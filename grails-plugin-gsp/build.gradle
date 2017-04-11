@@ -19,3 +19,7 @@ dependencies {
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"    
 }
 
+jar.dependsOn(compileAstGroovy)
+jar {
+    from(sourceSets.ast.output)
+}
