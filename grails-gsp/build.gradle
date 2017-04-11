@@ -1,5 +1,5 @@
 dependencies {
-    compile project(":grails-core"), {
+    compile "org.grails:grails-core:$grailsVersion", {
         exclude group:'org.grails', module:'grails-spring'
     }
     compile project(":grails-taglib")

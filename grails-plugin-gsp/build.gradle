@@ -10,33 +10,12 @@ configurations {
 }
 
 dependencies {
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     compile sourceSets.ast.output,
-            project(":grails-plugin-codecs"),
-            project(":grails-logging"),
             project(":grails-web-gsp-taglib")
 
-    astCompile project(":grails-web"),
-               project(":grails-plugin-controllers")
+    compile "org.grails:grails-plugin-codecs:$grailsVersion"    
+    astCompile "org.grails:grails-web:$grailsVersion"    
+    astCompile "org.grails:grails-plugin-controllers:$grailsVersion"    
 }
 
-test {
-    maxParallelForks = isTravisBuild ? 2 : 4
-    forkEvery = 100
-    if(!isTravisBuild) {
-      maxHeapSize = '1024m'
-    }
-}
-jar{
-    from compileAstGroovy.outputs.files
-}
-
-eclipse {
-    classpath {
-       file {
-           whenMerged { classpath ->
-                // remove invalid build/resources/ast entry
-                classpath.entries.removeAll { entry -> entry?.kind == 'lib' && entry?.path ==~ ".+/build/\\w+/ast\$" }
-           }
-       }
-    }
-}

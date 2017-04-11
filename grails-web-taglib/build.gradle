@@ -1,8 +1,10 @@
 dependencies {
-    compile( project(":grails-web-common") )
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+    compile "org.grails:grails-web-common:$grailsVersion"    
     compile( project(":grails-taglib") )
 
-    testRuntime( project(":grails-spring") )
+    testRuntime "org.grails:grails-spring:$grailsVersion"    
+    testCompile "org.springframework:spring-test:$springVersion"    
 }
 
 compileGroovy.doLast {
