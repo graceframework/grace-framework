@@ -1,5 +1,6 @@
 package org.grails.taglib
-import grails.core.GrailsTagLibClass
+
+import grails.core.gsp.GrailsTagLibClass
 import grails.util.GrailsClassUtils
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode

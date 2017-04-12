@@ -15,7 +15,7 @@
  */
 package org.grails.plugins.web
 import grails.config.Config
-import grails.core.GrailsTagLibClass
+import grails.core.gsp.GrailsTagLibClass
 import grails.gsp.PageRenderer
 import grails.plugins.Plugin
 import grails.util.BuildSettings

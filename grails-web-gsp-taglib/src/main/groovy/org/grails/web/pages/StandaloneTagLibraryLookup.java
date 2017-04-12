@@ -1,8 +1,8 @@
 package org.grails.web.pages;
 
-import grails.core.GrailsTagLibClass;
+import grails.core.gsp.GrailsTagLibClass;
 import grails.gsp.TagLib;
-import org.grails.core.DefaultGrailsTagLibClass;
+import org.grails.core.gsp.DefaultGrailsTagLibClass;
 import org.grails.taglib.TagLibraryLookup;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

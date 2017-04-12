@@ -15,6 +15,7 @@
  */
 package org.grails.web.taglib.jsp;
 
+import grails.core.gsp.GrailsTagLibClass;
 import grails.util.Holders;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
@@ -38,7 +39,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
 import grails.core.GrailsApplication;
-import grails.core.GrailsTagLibClass;
 import org.grails.core.artefact.TagLibArtefactHandler;
 import org.grails.buffer.FastStringPrintWriter;
 import org.grails.gsp.GroovyPage;
