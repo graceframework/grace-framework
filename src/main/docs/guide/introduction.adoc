@@ -1,6 +1,25 @@
 Groovy Servers Pages (or GSP for short) is Grails' view technology. It is designed to be familiar for users of technologies such as ASP and JSP, but to be far more flexible and intuitive.
 
-GSPs live in the `grails-app/views` directory and are typically rendered automatically (by convention) or with the link:{controllersRef}/render.html[render] method such as:
+GSP used to be part of Grails core, but since version 3.3 it is an independent Grails plugin that can be used by defining the following dependency in your `build.gradle`:
+
+[source,groovy,subs="attributes"]
+.build.gradle
+----
+dependencies {
+    ...
+    compile "org.grails.plugins:gsp:{version}"
+}
+----
+
+In addition for production compilation you should apply the `grails-gsp` Gradle plugin:
+
+[source,groovy,subs="attributes"]
+.build.gradle
+----
+apply plugin:"org.grails.grails-gsp"
+----
+
+GSPs themselves live in the `grails-app/views` directory and are typically rendered automatically (by convention) or with the link:{controllersRef}/render.html[render] method such as:
 
 [source,java]
 ----
