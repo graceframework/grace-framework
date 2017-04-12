@@ -1,25 +1,25 @@
-gsp:
-  title: Groovy Server Pages
-  GSPBasics:
-    title: GSP Basics
-    variablesAndScopes: Variables and Scopes
-    logicAndIteration: Logic and Iteration
-    pageDirectives: Page Directives
-    expressions: Expressions
-  tags:
-    title: GSP Tags
-    tagVariablesAndScopes: Variables and Scopes
-    tagLogicAndIteration: Logic and Iteration
-    searchAndFiltering: Search and Filtering
-    linksAndResources: Links and Resources
-    formsAndFields: Forms and Fields
-    tagsAsMethodCalls: Tags as Method Calls
-  viewsAndTemplates: Views and Templates
-  layouts: Layouts with Sitemesh
-  resources: Static Resources
+introduction: Introduction
+GSPBasics:
+  title: GSP Basics
+  variablesAndScopes: Variables and Scopes
+  logicAndIteration: Logic and Iteration
+  pageDirectives: Page Directives
+  expressions: Expressions
+tags:
+  title: GSP Tags
+  tagVariablesAndScopes: Variables and Scopes
+  tagLogicAndIteration: Logic and Iteration
+  searchAndFiltering: Search and Filtering
+  linksAndResources: Links and Resources
+  formsAndFields: Forms and Fields
+  tagsAsMethodCalls: Tags as Method Calls
+viewsAndTemplates: Views and Templates
+layouts:
+  title: Layouts with Sitemesh
   sitemeshContentBlocks: Sitemesh Content Blocks
-  makingChangesToADeployedApplication: Making Changes to a Deployed Application
-  GSPDebugging: GSP Debugging
+resources: Static Resources
+makingChangesToADeployedApplication: Making Changes to a Deployed Application
+GSPDebugging: GSP Debugging
 taglibs:
   title: Tag Libraries
   taglibVariablesAndScopes: Variables and Scopes
