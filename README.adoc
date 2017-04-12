@@ -1,0 +1,12 @@
+= Grails Server Pages (GSP)
+
+This project contains the sources for GSP, the server-side view rendering technology used in http://grails.org[Grails].
+
+== Documentation
+
+* Latest - http://gsp.grails.org
+* Latest - http://gsp.grails.org/latest/api
+
+
+* Snapshot Guide - http://gsp.grails.org/snapshot
+* Snapshot API - http://gsp.grails.org/snapshot
