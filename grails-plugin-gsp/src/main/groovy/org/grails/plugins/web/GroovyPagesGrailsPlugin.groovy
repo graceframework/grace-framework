@@ -24,8 +24,7 @@ import grails.util.GrailsUtil
 import grails.util.Metadata
 import grails.web.pages.GroovyPagesUriService
 import groovy.transform.CompileStatic
-import groovy.util.logging.Commons
-
+import groovy.util.logging.Slf4j
 import org.grails.core.artefact.TagLibArtefactHandler
 import org.grails.gsp.GroovyPageResourceLoader
 import org.grails.gsp.GroovyPagesTemplateEngine
@@ -55,7 +54,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
  * @author Graeme Rocher
  * @since 1.1
  */
-@Commons
+@Slf4j
 class GroovyPagesGrailsPlugin extends Plugin {
 
     public static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
@@ -67,8 +66,8 @@ class GroovyPagesGrailsPlugin extends Plugin {
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",
                             "file:./grails-app/taglib/**/*TagLib.groovy"]
 
-    def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [core: version, i18n: version]
+    def grailsVersion = "3.3.0 > *"
+    def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
     def observe = ['controllers']
     def loadAfter = ['filters']
 
