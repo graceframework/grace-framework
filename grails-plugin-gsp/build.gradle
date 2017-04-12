@@ -8,7 +8,9 @@ sourceSets {
 configurations {
     compile.extendsFrom astRuntime
 }
-
+ext {
+    isTravisBuild = System.getenv().get("TRAVIS") == 'true'
+}
 dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     compile sourceSets.ast.output,
@@ -16,7 +18,35 @@ dependencies {
 
     compile "org.grails:grails-plugin-codecs:$grailsVersion"    
     astCompile "org.grails:grails-web:$grailsVersion"    
-    astCompile "org.grails:grails-plugin-controllers:$grailsVersion"    
+    astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
+
+    testCompile "org.grails:grails-plugin-testing:$grailsVersion"
+    testCompile 'org.grails:grails-web-testing-support:1.0.0.BUILD-SNAPSHOT'
+
+    testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
+    testCompile "org.springframework:spring-test:$springVersion"
+
+    testCompile "taglibs:standard:${jstlVersion}"
+    testCompile "javax.servlet:jstl:${jstlVersion}"
+
+    testRuntime "org.grails:grails-plugin-url-mappings:$grailsVersion"
+}
+
+test {
+    if (isTravisBuild) {
+        maxParallelForks = 1
+        forkEvery = 10
+    }
+    else {
+        maxParallelForks = 4
+        forkEvery = 20
+    }
+
+    jvmArgs = ['-Xmx1028M']
+    afterSuite {
+        System.out.print('.')
+        System.out.flush()
+    }
 }
 
 jar.dependsOn(compileAstGroovy)

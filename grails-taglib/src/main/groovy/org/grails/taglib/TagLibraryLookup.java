@@ -17,7 +17,7 @@ package org.grails.taglib;
 
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
-import grails.core.gsp.GrailsTagLibClass;
+import grails.core.GrailsTagLibClass;
 import grails.core.support.GrailsApplicationAware;
 import groovy.lang.GroovyObject;
 import org.grails.core.artefact.TagLibArtefactHandler;
@@ -39,8 +39,8 @@ import java.util.*;
 public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicationAware, InitializingBean {
     protected ApplicationContext applicationContext;
     protected GrailsApplication grailsApplication;
-    protected Map<String, Map<String, Object>> tagNamespaces = new HashMap<String, Map<String, Object>>();
-    protected Map<String, NamespacedTagDispatcher> namespaceDispatchers = new HashMap<String, NamespacedTagDispatcher>();
+    protected Map<String, Map<String, Object>> tagNamespaces = new HashMap<>();
+    protected Map<String, NamespacedTagDispatcher> namespaceDispatchers = new HashMap<>();
     protected Map<String, Set<String>> tagsThatReturnObjectForNamespace = new HashMap<String, Set<String>>();
     protected Map<String, Map<String,Map<String, Object>>> encodeAsForTagNamespaces = new HashMap<String, Map<String,Map<String, Object>>>();
 
@@ -105,7 +105,7 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         }
         Map<String, Object> tags = tagNamespaces.get(namespace);
         if (tags == null) {
-            tags = new HashMap<String, Object>();
+            tags = new HashMap<>();
             tagNamespaces.put(namespace, tags);
         }
 
@@ -119,7 +119,7 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
 
         Map<String,Map<String, Object>> encodeAsForTagNamespace = encodeAsForTagNamespaces.get(namespace);
         if (encodeAsForTagNamespace==null) {
-            encodeAsForTagNamespace = new HashMap<String, Map<String, Object>>();
+            encodeAsForTagNamespace = new HashMap<>();
             encodeAsForTagNamespaces.put(namespace, encodeAsForTagNamespace);
         }
 

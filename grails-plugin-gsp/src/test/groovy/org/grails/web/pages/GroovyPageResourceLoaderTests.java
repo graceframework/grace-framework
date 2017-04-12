@@ -1,5 +1,4 @@
-/*
- * Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2005 Graeme Rocher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core;
+package org.grails.web.pages;
 
-import grails.core.GrailsTagLibClass;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
+import junit.framework.TestCase;
+import org.grails.gsp.GroovyPageResourceLoader;
 
 /**
- * Default implementation of a tag lib class.
+ * Tests for the development ResourceLoader instance of Groovy Server Pages.
  *
  * @author Graeme Rocher
- * @deprecated Use {@link org.grails.core.gsp.DefaultGrailsTagLibClass} instead
+ * @since 0.5
  */
-@SuppressWarnings("DeprecatedIsStillUsed")
-@Deprecated
-public abstract class DefaultGrailsTagLibClass extends AbstractInjectableGrailsClass implements GrailsTagLibClass{
+public class GroovyPageResourceLoaderTests extends TestCase {
 
-    public DefaultGrailsTagLibClass(Class<?> clazz) {
-        super(clazz, TagLibArtefactHandler.TYPE);
+    public void testGetRealLocationInProject() {
+        /*GroovyPageResourceLoader rl =*/ new GroovyPageResourceLoader();
     }
 }

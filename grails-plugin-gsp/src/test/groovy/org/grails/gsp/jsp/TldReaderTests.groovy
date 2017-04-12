@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core;
+package org.grails.gsp.jsp
 
-import grails.core.GrailsTagLibClass;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
+import org.grails.web.taglib.jsp.JspLocaleSelectTag
+import org.springframework.core.io.ClassPathResource
 
-/**
- * Default implementation of a tag lib class.
- *
- * @author Graeme Rocher
- * @deprecated Use {@link org.grails.core.gsp.DefaultGrailsTagLibClass} instead
- */
-@SuppressWarnings("DeprecatedIsStillUsed")
-@Deprecated
-public abstract class DefaultGrailsTagLibClass extends AbstractInjectableGrailsClass implements GrailsTagLibClass{
+class TldReaderTests extends GroovyTestCase{
 
-    public DefaultGrailsTagLibClass(Class<?> clazz) {
-        super(clazz, TagLibArtefactHandler.TYPE);
+    void testTldReader() {
+        def res = new ClassPathResource("org/codehaus/groovy/grails/web/pages/ext/jsp/tld-reader-test.tld")
+
+        TldReader tldReader = new TldReader(res.getInputStream())
+
+        assert tldReader.tags
+        assertEquals tldReader.tags.localeSelect, JspLocaleSelectTag.class.name
     }
 }

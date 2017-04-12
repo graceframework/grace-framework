@@ -19,8 +19,7 @@ import grails.core.gsp.GrailsTagLibClass;
 import groovy.lang.Closure;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaProperty;
-import org.grails.core.AbstractInjectableGrailsClass;
-import org.grails.core.artefact.TagLibArtefactHandler;
+import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -31,7 +30,7 @@ import java.util.*;
  * @author Graeme Rocher
  *
  */
-public class DefaultGrailsTagLibClass  extends AbstractInjectableGrailsClass implements GrailsTagLibClass, grails.core.GrailsTagLibClass {
+public class DefaultGrailsTagLibClass  extends org.grails.core.DefaultGrailsTagLibClass implements GrailsTagLibClass {
 
     protected static final String TAG_LIB = TagLibArtefactHandler.TYPE;
 
@@ -48,7 +47,7 @@ public class DefaultGrailsTagLibClass  extends AbstractInjectableGrailsClass imp
      */
     @SuppressWarnings("rawtypes")
     public DefaultGrailsTagLibClass(Class<?> clazz) {
-        super(clazz, TAG_LIB);
+        super(clazz);
 
         for (MetaProperty prop : GroovySystem.getMetaClassRegistry().getMetaClass(clazz).getProperties()) {
             int modifiers = prop.getModifiers();

@@ -4,6 +4,6 @@ dependencies {
 
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     // Required for JSP support
-    compileOnly 'javax.servlet.jsp:jsp-api:2.1'
+    compileOnly "javax.servlet.jsp:jsp-api:${jspApiVersion}"
 
 }
