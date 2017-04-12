@@ -1,3 +1,5 @@
+rootProject.name = "grails-gsp"
+
 include 'grails-gsp'
 include 'grails-plugin-gsp'
 include 'grails-taglib'
