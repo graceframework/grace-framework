@@ -64,6 +64,28 @@ class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
         }
     }
 
+    void testDynamicAttributes() {
+        File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
+        tempdir.mkdir()
+
+        withConfig("grails.views.gsp.keepgenerateddir='${tempdir.absolutePath.replaceAll('\\\\', '/')}'") {
+
+            def template = '''
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
+<html>
+  <body>
+      <spring:form action="action" grails="rocks">
+        
+      </spring:form>
+  </body>
+</html>
+'''
+            assertOutputContains 'grails="rocks"', template
+        }
+    }
+
+
+
     // test for GRAILS-3845
     void testNestedJSPTags() {
         def template = '''

@@ -159,6 +159,9 @@ class JspTagImpl implements JspTag {
             if (key && tagBean.isWritableProperty(key)) {
                 tagBean.setPropertyValue key, value
             }
+            else if(key && tag instanceof DynamicAttributes){
+                ((DynamicAttributes)tag).setDynamicAttribute(null,key,value);
+            }
         }
     }
 
