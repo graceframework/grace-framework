@@ -2,7 +2,6 @@ dependencies {
     compile "org.grails:grails-core:$grailsVersion", {
         exclude group:'org.grails', module:'grails-spring'
     }
-    compile project(":grails-web-gsp")
-    runtime project(":grails-web-jsp")
+    compile project(":grails-taglib")
     compile "org.codehaus.groovy:groovy-templates:$groovyVersion"
 }

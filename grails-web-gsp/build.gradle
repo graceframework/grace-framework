@@ -1,7 +1,8 @@
 dependencies {
     compileOnly "org.apache.ant:ant:${antVersion}"
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
-    compile "org.grails:grails-web-common:$grailsVersion"
+    compile( project(":grails-gsp") )
+    compile "org.grails:grails-web-common:$grailsVersion"    
     compile( project(":grails-web-taglib") )
 
     compile( project(":grails-web-sitemesh") ) {
