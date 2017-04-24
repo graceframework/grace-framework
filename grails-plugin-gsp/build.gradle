@@ -16,6 +16,9 @@ dependencies {
     compile sourceSets.ast.output,
             project(":grails-web-gsp-taglib")
 
+
+    runtime(project(":grails-web-jsp"))
+
     compile "org.grails:grails-plugin-codecs:$grailsVersion"    
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
