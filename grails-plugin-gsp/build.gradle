@@ -18,7 +18,7 @@ dependencies {
 
 
     runtime(project(":grails-web-jsp"))
-
+    compile "commons-lang:commons-lang:2.6"
     compile "org.grails:grails-plugin-codecs:$grailsVersion"    
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
