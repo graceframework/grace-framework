@@ -44,7 +44,9 @@ public interface GroovyPageLocator {
     /**
      * Finds a page for the given URI
      *
+     * @param pluginName The plugin name
      * @param uri The URI
+     * @param binding The biding to use
      * @return A script source
      */
     GroovyPageScriptSource findPageInBinding(String pluginName, String uri, TemplateVariableBinding binding);

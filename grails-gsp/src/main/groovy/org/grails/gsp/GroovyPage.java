@@ -41,10 +41,10 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
- * <p/>
- * Base class for a GroovyPage (at the moment there is nothing in here but could be useful for
- * providing utility methods etc.
+ * <p>NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
+ * </p>
+ * <p>Base class for a GroovyPage (at the moment there is nothing in here but could be useful for
+ * providing utility methods etc.</p>
  *
  * @author Troy Heninger
  * @author Graeme Rocher

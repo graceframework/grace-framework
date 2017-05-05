@@ -22,11 +22,13 @@ import org.grails.taglib.GrailsTagException;
  *
  * Example:
  *
- * <code>
+ * <pre>
+ * {@code 
  *  <gr:grep in="${thing}" filter="${Pattern.compile('[a-zA-Z]')}">
  *        <p>${it}</p>
  *  </gr:grep>
- * </code>
+ * }
+ * </pre>
  *
  * @author Graeme Rocher
  */

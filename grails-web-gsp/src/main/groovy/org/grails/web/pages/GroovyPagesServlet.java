@@ -50,6 +50,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
  *
  * Main servlet class.  Example usage in web.xml:
+ *
+ * <pre>
+ * {@code 
  *     <servlet>
  *       <servlet-name>GroovyPagesServlet</servlet-name>
  *       <servlet-class>GroovyPagesServlet</servlet-class>
@@ -62,6 +65,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *          </description>
  *        </init-param>
  *    </servlet>
+ * }
+ * </pre>
  *
  * @author Troy Heninger
  * @author Graeme Rocher

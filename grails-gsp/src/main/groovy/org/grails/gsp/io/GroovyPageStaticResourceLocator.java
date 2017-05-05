@@ -25,9 +25,11 @@ import org.grails.taglib.encoder.OutputContextLookupHelper;
 import org.springframework.core.io.Resource;
 
 /**
- * Extends the {@link DefaultResourceLocator} class with extra methods to evaluate static resources relative to the currently executing GSP page.
- * <p/>
- * This class is used to resolve references to static resources like CSS, Javascript and images files
+ * <p>
+ *   Extends the {@link DefaultResourceLocator} class with extra methods to evaluate static resources relative to the currently executing GSP page.
+ * </p>
+ *
+ * <p>This class is used to resolve references to static resources like CSS, Javascript and images files</p>
  *
  * @author Graeme Rocher
  * @since 2.0

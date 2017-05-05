@@ -30,10 +30,9 @@ import com.opensymphony.sitemesh.compatability.Content2HTMLPage;
 /**
  * Grails/GSP specific implementation of Sitemesh's AbstractHTMLPage
  *
- * g:capture* tags in RenderTagLib are used to capture head, meta, title, component & body contents.
+ * g:capture* tags in RenderTagLib are used to capture head, meta, title, component and body contents.
  * No html parsing is required for templating since capture tags are added at GSP compilation time.
  *
- * @see org.codehaus.groovy.grails.web.pages.SitemeshPreprocessor
  * @author Lari Hotari, Sagire Software Oy
  */
 public class GSPSitemeshPage extends AbstractHTMLPage implements Content{

@@ -88,7 +88,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     /**
      * ModifyOurScopeWithBodyTagTests breaks if variable isn't changed in the binding it exists in.
      *
-     * @param name
+     * @param name The name of the variable
      * @return The binding
      */
     public Binding findBindingForVariable(String name) {

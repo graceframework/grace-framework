@@ -55,8 +55,7 @@ public abstract class ResourceAwareTemplateEngine extends TemplateEngine {
      * @param resource The Spring Resource to create the template for
      * @param cacheable Whether the resource can be cached
      * @return A Template instance
-     * @throws IOException Thrown when there was an error reading the Template
-     * @throws ClassNotFoundException Thrown when there was a problem loading the Template into a class
+     *
      */
     public abstract Template createTemplate(Resource resource, boolean cacheable);
 

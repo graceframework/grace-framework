@@ -21,11 +21,14 @@ import org.grails.taglib.GrailsTagException;
 /**
  * Example:
  *
- * <code>
+ * <pre>
+ * {@code 
  *  <gr:findAll in="${thing}" expr="it.length() == 3">
  *        <p>${it}</p>
  *  </gr:findAll>
- * </code>
+ * }
+ * </pre>
+ *
  * @author Graeme Rocher
  * @since 19-Jan-2006
  */

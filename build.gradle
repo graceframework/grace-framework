@@ -19,7 +19,8 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = "https://raw.githubusercontent.com/grails/grails-common-build/master"
+    // commonBuild = "https://raw.githubusercontent.com/grails/grails-common-build/master"
+    commonBuild = "https://raw.githubusercontent.com/grails/grails-common-build/1a6b9e24fd2ec49e321ab983994f850663adcc6d/"
 }
 
 subprojects {
@@ -42,9 +43,13 @@ subprojects {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
-
+    println "PROJECT $project is $isGrailsPlugin"
     if(it.name.startsWith("examples")) {
         apply plugin:"org.grails.grails-web"
+    }
+    else if(isGrailsPlugin) {
+        apply plugin:"org.grails.grails-plugin"
+        apply from:"${commonBuild}/common-publishing.gradle"
     }
     else {
         apply from:"${commonBuild}/common-project.gradle"

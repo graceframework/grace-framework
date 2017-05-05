@@ -53,12 +53,6 @@ import org.springframework.context.ApplicationContext;
  * who want their tags to work in JSP should sub-class this class and call "setTagName" to set
  * the tagName of the tag within the Grails taglib
  *
- * This tag can of course be used standalone to invoke a Grails tag from JSP:
- *
- * <code>
- *   <gr:invokeTag tagName="myTag" />
- * </code>
- *
  * @author Graeme Rocher
  * @since 16-Jan-2006
  * @deprecated

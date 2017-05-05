@@ -1,20 +1,9 @@
-sourceSets {
-    ast {
-        groovy.srcDirs = ['src/ast/groovy']
-        resources.srcDirs = []
-    }
-}
-
-configurations {
-    compile.extendsFrom astRuntime
-}
 ext {
     isTravisBuild = System.getenv().get("TRAVIS") == 'true'
 }
 dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
-    compile sourceSets.ast.output,
-            project(":grails-web-gsp-taglib")
+    compile project(":grails-web-gsp-taglib")
 
 
     runtime(project(":grails-web-jsp"))
@@ -50,9 +39,4 @@ test {
         System.out.print('.')
         System.out.flush()
     }
-}
-
-jar.dependsOn(compileAstGroovy)
-jar {
-    from(sourceSets.ast.output)
 }
