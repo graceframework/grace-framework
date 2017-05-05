@@ -124,7 +124,10 @@ class GroovyPagesGrailsPlugin extends Plugin {
 
 
         // resolves JSP tag libraries
-        jspTagLibraryResolver(TagLibraryResolverImpl)
+        if(ClassUtils.isPresent("org.grails.gsp.jsp.TagLibraryResolverImpl", application.classLoader)) {
+            jspTagLibraryResolver(TagLibraryResolverImpl)
+        }
+
         // resolves GSP tag libraries
         gspTagLibraryLookup(TagLibraryLookup) { bean ->
             bean.lazyInit = true
