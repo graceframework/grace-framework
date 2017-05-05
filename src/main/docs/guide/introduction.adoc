@@ -1,6 +1,6 @@
 Groovy Servers Pages (or GSP for short) is Grails' view technology. It is designed to be familiar for users of technologies such as ASP and JSP, but to be far more flexible and intuitive.
 
-GSP used to be part of Grails core, but since version 3.3 it is an independent Grails plugin that can be used by defining the following dependency in your `build.gradle`:
+GSP was previusly part of Grails core, but since version 3.3 it is an independent Grails plugin that can be used by defining the following dependency in your `build.gradle`:
 
 [source,groovy,subs="attributes"]
 .build.gradle
