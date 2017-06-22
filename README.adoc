@@ -1,4 +1,4 @@
-= Grails Server Pages (GSP) image:https://travis-ci.org/grails/grails-gsp.svg?branch=master["Build Status", link="https://travis-ci.org/grails/grails-gsp"]
+= Groovy Server Pages (GSP) image:https://travis-ci.org/grails/grails-gsp.svg?branch=master["Build Status", link="https://travis-ci.org/grails/grails-gsp"]
 
 This project contains the sources for GSP, the server-side view rendering technology used in http://grails.org[Grails].
 
