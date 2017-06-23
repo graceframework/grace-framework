@@ -43,7 +43,6 @@ subprojects {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
-    println "PROJECT $project is $isGrailsPlugin"
     if(it.name.startsWith("examples")) {
         apply plugin:"org.grails.grails-web"
     }
