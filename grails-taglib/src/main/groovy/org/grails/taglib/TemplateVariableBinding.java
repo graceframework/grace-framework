@@ -195,4 +195,11 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
         variableNames.addAll(getVariablesMap().keySet());
         return variableNames;
     }
+
+    @Override
+    public boolean hasVariable(String name) {
+        return super.hasVariable(name)
+                || cachedParentVariableNames.contains(name)
+                || (parent != null && parent.hasVariable(name));
+    }
 }
