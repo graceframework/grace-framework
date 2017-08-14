@@ -46,4 +46,4 @@ This action will look up a `Book` instance and create a model that contains a ke
 ${book.title}
 ----
 
-WARNING: Embedding data received from user input has the risk of making your application vulnerable to an Cross Site Scripting (XSS) attack. Please read the documentation on link:security.html#xssPrevention[XSS prevention] for information on how to prevent XSS attacks.
+WARNING: Embedding data received from user input has the risk of making your application vulnerable to an Cross Site Scripting (XSS) attack. Please read the documentation on link:https://docs.grails.org/latest/guide/security.html#xssPrevention[XSS prevention] for information on how to prevent XSS attacks.
