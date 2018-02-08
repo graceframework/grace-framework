@@ -208,7 +208,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         hiddenValue = processFormFieldValueIfNecessary("_${name}", hiddenValue, "hidden")
 
         def hiddenFieldName
-        if(name.indexOf('.') == -1) {            
+        if(name.indexOf('.') == -1) {
             hiddenFieldName = "_${name}"
         } else {
             def lastDot = name.lastIndexOf('.')
