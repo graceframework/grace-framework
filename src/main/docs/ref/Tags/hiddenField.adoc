@@ -27,8 +27,3 @@ Attributes
 * `value` (optional) - The value of the text field
 
 
-=== Source
-
-
-{source:tag=FormTagLib.hiddenField}
-{source}

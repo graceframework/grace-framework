@@ -97,8 +97,3 @@ Attributes
 See link:{controllersRef}/render.html[render] in the user guide for more information.
 
 
-=== Source
-
-
-{source:tag=RenderTagLib.render}
-{source}

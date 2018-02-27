@@ -64,8 +64,3 @@ Attributes
 * `model` (optional) - Any request attributes (the model) to pass to the view to be included
 
 
-=== Source
-
-
-{source:tag=UrlMappingTagLib.include}
-{source}

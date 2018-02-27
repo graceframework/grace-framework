@@ -61,9 +61,3 @@ The types supported are:
 * png - Sets rel="shortcut icon"
 * appleicon - Sets rel="apple-touch-icon"
 
-
-=== Source
-
-
-{source:tag=ApplicationTagLib.external}
-{source}

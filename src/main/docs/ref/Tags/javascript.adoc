@@ -35,8 +35,3 @@ Attributes
 * `plugin` (optional) - The plugin to look for the JavaScript in
 
 
-=== Source
-
-
-{source:tag=JavascriptTagLib.javascript}
-{source}

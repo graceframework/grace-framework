@@ -30,9 +30,3 @@ Attributes
 
 * `code` - The 3-letter lowercase ISO3166 country code
 
-
-=== Source
-
-
-{source:tag=CountryTagLib.country}
-{source}
