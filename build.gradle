@@ -26,9 +26,6 @@ subprojects {
 
     version project.projectVersion
 
-    sourceCompatibility = "1.7"
-    targetCompatibility = "1.7"
-
     ext {
         userOrg = "grails"
         isGrailsPlugin = name.startsWith('grails-plugin')
@@ -56,6 +53,9 @@ subprojects {
         apply from:"${commonBuild}/common-project.gradle"
         apply from:"${commonBuild}/common-publishing.gradle"
     }
+
+    sourceCompatibility = "1.7"
+    targetCompatibility = "1.7"
 
     dependencies {
         compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
