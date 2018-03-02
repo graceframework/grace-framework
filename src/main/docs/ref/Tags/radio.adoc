@@ -37,8 +37,3 @@ Attributes
 * `checked` (optional) - boolean to indicate that the radio button should be checked
 
 
-=== Source
-
-
-{source:tag=FormTagLib.radio}
-{source}

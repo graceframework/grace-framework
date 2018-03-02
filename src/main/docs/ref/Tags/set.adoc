@@ -64,9 +64,3 @@ Attributes
 * `bean` -  The name or the type of a bean in the applicationContext; the type can be an interface or superclass
 * `scope` - Scope to set variable in, one of `request`, `page`, `flash` or `session`. Defaults to `page`.
 
-
-=== Source
-
-
-{source:tag=ApplicationTagLib.set}
-{source}

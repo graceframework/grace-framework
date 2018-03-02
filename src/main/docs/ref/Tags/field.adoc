@@ -74,10 +74,3 @@ grails:
 Defaults are `disabled`, `checked`, `readonly`
 
 
-=== Source
-
-
-{source:tag=FormTagLib.field}
-{source}
-
-

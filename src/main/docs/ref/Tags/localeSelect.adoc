@@ -28,8 +28,3 @@ Attributes
 * `value` (optional) - The selected `Locale`; defaults to the current request locale if not specified
 
 
-=== Source
-
-
-{source:tag=FormTagLib.localeSelect}
-{source}

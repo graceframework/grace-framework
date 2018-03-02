@@ -73,9 +73,3 @@ Attributes
 * `model` (optional) - The name of the model reference to check for errors
 * `field` (optional) - Check if a field of the bean or model reference has errors
 
-
-=== Source
-
-
-{source:tag=ValidationTagLib.hasErrors}
-{source}

@@ -30,8 +30,3 @@ Attributes
 * `field` (required) - The name of the field to obtain the value of
 
 
-=== Source
-
-
-{source:tag=ValidationTagLib.fieldValue}
-{source}

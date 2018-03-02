@@ -72,8 +72,3 @@ Attributes
 * `offset` (optional) - Used ONLY if `params.offset` is empty
 
 
-=== Source
-
-
-{source:tag=UrlMappingTagLib.paginate}
-{source}

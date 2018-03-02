@@ -51,9 +51,3 @@ Results in:
 </html>
 ----
 
-
-=== Source
-
-
-{source:tag=RenderTagLib.layoutHead}
-{source}

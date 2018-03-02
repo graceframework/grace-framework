@@ -48,9 +48,3 @@ Attributes
 * `dateStyle` (optional) - Set separate `style` for the date part.
 * `timeStyle` (optional) - Set separate `style` for the time part.
 
-
-=== Source
-
-
-{source:tag=FormatTagLib.formatDate}
-{source}

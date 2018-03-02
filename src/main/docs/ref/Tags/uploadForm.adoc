@@ -32,9 +32,3 @@ Attributes
 * `id` (optional) - The id to use in the link
 * `url` (optional) - A map containing the action, controller, id etc.
 
-
-=== Source
-
-
-{source:tag=FormTagLib.uploadForm}
-{source}

@@ -34,9 +34,3 @@ Attributes
 
 * `name` - The name of the cookie
 
-
-=== Source
-
-
-{source:tag=ApplicationTagLib.cookie}
-{source}

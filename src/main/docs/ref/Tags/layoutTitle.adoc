@@ -54,8 +54,3 @@ Results in:
 ----
 
 
-=== Source
-
-
-{source:tag=RenderTagLib.layoutTitle}
-{source}

@@ -42,8 +42,3 @@ Attributes
 * `uri` (optional) - If using the Resources plugin, the uri of the image. A more terse alternative to using the dir/file attributes.
 
 
-=== Source
-
-
-{source:tag=ApplicationTagLib.img}
-{source}

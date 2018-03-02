@@ -70,8 +70,3 @@ Attributes
 * `method` (optional) - The form method to use, either `POST` or `GET`; defaults to `POST`
 
 
-=== Source
-
-
-{source:tag=FormTagLib.form}
-{source}
