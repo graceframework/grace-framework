@@ -8,7 +8,7 @@
 
 Includes the response of another controller/action or view in the current response
 
-NOTE: When making a web request `g:include` does not make an independent request, it is part of the parent request.
+NOTE: The  `g:include` tag will not generate a separate request. The response from the `include` action will be merged into the response for the original request.
 
 
 === Examples
