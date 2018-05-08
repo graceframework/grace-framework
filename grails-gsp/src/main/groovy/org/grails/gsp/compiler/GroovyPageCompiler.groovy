@@ -17,6 +17,7 @@ package org.grails.gsp.compiler
 
 import grails.config.ConfigMap
 import org.apache.commons.logging.LogFactory
+import org.apache.commons.logging.Log
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.Phases
@@ -24,6 +25,7 @@ import org.grails.config.CodeGenConfig
 import org.grails.gsp.GroovyPageMetaInfo
 import org.grails.gsp.compiler.transform.GroovyPageInjectionOperation
 import org.grails.taglib.encoder.OutputEncodingSettings
+import groovy.transform.CompileStatic
 
 /**
  * Used to compile GSP files into a specified target directory.
@@ -31,9 +33,10 @@ import org.grails.taglib.encoder.OutputEncodingSettings
  * @author Graeme Rocher
  * @since 1.2
  */
+@CompileStatic
 class GroovyPageCompiler {
 
-    private static final LOG = LogFactory.getLog(GroovyPageCompiler)
+    private static final Log LOG = LogFactory.getLog(GroovyPageCompiler)
 
     private Map compileGSPRegistry = [:]
 
@@ -47,7 +50,7 @@ class GroovyPageCompiler {
     File viewsDir
     String viewPrefix = '/'
     String packagePrefix = 'default'
-    String encoding = "UTF-8"
+    String encoding = 'UTF-8'
     String expressionCodec = OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.EXPRESSION_CODEC_NAME)
     String[] configs = []
     ConfigMap configMap
@@ -70,7 +73,7 @@ class GroovyPageCompiler {
             LOG.debug "Compiling ${srcFiles.size()} GSP files using GroovyPageCompiler"
 
             if(configs) {
-                def codeGenConfig = new CodeGenConfig()
+                CodeGenConfig codeGenConfig = new CodeGenConfig()
                 codeGenConfig.classLoader = classLoader
                 configMap = codeGenConfig
                 for(path in configs) {
@@ -109,12 +112,12 @@ class GroovyPageCompiler {
 
         compilerConfig.setTargetDirectory(targetDir)
         compilerConfig.setSourceEncoding(encoding)
-        def relPath = relativePath(viewsDir, gspfile)
-        def viewuri = viewPrefix + relPath
+        String relPath = relativePath(viewsDir, gspfile)
+        String viewuri = viewPrefix + relPath
 
-        def relPackagePath = relativePath(viewsDir, gspfile.getParentFile())
+        String relPackagePath = relativePath(viewsDir, gspfile.getParentFile())
 
-        def packageDir = "gsp/${packagePrefix}"
+        String packageDir = "gsp/${packagePrefix}"
         if (relPackagePath.length() > 0) {
             if (packageDir.length() > 0 && !packageDir.endsWith('/')) {
                 packageDir += "/"
@@ -122,16 +125,16 @@ class GroovyPageCompiler {
             packageDir += generateJavaName(relPackagePath)
         }
 
-        def className = generateJavaName(packageDir.replace('/','_'))
+        String className = generateJavaName(packageDir.replace('/','_'))
 
         className += generateJavaName(gspfile.name)
         // using default package because of GRAILS-5022
         packageDir = ''
         //def className = generateJavaName(gspfile.name)
 
-        def classFile = new File(new File(targetDir, packageDir), "${className}.class")
-        def packageName = packageDir.replace('/','.')
-        def fullClassName
+        File classFile = new File(new File(targetDir, packageDir), "${className}.class")
+        String packageName = packageDir.replace('/','.')
+        String fullClassName
         if (packageName) {
             fullClassName = packageName + '.' + className
         }
@@ -143,7 +146,7 @@ class GroovyPageCompiler {
         if (gspfile.exists() && (!classFile.exists() || gspfile.lastModified() > classFile.lastModified())) {
             LOG.debug("Compiling gsp ${gspfile}...")
 
-            def gspgroovyfile = new File(new File(generatedGroovyPagesDirectory, packageDir), className + ".groovy")
+            File gspgroovyfile = new File(new File(generatedGroovyPagesDirectory, packageDir), className + ".groovy")
             gspgroovyfile.getParentFile().mkdirs()
 
             gspfile.withInputStream { InputStream gspinput ->
@@ -159,17 +162,17 @@ class GroovyPageCompiler {
                     gpp.generateGsp(gsptarget)
                 }
                 // write static html parts to data file (read from classpath at runtime)
-                def htmlDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.HTML_DATA_POSTFIX)
+                File htmlDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.HTML_DATA_POSTFIX)
                 htmlDataFile.parentFile.mkdirs()
                 gpp.writeHtmlParts(htmlDataFile)
                 // write linenumber mapping info to data file
-                def lineNumbersDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.LINENUMBERS_DATA_POSTFIX)
+                File lineNumbersDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.LINENUMBERS_DATA_POSTFIX)
                 gpp.writeLineNumbers(lineNumbersDataFile)
 
                 // register viewuri -> classname mapping
                 compileGSPRegistry[viewuri] = fullClassName
 
-                def unit = new CompilationUnit(compilerConfig, null, classLoader)
+                CompilationUnit unit = new CompilationUnit(compilerConfig, null, classLoader)
                 unit.addPhaseOperation(operation, Phases.CANONICALIZATION)
                 unit.addSource(gspgroovyfile)
                 unit.compile()
@@ -197,8 +200,8 @@ class GroovyPageCompiler {
 
     // find out the relative path from relbase to file
     protected String relativePath(File relbase, File file) {
-        def pathParts = []
-        def currentFile = file
+        List<String> pathParts = []
+        File currentFile = file
         while (currentFile != null && currentFile != relbase) {
             pathParts += currentFile.name
             currentFile = currentFile.parentFile
