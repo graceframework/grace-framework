@@ -19,6 +19,7 @@ import org.grails.taglib.GrailsTagException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
@@ -44,6 +45,7 @@ class GroovyPageScanner implements Tokens {
     private int lastLineNumberIndex = -1;
     private String pageName = "Unknown";
     private int maxHtmlLength = DEFAULT_MAX_HTML_LENGTH;
+    private Pattern isTagNameSpacePattern = Pattern.compile("^\\p{Alpha}\\w*$");
 
     GroovyPageScanner(String text) {
         Strip strip = new Strip(text);
@@ -247,7 +249,7 @@ class GroovyPageScanner implements Tokens {
     }
 
     private boolean isTagDefinition(String tagNameSpace) {
-        return tagNameSpace != null && tagNameSpace.matches("^\\p{Alpha}\\w*$");
+        return tagNameSpace != null && isTagNameSpacePattern.matcher(tagNameSpace).matches();
     }
 
     private String getTagNamespace(int fromIndex) {
