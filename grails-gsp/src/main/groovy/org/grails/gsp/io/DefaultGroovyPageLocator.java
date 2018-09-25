@@ -97,11 +97,14 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         return scriptSource;
     }
 
-    protected Resource findReloadablePage(final String uri) {
-        Resource resource = findResource(uri);
-        if (resource == null) {
+    protected Resource findReloadablePage(final String uri, BinaryGrailsPlugin binaryPlugin) {
+        Resource resource;
+        if (binaryPlugin == null) {
+            resource = findResource(uri);
+        } else {
             resource = findResourceInPlugins(uri);
         }
+
         return resource;
     }
 
@@ -200,17 +203,18 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         uri = GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri);
         Class<?> viewClass = binaryPlugin.resolveView(uri);
         if (viewClass != null && !reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
-            scriptSource = createGroovyPageCompiledScriptSource(uri, uri, viewClass);
+            scriptSource = createGroovyPageCompiledScriptSource(uri, uri, viewClass, binaryPlugin);
         }
         return scriptSource;
     }
 
-    protected GroovyPageCompiledScriptSource createGroovyPageCompiledScriptSource(final String uri, String fullPath, Class<?> viewClass) {
+    protected GroovyPageCompiledScriptSource createGroovyPageCompiledScriptSource(final String uri, String fullPath, Class<?> viewClass,
+                                                                                  final BinaryGrailsPlugin binaryPlugin) {
         GroovyPageCompiledScriptSource scriptSource = new GroovyPageCompiledScriptSource(uri, fullPath, viewClass);
         if (reloadEnabled) {
             scriptSource.setResourceCallable(new PrivilegedAction<Resource>() {
                 public Resource run() {
-                    return findReloadablePage(uri);
+                    return findReloadablePage(uri, binaryPlugin);
                 }
             });
         }
@@ -369,7 +373,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                         LOG.warn("Cannot load class " + gspClassName + ". Resuming on non-precompiled implementation.", e);
                     }
                     if (gspClass != null) {
-                        GroovyPageCompiledScriptSource groovyPageCompiledScriptSource = createGroovyPageCompiledScriptSource(uri, searchPath, gspClass);
+                        GroovyPageCompiledScriptSource groovyPageCompiledScriptSource = createGroovyPageCompiledScriptSource(uri, searchPath, gspClass, null);
                         if(LOG.isDebugEnabled()) {
                             LOG.debug("Returning new GSP script source for class [{}]", gspClassName);
                         }
