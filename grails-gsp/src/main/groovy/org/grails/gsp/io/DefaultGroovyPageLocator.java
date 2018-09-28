@@ -201,6 +201,8 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         Class<?> viewClass = binaryPlugin.resolveView(uri);
         if (viewClass != null && !reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
             scriptSource = createGroovyPageCompiledScriptSource(uri, uri, viewClass);
+            // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
+            ((GroovyPageCompiledScriptSource) scriptSource).setResourceCallable(null);
         }
         return scriptSource;
     }
