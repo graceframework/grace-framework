@@ -108,16 +108,19 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     private Map<String, Class> binaryPluginViewsMap = new ConcurrentHashMap<String, Class>();
 
     @Override
-    protected void initFrameworkServlet() throws ServletException, BeansException {
+    protected void initFrameworkServlet() throws BeansException {
         context = getServletContext();
         context.log("GSP servlet initialized");
         context.setAttribute(SERVLET_INSTANCE, this);
 
         final WebApplicationContext webApplicationContext = getWebApplicationContext();
         grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class, getClass().getClassLoader(), new Object[]{context}).get(0);
-        webApplicationContext.getAutowireCapableBeanFactory().autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
-        groovyPagesTemplateEngine = webApplicationContext.getBean(GroovyPagesTemplateEngine.BEAN_ID,
-                GroovyPagesTemplateEngine.class);
+        final AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
+        if (autowireCapableBeanFactory != null) {
+            autowireCapableBeanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+        }
+        groovyPagesTemplateEngine =
+                webApplicationContext.getBean(GroovyPagesTemplateEngine.BEAN_ID, GroovyPagesTemplateEngine.class);
 
     }
 

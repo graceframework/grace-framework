@@ -37,7 +37,6 @@ import org.grails.gsp.compiler.GroovyPageParser;
 import org.grails.gsp.io.*;
 import org.grails.gsp.jsp.TagLibraryResolver;
 import org.grails.taglib.TagLibraryLookup;
-import org.grails.taglib.encoder.OutputEncodingSettings;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
