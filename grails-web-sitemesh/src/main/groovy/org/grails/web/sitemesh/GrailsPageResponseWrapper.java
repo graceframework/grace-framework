@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -355,6 +356,16 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper{
                 byteBuffer = new StreamByteBuffer();
                 final OutputStream out=byteBuffer.getOutputStream();
                 exposedStream = new ServletOutputStream() {
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+
+                    @Override
+                    public void setWriteListener(WriteListener writeListener) {
+                        throw new UnsupportedOperationException("Method setWriteListener not supported");
+                    }
+
                     @Override
                     public void write(byte[] b, int off, int len) throws IOException {
                         out.write(b, off, len);

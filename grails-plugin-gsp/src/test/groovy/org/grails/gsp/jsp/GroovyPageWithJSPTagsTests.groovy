@@ -152,7 +152,8 @@ goodbye
 </form:form>'''
 
         request.setAttribute "address", new TestJspTagAddress(zip:"342343")
-        assertOutputEquals '''<form id="address" action="do" method="post">\n<b>Zip: </b><input id="zip" name="zip" type="text" value="342343"/>\n</form>''',
+        request.setAttribute "command", new TestJspTagAddress(zip:"342343")
+        assertOutputEquals '''<form id="command" commandName="address" action="do" method="post">\n<b>Zip: </b><input id="zip" name="zip" type="text" value="342343"/>\n</form>''',
                 template, [:], { it.toString().trim() }
     }
 }

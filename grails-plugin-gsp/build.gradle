@@ -13,6 +13,7 @@ dependencies {
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
 
     testCompile "org.grails:grails-plugin-testing:$grailsVersion"
+    testCompile "org.grails:grails-test-mixins:3.3.0"
     testCompile 'org.grails:grails-web-testing-support:1.0.0.BUILD-SNAPSHOT'
 
     testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
