@@ -32,10 +32,11 @@ class StoreController {
 '''
     }
 
-    void testMappingToControllerAndAction() {
-        def template = '<g:link controller="store" action="showTime">Show the time !</g:link>'
-        assertOutputEquals('<a href="/store/showTime">Show the time !</a>', template)
-    }
+
+//    void testMappingToControllerAndAction() {
+//        def template = '<g:link controller="store" action="showTime">Show the time !</g:link>'
+//        assertOutputEquals('<a href="/store/showTime">Show the time !</a>', template)
+//    }
 
     void testMappingToController() {
         def template = '<g:link controller="store">Show the time !</g:link>'
