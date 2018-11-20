@@ -25,7 +25,10 @@ dependencies {
     testRuntime "org.grails:grails-plugin-url-mappings:$grailsVersion"
 }
 // disable main class
-// findMainClass.onlyIf { false }
+bootJar {
+    mainClassName = 'dummy.Application'
+}
+findMainClass.onlyIf { false }
 test {
     if (isTravisBuild) {
         maxParallelForks = 1
