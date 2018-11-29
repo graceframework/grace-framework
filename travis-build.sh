@@ -1,9 +1,22 @@
 #!/bin/bash
 set -e
-./gradlew clean check assemble
 
 EXIT_STATUS=0
-echo "Publishing archives for branch $TRAVIS_BRANCH"
+
+echo "Check for branch $TRAVIS_BRANCH JDK: $TRAVIS_JDK_VERSION"
+
+./gradlew check assemble || EXIT_STATUS=$?
+
+if [ $EXIT_STATUS -ne 0 ]; then
+  exit $EXIT_STATUS
+fi
+
+if [ "${TRAVIS_JDK_VERSION}" == "openjdk11" ] ; then
+  exit $EXIT_STATUS
+fi
+
+echo "Publishing archives for branch $TRAVIS_BRANCH JDK: $TRAVIS_JDK_VERSION"
+
 if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH =~ ^master$ && $TRAVIS_PULL_REQUEST == 'false' ]]; then
 
   echo "Publishing archives"
