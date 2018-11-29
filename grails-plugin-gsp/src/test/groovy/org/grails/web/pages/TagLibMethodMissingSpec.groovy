@@ -2,13 +2,10 @@ package org.grails.web.pages
 
 import grails.artefact.Artefact
 import grails.test.AbstractGrailsEnvChangingSpec
-import grails.test.mixin.TestFor
+import grails.testing.web.taglib.TagLibUnitTest
 
-@TestFor(TagLibMethodMissingTagLib)
-class TagLibMethodMissingSpec extends AbstractGrailsEnvChangingSpec {
-    def setupSpec() {
-        mockTagLib(TagLibMethodMissingBTagLib)
-    }
+class TagLibMethodMissingSpec extends AbstractGrailsEnvChangingSpec implements TagLibUnitTest<TagLibMethodMissingBTagLib> {
+
 
     def "Test tag library method missing handling"(template, expectedContent, grailsEnv) {
         when:'We call a tag that invokes an existing tag in other TagLib'

@@ -1,20 +1,24 @@
 package org.grails.web.taglib
 
 import grails.artefact.Artefact
-import grails.test.mixin.TestFor
-import org.junit.Test
+import grails.testing.web.taglib.TagLibUnitTest
+import spock.lang.Shared
+import spock.lang.Specification
 
-@TestFor(TwoColumnTagLib)
-class LayoutWriterStackTests {
-    def template = """
+class LayoutWriterStackTests extends Specification implements TagLibUnitTest<TwoColumnTagLib> {
+
+    @Shared def template = """
     <g:twoColumn>
         <g:left>leftContent</g:left>
         <g:right>rightContent</g:right>
         bodyContent
     </g:twoColumn>"""
 
-    @Test void testLayoutTag() {
+    void testLayoutTag() {
+        when:
         String result = applyTemplate(template)
+
+        then:
         assertEqualsIgnoreWhiteSpace("""
         <div class='twoColumn'>
             left: <div class='left'>leftContent</div>,
@@ -24,10 +28,12 @@ class LayoutWriterStackTests {
                 result)
     }
 
-    @Test void testNestedLayoutTags() {
+    void testNestedLayoutTags() {
+        given:
         def nested = template.replaceAll("leftContent", template)
         String result = applyTemplate(nested)
 
+        expect:
         assertEqualsIgnoreWhiteSpace("""
         <div class='twoColumn'>
             left: <div class='left'>
@@ -42,8 +48,8 @@ class LayoutWriterStackTests {
                 result)
     }
 
-    void assertEqualsIgnoreWhiteSpace(String s1, String s2) {
-        assert s1.replaceAll(/\s/, '') == s2.replaceAll(/\s/, '')
+    boolean assertEqualsIgnoreWhiteSpace(String s1, String s2) {
+        s1.replaceAll(/\s/, '') == s2.replaceAll(/\s/, '')
     }
 }
 

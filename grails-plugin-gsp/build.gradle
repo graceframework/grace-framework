@@ -11,10 +11,9 @@ dependencies {
     compile "org.grails:grails-plugin-codecs:$grailsVersion"    
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
-
-    testCompile "org.grails:grails-plugin-testing:$grailsVersion"
-    testCompile "org.grails:grails-test-mixins:3.3.0"
-    testCompile 'org.grails:grails-web-testing-support:1.0.0.BUILD-SNAPSHOT'
+    
+    testCompile 'org.grails:grails-web-testing-support:2.0.0.BUILD-SNAPSHOT'
+    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.BUILD-SNAPSHOT'
 
     testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
     testCompile "org.springframework:spring-test:$springVersion"

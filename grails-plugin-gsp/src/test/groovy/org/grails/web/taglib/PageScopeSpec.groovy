@@ -1,15 +1,13 @@
 package org.grails.web.taglib
 
-import grails.test.mixin.TestMixin
-import grails.test.mixin.web.GroovyPageUnitTestMixin
+import grails.testing.web.GrailsWebUnitTest
 import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
  * @since 0.4
  */
-@TestMixin(GroovyPageUnitTestMixin)
-class PageScopeSpec extends Specification {
+class PageScopeSpec extends Specification implements GrailsWebUnitTest {
 
     void 'test referring to non existent page scope property does not throw MissingPropertyException'() {
         expect:

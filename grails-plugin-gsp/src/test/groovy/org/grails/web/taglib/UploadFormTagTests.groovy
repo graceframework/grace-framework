@@ -1,15 +1,15 @@
 package org.grails.web.taglib
 
-import grails.test.mixin.TestFor
+import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.junit.Test
+import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
-@TestFor(ApplicationTagLib)
-class UploadFormTagTests {
+class UploadFormTagTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
 //    @Test
 //    void testUploadForm() {
