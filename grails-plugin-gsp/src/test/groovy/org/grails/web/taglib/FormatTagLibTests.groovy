@@ -203,18 +203,6 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals("3.1233", template, [number: number])
     }
 
-    void testFormatCurrency() {
-        def number = "3.12325678" as BigDecimal
-        def template = '<g:formatNumber type="currency" number="${number}" locale="fi_FI" />'
-        assertOutputEquals("3,12 €", template, [number: number])
-    }
-
-    void testFormatCurrencyWithCodeAndLocale() {
-        def number = "3.12325678" as BigDecimal
-        def template = '<g:formatNumber type="currency" currencyCode="USD" number="${number}" locale="fi_FI" />'
-        assertOutputEquals("3,12 USD", template, [number: number])
-    }
-
     void testFormatCurrencyWithCode() {
         def number = "3.12325678" as BigDecimal
         def template = '<g:formatNumber type="currency" currencyCode="USD" number="${number}" locale="en_US" />'
