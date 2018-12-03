@@ -38,7 +38,7 @@ test {
         forkEvery = 20
     }
 
-    jvmArgs = ['-Xmx1028M']
+    jvmArgs = ['-Xmx1536M']
     afterSuite {
         System.out.print('.')
         System.out.flush()
