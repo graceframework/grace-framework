@@ -4,6 +4,7 @@ import com.opensymphony.module.sitemesh.RequestConstants
 import grails.build.support.MetaClassRegistryCleaner
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
+import grails.gorm.validation.PersistentEntityValidator
 import grails.plugins.GrailsPluginManager
 import grails.util.GrailsWebMockUtil
 import grails.util.Holders
@@ -26,7 +27,6 @@ import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.taglib.encoder.OutputEncodingStack
 import org.grails.taglib.encoder.WithCodecHelper
-import org.grails.validation.GrailsDomainClassValidator
 import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
 import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.GSPResponseWriter
@@ -298,8 +298,8 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
         initRequestAndResponse()
 
         ga.domainClasses.each { dc ->
-            def v = new GrailsDomainClassValidator()
-            v.domainClass = dc
+            def v = new PersistentEntityValidator()
+            v.targetClass = dc
             dc.validator.messageSource = messageSource
         }
     }
