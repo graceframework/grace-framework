@@ -2,7 +2,7 @@ dependencies {
     compile "javax.servlet:javax.servlet-api:$servletApiVersion"
     compile "org.grails:grails-web-common:$grailsVersion"    
 
-    compile 'opensymphony:sitemesh:2.4'
+    compile "opensymphony:sitemesh:$sitemeshVersion"
 
     testCompile "org.springframework:spring-test:$springVersion"    
 }
