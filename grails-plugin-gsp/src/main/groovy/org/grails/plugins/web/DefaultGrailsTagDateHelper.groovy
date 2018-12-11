@@ -13,10 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.grails.plugins.web
 
 import groovy.transform.CompileStatic
-import org.apache.commons.lang.time.FastDateFormat
+
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.FormatStyle
+import java.time.temporal.TemporalAccessor
 
 /**
  * The default implementation of {@link GrailsTagDateHelper}
@@ -31,59 +43,106 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
     @Override
     Object getTimeZone(Object timeZone) {
         if (timeZone != null) {
-            if (!(timeZone instanceof TimeZone)) {
-                TimeZone.getTimeZone(timeZone as String)
-            } else {
+            if (timeZone instanceof ZoneId) {
                 timeZone
+            } else if (timeZone instanceof TimeZone) {
+                timeZone.toZoneId()
+            } else {
+                ZoneId.of(timeZone.toString())
             }
         } else {
-            TimeZone.getDefault()
+            ZoneId.systemDefault()
         }
     }
 
     @Override
     Object getFormatFromPattern(String format, Object timeZone, Locale locale) {
-        FastDateFormat.getInstance(format, (TimeZone)timeZone, locale)
+        DateTimeFormatter.ofPattern(format, locale).withZone((ZoneId)timeZone)
+
     }
 
     @Override
-    Object getDateFormat(String style, Object timeZone, Locale locale) {
-        FastDateFormat.getDateInstance(parseStyle(style), (TimeZone)timeZone, locale)
+    Object getDateFormat(String dateStyle, Object timeZone, Locale locale) {
+        new DateTimeFormatterBuilder()
+                .appendLocalized(parseStyle(dateStyle), null)
+                .toFormatter(locale)
+                .withZone((ZoneId)timeZone)
     }
 
     @Override
-    Object getTimeFormat(String style, Object timeZone, Locale locale) {
-        FastDateFormat.getTimeInstance(parseStyle(style), (TimeZone)timeZone, locale)
+    Object getTimeFormat(String timeStyle, Object timeZone, Locale locale) {
+        new DateTimeFormatterBuilder()
+                .appendLocalized(null, parseStyle(timeStyle))
+                .toFormatter(locale)
+                .withZone((ZoneId)timeZone)
     }
 
     @Override
     Object getDateTimeFormat(String dateStyle, String timeStyle, Object timeZone, Locale locale) {
-        FastDateFormat.getDateTimeInstance(parseStyle(dateStyle), parseStyle(timeStyle), (TimeZone)timeZone, locale)
+        new DateTimeFormatterBuilder()
+                .appendLocalized(parseStyle(dateStyle), parseStyle(timeStyle))
+                .toFormatter(locale)
+                .withZone((ZoneId)timeZone)
     }
 
     @Override
     String format(Object formatter, Object date) {
-        ((FastDateFormat)formatter).format(date)
+        TemporalAccessor instant
+        if (date instanceof Date) {
+            instant = date.toInstant()
+        } else if (date instanceof Calendar) {
+            instant = date.toInstant()
+        } else if (date instanceof Long) {
+            instant = Instant.ofEpochMilli(date)
+        } else if (date instanceof TemporalAccessor) {
+            instant = date
+        } else {
+            throw new IllegalArgumentException("Cannot format class as date: " +
+                    (date == null ? "<null>" : date.getClass().getName()));
+        }
+        ((DateTimeFormatter)formatter).format(instant)
     }
 
-    private static int parseStyle(String styleStr) {
+    private static FormatStyle parseStyle(String styleStr) {
         switch (styleStr) {
-            case 'FULL':   return FastDateFormat.FULL
-            case 'LONG':   return FastDateFormat.LONG
-            case 'MEDIUM': return FastDateFormat.MEDIUM
-            default:       return FastDateFormat.SHORT
+            case 'FULL':   return FormatStyle.FULL
+            case 'LONG':   return FormatStyle.LONG
+            case 'MEDIUM': return FormatStyle.MEDIUM
+            default:       return FormatStyle.SHORT
         }
     }
 
     @Override
     Boolean supportsDatePicker(Class clazz) {
-        clazz == Date
+        clazz == Date || TemporalAccessor.isAssignableFrom(clazz)
     }
+
 
     @Override
     GregorianCalendar buildCalendar(Object date) {
-        GregorianCalendar c = new GregorianCalendar()
-        c.setTime((Date)date)
-        c
+        if (date instanceof Date) {
+            GregorianCalendar c = new GregorianCalendar()
+            c.setTime((Date)date)
+            c
+        } else {
+            ZonedDateTime zonedDateTime
+            if (date instanceof LocalDateTime) {
+                zonedDateTime = ZonedDateTime.of(date, ZoneId.systemDefault())
+            } else if (date instanceof LocalDate) {
+                zonedDateTime = ZonedDateTime.of(date, LocalTime.MIN, ZoneId.systemDefault())
+            } else if (date instanceof OffsetDateTime) {
+                zonedDateTime = ((OffsetDateTime) date).toZonedDateTime()
+
+            } else if (date instanceof ZonedDateTime) {
+                zonedDateTime = (ZonedDateTime) date
+
+            } else if (date instanceof TemporalAccessor) {
+                zonedDateTime = ZonedDateTime.from(date)
+            }
+            if (zonedDateTime == null) {
+                return null
+            }
+            GregorianCalendar.from(zonedDateTime)
+        }
     }
 }
