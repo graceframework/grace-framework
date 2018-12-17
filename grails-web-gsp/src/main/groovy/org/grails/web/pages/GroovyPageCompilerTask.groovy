@@ -15,7 +15,6 @@
  */
 package org.grails.web.pages
 
-import grails.build.logging.GrailsConsole
 import org.apache.tools.ant.BuildException
 import org.apache.tools.ant.DirectoryScanner
 import org.apache.tools.ant.taskdefs.MatchingTask
@@ -119,18 +118,7 @@ class GroovyPageCompilerTask extends MatchingTask {
 
         int gspCount = gspFiles?.size()
         if (gspCount) {
-
-            def grailsConsole
-            try {
-                grailsConsole = GrailsConsole.getInstance()
-            } catch(Throwable e) {
-                // ignore
-            }
-            if(grailsConsole)
-                grailsConsole.updateStatus("Compiling ${gspCount} GSP file${gspCount>1?'s':''} for package [${packagename}]")
-            else
-                println "Compiling ${gspCount} GSP file${gspCount>1?'s':''} for package [${packagename}]"
-
+            log("Compiling ${gspCount} GSP file${gspCount>1?'s':''} for package [${packagename}]")
         }
 
         if (tmpdir) {

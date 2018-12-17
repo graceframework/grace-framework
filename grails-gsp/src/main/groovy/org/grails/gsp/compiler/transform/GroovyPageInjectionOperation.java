@@ -15,7 +15,6 @@
  */
 package org.grails.gsp.compiler.transform;
 
-import grails.build.logging.GrailsConsole;
 import grails.compiler.ast.ClassInjector;
 import grails.compiler.ast.GroovyPageInjector;
 import org.codehaus.groovy.ast.ClassNode;
@@ -44,7 +43,8 @@ public class GroovyPageInjectionOperation extends GrailsAwareInjectionOperation 
             try {
                 classInjector.performInjection(source, context, classNode);
             } catch (RuntimeException e) {
-                GrailsConsole.getInstance().error("Error occurred calling AST injector [" + classInjector.getClass() + "]: " + e.getMessage(), e);
+                System.err.println("Error occurred calling AST injector [" + classInjector.getClass() + "]: " + e.getMessage());
+                e.printStackTrace(System.err);
                 throw e;
             }
         }
