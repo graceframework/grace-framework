@@ -28,6 +28,7 @@ import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.taglib.encoder.OutputEncodingStack
 import org.grails.taglib.encoder.WithCodecHelper
 import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.GSPResponseWriter
 import org.grails.web.servlet.context.support.WebRuntimeSpringConfiguration
@@ -38,6 +39,7 @@ import org.grails.web.sitemesh.GrailsLayoutView
 import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
+import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
 import org.springframework.context.ApplicationContext
 import org.springframework.context.MessageSource
 import org.springframework.context.support.StaticMessageSource
@@ -232,7 +234,8 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
         mockManager.registerProvidedArtefacts(grailsApplication)
 
         def mockControllerClass = gcl.parseClass("class MockController {  def index = {} } ")
-        ctx = new GenericWebApplicationContext(new MockServletContext())
+        ctx = new AnnotationConfigServletWebServerApplicationContext()
+        ctx.setServletContext(new MockServletContext())
         ctx.registerBeanDefinition("messageSource", new RootBeanDefinition(StaticMessageSource))
         ctx.refresh()
         ctx.servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, ctx)
@@ -246,6 +249,8 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
 
         messageSource = ctx.getBean("messageSource", MessageSource)
 
+        ctx.beanFactory.registerSingleton("classLoader", gcl)
+        ctx.beanFactory.registerSingleton("grailsLinkGenerator", new DefaultLinkGenerator("http://localhost:8080"))
         ctx.beanFactory.registerSingleton("manager", mockManager)
         ctx.beanFactory.registerSingleton("conversionService", new DefaultConversionService())
         ctx.beanFactory.registerSingleton(GroovyPagesUriService.BEAN_ID, new DefaultGroovyPagesUriService())

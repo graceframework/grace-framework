@@ -19,13 +19,13 @@ echo "Publishing archives for branch $TRAVIS_BRANCH JDK: $TRAVIS_JDK_VERSION"
 
 if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH =~ ^master$ && $TRAVIS_PULL_REQUEST == 'false' ]]; then
 
-  echo "Publishing archives"
+  # echo "Publishing archives"
 
-  if [[ -n $TRAVIS_TAG ]]; then
-      ./gradlew bintrayUpload || EXIT_STATUS=$?
-  else
-      ./gradlew publish || EXIT_STATUS=$?
-  fi
+  # if [[ -n $TRAVIS_TAG ]]; then
+  #     ./gradlew bintrayUpload || EXIT_STATUS=$?
+  # else
+  #     ./gradlew publish || EXIT_STATUS=$?
+  # fi
 
   ./gradlew docs || EXIT_STATUS=$?
 

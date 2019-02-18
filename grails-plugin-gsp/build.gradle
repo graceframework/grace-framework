@@ -12,8 +12,16 @@ dependencies {
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
     
-    testCompile 'org.grails:grails-web-testing-support:2.0.0.BUILD-SNAPSHOT'
-    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.BUILD-SNAPSHOT'
+    testCompile 'org.grails:grails-web-testing-support:2.0.0.BUILD-SNAPSHOT', {
+        exclude module:'async'
+    }
+    // testCompile 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
+    testCompile 'org.grails:grails-testing-support:2.0.0.BUILD-SNAPSHOT', {
+        exclude module:'async'
+    }
+    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.BUILD-SNAPSHOT', {
+        exclude module:'async'
+    }
 
     testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
     testCompile "org.springframework:spring-test:$springVersion"
