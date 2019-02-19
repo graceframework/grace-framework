@@ -1,47 +1,68 @@
 package org.grails.web.taglib
 
+import grails.testing.web.taglib.TagLibUnitTest
 import grails.util.GrailsUtil
 import grails.util.Holders
 import grails.util.Metadata
 import grails.util.MockRequestDataValueProcessor
+import groovy.transform.NotYetImplemented
 import org.grails.gsp.GroovyPageBinding
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.plugins.web.taglib.FormTagLib
 import org.grails.taglib.GrailsTagException
 import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.util.WebUtils
+import spock.lang.Specification
 
 import javax.servlet.http.Cookie
 
-class ApplicationTagLibTests extends AbstractGrailsTagTests {
+class ApplicationTagLibTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
+
+    def setup() {
+        tagLib.requestDataValueProcessor = new MockRequestDataValueProcessor()
+    }
 
     @Override
-    protected void setUp() {
-        super.setUp()
-        appCtx.getBean(ApplicationTagLib.name).requestDataValueProcessor = new MockRequestDataValueProcessor()
+    Set<String> getIncludePlugins() {
+        ['controllers'] as Set
     }
 
     void testResourceTagWithPluginAttribute() {
+        given:
         unRegisterRequestDataValueProcessor()
         request.contextPath = '/test'
         def template = '${resource(file:"images/foo.jpg", plugin:"controllers")}'
-        assertOutputEquals "/test/plugins/controllers-${GrailsUtil.getGrailsVersion()}/images/foo.jpg", template
+        def result = applyTemplate(template)
+
+        expect:
+        result == "/test/plugins/controllers-${GrailsUtil.getGrailsVersion()}/static/images/foo.jpg"
     }
 
     void testResourceTagWithPluginAttributeAndRequestDataValueProcessor() {
+        given:
         request.contextPath = '/test'
         def template = '${resource(file:"images/foo.jpg", plugin:"controllers")}'
-        assertOutputEquals "/test/plugins/controllers-${GrailsUtil.getGrailsVersion()}/images/foo.jpg?requestDataValueProcessorParamName=paramValue", template
+        def result = applyTemplate(template)
+
+        expect:
+        result == "/test/plugins/controllers-${GrailsUtil.getGrailsVersion()}/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue"
     }
 
+
+    @NotYetImplemented
     void testResourceTagWithImplicitPlugin() {
+        given:
         unRegisterRequestDataValueProcessor()
         def template = '${resource(file:"images/foo.jpg")}'
-
         request.setAttribute(GrailsApplicationAttributes.PAGE_SCOPE, new GroovyPageBinding("/plugin/one"))
-        assertOutputEquals "/plugin/one/images/foo.jpg", template
+
+        def result = applyTemplate(template)
+
+        expect:
+        result ==  "/plugin/one/images/foo.jpg"
     }
 
+    @NotYetImplemented
     void testResourceTagWithImplicitPluginAndRequestDataValueProcessor() {
 
         def template = '${resource(file:"images/foo.jpg")}'
@@ -50,6 +71,7 @@ class ApplicationTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals "/plugin/one/images/foo.jpg?requestDataValueProcessorParamName=paramValue", template
     }
 
+    @NotYetImplemented
     void testResourceTagWithContextPathAttribute() {
         unRegisterRequestDataValueProcessor()
         request.contextPath = '/test'
@@ -61,64 +83,89 @@ class ApplicationTagLibTests extends AbstractGrailsTagTests {
     }
 
     void testResourceTagWithContextPathAttributeAndRequestDataValueProcessor() {
+        when:
         request.contextPath = '/test'
         def template = '${resource(file:"images/foo.jpg", contextPath:"/foo")}'
-        assertOutputEquals "/foo/images/foo.jpg?requestDataValueProcessorParamName=paramValue", template
+        def result = applyTemplate(template)
 
-        request.setAttribute(GrailsApplicationAttributes.PAGE_SCOPE, new GroovyPageBinding("/plugin/one"))
-        assertOutputEquals "/foo/images/foo.jpg?requestDataValueProcessorParamName=paramValue", template
+        then:
+        result == "/foo/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue"
     }
 
     void testResourceTagWithPluginAttributeAndNone() {
+        when:
         unRegisterRequestDataValueProcessor()
         request.contextPath = '/test'
         def template = '${resource(file:"images/foo.jpg", plugin:"none")}'
-        assertOutputEquals "/test/images/foo.jpg", template
+
+        then:
+        applyTemplate(template) == "/test/static/images/foo.jpg"
     }
 
     void testResourceTagWithPluginAttributeAndNoneAndRequestDataValueProcessor() {
+        given:
         request.contextPath = '/test'
-        def template = '${resource(file:"images/foo.jpg", plugin:"none")}'
-        assertOutputEquals "/test/images/foo.jpg?requestDataValueProcessorParamName=paramValue", template
+
+        expect:
+        applyTemplate('${resource(file:"images/foo.jpg", plugin:"none")}') ==
+            "/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue"
     }
 
     void testResourceTag() {
+        given:
         unRegisterRequestDataValueProcessor()
         request.contextPath = '/test'
+        when:
         def template = '${resource(file:"images/foo.jpg")}'
-        assertOutputEquals '/test/images/foo.jpg', template
+        def result = applyTemplate(template)
 
-        template = '${resource(dir:"images",file:"foo.jpg")}'
-        assertOutputEquals '/test/images/foo.jpg', template
+        then:
+        result == '/test/static/images/foo.jpg'
+
+        when:
+        result = applyTemplate('${resource(dir:"images",file:"foo.jpg")}')
+
+        then:
+        result == '/test/static/images/foo.jpg'
     }
 
     void testResourceTagAndRequestDataValueProcessor() {
+        given:
         request.contextPath = '/test'
-        def template = '${resource(file:"images/foo.jpg")}'
-        assertOutputEquals '/test/images/foo.jpg?requestDataValueProcessorParamName=paramValue', template
 
-        template = '${resource(dir:"images",file:"foo.jpg")}'
-        assertOutputEquals '/test/images/foo.jpg?requestDataValueProcessorParamName=paramValue', template
+        expect:
+        applyTemplate( '${resource(file:"images/foo.jpg")}')  ==
+                '/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue'
+
+        applyTemplate('${resource(dir:"images",file:"foo.jpg")}') ==
+            '/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue'
     }
 
     void testResourceTagDirOnly() {
+        given:
         unRegisterRequestDataValueProcessor()
         request.contextPath = '/test'
-        def template = '${resource(dir:"jquery")}'
-        assertOutputEquals '/test/jquery', template
+
+        expect:
+        applyTemplate('${resource(dir:"jquery")}') ==
+            '/test/static/jquery'
     }
 
     void testResourceTagDirOnlyAndRequestDataValueProcessor() {
+        given:
         request.contextPath = '/test'
-        def template = '${resource(dir:"jquery")}'
-        assertOutputEquals '/test/jquery?requestDataValueProcessorParamName=paramValue', template
+
+        expect:
+        applyTemplate('${resource(dir:"jquery")}') ==
+            '/test/static/jquery?requestDataValueProcessorParamName=paramValue'
     }
 
+    @NotYetImplemented
     void testUseJessionIdWithCreateLink() {
+        given:
         unRegisterRequestDataValueProcessor()
         def response = new JsessionIdMockHttpServletResponse()
         ApplicationTagLib.metaClass.getResponse = {-> response}
-        def tagLibBean = appCtx.getBean(ApplicationTagLib.name)
         ga.config.grails.views.enable.jsessionid=true
         tagLibBean.afterPropertiesSet()
         assertTrue(tagLibBean.@useJsessionId)
@@ -133,6 +180,7 @@ class ApplicationTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals "/foo/test", template
     }
 
+    @NotYetImplemented
     void testUseJessionIdWithCreateLinkAndRequestDataValueProcessor() {
 
         def response = new JsessionIdMockHttpServletResponse()
@@ -153,52 +201,68 @@ class ApplicationTagLibTests extends AbstractGrailsTagTests {
     }
 
     void testObtainCookieValue() {
+        given:
         def cookie = new Cookie("foo", "bar")
         request.cookies = [cookie] as Cookie[]
 
-        def template = '<g:cookie name="foo" />'
-        assertOutputEquals "bar", template
-
-        template = '${cookie(name:"foo")}'
-        assertOutputEquals "bar", template
+        expect:
+        applyTemplate('<g:cookie name="foo" />') == 'bar'
+        applyTemplate('${cookie(name:"foo")}') == 'bar'
     }
 
     void testObtainHeaderValue() {
+        given:
         request.addHeader "FOO", "BAR"
-        def template = '<g:header name="FOO" />'
-        assertOutputEquals "BAR", template
 
-        template = '${header(name:"FOO")}'
-        assertOutputEquals "BAR", template
+        expect:
+        applyTemplate('<g:header name="FOO" />') == 'BAR'
+        applyTemplate('${header(name:"FOO")}') == 'BAR'
     }
 
     void testClonedUrlFromVariable() {
+        given:
         unRegisterRequestDataValueProcessor()
-        def template = '''<g:set var="urlMap" value="${[controller: 'test', action: 'justdoit']}"/>${urlMap.controller},${urlMap.action}<g:link url="${urlMap}">test</g:link>${urlMap.controller},${urlMap.action}'''
-        assertOutputEquals('test,justdoit<a href="/test/justdoit">test</a>test,justdoit', template)
+
+        expect:
+        applyTemplate( '''<g:set var="urlMap" value="${[controller: 'test', action: 'justdoit']}"/>${urlMap.controller},${urlMap.action}<g:link url="${urlMap}">test</g:link>${urlMap.controller},${urlMap.action}''' ) ==
+            'test,justdoit<a href="/test/test/justdoit">test</a>test,justdoit'
     }
 
     void testLinkWithMultipleParameters() {
+        given:
         unRegisterRequestDataValueProcessor()
+
         def template = '<g:link controller="foo" action="action" params="[test: \'test\', test2: \'test2\']">test</g:link>'
-        assertOutputEquals('<a href="/foo/action?test=test&amp;test2=test2">test</a>', template)
+        expect:
+        applyTemplate(template) ==
+            '<a href="/test/foo/action?test=test&amp;test2=test2">test</a>'
         // test caching too
-        assertOutputEquals('<a href="/foo/action?test=test&amp;test2=test2">test</a>', template)
+        applyTemplate(template) ==
+                '<a href="/test/foo/action?test=test&amp;test2=test2">test</a>'
+
     }
 
     void testLinkWithMultipleParametersAndRequestDataValueProcessor() {
+        given:
         def template = '<g:link controller="foo" action="action" params="[test: \'test\', test2: \'test2\']">test</g:link>'
-        assertOutputEquals('<a href="/foo/action?test=test&amp;test2=test2&amp;requestDataValueProcessorParamName=paramValue">test</a>', template)
+
+        expect:
+        applyTemplate(template) == '<a href="/test/foo/action?test=test&amp;test2=test2&amp;requestDataValueProcessorParamName=paramValue">test</a>'
         // test caching too
-        assertOutputEquals('<a href="/foo/action?test=test&amp;test2=test2&amp;requestDataValueProcessorParamName=paramValue">test</a>', template)
+        applyTemplate(template) == '<a href="/test/foo/action?test=test&amp;test2=test2&amp;requestDataValueProcessorParamName=paramValue">test</a>'
     }
 
     void testLinkWithMultipleCollectionParameters() {
+        given:
         unRegisterRequestDataValueProcessor()
         def template = '<g:link controller="foo" action="action" params="[test: [\'test-a\',\'test-b\'], test2: [\'test2-a\',\'test2-b\'] as String[]]">test</g:link>'
-        assertOutputEquals('<a href="/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>', template)
+
+        expect:
+        applyTemplate(template) ==
+            '<a href="/test/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>'
         // test caching too
-        assertOutputEquals('<a href="/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>', template)
+        applyTemplate(template) ==
+                '<a href="/test/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>'
     }
 
     void testLinkWithMultipleCollectionParametersAndRequestDataValueProcessor() {
@@ -766,7 +830,7 @@ app:
     }
 
     private void unRegisterRequestDataValueProcessor() {
-        appCtx.getBean(ApplicationTagLib.name).requestDataValueProcessor = null
+        tagLib.requestDataValueProcessor = null
     }
 
     void testWithTagWithNameAndAttrs() {

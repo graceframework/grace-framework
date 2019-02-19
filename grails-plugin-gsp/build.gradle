@@ -23,6 +23,7 @@ dependencies {
         exclude module:'async'
     }
 
+    testRuntime "org.grails.plugins:async"
     testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
     testCompile "org.springframework:spring-test:$springVersion"
 
