@@ -58,6 +58,7 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         }
     }
 
+    @Deprecated // moved to FormTagLibSpec
     void testFormTagWithAlternativeMethod() {
         unRegisterRequestDataValueProcessor()
         def template = '<g:form url="/foo/bar" method="delete"></g:form>'
@@ -143,6 +144,7 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals('<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;" id="testField" />', template, [value:/foo > " & < '/])
     }
 
+    @Deprecated
     void testTextFieldTagWithRequestDataValueProcessor() {
         def template = '<g:textField name="testField" value="1" />'
         assertOutputEquals('<input type="text" name="testField" value="1_PROCESSED_" id="testField" />', template)
@@ -200,6 +202,7 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals('<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />', template)
     }
 
+    @Deprecated
     void testFormWithURL() {
         final StringWriter sw = new StringWriter()
 
@@ -397,6 +400,7 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         assertEquals '<input type="text" name="B" value="" id="B" />', sw.toString()
     }
 
+    @Deprecated // moved to new test spec
     void testFieldImplDoesNotApplyAttributesFromPreviousInvocation() {
         // GRAILS-8250
         def attrs = [:]
