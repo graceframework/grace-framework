@@ -1,12 +1,14 @@
 package org.grails.web.taglib
 
 import grails.core.GrailsUrlMappingsClass
+import grails.testing.web.taglib.TagLibUnitTest
 import grails.util.MockRequestDataValueProcessor
 import org.grails.core.AbstractGrailsClass
 import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.plugins.web.taglib.FormTagLib
 import org.grails.buffer.FastStringWriter
 import org.springframework.context.ConfigurableApplicationContext
+import spock.lang.Specification
 
 /**
  * Tests for the FormTagLib.groovy file which contains tags to help with the                                         l
@@ -14,31 +16,29 @@ import org.springframework.context.ConfigurableApplicationContext
  *
  * @author Graeme
  */
-class FormTagLibTests extends AbstractGrailsTagTests {
+class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib> {
 
-    @Override
-    protected void setUp() {
-        super.setUp()
-        appCtx.getBean(FormTagLib.name).requestDataValueProcessor = new MockRequestDataValueProcessor()
+
+    def setup() {
+        tagLib.requestDataValueProcessor = new MockRequestDataValueProcessor()
     }
-    
-    @Override
-    protected void onInit() {
+
+    def setupSpec() {
         def mappingsClosure = {
             "/admin/books"(controller:'books', namespace:'admin')
             "/books"(controller:'books')
         }
-        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, new MockGrailsUrlMappingsClass(mappingsClosure))
+        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, new FormTagLibTests.MockGrailsUrlMappingsClass(mappingsClosure))
+
     }
     
-//    void testFormNamespace() {
-//        def template = '<g:form controller="books" namespace="admin"></g:form>'
-//        assertOutputEquals('<form action="/admin/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>', template)
-//    }
-    
-    void testFormNoNamespace() {
+    def testFormNoNamespace() {
+        when:
         def template = '<g:form controller="books"></g:form>'
-        assertOutputEquals('<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
     
     private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
@@ -58,108 +58,186 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         }
     }
 
-    @Deprecated // moved to FormTagLibSpec
-    void testFormTagWithAlternativeMethod() {
+    def testFormTagWithAlternativeMethod() {
         unRegisterRequestDataValueProcessor()
+        when:
         def template = '<g:form url="/foo/bar" method="delete"></g:form>'
-        assertOutputEquals('<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE" id="_method" /></form>', template)
+
+        then:
+        String output = ('<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE" id="_method" /></form>')
+        assert output == applyTemplate(template)
     }
 
-    void testFormTagWithAlternativeMethodAndRequestDataValueProcessor() {
+    def testFormTagWithAlternativeMethodAndRequestDataValueProcessor() {
+        when:
         def template = '<g:form url="/foo/bar" method="delete"></g:form>'
-        assertOutputEquals('<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE_PROCESSED_" id="_method" /><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE_PROCESSED_" id="_method" /><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     // test for GRAILS-3865
-    void testHiddenFieldWithZeroValue() {
+    def testHiddenFieldWithZeroValue() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:hiddenField name="index" value="${0}" />'
-        assertOutputContains 'value="0"', template
+        String output = applyTemplate('value="0"')
+
+        then:
+        assert output.contains('value="0"')
     }
-    void testHiddenFieldWithZeroValueAndRequestDataValueProcessor() {
+
+    def testHiddenFieldWithZeroValueAndRequestDataValueProcessor() {
+        when:
         def template = '<g:hiddenField name="index" value="${0}" />'
-        assertOutputContains 'value="0_PROCESSED_"', template
+        String output = applyTemplate(template)
+
+        then:
+        assert output.contains('value="0_PROCESSED_"')
     }
 
-    void testFormTagWithStringURL() {
+    def testFormTagWithStringURL() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:form url="/foo/bar"></g:form>'
-        assertOutputEquals('<form action="/foo/bar" method="post" ></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/foo/bar" method="post" ></form>'
     }
 
-    void testFormTagWithStringURLAndRequestDataValueProcessor() {
+    def testFormTagWithStringURLAndRequestDataValueProcessor() {
+        when:
         def template = '<g:form url="/foo/bar"></g:form>'
-        assertOutputEquals('<form action="/foo/bar" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/foo/bar" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
-    void testFormTagWithTrueUseToken() {
+    def testFormTagWithTrueUseToken() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:form url="/foo/bar" useToken="true"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_URI" value="', template)
+        String output = applyTemplate(template)
 
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
+
+        when:
         template = '<g:form url="/foo/bar" useToken="${2 * 3 == 6}"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_URI" value="', template)
+        output = applyTemplate(template)
+
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
     }
 
-    void testFormTagWithTrueUseTokenAndRequestDataValueProcessor() {
+    def testFormTagWithTrueUseTokenAndRequestDataValueProcessor() {
+        when:
+
         def template = '<g:form url="/foo/bar" useToken="true"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
+        String output = applyTemplate(template)
 
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_URI" value="', template)
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
 
+
+        when:
         template = '<g:form url="/foo/bar" useToken="${2 * 3 == 6}"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="', template)
-        assertOutputContains('<input type="hidden" name="SYNCHRONIZER_URI" value="', template)
+        output = applyTemplate(template)
+
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
     }
 
-    void testFormTagWithNonTrueUseToken() {
+    def testFormTagWithNonTrueUseToken() {
+        when:
+
         def template = '<g:form url="/foo/bar" useToken="false"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputNotContains('SYNCHRONIZER_TOKEN', template)
-        assertOutputNotContains('SYNCHRONIZER_URI', template)
+        String output = applyTemplate(template)
 
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert !output.contains('SYNCHRONIZER_TOKEN')
+        assert !output.contains('SYNCHRONIZER_URI')
+
+        when:
         template = '<g:form url="/foo/bar" useToken="someNonTrueValue"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputNotContains('SYNCHRONIZER_TOKEN', template)
-        assertOutputNotContains('SYNCHRONIZER_URI', template)
+        output = applyTemplate(template)
 
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert !output.contains('SYNCHRONIZER_TOKEN')
+        assert !output.contains('SYNCHRONIZER_URI')
+
+        when:
         template = '<g:form url="/foo/bar" useToken="${42 * 2112 == 3}"></g:form>'
-        assertOutputContains('<form action="/foo/bar" method="post" >', template)
-        assertOutputNotContains('SYNCHRONIZER_TOKEN', template)
-        assertOutputNotContains('SYNCHRONIZER_URI', template)
+        output = applyTemplate(template)
+
+        then:
+        assert output.contains('<form action="/foo/bar" method="post" >')
+        assert !output.contains('SYNCHRONIZER_TOKEN')
+        assert !output.contains('SYNCHRONIZER_URI')
     }
 
-    void testTextFieldTag() {
+    def testTextFieldTag() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:textField name="testField" value="1" />'
-        assertOutputEquals('<input type="text" name="testField" value="1" id="testField" />', template)
+        String output = applyTemplate(template,[value:"1"])
 
+        then:
+        assert output == '<input type="text" name="testField" value="1" id="testField" />'
+
+        when:
         template = '<g:textField name="testField" value="${value}" />'
-        assertOutputEquals('<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;" id="testField" />', template, [value:/foo > " & < '/])
+        output = applyTemplate(template,[value:/foo > " & < '/])
+
+        then:
+        assert output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;" id="testField" />'
     }
 
-    @Deprecated
-    void testTextFieldTagWithRequestDataValueProcessor() {
-        def template = '<g:textField name="testField" value="1" />'
-        assertOutputEquals('<input type="text" name="testField" value="1_PROCESSED_" id="testField" />', template)
+    def testTextFieldTagWithRequestDataValueProcessor() {
 
+        when:
+        String template = '<g:textField name="testField" value="1" />'
+        String output = applyTemplate(template)
+
+        then:
+        assert  output == '<input type="text" name="testField" value="1_PROCESSED_" id="testField" />'
+
+        when:
         template = '<g:textField name="testField" value="${value}" />'
-        assertOutputEquals('<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;_PROCESSED_" id="testField" />', template, [value:/foo > " & < '/])
+        output = applyTemplate(template, [value:/foo > " & < '/])
+
+        then:
+        assert output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;_PROCESSED_" id="testField" />'
     }
 
-    void testTextFieldTagWithNonBooleanAttributesAndNoConfig() {
+    def testTextFieldTagWithNonBooleanAttributesAndNoConfig() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:textField name="testField" value="1" disabled="false" checked="false" readonly="false" required="false" />'
-        assertOutputEquals('<input type="text" name="testField" value="1" required="false" id="testField" />', template)
+        String output = applyTemplate(template)
 
+        then:
+        assert output == '<input type="text" name="testField" value="1" required="false" id="testField" />'
+
+        when:
         template = '<g:textField name="testField" value="1" disabled="true" checked="true" readonly="true" required="true"/>'
-        assertOutputEquals('<input type="text" name="testField" value="1" required="true" disabled="disabled" checked="checked" readonly="readonly" id="testField" />', template)
+        output = applyTemplate(template)
+
+        then:
+        assert output == '<input type="text" name="testField" value="1" required="true" disabled="disabled" checked="checked" readonly="readonly" id="testField" />'
     }
 
     void testTextFieldTagWithNonBooleanAttributesAndConfig() {
@@ -202,32 +280,25 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals('<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />', template)
     }
 
-    @Deprecated
-    void testFormWithURL() {
-        final StringWriter sw = new StringWriter()
+    def testFormWithURL() {
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.form(new TreeMap([url:[controller:'con', action:'action'], id:'formElementId']))
 
-        withTag("form", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([url:[controller:'con', action:'action'], id:'formElementId'])
-            tag.call(attributes, { "" })
-        }
-        assertEquals '<form action="/con/action" method="post" id="formElementId" ></form>', sw.toString().trim()
+        then:
+        assert output == '<form action="/con/action" method="post" id="formElementId" ></form>'
     }
 
-    void testFormWithURLAndRequestDataValueProcessor() {
+    def testFormWithURLAndRequestDataValueProcessor() {
 
-        ConfigurableApplicationContext applicationContext = ctx
-        applicationContext.beanFactory.registerSingleton('requestDataValueProcessor', new MockRequestDataValueProcessor())
-
+        given:
         final StringWriter sw = new StringWriter()
 
-        withTag("form", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([url:[controller:'con', action:'action'], id:'formElementId'])
-            tag.call(attributes, { "" })
-        }
-        applicationContext.beanFactory.destroyBean('requestDataValueProcessor')
-        assertEquals '<form action="/con/action" method="post" id="formElementId" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>', sw.toString().trim()
+        when:
+        String output = tagLib.form(new TreeMap([url:[controller:'con', action:'action'], id:'formElementId']))
+
+        then:
+        assert output == '<form action="/con/action" method="post" id="formElementId" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     void testActionSubmitWithoutAction() {
@@ -400,28 +471,31 @@ class FormTagLibTests extends AbstractGrailsTagTests {
         assertEquals '<input type="text" name="B" value="" id="B" />', sw.toString()
     }
 
-    @Deprecated // moved to new test spec
-    void testFieldImplDoesNotApplyAttributesFromPreviousInvocation() {
+    def testFieldImplDoesNotApplyAttributesFromPreviousInvocation() {
+        unRegisterRequestDataValueProcessor()
         // GRAILS-8250
+        when:
         def attrs = [:]
         def out = new FastStringWriter()
         attrs.name = 'A'
         attrs.type = 'text'
         attrs.tagName = 'textField'
 
-        def tag = new FormTagLib()
-        tag.fieldImpl out, attrs
+        then:
+        tagLib.fieldImpl out, attrs
         assert '<input type="text" name="A" value="" id="A" />' == out.toString()
 
+        when:
         out = new FastStringWriter()
         attrs.name = 'B'
         attrs.type = 'text'
         attrs.tagName = 'textField'
+        tagLib.fieldImpl out, attrs
 
-        tag = new FormTagLib()
-        tag.fieldImpl out, attrs
+        then:
         assert '<input type="text" name="B" value="" id="B" />' == out.toString()
     }
+
 
     private void doTestBoolean(def attributes, String expected) {
         def sw = new StringWriter()
@@ -491,6 +565,6 @@ class FormTagLibTests extends AbstractGrailsTagTests {
     }
 
     private void unRegisterRequestDataValueProcessor() {
-        appCtx.getBean(FormTagLib.name).requestDataValueProcessor = null
+        tagLib.requestDataValueProcessor = null
     }
 }
