@@ -1,30 +1,42 @@
 package org.grails.web.taglib
 
+import grails.core.GrailsUrlMappingsClass
+import grails.testing.spock.OnceBefore
 import grails.testing.web.taglib.TagLibUnitTest
-
+import org.grails.core.AbstractGrailsClass
 import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.plugins.web.taglib.FormTagLib
 import spock.lang.Specification
 
 class FormTagLibResourceTests extends Specification implements TagLibUnitTest<FormTagLib> {
 
-    /**
-     * // the taglibunittest doesn't seem to be respecting this mapping in the tests?
-     * @return
-     */
-    def setupSpec() {
-        GroovyClassLoader gcl = new GroovyClassLoader()
-        def mappingClass = gcl.parseClass('''
-class TestUrlMappings {
-    static mappings = {
-        "/books"(resources:"book") {
+
+    @OnceBefore
+    void registerMappings() {
+
+        def mappingsClosure = {
+            "/books"(resources:"book")
             "/authors"(resources:"author")
         }
-    }
-}
-        ''')
+        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, new MockGrailsUrlMappingsClass(mappingsClosure))
 
-        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, mappingClass)
+    }
+
+    private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
+        Closure mappingClosure
+        public MockGrailsUrlMappingsClass(Closure mappingClosure) {
+            super(FormTagLibResourceTests.class, "UrlMappings")
+            this.mappingClosure = mappingClosure
+        }
+        @Override
+        public Closure getMappingsClosure() {
+            return mappingClosure
+        }
+
+        @Override
+        public List getExcludePatterns() {
+            return null
+        }
     }
 
     def testResourceSave() {

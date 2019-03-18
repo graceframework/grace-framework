@@ -12,6 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* Copyright 2004-2005 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.web.taglib
 
 import grails.testing.web.taglib.TagLibUnitTest
@@ -29,11 +43,11 @@ class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTag
         def result = applyTemplate(template, [:])
 
         then:
-        assert result.contains('<option value="gbr" selected="selected" >United Kingdom</option>')
+        result.contains('<option value="gbr" selected="selected" >United Kingdom</option>')
 
-        CountryTagLib.ISO3166_3.each {
-            assert result.contains("<option value=\"${it.key}\"")
-            assert result.contains(">${it.value.encodeAsHTML()}</option>")
+        CountryTagLib.ISO3166_3.every {
+            result.contains("<option value=\"${it.key}\"")
+            result.contains(">${it.value.encodeAsHTML()}</option>")
         }
     }
 
@@ -43,12 +57,12 @@ class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTag
         def result = applyTemplate(template, [:])
 
         then:
-        assert result.contains('<option value="usa" selected="selected" >United States</option>')
+        result.contains('<option value="usa" selected="selected" >United States</option>')
 
-        ['gbr', 'usa', 'deu'].each {
+        ['gbr', 'usa', 'deu'].every {
             def value = CountryTagLib.ISO3166_3[it]
-            assert result.contains("<option value=\"${it}\"")
-            assert result.contains(">${value.encodeAsHTML()}</option>")
+            result.contains("<option value=\"${it}\"")
+            result.contains(">${value.encodeAsHTML()}</option>")
         }
     }
 
@@ -66,11 +80,11 @@ class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTag
         def result = applyTemplate(template, [:])
 
         then:
-        assert result.contains("<option value=\"usa\" selected=\"selected\" >${codeMap['usa']}</option>")
+        result.contains("<option value=\"usa\" selected=\"selected\" >${codeMap['usa']}</option>")
 
-        codeMap.each { code, val ->
-            assert result.contains("<option value=\"${code}\"")
-            assert result.contains(">${val}</option>")
+        codeMap.every { code, val ->
+            result.contains("<option value=\"${code}\"")
+            result.contains(">${val}</option>")
         }
     }
 
@@ -81,12 +95,12 @@ class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTag
         def result = applyTemplate(template, [:])
 
         then:
-        assert result.contains('<option value="deu" selected="selected" >Germany</option>')
+        result.contains('<option value="deu" selected="selected" >Germany</option>')
 
-        ['gbr', 'usa', 'deu'].each {
+        ['gbr', 'usa', 'deu'].every {
             def value = CountryTagLib.ISO3166_3[it]
-            assert result.contains("<option value=\"${it}\"")
-            assert result.contains(">${value.encodeAsHTML()}</option>")
+            result.contains("<option value=\"${it}\"")
+            result.contains(">${value.encodeAsHTML()}</option>")
         }
     }
 
@@ -96,7 +110,7 @@ class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTag
         String output = applyTemplate(template)
 
         then:
-        assert output.contains('Germany')
+        output.contains('Germany')
     }
 
 }

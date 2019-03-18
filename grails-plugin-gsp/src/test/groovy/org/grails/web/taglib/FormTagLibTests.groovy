@@ -43,7 +43,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
+         output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
@@ -70,7 +70,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
 
         then:
         String output = ('<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE" id="_method" /></form>')
-        assert output == applyTemplate(template)
+         output == applyTemplate(template)
     }
 
     def testFormTagWithAlternativeMethodAndRequestDataValueProcessor() {
@@ -79,7 +79,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE_PROCESSED_" id="_method" /><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
+        output == '<form action="/foo/bar" method="post" ><input type="hidden" name="_method" value="DELETE_PROCESSED_" id="_method" /><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     // test for GRAILS-3865
@@ -90,7 +90,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate('value="0"')
 
         then:
-        assert output.contains('value="0"')
+        output.contains('value="0"')
     }
 
     def testHiddenFieldWithZeroValueAndRequestDataValueProcessor() {
@@ -99,7 +99,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output.contains('value="0_PROCESSED_"')
+        output.contains('value="0_PROCESSED_"')
     }
 
     def testFormTagWithStringURL() {
@@ -109,7 +109,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/foo/bar" method="post" ></form>'
+        output == '<form action="/foo/bar" method="post" ></form>'
     }
 
     def testFormTagWithStringURLAndRequestDataValueProcessor() {
@@ -118,7 +118,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/foo/bar" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
+        output == '<form action="/foo/bar" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     def testFormTagWithTrueUseToken() {
@@ -128,18 +128,18 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
+        output.contains('<form action="/foo/bar" method="post" >')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
 
         when:
         template = '<g:form url="/foo/bar" useToken="${2 * 3 == 6}"></g:form>'
         output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
+        output.contains('<form action="/foo/bar" method="post" >')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
     }
 
     def testFormTagWithTrueUseTokenAndRequestDataValueProcessor() {
@@ -149,9 +149,9 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
+        output.contains('<form action="/foo/bar" method="post" >')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
 
 
         when:
@@ -159,9 +159,9 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
-        assert output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
+        output.contains('<form action="/foo/bar" method="post" >')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_TOKEN" value="')
+        output.contains('<input type="hidden" name="SYNCHRONIZER_URI" value="')
     }
 
     def testFormTagWithNonTrueUseToken() {
@@ -171,27 +171,27 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert !output.contains('SYNCHRONIZER_TOKEN')
-        assert !output.contains('SYNCHRONIZER_URI')
+        output.contains('<form action="/foo/bar" method="post" >')
+        !output.contains('SYNCHRONIZER_TOKEN')
+        !output.contains('SYNCHRONIZER_URI')
 
         when:
         template = '<g:form url="/foo/bar" useToken="someNonTrueValue"></g:form>'
         output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert !output.contains('SYNCHRONIZER_TOKEN')
-        assert !output.contains('SYNCHRONIZER_URI')
+        output.contains('<form action="/foo/bar" method="post" >')
+        !output.contains('SYNCHRONIZER_TOKEN')
+        !output.contains('SYNCHRONIZER_URI')
 
         when:
         template = '<g:form url="/foo/bar" useToken="${42 * 2112 == 3}"></g:form>'
         output = applyTemplate(template)
 
         then:
-        assert output.contains('<form action="/foo/bar" method="post" >')
-        assert !output.contains('SYNCHRONIZER_TOKEN')
-        assert !output.contains('SYNCHRONIZER_URI')
+        output.contains('<form action="/foo/bar" method="post" >')
+        !output.contains('SYNCHRONIZER_TOKEN')
+        !output.contains('SYNCHRONIZER_URI')
     }
 
     def testTextFieldTag() {
@@ -201,14 +201,14 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template,[value:"1"])
 
         then:
-        assert output == '<input type="text" name="testField" value="1" id="testField" />'
+        output == '<input type="text" name="testField" value="1" id="testField" />'
 
         when:
         template = '<g:textField name="testField" value="${value}" />'
         output = applyTemplate(template,[value:/foo > " & < '/])
 
         then:
-        assert output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;" id="testField" />'
+        output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;" id="testField" />'
     }
 
     def testTextFieldTagWithRequestDataValueProcessor() {
@@ -218,14 +218,14 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert  output == '<input type="text" name="testField" value="1_PROCESSED_" id="testField" />'
+        output == '<input type="text" name="testField" value="1_PROCESSED_" id="testField" />'
 
         when:
         template = '<g:textField name="testField" value="${value}" />'
         output = applyTemplate(template, [value:/foo > " & < '/])
 
         then:
-        assert output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;_PROCESSED_" id="testField" />'
+         output == '<input type="text" name="testField" value="foo &gt; &quot; &amp; &lt; &#39;_PROCESSED_" id="testField" />'
     }
 
     def testTextFieldTagWithNonBooleanAttributesAndNoConfig() {
@@ -235,41 +235,53 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-        assert output == '<input type="text" name="testField" value="1" required="false" id="testField" />'
+        output == '<input type="text" name="testField" value="1" required="false" id="testField" />'
 
         when:
         template = '<g:textField name="testField" value="1" disabled="true" checked="true" readonly="true" required="true"/>'
         output = applyTemplate(template)
 
         then:
-        assert output == '<input type="text" name="testField" value="1" required="true" disabled="disabled" checked="checked" readonly="readonly" id="testField" />'
+        output == '<input type="text" name="testField" value="1" required="true" disabled="disabled" checked="checked" readonly="readonly" id="testField" />'
     }
 
 
     def testTextAreaWithBody() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:textArea name="test">This is content</g:textArea>'
         String output = applyTemplate(template)
-        assert output == '<textarea name="test" id="test" >This is content</textarea>'
+
+        then:
+        output == '<textarea name="test" id="test" >This is content</textarea>'
     }
 
     def testTextAreaWithBodyAndRequestDataValueProcessor() {
+        when:
         def template = '<g:textArea name="test">This is content</g:textArea>'
         String output = applyTemplate(template)
-        assert output == '<textarea name="test" id="test" >This is content_PROCESSED_</textarea>'
+
+        then:
+        output == '<textarea name="test" id="test" >This is content_PROCESSED_</textarea>'
     }
 
     def testPasswordTag() {
+        when:
         unRegisterRequestDataValueProcessor()
         def template = '<g:passwordField name="myPassword" value="foo"/>'
         String output = applyTemplate(template)
-        assert output == '<input type="password" name="myPassword" value="foo" id="myPassword" />'
+
+        then:
+        output == '<input type="password" name="myPassword" value="foo" id="myPassword" />'
     }
 
     def testPasswordTagWithRequestDataValueProcessor() {
+        when:
         def template = '<g:passwordField name="myPassword" value="foo"/>'
         String output = applyTemplate(template)
-        assert output =='<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />'
+
+        then:
+        output =='<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />'
     }
 
     def testFormWithURL() {
@@ -278,7 +290,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.form(new TreeMap([url:[controller:'con', action:'action'], id:'formElementId']))
 
         then:
-        assert output == '<form action="/con/action" method="post" id="formElementId" ></form>'
+        output == '<form action="/con/action" method="post" id="formElementId" ></form>'
     }
 
     def testFormWithURLAndRequestDataValueProcessor() {
@@ -287,7 +299,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.form(new TreeMap([url:[controller:'con', action:'action'], id:'formElementId']))
 
         then:
-        assert output == '<form action="/con/action" method="post" id="formElementId" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
+        output == '<form action="/con/action" method="post" id="formElementId" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     def testActionSubmitWithoutAction() {
@@ -297,7 +309,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([value:'Edit']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Edit" />'
+        output == '<input type="submit" name="_action_Edit" value="Edit" />'
     }
 
     def testActionSubmitWithoutActionAndWithRequestDataValueProcessor() {
@@ -306,7 +318,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([value:'Edit']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Edit_PROCESSED_" />'
+        output == '<input type="submit" name="_action_Edit" value="Edit_PROCESSED_" />'
     }
 
     def testActionSubmitWithAction() {
@@ -316,7 +328,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
+        output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
     }
 
     def testActionSubmitWithActionAndRequestDataValueProcessor() {
@@ -325,7 +337,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing_PROCESSED_" />'
+        output == '<input type="submit" name="_action_Edit" value="Some label for editing_PROCESSED_" />'
     }
 
     /**
@@ -338,7 +350,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing', name:'customName']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
+        output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
     }
 
     def testActionSubmitWithAdditionalAttributes() {
@@ -348,7 +360,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing', style:'width: 200px;']))
 
         then:
-        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" style="width: 200px;" />'
+        output == '<input type="submit" name="_action_Edit" value="Some label for editing" style="width: 200px;" />'
     }
 
     def testActionSubmitImageWithoutAction() {
@@ -358,7 +370,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', value:'Edit']))
 
         then:
-        assert output == '<input type="image" name="_action_Edit" value="Edit" src="edit.gif" />'
+        output == '<input type="image" name="_action_Edit" value="Edit" src="edit.gif" />'
     }
 
     def testActionSubmitImageWithoutActionAndWithRequestDataValueProcessor() {
@@ -367,7 +379,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', value:'Edit']))
 
         then:
-        assert output == '<input type="image" name="_action_Edit" value="Edit_PROCESSED_" src="edit.gif?requestDataValueProcessorParamName=paramValue" />'
+        output == '<input type="image" name="_action_Edit" value="Edit_PROCESSED_" src="edit.gif?requestDataValueProcessorParamName=paramValue" />'
     }
 
     def testActionSubmitImageWithAction() {
@@ -377,7 +389,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing']))
 
         then:
-        assert output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" />'
+        output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" />'
     }
 
     def testActionSubmitImageWithAdditionalAttributes() {
@@ -387,7 +399,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing', style:'border-line: 0px;']))
 
         then:
-        assert output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" style="border-line: 0px;" />'
+        output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" style="border-line: 0px;" />'
     }
 
     def testHtmlEscapingTextAreaTag() {
@@ -397,7 +409,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.textArea([name: "testField", value: "<b>some text</b>"])
 
         then:
-        assert output == '<textarea name="testField" id="testField" >&lt;b&gt;some text&lt;/b&gt;</textarea>'
+        output == '<textarea name="testField" id="testField" >&lt;b&gt;some text&lt;/b&gt;</textarea>'
     }
 
     def testTextAreaTag() {
@@ -407,7 +419,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.textArea([name: "testField", value: "1"])
 
         then:
-        assert output == '<textarea name="testField" id="testField" >1</textarea>'
+        output == '<textarea name="testField" id="testField" >1</textarea>'
     }
 
     def testPassingTheSameMapToTextField() {
@@ -417,13 +429,13 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.textField([name: 'A'])
 
         then:
-        assert output == '<input type="text" name="A" value="" id="A" />'
+        output == '<input type="text" name="A" value="" id="A" />'
 
         when:
         output = tagLib.textField([name: 'B'])
 
         then:
-        assert output == '<input type="text" name="B" value="" id="B" />'
+        output == '<input type="text" name="B" value="" id="B" />'
     }
 
     def testFieldImplDoesNotApplyAttributesFromPreviousInvocation() {
@@ -438,7 +450,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
 
         then:
         tagLib.fieldImpl out, attrs
-        assert '<input type="text" name="A" value="" id="A" />' == out.toString()
+         '<input type="text" name="A" value="" id="A" />' == out.toString()
 
         when:
         out = new FastStringWriter()
@@ -448,7 +460,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         tagLib.fieldImpl out, attrs
 
         then:
-        assert '<input type="text" name="B" value="" id="B" />' == out.toString()
+         '<input type="text" name="B" value="" id="B" />' == out.toString()
     }
 
     def testBooleanAttributes() {
@@ -460,7 +472,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for string as boolean false
         when:
@@ -468,7 +480,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+         output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test readonly for real boolean true
         when:
@@ -476,7 +488,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for real boolean false
         when:
@@ -484,7 +496,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test readonly for its default value
         when:
@@ -492,7 +504,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for a value different from the defined in the spec
         when:
@@ -500,7 +512,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" readonly="other value" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" readonly="other value" id="myfield" />'
 
         // Test readonly for null value
         when:
@@ -508,7 +520,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for string as boolean true
         when:
@@ -516,7 +528,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for string as boolean false
         when:
@@ -524,7 +536,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for real boolean true
         when:
@@ -532,7 +544,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for real boolean false
         when:
@@ -540,7 +552,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for its default value
         when:
@@ -548,7 +560,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for a value different from the defined in the spec
         when:
@@ -556,7 +568,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" disabled="other value" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" disabled="other value" id="myfield" />'
 
         // Test disabled for null value
         when:
@@ -564,7 +576,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         output = tagLib.textField(attributes)
 
         then:
-        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
+        output == '<input type="text" name="myfield" value="1" id="myfield" />'
     }
 
     private void unRegisterRequestDataValueProcessor() {
