@@ -8,13 +8,18 @@ import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.plugins.web.taglib.FormTagLib
 import org.grails.buffer.FastStringWriter
 import org.springframework.context.ConfigurableApplicationContext
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Tests for the FormTagLib.groovy file which contains tags to help with the                                         l
  * creation of HTML forms
  *
+ * Please note tests that require special config have been moved to FormTagLibWithConfigSpec you can test things
+ * that require no special config here
+ *
  * @author Graeme
+ * @author rvanderwerf
  */
 class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib> {
 
@@ -31,7 +36,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, new FormTagLibTests.MockGrailsUrlMappingsClass(mappingsClosure))
 
     }
-    
+
     def testFormNoNamespace() {
         when:
         def template = '<g:form controller="books"></g:form>'
@@ -40,7 +45,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         then:
         assert output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
-    
+
     private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
         Closure mappingClosure
         public MockGrailsUrlMappingsClass(Closure mappingClosure) {
@@ -240,44 +245,31 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         assert output == '<input type="text" name="testField" value="1" required="true" disabled="disabled" checked="checked" readonly="readonly" id="testField" />'
     }
 
-    void testTextFieldTagWithNonBooleanAttributesAndConfig() {
-        unRegisterRequestDataValueProcessor()
-        withConfig('''
-                grails {
-                    tags {
-                        booleanToAttributes = ['disabled', 'checked', 'readonly', 'required']
-                    }
-                }
-                ''') {
-            appCtx.getBean(FormTagLib.name).setConfiguration(grailsApplication.config)
-            def template = '<g:textField name="testField" value="1" disabled="false" checked="false" readonly="false" required="false" />'
-            assertOutputEquals('<input type="text" name="testField" value="1" id="testField" />', template)
 
-            template = '<g:textField name="testField" value="1" disabled="true" checked="true" readonly="true" required="true"/>'
-            assertOutputEquals('<input type="text" name="testField" value="1" disabled="disabled" checked="checked" readonly="readonly" required="required" id="testField" />', template)
-        }
-    }
-
-    void testTextAreaWithBody() {
+    def testTextAreaWithBody() {
         unRegisterRequestDataValueProcessor()
         def template = '<g:textArea name="test">This is content</g:textArea>'
-        assertOutputEquals '<textarea name="test" id="test" >This is content</textarea>', template
+        String output = applyTemplate(template)
+        assert output == '<textarea name="test" id="test" >This is content</textarea>'
     }
 
-    void testTextAreaWithBodyAndRequestDataValueProcessor() {
+    def testTextAreaWithBodyAndRequestDataValueProcessor() {
         def template = '<g:textArea name="test">This is content</g:textArea>'
-        assertOutputEquals '<textarea name="test" id="test" >This is content_PROCESSED_</textarea>', template
+        String output = applyTemplate(template)
+        assert output == '<textarea name="test" id="test" >This is content_PROCESSED_</textarea>'
     }
 
-    void testPasswordTag() {
+    def testPasswordTag() {
         unRegisterRequestDataValueProcessor()
         def template = '<g:passwordField name="myPassword" value="foo"/>'
-        assertOutputEquals('<input type="password" name="myPassword" value="foo" id="myPassword" />', template)
+        String output = applyTemplate(template)
+        assert output == '<input type="password" name="myPassword" value="foo" id="myPassword" />'
     }
 
-    void testPasswordTagWithRequestDataValueProcessor() {
+    def testPasswordTagWithRequestDataValueProcessor() {
         def template = '<g:passwordField name="myPassword" value="foo"/>'
-        assertOutputEquals('<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />', template)
+        String output = applyTemplate(template)
+        assert output =='<input type="password" name="myPassword" value="foo_PROCESSED_" id="myPassword" />'
     }
 
     def testFormWithURL() {
@@ -291,9 +283,6 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
 
     def testFormWithURLAndRequestDataValueProcessor() {
 
-        given:
-        final StringWriter sw = new StringWriter()
-
         when:
         String output = tagLib.form(new TreeMap([url:[controller:'con', action:'action'], id:'formElementId']))
 
@@ -301,174 +290,140 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         assert output == '<form action="/con/action" method="post" id="formElementId" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
-    void testActionSubmitWithoutAction() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitWithoutAction() {
 
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([value:'Edit'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="submit" name="_action_Edit" value="Edit" />', sw.toString() // NO TRIM, TEST WS!
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmit(new TreeMap([value:'Edit']))
+
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Edit" />'
     }
 
-    void testActionSubmitWithoutActionAndWithRequestDataValueProcessor() {
+    def testActionSubmitWithoutActionAndWithRequestDataValueProcessor() {
 
-        ConfigurableApplicationContext applicationContext = ctx
-        applicationContext.beanFactory.registerSingleton('requestDataValueProcessor', new MockRequestDataValueProcessor())
+        when:
+        String output = tagLib.actionSubmit(new TreeMap([value:'Edit']))
 
-
-        final StringWriter sw = new StringWriter()
-
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([value:'Edit'])
-            tag.call(attributes)
-        }
-        applicationContext.beanFactory.destroyBean('requestDataValueProcessor')
-        assertEquals '<input type="submit" name="_action_Edit" value="Edit_PROCESSED_" />', sw.toString() // NO TRIM, TEST WS!
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Edit_PROCESSED_" />'
     }
 
-    void testActionSubmitWithAction() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitWithAction() {
 
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([action:'Edit', value:'Some label for editing'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="submit" name="_action_Edit" value="Some label for editing" />', sw.toString() // NO TRIM, TEST WS!
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing']))
+
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
     }
 
-    void testActionSubmitWithActionAndRequestDataValueProcessor() {
+    def testActionSubmitWithActionAndRequestDataValueProcessor() {
 
-        ConfigurableApplicationContext applicationContext = ctx
-        applicationContext.beanFactory.registerSingleton('requestDataValueProcessor', new MockRequestDataValueProcessor())
+        when:
+        String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing']))
 
-
-        final StringWriter sw = new StringWriter()
-
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([action:'Edit', value:'Some label for editing'])
-            tag.call(attributes)
-        }
-        applicationContext.beanFactory.destroyBean('requestDataValueProcessor')
-        assertEquals '<input type="submit" name="_action_Edit" value="Some label for editing_PROCESSED_" />', sw.toString() // NO TRIM, TEST WS!
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing_PROCESSED_" />'
     }
 
     /**
      * GRAILS-454 - Make sure that the 'name' attribute is ignored.
      */
-    void testActionSubmitWithName() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitWithName() {
 
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([action:'Edit', value:'Some label for editing', name:'customName'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="submit" name="_action_Edit" value="Some label for editing" />', sw.toString() // NO TRIM, TEST WS!
-    }
-
-    void testActionSubmitWithAdditionalAttributes() {
-        final StringWriter sw = new StringWriter()
-
-        withTag("actionSubmit", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([action:'Edit', value:'Some label for editing', style:'width: 200px;'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="submit" name="_action_Edit" value="Some label for editing" style="width: 200px;" />', sw.toString() // NO TRIM, TEST WS!
-    }
-
-    void testActionSubmitImageWithoutAction() {
+        when:
         unRegisterRequestDataValueProcessor()
-        final StringWriter sw = new StringWriter()
+        String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing', name:'customName']))
 
-        withTag("actionSubmitImage", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([src:'edit.gif', value:'Edit'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="image" name="_action_Edit" value="Edit" src="edit.gif" />', sw.toString() // NO TRIM, TEST WS!
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" />'
     }
 
-    void testActionSubmitImageWithoutActionAndWithRequestDataValueProcessor() {
+    def testActionSubmitWithAdditionalAttributes() {
 
-        ConfigurableApplicationContext applicationContext = ctx
-        applicationContext.beanFactory.registerSingleton('requestDataValueProcessor', new MockRequestDataValueProcessor())
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmit(new TreeMap([action:'Edit', value:'Some label for editing', style:'width: 200px;']))
 
-
-        final StringWriter sw = new StringWriter()
-
-        withTag("actionSubmitImage", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([src:'edit.gif', value:'Edit'])
-            tag.call(attributes)
-        }
-        applicationContext.beanFactory.destroyBean('requestDataValueProcessor')
-        assertEquals '<input type="image" name="_action_Edit" value="Edit_PROCESSED_" src="edit.gif?requestDataValueProcessorParamName=paramValue" />', sw.toString() // NO TRIM, TEST WS!
+        then:
+        assert output == '<input type="submit" name="_action_Edit" value="Some label for editing" style="width: 200px;" />'
     }
 
-    void testActionSubmitImageWithAction() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitImageWithoutAction() {
 
-        withTag("actionSubmitImage", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" />', sw.toString() // NO TRIM, TEST WS!
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', value:'Edit']))
+
+        then:
+        assert output == '<input type="image" name="_action_Edit" value="Edit" src="edit.gif" />'
     }
 
-    void testActionSubmitImageWithAdditionalAttributes() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitImageWithoutActionAndWithRequestDataValueProcessor() {
 
-        withTag("actionSubmitImage", new PrintWriter(sw)) { tag ->
-            // use sorted map to be able to predict the order in which tag attributes are generated
-            def attributes = new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing', style:'border-line: 0px;'])
-            tag.call(attributes)
-        }
-        assertEquals '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" style="border-line: 0px;" />', sw.toString() // NO TRIM, TEST WS!
+        when:
+        String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', value:'Edit']))
+
+        then:
+        assert output == '<input type="image" name="_action_Edit" value="Edit_PROCESSED_" src="edit.gif?requestDataValueProcessorParamName=paramValue" />'
     }
 
-    void testHtmlEscapingTextAreaTag() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitImageWithAction() {
 
-        withTag("textArea", new PrintWriter(sw)) { tag ->
-            def attributes = [name: "testField", value: "<b>some text</b>"]
-            tag.call(attributes,{})
-        }
-        assertEquals '<textarea name="testField" id="testField" >&lt;b&gt;some text&lt;/b&gt;</textarea>', sw.toString()
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing']))
+
+        then:
+        assert output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" />'
     }
 
-    void testTextAreaTag() {
-        final StringWriter sw = new StringWriter()
+    def testActionSubmitImageWithAdditionalAttributes() {
 
-        withTag("textArea", new PrintWriter(sw)) { tag ->
-            def attributes = [name: "testField", value: "1"]
-            tag.call(attributes,{})
-        }
-        assertEquals '<textarea name="testField" id="testField" >1</textarea>', sw.toString()
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.actionSubmitImage(new TreeMap([src:'edit.gif', action:'Edit', value:'Some label for editing', style:'border-line: 0px;']))
+
+        then:
+        assert output == '<input type="image" name="_action_Edit" value="Some label for editing" src="edit.gif" style="border-line: 0px;" />'
     }
 
-    void testPassingTheSameMapToTextField() {
+    def testHtmlEscapingTextAreaTag() {
+
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.textArea([name: "testField", value: "<b>some text</b>"])
+
+        then:
+        assert output == '<textarea name="testField" id="testField" >&lt;b&gt;some text&lt;/b&gt;</textarea>'
+    }
+
+    def testTextAreaTag() {
+
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.textArea([name: "testField", value: "1"])
+
+        then:
+        assert output == '<textarea name="testField" id="testField" >1</textarea>'
+    }
+
+    def testPassingTheSameMapToTextField() {
         // GRAILS-8250
-        StringWriter sw = new StringWriter()
+        when:
+        unRegisterRequestDataValueProcessor()
+        String output = tagLib.textField([name: 'A'])
 
-        def attributes = [name: 'A']
-        withTag("textField", new PrintWriter(sw)) { tag ->
-            tag.call(attributes)
-        }
-        assertEquals '<input type="text" name="A" value="" id="A" />', sw.toString()
+        then:
+        assert output == '<input type="text" name="A" value="" id="A" />'
 
-        sw = new StringWriter()
-        attributes.name = 'B'
-        withTag("textField", new PrintWriter(sw)) { tag ->
-            tag.call(attributes)
-        }
-        assertEquals '<input type="text" name="B" value="" id="B" />', sw.toString()
+        when:
+        output = tagLib.textField([name: 'B'])
+
+        then:
+        assert output == '<input type="text" name="B" value="" id="B" />'
     }
 
     def testFieldImplDoesNotApplyAttributesFromPreviousInvocation() {
@@ -496,72 +451,120 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         assert '<input type="text" name="B" value="" id="B" />' == out.toString()
     }
 
-
-    private void doTestBoolean(def attributes, String expected) {
-        def sw = new StringWriter()
-        withTag('textField', new PrintWriter(sw)) { tag ->
-            tag.call(attributes)
-        }
-        assertEquals expected, sw.toString()
-    }
-
-    void testBooleanAttributes() {
+    def testBooleanAttributes() {
         // GRAILS-3468
         // Test readonly for string as boolean true
-        def attributes = [name: 'myfield', value: '1', readonly: 'true']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />')
+        when:
+        unRegisterRequestDataValueProcessor()
+        Map attributes = [name: 'myfield', value: '1', readonly: 'true']
+        String output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for string as boolean false
+        when:
         attributes = [name: 'myfield', value: '1', readonly: 'false']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test readonly for real boolean true
+        when:
         attributes = [name: 'myfield', value: '1', readonly: true]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for real boolean false
+        when:
         attributes = [name: 'myfield', value: '1', readonly: false]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test readonly for its default value
+        when:
         attributes = [name: 'myfield', value: '1', readonly: 'readonly']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" readonly="readonly" id="myfield" />'
 
         // Test readonly for a value different from the defined in the spec
+        when:
         attributes = [name: 'myfield', value: '1', readonly: 'other value']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" readonly="other value" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" readonly="other value" id="myfield" />'
 
         // Test readonly for null value
+        when:
         attributes = [name: 'myfield', value: '1', readonly: null]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for string as boolean true
+        when:
         attributes = [name: 'myfield', value: '1', disabled: 'true']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for string as boolean false
+        when:
         attributes = [name: 'myfield', value: '1', disabled: 'false']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for real boolean true
+        when:
         attributes = [name: 'myfield', value: '1', disabled: true]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for real boolean false
+        when:
         attributes = [name: 'myfield', value: '1', disabled: false]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
 
         // Test disabled for its default value
+        when:
         attributes = [name: 'myfield', value: '1', disabled: 'disabled']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" disabled="disabled" id="myfield" />'
 
         // Test disabled for a value different from the defined in the spec
+        when:
         attributes = [name: 'myfield', value: '1', disabled: 'other value']
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" disabled="other value" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" disabled="other value" id="myfield" />'
 
         // Test disabled for null value
+        when:
         attributes = [name: 'myfield', value: '1', disabled: null]
-        doTestBoolean(attributes, '<input type="text" name="myfield" value="1" id="myfield" />')
+        output = tagLib.textField(attributes)
+
+        then:
+        assert output == '<input type="text" name="myfield" value="1" id="myfield" />'
     }
 
     private void unRegisterRequestDataValueProcessor() {
