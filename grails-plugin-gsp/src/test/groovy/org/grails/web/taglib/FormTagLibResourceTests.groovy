@@ -1,10 +1,19 @@
 package org.grails.web.taglib
 
+import grails.testing.web.taglib.TagLibUnitTest
+
 import org.grails.core.artefact.UrlMappingsArtefactHandler
+import org.grails.plugins.web.taglib.FormTagLib
+import spock.lang.Specification
 
-class FormTagLibResourceTests extends AbstractGrailsTagTests {
+class FormTagLibResourceTests extends Specification implements TagLibUnitTest<FormTagLib> {
 
-    protected void onInit() {
+    /**
+     * // the taglibunittest doesn't seem to be respecting this mapping in the tests?
+     * @return
+     */
+    def setupSpec() {
+        GroovyClassLoader gcl = new GroovyClassLoader()
         def mappingClass = gcl.parseClass('''
 class TestUrlMappings {
     static mappings = {
@@ -18,72 +27,101 @@ class TestUrlMappings {
         grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, mappingClass)
     }
 
-    void testResourceSave() {
+    def testResourceSave() {
+        when:
         def template = '<g:form resource="book" action="save"/>'
-        assertOutputEquals('<form action="/books" method="post" ></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output =='<form action="/books" method="post" ></form>'
     }
 
-    void testResourceUpdate() {
+    def testResourceUpdate() {
+        when:
         def template = '<g:form resource="book" action="update" id="1"/>'
-        assertOutputEquals('<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
-    void testResourceUpdateIdInParams() {
+    def testResourceUpdateIdInParams() {
+        when:
         def template = '<g:form resource="book" action="update" params="[id:1]"/>'
-        assertOutputEquals('<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
-    void testResourcePatch() {
+    def testResourcePatch() {
+        when:
         def template = '<g:form resource="book" action="patch" id="1"/>'
-        assertOutputEquals('<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
-    void testResourcePatchIdInParams() {
+    def testResourcePatchIdInParams() {
+        when:
         def template = '<g:form resource="book" action="patch" params="[id:1]"/>'
-        assertOutputEquals('<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
-    void testResourceNestedSave() {
+    def testResourceNestedSave() {
+        when:
         def template = '<g:form resource="book/author" action="save" params="[bookId:1]"/>'
-        assertOutputEquals('<form action="/books/1/authors" method="post" ></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1/authors" method="post" ></form>'
     }
 
-    void testResourceNestedUpdate() {
+    def testResourceNestedUpdate() {
         // We'd really like to suppoer this format <g:form resource="book/author" action="update" id="2" bookId="1"/>
         // but the form tag limits the set of attributes it hands to the linkGenerator and the dynamic parameters like 'bookId' get filtered out
         // instead we make do with putting bookId in the params attribute
+        when:
         def template = '<g:form resource="book/author" action="update" id="2" params="[bookId:1]"/>'
-        assertOutputEquals('<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output =='<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
-    void testResourceNestedUpdateIdInParams() {
+    def testResourceNestedUpdateIdInParams() {
+        when:
         def template = '<g:form resource="book/author" action="update" params="[bookId:1, id:2]"/>'
-        assertOutputEquals('<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
-    void testResourceNestedPatch() {
+    def testResourceNestedPatch() {
+        when:
         def template = '<g:form resource="book/author" action="patch" id="2" params="[bookId:1]"/>'
-        assertOutputEquals('<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
     void testResourceNestedPatchIdInParams() {
+        when:
         def template = '<g:form resource="book/author" action="patch" params="[bookId:1, id:2]"/>'
-        assertOutputEquals('<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>', template)
+        String output = applyTemplate(template)
+
+        then:
+        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
-    void assertOutputEquals(expected, template, params = [:]) {
-        def engine = appCtx.groovyPagesTemplateEngine
 
-        assert engine
-        def t = engine.createTemplate(template, "test_"+ System.currentTimeMillis())
-
-        def w = t.make(params)
-
-        def sw = new StringWriter()
-        def out = new PrintWriter(sw)
-        webRequest.out = out
-        w.writeTo(out)
-
-        assertEquals expected, sw.toString()
-    }
 }
+
+
+
