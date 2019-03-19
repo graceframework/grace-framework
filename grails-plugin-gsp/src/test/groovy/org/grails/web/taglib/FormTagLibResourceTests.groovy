@@ -1,43 +1,11 @@
 package org.grails.web.taglib
 
-import grails.core.GrailsUrlMappingsClass
-import grails.testing.spock.OnceBefore
-import grails.testing.web.taglib.TagLibUnitTest
-import org.grails.core.AbstractGrailsClass
-import org.grails.core.artefact.UrlMappingsArtefactHandler
-import org.grails.plugins.web.taglib.FormTagLib
+import grails.artefact.Artefact
+import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
-class FormTagLibResourceTests extends Specification implements TagLibUnitTest<FormTagLib> {
+class FormTagLibResourceTests extends Specification implements UrlMappingsUnitTest<TestFormTagUrlMappings> {
 
-
-    @OnceBefore
-    void registerMappings() {
-
-        def mappingsClosure = {
-            "/books"(resources:"book")
-            "/authors"(resources:"author")
-        }
-        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, new MockGrailsUrlMappingsClass(mappingsClosure))
-
-    }
-
-    private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
-        Closure mappingClosure
-        public MockGrailsUrlMappingsClass(Closure mappingClosure) {
-            super(FormTagLibResourceTests.class, "UrlMappings")
-            this.mappingClosure = mappingClosure
-        }
-        @Override
-        public Closure getMappingsClosure() {
-            return mappingClosure
-        }
-
-        @Override
-        public List getExcludePatterns() {
-            return null
-        }
-    }
 
     def testResourceSave() {
         when:
@@ -45,7 +13,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output =='<form action="/books" method="post" ></form>'
+        output =='<form action="/books" method="post" ></form>'
     }
 
     def testResourceUpdate() {
@@ -54,7 +22,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
+        output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
     def testResourceUpdateIdInParams() {
@@ -63,7 +31,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
+        output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
     def testResourcePatch() {
@@ -72,7 +40,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
+        output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
     def testResourcePatchIdInParams() {
@@ -81,7 +49,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
+        output == '<form action="/books/1" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
     def testResourceNestedSave() {
@@ -90,7 +58,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1/authors" method="post" ></form>'
+        output == '<form action="/books/1/authors" method="post" ></form>'
     }
 
     def testResourceNestedUpdate() {
@@ -102,7 +70,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output =='<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
+        output =='<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
     def testResourceNestedUpdateIdInParams() {
@@ -111,7 +79,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
+        output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PUT" id="_method" /></form>'
     }
 
     def testResourceNestedPatch() {
@@ -120,7 +88,7 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
+        output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
     void testResourceNestedPatchIdInParams() {
@@ -129,11 +97,21 @@ class FormTagLibResourceTests extends Specification implements TagLibUnitTest<Fo
         String output = applyTemplate(template)
 
         then:
-        assert output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
+        output == '<form action="/books/1/authors/2" method="post" ><input type="hidden" name="_method" value="PATCH" id="_method" /></form>'
     }
 
 
 }
 
+@Artefact("UrlMappings")
+class TestFormTagUrlMappings {
+
+    static mappings = {
+        "/books"(resources:"book") {
+            "/authors"(resources:"author")
+        }
+    }
+
+}
 
 

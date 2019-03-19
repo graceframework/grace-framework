@@ -1,7 +1,10 @@
 package org.grails.gsp.jsp
 
-import org.grails.web.taglib.AbstractGrailsTagTests
+import grails.testing.spock.OnceBefore
+import grails.testing.web.taglib.TagLibUnitTest
+import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.web.pages.GroovyPagesServlet
+import spock.lang.Specification
 import javax.servlet.http.HttpServletRequest
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
@@ -10,9 +13,17 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver
  * @author Graeme Rocher
  * @since 1.0
  */
-class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
+class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
-    protected void onInit() {
+
+    static doWithConfig(c) {
+        File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
+        tempdir.mkdir()
+        c.grails.views.gsp.keepgenerateddir="'${tempdir.absolutePath.replaceAll('\\\\', '/')}'"
+    }
+
+    @OnceBefore
+    void onInit() {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
         GroovySystem.metaClassRegistry.removeMetaClass HttpServletRequest
         GroovySystem.metaClassRegistry.removeMetaClass MockHttpServletRequest
@@ -20,13 +31,14 @@ class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
         webRequest.getCurrentRequest().setAttribute(GroovyPagesServlet.SERVLET_INSTANCE, new GroovyPagesServlet())
     }
 
-    protected void onDestroy() {
+
+    def cleanupSpec() {
         GroovySystem.metaClassRegistry.removeMetaClass TagLibraryResolverImpl
     }
 
     // test for GRAILS-4573
-    void testIterativeTags() {
-
+    def testIterativeTags() {
+        when:
         def template = '''
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -35,17 +47,16 @@ class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
 </body>
 </html>
 '''
+        String output = applyTemplate(template)
+        //printCompiledSource(template)
 
-        printCompiledSource(template)
-        assertOutputContains("1 . 1<br/>2 . 2<br/>3 . 3<br/>",template)
+        then:
+        output.contains("1 . 1<br/>2 . 2<br/>3 . 3<br/>")
     }
 
-    void testGRAILS3797() {
-        File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
-        tempdir.mkdir()
+    def testGRAILS3797() {
 
-        withConfig("grails.views.gsp.keepgenerateddir='${tempdir.absolutePath.replaceAll('\\\\', '/')}'") {
-
+        when:
             messageSource.addMessage("A_ICON",request.locale, "test")
 
             def template = '''
@@ -60,16 +71,16 @@ class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
   </body>
 </html>
 '''
-            assertOutputContains '<img src="test"/>', template
-        }
+        String output = applyTemplate(template)
+
+        then:
+        output.contains('<img src="test"/>')
+
     }
 
     void testDynamicAttributes() {
-        File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
-        tempdir.mkdir()
 
-        withConfig("grails.views.gsp.keepgenerateddir='${tempdir.absolutePath.replaceAll('\\\\', '/')}'") {
-
+        when:
             def template = '''
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <html>
@@ -80,14 +91,18 @@ class GroovyPageWithJSPTagsTests extends AbstractGrailsTagTests {
   </body>
 </html>
 '''
-            assertOutputContains 'grails="rocks"', template
-        }
+        String output = applyTemplate(template)
+
+        then:
+        output.contains('grails="rocks"')
+
     }
 
 
 
     // test for GRAILS-3845
-    void testNestedJSPTags() {
+    def testNestedJSPTags() {
+        when:
         def template = '''
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -107,45 +122,74 @@ goodbye
 </body>
 </html>
 '''
-        assertOutputContains 'hello', template
-        assertOutputNotContains "goodbye", template
-    }
-    void testGSPCantOverrideDefaultNamespaceWithJSP() {
-        def template = '<%@ taglib prefix="g" uri="http://java.sun.com/jsp/jstl/fmt" %><g:formatNumber number="10" format=".00"/>'
-        assertOutputEquals '10.00', template
+        String output = applyTemplate(template)
+
+        then:
+        output.contains 'hello'
+        !output.contains("goodbye")
     }
 
-    void testGSPWithIterativeJSPTag() {
+    def testGSPCantOverrideDefaultNamespaceWithJSP() {
+        when:
+        def template = '<%@ taglib prefix="g" uri="http://java.sun.com/jsp/jstl/fmt" %><g:formatNumber number="10" format=".00"/>'
+        String output = applyTemplate(template)
+
+        then:
+        output == '10.00'
+    }
+
+    def testGSPWithIterativeJSPTag() {
+        when:
         def template = '''
  <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <g:set var="foo" value="${[1,2,3]}" />
 <c:forEach items="${foo}" var="num"><p>${num}</p></c:forEach>
 '''
 
-        assertOutputEquals '''<p>1</p><p>2</p><p>3</p>''', template, [:], { it.toString().trim() }
+        String output = applyTemplate(template)
+
+        then:
+        output.trim() == '''<p>1</p><p>2</p><p>3</p>'''
     }
 
-    void testSimpleTagWithValue() {
+    def testSimpleTagWithValue() {
+        when:
         def template = '<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><fmt:formatNumber value="${10}" pattern=".00"/>'
-        assertOutputEquals '10.00', template
+        String output = applyTemplate(template)
+
+        then:
+        output == '10.00'
     }
 
-    void testInvokeJspTagAsMethod() {
+    def testInvokeJspTagAsMethod() {
+        when:
         def template = '<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>${fmt.formatNumber(value:10, pattern:".00")}'
-        assertOutputEquals '10.00', template
+        String output = applyTemplate(template)
+
+        then:
+        output == '10.00'
     }
 
-    void testInvokeJspTagAsMethodWithBody() {
+    def testInvokeJspTagAsMethodWithBody() {
+        when:
         def template = '<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>${fmt.formatNumber(pattern:".00",10)}'
-        assertOutputEquals '10.00', template
+        String output = applyTemplate(template)
+
+        then:
+        output == '10.00'
     }
 
-    void testSimpleTagWithBody() {
+    def testSimpleTagWithBody() {
+        when:
         def template = '<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><fmt:formatNumber pattern=".00">10</fmt:formatNumber>'
-        assertOutputEquals '10.00', template
+        String output = applyTemplate(template)
+
+        then:
+        output == '10.00'
     }
 
-    void testSpringJSPTags() {
+    def testSpringJSPTags() {
+        when:
         def template ='''<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <form:form commandName="address" action="do">
 <b>Zip: </b><form:input path="zip"/>
@@ -153,8 +197,10 @@ goodbye
 
         request.setAttribute "address", new TestJspTagAddress(zip:"342343")
         request.setAttribute "command", new TestJspTagAddress(zip:"342343")
-        assertOutputEquals '''<form id="command" commandName="address" action="do" method="post">\n<b>Zip: </b><input id="zip" name="zip" type="text" value="342343"/>\n</form>''',
-                template, [:], { it.toString().trim() }
+        String output = applyTemplate(template).trim()
+
+        then:
+        output == '''<form id="command" commandName="address" action="do" method="post">\n<b>Zip: </b><input id="zip" name="zip" type="text" value="342343"/>\n</form>'''
     }
 }
 
