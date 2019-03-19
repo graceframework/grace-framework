@@ -1,62 +1,11 @@
 package org.grails.web.taglib
 
-import grails.testing.spock.OnceBefore
-import grails.testing.web.taglib.TagLibUnitTest
-import org.grails.core.artefact.UrlMappingsArtefactHandler
-import org.grails.plugins.web.taglib.ApplicationTagLib
-import org.grails.plugins.web.taglib.FormTagLib
+import grails.artefact.Artefact
+import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
-class LinkRenderingTagLibTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
+class LinkRenderingTagLibTests extends Specification implements UrlMappingsUnitTest<LinkRenderingTestUrlMappings> {
 
-    @OnceBefore
-    void configureMappings() {
-        GroovyClassLoader gcl = new GroovyClassLoader()
-        def mappingClass = gcl.parseClass('''
-class TestUrlMappings {
-    static mappings = {
-      "/$controller/$action?/$id?"{
-          constraints {
-             // apply constraints here
-          }
-      }
-
-      "/products/$id" {
-          controller = "test"
-          action = "index"
-      }
-      "/surveys/$action?" {
-          controller = "survey"
-       }
-        "/searchable" {
-            controller = "searchable"
-            action = "index"
-        }
-        "/searchable/$action?" {
-            controller = "searchable"
-        }
-
-        "/dummy/$action/$name/$id"(controller: "test2")
-
-        "/pluginOneFirstController" {
-            controller = 'first'
-            action = 'index'
-            plugin = 'firstUtil'
-        }
-
-        "/pluginTwoFirstController/$num?" {
-            controller = 'first'
-            action = 'index'
-            plugin = 'secondUtil'
-        }
-
-        "/pluginThreeFirstController"(controller: 'first', action: 'index', plugin: 'thirdUtil')
-    }
-}
-        ''')
-
-        grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, mappingClass)
-    }
 
     def testMappingsWhichSpecifyAPlugin() {
         when:
@@ -347,5 +296,47 @@ class TestUrlMappings {
 
         then:
         output == "/test2/show/jim?age=31"
+    }
+}
+
+@Artefact("UrlMappings")
+class LinkRenderingTestUrlMappings {
+    static mappings = {
+        "/$controller/$action?/$id?"{
+            constraints {
+                // apply constraints here
+            }
+        }
+
+        "/products/$id" {
+            controller = "test"
+            action = "index"
+        }
+        "/surveys/$action?" {
+            controller = "survey"
+        }
+        "/searchable" {
+            controller = "searchable"
+            action = "index"
+        }
+        "/searchable/$action?" {
+            controller = "searchable"
+        }
+
+        "/dummy/$action/$name/$id"(controller: "test2")
+
+        "/pluginOneFirstController" {
+            controller = 'first'
+            action = 'index'
+            plugin = 'firstUtil'
+        }
+
+        "/pluginTwoFirstController/$num?" {
+            controller = 'first'
+            action = 'index'
+            plugin = 'secondUtil'
+        }
+
+        "/pluginThreeFirstController"(controller: 'first', action: 'index', plugin: 'thirdUtil')
     }
 }
