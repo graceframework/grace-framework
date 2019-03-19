@@ -1,35 +1,50 @@
 package org.grails.web.pages
 
+import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.gsp.GroovyPagesException
-import org.grails.web.taglib.AbstractGrailsTagTests
+import org.grails.plugins.web.taglib.ApplicationTagLib
+import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
+ * @author rvanderwerf
  * @since 1.0
  */
-class GroovyPageLineNumberTests extends AbstractGrailsTagTests {
+class GroovyPageLineNumberTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
-    void testSpanningMultipleLines() {
+    def testSpanningMultipleLines() {
+        when:
         def template = '''
  <a href="${createLink(action:'listActivity', controller:'activity',
         params:[sort:params.sort?params.sort:'',
         order:params.order?params.order:'asc', offset:params.offset?params.offset:0])}"">Click me</a>
 '''
+        String output = applyTemplate(template).trim()
 
-        printCompiledSource template
+        then:
 
-        applyTemplate(template)
+        output == '<a href="/activity/listActivity?sort=&amp;order=asc&amp;offset=0"">Click me</a>'
     }
 
-    void testExpressionWithQuotes() {
+    def testExpressionWithQuotes() {
+        when:
         def template = '${foo + \' \' + bar}'
-        assertOutputEquals "one two", template, [foo:"one", bar:"two"]
+        String output = applyTemplate(template, [foo:"one", bar:"two"])
 
+        then:
+        output == "one two"
+
+        when:
         template = '<g:createLinkTo dir="${foo}" file="${foo + \' \' + bar}" />'
-        assertOutputEquals "/one/one two", template, [foo:"one", bar:"two"]
+        output = applyTemplate(template, [foo:"one", bar:"two"])
+
+        then:
+        output == "/static/one/one two"
     }
 
-    void testLineNumberDataInsideTagAttribute() {
+    def testLineNumberDataInsideTagAttribute() {
+
+        when:
         def template = '''
 
 <p />
@@ -38,11 +53,14 @@ class GroovyPageLineNumberTests extends AbstractGrailsTagTests {
 
 <p />
 '''
-        printCompiledSource template
-        try {
-            applyTemplate(template)
-        }
-        catch (GroovyPagesException e) {
+
+        applyTemplate(template)
+
+        then:
+        thrown GroovyPagesException
+
+
+/*
             def cause = e.cause
             while (cause != cause.cause && cause.cause) {
                 cause = cause.cause
@@ -50,10 +68,12 @@ class GroovyPageLineNumberTests extends AbstractGrailsTagTests {
             assertTrue "The cause should have been a NPE but was ${cause}", cause instanceof NullPointerException
             assertEquals 5, e.lineNumber
         }
+*/
     }
 
-    void testLineNumberingDataInsideExpression() {
+    def testLineNumberingDataInsideExpression() {
 
+        when:
         def template = '''
 
 <p />
@@ -62,30 +82,42 @@ ${foo.bar.path}
 
 <p />
 '''
-        try {
-            applyTemplate(template)
-        }
-        catch (GroovyPagesException e) {
+
+        String output = applyTemplate(template)
+
+        then:
+        //thrown GroovyPagesException
+        GroovyPagesException e = thrown()
+
+
             def cause = e.cause
             while (cause != cause.cause && cause.cause) {
                 cause = cause.cause
             }
-            assertTrue "The cause should have been a NPE but was ${cause}", cause instanceof NullPointerException
-            assertEquals 5,e.lineNumber
-        }
+            cause instanceof NullPointerException
+            5 == e.lineNumber
+
     }
 
-    void testEachWithQuestionMarkAtEnd() {
+    def testEachWithQuestionMarkAtEnd() {
+        when:
         def template = '<g:each in="${list?}">${it}</g:each>'
-        assertOutputEquals "123", template, [list:[1,2,3]]
+        String output = applyTemplate(template, [list:[1,2,3]])
+        then:
+        output == "123"
     }
 
-    void testStringWithQuestionMark() {
+    def testStringWithQuestionMark() {
+        when:
         def template = '${"hello?"}'
-        assertOutputEquals "hello?", template
+        String output = applyTemplate(template)
+
+        then:
+        output == "hello?"
     }
 
-    void testComplexPage() {
+    def testComplexPage() {
+        when:
         def template = '''
 <html>
     <head>
@@ -111,11 +143,12 @@ ${foo.bar.path}
     </body>
 </html>
 '''
-        try {
-            applyTemplate(template)
-        }
-        catch (GroovyPagesException e) {
-            assertEquals 9,e.lineNumber
-        }
+        String output = applyTemplate(template)
+
+        then:
+        //thrown GroovyPagesException
+        GroovyPagesException e = thrown()
+        9 ==e.lineNumber
+
     }
 }

@@ -2,86 +2,15 @@ package org.grails.web.mapping
 
 import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
-import org.grails.web.taglib.AbstractGrailsTagTests
 import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
+ * @author rvanderwerf
  * @since 1.0
  */
 class ReverseUrlMappingTests extends Specification implements UrlMappingsUnitTest<CustomUrlMappings> {
 
-/*
-    protected void onSetUp() {
-        gcl.parseClass '''
-public class CustomUrlMappings {
-static mappings = {
-"/$mslug/$controller/$action/$id?" {}
-
-"/controller_name/$mslug/action_name/$nslug" {
-    controller = "controller_name"
-    action = "action_name"
-}
-
-"/controller_name/$mslug/action_name/$nslug/$oslug" {
-    controller = "controller_name"
-    action = "action_name"
-}
-
-name myNamedMapping: '/people/list' {
-  controller = 'person'
-  action = 'list'
-}
-
-name myOtherNamedMapping: "/showPeople/$lastName" {
-  controller = 'person'
-  action = 'byLastName'
-}
-
-name showBooks: '/showSomeBooks' {
-    controller = 'book'
-    action = 'list'
-}
-
-name showBooks2: '/showSomeOtherBooks' {
-    controller = 'book'
-    action = 'list'
-}
-
-name showBooksWithAction: "/showSomeOtherBooks/$action" {
-    controller = 'book'
-}
-
-"/$namespace/$controller/$action?"()
-
-"/grails/$controller/$action?" {
-    namespace = "grails"
-}
-
-"/invokePrimaryController" {
-    controller = 'namespaced'
-    namespace = 'primary'
-}
-
-"/invokeSecondaryController" {
-    controller = 'namespaced'
-    namespace = 'secondary'
-}
-
-"/nonNamespacedController/$action?" {
-    controller = 'namespaced'
-}
-
-}}'''
-
-        gcl.parseClass '''
-class ProductController {
-    def create = {}
-    def save = {}
-}
-'''
-    }
-*/
 
     def testLinkTagRendering() {
         when:
