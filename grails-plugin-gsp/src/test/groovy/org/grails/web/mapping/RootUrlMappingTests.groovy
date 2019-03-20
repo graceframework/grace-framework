@@ -1,45 +1,44 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
+import grails.testing.web.UrlMappingsUnitTest
 import org.grails.web.taglib.AbstractGrailsTagTests
+import spock.lang.Specification
 
-class RootUrlMappingTests extends AbstractGrailsTagTests {
+class RootUrlMappingTests extends Specification implements UrlMappingsUnitTest<StoreUrlMappings> {
 
-    protected void onSetUp() {
-        gcl.parseClass '''
+
+    def testMappingToController() {
+        when:
+        def template = '<g:link controller="store">Show the time !</g:link>'
+        String output = applyTemplate(template)
+
+        then:
+        output == '<a href="/">Show the time !</a>'
+    }
+
+}
+
+@Artefact("UrlMappings")
 class StoreUrlMappings {
     static mappings = {
-      "/"(controller:"store")
-      "/$controller/$action?/$id?"{
-          constraints {
-             // apply constraints here
-          }
-      }
-      "/"(view:"/index")
-      "500"(view:'/error')
+        "/"(controller:"store")
+        "/$controller/$action?/$id?"{
+            constraints {
+                // apply constraints here
+            }
+        }
+        "/"(view:"/index")
+        "500"(view:'/error')
     }
-}'''
+}
 
-        gcl.parseClass '''
+@Artefact("Controller")
 class StoreController {
 
     def index = { }
 
     def showTime = {
         render "${new Date()}"
-    }
-}
-
-'''
-    }
-
-
-//    void testMappingToControllerAndAction() {
-//        def template = '<g:link controller="store" action="showTime">Show the time !</g:link>'
-//        assertOutputEquals('<a href="/store/showTime">Show the time !</a>', template)
-//    }
-
-    void testMappingToController() {
-        def template = '<g:link controller="store">Show the time !</g:link>'
-        assertOutputEquals('<a href="/">Show the time !</a>', template)
     }
 }

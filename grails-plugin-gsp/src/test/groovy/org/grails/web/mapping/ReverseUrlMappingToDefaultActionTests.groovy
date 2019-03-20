@@ -1,45 +1,54 @@
 package org.grails.web.mapping
 
-import org.grails.web.taglib.AbstractGrailsTagTests
+import grails.artefact.Artefact
+import grails.testing.spock.OnceBefore
+import grails.testing.web.UrlMappingsUnitTest
+import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
+ * @author rvanderwerf
  * @since 1.0
  */
-class ReverseUrlMappingToDefaultActionTests extends AbstractGrailsTagTests {
+class ReverseUrlMappingToDefaultActionTests extends Specification implements UrlMappingsUnitTest<ReverseUrlMappingToDefaultActionUrlMappings> {
 
-    protected void onSetUp() {
-        gcl.parseClass '''
-class UrlMappings {
-    static mappings = {
-            "/$id?"{
-                controller = "reverseUrlMappingContent"
-                action = "view"
-            }
-
-            "/$dir/$id?"{
-                controller = "reverseUrlMappingContent"
-                action = "view"
-            }
+    @OnceBefore
+    void mockControllers() {
+        mockController(ReverseUrlMappingContentController)
+        mockController(ReverseUrlMappingTestController)
     }
-}'''
 
-        gcl.parseClass '''
-@grails.artefact.Artefact("Controller")
+    def testLinkTagRendering() {
+        when:
+        def template = '<g:link url="[controller:\'reverseUrlMappingContent\', params:[dir:\'about\'], id:\'index\']">click</g:link>'
+        String output = applyTemplate(template)
+
+        then:
+        output == '<a href="/about/index">click</a>'
+    }
+}
+
+@Artefact("UrlMappings")
+class ReverseUrlMappingToDefaultActionUrlMappings {
+    static mappings = {
+        "/$id?"{
+            controller = "reverseUrlMappingContent"
+            action = "view"
+        }
+
+        "/$dir/$id?"{
+            controller = "reverseUrlMappingContent"
+            action = "view"
+        }
+    }
+}
+
+@Artefact("Controller")
 class ReverseUrlMappingContentController {
     def view = {}
 }
-@grails.artefact.Artefact("Controller")
+@Artefact("Controller")
 class ReverseUrlMappingTestController {
     def foo = {}
     def index = {}
-}
-'''
-    }
-
-    void testLinkTagRendering() {
-
-        def template = '<g:link url="[controller:\'reverseUrlMappingContent\', params:[dir:\'about\'], id:\'index\']">click</g:link>'
-        assertOutputEquals '<a href="/about/index">click</a>', template
-    }
 }

@@ -1,68 +1,88 @@
 package org.grails.web.pages
 
+import grails.testing.web.taglib.TagLibUnitTest
 import grails.util.Environment
 import org.grails.gsp.GroovyPagesException
+import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.web.taglib.AbstractGrailsTagTests
+import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
-class GroovyPageRenderingTests extends AbstractGrailsTagTests {
+class GroovyPageRenderingTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
-    void testGroovyPageExpressionExceptionInDevelopmentEnvironment() {
+    def testGroovyPageExpressionExceptionInDevelopmentEnvironment() {
+        when:
         def template = '${foo.bar.next}'
-
-        shouldFail(GroovyPagesException) {
-            applyTemplate(template)
-        }
+        String output = applyTemplate(template)
+        then:
+        thrown GroovyPagesException
     }
 
-    void testGroovyPageExpressionExceptionInOtherEnvironments() {
-        def template = '${foo.bar.next}'
+    def testGroovyPageExpressionExceptionInOtherEnvironments() {
 
+        when:
+        def template = '${foo.bar.next}'
         System.setProperty(Environment.KEY, "production")
+        applyTemplate(template)
 
-        shouldFail(NullPointerException) {
-            applyTemplate(template)
-        }
+        then:
+        thrown NullPointerException
     }
 
-    protected void onDestroy() {
+    def cleanupSpec() {
         System.setProperty(Environment.KEY, "")
     }
 
-    void testForeach() {
+    def testForeach() {
+        when:
         def template='<g:each in="${toplist}"><g:each var="t" in="${it.sublist}">${t}</g:each></g:each>'
         def result = applyTemplate(template, [toplist: [[sublist:['a','b']],[sublist:['c','d']]]])
-        assertEquals 'abcd', result
+
+        then:
+        result == 'abcd'
     }
 
-    void testForeachInTagbody() {
+    def testForeachInTagbody() {
+        when:
         def template='<g:set var="p"><g:each in="${toplist}"><g:each var="t" in="${it.sublist}">${t}</g:each></g:each></g:set>${p}'
         def result = applyTemplate(template, [toplist: [[sublist:['a','b']],[sublist:['c','d']]]])
-        assertEquals 'abcd', result
+
+        then:
+        result == 'abcd'
     }
 
-    void testForeachIteratingMap() {
+    def testForeachIteratingMap() {
+        when:
         def template='<g:each var="k,v" in="[a:1,b:2,c:3]">${k}=${v},</g:each>'
         def result = applyTemplate(template, [:])
-        assertEquals 'a=1,b=2,c=3,', result
+
+        then:
+        result == 'a=1,b=2,c=3,'
     }
 
-    void testForeachRenaming() {
+    def testForeachRenaming() {
+        when:
         def template='<g:each in="${list}"><g:each in="${list}">.</g:each></g:each>'
         def result=applyTemplate(template, [list: 1..10])
-        assertEquals '.' * 100, result
+
+        then:
+        result == '.' * 100
     }
 
-    void testForeachGRAILS8089() {
+    def testForeachGRAILS8089() {
+        when:
         def template='''<g:each in="${mockGrailsApplication.domainClasses.findAll{it.clazz=='we' && (it.clazz != 'no')}.sort({a,b->a.fullName.compareTo(b.fullName)})}"><option value="${it.fullName}"><g:message code="content.item.name.${it.fullName}" encodeAs="HTML"/></option></g:each>'''
         def result=applyTemplate(template, [mockGrailsApplication: [domainClasses: [[fullName: 'MyClass2', clazz:'we'], [fullName: 'MyClass1', clazz:'we'], [fullName: 'MyClass3', clazz:'no']] ]])
-        assertEquals '<option value="MyClass1">content.item.name.MyClass1</option><option value="MyClass2">content.item.name.MyClass2</option>', result
+
+        then:
+        result == '<option value="MyClass1">content.item.name.MyClass1</option><option value="MyClass2">content.item.name.MyClass2</option>'
     }
 
-    void testMultilineAttributeGRAILS8253() {
+    def testMultilineAttributeGRAILS8253() {
+        when:
         def template='''<html>
 <head>
 <title>Sample onclick issue page</title>
@@ -78,7 +98,9 @@ onclick="if (testForm.testField.value=='') { alert('Please enter some text.'); r
 </body>
 </html>'''
         def result=applyTemplate(template, [:])
-        assertEquals '''<html>
+
+        then:
+        result == '''<html>
 <head>
 <title>Sample onclick issue page</title>
 </head>
@@ -89,66 +111,96 @@ onclick="if (testForm.testField.value=='') { alert('Please enter some text.'); r
 is a test action description" class="buttons" onclick="if (testForm.testField.value==&#39;&#39;) { alert(&#39;Please enter some text.&#39;); return false; }" />
 </form>
 </body>
-</html>''', result
+</html>'''
     }
 
-    void testNestedExpression() {
+    def testNestedExpression() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='${[test: "${a} ${a}"]}'/>${b.test}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 
-    void testGstring() {
+    def testGstring() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='${"${a} ${a}"}'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 
-    void testGstring2() {
+    def testGstring2() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='${a} ${a}'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 
-    void testGstring3() {
+    def testGstring3() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='${a} hello'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 
-    void testGstring4() {
+    def testGstring4() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='hello ${a}'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 
-    void testGstring5() {
+    def testGstring5() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='hello ${a} hello'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello hello', result
+
+        then:
+        result == 'hello hello hello'
     }
 
-    void testNotGstring() {
+    def testNotGstring() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value="${'hello ${a} hello'}"/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello ${a} hello', result
+
+        then:
+        result == 'hello ${a} hello'
     }
 
-    void testNotGstring2() {
+    def testNotGstring2() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='${"hello \\${a} hello"}'/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello ${a} hello', result
+
+        then:
+        result == 'hello ${a} hello'
     }
 
-    void testNotGstring3() {
+    def testNotGstring3() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value="${a + '${'}"/>${b}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello${', result
+
+        then:
+        result == 'hello${'
     }
 
-    void testNestedExpressionInMap() {
+    def testNestedExpressionInMap() {
+        when:
         def template='''<g:set var="a" value="hello"/><g:set var="b" value='[test: "${a} ${a}"]'/>${b.test}'''
         def result = applyTemplate(template, [:])
-        assertEquals 'hello hello', result
+
+        then:
+        result == 'hello hello'
     }
 }

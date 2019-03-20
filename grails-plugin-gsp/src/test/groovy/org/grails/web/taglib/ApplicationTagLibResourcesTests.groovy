@@ -1,16 +1,20 @@
 package org.grails.web.taglib
 
+import grails.testing.spock.OnceBefore
+import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.springframework.context.ConfigurableApplicationContext
+import spock.lang.Specification
 
-class ApplicationTagLibResourcesTests extends AbstractGrailsTagTests {
+class ApplicationTagLibResourcesTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
+    @OnceBefore
     void onInitMockBeans() {
         ConfigurableApplicationContext applicationContext = grailsApplication.parentContext
         applicationContext.beanFactory.registerSingleton('grailsResourceProcessor', [something:'value'])
     }
 
-    def replaceMetaClass(Object o) {
+    private def replaceMetaClass(Object o) {
         def old = o.metaClass
 
         // Create a new EMC for the class and attach it.
@@ -21,12 +25,14 @@ class ApplicationTagLibResourcesTests extends AbstractGrailsTagTests {
         return old
     }
 
-    void testResourceTagDirOnlyWithResourcesHooks() {
+    def testResourceTagDirOnlyWithResourcesHooks() {
+        when:
         request.contextPath = '/test'
         def template = '${resource(dir:"jquery")}'
 
-        def taglib = appCtx.getBean(ApplicationTagLib.name)
+        def taglib = tagLib
         taglib.hasResourceProcessor = true
+
         def oldMC = replaceMetaClass(taglib)
 
         // Dummy r.resource impl
@@ -34,18 +40,21 @@ class ApplicationTagLibResourcesTests extends AbstractGrailsTagTests {
             resource: { attrs -> "WRONG"}
         ]
         taglib.metaClass.getR = { -> mockRes }
-        try {
-            assertOutputEquals '/test/jquery', template
-        } finally {
-            taglib.metaClass = oldMC
-        }
+        String output = applyTemplate(template)
+
+        then:
+        output == '/test/static/jquery'
+
+        cleanup:
+        taglib.metaClass = oldMC
     }
 
-    void testResourceTagDirAndFileWithResourcesHooks() {
+    def testResourceTagDirAndFileWithResourcesHooks() {
+        when:
         request.contextPath = '/test'
         def template = '${resource(dir:"jquery", file:"jqtest.js")}'
 
-        def taglib = appCtx.getBean(ApplicationTagLib.class.name)
+        def taglib = tagLib
         taglib.hasResourceProcessor = true
         def oldMC = replaceMetaClass(taglib)
 
@@ -54,10 +63,12 @@ class ApplicationTagLibResourcesTests extends AbstractGrailsTagTests {
             resource: { attrs -> "RESOURCES:${attrs.dir}/${attrs.file}" }
         ]
         taglib.metaClass.getR = { -> mockRes }
-        try {
-            assertOutputEquals 'RESOURCES:jquery/jqtest.js', template
-        } finally {
-            taglib.metaClass = oldMC
-        }
+        String output = applyTemplate(template)
+
+        then:
+        output == 'RESOURCES:jquery/jqtest.js'
+
+        cleanup:
+        taglib.metaClass = oldMC
     }
 }
