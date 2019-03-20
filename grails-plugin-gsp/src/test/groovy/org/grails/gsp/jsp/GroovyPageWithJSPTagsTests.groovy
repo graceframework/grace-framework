@@ -4,6 +4,8 @@ import grails.testing.spock.OnceBefore
 import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.web.pages.GroovyPagesServlet
+import org.springframework.context.MessageSource
+import org.springframework.web.servlet.support.JstlUtils
 import spock.lang.Specification
 import javax.servlet.http.HttpServletRequest
 import org.springframework.mock.web.MockHttpServletRequest
@@ -39,6 +41,7 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
     // test for GRAILS-4573
     def testIterativeTags() {
         when:
+        //JstlUtils.exposeLocalizationContext(request, grailsApplication.mainContext.getBean("messageSource", MessageSource))
         def template = '''
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
