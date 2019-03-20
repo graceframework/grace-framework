@@ -97,7 +97,7 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
                 jspTagLib = loadJspTagLib(getTldFromServletContext(location), uri)
             }
             if(jspTagLib) {
-                tagLibs[uri] = jspTagLib
+                tagLibs.put(uri,jspTagLib)
             }
         }
     }
