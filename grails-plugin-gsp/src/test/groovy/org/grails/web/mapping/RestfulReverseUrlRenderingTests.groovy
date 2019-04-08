@@ -1,42 +1,58 @@
 package org.grails.web.mapping
 
-import org.grails.web.taglib.AbstractGrailsTagTests
+import grails.artefact.Artefact
+import grails.testing.web.UrlMappingsUnitTest
+import spock.lang.Specification
 
 /**
  * @author Graeme Rocher
+ * @author rvanderwerf
  * @since 1.0
  */
-class RestfulReverseUrlRenderingTests extends AbstractGrailsTagTests {
+class RestfulReverseUrlRenderingTests extends Specification implements UrlMappingsUnitTest<RestfulReverseUrlMappings> {
 
-    protected void onSetUp() {
-        gcl.parseClass '''
-class UrlMappings {
-    static mappings = {
-    "/book" (controller: "book") { action = [GET: "create", POST: "save"] }
+
+    def testLinkTagRendering() {
+        when:
+        def template = '<g:link controller="restfulBook">create</g:link>'
+        String output = applyTemplate(template,[namespace:'g'])
+
+        then:
+        output == '<a href="/book">create</a>'
     }
-}'''
 
-        gcl.parseClass '''
-class BookController {
+    def testFormTagRendering() {
+        when:
+        def template = '<g:form controller="restfulBook" name="myForm" method="POST">save</g:form>'
+        String output = applyTemplate(template)
+
+        then:
+        output == '<form action="/book" method="post" name="myForm" id="myForm" >save</form>'
+    }
+
+
+    def testFormTagRenderGETRequest() {
+        when:
+        def template = '<g:form controller="restfulBook" name="myForm" method="GET">create</g:form>'
+        String output = applyTemplate(template)
+
+        then:
+        output == '<form action="/book" method="get" name="myForm" id="myForm" >create</form>'
+    }
+}
+
+@Artefact("UrlMappings")
+class RestfulReverseUrlMappings {
+    static mappings = {
+        "/book/" (controller: "restfulBook") {
+            action = [GET: "create", POST: "save"]
+        }
+
+    }
+}
+
+@Artefact("Controller")
+class RestfulBookController {
     def create = {}
     def save = {}
-}
-'''
-    }
-
-    void testLinkTagRendering() {
-        def template = '<g:link controller="book">create</g:link>'
-        assertOutputEquals '<a href="/book">create</a>', template
-    }
-
-    void testFormTagRendering() {
-        def template = '<g:form controller="book" name="myForm" method="POST">save</g:form>'
-        assertOutputEquals '<form action="/book" method="post" name="myForm" id="myForm" >save</form>', template
-    }
-
-
-    void testFormTagRenderGETRequest() {
-        def template = '<g:form controller="book" name="myForm" method="GET">create</g:form>'
-        assertOutputEquals '<form action="/book" method="get" name="myForm" id="myForm" >create</form>', template
-    }
 }

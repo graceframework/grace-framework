@@ -75,7 +75,7 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
                 patternResolver.getResources(tldResourcePattern).each { Resource resource ->
                     JspTagLib jspTagLib = loadJspTagLib(resource.getInputStream())
                     if(jspTagLib) {
-                        tagLibs[jspTagLib.URI] = jspTagLib
+                        tagLibs.put(jspTagLib.URI, jspTagLib)
                     }
                 }
             }
@@ -97,7 +97,7 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
                 jspTagLib = loadJspTagLib(getTldFromServletContext(location), uri)
             }
             if(jspTagLib) {
-                tagLibs[uri] = jspTagLib
+                tagLibs.put(uri,jspTagLib)
             }
         }
     }

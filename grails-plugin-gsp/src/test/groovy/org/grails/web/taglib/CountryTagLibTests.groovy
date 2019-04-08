@@ -12,41 +12,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* Copyright 2004-2005 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.web.taglib
 
+import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.plugins.web.taglib.CountryTagLib
+import org.grails.plugins.web.taglib.FormTagLib
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import spock.lang.Specification
 
-class CountryTagLibTests extends AbstractGrailsTagTests {
+class CountryTagLibTests extends Specification implements TagLibUnitTest<FormTagLib> {
 
-    void testFullCountryListWithSelection() {
+    def testFullCountryListWithSelection() {
+        when:
         def template = '<g:countrySelect name="foo" value="gbr" />'
 
         def result = applyTemplate(template, [:])
 
-        assertResultContains result, '<option value="gbr" selected="selected" >United Kingdom</option>'
+        then:
+        result.contains('<option value="gbr" selected="selected" >United Kingdom</option>')
 
-        CountryTagLib.ISO3166_3.each {
-            assertResultContains result, "<option value=\"${it.key}\""
-            assertResultContains result, ">${it.value.encodeAsHTML()}</option>"
+        CountryTagLib.ISO3166_3.every {
+            result.contains("<option value=\"${it.key}\"")
+            result.contains(">${it.value.encodeAsHTML()}</option>")
         }
     }
 
-    void testReducedCountryListWithSelection() {
+    def testReducedCountryListWithSelection() {
+        when:
         def template = '<g:countrySelect name="foo" value="usa" from="[\'gbr\', \'usa\', \'deu\']"/>'
         def result = applyTemplate(template, [:])
 
-        assertResultContains result, '<option value="usa" selected="selected" >United States</option>'
+        then:
+        result.contains('<option value="usa" selected="selected" >United States</option>')
 
-        ['gbr', 'usa', 'deu'].each {
+        ['gbr', 'usa', 'deu'].every {
             def value = CountryTagLib.ISO3166_3[it]
-            assertResultContains result, "<option value=\"${it}\""
-            assertResultContains result, ">${value.encodeAsHTML()}</option>"
+            result.contains("<option value=\"${it}\"")
+            result.contains(">${value.encodeAsHTML()}</option>")
         }
     }
 
-    void testCountryNamesWithValueMessagePrefix() {
+    def testCountryNamesWithValueMessagePrefix() {
         // Prepare the custom message source.
+        when:
         def msgPrefix = "country"
         def codeMap = [gbr: "Royaume Uni", usa: "Les Etats Unis", deu: "Allemagne"]
         codeMap.each { code, val ->
@@ -57,34 +79,38 @@ class CountryTagLibTests extends AbstractGrailsTagTests {
         def template = "<g:countrySelect name=\"foo\" valueMessagePrefix=\"${msgPrefix}\" value=\"usa\" from=\"['gbr', 'usa', 'deu']\"/>".toString()
         def result = applyTemplate(template, [:])
 
-        assertResultContains result, "<option value=\"usa\" selected=\"selected\" >${codeMap['usa']}</option>"
+        then:
+        result.contains("<option value=\"usa\" selected=\"selected\" >${codeMap['usa']}</option>")
 
-        codeMap.each { code, val ->
-            assertResultContains result, "<option value=\"${code}\""
-            assertResultContains result, ">${val}</option>"
+        codeMap.every { code, val ->
+            result.contains("<option value=\"${code}\"")
+            result.contains(">${val}</option>")
         }
     }
 
-    void testDefault() {
+    def testDefault() {
+
+        when:
         def template = '<g:countrySelect name="foo" default="deu" from="[\'gbr\', \'usa\', \'deu\']"/>'
         def result = applyTemplate(template, [:])
 
-        assertResultContains result, '<option value="deu" selected="selected" >Germany</option>'
+        then:
+        result.contains('<option value="deu" selected="selected" >Germany</option>')
 
-        ['gbr', 'usa', 'deu'].each {
+        ['gbr', 'usa', 'deu'].every {
             def value = CountryTagLib.ISO3166_3[it]
-            assertResultContains result, "<option value=\"${it}\""
-            assertResultContains result, ">${value.encodeAsHTML()}</option>"
+            result.contains("<option value=\"${it}\"")
+            result.contains(">${value.encodeAsHTML()}</option>")
         }
     }
 
-    void testCountryDisplay() {
+    def testCountryDisplay() {
+        when:
         def template = '<g:country code="deu"/>'
+        String output = applyTemplate(template)
 
-        assertOutputContains('Germany', template,[:])
+        then:
+        output.contains('Germany')
     }
 
-    void assertResultContains(result, expectedSubstring) {
-        assertTrue "Result does not contain expected string [$expectedSubstring]. Result was: ${result}", result.indexOf(expectedSubstring) > -1
-    }
 }
