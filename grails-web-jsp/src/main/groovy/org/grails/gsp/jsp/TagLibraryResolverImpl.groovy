@@ -48,8 +48,8 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
     ServletContext servletContext
     ClassLoader classLoader
     ResourceLoader resourceLoader
-    @Value('#{\'${grails.gsp.tldScanPattern:}\'?:\'${spring.gsp.tldScanPattern:}\'}')
-    String[] tldScanPatterns = [] as String[];
+    @Value('${grails.gsp.tldScanPattern:}')
+    String[] tldScanPatterns = [] as String[]
     volatile boolean initialized = false
 
     /**

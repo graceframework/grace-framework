@@ -1,6 +1,18 @@
 ext {
     isTravisBuild = System.getenv().get("TRAVIS") == 'true'
 }
+configurations.all {
+    resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
+        if (dependency.requested instanceof ModuleComponentSelector) {
+            if (group == 'org.grails' || group == 'org.grails.plugins') {
+                def targetProject = findProject(":${dependency.requested.module}")
+                if (targetProject != null) {
+                    dependency.useTarget targetProject
+                }
+            }
+        }
+    }
+}
 dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     compile project(":grails-web-gsp-taglib")
@@ -12,14 +24,14 @@ dependencies {
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
     
-    testCompile 'org.grails:grails-web-testing-support:2.0.0.BUILD-SNAPSHOT', {
+    testCompile 'org.grails:grails-web-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
     // testCompile 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
-    testCompile 'org.grails:grails-testing-support:2.0.0.BUILD-SNAPSHOT', {
+    testCompile 'org.grails:grails-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
-    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.BUILD-SNAPSHOT', {
+    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
 

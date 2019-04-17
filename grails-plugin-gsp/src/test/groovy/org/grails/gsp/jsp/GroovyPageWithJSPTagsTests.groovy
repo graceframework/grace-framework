@@ -2,6 +2,7 @@ package org.grails.gsp.jsp
 
 import grails.testing.spock.OnceBefore
 import grails.testing.web.taglib.TagLibUnitTest
+import grails.web.http.HttpHeaders
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.web.pages.GroovyPagesServlet
 import org.springframework.context.MessageSource
@@ -17,12 +18,15 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver
  */
 class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
-
-    static doWithConfig(c) {
+    static final Closure JSP_CONFIG = { config ->
+        config.grails.gsp.tldScanPattern = 'classpath*:/META-INF/spring*.tld,classpath*:/META-INF/fmt.tld,classpath*:/META-INF/c.tld,classpath*:/META-INF/core.tld,classpath*:/META-INF/c-1_0-rt.tld'
         File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
         tempdir.mkdir()
-        c.grails.views.gsp.keepgenerateddir="'${tempdir.absolutePath.replaceAll('\\\\', '/')}'"
+        config.grails.views.gsp.keepgenerateddir="'${tempdir.absolutePath.replaceAll('\\\\', '/')}'"
     }
+
+    @Override
+    Closure doWithConfig() { JSP_CONFIG }
 
     @OnceBefore
     void onInit() {
@@ -33,6 +37,9 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
         webRequest.getCurrentRequest().setAttribute(GroovyPagesServlet.SERVLET_INSTANCE, new GroovyPagesServlet())
     }
 
+    def setup() {
+        getRequest().addHeader(HttpHeaders.ACCEPT_LANGUAGE, Locale.ENGLISH)
+    }
 
     def cleanupSpec() {
         GroovySystem.metaClassRegistry.removeMetaClass TagLibraryResolverImpl
