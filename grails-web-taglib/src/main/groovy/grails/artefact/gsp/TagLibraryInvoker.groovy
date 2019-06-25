@@ -83,8 +83,10 @@ trait TagLibraryInvoker extends WebAttributes{
                 }
 
                 if (tagLibrary) {
-                    MetaClass thisMc = GrailsMetaClassUtils.getMetaClass(this)
-                    TagLibraryMetaUtils.registerMethodMissingForTags(thisMc, lookup, usedNamespace, methodName)
+                    if (!developmentMode) {
+                        MetaClass thisMc = GrailsMetaClassUtils.getMetaClass(this)
+                        TagLibraryMetaUtils.registerMethodMissingForTags(thisMc, lookup, usedNamespace, methodName)
+                    }
                     return tagLibrary.invokeMethod(methodName, args)
                 }
             }
