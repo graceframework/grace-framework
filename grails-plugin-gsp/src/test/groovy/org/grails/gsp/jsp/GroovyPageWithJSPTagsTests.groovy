@@ -7,7 +7,7 @@ import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.web.pages.GroovyPagesServlet
 import org.springframework.context.MessageSource
 import org.springframework.web.servlet.support.JstlUtils
-import spock.lang.Specification
+import spock.lang.*
 import javax.servlet.http.HttpServletRequest
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
@@ -20,9 +20,6 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
 
     static final Closure JSP_CONFIG = { config ->
         config.grails.gsp.tldScanPattern = 'classpath*:/META-INF/spring*.tld,classpath*:/META-INF/fmt.tld,classpath*:/META-INF/c.tld,classpath*:/META-INF/core.tld,classpath*:/META-INF/c-1_0-rt.tld'
-        File tempdir = new File(System.getProperty("java.io.tmpdir"), "gspgen")
-        tempdir.mkdir()
-        config.grails.views.gsp.keepgenerateddir="'${tempdir.absolutePath.replaceAll('\\\\', '/')}'"
     }
 
     @Override
@@ -64,6 +61,7 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
         output.contains("1 . 1<br/>2 . 2<br/>3 . 3<br/>")
     }
 
+    @PendingFeature("until we upgrade to next version of test support")
     def testGRAILS3797() {
 
         when:
