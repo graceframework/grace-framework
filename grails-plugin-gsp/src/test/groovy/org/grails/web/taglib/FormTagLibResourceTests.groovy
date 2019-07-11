@@ -2,8 +2,9 @@ package org.grails.web.taglib
 
 import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
-import spock.lang.Specification
+import spock.lang.*
 
+@IgnoreIf({System.getenv('TRAVIS')})
 class FormTagLibResourceTests extends Specification implements UrlMappingsUnitTest<TestFormTagUrlMappings> {
 
 
