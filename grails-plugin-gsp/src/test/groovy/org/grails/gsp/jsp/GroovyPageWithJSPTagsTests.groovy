@@ -61,7 +61,7 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
         output.contains("1 . 1<br/>2 . 2<br/>3 . 3<br/>")
     }
 
-    @PendingFeature("until we upgrade to next version of test support")
+    @PendingFeature(reason="until we upgrade to next version of test support")
     def testGRAILS3797() {
 
         when:
