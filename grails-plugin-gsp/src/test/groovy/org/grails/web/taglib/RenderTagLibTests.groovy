@@ -26,10 +26,10 @@ import org.grails.buffer.FastStringWriter
 import org.grails.core.io.MockStringResourceLoader
 import org.grails.gsp.GroovyPageBinding
 import org.grails.plugins.web.taglib.RenderTagLib
+import org.grails.taglib.GrailsTagException
 import org.grails.web.sitemesh.FactoryHolder
 import org.grails.web.sitemesh.GSPSitemeshPage
 import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper
-import org.grails.taglib.GrailsTagException
 import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import spock.lang.Specification
@@ -159,6 +159,45 @@ class RenderTagLibTests extends Specification implements UrlMappingsUnitTest<Ren
         result.contains('<a href="/book/list?offset=16&amp;max=2" class="step">9</a><a href="/book/list?offset=18&amp;max=2" class="step">10</a>')
     }
 
+    protected void onInit() {
+        if (name in ['testPaginateMappingAndAction', 'testPaginateNamespace']) {
+            def mappingClass = gcl.parseClass('''
+    class TestUrlMappings {
+        static mappings = {
+            name claimTab: "/claim/$id/$action" {
+                controller = 'Claim'
+                constraints { id(matches: /\\d+/) }
+            }
+            "/userAdmin/$id?" {
+                controller = 'admin'
+                namespace = 'users'
+            }
+            "/reportAdmin/$id?" {
+                controller = 'admin'
+                namespace = 'reports'
+            }
+        }
+    }
+            ''')
+
+            grailsApplication.addArtefact(UrlMappingsArtefactHandler.TYPE, mappingClass)
+        } else if (name in ['testSortableColumnNamespaceNull', 'testSortableColumnNamespaceNullWithIndexAction', 'testSortableColumnWithCustomNamespace', 'testSortableColumnWithCustomNamespaceFromRequest']) {
+            def mappingClass = gcl.parseClass('''
+    class TestUrlMappings {
+        static mappings = {
+            "/custompath/mockcontroller/$action?/$id?" {
+                controller = 'MockController'
+            }
+
+            "/custompathCustomNamespace/mockcontroller/$action?/$id?" {
+                controller = 'MockController'
+                namespace = 'custom'
+            }
+        }
+    }
+            ''')
+        }
+    }
 
     def setupSpec() {
 
@@ -181,6 +220,36 @@ class RenderTagLibTests extends Specification implements UrlMappingsUnitTest<Ren
 
         template = '<g:paginate next="Forward" prev="Back" maxsteps="8" max="10" id="1" total="12" namespace="reports" controller="admin" action="index"/>'
         assertOutputEquals '<span class="currentStep">1</span><a href="/reportAdmin/1?offset=10&amp;max=10" class="step">2</a><a href="/reportAdmin/1?offset=10&amp;max=10" class="nextLink">Forward</a>', template
+    }
+
+    void testSortableColumnNamespaceNull() {
+        webRequest.controllerName = "MockController"
+
+        def template = '<g:sortableColumn property="id" title="ID" id="1" />'
+        assertOutputEquals '<th id="1" class="sortable" ><a href="/custompath/mockcontroller/list?sort=id&amp;order=asc">ID</a></th>', template
+    }
+
+    void testSortableColumnNamespaceNullWithIndexAction() {
+        webRequest.controllerName = "MockController"
+        webRequest.actionName = "index"
+
+        def template = '<g:sortableColumn property="id" title="ID" id="1" />'
+        assertOutputEquals '<th id="1" class="sortable" ><a href="/custompath/mockcontroller/index?sort=id&amp;order=asc">ID</a></th>', template
+    }
+
+    void testSortableColumnWithCustomNamespace() {
+        webRequest.controllerName = "MockController"
+
+        def template = '<g:sortableColumn property="id" title="ID" id="1" namespace="custom"/>'
+        assertOutputEquals '<th id="1" class="sortable" ><a href="/custompathCustomNamespace/mockcontroller/list?sort=id&amp;order=asc">ID</a></th>', template
+    }
+
+    void testSortableColumnWithCustomNamespaceFromRequest() {
+        webRequest.controllerName = "MockController"
+        webRequest.controllerNamespace = "custom"
+
+        def template = '<g:sortableColumn property="id" title="ID" id="1" />'
+        assertOutputEquals '<th id="1" class="sortable" ><a href="/custompathCustomNamespace/mockcontroller/list?sort=id&amp;order=asc">ID</a></th>', template
     }
 
     void testPageProperty() {
