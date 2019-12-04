@@ -185,6 +185,11 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
     Closure checkBox = { attrs ->
         def value = attrs.remove('value')
         def name = attrs.remove('name')
+
+        if(!name){
+            throwTagError("Tag [checkBox] missing required attribute [name]")
+        }
+
         booleanToAttribute(attrs, 'disabled')
         booleanToAttribute(attrs, 'readonly')
 
