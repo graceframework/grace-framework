@@ -18,3 +18,10 @@ The asset-pipeline allows you to define your javascript or css requirements righ
 Take a look at the http://bertramdev.github.io/asset-pipeline[documentation] for the asset-pipeline to get started.
 
 If you do not want to use the Asset-Pipeline plugin, you can serve the static assets from directories `src/main/resources/public` or `src/main/webapp`, but the latter one only gets included in WAR packaging but not in JAR packaging.
+
+For example, if you had a file stored at `/src/main/resources/public/images/example.png` and your Grails application was running on port 8080, then you could access the file by navigating to http://localhost:8080/static/images/example.jpg[http://localhost:8080/static/images/example.jpg].
+
+==== Cache Configuration for Static Resources
+
+By default, files under `src/main/resources/public` or `src/main/webapp` are served with an HTTP response header of `Cache-Control: no-store`.
+To have them be cached by the browser, you can set the configuration setting `grails.resources.cachePeriod: number` in `application.yml` so that they are served with a response header of `Cache-Control: max-age=number` indicating to the browser how many seconds the file should be considered fresh.
