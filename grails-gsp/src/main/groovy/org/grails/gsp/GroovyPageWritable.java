@@ -96,8 +96,6 @@ public class GroovyPageWritable implements Writable {
             writeGroovySourceToResponse(metaInfo, out);
         }
         else {
-            boolean debugTemplates = shouldDebugTemplates(outputContext);
-
             // Set it to HTML by default
             if (metaInfo.getCompilationException()!=null) {
                 throw metaInfo.getCompilationException();
@@ -143,21 +141,6 @@ public class GroovyPageWritable implements Writable {
 
             page.initRun(out, outputContext, metaInfo);
 
-            int debugId = 0;
-            long debugStartTimeMs = 0;
-            if (debugTemplates) {
-                debugId = incrementAndGetDebugTemplatesIdCounter(outputContext);
-                out.write("<!-- GSP #");
-                out.write(String.valueOf(debugId));
-                out.write(" START template: ");
-                out.write(page.getGroovyPageFileName());
-                out.write(" precompiled: ");
-                out.write(String.valueOf(metaInfo.isPrecompiledMode()));
-                out.write(" lastmodified: ");
-                out.write(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(metaInfo.getLastModified())));
-                out.write(" -->");
-                debugStartTimeMs=System.currentTimeMillis();
-            }
             try {
                 page.run();
             }
@@ -171,15 +154,6 @@ public class GroovyPageWritable implements Writable {
                     }
                 }
             }
-            if (debugTemplates) {
-                out.write("<!-- GSP #");
-                out.write(String.valueOf(debugId));
-                out.write(" END template: ");
-                out.write(page.getGroovyPageFileName());
-                out.write(" rendering time: ");
-                out.write(String.valueOf(System.currentTimeMillis() - debugStartTimeMs));
-                out.write(" ms -->");
-            }
         }
         return out;
     }
@@ -187,10 +161,6 @@ public class GroovyPageWritable implements Writable {
     private int incrementAndGetDebugTemplatesIdCounter(OutputContext outputContext) {
         //debugTemplatesIdCounter.incrementAndGet()
         return 0;
-    }
-
-    private boolean shouldDebugTemplates(OutputContext outputContext) {
-        return false;
     }
 
     private boolean shouldShowGroovySource(OutputContext outputContext) {
