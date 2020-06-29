@@ -683,14 +683,18 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         booleanToAttribute(attrs, 'disabled')
         booleanToAttribute(attrs, 'readonly')
-
+        out.println("<label style=\"display:none;\" for=\"${name}_day\" id=\"label_${name}_day\">Day</label>")
+        out.println("<label style=\"display:none;\" for=\"${name}_month\" id=\"label_${name}_month\">Month</label>")
+        out.println("<label style=\"display:none;\" for=\"${name}_year\" id=\"label_${name}_year\">Year</label>")
+        out.println("<label style=\"display:none;\" for=\"${name}_hour\" id=\"label_${name}_hour\">Hour</label>")
+        out.println("<label style=\"display:none;\" for=\"${name}_minute\" id=\"label_${name}_minute\">Minute</label>")
         // Change this hidden to use requestDataValueProcessor
         def dateStructValue = processFormFieldValueIfNecessary("${name}","date.struct","hidden")
         out.println "<input type=\"hidden\" name=\"${name}\" value=\"${dateStructValue}\" />"
 
         // create day select
         if (precision >= PRECISION_RANKINGS["day"]) {
-            out.println "<select name=\"${name}_day\" id=\"${id}_day\" aria-labelledby=\"${name}\""
+            out.println "<select name=\"${name}_day\" id=\"${id}_day\" aria-labelledby=\"${name} ${name}_day\""
             if (attrs.disabled) {
                 out << ' disabled="disabled"'
             }
@@ -714,7 +718,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         // create month select
         if (precision >= PRECISION_RANKINGS["month"]) {
-            out.println "<select name=\"${name}_month\" id=\"${id}_month\" aria-labelledby=\"${name}\""
+            out.println "<select name=\"${name}_month\" id=\"${id}_month\" aria-labelledby=\"${name} ${name}_month\""
             if (attrs.disabled) {
                 out << ' disabled="disabled"'
             }
@@ -740,7 +744,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         // create year select
         if (precision >= PRECISION_RANKINGS["year"]) {
-            out.println "<select name=\"${name}_year\" id=\"${id}_year\" aria-labelledby=\"${name}\""
+            out.println "<select name=\"${name}_year\" id=\"${id}_year\" aria-labelledby=\"${name} ${name}_year\""
             if (attrs.disabled) {
                 out << ' disabled="disabled"'
             }
@@ -764,7 +768,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         // do hour select
         if (precision >= PRECISION_RANKINGS["hour"]) {
-            out.println "<select name=\"${name}_hour\" id=\"${id}_hour\" aria-labelledby=\"${name}\""
+            out.println "<select name=\"${name}_hour\" id=\"${id}_hour\" aria-labelledby=\"${name} ${name}_hour\""
             if (attrs.disabled) {
                 out << ' disabled="disabled"'
             }
@@ -795,7 +799,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         // do minute select
         if (precision >= PRECISION_RANKINGS["minute"]) {
-            out.println "<select name=\"${name}_minute\" id=\"${id}_minute\" aria-labelledby=\"${name}\""
+            out.println "<select name=\"${name}_minute\" id=\"${id}_minute\" aria-labelledby=\"${name} ${name}_minute\""
             if (attrs.disabled) {
                 out << 'disabled="disabled"'
             }
