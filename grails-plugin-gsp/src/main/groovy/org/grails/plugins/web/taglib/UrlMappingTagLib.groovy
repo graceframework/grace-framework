@@ -99,11 +99,9 @@ class UrlMappingTagLib implements TagLibrary{
         def locale = RequestContextUtils.getLocale(request)
 
         def total = attrs.int('total') ?: 0
-        def offset = params.int('offset') ?: 0
+        def offset = attrs.int('offset') ?: params.int('offset') ?: 0
         def max = params.int('max')
         def maxsteps = (attrs.int('maxsteps') ?: 10)
-
-        if (!offset) offset = (attrs.int('offset') ?: 0)
         if (!max) max = (attrs.int('max') ?: 10)
 
         Map linkParams = [:]
