@@ -3,6 +3,7 @@ package org.grails.plugins.web.taglib
 import grails.artefact.TagLibrary
 import grails.gsp.TagLib
 import grails.util.TypeConvertingMap
+import grails.web.mapping.LinkGenerator
 import grails.web.mapping.UrlMapping
 import groovy.transform.CompileStatic
 import org.grails.encoder.CodecLookup
@@ -12,6 +13,7 @@ import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.web.mapping.ForwardUrlMappingInfo
 import org.grails.web.mapping.UrlMappingUtils
 import org.grails.web.util.GrailsApplicationAttributes
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.servlet.support.RequestContextUtils
 
 /**
@@ -25,6 +27,9 @@ import org.springframework.web.servlet.support.RequestContextUtils
 class UrlMappingTagLib implements TagLibrary{
 
     CodecLookup codecLookup
+
+    @Autowired
+    LinkGenerator linkGenerator
 
     /**
      * Includes another controller/action within the current response.<br/>
@@ -60,7 +65,7 @@ class UrlMappingTagLib implements TagLibrary{
             if (attrs.plugin != null) {
                 mapping.pluginName = attrs.plugin as String
             }
-            out << UrlMappingUtils.includeForUrlMappingInfo(request, response, mapping, (Map)(attrs.model ?: [:]))?.content
+            out << UrlMappingUtils.includeForUrlMappingInfo(request, response, mapping, (Map)(attrs.model ?: [:]), linkGenerator)?.content
         }
     }
 
