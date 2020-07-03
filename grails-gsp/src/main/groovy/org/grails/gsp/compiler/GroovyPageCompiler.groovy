@@ -70,7 +70,7 @@ class GroovyPageCompiler {
     */
     Map compile() {
         if (srcFiles && targetDir && viewsDir) {
-            LOG.debug "Compiling ${srcFiles.size()} GSP files using GroovyPageCompiler"
+            // LOG.debug "Compiling ${srcFiles.size()} GSP files using GroovyPageCompiler"
 
             if(configs) {
                 CodeGenConfig codeGenConfig = new CodeGenConfig()
@@ -144,7 +144,7 @@ class GroovyPageCompiler {
 
         // compile check
         if (gspfile.exists() && (!classFile.exists() || gspfile.lastModified() > classFile.lastModified())) {
-            LOG.debug("Compiling gsp ${gspfile}...")
+            // LOG.debug("Compiling gsp ${gspfile}...")
 
             File gspgroovyfile = new File(new File(generatedGroovyPagesDirectory, packageDir), className + ".groovy")
             gspgroovyfile.getParentFile().mkdirs()

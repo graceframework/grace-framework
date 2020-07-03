@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenLocal()
+        jcenter()
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
@@ -14,6 +15,7 @@ buildscript {
 
 repositories {
     mavenLocal()
+    jcenter()
     maven { url "https://repo.grails.org/grails/core" }
 }
 version project.projectVersion
