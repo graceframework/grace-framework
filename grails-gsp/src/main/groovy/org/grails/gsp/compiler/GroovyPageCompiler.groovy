@@ -104,18 +104,26 @@ class GroovyPageCompiler {
             CompletionService completionService = new ExecutorCompletionService(threadPool);
             List<Future<Map>> futures = []
             try {
-                
-                for(int index = 0; index < srcFiles.size(); index++) {        
-                    File gsp = srcFiles[index]
+                Integer collationLevel = Runtime.getRuntime().availableProcessors()*2
+                if(srcFiles.size() < collationLevel) {
+                    collationLevel = 1
+                }
+                def collatedSrcFiles = srcFiles.collate(collationLevel)
+                for(int index = 0; index < collatedSrcFiles.size(); index++) {        
+                    def gspFiles = collatedSrcFiles[index]
+                    
                     futures << completionService.submit({ ->
-                        try {
-                            Map results = compileGSP(viewsDir, gsp, viewPrefix, packagePrefix)    
-                            return results
-                        } catch(Exception ex) {
-                            LOG.error("Error Compiling GSP File: ${gsp.name} - ${ex.message}")
-                            throw ex
+                        def results = [:]
+                        for(int gspIndex=0;gspIndex < gspFiles.size();gspIndex++) {
+                            File gsp = gspFiles[gspIndex]
+                            try {
+                                compileGSP(viewsDir, gsp, viewPrefix, packagePrefix, results)    
+                            } catch(Exception ex) {
+                                LOG.error("Error Compiling GSP File: ${gsp.name} - ${ex.message}")
+                                throw ex
+                            }
                         }
-                        
+                        return results 
                     } as Callable)
                 }
 
@@ -164,7 +172,7 @@ class GroovyPageCompiler {
      * @param packagePrefix The package prefix to use which allows scoping for different applications and plugins
      *
      */
-    protected Map compileGSP(File viewsDir, File gspfile, String viewPrefix, String packagePrefix) {
+    protected Map compileGSP(File viewsDir, File gspfile, String viewPrefix, String packagePrefix, Map compileGSPResults) {
         String relPath = relativePath(viewsDir, gspfile)
         String viewuri = viewPrefix + relPath
 
@@ -178,7 +186,6 @@ class GroovyPageCompiler {
             packageDir += generateJavaName(relPackagePath)
         }
         String className = generateJavaName(packageDir.replace('/','_'))
-        Map compileGSPResults = [:]
         className += generateJavaName(gspfile.name)
         // using default package because of GRAILS-5022
         packageDir = ''
