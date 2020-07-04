@@ -80,29 +80,6 @@ public class GroovyPageCompilerForkTask {
         }
     }
 
-    // void compile(Iterable<File> sources) {
-    //     configuration.setClasspathList(classpath)
-    //     String pathToSourceDir = sourceDir.canonicalPath
-    //     for(File source in sources) {
-    //         configureCompiler()
-    //         CompilationUnit unit = new CompilationUnit(configuration)
-    //         String pathToSource = source.canonicalPath
-    //         String path = pathToSource - pathToSourceDir
-    //         String templateName = GenericGroovyTemplateResolver.resolveTemplateName(
-    //                 packageName, path
-    //         )
-    //         unit.addSource(new SourceUnit(
-    //                 templateName,
-    //                 new FileReaderSource(source, configuration),
-    //                 configuration,
-    //                 unit.classLoader,
-    //                 unit.errorCollector
-    //         ))
-    //         unit.compile()
-    //     }
-
-    // }
-
     void compile(List<File> sources) {
     	configureCompiler()
     	compiler.srcFiles = sources

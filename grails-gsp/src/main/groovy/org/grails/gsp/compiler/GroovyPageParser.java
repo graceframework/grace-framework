@@ -227,9 +227,6 @@ public class GroovyPageParser implements Tokens {
         Map<String, String> directives = parseDirectives(gspSource);
 
         if (isSitemeshPreprocessingEnabled(directives.get(SITEMESH_PREPROCESS_DIRECTIVE))) {
-            if (LOG.isDebugEnabled()) {
-                // LOG.debug("Preprocessing " + uri + " for sitemesh. Replacing head, title, meta and body elements with sitemesh:capture*.");
-            }
             // GSP preprocessing for direct sitemesh integration: replace head -> g:captureHead, title -> g:captureTitle, meta -> g:captureMeta, body -> g:captureBody
             gspSource = sitemeshPreprocessor.addGspSitemeshCapturing(gspSource);
             sitemeshPreprocessMode=true;
@@ -374,16 +371,6 @@ public class GroovyPageParser implements Tokens {
         Writer target = streamBuffer.getWriter();
         try {
             generateGsp(target, false);
-
-            if (LOG.isDebugEnabled()) {
-                if (keepGeneratedFile != null) {
-                    // LOG.debug("Compiled GSP into Groovy code. Source is in " + keepGeneratedFile);
-                }
-                else {
-                    // LOG.debug("Configure " + CONFIG_PROPERTY_GSP_KEEPGENERATED_DIR +
-                            // " property to view generated source.");
-                }
-            }
             return byteOutputBuffer.getInputStream();
         }
         finally {
@@ -460,8 +447,6 @@ public class GroovyPageParser implements Tokens {
             return;
         }
 
-        // LOG.debug("parse: declare");
-
         out.println();
         write(scan.getToken().trim(), gsp);
         out.println();
@@ -472,8 +457,6 @@ public class GroovyPageParser implements Tokens {
         if (finalPass) {
             return;
         }
-
-        // LOG.debug("parse: direct");
 
         String text = scan.getToken();
         text = text.trim();
@@ -487,7 +470,6 @@ public class GroovyPageParser implements Tokens {
     private void directPage(String text) {
 
         text = text.trim();
-        // LOG.debug("directPage(" + text + ')');
         Matcher mat = PAGE_DIRECTIVE_PATTERN.matcher(text);
         Boolean compileStaticModeSetting = compileStaticMode;
         while (mat.find()) {
@@ -565,16 +547,12 @@ public class GroovyPageParser implements Tokens {
             return;
         }
 
-        // LOG.debug("parse: expr");
-
         String text = scan.getToken().trim();
         out.printlnToResponse(text);
     }
 
     private void expr() {
         if (!finalPass) return;
-
-        // LOG.debug("parse: expr");
 
         String text = scan.getToken().trim();
         text = getExpressionText(text);
@@ -673,8 +651,6 @@ public class GroovyPageParser implements Tokens {
 
     private void html() {
         if (!finalPass) return;
-
-        // LOG.debug("parse: html");
 
         String text = scan.getToken();
         if (text.length() == 0) {
@@ -795,8 +771,6 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void page() {
-
-        // LOG.debug("parse: page");
 
         if (finalPass) {
             out.println();
@@ -1315,7 +1289,6 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void pageImport(String value) {
-        // LOG.debug("pageImport(" + value + ')');
         String[] imports = Pattern.compile(";").split(value.subSequence(0, value.length()));
         for (int ix = 0; ix < imports.length; ix++) {
             out.print("import ");
@@ -1338,8 +1311,6 @@ public class GroovyPageParser implements Tokens {
     private void script(boolean gsp) {
         flushTagBuffering();
         if (!finalPass) return;
-
-        // LOG.debug("parse: script");
 
         out.println();
         write(scan.getToken().trim(), gsp);
