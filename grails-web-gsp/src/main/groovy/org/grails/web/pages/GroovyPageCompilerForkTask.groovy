@@ -23,13 +23,20 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.codehaus.groovy.control.io.FileReaderSource
-
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.ExecutorCompletionService
+import java.util.concurrent.CompletionService
+import groovy.transform.CompileStatic
 /**
  * A Forked Compiler Task for use (typically by Gradle)
  *
  * @author David Estes
  */
 
+@CompileStatic
 public class GroovyPageCompilerForkTask {
 	@Delegate CompilerConfiguration configuration = new CompilerConfiguration()
 
@@ -40,7 +47,6 @@ public class GroovyPageCompilerForkTask {
     String serverpath
     String encoding
     String targetCompatibility
-    GroovyPageCompiler compiler
 
     GroovyPageCompilerForkTask(File sourceDir, File destDir, File tmpdir) {
         this.tmpdir = tmpdir
@@ -49,8 +55,8 @@ public class GroovyPageCompilerForkTask {
         
     }
 
-    void configureCompiler() {
-    	compiler = new GroovyPageCompiler()
+    GroovyPageCompiler createPageCompiler() {
+    	GroovyPageCompiler compiler = new GroovyPageCompiler()
     	CompilerConfiguration config = new CompilerConfiguration()
         if (classpath) {
             config.classpath = classpath.toString()
@@ -78,11 +84,12 @@ public class GroovyPageCompilerForkTask {
         if (encoding) {
             compiler.encoding = encoding
         }
+        return compiler
     }
 
     void compile(List<File> sources) {
-    	configureCompiler()
-    	compiler.srcFiles = sources
+        GroovyPageCompiler compiler = createPageCompiler()
+        compiler.srcFiles = sources
         compiler.compile()
     }
 
@@ -108,7 +115,7 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String packageName = args[4].trim()
         String serverpath = args[5]
         File configFile = new File(args[6])
-        String encoding = new File(args[7])
+        String encoding = args[7] ?: 'UTF-8'
 
 
         // configuration.readConfiguration(configFile)
