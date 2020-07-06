@@ -65,6 +65,9 @@ public class GroovyPageParser implements Tokens {
 
     private static final Pattern PRESCAN_PAGE_DIRECTIVE_PATTERN = Pattern.compile("<%@\\s*(?!" + TAGLIB_DIRECTIVE + " )(.*?)\\s*%>", Pattern.DOTALL);
     private static final Pattern PRESCAN_COMMENT_PATTERN = Pattern.compile("<%--.*?%>", Pattern.DOTALL);
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
+    private static final Pattern NON_WHITESPACE_PATTERN = Pattern.compile("\\S");
+    private static final Pattern IMPORT_SEMICOLON_PATTERN = Pattern.compile(";");
 
     public static final String CONSTANT_NAME_JSP_TAGS = "JSP_TAGS";
     public static final String CONSTANT_NAME_CONTENT_TYPE = "CONTENT_TYPE";
@@ -649,6 +652,8 @@ public class GroovyPageParser implements Tokens {
         }
     }
 
+
+
     private void html() {
         if (!finalPass) return;
 
@@ -659,7 +664,7 @@ public class GroovyPageParser implements Tokens {
 
         // If we detect it is all whitespace, we need to keep it for later
         // If it is not whitespace, we need to flush any whitespace we do have
-        boolean contentIsWhitespace = !Pattern.compile("\\S").matcher(text).find();
+        boolean contentIsWhitespace = !NON_WHITESPACE_PATTERN.matcher(text).find();
         if (!contentIsWhitespace && currentlyBufferingWhitespace) {
             flushBufferedWhiteSpace();
         }
@@ -1116,7 +1121,7 @@ public class GroovyPageParser implements Tokens {
         String tagName;
         Map attrs = new LinkedHashMap();
 
-        Matcher m=Pattern.compile("\\s").matcher(text);
+        Matcher m=WHITESPACE_PATTERN.matcher(text);
 
         if (m.find()) { // ignores carriage returns and new lines
             tagName = text.substring(0, m.start());
@@ -1289,7 +1294,7 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void pageImport(String value) {
-        String[] imports = Pattern.compile(";").split(value.subSequence(0, value.length()));
+        String[] imports = IMPORT_SEMICOLON_PATTERN.split(value.subSequence(0, value.length()));
         for (int ix = 0; ix < imports.length; ix++) {
             out.print("import ");
             out.print(imports[ix]);
