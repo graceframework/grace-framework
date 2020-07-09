@@ -65,6 +65,9 @@ public class GroovyPageParser implements Tokens {
 
     private static final Pattern PRESCAN_PAGE_DIRECTIVE_PATTERN = Pattern.compile("<%@\\s*(?!" + TAGLIB_DIRECTIVE + " )(.*?)\\s*%>", Pattern.DOTALL);
     private static final Pattern PRESCAN_COMMENT_PATTERN = Pattern.compile("<%--.*?%>", Pattern.DOTALL);
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
+    private static final Pattern NON_WHITESPACE_PATTERN = Pattern.compile("\\S");
+    private static final Pattern IMPORT_SEMICOLON_PATTERN = Pattern.compile(";");
 
     public static final String CONSTANT_NAME_JSP_TAGS = "JSP_TAGS";
     public static final String CONSTANT_NAME_CONTENT_TYPE = "CONTENT_TYPE";
@@ -227,9 +230,6 @@ public class GroovyPageParser implements Tokens {
         Map<String, String> directives = parseDirectives(gspSource);
 
         if (isSitemeshPreprocessingEnabled(directives.get(SITEMESH_PREPROCESS_DIRECTIVE))) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Preprocessing " + uri + " for sitemesh. Replacing head, title, meta and body elements with sitemesh:capture*.");
-            }
             // GSP preprocessing for direct sitemesh integration: replace head -> g:captureHead, title -> g:captureTitle, meta -> g:captureMeta, body -> g:captureBody
             gspSource = sitemeshPreprocessor.addGspSitemeshCapturing(gspSource);
             sitemeshPreprocessMode=true;
@@ -374,16 +374,6 @@ public class GroovyPageParser implements Tokens {
         Writer target = streamBuffer.getWriter();
         try {
             generateGsp(target, false);
-
-            if (LOG.isDebugEnabled()) {
-                if (keepGeneratedFile != null) {
-                    LOG.debug("Compiled GSP into Groovy code. Source is in " + keepGeneratedFile);
-                }
-                else {
-                    LOG.debug("Configure " + CONFIG_PROPERTY_GSP_KEEPGENERATED_DIR +
-                            " property to view generated source.");
-                }
-            }
             return byteOutputBuffer.getInputStream();
         }
         finally {
@@ -460,8 +450,6 @@ public class GroovyPageParser implements Tokens {
             return;
         }
 
-        LOG.debug("parse: declare");
-
         out.println();
         write(scan.getToken().trim(), gsp);
         out.println();
@@ -472,8 +460,6 @@ public class GroovyPageParser implements Tokens {
         if (finalPass) {
             return;
         }
-
-        LOG.debug("parse: direct");
 
         String text = scan.getToken();
         text = text.trim();
@@ -487,7 +473,6 @@ public class GroovyPageParser implements Tokens {
     private void directPage(String text) {
 
         text = text.trim();
-        // LOG.debug("directPage(" + text + ')');
         Matcher mat = PAGE_DIRECTIVE_PATTERN.matcher(text);
         Boolean compileStaticModeSetting = compileStaticMode;
         while (mat.find()) {
@@ -565,16 +550,12 @@ public class GroovyPageParser implements Tokens {
             return;
         }
 
-        LOG.debug("parse: expr");
-
         String text = scan.getToken().trim();
         out.printlnToResponse(text);
     }
 
     private void expr() {
         if (!finalPass) return;
-
-        LOG.debug("parse: expr");
 
         String text = scan.getToken().trim();
         text = getExpressionText(text);
@@ -671,10 +652,10 @@ public class GroovyPageParser implements Tokens {
         }
     }
 
+
+
     private void html() {
         if (!finalPass) return;
-
-        LOG.debug("parse: html");
 
         String text = scan.getToken();
         if (text.length() == 0) {
@@ -683,7 +664,7 @@ public class GroovyPageParser implements Tokens {
 
         // If we detect it is all whitespace, we need to keep it for later
         // If it is not whitespace, we need to flush any whitespace we do have
-        boolean contentIsWhitespace = !Pattern.compile("\\S").matcher(text).find();
+        boolean contentIsWhitespace = !NON_WHITESPACE_PATTERN.matcher(text).find();
         if (!contentIsWhitespace && currentlyBufferingWhitespace) {
             flushBufferedWhiteSpace();
         }
@@ -795,8 +776,6 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void page() {
-
-        LOG.debug("parse: page");
 
         if (finalPass) {
             out.println();
@@ -1142,7 +1121,7 @@ public class GroovyPageParser implements Tokens {
         String tagName;
         Map attrs = new LinkedHashMap();
 
-        Matcher m=Pattern.compile("\\s").matcher(text);
+        Matcher m=WHITESPACE_PATTERN.matcher(text);
 
         if (m.find()) { // ignores carriage returns and new lines
             tagName = text.substring(0, m.start());
@@ -1315,8 +1294,7 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void pageImport(String value) {
-        // LOG.debug("pageImport(" + value + ')');
-        String[] imports = Pattern.compile(";").split(value.subSequence(0, value.length()));
+        String[] imports = IMPORT_SEMICOLON_PATTERN.split(value.subSequence(0, value.length()));
         for (int ix = 0; ix < imports.length; ix++) {
             out.print("import ");
             out.print(imports[ix]);
@@ -1338,8 +1316,6 @@ public class GroovyPageParser implements Tokens {
     private void script(boolean gsp) {
         flushTagBuffering();
         if (!finalPass) return;
-
-        LOG.debug("parse: script");
 
         out.println();
         write(scan.getToken().trim(), gsp);
