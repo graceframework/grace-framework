@@ -212,4 +212,14 @@ class DefaultDateHelperSpec extends Specification {
         then:
         thrown(IllegalArgumentException)
     }
+
+    void "test format for java.sql.Date"() {
+
+        given:
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of('UTC'))
+        def date = new java.sql.Date(localDate.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli())
+
+        expect:
+        helper.format(formatter, date) == '1941-01-05'
+    }
 }

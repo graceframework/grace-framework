@@ -88,7 +88,9 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
     @Override
     String format(Object formatter, Object date) {
         TemporalAccessor instant
-        if (date instanceof Date) {
+        if (date instanceof java.sql.Date) {
+            instant = date.toLocalDate()
+        } else if (date instanceof Date) {
             instant = date.toInstant()
         } else if (date instanceof Calendar) {
             instant = date.toInstant()
