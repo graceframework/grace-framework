@@ -29,7 +29,7 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 import org.grails.compiler.injection.GrailsASTUtils;
-import org.grails.core.artefact.TagLibArtefactHandler;
+import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.taglib.TagOutput;
 import org.grails.taglib.encoder.OutputContextLookupHelper;
