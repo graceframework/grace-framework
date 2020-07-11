@@ -71,6 +71,13 @@ subprojects {
         testCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
     }
+
+    tasks.withType(Test) {
+        testLogging {
+            showStandardStreams = true
+            exceptionFormat = 'full'
+        }
+    }
 }
 
 apply from:"${commonBuild}/common-docs.gradle"
