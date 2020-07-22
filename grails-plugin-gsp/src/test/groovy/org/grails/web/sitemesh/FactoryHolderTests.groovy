@@ -3,26 +3,33 @@ package org.grails.web.sitemesh
 import com.opensymphony.module.sitemesh.DecoratorMapper
 import com.opensymphony.module.sitemesh.Factory
 import com.opensymphony.module.sitemesh.PageParser
+import org.junit.jupiter.api.Test
 
-class FactoryHolderTests extends GroovyTestCase {
+import static org.junit.jupiter.api.Assertions.*
 
+class FactoryHolderTests {
+
+    @Test
     void testGetFactoryReturnsFactoryForNonNullFactory() {
         def factory = new DummyFactory()
         FactoryHolder.setFactory(factory)
         assertSame factory, FactoryHolder.getFactory()
     }
 
+    @Test
     void testGetFactoryForNullFactory() {
         FactoryHolder.setFactory(null)
         assertNull FactoryHolder.getFactory()
     }
 
+    @Test
     void testSetFactory() {
         def factory = new DummyFactory()
         FactoryHolder.setFactory(factory)
         assertSame factory, FactoryHolder.factory
     }
 
+    @Test
     // Silly test, but a necessary evil in order to get Cobertura to give us 100% coverage
     void testPrivateConstructor() {
         assertNotNull new FactoryHolder()

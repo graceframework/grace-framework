@@ -2,19 +2,21 @@ package org.grails.gsp.jsp
 
 import grails.core.DefaultGrailsApplication
 import grails.util.GrailsWebMockUtil
-
 import org.grails.web.pages.GroovyPagesServlet
 import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.mock.web.MockServletContext
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.servlet.support.JstlUtils
 
+import static org.junit.jupiter.api.Assertions.assertEquals
+
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
-class SimpleJspTagTests extends GroovyTestCase {
+class SimpleJspTagTests {
 
     GrailsWebRequest webRequest
 
@@ -27,6 +29,7 @@ class SimpleJspTagTests extends GroovyTestCase {
         RequestContextHolder.resetRequestAttributes()
     }
 
+    @Test
     void testSimpleTagUsage() {
 
         def resolver = new TagLibraryResolverImpl()

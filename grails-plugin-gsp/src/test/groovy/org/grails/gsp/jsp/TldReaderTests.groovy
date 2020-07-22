@@ -16,10 +16,15 @@
 package org.grails.gsp.jsp
 
 import org.grails.web.taglib.jsp.JspLocaleSelectTag
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
-class TldReaderTests extends GroovyTestCase{
+import static org.junit.jupiter.api.Assertions.assertEquals
 
+
+class TldReaderTests {
+
+    @Test
     void testTldReader() {
         def res = new ClassPathResource("org/codehaus/groovy/grails/web/pages/ext/jsp/tld-reader-test.tld")
 

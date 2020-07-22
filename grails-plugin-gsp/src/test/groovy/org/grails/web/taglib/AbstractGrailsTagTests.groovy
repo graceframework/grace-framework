@@ -13,7 +13,7 @@ import grails.web.pages.GroovyPagesUriService
 import org.grails.buffer.FastStringWriter
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.TagLibArtefactHandler
+import org.grails.core.artefact.gsp.TagLibArtefactHandler
 import org.grails.encoder.Encoder
 import org.grails.gsp.GroovyPage
 import org.grails.gsp.GroovyPageMetaInfo
@@ -37,6 +37,8 @@ import org.grails.web.sitemesh.GSPSitemeshPage
 import org.grails.web.sitemesh.GrailsHTMLPageParser
 import org.grails.web.sitemesh.GrailsLayoutView
 import org.grails.web.util.GrailsApplicationAttributes
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
@@ -54,7 +56,6 @@ import org.springframework.ui.context.ThemeSource
 import org.springframework.ui.context.support.SimpleTheme
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.support.GenericWebApplicationContext
 import org.springframework.web.servlet.DispatcherServlet
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver
 import org.springframework.web.servlet.support.JstlUtils
@@ -67,7 +68,9 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
-abstract class AbstractGrailsTagTests extends GroovyTestCase {
+import static org.junit.jupiter.api.Assertions.*
+
+abstract class AbstractGrailsTagTests {
     MockServletContext servletContext
     GrailsWebRequest webRequest
     MockHttpServletRequest request
@@ -215,6 +218,7 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
     protected void onSetUp() {
     }
 
+    @BeforeEach
     protected void setUp() throws Exception {
         GroovySystem.metaClassRegistry.addMetaClassRegistryChangeEventListener(registryCleaner)
         GroovyPageMetaInfo.DEFAULT_PLUGIN_PATH = null
@@ -321,6 +325,7 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
         request.setAttribute(DispatcherServlet.THEME_RESOLVER_ATTRIBUTE, new SessionThemeResolver())
     }
 
+    @AfterEach
     protected void tearDown() {
         // Clear the page cache in the template engine since it's
         // static and likely to cause tests to interfere with each other.
@@ -383,12 +388,14 @@ abstract class AbstractGrailsTagTests extends GroovyTestCase {
 
     void assertOutputContains(expected, template, params = [:]) {
         def result = applyTemplate(template, params)
-        assertTrue "Output does not contain expected string [$expected]. Output was: [${result}]", result.indexOf(expected) > -1
+        assertTrue result.indexOf(expected) > -1,
+                "Output does not contain expected string [$expected]. Output was: [${result}]"
     }
 
     void assertOutputNotContains(expected, template, params = [:]) {
         def result = applyTemplate(template, params)
-        assertFalse "Output should not contain the expected string [$expected]. Output was: [${result}]", result.indexOf(expected) > -1
+        assertFalse result.indexOf(expected) > -1,
+                "Output should not contain the expected string [$expected]. Output was: [${result}]"
     }
 
     /**

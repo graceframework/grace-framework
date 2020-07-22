@@ -2,6 +2,10 @@ package org.grails.gsp.jsp
 
 import grails.core.DefaultGrailsApplication
 import grails.util.GrailsWebMockUtil
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.servlet.jsp.JspException
 import javax.servlet.jsp.JspWriter
@@ -12,23 +16,28 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.springframework.mock.web.MockServletContext
 import org.springframework.web.context.request.RequestContextHolder
 
+import static org.junit.jupiter.api.Assertions.assertEquals
+
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
-class SimpleTagTests extends GroovyTestCase {
+class SimpleTagTests {
 
     GrailsWebRequest webRequest
 
+    @BeforeEach
     protected void setUp() {
         webRequest = GrailsWebMockUtil.bindMockWebRequest()
         webRequest.getCurrentRequest().setAttribute(GroovyPagesServlet.SERVLET_INSTANCE, new GroovyPagesServlet())
     }
 
+    @AfterEach
     protected void tearDown() {
         RequestContextHolder.resetRequestAttributes()
     }
 
+    @Test
     void testSimpleTagWithBodyUsage() {
         def resolver = new TagLibraryResolverImpl()
         resolver.servletContext = new MockServletContext()
@@ -43,6 +52,7 @@ class SimpleTagTests extends GroovyTestCase {
         assertEquals "bodySimpleTagSupport:testbody", sw.toString().trim()
     }
 
+    @Test
     void testSimpleTagUsage() {
 
         def resolver = new TagLibraryResolverImpl()

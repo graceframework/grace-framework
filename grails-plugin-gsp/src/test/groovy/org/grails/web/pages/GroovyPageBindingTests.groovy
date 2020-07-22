@@ -1,13 +1,17 @@
 package org.grails.web.pages
 
 import org.grails.gsp.GroovyPageBinding
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * @author Graeme Rocher
  * @since 1.1
  */
-class GroovyPageBindingTests extends GroovyTestCase {
+class GroovyPageBindingTests {
 
+    @Test
     void testGroovyPageBinding() {
         def binding = new GroovyPageBinding()
 
@@ -17,6 +21,7 @@ class GroovyPageBindingTests extends GroovyTestCase {
         assertEquals binding.getMetaClass(), binding.metaClass
     }
 
+    @Test
     void testVariables() {
         def parentBinding = new GroovyPageBinding()
         parentBinding.a = 1

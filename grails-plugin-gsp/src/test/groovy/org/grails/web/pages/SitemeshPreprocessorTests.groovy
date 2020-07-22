@@ -1,9 +1,13 @@
 package org.grails.web.pages
 
 import org.grails.gsp.compiler.SitemeshPreprocessor
+import org.junit.jupiter.api.Test
 
-class SitemeshPreprocessorTests extends GroovyTestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals
 
+class SitemeshPreprocessorTests {
+
+    @Test
     void testSimpleParse() {
         def gspBody = '''
 <html>
@@ -29,6 +33,7 @@ class SitemeshPreprocessorTests extends GroovyTestCase {
         assertEquals(gspBodyExpected, preprocessor.addGspSitemeshCapturing(gspBody))
     }
 
+    @Test
     void testContentParse() {
         def gspBody = '''
 <html>
@@ -56,6 +61,7 @@ class SitemeshPreprocessorTests extends GroovyTestCase {
         assertEquals(gspBodyExpected, preprocessor.addGspSitemeshCapturing(gspBody))
     }
 
+    @Test
     void testContentParse2() {
         def gspBody = '''
 <html>
@@ -89,6 +95,7 @@ class SitemeshPreprocessorTests extends GroovyTestCase {
         assertEquals(gspBodyExpected, preprocessor.addGspSitemeshCapturing(gspBody))
     }
 
+    @Test
     void testSitemeshParameterParse() {
         def gspBody = '''
 <html>
@@ -114,6 +121,7 @@ class SitemeshPreprocessorTests extends GroovyTestCase {
         assertEquals(gspBodyExpected, preprocessor.addGspSitemeshCapturing(gspBody))
     }
 
+    @Test
     void testOtherParse() {
         def gspBody = '''
 <html>

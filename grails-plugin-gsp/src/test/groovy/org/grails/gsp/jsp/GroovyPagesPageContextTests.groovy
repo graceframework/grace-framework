@@ -1,25 +1,36 @@
 package org.grails.gsp.jsp
 
 import grails.util.GrailsWebMockUtil
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import javax.servlet.jsp.PageContext
 
 import org.springframework.web.context.request.RequestContextHolder
 
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
+import static org.junit.jupiter.api.Assertions.assertTrue
+
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
-class GroovyPagesPageContextTests extends GroovyTestCase {
+class GroovyPagesPageContextTests  {
 
+    @BeforeEach
     protected void setUp() {
         GrailsWebMockUtil.bindMockWebRequest()
     }
 
+    @AfterEach
     protected void tearDown() {
         RequestContextHolder.resetRequestAttributes()
     }
 
+    @Test
     void testPageContextState() {
 
         def pageContext = new GroovyPagesPageContext()
@@ -31,6 +42,7 @@ class GroovyPagesPageContextTests extends GroovyTestCase {
         assert pageContext.getPage()
     }
 
+    @Test
     void testPageContextScopes() {
         def pageContext = new GroovyPagesPageContext()
 
@@ -41,8 +53,8 @@ class GroovyPagesPageContextTests extends GroovyTestCase {
 
         assertNull pageContext.getAttribute("foo", PageContext.REQUEST_SCOPE)
 
-        assertTrue "Variable name 'foo' does not appear in list of names in page scope",
-            pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE).toList().contains('foo')
+        assertTrue pageContext.getAttributeNamesInScope(PageContext.PAGE_SCOPE).toList().contains('foo'),
+                "Variable name 'foo' does not appear in list of names in page scope"
 
         assertEquals PageContext.PAGE_SCOPE, pageContext.getAttributesScope("foo")
         assertEquals "bar", pageContext.findAttribute("foo")

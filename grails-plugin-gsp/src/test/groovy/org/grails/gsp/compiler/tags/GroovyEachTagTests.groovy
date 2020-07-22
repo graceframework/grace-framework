@@ -1,14 +1,21 @@
 package org.grails.gsp.compiler.tags
 
-class GroovyEachTagTests extends GroovyTestCase {
+import org.grails.taglib.GrailsTagException
+import org.junit.jupiter.api.Test
 
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertThrows
+
+class GroovyEachTagTests {
+
+    @Test
     void testEachWithSafeDereference() {
         def sw = new StringWriter()
 
         def tag = new GroovyEachTag()
         tag.init(out: new PrintWriter(sw))
 
-        shouldFail {
+        assertThrows(GrailsTagException) {
             tag.doStartTag()
         }
 
@@ -19,6 +26,7 @@ class GroovyEachTagTests extends GroovyTestCase {
        assertEquals("for( "+tag.getForeachRenamedIt()+" in test ) {"+ System.getProperty("line.separator")+ "changeItVariable(" + tag.getForeachRenamedIt() + ")" + System.getProperty("line.separator"),sw.toString())
     }
 
+    @Test
     void testSimpleEach() {
         def sw = new StringWriter()
         def tag = new GroovyEachTag()
@@ -35,6 +43,7 @@ class GroovyEachTagTests extends GroovyTestCase {
         assertEquals("for( "+tag.getForeachRenamedIt()+" in test ) {"+ System.getProperty("line.separator")+ "changeItVariable(" + tag.getForeachRenamedIt() + ")" + System.getProperty("line.separator"),sw.toString())
     }
 
+    @Test
     void testEachWithVar() {
         def sw = new StringWriter()
 
@@ -47,17 +56,19 @@ class GroovyEachTagTests extends GroovyTestCase {
         assertEquals("for( i in test ) {"+ System.getProperty("line.separator"),sw.toString())
     }
 
+    @Test
     void testEachWithStatusOnly() {
         def sw = new StringWriter()
 
         def tag = new GroovyEachTag()
         tag.init(out: new PrintWriter(sw))
         tag.setAttributes('"in"': 'test', '"status"':"i")
-        shouldFail {
+        assertThrows(GrailsTagException) {
             tag.doStartTag()
         }
     }
 
+    @Test
     void testEachWithStatusAndVar() {
         def sw = new StringWriter()
 
@@ -65,7 +76,7 @@ class GroovyEachTagTests extends GroovyTestCase {
         tag.init(out: new PrintWriter(sw))
         tag.setAttributes('"in"': 'test', '"status"':"i",'"var"':"i")
 
-        shouldFail {
+        assertThrows(GrailsTagException) {
             tag.doStartTag()
         }
         tag.setAttributes('"var"':'j')

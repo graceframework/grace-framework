@@ -1,20 +1,23 @@
 package org.grails.gsp.compiler.tags
 
-class GroovyGrepTagTests extends GroovyTestCase {
+import org.grails.taglib.GrailsTagException
+import org.junit.jupiter.api.Test
 
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertThrows
+
+class GroovyGrepTagTests {
+
+    @Test
     void testDoStartTag() {
         def sw = new StringWriter()
 
         def tag = new GroovyGrepTag()
         tag.init(out: new PrintWriter(sw))
 
-        try {
+        assertThrows(GrailsTagException, {
             tag.doStartTag()
-            fail("Should throw exception for required attributes")
-        }
-        catch(Exception e) {
-            // expected
-        }
+        }, "Should throw exception for required attributes")
 
         tag.setAttributes('"in"': 'test', '"filter"':'\${~/regex/}')
 
@@ -23,6 +26,7 @@ class GroovyGrepTagTests extends GroovyTestCase {
         assertEquals("for( "+tag.getForeachRenamedIt()+" in test.grep(~/regex/) ) {"+System.getProperty("line.separator")+ "changeItVariable(" + tag.getForeachRenamedIt() + ")" + System.getProperty("line.separator"), sw.toString())
     }
 
+    @Test
     void testWithStatus() {
         def sw = new StringWriter()
 

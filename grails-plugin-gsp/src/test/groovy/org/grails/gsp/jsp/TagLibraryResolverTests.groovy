@@ -17,13 +17,15 @@ package org.grails.gsp.jsp
 
 import grails.core.DefaultGrailsApplication
 import org.codehaus.groovy.tools.RootLoader
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.DefaultResourceLoader
 import org.springframework.core.io.Resource
 import org.springframework.mock.web.MockServletContext
 
-class TagLibraryResolverTests extends GroovyTestCase {
+class TagLibraryResolverTests {
 
+    @Test
     void testResolveTagLibraryFromJar() {
         def resolver = new TagLibraryResolverImpl()
         resolver.servletContext = new MockServletContext()
@@ -48,6 +50,7 @@ class TagLibraryResolverTests extends GroovyTestCase {
         assert tagLib.getTag("redirect")
     }
 
+    @Test
     void testResolveTagLibraryFromWebXml() {
 
         def resolver = new MockWebXmlTagLibraryResolver()

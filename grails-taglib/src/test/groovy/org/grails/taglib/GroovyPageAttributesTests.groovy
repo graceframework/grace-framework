@@ -1,7 +1,13 @@
 package org.grails.taglib
 
-class GroovyPageAttributesTests extends GroovyTestCase {
 
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.*
+
+class GroovyPageAttributesTests {
+
+    @Test
     void testCloneAttributes() {
         def originalMap = [framework: 'Grails', company: 'SpringSource']
         def wrapper = new GroovyPageAttributes(originalMap)
@@ -12,6 +18,7 @@ class GroovyPageAttributesTests extends GroovyTestCase {
         assertEquals "SpringSource", cloned.company
     }
 
+    @Test
     void testMutatingImpactsWrappedMap() {
         def originalMap = [framework: 'Grails', company: 'SpringSource']
         def wrapper = new GroovyPageAttributes(originalMap)
@@ -40,6 +47,7 @@ class GroovyPageAttributesTests extends GroovyTestCase {
         assertEquals 'JVM', originalMap.target
     }
 
+    @Test
     void testEqualsImpl() {
         assert toGroovyPageAttributes([:]) == toGroovyPageAttributes([:])
         assert toGroovyPageAttributes(a: 1) == toGroovyPageAttributes(a: 1)
@@ -51,6 +59,7 @@ class GroovyPageAttributesTests extends GroovyTestCase {
         assert toGroovyPageAttributes(a: 1, b: 2) == toGroovyPageAttributes(b: 2, "a": 1)
     }
 
+    @Test
     void testHashCode() {
         assert toGroovyPageAttributes(a: 1, b: 2).hashCode() == toGroovyPageAttributes(a: 1, b: 2).hashCode()
         assert toGroovyPageAttributes([:]).hashCode() == toGroovyPageAttributes([:]).hashCode()
@@ -60,6 +69,7 @@ class GroovyPageAttributesTests extends GroovyTestCase {
         assert toGroovyPageAttributes(a: 1, b: 2).hashCode() != ["b": 2, a: 1].hashCode()
     }
 
+    @Test
     void testToString() {
         def attrs = toGroovyPageAttributes(one:"foo")
 

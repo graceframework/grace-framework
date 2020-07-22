@@ -15,8 +15,15 @@
  */
 package org.grails.gsp.jsp
 
-class WebXmlTagLibraryReaderTests extends GroovyTestCase {
 
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+
+
+class WebXmlTagLibraryReaderTests {
+
+    @Test
     void testWebXmlTagLibraryReader() {
         def is = new ByteArrayInputStream(testWebXml.getBytes())
         WebXmlTagLibraryReader webXmlReader = new WebXmlTagLibraryReader(is)
