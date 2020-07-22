@@ -70,7 +70,7 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
             }
             beanDefinition.getPropertyValues().with {
                 addPropertyValue('innerViewResolver', previousViewResolver)
-                addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference(GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
+                addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
             }
             registry.registerBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME, beanDefinition)
         }

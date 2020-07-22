@@ -15,34 +15,34 @@ configurations.all {
 }
 dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
-    compile project(":grails-web-gsp-taglib")
+    api project(":grails-web-gsp-taglib")
 
 
-    runtime(project(":grails-web-jsp"))
-    compile "commons-lang:commons-lang:2.6"
-    compile "org.grails:grails-plugin-codecs:$grailsVersion"    
+    runtimeOnly(project(":grails-web-jsp"))
+    api "commons-lang:commons-lang:2.6"
+    api "org.grails:grails-plugin-codecs:$grailsVersion"
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
     
-    testCompile 'org.grails:grails-web-testing-support:2.0.0.RC1', {
+    testImplementation 'org.grails:grails-web-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
-    // testCompile 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
-    testCompile 'org.grails:grails-testing-support:2.0.0.RC1', {
+    // testImplementation 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
+    testImplementation 'org.grails:grails-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
-    testCompile 'org.grails:grails-gorm-testing-support:2.0.0.RC1', {
+    testImplementation 'org.grails:grails-gorm-testing-support:2.0.0.RC1', {
         exclude module:'async'
     }
 
-    testRuntime "org.grails.plugins:async"
-    testCompile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
-    testCompile "org.springframework:spring-test:$springVersion"
+    testRuntimeOnly "org.grails.plugins:async"
+    testImplementation "javax.servlet.jsp:jsp-api:${jspApiVersion}"
+    testImplementation "org.springframework:spring-test:$springVersion"
 
-    testCompile "taglibs:standard:${jstlVersion}"
-    testCompile "javax.servlet:jstl:${jstlVersion}"
+    testImplementation "taglibs:standard:${jstlVersion}"
+    testImplementation "javax.servlet:jstl:${jstlVersion}"
 
-    testRuntime "org.grails:grails-plugin-url-mappings:$grailsVersion"
+    testRuntimeOnly "org.grails:grails-plugin-url-mappings:$grailsVersion"
 }
 // disable main class
 bootJar {

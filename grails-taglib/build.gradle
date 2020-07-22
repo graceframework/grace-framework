@@ -1,6 +1,6 @@
 dependencies {
-    compile "org.grails:grails-core:$grailsVersion", {
+    api "org.grails:grails-core:$grailsVersion", {
         exclude group:'org.grails', module:'grails-spring'
     }
-    compile "org.grails:grails-encoder:$grailsVersion"    
+    api "org.grails:grails-encoder:$grailsVersion"
 }

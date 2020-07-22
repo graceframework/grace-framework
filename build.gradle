@@ -9,7 +9,6 @@ buildscript {
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
     }
 }
 
@@ -21,7 +20,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/47f0f2e0d9d82030b758c6dfe7bc7eefe6582342'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/gradle6'
 }
 
 apply plugin:'idea'
@@ -62,17 +61,22 @@ subprojects {
     }
 
     apply plugin:'idea'
+    apply plugin: 'java-library'
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
 
     dependencies {
         compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
 
-        testCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
-        testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
+        testImplementation "javax.servlet:javax.servlet-api:$servletApiVersion"
+        testImplementation "org.codehaus.groovy:groovy-test-junit5:${groovyVersion}"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+        testImplementation "org.junit.platform:junit-platform-runner:1.6.2"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.2"
     }
 
     tasks.withType(Test) {
+        useJUnitPlatform()
         testLogging {
             showStandardStreams = true
             exceptionFormat = 'full'

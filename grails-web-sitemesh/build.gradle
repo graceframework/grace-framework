@@ -1,8 +1,8 @@
 dependencies {
-    compile "javax.servlet:javax.servlet-api:$servletApiVersion"
-    compile "org.grails:grails-web-common:$grailsVersion"    
+    api "javax.servlet:javax.servlet-api:$servletApiVersion"
+    api "org.grails:grails-web-common:$grailsVersion"
 
-    compile "opensymphony:sitemesh:$sitemeshVersion"
+    api "opensymphony:sitemesh:$sitemeshVersion"
 
-    testCompile "org.springframework:spring-test:$springVersion"    
+    testImplementation "org.springframework:spring-test:$springVersion"
 }

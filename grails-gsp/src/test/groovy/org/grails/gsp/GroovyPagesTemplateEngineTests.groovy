@@ -7,11 +7,16 @@ import grails.util.GrailsUtil
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.io.MockStringResourceLoader
 import org.grails.gsp.compiler.GroovyPageParser
+import org.junit.jupiter.api.Test
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.UrlResource
 
-class GroovyPagesTemplateEngineTests extends GroovyTestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertTrue
 
+class GroovyPagesTemplateEngineTests {
+
+    @Test
     void testCommentAtEndOfTemplate() {
         System.setProperty("grails.env", "development")
         assert GrailsUtil.isDevelopmentEnv()
@@ -35,6 +40,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertTrue(sw.toString().indexOf("should not be in the output") == -1)
     }
 
+    @Test
     void testShowSourceParameter() {
         try {
             System.setProperty("grails.env", "development")
@@ -60,6 +66,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         }
     }
 
+    @Test
     void testEstablishNameForResource() {
         def res = new UrlResource("http://grails.org/some.path/foo.gsp")
 
@@ -69,6 +76,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "some_path_foo_gsp", gpte.establishPageName(res, null)
     }
 
+    @Test
     void testCreateTemplateFromCurrentRequest2() {
         def uri1 = "/another"
 
@@ -91,6 +99,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "success 2", sw.toString()
     }
 
+    @Test
     void testCreateTemplateFromCurrentRequest1() {
         def uri1 = "/somedir/myview"
         def uri2 = "/another"
@@ -115,6 +124,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "success 1", sw.toString()
     }
 
+    @Test
     void testCreateTemplateFromResource() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -130,6 +140,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "hello", sw.toString()
     }
 
+    @Test
     void testNestingGroovyExpressionInAttribute() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -155,6 +166,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         [getMainContext: { ->  null},  getConfig: { ->  config} , getFlatConfig: { -> config.flatten() } , getArtefacts: { String artefactType -> [] as GrailsClass[] }, getArtefactByLogicalPropertyName: { String type, String logicalName ->  null} ] as GrailsApplication
     }
 
+    @Test
     void testParsingNestedCurlyBraces() {
         // GRAILS-7915
         def gpte = new GroovyPagesTemplateEngine()
@@ -210,6 +222,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals expected, sw.toString()
     }
 
+    @Test
     void testParsingParensInNestedCurlyBraces() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -228,6 +241,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "[PETER, PHIL]", sw.toString()
     }
 
+    @Test
     void testParsingBracketsInNestedCurlyBraces() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -246,6 +260,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "[G, C]", sw.toString()
     }
 
+    @Test
     void testParsingIfs() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -264,6 +279,7 @@ class GroovyPagesTemplateEngineTests extends GroovyTestCase {
         assertEquals "hello", sw.toString()
     }
 
+    @Test
     void testParsingMultilineQuotes() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -292,6 +308,7 @@ hello
         assertEquals result, sw.toString()
     }
 
+    @Test
     void testParsingMultilineQuotes2() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -320,6 +337,7 @@ hello
         assertEquals result, sw.toString()
     }
 
+    @Test
     void testGscript() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.grailsApplication = createMockGrailsApplication()
@@ -339,6 +357,7 @@ hello
         assertEquals "hello", sw.toString()
     }
 
+    @Test
     void testGRAILS8218() {
         def gpte = new GroovyPagesTemplateEngine()
 
@@ -358,6 +377,7 @@ hello
         assertEquals "ok", sw.toString()
     }
 
+    @Test
     void testGRAILS8199() {
         def gpte = new GroovyPagesTemplateEngine()
 
@@ -377,6 +397,7 @@ hello
         assertEquals "<div id='hello'/>", sw.toString()
     }
 
+    @Test
     void testParsingQuotes() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -399,6 +420,7 @@ hello
         assertEquals "hello", sw.toString()
     }
 
+    @Test
     void testCreateTemplateWithBinding() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -414,6 +436,7 @@ hello
         assertEquals "Hello World", sw.toString()
     }
 
+    @Test
     void testInlineScriptWithValidUnmatchedBrackets() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -438,6 +461,7 @@ never
         assertEquals "Hello World", sw.toString().trim()
     }
 
+    @Test
     void testInlineScriptWithValidUnmatchedBracketsGspSyntax() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -462,6 +486,7 @@ never
         assertEquals "Hello World", sw.toString().trim()
     }
 
+    @Test
     void testCreateTemplateFromText() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()
@@ -477,6 +502,7 @@ never
         assertEquals "hello", sw.toString()
     }
 
+    @Test
     void testForEachInProductionMode() {
         System.setProperty("grails.env", "production")
 
@@ -495,6 +521,7 @@ never
         assertEquals "1 2 3 4 5 ", sw.toString()
     }
 
+    @Test
     void testGetUriWithinGrailsViews() {
         def gpte = new GroovyPagesTemplateEngine()
         gpte.afterPropertiesSet()

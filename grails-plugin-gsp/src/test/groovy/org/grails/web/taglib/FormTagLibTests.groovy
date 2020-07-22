@@ -43,7 +43,7 @@ class FormTagLibTests extends Specification implements TagLibUnitTest<FormTagLib
         String output = applyTemplate(template)
 
         then:
-         output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
+        output == '<form action="/books" method="post" ><input type="hidden" name="requestDataValueProcessorHiddenName" value="hiddenValue" />\n</form>'
     }
 
     private static final class MockGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
