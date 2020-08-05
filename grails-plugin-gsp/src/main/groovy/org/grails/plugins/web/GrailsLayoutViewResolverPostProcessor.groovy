@@ -17,6 +17,7 @@ package org.grails.plugins.web
 
 import org.grails.web.servlet.view.SitemeshLayoutViewResolver
 import org.springframework.beans.BeansException
+import org.springframework.beans.MutablePropertyValues
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.config.RuntimeBeanReference
@@ -36,7 +37,7 @@ import org.springframework.core.Ordered
  * 
  * @author Lari Hotari
  * @since 2.4.0
- * @see GrailsLayoutViewResolver
+ * @see org.grails.web.servlet.view.GrailsLayoutViewResolver
  *
  */
 class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPostProcessor, Ordered {
@@ -68,10 +69,9 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
             if (markBeanPrimary) {
                 beanDefinition.primary = true
             }
-            beanDefinition.getPropertyValues().with {
-                addPropertyValue('innerViewResolver', previousViewResolver)
-                addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
-            }
+            final MutablePropertyValues propertyValues = beanDefinition.getPropertyValues()
+            propertyValues.addPropertyValue('innerViewResolver', previousViewResolver)
+            propertyValues.addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
             registry.registerBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME, beanDefinition)
         }
     }
