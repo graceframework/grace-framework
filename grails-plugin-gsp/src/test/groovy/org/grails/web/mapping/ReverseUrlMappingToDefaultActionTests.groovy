@@ -45,10 +45,10 @@ class ReverseUrlMappingToDefaultActionUrlMappings {
 
 @Artefact("Controller")
 class ReverseUrlMappingContentController {
-    def view = {}
+    def view() {}
 }
 @Artefact("Controller")
 class ReverseUrlMappingTestController {
-    def foo = {}
-    def index = {}
+    def foo() {}
+    def index() {}
 }

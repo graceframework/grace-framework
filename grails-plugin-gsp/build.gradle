@@ -23,15 +23,15 @@ dependencies {
     api "org.grails:grails-plugin-codecs:$grailsVersion"
     astCompile "org.grails:grails-web:$grailsVersion"    
     astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
-    
-    testImplementation 'org.grails:grails-web-testing-support:2.0.0.RC1', {
+
+    testImplementation "org.grails:grails-web-testing-support:$testingSupportVersion", {
         exclude module:'async'
     }
     // testImplementation 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
-    testImplementation 'org.grails:grails-testing-support:2.0.0.RC1', {
+    testImplementation "org.grails:grails-testing-support:$testingSupportVersion", {
         exclude module:'async'
     }
-    testImplementation 'org.grails:grails-gorm-testing-support:2.0.0.RC1', {
+    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersion", {
         exclude module:'async'
     }
 
