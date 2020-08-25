@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
         maven { url "https://repo.grails.org/grails/core" }
     }
@@ -13,7 +12,6 @@ buildscript {
 }
 
 repositories {
-    mavenLocal()
     jcenter()
     maven { url "https://repo.grails.org/grails/core" }
 }
@@ -42,7 +40,6 @@ subprojects {
         group "org.grails"
     }
     repositories {
-        mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
     if(it.name.startsWith("examples")) {
