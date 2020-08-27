@@ -7,7 +7,7 @@ In order to use JSP support you must ensure you have the `grails-web-jsp` depend
 ----
 dependencies {
     ...
-    runtime "org.grails:grails-web-jsp:{version}"
+    runtimeOnly "org.grails:grails-web-jsp:{version}"
 }
 ----
 
@@ -34,8 +34,8 @@ grails:
 JSTL standard library is no longer added as a dependency by default. In case you are using JSTL, you should also add these dependencies to `build.gradle`:
 [source,groovy]
 ----
-runtime 'javax.servlet:jstl:1.1.2'
-        runtime 'taglibs:standard:1.1.2'
+        runtimeOnly 'javax.servlet:jstl:1.1.2'
+        runtimeOnly 'taglibs:standard:1.1.2'
 ----
 
 Then you can use JSP tags like any other tag:
