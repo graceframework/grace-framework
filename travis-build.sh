@@ -47,9 +47,10 @@ if [[ -n $TRAVIS_TAG ]] || [[ $TRAVIS_BRANCH =~ ^master|[234]\..\.x$ && $TRAVIS_
 
   # If there is a tag present then this becomes the latest
   if [[ -n $TRAVIS_TAG ]]; then
-      mkdir -p latest
-      cp -r ../build/docs/. ./latest/
-      git add latest/*
+#  Do not publish latest for the milestone release
+#      mkdir -p latest
+#      cp -r ../build/docs/. ./latest/
+#      git add latest/*
 
       version="$TRAVIS_TAG"
       version=${version:1}
