@@ -2,7 +2,6 @@ package org.grails.web.mapping
 
 import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
-import org.grails.web.taglib.AbstractGrailsTagTests
 import spock.lang.Specification
 
 class RootUrlMappingTests extends Specification implements UrlMappingsUnitTest<StoreUrlMappings> {

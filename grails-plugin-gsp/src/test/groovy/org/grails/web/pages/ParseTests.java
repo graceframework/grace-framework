@@ -1,33 +1,28 @@
 package org.grails.web.pages;
 
-import grails.config.Config;
 import grails.core.DefaultGrailsApplication;
 import grails.core.GrailsApplication;
 import grails.util.GrailsWebMockUtil;
 import grails.util.GrailsWebUtil;
-import grails.util.Holders;
 import grails.web.pages.GroovyPagesUriService;
-import org.grails.web.util.GrailsApplicationAttributes;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import junit.framework.TestCase;
-
 import org.codehaus.groovy.runtime.IOGroovyMethods;
-import org.grails.config.PropertySourcesConfig;
 import org.grails.gsp.GroovyPage;
 import org.grails.gsp.compiler.GroovyPageParser;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.taglib.GrailsTagException;
-import org.springframework.context.support.GenericApplicationContext;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.util.GrailsApplicationAttributes;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.GenericWebApplicationContext;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Tests the GSP parser.  This can detect issues caused by improper
@@ -39,7 +34,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
  *
  * @author Daiji
  */
-public class ParseTests extends TestCase {
+public class ParseTests {
 
     class ParsedResult {
         String generatedGsp;
@@ -70,6 +65,7 @@ public class ParseTests extends TestCase {
         return result.toString();
     }
 
+    @Test
     public void testParse() throws Exception {
         ParsedResult result = parseCode("myTest1", "<div>hi</div>");
         String expected = makeImports() +
@@ -82,10 +78,11 @@ public class ParseTests extends TestCase {
             "registerSitemeshPreprocessMode()\n" +
             "printHtmlPart(0)\n" +
             "}\n" + GSP_FOOTER;
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
-        assertEquals("<div>hi</div>", result.htmlParts[0]);
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
+        Assertions.assertEquals("<div>hi</div>", result.htmlParts[0]);
     }
 
+    @Test
     public void testParseWithUnclosedSquareBracket() throws Exception {
         String output = parseCode("myTest2", "<g:message code=\"testing [\"/>").generatedGsp;
         String expected = makeImports() +
@@ -100,26 +97,21 @@ public class ParseTests extends TestCase {
             "invokeTag('message','g',1,['code':evaluate('\"testing [\"', 1, it) { return \"testing [\" }],-1)\n" +
             "}\n" + GSP_FOOTER;
 
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output));
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output));
     }
 
+    @Test
     public void testParseWithUnclosedGstringThrowsException() throws IOException {
-        try {
-            parseCode("myTest3", "<g:message value=\"${boom\">");
-        }
-        catch (GrailsTagException e) {
-            assertEquals("[myTest3:1] Unclosed GSP expression", e.getMessage());
-            return;
-        }
-        fail("Expected parse exception not thrown");
+        Assertions.assertThrows(GrailsTagException.class, () -> parseCode("myTest3", "<g:message value=\"${boom\">"), "[myTest3:1] Unclosed GSP expression");
     }
 
+    @Test
     public void testParseWithUTF8() throws Exception {
         // This is some unicode Chinese (who knows what it says!)
         String src = "Chinese text: \u3421\u3437\u343f\u3443\u3410\u3405\u38b3\u389a\u395e\u3947\u3adb\u3b5a\u3b67";
         // Sanity check the string loaded OK as unicode - it won't look right if you output it, default stdout is not UTF-8
         // on many OSes
-        assertEquals(src.indexOf('?'), -1);
+        Assertions.assertEquals(src.indexOf('?'), -1);
 
         ConfigObject config = new ConfigSlurper().parse("grails.views.gsp.encoding = \"UTF-8\"");
 
@@ -141,8 +133,8 @@ public class ParseTests extends TestCase {
             "registerSitemeshPreprocessMode()\n" +
             "printHtmlPart(0)\n" +
             "}\n" + GSP_FOOTER;
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output.generatedGsp));
-        assertEquals(src, output.htmlParts[0]);
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output.generatedGsp));
+        Assertions.assertEquals(src, output.htmlParts[0]);
     }
 
     private GrailsWebRequest buildMockRequest(ConfigObject config) throws Exception {
@@ -158,11 +150,12 @@ public class ParseTests extends TestCase {
         return GrailsWebMockUtil.bindMockWebRequest(appCtx);
     }
 
+    @Test
     public void testParseWithLocalEncoding() throws IOException {
         String src = "This is just plain ASCII to make sure test works on all platforms";
         // Sanity check the string loaded OK as unicode - it won't look right if you output it,
         // default stdout is not UTF-8 on many OSes
-        assertEquals(src.indexOf('?'), -1);
+        Assertions.assertEquals(src.indexOf('?'), -1);
 
         ParsedResult output = null;
         output = parseCode("myTest5", src);
@@ -176,8 +169,8 @@ public class ParseTests extends TestCase {
             "registerSitemeshPreprocessMode()\n" +
             "printHtmlPart(0)\n" +
             "}\n" + GSP_FOOTER;
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output.generatedGsp));
-        assertEquals(src, output.htmlParts[0]);
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(output.generatedGsp));
+        Assertions.assertEquals(src, output.htmlParts[0]);
     }
 
     /**
@@ -213,15 +206,17 @@ public class ParseTests extends TestCase {
         return result;
     }
 
+    @Test
      public void testParseGTagsWithNamespaces() throws Exception {
          String output = parseCode("myTest6",
                  "<tbody>\n" +
                  "  <tt:form />\n" +
                  "</tbody>").generatedGsp;
          System.out.println("output = " + output);
-         assertTrue("should have call to tag with 'tt' namespace", output.indexOf("invokeTag('form','tt',2,[:],-1)") > -1);
+         Assertions.assertTrue(output.indexOf("invokeTag('form','tt',2,[:],-1)") > -1, "should have call to tag with 'tt' namespace");
      }
 
+     @Test
      public void testParseWithWhitespaceNotEaten() throws Exception {
          String expected = makeImports() +
             "\n" +
@@ -244,11 +239,12 @@ public class ParseTests extends TestCase {
                  "\n" +
                  "Thanks");
 
-         assertEquals(expected.replaceAll("[\r\n]", ""), output.generatedGsp.replaceAll("[\r\n]", ""));
-         assertEquals("Please click the link below to confirm your email address:\n\n", output.htmlParts[0]);
-         assertEquals("\n\n\nThanks", output.htmlParts[1]);
+         Assertions.assertEquals(expected.replaceAll("[\r\n]", ""), output.generatedGsp.replaceAll("[\r\n]", ""));
+         Assertions.assertEquals("Please click the link below to confirm your email address:\n\n", output.htmlParts[0]);
+         Assertions.assertEquals("\n\n\nThanks", output.htmlParts[1]);
      }
 
+     @Test
      public void testBodyWithGStringAttribute() throws Exception {
          ParsedResult result = parseCode("GRAILS5598", "<body class=\"${page.name} ${page.group.name.toLowerCase()}\">text</body>");
          String expected = makeImports() +
@@ -262,10 +258,11 @@ public class ParseTests extends TestCase {
             "createClosureForHtmlPart(0, 1)\n" +
             "invokeTag('captureBody','sitemesh',1,['class':evaluate('\"${page.name} ${page.group.name.toLowerCase()}\"', 1, it) { return \"${page.name} ${page.group.name.toLowerCase()}\" }],1)\n" +
             "}\n" + GSP_FOOTER;
-         assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
-         assertEquals("text", result.htmlParts[0]);
+         Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
+         Assertions.assertEquals("text", result.htmlParts[0]);
      }
 
+     @Test
      public void testBypassSitemeshPreprocess() throws Exception {
          ParsedResult result = parseCode("SITEMESH_PREPROCESS_TEST", "<%@page sitemeshPreprocess=\"false\"%>\n<body>text</body>");
          String expected = makeImports() +
@@ -277,10 +274,11 @@ public class ParseTests extends TestCase {
             "Writer expressionOut = getExpressionOut()\n"+
             "printHtmlPart(0)\n" +
             "}\n" + GSP_FOOTER;
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
-        assertEquals("\n<body>text</body>", result.htmlParts[0]);
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
+        Assertions.assertEquals("\n<body>text</body>", result.htmlParts[0]);
     }
 
+    @Test
      public void testMetaWithGStringAttribute() throws Exception {
          ParsedResult result = parseCode("GRAILS5605", "<html><head><meta name=\"SomeName\" content='${grailsApplication.config.myFirstConfig}/something/${someVar}' /></head></html>");
          String expected = makeImports() +
@@ -298,6 +296,6 @@ public class ParseTests extends TestCase {
             "invokeTag('captureHead','sitemesh',1,[:],1)\n" +
             "printHtmlPart(1)\n" +
             "}\n" + GSP_FOOTER;
-        assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
+        Assertions.assertEquals(trimAndRemoveCR(expected), trimAndRemoveCR(result.generatedGsp));
     }
 }

@@ -1,29 +1,32 @@
 package org.grails.gsp.compiler.tags
 
-import junit.framework.Assert
-import junit.framework.TestCase
+
 import org.grails.gsp.GroovyPage
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 /**
  * @author graemerocher
  */
-class GroovySyntaxTagTests extends TestCase {
+class GroovySyntaxTagTests {
 
     private tag = new MyGroovySyntaxTag()
 
     /**
      * Test method for {@link GroovySyntaxTag#init(java.util.Map)}.
      */
+    @Test
     void testInit() {
         Map ctx = [:]
         ctx.put(GroovyPage.OUT, new PrintWriter(new StringWriter()))
         tag.init(ctx)
-        assertEquals(tag.out,ctx.get(GroovyPage.OUT))
+        Assertions.assertEquals(tag.out,ctx.get(GroovyPage.OUT))
     }
 
     /**
      * Test method for {@link GroovySyntaxTag#setAttributes(java.util.Map)}.
      */
+    @Test
     void testSetAttributes() {
         Map attrs = [:]
         attrs.put("\"test1\"","value1")
@@ -31,20 +34,21 @@ class GroovySyntaxTagTests extends TestCase {
 
         tag.setAttributes(attrs)
 
-        assertNotNull(tag.attributes)
-        Assert.assertFalse(tag.attributes.isEmpty())
-        TestCase.assertEquals(2, tag.attributes.size())
-        Assert.assertTrue(tag.attributes.containsKey("test1"))
-        Assert.assertTrue(tag.attributes.containsKey("test2"))
+        Assertions.assertNotNull(tag.attributes)
+        Assertions.assertFalse(tag.attributes.isEmpty())
+        Assertions.assertEquals(2, tag.attributes.size())
+        Assertions.assertTrue(tag.attributes.containsKey("test1"))
+        Assertions.assertTrue(tag.attributes.containsKey("test2"))
     }
 
     /**
      * Test method for {@link GroovySyntaxTag#calculateExpression(java.lang.String)}.
      */
+    @Test
     void testCalculateExpression() {
-        TestCase.assertEquals("test", tag.calculateExpression(" test "))
-        TestCase.assertEquals("test",tag.calculateExpression(" \" test\" "))
-        TestCase.assertEquals("test.method()", tag.calculateExpression(' ${ test.method() } '))
+        Assertions.assertEquals("test", tag.calculateExpression(" test "))
+        Assertions.assertEquals("test",tag.calculateExpression(" \" test\" "))
+        Assertions.assertEquals("test.method()", tag.calculateExpression(' ${ test.method() } '))
     }
 }
 

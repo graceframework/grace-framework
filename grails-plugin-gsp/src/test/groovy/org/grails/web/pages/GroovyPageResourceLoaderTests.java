@@ -14,8 +14,8 @@
  */
 package org.grails.web.pages;
 
-import junit.framework.TestCase;
 import org.grails.gsp.GroovyPageResourceLoader;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the development ResourceLoader instance of Groovy Server Pages.
@@ -23,8 +23,9 @@ import org.grails.gsp.GroovyPageResourceLoader;
  * @author Graeme Rocher
  * @since 0.5
  */
-public class GroovyPageResourceLoaderTests extends TestCase {
+public class GroovyPageResourceLoaderTests {
 
+    @Test
     public void testGetRealLocationInProject() {
         /*GroovyPageResourceLoader rl =*/ new GroovyPageResourceLoader();
     }

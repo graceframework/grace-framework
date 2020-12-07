@@ -1,15 +1,17 @@
 package org.grails.gsp.compiler;
 
-import junit.framework.TestCase;
 import org.grails.gsp.GroovyPage;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the GSP lexer (Scan class).
  *
  * @author a.shneyderman
  */
-public class ScanTests extends TestCase {
+public class ScanTests {
 
+    @Test
     public void testTagsCustomNamespace() {
         String gsp =
             "<tbody>\n" +
@@ -21,11 +23,12 @@ public class ScanTests extends TestCase {
         while ((next = s.nextToken()) != Tokens.EOF) {
             if (next == Tokens.GSTART_TAG ||
                 next == Tokens.GEND_TAG) {
-                assertEquals("tt", s.getNamespace());
+                Assertions.assertEquals("tt", s.getNamespace());
             }
         }
     }
 
+    @Test
     public void testTagsDefaultNamespace() {
         String gsp =
             "<tbody>\n" +
@@ -37,21 +40,22 @@ public class ScanTests extends TestCase {
         while ((next = s.nextToken()) != Tokens.EOF) {
             if (next == Tokens.GSTART_TAG ||
                 next == Tokens.GEND_TAG) {
-                assertEquals(GroovyPage.DEFAULT_NAMESPACE, s.getNamespace());
+                Assertions.assertEquals(GroovyPage.DEFAULT_NAMESPACE, s.getNamespace());
             }
         }
     }
-    
+
+    @Test
     public void testMaxHtmlLength() {
         String gsp = "0123456789ABCDEFGHIJK";
         GroovyPageScanner scanner = new GroovyPageScanner(gsp);
         scanner.setMaxHtmlLength(10);
-        assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
-        assertEquals("0123456789", scanner.getToken());
-        assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
-        assertEquals("ABCDEFGHIJ", scanner.getToken());
-        assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
-        assertEquals("K", scanner.getToken());
-        assertEquals(GroovyPageScanner.EOF, scanner.nextToken());
+        Assertions.assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
+        Assertions.assertEquals("0123456789", scanner.getToken());
+        Assertions.assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
+        Assertions.assertEquals("ABCDEFGHIJ", scanner.getToken());
+        Assertions.assertEquals(GroovyPageScanner.HTML, scanner.nextToken());
+        Assertions.assertEquals("K", scanner.getToken());
+        Assertions.assertEquals(GroovyPageScanner.EOF, scanner.nextToken());
     }
 }

@@ -62,7 +62,7 @@ class GroovyFindAllTagTests {
     @Test
     void testDoEndTag() {
         tag.doEndTag()
-        assertEquals("}${System.properties['line.separator']}", sw.toString())
+        assertEquals("}${System.properties['line.separator']}".toString(), sw.toString())
     }
 
     @Test
