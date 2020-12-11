@@ -65,4 +65,3 @@ jobs:
           FOLDER: build/docs
           COMMIT_EMAIL: behlp@objectcomputing.com
           COMMIT_NAME: Puneet Behl
-        run: ./gradlew docs
