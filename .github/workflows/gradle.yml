@@ -59,7 +59,7 @@ jobs:
         if: success() && github.event_name == 'push' && matrix.java == '8'
         uses: micronaut-projects/github-pages-deploy-action@master
         env:
-          TARGET_REPOSITORY: grails/grails-gsp
+          TARGET_REPOSITORY: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages
           FOLDER: build/docs
