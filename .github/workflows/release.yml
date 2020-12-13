@@ -60,3 +60,6 @@ jobs:
         uses: micronaut-projects/github-actions/post-release@grails
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          SNAPSHOT_SUFFIX: .BUILD-SNAPSHOT
+
