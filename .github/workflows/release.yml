@@ -2,6 +2,9 @@ name: Release
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - master
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -21,13 +24,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Set the current release version
-        id: release_version
-        run: echo ::set-output name=release_version::${GITHUB_REF:11}
-      - name: Run pre-release
-        uses: micronaut-projects/github-actions/pre-release@grails
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish, Upload to Bintray
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
@@ -37,7 +33,9 @@ jobs:
           ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
           SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
-        run: ./gradlew bintrayUpload
+        run: |
+          echo "Publishing Documentation"
+          ./gradlew docs
       - name: Export Gradle Properties
         uses: micronaut-projects/github-actions/export-gradle-properties@grails
       - name: Publish to Github Pages
