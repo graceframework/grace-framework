@@ -25,7 +25,7 @@ jobs:
         id: release_version
         run: echo ::set-output name=release_version::${GITHUB_REF:11}
       - name: Run pre-release
-        uses: micronaut-projects/github-actions/pre-release@grails
+        uses: micronaut-projects/github-actions/pre-release@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish, Upload to Bintray
@@ -43,7 +43,7 @@ jobs:
           echo "Publishing Documentation"
           ./gradlew docs
       - name: Export Gradle Properties
-        uses: micronaut-projects/github-actions/export-gradle-properties@grails
+        uses: micronaut-projects/github-actions/export-gradle-properties@master
       - name: Publish to Github Pages
         if: success()
         uses: micronaut-projects/github-pages-deploy-action@master
@@ -57,7 +57,7 @@ jobs:
           COMMIT_NAME: ${{ env.GIT_USER_NAME }}
       - name: Run post-release
         if: success()
-        uses: micronaut-projects/github-actions/post-release@grails
+        uses: micronaut-projects/github-actions/post-release@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
