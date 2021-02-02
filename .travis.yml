@@ -2,6 +2,10 @@ language: groovy
 jdk:
 - openjdk8
 - openjdk11
+branches:
+  only:
+    - 3.3.x
+    - 4.0.x
 env:
   global:
   - TERM=dumb
