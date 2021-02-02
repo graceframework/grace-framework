@@ -1,3 +1,6 @@
+import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionRulesWithCurrent
+import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
+
 buildscript {
     repositories {
         jcenter()
@@ -8,6 +11,7 @@ buildscript {
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.36.0"
     }
 }
 
@@ -24,6 +28,8 @@ ext {
 apply plugin:'idea'
 
 subprojects {
+
+    apply plugin: com.github.benmanes.gradle.versions.VersionsPlugin
 
     version project.projectVersion
 
@@ -106,6 +112,21 @@ subprojects {
             exceptionFormat = 'full'
         }
     }
+
+    tasks.named("dependencyUpdates").configure {com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask task->
+
+        // disallow release candidates as upgradable versions from stable versions
+        task.rejectVersionIf {
+            isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+        }
+    }
 }
 
 apply from:"${commonBuild}/common-docs.gradle"
+
+boolean isNonStable(String version) {
+    version ==~ /(?i).+(-|\.?)(b|M|RC|Dev)\d?.*/ ||
+            ['alpha', 'beta', 'milestone', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
+                version ==~ /(?i).*[.-]$qualifier[.\d-+]*/
+            }
+}
