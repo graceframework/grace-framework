@@ -122,6 +122,10 @@ subprojects {
             isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
         }
     }
+
+    useLatestVersions {
+        updateRootProperties = true
+    }
 }
 
 apply from:"${commonBuild}/common-docs.gradle"
