@@ -93,6 +93,8 @@ subprojects {
                 details.useVersion(springVersion)
             } else if (details.requested.group == "org.springframework.boot") {
                 details.useVersion(springBootVersion)
+            } else if (details.requested.group == "org.spockframework") {
+                details.useVersion(spockVersion)
             }
         }
     }
