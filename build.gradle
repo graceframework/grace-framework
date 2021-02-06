@@ -104,7 +104,7 @@ subprojects {
 
         testImplementation "javax.servlet:javax.servlet-api:$servletApiVersion"
         testImplementation "org.codehaus.groovy:groovy-test-junit5:${groovyVersion}"
-        testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
         testImplementation "org.junit.platform:junit-platform-runner:1.7.1"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
     }
