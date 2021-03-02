@@ -1,4 +1,7 @@
 language: groovy
+branches:
+  only:
+    - 3.3.x
 jdk:
 - openjdk8
 - openjdk11
