@@ -73,7 +73,7 @@ trait TagLibraryInvoker extends WebAttributes{
     Object methodMissing(String methodName, Object argsObject) {
         Object[] args = argsObject instanceof Object[] ? (Object[])argsObject : [argsObject] as Object[]
         if (shouldHandleMethodMissing(methodName, args)) {
-            TagLibraryLookup lookup = tagLibraryLookup
+            TagLibraryLookup lookup = getTagLibraryLookup()
             if (lookup) {
                 def usedNamespace = getTaglibNamespace()
                 GroovyObject tagLibrary = lookup.lookupTagLibrary(usedNamespace, methodName)
@@ -111,7 +111,7 @@ trait TagLibraryInvoker extends WebAttributes{
      * @return The namespace or a MissingPropertyException
      */
      Object propertyMissing(String propertyName) {
-        TagLibraryLookup lookup = tagLibraryLookup
+        TagLibraryLookup lookup = getTagLibraryLookup()
         NamespacedTagDispatcher namespacedTagDispatcher = lookup?.lookupNamespaceDispatcher(propertyName)
         if (namespacedTagDispatcher) {
             if (!developmentMode) {
