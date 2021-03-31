@@ -62,7 +62,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
     
     CodecLookup codecLookup
 
-    private List<String> booleanAttributes = ['disabled', 'checked', 'readonly']
+    private List<String> booleanAttributes = ['disabled', 'checked', 'readonly','required']
 
     void afterPropertiesSet() {
         if (applicationContext.containsBean('requestDataValueProcessor')) {
