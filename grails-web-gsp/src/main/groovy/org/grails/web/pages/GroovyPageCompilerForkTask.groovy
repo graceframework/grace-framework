@@ -16,6 +16,7 @@
 package org.grails.web.pages
 
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.grails.config.CodeGenConfig
 import org.grails.gsp.compiler.GroovyPageCompiler
 import groovy.io.FileType
 import org.codehaus.groovy.control.CompilationUnit
@@ -47,6 +48,7 @@ public class GroovyPageCompilerForkTask {
     String serverpath
     String encoding
     String targetCompatibility
+    String[] configs
 
     GroovyPageCompilerForkTask(File sourceDir, File destDir, File tmpdir) {
         this.tmpdir = tmpdir
@@ -58,6 +60,13 @@ public class GroovyPageCompilerForkTask {
     GroovyPageCompiler createPageCompiler() {
     	GroovyPageCompiler compiler = new GroovyPageCompiler()
     	CompilerConfiguration config = new CompilerConfiguration()
+
+
+        if(configs) {
+            String configPaths = configs.collect{new File(it)}.findAll{it.exists()}?.collect{it.canonicalPath}.toArray()
+            compiler.setConfigs(configPaths)
+        }
+
         if (classpath) {
             config.classpath = classpath.toString()
         }
@@ -114,12 +123,16 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String targetCompatibility = args[3]
         String packageName = args[4].trim()
         String serverpath = args[5]
+        String[] configFiles = args[6].tokenize(',')
         File configFile = new File(args[6])
         String encoding = args[7] ?: 'UTF-8'
 
 
-        // configuration.readConfiguration(configFile)
+        
         GroovyPageCompilerForkTask compiler = new GroovyPageCompilerForkTask(srcDir,destinationDir,tmpDir)
+        if(configFiles) {
+            compiler.configs = configFiles
+        }
         if(packageName) {
         	compiler.packageName = packageName	
         }
