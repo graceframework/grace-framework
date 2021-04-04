@@ -6,7 +6,7 @@
 === Purpose
 
 
-Formats `java.util.Date` instances using the patterns defined by the https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html[SimpleDateFormat] class.
+Formats `java.util.Date`, `java.time.LocalDate`, and `java.time.LocalDateTime` instances using the patterns defined by the https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html[SimpleDateFormat] class.
 
 
 === Examples
@@ -38,7 +38,7 @@ Formats `java.util.Date` instances using the patterns defined by the https://doc
 
 Attributes
 
-* `date` (required) - The date object to format
+* `date` (required) - The date object to format. It could be the instance of `java.util.Date`, `java.time.LocalDate`, `java.time.LocalDateTime`.
 * `format` (optional) - The formatting pattern to use for the date, see https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html[SimpleDateFormat]
 * `formatName` (optional) - Look up `format` from the default MessageSource / ResourceBundle (i18n/*.properties file) with this key. If `format` and `formatName` are empty, `format` is looked up with '`default.date.format`' key. Defaults to 'yyyy-MM-dd HH:mm:ss z' if the key not specified
 * `type` (optional) - The type of format to use for the date / time. `format` or `formatName` aren't used when `type` is specified. Possible values: 'date' - shows only date part, 'time' - shows only time part, 'both'/'datetime' - shows date and time
@@ -48,3 +48,4 @@ Attributes
 * `dateStyle` (optional) - Set separate `style` for the date part.
 * `timeStyle` (optional) - Set separate `style` for the time part.
 
+WARNING: While using `java.time.LocalDate` as the date value please specify the format attribute as the default (yyyy-MM-dd HH:mm:ss z) would fail to format because `java.time.LocalDate` does not have any time format.
