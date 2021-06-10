@@ -46,7 +46,7 @@ dependencies {
 }
 // disable main class
 bootJar {
-    mainClass.set(dummy.Application)
+    mainClass.set('dummy.Application')
 }
 findMainClass.onlyIf { false }
 test {
