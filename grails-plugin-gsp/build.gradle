@@ -1,5 +1,5 @@
 ext {
-    isTravisBuild = System.getenv().get("TRAVIS") == 'true'
+    isCiBuild = System.getenv().get("TRAVIS") == 'true' || System.getenv().get("CI")
 }
 configurations.all {
     resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
@@ -50,7 +50,7 @@ bootJar {
 }
 findMainClass.onlyIf { false }
 test {
-    if (isTravisBuild) {
+    if (isCiBuild) {
         maxParallelForks = 1
         forkEvery = 10
     }

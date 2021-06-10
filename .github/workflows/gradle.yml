@@ -35,6 +35,7 @@ jobs:
       - name: Run Tests
         run: ./gradlew check
       - name: Publish Test Report
+        if: failure()
         uses: scacap/action-surefire-report@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +53,7 @@ jobs:
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         run: |
           echo $SECRING_FILE | base64 -d > secring.gpg
-          ./gradlew -Dorg.gradle.internal.publish.checksums.insecure=true -Psigning.keyId="$SIGNING_KEY" -Psigning.password="$SIGNING_PASSPHRASE" -Psigning.secretKeyRingFile="secring.gpg" publish
+          ./gradlew publish
           echo "Publishing Docs..."
           ./gradlew docs
       - name: Publish to Github Pages

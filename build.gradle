@@ -3,27 +3,28 @@ import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentS
 
 buildscript {
     repositories {
-        jcenter()
         maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath "se.patrikerdes:gradle-use-latest-versions-plugin:0.2.17"
+        classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
+        classpath "se.patrikerdes:gradle-use-latest-versions-plugin:0.2.17"
+        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
     }
 }
 
 repositories {
-    jcenter()
     maven { url "https://repo.grails.org/grails/core" }
 }
+
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/v2.0.0.M1'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
 }
 
 apply plugin:'idea'
@@ -41,25 +42,21 @@ subprojects {
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
     }
 
-    if(isGrailsPlugin) {
+    if (isGrailsPlugin) {
         group "org.grails.plugins"
-    }
-    else {
+    } else {
         group "org.grails"
     }
     repositories {
         maven { url "https://repo.grails.org/grails/core" }
     }
-    if(it.name.startsWith("examples")) {
-        apply plugin:"org.grails.grails-web"
-    }
-    else if(isGrailsPlugin) {
-        apply plugin:"org.grails.grails-plugin"
-        apply from:"${commonBuild}/common-publishing.gradle"
-    }
-    else {
-        apply from:"${commonBuild}/common-project.gradle"
-        apply from:"${commonBuild}/common-publishing.gradle"
+    if (it.name.startsWith("examples")) {
+        apply plugin: "org.grails.grails-web"
+    } else if (isGrailsPlugin) {
+        apply plugin: "org.grails.grails-plugin"
+    } else {
+        apply from: "${commonBuild}/common-project.gradle"
+
         dependencies {
             documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
         }
@@ -130,7 +127,8 @@ subprojects {
     }
 }
 
-apply from:"${commonBuild}/common-docs.gradle"
+apply from: "${commonBuild}/common-docs.gradle"
+apply from: "${commonBuild}/common-publishing.gradle"
 
 boolean isNonStable(String version) {
     version ==~ /(?i).+(-|\.?)(b|M|RC|Dev)\d?.*/ ||
