@@ -1,5 +1,5 @@
 ext {
-    isCiBuild = System.getenv().get("TRAVIS") == 'true' || System.getenv().get("CI")
+    isCiBuild = System.getenv().get("TRAVIS") == 'true' || System.getenv().get("CI") as Boolean
 }
 configurations.all {
     resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
@@ -46,7 +46,7 @@ dependencies {
 }
 // disable main class
 bootJar {
-    mainClassName = 'dummy.Application'
+    mainClass.set(dummy.Application)
 }
 findMainClass.onlyIf { false }
 test {
