@@ -60,6 +60,7 @@ ext.pomInfo = {
 }
 
 apply plugin: 'idea'
+apply plugin: 'java-library'
 apply plugin: 'groovy'
 apply plugin: "io.github.groovylang.groovydoc"
 apply plugin: 'com.bmuschko.nexus'
@@ -78,6 +79,7 @@ configurations {
 }
 
 dependencies {
+    documentation "org.fusesource.jansi:jansi:1.18"
     documentation "org.codehaus.groovy:groovy-cli-picocli:$groovyVersion"
 
     api gradleApi()
@@ -85,12 +87,12 @@ dependencies {
     api "com.bmuschko:gradle-nexus-plugin:2.3.1"
     api "org.grails:grails-gradle-model:$grailsVersion"
     api "org.grails:grails-shell:$grailsVersion", {
-        exclude group:"org.slf4j", module:"slf4j-simple"
+        exclude group: "org.slf4j", module: "slf4j-simple"
     }
     api "org.grails:grails-bootstrap:$grailsVersion", {
-        exclude group:"org.fusesource.jansi", module:"jansi"
-        exclude group:"jline", module:"jline"
-        exclude group:"net.java.dev.jna", module:"jna"
+        exclude group: "org.fusesource.jansi", module: "jansi"
+        exclude group: "jline", module: "jline"
+        exclude group: "net.java.dev.jna", module: "jna"
 
         // Ant
         exclude group: "org.codehaus.groovy", module: "groovy-ant"
@@ -104,7 +106,6 @@ dependencies {
     }
 
     api "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    api 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     api "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
     api 'com.netflix.nebula:gradle-extra-configurations-plugin:2.2.0'
 }
@@ -130,6 +131,7 @@ configure([compileJava, compileTestJava]) {
 }
 
 configure([groovydoc]) {
+    destinationDir = project.file("build/docs/api")
     classpath += configurations.documentation
     jvmArgs "-Xmx512M"
 }
