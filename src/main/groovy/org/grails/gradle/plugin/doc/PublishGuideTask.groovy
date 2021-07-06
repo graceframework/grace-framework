@@ -22,6 +22,8 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.gradle.work.InputChanges
+
 /**
  * A task used to publish the user guide if a publin that is in GDoc format
  *
@@ -53,7 +55,7 @@ class PublishGuideTask extends AbstractCompile {
     void setSource(Object source) {
         try {
             srcDir = project.file(source)
-            if(srcDir.exists() && !srcDir.isDirectory()) {
+            if (srcDir.exists() && !srcDir.isDirectory()) {
                 throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
             }
             super.setSource(source)
@@ -64,18 +66,18 @@ class PublishGuideTask extends AbstractCompile {
 
     @CompileDynamic
     @TaskAction
-    protected void compile() {
+    void compile(InputChanges inputChanges) {
         def urls = getClasspath().files.collect() { File f -> f.toURI().toURL() }
 
         URLClassLoader classLoader = new URLClassLoader(urls as URL[], (ClassLoader) null)
         def docPublisher = classLoader.loadClass("grails.doc.DocPublisher").newInstance(srcDir, destinationDir, project.logger)
-        if(groovydocDir?.exists()) {
+        if (groovydocDir?.exists()) {
             project.copy {
                 from groovydocDir
                 into "$destinationDir/gapi"
             }
         }
-        if(javadocDir?.exists()) {
+        if (javadocDir?.exists()) {
             project.copy {
                 from javadocDir
                 into "$destinationDir/api"
@@ -87,13 +89,13 @@ class PublishGuideTask extends AbstractCompile {
         docPublisher.target = destinationDir
         docPublisher.workDir = new File(project.buildDir, "doc-tmp")
         docPublisher.apiDir = destinationDir
-        if(resourcesDir) {
+        if (resourcesDir) {
             docPublisher.images = new File(resourcesDir, "img")
             docPublisher.css = new File(resourcesDir, "css")
             docPublisher.js = new File(resourcesDir, "js")
             docPublisher.style = new File(resourcesDir, "style")
         }
-        if(propertiesFile) {
+        if (propertiesFile) {
             docPublisher.propertiesFile = propertiesFile
         }
 

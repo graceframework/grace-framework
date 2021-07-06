@@ -32,6 +32,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
+import org.gradle.work.InputChanges
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.cli.profile.commands.script.GroovyScriptCommandTransform
 import org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin
@@ -71,11 +72,6 @@ class ProfileCompilerTask extends AbstractCompile {
     @Optional
     File templatesDir
 
-    @TaskAction
-    void execute(IncrementalTaskInputs inputs) {
-        compile()
-    }
-
     @Override
     @InputFiles
     FileTree getSource() {
@@ -88,7 +84,8 @@ class ProfileCompilerTask extends AbstractCompile {
         super.setDestinationDir(destinationDir)
     }
 
-    protected void compile() {
+    @TaskAction
+    void execute(InputChanges inputChanges) {
 
         boolean profileYmlExists = config?.exists()
 

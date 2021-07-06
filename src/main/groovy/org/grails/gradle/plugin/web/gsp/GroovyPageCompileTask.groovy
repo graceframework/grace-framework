@@ -11,6 +11,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
+import org.gradle.work.InputChanges
 
 /**
  * A task for compiling GSPs
@@ -46,12 +47,8 @@ class GroovyPageCompileTask extends AbstractCompile {
     }
 
     @TaskAction
-    void execute(IncrementalTaskInputs inputs) {
-        compile()
-    }
-
     @CompileDynamic
-    protected void compile() {
+    protected void execute(InputChanges inputChanges) {
 
         def compileTask = this
         Project gradleProject = project
