@@ -1,7 +1,7 @@
 dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     api "org.grails:grails-web-common:$grailsVersion"
-    api( project(":grails-taglib") )
+    api project(":grails-taglib")
 
     testRuntimeOnly "org.grails:grails-spring:$grailsVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
@@ -9,5 +9,5 @@ dependencies {
 
 compileGroovy.doLast {
     // unfortunate workaround, since the generated one overrides the one in src/main/resources
-    project.delete("build/classes/main/META-INF/grails.factories")
+    project.delete("build/classes/groovy/main/META-INF/grails.factories")
 }
