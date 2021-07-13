@@ -7,6 +7,7 @@ dependencies {
     testImplementation "org.springframework:spring-test:$springVersion"
 }
 
+// TODO: Remove this after update to Grails 5.0.0.M2
 compileGroovy.doLast {
     // unfortunate workaround, since the generated one overrides the one in src/main/resources
     final String compileGroovyTargetDir = tasks.compileGroovy.destinationDirectory.getAsFile().getOrNull()?.path ?: "build/classes/groovy/main"
