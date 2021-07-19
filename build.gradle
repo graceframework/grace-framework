@@ -24,7 +24,7 @@ repositories {
 version project.projectVersion
 
 ext {
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/11cea5c569af59e9590cf5a044578467eb74e3bd'
+    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/0e45dbd0f696addb1824eab9bef7d4b98b86cba4'
 }
 
 apply plugin:'idea'
