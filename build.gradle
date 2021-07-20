@@ -266,7 +266,6 @@ subprojects { subproject ->
 
         subproject.afterEvaluate {
             signing {
-                println "hasPublishTask: " + gradle.taskGraph.hasTask("publish")
                 required { isReleaseVersion  }
                 sign publishing.publications.maven
             }
