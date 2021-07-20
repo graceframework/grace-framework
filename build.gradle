@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
         classpath "io.github.gradle-nexus:publish-plugin:1.0.0"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
         classpath "se.patrikerdes:gradle-use-latest-versions-plugin:0.2.17"
@@ -120,7 +119,176 @@ subprojects {
 }
 
 apply from: "${commonBuild}/common-docs.gradle"
-apply from: "${commonBuild}/common-publishing.gradle"
+
+ext.isSnapshot = project.projectVersion.endsWith('-SNAPSHOT')
+ext.isReleaseVersion = !isSnapshot
+ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : "${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg"
+ext."signing.password" = project.hasProperty("signing.password") ? project.getProperty('signing.password') : System.getenv('SIGNING_PASSPHRASE')
+
+if (isReleaseVersion) {
+    apply plugin: 'maven-publish'
+    apply plugin: "io.github.gradle-nexus.publish-plugin"
+
+    nexusPublishing {
+        repositories {
+            sonatype {
+                def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+                def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+                def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
+                username = ossUser
+                password = ossPass
+                stagingProfileId = ossStagingProfileId
+            }
+        }
+        transitionCheckOptions {
+            maxRetries.set(40)
+            delayBetween.set(java.time.Duration.ofMillis(2000))
+        }
+    }
+}
+
+subprojects { project ->
+
+    ext.isSnapshot = project.projectVersion.endsWith('-SNAPSHOT')
+    ext.isReleaseVersion = !isSnapshot
+    ext {
+        isExample = project.name.startsWith('example')
+        isGrailsPlugin = project.name.startsWith('grails-plugin')
+        pomInfo = {
+            delegate.name project.title
+            delegate.description project.projectDesc
+            delegate.url projectUrl
+
+            delegate.licenses {
+                delegate.license {
+                    delegate.name 'The Apache Software License, Version 2.0'
+                    delegate.url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    delegate.distribution 'repo'
+                }
+            }
+
+            delegate.scm {
+                delegate.url "scm:git@github.com:${githubSlug}.git"
+                delegate.connection "scm:git@github.com:${githubSlug}.git"
+                delegate.developerConnection "scm:git@github.com:${githubSlug}.git"
+            }
+
+            if (developers) {
+                delegate.developers {
+                    for (dev in developers.split(',')) {
+                        delegate.developer {
+                            delegate.id dev.toLowerCase().replace(' ', '')
+                            delegate.name dev
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (!isExample) {
+
+        apply plugin: 'maven-publish'
+
+        if (isReleaseVersion) {
+            apply plugin: 'signing'
+        }
+
+        Task sourcesJar = project.tasks.findByName("sourcesJar")
+        if (!sourcesJar) {
+            sourcesJar = tasks.create("sourcesJar", Jar) {
+                classifier = 'sources'
+                group = BasePlugin.BUILD_GROUP
+                description = 'Assembles a jar archive containing the main sources of this project.'
+                from project.sourceSets.main.allSource
+            }
+        }
+
+        Task javadocJar = project.tasks.findByName("javadocJar")
+        if (!javadocJar) {
+            javadocJar = tasks.create("javadocJar", Jar) {
+                classifier = 'javadoc'
+                group = BasePlugin.BUILD_GROUP
+                description = 'Assembles a jar archive containing the generated Javadoc API documentation of this project.'
+                from project.plugins.hasPlugin(GroovyPlugin) ? project.tasks.getByName(GroovyPlugin.GROOVYDOC_TASK_NAME) : project.tasks.getByName(JavaPlugin.JAVADOC_TASK_NAME)
+            }
+        }
+        tasks.findByName("assemble").finalizedBy(sourcesJar, javadocJar)
+
+        publishing {
+            if (isSnapshot) {
+                repositories {
+                    maven {
+                        credentials {
+                            def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
+                            def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
+                            username = u
+                            password = p
+                        }
+                        if (isGrailsPlugin) {
+                            url "https://repo.grails.org/grails/plugins3-snapshots-local"
+                        } else {
+                            url "https://repo.grails.org/grails/libs-snapshots-local"
+                        }
+                    }
+                }
+            }
+
+            publications {
+                maven(MavenPublication) {
+                    if (isGrailsPlugin) {
+                        artifactId(project.name - 'grails-plugin-')
+                    } else if (project.name.contains('/')) {
+                        artifactId(project.name.substring(project.name.indexOf('/') + 1))
+                    }
+
+                    from components.java
+
+                    artifact sourcesJar
+                    artifact javadocJar
+
+                    if (isGrailsPlugin) {
+                        artifact source: "${project.buildDir}/classes/groovy/main/META-INF/grails-plugin.xml",
+                                classifier: "plugin",
+                                extension: 'xml'
+                    }
+                    pom.withXml {
+                        def xml = asNode()
+
+                        xml.children().last() + pomInfo
+                        // dependency management shouldn't be included
+                        def n = xml.get("dependencyManagement")
+                        if (n)
+                            xml.remove(n)
+                    }
+
+                }
+            }
+        }
+
+        if (isReleaseVersion) {
+            project.afterEvaluate {
+                signing {
+                    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                    sign publishing.publications.maven
+                }
+            }
+
+            tasks.withType(Sign) {
+                onlyIf { isReleaseVersion }
+            }
+
+
+            //do not generate extra load on Nexus with new staging repository if signing fails
+            tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
+                shouldRunAfter(tasks.withType(Sign))
+            }
+        }
+    }
+
+}
+
 
 boolean isNonStable(String version) {
     version ==~ /(?i).+(-|\.?)(b|M|RC|Dev)\d?.*/ ||
