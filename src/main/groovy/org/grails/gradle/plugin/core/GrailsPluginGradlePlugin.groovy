@@ -138,7 +138,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         project.sourceSets {
             ast {
                 groovy {
-                    compileClasspath += project.configurations.compile
+                    compileClasspath += project.configurations.compileClasspath
                 }
             }
             main {
