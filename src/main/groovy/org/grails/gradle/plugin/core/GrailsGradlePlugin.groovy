@@ -622,7 +622,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
         project.afterEvaluate {
             if (project.tasks.findByName("pathingJar") == null) {
                 ConfigurationContainer configurations = project.configurations
-            Configuration runtime = configurations.getByName('runtimeClasspath')
+                Configuration runtime = configurations.getByName('runtimeClasspath')
                 Configuration developmentOnly = configurations.findByName('developmentOnly')
                 Configuration console = configurations.getByName('console')
                 SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
