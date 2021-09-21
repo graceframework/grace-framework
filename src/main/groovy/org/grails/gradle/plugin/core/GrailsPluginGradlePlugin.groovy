@@ -87,7 +87,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
 
         ConfigurationContainer allConfigurations = project.configurations
 
-        def runtimeConfiguration = allConfigurations.findByName('runtime')
+        def runtimeConfiguration = allConfigurations.findByName('runtimeClasspath')
         def explodedConfig = allConfigurations.create('exploded')
         explodedConfig.extendsFrom(runtimeConfiguration)
         if(Environment.isDevelopmentRun() && isExploded(project)) {
