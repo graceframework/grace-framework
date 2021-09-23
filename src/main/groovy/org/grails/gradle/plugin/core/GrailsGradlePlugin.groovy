@@ -39,7 +39,11 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.AbstractCopyTask
+import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetOutput
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.testing.Test
@@ -670,7 +674,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
         FileCollection mainFiles = resolveClassesDirs(output, project)
         FileCollection fileCollection = project.files("${project.buildDir}/resources/main", "${project.projectDir}/gsp-classes") + mainFiles
         configurations.each {
-            fileCollection = fileCollection + it
+            fileCollection = fileCollection + it.filter({ File file-> !file.name.startsWith("spring-boot-devtools")})
         }
         fileCollection
     }
