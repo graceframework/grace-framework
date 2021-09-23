@@ -44,7 +44,7 @@ class GroovyPagePlugin implements Plugin<Project> {
         FileCollection classesDirs = resolveClassesDirs(output, project)
         File destDir = output?.dir("gsp-classes") ?: new File(project.buildDir, "gsp-classes/main")
 
-        Configuration providedConfig = project.configurations.findByName('provided')
+        Configuration providedConfig = project.configurations.findByName('providedCompile')
         def allClasspath = project.configurations.compileClasspath + project.configurations.gspCompile + classesDirs
         if(providedConfig) {
             allClasspath += providedConfig
