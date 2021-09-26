@@ -35,6 +35,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyResolveDetails
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.ExtraPropertiesExtension
@@ -508,9 +509,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
             TaskContainer taskContainer = project.tasks
 
             taskContainer.getByName(sourceSet.processResourcesTaskName) { AbstractCopyTask task ->
-
                 GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
                 boolean native2ascii = grailsExt.native2ascii
+                task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
                 if(native2ascii && grailsExt.native2asciiAnt && !taskContainer.findByName('native2ascii')) {
                     File destinationDir = ((ProcessResources) task).destinationDir
                     Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file('grails-app/i18n'), destinationDir)
