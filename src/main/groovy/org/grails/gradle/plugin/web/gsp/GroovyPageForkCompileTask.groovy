@@ -33,7 +33,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     @InputDirectory
     File srcDir
 
-    @Input
+    @InputDirectory
     File tmpDir
 
     @Input
@@ -117,11 +117,12 @@ class GroovyPageForkCompileTask extends AbstractCompile {
         // no-op
     }
 
+    @Input
     protected String getCompilerName() {
         "org.grails.web.pages.GroovyPageCompilerForkTask"
     }
 
-
+    @Input
     String getFileExtension() {
         "gsp"
     }
