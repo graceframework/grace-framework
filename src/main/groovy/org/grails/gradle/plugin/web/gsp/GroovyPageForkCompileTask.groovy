@@ -5,6 +5,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.tools.shell.util.PackageHelper
 import org.gradle.api.Action
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Nested
@@ -14,6 +15,10 @@ import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
+
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
@@ -33,6 +38,14 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     @InputDirectory
     File srcDir
 
+    @Input
+    String tmpDirPath
+
+    /**
+     * @deprecated Use {@link #tmpDirPath} instead.
+     */
+    @Deprecated
+    @Optional
     @InputDirectory
     File tmpDir
 
@@ -92,10 +105,17 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                             project.file("grails-app/conf/application.groovy").canonicalPath
                         ].join(',')
 
+                        Path path = Paths.get(tmpDirPath)
+                        File tmp = tmpDir
+                        if (Files.exists(path)) {
+                            tmp = path.toFile()
+                        } else {
+                            tmp = Files.createDirectories(path).toFile()
+                        }
                         def arguments = [
                             srcDir.canonicalPath,
                             destinationDir.canonicalPath,
-                            tmpDir.canonicalPath,
+                            tmp.canonicalPath,
                             targetCompatibility,
                             packageName,
                             serverpath,
