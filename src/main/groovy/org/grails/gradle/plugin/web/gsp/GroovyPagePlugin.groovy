@@ -6,6 +6,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
@@ -51,9 +53,10 @@ class GroovyPagePlugin implements Plugin<Project> {
         }
 
         def allTasks = project.tasks
+
         def compileGroovyPages = allTasks.create("compileGroovyPages", GroovyPageForkCompileTask) {
             destinationDir = destDir
-            tmpDir = getTmpDir(project)
+            tmpDirPath = getTmpDirPath(project)
             source = project.file("${project.projectDir}/grails-app/views")
             serverpath = "/WEB-INF/grails-app/views/"
         }
@@ -63,7 +66,7 @@ class GroovyPagePlugin implements Plugin<Project> {
         def compileWebappGroovyPages = allTasks.create("compileWebappGroovyPages", GroovyPageForkCompileTask) {
             destinationDir = destDir
             source = project.file("${project.projectDir}/src/main/webapp")
-            tmpDir = getTmpDir(project)
+            tmpDirPath = getTmpDirPath(project)
             serverpath = "/"
         }
 
@@ -109,10 +112,9 @@ class GroovyPagePlugin implements Plugin<Project> {
         output?.classesDirs ?: project.files(new File(project.buildDir, "classes/main"))
     }
 
-    protected File getTmpDir(Project project) {
+    protected String getTmpDirPath(Project project) {
         def tmpdir = new File(project.buildDir as String, "gsptmp")
-        tmpdir.mkdirs()
-        return tmpdir
+        return tmpdir.absolutePath
     }
 
 }
