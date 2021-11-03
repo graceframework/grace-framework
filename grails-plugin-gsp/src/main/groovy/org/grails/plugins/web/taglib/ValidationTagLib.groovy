@@ -62,10 +62,11 @@ class ValidationTagLib implements TagLibrary {
     Closure fieldError = { attrs, body ->
         def bean = attrs.bean
         def field = attrs.field
+        def encodeAs = attrs.encodeAs
 
         if (bean && field) {
             if (bean.metaClass.hasProperty(bean, 'errors')) {
-                return messageImpl(error: bean.errors?.getFieldError(field), encodeAs: "HTML")
+                return messageImpl(error: bean.errors?.getFieldError(field), encodeAs: encodeAs ?: "HTML")
             }
         }
 
