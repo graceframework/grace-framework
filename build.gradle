@@ -7,8 +7,6 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
         classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.39.0"
-        classpath "se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18"
     }
 }
 
@@ -25,9 +23,6 @@ ext {
 apply plugin:'idea'
 
 subprojects {
-
-    apply plugin: 'se.patrikerdes.use-latest-versions'
-    apply plugin: com.github.benmanes.gradle.versions.VersionsPlugin
 
     version project.projectVersion
 
@@ -103,18 +98,6 @@ subprojects {
             showStandardStreams = true
             exceptionFormat = 'full'
         }
-    }
-
-    tasks.named("dependencyUpdates").configure {com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask task->
-
-        // disallow release candidates as upgradable versions from stable versions
-        task.rejectVersionIf {
-            isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
-        }
-    }
-
-    useLatestVersions {
-        updateRootProperties = true
     }
 }
 
