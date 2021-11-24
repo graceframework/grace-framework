@@ -17,7 +17,6 @@ dependencies {
     compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
     api project(":grails-web-gsp-taglib")
 
-
     runtimeOnly(project(":grails-web-jsp"))
     api "commons-lang:commons-lang:2.6"
     api "org.grails:grails-plugin-codecs:$grailsVersion"
@@ -27,7 +26,6 @@ dependencies {
     testImplementation "org.grails:grails-web-testing-support:$testingSupportVersion", {
         exclude module:'async'
     }
-    // testImplementation 'org.grails:grails-async:4.0.0.BUILD-SNAPSHOT'
     testImplementation "org.grails:grails-testing-support:$testingSupportVersion", {
         exclude module:'async'
     }
