@@ -32,7 +32,7 @@ version-resolver:
       - 'type: patch'
   default: patch
 template: |
-  ## Changes
+  ## What's Changed
 
   $CHANGES
 
