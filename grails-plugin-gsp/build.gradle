@@ -20,8 +20,8 @@ dependencies {
     runtimeOnly(project(":grails-web-jsp"))
     api "commons-lang:commons-lang:2.6"
     api "org.grails:grails-plugin-codecs:$grailsVersion"
-    astCompile "org.grails:grails-web:$grailsVersion"    
-    astCompile "org.grails:grails-plugin-controllers:$grailsVersion"
+    astImplementation "org.grails:grails-web:$grailsVersion"
+    astImplementation "org.grails:grails-plugin-controllers:$grailsVersion"
 
     testImplementation "org.grails:grails-web-testing-support:$testingSupportVersion", {
         exclude module:'async'
