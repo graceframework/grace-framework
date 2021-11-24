@@ -17,6 +17,7 @@ repositories {
 version project.projectVersion
 
 ext {
+    isCiBuild = System.getenv().get("TRAVIS") == 'true' || (System.getenv().get("CI") as Boolean)
     commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
 }
 
@@ -97,6 +98,11 @@ subprojects {
         testLogging {
             showStandardStreams = true
             exceptionFormat = 'full'
+        }
+        if (isCiBuild) {
+            maxParallelForks = 2
+        } else {
+            maxParallelForks = 4
         }
     }
 }
