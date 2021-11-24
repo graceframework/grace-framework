@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -51,13 +52,15 @@ import com.opensymphony.sitemesh.Content;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefreshedEvent>{
+public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
     public static final String LAYOUT_ATTRIBUTE = "org.grails.layout.name";
     public static final String NONE_LAYOUT = "_none_";
     public static final String RENDERING_VIEW_ATTRIBUTE = "org.grails.rendering.view";
     private static final Logger LOG = LoggerFactory.getLogger(GrailsLayoutDecoratorMapper.class);
     private static final long LAYOUT_CACHE_EXPIRATION_MILLIS = Long.getLong("grails.gsp.reload.interval", 5000);
     private static final String LAYOUTS_PATH = "/layouts";
+
+    private static final int ORDER = Ordered.LOWEST_PRECEDENCE - 1;
 
     private Map<String, DecoratorCacheValue> decoratorCache = new ConcurrentHashMap<String, DecoratorCacheValue>();
     private Map<LayoutCacheKey, DecoratorCacheValue> layoutDecoratorCache = new ConcurrentHashMap<LayoutCacheKey, DecoratorCacheValue>();
@@ -67,6 +70,11 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
     private boolean cacheEnabled = (Environment.getCurrent() != Environment.DEVELOPMENT);
     private ViewResolver viewResolver;
     private boolean enableNonGspViews = false;
+
+    @Override
+    public int getOrder() {
+        return ORDER;
+    }
 
     public void setDefaultDecoratorName(String defaultDecoratorName) {
         this.defaultDecoratorName = defaultDecoratorName;
