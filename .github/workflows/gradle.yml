@@ -24,7 +24,14 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+      - name: Run Tests
+        if: github.event_name == 'pull_request'
+        id: tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean check
       - name: Run Build
+        if: github.event_name == 'push' && matrix.java == '8'
         id: build
         uses: gradle/gradle-build-action@v2
         env:
@@ -40,7 +47,7 @@ jobs:
         with:
           arguments: publish
       - name: Publish Test Report
-        if: steps.build.outcome == 'failure'
+        if: steps.build.outcome == 'failure' || steps.tests.outcome == 'failure'
         uses: scacap/action-surefire-report@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
