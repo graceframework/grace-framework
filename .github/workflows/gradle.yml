@@ -31,7 +31,7 @@ jobs:
         with:
           arguments: clean check
       - name: Run Build
-        if: github.event_name == 'push' && matrix.java == '8'
+        if: github.event_name == 'push'
         id: build
         uses: gradle/gradle-build-action@v2
         env:
