@@ -15,22 +15,14 @@
  */
 package org.grails.web.pages
 
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.grails.config.CodeGenConfig
-import org.grails.gsp.compiler.GroovyPageCompiler
 import groovy.io.FileType
-import org.codehaus.groovy.control.CompilationUnit
-import org.codehaus.groovy.control.SourceUnit
-import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
-import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.codehaus.groovy.control.io.FileReaderSource
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.ExecutorCompletionService
-import java.util.concurrent.CompletionService
 import groovy.transform.CompileStatic
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.grails.gsp.compiler.GroovyPageCompiler
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
 /**
  * A Forked Compiler Task for use (typically by Gradle)
  *
@@ -63,7 +55,7 @@ public class GroovyPageCompilerForkTask {
 
 
         if(configs) {
-            String configPaths = configs.collect{new File(it)}.findAll{it.exists()}?.collect{it.canonicalPath}.toArray()
+            String[] configPaths = extractValidConfigPaths(configs)
             compiler.setConfigs(configPaths)
         }
 
@@ -94,6 +86,14 @@ public class GroovyPageCompilerForkTask {
             compiler.encoding = encoding
         }
         return compiler
+    }
+
+    private String[] extractValidConfigPaths(String[] configs) {
+        configs
+                .collect { new File(it) }
+                .findAll { it.exists() }
+                .collect { it.canonicalPath }
+                .toArray(new String[0])
     }
 
     void compile(List<File> sources) {
