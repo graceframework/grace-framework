@@ -1,7 +1,14 @@
 package org.grails.web.taglib
 
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertTrue
+
+
 class FormRenderingTagLibTests extends AbstractGrailsTagTests {
 
+    @Test
     void testTimeZoneSelect() {
         def template = '<g:timeZoneSelect name="foo"/>'
 
@@ -26,7 +33,7 @@ class FormRenderingTagLibTests extends AbstractGrailsTagTests {
         assertTrue output.endsWith('</select>')
     }
 
-    void assertOutputEquals(expected, template, params = [:]) {
+     void assertOutputEquals(expected, template, params = [:]) {
         def engine = appCtx.groovyPagesTemplateEngine
 
         assert engine

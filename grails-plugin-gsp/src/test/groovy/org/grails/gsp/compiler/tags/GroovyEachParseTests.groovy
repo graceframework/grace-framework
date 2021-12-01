@@ -1,9 +1,13 @@
 package org.grails.gsp.compiler.tags
 
 import org.grails.web.pages.ParseTests
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class GroovyEachParseTests extends ParseTests {
 
+    @Test
     void testEachOutput() {
         def output = parseCode("myTest", """
 <g:each var="t" in="${'blah'}">
@@ -28,6 +32,7 @@ printHtmlPart(0)
         assertEquals("\n", output.htmlParts[0])
     }
 
+    @Test
     void testEachOutputNoLineBreaks() {
         def output = parseCode("myTest", """
 <g:each var="t" in="${'blah'}"></g:each>""")
@@ -48,6 +53,7 @@ for( t in evaluate('"blah"', 1, it) { return "blah" } ) {
         assertEquals("\n", output.htmlParts[0])
     }
 
+    @Test
     void testEachOutVarAndIndex() {
         def output = parseCode("myTest2", """
 <g:each var="t" status="i" in="${'blah'}">

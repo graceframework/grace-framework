@@ -2,6 +2,9 @@ package org.grails.web.taglib
 
 import grails.util.Environment
 import org.grails.taglib.GrailsTagException
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 /**
  * Tests some of the core tags when rendering inside GSP.
@@ -21,12 +24,14 @@ class CoreTagsTests extends AbstractGrailsTagTests {
         System.setProperty(Environment.KEY, "")
     }
 
+    @Test
     void testUnlessWithTestCondition() {
         def template = '<g:unless test="${cond}">body text</g:unless>'
         assertOutputEquals 'body text', template, [cond: false], {it.toString().trim()}
         assertOutputEquals '', template, [cond: true], {it.toString().trim()}
     }
 
+    @Test
     void testUnlessWithEnvCondition() {
         def template = '<g:unless env="production">body text</g:unless>'
         assertOutputEquals 'body text', template, [:], {it.toString().trim()}
@@ -34,6 +39,7 @@ class CoreTagsTests extends AbstractGrailsTagTests {
         assertOutputEquals '', template, [:], {it.toString().trim()}
     }
 
+    @Test
     void testUnlessWithEnvAndTestConditions() {
         def template = '<g:unless env="production" test="${cond}">body text</g:unless>'
         assertOutputEquals 'body text', template, [cond: false], {it.toString().trim()}
@@ -44,6 +50,7 @@ class CoreTagsTests extends AbstractGrailsTagTests {
         assertOutputEquals '', template, [cond: true], {it.toString().trim()}
     }
 
+    @Test
     void testIfElse() {
 
         def template = '''
@@ -70,6 +77,7 @@ bar
        assertOutputEquals("bar", template, [foo:false]) { it.toString().trim() }
    }
 
+    @Test
     void testIfWithEnv() {
         def template = '''
 <g:if env="testing" test="${foo}">foo</g:if>
@@ -83,17 +91,20 @@ bar
         assertOutputEquals("foo", template2, [foo:true], { it.toString().trim() })
     }
 
+    @Test
     void testIfWithEnvAndWithoutTestAttribute() {
         def template = '''<g:if env="development">foo</g:if>'''
         assertOutputEquals("foo", template)
     }
 
+    @Test
     void testIfWithoutEnvAndTestAttributes() {
-        shouldFail(GrailsTagException) {
+        assertThrows(GrailsTagException, {
             applyTemplate("<g:if>foo</g:if>")
-        }
+        })
     }
 
+    @Test
     void testElseIf() {
         def template = '''
 <g:if test="${foo}">foo</g:if>

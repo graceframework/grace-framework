@@ -1,9 +1,14 @@
 package org.grails.web.taglib
 
 import org.apache.commons.lang.WordUtils
+import org.junit.jupiter.api.Test
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import org.w3c.dom.Document
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNotNull
+import static org.junit.jupiter.api.Assertions.assertTrue
 
 /**
  * @author Graeme Rocher
@@ -15,21 +20,24 @@ class SelectTagTests extends AbstractGrailsTagTests {
 
     private static final String SELECT_TAG_NAME = "testSelect"
 
+    @Test
     void testSelectTagEscaping() {
         def template = '<g:select id="${foo}.genre" name="${foo}.genre" value="${book?.genre}" from="${[\'non-fiction\',\'fiction\']}" noSelection="[\'\':\'-Genre-\']" />'
         def result = applyTemplate(template, [foo:'bar" /><script>alert("gotcha")</script>'])
 
-        assertTrue "should have HTML escaped attributes", result.startsWith('<select id="bar&quot; /&gt;&lt;script&gt;alert(&quot;gotcha&quot;)&lt;/script&gt;.genre" name="bar&quot; /&gt;&lt;script&gt;alert(&quot;gotcha&quot;)&lt;/script&gt;.genre" >')
+        assertTrue result.startsWith('<select id="bar&quot; /&gt;&lt;script&gt;alert(&quot;gotcha&quot;)&lt;/script&gt;.genre" name="bar&quot; /&gt;&lt;script&gt;alert(&quot;gotcha&quot;)&lt;/script&gt;.genre" >'), "should have HTML escaped attributes"
     }
 
+    @Test
     void testSelectTagEscapingValue() {
         def template = '<g:select id="genre" name="genre" from="${values}" />'
         def result = applyTemplate(template, [values: ["\"></option></select><script>alert('hi')</script>"]])
 
         println result
-        assertTrue "should have HTML escaped values", result.contains('<option value="&quot;&gt;&lt;/option&gt;&lt;/select&gt;&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;" >&quot;&gt;&lt;/option&gt;&lt;/select&gt;&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;</option>')
+        assertTrue result.contains('<option value="&quot;&gt;&lt;/option&gt;&lt;/select&gt;&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;" >&quot;&gt;&lt;/option&gt;&lt;/select&gt;&lt;script&gt;alert(&#39;hi&#39;)&lt;/script&gt;</option>'), "should have HTML escaped values"
     }
 
+    @Test
     void testSelectUsesExpressionForDisable() {
         def template = '<g:set var="flag" value="${true}"/><g:select disabled="${flag}" name="foo" id="foo" from="[1,2,3]" />'
         assertOutputContains('disabled="disabled"', template)
@@ -41,11 +49,13 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<select name="foo" id="foo" >', template)
     }
 
+    @Test
     void testSelectWithBigDecimal() {
         def template = '<g:set var="value" value="${2.4}"/><g:select name="foo" from="[1,2,3]" value="${value}" />'
         assertOutputContains('<option value="2" selected="selected" >2</option>', template)
     }
 
+    @Test
     void testSimpleSelect() {
         def template = '<g:select name="foo" from="[1,2,3]" value="1" />'
         assertOutputContains('<option value="1" selected="selected" >1</option>', template)
@@ -53,6 +63,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<option value="3" >3</option>', template)
     }
 
+    @Test
     void testMultiSelect() {
         def template = '<g:select name="foo" from="[1,2,3]" value="[2,3]" />'
 
@@ -62,6 +73,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<option value="3" selected="selected" >3</option>', template)
     }
 
+    @Test
     void testSelectWithCustomOptionKeyAndValue() {
 
         def list = [new SelectTestObject(id:1L, name:"Foo"),new SelectTestObject(id:2L, name:"Bar")]
@@ -71,6 +83,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<option value="1" >Foo</option>', template,[objList:list])
     }
 
+    @Test
     void testMultiSelectWithCustomOptionKeyAndValue() {
         def list = [new SelectTestObject(id:1L, name:"Foo"),new SelectTestObject(id:2L, name:"Bar"),new SelectTestObject(id:3L, name:"More")]
 
@@ -80,6 +93,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<option value="3" selected="selected" >More</option>', template,[objList:list])
     }
 
+    @Test
     void testSelectWithCustomOptionKeyAndValueAsClosure() {
         def list = [new SelectTestObject(id:1L, name:"Foo"),new SelectTestObject(id:2L, name:"Bar")]
         def template = '<g:select optionKey="id" optionValue="${{it.name?.toUpperCase()}}" name="foo" from="${objList}" value="2" />'
@@ -93,6 +107,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
      * Test case for GRAILS-3596: GString keys and string selected values
      * should match if they resolve to the same text.
      */
+    @Test
     void testSelectWithGStringKeysAndStringValue() {
         def counter = 1
         def list = [
@@ -110,6 +125,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
      * Test case for GRAILS-3596: GString selected values and string keys
      * should match if they resolve to the same text.
      */
+    @Test
     void testSelectWithStringKeysAndGStringValue() {
         def counter = 3
         def list = [
@@ -126,6 +142,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains('<option value="Item 2" >Item Two</option>', template,[objList:list, value:"Item $counter"])
     }
 
+    @Test
     void testSelectTag() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -168,6 +185,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         }
     }
 
+    @Test
     void testSelectTagWithNoSelectionSet() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -210,6 +228,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         }
     }
 
+    @Test
     void testSelectTagWithValueMessagePrefixSet() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -259,6 +278,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         }
     }
 
+    @Test
     void testMultipleSelect() {
         def categories = [
                 new Expando(code: 'M', label: 'Mystery'),
@@ -270,6 +290,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         checkMultiSelect(categories, selected, {cat -> selected.contains(cat.code) })
     }
 
+    @Test
     void testMultipleSelectWithObjectValues() {
         def sel1 = new Expando(code: 'T', label: 'Thriller'),
             sel2 = new Expando(code: 'C', label: 'Crime')
@@ -318,9 +339,10 @@ class SelectTagTests extends AbstractGrailsTagTests {
             }
         }
 
-        assertEquals("expecting selected options", selected.size(), actualSelected)
+        assertEquals(selected.size(), actualSelected, "expecting selected options")
     }
 
+    @Test
     void testSelectFromListOfMessageSourceResolvableObjectsUsesDefaultMessage() {
         def list = Title.values()
 
@@ -331,6 +353,7 @@ class SelectTagTests extends AbstractGrailsTagTests {
         assertOutputContains '<option value="DR" >Dr</option>', template, [list: list]
     }
 
+    @Test
     void testSelectFromListOfMessageSourceResolvableObjectsUsesI18nProperty() {
         def list = Title.values()
 

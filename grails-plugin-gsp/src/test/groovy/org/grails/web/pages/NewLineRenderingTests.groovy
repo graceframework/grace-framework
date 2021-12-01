@@ -1,6 +1,7 @@
 package org.grails.web.pages
 
 import org.grails.web.taglib.AbstractGrailsTagTests
+import org.junit.jupiter.api.Test
 
 /**
  * @author Graeme Rocher
@@ -8,6 +9,7 @@ import org.grails.web.taglib.AbstractGrailsTagTests
  */
 class NewLineRenderingTests extends AbstractGrailsTagTests {
 
+    @Test
     void testNewLinesBetweenExpressions() {
         def template = '''username: ${username}
 password: ${password}'''

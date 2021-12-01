@@ -1,15 +1,17 @@
 package org.grails.web.sitemesh
 
-import org.grails.core.io.MockStringResourceLoader
-import org.grails.web.taglib.AbstractGrailsTagTests
-import org.springframework.mock.web.MockServletConfig
-
 import com.opensymphony.module.sitemesh.Config
 import com.opensymphony.module.sitemesh.Decorator
 import com.opensymphony.module.sitemesh.DecoratorMapper
 import com.opensymphony.module.sitemesh.PageParser
 import com.opensymphony.module.sitemesh.RequestConstants
 import com.opensymphony.module.sitemesh.factory.BaseFactory
+import org.grails.core.io.MockStringResourceLoader
+import org.grails.web.taglib.AbstractGrailsTagTests
+import org.junit.jupiter.api.Test
+import org.springframework.mock.web.MockServletConfig
+
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Tests the sitemesh capturing and rendering tags end-to-end
@@ -19,6 +21,7 @@ import com.opensymphony.module.sitemesh.factory.BaseFactory
  */
 class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
 
+    @Test
     void testSimpleLayout() {
         def template = '''
 <html>
@@ -50,6 +53,7 @@ class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
 ''', result
     }
 
+    @Test
     void testTitleInSubTemplate() {
         def resourceLoader = new MockStringResourceLoader()
         resourceLoader.registerMockResource('/_title.gsp', '<title>This is the title</title>')
@@ -109,6 +113,7 @@ class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
         FactoryHolder.factory = siteMeshFactory
     }
 
+    @Test
     void testMultipleLevelsOfLayouts() {
         def resourceLoader = new MockStringResourceLoader()
         resourceLoader.registerMockResource('/layout/dialog.gsp', '''<html>
@@ -156,6 +161,7 @@ class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
 ''', result
     }
 
+    @Test
     void testParameters() {
         def template = '''
 <html>
@@ -175,6 +181,7 @@ class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
         assertEquals '<h1>pageProperty: here!</h1>', result
     }
 
+    @Test
     void testParametersWithLogic() {
         def template = '''
 <html>
@@ -194,6 +201,7 @@ class FullSitemeshLifeCycleTests extends AbstractGrailsTagTests {
     }
     
     // GRAILS-11484
+    @Test
     void testMultilineTitle() {
         def template = '''
 <html>
