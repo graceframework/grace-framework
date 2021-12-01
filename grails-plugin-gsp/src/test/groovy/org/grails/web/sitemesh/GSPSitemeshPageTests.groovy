@@ -1,13 +1,17 @@
 package org.grails.web.sitemesh
 
 import com.opensymphony.module.sitemesh.RequestConstants
-
-import org.grails.web.taglib.AbstractGrailsTagTests
 import org.grails.buffer.FastStringWriter
+import org.grails.web.taglib.AbstractGrailsTagTests
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.springframework.web.context.request.RequestContextHolder
+
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class GSPSitemeshPageTests extends AbstractGrailsTagTests {
 
+    @Test
     void testCaptureContent() {
         def template='<sitemesh:captureContent tag=\"testtag\">this is the captured content</sitemesh:captureContent>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -17,6 +21,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals 'this is the captured content', gspSiteMeshPage.getContentBuffer('page.testtag').toString()
     }
 
+    @Test
     void testCaptureContent2() {
         def template='<sitemesh:captureContent tag=\"testtag\">this is the <g:if test="${true}">captured</g:if> content</sitemesh:captureContent>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -25,6 +30,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals 'this is the captured content', gspSiteMeshPage.getContentBuffer('page.testtag').toString()
     }
 
+    @Test
     void testCaptureContent3() {
         def template='<content tag=\"testtag\">this is the <g:if test="${true}">captured</g:if> content</content>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -33,6 +39,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals 'this is the captured content', gspSiteMeshPage.getContentBuffer('page.testtag').toString()
     }
 
+    @Test
     void testCaptureTitleAndBody() {
         def template='<html><head><title>This is the title</title></head><body onload="somejs();">body here</body></html>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -45,6 +52,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals 'somejs();', gspSiteMeshPage.getProperty('body.onload')
     }
 
+    @Test
     void testMetaObjectValues() {
         // GRAILS-5603 test case
         def template='<html><head><meta name="intval" content="${123}"/><meta name="dateval" content="${new Date(0)}"/><title>This is the title</title></head><body onload="somejs();">body here</body></html>'
@@ -55,6 +63,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals new Date(0).toString(), gspSiteMeshPage.getProperty('meta.dateval')
     }
 
+    @Test
     void testLayoutTags() {
         def template='<html><head><title>This is the title</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body onload="somejs();">body here</body></html>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -71,6 +80,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals '<html><head><title>This is the title</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body onload="somejs();">body here</body></html>', result2
     }
 
+    @Test
     void testLayoutTagsBodyIsWholePage() {
         def template='body here'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -90,6 +100,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals '<body>body here</body>', result2
     }
 
+    @Test
     void testLayoutcontent() {
         def template='<html><head><title>This is the title</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/></head><body onload="somejs();">body here</body><content tag="nav">Navigation content</content></html>'
         def gspSiteMeshPage = new GSPSitemeshPage()
@@ -106,6 +117,7 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals '<html><head><title>This is the title</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/></head><body onload="somejs();">body here Navigation content</body></html>', result2
     }
 
+    @Test
     void testEmptyTitle() {
         // GRAILS-7510 , GRAILS-7736
         def template='<html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/></head><body onload="somejs();">body here</body><content tag="nav">Navigation content</content></html>'
@@ -123,7 +135,8 @@ class GSPSitemeshPageTests extends AbstractGrailsTagTests {
         assertEquals '<html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/></head><body onload="somejs();">body here Navigation content</body></html>', result2
     }
 
+    @AfterEach
     void tearDown() {
-         RequestContextHolder.resetRequestAttributes()
+        RequestContextHolder.resetRequestAttributes()
     }
 }

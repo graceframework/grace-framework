@@ -1,9 +1,14 @@
 package org.grails.web.taglib
 
 import org.grails.buffer.StreamCharBuffer
-import spock.lang.Issue
-import java.text.DecimalFormatSymbols
 import org.grails.taglib.GrailsTagException
+import org.junit.jupiter.api.Test
+import spock.lang.Issue
+
+import java.text.DecimalFormatSymbols
+
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.junit.jupiter.api.Assertions.assertTrue
 
 /**
  * Tests for the FormatTagLib.
@@ -13,6 +18,7 @@ import org.grails.taglib.GrailsTagException
  */
 class FormatTagLibTests extends AbstractGrailsTagTests {
 
+    @Test
     void testFormatBoolean() {
         messageSource.addMessage("default.boolean.true",request.locale, "Yeah!")
         messageSource.addMessage("default.boolean.false",request.locale, "Noooo!")
@@ -38,6 +44,7 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
     }
 
     @Issue('https://github.com/grails/grails-core/issues/9159')
+    @Test
     void testFormatDateWithStreamCharBufferFormat() {
         def calender = new GregorianCalendar(1980,1,3)
         def format = 'yyyy-MM-dd'
@@ -47,7 +54,7 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals("1980-02-03", template, [date:calender.getTime(), format: buffer])
     }
 
-
+    @Test
     void testFormatDate() {
         def calender = new GregorianCalendar(1980,1,3)
         def template = '<g:formatDate format="yyyy-MM-dd" date="${date}"/>'
@@ -151,33 +158,39 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals("February 4, 1980 11:02 AM", template, [date: date])
     }*/
 
+    @Test
     void testFormatDateNullDate() {
         def template = '<g:formatDate format="yyyy-MM-dd" date="${date}"/>'
         assertOutputEquals("", template, [date:null])
     }
 
+    @Test
     void testFormatDateCurrentDate() {
         def template = '<g:formatDate format="yyyy-MM-dd"/>'
         def output = applyTemplate(template)
         assertTrue(output ==~ /\d{4}-\d{2}-\d{2}/)
     }
 
+    @Test
     void testFormatNumber() {
         def template = '<g:formatNumber number="${myNumber}" format="\\$###,##0"/>'
         assertOutputEquals('$10', template, [myNumber:10])
     }
 
+    @Test
     void testFormatNumberNullNumber() {
         def template = '<g:formatNumber number="${myNumber}"/>'
         assertOutputEquals("", template, [myNumber:null])
     }
 
+    @Test
     void testFormatNumberNoNumber() {
-        shouldFail(GrailsTagException) {
+        assertThrows(GrailsTagException) {
             applyTemplate('<g:formatNumber/>')
         }
     }
 
+    @Test
     void testFormatDateFromBundle() {
         def calender = new GregorianCalendar(1980,1,3)
         def template = '<g:formatDate formatName="format.date" date="${date}"/>'
@@ -186,71 +199,83 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals("1980-02-03", template, [date:calender.getTime()])
     }
 
+    @Test
     void testFormatNumberFromBundle() {
        def template = '<g:formatNumber number="${myNumber}" formatName="format.number" />'
        messageSource.addMessage("format.number", request.locale, '\$###,##0')
         assertOutputEquals('$10', template, [myNumber:10])
     }
 
+    @Test
     void testEncodeAs() {
         def template = '<g:encodeAs codec="HTML">Coheed & Cambria</g:encodeAs>'
         assertOutputEquals('Coheed &amp; Cambria', template, [:])
     }
 
+    @Test
     void testFormatBigDecimal() {
         def number = "3.12325678" as BigDecimal
         def template = '<g:formatNumber format="#.####" number="${number}"/>'
         assertOutputEquals("3.1233", template, [number: number])
     }
 
+    @Test
     void testFormatCurrencyWithCode() {
         def number = "3.12325678" as BigDecimal
         def template = '<g:formatNumber type="currency" currencyCode="USD" number="${number}" locale="en_US" />'
         assertOutputEquals("\$3.12", template, [number: number])
     }
 
+    @Test
     void testFormatNumberDecimals() {
         def number = "3.12325678" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" minFractionDigits="3" maxFractionDigits="3" />'
         assertOutputEquals("3,123", template, [number: number])
     }
 
+    @Test
     void testFormatNumberRoundingModeHalfDown() {
         def number = "3.125" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" maxFractionDigits="2" roundingMode="HALF_DOWN" />'
         assertOutputEquals("3,12", template, [number: number])
     }
 
+    @Test
     void testFormatNumberRoundingModeHalfUp() {
         def number = "3.125" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" maxFractionDigits="2" roundingMode="HALF_UP" />'
         assertOutputEquals("3,13", template, [number: number])
     }
 
+    @Test
     void testFormatNumberRoundingModeUnnecessary() {
         def number = "3.125" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" maxFractionDigits="2" roundingMode="UNNECESSARY" />'
         assertOutputEquals("3,125", template, [number: number])
     }
 
+    @Test
     void testFormatNumberRoundingModeUnnecessary2() {
         def number = "3.125" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" maxFractionDigits="3" roundingMode="UNNECESSARY" />'
         assertOutputEquals("3,125", template, [number: number])
     }
 
+    @Test
     void testFormatNumberInteger() {
         def number = "3.12325678" as BigDecimal
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" minIntegerDigits="3" maxIntegerDigits="3" minFractionDigits="0" maxFractionDigits="0"/>'
         assertOutputEquals("003", template, [number: number])
     }
 
+    @Test
     void testFormatNumberInteger2() {
         def number = 1
         def template = '<g:formatNumber type="number" number="${number}" minIntegerDigits="3"/>'
         assertOutputEquals("001", template, [number: number])
     }
 
+    @Test
     void testFormatNumberIntegerWithNoGrouping() {
         def number = 1234
         def template = '<g:formatNumber type="number" number="${number}" minIntegerDigits="3" groupingUsed="false" locale="en_US"/>'
@@ -258,6 +283,7 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         template = '<g:formatNumber type="number" number="${number}" minIntegerDigits="3" groupingUsed="${false}" locale="en_US"/>'
         assertOutputEquals("1234", template, [number: number])    }
 
+    @Test
     void testFormatNumberIntegerWithGrouping() {
         def number = 1234
         def template = '<g:formatNumber type="number" number="${number}" minIntegerDigits="3" groupingUsed="true" locale="en_US"/>'
@@ -266,18 +292,21 @@ class FormatTagLibTests extends AbstractGrailsTagTests {
         assertOutputEquals("1,234", template, [number: number])
     }
 
+    @Test
     void testFormatNumberParsingString() {
         def number = "3,12325678"
         def template = '<g:formatNumber type="number" number="${number}" locale="fi_FI" minFractionDigits="3" maxFractionDigits="3" />'
         assertOutputEquals("3,123", template, [number: number])
     }
 
+    @Test
     void testFormatNumberNaN() {
         def number = Double.NaN
         def template = '<g:formatNumber number="${number}"/>'
         assertOutputEquals(new DecimalFormatSymbols().getNaN(), template, [number: number])
     }
 
+    @Test
     void testFormatNumberNaNCustomized() {
         def number = Double.NaN
         def template = '<g:formatNumber number="${number}" nan="n/a"/>'

@@ -1,7 +1,12 @@
 package org.grails.web.taglib
 
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+
 class MessageTagTests extends AbstractGrailsTagTests {
 
+    @Test
     void testMessageTagInTemplate() {
         def template = '<g:message code="test.code" />'
         messageSource.addMessage("test.code", new Locale("en"), "hello world!")
@@ -9,6 +14,7 @@ class MessageTagTests extends AbstractGrailsTagTests {
         assertOutputEquals 'hello world!', template
     }
 
+    @Test
     void testMessageTag() {
         StringWriter sw = new StringWriter();
 
@@ -34,6 +40,7 @@ class MessageTagTests extends AbstractGrailsTagTests {
         }
     }
 
+    @Test
     void testMessageTagWithCodec() {
         StringWriter sw = new StringWriter();
 

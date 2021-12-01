@@ -2,8 +2,16 @@ package org.grails.web.taglib
 
 import org.grails.plugins.web.taglib.FormTagLib
 import org.grails.taglib.GrailsTagException
+import org.junit.jupiter.api.Test
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertNotNull
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.junit.jupiter.api.Assertions.assertTrue
+
 
 /**
  * Tests for the FormTagLib.groovy file which contains tags to help with the
@@ -23,6 +31,7 @@ class FormTagLib3Tests extends AbstractGrailsTagTests {
 
     def lineSep = new String([(char)13,(char)10] as char[])
 
+    @Test
     void testHiddenFieldTag() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
@@ -35,6 +44,7 @@ class FormTagLib3Tests extends AbstractGrailsTagTests {
         assertEquals '<input type="hidden" name="testField" value="1" id="testField" />', sw.toString()
     }
 
+    @Test
     void testRadioTag() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -59,6 +69,7 @@ class FormTagLib3Tests extends AbstractGrailsTagTests {
         assertEquals "<input type=\"radio\" name=\"testRadio\" value=\"2\" id=\"testRadio\"  />", sw.toString()
     }
 
+    @Test
     void testRadioUsesExpressionForDisable() {
         def template = '<g:set var="flag" value="${true}"/><g:radio disabled="${flag}" name="foo" value="bar" />'
         assertOutputContains('disabled="disabled"', template)
@@ -70,6 +81,7 @@ class FormTagLib3Tests extends AbstractGrailsTagTests {
         assertOutputContains('<input type="radio" name="foo" value="bar"', template)
     }
 
+    @Test
     void testRadioGroupTagWithLabels() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -82,7 +94,8 @@ class FormTagLib3Tests extends AbstractGrailsTagTests {
                 + lineSep + "<p><g:message code=\"radio.3\" /> <input type=\"radio\" name=\"testRadio\" value=\"3\" /></p>"
                 + lineSep , sw.toString())
     }
-    
+
+    @Test
     void testRadioGroupTagWithHtmlCodec() {
         withConfig('''
 grails {
@@ -102,6 +115,7 @@ grails {
         }
     }
 
+    @Test
     void testRadioGroupTagWithNoneCodec() {
         withConfig('''
 grails {
@@ -121,6 +135,7 @@ grails {
         }
     }
 
+    @Test
     void testRadioGroupTag() {
         def template='''<g:radioGroup name="myGroup" values="[1,2,3]" value="1" >${it.label} ${it.radio}</g:radioGroup>'''
         def expected='''Radio 1 <input type="radio" name="myGroup" checked="checked" value="1" />
@@ -129,8 +144,8 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
 '''
         assertOutputEquals(expected, template, [:], { it.replaceAll('\r\n','\n') })
     }
-    
 
+    @Test
     void testRadioGroupTagWithoutLabelsAndInvalidValue() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -143,6 +158,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
                 + lineSep , sw.toString())
     }
 
+    @Test
     void testRadioGroupTagWithNonStringValue() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -155,6 +171,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
                 + lineSep , sw.toString())
     }
 
+    @Test
     void testRadioGroupTagWithNoValue() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -167,6 +184,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
                 + lineSep , sw.toString())
     }
 
+    @Test
     void testRadioGroupTagWithCustomAttributes() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -179,6 +197,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
                 + lineSep , sw.toString())
     }
 
+    @Test
     void testCheckboxTag() {
         def template = '<g:checkBox name="foo" value="${test}"/>'
         assertOutputEquals('<input type="hidden" name="_foo" /><input type="checkbox" name="foo" checked="checked" value="hello" id="foo"  />', template, [test:"hello"])
@@ -208,6 +227,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertOutputEquals('<input type="hidden" name="foo.bar.bing._bang" /><input type="checkbox" name="foo.bar.bing.bang" value="hello" id="foo.bar.bing.bang"  />', template, [test:"hello"])
     }
 
+    @Test
     void testCheckBoxUsesExpressionForDisable() {
         def template = '<g:set var="flag" value="${true}"/><g:checkBox disabled="${flag}" name="foo"/>'
         assertOutputContains('disabled="disabled"', template)
@@ -219,6 +239,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertOutputContains('<input type="checkbox" name="foo" id="foo"', template)
     }
 
+    @Test
     void testRenderingNoSelectionOption() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
@@ -227,6 +248,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertEquals '<option value=""></option>', sw.toString()
     }
 
+    @Test
     void testCheckedOverridesValue() {
         def template = '<g:checkBox name="foo" value="${value}" checked="${checked}" />'
         assertOutputEquals '<input type="hidden" name="_foo" /><input type="checkbox" name="foo" checked="checked" value="0" id="foo"  />', template, [value: 0, checked: true]
@@ -235,6 +257,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertOutputEquals '<input type="hidden" name="_foo" /><input type="checkbox" name="foo" value="1" id="foo"  />', template, [value: 1, checked: false]
     }
 
+    @Test
     void testNoHtmlEscapingTextAreaTag() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -250,6 +273,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
 
             tag.call(attrs, {})
         };
+
         { ->
             final String result = sw.toString()
             // need to inspect this as raw text so the DocumentHelper doesn't
@@ -260,7 +284,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
             assertNotNull(document)
 
             final Element inputElement = document.getDocumentElement()
-            assertFalse("escapeHtml attribute should not exist", inputElement.hasAttribute("escapeHtml"))
+            assertFalse inputElement.hasAttribute("escapeHtml") , "escapeHtml attribute should not exist"
         }()
 
         sw = new StringWriter()
@@ -287,10 +311,11 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
             assertNotNull(document)
 
             final Element inputElement = document.getDocumentElement()
-            assertFalse("escapeHtml attribute should not exist", inputElement.hasAttribute("escapeHtml"))
+            assertFalse inputElement.hasAttribute("escapeHtml"), "escapeHtml attribute should not exist"
         }()
     }
 
+    @Test
     void testHtmlEscapingTextAreaTag() {
         StringWriter sw = new StringWriter()
         PrintWriter pw = new PrintWriter(sw)
@@ -317,7 +342,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
             assertNotNull(document)
 
             final Element inputElement = document.getDocumentElement()
-            assertFalse("escapeHtml attribute should not exist", inputElement.hasAttribute("escapeHtml"))
+            assertFalse inputElement.hasAttribute("escapeHtml"), "escapeHtml attribute should not exist"
         }()
 
         sw = new StringWriter()
@@ -345,24 +370,25 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
             assertNotNull(document)
 
             final Element inputElement = document.getDocumentElement()
-            assertFalse("escapeHtml attribute should not exist", inputElement.hasAttribute("escapeHtml"))
+            assertFalse inputElement.hasAttribute("escapeHtml"), "escapeHtml attribute should not exist"
         }()
     }
 
-    
+    @Test
     void testFieldTagWithEmptyNameAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
 
         withTag("field", pw) { tag ->
             assertNotNull tag
-            def message = shouldFail(GrailsTagException) {
+            GrailsTagException thrown = assertThrows(GrailsTagException) {
                 tag([name: ''])
             }
-            assertEquals 'Tag [field] is missing required attribute [name] or [field]', message
+            assertEquals 'Tag [field] is missing required attribute [name] or [field]', thrown.message
         }
     }
 
+    @Test
     void testSelectTagWithEmptyListFromAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
@@ -375,32 +401,35 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertTrue sw.toString().startsWith('<select name="mySelectTag" id="mySelectTag" >')
     }
 
+    @Test
     void testSelectTagWithNoFromAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
 
         withTag("select", pw) { tag ->
             assertNotNull tag
-            def message = shouldFail(GrailsTagException) {
+            GrailsTagException thrown = assertThrows(GrailsTagException) {
                 tag([name: 'mySelectTag'])
             }
-            assertEquals 'Tag [select] is missing required attribute [from]', message
+            assertEquals 'Tag [select] is missing required attribute [from]', thrown.message
         }
     }
 
+    @Test
     void testSelectTagWithNoNameAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
 
         withTag("select", pw) { tag ->
             assertNotNull tag
-            def message = shouldFail(GrailsTagException) {
+            GrailsTagException thrown = assertThrows(GrailsTagException) {
                 tag([from: [1,2,3]])
             }
-            assertEquals 'Tag [select] is missing required attribute [name]', message
+            assertEquals 'Tag [select] is missing required attribute [name]', thrown.message
         }
     }
 
+    @Test
     void testSelectTagWithNullAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
@@ -415,30 +444,33 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertTrue sw.toString().startsWith('<select name="mySelectTag" id="mySelectTag" >')
     }
 
+    @Test
     void testDatePickerWithYearsAndRelativeYearsAttribute() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
 
         withTag("datePicker", pw) { tag ->
-            def msg = shouldFail(GrailsTagException) {
+            GrailsTagException thrown = assertThrows(GrailsTagException) {
                 tag(years:[1900..1910], relativeYears: [-2..10])
             }
-            assertEquals "Tag [datePicker] does not allow both the years and relativeYears attributes to be used together.", msg
+            assertEquals "Tag [datePicker] does not allow both the years and relativeYears attributes to be used together.", thrown.message
         }
     }
 
+    @Test
     void testDatePickerWithInvalidRelativeYears() {
         final StringWriter sw = new StringWriter()
         final PrintWriter pw = new PrintWriter(sw)
 
         withTag("datePicker", pw) { tag ->
-            def msg = shouldFail(GrailsTagException) {
+            GrailsTagException thrown = assertThrows(GrailsTagException) {
                 tag(relativeYears: 'not an integer range')
             }
-            assertEquals "The [datePicker] relativeYears attribute must be a range of int.", msg
+            assertEquals "The [datePicker] relativeYears attribute must be a range of int.", thrown.message
         }
     }
 
+    @Test
     void testDatePickerWithRelativeYearsAndReverseRange() {
         def now = Calendar.instance
         def currentYear = now.get(Calendar.YEAR)
@@ -475,6 +507,7 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertEquals(-1, result.indexOf("""<option value="${currentYear + 7}">${currentYear + 7}</option>"""))
     }
 
+    @Test
     void testDatePickerWithRelativeYears() {
         def now = Calendar.instance
         def currentYear = now.get(Calendar.YEAR)
@@ -511,11 +544,12 @@ Radio 3 <input type="radio" name="myGroup" value="3" />
         assertEquals(-1, result.indexOf("""<option value="${currentYear + 6}">${currentYear + 6}</option>"""))
         assertEquals(-1, result.indexOf("""<option value="${currentYear + 7}">${currentYear + 7}</option>"""))
     }
-    
+
+    @Test
     void testDatePickerAriaLabel() {
         def template = '<g:datePicker name="myDate" value="${new Date()}"/>'
         def result = applyTemplate(template)
-        
+
         assertTrue result.contains('<select name="myDate_year" id="myDate_year" aria-labelledby="myDate myDate_year"')
         assertTrue result.contains('<select name="myDate_month" id="myDate_month" aria-labelledby="myDate myDate_month"')
         assertTrue result.contains('<select name="myDate_day" id="myDate_day" aria-labelledby="myDate myDate_day"')

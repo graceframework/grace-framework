@@ -1,11 +1,17 @@
 package org.grails.web.taglib
+
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 /**
  * @author Graeme Rocher
  * @since 1.0
  */
 class TagLibraryDynamicPropertyTests extends AbstractGrailsTagTests {
 
+    @BeforeEach
     protected void onSetUp() {
+        
         gcl.parseClass '''
 import grails.gsp.*
 
@@ -28,6 +34,7 @@ class FooTagLib {
 '''
     }
 
+    @Test
     void testDynamicProperties() {
         webRequest.actionName = "test"
         webRequest.controllerName = "foo"

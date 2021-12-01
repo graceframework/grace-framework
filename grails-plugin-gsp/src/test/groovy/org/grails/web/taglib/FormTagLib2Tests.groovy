@@ -1,5 +1,9 @@
 package org.grails.web.taglib
 
+import org.junit.jupiter.api.Assertions
+
+import static org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 import java.text.DateFormat
 import org.w3c.dom.Document
@@ -21,30 +25,37 @@ class FormTagLib2Tests extends AbstractGrailsTagTests {
     private static final Collection DATE_PRECISIONS_INCLUDING_DAY = ["day", "hour", "minute", null].asImmutable()
     private static final Collection DATE_PRECISIONS_INCLUDING_MONTH = ["month", "day", "hour", "minute", null].asImmutable()
 
+    @Test
     void testDatePickerTagWithDefaultDateAndPrecision() {
         testDatePickerTag(null, null)
     }
 
+    @Test
     void testDatePickerTagWithYearPrecision() {
         testDatePickerTag(null, "year")
     }
 
+    @Test
     void testDatePickerTagWithMonthPrecision() {
         testDatePickerTag(null, "month")
     }
 
+    @Test
     void testDatePickerTagWithDayPrecision() {
         testDatePickerTag(null, "day")
     }
 
+    @Test
     void testDatePickerTagWithHourPrecision() {
         testDatePickerTag(null, "hour")
     }
 
+    @Test
     void testDatePickerTagWithMinutePrecision() {
         testDatePickerTag(null, "minute")
     }
 
+    @Test
     void testDatePickerTagWithCustomDate() {
         testDatePickerTag(new Date(0), null)
     }
@@ -82,6 +93,7 @@ class FormTagLib2Tests extends AbstractGrailsTagTests {
         testDatePickerTag(ZonedDateTime.now(), null)
     }*/
 
+    @Test
     void testDatePickerTagWithDefault() {
         def defaultDate = Calendar.getInstance()
         defaultDate.add(Calendar.DAY_OF_MONTH, 7)
@@ -96,8 +108,9 @@ class FormTagLib2Tests extends AbstractGrailsTagTests {
                 defaultDate.get(Calendar.DAY_OF_MONTH).toString())
     }
 
+    @Test
     void testDatePickerTagThrowsErrorWithInvalidDefault() {
-        shouldFail {
+        assertThrows(Exception) {
             getDatePickerOutput(null, 'day', new Integer())
         }
         DateFormat defaultFormat = DateFormat.getInstance()
@@ -105,10 +118,12 @@ class FormTagLib2Tests extends AbstractGrailsTagTests {
         assertNotNull(document)
     }
 
+    @Test
     void testDatePickerTagWithCustomDateAndPrecision() {
         testDatePickerTag(new Date(0), "day")
     }
 
+    @Test
     void testDatePickerTagWithNoneValues() {
         Document document = getDatePickerOutput("none", "day", null)
         assertNotNull(document)
