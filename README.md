@@ -1,6 +1,8 @@
 Grails Gradle Plugins
 ========
 
+Latest API Docs: https://grails.github.io/grails-gradle-plugin/latest/api/
+
 Below are the plugins that are provided by the grails-gradle-plugin dependency.
 
 ```
