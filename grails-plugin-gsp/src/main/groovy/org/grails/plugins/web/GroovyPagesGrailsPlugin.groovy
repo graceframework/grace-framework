@@ -202,7 +202,7 @@ class GroovyPagesGrailsPlugin extends Plugin {
 
         // Setup the main templateEngine used to render GSPs
         groovyPagesTemplateEngine(GroovyPagesTemplateEngine) { bean ->
-            classLoader = ref("classLoader")
+            bean.lazyInit = true
             groovyPageLocator = groovyPageLocator
             if (enableReload) {
                 reloadEnabled = enableReload
