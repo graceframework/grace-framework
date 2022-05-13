@@ -155,6 +155,12 @@ ext {
             names  : ['h2'],
             modules: ['']
         ],
+        'spring-boot': [
+            version: springBootVersion,
+            group  : 'org.springframework.boot',
+            names  : ['spring-boot'],
+            modules: ['', 'dependencies', 'cli']
+        ],
     ]
 
     nexusUsername = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
@@ -229,6 +235,7 @@ if (isReleaseVersion) {
 allprojects {
     repositories {
         mavenLocal()
+        mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         if(groovyVersion.endsWith('-SNAPSHOT')) {

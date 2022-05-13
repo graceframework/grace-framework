@@ -80,7 +80,7 @@ publishing {
                                     mkp.dependency {
                                         mkp.groupId info.group
                                         mkp.artifactId dependency
-                                        mkp.version "\${${dep.key}.version}"
+                                        mkp.version dep.value.version
                                     }
                                 }
                             }
@@ -118,5 +118,24 @@ publishing {
                 }
             }
         }
+    }
+}
+
+configurations {
+	effectiveBom
+}
+
+def effectiveBom = file("$buildDir/generated/effective-bom/${project.name}.xml")
+
+task generateEffectiveBom(type: Copy) {
+	from file("$buildDir/publications/maven")
+    destinationDir file("$buildDir/generated/effective-bom")
+    include "pom-default.xml"
+    rename "pom-default.xml", "${project.name}.xml"
+}
+
+artifacts {
+    add("effectiveBom", effectiveBom) {
+        builtBy(generateEffectiveBom)
     }
 }
