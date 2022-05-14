@@ -23,6 +23,7 @@ import org.springframework.beans.factory.BeanIsAbstractException
 import org.springframework.beans.factory.ObjectFactory
 import org.springframework.beans.factory.config.Scope
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Lazy
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
@@ -867,6 +868,49 @@ bb.createApplicationContext()
         assertFalse ctx.isSingleton('nonSingletonBean'), 'nonSingletonBean should not have been a singleton'
         assertTrue ctx.isSingleton('unSpecifiedScopeBean'), 'unSpecifiedScopeBean should not have been a singleton'
     }
+
+    @Test
+    void testLazyBeanDefinition() {
+        bb.beans {
+            generalBean(GeneralBean) { bean ->
+                name = 'generalBean'
+            }
+            generalLazyBean(GeneralBean) { bean ->
+                bean.lazyInit = true
+                name = 'generalLazyBean'
+            }
+            lazyBean(LazyBean)
+            lazyBeanInitFalse(LazyBean) { bean ->
+                bean.lazyInit = false
+            }
+            lazyBeanValueFalse(LazyBeanValueFalse)
+        }
+
+        def generalBean = bb.getBeanDefinition('generalBean')
+        assertNotNull generalBean, 'beanDefinition should be not null'
+        assertFalse generalBean.isLazyInit(), 'generalBean should not be lazy default'
+        assertNull generalBean.getLazyInit(), 'getLazyInit of generalBean should be null default'
+
+        def generalLazyBean = bb.getBeanDefinition('generalLazyBean')
+        assertNotNull generalLazyBean, 'beanDefinition should be not null'
+        assertTrue generalLazyBean.isLazyInit(), 'generalLazyBean should be lazy'
+        assertNotNull generalLazyBean.getLazyInit(), 'getLazyInit of generalLazyBean should be not null'
+
+        def lazyBean = bb.getBeanDefinition('lazyBean')
+        assertNotNull lazyBean, 'beanDefinition should be not null'
+        assertTrue lazyBean.isLazyInit(), 'lazyBean should be lazy'
+        assertNotNull lazyBean.getLazyInit(), 'getLazyInit of lazyBean should be not null'
+
+        def lazyBeanInitFalse = bb.getBeanDefinition('lazyBeanInitFalse')
+        assertNotNull lazyBeanInitFalse, 'beanDefinition should be not null'
+        assertFalse lazyBeanInitFalse.isLazyInit(), 'lazyBean but init false, so it should be not lazy'
+        assertNotNull lazyBeanInitFalse.getLazyInit(), 'getLazyInit of lazyBeanInitFalse should be not null'
+
+        def lazyBeanValueFalse = bb.getBeanDefinition('lazyBeanValueFalse')
+        assertNotNull lazyBeanValueFalse, 'beanDefinition should be not null'
+        assertFalse lazyBeanValueFalse.isLazyInit(), 'lazyBeanValueFalse wit false value, so it should be not lazy'
+        assertNotNull lazyBeanValueFalse.getLazyInit(), 'getLazyInit of lazyBeanValueFalse should be not null'
+    }
 }
 
 class HolyGrailQuest {
@@ -938,6 +982,18 @@ class Bean6 {
     }
     Map<String, Bean1> peopleByName
 }
+
+// GeneralBean
+class GeneralBean {
+    String name
+}
+
+// lazy bean
+@Lazy
+class LazyBean {}
+
+@Lazy(value = false)
+class LazyBeanValueFalse {}
 
 // a factory bean
 class Bean1Factory {
