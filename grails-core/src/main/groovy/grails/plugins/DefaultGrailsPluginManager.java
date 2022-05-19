@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Handles the loading and management of plug-ins in the Grails system.
+ * <p>Handles the loading and management of plugins in the Grails system.
  * A plugin is just like a normal Grails application except that it contains a file ending
  * in *Plugin.groovy in the root of the directory.
  * <p/>
@@ -489,7 +489,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 isCompatiblePlugin(plugin);
                 grailsUserPlugins.add(plugin);
             } else {
-                LOG.warn("Class [" + pluginClass + "] not loaded as plug-in. Grails plug-ins must end with the convention 'GrailsPlugin'!");
+                LOG.warn("Class [" + pluginClass + "] not loaded as plugin. Grails plugins must end with the convention 'GrailsPlugin'!");
             }
         }
 
@@ -500,7 +500,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 isCompatiblePlugin(plugin);
                 grailsUserPlugins.add(plugin);
             } else {
-                LOG.warn("Class [" + pluginClass + "] not loaded as plug-in. Grails plug-ins must end with the convention 'GrailsPlugin'!");
+                LOG.warn("Class [" + pluginClass + "] not loaded as plugin. Grails plugins must end with the convention 'GrailsPlugin'!");
             }
         }
         return grailsUserPlugins;
@@ -528,7 +528,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     /**
-     * This method will attempt to load that plug-ins not loaded in the first pass
+     * This method will attempt to load that plugins not loaded in the first pass
      */
     private void loadDelayedPlugins() {
         while (!delayedLoadPlugins.isEmpty()) {
@@ -678,7 +678,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         }
 
         if (LOG.isInfoEnabled()) {
-            LOG.info("Grails plug-in [" + plugin.getName() + "] with version [" + plugin.getVersion() + "] loaded successfully");
+            LOG.info("Grails plugin [" + plugin.getName() + "] with version [" + plugin.getVersion() + "] loaded successfully");
         }
 
         if (plugin instanceof ParentApplicationContextAware) {
@@ -716,7 +716,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             plugins.remove(pluginToEvict.getName());
 
             if (LOG.isInfoEnabled()) {
-                LOG.info("Grails plug-in " + pluginToEvict + " was evicted by " + evictor);
+                LOG.info("Grails plugin " + pluginToEvict + " was evicted by " + evictor);
             }
         }
     }
