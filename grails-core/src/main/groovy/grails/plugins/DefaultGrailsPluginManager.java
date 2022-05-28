@@ -367,6 +367,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
         final Class<?>[] corePluginClasses = finder.getPluginClasses();
 
+        LOG.info("Attempting to load [" + corePluginClasses.length + "] core plugins");
+
         for (Class<?> pluginClass : corePluginClasses) {
             if (pluginClass != null && !Modifier.isAbstract(pluginClass.getModifiers()) && pluginClass != DefaultGrailsPlugin.class) {
                 final BinaryGrailsPluginDescriptor binaryDescriptor = finder.getBinaryDescriptor(pluginClass);
