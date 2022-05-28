@@ -92,7 +92,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
 
     @SuppressWarnings("rawtypes")
     private void loadCorePluginsFromResources(Resource[] resources) throws IOException {
-        LOG.info("Attempting to load [" + resources.length + "] core plugins");
         try {
             SAXParser saxParser = SpringIOUtils.newSAXParser();
             for (Resource resource : resources) {

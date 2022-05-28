@@ -246,7 +246,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         pluginList = sortPlugins(pluginList);
         initializePlugins();
         initialised = true;
-        LOG.info(String.format("Total %d plugins loaded successfully, take in %dms.)", pluginList.size(), (System.currentTimeMillis() - time)));
+        LOG.info(String.format("Total %d plugins loaded successfully, take in %dms.", pluginList.size(), (System.currentTimeMillis() - time)));
     }
 
     protected List<GrailsPlugin> sortPlugins(List<GrailsPlugin> toSort) {
@@ -366,6 +366,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         List<GrailsPlugin> grailsCorePlugins = new ArrayList<GrailsPlugin>();
 
         final Class<?>[] corePluginClasses = finder.getPluginClasses();
+
+        LOG.info("Attempting to load [" + corePluginClasses.length + "] core plugins");
 
         for (Class<?> pluginClass : corePluginClasses) {
             if (pluginClass != null && !Modifier.isAbstract(pluginClass.getModifiers()) && pluginClass != DefaultGrailsPlugin.class) {
