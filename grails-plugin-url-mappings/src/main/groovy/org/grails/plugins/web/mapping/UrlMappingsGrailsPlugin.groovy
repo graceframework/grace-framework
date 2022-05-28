@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,24 +26,26 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.grails.core.artefact.UrlMappingsArtefactHandler
 import grails.web.mapping.cors.GrailsCorsConfiguration
-import org.grails.spring.beans.factory.HotSwappableTargetSourceFactoryBean
 import org.grails.web.mapping.CachingLinkGenerator
 import org.grails.web.mapping.DefaultLinkGenerator
 import grails.web.mapping.LinkGenerator
 import grails.web.mapping.UrlMappings
 import grails.web.mapping.UrlMappingsHolder
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
+import org.grails.web.mapping.UrlMappingsTargetSourceFactoryBean
 import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping
 import org.grails.web.mapping.mvc.UrlMappingsInfoHandlerAdapter
 import org.grails.web.mapping.servlet.UrlMappingsErrorPageCustomizer
 import org.springframework.aop.framework.ProxyFactoryBean
 import org.springframework.aop.target.HotSwappableTargetSource
+import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.ApplicationContext
 
 /**
  * Handles the configuration of URL mappings.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 class UrlMappingsGrailsPlugin extends Plugin {
@@ -55,6 +57,7 @@ class UrlMappingsGrailsPlugin extends Plugin {
     def loadAfter = ['controllers']
 
     Closure doWithSpring() { {->
+        def ctx = applicationContext
         def application = grailsApplication
         if(!application.getArtefacts(UrlMappingsArtefactHandler.TYPE)) {
             application.addArtefact(UrlMappingsArtefactHandler.TYPE, DefaultUrlMappings )
@@ -66,7 +69,10 @@ class UrlMappingsGrailsPlugin extends Plugin {
         boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.current.isReloadEnabled()
         boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean, !isReloadEnabled)
 
-        "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter)
+        "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter) { bean ->
+            bean.lazyInit = true
+            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+        }
 
         boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean, true)
 
@@ -87,20 +93,21 @@ class UrlMappingsGrailsPlugin extends Plugin {
         grailsLinkGenerator(cacheUrls ? CachingLinkGenerator : DefaultLinkGenerator, serverURL)
 
         if (isReloadEnabled) {
-            urlMappingsTargetSource(HotSwappableTargetSourceFactoryBean) {
+            urlMappingsTargetSource(UrlMappingsTargetSourceFactoryBean) {
                 it.lazyInit = true
-                target = bean(UrlMappingsHolderFactoryBean) {
-                    it.lazyInit = true
-                }
+                it.role = BeanDefinition.ROLE_INFRASTRUCTURE
+                applicationContext = ctx
             }
             grailsUrlMappingsHolder(ProxyFactoryBean) {
                 it.lazyInit = true
+                it.role = BeanDefinition.ROLE_INFRASTRUCTURE
                 targetSource = urlMappingsTargetSource
                 proxyInterfaces = [UrlMappings]
-             }
-         } else {
+            }
+        } else {
             grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
                 bean.lazyInit = true
+                bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
             }
         }
     }}
