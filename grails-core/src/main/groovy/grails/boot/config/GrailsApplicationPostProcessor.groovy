@@ -42,6 +42,7 @@ import org.springframework.core.env.AbstractEnvironment
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.EnumerablePropertySource
 import org.springframework.core.io.Resource
+import org.springframework.core.Ordered
 
 /**
  * A {@link BeanDefinitionRegistryPostProcessor} that enhances any ApplicationContext with plugin manager capabilities
@@ -51,7 +52,7 @@ import org.springframework.core.io.Resource
  */
 @CompileStatic
 @Slf4j
-class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, ApplicationListener<ApplicationContextEvent> {
+class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, ApplicationListener<ApplicationContextEvent>, Ordered {
     static final boolean RELOADING_ENABLED = Environment.isReloadingAgentEnabled()
 
     final GrailsApplication grailsApplication
@@ -283,4 +284,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         }
     }
 
+	@Override
+	public int getOrder() {
+		Ordered.HIGHEST_PRECEDENCE
+	}
 }
