@@ -23,6 +23,8 @@ import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
 import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean
 import org.grails.plugins.domain.support.DefaultMappingContextFactoryBean
 import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Role
 
 /**
  * Configures the domain classes in the spring context.
@@ -43,15 +45,18 @@ class DomainClassGrailsPlugin extends Plugin {
         GrailsApplication application = grailsApplication
         validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
             bean.lazyInit = true
+            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
         }
         "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator"))  { bean ->
             bean.lazyInit = true
+            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
         }
         grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext)  { bean ->
             bean.lazyInit = true
         }
         gormValidatorRegistry(ValidatorRegistryFactoryBean)  { bean ->
             bean.lazyInit = true
+            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
         }
     }}
 }
