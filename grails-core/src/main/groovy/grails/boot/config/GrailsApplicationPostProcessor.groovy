@@ -6,7 +6,6 @@ import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.core.GrailsApplicationClass
 import grails.core.GrailsApplicationLifeCycle
-import grails.plugins.DefaultGrailsPluginManager
 import grails.plugins.GrailsPlugin
 import grails.plugins.GrailsPluginManager
 import grails.spring.BeanBuilder
@@ -64,7 +63,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
     boolean loadExternalBeans = true
     boolean reloadingEnabled = RELOADING_ENABLED
 
-    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, Class...classes) {
+    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, GrailsApplication grailsApplication, GrailsPluginManager pluginManager, Class...classes) {
         this.lifeCycle = lifeCycle
         if(lifeCycle instanceof GrailsApplicationClass) {
             this.applicationClass = (GrailsApplicationClass)lifeCycle
@@ -73,8 +72,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             this.applicationClass = null
         }
         this.classes = classes != null ? classes : [] as Class[]
-        grailsApplication = applicationClass != null ? new DefaultGrailsApplication(applicationClass) : new DefaultGrailsApplication()
-        pluginManager = new DefaultGrailsPluginManager(grailsApplication)
+        this.grailsApplication = grailsApplication
+        this.pluginManager = pluginManager
         if(applicationContext != null) {
             setApplicationContext(applicationContext)
         }

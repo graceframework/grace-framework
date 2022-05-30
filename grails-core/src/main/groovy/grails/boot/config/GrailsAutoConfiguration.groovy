@@ -16,9 +16,12 @@
 package grails.boot.config
 
 import grails.config.Config
+import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.boot.config.tools.ClassPathScanner
 import grails.core.GrailsApplicationClass
+import grails.plugins.DefaultGrailsPluginManager
+import grails.plugins.GrailsPluginManager
 import groovy.transform.CompileStatic
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
@@ -67,7 +70,16 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      */
     @Bean
     GrailsApplicationPostProcessor grailsApplicationPostProcessor() {
-        return new GrailsApplicationPostProcessor( this, applicationContext, classes() as Class[])
+        GrailsApplication grailsApplication = grailsApplication()
+        return new GrailsApplicationPostProcessor( this, applicationContext, grailsApplication, grailsPluginManager(grailsApplication), classes() as Class[])
+    }
+
+    GrailsApplication grailsApplication() {
+        return new DefaultGrailsApplication(this)
+    }
+
+    GrailsPluginManager grailsPluginManager(GrailsApplication grailsApplication) {
+        return new DefaultGrailsPluginManager(grailsApplication)
     }
 
     /**
