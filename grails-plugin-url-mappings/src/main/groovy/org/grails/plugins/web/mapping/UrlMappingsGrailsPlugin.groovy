@@ -60,7 +60,7 @@ class UrlMappingsGrailsPlugin extends Plugin {
         def ctx = applicationContext
         def application = grailsApplication
         if(!application.getArtefacts(UrlMappingsArtefactHandler.TYPE)) {
-            application.addArtefact(UrlMappingsArtefactHandler.TYPE, DefaultUrlMappings )
+            application.addArtefact(UrlMappingsArtefactHandler.TYPE, DefaultUrlMappings)
         }
 
         def config = application.config
@@ -129,8 +129,8 @@ class UrlMappingsGrailsPlugin extends Plugin {
 
         LinkGenerator linkGenerator = ctx.getBean("grailsLinkGenerator", LinkGenerator)
         if (linkGenerator instanceof CachingLinkGenerator) {
-          linkGenerator.clearCache()
-       }
+            linkGenerator.clearCache()
+        }
     }
 
     @CompileStatic
