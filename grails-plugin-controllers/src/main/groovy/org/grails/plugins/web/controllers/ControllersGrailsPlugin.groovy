@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,8 +180,7 @@ class ControllersGrailsPlugin extends Plugin {
 
         private static final String[] RESOURCE_LOCATIONS
         static {
-            RESOURCE_LOCATIONS = new String[CLASSPATH_RESOURCE_LOCATIONS.length
-                    + SERVLET_RESOURCE_LOCATIONS.length]
+            RESOURCE_LOCATIONS = new String[CLASSPATH_RESOURCE_LOCATIONS.length + SERVLET_RESOURCE_LOCATIONS.length]
             System.arraycopy(SERVLET_RESOURCE_LOCATIONS, 0, RESOURCE_LOCATIONS, 0,
                     SERVLET_RESOURCE_LOCATIONS.length)
             System.arraycopy(CLASSPATH_RESOURCE_LOCATIONS, 0, RESOURCE_LOCATIONS,
