@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,12 @@ import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
 import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean
 import org.grails.plugins.domain.support.DefaultMappingContextFactoryBean
 import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
-import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.Role
 
 /**
  * Configures the domain classes in the spring context.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 class DomainClassGrailsPlugin extends Plugin {
@@ -45,18 +44,18 @@ class DomainClassGrailsPlugin extends Plugin {
         GrailsApplication application = grailsApplication
         validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
             bean.lazyInit = true
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            bean.role = "infrastructure"
         }
         "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator"))  { bean ->
             bean.lazyInit = true
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            bean.role = "infrastructure"
         }
         grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext)  { bean ->
             bean.lazyInit = true
         }
         gormValidatorRegistry(ValidatorRegistryFactoryBean)  { bean ->
             bean.lazyInit = true
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            bean.role = "infrastructure"
         }
     }}
 }
