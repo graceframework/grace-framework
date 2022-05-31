@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import grails.util.GrailsUtil
 import groovy.util.logging.Slf4j
 import org.grails.spring.context.support.PluginAwareResourceBundleMessageSource
 import org.grails.web.i18n.ParamsAwareLocaleChangeInterceptor
-import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.Role
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.Resource
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
@@ -37,6 +35,7 @@ import java.nio.file.Files
  * Configures Grails' internationalisation support.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 @Slf4j
@@ -55,7 +54,7 @@ class I18nGrailsPlugin extends Plugin {
 
         messageSource(PluginAwareResourceBundleMessageSource, application, pluginManager) { bean ->
             bean.primary = true
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            bean.role = "infrastructure"
             fallbackToSystemLocale = false
             if (Environment.current.isReloadEnabled() || gspEnableReload) {
                 cacheSeconds = config.getProperty(Settings.I18N_CACHE_SECONDS, Integer, 5)
