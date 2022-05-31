@@ -20,9 +20,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.aop.SpringProxy
 import org.springframework.beans.factory.BeanIsAbstractException
 import org.springframework.beans.factory.ObjectFactory
+import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.Scope
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Lazy
+import org.springframework.context.annotation.Role
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
@@ -911,6 +913,60 @@ bb.createApplicationContext()
         assertFalse lazyBeanValueFalse.isLazyInit(), 'lazyBeanValueFalse wit false value, so it should be not lazy'
         assertNotNull lazyBeanValueFalse.getLazyInit(), 'getLazyInit of lazyBeanValueFalse should be not null'
     }
+
+    @Test
+    void testBeanRoleDefinition() {
+        bb.beans {
+            applicationBean(Bean1) { bean ->
+                bean.role = BeanDefinition.ROLE_APPLICATION
+            }
+            applicationBean2(Bean1) { bean ->
+                bean.role = 'application'
+            }
+            applicationBean3(ApplicationBean)
+            supportBean(Bean1) { bean ->
+                bean.role = BeanDefinition.ROLE_SUPPORT
+            }
+            supportBean2(Bean1) { bean ->
+                bean.role = 'support'
+            }
+            supportBean3(SupportBean)
+            infrastructureBean(Bean1) { bean ->
+                bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            }
+            infrastructureBean2(Bean1) { bean ->
+                bean.role = 'infrastructure'
+            }
+            infrastructureBean3(InfrastructureBean)
+        }
+
+        def applicationBean = bb.getBeanDefinition('applicationBean')
+        assertEquals BeanDefinition.ROLE_APPLICATION, applicationBean.role
+
+        def applicationBean2 = bb.getBeanDefinition('applicationBean2')
+        assertEquals BeanDefinition.ROLE_APPLICATION, applicationBean2.role
+
+        def applicationBean3 = bb.getBeanDefinition('applicationBean3')
+        assertEquals BeanDefinition.ROLE_APPLICATION, applicationBean3.role
+
+        def supportBean = bb.getBeanDefinition('supportBean')
+        assertEquals BeanDefinition.ROLE_SUPPORT, supportBean.role
+
+        def supportBean2 = bb.getBeanDefinition('supportBean2')
+        assertEquals BeanDefinition.ROLE_SUPPORT, supportBean2.role
+
+        def supportBean3 = bb.getBeanDefinition('supportBean3')
+        assertEquals BeanDefinition.ROLE_SUPPORT, supportBean3.role
+
+        def infrastructureBean = bb.getBeanDefinition('infrastructureBean')
+        assertEquals BeanDefinition.ROLE_INFRASTRUCTURE, infrastructureBean.role
+
+        def infrastructureBean2 = bb.getBeanDefinition('infrastructureBean2')
+        assertEquals BeanDefinition.ROLE_INFRASTRUCTURE, infrastructureBean2.role
+
+        def infrastructureBean3 = bb.getBeanDefinition('infrastructureBean3')
+        assertEquals BeanDefinition.ROLE_INFRASTRUCTURE, infrastructureBean3.role
+    }
 }
 
 class HolyGrailQuest {
@@ -999,6 +1055,15 @@ class LazyBeanValueFalse {}
 class Bean1Factory {
     Bean1 newInstance() { new Bean1() }
 }
+
+@Role(BeanDefinition.ROLE_APPLICATION)
+class ApplicationBean {}
+
+@Role(BeanDefinition.ROLE_SUPPORT)
+class SupportBean {}
+
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+class InfrastructureBean {}
 
 class ScopeTest {}
 

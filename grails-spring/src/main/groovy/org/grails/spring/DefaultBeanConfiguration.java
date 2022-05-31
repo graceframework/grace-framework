@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Role;
 import org.springframework.util.Assert;
 
 /**
@@ -41,6 +42,7 @@ import org.springframework.util.Assert;
  * article: http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring
  *
  * @author Graeme
+ * @author Michael Yan
  * @since 0.3
  */
 public class DefaultBeanConfiguration extends GroovyObjectSupport implements BeanConfiguration {
@@ -56,6 +58,10 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     private static final String PARENT = "parent";
     private static final String BY_TYPE = "byType";
     private static final String BY_CONSTRUCTOR = "constructor";
+    private static final String ROLE = "role";
+    private static final String ROLE_APPLICATION = "application";
+    private static final String ROLE_SUPPORT = "support";
+    private static final String ROLE_INFRASTRUCTURE = "infrastructure";
     private static final List<String> DYNAMIC_PROPS = Arrays.asList(
         AUTOWIRE,
         CONSTRUCTOR_ARGS,
@@ -102,6 +108,18 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
             }
             else if (BY_CONSTRUCTOR.equals(newValue)) {
                 bd.setAutowireMode(AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
+            }
+        }
+        // role
+        else if (ROLE.equals(property)) {
+            if (ROLE_APPLICATION.equals(newValue) || Integer.valueOf(BeanDefinition.ROLE_APPLICATION).equals(newValue)) {
+                bd.setRole(BeanDefinition.ROLE_APPLICATION);
+            }
+            else if (ROLE_SUPPORT.equals(newValue) || Integer.valueOf(BeanDefinition.ROLE_SUPPORT).equals(newValue)) {
+                bd.setRole(BeanDefinition.ROLE_SUPPORT);
+            }
+            else if (ROLE_INFRASTRUCTURE.equals(newValue) || Integer.valueOf(BeanDefinition.ROLE_INFRASTRUCTURE).equals(newValue)) {
+                bd.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
             }
         }
         // constructorArgs
@@ -222,6 +240,10 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
             Lazy lazy = clazz.getAnnotation(Lazy.class);
             if (lazy != null) {
                 bd.setLazyInit(lazy.value());
+            }
+            Role role = clazz.getAnnotation(Role.class);
+            if (role != null) {
+                bd.setRole(role.value());
             }
             bd.setBeanClass(clazz);
         }
