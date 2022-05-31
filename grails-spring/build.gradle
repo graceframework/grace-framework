@@ -16,4 +16,8 @@ dependencies {
 
         exclude group:"org.codehaus.gant", module:"gant_groovy1.8"
     }
+
+    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
+    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
+            "org.aspectj:aspectjweaver:$aspectjVersion"
 }
