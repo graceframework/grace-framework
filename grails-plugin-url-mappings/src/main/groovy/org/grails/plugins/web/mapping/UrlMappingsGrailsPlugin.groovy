@@ -38,7 +38,6 @@ import org.grails.web.mapping.mvc.UrlMappingsInfoHandlerAdapter
 import org.grails.web.mapping.servlet.UrlMappingsErrorPageCustomizer
 import org.springframework.aop.framework.ProxyFactoryBean
 import org.springframework.aop.target.HotSwappableTargetSource
-import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.ApplicationContext
 
 /**
@@ -71,7 +70,7 @@ class UrlMappingsGrailsPlugin extends Plugin {
 
         "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter) { bean ->
             bean.lazyInit = true
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+            bean.role = "infrastructure"
         }
 
         boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean, true)
@@ -95,19 +94,19 @@ class UrlMappingsGrailsPlugin extends Plugin {
         if (isReloadEnabled) {
             urlMappingsTargetSource(UrlMappingsTargetSourceFactoryBean) {
                 it.lazyInit = true
-                it.role = BeanDefinition.ROLE_INFRASTRUCTURE
+                it.role = "infrastructure"
                 applicationContext = ctx
             }
             grailsUrlMappingsHolder(ProxyFactoryBean) {
                 it.lazyInit = true
-                it.role = BeanDefinition.ROLE_INFRASTRUCTURE
+                it.role = "infrastructure"
                 targetSource = urlMappingsTargetSource
                 proxyInterfaces = [UrlMappings]
             }
         } else {
             grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
                 bean.lazyInit = true
-                bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
+                bean.role = "infrastructure"
             }
         }
     }}
