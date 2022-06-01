@@ -70,8 +70,8 @@ class ControllersGrailsPlugin extends Plugin {
 
         boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
         String uploadTmpDir = config.getProperty(Settings.CONTROLLERS_UPLOAD_LOCATION, System.getProperty("java.io.tmpdir"))
-        long maxFileSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_FILE_SIZE, Long, 128000L)
-        long maxRequestSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_REQUEST_SIZE, Long, 128000L)
+        long maxFileSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_FILE_SIZE, Long, 1048576L)
+        long maxRequestSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_REQUEST_SIZE, Long, 10485760L)
         int fileSizeThreashold = config.getProperty(Settings.CONTROLLERS_UPLOAD_FILE_SIZE_THRESHOLD, Integer, 0)
         String filtersEncoding = config.getProperty(Settings.FILTER_ENCODING, 'utf-8')
         boolean filtersForceEncoding = config.getProperty(Settings.FILTER_FORCE_ENCODING, Boolean, false)
