@@ -29,6 +29,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.core.io.DescriptiveResource
 
 
 /**
@@ -163,6 +164,7 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
      */
     void beans(Closure beanDefinitions) {
         def bb = new BeanBuilder(null, grailsApplication.classLoader)
+        bb.setBeanBuildResource(new DescriptiveResource(this.getClass().getName()))
         bb.beans beanDefinitions
         bb.registerBeans((BeanDefinitionRegistry)applicationContext)
         new MapBasedSmartPropertyOverrideConfigurer(grailsApplication: grailsApplication).postProcessBeanFactory(((ConfigurableApplicationContext)applicationContext).beanFactory)
