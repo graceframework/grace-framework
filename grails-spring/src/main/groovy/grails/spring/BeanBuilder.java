@@ -120,7 +120,7 @@ public class BeanBuilder extends GroovyObjectSupport {
     private Map<String, NamespaceHandler> namespaceHandlers = new HashMap<String, NamespaceHandler>();
     private XmlBeanDefinitionReader xmlBeanDefinitionReader;
     private Map<String, String> namespaces = new HashMap<String, String>();
-    private Resource beanBuildResource = new ByteArrayResource(new byte[0]);
+    private Resource beanBuildResource;
     private XmlReaderContext readerContext;
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
@@ -150,6 +150,10 @@ public class BeanBuilder extends GroovyObjectSupport {
     public void setResourcePatternResolver(ResourcePatternResolver resourcePatternResolver) {
         Assert.notNull(resourcePatternResolver, "The argument [resourcePatternResolver] cannot be null");
         this.resourcePatternResolver = resourcePatternResolver;
+    }
+
+    public void setBeanBuildResource(Resource resource) {
+        this.beanBuildResource = resource;
     }
 
     protected void initializeSpringConfig() {
@@ -706,6 +710,9 @@ public class BeanBuilder extends GroovyObjectSupport {
             callable.setDelegate(this);
             callable.setResolveStrategy(Closure.DELEGATE_FIRST);
             callable.call(new Object[]{currentBeanConfig});
+        }
+        if (this.beanBuildResource != null && currentBeanConfig.getResource() == null) {
+            currentBeanConfig.setResource(this.beanBuildResource);
         }
 
         BeanConfiguration beanConfig = currentBeanConfig;

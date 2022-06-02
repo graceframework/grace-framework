@@ -33,6 +33,7 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Role;
+import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 /**
@@ -171,6 +172,9 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     private String name;
     private boolean singleton = true;
     private AbstractBeanDefinition definition;
+
+    private Resource resource;
+
     private Collection<?> constructorArgs = Collections.emptyList();
     private BeanWrapper wrapper;
 
@@ -220,6 +224,9 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         if (definition == null) {
             definition = createBeanDefinition();
         }
+        else if (definition.getResource() == null) {
+            definition.setResource(this.resource);
+        }
         return definition;
     }
 
@@ -250,6 +257,9 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         bd.setScope(singleton ? AbstractBeanDefinition.SCOPE_SINGLETON : AbstractBeanDefinition.SCOPE_PROTOTYPE);
         if (parentName != null) {
             bd.setParentName(parentName);
+        }
+        if (resource != null) {
+            bd.setResource(resource);
         }
         wrapper = new BeanWrapperImpl(bd);
         return bd;
@@ -298,6 +308,14 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
 
     public void setName(String beanName) {
         name = beanName;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public Resource getResource() {
+        return this.resource;
     }
 
     public Object getPropertyValue(String propName) {

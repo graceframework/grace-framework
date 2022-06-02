@@ -17,6 +17,7 @@ package org.grails.spring;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.core.io.Resource;
 
 /**
  * Represents a runtime bean configuration.
@@ -99,6 +100,14 @@ public interface BeanConfiguration {
      * @param beanName The bean name
      */
     void setName(String beanName);
+
+    /**
+     * Set the resource that this bean definition came from.
+     * @param resource the resource
+     */
+    void setResource(Resource resource);
+
+    Resource getResource();
 
     /**
      * Returns true if the bean config has the name property set.

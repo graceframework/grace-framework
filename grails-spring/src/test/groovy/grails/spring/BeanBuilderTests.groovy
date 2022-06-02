@@ -22,10 +22,12 @@ import org.springframework.beans.factory.BeanIsAbstractException
 import org.springframework.beans.factory.ObjectFactory
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.Scope
+import org.springframework.beans.factory.support.AbstractBeanDefinition
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Role
 import org.springframework.context.support.GenericApplicationContext
+import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
 
@@ -58,6 +60,22 @@ class BeanBuilderTests {
     }
 
     @Test
+    void testBeanResourceFromSpringXml() {
+
+        bb.beans {
+            importBeans "classpath:grails/spring/test.xml"
+        }
+
+        def ctx = bb.createApplicationContext()
+
+        def springConfig = bb.getSpringConfig()
+
+        def bd = (AbstractBeanDefinition)springConfig.getBeanDefinition("foo")
+
+        assertEquals new ClassPathResource("grails/spring/test.xml"), bd.getResource()
+    }
+
+    @Test
     void testImportBeansFromGroovy() {
 
         bb.beans {
@@ -68,6 +86,22 @@ class BeanBuilderTests {
 
         def foo = ctx.getBean("foo")
         assertEquals "hello", foo
+    }
+
+    @Test
+    void testBeanResourceFromGroovy() {
+
+        bb.beans {
+            importBeans "file:src/test/resources/grails/spring/test.groovy"
+        }
+
+        def ctx = bb.createApplicationContext()
+
+        def springConfig = bb.getSpringConfig()
+
+        def bc = springConfig.getBeanConfig("foo")
+
+        assertNotNull bc.resource
     }
 
     @Test
@@ -966,6 +1000,18 @@ bb.createApplicationContext()
 
         def infrastructureBean3 = bb.getBeanDefinition('infrastructureBean3')
         assertEquals BeanDefinition.ROLE_INFRASTRUCTURE, infrastructureBean3.role
+    }
+
+    @Test
+    void testBeanBuilderResource() {
+        bb.setBeanBuildResource(new ClassPathResource("META-INF/grails-plugin.xml"))
+        bb.beans {
+            demoBean(Bean1)
+        }
+
+        def bd = (AbstractBeanDefinition)bb.getBeanDefinition('demoBean')
+        assertNotNull bd.getResource()
+        assertNotNull bd.getResourceDescription()
     }
 }
 
