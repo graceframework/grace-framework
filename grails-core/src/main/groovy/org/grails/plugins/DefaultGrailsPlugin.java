@@ -62,6 +62,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.filter.TypeFilter;
@@ -539,6 +540,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             Closure c = ((Plugin) plugin).doWithSpring();
             if(c != null) {
                 BeanBuilder bb = new BeanBuilder(getParentCtx(),springConfig, grailsApplication.getClassLoader());
+                bb.setBeanBuildResource(new DescriptiveResource(this.plugin.getClass().getName()));
                 bb.setBinding(b);
                 bb.invokeMethod("beans", new Object[]{c});
             }
@@ -555,6 +557,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
             Closure c = (Closure)plugin.getProperty(DO_WITH_SPRING);
             BeanBuilder bb = new BeanBuilder(getParentCtx(),springConfig, grailsApplication.getClassLoader());
+            bb.setBeanBuildResource(new DescriptiveResource(this.plugin.getClass().getName()));
             bb.setBinding(b);
             c.setDelegate(bb);
             bb.invokeMethod("beans", new Object[]{c});

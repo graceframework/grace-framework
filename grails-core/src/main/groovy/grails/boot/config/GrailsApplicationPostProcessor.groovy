@@ -40,6 +40,7 @@ import org.springframework.core.convert.support.ConfigurableConversionService
 import org.springframework.core.env.AbstractEnvironment
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.EnumerablePropertySource
+import org.springframework.core.io.DescriptiveResource
 import org.springframework.core.io.Resource
 import org.springframework.core.Ordered
 
@@ -176,9 +177,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             def context = application.mainContext
             def beanResources = context.getResource(RuntimeSpringConfigUtilities.SPRING_RESOURCES_GROOVY)
             if (beanResources?.exists()) {
-                def gcl = new GroovyClassLoader(application.classLoader)
                 try {
-                    RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, application, gcl.parseClass(new GroovyCodeSource(beanResources.URL)))
+                    RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, application, beanResources)
                 } catch (Throwable e) {
                     log.error("Error loading spring/resources.groovy file: ${e.message}", e)
                     throw new GrailsConfigurationException("Error loading spring/resources.groovy file: ${e.message}", e)
@@ -201,6 +201,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             def withSpring = lifeCycle.doWithSpring()
             if(withSpring) {
                 def bb = new BeanBuilder(null, springConfig, application.classLoader)
+                bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()))
                 bb.beans withSpring
             }
         }
