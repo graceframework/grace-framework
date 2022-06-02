@@ -18,15 +18,17 @@ package org.grails.spring;
 
 import grails.spring.BeanBuilder;
 import grails.util.CollectionUtils;
-import groovy.lang.Binding;
-import groovy.lang.Closure;
-import groovy.lang.Script;
+import groovy.lang.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import grails.core.GrailsApplication;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.DescriptiveResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 import org.grails.spring.RuntimeSpringConfiguration;
+
+import java.io.IOException;
 
 /**
  * @since 2.4
@@ -97,6 +99,22 @@ public class RuntimeSpringConfigUtilities {
         springGroovyResourcesBeanBuilder.setBinding(new Binding(CollectionUtils.newMap(
             "application", application,
             "grailsApplication", application))); // GRAILS-7550
+        springGroovyResourcesBeanBuilder.setBeanBuildResource(new DescriptiveResource(groovySpringResourcesClass.getName()));
+        Script script = (Script) groovySpringResourcesClass.newInstance();
+        script.run();
+        Object beans = script.getProperty("beans");
+        springGroovyResourcesBeanBuilder.beans((Closure<?>)beans);
+        return springGroovyResourcesBeanBuilder;
+    }
+
+    public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config, GrailsApplication application, Resource resource) throws InstantiationException, IllegalAccessException, IOException {
+        GroovyClassLoader gcl = new GroovyClassLoader(application.getClassLoader());
+        Class<?> groovySpringResourcesClass = gcl.parseClass(new GroovyCodeSource(resource.getURI()));
+        springGroovyResourcesBeanBuilder = new BeanBuilder(null, config,Thread.currentThread().getContextClassLoader());
+        springGroovyResourcesBeanBuilder.setBinding(new Binding(CollectionUtils.newMap(
+                "application", application,
+                "grailsApplication", application))); // GRAILS-7550
+        springGroovyResourcesBeanBuilder.setBeanBuildResource(resource);
         Script script = (Script) groovySpringResourcesClass.newInstance();
         script.run();
         Object beans = script.getProperty("beans");
