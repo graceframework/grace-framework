@@ -103,7 +103,7 @@ ext {
             modules: ['aop', 'aspects', 'beans', 'context-support', 'context', 'core', 'expression', 'instrument', 'jdbc', 'jms', 'messaging', 'orm', 'oxm', 'test', 'tx', 'web', 'webmvc', 'websocket']
         ],
         directoryWatcher: [
-            version: directoryWatcherVersion,
+            version: methvinDirectoryWatcherVersion,
             group  : 'io.methvin',
             names  : ['directory-watcher'],
             modules: ['']
