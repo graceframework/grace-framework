@@ -11,12 +11,15 @@ import org.springframework.beans.factory.FactoryBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.MessageSource
+import org.springframework.context.annotation.Lazy
 
 class DefaultConstraintEvaluatorFactoryBean implements FactoryBean<ConstraintsEvaluator> {
 
+    @Lazy
     @Autowired
     MessageSource messageSource
 
+    @Lazy
     @Autowired
     @Qualifier('grailsDomainClassMappingContext')
     MappingContext grailsDomainClassMappingContext

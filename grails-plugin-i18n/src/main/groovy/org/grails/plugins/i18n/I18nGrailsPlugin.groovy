@@ -53,8 +53,6 @@ class I18nGrailsPlugin extends Plugin {
         String encoding = config.getProperty(Settings.GSP_VIEW_ENCODING, 'UTF-8')
 
         messageSource(PluginAwareResourceBundleMessageSource, application, pluginManager) { bean ->
-            bean.primary = true
-            bean.role = "infrastructure"
             fallbackToSystemLocale = false
             if (Environment.current.isReloadEnabled() || gspEnableReload) {
                 cacheSeconds = config.getProperty(Settings.I18N_CACHE_SECONDS, Integer, 5)
