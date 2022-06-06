@@ -262,7 +262,9 @@ class GroovyPagesGrailsPlugin extends Plugin {
         }
 
         // Now go through tag libraries and configure them in Spring too. With AOP proxies and so on
-        for (taglib in application.tagLibClasses) {
+        def start = System.currentTimeMillis()
+        def taglibs = application.getArtefacts(TagLibArtefactHandler.TYPE)
+        for (taglib in taglibs) {
 
             final tagLibClass = taglib.clazz
 
@@ -274,6 +276,7 @@ class GroovyPagesGrailsPlugin extends Plugin {
                 //bean.scope = 'request'
             }
         }
+        log.info(String.format("Found %d TagLibs: initialization completed in %d ms", taglibs.size(), (System.currentTimeMillis() - start)))
 
         errorsViewStackTracePrinter(ErrorsViewStackTracePrinter, ref('grailsResourceLocator'))
         filteringCodecsByContentTypeSettings(FilteringCodecsByContentTypeSettings, application)
