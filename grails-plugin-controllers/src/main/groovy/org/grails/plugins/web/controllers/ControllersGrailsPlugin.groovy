@@ -144,7 +144,9 @@ class ControllersGrailsPlugin extends Plugin {
             multipartConfig = multipartConfigElement
         }
 
-        for (controller in application.getArtefacts(ControllerArtefactHandler.TYPE)) {
+        def start = System.currentTimeMillis()
+        def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)
+        for (controller in controllerClasses) {
             log.debug "Configuring controller $controller.fullName"
             if (controller.available) {
                 def lazyInit = controller.hasProperty("lazyInit") ? controller.getPropertyValue("lazyInit") : true
@@ -162,6 +164,7 @@ class ControllersGrailsPlugin extends Plugin {
                 }
             }
         }
+        log.info(String.format("Found %d Controllers: initialization completed in %d ms", controllerClasses.size(), (System.currentTimeMillis() - start)))
 
         if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean.class, false)) {
             log.warn("'grails.json.legacy.builder' is set to TRUE but is NOT supported in this version of Grails.")
