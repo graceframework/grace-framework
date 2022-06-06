@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse
  * This tag library tends to get extended by others as tags within here can be re-used in said libraries
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 @TagLib
 class ApplicationTagLib implements ApplicationContextAware, InitializingBean, GrailsApplicationAware, TagLibrary {
@@ -53,7 +54,6 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
     ApplicationContext applicationContext
     GrailsPluginManager pluginManager
     GrailsApplication grailsApplication
-    UrlMappingsHolder grailsUrlMappingsHolder
 
     @Autowired
     LinkGenerator linkGenerator
