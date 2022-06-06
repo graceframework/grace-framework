@@ -6,6 +6,7 @@ import org.grails.datastore.mapping.validation.ValidatorRegistry
 import org.springframework.beans.factory.FactoryBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.annotation.Lazy
 
 /**
  * A factory bean for the validator registry
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 @CompileStatic
 class ValidatorRegistryFactoryBean implements FactoryBean<ValidatorRegistry> {
 
+    @Lazy
     @Autowired
     @Qualifier('grailsDomainClassMappingContext')
     MappingContext mappingContext

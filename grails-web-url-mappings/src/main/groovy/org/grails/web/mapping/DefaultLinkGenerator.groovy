@@ -24,7 +24,6 @@ import grails.web.mapping.UrlMapping
 import grails.web.mapping.UrlMappingsHolder
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.util.StringUtils
 
 import javax.annotation.PostConstruct
 import java.util.regex.Pattern
@@ -78,7 +77,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     MappingContext mappingContext
 
     @Autowired(required = false)
-    UrlConverter grailsUrlConverter = new CamelCaseUrlConverter()
+    private UrlConverter grailsUrlConverter = new CamelCaseUrlConverter()
 
     @Value('${grails.resources.pattern:/static/**}')
     String resourcePattern = Settings.DEFAULT_RESOURCE_PATTERN

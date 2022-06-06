@@ -51,14 +51,12 @@ class DomainClassGrailsPlugin extends Plugin {
         }
         "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator"))  { bean ->
             bean.lazyInit = true
-            bean.role = "infrastructure"
         }
         grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext)  { bean ->
             bean.lazyInit = true
         }
         gormValidatorRegistry(ValidatorRegistryFactoryBean)  { bean ->
             bean.lazyInit = true
-            bean.role = "infrastructure"
         }
 
         def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)

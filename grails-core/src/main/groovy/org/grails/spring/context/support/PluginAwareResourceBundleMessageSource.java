@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,13 @@ import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
 import org.grails.core.support.internal.tools.ClassRelativeResourcePatternResolver;
 import org.grails.plugins.BinaryGrailsPlugin;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -51,9 +53,10 @@ import java.util.concurrent.ConcurrentMap;
  * A ReloadableResourceBundleMessageSource that is capable of loading message sources from plugins.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.1
  */
-public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBundleMessageSource implements GrailsApplicationAware, PluginManagerAware, InitializingBean {
+public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBundleMessageSource implements GrailsApplicationAware, PluginManagerAware, InitializingBean, SmartInitializingSingleton {
     private static final String GRAILS_APP_I18N_PATH_COMPONENT = "/grails-app/i18n/";
     protected GrailsApplication application;
     protected GrailsPluginManager pluginManager;
@@ -86,7 +89,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         this.resourceResolver = resourceResolver;
     }
 
+    @Override
     public void afterPropertiesSet() throws Exception {
+        Assert.notNull(this.pluginManager, "GrailsPluginManager is required");
+        Assert.notNull(this.resourceResolver, "PathMatchingResourcePatternResolver is required");
+
         if (pluginCacheMillis == Long.MIN_VALUE) {
             pluginCacheMillis = cacheMillis;
         }
@@ -94,7 +101,10 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         if (localResourceLoader == null) {
             return;
         }
+    }
 
+    @Override
+    public void afterSingletonsInstantiated() {
         Resource[] resources;
         if(Environment.isDevelopmentEnvironmentAvailable()) {
             File[] propertiesFiles = new File(BuildSettings.BASE_DIR, GRAILS_APP_I18N_PATH_COMPONENT).listFiles(new FilenameFilter() {
@@ -115,24 +125,25 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
             }
         }
         else {
-            if(searchClasspath) {
-                resources = resourceResolver.getResources(messageBundleLocationPattern);
-            }
-            else {
-                DefaultGrailsApplication defaultGrailsApplication = (DefaultGrailsApplication) application;
-                if(defaultGrailsApplication != null) {
-                    GrailsApplicationClass applicationClass = defaultGrailsApplication.getApplicationClass();
-                    if(applicationClass != null) {
-                        ResourcePatternResolver resourcePatternResolver = new ClassRelativeResourcePatternResolver(applicationClass.getClass());
-                        resources = resourcePatternResolver.getResources(messageBundleLocationPattern);
-                    }
-                    else {
+            try {
+                if (searchClasspath) {
+                    resources = resourceResolver.getResources(messageBundleLocationPattern);
+                } else {
+                    DefaultGrailsApplication defaultGrailsApplication = (DefaultGrailsApplication) application;
+                    if (defaultGrailsApplication != null) {
+                        GrailsApplicationClass applicationClass = defaultGrailsApplication.getApplicationClass();
+                        if (applicationClass != null) {
+                            ResourcePatternResolver resourcePatternResolver = new ClassRelativeResourcePatternResolver(applicationClass.getClass());
+                            resources = resourcePatternResolver.getResources(messageBundleLocationPattern);
+                        } else {
+                            resources = resourceResolver.getResources(messageBundleLocationPattern);
+                        }
+                    } else {
                         resources = resourceResolver.getResources(messageBundleLocationPattern);
                     }
                 }
-                else {
-                    resources = resourceResolver.getResources(messageBundleLocationPattern);
-                }
+            } catch (Exception e) {
+                resources = new Resource[0];
             }
         }
 
