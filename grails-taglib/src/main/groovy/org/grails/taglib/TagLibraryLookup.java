@@ -25,6 +25,7 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.taglib.encoder.WithCodecHelper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -36,7 +37,7 @@ import java.util.*;
  * @author Graeme Rocher
  * @since 1.1
  */
-public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicationAware, InitializingBean {
+public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicationAware, InitializingBean, SmartInitializingSingleton {
     protected ApplicationContext applicationContext;
     protected GrailsApplication grailsApplication;
     protected Map<String, Map<String, Object>> tagNamespaces = new HashMap<>();
@@ -44,11 +45,15 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
     protected Map<String, Set<String>> tagsThatReturnObjectForNamespace = new HashMap<String, Set<String>>();
     protected Map<String, Map<String,Map<String, Object>>> encodeAsForTagNamespaces = new HashMap<String, Map<String,Map<String, Object>>>();
 
+    @Override
     public void afterPropertiesSet() throws Exception {
         if (grailsApplication == null || applicationContext == null) {
             return;
         }
+    }
 
+    @Override
+    public void afterSingletonsInstantiated() {
         try {
             registerTagLibraries();
         } catch (GrailsConfigurationException e) {
