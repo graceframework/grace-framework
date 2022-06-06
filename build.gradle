@@ -87,7 +87,7 @@ ext {
         'scaffolding-core': [
                 version: scaffoldingCoreVersion,
                 group  : 'org.grails',
-                names  : ['scaffolding'],
+                names  : ['grails-scaffolding'],
                 modules: ['core']
         ],
         groovy: [
