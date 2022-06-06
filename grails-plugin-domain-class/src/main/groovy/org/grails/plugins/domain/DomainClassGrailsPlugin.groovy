@@ -18,7 +18,9 @@ package org.grails.plugins.domain
 import grails.core.GrailsApplication
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
+import groovy.util.logging.Slf4j
 import grails.validation.ConstraintsEvaluator
+import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
 import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean
 import org.grails.plugins.domain.support.DefaultMappingContextFactoryBean
@@ -31,6 +33,7 @@ import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
  * @author Michael Yan
  * @since 0.4
  */
+@Slf4j
 class DomainClassGrailsPlugin extends Plugin {
 
     def watchedResources = ["file:./grails-app/domain/**/*.groovy",
@@ -57,5 +60,8 @@ class DomainClassGrailsPlugin extends Plugin {
             bean.lazyInit = true
             bean.role = "infrastructure"
         }
+
+        def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
+        log.info(String.format("Found %d Domains", domainClasses.size()))
     }}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import grails.core.GrailsServiceClass
 import grails.plugins.GrailsPlugin
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
+import groovy.util.logging.Slf4j
 import org.grails.core.artefact.ServiceArtefactHandler
 import org.grails.core.exceptions.GrailsConfigurationException
 
@@ -33,6 +34,7 @@ import java.lang.reflect.Modifier
  * @author Graeme Rocher
  * @since 0.4
  */
+@Slf4j
 class ServicesGrailsPlugin extends Plugin  {
 
     def version = GrailsUtil.getGrailsVersion()
@@ -49,7 +51,9 @@ class ServicesGrailsPlugin extends Plugin  {
             throw new GrailsConfigurationException("Spring proxy-based transaction management no longer supported. Yes the @grails.gorm.transactions.Transactional annotation instead")
         }
 
-        for (GrailsServiceClass serviceClass in application.getArtefacts(ServiceArtefactHandler.TYPE)) {
+        def start = System.currentTimeMillis()
+        def serviceClasses = application.getArtefacts(ServiceArtefactHandler.TYPE)
+        for (GrailsServiceClass serviceClass in serviceClasses) {
             GrailsPlugin providingPlugin = manager?.getPluginForClass(serviceClass.clazz)
 
             String beanName
@@ -71,6 +75,7 @@ class ServicesGrailsPlugin extends Plugin  {
                 }
             }
         }
+        log.info(String.format("Found %d Services: initialization completed in %d ms", serviceClasses.size(), (System.currentTimeMillis() - start)))
 
         serviceBeanAliasPostProcessor(ServiceBeanAliasPostProcessor)
     }}
