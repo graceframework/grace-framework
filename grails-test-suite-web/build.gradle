@@ -27,7 +27,7 @@ dependencies {
                 project(':grails-web'),
                 project(':grails-web-databinding'),
                 project(':grails-spring')
-    testImplementation "org.grails.plugins:converters:$legacyConvertersVersion"
+    testImplementation "org.grails.plugins:converters:$convertersVersion"
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:7.2.2", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'

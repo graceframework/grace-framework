@@ -12,7 +12,7 @@ dependencies {
 
     api project(":grails-plugin-mimetypes")
     api project(":grails-web")
-    api "org.grails.plugins:converters:$legacyConvertersVersion"
+    api "org.grails.plugins:converters:$convertersVersion"
 
     // command line requirements
     api  "jline:jline:$jlineVersion"
