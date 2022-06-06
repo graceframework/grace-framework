@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.grails.web.mapping.mvc.GrailsControllerUrlMappings;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
@@ -47,6 +48,7 @@ import java.util.List;
  * Constructs the UrlMappingsHolder from the registered UrlMappings class within a GrailsApplication.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.5
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -57,6 +59,9 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
     private UrlMappings urlMappingsHolder;
     private GrailsPluginManager pluginManager;
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private UrlConverter grailsUrlConverter;
 
     public UrlMappings getObject() throws Exception {
         return urlMappingsHolder;
@@ -123,8 +128,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         }
         // call initialize() after settings are in place
         defaultUrlMappingsHolder.initialize();
-        UrlConverter urlConverter = applicationContext.containsBean(UrlConverter.BEAN_NAME) ? applicationContext.getBean(UrlConverter.BEAN_NAME, UrlConverter.class) : null;
-        final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(grailsApplication, defaultUrlMappingsHolder, urlConverter);
+        final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(grailsApplication, defaultUrlMappingsHolder, grailsUrlConverter);
         ((ConfigurableApplicationContext)applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
             @Override
             public void onApplicationEvent(ArtefactAdditionEvent event) {
