@@ -4,6 +4,7 @@ configurations.testCompileClasspath {
 
 dependencies {
 
+    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
     testImplementation project(':grails-test-suite-base'),
                 project(':grails-plugin-domain-class'),
                 project(':grails-plugin-datasource'),

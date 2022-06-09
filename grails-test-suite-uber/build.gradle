@@ -18,6 +18,8 @@ dependencies {
     testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
             "org.aspectj:aspectjweaver:$aspectjVersion"
 
+    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
+
     testImplementation project(':grails-plugin-codecs'),
                 project(':grails-plugin-domain-class') ,
                 project(':grails-plugin-url-mappings') ,

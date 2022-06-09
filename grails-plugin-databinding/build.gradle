@@ -10,6 +10,7 @@
 
     api project(':grails-core'), project(':grails-web')
 
+    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
     testImplementation project(':grails-test-suite-base')
     testImplementation "org.grails:grails-web-testing-support:$testingSupportVersionForTests", {
         exclude module:'grails-plugin-codecs'
