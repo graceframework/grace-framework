@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,9 @@
 package grails.boot.config
 
 import grails.config.Config
-import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.boot.config.tools.ClassPathScanner
 import grails.core.GrailsApplicationClass
-import grails.plugins.DefaultGrailsPluginManager
-import grails.plugins.GrailsPluginManager
 import groovy.transform.CompileStatic
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
@@ -70,16 +67,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      */
     @Bean
     GrailsApplicationPostProcessor grailsApplicationPostProcessor() {
-        GrailsApplication grailsApplication = grailsApplication()
-        return new GrailsApplicationPostProcessor( this, applicationContext, grailsApplication, grailsPluginManager(grailsApplication), classes() as Class[])
-    }
-
-    GrailsApplication grailsApplication() {
-        return new DefaultGrailsApplication(this)
-    }
-
-    GrailsPluginManager grailsPluginManager(GrailsApplication grailsApplication) {
-        return new DefaultGrailsPluginManager(grailsApplication)
+        return new GrailsApplicationPostProcessor(this, applicationContext, classes() as Class[])
     }
 
     /**
@@ -108,7 +96,6 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         return classes
     }
 
-
     /**
      * Whether classpath scanning should be limited to the application and not dependent JAR files. Users can override this method to enable more broad scanning
      * at the cost of startup time.
@@ -133,7 +120,6 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
     Collection<String> packageNames() {
         packages().collect { Package p -> p.name }
     }
-
 
     @Override
     Closure doWithSpring() { null }
@@ -172,4 +158,3 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
     }
 
 }
-

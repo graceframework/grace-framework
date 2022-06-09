@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.boot.config
 
 import grails.boot.GrailsApp
@@ -6,6 +21,7 @@ import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.core.GrailsApplicationClass
 import grails.core.GrailsApplicationLifeCycle
+import grails.plugins.DefaultGrailsPluginManager
 import grails.plugins.GrailsPlugin
 import grails.plugins.GrailsPluginManager
 import grails.spring.BeanBuilder
@@ -48,6 +64,7 @@ import org.springframework.core.Ordered
  * A {@link BeanDefinitionRegistryPostProcessor} that enhances any ApplicationContext with plugin manager capabilities
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -64,6 +81,10 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
     boolean loadExternalBeans = true
     boolean reloadingEnabled = RELOADING_ENABLED
 
+    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, Class...classes) {
+        this(lifeCycle, applicationContext, null, null, classes)
+    }
+
     GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, GrailsApplication grailsApplication, GrailsPluginManager pluginManager, Class...classes) {
         this.lifeCycle = lifeCycle
         if(lifeCycle instanceof GrailsApplicationClass) {
@@ -73,8 +94,16 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             this.applicationClass = null
         }
         this.classes = classes != null ? classes : [] as Class[]
-        this.grailsApplication = grailsApplication
-        this.pluginManager = pluginManager
+        if (grailsApplication != null) {
+            this.grailsApplication = grailsApplication
+        } else {
+            this.grailsApplication = new DefaultGrailsApplication(applicationClass)
+        }
+        if (pluginManager != null) {
+            this.pluginManager = pluginManager
+        } else {
+            this.pluginManager = new DefaultGrailsPluginManager(this.grailsApplication)
+        }
         if(applicationContext != null) {
             setApplicationContext(applicationContext)
         }
@@ -284,8 +313,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         }
     }
 
-	@Override
-	public int getOrder() {
-		Ordered.HIGHEST_PRECEDENCE
-	}
+    @Override
+    int getOrder() {
+        0
+    }
 }
