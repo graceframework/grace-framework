@@ -52,7 +52,7 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
     public static final String DEFAULT_JSR310_LOCAL_TIME_FORMAT = "HH:mm:ss"
     public static final List<String> DEFAULT_DATE_FORMATS = ['yyyy-MM-dd HH:mm:ss.S',"yyyy-MM-dd'T'HH:mm:ss'Z'","yyyy-MM-dd HH:mm:ss.S z","yyyy-MM-dd'T'HH:mm:ss.SSSX", DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT, DEFAULT_JSR310_OFFSET_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_FORMAT, DEFAULT_JSR310_LOCAL_TIME_FORMAT]
 
-    boolean enabled = ClassUtils.isPresent("io.micronaut.spring.context.env.MicronautEnvironment", grailsApplication.classLoader)
+    boolean enabled = !ClassUtils.isPresent("io.micronaut.spring.context.env.MicronautEnvironment", getClass().getClassLoader())
 
     @Override
     Closure doWithSpring() {{->
