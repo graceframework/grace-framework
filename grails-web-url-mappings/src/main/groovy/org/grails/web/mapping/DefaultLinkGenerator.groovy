@@ -77,7 +77,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     MappingContext mappingContext
 
     @Autowired(required = false)
-    private UrlConverter grailsUrlConverter = new CamelCaseUrlConverter()
+    UrlConverter grailsUrlConverter = new CamelCaseUrlConverter()
 
     @Value('${grails.resources.pattern:/static/**}')
     String resourcePattern = Settings.DEFAULT_RESOURCE_PATTERN
