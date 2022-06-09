@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.grails.plugins.databinding
 
 import grails.config.Settings
 import grails.plugins.Plugin
-import grails.util.GrailsUtil
 import grails.web.databinding.DataBindingUtils
 import grails.web.databinding.GrailsWebDataBinder
 import org.grails.databinding.converters.Jsr310ConvertersConfiguration
@@ -34,6 +33,7 @@ import org.grails.databinding.converters.DateConversionHelper
 import org.grails.databinding.converters.TimeZoneConverter
 import org.grails.databinding.converters.web.LocaleAwareBigDecimalConverter
 import org.grails.databinding.converters.web.LocaleAwareNumberConverter
+import org.springframework.util.ClassUtils
 
 /**
  * Plugin for configuring the data binding features of Grails
@@ -52,7 +52,7 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
     public static final String DEFAULT_JSR310_LOCAL_TIME_FORMAT = "HH:mm:ss"
     public static final List<String> DEFAULT_DATE_FORMATS = ['yyyy-MM-dd HH:mm:ss.S',"yyyy-MM-dd'T'HH:mm:ss'Z'","yyyy-MM-dd HH:mm:ss.S z","yyyy-MM-dd'T'HH:mm:ss.SSSX", DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT, DEFAULT_JSR310_OFFSET_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_FORMAT, DEFAULT_JSR310_LOCAL_TIME_FORMAT]
 
-    def version = GrailsUtil.getGrailsVersion()
+    boolean enabled = ClassUtils.isPresent("io.micronaut.spring.context.env.MicronautEnvironment", grailsApplication.classLoader)
 
     @Override
     Closure doWithSpring() {{->
