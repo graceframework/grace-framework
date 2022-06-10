@@ -356,6 +356,34 @@ strong {
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //
+//  Heade anchor.
+//
+////////////////////////////////////////////////////////////////////////////////
+*/
+#main h1 .anchor, #main h2 .anchor, #main h3 .anchor, #main h4 .anchor, #main h5 .anchor, #main h6 .anchor {
+    position: absolute;
+    text-decoration: none;
+    width: 1.75ex;
+    margin-left: -1.0ex;
+    padding-top: .05em;
+    visibility: hidden;
+    font-size: .8em;
+    font-weight: 400;
+ }
+ 
+ #main h1 .anchor::before, #main h2 .anchor::before, #main h3 .anchor::before, #main h4 .anchor::before, #main h5 .anchor::before, #main h6 .anchor::before {
+    content: "\00a7";
+ }
+ 
+ #main h1:hover .anchor, #main h2:hover .anchor, #main h3:hover .anchor, #main h4:hover .anchor, #main h5:hover .anchor, #main h6:hover .anchor {
+    color: #feb672;
+    color: var(--color-brand-primary);
+    visibility: visible;
+ }
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//
 //  Default Style.
 //
 ////////////////////////////////////////////////////////////////////////////////
