@@ -17,6 +17,7 @@ package grails.boot.config.tools
 
 import grails.boot.config.GrailsApplicationPostProcessor
 import grails.core.GrailsApplicationLifeCycle
+import grails.plugins.GrailsPluginManager
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.context.ApplicationContext
@@ -36,6 +37,11 @@ class ProfilingGrailsApplicationPostProcessor extends GrailsApplicationPostProce
 
     ProfilingGrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, Class... classes) {
         super(lifeCycle, applicationContext, classes)
+        ((ConfigurableApplicationContext)applicationContext).beanFactory.addBeanPostProcessor(this)
+    }
+
+    ProfilingGrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, GrailsPluginManager pluginManager, Class...classes) {
+        super(lifeCycle, applicationContext, pluginManager.getApplication(), pluginManager, classes)
         ((ConfigurableApplicationContext)applicationContext).beanFactory.addBeanPostProcessor(this)
     }
 
