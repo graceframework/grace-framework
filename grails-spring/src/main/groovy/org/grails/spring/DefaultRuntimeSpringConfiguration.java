@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -45,7 +46,7 @@ import org.springframework.util.Assert;
  * to be constructed at runtime.
  *
  * Credit must go to Solomon Duskis and the
- * article: http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring
+ * article: <a href="http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring">Programmatic Configuration in Spring</a>
  *
  * @author Graeme
  * @since 0.3
@@ -269,19 +270,24 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
     private void registerBeanConfigsWithRegistry(BeanDefinitionRegistry registry) {
         for (BeanConfiguration bc : beanConfigs.values()) {
             String beanName = bc.getName();
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("[RuntimeConfiguration] Registering bean [" + beanName + "]");
-                if (LOG.isTraceEnabled()) {
-                    PropertyValue[] pvs = bc.getBeanDefinition()
-                                            .getPropertyValues()
-                                            .getPropertyValues();
-                    for (PropertyValue pv : pvs) {
-                        LOG.trace("[RuntimeConfiguration] With property [" + pv.getName() + "] set to [" + pv.getValue() + "]");
+
+            if (bc.isConditionOn()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Registering bean definition for bean name '" + beanName + "'");
+                    if (LOG.isTraceEnabled()) {
+                        MutablePropertyValues pvs = bc.getBeanDefinition().getPropertyValues();
+                        for (PropertyValue pv : pvs) {
+                            LOG.trace("    with property: " + pv.getName() + " = " + pv.getValue());
+                        }
                     }
                 }
-            }
 
-            registry.registerBeanDefinition(beanName, bc.getBeanDefinition());
+                registry.registerBeanDefinition(beanName, bc.getBeanDefinition());
+            } else {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Bean '" + beanName + "' is not registered with bean.condition = false");
+                }
+            }
         }
     }
 
@@ -289,11 +295,11 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
         for (Object key : beanDefinitions.keySet()) {
             BeanDefinition bd = beanDefinitions.get(key);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("[RuntimeConfiguration] Registering bean [" + key + "]");
+                LOG.debug("Registering bean definition for bean name '" + key + "'");
                 if (LOG.isTraceEnabled()) {
-                    PropertyValue[] pvs = bd.getPropertyValues().getPropertyValues();
+                    MutablePropertyValues pvs = bd.getPropertyValues();
                     for (PropertyValue pv : pvs) {
-                        LOG.trace("[RuntimeConfiguration] With property [" + pv.getName() + "] set to [" + pv.getValue() + "]");
+                        LOG.trace("    with property: " + pv.getName() + " = " + pv.getValue());
                     }
                 }
             }
@@ -314,7 +320,25 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
             registerBeansWithRegistry(registry);
         }
         for (Map.Entry<String, BeanConfiguration> beanEntry : beanConfigs.entrySet()) {
-            targetSpringConfig.addBeanConfiguration(beanEntry.getKey(), beanEntry.getValue());
+            String beanName = beanEntry.getKey();
+            BeanConfiguration bc = beanEntry.getValue();
+            if (beanEntry.getValue().isConditionOn()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Registering bean definition for bean name '" + beanName + "'");
+                    if (LOG.isTraceEnabled()) {
+                        MutablePropertyValues pvs = bc.getBeanDefinition().getPropertyValues();
+                        for (PropertyValue pv : pvs) {
+                            LOG.trace("    with property: " + pv.getName() + " = " + pv.getValue());
+                        }
+                    }
+                }
+
+                targetSpringConfig.addBeanConfiguration(beanEntry.getKey(), beanEntry.getValue());
+            } else {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Bean '" + beanName + "' is not registered with bean.condition = false");
+                }
+            }
         }
     }
 

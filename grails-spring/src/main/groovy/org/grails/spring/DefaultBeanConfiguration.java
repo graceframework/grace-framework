@@ -174,6 +174,7 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     private AbstractBeanDefinition definition;
 
     private Resource resource;
+    private boolean condition = true;
 
     private Collection<?> constructorArgs = Collections.emptyList();
     private BeanWrapper wrapper;
@@ -356,5 +357,9 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         }
         getBeanDefinition().setParentName(parentName);
         setAbstract(false);
+    }
+
+    public boolean isConditionOn() {
+        return condition;
     }
 }

@@ -1013,6 +1013,32 @@ bb.createApplicationContext()
         assertNotNull bd.getResource()
         assertNotNull bd.getResourceDescription()
     }
+
+    @Test
+    void testBeanWithCondition() {
+        bb.beans {
+            conditionalBean(Bean1) { bean ->
+                bean.condition = false
+            }
+            conditionalBean2(Bean1) { bean ->
+                bean.condition = true
+            }
+            def enable = false
+            conditionalBean3(Bean1) { bean ->
+                bean.condition = enable
+            }
+        }
+
+        def ctx  = bb.createApplicationContext()
+        def bc = bb.getSpringConfig()
+
+        assertEquals 3, bc.getBeanNames().size()
+        assertEquals 1, ctx.getBeanDefinitionCount()
+        assertFalse ctx.containsBean("conditionalBean")
+        assertFalse ctx.containsBean("conditionalBean3")
+        assertNotNull bc.getBeanConfig("conditionalBean")
+        assertNotNull ctx.getBean("conditionalBean2")
+    }
 }
 
 class HolyGrailQuest {
