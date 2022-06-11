@@ -85,6 +85,10 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         this(lifeCycle, applicationContext, null, null, classes)
     }
 
+    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, GrailsPluginManager pluginManager, Class...classes) {
+        this(lifeCycle, applicationContext, pluginManager.getApplication(), pluginManager, classes)
+    }
+
     GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle, ApplicationContext applicationContext, GrailsApplication grailsApplication, GrailsPluginManager pluginManager, Class...classes) {
         this.lifeCycle = lifeCycle
         if(lifeCycle instanceof GrailsApplicationClass) {

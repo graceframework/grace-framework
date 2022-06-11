@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,6 +173,11 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param application The GrailsApplication instance
      */
     void setApplication(GrailsApplication application);
+
+    /**
+     * Get the GrailsApplication used be this plugin manager
+     */
+    GrailsApplication getApplication();
 
     /**
      * @return the initialised
