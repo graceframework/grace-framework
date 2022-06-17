@@ -156,6 +156,12 @@ ext {
             names  : ['h2'],
             modules: ['']
         ],
+        'spring-boot': [
+            version: springBootVersion,
+            group  : 'org.springframework.boot',
+            names  : ['spring-boot'],
+            modules: ['', 'dependencies', 'cli']
+        ],
     ]
 
     nexusUsername = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''

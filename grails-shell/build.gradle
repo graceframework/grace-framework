@@ -11,9 +11,14 @@ ext {
     gradleToolingApiVersion = '6.9'
 }
 
+configurations {
+	dependenciesBom
+}
+
 dependencies {
     api project(":grails-bootstrap")
     api project(":grails-gradle-model")
+    dependenciesBom(project(path: ":grails-bom", configuration: 'effectiveBom'))
     api "org.apache.ant:ant:$antVersion"
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"
     api "org.codehaus.groovy:groovy-json:$groovyVersion"
@@ -42,6 +47,17 @@ dependencies {
     runtimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
     runtimeOnly "org.codehaus.plexus:plexus-component-api:1.0-alpha-33"
 
+}
+
+task syncGrailsDependenciesBom(type: Sync) {
+	destinationDir = file("${buildDir}/generated-resources/org/grails/cli/boot/dependencies")
+	from configurations.dependenciesBom
+}
+
+sourceSets {
+	main {
+		output.dir("${buildDir}/generated-resources", builtBy: "syncGrailsDependenciesBom")
+	}
 }
 
 eclipse {
