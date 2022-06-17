@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ class ConfigProperties extends Properties {
 
     @Override
     Set<Object> keySet() {
-        return (Set<Object>)stringPropertyNames()
+        return stringPropertyNames() as Set<Object>
     }
 
     @Override

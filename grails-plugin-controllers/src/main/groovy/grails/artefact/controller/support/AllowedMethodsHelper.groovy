@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class AllowedMethodsHelper {
             if(value instanceof String) {
                 isAllowed = method.equalsIgnoreCase(value)
             } else if (value instanceof List) {
-                isAllowed = value.find { String s -> method.equalsIgnoreCase(s) }
+                isAllowed = value.find { s -> method.equalsIgnoreCase(String.valueOf(s)) }
             } else {
                 isAllowed = false
             }
