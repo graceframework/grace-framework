@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyResolveDetails
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
@@ -50,6 +49,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
+import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.build.parsing.CommandLineParser
 import org.grails.gradle.plugin.agent.AgentTasksEnhancer
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
@@ -83,6 +83,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     List<String> excludedGrailsAppSourceDirs = ['migrations', 'assets']
     List<String> grailsAppResourceDirs = ['views', 'i18n', 'conf']
     private final ToolingModelBuilderRegistry registry
+    String grailsVersion
 
     @Inject
     GrailsGradlePlugin(ToolingModelBuilderRegistry registry) {
@@ -96,6 +97,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if( project.tasks.findByName('compileGroovy') == null ) {
             super.apply(project)
         }
+
+        grailsVersion = resolveGrailsVersion(project)
 
         excludeDependencies(project)
 
@@ -118,8 +121,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         configureGrailsBuildSettings(project)
 
         configureFileWatch(project)
-
-        String grailsVersion = resolveGrailsVersion(project)
 
         enableNative2Ascii(project, grailsVersion)
 
@@ -183,9 +184,14 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileDynamic
-    private void applyBomImport(DependencyManagementExtension dme, project) {
+    private void applyBomImport(DependencyManagementExtension dme, Project project) {
+        String springBootVersion = resolveSpringBootVersion(project)
         dme.imports({
-            mavenBom("org.grails:grails-bom:${project.properties['grailsVersion']}")
+            mavenBom("org.grails:grails-bom:${grailsVersion}")
+            mavenBom("org.springframework.boot:spring-boot-starter-parent:${springBootVersion}")
+        })
+        dme.dependencies({
+            dependency("org.grails:grails-shell:${grailsVersion}")
         })
         dme.setApplyMavenExclusions(false)
     }
@@ -195,7 +201,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String getDefaultMicronautVersion() {
-        '3.2.7'
+        '3.3.4'
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
@@ -213,7 +219,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             Map<String, Object> buildPropertiesContents = ['grails.env': Environment.isSystemSet() ? Environment.current.name : Environment.PRODUCTION.name,
                                                            'info.app.name': project.name,
                                                            'info.app.version':  project.version instanceof Serializable ? project.version : project.version.toString(),
-                                                           'info.app.grailsVersion': project.properties.get('grailsVersion')]
+                                                           'info.app.grailsVersion': grailsVersion]
 
             buildPropertiesTask.inputs.properties(buildPropertiesContents)
             buildPropertiesTask.outputs.file(buildInfoFile)
@@ -236,24 +242,25 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileStatic
     protected void configureMicronaut(Project project) {
-        final String micronautVersion = project.properties['micronautVersion']
-        if (micronautVersion) {
-            project.configurations.all({ Configuration configuration ->
-                configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
-                    String dependencyName = details.requested.name
-                    String group = details.requested.group
-                    if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
-                        details.useVersion(micronautVersion)
-                        return
-                    }
-                } as Action<DependencyResolveDetails>)
-            } as Action<Configuration>)
-        }
+        final String micronautVersion = resolveMicronautVersion(project)
+
+        project.configurations.all({ Configuration configuration ->
+            configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
+                String dependencyName = details.requested.name
+                String group = details.requested.group
+                if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
+                    details.useVersion(micronautVersion)
+                }
+                if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
+                    details.useVersion('2.0.0')
+                }
+            } as Action<DependencyResolveDetails>)
+        } as Action<Configuration>)
     }
 
     @CompileStatic
     protected void configureGroovy(Project project) {
-        final String groovyVersion = project.properties['groovyVersion']
+        final String groovyVersion = resolveGroovyVersion(project)
         if (groovyVersion) {
             project.configurations.all({ Configuration configuration ->
                 configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
@@ -371,13 +378,53 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String resolveGrailsVersion(Project project) {
-        def grailsVersion = project.property('grailsVersion')
+        def grailsVersion = project.findProperty('grailsVersion')
 
         if (!grailsVersion) {
-            def grailsCoreDep = project.configurations.getByName('compileClasspath').dependencies.find { Dependency d -> d.name == 'grails-core' }
-            grailsVersion = grailsCoreDep.version
+            Properties grailsBuildProperties = new Properties()
+            grailsBuildProperties.load(BuildSettings.class.getResourceAsStream("/grails.build.properties"))
+            grailsVersion = grailsBuildProperties.getProperty("grails.version")
+        }
+        if (!grailsVersion) {
+            grailsVersion = new GrailsDependenciesDependencyManagement().getGrailsVersion()
         }
         grailsVersion
+    }
+
+    protected String resolveGroovyVersion(Project project) {
+        def groovyVersion = project.findProperty('groovyVersion')
+
+        if (!groovyVersion) {
+            groovyVersion = new GrailsDependenciesDependencyManagement().getGroovyVersion()
+        }
+        if (!groovyVersion) {
+            groovyVersion = GroovySystem.getVersion()
+        }
+
+        groovyVersion
+    }
+
+    protected String resolveSpringBootVersion(Project project) {
+        def springBootVersion = project.findProperty('springBootVersion')
+
+        if (!springBootVersion) {
+            springBootVersion = new GrailsDependenciesDependencyManagement().getSpringBootVersion()
+        }
+
+        springBootVersion
+    }
+
+    protected String resolveMicronautVersion(Project project) {
+        def micronautVersion = project.findProperty('micronautVersion')
+
+        if (!micronautVersion) {
+            micronautVersion = new GrailsDependenciesDependencyManagement().getMicronautVersion()
+        }
+        if (!micronautVersion) {
+            micronautVersion = getDefaultMicronautVersion()
+        }
+
+        micronautVersion
     }
 
     @CompileDynamic
@@ -486,7 +533,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.configurations {
                 agent
             }
-            final String micronautVersion = project.properties['micronautVersion']
+            final String micronautVersion = resolveMicronautVersion(project)
             if (project.configurations.findByName("developmentOnly")) {
                 project.dependencies.add("developmentOnly", "io.micronaut:micronaut-inject-groovy:${micronautVersion?:defaultMicronautVersion}")
             }
