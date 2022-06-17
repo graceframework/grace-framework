@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.config
 
 import groovy.transform.CompileDynamic
@@ -10,7 +25,8 @@ import org.slf4j.LoggerFactory
 import java.util.regex.Pattern
 
 /**
- * @deprecated This class is deprecated to reduce complexity, improve performance, and increase maintainability. Use {@code config.getProperty(String key, Class<T> targetType)} instead.
+ * @deprecated This class is deprecated to reduce complexity, improve performance, and increase maintainability.
+ * Use {@code config.getProperty(String key, Class<T> targetType)} instead.
  */
 @Deprecated
 @EqualsAndHashCode
@@ -103,7 +119,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     @Override
-    void putAll(Map<? extends String, ?> m) {
+    void putAll(Map<? extends String, ? extends Object> m) {
         delegateMap.putAll m
     }
 
@@ -377,7 +393,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     
     public Properties toProperties() {
         Properties properties = new Properties()
-        flattenKeys((Map<String, Object>)properties, this, [], true)
+        flattenKeys(properties as Map<String, Object>, this, [] as List<String>, true)
         properties
     }
     

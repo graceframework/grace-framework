@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class ServletRenderContext extends AbstractRenderContext {
     private boolean writerObtained = false
 
     ServletRenderContext(GrailsWebRequest webRequest) {
-        this(webRequest, Collections.emptyMap())
+        this(webRequest, Collections.<String, Object> emptyMap())
     }
 
     ServletRenderContext(GrailsWebRequest webRequest, Map<String, Object> arguments) {
@@ -52,8 +52,8 @@ class ServletRenderContext extends AbstractRenderContext {
             final argsMap = arguments
             final incObject = argsMap != null ?  argsMap.get(IncludeExcludeSupport.INCLUDES_PROPERTY) : null
             final excObject = argsMap != null ? argsMap.get(IncludeExcludeSupport.EXCLUDES_PROPERTY) : null
-            List includes = incObject instanceof List ? (List)incObject : null
-            List excludes = excObject instanceof List ? (List)excObject : null
+            List<String> includes = incObject instanceof List ? (List<String>) incObject : null
+            List<String> excludes = excObject instanceof List ? (List<String>) excObject : null
             if(includes != null) {
                 this.includes = includes
             }
@@ -62,7 +62,7 @@ class ServletRenderContext extends AbstractRenderContext {
             }
         }
         else {
-            this.arguments = Collections.emptyMap()
+            this.arguments = Collections.<String, Object> emptyMap()
         }
     }
 
