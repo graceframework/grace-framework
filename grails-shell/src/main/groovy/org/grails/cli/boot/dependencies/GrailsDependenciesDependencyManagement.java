@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import org.springframework.boot.cli.compiler.dependencies.MavenModelDependencyMa
  * {@code grails-bom}.
  *
  * @author Michael Yan
- * @since 5.1.8
+ * @since 2022.0.0
  */
 public class GrailsDependenciesDependencyManagement extends MavenModelDependencyManagement {
 
@@ -50,4 +50,15 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
 		}
 	}
 
+	public String getGrailsVersion() {
+		return find("grails-core").getVersion();
+	}
+
+	public String getGroovyVersion() {
+		return find("groovy").getVersion();
+	}
+
+	public String getMicronautVersion() {
+		return find("micronaut-core").getVersion();
+	}
 }
