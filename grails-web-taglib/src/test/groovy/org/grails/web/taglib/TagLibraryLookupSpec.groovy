@@ -40,6 +40,7 @@ class TagLibraryLookupSpec extends Specification {
             lookup.grailsApplication = application
             lookup.applicationContext = applicationContext
             lookup.afterPropertiesSet()
+            lookup.afterSingletonsInstantiated()
 
             def context = new MockServletContext()
             context.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext)
