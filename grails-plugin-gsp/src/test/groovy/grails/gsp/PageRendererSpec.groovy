@@ -125,6 +125,7 @@ class PageRendererSpec extends Specification {
         tll.applicationContext = ctx
 
         tll.afterPropertiesSet()
+        tll.afterSingletonsInstantiated()
 
         te.tagLibraryLookup = tll
 

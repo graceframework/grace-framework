@@ -202,14 +202,6 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     /**
-     * Sets the ClassLoader that the TemplateEngine should use to
-     * @param classLoader The ClassLoader to use when compilation of Groovy Pages occurs
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    /**
      * Retrieves a line number matrix for the specified page that can be used
      * to retrieve the actual line number within the GSP page if the line number within the
      * compiled GSP is known

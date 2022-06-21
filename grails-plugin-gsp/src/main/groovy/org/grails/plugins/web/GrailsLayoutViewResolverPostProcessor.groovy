@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.RuntimeBeanReference
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.beans.factory.support.GenericBeanDefinition
+import org.springframework.core.io.DescriptiveResource
 import org.springframework.core.Ordered
 
 /**
@@ -69,6 +70,7 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
             if (markBeanPrimary) {
                 beanDefinition.primary = true
             }
+            beanDefinition.setResource(new DescriptiveResource("org.grails.plugins.web.GroovyPagesGrailsPlugin"))
             final MutablePropertyValues propertyValues = beanDefinition.getPropertyValues()
             propertyValues.addPropertyValue('innerViewResolver', previousViewResolver)
             propertyValues.addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
