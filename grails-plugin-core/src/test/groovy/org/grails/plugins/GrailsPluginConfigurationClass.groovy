@@ -1,12 +1,9 @@
 package org.grails.plugins
 
-import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.plugins.GrailsPlugin
 import grails.plugins.GrailsPluginManager
 import groovy.transform.CompileStatic
-import org.grails.plugins.DefaultGrailsPlugin
-import org.grails.plugins.MockGrailsPluginManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.FileSystemResource
@@ -22,14 +19,15 @@ class GrailsPluginConfigurationClass {
     @Bean(name = "grailsPluginManager")
     GrailsPluginManager getGrailsPluginManager() {
         String tempDir = System.getProperty("java.io.tmpdir")
-        GrailsApplication grailsApplication = new DefaultGrailsApplication()
+        GrailsApplication grailsApplication = new MockGrailsApplication()
         final MockGrailsPluginManager pluginManager = new MockGrailsPluginManager(grailsApplication)
+        pluginManager.loadCorePlugins = false
         final List<DefaultGrailsPlugin> plugins = createGrailsPlugins(grailsApplication)
         plugins.forEach({ plugin -> pluginManager.registerMockPlugin((GrailsPlugin) plugin)})
         return pluginManager
     }
 
-    private List<DefaultGrailsPlugin> createGrailsPlugins(DefaultGrailsApplication grailsApplication) {
+    private List<DefaultGrailsPlugin> createGrailsPlugins(GrailsApplication grailsApplication) {
         final String grailsVersion = '4.0.1'
         def gcl = new GroovyClassLoader()
         GrailsPlugin plugin = new MockTestGrailsPlugin(gcl.parseClass("""class TestGrailsPlugin {
@@ -75,6 +73,9 @@ class GrailsPluginConfigurationClass {
     }
 
     class MockTestTwoGrailsPlugin extends DefaultGrailsPlugin {
+        MockTestTwoGrailsPlugin() {
+            super(null, null)
+        }
 
         MockTestTwoGrailsPlugin(Class<?> pluginClass, Resource resource, GrailsApplication application) {
             super(pluginClass, resource, application)

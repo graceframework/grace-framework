@@ -1,6 +1,5 @@
 package org.grails.plugins
 
-import grails.core.DefaultGrailsApplication
 import org.grails.plugins.BinaryGrailsPlugin
 import org.grails.plugins.BinaryGrailsPluginDescriptor
 import org.springframework.core.io.ByteArrayResource
@@ -24,7 +23,7 @@ class BinaryPluginSpec extends Specification {
     def "Test creation of a binary plugin"() {
         when:
             def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes('UTF-8')), ['org.grails.plugins.TestBinaryResource'])
-            def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new DefaultGrailsApplication())
+            def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new MockGrailsApplication())
 
         then:
             binaryPlugin.version == "1.0"
@@ -39,7 +38,7 @@ class BinaryPluginSpec extends Specification {
             def resource = new MockBinaryPluginResource(testBinary.getBytes('UTF-8'))
             def descriptor = new BinaryGrailsPluginDescriptor(resource, ['org.grails.plugins.TestBinaryResource'])
             resource.relativesResources['static/css/main.css'] = new ByteArrayResource(''.bytes)
-            def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new DefaultGrailsApplication())
+            def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new MockGrailsApplication())
             def cssResource = binaryPlugin.getResource("/css/main.css")
 
         then:
@@ -91,7 +90,7 @@ class MockConfigBinaryGrailsPlugin extends BinaryGrailsPlugin {
     static Boolean GROOVY_EXISTS = false
 
     MockConfigBinaryGrailsPlugin(BinaryGrailsPluginDescriptor descriptor) {
-        super(TestBinaryGrailsPlugin, descriptor, new DefaultGrailsApplication())
+        super(TestBinaryGrailsPlugin, descriptor, new MockGrailsApplication())
     }
 
     protected Resource getConfigurationResource(Class<?> pluginClass, String path) {

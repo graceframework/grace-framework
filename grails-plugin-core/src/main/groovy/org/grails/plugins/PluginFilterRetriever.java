@@ -16,7 +16,6 @@
 package org.grails.plugins;
 
 import grails.config.Config;
-import grails.config.Settings;
 import grails.plugins.PluginFilter;
 
 import java.util.Collection;
@@ -34,13 +33,21 @@ import org.springframework.util.StringUtils;
  */
 public class PluginFilterRetriever {
 
+    /**
+     * Which plugins to include in the plugin manager
+     */
+    String PLUGIN_INCLUDES = "grails.plugin.includes";
+    /**
+     * Which plugins to exclude from the plugin manager
+     */
+    String PLUGIN_EXCLUDES = "grails.plugin.excludes";
 
     @SuppressWarnings("rawtypes")
     public PluginFilter getPluginFilter(Config config) {
 
         Assert.notNull(config, "Config should not be null");
-        Object includes = config.getProperty(Settings.PLUGIN_INCLUDES, Object.class, null);
-        Object excludes = config.getProperty(Settings.PLUGIN_EXCLUDES, Object.class, null);
+        Object includes = config.getProperty(PLUGIN_INCLUDES, Object.class, null);
+        Object excludes = config.getProperty(PLUGIN_EXCLUDES, Object.class, null);
 
         return getPluginFilter(includes, excludes);
     }

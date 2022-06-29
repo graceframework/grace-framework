@@ -1,6 +1,5 @@
 package org.grails.plugins
 
-import grails.core.DefaultGrailsApplication
 import grails.plugins.DefaultGrailsPluginManager
 import grails.util.Environment
 import grails.util.GrailsUtil
@@ -26,7 +25,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "0.1", plugin.version
@@ -45,7 +44,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "0.1", plugin.version
@@ -63,7 +62,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "testOne", plugin.name
@@ -86,7 +85,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "0.1", plugin.properties.version
@@ -107,7 +106,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "/plugins/test-one-0.1", plugin.pluginPath
@@ -124,7 +123,7 @@ class TestOnetwoThreeFourfiveGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "/plugins/test-onetwo-three-fourfive-0.1", plugin.pluginPath
@@ -141,7 +140,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "/plugins/testOne-0.1", plugin.pluginPathCamelCase
@@ -158,7 +157,7 @@ class TestOnetwoThreeFourfiveGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "/plugins/testOnetwoThreeFourfive-0.1", plugin.pluginPathCamelCase
@@ -175,7 +174,7 @@ class TestOneGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertEquals "test-one-0.1", plugin.fileSystemName
@@ -191,7 +190,7 @@ class TestGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertTrue plugin.supportsEnvironment(Environment.DEVELOPMENT)
@@ -208,7 +207,7 @@ class TestGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def plugin = new DefaultGrailsPlugin(test1, application)
 
         assertTrue plugin.supportsEnvironment(Environment.DEVELOPMENT)
@@ -226,7 +225,7 @@ class TestGrailsPlugin {
 }
 ''')
 
-        DefaultGrailsApplication application = new DefaultGrailsApplication()
+        MockGrailsApplication application = new MockGrailsApplication()
         def pluginManager = new DefaultGrailsPluginManager([test1] as Class[], application)
         pluginManager.setLoadCorePlugins(false)
 

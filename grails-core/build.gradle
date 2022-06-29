@@ -42,6 +42,7 @@ dependencies {
 
     api project(":grails-api")
     api project(":grails-plugin-api")
+    api project(":grails-plugin-core")
     api project(":grails-bootstrap"), {
         exclude group:"org.fusesource.jansi", module:"jansi"
         exclude group:"jline", module:"jline"

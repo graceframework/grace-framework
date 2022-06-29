@@ -22,8 +22,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 
-
-import grails.core.DefaultGrailsApplication;
 import grails.core.GrailsApplication;
 import grails.plugins.exceptions.PluginException;
 import org.springframework.util.Assert;
@@ -42,7 +40,7 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public MockGrailsPluginManager() {
-        this(new DefaultGrailsApplication(new Class[0], new GroovyClassLoader()));
+        this(new MockGrailsApplication(new Class[0], new GroovyClassLoader()));
     }
 
     @Override
@@ -60,6 +58,7 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public void registerMockPlugin(GrailsPlugin plugin) {
+        plugin.setManager(this);
         plugins.put(plugin.getName(), plugin);
         pluginList.add(plugin);
     }

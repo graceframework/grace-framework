@@ -2,6 +2,7 @@ package org.grails.plugins
 
 import grails.boot.GrailsApp
 import io.micronaut.spring.context.env.MicronautEnvironment
+import org.springframework.boot.WebApplicationType
 import org.springframework.context.ConfigurableApplicationContext
 import spock.lang.Specification
 
@@ -16,6 +17,7 @@ class PluginYamlPropertySourceLoaderSpec extends Specification {
 
         given:
         GrailsApp app = new GrailsApp(GrailsPluginConfigurationClass.class)
+        app.setWebApplicationType(WebApplicationType.NONE)
         ConfigurableApplicationContext context = app.run()
 
         expect:
@@ -26,6 +28,7 @@ class PluginYamlPropertySourceLoaderSpec extends Specification {
 
         given:
         GrailsApp app = new GrailsApp(GrailsPluginConfigurationClass.class)
+        app.setWebApplicationType(WebApplicationType.NONE)
         ConfigurableApplicationContext context = app.run()
         MicronautEnvironment environment = (MicronautEnvironment) context.parent.getEnvironment()
 
@@ -39,6 +42,7 @@ class PluginYamlPropertySourceLoaderSpec extends Specification {
 
         given:
         GrailsApp app = new GrailsApp(GrailsPluginConfigurationClass.class)
+        app.setWebApplicationType(WebApplicationType.NONE)
         ConfigurableApplicationContext context = app.run()
         MicronautEnvironment environment = (MicronautEnvironment) context.parent.getEnvironment()
 
