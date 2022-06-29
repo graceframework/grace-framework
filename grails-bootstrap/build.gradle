@@ -5,7 +5,9 @@ dependencies {
     api ( "org.codehaus.groovy:groovy-templates:$groovyVersion" )
     api "org.yaml:snakeyaml:1.30"
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    
+
+    api project(":grails-util")
+
     compileOnly("io.methvin:directory-watcher:$methvinDirectoryWatcherVersion")
     compileOnly("org.fusesource.jansi:jansi:$jansiVersion")
     compileOnly("jline:jline:$jlineVersion")
@@ -16,7 +18,6 @@ dependencies {
 
     testImplementation("org.fusesource.jansi:jansi:$jansiVersion")
     testImplementation("jline:jline:$jlineVersion")
-
 }
 
 processResources {

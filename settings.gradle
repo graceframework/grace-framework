@@ -43,6 +43,7 @@ include (
         'grails-shell',
         'grails-spring',
         'grails-test',
+        'grails-util',
         'grails-web',
         'grails-web-common',
         'grails-web-boot',
