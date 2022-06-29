@@ -64,6 +64,10 @@ dependencies {
         exclude group:'org.grails', module:'grails-bootstrap'
     }
 
+    api project(":grails-spring-boot")
+
+    api project(":grails-util")
+
     api "org.grails:grails-datastore-core:$datastoreVersion"
 
     testImplementation("org.springframework:spring-jdbc:${springVersion}") {

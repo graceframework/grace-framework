@@ -42,6 +42,7 @@ include (
         'grails-logging',
         'grails-shell',
         'grails-spring',
+        'grails-spring-boot',
         'grails-test',
         'grails-util',
         'grails-web',
