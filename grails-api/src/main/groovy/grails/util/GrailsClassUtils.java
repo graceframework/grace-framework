@@ -977,27 +977,27 @@ public class GrailsClassUtils {
         return ClassUtils.forName(className, ClassUtils.getDefaultClassLoader()).newInstance();
     }
 
-    /**
-     * Checks to see if a class is marked with @grails.artefact.Enhanced and if the enhancedFor
-     * attribute of the annotation contains a specific feature name
-     *
-     * @param controllerClass The class to inspect
-     * @param featureName The name of a feature to check for
-     * @return true if controllerClass is marked with Enhanced and the enhancedFor attribute includes featureName, otherwise returns false
-     * @see Enhanced
-     * @see Enhanced#enhancedFor()
-     */
-    public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
-        boolean hasBeenEnhanced = false;
-        final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
-        if(enhancedAnnotation != null) {
-            final String[] enhancedFor = enhancedAnnotation.enhancedFor();
-            if(enhancedFor != null) {
-                hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
-            }
-        }
-        return hasBeenEnhanced;
-    }
+   /**
+    * Checks to see if a class is marked with @grails.artefact.Enhanced and if the enhancedFor
+    * attribute of the annotation contains a specific feature name
+    *
+    * @param controllerClass The class to inspect
+    * @param featureName The name of a feature to check for
+    * @return true if controllerClass is marked with Enhanced and the enhancedFor attribute includes featureName, otherwise returns false
+    * @see Enhanced
+    * @see Enhanced#enhancedFor()
+    */
+   public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
+       boolean hasBeenEnhanced = false;
+       final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
+       if(enhancedAnnotation != null) {
+           final String[] enhancedFor = enhancedAnnotation.enhancedFor();
+           if(enhancedFor != null) {
+               hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
+           }
+       }
+       return hasBeenEnhanced;
+   }
 
     public static FastClass fastClass(Class superClass) {
         FastClass.Generator gen = new FastClass.Generator();

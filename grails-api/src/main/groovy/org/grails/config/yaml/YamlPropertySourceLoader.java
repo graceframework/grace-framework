@@ -16,8 +16,6 @@
 
 package org.grails.config.yaml;
 
-
-import grails.plugins.GrailsPlugin;
 import grails.util.Environment;
 import org.grails.config.NavigableMap;
 import org.grails.config.NavigableMapPropertySource;
@@ -40,6 +38,8 @@ import java.util.stream.Collectors;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class YamlPropertySourceLoader extends YamlProcessor implements PropertySourceLoader {
+    private static final String ENVIRONMENTS = "environments";
+
     @Override
     public String[] getFileExtensions() {
         return new String[] { "yml", "yaml" };
@@ -67,7 +67,7 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
             final Environment env = Environment.getCurrentEnvironment();
             String currentEnvironment = env != null ? env.getName() : null;
             if (currentEnvironment != null) {
-                final String prefix = GrailsPlugin.ENVIRONMENTS + "." + currentEnvironment + ".";
+                final String prefix = ENVIRONMENTS + "." + currentEnvironment + ".";
                 final Set<String> environmentSpecificEntries =
                         map.keySet().stream().filter(k -> k.startsWith(prefix)).collect(Collectors.toSet());
 

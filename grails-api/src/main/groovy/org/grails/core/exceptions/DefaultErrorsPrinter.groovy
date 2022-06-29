@@ -20,6 +20,7 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage
 import org.grails.exceptions.reporting.CodeSnippetPrinter
 import org.grails.exceptions.reporting.DefaultStackTracePrinter
 import org.grails.exceptions.reporting.SourceCodeAware
+import org.grails.exceptions.reporting.StackTracePrinter
 import org.grails.core.io.ResourceLocator
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource

@@ -1,6 +1,5 @@
-package org.grails.util
+package grails.util
 
-import grails.util.TypeConvertingMap
 import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Test
 

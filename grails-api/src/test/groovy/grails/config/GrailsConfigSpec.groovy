@@ -8,7 +8,7 @@ class GrailsConfigSpec extends Specification{
     
     def "should merge sub-documents in yaml file to single config"() {
         given:
-        File file = new File("src/test/resources/grails/config/application.yml")
+        File file = new File("src/test/resources/config/application.yml")
         CodeGenConfig config = new CodeGenConfig()
         when:
         config.loadYml(file)
