@@ -2,6 +2,7 @@ package grails.boot
 
 import grails.boot.config.GrailsAutoConfiguration
 import org.springframework.boot.SpringApplication
+
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory
@@ -24,7 +25,7 @@ class GrailsSpringApplicationSpec extends Specification{
 
     void "Test run Grails via SpringApplication"() {
         when:"SpringApplication is used to run a Grails app"
-        SpringApplication springApplication  = new SpringApplication(Application)
+        SpringApplication springApplication = new SpringApplication(Application)
         springApplication.allowBeanDefinitionOverriding = true
         context = (AnnotationConfigServletWebServerApplicationContext) springApplication.run()
 

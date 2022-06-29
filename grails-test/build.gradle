@@ -9,7 +9,7 @@ dependencies {
     api("org.spockframework:spock-core:$spockVersion") { transitive = false }
     api "org.junit.platform:junit-platform-runner:1.8.2"
 
-
+    api project(":grails-boot")
     api project(":grails-plugin-mimetypes")
     api project(":grails-web")
     api "org.grails.plugins:converters:$convertersVersion"

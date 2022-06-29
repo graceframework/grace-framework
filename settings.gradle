@@ -32,6 +32,7 @@ rootProject.name = "grails.core.ROOT"
 
 include (
         'grails-api',
+        'grails-boot',
         'grails-bootstrap',
         'grails-codecs',
         'grails-console',

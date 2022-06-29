@@ -1,5 +1,4 @@
 grails.core.ArtefactHandler=\
-org.grails.core.artefact.ApplicationArtefactHandler,\
 org.grails.core.artefact.UrlMappingsArtefactHandler,\
 org.grails.core.artefact.ControllerArtefactHandler,\
 org.grails.core.artefact.ServiceArtefactHandler,\

@@ -6,6 +6,7 @@ import grails.plugins.Plugin
 import grails.util.Environment
 import org.grails.plugins.DefaultGrailsPlugin
 import org.grails.plugins.MockGrailsPluginManager
+import org.springframework.boot.WebApplicationType
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,12 +23,13 @@ class DevelopmentModeWatchSpec extends Specification {
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
         System.setProperty("base.dir", ".")
         GrailsApp app = new GrailsApp(GrailsTestConfigurationClass.class)
+        app.webApplicationType = WebApplicationType.NONE
         ConfigurableApplicationContext context = app.run()
         WatchedResourcesGrailsPlugin plugin = context.getBean('grailsPluginManager').pluginList[0].plugin.instance
-        def pollingCondition = new PollingConditions(timeout: 10)
+        PollingConditions pollingCondition = new PollingConditions(timeout: 10, initialDelay: 5, factor: 1)
 
         when:
-        File watchedFile = new File('testWatchedFile.properties')
+        File watchedFile = new File("build",'testWatchedFile.properties')
         watchedFile.createNewFile()
         watchedFile.write 'foo.bar=baz'
 
