@@ -10,25 +10,26 @@ configurations.testCompileClasspath {
 
 dependencies {
 
-    testImplementation 'javax.servlet.jsp:jsp-api:2.2'
-    testImplementation 'jstl:jstl:1.2'
-    testImplementation 'javax.el:el-api:2.2'
+    testImplementation "javax.servlet.jsp:jsp-api:2.2"
+    testImplementation "jstl:jstl:1.2"
+    testImplementation "javax.el:el-api:2.2"
     testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
 
-    testImplementation project(':grails-test-suite-base'),
-                project(':grails-plugin-domain-class'),
-                project(':grails-plugin-codecs'),
-                project(':grails-plugin-datasource'),
-                project(':grails-plugin-i18n'),
-                project(':grails-plugin-url-mappings'),
-                project(':grails-plugin-databinding'),
-                project(':grails-plugin-services'),
-                project(':grails-plugin-interceptors'),
-                project(':grails-plugin-controllers'),
-                project(':grails-plugin-rest'),
-                project(':grails-web'),
-                project(':grails-web-databinding'),
-                project(':grails-spring')
+    testImplementation project(":grails-boot")
+    testImplementation project(":grails-test-suite-base")
+    testImplementation project(":grails-plugin-domain-class")
+    testImplementation project(":grails-plugin-codecs")
+    testImplementation project(":grails-plugin-datasource")
+    testImplementation project(":grails-plugin-i18n")
+    testImplementation project(":grails-plugin-url-mappings")
+    testImplementation project(":grails-plugin-databinding")
+    testImplementation project(":grails-plugin-services")
+    testImplementation project(":grails-plugin-interceptors")
+    testImplementation project(":grails-plugin-controllers")
+    testImplementation project(":grails-plugin-rest")
+    testImplementation project(":grails-web")
+    testImplementation project(":grails-web-databinding")
+    testImplementation project(":grails-spring")
     testImplementation "org.grails.plugins:converters:$convertersVersion"
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:7.2.2", {
@@ -106,7 +107,7 @@ configurations {
 }
 
 compileTestGroovy {
-    groovyOptions.listFiles = true
+    // groovyOptions.listFiles = true
 }
 
 def defaultTestConfig = {

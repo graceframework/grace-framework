@@ -3,21 +3,21 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-
     testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
-    testImplementation project(':grails-test-suite-base'),
-                project(':grails-plugin-domain-class'),
-                project(':grails-plugin-datasource'),
-                project(':grails-plugin-i18n'),
-                project(':grails-plugin-url-mappings'),
-                project(':grails-plugin-databinding'),
-                project(':grails-plugin-services'),
-                project(':grails-plugin-controllers'),
-                project(':grails-bootstrap'),
-                project(':grails-spring')
+    testImplementation project(":grails-boot")
+    testImplementation project(":grails-test-suite-base")
+    testImplementation project(":grails-plugin-domain-class")
+    testImplementation project(":grails-plugin-datasource")
+    testImplementation project(":grails-plugin-i18n")
+    testImplementation project(":grails-plugin-url-mappings")
+    testImplementation project(":grails-plugin-databinding")
+    testImplementation project(":grails-plugin-services")
+    testImplementation project(":grails-plugin-controllers")
+    testImplementation project(":grails-bootstrap")
+    testImplementation project(":grails-spring")
 
     testImplementation "org.grails:grails-datastore-gorm-validation:$datastoreVersion"
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:7.2.2", {
+    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$datastoreVersion", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'

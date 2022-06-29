@@ -1,4 +1,5 @@
 dependencies {
     api project(":grails-databinding")
+    api project(":grails-util")
     api project(":grails-web-common")
 }

@@ -1,4 +1,6 @@
 dependencies {
-    api project(":grails-web"), project(":grails-plugin-controllers")
-    api "junit:junit:${junitVersion}"
+    api project(":grails-api")
+    api project(":grails-core")
+    api project(":grails-plugin-controllers")
+    api project(":grails-web")
 }
