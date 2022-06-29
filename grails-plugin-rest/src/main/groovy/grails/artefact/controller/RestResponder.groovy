@@ -76,10 +76,10 @@ trait RestResponder {
     }
 
     /**
-     * Same as {@link RestResponder#respond(java.lang.Object, java.lang.Object, java.util.Map)}, but here to support Groovy named arguments
+     * Same as {@link RestResponder#respond(java.lang.Object, java.util.Map)}, but here to support Groovy named arguments
      */
     @Generated
-    def respond(Map args, value) {
+    def respond(Map args, Object value) {
         internalRespond value, args
     }
 
@@ -118,11 +118,11 @@ trait RestResponder {
      * @return
      */
     @Generated
-    def respond(value, Map args = [:]) {
+    def respond(Object value, Map args = [:]) {
         internalRespond value, args
     }
 
-    private internalRespond(value, Map args=[:]) {
+    private internalRespond(Object value, Map args=[:]) {
         Integer statusCode
         if (args.status) {
             final statusValue = args.status
