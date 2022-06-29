@@ -40,7 +40,7 @@ dependencies {
     }
     compileOnly("org.codehaus.groovy:groovy-templates:$groovyVersion")
 
-
+    api project(":grails-api")
     api project(":grails-bootstrap"), {
         exclude group:"org.fusesource.jansi", module:"jansi"
         exclude group:"jline", module:"jline"
