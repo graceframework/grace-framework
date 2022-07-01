@@ -1,0 +1,21 @@
+dependencies {
+    api project(":grails-api")
+
+    api project(":grails-bootstrap"), {
+        exclude group:"org.fusesource.jansi", module:"jansi"
+        exclude group:"jline", module:"jline"
+        exclude group:"net.java.dev.jna", module:"jna"
+    }
+
+    api project(":grails-spring"), {
+        exclude group:'org.springframework', module:'spring-tx'
+        exclude group:'org.springframework', module:'spring-web'
+        exclude group:'org.grails', module:'grails-bootstrap'
+    }
+
+    api "org.grails:grails-datastore-core:$datastoreVersion"
+
+    testImplementation("org.springframework:spring-jdbc:${springVersion}") {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+}

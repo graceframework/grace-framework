@@ -24,7 +24,6 @@ import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.LogASTTransformation;
-import org.grails.datastore.mapping.reflect.AstUtils;
 
 import java.lang.reflect.Modifier;
 import java.net.URL;

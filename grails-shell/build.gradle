@@ -16,6 +16,8 @@ configurations {
 }
 
 dependencies {
+    api project(":grails-api")
+    api project(":grails-boot")
     api project(":grails-bootstrap")
     api project(":grails-gradle-model")
     dependenciesBom(project(path: ":grails-bom", configuration: 'effectiveBom'))
@@ -46,7 +48,6 @@ dependencies {
 
     runtimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
     runtimeOnly "org.codehaus.plexus:plexus-component-api:1.0-alpha-33"
-
 }
 
 task syncGrailsDependenciesBom(type: Sync) {

@@ -1,5 +1,7 @@
 dependencies {
+    api project(":grails-api")
     api project(":grails-core")
+    api project(":grails-boot")
     api "org.codehaus.groovy:groovy-console:$groovyVersion"
     api "org.codehaus.groovy:groovy-swing:$groovyVersion"
     api "org.codehaus.groovy:groovy-groovysh:$groovyVersion"
@@ -8,9 +10,6 @@ dependencies {
             "net.java.dev.jna:jna:$jnaVersion"
 
     api("org.springframework.boot:spring-boot:$springBootVersion")
-    api "org.springframework:spring-test:${springVersion}"
-
     api "org.springframework:spring-web:${springVersion}", optional
-
     api "javax.servlet:javax.servlet-api:$servletApiVersion", optional
 }

@@ -8,6 +8,7 @@ import org.grails.plugins.MockGrailsPluginManager
 import org.grails.plugins.TestBinaryGrailsPlugin
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.ResourceLoader
+import org.springframework.core.io.Resource
 
 import spock.lang.Specification
 

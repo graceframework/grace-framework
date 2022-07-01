@@ -3,10 +3,11 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-
-    api project(':grails-test-suite-base'),
-            project(':grails-plugin-interceptors'),        
-            project(':grails-plugin-controllers')
+    api project(":grails-api")
+    api project(":grails-util")
+    api project(":grails-test-suite-base")
+    api project(":grails-plugin-interceptors")
+    api project(":grails-plugin-controllers")
 
     api "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
 
@@ -20,15 +21,16 @@ dependencies {
 
     testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
 
-    testImplementation project(':grails-plugin-codecs'),
-                project(':grails-plugin-domain-class') ,
-                project(':grails-plugin-url-mappings') ,
-                project(":grails-plugin-datasource"),
-                project(":grails-plugin-services"),
-                project(":grails-plugin-rest"),
-                project(":grails-plugin-i18n"),
-                project(":grails-plugin-databinding"),
-                project(':grails-spring')
+    testImplementation project(":grails-boot")
+    testImplementation project(":grails-plugin-codecs")
+    testImplementation project(":grails-plugin-domain-class")
+    testImplementation project(":grails-plugin-url-mappings")
+    testImplementation project(":grails-plugin-datasource")
+    testImplementation project(":grails-plugin-services")
+    testImplementation project(":grails-plugin-rest")
+    testImplementation project(":grails-plugin-i18n")
+    testImplementation project(":grails-plugin-databinding")
+    testImplementation project(":grails-spring")
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:7.2.2", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'

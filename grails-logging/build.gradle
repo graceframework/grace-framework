@@ -1,3 +1,4 @@
 dependencies {
     api project(":grails-core")
+    testImplementation project(":grails-boot")
 }

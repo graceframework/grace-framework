@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 Graeme Rocher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.grails.web.mapping;
 
-import grails.boot.GrailsApp;
 import grails.util.GrailsNameUtils;
 import grails.web.CamelCaseUrlConverter;
 import grails.web.UrlConverter;
@@ -24,7 +23,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import grails.web.mapping.UrlMapping;

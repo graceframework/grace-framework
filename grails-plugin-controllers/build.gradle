@@ -1,9 +1,10 @@
 dependencies {
-    api project(":grails-core"),
-            project(":grails-web"),
-            project(':grails-plugin-mimetypes'),
-            project(':grails-plugin-validation'),
-            project(':grails-plugin-domain-class')
+    api project(":grails-core")
+    api project(':grails-plugin-mimetypes')
+    api project(':grails-plugin-validation')
+    api project(':grails-plugin-domain-class')
+    api project(":grails-util")
+    api project(":grails-web")
 
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
     runtimeOnly project(':grails-plugin-i18n')

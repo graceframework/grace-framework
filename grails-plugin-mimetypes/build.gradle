@@ -9,5 +9,6 @@ dependencies {
     compileOnly "io.micronaut.cache:micronaut-cache-core:$micronautCacheVersion"
     compileOnly "io.micronaut:micronaut-runtime:$micronautVersion"
 
+    api project(":grails-plugin-api")
     api project(":grails-web")
 }

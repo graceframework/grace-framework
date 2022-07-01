@@ -31,6 +31,8 @@ buildCache {
 rootProject.name = "grails.core.ROOT"
 
 include (
+        'grails-api',
+        'grails-boot',
         'grails-bootstrap',
         'grails-codecs',
         'grails-console',
@@ -41,7 +43,9 @@ include (
         'grails-logging',
         'grails-shell',
         'grails-spring',
+        'grails-spring-boot',
         'grails-test',
+        'grails-util',
         'grails-web',
         'grails-web-common',
         'grails-web-boot',
@@ -55,8 +59,10 @@ include (
         'grails-bom',
 
         // Plugins
+        'grails-plugin-api',
         'grails-plugin-codecs',
         'grails-plugin-controllers',
+        'grails-plugin-core',
         'grails-plugin-databinding',
         'grails-plugin-datasource',
         'grails-plugin-domain-class',
