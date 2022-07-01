@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.grails.compiler.injection
+
 import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.dev.Support
@@ -101,7 +102,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                     def packageNamesBody = new BlockStatement()
                     def grailsAppDir = GrailsResourceUtils.getAppDir(new UrlResource(GrailsASTUtils.getSourceUrl(source)))
                     if(grailsAppDir.exists()) {
-
                         def packageNames = ResourceUtils.getProjectPackageNames(grailsAppDir.file.parentFile)
                                                         .collect() { String str -> new ConstantExpression(str) }
                         if(packageNames.any() { ConstantExpression packageName -> ['org','com','io','net'].contains(packageName.text) }) {
@@ -113,24 +113,19 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                 }
 
                 def classLoader = getClass().classLoader
-                if(ClassUtils.isPresent('javax.servlet.ServletContext', classLoader)) {
-                    GrailsASTUtils.addAnnotationOrGetExisting(classNode, ClassHelper.make(classLoader.loadClass('org.springframework.web.servlet.config.annotation.EnableWebMvc')))
-                }
-                if(ClassUtils.isPresent('org.springframework.boot.autoconfigure.EnableAutoConfiguration', classLoader) ) {
-                    def enableAutoConfigurationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode, ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.EnableAutoConfiguration')))
+                if(ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader) ) {
+                    def springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode, ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
 
                     for(autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
                         if(ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
                             def autoConfigClassExpression = new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
-                            GrailsASTUtils.addExpressionToAnnotationMember(enableAutoConfigurationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
+                            GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                         }
                     }
                 }
             }
         }
     }
-
-
 
     @Override
     boolean shouldInject(URL url) {
