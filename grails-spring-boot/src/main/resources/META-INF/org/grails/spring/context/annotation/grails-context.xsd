@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsd:schema xmlns="http://www.grails.org/schema/context" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<xsd:schema xmlns="http://www.grails.org/schema/context" 
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 			xmlns:beans="http://www.springframework.org/schema/beans"
 			xmlns:tool="http://www.springframework.org/schema/tool"
-			targetNamespace="http://www.grails.org/schema/context" elementFormDefault="qualified"
+			targetNamespace="http://www.grails.org/schema/context" 
+			elementFormDefault="qualified"
 			attributeFormDefault="unqualified">
 
-	<xsd:import namespace="http://www.springframework.org/schema/beans"/>
-	<xsd:import namespace="http://www.springframework.org/schema/tool"/>
-
+	<xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="https://www.springframework.org/schema/beans/spring-beans.xsd"/>
+	<xsd:import namespace="http://www.springframework.org/schema/tool" schemaLocation="https://www.springframework.org/schema/tool/spring-tool.xsd"/>
 
 	<xsd:element name="component-scan">
 		<xsd:annotation>
