@@ -1,6 +1,7 @@
 dependencies {
-    api project(':grails-plugin-core')
+    api project(":grails-plugin-core")
     api project(":grails-web-common")
 
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"
 }
