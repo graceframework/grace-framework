@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ package grails.core;
 
 import grails.config.Config;
 import grails.core.events.ArtefactAdditionEvent;
+import grails.core.support.GrailsApplicationAware;
+import grails.core.support.GrailsConfigurationAware;
 import grails.util.GrailsNameUtils;
 import grails.util.GrailsUtil;
 import groovy.lang.GroovyClassLoader;
@@ -47,10 +49,7 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.io.support.GrailsResourceUtils;
-import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -75,7 +74,6 @@ import org.springframework.util.StringUtils;
  * @author Graeme Rocher
  *
  * @see grails.plugins.GrailsPluginManager
- * @see grails.plugins.DefaultGrailsPluginManager
  * @see grails.core.ArtefactHandler
  * @see grails.core.ArtefactInfo
  * @since 0.1
@@ -537,12 +535,19 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
      * @param handler The ArtefactHandler to regster
      */
     public void registerArtefactHandler(ArtefactHandler handler) {
-        GrailsApplicationAwareBeanPostProcessor.processAwareInterfaces(this, handler);
         artefactHandlersByName.put(handler.getType(), handler);
         updateArtefactHandlers();
+        processAwareInterfaces(this, handler);
     }
 
-
+    private void processAwareInterfaces(GrailsApplication grailsApplication, ArtefactHandler handler) {
+        if (handler instanceof GrailsApplicationAware) {
+            ((GrailsApplicationAware)handler).setGrailsApplication(grailsApplication);
+        }
+        if (handler instanceof GrailsConfigurationAware) {
+            ((GrailsConfigurationAware)handler).setConfiguration(grailsApplication.getConfig());
+        }
+    }
 
     public boolean hasArtefactHandler(String type) {
         return artefactHandlersByName.containsKey(type);
