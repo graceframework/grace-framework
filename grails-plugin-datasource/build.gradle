@@ -1,15 +1,14 @@
 dependencies {
-    api "org.codehaus.groovy:groovy-sql:$groovyVersion"
+    api project(":grails-core")
+    api project(':grails-plugin-api')
+    api project(":grails-spring-boot")
 
+    api "org.codehaus.groovy:groovy-sql:$groovyVersion"
     api("org.springframework:spring-context:${springVersion}")
     api("org.springframework:spring-jdbc:${springVersion}")
-
     api "org.grails:grails-datastore-core:$datastoreVersion"
     api "org.grails:grails-datastore-gorm:$datastoreVersion"
 
     compileOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
     runtimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-log4j:$tomcatLog4jVersion"
-
-    api project(":grails-core")
-    api project(':grails-plugin-api')
 }
