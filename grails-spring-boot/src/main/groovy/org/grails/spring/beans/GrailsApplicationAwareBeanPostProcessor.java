@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2007 the original author or authors.
+ * Copyright 2003-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 import grails.core.support.GrailsConfigurationAware;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * Implementation of {@link org.springframework.beans.factory.config.BeanPostProcessor}
@@ -28,7 +29,7 @@ import org.springframework.beans.BeansException;
  * @author Steven Devijver
  * @since 0.2
  */
-public class GrailsApplicationAwareBeanPostProcessor extends BeanPostProcessorAdapter {
+public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcessor {
 
     private GrailsApplication grailsApplication;
 

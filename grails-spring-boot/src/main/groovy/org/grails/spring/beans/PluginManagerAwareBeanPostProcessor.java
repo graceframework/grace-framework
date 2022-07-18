@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import grails.plugins.PluginManagerAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * Auto-injects beans that implement PluginManagerAware.
@@ -27,7 +28,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
  * @author Graeme Rocher
  * @since 1.2
  */
-public class PluginManagerAwareBeanPostProcessor extends BeanPostProcessorAdapter implements BeanFactoryAware {
+public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
     private GrailsPluginManager pluginManager;
     private BeanFactory beanFactory;
@@ -47,8 +48,8 @@ public class PluginManagerAwareBeanPostProcessor extends BeanPostProcessorAdapte
                 pluginManager = beanFactory.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
             }
         }
-        if(pluginManager != null) {
 
+        if(pluginManager != null) {
             if (bean instanceof PluginManagerAware) {
                 ((PluginManagerAware)bean).setPluginManager(pluginManager);
             }
@@ -61,6 +62,4 @@ public class PluginManagerAwareBeanPostProcessor extends BeanPostProcessorAdapte
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
-    
-    
 }
