@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
  */
 package org.grails.core.artefact
 
-import grails.boot.config.GrailsAutoConfiguration
 import grails.core.ArtefactHandlerAdapter
 import grails.core.DefaultGrailsClass
 import grails.core.GrailsClass
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
-import org.grails.compiler.injection.GrailsASTUtils
 
 /**
  * An {@link grails.core.ArtefactHandler} that identifies the Application class
@@ -32,7 +30,6 @@ import org.grails.compiler.injection.GrailsASTUtils
 @CompileStatic
 class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final ClassNode AUTO_CONFIGURATION_CLASS_NODE = new ClassNode(GrailsAutoConfiguration)
     public static final String TYPE = "Application"
 
     ApplicationArtefactHandler() {
@@ -41,11 +38,15 @@ class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
 
     @Override
     boolean isArtefact(ClassNode classNode) {
-        classNode.nameWithoutPackage.endsWith('Application') && GrailsASTUtils.isAssignableFrom(AUTO_CONFIGURATION_CLASS_NODE, classNode)
+        println 'ApplicationArtefactHandler.isArtefact:' + classNode.superClass.name
+        classNode.nameWithoutPackage.endsWith('Application') &&
+                (classNode.superClass.name == 'grails.boot.config.GrailsAutoConfiguration')
     }
 
     @Override
     boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
-        GrailsAutoConfiguration.isAssignableFrom(clazz) && clazz.simpleName.endsWith('Application')
+        println 'ApplicationArtefactHandler.isArtefactClass:' + clazz.superclass.name
+        clazz.simpleName.endsWith('Application') &&
+                (clazz.superclass.name == 'grails.boot.config.GrailsAutoConfiguration')
     }
 }

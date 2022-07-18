@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.grails.compiler.injection
+
 import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.dev.Support
@@ -129,8 +130,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
             }
         }
     }
-
-
 
     @Override
     boolean shouldInject(URL url) {
