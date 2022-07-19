@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,15 @@ import grails.util.GrailsNameUtils;
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
-import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.exceptions.GrailsRuntimeException;
+import org.grails.io.support.FileSystemResource;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.io.support.Resource;
-import org.grails.io.support.UrlResource;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 
 /**
  * Adapter for the {@link grails.core.ArtefactHandler} interface
@@ -82,22 +80,20 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      */
     @Override
     public boolean isArtefact(ClassNode classNode) {
-        int modifiers = classNode.getModifiers();
-
-        URL url = GrailsASTUtils.getSourceUrl(classNode);
-        if(url == null) return false;
         try {
-            UrlResource resource = new UrlResource(url);
-            if(!isArtefactResource(resource)) return false;
+            String filename = classNode.getModule().getContext().getName();
+            Resource resource = new FileSystemResource(filename);
+            if (resource.exists() && isArtefactResource(resource)) {
+                return true;
+            }
         } catch (IOException e) {
             return false;
         }
 
-        if(isValidArtefactClassNode(classNode, modifiers)) {
-            String name = classNode.getName();
-            if(name != null && this.artefactSuffix != null && name.endsWith(artefactSuffix)) {
-                return true;
-            }
+        int modifiers = classNode.getModifiers();
+        String name = classNode.getName();
+        if (isValidArtefactClassNode(classNode, modifiers)) {
+            return name != null && this.artefactSuffix != null && name.endsWith(artefactSuffix);
         }
         return false;
     }
