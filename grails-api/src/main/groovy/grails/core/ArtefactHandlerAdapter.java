@@ -19,15 +19,18 @@ import grails.util.GrailsNameUtils;
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
+import org.codehaus.groovy.control.SourceUnit;
 import org.grails.core.exceptions.GrailsRuntimeException;
 import org.grails.io.support.FileSystemResource;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.io.support.Resource;
+import org.grails.io.support.UrlResource;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 
 /**
  * Adapter for the {@link grails.core.ArtefactHandler} interface
@@ -80,12 +83,27 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      */
     @Override
     public boolean isArtefact(ClassNode classNode) {
-        try {
-            String filename = classNode.getModule().getContext().getName();
-            Resource resource = new FileSystemResource(filename);
-            if (resource.exists() && isArtefactResource(resource)) {
-                return true;
+        SourceUnit source = classNode.getModule().getContext();
+        final String filename = source.getName();
+        if (filename == null) {
+            return false;
+        }
+
+        URL url = null;
+        Resource resource = new FileSystemResource(filename);
+        if (resource.exists()) {
+            try {
+                url = resource.getURL();
+            } catch (IOException e) {
+                // ignore
             }
+        }
+
+        if (url == null) return false;
+
+        try {
+            UrlResource urlResource = new UrlResource(url);
+            if (!isArtefactResource(urlResource)) return false;
         } catch (IOException e) {
             return false;
         }
