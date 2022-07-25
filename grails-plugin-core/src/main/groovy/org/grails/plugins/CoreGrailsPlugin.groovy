@@ -29,8 +29,6 @@ import org.grails.spring.context.support.GrailsPlaceholderConfigurer
 import org.grails.spring.context.support.MapBasedSmartPropertyOverrideConfigurer
 import org.grails.spring.RuntimeSpringConfigUtilities
 import org.grails.core.io.DefaultResourceLocator
-import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
-import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
 import org.grails.core.support.ClassEditor
 import org.grails.dev.support.DevelopmentShutdownHook
 import org.grails.beans.support.PropertiesEditor
@@ -101,9 +99,6 @@ class CoreGrailsPlugin extends Plugin {
             xmlns grailsContext:"http://grails.org/schema/context"
             grailsContext.'component-scan'('base-package':packagesToScan.join(','))
         }
-
-        grailsApplicationAwarePostProcessor(GrailsApplicationAwareBeanPostProcessor, ref("grailsApplication"))
-        pluginManagerPostProcessor(PluginManagerAwareBeanPostProcessor)
 
         // add shutdown hook if not running in war deployed mode
         final warDeployed = Environment.isWarDeployed()
