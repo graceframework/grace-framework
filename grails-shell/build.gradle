@@ -17,7 +17,6 @@ configurations {
 
 dependencies {
     api project(":grails-api")
-    api project(":grails-boot")
     api project(":grails-bootstrap")
     api project(":grails-gradle-model")
     dependenciesBom(project(path: ":grails-bom", configuration: 'effectiveBom'))
