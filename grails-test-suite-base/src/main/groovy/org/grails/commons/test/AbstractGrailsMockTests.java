@@ -15,12 +15,11 @@
  */
 package org.grails.commons.test;
 
-import grails.util.Metadata;
 import groovy.lang.ExpandoMetaClass;
 import groovy.lang.GroovyClassLoader;
+import groovy.test.GroovyTestCase;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
-import groovy.util.GroovyTestCase;
 
 import java.io.IOException;
 
