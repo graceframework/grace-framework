@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2007 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,37 +38,36 @@ public abstract class BasePluginFilter implements PluginFilter {
     /**
      * The supplied included plugin names (a String).
      */
-    private final Set<String> suppliedNames;
+    private final Set<String> suppliedNames = new HashSet<>();;
 
     /**
      * Plugins corresponding with the supplied names.
      */
-    private final List<GrailsPlugin> explicitlyNamedPlugins = new ArrayList<GrailsPlugin>();
+    private final List<GrailsPlugin> explicitlyNamedPlugins = new ArrayList<>();
 
     /**
      * Plugins derivied through a dependency relationship.
      */
-    private final List<GrailsPlugin> derivedPlugins = new ArrayList<GrailsPlugin>();
+    private final List<GrailsPlugin> derivedPlugins = new ArrayList<>();
 
     /**
      * Holds a name to GrailsPlugin map (String, Plugin).
      */
-    protected Map<String, GrailsPlugin> nameMap;
+    protected Map<String, GrailsPlugin> nameMap = new HashMap<>();
 
     /**
      * Temporary field holding list of plugin names added to the filtered List
      * to return (String).
      */
-    private Set<String> addedNames;
+    private Set<String> addedNames = new HashSet<>();
 
     private List<GrailsPlugin> originalPlugins;
 
     public BasePluginFilter(Set<String> suppliedNames) {
-        this.suppliedNames = suppliedNames;
+        this.suppliedNames.addAll(suppliedNames);
     }
 
     public BasePluginFilter(String[] included) {
-        suppliedNames = new HashSet<String>();
         for (int i = 0; i < included.length; i++) {
             suppliedNames.add(included[i].trim());
         }
@@ -93,7 +92,6 @@ public abstract class BasePluginFilter implements PluginFilter {
     public List<GrailsPlugin>  filterPluginList(List<GrailsPlugin> original) {
 
         originalPlugins = Collections.unmodifiableList(original);
-        addedNames = new HashSet<String>();
 
         buildNameMap();
         buildExplicitlyNamedList();
@@ -177,7 +175,6 @@ public abstract class BasePluginFilter implements PluginFilter {
      *
      */
     private void buildNameMap() {
-        nameMap = new HashMap<String, GrailsPlugin>();
         for (GrailsPlugin plugin : originalPlugins) {
             nameMap.put(plugin.getName(), plugin);
         }

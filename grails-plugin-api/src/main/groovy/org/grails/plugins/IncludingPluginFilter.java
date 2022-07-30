@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2007 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,17 +39,18 @@ public class IncludingPluginFilter extends BasePluginFilter {
     }
 
     @Override
-    protected List getPluginList(List original, List pluginList) {
-        List newList = new ArrayList();
-        newList.addAll(pluginList);
-        return newList;
+    protected List<GrailsPlugin> getPluginList(List original, List pluginList) {
+        return new ArrayList(pluginList);
     }
 
     @Override
     protected void addPluginDependencies(List additionalList, GrailsPlugin plugin) {
         String[] dependencyNames = plugin.getDependencyNames();
         for (String name : dependencyNames) {
-            registerDependency(additionalList, getNamedPlugin(name));
+            GrailsPlugin dependOnPlugin = getNamedPlugin(name);
+            if (dependOnPlugin != null) {
+                registerDependency(additionalList, dependOnPlugin);
+            }
         }
     }
 }
