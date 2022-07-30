@@ -800,7 +800,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         this.pluginFilter = pluginFilter;
     }
 
-    List<GrailsPlugin> getPluginList() {
+    public List<GrailsPlugin> getPluginList() {
         return Collections.unmodifiableList(pluginList);
     }
 }
