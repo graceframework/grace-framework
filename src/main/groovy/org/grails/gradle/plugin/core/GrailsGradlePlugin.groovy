@@ -58,6 +58,7 @@ import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
 import org.grails.gradle.plugin.run.FindMainClassTask
 import org.grails.gradle.plugin.util.SourceSets
 import org.grails.io.support.FactoriesLoaderSupport
+import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootArchive
@@ -189,9 +190,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         dme.imports({
             mavenBom("org.grails:grails-bom:${grailsVersion}")
             mavenBom("org.springframework.boot:spring-boot-starter-parent:${springBootVersion}")
-        })
-        dme.dependencies({
-            dependency("org.grails:grails-shell:${grailsVersion}")
         })
         dme.setApplyMavenExclusions(false)
     }
@@ -381,12 +379,12 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def grailsVersion = project.findProperty('grailsVersion')
 
         if (!grailsVersion) {
+            grailsVersion = new GrailsDependenciesDependencyManagement().getGrailsVersion()
+        }
+        if (!grailsVersion) {
             Properties grailsBuildProperties = new Properties()
             grailsBuildProperties.load(BuildSettings.class.getResourceAsStream("/grails.build.properties"))
             grailsVersion = grailsBuildProperties.getProperty("grails.version")
-        }
-        if (!grailsVersion) {
-            grailsVersion = new GrailsDependenciesDependencyManagement().getGrailsVersion()
         }
         grailsVersion
     }
@@ -409,6 +407,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         if (!springBootVersion) {
             springBootVersion = new GrailsDependenciesDependencyManagement().getSpringBootVersion()
+        }
+        if (!springBootVersion) {
+            springBootVersion = new SpringBootDependenciesDependencyManagement().getSpringBootVersion()
         }
 
         springBootVersion
