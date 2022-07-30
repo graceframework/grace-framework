@@ -38,6 +38,8 @@ import org.grails.datastore.mapping.model.MappingContext
 import org.grails.plugins.core.CoreConfiguration
 import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.spring.RuntimeSpringConfigUtilities
+import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
+import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
@@ -256,6 +258,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
             beanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, pluginManager)
         }
+        beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
+        beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(pluginManager))
     }
 
     @Override

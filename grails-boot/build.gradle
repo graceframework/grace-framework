@@ -7,32 +7,23 @@ dependencies {
     compileOnly "io.micronaut.cache:micronaut-cache-core:$micronautCacheVersion", {
         exclude group:"org.slf4j", module: "slf4j-simple"
     }
-    api 'javax.persistence:javax.persistence-api:2.2'
+    api "javax.persistence:javax.persistence-api:2.2"
     api "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
 
     api("org.springframework.boot:spring-boot:$springBootVersion")
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-    api("org.springframework:spring-core:${springVersion}")
-    api("org.springframework:spring-context:${springVersion}")
     api("org.springframework:spring-beans:${springVersion}")
+    api("org.springframework:spring-context:${springVersion}")
+    api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-web:${springVersion}")
 
     api project(":grails-api")
+    api project(":grails-bootstrap")
     api project(":grails-core")
     api project(":grails-plugin-api")
     api project(":grails-plugin-core")
-    api project(":grails-bootstrap"), {
-        exclude group:"org.fusesource.jansi", module:"jansi"
-        exclude group:"jline", module:"jline"
-        exclude group:"net.java.dev.jna", module:"jna"
-    }
-
-    api project(":grails-spring"), {
-        exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.springframework', module:'spring-web'
-        exclude group:'org.grails', module:'grails-bootstrap'
-    }
-
+    api project(":grails-spring")
+    api project(":grails-spring-boot")
     api project(":grails-web")
 
     testImplementation project(":grails-plugin-controllers")

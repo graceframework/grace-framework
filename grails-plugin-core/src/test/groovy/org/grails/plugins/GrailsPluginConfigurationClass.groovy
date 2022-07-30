@@ -28,18 +28,9 @@ class GrailsPluginConfigurationClass {
     }
 
     private List<DefaultGrailsPlugin> createGrailsPlugins(GrailsApplication grailsApplication) {
-        final String grailsVersion = '4.0.1'
-        def gcl = new GroovyClassLoader()
-        GrailsPlugin plugin = new MockTestGrailsPlugin(gcl.parseClass("""class TestGrailsPlugin {
-        def version = '1.0.0'
-        def grailsVersion = '$grailsVersion'
-        def loadAfter = ['testTwo']
-}"""), grailsApplication)
+        GrailsPlugin plugin = new MockTestGrailsPlugin(TestGrailsPlugin, grailsApplication)
 
-        GrailsPlugin plugin2 = new MockTestTwoGrailsPlugin(gcl.parseClass("""class TestTwoGrailsPlugin {
-        def version = '1.0.0'
-        def grailsVersion = '$grailsVersion'
-}"""), grailsApplication)
+        GrailsPlugin plugin2 = new MockTestTwoGrailsPlugin(TestTwoGrailsPlugin, grailsApplication)
         [plugin, plugin2]
     }
 

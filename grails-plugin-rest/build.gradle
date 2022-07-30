@@ -11,6 +11,6 @@ dependencies {
     api "org.grails.plugins:converters:$convertersVersion"
 
     implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
-    testImplementation project(":grails-plugin-url-mappings"),
-                project(":grails-test-suite-base")
+    testImplementation project(":grails-plugin-url-mappings")
+    testImplementation project(":grails-test-suite-base")
 }
