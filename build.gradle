@@ -84,23 +84,9 @@ dependencies {
     api "io.github.gradle-nexus:publish-plugin:1.1.0"
     api "com.bmuschko:gradle-nexus-plugin:2.3.1"
     api "org.grails:grails-gradle-model:$grailsVersion"
+    api "org.grails:grails-bootstrap:$grailsVersion"
     api "org.grails:grails-shell:$grailsVersion", {
         exclude group: "org.slf4j", module: "slf4j-simple"
-    }
-    api "org.grails:grails-bootstrap:$grailsVersion", {
-        exclude group: "org.fusesource.jansi", module: "jansi"
-        exclude group: "jline", module: "jline"
-        exclude group: "net.java.dev.jna", module: "jna"
-
-        // Ant
-        exclude group: "org.codehaus.groovy", module: "groovy-ant"
-        exclude group: "org.apache.ant", module: "ant"
-        exclude group: "org.apache.ant", module: "ant-launcher"
-        exclude group: "org.apache.ivy", module: "ivy"
-        exclude group: "org.apache.ant", module: "ant-trax"
-        exclude group: "org.apache.ant", module: "ant-junit"
-
-        exclude group: "org.codehaus.gant", module: "gant_groovy1.8"
     }
 
     compileOnly "org.apache.maven:maven-model:3.8.4"
