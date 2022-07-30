@@ -94,10 +94,9 @@ class CoreGrailsPlugin extends Plugin {
             packagesToScan += beanPackages
         }
 
-
         if (packagesToScan) {
-            xmlns grailsContext:"http://grails.org/schema/context"
-            grailsContext.'component-scan'('base-package':packagesToScan.join(','))
+            xmlns grailsContext: "http://grails.org/schema/context"
+            grailsContext.'component-scan'('base-package': packagesToScan.join(','))
         }
 
         // add shutdown hook if not running in war deployed mode
