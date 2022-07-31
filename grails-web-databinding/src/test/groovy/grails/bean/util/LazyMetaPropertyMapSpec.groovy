@@ -1,6 +1,5 @@
-package org.grails.commons.metaclass
+package grails.beans.util
 
-import grails.beans.util.LazyMetaPropertyMap
 import spock.lang.Specification
 
 /**

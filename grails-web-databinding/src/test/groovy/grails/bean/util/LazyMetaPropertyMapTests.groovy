@@ -1,6 +1,5 @@
-package org.grails.commons.metaclass
+package grails.beans.util
 
-import grails.beans.util.LazyMetaPropertyMap
 import org.junit.jupiter.api.Test
 
 import static org.junit.jupiter.api.Assertions.*

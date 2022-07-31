@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.grails.web.binding
+package org.grails.web.databinding
 
-import org.grails.web.databinding.DataBindingLazyMetaPropertyMap
 import spock.lang.Specification
 
 class DataBindingLazyMetaPropertyMapTests extends Specification {
