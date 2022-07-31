@@ -1,4 +1,3 @@
 dependencies {
     api "org.springframework:spring-core:${springVersion}"
-    api "org.grails:grails-datastore-core:$datastoreVersion"
 }
