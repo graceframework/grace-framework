@@ -89,7 +89,7 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
 
-    compileOnly "org.apache.maven:maven-model:3.8.4"
+    compileOnly "org.apache.maven:maven-model:3.8.6"
     api "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     api "io.spring.gradle:dependency-management-plugin:1.0.12.RELEASE"
     api "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
