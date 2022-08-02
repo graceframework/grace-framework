@@ -24,7 +24,7 @@ import grails.util.Environment
 import grails.util.GrailsUtil
 import groovy.util.logging.Slf4j
 import org.grails.spring.context.support.PluginAwareResourceBundleMessageSource
-import org.springframework.context.support.ReloadableResourceBundleMessageSource
+import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.Resource
 
 import java.nio.file.Files
