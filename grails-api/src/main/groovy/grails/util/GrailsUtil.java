@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,12 @@
  */
 package grails.util;
 
-import grails.io.IOUtils;
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Writable;
-import groovy.util.slurpersupport.GPathResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
 import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
 import org.grails.exceptions.reporting.StackTraceFilterer;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
 /**
  * Grails utility methods for command line and GUI applications.
@@ -167,6 +152,5 @@ public class GrailsUtil {
     public static Throwable deepSanitize(Throwable t) {
         return stackFilterer.filter(t, true);
     }
-
 
 }
