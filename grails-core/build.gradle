@@ -1,10 +1,10 @@
 dependencies {
     compileOnly "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
     api "org.springframework.boot:spring-boot:$springBootVersion"
-    api "org.springframework:spring-core:${springVersion}"
-    api "org.springframework:spring-tx:${springVersion}"
     api "org.springframework:spring-beans:${springVersion}"
     api "org.springframework:spring-context:${springVersion}"
+    api "org.springframework:spring-core:${springVersion}"
+    api "org.springframework:spring-tx:${springVersion}"
 
     api project(":grails-api")
     api project(":grails-bootstrap")
@@ -19,12 +19,6 @@ dependencies {
     testImplementation "org.springframework:spring-jdbc:${springVersion}"
     testImplementation "org.springframework:spring-test:${springVersion}"
     testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
-
-    // These dependencies are not required, but due to a Groovy compiler bug they are loaded by Groovy and hence
-    // have to be on the path for compilation even though they shouldn't be
-    api "org.apache.ant:ant:${antVersion}"
-    api "jline:jline:$jlineVersion"
-    api "org.fusesource.jansi:jansi:$jansiVersion"
 }
 
 def writeProps = tasks.register('writeGrailsProperties', WriteProperties) {
