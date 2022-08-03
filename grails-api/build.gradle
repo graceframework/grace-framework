@@ -1,15 +1,12 @@
 dependencies {
-    api("org.springframework:spring-core:${springVersion}")
-    api("org.springframework:spring-context:${springVersion}")
     api("org.springframework:spring-beans:${springVersion}")
-
+    api("org.springframework:spring-context:${springVersion}")
+    api("org.springframework:spring-core:${springVersion}")
     api("org.springframework.boot:spring-boot:$springBootVersion")
 
-    api project(":grails-bootstrap"), {
-        exclude group:"org.fusesource.jansi", module:"jansi"
-        exclude group:"jline", module:"jline"
-        exclude group:"net.java.dev.jna", module:"jna"
-    }
+    api project(":grails-bootstrap")
 
-    api "org.grails:grails-datastore-core:$datastoreVersion"
+    api "org.grails:grails-datastore-core:$datastoreVersion", {
+        transitive = false
+    }
 }
