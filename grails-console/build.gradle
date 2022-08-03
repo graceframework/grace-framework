@@ -1,15 +1,15 @@
 dependencies {
+    api("org.codehaus.groovy:groovy-console:$groovyVersion")
+    api("org.codehaus.groovy:groovy-swing:$groovyVersion")
+    api("org.codehaus.groovy:groovy-groovysh:$groovyVersion")
+    api("org.springframework.boot:spring-boot:$springBootVersion")
+    api("org.springframework:spring-web:${springVersion}", optional)
+    api("javax.servlet:javax.servlet-api:$servletApiVersion", optional)
+    implementation("org.fusesource.jansi:jansi:$jansiVersion")
+    implementation("jline:jline:$jlineVersion")
+    implementation("net.java.dev.jna:jna:$jnaVersion")
+
     api project(":grails-api")
     api project(":grails-core")
     api project(":grails-boot")
-    api "org.codehaus.groovy:groovy-console:$groovyVersion"
-    api "org.codehaus.groovy:groovy-swing:$groovyVersion"
-    api "org.codehaus.groovy:groovy-groovysh:$groovyVersion"
-    implementation "org.fusesource.jansi:jansi:$jansiVersion",
-            "jline:jline:$jlineVersion",
-            "net.java.dev.jna:jna:$jnaVersion"
-
-    api("org.springframework.boot:spring-boot:$springBootVersion")
-    api "org.springframework:spring-web:${springVersion}", optional
-    api "javax.servlet:javax.servlet-api:$servletApiVersion", optional
 }
