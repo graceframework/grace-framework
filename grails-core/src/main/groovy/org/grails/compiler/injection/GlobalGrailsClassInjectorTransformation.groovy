@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,8 @@ package org.grails.compiler.injection
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
-import grails.io.IOUtils
-import grails.plugins.metadata.GrailsPlugin
-import grails.util.GrailsNameUtils
 import groovy.transform.CompilationUnitAware
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import groovy.util.slurpersupport.GPathResult
-import groovy.xml.MarkupBuilder
-import groovy.xml.StreamingMarkupBuilder
 import org.codehaus.groovy.ast.*
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.control.CompilationUnit
@@ -35,11 +28,13 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.grails.core.io.support.GrailsFactoriesLoader
-import org.grails.io.support.AntPathMatcher
-import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.UrlResource
 
 import java.lang.reflect.Modifier
+
+import static org.grails.compiler.injection.GrailsASTUtils.isSubclassOfOrImplementsInterface
+import static org.grails.io.support.GrailsResourceUtils.isGrailsResource
+import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 
 /**
  * A global transformation that applies Grails' transformations to classes within a Grails project
@@ -51,21 +46,20 @@ import java.lang.reflect.Modifier
 @GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
+    static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make("grails.core.ArtefactHandler")
+    static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact.class)
+    static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make("grails.compiler.traits.TraitInjector")
+    static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make("grails.dev.commands.ApplicationCommand")
 
-    public static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make("grails.core.ArtefactHandler")
-    public static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make("grails.dev.commands.ApplicationCommand")
-    public static final ClassNode TRAIT_INJECTOR_CLASS = ClassHelper.make("grails.compiler.traits.TraitInjector")
+    CompilationUnit compilationUnit
 
     @Override
     void visit(ASTNode[] nodes, SourceUnit source) {
+        ModuleNode ast = source.getAST()
 
-        ModuleNode ast = source.getAST();
-        List<ClassNode> classes = new ArrayList<>(ast.getClasses());
+        URL url = GrailsASTUtils.getSourceUrl(source)
 
-        URL url = GrailsASTUtils.getSourceUrl(source);
-
-        if(url == null ) return
-        if(!GrailsResourceUtils.isProjectSource(new UrlResource(url))) return;
+        if (url == null || !isProjectSource(new UrlResource(url))) return
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
@@ -74,54 +68,18 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             ArtefactTypeAstTransformation.findInjectors(key, classInjectors)
         }
 
+        File compilationTargetDirectory = resolveCompilationTargetDirectory(source)
+
         Set<String> transformedClasses = []
-        String projectName = null
-        String projectVersion = null
-        ClassNode pluginClassNode = null
-        def compilationTargetDirectory = resolveCompilationTargetDirectory(source)
-
+        List<ClassNode> classes = new ArrayList<>(ast.getClasses())
         for (ClassNode classNode : classes) {
-            projectName = classNode.getNodeMetaData("projectName") ? String.valueOf(classNode.getNodeMetaData("projectName")) : null
-            projectVersion = classNode.getNodeMetaData("projectVersion") ? String.valueOf(classNode.getNodeMetaData("projectVersion")) : null
-            if(projectVersion == null) {
-                projectVersion = getClass().getPackage().getImplementationVersion()
-            }
+            if (!isGrailsResource(new UrlResource(url))) continue
 
-            def classNodeName = classNode.name
+            String classNodeName = classNode.name
 
-            if(classNodeName.endsWith("GrailsPlugin") && !classNode.isAbstract()) {
-                pluginClassNode = classNode
-
-                if(!classNode.getProperty('version')) {
-                    classNode.addProperty(new PropertyNode('version', Modifier.PUBLIC, ClassHelper.make(Object), classNode, new ConstantExpression(projectVersion) , null, null))
-                }
-
-                continue
-            }
-
-            if(updateGrailsFactoriesWithType(classNode, ARTEFACT_HANDLER_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-            if(updateGrailsFactoriesWithType(classNode, APPLICATION_CONTEXT_COMMAND_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-            if(updateGrailsFactoriesWithType(classNode, TRAIT_INJECTOR_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-
-            if(!GrailsResourceUtils.isGrailsResource(new UrlResource(url))) continue;
-
-            if(projectName && projectVersion) {
-                // Groovy 3.0.7 issue fixed in 3.0.8: https://issues.apache.org/jira/browse/GROOVY-9891
-                Map<String, Object> members = [name: GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(projectName), version:projectVersion] as Map<String, Object>
-                GrailsASTUtils.addAnnotationOrGetExisting(classNode, GrailsPlugin, members)
-            }
-
-            classNode.getModule().addImport("Autowired", ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
-
-            for(ArtefactHandler handler in artefactHandlers) {
-                if(handler.isArtefact(classNode)) {
-                    if(!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
+            for (ArtefactHandler handler in artefactHandlers) {
+                if (handler.isArtefact(classNode)) {
+                    if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
                         transformedClasses.add classNodeName
                         def annotationNode = new AnnotationNode(new ClassNode(Artefact.class))
                         annotationNode.addMember("value", new ConstantExpression(handler.getType()))
@@ -139,39 +97,45 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 }
             }
 
-            if(!transformedClasses.contains(classNodeName)) {
-                def globalClassInjectors = GrailsAwareInjectionOperation.globalClassInjectors
+            if (!transformedClasses.contains(classNodeName)) {
+                ClassInjector[] globalClassInjectors = GrailsAwareInjectionOperation.globalClassInjectors
 
-                for(ClassInjector injector in globalClassInjectors) {
+                for (ClassInjector injector in globalClassInjectors) {
                     injector.performInjection(source, classNode)
                 }
             }
+
+            if (updateGrailsFactoriesWithType(classNode, ARTEFACT_HANDLER_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+            if (updateGrailsFactoriesWithType(classNode, APPLICATION_CONTEXT_COMMAND_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+            if (updateGrailsFactoriesWithType(classNode, TRAIT_INJECTOR_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+
+            classNode.getModule().addImport("Autowired",
+                    ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
         }
-
-        def pluginXmlFile = new File(compilationTargetDirectory, "META-INF/grails-plugin.xml")
-        // now create or update grails-plugin.xml
-        // first check if plugin.xml exists
-        pluginXmlFile.parentFile.mkdirs()
-
-        generatePluginXml(pluginClassNode, projectVersion, transformedClasses, pluginXmlFile)
     }
 
     static File resolveCompilationTargetDirectory(SourceUnit source) {
         File targetDirectory = null
-        if(source.getClass().name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
+        if (source.class.name == "org.codehaus.jdt.groovy.control.EclipseSourceUnit") {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
         } else {
 			targetDirectory = source.configuration.targetDirectory
 		}
-        if(targetDirectory == null) {
-            targetDirectory = new File('build/classes/main')
+        if (!targetDirectory) {
+            targetDirectory = new File("build/classes/main")
         }
-        return targetDirectory
+        targetDirectory
     }
 
     static boolean updateGrailsFactoriesWithType(ClassNode classNode, ClassNode superType, File compilationTargetDirectory) {
-        if (GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, superType)) {
-            if(Modifier.isAbstract(classNode.getModifiers())) return false
+        if (isSubclassOfOrImplementsInterface(classNode, superType)) {
+            if (Modifier.isAbstract(classNode.getModifiers())) return false
 
             def classNodeName = classNode.name
             def props = new Properties()
@@ -230,151 +194,4 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         }
         sourceDirectory.parentFile
     }
-
-    static Set<String> pendingPluginClasses = []
-    static Collection<String> pluginExcludes = []
-
-    protected static void generatePluginXml(ClassNode pluginClassNode, String projectVersion, Set<String> transformedClasses, File pluginXmlFile) {
-        def pluginXmlExists = pluginXmlFile.exists()
-        Set pluginClasses = []
-        pluginClasses.addAll(transformedClasses)
-        pluginClasses.addAll(pendingPluginClasses)
-
-        // if the class being transformed is a *GrailsPlugin class then if it doesn't exist create it
-        if (pluginClassNode && !pluginClassNode.isAbstract()) {
-            if (!pluginXmlExists) {
-                writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, pluginClasses)
-            } else {
-                // otherwise if the file does exist, update it with the plugin name
-                updatePluginXml(pluginClassNode, projectVersion, pluginXmlFile, pluginClasses)
-            }
-        } else if (pluginXmlExists) {
-            // if the class isn't the *GrailsPlugin class then only update the plugin.xml if it already exists
-            updatePluginXml(null, projectVersion, pluginXmlFile,  pluginClasses)
-        } else {
-            // otherwise add it to a list of pending classes to populated when the plugin.xml is created
-            pendingPluginClasses.addAll(transformedClasses)
-        }
-    }
-
-    @CompileDynamic
-    static void writePluginXml(ClassNode pluginClassNode, String projectVersion, File pluginXml, Collection<String> artefactClasses) {
-        if(pluginClassNode) {
-            PluginAstReader pluginAstReader = new PluginAstReader()
-            def info = pluginAstReader.readPluginInfo(pluginClassNode)
-
-            pluginXml.withWriter( "UTF-8") { Writer writer ->
-                def mkp = new MarkupBuilder(writer)
-                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, "GrailsPlugin")
-
-                def pluginProperties = info.getProperties()
-                def pluginVersion = pluginProperties['version'] ?: projectVersion
-                def grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + " > *"
-                def excludes = pluginProperties['pluginExcludes']
-                if(excludes instanceof List) {
-                    pluginExcludes.clear()
-                    pluginExcludes.addAll(excludes)
-                }
-
-                mkp.plugin(name:pluginName, version: pluginVersion, grailsVersion: grailsVersion) {
-                    type(pluginClassNode.name)
-
-                    for(entry in pluginProperties) {
-                        delegate."$entry.key"(entry.value)
-                    }
-
-                    // if there are pending classes to add to the plugin.xml add those
-                    if(artefactClasses) {
-                        def antPathMatcher = new AntPathMatcher()
-                        resources {
-                            for(String cn in artefactClasses) {
-                                if (!pluginExcludes.any() { String exc -> antPathMatcher.match(exc, cn.replace('.','/')) }) {
-                                    resource cn
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            pendingPluginClasses.clear()
-        }
-    }
-
-    @CompileDynamic
-    static void updatePluginXml(ClassNode pluginClassNode, String projectVersion, File pluginXmlFile, Collection<String> artefactClasses) {
-        try {
-            XmlSlurper xmlSlurper = IOUtils.createXmlSlurper()
-
-            def pluginXml = xmlSlurper.parse(pluginXmlFile)
-            if(pluginClassNode) {
-                PluginAstReader pluginAstReader = new PluginAstReader()
-                def info = pluginAstReader.readPluginInfo(pluginClassNode)
-
-                def pluginProperties = info.getProperties()
-                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, "GrailsPlugin")
-                def pluginVersion = pluginProperties['version'] ?: projectVersion
-                def grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + " > *"
-
-                pluginXml.@name = pluginName
-                pluginXml.@version = pluginVersion
-                pluginXml.type = pluginClassNode.name
-                pluginXml.@grailsVersion = grailsVersion
-                for(entry in pluginProperties) {
-                    pluginXml."$entry.key" = entry.value
-                }
-
-                def excludes = pluginProperties['pluginExcludes']
-                if(excludes instanceof List) {
-                    pluginExcludes.clear()
-                    pluginExcludes.addAll(excludes)
-                }
-            }
-
-            if(artefactClasses) {
-                def resources = pluginXml.resources
-
-                for(String cn in artefactClasses) {
-                    if ( !resources.resource.find { it.text() == cn } ) {
-                        resources.appendNode {
-                            resource(cn)
-                        }
-                    }
-                }
-            }
-
-            handleExcludes(pluginXml)
-
-            Writable writable = new StreamingMarkupBuilder().bind {
-                mkp.yield pluginXml
-            }
-
-            pluginXmlFile.withWriter("UTF-8") { Writer writer ->
-                writable.writeTo(writer)
-            }
-
-            pendingPluginClasses.clear()
-
-        } catch (e) {
-            // corrupt, recreate
-            writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
-        }
-    }
-
-    @CompileDynamic
-    protected static void handleExcludes(GPathResult pluginXml) {
-        if (pluginExcludes) {
-
-            def antPathMatcher = new AntPathMatcher()
-            pluginXml.resources.resource.each { res ->
-                if (pluginExcludes.any() { String exc -> antPathMatcher.match(exc, res.text().replace('.','/')) }) {
-                    res.replaceNode {}
-                }
-            }
-        }
-    }
-
-    public static final ClassNode ARTEFACT_CLASS_NODE = new ClassNode(Artefact.class)
-
-    CompilationUnit compilationUnit
 }
