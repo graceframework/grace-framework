@@ -12,7 +12,7 @@ import spock.lang.Specification
 /**
  * Created by graemerocher on 19/09/14.
  */
-class GlobalGrailsClassInjectorTransformationSpec extends Specification {
+class GlobalGrailsPluginTransformationSpec extends Specification {
 
     void "Test that a correct plugin dot xml file is generated when the plugin dot xml doesn't exist"() {
         given:"A file that doesn't yet exist"
@@ -39,7 +39,7 @@ class FooGrailsPlugin {
             !pluginXml.exists()
 
         when:"the transformation generates the plugin.xml"
-            def transformation = new GlobalGrailsClassInjectorTransformation()
+            def transformation = new GlobalGrailsPluginTransformation()
             transformation.generatePluginXml(classNode,"1.0", ['Foo'] as Set, pluginXml)
 
         then:"the file exists"
@@ -88,7 +88,7 @@ class FooGrailsPlugin {
             pluginXml.exists()
 
         when:"the transformation generates the plugin.xml"
-            def transformation = new GlobalGrailsClassInjectorTransformation()
+            def transformation = new GlobalGrailsPluginTransformation()
             transformation.generatePluginXml(classNode, "1.0", ['Foo', "Bar"] as Set, pluginXml)
 
         then:"the file exists"
