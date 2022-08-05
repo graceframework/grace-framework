@@ -59,12 +59,12 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
         URL url = GrailsASTUtils.getSourceUrl(source)
 
-        if (url == null || !isProjectSource(new UrlResource(url))) return
+        if (!url || !isProjectSource(new UrlResource(url))) return
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
-        Map<String, List<ClassInjector>> cache = new HashMap<String, List<ClassInjector>>().withDefault { String key ->
+        Map<String, List<ClassInjector>> injectorsCache = new HashMap<String, List<ClassInjector>>().withDefault { String key ->
             ArtefactTypeAstTransformation.findInjectors(key, classInjectors)
         }
 
@@ -82,17 +82,17 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
                         transformedClasses.add classNodeName
                         def annotationNode = new AnnotationNode(new ClassNode(Artefact.class))
-                        annotationNode.addMember("value", new ConstantExpression(handler.getType()))
+                        annotationNode.addMember("value", new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
-                        List<ClassInjector> injectors = cache[handler.type]
+                        List<ClassInjector> injectors = injectorsCache[handler.type]
                         for (ClassInjector injector: injectors) {
                             if (injector instanceof CompilationUnitAware) {
                                 ((CompilationUnitAware)injector).compilationUnit = compilationUnit
                             }
                         }
                         ArtefactTypeAstTransformation.performInjection(source, classNode, injectors)
-                        TraitInjectionUtils.processTraitsForNode(source, classNode, handler.getType(), compilationUnit)
+                        TraitInjectionUtils.processTraitsForNode(source, classNode, handler.type, compilationUnit)
                     }
                 }
             }
@@ -139,7 +139,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
             def classNodeName = classNode.name
             def props = new Properties()
-            def superTypeName = superType.getName()
+            def superTypeName = superType.name
 
             // generate META-INF/grails.factories
             File factoriesFile = new File(compilationTargetDirectory, "META-INF/grails.factories")
@@ -189,7 +189,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
     private static File findSourceDirectory(File compilationTargetDirectory) {
         File sourceDirectory = compilationTargetDirectory
-        while (sourceDirectory != null && !(sourceDirectory.name in ["build", "target"])) {
+        while (sourceDirectory && !(sourceDirectory.name in ["build", "target"])) {
             sourceDirectory = sourceDirectory.parentFile
         }
         sourceDirectory.parentFile

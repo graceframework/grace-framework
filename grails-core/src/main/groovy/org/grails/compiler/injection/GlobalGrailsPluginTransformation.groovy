@@ -54,7 +54,7 @@ import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 @GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsPluginTransformation implements ASTTransformation, CompilationUnitAware {
-    static Set<String> pendingPluginClasses = []
+    static Set<String> pendingArtefactClasses = []
     static Set<String> pluginExcludes = []
 
     CompilationUnit compilationUnit
@@ -64,7 +64,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         ModuleNode ast = source.getAST()
 
         URL url = GrailsASTUtils.getSourceUrl(source)
-        if (url == null || !isProjectSource(new UrlResource(url))) return
+        if (!url || !isProjectSource(new UrlResource(url))) return
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
 
@@ -86,7 +86,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             if (classNodeName.endsWith("GrailsPlugin") && !classNode.isAbstract()) {
                 pluginClassNode = classNode
 
-                if(!classNode.getProperty("version")) {
+                if (!classNode.getProperty("version")) {
                     classNode.addProperty(new PropertyNode("version", Modifier.PUBLIC,
                                 ClassHelper.make(Object), classNode,
                                 new ConstantExpression(projectVersion) , null, null))
@@ -124,44 +124,44 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         } else {
             targetDirectory = source.configuration.targetDirectory
         }
-        if (targetDirectory == null) {
+        if (!targetDirectory) {
             targetDirectory = new File('build/classes/main')
         }
-        return targetDirectory
+        targetDirectory
     }
 
     static void generatePluginXml(ClassNode pluginClassNode, String projectVersion,
-                                            Set<String> transformedClasses, File pluginXmlFile) {
+                                  Set<String> transformedClasses, File pluginXmlFile) {
         def pluginXmlExists = pluginXmlFile.exists()
-        Set<String> pluginClasses = []
-        pluginClasses.addAll(transformedClasses)
-        pluginClasses.addAll(pendingPluginClasses)
+        Set<String> artefactClasses = []
+        artefactClasses.addAll(transformedClasses)
+        artefactClasses.addAll(pendingArtefactClasses)
 
         // if the class being transformed is a *GrailsPlugin class then if it doesn't exist create it
         if (pluginClassNode && !pluginClassNode.isAbstract()) {
             if (!pluginXmlExists) {
-                writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, pluginClasses)
+                writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
             } else {
                 // otherwise if the file does exist, update it with the plugin name
-                updatePluginXml(pluginClassNode, projectVersion, pluginXmlFile, pluginClasses)
+                updatePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
             }
         } else if (pluginXmlExists) {
             // if the class isn't the *GrailsPlugin class then only update the plugin.xml if it already exists
-            updatePluginXml(null, projectVersion, pluginXmlFile,  pluginClasses)
+            updatePluginXml(null, projectVersion, pluginXmlFile, artefactClasses)
         } else {
             // otherwise add it to a list of pending classes to populated when the plugin.xml is created
-            pendingPluginClasses.addAll(transformedClasses)
+            pendingArtefactClasses.addAll(transformedClasses)
         }
     }
 
     @CompileDynamic
     static void writePluginXml(ClassNode pluginClassNode, String projectVersion,
-                               File pluginXml, Set<String> artefactClasses) {
+                               File pluginXmlFile, Set<String> artefactClasses) {
         if (pluginClassNode) {
             PluginAstReader pluginAstReader = new PluginAstReader()
             def info = pluginAstReader.readPluginInfo(pluginClassNode)
 
-            pluginXml.withWriter( "UTF-8") { Writer writer ->
+            pluginXmlFile.withWriter( "UTF-8") { Writer writer ->
                 def mkp = new MarkupBuilder(writer)
                 def pluginName = getLogicalPropertyName(pluginClassNode.name, "GrailsPlugin")
 
@@ -195,7 +195,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 }
             }
 
-            pendingPluginClasses.clear()
+            pendingArtefactClasses.clear()
         }
     }
 
@@ -252,7 +252,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 writable.writeTo(writer)
             }
 
-            pendingPluginClasses.clear()
+            pendingArtefactClasses.clear()
 
         } catch (ignored) {
             // corrupt, recreate
