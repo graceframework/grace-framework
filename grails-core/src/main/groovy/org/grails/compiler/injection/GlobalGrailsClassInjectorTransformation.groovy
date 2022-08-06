@@ -73,9 +73,22 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         Set<String> transformedClasses = []
         List<ClassNode> classes = new ArrayList<>(ast.getClasses())
         for (ClassNode classNode : classes) {
+            String classNodeName = classNode.name
+
+            if (updateGrailsFactoriesWithType(classNode, ARTEFACT_HANDLER_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+            if (updateGrailsFactoriesWithType(classNode, APPLICATION_CONTEXT_COMMAND_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+            if (updateGrailsFactoriesWithType(classNode, TRAIT_INJECTOR_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+
             if (!isGrailsResource(new UrlResource(url))) continue
 
-            String classNodeName = classNode.name
+            classNode.getModule().addImport("Autowired",
+                    ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
 
             for (ArtefactHandler handler in artefactHandlers) {
                 if (handler.isArtefact(classNode)) {
@@ -105,18 +118,6 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 }
             }
 
-            if (updateGrailsFactoriesWithType(classNode, ARTEFACT_HANDLER_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-            if (updateGrailsFactoriesWithType(classNode, APPLICATION_CONTEXT_COMMAND_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-            if (updateGrailsFactoriesWithType(classNode, TRAIT_INJECTOR_CLASS, compilationTargetDirectory)) {
-                continue
-            }
-
-            classNode.getModule().addImport("Autowired",
-                    ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
         }
     }
 
