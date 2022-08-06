@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,48 +30,34 @@ interface GrailsApplicationLifeCycle {
      *
      * @return A closure that defines beans to be registered by Spring
      */
-    default Closure doWithSpring() {
-        return {->}
-    }
+    Closure doWithSpring()
 
     /**
      * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed in a phase where plugins can add dynamic methods. Subclasses should override
      */
-    default void doWithDynamicMethods() {
-        // no-op
-    }
-
+    void doWithDynamicMethods()
     /**
      * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed and after {#doWithDynamicMethods()} is invoked. Subclasses should override
      */
-    default void doWithApplicationContext() {
-        // no-op
-    }
+    void doWithApplicationContext()
 
     /**
      * Invoked when the application configuration changes
      *
      * @param event The event
      */
-    default void onConfigChange(Map<String, Object> event) {
-        // no-op
-    }
+    void onConfigChange(Map<String, Object> event)
 
     /**
      * Invoked once all prior initialization hooks: {@link GrailsApplicationLifeCycle#doWithSpring()}, {@link GrailsApplicationLifeCycle#doWithDynamicMethods()} and {@link GrailsApplicationLifeCycle#doWithApplicationContext()}
      *
      * @param event The event
      */
-    default void onStartup(Map<String, Object> event) {
-        // no-op
-    }
-
+    void onStartup(Map<String, Object> event)
     /**
      * Invoked when the {@link org.springframework.context.ApplicationContext} is closed
      *
      * @param event The event
      */
-    default void onShutdown(Map<String, Object> event) {
-        // no-op
-    }
+    void onShutdown(Map<String, Object> event)
 }

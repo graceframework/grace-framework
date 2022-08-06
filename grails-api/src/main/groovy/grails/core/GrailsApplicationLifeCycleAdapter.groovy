@@ -18,14 +18,14 @@ package grails.core
 
 import groovy.transform.CompileStatic
 
+
 /**
  * Adapter for the {@link GrailsApplicationLifeCycle} interface
- * @deprecated Use GrailsApplicationLifeCycle instead
+ *
  * @author Graeme Rocher
  * @since 3.0
  */
 @CompileStatic
-@Deprecated
 class GrailsApplicationLifeCycleAdapter implements GrailsApplicationLifeCycle {
     @Override
     Closure doWithSpring() {

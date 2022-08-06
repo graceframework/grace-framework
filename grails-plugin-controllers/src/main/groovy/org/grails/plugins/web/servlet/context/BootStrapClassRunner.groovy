@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.grails.plugins.web.servlet.context
 
 import grails.core.GrailsApplication
-import grails.core.GrailsApplicationLifeCycle
+import grails.core.GrailsApplicationLifeCycleAdapter
 import grails.core.GrailsClass
 import grails.core.support.GrailsApplicationAware
 import grails.plugins.GrailsPluginManager
@@ -33,6 +33,8 @@ import org.springframework.web.context.WebApplicationContext
 
 import javax.servlet.ServletContext
 
+
+
 /**
  * Runs the BootStrap classes on startup
  *
@@ -41,7 +43,7 @@ import javax.servlet.ServletContext
  */
 @CompileStatic
 @Commons
-class BootStrapClassRunner implements GrailsApplicationLifeCycle, GrailsApplicationAware, ServletContextAware, ApplicationContextAware, PluginManagerAware {
+class BootStrapClassRunner extends GrailsApplicationLifeCycleAdapter implements GrailsApplicationAware, ServletContextAware, ApplicationContextAware, PluginManagerAware {
 
     GrailsApplication grailsApplication
     GrailsPluginManager pluginManager
@@ -51,7 +53,7 @@ class BootStrapClassRunner implements GrailsApplicationLifeCycle, GrailsApplicat
     @Override
     void onStartup(Map<String, Object> event) {
         if(grailsApplication && applicationContext && servletContext) {
-            GrailsConfigUtils.executeGrailsBootstraps(grailsApplication, (WebApplicationContext)applicationContext, servletContext, pluginManager)
+            GrailsConfigUtils.executeGrailsBootstraps(grailsApplication, (WebApplicationContext)applicationContext, servletContext, pluginManager )
         }
     }
 
