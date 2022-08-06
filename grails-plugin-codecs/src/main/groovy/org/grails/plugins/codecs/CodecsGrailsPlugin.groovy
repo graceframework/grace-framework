@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,10 @@ package org.grails.plugins.codecs
 
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
-import org.grails.plugins.codecs.DefaultCodecLookup
-import org.grails.commons.CodecArtefactHandler
 import org.grails.encoder.impl.HTML4Codec
-import org.grails.plugins.codecs.HTMLCodec
 import org.grails.encoder.impl.HTMLJSCodec
 import org.grails.encoder.impl.JavaScriptCodec
 import org.grails.encoder.impl.RawCodec
-import org.grails.plugins.codecs.URLCodec
 
 /**
  * Configures pluggable codecs.
