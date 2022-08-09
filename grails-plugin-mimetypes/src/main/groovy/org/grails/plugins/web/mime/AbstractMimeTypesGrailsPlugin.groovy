@@ -16,6 +16,7 @@
 package org.grails.plugins.web.mime
 
 import grails.plugins.Plugin
+import grails.util.GrailsUtil
 import org.grails.web.mime.DefaultMimeTypeResolver
 import grails.web.mime.MimeTypeResolver
 import org.grails.web.mime.DefaultMimeUtility
@@ -31,6 +32,9 @@ import grails.web.mime.MimeType
  */
 @Deprecated
 abstract class AbstractMimeTypesGrailsPlugin extends Plugin {
+    def version = GrailsUtil.getGrailsVersion()
+    def dependsOn = [core:version, controllers:version]
+    def observe = ['controllers']
 
     Closure doWithSpring() {{->
         "${MimeType.BEAN_NAME}"(MimeTypesFactoryBean)

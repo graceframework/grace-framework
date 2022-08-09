@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins.web.mime
+ 
+package org.grails.plugins.web.mime;
 
-import grails.util.GrailsUtil
+import groovy.lang.Closure;
 
 /**
  * Provides content negotiation capabilities to Grails via a new withFormat method on controllers
@@ -27,13 +28,9 @@ import grails.util.GrailsUtil
  */
 @Deprecated
 class MimeTypesGrailsPlugin extends AbstractMimeTypesGrailsPlugin {
-    
-    def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [core:version, controllers:version]
-    def observe = ['controllers']
 
     @Override
-    Closure doWithSpring() {
-        return super.doWithSpring()
+    public Closure doWithSpring() {
+        return super.doWithSpring();
     }
 }
