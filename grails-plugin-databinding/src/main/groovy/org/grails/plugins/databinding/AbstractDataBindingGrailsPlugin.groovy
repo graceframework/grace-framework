@@ -33,7 +33,6 @@ import org.grails.databinding.converters.DateConversionHelper
 import org.grails.databinding.converters.TimeZoneConverter
 import org.grails.databinding.converters.web.LocaleAwareBigDecimalConverter
 import org.grails.databinding.converters.web.LocaleAwareNumberConverter
-import org.springframework.util.ClassUtils
 
 /**
  * Plugin for configuring the data binding features of Grails
@@ -50,9 +49,16 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
     public static final String DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
     public static final String DEFAULT_JSR310_LOCAL_DATE_FORMAT = "yyyy-MM-dd"
     public static final String DEFAULT_JSR310_LOCAL_TIME_FORMAT = "HH:mm:ss"
-    public static final List<String> DEFAULT_DATE_FORMATS = ['yyyy-MM-dd HH:mm:ss.S',"yyyy-MM-dd'T'HH:mm:ss'Z'","yyyy-MM-dd HH:mm:ss.S z","yyyy-MM-dd'T'HH:mm:ss.SSSX", DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT, DEFAULT_JSR310_OFFSET_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT, DEFAULT_JSR310_LOCAL_DATE_FORMAT, DEFAULT_JSR310_LOCAL_TIME_FORMAT]
-
-    boolean enabled = !ClassUtils.isPresent("io.micronaut.spring.context.env.MicronautEnvironment", getClass().getClassLoader())
+    public static final List<String> DEFAULT_DATE_FORMATS = [
+        'yyyy-MM-dd HH:mm:ss.S',
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd HH:mm:ss.S z",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSX", 
+        DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT, 
+        DEFAULT_JSR310_OFFSET_TIME_FORMAT, 
+        DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT, 
+        DEFAULT_JSR310_LOCAL_DATE_FORMAT, 
+        DEFAULT_JSR310_LOCAL_TIME_FORMAT]
 
     @Override
     Closure doWithSpring() {{->
@@ -63,7 +69,6 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
         boolean dateParsingLenientSetting = config.getProperty(Settings.DATE_LENIENT_PARSING, Boolean, false)
         Integer autoGrowCollectionLimitSetting = config.getProperty(Settings.AUTO_GROW_COLLECTION_LIMIT, Integer, 256)
         List dateFormats = config.getProperty(Settings.DATE_FORMATS, List, DEFAULT_DATE_FORMATS)
-
 
         "${DataBindingUtils.DATA_BINDER_BEAN_NAME}"(GrailsWebDataBinder, grailsApplication) {
             // trimStrings defaults to TRUE

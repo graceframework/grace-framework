@@ -16,7 +16,10 @@ class DataBindingConfigurationSpec extends Specification implements GrailsUnitTe
 
 
     void setup() {
-        defineBeans {
+    }
+
+    Closure doWithSpring() {
+        { ->
             myValueConverter1(MyValueConverter)
             myValueConverter2(MyValueConverter2)
             myDateValueConverter(MyDateValueConverter)

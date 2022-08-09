@@ -10,6 +10,6 @@ class GroovyConfigPropertySourceLoaderSpec extends Specification implements Grai
     void "test read config from application.groovy from parent Micronaut context"() {
 
         expect:
-        ((ConfigurableApplicationContext) applicationContext.parent).getEnvironment().getProperty("foo", String) == "bar"
+        ((ConfigurableApplicationContext) applicationContext).getEnvironment().getProperty("foo", String) == "bar"
     }
 }

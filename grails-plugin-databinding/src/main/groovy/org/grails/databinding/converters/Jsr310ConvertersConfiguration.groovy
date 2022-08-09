@@ -1,17 +1,29 @@
+/*
+ * Copyright 2004-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.grails.databinding.converters;
 
 import grails.databinding.TypedStructuredBindingEditor
 import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
 import org.grails.plugins.databinding.DataBindingConfigurationProperties
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-import javax.inject.Inject
 import java.time.*
 import java.time.format.DateTimeFormatter
 
-@Configuration
 class Jsr310ConvertersConfiguration {
 
     Set<String> formatStrings = []
@@ -19,12 +31,10 @@ class Jsr310ConvertersConfiguration {
     Jsr310ConvertersConfiguration() {
     }
 
-    @Inject
     Jsr310ConvertersConfiguration(DataBindingConfigurationProperties configurationProperties) {
         this.formatStrings = configurationProperties.dateFormats as Set<String>
     }
 
-    @Bean
     FormattedValueConverter offsetDateTimeConverter() {
         new FormattedValueConverter() {
             @Override
@@ -39,7 +49,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter offsetDateTimeValueConverter() {
         new Jsr310DateValueConverter<OffsetDateTime>() {
             @Override
@@ -56,7 +65,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor offsetDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<OffsetDateTime>() {
             @Override
@@ -71,7 +79,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     FormattedValueConverter offsetTimeConverter() {
         new FormattedValueConverter() {
             @Override
@@ -86,7 +93,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter offsetTimeValueConverter() {
         new Jsr310DateValueConverter<OffsetTime>() {
             @Override
@@ -103,7 +109,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor offsetTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<OffsetTime>() {
             @Override
@@ -118,7 +123,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     FormattedValueConverter localDateTimeConverter() {
         new FormattedValueConverter() {
             @Override
@@ -133,7 +137,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter localDateTimeValueConverter() {
         new Jsr310DateValueConverter<LocalDateTime>() {
             @Override
@@ -150,7 +153,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor localDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalDateTime>() {
             @Override
@@ -165,7 +167,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     FormattedValueConverter localDateConverter() {
         new FormattedValueConverter() {
             @Override
@@ -180,7 +181,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter localDateValueConverter() {
         new Jsr310DateValueConverter<LocalDate>() {
             @Override
@@ -197,7 +197,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor localDateStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalDate>() {
             @Override
@@ -212,7 +211,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     FormattedValueConverter localTimeConverter() {
         new FormattedValueConverter() {
             @Override
@@ -227,7 +225,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter localTimeValueConverter() {
         new Jsr310DateValueConverter<LocalTime>() {
             @Override
@@ -244,7 +241,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor localTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalTime>() {
             @Override
@@ -259,7 +255,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     FormattedValueConverter zonedDateTimeConverter() {
         new FormattedValueConverter() {
             @Override
@@ -274,7 +269,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter zonedDateTimeValueConverter() {
         new Jsr310DateValueConverter<ZonedDateTime>() {
             @Override
@@ -291,7 +285,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     TypedStructuredBindingEditor zonedDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<ZonedDateTime>() {
             @Override
@@ -306,7 +299,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter periodValueConverter() {
         new Jsr310DateValueConverter<Period>() {
             @Override
@@ -321,7 +313,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter instantStringValueConverter() {
         new ValueConverter() {
             @Override
@@ -340,7 +331,6 @@ class Jsr310ConvertersConfiguration {
         }
     }
 
-    @Bean
     ValueConverter instantValueConverter() {
         new ValueConverter() {
             @Override
