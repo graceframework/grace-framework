@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Primary;
  *
  * @author graemerocher
  * @author Michael Yan
- * @since 4.0
+ * @since 2022.0.0
  */
 @Configuration(proxyBeanMethods = false)
 public class CodecsPluginConfiguration {
@@ -37,7 +37,8 @@ public class CodecsPluginConfiguration {
     @Primary
     @ConditionalOnMissingBean
     public CodecLookup codecLookup(ObjectProvider<GrailsApplication> grailsApplication) {
-        DefaultCodecLookup defaultCodecLookup = new DefaultCodecLookup(grailsApplication.getIfUnique());
+        DefaultCodecLookup defaultCodecLookup = new DefaultCodecLookup(grailsApplication.getIfAvailable());
+        defaultCodecLookup.reInitialize();
         return defaultCodecLookup;
     }
 }
