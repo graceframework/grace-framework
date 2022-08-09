@@ -3,7 +3,6 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
     testImplementation project(":grails-boot")
     testImplementation project(":grails-test-suite-base")
     testImplementation project(":grails-plugin-domain-class")
@@ -59,7 +58,6 @@ dependencies {
         exclude module:'grails-plugin-domain-class'
     }
     testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-domain-class'
         exclude module:'grails-test'
         exclude module:'async'

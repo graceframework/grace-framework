@@ -13,7 +13,6 @@ dependencies {
     testImplementation "javax.servlet.jsp:jsp-api:2.2"
     testImplementation "jstl:jstl:1.2"
     testImplementation "javax.el:el-api:2.2"
-    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
 
     testImplementation project(":grails-boot")
     testImplementation project(":grails-test-suite-base")
