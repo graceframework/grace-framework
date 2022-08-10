@@ -35,7 +35,6 @@ import org.grails.config.PropertySourcesConfig
 import org.grails.core.exceptions.GrailsConfigurationException
 import org.grails.core.lifecycle.ShutdownOperations
 import org.grails.datastore.mapping.model.MappingContext
-import org.grails.plugins.core.CoreConfiguration
 import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.spring.RuntimeSpringConfigUtilities
 import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
@@ -251,9 +250,6 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             ConfigurableBeanFactory configurableBeanFactory = parentBeanFactory
             configurableBeanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
             configurableBeanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, pluginManager)
-            parentBeanFactory.getBean(CoreConfiguration).setChildContext(
-                    (ConfigurableApplicationContext)applicationContext
-            )
         } else {
             beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
             beanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, pluginManager)

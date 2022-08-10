@@ -1,8 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java:$micronautVersion"
-    annotationProcessor "io.micronaut.spring:micronaut-spring-boot-annotation:$micronautSpringVersion"
-    annotationProcessor "io.micronaut.cache:micronaut-cache-core:$micronautCacheVersion"
-
     api project(":grails-api")
     api project(":grails-plugin-api")
     api project(":grails-spring-boot")
@@ -12,6 +8,7 @@ dependencies {
     api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-context:${springVersion}")
     api("org.springframework:spring-beans:${springVersion}")
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
     testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
     testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion"
     testRuntimeOnly "org.aspectj:aspectjweaver:$aspectjVersion"
