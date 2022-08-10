@@ -33,8 +33,4 @@ dependencies {
     testRuntimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatLog4jVersion"
     testRuntimeOnly project(":grails-plugin-i18n")
     testRuntimeOnly project(":grails-plugin-url-mappings")
-
-    testImplementation("org.springframework:spring-test:${springVersion}")
-    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
-    testImplementation "org.hamcrest:hamcrest-core:1.3"
 }
