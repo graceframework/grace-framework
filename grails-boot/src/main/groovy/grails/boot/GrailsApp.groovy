@@ -10,14 +10,7 @@ import grails.util.Environment
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import io.micronaut.context.ApplicationContext
-import io.micronaut.context.ApplicationContextBuilder
-import io.micronaut.context.ApplicationContextConfiguration
-import io.micronaut.context.env.AbstractPropertySourceLoader
-import io.micronaut.context.env.PropertySource
-import io.micronaut.core.util.StringUtils
-import io.micronaut.spring.context.env.MicronautEnvironment
-import io.micronaut.spring.context.factory.MicronautBeanFactoryConfiguration
+
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
@@ -34,15 +27,10 @@ import org.springframework.boot.ResourceBanner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.context.event.ApplicationPreparedEvent
 import org.springframework.boot.web.context.WebServerApplicationContext
-import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.context.event.ContextStoppedEvent
-import org.springframework.core.convert.ConversionService
 import org.springframework.core.env.ConfigurableEnvironment
-import org.springframework.core.env.PropertyResolver
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.ResourceLoader
-import org.springframework.util.ClassUtils
 
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -104,8 +92,6 @@ class GrailsApp extends SpringApplication {
         log.debug("Application directory discovered as: {}", IOUtils.findApplicationDirectory())
         log.debug("Current base directory is [{}]. Reloading base directory is [{}]", new File("."), BuildSettings.BASE_DIR)
 
-        loadPluginConfigurationsToMicronautContext(applicationContext)
-
         if(environment.isReloadEnabled()) {
             log.debug("Reloading status: {}", environment.isReloadEnabled())
             enableDevelopmentModeWatch(environment, applicationContext)
@@ -115,85 +101,11 @@ class GrailsApp extends SpringApplication {
         return applicationContext
     }
 
-    @SuppressWarnings("GrMethodMayBeStatic")
-    private void loadPluginConfigurationsToMicronautContext(ConfigurableApplicationContext applicationContext) {
-        if (isMicronautEnvironment()) {
-            GrailsPluginManager pluginManager = applicationContext.getBean(GrailsPluginManager)
-            ConfigurableApplicationContext parentApplicationContext = (ConfigurableApplicationContext) applicationContext.parent
-            ConfigurableEnvironment parentContextEnv = parentApplicationContext.getEnvironment()
-            if (parentContextEnv instanceof MicronautEnvironment) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Loading configurations from the plugins to the parent Micronaut context")
-                }
-                final io.micronaut.context.env.Environment micronautEnv = ((io.micronaut.context.env.Environment) parentContextEnv.getEnvironment())
-                final GrailsPlugin[] plugins = pluginManager.allPlugins
-                Integer priority = AbstractPropertySourceLoader.DEFAULT_POSITION
-                Arrays.stream(plugins)
-                        .filter({ GrailsPlugin plugin -> plugin.propertySource != null })
-                        .forEach({ GrailsPlugin plugin ->
-                            if (log.isDebugEnabled()) {
-                                log.debug("Loading configurations from {} plugin to the parent Micronaut context", plugin.name)
-                            }
-                            micronautEnv.addPropertySource(PropertySource.of("grails.plugins.$plugin.name", (Map) plugin.propertySource.source, --priority))
-                        })
-                micronautEnv.refresh()
-                applicationContext.setParent(parentApplicationContext)
-            }
-        }
-    }
-
     @Override
     protected ConfigurableApplicationContext createApplicationContext() {
         setAllowBeanDefinitionOverriding(true)
         setAllowCircularReferences(true)
         ConfigurableApplicationContext applicationContext = super.createApplicationContext()
-
-        if (isMicronautEnvironment()) {
-            def now = System.currentTimeMillis()
-
-            ClassLoader applicationClassLoader = this.classLoader
-            ApplicationContextConfiguration micronautConfiguration = new ApplicationContextConfiguration() {
-                @Override
-                List<String> getEnvironments() {
-                    if (configuredEnvironment != null) {
-                        return configuredEnvironment.getActiveProfiles().toList()
-                    } else {
-                        return Collections.emptyList()
-                    }
-                }
-
-                @Override
-                Optional<Boolean> getDeduceEnvironments() {
-                    return Optional.of(false)
-                }
-
-                @Override
-                ClassLoader getClassLoader() {
-                    return applicationClassLoader
-                }
-            }
-
-            List beanExcludes = []
-            beanExcludes.add(ConversionService.class)
-            beanExcludes.add(org.springframework.core.env.Environment.class)
-            beanExcludes.add(PropertyResolver.class)
-            beanExcludes.add(ConfigurableEnvironment.class)
-            def objectMapper = io.micronaut.core.reflect.ClassUtils.forName("com.fasterxml.jackson.databind.ObjectMapper", classLoader).orElse(null)
-            if (objectMapper != null) {
-                beanExcludes.add(objectMapper)
-            }
-            def micronautContext = new io.micronaut.context.DefaultApplicationContext(micronautConfiguration);
-            micronautContext
-                    .environment
-                    .addPropertySource("grails-config", [(MicronautBeanFactoryConfiguration.PREFIX + ".bean-excludes"): (Object) beanExcludes])
-            micronautContext.start()
-            ConfigurableApplicationContext parentContext = micronautContext.getBean(ConfigurableApplicationContext)
-            applicationContext.setParent(
-                    parentContext
-            )
-            applicationContext.addApplicationListener(new MicronautShutdownListener(micronautContext))
-            log.info("Started Micronaut Parent Application Context in ${System.currentTimeMillis() - now}ms")
-        }
 
         if(enableBeanCreationProfiler) {
             def processor = new BeanCreationProfilingPostProcessor()
@@ -201,10 +113,6 @@ class GrailsApp extends SpringApplication {
             applicationContext.addApplicationListener(processor)
         }
         return applicationContext
-    }
-
-    protected ApplicationContextBuilder newMicronautContextBuilder() {
-        return ApplicationContext.builder()
     }
 
     @Override
@@ -453,7 +361,8 @@ class GrailsApp extends SpringApplication {
                 applicationContext.publishEvent(
                         new ApplicationPreparedEvent(
                                 this,
-                                StringUtils.EMPTY_STRING_ARRAY, (ConfigurableApplicationContext)applicationContext.getParent())
+                                new String[0],
+                                (ConfigurableApplicationContext)applicationContext.getParent())
                 )
             }
             String contextPath = app.config.getProperty('server.servlet.context-path', '')
@@ -490,28 +399,5 @@ class GrailsApp extends SpringApplication {
         GrailsApp grailsApp = new GrailsApp(sources)
         grailsApp.banner = new ResourceBanner(new ClassPathResource(GRAILS_BANNER))
         return grailsApp.run(args)
-    }
-
-    @CompileStatic
-    static class MicronautShutdownListener implements ApplicationListener<ContextStoppedEvent> {
-        final ApplicationContext micronautApplicationContext
-
-        MicronautShutdownListener(ApplicationContext micronautApplicationContext) {
-            this.micronautApplicationContext = micronautApplicationContext
-        }
-
-        @Override
-        void onApplicationEvent(ContextStoppedEvent event) {
-            this.micronautApplicationContext.stop()
-        }
-    }
-
-    private boolean isMicronautEnvironment() {
-        try {
-            ClassUtils.forName("io.micronaut.spring.context.env.MicronautEnvironment", this.classLoader)
-            return true
-        } catch (Exception e) {
-            return false
-        }
     }
 }

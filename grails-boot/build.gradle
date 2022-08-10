@@ -1,12 +1,6 @@
 dependencies {
     api "io.micronaut:micronaut-inject:$micronautVersion"
     api "javax.inject:javax.inject:1"
-    compileOnly "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion", {
-        exclude group:"org.slf4j", module: "slf4j-simple"
-    }
-    compileOnly "io.micronaut.cache:micronaut-cache-core:$micronautCacheVersion", {
-        exclude group:"org.slf4j", module: "slf4j-simple"
-    }
     api "javax.persistence:javax.persistence-api:2.2"
     api "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
 
