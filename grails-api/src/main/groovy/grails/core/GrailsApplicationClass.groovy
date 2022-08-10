@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,5 +23,31 @@ package grails.core
  */
 trait GrailsApplicationClass implements GrailsApplicationLifeCycle {
 
+    @Override
+    Closure doWithSpring() { null }
 
+    @Override
+    void doWithDynamicMethods() {
+        // no-op
+    }
+
+    @Override
+    void doWithApplicationContext() {
+        // no-op
+    }
+
+    @Override
+    void onConfigChange(Map<String, Object> event) {
+        // no-op
+    }
+
+    @Override
+    void onStartup(Map<String, Object> event) {
+        // no-op
+    }
+
+    @Override
+    void onShutdown(Map<String, Object> event) {
+        // no-op
+    }
 }

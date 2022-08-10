@@ -121,34 +121,6 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         packages().collect { Package p -> p.name }
     }
 
-    @Override
-    Closure doWithSpring() { null }
-
-    @Override
-    void doWithDynamicMethods() {
-        // no-op
-    }
-
-    @Override
-    void doWithApplicationContext() {
-        // no-op
-    }
-
-    @Override
-    void onConfigChange(Map<String, Object> event) {
-        // no-op
-    }
-
-    @Override
-    void onStartup(Map<String, Object> event) {
-        // no-op
-    }
-
-    @Override
-    void onShutdown(Map<String, Object> event) {
-        // no-op
-    }
-
     GrailsApplication getGrailsApplication() {
         applicationContext.getBean(GrailsApplication)
     }
