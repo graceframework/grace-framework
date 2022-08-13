@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.springframework.core.env.EnumerablePropertySource
 class PrefixedMapPropertySource extends EnumerablePropertySource {
     final EnumerablePropertySource source
     final String prefix
-    final String[] propertyNames
+    private final String[] propertyNames
 
     PrefixedMapPropertySource(String prefix, EnumerablePropertySource source) {
         super(prefix + "_" + source.getName())
@@ -40,6 +40,19 @@ class PrefixedMapPropertySource extends EnumerablePropertySource {
 
     @Override
     Object getProperty(String name) {
-        return source.getProperty("${prefix}.$name")
+        if (name.startsWith(prefix)) {
+            String key = name - prefix - '.'
+            return source.getProperty(key)
+        }
+        return null
+    }
+
+    @Override
+    boolean containsProperty(String name) {
+        return this.propertyNames.contains(name)
+    }
+
+    String[] getPropertyNames() {
+        this.propertyNames
     }
 }
