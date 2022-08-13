@@ -29,20 +29,25 @@ import org.grails.build.parsing.CommandLine
 @CompileStatic
 @Canonical
 class ExecutionContext {
+
     /**
      * The command line instance
      */
     CommandLine commandLine
+
     /**
      * The base directory for the project
      */
     final File baseDir = BuildSettings.BASE_DIR
+
     /**
      * The classes directory of the project
      */
     final File classesDir = BuildSettings.CLASSES_DIR
+
     /**
      * The target directory of the project
      */
     final File targetDir = BuildSettings.TARGET_DIR
+
 }

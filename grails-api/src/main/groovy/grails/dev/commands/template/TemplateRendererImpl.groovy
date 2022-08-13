@@ -89,6 +89,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(File template, File destination, Model model) {
         render(template, destination, model.asMap())
     }
+
     /**
      * Render the given template to the given destination
      *
@@ -107,7 +108,8 @@ class TemplateRendererImpl implements TemplateRenderer {
                         def templateEngine = new GStringTemplateEngine()
                         t = templateEngine.createTemplate(template)
                     } catch (e) {
-                        throw new TemplateException("Error rendering template [$template] to destination ${projectPath(destination)}: ${e.message}", e)
+                        throw new TemplateException("Error rendering template [$template] " +
+                                "to destination ${projectPath(destination)}: ${e.message}", e)
                     }
                 }
                 try {
@@ -115,7 +117,8 @@ class TemplateRendererImpl implements TemplateRenderer {
                     println("Rendered template ${template.name} to destination ${projectPath(destination)}")
                 } catch (Throwable e) {
                     destination.delete()
-                    throw new TemplateException("Error rendering template [$template] to destination ${projectPath(destination)}: ${e.message}", e)
+                    throw new TemplateException("Error rendering template [$template] " +
+                            "to destination ${projectPath(destination)}: ${e.message}", e)
                 }
             }
         }
@@ -131,6 +134,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(Resource template, File destination, Model model, boolean overwrite = false) {
         render(template, destination, model.asMap(), overwrite)
     }
+
     /**
      * Render the given template to the given destination
      *
@@ -147,7 +151,6 @@ class TemplateRendererImpl implements TemplateRenderer {
             } else {
                 Template t = templateCache[template.filename]
                 if (t == null) {
-
                     try {
                         def templateEngine = new GStringTemplateEngine()
                         def reader = new InputStreamReader(template.inputStream, "UTF-8")
@@ -156,12 +159,12 @@ class TemplateRendererImpl implements TemplateRenderer {
                         } finally {
                             try {
                                 reader.close()
-                            } catch (e) {
-                                // ignore
+                            } catch (ignore) {
                             }
                         }
                     } catch (e) {
-                        throw new TemplateException("Error rendering template [$template.filename] to destination ${projectPath(destination)}: ${e.message}", e)
+                        throw new TemplateException("Error rendering template [$template.filename] " +
+                                "to destination ${projectPath(destination)}: ${e.message}", e)
                     }
                 }
                 if (t != null) {
@@ -170,7 +173,8 @@ class TemplateRendererImpl implements TemplateRenderer {
                         println("Rendered template ${template.filename} to destination ${projectPath(destination)}")
                     } catch (Throwable e) {
                         destination.delete()
-                        throw new TemplateException("Error rendering template [$template.filename] to destination ${projectPath(destination)}: ${e.message}", e)
+                        throw new TemplateException("Error rendering template [$template.filename] " +
+                                "to destination ${projectPath(destination)}: ${e.message}", e)
                     }
                 }
             }
@@ -204,7 +208,6 @@ class TemplateRendererImpl implements TemplateRenderer {
         return resource(f)
     }
 
-
     protected static void writeTemplateToDestination(Template template, Map model, File destination) {
         destination.parentFile.mkdirs()
         destination.withWriter { BufferedWriter w ->
@@ -212,4 +215,5 @@ class TemplateRendererImpl implements TemplateRenderer {
             w.flush()
         }
     }
+
 }

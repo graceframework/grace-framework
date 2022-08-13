@@ -24,4 +24,5 @@ trait GrailsApplicationCommand implements ApplicationCommand, ModelBuilder {
     }
 
     abstract boolean handle()
+
 }

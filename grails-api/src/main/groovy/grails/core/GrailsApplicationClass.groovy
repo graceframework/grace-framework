@@ -50,4 +50,5 @@ trait GrailsApplicationClass implements GrailsApplicationLifeCycle {
     void onShutdown(Map<String, Object> event) {
         // no-op
     }
+
 }

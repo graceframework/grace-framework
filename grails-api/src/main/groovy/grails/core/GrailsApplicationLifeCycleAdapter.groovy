@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.core
 
 import groovy.transform.CompileStatic
-
 
 /**
  * Adapter for the {@link GrailsApplicationLifeCycle} interface
@@ -27,9 +25,11 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class GrailsApplicationLifeCycleAdapter implements GrailsApplicationLifeCycle {
+
     @Override
     Closure doWithSpring() {
-        return {->}
+        return { ->
+        }
     }
 
     @Override
@@ -56,4 +56,5 @@ class GrailsApplicationLifeCycleAdapter implements GrailsApplicationLifeCycle {
     void onShutdown(Map<String, Object> event) {
         // no-op
     }
+
 }

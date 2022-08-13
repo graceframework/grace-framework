@@ -7,25 +7,30 @@ package grails.config
  * @since 3.0
  */
 interface Settings {
+
     /**
      *  The active Grails profile
      */
     String PROFILE = "grails.profile"
+
     /**
      *  Packages to scan for Spring beans
      */
     String SPRING_BEAN_PACKAGES = "grails.spring.bean.packages"
+
     /**
      * Whether to disable AspectJ explicitly
      */
     String SPRING_DISABLE_ASPECTJ = "grails.spring.disable.aspectj.autoweaving"
+
     /**
      * The prefix to use for property placeholders
      */
     String SPRING_PLACEHOLDER_PREFIX = "grails.spring.placeholder.prefix"
 
     /**
-     * Whether to enable Spring proxy based transaction management. Since {@code @Transactional} uses an AST transform, this makes Spring proxy based transaction management redundant.
+     * Whether to enable Spring proxy based transaction management. Since {@code @Transactional} uses an AST transform,
+     * this makes Spring proxy based transaction management redundant.
      * However, if Spring proxies are prefer
      */
     String SPRING_TRANSACTION_MANAGEMENT = "grails.spring.transactionManagement.proxies"
@@ -34,6 +39,7 @@ interface Settings {
      * Which plugins to include in the plugin manager
      */
     String PLUGIN_INCLUDES = "grails.plugin.includes"
+
     /**
      * Which plugins to exclude from the plugin manager
      */
@@ -50,6 +56,7 @@ interface Settings {
      * Whether to disable caching of resources in GSP
      */
     String GSP_DISABLE_CACHING_RESOURCES = "grails.gsp.disable.caching.resources"
+
     /**
      * Whether to enable GSP reload in production
      */
@@ -84,10 +91,12 @@ interface Settings {
      * Whether to translate GORM events into reactor events
      */
     String GORM_REACTOR_EVENTS = "grails.gorm.reactor.events"
+
     /**
      * The configured mime types
      */
     String MIME_TYPES = 'grails.mime.types'
+
     /**
      * Whether to use the accept header for content negotiation
      */
@@ -201,28 +210,33 @@ interface Settings {
     /**
      * The default encoding
      */
-    String DEFAULT_ENCODING = System.getProperty('file.encoding',"UTF-8")
+    String DEFAULT_ENCODING = System.getProperty('file.encoding', "UTF-8")
 
     /**
      * Whether to log request parameters in the console
      */
     String SETTING_LOG_REQUEST_PARAMETERS = "grails.exceptionresolver.logRequestParameters"
+
     /**
      * The parameters to exclude from logging
      */
     String SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES = "grails.exceptionresolver.params.exclude"
+
     /**
      * The class to use for stacktrace filtering. Should be an instanceof {@link org.grails.exceptions.reporting.StackTraceFilterer}
      */
     String SETTING_LOGGING_STACKTRACE_FILTER_CLASS = "grails.logging.stackTraceFiltererClass"
+
     /**
      * Whether to use the legacy JSON builder
      */
     String SETTING_LEGACY_JSON_BUILDER = "grails.json.legacy.builder"
+
     /**
      * Whether to execute Bootstrap classes
      */
     String SETTING_SKIP_BOOTSTRAP = "grails.bootstrap.skip"
+
     /**
      * Whether to load cors configuration via a filter (true) or interceptor(false)
      */
@@ -241,4 +255,5 @@ interface Settings {
     String I18N_CACHE_SECONDS = 'grails.i18n.cache.seconds'
 
     String I18N_FILE_CACHE_SECONDS = 'grails.i18n.filecache.seconds'
+
 }

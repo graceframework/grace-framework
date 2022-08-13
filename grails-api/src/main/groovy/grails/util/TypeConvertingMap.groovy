@@ -28,6 +28,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class TypeConvertingMap extends AbstractTypeConvertingMap {
+
     TypeConvertingMap() {
         super()
     }
@@ -107,4 +108,5 @@ class TypeConvertingMap extends AbstractTypeConvertingMap {
     Boolean 'boolean'(String name, Boolean defaultValue) {
         return getBoolean(name, defaultValue)
     }
+
 }

@@ -60,14 +60,18 @@ class VersionComparator implements Comparator<String> {
                     if (result != 0) {
                         break
                     }
-                    if (i == (nums1.size()-1) && bigRight) {
-                        if (nums2[i+1] != 0)
-                            result = -1; break
+                    if (i == (nums1.size() - 1) && bigRight) {
+                        if (nums2[i + 1] != 0) {
+                            result = -1
+                            break
+                        }
                     }
                 }
                 else if (bigLeft) {
-                    if (nums1[i] != 0)
-                        result = 1; break
+                    if (nums1[i] != 0) {
+                        result = 1
+                        break
+                    }
                 }
             }
         }
@@ -107,4 +111,5 @@ class VersionComparator implements Comparator<String> {
     protected boolean isSnapshot(String version) {
         SNAPSHOT_SUFFIXES.any { String it -> version?.endsWith(it) }
     }
+
 }

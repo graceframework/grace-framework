@@ -34,6 +34,7 @@ interface TemplateRenderer {
      */
     @CompileDynamic
     void render(Map<String, Object> namedArguments)
+
     /**
      * Render the given template to the give destination for the given model
      *
@@ -50,7 +51,7 @@ interface TemplateRenderer {
      * @param destination The destination
      * @param model The model
      */
-    void render(CharSequence template, File destination )
+    void render(CharSequence template, File destination)
 
     /**
      * Render the given template to the given destination
@@ -59,7 +60,8 @@ interface TemplateRenderer {
      * @param destination The destination
      * @param model The model
      */
-    void render(CharSequence template, File destination, Map model )
+    void render(CharSequence template, File destination, Map model)
+
     /**
      * Render the given template to the given destination
      *
@@ -94,7 +96,7 @@ interface TemplateRenderer {
      * @param destination The destination
      * @param model The model
      */
-    void render(File template, File destination, Map model )
+    void render(File template, File destination, Map model)
 
     /**
      * Render the given template to the given destination
@@ -113,7 +115,6 @@ interface TemplateRenderer {
      * @param model The model
      */
     void render(Resource template, File destination, Model model)
-
 
     /**
      * Render the given template to the give destination for the given model
@@ -166,4 +167,5 @@ interface TemplateRenderer {
      * @return The resource or null if it doesn't exist
      */
     Resource template(Object location)
+
 }

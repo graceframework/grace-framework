@@ -33,11 +33,13 @@ interface GrailsApplicationLifeCycle {
     Closure doWithSpring()
 
     /**
-     * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed in a phase where plugins can add dynamic methods. Subclasses should override
+     * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed in a phase
+     * where plugins can add dynamic methods. Subclasses should override
      */
     void doWithDynamicMethods()
     /**
-     * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed and after {#doWithDynamicMethods()} is invoked. Subclasses should override
+     * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed
+     * and after {#doWithDynamicMethods()} is invoked. Subclasses should override
      */
     void doWithApplicationContext()
 
@@ -49,7 +51,8 @@ interface GrailsApplicationLifeCycle {
     void onConfigChange(Map<String, Object> event)
 
     /**
-     * Invoked once all prior initialization hooks: {@link GrailsApplicationLifeCycle#doWithSpring()}, {@link GrailsApplicationLifeCycle#doWithDynamicMethods()} and {@link GrailsApplicationLifeCycle#doWithApplicationContext()}
+     * Invoked once all prior initialization hooks: {@link GrailsApplicationLifeCycle#doWithSpring()},
+     * {@link GrailsApplicationLifeCycle#doWithDynamicMethods()} and {@link GrailsApplicationLifeCycle#doWithApplicationContext()}
      *
      * @param event The event
      */
@@ -60,4 +63,5 @@ interface GrailsApplicationLifeCycle {
      * @param event The event
      */
     void onShutdown(Map<String, Object> event)
+
 }

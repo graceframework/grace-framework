@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.core.io.support
 
 import groovy.transform.CompileStatic
@@ -33,10 +32,8 @@ import org.springframework.util.ClassUtils
 @CompileStatic
 class GrailsFactoriesLoader extends FactoriesLoaderSupport {
 
-
     private static final Object[] NO_ARGUMENTS = [] as Object[]
-    
-    
+
     /**
      * Load the factory implementations of the given type from the default location,
      * using the given class loader.
@@ -59,30 +56,29 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
     }
 
     static <T> List<T> loadFactoriesWithArguments(Class<T> factoryClass, ClassLoader classLoader, Object[] arguments) {
-        boolean hasArguments = !(arguments != null && arguments.length==0)
-        List<T> results = new ArrayList<T>() 
-        for(Class<? extends T> clazz : loadFactoryClasses(factoryClass, classLoader)) {
-            results.add(hasArguments ? clazz.newInstance(arguments) : clazz.newInstance()) 
+        boolean hasArguments = !(arguments != null && arguments.length == 0)
+        List<T> results = new ArrayList<T>()
+        for (Class<? extends T> clazz : loadFactoryClasses(factoryClass, classLoader)) {
+            results.add(hasArguments ? clazz.newInstance(arguments) : clazz.newInstance())
         }
         OrderComparator.sort((List<?>) results)
         results
     }
-    
+
     static <T> List<Class<T>> loadFactoryClasses(Class<T> factoryClass, ClassLoader classLoader = GrailsFactoriesLoader.class.classLoader) {
         Assert.notNull factoryClass, "'factoryClass' must not be null"
-        
+
         def factoryNames = loadFactoryNames(factoryClass, classLoader)
 
         List<Class<T>> result = []
         for (String factoryName in factoryNames) {
             def clazz = loadFactoryClass(factoryName, factoryClass, classLoader)
-            if(clazz) {
+            if (clazz) {
                 result.add clazz
             }
         }
         return result
     }
-
 
     private static <T> Class<? extends T> loadFactoryClass(String instanceClassName, Class<T> factoryClass, ClassLoader classLoader) {
         try {
@@ -101,7 +97,7 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
 
     static <T> T loadFactory(Class<T> factoryClass, ClassLoader classLoader = GrailsFactoriesLoader.class.classLoader) {
         def all = loadFactories(factoryClass, classLoader)
-        if(all) {
+        if (all) {
             return all.get(0)
         }
     }
@@ -112,8 +108,9 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
 
     static <T> T loadFactory(Class<T> factoryClass, ClassLoader classLoader, Object... arguments) {
         def all = loadFactoriesWithArguments(factoryClass, classLoader, arguments)
-        if(all) {
+        if (all) {
             return (T)all.get(0)
         }
     }
+
 }

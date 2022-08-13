@@ -37,7 +37,8 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
 
     ResourceLocator resourceLocator
 
-    DefaultErrorsPrinter() {}
+    DefaultErrorsPrinter() {
+    }
 
     DefaultErrorsPrinter(ResourceLocator resourceLocator) {
         this.resourceLocator = resourceLocator
@@ -59,7 +60,6 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
 
         Throwable cause = exception
         while (cause) {
-
             if (!cause.stackTrace) break
             if (cause.getClass().name == 'org.springframework.web.util.NestedServletException') {
                 cause = cause.cause
@@ -116,14 +116,12 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                             }
                         }
                     }
-                    catch (e) {
-                        // ignore
+                    catch (ignore) {
                     }
                     finally {
                         try {
                             input?.close()
-                        } catch (e) {
-                            // ignore
+                        } catch (ignore) {
                         }
                         pw.print formatCodeSnippetEnd(res, lineNumber)
                     }
@@ -155,8 +153,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                             break
                         }
                     }
-                } catch (e) {
-                    // ignore
+                } catch (ignore) {
                 }
             }
             else if (start instanceof MultipleCompilationErrorsException) {
@@ -202,7 +199,6 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
     String formatCodeSnippetStart(Resource resource, int lineNumber) {
         """Around line $lineNumber of $resource.filename
 """
-
     }
 
     protected String formatCodeSnippetLine(int currentLineNumber, currentLine) {
@@ -226,4 +222,5 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
         }
         return ex
     }
+
 }

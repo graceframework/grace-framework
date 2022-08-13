@@ -33,7 +33,7 @@ class ApplicationContextCommandRegistry {
         def registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand)
 
         def iterator = registeredCommands.iterator()
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             def cmd = iterator.next()
             commands[cmd.name] = cmd
         }
@@ -46,4 +46,5 @@ class ApplicationContextCommandRegistry {
     static ApplicationCommand findCommand(String name) {
         commands[name]
     }
+
 }

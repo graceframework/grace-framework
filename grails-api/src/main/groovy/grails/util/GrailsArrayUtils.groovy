@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.util
 
 import groovy.transform.CompileStatic
@@ -78,6 +77,7 @@ abstract class GrailsArrayUtils {
     static Object addToStart(Object array, Object newObject) {
         add array, 0, newObject
     }
+
     /**
      * Adds the given object to the given array at the given position
      *
@@ -87,8 +87,7 @@ abstract class GrailsArrayUtils {
      * @return A new array, one element bigger, with the object added at the given position
      */
     static Object add(Object array, int pos, Object newObject) {
-
-        if(array == null) {
+        if (array == null) {
             Object[] newArray = (Object[])Array.newInstance(newObject.getClass(), 1)
             newArray[pos] = newObject
             return newArray
@@ -99,7 +98,7 @@ abstract class GrailsArrayUtils {
             def newArray = Array.newInstance(type, len + 1)
             System.arraycopy array, 0, newArray, 0, pos
             Array.set newArray, pos, newObject
-            if( pos < len ) {
+            if (pos < len) {
                 System.arraycopy array, pos, newArray, pos + 1, len - pos
             }
             return newArray
@@ -115,20 +114,21 @@ abstract class GrailsArrayUtils {
      * @return A new array, one element bigger, with the object added at the given position
      */
     static Object addAll(Object array, Object otherArray) {
-        if(array == null) {
+        if (array == null) {
             return otherArray
         }
         else {
             def type = array.getClass().componentType
-            int len = Array.getLength( array )
-            int len2 = Array.getLength( otherArray )
+            int len = Array.getLength(array)
+            int len2 = Array.getLength(otherArray)
 
             def newArray = Array.newInstance(type, len + len2)
             System.arraycopy(array, 0, newArray, 0, len);
             try {
                 System.arraycopy otherArray, 0, newArray, len, len2
             } catch (ArrayStoreException ase) {
-                throw new IllegalArgumentException("Component types of passed arrays do not match [${array.getClass().componentType}] and [${otherArray.getClass().componentType}]", ase)
+                throw new IllegalArgumentException("Component types of passed arrays do not match [${array.getClass().componentType}] " +
+                        "and [${otherArray.getClass().componentType}]", ase)
             }
             return newArray
         }
@@ -145,27 +145,28 @@ abstract class GrailsArrayUtils {
     static Object subarray(Object args, int start, int end) {
         def len = Array.getLength(args)
 
-        if(start < 0) start = 0
-        if(end > len) end = len
+        if (start < 0) start = 0
+        if (end > len) end = len
 
         def type = args.getClass().componentType
 
         def newLen = end - start
-        if(newLen <= 0) {
+        if (newLen <= 0) {
             return Array.newInstance(type, 0)
         }
         else {
-            def newArray = Array.newInstance(type, newLen )
-            System.arraycopy args, start, newArray,0, newLen
+            def newArray = Array.newInstance(type, newLen)
+            System.arraycopy args, start, newArray, 0, newLen
             return newArray
         }
     }
 
     public static boolean contains(Object[] array, Object elementToSearchFor) {
         boolean found = false
-        if(array) {
+        if (array) {
             found = DefaultGroovyMethods.contains(array, elementToSearchFor)
         }
         found
     }
+
 }

@@ -34,7 +34,6 @@ import java.lang.management.ManagementFactory
 @Commons
 class Support {
 
-
     public static final String PROPERTY_RELOAD_AGENT_PATH = "reload.agent.path"
     public static final String ENV_RELOAD_AGENT_PATH = "RELOAD_AGENT_PATH"
 
@@ -42,37 +41,37 @@ class Support {
      * Enables the reloading agent at runtime if it isn't present
      */
     static void enableAgentIfNotPresent(Class mainClass = null) {
-        if(mainClass) {
+        if (mainClass) {
             System.setProperty(BuildSettings.MAIN_CLASS_NAME, mainClass.getName())
         }
 
         def environment = Environment.current
-        if(environment.isReloadEnabled() &&
+        if (environment.isReloadEnabled() &&
                 (!ClassUtils.isPresent("org.springsource.loaded.SpringLoaded", System.classLoader) ||
                         !ClassUtils.isPresent("org.springsource.loaded.TypeRegistry", System.classLoader))) {
             def grailsHome = System.getenv(Environment.ENV_GRAILS_HOME)
 
-            if(grailsHome) {
+            if (grailsHome) {
                 def agentPath = System.getProperty(PROPERTY_RELOAD_AGENT_PATH)
-                if(!agentPath) {
+                if (!agentPath) {
                     agentPath = System.getenv(ENV_RELOAD_AGENT_PATH)
                 }
                 def file = findAgentJar(agentPath, grailsHome)
-                if(file?.exists()) {
+                if (file?.exists()) {
                     def runtimeMxBean = ManagementFactory.runtimeMXBean
                     def arguments = runtimeMxBean.inputArguments
-                    if(!arguments.contains('-Xverify:none') && !arguments.contains('-noverify')) {
-                        log.warn("Reloading is disabled. Development time reloading requires disabling the Java verifier. Please pass the argument '-Xverify:none' to the JVM")
+                    if (!arguments.contains('-Xverify:none') && !arguments.contains('-noverify')) {
+                        log.warn("Reloading is disabled. Development time reloading requires disabling the Java verifier. " +
+                                "Please pass the argument '-Xverify:none' to the JVM")
                     }
                     else {
                         def vmName = runtimeMxBean.name
                         int i = vmName.indexOf('@')
                         String pid = vmName.subSequence(0, i)
-                        if(ClassUtils.isPresent('com.sun.tools.attach.VirtualMachine', System.classLoader)) {
+                        if (ClassUtils.isPresent('com.sun.tools.attach.VirtualMachine', System.classLoader)) {
                             def vmClass = Support.classLoader.loadClass('com.sun.tools.attach.VirtualMachine')
                             attachAgentClassToProcess(vmClass, pid, file)
                         }
-
                     }
                 }
             }
@@ -80,13 +79,13 @@ class Support {
     }
 
     protected static File findAgentJar(String agentPath, String grailsHome) {
-        if(agentPath) {
+        if (agentPath) {
             return new File(agentPath)
         }
-        else if(grailsHome) {
+        else if (grailsHome) {
             def parentDir = new File(grailsHome, "lib/org.springframework/springloaded/jars")
-            if(parentDir.exists()) {
-                return parentDir.listFiles()?.find() { File f -> f.name.endsWith('.RELEASE.jar')}
+            if (parentDir.exists()) {
+                return parentDir.listFiles()?.find() { File f -> f.name.endsWith('.RELEASE.jar') }
             }
         }
     }
@@ -101,4 +100,5 @@ class Support {
             System.err.println("WARNING: Could not attach reloading agent. Reloading disabled. Message: $e.message")
         }
     }
+
 }

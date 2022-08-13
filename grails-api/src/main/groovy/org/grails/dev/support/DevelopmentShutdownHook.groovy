@@ -50,4 +50,5 @@ class DevelopmentShutdownHook implements ApplicationContextAware {
 
         System.setProperty(INSTALLED, "true")
     }
+
 }

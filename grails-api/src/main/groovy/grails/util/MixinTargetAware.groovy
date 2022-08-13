@@ -24,4 +24,5 @@ package grails.util
 public interface MixinTargetAware<T> {
 
     void setTarget(T targetObject)
+
 }
