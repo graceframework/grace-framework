@@ -52,6 +52,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.event.ApplicationContextEvent
 import org.springframework.context.event.ContextClosedEvent
 import org.springframework.context.event.ContextRefreshedEvent
+import org.springframework.core.OrderComparator
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.support.ConfigurableConversionService
 import org.springframework.core.env.AbstractEnvironment
@@ -231,11 +232,29 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             }
         }
 
-        if(lifeCycle) {
+        Binding b = new Binding()
+        b.setVariable("application", grailsApplication)
+        b.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
+        b.setVariable("manager", pluginManager)
+        if (lifeCycle) {
             def withSpring = lifeCycle.doWithSpring()
-            if(withSpring) {
+            if (withSpring) {
                 def bb = new BeanBuilder(null, springConfig, application.classLoader)
                 bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()))
+                bb.setBinding(b)
+                bb.beans withSpring
+            }
+        }
+
+        List<GrailsApplicationLifeCycle> lifeCycleBeans = this.applicationContext.getBeansOfType(
+                GrailsApplicationLifeCycle.class).values().asList()
+        Collections.sort(lifeCycleBeans, OrderComparator.INSTANCE)
+        for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
+            def withSpring = lifeCycle.doWithSpring()
+            if (lifeCycle != this.lifeCycle && withSpring) {
+                def bb = new BeanBuilder(null, springConfig, application.classLoader)
+                bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()))
+                bb.setBinding(b)
                 bb.beans withSpring
             }
         }
