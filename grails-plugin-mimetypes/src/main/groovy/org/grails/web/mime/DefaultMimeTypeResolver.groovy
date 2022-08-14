@@ -53,10 +53,11 @@ class DefaultMimeTypeResolver implements MimeTypeResolver {
     MimeType resolveRequestMimeType(GrailsWebRequest webRequest = GrailsWebRequest.lookup()) {
         if (webRequest != null) {
             final allMimeTypes = HttpServletRequestExtension.getMimeTypes(webRequest.request)
-            if(allMimeTypes) {
+            if (allMimeTypes) {
                 return allMimeTypes[0]
             }
         }
         return null
     }
+
 }

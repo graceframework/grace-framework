@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 package grails.web.mime
+
 /**
  * <p>Defines an interface for classes that parse the HTTP Accept header into a set or MimeType definitions ordered by
  * priority.
  *
- * <p>The ordering is based on the order they appear in the Accept header as well as the 'q' (for quality) parameter. A mime type definition of 'text/xml;q=0.6' will
+ * <p>The ordering is based on the order they appear in the Accept header as well as the 'q' (for quality) parameter.
+ * A mime type definition of 'text/xml;q=0.6' will
  *  have a higher priorty than 'text/html' due to the q parameter
  *
  * @author Graeme Rocher
@@ -35,4 +37,5 @@ interface AcceptHeaderParser {
      * Parses an Accept header into an ordered array of MimeType definitions
      */
     MimeType[] parse(String header, MimeType fallbackMimeType)
+
 }
