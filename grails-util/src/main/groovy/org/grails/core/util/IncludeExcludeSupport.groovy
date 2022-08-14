@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.core.util
 
 import groovy.transform.CompileStatic
@@ -49,4 +48,5 @@ class IncludeExcludeSupport<T> {
     boolean excludes(List<T> excludes, T object) {
         excludes != null && excludes.contains(object)
     }
+
 }
