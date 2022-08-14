@@ -44,21 +44,23 @@ class I18nGrailsPlugin extends Plugin {
     String watchedResources = "file:./${baseDir}/**/*.properties".toString()
 
     @Override
-    Closure doWithSpring() {{->
-        GrailsApplication application = grailsApplication
-        Config config = application.config
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean, false)
-        String encoding = config.getProperty(Settings.GSP_VIEW_ENCODING, 'UTF-8')
+    Closure doWithSpring() {
+        { ->
+            GrailsApplication application = grailsApplication
+            Config config = application.config
+            boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean, false)
+            String encoding = config.getProperty(Settings.GSP_VIEW_ENCODING, 'UTF-8')
 
-        messageSource(PluginAwareResourceBundleMessageSource, application, pluginManager) { bean ->
-            fallbackToSystemLocale = false
-            if (Environment.current.isReloadEnabled() || gspEnableReload) {
-                cacheSeconds = config.getProperty(Settings.I18N_CACHE_SECONDS, Integer, 5)
-                fileCacheSeconds = config.getProperty(Settings.I18N_FILE_CACHE_SECONDS, Integer, 5)
+            messageSource(PluginAwareResourceBundleMessageSource, application, pluginManager) { bean ->
+                fallbackToSystemLocale = false
+                if (Environment.current.isReloadEnabled() || gspEnableReload) {
+                    cacheSeconds = config.getProperty(Settings.I18N_CACHE_SECONDS, Integer, 5)
+                    fileCacheSeconds = config.getProperty(Settings.I18N_FILE_CACHE_SECONDS, Integer, 5)
+                }
+                defaultEncoding = encoding
             }
-            defaultEncoding = encoding
         }
-    }}
+    }
 
     @Override
     void onChange(Map<String, Object> event) {
@@ -77,13 +79,13 @@ class I18nGrailsPlugin extends Plugin {
             File eventFile = event.source.file.canonicalFile
             File i18nDir = eventFile.parentFile
             if (isChildOfFile(eventFile, i18nDir)) {
-                if( i18nDir.name == 'i18n' && i18nDir.parentFile.name == 'grails-app') {
+                if (i18nDir.name == 'i18n' && i18nDir.parentFile.name == 'grails-app') {
                     def appDir = i18nDir.parentFile.parentFile
                     resourcesDir = new File(appDir, BuildSettings.BUILD_RESOURCES_PATH)
                     classesDir = new File(appDir, BuildSettings.BUILD_CLASSES_PATH)
                 }
 
-                if(nativeascii) {
+                if (nativeascii) {
                     // if native2ascii is enabled then read the properties and write them out again
                     // so that unicode escaping is applied
                     def properties = new Properties()
@@ -100,10 +102,9 @@ class I18nGrailsPlugin extends Plugin {
                 }
                 else {
                     // otherwise just copy the file as is
-                    Files.copy( eventFile.toPath(),new File(resourcesDir, eventFile.name).toPath() )
-                    Files.copy( eventFile.toPath(),new File(classesDir, eventFile.name).toPath() )
+                    Files.copy(eventFile.toPath(), new File(resourcesDir, eventFile.name).toPath())
+                    Files.copy(eventFile.toPath(), new File(classesDir, eventFile.name).toPath())
                 }
-
             }
         }
 
@@ -115,7 +116,7 @@ class I18nGrailsPlugin extends Plugin {
 
     protected boolean isChildOfFile(File child, File parent) {
         def currentFile = child.canonicalFile
-        while(currentFile != null) {
+        while (currentFile != null) {
             if (currentFile == parent) {
                 return true
             }
