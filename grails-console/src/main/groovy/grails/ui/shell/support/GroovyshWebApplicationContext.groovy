@@ -22,7 +22,6 @@ import groovy.transform.InheritConstructors
 import org.codehaus.groovy.tools.shell.Groovysh
 import org.codehaus.groovy.tools.shell.IO
 
-
 /**
  * @author Graeme Rocher
  * @since 3.0
@@ -46,4 +45,5 @@ class GroovyshWebApplicationContext extends DevelopmentWebApplicationContext {
 
         new Groovysh(binding, new IO()).run("")
     }
+
 }

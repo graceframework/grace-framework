@@ -21,7 +21,6 @@ import org.codehaus.groovy.tools.shell.Groovysh
 import org.codehaus.groovy.tools.shell.IO
 import org.springframework.context.support.GenericApplicationContext
 
-
 /**
  * @author Graeme Rocher
  * @since 3.0
@@ -43,4 +42,5 @@ class GroovyshApplicationContext extends GenericApplicationContext {
 
         new Groovysh(binding, new IO()).run("")
     }
+
 }

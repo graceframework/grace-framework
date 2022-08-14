@@ -22,7 +22,8 @@ import org.springframework.context.support.GenericApplicationContext
  */
 
 /**
- * An {@link org.springframework.context.ApplicationContext} that loads the GroovyConsole and makes the ApplicationContext and Grails environment available to the console
+ * An {@link org.springframework.context.ApplicationContext} that loads the GroovyConsole
+ * and makes the ApplicationContext and Grails environment available to the console
  *
  * @author Graeme Rocher
  * @since 3.0
@@ -44,14 +45,17 @@ class GroovyConsoleApplicationContext extends GenericApplicationContext {
 
         final GroovyConsoleApplicationContext self = this
         groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(binding) {
+
             @Override
             boolean exit(EventObject evt) {
                 boolean exit = super.exit(evt)
                 self.close()
                 exit
             }
-        }
-        groovyConsole.run()
 
+        }
+
+        groovyConsole.run()
     }
+
 }

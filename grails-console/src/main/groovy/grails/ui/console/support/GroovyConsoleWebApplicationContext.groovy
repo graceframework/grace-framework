@@ -49,6 +49,7 @@ class GroovyConsoleWebApplicationContext extends DevelopmentWebApplicationContex
 
         final GroovyConsoleWebApplicationContext self = this
         groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(binding) {
+
             @Override
             boolean exit(EventObject evt) {
                 boolean exit = super.exit(evt)
@@ -56,21 +57,22 @@ class GroovyConsoleWebApplicationContext extends DevelopmentWebApplicationContex
                 System.exit(0)
                 exit
             }
+
         }
 
         def interceptors = getBeansOfType(PersistenceContextInterceptor).values()
         groovyConsole.beforeExecution = {
-            for(i in interceptors) {
+            for (i in interceptors) {
                 i.init()
             }
         }
 
         groovyConsole.afterExecution = {
-            for(i in interceptors) {
+            for (i in interceptors) {
                 i.destroy()
             }
         }
         groovyConsole.run()
-
     }
+
 }

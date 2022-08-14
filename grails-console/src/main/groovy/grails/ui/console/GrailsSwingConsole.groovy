@@ -24,7 +24,6 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
-
 /**
  * The Grails console runs Grails embedded within a Swing console instead of within a container like Tomcat
  *
@@ -56,7 +55,6 @@ class GrailsSwingConsole extends GrailsApp {
         }
     }
 
-
     /**
      * Static helper that can be used to run a {@link GrailsApp} from the
      * specified source using default settings.
@@ -85,7 +83,7 @@ class GrailsSwingConsole extends GrailsApp {
      * @param args The first argument is the Application class name
      */
     public static void main(String[] args) {
-        if(args) {
+        if (args) {
             def applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
             new GrailsSwingConsole(applicationClass).run(args)
         }
@@ -93,4 +91,5 @@ class GrailsSwingConsole extends GrailsApp {
             System.err.println("Missing application class name argument")
         }
     }
+
 }
