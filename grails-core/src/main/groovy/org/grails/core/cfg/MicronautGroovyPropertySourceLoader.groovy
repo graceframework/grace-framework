@@ -49,10 +49,10 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
     @Override
     protected Optional<InputStream> readInput(ResourceLoader resourceLoader, String fileName) {
         Stream<URL> urls = resourceLoader.getResources(fileName)
-        Stream<URL> urlStream = urls.filter({url -> !url.getPath().contains("src/main/groovy")})
+        Stream<URL> urlStream = urls.filter({ url -> !url.getPath().contains("src/main/groovy") })
         Optional<URL> config = urlStream.findFirst()
         if (config.isPresent()) {
-            return config.flatMap( {url ->
+            return config.flatMap({ url ->
                 try {
                     return Optional.of(url.openStream())
                 } catch (IOException e) {

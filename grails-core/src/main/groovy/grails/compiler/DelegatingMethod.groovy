@@ -20,9 +20,9 @@ import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
-
 /**
- * Used to indicate to the compiler that a particular method simply delegates to another one. This information is useful in cases where only the final method
+ * Used to indicate to the compiler that a particular method simply delegates to another one.
+ * This information is useful in cases where only the final method
  * should be transformed and not the methods that delegate to the said method.
  *
  * @author Graeme Rocher

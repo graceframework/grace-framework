@@ -47,4 +47,5 @@ class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
         clazz.simpleName.endsWith('Application') &&
                 (clazz.superclass.name == 'grails.boot.config.GrailsAutoConfiguration')
     }
+
 }

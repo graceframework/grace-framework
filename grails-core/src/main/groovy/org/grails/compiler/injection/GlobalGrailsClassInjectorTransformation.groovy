@@ -46,6 +46,7 @@ import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 @GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
+
     static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make("grails.core.ArtefactHandler")
     static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact.class)
     static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make("grails.compiler.traits.TraitInjector")
@@ -117,7 +118,6 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                     injector.performInjection(source, classNode)
                 }
             }
-
         }
     }
 
@@ -126,7 +126,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         if (source.class.name == "org.codehaus.jdt.groovy.control.EclipseSourceUnit") {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
         } else {
-			targetDirectory = source.configuration.targetDirectory
+            targetDirectory = source.configuration.targetDirectory
 		}
         if (!targetDirectory) {
             targetDirectory = new File("build/classes/main")
@@ -168,7 +168,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             Properties fileProps = new Properties()
             factoriesFile.withInputStream { InputStream input ->
                 fileProps.load(input)
-                fileProps.each { Map.Entry prop->
+                fileProps.each { Map.Entry prop ->
                     addToProps(props, (String) prop.key, (String) prop.value)
                 }
             }
@@ -195,4 +195,5 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         }
         sourceDirectory.parentFile
     }
+
 }

@@ -28,18 +28,18 @@ import org.codehaus.groovy.transform.stc.GroovyTypeCheckingExtensionSupport.Type
  * @since 2.4
  */
 class DomainMappingTypeCheckingExtension extends TypeCheckingDSL {
-    
+
     @Override
     public Object run() {
         setup { newScope() }
 
         finish { scopeExit() }
-        
+
         beforeVisitClass { ClassNode classNode ->
             def mappingProperty = classNode.getField('mapping')
-            if(mappingProperty && mappingProperty.isStatic() && mappingProperty.initialExpression instanceof ClosureExpression) {
+            if (mappingProperty && mappingProperty.isStatic() && mappingProperty.initialExpression instanceof ClosureExpression) {
                 def sourceUnit = classNode?.module?.context
-                if(GrailsASTUtils.isDomainClass(classNode, sourceUnit)) {
+                if (GrailsASTUtils.isDomainClass(classNode, sourceUnit)) {
                     newScope {
                         mappingClosureCode = mappingProperty.initialExpression.code
                     }
@@ -51,7 +51,7 @@ class DomainMappingTypeCheckingExtension extends TypeCheckingDSL {
         }
 
         afterVisitClass { ClassNode classNode ->
-            if(currentScope.mappingClosureCode) {
+            if (currentScope.mappingClosureCode) {
                 def mappingProperty = classNode.getField('mapping')
                 mappingProperty.initialExpression.code = currentScope.mappingClosureCode
                 currentScope.checkingMappingClosure = true
@@ -62,12 +62,13 @@ class DomainMappingTypeCheckingExtension extends TypeCheckingDSL {
 
         methodNotFound { ClassNode receiver, String name, ArgumentListExpression argList, ClassNode[] argTypes, MethodCall call ->
             def dynamicCall
-            if(currentScope.mappingClosureCode && currentScope.checkingMappingClosure) {
-                dynamicCall = makeDynamic (call)
+            if (currentScope.mappingClosureCode && currentScope.checkingMappingClosure) {
+                dynamicCall = makeDynamic(call)
             }
             dynamicCall
         }
-        
+
         null
     }
+
 }

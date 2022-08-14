@@ -29,7 +29,7 @@ abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
     @Override
     void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         def className = classNode.name
-        if(!processesClassNames.contains(className)) {
+        if (!processesClassNames.contains(className)) {
             performInjectionInternal source, classNode
             processesClassNames.add className
         }
@@ -41,4 +41,5 @@ abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
     boolean shouldInject(URL url) {
         return true
     }
+
 }

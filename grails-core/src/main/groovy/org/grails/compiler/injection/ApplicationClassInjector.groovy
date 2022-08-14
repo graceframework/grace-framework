@@ -55,7 +55,11 @@ import java.lang.reflect.Modifier
 class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     public static final String EXCLUDE_MEMBER = "exclude"
-    public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = ['org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration', 'org.springframework.boot.autoconfigure.reactor.ReactorAutoConfiguration', 'org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration', 'org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration']
+    public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = [
+            'org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration',
+            'org.springframework.boot.autoconfigure.reactor.ReactorAutoConfiguration',
+            'org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration',
+            'org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration']
 
     ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
@@ -79,45 +83,52 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
     @Override
     @CompileDynamic
     void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        if(applicationArtefactHandler.isArtefact(classNode)) {
-            def objectId = Integer.valueOf( System.identityHashCode(classNode) )
-            if(!transformedInstances.contains(objectId)) {
+        if (applicationArtefactHandler.isArtefact(classNode)) {
+            def objectId = Integer.valueOf(System.identityHashCode(classNode))
+            if (!transformedInstances.contains(objectId)) {
                 transformedInstances << objectId
 
                 def arguments = new ArgumentListExpression(new ClassExpression(classNode))
-                def enableAgentMethodCall = new MethodCallExpression(new ClassExpression(ClassHelper.make(Support)), "enableAgentIfNotPresent", arguments)
+                def enableAgentMethodCall = new MethodCallExpression(new ClassExpression(ClassHelper.make(Support)),
+                        "enableAgentIfNotPresent", arguments)
                 def methodCallStatement = new ExpressionStatement(enableAgentMethodCall)
 
                 List<Statement> statements = [
-                        stmt( callX(classX(System), "setProperty", args(  propX( classX(BuildSettings), "MAIN_CLASS_NAME"), constX(classNode.name) )) ),
+                        stmt(callX(classX(System), "setProperty", args(propX( classX(BuildSettings), "MAIN_CLASS_NAME"),
+                                constX(classNode.name)))),
                         methodCallStatement
                 ]
                 classNode.addStaticInitializerStatements(statements, true)
 
                 def packageNamesMethod = classNode.getMethod('packageNames', GrailsASTUtils.ZERO_PARAMETERS)
 
-                if(packageNamesMethod == null || packageNamesMethod.declaringClass != classNode) {
-                    def collectionClassNode = GrailsASTUtils.replaceGenericsPlaceholders(ClassHelper.make(Collection), [E: ClassHelper.make(String)])
+                if (packageNamesMethod == null || packageNamesMethod.declaringClass != classNode) {
+                    def collectionClassNode = GrailsASTUtils.replaceGenericsPlaceholders(
+                            ClassHelper.make(Collection), [E: ClassHelper.make(String)])
 
                     def packageNamesBody = new BlockStatement()
                     def grailsAppDir = GrailsResourceUtils.getAppDir(new UrlResource(GrailsASTUtils.getSourceUrl(source)))
-                    if(grailsAppDir.exists()) {
+                    if (grailsAppDir.exists()) {
                         def packageNames = ResourceUtils.getProjectPackageNames(grailsAppDir.file.parentFile)
                                                         .collect() { String str -> new ConstantExpression(str) }
-                        if(packageNames.any() { ConstantExpression packageName -> ['org','com','io','net'].contains(packageName.text) }) {
-                            GrailsASTUtils.error(source, classNode, "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' as this can result in performance degradation of classpath scanning")
+                        if (packageNames.any() { ConstantExpression packageName -> ['org', 'com', 'io', 'net'].contains(packageName.text) }) {
+                            GrailsASTUtils.error(source, classNode,
+                                    "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' " +
+                                            "as this can result in performance degradation of classpath scanning")
                         }
                         packageNamesBody.addStatement(new ReturnStatement(new ExpressionStatement(new ListExpression(packageNames.toList()))))
-                        AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod("packageNames", Modifier.PUBLIC, collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
+                        AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod("packageNames", Modifier.PUBLIC,
+                                collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
                     }
                 }
 
                 def classLoader = getClass().classLoader
-                if(ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader) ) {
-                    def springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode, ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
+                if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
+                    def springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
+                            ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
 
-                    for(autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
-                        if(ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
+                    for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
+                        if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
                             def autoConfigClassExpression = new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
                             GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                         }
@@ -129,8 +140,9 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     boolean shouldInject(URL url) {
-        if(url == null) return false
+        if (url == null) return false
         def res = new UrlResource(url)
         return GrailsResourceUtils.isGrailsResource(res) && res.filename == "Application.groovy"
     }
+
 }

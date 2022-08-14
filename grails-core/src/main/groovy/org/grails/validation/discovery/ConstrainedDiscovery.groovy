@@ -18,4 +18,5 @@ interface ConstrainedDiscovery {
      * @return The constrained properties
      */
     Map<String, Constrained> findConstrainedProperties(PersistentEntity entity)
+
 }

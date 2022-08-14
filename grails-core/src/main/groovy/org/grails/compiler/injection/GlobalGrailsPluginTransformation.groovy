@@ -54,6 +54,7 @@ import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 @GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsPluginTransformation implements ASTTransformation, CompilationUnitAware {
+
     static Set<String> pendingArtefactClasses = []
     static Set<String> pluginExcludes = []
 
@@ -161,7 +162,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             PluginAstReader pluginAstReader = new PluginAstReader()
             def info = pluginAstReader.readPluginInfo(pluginClassNode)
 
-            pluginXmlFile.withWriter( "UTF-8") { Writer writer ->
+            pluginXmlFile.withWriter("UTF-8") { Writer writer ->
                 def mkp = new MarkupBuilder(writer)
                 def pluginName = getLogicalPropertyName(pluginClassNode.name, "GrailsPlugin")
 
@@ -186,7 +187,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                         def antPathMatcher = new AntPathMatcher()
                         resources {
                             for (String cn in artefactClasses) {
-                                if (!pluginExcludes.any() { String exc -> antPathMatcher.match(exc, cn.replace('.','/')) }) {
+                                if (!pluginExcludes.any() { String exc -> antPathMatcher.match(exc, cn.replace('.', '/')) }) {
                                     resource cn
                                 }
                             }
@@ -234,7 +235,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 def resources = pluginXml.resources
 
                 for (String cn in artefactClasses) {
-                    if ( !resources.resource.find { it.text() == cn } ) {
+                    if (!resources.resource.find { it.text() == cn }) {
                         resources.appendNode {
                             resource(cn)
                         }
@@ -253,7 +254,6 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             }
 
             pendingArtefactClasses.clear()
-
         } catch (ignored) {
             // corrupt, recreate
             writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
@@ -266,9 +266,11 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             def antPathMatcher = new AntPathMatcher()
             pluginXml.resources.resource.each { res ->
                 if (pluginExcludes.any() { String exc -> antPathMatcher.match(exc, res.text().replace('.', '/')) }) {
-                    res.replaceNode {}
+                    res.replaceNode {
+                    }
                 }
             }
         }
     }
+
 }

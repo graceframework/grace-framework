@@ -28,12 +28,14 @@ import org.codehaus.groovy.transform.GroovyASTTransformation
  * @author Graeme Rocher
  * @since 3.0
  */
-@GroovyASTTransformation( phase= CompilePhase.CONVERSION)
+@GroovyASTTransformation(phase= CompilePhase.CONVERSION)
 @CompileStatic
 class GlobalImportTransformation implements ASTTransformation {
+
     @Override
     void visit(ASTNode[] nodes, SourceUnit source) {
         ModuleNode ast = source.getAST();
         ast.addImport("Autowired", ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
     }
+
 }
