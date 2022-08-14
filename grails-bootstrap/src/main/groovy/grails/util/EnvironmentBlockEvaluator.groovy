@@ -24,6 +24,7 @@ import groovy.transform.PackageScope
  */
 @CompileStatic
 class EnvironmentBlockEvaluator {
+
     private Environment current
     private Closure<?> callable
 
@@ -79,4 +80,5 @@ class EnvironmentBlockEvaluator {
         }
         throw new MissingMethodException(name, Environment.class, argsArray)
     }
+
 }

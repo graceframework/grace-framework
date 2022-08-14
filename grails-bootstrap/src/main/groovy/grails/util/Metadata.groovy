@@ -38,6 +38,7 @@ import java.lang.ref.SoftReference
  */
 @CompileStatic
 class Metadata extends PropertySourcePropertyResolver {
+
     private static final long serialVersionUID = -582452926111226898L
     public static final String FILE = "application.yml"
     public static final String APPLICATION_VERSION = "info.app.version"
@@ -274,7 +275,6 @@ class Metadata extends PropertySourcePropertyResolver {
         return ((PropertyResolver) this).getProperty(APPLICATION_NAME, String.class).orElse(DEFAULT_APPLICATION_NAME)
     }
 
-
     /**
      * @return The version of the servlet spec the application was created for
      */
@@ -286,11 +286,9 @@ class Metadata extends PropertySourcePropertyResolver {
         servletVersion.orElse(DEFAULT_SERVLET_VERSION)
     }
 
-
     void setServletVersion(String servletVersion) {
         this.servletVersion = servletVersion
     }
-
 
     /**
      * @return true if this application is deployed as a WAR
@@ -305,7 +303,6 @@ class Metadata extends PropertySourcePropertyResolver {
     boolean isDevelopmentEnvironmentAvailable() {
         return Environment.isDevelopmentEnvironmentAvailable()
     }
-
 
     private static void closeQuietly(Closeable c) {
         if (c != null) {
@@ -340,7 +337,7 @@ class Metadata extends PropertySourcePropertyResolver {
         resetCaches()
         if (metadataFile != null) {
             loadFromFile(metadataFile)
-        } else if (props != null ) {
+        } else if (props != null) {
             addPropertySource(PropertySource.of(props))
             afterLoading()
         } else {
@@ -361,6 +358,7 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     static class FinalReference<T> extends SoftReference<T> {
+
         private final T ref
 
         FinalReference(T t) {
@@ -372,6 +370,7 @@ class Metadata extends PropertySourcePropertyResolver {
         T get() {
             return ref
         }
+
     }
 
     @Override
@@ -395,4 +394,5 @@ class Metadata extends PropertySourcePropertyResolver {
     Object getProperty(String propertyName) {
         return get(propertyName)
     }
+
 }

@@ -55,7 +55,6 @@ interface Model {
      */
     String getPropertyName()
 
-
     /**
      * A property name version of the class name. For example 'FooBar' becomes 'fooBar'
      *
@@ -71,7 +70,8 @@ interface Model {
     String getLowerCaseName()
 
     /**
-     * Returns the convention of this model for the given name. For example given a {@link #getSimpleName()} of "Foo" this method will return "FooController" where the name argument is "Controller"
+     * Returns the convention of this model for the given name.
+     * For example given a {@link #getSimpleName()} of "Foo" this method will return "FooController" where the name argument is "Controller"
      * @param conventionName The name
      * @return The convention for the given convention name
      */
@@ -81,4 +81,5 @@ interface Model {
      * @return The model as a map
      */
     Map<String, Object> asMap()
+
 }

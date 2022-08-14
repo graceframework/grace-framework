@@ -34,13 +34,12 @@ class MainClassFinder {
      * @return The name of the main class
      */
     static String searchMainClass(URI path) {
-
         if (!path) {
             return null
         }
 
         def pathStr = path.toString()
-        if(mainClasses.containsKey(pathStr)) {
+        if (mainClasses.containsKey(pathStr)) {
             return mainClasses.get(pathStr)
         }
 
@@ -56,9 +55,9 @@ class MainClassFinder {
                 searchDirs = [classesDir]
             }
 
-            if(rootDir) {
+            if (rootDir) {
                 def rootClassesDir = new File(rootDir, BuildSettings.BUILD_CLASSES_PATH)
-                if(rootClassesDir.exists()) {
+                if (rootClassesDir.exists()) {
                     searchDirs << rootClassesDir
                 }
 
@@ -74,7 +73,7 @@ class MainClassFinder {
                 mainClass = findMainClass(dir)
                 if (mainClass) break
             }
-            if(mainClass != null) {
+            if (mainClass != null) {
                 mainClasses.put(pathStr, mainClass)
             }
             return mainClass
@@ -84,11 +83,11 @@ class MainClassFinder {
     }
 
     private static File findRootDirectory(File file) {
-        if(file) {
+        if (file) {
             def parent = file.parentFile
 
-            while(parent != null) {
-                if(new File(parent, "build.gradle").exists() || new File(parent, "grails-app").exists()) {
+            while (parent != null) {
+                if (new File(parent, "build.gradle").exists() || new File(parent, "grails-app").exists()) {
                     return parent
                 }
                 else {
@@ -100,14 +99,13 @@ class MainClassFinder {
     }
 
     static String findMainClass(File rootFolder = BuildSettings.CLASSES_DIR) {
-        if( rootFolder == null) {
+        if (rootFolder == null) {
             // try current directory
             rootFolder = new File("build/classes/main")
         }
 
-
         def rootFolderPath = rootFolder.canonicalPath
-        if(mainClasses.containsKey(rootFolderPath)) {
+        if (mainClasses.containsKey(rootFolderPath)) {
             return mainClasses.get(rootFolderPath)
         }
 
@@ -143,20 +141,18 @@ class MainClassFinder {
                             (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
                 }
 
-                if(files) {
-                    for(File sub in files) {
+                if (files) {
+                    for (File sub in files) {
                         stack.push(sub)
                     }
                 }
-
             }
         }
         return null
     }
 
-
     protected static boolean isMainClass(ClassReader classReader) {
-        if(classReader.superName?.startsWith('grails/boot/config/')) {
+        if (classReader.superName?.startsWith('grails/boot/config/')) {
             def mainMethodFinder = new MainMethodFinder()
             classReader.accept(mainMethodFinder, ClassReader.SKIP_CODE)
             return mainMethodFinder.found
@@ -175,22 +171,20 @@ class MainClassFinder {
 
         @Override
         MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-            if(!found) {
+            if (!found) {
                 if (isAccess(access, Opcodes.ACC_PUBLIC, Opcodes.ACC_STATIC)
                         && MAIN_METHOD_NAME.equals(name)
                         && MAIN_METHOD_TYPE.getDescriptor().equals(desc)) {
-
-
                     this.found = true
                 }
             }
             return null
         }
 
-
         private boolean isAccess(int access, int... requiredOpsCodes) {
             return !requiredOpsCodes.any { int requiredOpsCode -> (access & requiredOpsCode) == 0 }
         }
+
     }
 
 }

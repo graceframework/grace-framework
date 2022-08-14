@@ -30,4 +30,5 @@ interface CodeSnippetPrinter {
      * @return The code snippet or nothing if it can't be previewed
      */
     String prettyPrintCodeSnippet(Throwable exception)
+
 }

@@ -73,6 +73,7 @@ enum Environment {
      * The name of the GRAILS_HOME environment variable
      */
     public static String ENV_GRAILS_HOME = "GRAILS_HOME"
+
     /**
      * Specify whether reloading is enabled for this environment
      */
@@ -178,7 +179,6 @@ enum Environment {
 
         URL url = Environment.class.getResource("")
         if (url != null) {
-
             String protocol = url.getProtocol()
             if (protocol == "jar") {
                 String fullPath = url.toString()
@@ -189,11 +189,9 @@ enum Environment {
                     if (i > -1) {
                         fullPath = fullPath.substring(i + IOUtils.RESOURCE_JAR_PREFIX.length())
                         STANDALONE_DEPLOYED = fullPath.contains(IOUtils.RESOURCE_JAR_PREFIX)
-
                     } else {
                         STANDALONE_DEPLOYED = false
                     }
-
                 }
             } else {
                 STANDALONE_DEPLOYED = false
@@ -207,7 +205,6 @@ enum Environment {
             String path = loadedLocation.getPath()
             WAR_DEPLOYED = isWebPath(path)
         } else {
-
             loadedLocation = Thread.currentThread().getContextClassLoader().getResource(Metadata.FILE)
             if (loadedLocation != null) {
                 String path = loadedLocation.getPath()
@@ -270,7 +267,6 @@ enum Environment {
                 return env
             }
         }
-
 
         Environment current = cachedCurrentEnvironment.get()
         if (current != null) {
@@ -335,7 +331,6 @@ enum Environment {
      *
      * @return true if the application is running in development mode
      */
-
     static boolean isDevelopmentMode() {
         return DEVELOPMENT_MODE
     }

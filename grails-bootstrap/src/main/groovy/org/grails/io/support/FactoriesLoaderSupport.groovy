@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2015 original authors
  *
@@ -21,7 +20,6 @@ import groovy.transform.CompileStatic
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-
 /**
  * Base functionality for loading grails.factories
  *
@@ -30,10 +28,12 @@ import java.util.concurrent.ConcurrentMap
  */
 @CompileStatic
 class FactoriesLoaderSupport {
+
     /** The location to look for the factories. Can be present in multiple JAR files. */
     static final String FACTORIES_RESOURCE_LOCATION = "META-INF/grails.factories"
 
-    private static ConcurrentMap<Integer, Map<String,String[]>> loadedPropertiesForClassLoader = new ConcurrentHashMap<Integer, Map<String,String[]>>()
+    private static ConcurrentMap<Integer, Map<String,String[]>> loadedPropertiesForClassLoader =
+            new ConcurrentHashMap<Integer, Map<String,String[]>>()
 
     /**
      * Loads the names of the classes from grails.factories without loading the classes themselves
@@ -93,4 +93,5 @@ class FactoriesLoaderSupport {
             throw new IllegalArgumentException("Unable to load [$factoryClassName] factories from location [$FACTORIES_RESOURCE_LOCATION]", ex);
         }
     }
+
 }

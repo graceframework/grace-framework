@@ -34,18 +34,22 @@ class BuildSettings {
      * The http proxy username
      */
     public static final String PROXY_HTTP_USER = "http.proxyUser"
+
     /**
      * The http proxy password
      */
     public static final String PROXY_HTTP_PASSWORD = "http.proxyPassword"
+
     /**
      * The proxy selector object to use when connecting remotely from the CLI
      */
     public static final String PROXY_SELECTOR = "grails.proxy.selector"
+
     /**
      * The authenticator to use when connecting remotely from the CLI
      */
     public static final String AUTHENTICATOR = "grails.proxy.authenticator"
+
     /**
      * Name of the System property that specifies the main class name
      */
@@ -55,6 +59,7 @@ class BuildSettings {
      * The name of the profile being used
      */
     public static final String PROFILE = "grails.profile"
+
     /**
      * Specifies the profile repositories to use
      */
@@ -91,14 +96,17 @@ class BuildSettings {
      * The compiler source level to use
      */
     public static final String COMPILER_TARGET_LEVEL = "grails.project.target.level"
+
     /**
      * The version of the servlet API
      */
     public static final String SERVLET_VERSION = "grails.servlet.version"
+
     /**
      * The base directory of the application
      */
     public static final String APP_BASE_DIR = "base.dir"
+
     /**
      * The name of the system property for the Grails work directory.
      */
@@ -109,7 +117,7 @@ class BuildSettings {
      */
     public static final String PROJECT_WORK_DIR = "grails.project.work.dir"
 
-    public static final String OFFLINE_MODE= "grails.offline.mode"
+    public static final String OFFLINE_MODE = "grails.offline.mode"
 
     /**
      * The name of the system property for {@link #}.
@@ -177,7 +185,6 @@ class BuildSettings {
      */
     public static final String CONVERT_CLOSURES_KEY = "grails.compile.artefacts.closures.convert"
 
-
     /**
      * The location of the local Grails installation. Will be null if not known
      */
@@ -197,10 +204,12 @@ class BuildSettings {
      * The target directory of the project, null outside of the development environment
      */
     public static final File TARGET_DIR
+
     /**
      * The resources directory of the project, null outside of the development environment
      */
     public static final File RESOURCES_DIR
+
     /**
      * The classes directory of the project, null outside of the development environment
      */
@@ -234,20 +243,20 @@ class BuildSettings {
     }
 
     static {
-        boolean grailsAppDirPresent = new File( "grails-app").exists() || new File( "Application.groovy").exists()
-        if(!grailsAppDirPresent) {
+        boolean grailsAppDirPresent = new File("grails-app").exists() || new File("Application.groovy").exists()
+        if (!grailsAppDirPresent) {
             CLASSES_DIR = null
             BUILD_CLASSES_PATH = "build/classes/main"
         }
         else {
             String fromSystem = System.getProperty(PROJECT_CLASSES_DIR)
-            if(fromSystem) {
+            if (fromSystem) {
                 CLASSES_DIR = new File(fromSystem)
                 BUILD_CLASSES_PATH = fromSystem
             }
             else  {
                 File groovyDir = new File("build/classes/groovy/main")
-                if(groovyDir.exists()) {
+                if (groovyDir.exists()) {
                     BUILD_CLASSES_PATH = "build/classes/groovy/main"
                     CLASSES_DIR = groovyDir
                 }
@@ -257,9 +266,13 @@ class BuildSettings {
                 }
             }
         }
-        BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR)) :  ( IOUtils.findApplicationDirectoryFile() ?: new File("."))
+        BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR))
+                : (IOUtils.findApplicationDirectoryFile() ?: new File("."))
         GRAILS_APP_DIR_PRESENT = new File(BASE_DIR, "grails-app").exists() || new File(BASE_DIR, "Application.groovy").exists()
         TARGET_DIR = new File(BASE_DIR, "build")
-        RESOURCES_DIR = !GRAILS_APP_DIR_PRESENT ? null : (System.getProperty(PROJECT_RESOURCES_DIR) ? new File(System.getProperty(PROJECT_RESOURCES_DIR)) : new File(TARGET_DIR, "resources/main"))
+        RESOURCES_DIR = !GRAILS_APP_DIR_PRESENT ? null :
+                (System.getProperty(PROJECT_RESOURCES_DIR) ? new File(System.getProperty(PROJECT_RESOURCES_DIR)) :
+                        new File(TARGET_DIR, "resources/main"))
     }
+
 }

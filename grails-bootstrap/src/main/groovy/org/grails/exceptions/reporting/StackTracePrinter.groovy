@@ -30,4 +30,5 @@ interface StackTracePrinter {
      * @return The result
      */
     String prettyPrint(Throwable throwable)
+
 }

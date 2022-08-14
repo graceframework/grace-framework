@@ -65,4 +65,5 @@ class ByteArrayResource implements Resource {
     org.grails.io.support.Resource createRelative(String relativePath) {
         throw new UnsupportedOperationException("Method createRelative not supported")
     }
+
 }

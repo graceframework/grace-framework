@@ -67,4 +67,5 @@ class CosineSimilarity {
     private static double dotProduct(Map<List, Integer> m1, Map<List, Integer> m2) {
         m1.keySet().collect { key -> m1[key] * m2.get(key, 0) }.sum()
     }
+
 }

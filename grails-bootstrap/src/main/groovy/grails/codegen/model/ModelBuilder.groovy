@@ -42,6 +42,7 @@ trait ModelBuilder {
     Model model(Class cls) {
         return new ModelImpl(cls.getName())
     }
+
     /**
      * A model for the given class name
      * @param className The class name
@@ -49,7 +50,7 @@ trait ModelBuilder {
      * @return The {@link Model} instance
      */
     Model model(String className) {
-        if(defaultPackage && !className.contains('.')) {
+        if (defaultPackage && !className.contains('.')) {
             return new ModelImpl("${defaultPackage}.$className")
         }
         else {
@@ -80,6 +81,7 @@ trait ModelBuilder {
 
     @CompileStatic
     private static class ModelImpl implements Model {
+
         final String className
         final String fullName
         final String propertyName
@@ -96,7 +98,6 @@ trait ModelBuilder {
             this.packagePath = packageName.replace('.' as char, File.separatorChar)
             this.simpleName = this.className
             this.lowerCaseName = GrailsNameUtils.getScriptName(className)
-
         }
 
         @Override
@@ -111,8 +112,12 @@ trait ModelBuilder {
 
         @Override
         Map<String, Object> asMap() {
-            (Map<String,Object>) [ className: className, fullName: fullName, propertyName: propertyName, modelName: propertyName, packageName: packageName, packagePath: packagePath, simpleName: simpleName, lowerCaseName: lowerCaseName]
+            [
+                    className: className, fullName: fullName, propertyName: propertyName, modelName: propertyName,
+                    packageName: packageName, packagePath: packagePath, simpleName: simpleName, lowerCaseName: lowerCaseName
+            ] as Map<String,Object>
         }
+
     }
 
 }

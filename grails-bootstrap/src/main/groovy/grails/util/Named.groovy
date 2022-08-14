@@ -15,8 +15,6 @@
  */
 package grails.util
 
-
-
 /**
  * A interface for objects that have been assigned a name
  *
@@ -24,8 +22,10 @@ package grails.util
  * @since 3.0
  */
 interface Named {
+
     /**
      * @return The name of the object
      */
     String getName()
+
 }

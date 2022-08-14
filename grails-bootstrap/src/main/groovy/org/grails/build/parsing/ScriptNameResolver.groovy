@@ -25,12 +25,13 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class ScriptNameResolver {
+
     /**
      * Matches a camelCase scriptName to a potential scriptFileName in canonical form.<p>
      * The following scriptNames match FooBar: FB, FoB, FBa
      */
     static boolean resolvesTo(String scriptName, String scriptFileName) {
-        def scriptFileNameTokens = GrailsNameUtils.getNameFromScript( scriptFileName ).findAll(/[A-Z][a-z]+/)
+        def scriptFileNameTokens = GrailsNameUtils.getNameFromScript(scriptFileName).findAll(/[A-Z][a-z]+/)
         def scriptNameTokens = GrailsNameUtils.getNameFromScript(scriptName).findAll(/[A-Z][a-z]*/)
 
         if (scriptFileNameTokens.size() != scriptNameTokens.size()) return false
@@ -40,4 +41,5 @@ class ScriptNameResolver {
         }
         true
     }
+
 }

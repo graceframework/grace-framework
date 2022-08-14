@@ -156,4 +156,5 @@ class DevNullPrintStream extends PrintStream {
     @Override
     void write(byte[] b) throws IOException {
     }
+
 }
