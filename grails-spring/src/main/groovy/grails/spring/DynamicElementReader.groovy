@@ -57,7 +57,8 @@ class DynamicElementReader extends GroovyObjectSupport {
     boolean beanDecorator = false
     boolean firstCall = true
 
-    DynamicElementReader(String namespace, Map namespaceMap=Collections.EMPTY_MAP, NamespaceHandler namespaceHandler = null, ParserContext parserContext = null) {
+    DynamicElementReader(String namespace, Map namespaceMap=Collections.EMPTY_MAP,
+                         NamespaceHandler namespaceHandler = null, ParserContext parserContext = null) {
         this.xmlNamespaces = namespaceMap
         this.rootNamespace = namespace
         this.namespaceHandler = namespaceHandler
@@ -100,7 +101,7 @@ class DynamicElementReader extends GroovyObjectSupport {
 
         def callable = {
             for (namespace in myNamespaces) {
-                mkp.declareNamespace([(namespace.key):namespace.value])
+                mkp.declareNamespace([(namespace.key): namespace.value])
             }
             if (args && (args[-1] instanceof Closure)) {
                 args[-1].resolveStrategy = Closure.DELEGATE_FIRST
@@ -124,7 +125,7 @@ class DynamicElementReader extends GroovyObjectSupport {
         if (namespaceHandler && parserContext) {
             if (beanDecorator && beanConfiguration) {
                 BeanDefinitionHolder holder = new BeanDefinitionHolder(beanConfiguration.getBeanDefinition(), beanConfiguration.getName())
-                holder = namespaceHandler.decorate(element,holder, parserContext)
+                holder = namespaceHandler.decorate(element, holder, parserContext)
                 beanConfiguration.setBeanDefinition(holder.getBeanDefinition())
             }
             else {
@@ -145,4 +146,5 @@ class DynamicElementReader extends GroovyObjectSupport {
 
         return element
     }
+
 }
