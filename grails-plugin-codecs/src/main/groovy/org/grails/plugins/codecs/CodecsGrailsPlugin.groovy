@@ -30,6 +30,7 @@ import org.grails.encoder.impl.RawCodec
  * @deprecated as of 2022.0.0; use {@link CodecsPluginConfiguration} instead
  */
 class CodecsGrailsPlugin extends Plugin {
+
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [core: version]
     def watchedResources = "file:./grails-app/utils/**/*Codec.groovy"
@@ -42,7 +43,9 @@ class CodecsGrailsPlugin extends Plugin {
             RawCodec
     ]
 
-    Closure doWithSpring() {{->
+    Closure doWithSpring() { { ->
         // Keep this because it is used by testing-support
-    }}
+        }
+    }
+
 }
