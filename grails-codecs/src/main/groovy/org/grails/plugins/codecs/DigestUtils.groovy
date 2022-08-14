@@ -40,4 +40,5 @@ abstract class DigestUtils {
         md.update(src) // This probably needs to use the thread's Locale encoding
         return md.digest()
     }
+
 }

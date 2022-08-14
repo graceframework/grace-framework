@@ -63,4 +63,5 @@ class HexCodecExtensionMethods {
         output.eachWithIndex { v, i -> result[i] = v }
         return result
     }
+
 }

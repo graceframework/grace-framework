@@ -48,4 +48,5 @@ class Base64CodecExtensionMethods {
 
         return Base64.decodeBase64(theTarget.toString().getBytes("UTF-8"))
     }
+
 }
