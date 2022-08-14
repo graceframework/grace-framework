@@ -1,6 +1,7 @@
 package org.grails.buffer
 
 class StreamCharBufferMetaUtils {
+
     static registerStreamCharBufferMetaClass() {
         StreamCharBuffer.metaClass.methodMissing = { String name, args ->
             def retval = delegate.toString().invokeMethod(name, args)
@@ -22,4 +23,5 @@ class StreamCharBufferMetaUtils {
             }
         }
     }
+
 }

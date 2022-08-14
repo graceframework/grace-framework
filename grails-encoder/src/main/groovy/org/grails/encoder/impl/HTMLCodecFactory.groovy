@@ -22,11 +22,16 @@ import org.grails.encoder.Decoder
 
 @CompileStatic
 class HTMLCodecFactory implements CodecFactory {
+
     Encoder encoder = new HTMLEncoder()
-    Decoder decoder = decoder = new HTML4Decoder() {
+
+    Decoder decoder = new HTML4Decoder() {
+
         @Override
         public CodecIdentifier getCodecIdentifier() {
             return HTMLEncoder.HTML_CODEC_IDENTIFIER;
         }
-    } 
+
+    }
+
 }

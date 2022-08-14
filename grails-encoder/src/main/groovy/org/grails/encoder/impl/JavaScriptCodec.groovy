@@ -35,6 +35,7 @@ class JavaScriptCodec implements CodecFactory {
     static Encoder ENCODER = new JavaScriptEncoder()
 
     static Decoder DECODER = new Decoder() {
+
         def decode(Object obj) {
             obj != null ? StringEscapeUtils.unescapeJavaScript(obj.toString()) : null
         }
@@ -42,9 +43,11 @@ class JavaScriptCodec implements CodecFactory {
         CodecIdentifier getCodecIdentifier() {
             JavaScriptEncoder.JAVASCRIPT_CODEC_IDENTIFIER
         }
+
     }
 
     Encoder getEncoder() { ENCODER }
 
     Decoder getDecoder() { DECODER }
+
 }

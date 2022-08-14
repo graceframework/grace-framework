@@ -23,8 +23,10 @@ import org.grails.encoder.CodecMetaClassSupport
 
 @CompileStatic
 class StandaloneCodecLookup extends BasicCodecLookup {
+
     boolean registerMetaMethods = true
     boolean cacheLookupsInMetaMethods = true
+
     Collection<Class> targetClassesForMetaMethods = [
         String,
         GStringImpl,
@@ -32,6 +34,7 @@ class StandaloneCodecLookup extends BasicCodecLookup {
         StringBuilder,
         Object
     ]
+
     Collection<Class> codecFactoryClasses = [
             XMLCodecFactory,
             HTMLCodecFactory,
@@ -56,15 +59,15 @@ class StandaloneCodecLookup extends BasicCodecLookup {
     }
 
     protected registerMetaMethods(CodecFactory codecFactory) {
-        if(registerMetaMethods && targetClassesForMetaMethods) {
+        if (registerMetaMethods && targetClassesForMetaMethods) {
             new CodecMetaClassSupport().configureCodecMethods(codecFactory, cacheLookupsInMetaMethods, resolveMetaClasses())
         }
     }
 
     protected List<ExpandoMetaClass> resolveMetaClasses() {
-        targetClassesForMetaMethods.collect {
-            Class clazz ->
+        targetClassesForMetaMethods.collect { Class clazz ->
             GrailsMetaClassUtils.getExpandoMetaClass(clazz)
         }
     }
+
 }

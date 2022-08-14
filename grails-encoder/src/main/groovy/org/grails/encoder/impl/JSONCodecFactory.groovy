@@ -23,12 +23,13 @@ import org.grails.encoder.CodecIdentifier
 import org.grails.encoder.Encoder
 import org.grails.encoder.Decoder
 
-
 @CompileStatic
 class JSONCodecFactory implements CodecFactory {
+
     Encoder encoder = new BasicJSONEncoder()
 
     Decoder decoder = new Decoder() {
+
         def decode(Object obj) {
             obj != null ? StringEscapeUtils.unescapeJavaScript(obj.toString()) : null
         }
@@ -36,5 +37,7 @@ class JSONCodecFactory implements CodecFactory {
         CodecIdentifier getCodecIdentifier() {
             BasicJSONEncoder.JSON_CODEC_IDENTIFIER
         }
+
     }
+
 }
