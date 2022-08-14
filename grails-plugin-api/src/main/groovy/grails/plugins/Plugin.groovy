@@ -31,7 +31,6 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.DescriptiveResource
 
-
 /**
  * Super class for plugins to implement. Plugin implementations should define the various plugin hooks
  * (doWithSpring, doWithApplicationContext, doWithDynamicMethods etc.)
@@ -46,10 +45,12 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
      * The {@link GrailsApplication} instance
      */
     GrailsApplication grailsApplication
+
     /**
      * The {@link GrailsPlugin} definition for this plugin
      */
     GrailsPlugin plugin
+
     /**
      * The {@link GrailsPluginManager} instance
      */
@@ -63,11 +64,16 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
     /**
      * @return The {@link Config} instance for this plugin
      */
-    Config getConfig() { grailsApplication.config }
+    Config getConfig() {
+        grailsApplication.config
+    }
+
     /**
      * The {@link GrailsPluginManager} instance
      */
-    GrailsPluginManager getManager() { pluginManager}
+    GrailsPluginManager getManager() {
+        pluginManager
+    }
 
     /**
      * Whether the plugin is enabled
@@ -79,7 +85,6 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
      */
     final List<ArtefactHandler> artefacts = []
 
-
     /**
      * The {@link ApplicationContext} instance
      */
@@ -89,7 +94,7 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
      * @return The ApplicationContext
      */
     ConfigurableApplicationContext getApplicationContext() {
-        if(applicationContext instanceof ConfigurableApplicationContext) {
+        if (applicationContext instanceof ConfigurableApplicationContext) {
             return (ConfigurableApplicationContext)applicationContext
         }
         return null;
@@ -99,13 +104,16 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
     void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext
     }
-/**
+
+    /**
      * Sub classes should override to provide implementations
      *
      * @return A closure that defines beans to be executed by Spring
      */
     @Override
-    Closure doWithSpring() { null }
+    Closure doWithSpring() {
+        null
+    }
 
     /**
      * Invoked in a phase where plugins can add dynamic methods. Subclasses should override
@@ -116,7 +124,8 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
     }
 
     /**
-     * Invokes once the {@link ApplicationContext} has been refreshed and after {#doWithDynamicMethods()} is invoked. Subclasses should override
+     * Invokes once the {@link ApplicationContext} has been refreshed and after {#doWithDynamicMethods()} is invoked.
+     * Subclasses should override
      */
     @Override
     void doWithApplicationContext() {
@@ -146,6 +155,7 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
     void onStartup(Map<String, Object> event) {
         // no-op
     }
+
     /**
      * Invoked when the {@link ApplicationContext} is closed
      *
@@ -167,6 +177,8 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
         bb.setBeanBuildResource(new DescriptiveResource(this.getClass().getName()))
         bb.beans beanDefinitions
         bb.registerBeans((BeanDefinitionRegistry)applicationContext)
-        new MapBasedSmartPropertyOverrideConfigurer(grailsApplication: grailsApplication).postProcessBeanFactory(((ConfigurableApplicationContext)applicationContext).beanFactory)
+        new MapBasedSmartPropertyOverrideConfigurer(grailsApplication: grailsApplication)
+                .postProcessBeanFactory(((ConfigurableApplicationContext)applicationContext).beanFactory)
     }
+
 }
