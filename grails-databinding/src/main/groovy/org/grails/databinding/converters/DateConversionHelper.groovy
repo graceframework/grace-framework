@@ -43,7 +43,7 @@ class DateConversionHelper implements ValueConverter {
     Object convert(value) {
         Date dateValue
         if (value instanceof String) {
-            if(!value) {
+            if (!value) {
                 return null
             }
             Exception firstException
@@ -58,7 +58,7 @@ class DateConversionHelper implements ValueConverter {
                     }
                 }
             }
-            if(dateValue == null && firstException) {
+            if (dateValue == null && firstException) {
                 throw firstException
             }
         }
@@ -72,4 +72,5 @@ class DateConversionHelper implements ValueConverter {
     boolean canConvert(Object value) {
         value instanceof String
     }
+
 }

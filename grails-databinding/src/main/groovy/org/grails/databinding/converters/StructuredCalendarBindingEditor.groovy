@@ -27,4 +27,5 @@ class StructuredCalendarBindingEditor extends AbstractStructuredDateBindingEdito
     Calendar getDate(Calendar c) {
         c
     }
+
 }

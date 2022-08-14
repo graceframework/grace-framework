@@ -30,4 +30,5 @@ class StructuredSqlDateBindingEditor extends AbstractStructuredDateBindingEditor
     Date getDate(Calendar c) {
         return new Date(c.time.time)
     }
+
 }

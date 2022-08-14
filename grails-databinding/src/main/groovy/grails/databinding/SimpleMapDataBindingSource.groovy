@@ -54,4 +54,5 @@ class SimpleMapDataBindingSource implements DataBindingSource {
     int size() {
         map.size()
     }
+
 }

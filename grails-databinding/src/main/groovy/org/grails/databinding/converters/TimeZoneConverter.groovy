@@ -39,4 +39,5 @@ class TimeZoneConverter implements ValueConverter {
     Class<?> getTargetType() {
         TimeZone
     }
+
 }

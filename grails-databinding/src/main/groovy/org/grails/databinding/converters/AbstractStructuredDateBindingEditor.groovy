@@ -53,7 +53,7 @@ abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindi
             int hour = getIntegerValue(fieldValues, prefix + "hour", 0)
             int minute = getIntegerValue(fieldValues, prefix + "minute", 0)
 
-            def c = new GregorianCalendar(year,month - 1,day,hour,minute)
+            def c = new GregorianCalendar(year, month - 1, day, hour, minute)
             return getDate(c)
         }
         catch (NumberFormatException nfe) {
@@ -81,4 +81,5 @@ abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindi
     }
 
     abstract T getDate(Calendar c)
+
 }

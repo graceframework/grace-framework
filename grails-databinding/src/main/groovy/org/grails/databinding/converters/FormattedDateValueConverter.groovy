@@ -28,12 +28,12 @@ import java.text.SimpleDateFormat
 class FormattedDateValueConverter implements FormattedValueConverter {
 
     def convert(value, String format) {
-        if(value instanceof Date) {
+        if (value instanceof Date) {
             return value
         }
-        else if(value instanceof CharSequence) {
+        else if (value instanceof CharSequence) {
             String dateStr = value.toString()
-            if(!dateStr) {
+            if (!dateStr) {
                 return null
             }
             else {

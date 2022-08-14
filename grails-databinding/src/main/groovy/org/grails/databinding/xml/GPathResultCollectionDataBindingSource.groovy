@@ -38,4 +38,5 @@ class GPathResultCollectionDataBindingSource implements CollectionDataBindingSou
     List<DataBindingSource> getDataBindingSources() {
         dataBindingSources
     }
+
 }

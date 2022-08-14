@@ -20,6 +20,7 @@ package org.grails.databinding
  * @since 2.3
  */
 class IndexedPropertyReferenceDescriptor {
+
     String propertyName
     String index
 
@@ -27,4 +28,5 @@ class IndexedPropertyReferenceDescriptor {
     String toString() {
         "${propertyName}[${index}]"
     }
+
 }

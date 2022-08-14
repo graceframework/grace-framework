@@ -28,4 +28,5 @@ class StructuredDateBindingEditor extends AbstractStructuredDateBindingEditor<Da
     Date getDate(Calendar c) {
         c.time
     }
+
 }
