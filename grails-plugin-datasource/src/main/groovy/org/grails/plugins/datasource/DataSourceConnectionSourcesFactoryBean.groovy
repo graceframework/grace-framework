@@ -25,7 +25,8 @@ import javax.sql.DataSource
  * @since 3.3
  */
 @CompileStatic
-class DataSourceConnectionSourcesFactoryBean implements InitializingBean, FactoryBean<ConnectionSources<DataSource, DataSourceSettings>>, ApplicationContextAware {
+class DataSourceConnectionSourcesFactoryBean implements InitializingBean, FactoryBean<ConnectionSources<DataSource, DataSourceSettings>>,
+        ApplicationContextAware {
 
     final PropertyResolver configuration
     ApplicationContext applicationContext
@@ -54,21 +55,21 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
     void afterPropertiesSet() throws Exception {
         DataSourceConnectionSourceFactory factory = new DataSourceConnectionSourceFactory()
         this.connectionSources = ConnectionSourcesInitializer.create(factory, configuration)
-        if(applicationContext instanceof ConfigurableApplicationContext) {
+        if (applicationContext instanceof ConfigurableApplicationContext) {
             ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext)applicationContext
-            for(ConnectionSource<DataSource, ConnectionSourceSettings> connectionSource in connectionSources.allConnectionSources) {
+            for (ConnectionSource<DataSource, ConnectionSourceSettings> connectionSource in connectionSources.allConnectionSources) {
                 if (connectionSource.name != ConnectionSource.DEFAULT) {
                     String suffix = "_${connectionSource.name}"
                     String dsName = "dataSource${suffix}"
                     String tmName = "transactionManager${suffix}"
-                    if(!applicationContext.containsBean(dsName)) {
+                    if (!applicationContext.containsBean(dsName)) {
                         DataSource dataSource = connectionSource.source
                         configurableApplicationContext.beanFactory.registerSingleton(
                                 dsName,
                                 dataSource
                         )
                     }
-                    if(!applicationContext.containsBean(tmName)) {
+                    if (!applicationContext.containsBean(tmName)) {
                         DataSource dataSource = connectionSource.source
                         configurableApplicationContext.beanFactory.registerSingleton(
                                 tmName,
@@ -76,7 +77,6 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
                         )
                     }
                 }
-
             }
         }
     }
