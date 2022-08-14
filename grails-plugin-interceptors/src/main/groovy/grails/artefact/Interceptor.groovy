@@ -70,6 +70,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     boolean doesMatch() {
         doesMatch(request)
     }
+
     /**
      * @return Whether the current interceptor does match
      */
@@ -79,7 +80,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
         if (allMatchers.isEmpty()) {
             // default to map just the controller by convention
             def matcher = new UrlMappingMatcher(this)
-            matcher.matches(controller: Pattern.compile(GrailsNameUtils.getLogicalPropertyName(getClass().simpleName, InterceptorArtefactHandler.TYPE)))
+            String propertyName = GrailsNameUtils.getLogicalPropertyName(getClass().simpleName, InterceptorArtefactHandler.TYPE)
+            matcher.matches(controller: Pattern.compile(propertyName))
             allMatchers << matcher
         }
 
@@ -236,7 +238,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      * @param t The exception instance if an exception was thrown, null otherwise
      */
     @Generated
-    void afterView() {}
+    void afterView() {
+    }
 
     /**
      * Sets a response header for the given name and value
@@ -267,7 +270,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
             ResponseRenderer.super.render(argMap)
             def mav = (ModelAndView) req.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
             if (mav != null) {
-                def view = applicationContext.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver).resolveView(mav.viewName, request.getLocale())
+                def view = applicationContext.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver)
+                        .resolveView(mav.viewName, request.getLocale())
                 if (view != null) {
                     def resp = response
                     view.render(mav.model, req, resp)
@@ -305,4 +309,5 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     Collection<Matcher> getMatchers() {
         return matchers
     }
+
 }

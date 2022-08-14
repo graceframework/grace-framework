@@ -18,7 +18,6 @@ package grails.interceptors
 import grails.artefact.Interceptor
 import grails.web.mapping.UrlMappingInfo
 
-
 /**
  * A Matcher is used to configure matching for {@link grails.artefact.Interceptor} instances
  *
@@ -89,4 +88,5 @@ interface Matcher {
      * Checks whether the current matcher is a exclude matcher or not
      */
     boolean isExclude()
+
 }

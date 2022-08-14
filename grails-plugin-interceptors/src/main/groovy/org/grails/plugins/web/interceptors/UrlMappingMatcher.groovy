@@ -59,9 +59,9 @@ class UrlMappingMatcher implements Matcher {
         boolean hasUriPatterns = !uriPatterns.isEmpty()
 
         boolean isExcluded = this.isExcluded(uri, info)
-        if(matchAll && !isExcluded) return true
+        if (matchAll && !isExcluded) return true
 
-        if(!isExcluded) {
+        if (!isExcluded) {
             if (hasUriPatterns) {
                 uri = uri.replace(';', '')
                 for (pattern in uriPatterns) {
@@ -79,14 +79,14 @@ class UrlMappingMatcher implements Matcher {
     }
 
     protected boolean isExcluded(String uri, UrlMappingInfo info) {
-        for(pattern in uriExcludePatterns) {
-            if(pathMatcher.match(pattern, uri)) {
+        for (pattern in uriExcludePatterns) {
+            if (pathMatcher.match(pattern, uri)) {
                 return true
             }
         }
-        if(info) {
-            for(exclude in excludes) {
-                if(exclude.isExcluded(info)) {
+        if (info) {
+            for (exclude in excludes) {
+                if (exclude.isExcluded(info)) {
                     return true
                 }
             }
@@ -110,29 +110,29 @@ class UrlMappingMatcher implements Matcher {
 
     @Override
     Matcher matches(Map arguments) {
-        if(arguments.uri) {
+        if (arguments.uri) {
             uriPatterns << arguments.uri.toString()
         }
         else {
-            controllerRegex = regexMatch( arguments, "controller")
-            actionRegex = regexMatch( arguments, "action")
-            namespaceRegex = regexMatch( arguments, "namespace")
-            methodRegex = regexMatch( arguments, "method")
+            controllerRegex = regexMatch(arguments, "controller")
+            actionRegex = regexMatch(arguments, "action")
+            namespaceRegex = regexMatch(arguments, "namespace")
+            methodRegex = regexMatch(arguments, "method")
         }
         return this
     }
 
     @Override
     Matcher excludes(Map arguments) {
-        if(arguments.uri) {
+        if (arguments.uri) {
             uriExcludePatterns << arguments.uri.toString()
         }
         else {
             def exclude = new MapExclude()
-            exclude.controllerExcludesRegex = regexMatch( arguments, "controller", null)
-            exclude.actionExcludesRegex = regexMatch( arguments, "action", null)
-            exclude.namespaceExcludesRegex = regexMatch( arguments, "namespace", null)
-            exclude.methodExcludesRegex = regexMatch( arguments, "method", null)
+            exclude.controllerExcludesRegex = regexMatch(arguments, "controller", null)
+            exclude.actionExcludesRegex = regexMatch(arguments, "action", null)
+            exclude.namespaceExcludesRegex = regexMatch(arguments, "namespace", null)
+            exclude.methodExcludesRegex = regexMatch(arguments, "method", null)
             excludes << exclude
         }
         return this
@@ -156,13 +156,13 @@ class UrlMappingMatcher implements Matcher {
 
     private Pattern regexMatch(Map arguments, String type, Pattern defaultPattern = WILD_CARD_PATTERN) {
         def value = arguments.get(type)
-        if(!value) return defaultPattern
-        if(value instanceof Pattern) {
+        if (!value) return defaultPattern
+        if (value instanceof Pattern) {
             return (Pattern)value
         }
         else {
             def str = value.toString()
-            if(str == '*') return defaultPattern
+            if (str == '*') return defaultPattern
             else {
                 return Pattern.compile(str)
             }
@@ -170,10 +170,13 @@ class UrlMappingMatcher implements Matcher {
     }
 
     static interface Exclude {
+
         boolean isExcluded(UrlMappingInfo info)
+
     }
 
     static class ClosureExclude implements Exclude {
+
         Interceptor interceptor
         Closure<Boolean> callable
 
@@ -184,15 +187,17 @@ class UrlMappingMatcher implements Matcher {
 
         @Override
         boolean isExcluded(UrlMappingInfo info) {
-            if(callable) {
+            if (callable) {
                 callable.delegate = interceptor
                 return callable.call()
             }
             return false
         }
+
     }
 
     static class MapExclude implements Exclude {
+
         Pattern controllerExcludesRegex
         Pattern actionExcludesRegex
         Pattern namespaceExcludesRegex
@@ -209,6 +214,7 @@ class UrlMappingMatcher implements Matcher {
                     namespaceExclude &&
                     methodExclude
         }
+
     }
 
     protected int hashCode(UrlMappingInfo info) {
@@ -217,4 +223,5 @@ class UrlMappingMatcher implements Matcher {
         hash = HashCodeHelper.updateHash(hash, info)
         return hash
     }
+
 }

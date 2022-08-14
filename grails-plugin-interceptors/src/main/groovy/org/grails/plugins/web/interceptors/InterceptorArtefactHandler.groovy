@@ -41,4 +41,5 @@ public class InterceptorArtefactHandler extends ArtefactHandlerAdapter {
     public String getPluginName() {
         return PLUGIN_NAME;
     }
+
 }

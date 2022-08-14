@@ -36,4 +36,5 @@ class InterceptorTraitInjector implements TraitInjector {
     String[] getArtefactTypes() {
         ['Interceptor'] as String[]
     }
+
 }
