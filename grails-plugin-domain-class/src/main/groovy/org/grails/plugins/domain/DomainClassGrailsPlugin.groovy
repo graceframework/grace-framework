@@ -40,26 +40,28 @@ class DomainClassGrailsPlugin extends Plugin {
                             "file:./plugins/*/grails-app/domain/**/*.groovy"]
 
     def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [i18n:version]
+    def dependsOn = [i18n: version]
     def loadAfter = ['controllers', 'dataSource']
 
-    Closure doWithSpring() {{->
-        GrailsApplication application = grailsApplication
-        validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
-            bean.lazyInit = true
-            bean.role = "infrastructure"
-        }
-        "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator"))  { bean ->
-            bean.lazyInit = true
-        }
-        grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext)  { bean ->
-            bean.lazyInit = true
-        }
-        gormValidatorRegistry(ValidatorRegistryFactoryBean)  { bean ->
-            bean.lazyInit = true
-        }
+    Closure doWithSpring() { { ->
+            GrailsApplication application = grailsApplication
+            validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
+                bean.lazyInit = true
+                bean.role = "infrastructure"
+            }
+            "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator")) { bean ->
+                bean.lazyInit = true
+            }
+            grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext) { bean ->
+                bean.lazyInit = true
+            }
+            gormValidatorRegistry(ValidatorRegistryFactoryBean) { bean ->
+                bean.lazyInit = true
+            }
 
-        def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
-        log.info(String.format("Found %d Domains", domainClasses.size()))
-    }}
+            def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
+            log.info(String.format("Found %d Domains", domainClasses.size()))
+        }
+    }
+
 }

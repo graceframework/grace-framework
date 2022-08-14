@@ -19,7 +19,7 @@ import grails.artefact.DomainClass
 import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**
- * 
+ *
  * @author Jeff Brown
  * @since 3.0
  *
@@ -30,9 +30,9 @@ class DomainClassTraitInjector implements TraitInjector {
         DomainClass
     }
 
-
     @Override
     String[] getArtefactTypes() {
         [DomainClassArtefactHandler.TYPE]
     }
+
 }

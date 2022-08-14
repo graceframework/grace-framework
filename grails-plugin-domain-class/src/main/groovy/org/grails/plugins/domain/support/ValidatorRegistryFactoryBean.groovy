@@ -36,4 +36,5 @@ class ValidatorRegistryFactoryBean implements FactoryBean<ValidatorRegistry> {
     boolean isSingleton() {
         return true
     }
+
 }

@@ -43,4 +43,5 @@ class DefaultConstraintEvaluatorFactoryBean implements FactoryBean<ConstraintsEv
     boolean isSingleton() {
         true
     }
+
 }

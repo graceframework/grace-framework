@@ -37,14 +37,13 @@ class DefaultMappingContextFactoryBean implements FactoryBean<MappingContext>, I
         this.configuration = grailsApplication.config
         this.messageSource = messageSource
         this.grailsApplication = grailsApplication
-        if(messageSource instanceof ApplicationContext) {
+        if (messageSource instanceof ApplicationContext) {
             this.applicationContext = (ApplicationContext)messageSource
         }
         else {
             applicationContext = null
         }
     }
-
 
     @Override
     MappingContext getObject() throws Exception {
@@ -71,7 +70,7 @@ class DefaultMappingContextFactoryBean implements FactoryBean<MappingContext>, I
 
         this.mappingContext = new KeyValueMappingContext("default", settings)
         DefaultValidatorRegistry validatorRegistry = new DefaultValidatorRegistry(mappingContext, settings, messageSource)
-        for(factory in constraintFactories) {
+        for (factory in constraintFactories) {
             validatorRegistry.addConstraintFactory(factory)
         }
         mappingContext.setValidatorRegistry(
@@ -79,6 +78,7 @@ class DefaultMappingContextFactoryBean implements FactoryBean<MappingContext>, I
         )
 
         GrailsClass[] persistentClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
-        mappingContext.addPersistentEntities(persistentClasses.collect() { GrailsClass cls -> cls.clazz} as Class[])
+        mappingContext.addPersistentEntities(persistentClasses.collect() { GrailsClass cls -> cls.clazz } as Class[])
     }
+
 }

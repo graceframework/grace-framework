@@ -49,4 +49,5 @@ trait DomainClass {
             return Collections.<String,Constrained>emptyMap()
         }
     }
+
 }
