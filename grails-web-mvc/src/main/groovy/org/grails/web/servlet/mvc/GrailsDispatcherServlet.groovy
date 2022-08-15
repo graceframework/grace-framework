@@ -48,13 +48,15 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
     }
 
     @Override
-    protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request, HttpServletResponse response, RequestAttributes previousAttributes) {
+    protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request,
+                                                              HttpServletResponse response,
+                                                              RequestAttributes previousAttributes) {
         if (previousAttributes == null || !(previousAttributes instanceof GrailsWebRequest)) {
             return buildGrailsWebRequest(request, response)
         }
         else {
             GrailsWebRequest webRequest = (GrailsWebRequest) previousAttributes
-            if(webRequest.isActive()) {
+            if (webRequest.isActive()) {
                 return webRequest
             }
             else {
@@ -72,11 +74,11 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
     @Override
     protected HttpServletRequest checkMultipart(HttpServletRequest request) throws MultipartException {
         boolean shouldProcessMultiPart = !WebUtils.isError(request) && !WebUtils.isForwardOrInclude(request)
-        if(shouldProcessMultiPart) {
+        if (shouldProcessMultiPart) {
             HttpServletRequest processedRequest = super.checkMultipart(request)
-            if(!processedRequest.is(request)) {
+            if (!processedRequest.is(request)) {
                 def webRequest = GrailsWebRequest.lookup(request)
-                if(webRequest != null) {
+                if (webRequest != null) {
                     webRequest.multipartRequest = processedRequest
                 }
             }
@@ -95,9 +97,10 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
         if (applicationContext instanceof WebApplicationContext) {
             WebApplicationContext wac = (WebApplicationContext)applicationContext
             Holders.setServletContext(wac.servletContext);
-            Holders.addApplicationDiscoveryStrategy(new ServletEnvironmentGrailsApplicationDiscoveryStrategy(wac.servletContext, applicationContext));
-
+            Holders.addApplicationDiscoveryStrategy(
+                    new ServletEnvironmentGrailsApplicationDiscoveryStrategy(wac.servletContext, applicationContext));
         }
         super.setApplicationContext(applicationContext)
     }
+
 }

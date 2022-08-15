@@ -27,7 +27,7 @@ import org.grails.web.util.WebUtils
  * @since 3.0
  */
 @CompileStatic
-class TokenResponseActionResultTransformer implements ActionResultTransformer{
+class TokenResponseActionResultTransformer implements ActionResultTransformer {
 
     @Override
     def transformActionResult(GrailsWebRequest webRequest, String viewName, Object actionResult) {
@@ -46,9 +46,10 @@ class TokenResponseActionResultTransformer implements ActionResultTransformer{
                 return null;
             }
             catch (IOException e) {
-                throw new ControllerExecutionException("I/O error sending redirect to URI: " + uri,e);
+                throw new ControllerExecutionException("I/O error sending redirect to URI: " + uri, e);
             }
         }
         return actionResult
     }
+
 }
