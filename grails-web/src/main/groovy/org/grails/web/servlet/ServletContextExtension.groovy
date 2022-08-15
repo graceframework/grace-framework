@@ -28,8 +28,9 @@ class ServletContextExtension {
     static propertyMissing(ServletContext context, String name, value) {
         context.setAttribute name, value
     }
-    
+
     static propertyMissing(ServletContext context, String name) {
         context.getAttribute name
     }
+
 }
