@@ -32,13 +32,14 @@ import org.grails.databinding.bindingsource.DataBindingSourceCreator
  * @see DataBindingSourceCreator
  */
 interface DataBindingSourceRegistry {
+
     String BEAN_NAME = 'dataBindingSourceRegistry'
 
     /**
      * Adds a new {@link DataBindingSourceCreator} to the registry
      * @param creator The {@link DataBindingSourceCreator}
      */
-    void addDataBindingSourceCreator(DataBindingSourceCreator creator )
+    void addDataBindingSourceCreator(DataBindingSourceCreator creator)
 
     /**
      * Locates a {@link DataBindingSource} for the given MimeType and binding target
@@ -57,4 +58,5 @@ interface DataBindingSourceRegistry {
      * @return The {@link CollectionDataBindingSource}
      */
     CollectionDataBindingSource createCollectionDataBindingSource(MimeType mimeType, Class bindingTargetType, Object bindingSource)
+
 }

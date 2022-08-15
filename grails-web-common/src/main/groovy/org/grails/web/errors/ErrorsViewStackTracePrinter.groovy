@@ -90,4 +90,5 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
     protected int getLineNumberInfo(Throwable cause, int defaultInfo) {
         return super.getLineNumberInfo(cause, defaultInfo)
     }
+
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.web.mime
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
@@ -48,4 +47,5 @@ public interface MimeTypeResolver {
      * @return The request format sent by the client
      */
     MimeType resolveRequestMimeType(GrailsWebRequest request)
+
 }

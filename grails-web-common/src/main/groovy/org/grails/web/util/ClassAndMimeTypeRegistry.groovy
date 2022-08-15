@@ -28,7 +28,8 @@ import grails.web.mime.MimeType
 import grails.web.mime.MimeTypeProvider
 
 /**
- * Abstract class for class that maintains a registry of mappings MimeType,Class and a particular object type. Used by RendererRegistry and DataBindingSourceRegistry
+ * Abstract class for class that maintains a registry of mappings MimeType,Class and a particular object type.
+ * Used by RendererRegistry and DataBindingSourceRegistry
  *
  * @author Graeme Rocher
  * @since 2.3
@@ -37,7 +38,11 @@ import grails.web.mime.MimeTypeProvider
 abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
 
     private static final MimeTypeProvider NULL_RESOLVE = new MimeTypeProvider() {
-        MimeType[] getMimeTypes() { null }
+
+        MimeType[] getMimeTypes() {
+            null
+        }
+
     }
 
     private Map<Class, Collection<R >> registeredObjectsByType = new ConcurrentHashMap<>()
@@ -57,7 +62,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
     }
 
     Collection<R> getRegisteredObjects(Class targetType) {
-        if(targetType == null) {
+        if (targetType == null) {
             return null
         }
         def registeredObjects = registeredObjectsByType.get(targetType)
@@ -69,17 +74,15 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
     }
 
     R findMatchingObjectForMimeType(MimeType mimeType, object) {
-        if(object == null) return null
+        if (object == null) return null
 
         final clazz = object instanceof Class ? (Class)object : object.getClass()
 
         final K cacheKey = createCacheKey(clazz, mimeType)
         R registeredObject = (R)resolvedObjectCache.getIfPresent(cacheKey)
         if (registeredObject == null) {
-
             Class currentClass = clazz
-            while(currentClass != null) {
-
+            while (currentClass != null) {
                 registeredObject = findRegisteredObjectForType(currentClass, mimeType)
                 if (registeredObject) {
                     resolvedObjectCache.put(cacheKey, registeredObject)
@@ -90,7 +93,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             }
 
             final interfaces = GrailsClassUtils.getAllInterfaces(object)
-            for(i in interfaces) {
+            for (i in interfaces) {
                 registeredObject = findRegisteredObjectForType(i, mimeType)
                 if (registeredObject) break
             }
@@ -103,10 +106,10 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             }
         }
 
-        if(registeredObject == null && !Environment.isDevelopmentMode()) {
+        if (registeredObject == null && !Environment.isDevelopmentMode()) {
             resolvedObjectCache.put(cacheKey, (R)NULL_RESOLVE)
         }
-        else if(NULL_RESOLVE.is(registeredObject)) {
+        else if (NULL_RESOLVE.is(registeredObject)) {
             return null
         }
         return registeredObject
@@ -116,13 +119,13 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
         R findObject = null
         final objectList = registeredObjectsByType.get(currentClass)
         if (objectList) {
-            findObject = (R)objectList.find { 
+            findObject = (R)objectList.find {
                 MimeTypeProvider r = (MimeTypeProvider)it
                 r.mimeTypes.any { MimeType mt ->
                     mt  == mimeType
                 }
             }
-            if(findObject == null) {
+            if (findObject == null) {
                 findObject = (R)objectList.find {
                     MimeTypeProvider r = (MimeTypeProvider)it
                     r.mimeTypes.any { MimeType mt ->
@@ -140,4 +143,5 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
     }
 
     abstract K createCacheKey(Class type, MimeType mimeType)
+
 }

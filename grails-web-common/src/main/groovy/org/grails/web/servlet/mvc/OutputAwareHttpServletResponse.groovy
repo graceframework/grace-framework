@@ -33,4 +33,5 @@ class OutputAwareHttpServletResponse extends HttpServletResponseWrapper {
         writerAvailable = false
         return super.getOutputStream()
     }
+
 }

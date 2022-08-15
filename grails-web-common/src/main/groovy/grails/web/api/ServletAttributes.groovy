@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.web.api
 
 import groovy.transform.CompileStatic
@@ -31,7 +30,7 @@ import javax.servlet.http.HttpSession
  *
  * @author Graeme Rocher
  * @author Jeff Brown
- * 
+ *
  */
 @CompileStatic
 trait ServletAttributes implements WebAttributes {
@@ -83,6 +82,5 @@ trait ServletAttributes implements WebAttributes {
         }
         servletContext
     }
-
 
 }

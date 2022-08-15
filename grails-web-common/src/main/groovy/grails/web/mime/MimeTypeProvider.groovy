@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.web.mime
 
 /**
@@ -28,4 +27,5 @@ interface MimeTypeProvider {
      * @return The {@link MimeType} instances provided by this object
      */
     MimeType[] getMimeTypes()
+
 }

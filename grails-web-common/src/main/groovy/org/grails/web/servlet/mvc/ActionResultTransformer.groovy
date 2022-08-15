@@ -16,7 +16,8 @@
 package org.grails.web.servlet.mvc
 
 /**
- * Interface for classes which transform the result of an action. These can be registered with the Spring context and are loaded and applied to action responses
+ * Interface for classes which transform the result of an action.
+ * These can be registered with the Spring context and are loaded and applied to action responses
  *
  * @author Graeme Rocher
  * @since 2.3
@@ -32,4 +33,5 @@ interface ActionResultTransformer {
      * @return The transformed result
      */
     def transformActionResult(GrailsWebRequest webRequest, String viewName, actionResult)
+
 }
