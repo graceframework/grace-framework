@@ -73,6 +73,7 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
 
         if (domain) {
             marshaller = new DeepDomainClassMarshaller(false, proxyHandler, grailsApplication) {
+
                 @Override
                 protected boolean includesProperty(Object o, String property) {
                     return includes == null || includes.contains(property)
@@ -82,9 +83,11 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
                 protected boolean excludesProperty(Object o, String property) {
                     return excludes.contains(property)
                 }
+
             }
-        } else if(!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
+        } else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
             marshaller = new GroovyBeanMarshaller() {
+
                 @Override
                 protected boolean includesProperty(Object o, String property) {
                     return includes == null || includes.contains(property)
@@ -94,15 +97,17 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
                 protected boolean excludesProperty(Object o, String property) {
                     return excludes.contains(property)
                 }
+
             }
         }
-        if(marshaller) {
+
+        if (marshaller) {
             registerCustomMarshaller(marshaller)
         }
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected void registerCustomMarshaller( ObjectMarshaller marshaller) {
+    protected void registerCustomMarshaller(ObjectMarshaller marshaller) {
         XML.registerObjectMarshaller(targetType, { object, XML xml ->
             marshaller.marshalObject(object, xml)
         })
@@ -114,4 +119,5 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
         converter.setIncludes(includes != null ? includes : context.includes)
         converter.render(context.getWriter())
     }
+
 }

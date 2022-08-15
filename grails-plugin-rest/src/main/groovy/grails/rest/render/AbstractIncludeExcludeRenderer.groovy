@@ -41,7 +41,8 @@ abstract class AbstractIncludeExcludeRenderer<T> extends AbstractRenderer<T> {
     }
 
     boolean shouldIncludeProperty(RenderContext renderContext, Object object, String property) {
-        includeExcludeSupport.shouldInclude(renderContext.includes,renderContext.excludes, property) && includeExcludeSupport.shouldInclude(includes, excludes, property)
+        includeExcludeSupport.shouldInclude(renderContext.includes, renderContext.excludes, property) &&
+                includeExcludeSupport.shouldInclude(includes, excludes, property)
     }
 
     boolean includesProperty(Object object, String property) {
@@ -51,4 +52,5 @@ abstract class AbstractIncludeExcludeRenderer<T> extends AbstractRenderer<T> {
     boolean excludesProperty(Object object, String property) {
         includeExcludeSupport.excludes(excludes, property)
     }
+
 }

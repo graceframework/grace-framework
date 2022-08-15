@@ -37,6 +37,7 @@ import org.springframework.http.HttpMethod
  */
 @CompileStatic
 class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
+
     public static final MimeType MIME_TYPE = MimeType.HAL_XML
     public static final String RESOURCE_TAG = "resource"
     public static final String LINK_TAG = "link"
@@ -62,7 +63,6 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         XMLStreamWriter w = prettyPrint ? new PrettyPrintXMLStreamWriter(streamingWriter) : new XMLStreamWriter(streamingWriter)
         XML xml = new XML(w)
 
-
         final entity = mappingContext.getPersistentEntity(object.class.name)
         boolean isDomain = entity != null
 
@@ -75,7 +75,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         else if (object instanceof Collection) {
             XMLStreamWriter writer = xml.getWriter()
             startResourceTagForCurrentPath(context, writer)
-            for(o in ((Collection)object)) {
+            for (o in ((Collection) object)) {
                 final currentEntity = mappingContext.getPersistentEntity(o.class.name)
                 if (currentEntity) {
                     writeDomainWithEmbeddedAndLinks(currentEntity, o, context, xml, writtenObjects)
@@ -89,7 +89,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
             writeExtraLinks(object, context.locale, xml)
             final bean = PropertyAccessorFactory.forBeanPropertyAccess(object)
             final propertyDescriptors = bean.propertyDescriptors
-            for(pd in propertyDescriptors) {
+            for (pd in propertyDescriptors) {
                 final propertyName = pd.name
                 if (DEFAULT_EXCLUDES.contains(propertyName)) continue
                 if (shouldIncludeProperty(context, object, propertyName)) {
@@ -101,10 +101,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                 }
             }
             writer.end()
-
         }
-
-
     }
 
     protected void startResourceTagForCurrentPath(RenderContext context, XMLStreamWriter writer) {
@@ -121,7 +118,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         XMLStreamWriter writer = xml.getWriter()
         startResourceTag(writer, resourceHref, locale, title)
         final metaClass = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
-        final associationMap = writeAssociationLinks(context,object, locale, xml, entity, metaClass)
+        final associationMap = writeAssociationLinks(context, object, locale, xml, entity, metaClass)
         writeDomain(context, metaClass, entity, object, xml)
 
         if (associationMap) {
@@ -150,7 +147,6 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                         }
                     }
                 }
-
             }
         }
         writer.end()
@@ -183,10 +179,10 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         }
 
         if (link.templated) {
-            writer.attribute(TEMPLATED_ATTRIBUTE,"true")
+            writer.attribute(TEMPLATED_ATTRIBUTE, "true")
         }
         if (link.deprecated) {
-            writer.attribute(DEPRECATED_ATTRIBUTE,"true")
+            writer.attribute(DEPRECATED_ATTRIBUTE, "true")
         }
         writer.end()
     }
@@ -200,4 +196,5 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         xml.convertAnother(value)
         writer.end()
     }
+
 }

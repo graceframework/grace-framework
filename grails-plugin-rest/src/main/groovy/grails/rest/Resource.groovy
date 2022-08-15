@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.rest
 
 import java.lang.annotation.ElementType
@@ -47,17 +46,20 @@ public @interface Resource {
     String[] formats() default ["json", 'xml']
 
     /**
-     * @return The URI of the resource. If specified a {@link grails.web.mapping.UrlMapping} will automatically be registered for the resource
+     * @return The URI of the resource.
+     * If specified a {@link grails.web.mapping.UrlMapping} will automatically be registered for the resource
      */
     String uri() default ""
 
     /**
-     * @return The namespace of the resource. If specified a {@link grails.web.mapping.UrlMapping} with this namespace will automatically be registered for the resource
+     * @return The namespace of the resource.
+     * If specified a {@link grails.web.mapping.UrlMapping} with this namespace will automatically be registered for the resource
      */
     String namespace() default ""
 
     /**
      * @return The super class to use for the generated controller class
      */
-    Class<?> superClass() default RestfulController 
+    Class<?> superClass() default RestfulController
+
 }

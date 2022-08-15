@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.rest.render
 
 import groovy.transform.CompileStatic
@@ -25,9 +24,10 @@ import groovy.transform.CompileStatic
  * @since 2.3
  */
 @CompileStatic
-abstract class AbstractRenderContext implements RenderContext{
+abstract class AbstractRenderContext implements RenderContext {
 
     List<String> includes
     List<String> excludes
     Map<String, Object> arguments
+
 }

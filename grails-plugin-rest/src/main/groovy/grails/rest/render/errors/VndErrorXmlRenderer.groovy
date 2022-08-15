@@ -36,6 +36,7 @@ import org.springframework.http.HttpStatus
  */
 @CompileStatic
 class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
+
     public static final MimeType MIME_TYPE = new MimeType("application/vnd.error+xml", "xml")
     public static final String ERRORS_TAG = "errors"
     public static final String ERROR_TAG = "error"
@@ -73,4 +74,5 @@ class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
             w.end()
         }
     }
+
 }

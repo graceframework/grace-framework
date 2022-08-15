@@ -73,7 +73,7 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
     @Override
     void render(T object, RenderContext context) {
         final mimeType = context.acceptMimeType ?: MimeType.JSON
-        context.setContentType( GrailsWebUtil.getContentType(mimeType.name, encoding) )
+        context.setContentType(GrailsWebUtil.getContentType(mimeType.name, encoding))
         def viewName = context.viewName ?: context.actionName
         final view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
         if (view && !(object instanceof Errors)) {
@@ -85,7 +85,6 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
             htmlRenderer.render((Object)object, context)
         } else {
             if (object instanceof Errors) {
-
                 context.setStatus(errorsHttpStatus)
             }
             renderJson(object, context)
@@ -115,4 +114,5 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
         converter.setIncludes(context.includes)
         converter.render(context.getWriter())
     }
+
 }

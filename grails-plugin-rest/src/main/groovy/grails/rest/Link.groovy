@@ -43,18 +43,22 @@ class Link implements Serializable {
      * The link relationship
      */
     final String rel
+
     /**
      * The link's href
      */
     final String href
+
     /**
      * The language of the linked resource
      */
     Locale hreflang
+
     /**
      * The content type of the linked resource
      */
     String contentType
+
     /**
      * The Human readable title of the resource
      */
@@ -77,18 +81,18 @@ class Link implements Serializable {
      * @return The link
      */
     static Link createLink(Map<String, Object> arguments) {
-
         final rel = arguments.rel ? arguments.rel.toString() : null
         final href = arguments.href ? arguments.href.toString() : null
-        def link = (Link)Link.newInstance(rel, href)
+        def link = (Link) Link.newInstance(rel, href)
 
         final remaining = arguments.subMap(['hreflang', 'contentType', 'title', 'deprecated', 'templated'])
-        for(entry in remaining.entrySet()) {
+        for (entry in remaining.entrySet()) {
             final value = entry.value
             if (value) {
-                ((GroovyObject)link).setProperty(entry.key, value)
+                ((GroovyObject) link).setProperty(entry.key, value)
             }
         }
         return link
     }
+
 }

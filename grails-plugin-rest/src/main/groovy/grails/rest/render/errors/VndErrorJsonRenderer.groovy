@@ -35,6 +35,7 @@ import org.springframework.http.HttpStatus
  */
 @CompileStatic
 class VndErrorJsonRenderer extends AbstractVndErrorRenderer {
+
     public static final MimeType MIME_TYPE = new MimeType("application/vnd.error+json", "json")
     public static final String LINKS_ATTRIBUTE = "_links"
     public static final String FOUR_SPACES = '    '
@@ -45,7 +46,6 @@ class VndErrorJsonRenderer extends AbstractVndErrorRenderer {
     void render(Errors object, RenderContext context) {
         if (messageSource == null) throw new IllegalStateException("messageSource property null")
         if (object instanceof BeanPropertyBindingResult) {
-
             context.setContentType(GrailsWebUtil.getContentType(MIME_TYPE.name, encoding))
             context.setStatus(HttpStatus.UNPROCESSABLE_ENTITY)
             Locale locale = context.locale
@@ -68,13 +68,13 @@ class VndErrorJsonRenderer extends AbstractVndErrorRenderer {
                         delegate.call(HREF_ATTRIBUTE, path)
                     }
                 }
-
             }
 
             targetWriter.flush()
-            if(prettyPrint) {
+            if (prettyPrint) {
                 responseWriter.write(JsonOutput.prettyPrint(targetWriter.toString()))
             }
         }
     }
+
 }

@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * A transform that makes it possible to attach {@link Link} instances to any class. Two methods are added, one called link(Map args) and another called links() to retrieve the links.
+ * A transform that makes it possible to attach {@link Link} instances to any class.
+ * Two methods are added, one called link(Map args) and another called links() to retrieve the links.
  *
  * Example:
  *
@@ -44,7 +45,6 @@ import java.lang.annotation.Target
  * @author Graeme Rocher
  * @since 2.3
  */
-
 @Retention(RetentionPolicy.SOURCE)
 @Target([ElementType.TYPE])
 @GroovyASTTransformationClass("org.grails.plugins.web.rest.transform.LinkableTransform")

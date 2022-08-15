@@ -97,7 +97,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     @Override
     final void render(T object, RenderContext context) {
         final mimeType = context.acceptMimeType ?: getMimeTypes()[0]
-        context.setContentType( GrailsWebUtil.getContentType(mimeType.name, encoding) )
+        context.setContentType(GrailsWebUtil.getContentType(mimeType.name, encoding))
 
         def viewName = context.viewName ?: context.actionName
         final view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
@@ -111,13 +111,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
         } else {
             renderInternal(object, context)
         }
-
     }
 
     abstract void renderInternal(T object, RenderContext context)
 
     protected boolean isDomainResource(Class clazz) {
-        if(mappingContext != null) {
+        if (mappingContext != null) {
             return mappingContext.isPersistentEntity(clazz)
         } else {
             DomainClassArtefactHandler.isDomainClass(clazz, true)
@@ -131,7 +130,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
 
     protected String getResourceTitle(String uri, Locale locale) {
         if (uri.startsWith('/')) uri = uri.substring(1)
-        if (uri.endsWith('/')) uri = uri.substring(0, uri.length()-1)
+        if (uri.endsWith('/')) uri = uri.substring(0, uri.length() - 1)
         uri = uri.replace('/', '.')
         messageSource.getMessage("resource.${uri}.href.title", [uri] as Object[], "", locale)
     }
@@ -144,14 +143,14 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
         return Collections.emptyList()
     }
 
-    protected Map<Association, Object> writeAssociationLinks(RenderContext context, object, Locale locale, writer, PersistentEntity entity, MetaClass metaClass) {
+    protected Map<Association, Object> writeAssociationLinks(RenderContext context, object, Locale locale, writer,
+                                                             PersistentEntity entity, MetaClass metaClass) {
         writeExtraLinks(object, locale, writer)
-
 
         Map<Association, Object> associationMap = [:]
         for (Association a in entity.associations) {
             final propertyName = a.name
-            if (!shouldIncludeProperty(context,object, propertyName)) {
+            if (!shouldIncludeProperty(context, object, propertyName)) {
                 continue
             }
             final associatedEntity = a.associatedEntity
@@ -176,12 +175,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
                 } else if (!(a instanceof Basic)) {
                     associationMap[a] = metaClass.getProperty(object, propertyName)
                 }
-
             } else if ((a instanceof ToOne) && (proxyHandler instanceof EntityProxyHandler)) {
                 if (associatedEntity) {
                     final proxy = mappingContext.getEntityReflector(a.owner).getProperty(object, propertyName)
                     final id = proxyHandler.getProxyIdentifier(proxy)
-                    final href = linkGenerator.link(resource: associatedEntity.decapitalizedName, id: id, method: HttpMethod.GET, absolute: absoluteLinks)
+                    final href = linkGenerator.link(resource: associatedEntity.decapitalizedName, id: id,
+                            method: HttpMethod.GET, absolute: absoluteLinks)
                     final associationTitle = getLinkTitle(associatedEntity, locale)
                     def link = new Link(propertyName, href)
                     link.title = associationTitle
@@ -209,7 +208,6 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
      * @return Any associations embedded within the object
      */
     protected void writeDomain(RenderContext context, MetaClass metaClass, PersistentEntity entity, Object object, writer) {
-
         if (entity) {
             for (PersistentProperty p in entity.persistentProperties) {
                 final propertyName = p.name
@@ -228,4 +226,5 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
 
     protected abstract void writeLink(Link link, Locale locale, writerObject)
     protected abstract  void writeDomainProperty(value, String propertyName, writer)
+
 }

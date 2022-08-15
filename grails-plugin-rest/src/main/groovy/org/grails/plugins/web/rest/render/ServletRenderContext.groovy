@@ -47,17 +47,17 @@ class ServletRenderContext extends AbstractRenderContext {
 
     ServletRenderContext(GrailsWebRequest webRequest, Map<String, Object> arguments) {
         this.webRequest = webRequest
-        if(arguments != null) {
+        if (arguments != null) {
             this.arguments = Collections.unmodifiableMap(arguments)
             final argsMap = arguments
             final incObject = argsMap != null ?  argsMap.get(IncludeExcludeSupport.INCLUDES_PROPERTY) : null
             final excObject = argsMap != null ? argsMap.get(IncludeExcludeSupport.EXCLUDES_PROPERTY) : null
             List<String> includes = incObject instanceof List ? (List<String>) incObject : null
             List<String> excludes = excObject instanceof List ? (List<String>) excObject : null
-            if(includes != null) {
+            if (includes != null) {
                 this.includes = includes
             }
-            if(excludes != null) {
+            if (excludes != null) {
                 this.excludes = excludes
             }
         }
@@ -65,7 +65,6 @@ class ServletRenderContext extends AbstractRenderContext {
             this.arguments = Collections.<String, Object> emptyMap()
         }
     }
-
 
     @Override
     String getResourcePath() {
@@ -169,4 +168,5 @@ class ServletRenderContext extends AbstractRenderContext {
     boolean wasWrittenTo() {
         return writerObtained
     }
+
 }

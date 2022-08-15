@@ -46,7 +46,7 @@ import org.springframework.validation.Errors
  * @since 2.3
  */
 @CompileStatic
-class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, RendererCacheKey> implements RendererRegistry{
+class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, RendererCacheKey> implements RendererRegistry {
 
     private Map<ContainerRendererCacheKey, Renderer> containerRenderers = new ConcurrentHashMap<>()
     private Cache<ContainerRendererCacheKey, Renderer<?>> containerRendererCache = Caffeine.newBuilder()
@@ -56,6 +56,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Autowired(required = false)
     GrailsConventionGroovyPageLocator groovyPageLocator
+
     @Autowired(required = false)
     ProxyHandler proxyHandler
 
@@ -88,7 +89,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Autowired(required = false)
     void setRenderers(Renderer[] renderers) {
-        for(Renderer r in renderers) {
+        for (Renderer r in renderers) {
             addRenderer(r)
         }
     }
@@ -106,7 +107,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Override
     void addDefaultRenderer(Renderer<Object> renderer) {
-        for(MimeType mt in renderer.mimeTypes) {
+        for (MimeType mt in renderer.mimeTypes) {
             registerDefault(mt, renderer)
             removeFromCache(renderer.getTargetType(), mt)
         }
@@ -114,7 +115,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Override
     void addContainerRenderer(Class objectType, Renderer renderer) {
-        for(MimeType mt in renderer.mimeTypes) {
+        for (MimeType mt in renderer.mimeTypes) {
             def key = new ContainerRendererCacheKey(renderer.getTargetType(), objectType, mt)
 
             containerRendererCache.invalidate(key)
@@ -145,18 +146,16 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
             def targetClass = originalTargetClass
 
             while (targetClass != null) {
-
                 renderer = containerRenderers.get(key)
                 if (renderer != null) break
                 else {
-
                     key = new ContainerRendererCacheKey(containerType, targetClass, mimeType)
                     renderer = containerRenderers.get(key)
                     if (renderer != null) break
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
                         final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
-                        for(Class i in containerInterfaces) {
+                        for (Class i in containerInterfaces) {
                             key = new ContainerRendererCacheKey(i, targetClass, mimeType)
                             renderer = containerRenderers.get(key)
                             if (renderer != null) break
@@ -171,14 +170,14 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                 //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
                 final interfaces = GrailsClassUtils.getAllInterfacesForClass(originalTargetClass)
             outer:
-                for(Class i in interfaces) {
+                for (Class i in interfaces) {
                     key = new ContainerRendererCacheKey(containerType, i, mimeType)
                     renderer = containerRenderers.get(key)
                     if (renderer) break
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
                         final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
-                        for(Class ci in containerInterfaces) {
+                        for (Class ci in containerInterfaces) {
                             key = new ContainerRendererCacheKey(ci, i, mimeType)
                             renderer = containerRenderers.get(key)
                             if (renderer != null) break outer
@@ -247,14 +246,19 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Canonical
     class RendererCacheKey {
+
         Class clazz
         MimeType mimeType
+
     }
 
     @Canonical
     class ContainerRendererCacheKey {
+
         Class containerType
         Class clazz
         MimeType mimeType
+
     }
+
 }

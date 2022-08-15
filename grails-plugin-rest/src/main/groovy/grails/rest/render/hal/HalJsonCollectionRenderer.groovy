@@ -20,7 +20,6 @@ import grails.util.GrailsNameUtils
 
 import grails.web.mime.MimeType
 
-
 /**
  * A HAL JSON renderer for a collection of objects
  *

@@ -68,13 +68,13 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
 
     @PostConstruct
     void registerCustomConverter() {
-
         def domain = grailsApplication != null ? grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, targetType.name) : null
 
         ObjectMarshaller<JSON> marshaller  = null
 
         if (domain) {
             DeepDomainClassMarshaller domainClassMarshaller = new DeepDomainClassMarshaller(false, proxyHandler, grailsApplication) {
+
                 @Override
                 protected boolean includesProperty(Object o, String property) {
                     return includes == null || includes.contains(property)
@@ -84,17 +84,20 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
                 protected boolean excludesProperty(Object o, String property) {
                     return excludes.contains(property)
                 }
+
             }
-            if(includes?.contains(GormProperties.VERSION)) {
+
+            if (includes?.contains(GormProperties.VERSION)) {
                 domainClassMarshaller.includeVersion = true
             }
-            if(includes?.contains('class')) {
+            if (includes?.contains('class')) {
                 domainClassMarshaller.includeClass = true
             }
 
             marshaller = domainClassMarshaller
-        } else if(!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
-            marshaller = (ObjectMarshaller<JSON>)new GroovyBeanMarshaller() {
+        } else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
+            marshaller = (ObjectMarshaller<JSON>) new GroovyBeanMarshaller() {
+
                 @Override
                 protected boolean includesProperty(Object o, String property) {
                     return includes == null || includes.contains(property)
@@ -104,10 +107,10 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
                 protected boolean excludesProperty(Object o, String property) {
                     return excludes.contains(property)
                 }
+
             }
         }
-        if(marshaller) {
-
+        if (marshaller) {
             registerCustomMarshaller(marshaller)
         }
     }
@@ -125,4 +128,5 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
         converter.setIncludes(includes != null ? includes : context.includes)
         converter.render(context.getWriter())
     }
+
 }

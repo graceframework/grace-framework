@@ -39,7 +39,6 @@ public interface RenderContext {
      */
     List<String> getExcludes()
 
-
     /**
      * @return Arguments passed by the user
      */
@@ -49,14 +48,17 @@ public interface RenderContext {
      * @return The path the the resource
      */
     String getResourcePath()
+
     /**
      * @return Returns the mime type accepted by the client or null if non specified
      */
     MimeType getAcceptMimeType()
+
     /**
      * @return The locale
      */
     Locale getLocale()
+
     /**
      * @return The writer to render to
      */
@@ -116,4 +118,5 @@ public interface RenderContext {
      * Returns true if the getWriter() method was called
      */
     boolean wasWrittenTo()
+
 }
