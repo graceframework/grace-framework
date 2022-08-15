@@ -40,6 +40,7 @@ import org.springframework.validation.FieldError
  */
 @CompileStatic
 trait Validateable {
+
     private BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
     private static Map<String, Constrained> constraintsMapInternal
 
@@ -86,7 +87,7 @@ trait Validateable {
             Map<String, grails.gorm.validation.ConstrainedProperty> evaluatedConstraints = evaluator.evaluate(this, defaultNullable())
 
             Map<String, Constrained> finalConstraints = [:]
-            for(entry in evaluatedConstraints) {
+            for (entry in evaluatedConstraints) {
                 finalConstraints.put(entry.key, new ConstrainedDelegate(entry.value))
             }
 
@@ -177,7 +178,8 @@ trait Validateable {
         boolean shouldInherit = Boolean.valueOf(params?.inherit?.toString() ?: 'true')
         org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator evaluator = findConstraintsEvaluator()
 
-        Map<String, grails.gorm.validation.ConstrainedProperty> constraints = evaluator.evaluate(this.class, defaultNullable(), !shouldInherit, adHocConstraintsClosures)
+        Map<String, grails.gorm.validation.ConstrainedProperty> constraints = evaluator.evaluate(this.class, defaultNullable(),
+                !shouldInherit, adHocConstraintsClosures)
 
         ValidationErrors localErrors = doValidate(constraints, fieldsToValidate)
 
@@ -225,7 +227,8 @@ trait Validateable {
     private static org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator findConstraintsEvaluator() {
         try {
             ApplicationContext ctx = Holders.applicationContext
-            org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator evaluator = ctx.getBean(org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator)
+            org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator evaluator =
+                    ctx.getBean(org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator)
             return evaluator
         } catch (Throwable e) {
             MessageSource messageSource = Holders.findApplicationContext() ?: new StaticMessageSource()
@@ -259,4 +262,5 @@ trait Validateable {
     static boolean defaultNullable() {
         false
     }
+
 }
