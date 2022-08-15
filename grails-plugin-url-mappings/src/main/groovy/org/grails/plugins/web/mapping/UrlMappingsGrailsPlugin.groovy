@@ -52,61 +52,63 @@ class UrlMappingsGrailsPlugin extends Plugin {
     def watchedResources = ["file:./grails-app/controllers/*UrlMappings.groovy"]
 
     def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [core:version]
+    def dependsOn = [core: version]
     def loadAfter = ['controllers']
 
-    Closure doWithSpring() { {->
-        def ctx = applicationContext
-        def application = grailsApplication
-        if(!application.getArtefacts(UrlMappingsArtefactHandler.TYPE)) {
-            application.addArtefact(UrlMappingsArtefactHandler.TYPE, DefaultUrlMappings)
-        }
+    Closure doWithSpring() {
+        { ->
+            def ctx = applicationContext
+            def application = grailsApplication
+            if (!application.getArtefacts(UrlMappingsArtefactHandler.TYPE)) {
+                application.addArtefact(UrlMappingsArtefactHandler.TYPE, DefaultUrlMappings)
+            }
 
-        def config = application.config
-        String serverURL = config.getProperty(Settings.SERVER_URL) ?: null
-        String urlConverterType = config.getProperty(Settings.WEB_URL_CONVERTER)
-        boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.current.isReloadEnabled()
-        boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean, !isReloadEnabled)
+            def config = application.config
+            String serverURL = config.getProperty(Settings.SERVER_URL) ?: null
+            String urlConverterType = config.getProperty(Settings.WEB_URL_CONVERTER)
+            boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.current.isReloadEnabled()
+            boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean, !isReloadEnabled)
 
-       "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter)
+            "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter)
 
-        boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean, true)
+            boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean, true)
 
-        grailsCorsConfiguration(GrailsCorsConfiguration)
+            grailsCorsConfiguration(GrailsCorsConfiguration)
 
-        urlMappingsHandlerMapping(UrlMappingsHandlerMapping, ref("grailsUrlMappingsHolder")) {
-            if (!corsFilterEnabled) {
-                grailsCorsConfiguration = ref("grailsCorsConfiguration")
+            urlMappingsHandlerMapping(UrlMappingsHandlerMapping, ref("grailsUrlMappingsHolder")) {
+                if (!corsFilterEnabled) {
+                    grailsCorsConfiguration = ref("grailsCorsConfiguration")
+                }
+            }
+
+            if (corsFilterEnabled) {
+                grailsCorsFilter(GrailsCorsFilter, ref("grailsCorsConfiguration"))
+            }
+
+            urlMappingsInfoHandlerAdapter(UrlMappingsInfoHandlerAdapter)
+            urlMappingsErrorPageCustomizer(UrlMappingsErrorPageCustomizer)
+            grailsLinkGenerator(cacheUrls ? CachingLinkGenerator : DefaultLinkGenerator, serverURL)
+
+            if (isReloadEnabled) {
+                urlMappingsTargetSource(UrlMappingsTargetSourceFactoryBean) {
+                    it.lazyInit = true
+                    it.role = "infrastructure"
+                    applicationContext = ctx
+                }
+                grailsUrlMappingsHolder(ProxyFactoryBean) {
+                    it.lazyInit = true
+                    it.role = "infrastructure"
+                    targetSource = urlMappingsTargetSource
+                    proxyInterfaces = [UrlMappings]
+                }
+            } else {
+                grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
+                    bean.lazyInit = true
+                    bean.role = "infrastructure"
+                }
             }
         }
-
-        if (corsFilterEnabled) {
-            grailsCorsFilter(GrailsCorsFilter, ref("grailsCorsConfiguration"))
-        }
-
-        urlMappingsInfoHandlerAdapter(UrlMappingsInfoHandlerAdapter)
-        urlMappingsErrorPageCustomizer(UrlMappingsErrorPageCustomizer)
-        grailsLinkGenerator(cacheUrls ? CachingLinkGenerator : DefaultLinkGenerator, serverURL)
-
-        if (isReloadEnabled) {
-            urlMappingsTargetSource(UrlMappingsTargetSourceFactoryBean) {
-                it.lazyInit = true
-                it.role = "infrastructure"
-                applicationContext = ctx
-            }
-            grailsUrlMappingsHolder(ProxyFactoryBean) {
-                it.lazyInit = true
-                it.role = "infrastructure"
-                targetSource = urlMappingsTargetSource
-                proxyInterfaces = [UrlMappings]
-            }
-        } else {
-            grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
-                bean.lazyInit = true
-                bean.role = "infrastructure"
-            }
-        }
-    }}
+    }
 
     @Override
     void onChange(Map<String, Object> event) {
@@ -138,8 +140,11 @@ class UrlMappingsGrailsPlugin extends Plugin {
 
     @CompileDynamic
     static class DefaultUrlMappings {
+
         static mappings = {
             "/$controller/$action?/$id?(.$format)?"()
         }
+
     }
+
 }
