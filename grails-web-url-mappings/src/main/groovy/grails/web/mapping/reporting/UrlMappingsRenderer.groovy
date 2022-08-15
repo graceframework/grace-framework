@@ -31,4 +31,5 @@ public interface UrlMappingsRenderer {
      * @param urlMappings The URL mappings
      */
     void render(List<UrlMapping> urlMappings)
+
 }

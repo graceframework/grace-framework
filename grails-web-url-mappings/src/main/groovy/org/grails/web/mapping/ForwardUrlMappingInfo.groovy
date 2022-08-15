@@ -49,7 +49,7 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
     void setParams(Map params) {
         if (params) {
             parameters = params
-        } 
+        }
     }
     public Map<String, Object> getParams() {
         return parameters;
@@ -70,4 +70,5 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
     UrlMappingData getUrlData() {
         null
     }
+
 }

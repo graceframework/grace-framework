@@ -22,14 +22,16 @@ package org.grails.web.mapping
  * @since 2.0
  */
 class DefaultUrlMappings {
+
     static Closure mappings = {
-        "/$controller/$action?/$id?"{
+        "/$controller/$action?/$id?" {
             constraints {
                 // apply constraints here
             }
         }
 
-        "/"(view:"/index")
-        "500"(view:'/error')
+        "/"(view: "/index")
+        "500"(view: '/error')
     }
+
 }

@@ -43,11 +43,13 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     ConcurrentHashMap<ControllerKey, GrailsControllerClass> mappingsToGrailsControllerMap = new ConcurrentHashMap<>()
     ConcurrentHashMap<ControllerKey, GrailsControllerClass> deferredMappings = new ConcurrentHashMap<>()
 
-    AbstractGrailsControllerUrlMappings(GrailsApplication grailsApplication, UrlMappings urlMappingsHolderDelegate, UrlConverter urlConverter = null) {
+    AbstractGrailsControllerUrlMappings(GrailsApplication grailsApplication,
+                                        UrlMappings urlMappingsHolderDelegate,
+                                        UrlConverter urlConverter = null) {
         this.urlMappingsHolderDelegate = urlMappingsHolderDelegate
         this.urlConverter = urlConverter
         def controllerArtefacts = grailsApplication.getArtefacts(ControllerArtefactHandler.TYPE)
-        for(GrailsClass gc in controllerArtefacts) {
+        for (GrailsClass gc in controllerArtefacts) {
             registerController((GrailsControllerClass)gc)
         }
 
@@ -75,17 +77,20 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     }
 
     @Override
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, String httpMethod, Map params) {
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, String httpMethod, Map params) {
         urlMappingsHolderDelegate.getReverseMapping(controller, action, namespace, pluginName, httpMethod, params)
     }
 
     @Override
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params) {
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, String httpMethod, String version, Map params) {
         urlMappingsHolderDelegate.getReverseMapping(controller, action, namespace, pluginName, httpMethod, version, params)
     }
 
     @Override
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, Map params) {
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, Map params) {
         urlMappingsHolderDelegate.getReverseMapping(controller, action, namespace, pluginName, params)
     }
 
@@ -100,12 +105,14 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     }
 
     @Override
-    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace, String pluginName, String httpMethod, Map params) {
+    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
+                                          String pluginName, String httpMethod, Map params) {
         urlMappingsHolderDelegate.getReverseMappingNoDefault(controller, action, namespace, pluginName, httpMethod, params)
     }
 
     @Override
-    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params) {
+    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
+                                          String pluginName, String httpMethod, String version, Map params) {
         urlMappingsHolderDelegate.getReverseMappingNoDefault(controller, action, namespace, pluginName, httpMethod, version, params)
     }
 
@@ -117,34 +124,34 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
 
     @Override
     UrlMappingInfo matchStatusCode(int responseCode) {
-        return collectControllerMapping( urlMappingsHolderDelegate.matchStatusCode(responseCode) )
+        return collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode))
     }
 
     @Override
     UrlMappingInfo matchStatusCode(int responseCode, Throwable e) {
-        return collectControllerMapping( urlMappingsHolderDelegate.matchStatusCode(responseCode, e) )
+        return collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode, e))
     }
-
 
     void registerController(GrailsControllerClass controller) {
         boolean hasUrlConverter = urlConverter != null
-        if(hasUrlConverter) {
+        if (hasUrlConverter) {
             controller.registerUrlConverter(urlConverter)
         }
-        def namespace = hasUrlConverter ? urlConverter.toUrlElement( controller.namespace ) : controller.namespace
-        def plugin = hasUrlConverter ? urlConverter.toUrlElement( controller.pluginName ) : controller.pluginName
+        def namespace = hasUrlConverter ? urlConverter.toUrlElement(controller.namespace) : controller.namespace
+        def plugin = hasUrlConverter ? urlConverter.toUrlElement(controller.pluginName) : controller.pluginName
         final boolean hasNamespace = namespace != null
         final boolean hasPlugin = plugin != null
 
-        def controllerName = hasUrlConverter ? urlConverter.toUrlElement( controller.logicalPropertyName ) : controller.logicalPropertyName
+        def controllerName = hasUrlConverter ? urlConverter.toUrlElement(controller.logicalPropertyName) : controller.logicalPropertyName
         String pluginNameToRegister = hasPlugin ? GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(plugin) : null
 
         def defaultActionKey = new ControllerKey(namespace, controllerName, null, pluginNameToRegister)
 
-
         mappingsToGrailsControllerMap.put(defaultActionKey, controller)
 
-        //Plugins should override others. Application controllers defaults should be deferred to ensure the right controller/action is chosen due to order being non deterministic
+        // Plugins should override others.
+        // Application controllers defaults should be deferred to ensure the right controller/action is chosen
+        // due to order being non deterministic
         Map<ControllerKey, GrailsControllerClass> mapToUse = plugin ? mappingsToGrailsControllerMap : deferredMappings
 
         if (hasNamespace) {
@@ -203,7 +210,8 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     }
 
     protected UrlMappingInfo collectControllerMapping(UrlMappingInfo info) {
-        GrailsControllerClass  controllerClass = info ? mappingsToGrailsControllerMap.get(new ControllerKey(info.namespace, info.controllerName, info.actionName, info.pluginName)) : null
+        GrailsControllerClass  controllerClass = info ? mappingsToGrailsControllerMap.get(
+                new ControllerKey(info.namespace, info.controllerName, info.actionName, info.pluginName)) : null
 
         if (controllerClass && info) {
             return new GrailsControllerUrlMappingInfo(controllerClass, info)
@@ -214,10 +222,12 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
 
     @Canonical
     static class ControllerKey {
+
         String namespace
         String controller
         String action
         String plugin
-    }
-}
 
+    }
+
+}

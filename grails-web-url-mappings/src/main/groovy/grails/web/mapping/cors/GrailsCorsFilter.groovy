@@ -50,4 +50,5 @@ class GrailsCorsFilter extends CorsFilter implements Ordered {
     int getOrder() {
         HIGHEST_PRECEDENCE
     }
+
 }

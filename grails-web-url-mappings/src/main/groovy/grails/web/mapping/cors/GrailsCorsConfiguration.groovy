@@ -46,7 +46,7 @@ class GrailsCorsConfiguration {
                 mappings.each { String key, Object value ->
                     GrailsDefaultCorsConfiguration corsConfiguration = new GrailsDefaultCorsConfiguration(grailsCorsMapping)
                     if (value instanceof Map) {
-                        TypeConvertingMap config = new TypeConvertingMap((Map)value)
+                        TypeConvertingMap config = new TypeConvertingMap((Map) value)
                         if (config.containsKey('allowedOrigins')) {
                             corsConfiguration.allowedOrigins = config.list('allowedOrigins')
                         }
@@ -75,4 +75,5 @@ class GrailsCorsConfiguration {
 
         corsConfigurationMap
     }
+
 }

@@ -36,6 +36,7 @@ import org.fusesource.jansi.Ansi
  */
 @CompileStatic
 class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
+
     public static final String DEFAULT_ACTION = '(default action)'
     PrintStream targetStream = System.out
     boolean isAnsiEnabled = GrailsConsole.getInstance().isAnsiEnabled()
@@ -50,7 +51,9 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
     @Override
     void render(List<UrlMapping> urlMappings) {
         final mappingsByController = urlMappings.groupBy { UrlMapping mapping -> mapping.controllerName }
-        def longestMapping = establishUrlPattern(urlMappings.max { UrlMapping mapping -> establishUrlPattern(mapping, false).length() }, false).length() + 5
+        def longestMapping = establishUrlPattern(urlMappings.max {
+            UrlMapping mapping -> establishUrlPattern(mapping, false).length()
+        }, false).length() + 5
         final longestActionName = urlMappings.max { UrlMapping mapping ->
             if (mapping?.actionName) {
                 return mapping?.actionName?.toString()?.length() ?: 0
@@ -74,10 +77,12 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
                 String actionName = urlMapping.actionName?.toString() ?: DEFAULT_ACTION
                 if (actionName && !urlMapping.viewName) {
-                    targetStream.println("${yellowBar()}${urlMapping.httpMethod.center(8)}${yellowBar()}${urlPattern}${yellowBar()}${bold('Action: ')}${actionName.padRight(longestAction)}${endBar()}")
+                    targetStream.println("${yellowBar()}${urlMapping.httpMethod.center(8)}${yellowBar()}${urlPattern}" +
+                            "${yellowBar()}${bold('Action: ')}${actionName.padRight(longestAction)}${endBar()}")
                 }
                 else if (urlMapping.viewName) {
-                    targetStream.println("${yellowBar()}${urlMapping.httpMethod.center(8)}${yellowBar()}${urlPattern}${yellowBar()}${bold('View:   ')}${urlMapping.viewName.toString().padRight(longestAction)}${endBar()}")
+                    targetStream.println("${yellowBar()}${urlMapping.httpMethod.center(8)}${yellowBar()}${urlPattern}" +
+                            "${yellowBar()}${bold('View:   ')}${urlMapping.viewName.toString().padRight(longestAction)}${endBar()}")
                 }
             }
             targetStream.println()
@@ -93,7 +98,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     protected String establishUrlPattern(UrlMapping urlMapping, boolean withAnsi = isAnsiEnabled, int padding = -1) {
         if (urlMapping instanceof ResponseCodeUrlMapping) {
-            def errorCode = "ERROR: "+ ((ResponseCodeMappingData)urlMapping.urlData).responseCode
+            def errorCode = "ERROR: " + ((ResponseCodeMappingData) urlMapping.urlData).responseCode
             if (withAnsi) {
                 return padAnsi(error(errorCode), errorCode, padding)
             }
@@ -107,7 +112,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
             boolean hasTokens = token.contains(UrlMapping.CAPTURED_WILDCARD) || token.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
             if (hasTokens) {
                 String finalToken = token
-                while(hasTokens) {
+                while (hasTokens) {
                     if (finalToken.contains(UrlMapping.CAPTURED_WILDCARD)) {
                         ConstrainedProperty constraint = (ConstrainedProperty)constraints[constraintIndex++]
                         def prop = '\\${' + constraint.propertyName + '}'
@@ -126,7 +131,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
                 urlPattern << token
             }
 
-            if (i < (tokens.length-1)) {
+            if (i < (tokens.length - 1)) {
                 urlPattern << UrlMapping.SLASH
             }
         }
@@ -201,4 +206,5 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
         }
         return " |"
     }
+
 }

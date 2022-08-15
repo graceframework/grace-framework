@@ -23,7 +23,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Commons
 
-
 /**
  * A {@link ApplicationCommand} that renders the URL mappings
  *
@@ -50,4 +49,5 @@ class UrlMappingsReportCommand implements ApplicationCommand {
             return false
         }
     }
+
 }

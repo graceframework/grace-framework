@@ -43,4 +43,5 @@ class LinkGeneratorFactory implements ApplicationContextAware {
     void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         urlMappingsFactory.applicationContext = applicationContext
     }
+
 }

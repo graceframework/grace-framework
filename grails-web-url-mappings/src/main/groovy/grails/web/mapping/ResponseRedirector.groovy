@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.RequestDataValueProcessor
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
 /**
  * Encapsulates the logic for issuing a redirect based on a Map of arguments
  *
@@ -63,17 +64,19 @@ class ResponseRedirector {
 
     void redirect(HttpServletRequest request, HttpServletResponse response, Map arguments) {
         if (request.getAttribute(GRAILS_REDIRECT_ISSUED)) {
-            throw new CannotRedirectException("Cannot issue a redirect(..) here. A previous call to redirect(..) has already redirected the response.")
+            throw new CannotRedirectException("Cannot issue a redirect(..) here. " +
+                    "A previous call to redirect(..) has already redirected the response.")
         }
 
         if (response.committed) {
-            throw new CannotRedirectException("Cannot issue a redirect(..) here. The response has already been committed either by another redirect or by directly writing to the response.")
+            throw new CannotRedirectException("Cannot issue a redirect(..) here. " +
+                    "The response has already been committed either by another redirect or by directly writing to the response.")
         }
 
         boolean permanent
 
         def permanentArgument = arguments.get(ARGUMENT_PERMANENT)
-        if(permanentArgument instanceof String) {
+        if (permanentArgument instanceof String) {
             permanent = Boolean.valueOf(permanentArgument)
         } else {
             permanent = Boolean.TRUE == permanentArgument
@@ -110,8 +113,10 @@ class ResponseRedirector {
     /*
      * Redirects the response the the given URI
      */
-    private void redirectResponse(String serverBaseURL, String actualUri, HttpServletRequest request, HttpServletResponse response, boolean permanent, boolean absolute) {
-        if(log.isDebugEnabled()) {
+    private void redirectResponse(String serverBaseURL, String actualUri,
+                                  HttpServletRequest request, HttpServletResponse response,
+                                  boolean permanent, boolean absolute) {
+        if (log.isDebugEnabled()) {
             log.debug "Method [redirect] forwarding request to [$actualUri]"
             log.debug "Executing redirect with response [$response]"
         }
@@ -140,11 +145,11 @@ class ResponseRedirector {
         request.setAttribute GRAILS_REDIRECT_ISSUED, processedActualUri
     }
 
-
     private String processedUrl(String link, HttpServletRequest request) {
         if (requestDataValueProcessor) {
             link = requestDataValueProcessor.processUrl(request, link)
         }
         return link
     }
+
 }

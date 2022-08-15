@@ -28,8 +28,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @since 3.0
  */
 @CompileStatic
-class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContextAware{
-
+class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContextAware {
 
     ApplicationContext applicationContext
 
@@ -48,30 +47,29 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
 
     @Override
     ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         UrlMappingInfo info = (UrlMappingInfo)handler
 
         GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
 
         boolean isAsyncRequest = WebUtils.isAsync(request) && !WebUtils.isError(request);
-        if(isAsyncRequest) {
+        if (isAsyncRequest) {
             Object modelAndView = request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW);
-            if(modelAndView instanceof ModelAndView) {
+            if (modelAndView instanceof ModelAndView) {
                 return (ModelAndView)modelAndView
             }
         }
         else {
-            if(info instanceof GrailsControllerUrlMappingInfo) {
+            if (info instanceof GrailsControllerUrlMappingInfo) {
                 GrailsControllerUrlMappingInfo controllerUrlMappingInfo = (GrailsControllerUrlMappingInfo)info
                 GrailsControllerClass controllerClass = controllerUrlMappingInfo.controllerClass
                 Object controller
 
                 def fullName = controllerClass.fullName
-                if( controllerClass.isSingleton() ) {
+                if (controllerClass.isSingleton()) {
                     controller = controllerCache.get(fullName)
-                    if(controller == null) {
+                    if (controller == null) {
                         controller = applicationContext ? applicationContext.getBean(fullName) : controllerClass.newInstance()
-                        if( !Environment.isReloadingAgentEnabled() ) {
+                        if (!Environment.isReloadingAgentEnabled()) {
                             // don't cache when reloading active
                             controllerCache.put(fullName, controller)
                         }
@@ -89,23 +87,23 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                 request.setAttribute(GrailsApplicationAttributes.CONTROLLER, controller)
                 def result = controllerClass.invoke(controller, action)
 
-                if(actionResultTransformers) {
-                    for(transformer in actionResultTransformers) {
+                if (actionResultTransformers) {
+                    for (transformer in actionResultTransformers) {
                         result = transformer.transformActionResult(webRequest, action, result)
                     }
                 }
 
                 def modelAndView = request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
-                if(modelAndView instanceof ModelAndView) {
+                if (modelAndView instanceof ModelAndView) {
                     return (ModelAndView) modelAndView
                 }
-                else if(result instanceof Map) {
+                else if (result instanceof Map) {
                     String viewName = controllerClass.actionUriToViewName(action)
                     def finalModel = new HashMap<String, Object>()
                     def flashScope = webRequest.getFlashScope()
-                    if(!flashScope.isEmpty()) {
+                    if (!flashScope.isEmpty()) {
                         def chainModel = flashScope.get(FlashScope.CHAIN_MODEL)
-                        if(chainModel instanceof Map) {
+                        if (chainModel instanceof Map) {
                             finalModel.putAll((Map)chainModel)
                         }
                     }
@@ -113,19 +111,18 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
 
                     return new ModelAndView(viewName, finalModel)
                 }
-                else if(result instanceof ModelAndView) {
+                else if (result instanceof ModelAndView) {
                     return (ModelAndView) result
-                } else if(result == null &&
-                          webRequest.renderView) {
+                } else if (result == null && webRequest.renderView) {
                     return new ModelAndView(controllerClass.actionUriToViewName(action))
                 }
             }
-            else if(info.viewName) {
+            else if (info.viewName) {
                 return new ModelAndView(info.viewName)
             }
-            else if(info.redirectInfo) {
+            else if (info.redirectInfo) {
                 def i = info.redirectInfo
-                if(i instanceof Map) {
+                if (i instanceof Map) {
                     redirector?.redirect((Map) i)
                 }
                 else {
@@ -139,5 +136,8 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
     }
 
     @Override
-    long getLastModified(HttpServletRequest request, Object handler) { -1 }
+    long getLastModified(HttpServletRequest request, Object handler) {
+        -1
+    }
+
 }

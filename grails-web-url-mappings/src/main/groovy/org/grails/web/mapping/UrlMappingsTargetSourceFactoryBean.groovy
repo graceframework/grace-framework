@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationContext
  */
 @CompileStatic
 class UrlMappingsTargetSourceFactoryBean extends HotSwappableTargetSourceFactoryBean {
+
     private GrailsApplication grailsApplication
     private GrailsPluginManager pluginManager
     private ApplicationContext applicationContext
@@ -56,6 +57,8 @@ class UrlMappingsTargetSourceFactoryBean extends HotSwappableTargetSourceFactory
     void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext
         setGrailsApplication(applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class))
-        setPluginManager(applicationContext.containsBean(GrailsPluginManager.BEAN_NAME) ? applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class) : null)
+        setPluginManager(applicationContext.containsBean(GrailsPluginManager.BEAN_NAME) ?
+                applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class) : null)
     }
+
 }

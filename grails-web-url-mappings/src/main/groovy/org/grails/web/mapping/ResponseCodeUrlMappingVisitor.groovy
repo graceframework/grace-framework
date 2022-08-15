@@ -22,10 +22,11 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.control.SourceUnit
 
 class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
+
     boolean insideMapping = false
     List<String> responseCodes = []
 
-    public void visitProperty(PropertyNode node){
+    public void visitProperty(PropertyNode node) {
         if (node?.name == "mappings") {
             insideMapping = true
         }
@@ -34,6 +35,7 @@ class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
             insideMapping = false
         }
     }
+
     public void visitMethodCallExpression(MethodCallExpression call) {
         if (insideMapping && call.methodAsString =~ /^\d{3}$/ && !responseCodes.contains(call.methodAsString)) {
             responseCodes << call.methodAsString
@@ -49,4 +51,5 @@ class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
     protected SourceUnit getSourceUnit() {
         return null;
     }
+
 }
