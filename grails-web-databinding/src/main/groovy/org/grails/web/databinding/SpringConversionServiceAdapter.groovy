@@ -37,4 +37,5 @@ class SpringConversionServiceAdapter implements ConversionService {
     def convert(Object object, Class<?> targetType) {
         springConversionService.convert object, targetType
     }
+
 }

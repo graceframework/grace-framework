@@ -25,9 +25,11 @@ import org.grails.databinding.bindingsource.DataBindingSourceCreationException;
  * @since 2.3
  */
 public class InvalidRequestBodyException extends DataBindingSourceCreationException {
+
     private static final long serialVersionUID = 1L;
 
     public InvalidRequestBodyException(Exception cause) {
         super(cause);
     }
+
 }

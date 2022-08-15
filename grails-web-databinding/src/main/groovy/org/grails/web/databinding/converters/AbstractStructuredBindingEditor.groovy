@@ -15,7 +15,6 @@
  */
 package org.grails.web.databinding.converters
 
-
 import grails.databinding.DataBindingSource;
 import grails.databinding.TypedStructuredBindingEditor;
 import groovy.transform.CompileStatic
@@ -25,23 +24,23 @@ import java.lang.reflect.ParameterizedType
 /**
  * An abstract base class for StructuredBindingEditor instances which can be auto-discovered
  * as beans in the Spring application context
- * 
+ *
  * @see StructuredBindingEditor
- * 
+ *
  * @since 2.3.4
  */
 @CompileStatic
 abstract class AbstractStructuredBindingEditor<T> implements TypedStructuredBindingEditor<T> {
 
-    final Class<T> targetType   
-     
+    final Class<T> targetType
+
     AbstractStructuredBindingEditor() {
         def superClass = getClass().genericSuperclass
         def type = (ParameterizedType) superClass
         def types = type.actualTypeArguments
         targetType = types[0]
     }
-    
+
     @Override
     public T getPropertyValue(Object obj, String propertyName, DataBindingSource bindingSource) {
         def propertyMap = getPropertyValuesMap(propertyName, bindingSource)
@@ -57,9 +56,9 @@ abstract class AbstractStructuredBindingEditor<T> implements TypedStructuredBind
      * in the resulting Map with a key that matches the original key with the propertyName
      * plus prefix removed.  For example, if propertyPrefix is &quot;address&quot; and
      * bindingSource contains the key &quot;address_city&quot; with a value of &quot;St. Louis&quot;
-     * then the resulting Map will contain an entry such that the key is &quot;city&quot; 
+     * then the resulting Map will contain an entry such that the key is &quot;city&quot;
      * with a value of &quot;St. Louis&quot;
-     *     
+     *
      * @param propertyPrefix The property name to extract structured values for
      * @param bindingSource the DataBindingSource to extract structured values from
      * @return A Map containing keys and values as described above.
@@ -67,12 +66,13 @@ abstract class AbstractStructuredBindingEditor<T> implements TypedStructuredBind
     Map<String, Object> getPropertyValuesMap(String propertyPrefix, DataBindingSource bindingSource) {
         def valuesMap = [:]
         def prefix = propertyPrefix + '_'
-        for(String key : bindingSource.propertyNames) {
-            if(key.startsWith(prefix) && key.size() > prefix.size()) {
+        for (String key : bindingSource.propertyNames) {
+            if (key.startsWith(prefix) && key.size() > prefix.size()) {
                 def propName = key[prefix.size()..-1]
                 valuesMap[propName] = bindingSource.getPropertyValue(key)
             }
         }
         valuesMap
     }
+
 }

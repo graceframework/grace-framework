@@ -28,6 +28,7 @@ import org.springframework.validation.BindingResult
  */
 @CompileStatic
 trait WebDataBinding {
+
     /**
      * Binds the source object to the properties of the target instance converting any types as necessary
      *
@@ -50,4 +51,5 @@ trait WebDataBinding {
     Map<?, ?> getProperties() {
         new DataBindingLazyMetaPropertyMap(this)
     }
+
 }

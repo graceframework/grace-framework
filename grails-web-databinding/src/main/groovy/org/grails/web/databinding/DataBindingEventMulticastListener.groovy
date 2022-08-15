@@ -70,8 +70,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
 
     @Override
     void afterBinding(obj, String propertyName, errors) {
-        if(listeners) {
-            for(DataBindingListener listener : listeners) {
+        if (listeners) {
+            for (DataBindingListener listener : listeners) {
                 try {
                     listener.afterBinding obj, propertyName, errors
                 } catch (Exception e) {
@@ -83,8 +83,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
 
     @Override
     void afterBinding(target, errors) {
-        if(listeners) {
-            for(DataBindingListener listener : listeners) {
+        if (listeners) {
+            for (DataBindingListener listener : listeners) {
                 try {
                     listener.afterBinding target, errors
                 } catch (Exception e) {
@@ -96,8 +96,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
 
     @Override
     void bindingError(BindingError error, errors) {
-        if(listeners) {
-            for(DataBindingListener listener : listeners) {
+        if (listeners) {
+            for (DataBindingListener listener : listeners) {
                 try {
                     listener.bindingError error, errors
                 } catch (Exception e) {
@@ -106,4 +106,5 @@ class DataBindingEventMulticastListener implements DataBindingListener {
             }
         }
     }
+
 }

@@ -27,6 +27,7 @@ import org.springframework.validation.FieldError
 
 @CompileStatic
 class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
+
     private final MessageSource messageSource
 
     GrailsWebDataBindingListener(MessageSource messageSource) {
@@ -64,4 +65,5 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
         }
         return resolvedPropertyName
     }
+
 }

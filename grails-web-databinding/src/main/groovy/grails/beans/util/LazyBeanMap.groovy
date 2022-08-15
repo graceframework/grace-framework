@@ -18,23 +18,27 @@ package grails.beans.util
 import groovy.transform.CompileStatic
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
 
-
 /**
- * <p>A map that backs onto a bean. The map is not initialized from the beans property values on creation, but instead lazily reads the values on demand.
- * No caching is applied, so each read results in a reflective call to retrieve the property. Users of this API should apply their own caching strategy if necessary.
+ * <p>A map that backs onto a bean. The map is not initialized from the beans property values on creation,
+ * but instead lazily reads the values on demand.
+ * No caching is applied, so each read results in a reflective call to retrieve the property.
+ * Users of this API should apply their own caching strategy if necessary.
  * </p>
  * <p>
- * Note that the {@link Map#values()} and {@link Map#entrySet()} implementations are expensive operations as they will read all properties of the target bean and should be used with caution.
+ * Note that the {@link Map#values()} and {@link Map#entrySet()} implementations are expensive operations
+ * as they will read all properties of the target bean and should be used with caution.
  * </p>
  * <p>
- * Additionally the {@link Map#remove(java.lang.Object)} and {@link Map#clear()} methods are not implemented and will throw {@link UnsupportedOperationException}.
+ * Additionally the {@link Map#remove(java.lang.Object)} and {@link Map#clear()} methods are not implemented
+ * and will throw {@link UnsupportedOperationException}.
  * </p>
  * @since 2.4
  * @author Graeme Rocher
  * @deprecated use {@link LazyMetaPropertyMap} instead
  */
 @CompileStatic
-class LazyBeanMap implements Map<String,Object>{
+class LazyBeanMap implements Map<String, Object> {
+
     final private ClassPropertyFetcher cpf
     final Object target
 
@@ -45,7 +49,7 @@ class LazyBeanMap implements Map<String,Object>{
      */
     LazyBeanMap(Object target) {
         this.target = target
-        if(target != null) {
+        if (target != null) {
             this.cpf = ClassPropertyFetcher.forClass(target.getClass())
         }
     }
@@ -56,7 +60,9 @@ class LazyBeanMap implements Map<String,Object>{
     }
 
     @Override
-    boolean isEmpty() { cpf ? false : true}
+    boolean isEmpty() {
+        cpf ? false : true
+    }
 
     @Override
     boolean containsKey(Object key) {
@@ -70,9 +76,9 @@ class LazyBeanMap implements Map<String,Object>{
 
     @Override
     def get(Object key) {
-        if(!cpf) return null
+        if (!cpf) return null
         def property = key.toString()
-        if(cpf.isReadableProperty(property))
+        if (cpf.isReadableProperty(property))
             cpf.getPropertyValue target, property
         else
             return null
@@ -80,7 +86,7 @@ class LazyBeanMap implements Map<String,Object>{
 
     @Override
     def put(String key, def value) {
-        if(!cpf) return null
+        if (!cpf) return null
         def old = get(key)
         def mc = GroovySystem.metaClassRegistry.getMetaClass(target.getClass())
         mc.setProperty(target, key, value)
@@ -94,8 +100,8 @@ class LazyBeanMap implements Map<String,Object>{
 
     @Override
     void putAll(Map<? extends String, ?> m) {
-        if(!cpf) return
-        for(String property in m.keySet()) {
+        if (!cpf) return
+        for (String property in m.keySet()) {
             put(property, m.get(property))
         }
     }
@@ -107,27 +113,36 @@ class LazyBeanMap implements Map<String,Object>{
 
     @Override
     Set<String> keySet() {
-        if(!cpf) return [] as Set<String>
+        if (!cpf) return [] as Set<String>
         else {
-            return new HashSet<String>( cpf.metaProperties.collect { MetaProperty pd -> pd.name} )
+            return new HashSet<String>(
+                    cpf.metaProperties.collect {
+                        MetaProperty pd -> pd.name
+                    }
+            )
         }
     }
 
     @Override
     Collection<Object> values() {
-        if(!cpf) return []
+        if (!cpf) return []
         else {
-            keySet().collect() { String property -> cpf.getPropertyValue(property) }
+            keySet().collect() {
+                String property -> cpf.getPropertyValue(property)
+            }
         }
     }
 
     @Override
     Set<Map.Entry<String, Object>> entrySet() {
-        if(!cpf) return [] as Set<Map.Entry<String, Object>>
+        if (!cpf) return [] as Set<Map.Entry<String, Object>>
         else {
             return new HashSet<Map.Entry<String, Object>>(
-                    keySet().collect() { String property -> new AbstractMap.SimpleEntry<String, Object>(property, cpf.getPropertyValue(property)) }
+                    keySet().collect() {
+                        String property -> new AbstractMap.SimpleEntry<String, Object>(property, cpf.getPropertyValue(property))
+                    }
             )
         }
     }
+
 }

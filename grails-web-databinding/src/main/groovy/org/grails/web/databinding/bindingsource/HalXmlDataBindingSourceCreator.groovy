@@ -40,4 +40,5 @@ class HalXmlDataBindingSourceCreator extends XmlDataBindingSourceCreator {
         def gpathMap = new HalGPathResultMap(gpath)
         return new SimpleMapDataBindingSource(gpathMap)
     }
+
 }

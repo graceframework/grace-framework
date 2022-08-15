@@ -32,7 +32,6 @@ import grails.web.mime.MimeType
 import org.grails.databinding.bindingsource.DataBindingSourceCreationException
 import org.springframework.beans.factory.annotation.Autowired
 
-
 /**
  * Creates DataBindingSource objects from JSON in the request body
  *
@@ -58,10 +57,10 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
 
     @Override
     DataBindingSource createDataBindingSource(MimeType mimeType, Class bindingTargetType, Object bindingSource) {
-        if(bindingSource instanceof Map) {
+        if (bindingSource instanceof Map) {
             return new SimpleMapDataBindingSource(createJsonMap(bindingSource))
         }
-        else if(bindingSource instanceof JSONObject) {
+        else if (bindingSource instanceof JSONObject) {
             return new SimpleMapDataBindingSource((JSONObject)bindingSource)
         }
         else {
@@ -71,10 +70,9 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
 
     @Override
     protected CollectionDataBindingSource createCollectionBindingSource(Reader reader) {
-
         Object jsonElement = jsonSlurper.parse(reader)
         def dataBindingSources = jsonElement.collect { element ->
-            if(element instanceof Map) {
+            if (element instanceof Map) {
                 new SimpleMapDataBindingSource(createJsonMap(element))
             }
             else {
@@ -82,9 +80,11 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
             }
         }
         return new CollectionDataBindingSource() {
+
             List<DataBindingSource> getDataBindingSources() {
                 (List<DataBindingSource>)dataBindingSources
             }
+
         }
     }
 
@@ -92,26 +92,24 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
     protected DataBindingSource createBindingSource(Reader reader) {
         final jsonElement = jsonSlurper.parse(reader)
 
-        if(jsonElement instanceof Map) {
+        if (jsonElement instanceof Map) {
             return new SimpleMapDataBindingSource(createJsonMap(jsonElement))
         }
         else {
             return new SimpleMapDataBindingSource(Collections.emptyMap())
         }
-
-
     }
 
     protected Map createJsonMap(Object jsonElement) {
         (Map) jsonElement
     }
 
-
     @Override
     protected DataBindingSourceCreationException createBindingSourceCreationException(Exception e) {
-        if(e instanceof JsonException) {
+        if (e instanceof JsonException) {
             return new InvalidRequestBodyException(e)
         }
         return super.createBindingSourceCreationException(e)
     }
+
 }
