@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.gradle.plugin.model
 
 import groovy.transform.CompileStatic
 
 @CompileStatic
 class DefaultGrailsClasspath implements GrailsClasspath {
+
     private static final long serialVersionUID = 1L
     List<URL> dependencies
     List<URL> profileDependencies
     String error
+
 }

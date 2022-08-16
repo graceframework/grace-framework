@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.gradle.plugin.model
 
 import groovy.transform.CompileStatic
@@ -25,6 +24,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 interface GrailsClasspath extends Serializable {
+
     /**
      * @return All Grails dependencies, pull from 'testRuntimeOnly' scope
      */
@@ -34,8 +34,10 @@ interface GrailsClasspath extends Serializable {
      * @return The profile dependencies
      */
     List<URL> getProfileDependencies()
+
     /**
      * @return The error message if one occurred
      */
     String getError()
+
 }
