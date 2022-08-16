@@ -41,7 +41,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
-import org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator
 
 import javax.servlet.DispatcherType
 import javax.servlet.MultipartConfigElement
