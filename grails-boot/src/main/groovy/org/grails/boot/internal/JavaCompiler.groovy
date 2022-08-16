@@ -22,7 +22,6 @@ import org.springframework.util.ClassUtils
 import javax.tools.ToolProvider
 import java.nio.charset.Charset
 
-
 /**
  * Helper for recompiling Java code at runtime
  *
@@ -40,7 +39,9 @@ class JavaCompiler {
         // compile java source
         javax.tools.JavaCompiler compiler = ToolProvider.getSystemJavaCompiler()
         def sfm = compiler.getStandardFileManager(null, null, Charset.forName('UTF-8'))
-        def compileTask = compiler.getTask(null, null, null, ['-d', config.targetDirectory.absolutePath], null, sfm.getJavaFileObjects(files))
+        def compileTask = compiler.getTask(null, null, null,
+                ['-d', config.targetDirectory.absolutePath], null, sfm.getJavaFileObjects(files))
         compileTask.call()
     }
+
 }

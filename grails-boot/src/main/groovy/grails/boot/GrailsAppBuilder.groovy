@@ -20,4 +20,5 @@ class GrailsAppBuilder extends SpringApplicationBuilder {
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class < ? > ... sources) {
         return new GrailsApp(resourceLoader, sources)
     }
+
 }

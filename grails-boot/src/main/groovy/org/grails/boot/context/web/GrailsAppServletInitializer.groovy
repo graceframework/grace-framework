@@ -18,4 +18,5 @@ abstract class GrailsAppServletInitializer extends SpringBootServletInitializer 
     protected SpringApplicationBuilder createSpringApplicationBuilder() {
         return new GrailsAppBuilder()
     }
+
 }

@@ -48,7 +48,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         try {
             // patch AopConfigUtils if possible
             Field field = AopConfigUtils.class.getDeclaredField(APC_PRIORITY_LIST_FIELD)
-            if(field != null) {
+            if (field != null) {
                 field.setAccessible(true)
                 Object obj = field.get(null)
                 List<Class<?>> list = (List<Class<?>>) obj
@@ -63,7 +63,8 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
     ApplicationContext applicationContext
 
     /**
-     * @return A post processor that uses the {@link grails.plugins.GrailsPluginManager} to configure the {@link org.springframework.context.ApplicationContext}
+     * @return A post processor that uses the {@link grails.plugins.GrailsPluginManager}
+     * to configure the {@link org.springframework.context.ApplicationContext}
      */
     @Bean
     GrailsApplicationPostProcessor grailsApplicationPostProcessor() {
@@ -77,7 +78,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         Collection<Class> classes = new HashSet()
 
         ClassPathScanner scanner = new ClassPathScanner()
-        if(limitScanningToApplication()) {
+        if (limitScanningToApplication()) {
             classes.addAll scanner.scan(getClass(), packageNames())
         }
         else {
@@ -85,7 +86,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         }
 
         ClassLoader classLoader = getClass().getClassLoader()
-        for(cls in AbstractGrailsArtefactTransformer.transformedClassNames) {
+        for (cls in AbstractGrailsArtefactTransformer.transformedClassNames) {
             try {
                 classes << classLoader.loadClass(cls)
             } catch (ClassNotFoundException cnfe) {
@@ -97,8 +98,8 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
     }
 
     /**
-     * Whether classpath scanning should be limited to the application and not dependent JAR files. Users can override this method to enable more broad scanning
-     * at the cost of startup time.
+     * Whether classpath scanning should be limited to the application and not dependent JAR files.
+     * Users can override this method to enable more broad scanning at the cost of startup time.
      *
      * @return True if scanning should be limited to the application and should not include dependant JAR files
      */
@@ -111,7 +112,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      */
     Collection<Package> packages() {
         def thisPackage = getClass().package
-        thisPackage ? [ thisPackage ] : new ArrayList<Package>()
+        thisPackage ? [thisPackage] : new ArrayList<Package>()
     }
 
     /**

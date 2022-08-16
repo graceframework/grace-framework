@@ -41,8 +41,8 @@ import java.lang.annotation.Annotation
 @Slf4j
 @CompileStatic
 class ClassPathScanner {
-    private static final List DEFAULT_IGNORED_ROOT_PACKAGES = ['com', 'org', 'net', 'co', 'java', 'javax', 'groovy']
 
+    private static final List DEFAULT_IGNORED_ROOT_PACKAGES = ['com', 'org', 'net', 'co', 'java', 'javax', 'groovy']
 
     /**
      * Scans for classes relative to the given class
@@ -52,7 +52,7 @@ class ClassPathScanner {
      * @return A set of classes
      */
     Set<Class> scan(Class applicationClass) {
-        return scan(applicationClass,[applicationClass.package.name])
+        return scan(applicationClass, [applicationClass.package.name])
     }
 
     /**
@@ -64,7 +64,7 @@ class ClassPathScanner {
      * @return A set of classes
      */
     Set<Class> scan(Class applicationClass, Class<? extends Annotation> annotationFilter) {
-        return scan(applicationClass,[applicationClass.package.name], annotationFilter)
+        return scan(applicationClass, [applicationClass.package.name], annotationFilter)
     }
 
     /**
@@ -75,8 +75,8 @@ class ClassPathScanner {
      *
      * @return A set of classes
      */
-    Set<Class> scan(Class applicationClass, Closure<Boolean> annotationFilter ) {
-        return scan(applicationClass,[applicationClass.package.name], annotationFilter)
+    Set<Class> scan(Class applicationClass, Closure<Boolean> annotationFilter) {
+        return scan(applicationClass, [applicationClass.package.name], annotationFilter)
     }
     /**
      * Scans for classes relative to the given class
@@ -102,9 +102,10 @@ class ClassPathScanner {
      * @param packageNames The package names to scan
      * @return A set of classes
      */
-    Set<Class> scan(Class applicationClass, Collection<String> packageNames, Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
+    Set<Class> scan(Class applicationClass, Collection<String> packageNames,
+                    Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         ResourcePatternResolver resourcePatternResolver = new GrailsClasspathIgnoringResourceResolver(applicationClass)
-        return scan(applicationClass.getClassLoader(), resourcePatternResolver,packageNames, annotationFilter)
+        return scan(applicationClass.getClassLoader(), resourcePatternResolver, packageNames, annotationFilter)
     }
 
     /**
@@ -114,7 +115,8 @@ class ClassPathScanner {
      * @param packageNames The package names
      * @return The found classes
      */
-    Set<Class> scan(ResourcePatternResolver resourcePatternResolver, Collection<String> packageNames, Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
+    Set<Class> scan(ResourcePatternResolver resourcePatternResolver, Collection<String> packageNames,
+                    Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         ClassLoader classLoader = resourcePatternResolver.getClassLoader()
         return scan(classLoader, resourcePatternResolver, packageNames, annotationFilter)
     }
@@ -128,7 +130,8 @@ class ClassPathScanner {
      * @param annotationFilter The filter
      * @return The classes
      */
-    Set<Class> scan(ClassLoader classLoader, ResourcePatternResolver resourcePatternResolver, Collection<String> packageNames, Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
+    Set<Class> scan(ClassLoader classLoader, ResourcePatternResolver resourcePatternResolver, Collection<String> packageNames,
+                    Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         Set<Class> classes = []
         for (String pkg in packageNames.unique()) {
             if (pkg == null) continue
@@ -136,7 +139,7 @@ class ClassPathScanner {
                 continue
             }
 
-            if(pkg == "") {
+            if (pkg == "") {
                 // try the default package in case of a script without recursing into subpackages
                 log.warn("The application defines a Groovy source using the default package. Please move all Groovy sources into a package.")
                 String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +  "*.class"
@@ -170,7 +173,8 @@ class ClassPathScanner {
         DEFAULT_IGNORED_ROOT_PACKAGES
     }
 
-    private void scanUsingPattern(ResourcePatternResolver resourcePatternResolver, String pattern, ClassLoader classLoader, Closure<Boolean> annotationFilter, Set<Class> classes) {
+    private void scanUsingPattern(ResourcePatternResolver resourcePatternResolver, String pattern,
+                                  ClassLoader classLoader, Closure<Boolean> annotationFilter, Set<Class> classes) {
         def resources = resourcePatternResolver.getResources(pattern)
         for (Resource res in resources) {
             // ignore closures / inner classes
@@ -183,7 +187,6 @@ class ClassPathScanner {
             }
         }
     }
-
 
     @CompileStatic
     @InheritConstructors
@@ -200,13 +203,11 @@ class ClassPathScanner {
             ClassLoader cl = getClassLoader()
             Enumeration<URL> resourceUrls = (cl != null ? cl.getResources(path) : ClassLoader.getSystemResources(path))
             while (resourceUrls.hasMoreElements()) {
-
                 URL url = resourceUrls.nextElement()
                 // if the path is from a JAR file ignore, plugins inside JAR files will have their own mechanism for loading
-                if(!url.path.contains('jar!/grails/')) {
+                if (!url.path.contains('jar!/grails/')) {
                     result.add(convertClassLoaderURL(url))
                 }
-
             }
             return result
         }
@@ -239,7 +240,6 @@ class ClassPathScanner {
             try {
                 URL withoutBang = new URL("${urlStr.substring(0, urlStr.length() - 2)}/")
                 addURL(withoutBang)
-
             } catch (MalformedURLException e) {
                 // ignore, running as a WAR
             }
@@ -247,7 +247,7 @@ class ClassPathScanner {
 
         @Override
         Enumeration<URL> getResources(String name) throws IOException {
-            if(jarDeployed && name == '') {
+            if (jarDeployed && name == '') {
                 return applicationClass.getClassLoader().getResources(name)
             }
             else {
@@ -263,5 +263,7 @@ class ClassPathScanner {
                 return applicationClass.getClassLoader().loadClass(name)
             }
         }
+
     }
+
 }

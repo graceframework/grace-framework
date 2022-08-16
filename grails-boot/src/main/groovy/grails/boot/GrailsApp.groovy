@@ -106,7 +106,7 @@ class GrailsApp extends SpringApplication {
         log.debug("Application directory discovered as: {}", IOUtils.findApplicationDirectory())
         log.debug("Current base directory is [{}]. Reloading base directory is [{}]", new File("."), BuildSettings.BASE_DIR)
 
-        if(environment.isReloadEnabled()) {
+        if (environment.isReloadEnabled()) {
             log.debug("Reloading status: {}", environment.isReloadEnabled())
             enableDevelopmentModeWatch(environment, applicationContext)
             environment.isDevtoolsRestart()
@@ -121,7 +121,7 @@ class GrailsApp extends SpringApplication {
         setAllowCircularReferences(true)
         ConfigurableApplicationContext applicationContext = super.createApplicationContext()
 
-        if(enableBeanCreationProfiler) {
+        if (enableBeanCreationProfiler) {
             def processor = new BeanCreationProfilingPostProcessor()
             applicationContext.getBeanFactory().addBeanPostProcessor(processor)
             applicationContext.addApplicationListener(processor)
@@ -147,13 +147,14 @@ class GrailsApp extends SpringApplication {
     protected void enableDevelopmentModeWatch(Environment environment, ConfigurableApplicationContext applicationContext, String... args) {
         def location = environment.getReloadLocation()
 
-        if(location) {
+        if (location) {
             directoryWatcher = new DirectoryWatcher()
 
             Queue<File> changedFiles = new ConcurrentLinkedQueue<>()
             Queue<File> newFiles = new ConcurrentLinkedQueue<>()
 
             directoryWatcher.addListener(new FileExtensionFileChangeListener(['groovy', 'java']) {
+
                 @Override
                 void onChange(File file, List<String> extensions) {
                     changedFiles << file.canonicalFile
@@ -164,11 +165,12 @@ class GrailsApp extends SpringApplication {
                     changedFiles << file.canonicalFile
                     // For some bizarro reason Windows fires onNew events even for files that have
                     // just been modified and not created
-                    if(System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
+                    if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
                         return
                     }
                     newFiles << file.canonicalFile
                 }
+
             })
 
             def pluginManager = applicationContext.getBean(GrailsPluginManager)
@@ -178,35 +180,34 @@ class GrailsApp extends SpringApplication {
             File baseDir = new File(location).canonicalFile
             String baseDirPath = baseDir.canonicalPath
             List<File> watchBaseDirectories = [baseDir]
-            for(GrailsPlugin plugin in pluginManager.allPlugins) {
-                if(plugin instanceof BinaryGrailsPlugin) {
+            for (GrailsPlugin plugin in pluginManager.allPlugins) {
+                if (plugin instanceof BinaryGrailsPlugin) {
                     BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin)plugin
                     def pluginDirectory = binaryGrailsPlugin.projectDirectory
-                    if(pluginDirectory != null) {
+                    if (pluginDirectory != null) {
                         watchBaseDirectories << pluginDirectory
                     }
                 }
             }
 
-            for(dir in watchBaseDirectories) {
+            for (dir in watchBaseDirectories) {
                 configureDirectoryWatcher(directoryWatcher, dir.absolutePath)
             }
 
-            for(GrailsPlugin plugin in pluginManager.allPlugins) {
+            for (GrailsPlugin plugin in pluginManager.allPlugins) {
                 def watchedResourcePatterns = plugin.getWatchedResourcePatterns()
-                if(watchedResourcePatterns != null) {
-
-                    for(WatchPattern wp in new ArrayList<WatchPattern>(watchedResourcePatterns)) {
+                if (watchedResourcePatterns != null) {
+                    for (WatchPattern wp in new ArrayList<WatchPattern>(watchedResourcePatterns)) {
                         boolean first = true
-                        for(watchBase in watchBaseDirectories) {
-                            if(!first) {
-                                if(wp.file != null) {
+                        for (watchBase in watchBaseDirectories) {
+                            if (!first) {
+                                if (wp.file != null) {
                                     String relativePath = wp.file.canonicalPath - baseDirPath
                                     File watchFile = new File(watchBase, relativePath)
                                     // the base project will already been in the list of watch patterns, but we add any subprojects here
                                     plugin.watchedResourcePatterns.add(new WatchPattern(file: watchFile, extension: wp.extension))
                                 }
-                                else if(wp.directory != null) {
+                                else if (wp.directory != null) {
                                     String relativePath = wp.directory.canonicalPath - baseDirPath
                                     File watchDir = new File(watchBase, relativePath)
                                     // the base project will already been in the list of watch patterns, but we add any subprojects here
@@ -214,12 +215,12 @@ class GrailsApp extends SpringApplication {
                                 }
                             }
                             first = false
-                            if(wp.file) {
+                            if (wp.file) {
                                 String relativePath = wp.file.canonicalPath - baseDirPath
                                 def resolvedPath = new File(watchBase, relativePath)
                                 directoryWatcher.addWatchFile(resolvedPath)
                             }
-                            else if(wp.directory && wp.extension) {
+                            else if (wp.directory && wp.extension) {
                                 String relativePath = wp.directory.canonicalPath - baseDirPath
                                 def resolvedPath = new File(watchBase, relativePath)
                                 directoryWatcher.addWatchDirectory(resolvedPath, wp.extension)
@@ -229,42 +230,40 @@ class GrailsApp extends SpringApplication {
                 }
             }
 
-
             developmentModeActive = true
             Thread.start {
                 CompilerConfiguration compilerConfig = new CompilerConfiguration()
                 compilerConfig.setTargetDirectory(new File(location, BuildSettings.BUILD_CLASSES_PATH))
 
-                while(isDevelopmentModeActive()) {
+                while (isDevelopmentModeActive()) {
                     // Workaround for some IDE / OS combos - 2 events (new + update) for the same file
                     def uniqueChangedFiles = changedFiles as Set
 
-
                     def i = uniqueChangedFiles.size()
                     try {
-                        if(i > 1) {
+                        if (i > 1) {
                             changedFiles.clear()
-                            for(f in uniqueChangedFiles) {
+                            for (f in uniqueChangedFiles) {
                                 recompile(f, compilerConfig, location)
-                                if(newFiles.contains(f)) {
+                                if (newFiles.contains(f)) {
                                     newFiles.remove(f)
                                 }
                                 pluginManager.informOfFileChange(f)
                                 sleep 1000
                             }
                         }
-                        else if(i == 1) {
+                        else if (i == 1) {
                             changedFiles.clear()
                             def changedFile = uniqueChangedFiles[0]
                             changedFile = changedFile.canonicalFile
                             // Groovy files within the 'conf' directory are not compiled
                             String confPath = "${File.separator}grails-app${File.separator}conf${File.separator}"
-                            if(changedFile.path.contains(confPath)) {
+                            if (changedFile.path.contains(confPath)) {
                                 pluginManager.informOfFileChange(changedFile)
                             }
                             else {
                                 recompile(changedFile, compilerConfig, location)
-                                if(newFiles.contains(changedFile)) {
+                                if (newFiles.contains(changedFile)) {
                                     newFiles.remove(changedFile)
                                 }
                                 pluginManager.informOfFileChange(changedFile)
@@ -278,7 +277,6 @@ class GrailsApp extends SpringApplication {
 
                     sleep 1000
                 }
-
             }
             directoryWatcher.start()
         }
@@ -290,7 +288,7 @@ class GrailsApp extends SpringApplication {
 
     static void setDevelopmentModeActive(boolean active) {
         developmentModeActive = active
-        if(directoryWatcher != null) {
+        if (directoryWatcher != null) {
             directoryWatcher.active = active
         }
     }
@@ -305,18 +303,19 @@ class GrailsApp extends SpringApplication {
         if (changedPath.contains(grailsAppDir)) {
             appDir = new File(changedPath.substring(0, changedPath.indexOf(grailsAppDir)))
         }
-        else if(changedPath.contains(sourceMainGroovy)) {
+        else if (changedPath.contains(sourceMainGroovy)) {
             appDir = new File(changedPath.substring(0, changedPath.indexOf(sourceMainGroovy)))
         }
         def baseFileLocation = appDir?.absolutePath ?: location
         compilerConfig.setTargetDirectory(new File(baseFileLocation, BuildSettings.BUILD_CLASSES_PATH))
         println "File $changedFile changed, recompiling..."
-        if(changedFile.name.endsWith('.java')) {
-            if(JavaCompiler.isAvailable()) {
+        if (changedFile.name.endsWith('.java')) {
+            if (JavaCompiler.isAvailable()) {
                 JavaCompiler.recompile(compilerConfig, changedFile)
             }
             else {
-                log.error("Cannot recompile [$changedFile.name], the current JVM is not a JDK (recompilation will not work on a JRE missing the compiler APIs).")
+                log.error("Cannot recompile [$changedFile.name], " +
+                        "the current JVM is not a JDK (recompilation will not work on a JRE missing the compiler APIs).")
             }
         }
         else {
@@ -345,19 +344,21 @@ class GrailsApp extends SpringApplication {
     protected static DirectoryWatcher.FileChangeListener createPluginManagerListener(ConfigurableApplicationContext applicationContext) {
         def pluginManager = applicationContext.getBean(GrailsPluginManager)
         return new DirectoryWatcher.FileChangeListener() {
+
             @Override
             void onChange(File file) {
-                if(!file.name.endsWith('.groovy') && !file.name.endsWith('.java')) {
+                if (!file.name.endsWith('.groovy') && !file.name.endsWith('.java')) {
                     pluginManager.informOfFileChange(file)
                 }
             }
 
             @Override
             void onNew(File file) {
-                if(!file.name.endsWith('.groovy') && !file.name.endsWith('.java')) {
+                if (!file.name.endsWith('.groovy') && !file.name.endsWith('.java')) {
                     pluginManager.informOfFileChange(file)
                 }
             }
+
         }
     }
 
@@ -414,4 +415,5 @@ class GrailsApp extends SpringApplication {
         grailsApp.banner = new ResourceBanner(new ClassPathResource(GRAILS_BANNER))
         return grailsApp.run(args)
     }
+
 }

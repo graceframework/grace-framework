@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.boot.config.tools
 
 import groovy.transform.CompileStatic
-
 
 /**
  * Used to interpret the Gradle settings.gradle file
@@ -27,7 +25,6 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 abstract class SettingsFile extends Script {
-
 
     void include(String[] projectPaths) {
         binding.setVariable("projectPaths", projectPaths)
@@ -44,4 +41,5 @@ abstract class SettingsFile extends Script {
     def propertyMissing(String name) {
         // ignore
     }
+
 }
