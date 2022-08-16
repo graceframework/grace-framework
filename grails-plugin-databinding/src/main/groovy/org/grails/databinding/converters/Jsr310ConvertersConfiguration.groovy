@@ -20,7 +20,13 @@ import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
 import org.grails.plugins.databinding.DataBindingConfigurationProperties
 
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.OffsetTime
+import java.time.Period
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class Jsr310ConvertersConfiguration {
