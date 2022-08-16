@@ -25,7 +25,11 @@ import groovy.xml.slurpersupport.GPathResult
 import org.grails.databinding.ClosureValueConverter
 import org.grails.databinding.ClosureValueInitializer
 import org.grails.databinding.IndexedPropertyReferenceDescriptor
-import org.grails.databinding.converters.*
+import org.grails.databinding.converters.ConversionService
+import org.grails.databinding.converters.FormattedDateValueConverter
+import org.grails.databinding.converters.StructuredCalendarBindingEditor
+import org.grails.databinding.converters.StructuredDateBindingEditor
+import org.grails.databinding.converters.StructuredSqlDateBindingEditor
 import org.grails.databinding.errors.SimpleBindingError
 import org.grails.databinding.xml.GPathResultMap
 
