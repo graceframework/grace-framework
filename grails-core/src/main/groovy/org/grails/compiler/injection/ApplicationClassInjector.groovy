@@ -40,8 +40,15 @@ import org.grails.core.artefact.ApplicationArtefactHandler
 import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.UrlResource
 import org.springframework.util.ClassUtils
-import static org.codehaus.groovy.ast.tools.GeneralUtils.*
+
 import java.lang.reflect.Modifier
+
+import static org.codehaus.groovy.ast.tools.GeneralUtils.args
+import static org.codehaus.groovy.ast.tools.GeneralUtils.callX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.classX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.constX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.propX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.stmt
 
 /**
  * Injector for the 'Application' class
@@ -94,7 +101,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                 def methodCallStatement = new ExpressionStatement(enableAgentMethodCall)
 
                 List<Statement> statements = [
-                        stmt(callX(classX(System), "setProperty", args(propX( classX(BuildSettings), "MAIN_CLASS_NAME"),
+                        stmt(callX(classX(System), "setProperty", args(propX(classX(BuildSettings), "MAIN_CLASS_NAME"),
                                 constX(classNode.name)))),
                         methodCallStatement
                 ]

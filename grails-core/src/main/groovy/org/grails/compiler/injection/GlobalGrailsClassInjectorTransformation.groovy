@@ -20,7 +20,11 @@ import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-import org.codehaus.groovy.ast.*
+import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilePhase

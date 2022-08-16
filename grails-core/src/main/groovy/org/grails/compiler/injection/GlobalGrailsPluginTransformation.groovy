@@ -25,7 +25,11 @@ import groovy.xml.MarkupBuilder
 import groovy.xml.StreamingMarkupBuilder
 import groovy.xml.XmlSlurper
 import groovy.xml.slurpersupport.GPathResult
-import org.codehaus.groovy.ast.*
+import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.ModuleNode
+import org.codehaus.groovy.ast.PropertyNode
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilePhase
@@ -89,8 +93,8 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
 
                 if (!classNode.getProperty("version")) {
                     classNode.addProperty(new PropertyNode("version", Modifier.PUBLIC,
-                                ClassHelper.make(Object), classNode,
-                                new ConstantExpression(projectVersion) , null, null))
+                            ClassHelper.make(Object), classNode,
+                            new ConstantExpression(projectVersion), null, null))
                 }
 
                 continue
