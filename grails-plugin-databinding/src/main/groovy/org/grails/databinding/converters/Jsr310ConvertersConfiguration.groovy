@@ -20,6 +20,7 @@ import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
 import org.grails.plugins.databinding.DataBindingConfigurationProperties
 
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
