@@ -31,4 +31,5 @@ class GrailsApplicationContextLoader extends SpringBootContextLoader {
     protected SpringApplication getSpringApplication() {
         return new GrailsApp()
     }
+
 }

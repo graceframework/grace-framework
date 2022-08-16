@@ -45,4 +45,5 @@ class GrailsMockHttpSession extends MockHttpSession {
     void putAt(String name, Object value) {
         super.setAttribute(name, value)
     }
+
 }

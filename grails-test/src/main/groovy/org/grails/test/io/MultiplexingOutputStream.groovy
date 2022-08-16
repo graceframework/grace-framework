@@ -27,8 +27,9 @@ class MultiplexingOutputStream extends OutputStream {
     }
 
     void write(int b) {
-        for(OutputStream out in streams) {
+        for (OutputStream out in streams) {
             out.write(b)
         }
     }
+
 }

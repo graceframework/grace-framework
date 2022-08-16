@@ -18,6 +18,7 @@ package org.grails.test.support
 import org.springframework.context.ApplicationContext
 
 class GrailsTestMode {
+
     boolean autowire = false
     boolean wrapInRequestEnvironment = false
     boolean wrapInTransaction = false
@@ -25,4 +26,5 @@ class GrailsTestMode {
     GrailsTestInterceptor createInterceptor(Object test, ApplicationContext appCtx, String[] testClassSuffixes) {
         new GrailsTestInterceptor(test, this, appCtx, testClassSuffixes)
     }
+
 }

@@ -48,7 +48,8 @@ class SystemOutAndErrSwapper {
     boolean isSwapped() {
         return swapped
     }
-/**
+
+    /**
      * Replaces System.out and System.err with PrintStream's wrapping outStream and errStream
      *
      * @return [outStream, errStream]
@@ -116,13 +117,13 @@ class SystemOutAndErrSwapper {
 
     @CompileStatic
     static class TestOutputCapturingPrintStream extends GrailsConsolePrintStream {
+
         BufferedWriter textOut
 
         TestOutputCapturingPrintStream(PrintStream out) {
             super(out)
             textOut = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"))
         }
-
 
         @Override
         void print(Object o) {
@@ -152,7 +153,6 @@ class SystemOutAndErrSwapper {
             } catch (IOException e) {
                 setError()
             }
-
         }
 
         @Override
@@ -165,5 +165,7 @@ class SystemOutAndErrSwapper {
                 setError()
             }
         }
+
     }
+
 }

@@ -40,11 +40,13 @@ class GrailsTestAutowirer {
         beanFactory.autowireBeanProperties(bean, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
         beanFactory.initializeBean(bean, bean.class.name)
 
-        def annotationProcessor = beanFactory.createBean(AutowiredAnnotationBeanPostProcessor, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
+        def annotationProcessor = beanFactory.createBean(AutowiredAnnotationBeanPostProcessor,
+                AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
         annotationProcessor.processInjection(bean)
 
         if (bean instanceof ApplicationContextAware && applicationContext != null) {
             bean.setApplicationContext(applicationContext)
         }
     }
+
 }

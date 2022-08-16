@@ -101,4 +101,5 @@ class GrailsTestInterceptor {
     protected GrailsTestRequestEnvironmentInterceptor createRequestEnvironmentInterceptor() {
         new GrailsTestRequestEnvironmentInterceptor(appCtx)
     }
+
 }

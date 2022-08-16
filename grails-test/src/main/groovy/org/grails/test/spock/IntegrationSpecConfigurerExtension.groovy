@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.test.spock
 
 import org.spockframework.runtime.model.SpecInfo
@@ -40,32 +39,30 @@ class IntegrationSpecConfigurerExtension extends AbstractAnnotationDrivenExtensi
 
     void visitSpecAnnotation(Annotation annotation, SpecInfo spec) {
         final context = Holders.getApplicationContext()
-        if(context) {
-            for(FeatureInfo info in spec.getAllFeatures()) {
+        if (context) {
+            for (FeatureInfo info in spec.getAllFeatures()) {
                 info.addInterceptor(new IntegrationSpecMethodInterceptor(context))
             }
         }
-
     }
-
 
     @CompileStatic
     class IntegrationSpecMethodInterceptor implements IMethodInterceptor {
+
         ApplicationContext applicationContext
         GrailsTestMode mode
-
 
         IntegrationSpecMethodInterceptor(ApplicationContext applicationContext) {
             this.applicationContext = applicationContext
             this.mode = new GrailsTestMode(autowire: true, wrapInTransaction: true, wrapInRequestEnvironment: true)
-
         }
 
         @Override
         void intercept(IMethodInvocation invocation) {
             final instance = invocation.instance ?: invocation.sharedInstance
-            if(instance) {
-                GrailsTestInterceptor interceptor = new GrailsTestInterceptor(instance, mode, applicationContext, ["Spec", "Specification", "Tests", "Test"] as String[])
+            if (instance) {
+                GrailsTestInterceptor interceptor = new GrailsTestInterceptor(instance, mode, applicationContext,
+                        ["Spec", "Specification", "Tests", "Test"] as String[])
                 interceptor.wrap {
                     invocation.proceed()
                 }
@@ -74,5 +71,7 @@ class IntegrationSpecConfigurerExtension extends AbstractAnnotationDrivenExtensi
                 invocation.proceed()
             }
         }
+
     }
+
 }

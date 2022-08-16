@@ -46,7 +46,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest
  * A custom mock HTTP servlet request that provides the extra properties
  * and methods normally injected by the "servlets" plugin.
  */
-class GrailsMockHttpServletRequest extends MockHttpServletRequest implements MultipartHttpServletRequest{
+class GrailsMockHttpServletRequest extends MockHttpServletRequest implements MultipartHttpServletRequest {
 
     boolean invalidToken
     MultiValueMap multipartFiles = new LinkedMultiValueMap<String, MultipartFile>()
@@ -63,7 +63,6 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     DispatcherType dispatcherType
     AsyncContext asyncContext
     private ServletInputStream cachedInputStream
-
 
     public GrailsMockHttpServletRequest() {
         super();
@@ -82,16 +81,16 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     void setFormat(String format) {
         setAttribute(GrailsApplicationAttributes.CONTENT_FORMAT, format)
     }
-    
+
     @Override
     void setContentType(String newContentType) {
         super.setContentType(newContentType)
         def webRequest = getAttribute(GrailsApplicationAttributes.WEB_REQUEST)
         def mimeType = MimeType.configuredMimeTypes?.find { mt ->
             mt?.name == newContentType
-        } 
-        
-        if(!mimeType) {
+        }
+
+        if (!mimeType) {
             mimeType = new MimeType(newContentType)
         }
         setAttribute(GrailsApplicationAttributes.REQUEST_FORMATS, [mimeType] as MimeType[])
@@ -131,7 +130,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         }
         else {
             XML xml
-            if(sourceXml instanceof XML) {
+            if (sourceXml instanceof XML) {
                 xml = (XML)sourceXml
             } else {
                 xml = new XML(sourceXml)
@@ -261,7 +260,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
                     break
 
                 case 1:
-                    match = c.call(key:name, value:getAttribute(name))
+                    match = c.call(key: name, value: getAttribute(name))
                     break
 
                 default:
@@ -291,7 +290,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
                     break
 
                 case 1:
-                    match = c.call(key:name, value:getAttribute(name))
+                    match = c.call(key: name, value: getAttribute(name))
                     break
 
                 default:
@@ -313,7 +312,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
                     break
 
                 case 1:
-                    c.call(key:name, value:getAttribute(name))
+                    c.call(key: name, value: getAttribute(name))
                     break
 
                 default:
@@ -408,7 +407,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     }
 
     Collection<Part> getParts() {
-        getMultiFileMap().values().flatten().collect {new MockPart(it)}
+        getMultiFileMap().values().flatten().collect { new MockPart(it) }
     }
 
     Part getPart(String name) {
@@ -424,7 +423,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         if (response == null) {
             response = new GrailsMockHttpServletResponse()
         }
-        startAsync(this,response)
+        startAsync(this, response)
     }
 
     AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) {
@@ -442,6 +441,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         }
         cachedInputStream
     }
+
 }
 
 class MockPart implements Part {
@@ -502,6 +502,7 @@ class MockPart implements Part {
     Collection<String> getHeaderNames() {
         return headers.keySet()
     }
+
 }
 
 class MockAsyncContext implements AsyncContext {
@@ -548,7 +549,6 @@ class MockAsyncContext implements AsyncContext {
                 AsyncListener al = listener.listener
                 al.onComplete(listener.event)
             }
-
         } catch (e) {
             for (listener in asyncListeners) {
                 AsyncListener al = listener.listener
@@ -558,14 +558,15 @@ class MockAsyncContext implements AsyncContext {
     }
 
     void addListener(AsyncListener listener) {
-        asyncListeners << [listener:listener, event:new AsyncEvent(this, request, response)]
+        asyncListeners << [listener: listener, event: new AsyncEvent(this, request, response)]
     }
 
     void addListener(AsyncListener listener, ServletRequest servletRequest, ServletResponse servletResponse) {
-        asyncListeners << [listener:listener, event:new AsyncEvent(this, servletRequest, servletResponse)]
+        asyncListeners << [listener: listener, event: new AsyncEvent(this, servletRequest, servletResponse)]
     }
 
     def <T extends AsyncListener> T createListener(Class<T> clazz) {
         return clazz.newInstance()
     }
+
 }
