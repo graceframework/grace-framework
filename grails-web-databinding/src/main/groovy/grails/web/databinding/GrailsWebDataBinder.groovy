@@ -16,7 +16,11 @@
 package grails.web.databinding
 
 import grails.core.GrailsApplication
-import grails.databinding.*
+import grails.databinding.BindingFormat
+import grails.databinding.DataBindingSource
+import grails.databinding.SimpleDataBinder
+import grails.databinding.SimpleMapDataBindingSource
+import grails.databinding.TypedStructuredBindingEditor
 import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
 import grails.databinding.events.DataBindingListener
@@ -57,7 +61,7 @@ import org.springframework.validation.ObjectError
 
 import java.lang.annotation.Annotation
 
-import static grails.web.databinding.DataBindingUtils.*
+import static grails.web.databinding.DataBindingUtils.getBindingIncludeList
 
 @CompileStatic
 class GrailsWebDataBinder extends SimpleDataBinder {

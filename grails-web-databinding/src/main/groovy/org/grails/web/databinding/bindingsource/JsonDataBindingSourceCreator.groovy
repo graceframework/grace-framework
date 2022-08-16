@@ -19,7 +19,6 @@ import grails.databinding.CollectionDataBindingSource;
 import grails.databinding.DataBindingSource;
 import grails.databinding.SimpleMapDataBindingSource
 import groovy.json.JsonException
-import groovy.json.JsonParserType
 import groovy.json.JsonSlurper;
 import groovy.transform.CompileStatic
 
