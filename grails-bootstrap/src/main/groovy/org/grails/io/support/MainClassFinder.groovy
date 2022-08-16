@@ -2,7 +2,6 @@ package org.grails.io.support
 
 import grails.util.BuildSettings
 import groovy.transform.CompileStatic
-import groovy.transform.Memoized
 import groovyjarjarasm.asm.ClassReader
 import groovyjarjarasm.asm.ClassVisitor
 import groovyjarjarasm.asm.MethodVisitor
