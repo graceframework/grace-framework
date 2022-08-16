@@ -38,8 +38,10 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
-import static java.lang.reflect.Modifier.*
-import static org.grails.compiler.injection.GrailsASTUtils.*
+import static java.lang.reflect.Modifier.PRIVATE
+import static java.lang.reflect.Modifier.PUBLIC
+import static java.lang.reflect.Modifier.TRANSIENT
+import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 
 /**
  * Implementation of the {@link Linkable} transform

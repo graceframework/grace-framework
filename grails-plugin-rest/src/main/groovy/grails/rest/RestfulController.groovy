@@ -20,9 +20,12 @@ import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 import grails.util.GrailsNameUtils
 import grails.web.http.HttpHeaders
-import org.springframework.http.HttpStatus
 
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.CREATED
+import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED
+import static org.springframework.http.HttpStatus.NO_CONTENT
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.OK
 
 /**
  * Base class that can be extended to get the basic CRUD operations needed for a RESTful API.
@@ -208,7 +211,7 @@ class RestfulController<T> {
      */
     protected boolean handleReadOnly() {
         if (readOnly) {
-            render status: HttpStatus.METHOD_NOT_ALLOWED.value()
+            render status: METHOD_NOT_ALLOWED.value()
             return true
         } else {
             return false

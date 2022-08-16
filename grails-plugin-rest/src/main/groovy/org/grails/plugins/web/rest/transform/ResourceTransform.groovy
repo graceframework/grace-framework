@@ -17,11 +17,8 @@ package org.grails.plugins.web.rest.transform
 
 import grails.io.IOUtils
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils
-import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 
-import static java.lang.reflect.Modifier.*
-import static org.grails.compiler.injection.GrailsASTUtils.*
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.rest.Resource
@@ -75,6 +72,17 @@ import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+
+import static java.lang.reflect.Modifier.FINAL
+import static java.lang.reflect.Modifier.PRIVATE
+import static java.lang.reflect.Modifier.PUBLIC
+import static java.lang.reflect.Modifier.STATIC
+import static org.grails.compiler.injection.GrailsASTUtils.applyDefaultMethodTarget
+import static org.grails.compiler.injection.GrailsASTUtils.buildThisExpression
+import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
+import static org.grails.compiler.injection.GrailsASTUtils.processVariableScopes
+import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
+import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 
 /**
  * The Resource transform automatically exposes a domain class as a RESTful resource.
