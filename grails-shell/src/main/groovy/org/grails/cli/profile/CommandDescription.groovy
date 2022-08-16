@@ -29,14 +29,17 @@ import jline.console.completer.Completer
 @CompileStatic
 @Canonical
 class CommandDescription {
+
     /**
      * The name of the command
      */
     String name
+
     /**
      * The description of the command
      */
     String description
+
     /**
      * The usage instructions for the command
      */
@@ -97,6 +100,7 @@ class CommandDescription {
         this.synonyms.addAll(synonyms)
         return this
     }
+
     /**
      * Sets the completer
      *
@@ -128,7 +132,7 @@ class CommandDescription {
     CommandDescription argument(Map args) {
         def arg = new CommandArgument(args)
         def name = arg.name
-        if(name) {
+        if (name) {
             arguments[name] = arg
         }
         return this
@@ -143,10 +147,11 @@ class CommandDescription {
     CommandDescription flag(Map args) {
         def arg = new CommandArgument(args)
         def name = arg.name
-        if(name) {
+        if (name) {
             arg.required = false
             flags[name] = arg
         }
         return this
     }
+
 }

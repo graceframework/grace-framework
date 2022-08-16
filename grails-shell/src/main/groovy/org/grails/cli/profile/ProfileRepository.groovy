@@ -1,8 +1,3 @@
-package org.grails.cli.profile
-
-import org.eclipse.aether.artifact.Artifact
-import org.grails.io.support.Resource
-
 /*
  * Copyright 2014 original authors
  *
@@ -18,6 +13,10 @@ import org.grails.io.support.Resource
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile
+
+import org.eclipse.aether.artifact.Artifact
+import org.grails.io.support.Resource
 
 /**
  *
@@ -71,4 +70,5 @@ interface ProfileRepository {
      * @return The {@link Artifact} that resolves to the profile
      */
     Artifact getProfileArtifact(String profileName)
+
 }

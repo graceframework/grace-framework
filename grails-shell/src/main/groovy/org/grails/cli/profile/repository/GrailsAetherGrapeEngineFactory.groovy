@@ -31,14 +31,12 @@ import org.springframework.boot.cli.compiler.grape.RepositorySystemSessionAutoCo
 class GrailsAetherGrapeEngineFactory {
 
     static AetherGrapeEngine create(GroovyClassLoader classLoader,
-                                           List<GrailsRepositoryConfiguration> repositoryConfigurations,
-                                           DependencyResolutionContext dependencyResolutionContext) {
+                                    List<GrailsRepositoryConfiguration> repositoryConfigurations,
+                                    DependencyResolutionContext dependencyResolutionContext) {
 
-        RepositorySystem repositorySystem = createServiceLocator()
-                .getService(RepositorySystem.class)
+        RepositorySystem repositorySystem = createServiceLocator().getService(RepositorySystem.class)
 
-        DefaultRepositorySystemSession repositorySystemSession = MavenRepositorySystemUtils
-                .newSession()
+        DefaultRepositorySystemSession repositorySystemSession = MavenRepositorySystemUtils.newSession()
 
         ServiceLoader<RepositorySystemSessionAutoConfiguration> autoConfigurations = ServiceLoader
                 .load(RepositorySystemSessionAutoConfiguration.class)
@@ -47,8 +45,7 @@ class GrailsAetherGrapeEngineFactory {
             autoConfiguration.apply(repositorySystemSession, repositorySystem)
         }
 
-        new DefaultRepositorySystemSessionAutoConfiguration()
-                .apply(repositorySystemSession, repositorySystem)
+        new DefaultRepositorySystemSessionAutoConfiguration().apply(repositorySystemSession, repositorySystem)
 
         return new AetherGrapeEngine(classLoader, repositorySystem,
                 repositorySystemSession, createRepositories(repositoryConfigurations),
@@ -65,10 +62,9 @@ class GrailsAetherGrapeEngineFactory {
         return locator
     }
 
-    private static List<RemoteRepository> createRepositories(
-            List<GrailsRepositoryConfiguration> repositoryConfigurations) {
-        List<RemoteRepository> repositories = new ArrayList<RemoteRepository>(
-                repositoryConfigurations.size())
+    private static List<RemoteRepository> createRepositories(List<GrailsRepositoryConfiguration> repositoryConfigurations) {
+        List<RemoteRepository> repositories = new ArrayList<RemoteRepository>(repositoryConfigurations.size())
+
         for (GrailsRepositoryConfiguration repositoryConfiguration : repositoryConfigurations) {
             RemoteRepository.Builder builder = new RemoteRepository.Builder(
                     repositoryConfiguration.getName(), "default",
@@ -88,4 +84,5 @@ class GrailsAetherGrapeEngineFactory {
         }
         return repositories
     }
+
 }

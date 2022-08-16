@@ -1,7 +1,3 @@
-package org.grails.cli.profile
-
-import groovy.transform.InheritConstructors
-
 /*
  * Copyright 2014 original authors
  *
@@ -17,11 +13,15 @@ import groovy.transform.InheritConstructors
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile
+
+import groovy.transform.InheritConstructors
 
 /**
  * @author Graeme Rocher
  * @since 3.0
  */
 @InheritConstructors
-class CommandException extends RuntimeException{
+class CommandException extends RuntimeException {
+
 }

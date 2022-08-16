@@ -17,7 +17,6 @@ package org.grails.cli.profile.commands.io
 
 import org.grails.io.support.Resource
 
-
 /**
  * Utility methods exposed to scripts for interacting with resources (found on the file system or jars) and the file system
  *
@@ -32,12 +31,14 @@ interface FileSystemInteraction {
      * @param path The path to the directory
      */
     FileSystemInteraction mkdir(path)
+
     /**
      * Deletes a file
      *
      * @param path The path to the file
      */
     FileSystemInteraction delete(path)
+
     /**
      * Allows Gradle style simple copy specs
      *
@@ -45,6 +46,7 @@ interface FileSystemInteraction {
      * @return this
      */
     FileSystemInteraction copy(@DelegatesTo(CopySpec) Closure callable)
+
     /**
      * Copies a resource to the target destination
      *
@@ -52,6 +54,7 @@ interface FileSystemInteraction {
      * @param destination The destination
      */
     FileSystemInteraction copy(path, destination)
+
     /**
      * Copies resources to the target destination
      *
@@ -59,6 +62,7 @@ interface FileSystemInteraction {
      * @param destination The destination
      */
     FileSystemInteraction copyAll(Iterable resources, destination)
+
     /**
      * Copy a Resource from the given location to the given directory or location
      *
@@ -67,6 +71,7 @@ interface FileSystemInteraction {
      * @return The {@FileSystemInteraction} instance
      */
     FileSystemInteraction copy(Resource from, File to)
+
     /**
      * Obtain a file for the given path
      *
@@ -74,30 +79,36 @@ interface FileSystemInteraction {
      * @return The file
      */
     File file(Object path)
+
     /**
      * @return The target build directory
      */
     File getBuildDir()
+
     /**
      * @return The directory where resources are processed to
      */
     File getResourcesDir()
+
     /**
      * @return The directory where classes are compiled to
      */
     File getClassesDir()
+
     /**
      * Finds a source file for the given class name
      * @param className The class name
      * @return The source resource
      */
     Resource source(String className)
+
     /**
      * Obtain a resource for the given path
      * @param path The path
      * @return The resource
      */
     Resource resource(Object path)
+
     /**
      * Obtain resources for the given pattern
      *
@@ -105,6 +116,7 @@ interface FileSystemInteraction {
      * @return The resources
      */
     Collection<Resource> resources(String pattern)
+
     /**
      * Obtain the path of the resource relative to the current project
      *
@@ -120,7 +132,7 @@ interface FileSystemInteraction {
      * @return The class name
      */
     String className(Resource resource)
-    
+
     /**
      * Get files matching the given pattern
      *
@@ -130,6 +142,7 @@ interface FileSystemInteraction {
     Collection<File> files(String pattern)
 
     static class CopySpec {
+
         def from
         def into
         void from(path) {
@@ -138,5 +151,7 @@ interface FileSystemInteraction {
         void into(path) {
             this.into = path
         }
+
     }
+
 }

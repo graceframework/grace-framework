@@ -1,8 +1,3 @@
-package org.grails.cli.profile.steps
-
-import org.grails.cli.profile.Command
-import org.grails.cli.profile.Step
-
 /*
  * Copyright 2014 original authors
  *
@@ -18,6 +13,10 @@ import org.grails.cli.profile.Step
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile.steps
+
+import org.grails.cli.profile.Command
+import org.grails.cli.profile.Step
 
 /**
  * Creates steps
@@ -37,4 +36,5 @@ interface StepFactory {
      * @return The step instance
      */
     Step createStep(String name, Command command, Map parameters)
+
 }

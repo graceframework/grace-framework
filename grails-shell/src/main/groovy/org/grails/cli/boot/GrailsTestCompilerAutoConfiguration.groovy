@@ -25,7 +25,6 @@ import org.springframework.boot.cli.compiler.AstUtils
 import org.springframework.boot.cli.compiler.CompilerAutoConfiguration
 import org.springframework.boot.cli.compiler.DependencyCustomizer
 
-
 /**
  * @author Graeme Rocher
  * @since 3.0
@@ -45,7 +44,7 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
     @Override
     boolean matches(ClassNode classNode) {
         def matches = AstUtils.subclasses(classNode, "Specification")
-        if(matches) {
+        if (matches) {
             lastMatch = classNode
         }
         return matches
@@ -58,9 +57,13 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     @Override
     void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
-        if(lastMatch != null) {
-            def annotation = GrailsApplicationCompilerAutoConfiguration.createGrabAnnotation("org.grails", "grails-plugin-testing", Environment.class.getPackage().getImplementationVersion(), null, null, true)
+        if (lastMatch != null) {
+            def annotation = GrailsApplicationCompilerAutoConfiguration.createGrabAnnotation(
+                    "org.grails",
+                    "grails-plugin-testing",
+                    Environment.class.getPackage().getImplementationVersion(), null, null, true)
             lastMatch.addAnnotation(annotation);
         }
     }
+
 }

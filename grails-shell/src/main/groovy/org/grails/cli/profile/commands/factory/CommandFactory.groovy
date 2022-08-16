@@ -1,8 +1,3 @@
-package org.grails.cli.profile.commands.factory
-
-import org.grails.cli.profile.Command
-import org.grails.cli.profile.Profile
-
 /*
  * Copyright 2014 original authors
  *
@@ -18,6 +13,10 @@ import org.grails.cli.profile.Profile
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile.commands.factory
+
+import org.grails.cli.profile.Command
+import org.grails.cli.profile.Profile
 
 /**
  * Factory for the creation of {@link Command} instances
@@ -35,6 +34,6 @@ interface CommandFactory {
      * @param inherited Whether the profile passed is inherited (ie a parent profile)
      * @return A command or null if it wasn't possible to create one
      */
-    Collection<Command> findCommands( Profile profile, boolean inherited )
+    Collection<Command> findCommands(Profile profile, boolean inherited)
 
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.profile.repository
 
 import groovy.transform.CompileDynamic
@@ -36,7 +35,8 @@ import org.springframework.boot.cli.compiler.grape.DependencyResolutionFailedExc
 @CompileStatic
 class MavenProfileRepository extends AbstractJarProfileRepository {
 
-    public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration("grailsCentral", new URI("https://repo.grails.org/grails/core"), true)
+    public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration(
+            "grailsCentral", new URI("https://repo.grails.org/grails/core"), true)
 
     List<GrailsRepositoryConfiguration> repositoryConfigurations
     AetherGrapeEngine grapeEngine
@@ -61,12 +61,12 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     @Override
     Profile getProfile(String profileName, Boolean parentProfile) {
         String profileShortName = profileName
-        if(profileName.contains(':')) {
+        if (profileName.contains(':')) {
             def art = new DefaultArtifact(profileName)
             profileShortName = art.artifactId
         }
         if (!profilesByName.containsKey(profileShortName)) {
-            if(parentProfile && profileDependencyVersions.find(DEFAULT_PROFILE_GROUPID, profileShortName)) {
+            if (parentProfile && profileDependencyVersions.find(DEFAULT_PROFILE_GROUPID, profileShortName)) {
                 return resolveProfile(profileShortName)
             } else {
                 return resolveProfile(profileName)
@@ -85,13 +85,13 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
         try {
             grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
-        } catch (DependencyResolutionFailedException e ) {
-
-            def localData = new File(System.getProperty("user.home"),"/.m2/repository/${art.groupId.replace('.','/')}/$art.artifactId/maven-metadata-local.xml")
-            if(localData.exists()) {
+        } catch (DependencyResolutionFailedException e) {
+            def localData = new File(System.getProperty("user.home"),
+                    "/.m2/repository/${art.groupId.replace('.', '/')}/$art.artifactId/maven-metadata-local.xml")
+            if (localData.exists()) {
                 def currentVersion = parseCurrentVersion(localData)
                 def profileFile = new File(localData.parentFile, "$currentVersion/${art.artifactId}-${currentVersion}.jar")
-                if(profileFile.exists()) {
+                if (profileFile.exists()) {
                     classLoader.addURL(profileFile.toURI().toURL())
                 }
                 else {
@@ -121,7 +121,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     @Override
     List<Profile> getAllProfiles() {
-        if(!resolved) {
+        if (!resolved) {
             List<Map> profiles = []
             resolutionContext.managedDependencies.each { Dependency dep ->
                 if (dep.artifact.groupId == "org.grails.profiles") {
@@ -134,15 +134,15 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 grapeEngine.grab(profile)
             }
 
-            def localData = new File(System.getProperty("user.home"),"/.m2/repository/org/grails/profiles")
-            if(localData.exists()) {
+            def localData = new File(System.getProperty("user.home"), "/.m2/repository/org/grails/profiles")
+            if (localData.exists()) {
                 localData.eachDir { File dir ->
-                    if(!dir.name.startsWith('.')) {
+                    if (!dir.name.startsWith('.')) {
                         def profileData = new File(dir, "/maven-metadata-local.xml")
-                        if(profileData.exists()) {
+                        if (profileData.exists()) {
                             def currentVersion = parseCurrentVersion(profileData)
                             def profileFile = new File(dir, "$currentVersion/${dir.name}-${currentVersion}.jar")
-                            if(profileFile.exists()) {
+                            if (profileFile.exists()) {
                                 classLoader.addURL(profileFile.toURI().toURL())
                             }
                         }
@@ -155,4 +155,5 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         }
         return super.getAllProfiles()
     }
+
 }

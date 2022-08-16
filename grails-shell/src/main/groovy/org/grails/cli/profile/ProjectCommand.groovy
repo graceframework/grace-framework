@@ -22,4 +22,5 @@ package org.grails.cli.profile
  * @since 3.0
  */
 interface ProjectCommand extends Command {
+
 }

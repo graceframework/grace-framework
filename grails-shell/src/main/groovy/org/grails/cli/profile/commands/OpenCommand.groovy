@@ -1,14 +1,3 @@
-package org.grails.cli.profile.commands
-
-import groovy.transform.CompileStatic
-import jline.console.completer.Completer
-import jline.console.completer.FileNameCompleter
-import org.grails.cli.profile.CommandDescription
-import org.grails.cli.profile.ExecutionContext
-import org.grails.cli.profile.ProjectCommand
-
-import java.awt.Desktop
-
 /*
  * Copyright 2014 original authors
  *
@@ -24,6 +13,16 @@ import java.awt.Desktop
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile.commands
+
+import groovy.transform.CompileStatic
+import jline.console.completer.Completer
+import jline.console.completer.FileNameCompleter
+import org.grails.cli.profile.CommandDescription
+import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.ProjectCommand
+
+import java.awt.Desktop
 
 /**
  * @author graemerocher
@@ -43,11 +42,11 @@ class OpenCommand implements ProjectCommand, Completer {
     @Override
     boolean handle(ExecutionContext executionContext) {
         def filePath = executionContext.commandLine.remainingArgsString
-        if(filePath) {
-            if(filePath == 'test-report') {
+        if (filePath) {
+            if (filePath == 'test-report') {
                 filePath = 'build/reports/tests/index.html'
             }
-            if(Desktop.isDesktopSupported())  {
+            if (Desktop.isDesktopSupported())  {
                 try {
                     Desktop.desktop.open(new File(filePath))
                     return true
@@ -69,4 +68,5 @@ class OpenCommand implements ProjectCommand, Completer {
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
         return new FileNameCompleter().complete(buffer, cursor, candidates)
     }
+
 }

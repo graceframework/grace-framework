@@ -83,4 +83,5 @@ class GradleDependency {
     String getScope() {
         scope
     }
+
 }

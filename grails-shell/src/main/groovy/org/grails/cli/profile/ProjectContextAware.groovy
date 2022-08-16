@@ -24,4 +24,5 @@ package org.grails.cli.profile
 interface ProjectContextAware {
 
     void setProjectContext(ProjectContext projectContext)
+
 }

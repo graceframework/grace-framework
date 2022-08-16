@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.profile
 
 import org.grails.build.parsing.CommandLine
@@ -24,6 +23,7 @@ import org.grails.build.parsing.CommandLine
  * @author Graeme Rocher
  */
 abstract class AbstractStep implements Step {
+
     ProfileCommand command
     Map<String, Object> parameters
 
@@ -42,4 +42,5 @@ abstract class AbstractStep implements Step {
         def value = commandLine?.undeclaredOptions?.get(name)
         return value ?: null
     }
+
 }

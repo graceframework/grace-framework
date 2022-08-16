@@ -17,8 +17,6 @@ package org.grails.cli.profile
 
 import groovy.transform.CompileStatic
 
-
-
 /**
  * Represents argument to a command
  *
@@ -27,6 +25,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class CommandArgument {
+
     /**
      * The name of the argument
      */

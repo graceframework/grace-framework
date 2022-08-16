@@ -38,8 +38,9 @@ class DefaultStepFactory implements StepFactory {
 
     @Override
     Step createStep(String name, Command command, Map parameters) {
-        if(command instanceof ProfileCommand) {
+        if (command instanceof ProfileCommand) {
             return steps[name]?.newInstance(command, parameters)
         }
     }
+
 }

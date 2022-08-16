@@ -1,11 +1,3 @@
-package org.grails.cli.profile.commands
-
-import org.grails.cli.profile.Command
-import org.grails.cli.profile.CommandDescription
-import org.grails.cli.profile.ExecutionContext
-import org.grails.cli.profile.Profile
-import org.grails.cli.profile.ProfileCommand
-
 /*
  * Copyright 2014 original authors
  *
@@ -21,6 +13,13 @@ import org.grails.cli.profile.ProfileCommand
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile.commands
+
+import org.grails.cli.profile.Command
+import org.grails.cli.profile.CommandDescription
+import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.Profile
+import org.grails.cli.profile.ProfileCommand
 
 /**
  * A command that executes a closure
@@ -29,6 +28,7 @@ import org.grails.cli.profile.ProfileCommand
  * @since 3.0
  */
 class ClosureExecutingCommand implements ProfileCommand {
+
     String name
     Closure callable
     Profile profile
@@ -47,4 +47,5 @@ class ClosureExecutingCommand implements ProfileCommand {
     boolean handle(ExecutionContext executionContext) {
         callable.call(executionContext)
     }
+
 }

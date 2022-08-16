@@ -21,13 +21,12 @@ import groovy.transform.CompileStatic
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-
-
 /**
  * @author Graeme Rocher
  */
 @CompileStatic
 class GradleAsyncInvoker {
+
     GradleInvoker invoker
 
     public static final ExecutorService POOL = Executors.newFixedThreadPool(4);
@@ -36,7 +35,7 @@ class GradleAsyncInvoker {
         Runtime.addShutdownHook {
             try {
                 Thread.start {
-                    if(!POOL.isTerminated()) {
+                    if (!POOL.isTerminated()) {
                         POOL.shutdownNow()
                     }
                 }.join(1000)
@@ -57,6 +56,5 @@ class GradleAsyncInvoker {
             invoker."$name"(*args)
         }
     }
-
 
 }

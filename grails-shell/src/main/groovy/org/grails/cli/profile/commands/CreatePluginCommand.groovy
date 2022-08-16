@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.profile.commands
 
 import groovy.transform.CompileStatic
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
+
 /**
  * A command for creating a plugin
  *
@@ -49,7 +49,7 @@ class CreatePluginCommand extends CreateAppCommand {
 
     protected boolean validateProfile(Profile profileInstance, String profileName, ExecutionContext executionContext) {
         def pluginProfile = profileInstance.extends.find() { Profile parent -> parent.name == 'plugin' }
-        if(profileName != 'plugin' && pluginProfile == null) {
+        if (profileName != 'plugin' && pluginProfile == null) {
             executionContext.console.error("No valid plugin profile found for name [$profileName]")
             return false
         }
@@ -57,4 +57,5 @@ class CreatePluginCommand extends CreateAppCommand {
             return super.validateProfile(profileInstance, profileName)
         }
     }
+
 }

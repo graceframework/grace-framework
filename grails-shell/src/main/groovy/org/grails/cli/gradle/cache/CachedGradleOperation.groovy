@@ -27,7 +27,8 @@ import org.grails.cli.profile.ProjectContext
 import java.util.concurrent.Callable
 
 /**
- * Utility class for performing cached operations that retrieve data from Gradle. Since these operations are expensive we want to cache the data to avoid unnecessarily calling Gradle
+ * Utility class for performing cached operations that retrieve data from Gradle.
+ * Since these operations are expensive we want to cache the data to avoid unnecessarily calling Gradle
  *
  * @author Graeme Rocher
  * @since 3.0
@@ -53,12 +54,11 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
     T call() throws Exception {
         def depsFile = new File(BuildSettings.TARGET_DIR, fileName)
         try {
-            if(depsFile.exists() && depsFile.lastModified() > new File(projectContext.baseDir, "build.gradle").lastModified()) {
+            if (depsFile.exists() && depsFile.lastModified() > new File(projectContext.baseDir, "build.gradle").lastModified()) {
                 T cached = readFromCached(depsFile)
-                if(cached) {
+                if (cached) {
                     return cached
                 }
-
             }
         } catch (Throwable e) {
             throw e
@@ -94,4 +94,5 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
             // ignore
         }
     }
+
 }

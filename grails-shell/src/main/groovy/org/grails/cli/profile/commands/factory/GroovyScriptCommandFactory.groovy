@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.cli.profile.commands.factory
 
 import grails.build.logging.GrailsConsole
@@ -15,22 +30,6 @@ import org.grails.io.support.Resource
 
 import java.nio.charset.StandardCharsets
 
-/*
- * Copyright 2014 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /**
  * A {@link CommandFactory} that creates {@link Command} instances from Groovy scripts
  *
@@ -47,7 +46,8 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
     protected GroovyScriptCommand readCommandFile(Resource resource) {
         GroovyClassLoader classLoader = createGroovyScriptCommandClassLoader()
         try {
-            return (GroovyScriptCommand) classLoader.parseClass(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8 ), resource.filename).newInstance()
+            return (GroovyScriptCommand) classLoader.parseClass(
+                    new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8), resource.filename).newInstance()
         } catch (Throwable e) {
             GrailsConsole.getInstance().error("Failed to compile ${resource.filename}: " + e.getMessage(), e)
         }
@@ -64,12 +64,11 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
     private static GroovyClassLoader createClassLoaderForBaseClass(CompilerConfiguration configuration, String baseClassName) {
         configuration.setScriptBaseClass(baseClassName)
 
-
         def importCustomizer = new ImportCustomizer()
         importCustomizer.addStarImports("org.grails.cli.interactive.completers")
         importCustomizer.addStarImports("grails.util")
         importCustomizer.addStarImports("grails.codegen.model")
-        configuration.addCompilationCustomizers(importCustomizer,new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
+        configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
         def classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, configuration)
         return classLoader
     }
@@ -85,4 +84,5 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         data.setProfile(profile)
         return data
     }
+
 }

@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.gradle.cache
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.grails.cli.profile.ProjectContext
-
 
 /**
  * A {@link CachedGradleOperation} that reads and writes a list of values
@@ -29,7 +27,7 @@ import org.grails.cli.profile.ProjectContext
  */
 @CompileStatic
 @InheritConstructors
-abstract class ListReadingCachedGradleOperation<T> extends CachedGradleOperation<List<T>>{
+abstract class ListReadingCachedGradleOperation<T> extends CachedGradleOperation<List<T>> {
 
     @Override
     List<T> readFromCached(File f) {
@@ -42,6 +40,5 @@ abstract class ListReadingCachedGradleOperation<T> extends CachedGradleOperation
     void writeToCache(PrintWriter writer, List<T> data) {
         for (url in data) writer.println(url.toString())
     }
-
 
 }

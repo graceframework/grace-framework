@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.boot
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.springframework.boot.cli.command.CommandFactory
 import org.springframework.boot.cli.command.CommandRunner
-
 
 /**
  * Allows invocation of Spring commands from command scripts
@@ -48,10 +46,9 @@ class SpringInvoker {
 
     @Override
     Object invokeMethod(String name, Object args) {
-        if(args instanceof Object[]) {
-
+        if (args instanceof Object[]) {
             List<String> argList = [name]
-            argList.addAll( ((Object[])args).collect() { it.toString() } )
+            argList.addAll(((Object[])args).collect() { it.toString() })
 
             def currentThread = Thread.currentThread()
             def existing = currentThread.contextClassLoader
@@ -67,14 +64,15 @@ class SpringInvoker {
 
     @InheritConstructors
     static class Slf4jBindingAwareClassLoader extends URLClassLoader {
+
         @Override
         Enumeration<URL> getResources(String name) throws IOException {
-            if("org/slf4j/impl/StaticLoggerBinder.class" == name) {
+            if ("org/slf4j/impl/StaticLoggerBinder.class" == name) {
                 def resources = super.getResources(name)
                 def oneRes = (URL)resources.find() { URL url -> !url.toString().contains('slf4j-simple') }
-                if(oneRes) {
-
+                if (oneRes) {
                     return new Enumeration<URL>() {
+
                         URL current = oneRes
                         @Override
                         boolean hasMoreElements() {
@@ -87,6 +85,7 @@ class SpringInvoker {
                             current = null
                             return i
                         }
+
                     }
                 }
                 else {
@@ -97,5 +96,7 @@ class SpringInvoker {
                 return super.getResources(name)
             }
         }
+
     }
+
 }

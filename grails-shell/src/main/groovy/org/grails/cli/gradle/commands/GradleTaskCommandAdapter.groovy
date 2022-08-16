@@ -46,7 +46,7 @@ class GradleTaskCommandAdapter implements ProfileCommand {
     @Override
     CommandDescription getDescription() {
         String description
-        if(adapted instanceof Described) {
+        if (adapted instanceof Described) {
             description = ((Described)adapted).description
         }
         else {
@@ -59,12 +59,13 @@ class GradleTaskCommandAdapter implements ProfileCommand {
     @CompileDynamic
     boolean handle(ExecutionContext executionContext) {
         GradleInvoker invoker = new GradleInvoker(executionContext)
+        String method = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(adapted.name)
 
         def commandLine = executionContext.commandLine
         if (commandLine.remainingArgs || commandLine.undeclaredOptions) {
-            invoker."${GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(adapted.name)}"("-Pargs=${commandLine.remainingArgsWithOptionsString}")
+            invoker."${method}"("-Pargs=${commandLine.remainingArgsWithOptionsString}")
         } else {
-            invoker."${GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(adapted.name)}"()
+            invoker."${method}"()
         }
 
         return true
@@ -74,4 +75,5 @@ class GradleTaskCommandAdapter implements ProfileCommand {
     String getName() {
         return adapted.name
     }
+
 }

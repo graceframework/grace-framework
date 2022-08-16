@@ -27,7 +27,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 
 import java.util.regex.Pattern
 
-
 /**
  * A {@link CommandFactory} that can discover commands defined in YAML or JSON
  *
@@ -36,7 +35,8 @@ import java.util.regex.Pattern
  */
 @CompileStatic
 class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
-    protected Yaml yamlParser=new Yaml(new SafeConstructor())
+
+    protected Yaml yamlParser = new Yaml(new SafeConstructor())
     // LAX parser for JSON: http://mrhaki.blogspot.ie/2014/08/groovy-goodness-relax-groovy-will-parse.html
     protected JsonSlurper jsonSlurper = new JsonSlurper().setType(JsonParserType.LAX)
 
@@ -50,7 +50,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
 
         try {
             is = resource.inputStream
-            if(resource.filename.endsWith('.json')) {
+            if (resource.filename.endsWith('.json')) {
                 data = jsonSlurper.parse(is, "UTF-8") as Map
             } else {
                 data = yamlParser.<Map>load(is)
@@ -62,8 +62,8 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
     }
 
     protected Command createCommand(Profile profile, String commandName, Resource resource, Map data) {
-        if(!data.profile || profile.name == data.profile?.toString()) {
-            Command command = new DefaultMultiStepCommand( commandName, profile, data )
+        if (!data.profile || profile.name == data.profile?.toString()) {
+            Command command = new DefaultMultiStepCommand(commandName, profile, data)
             Object minArguments = data?.minArguments
             command.minArguments = minArguments instanceof Integer ? (Integer)minArguments : 1
             return command

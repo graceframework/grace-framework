@@ -27,6 +27,7 @@ import java.util.regex.Pattern
  * @since 2.0
  */
 class RegexCompletor implements Completer {
+
     Pattern pattern
 
     RegexCompletor(String pattern) {
@@ -53,4 +54,5 @@ class RegexCompletor implements Completer {
         }
         else return -1
     }
+
 }

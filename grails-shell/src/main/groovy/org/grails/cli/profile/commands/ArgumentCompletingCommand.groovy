@@ -1,12 +1,3 @@
-package org.grails.cli.profile.commands
-
-import jline.console.completer.ArgumentCompleter
-import jline.console.completer.Completer
-import org.grails.build.parsing.CommandLine
-import org.grails.build.parsing.CommandLineParser
-import org.grails.cli.profile.Command
-import org.grails.cli.profile.CommandDescription
-
 /*
  * Copyright 2014 original authors
  *
@@ -22,6 +13,14 @@ import org.grails.cli.profile.CommandDescription
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.cli.profile.commands
+
+import jline.console.completer.ArgumentCompleter
+import jline.console.completer.Completer
+import org.grails.build.parsing.CommandLine
+import org.grails.build.parsing.CommandLineParser
+import org.grails.cli.profile.Command
+import org.grails.cli.profile.CommandDescription
 
 /**
  * @author graemerocher
@@ -44,7 +43,6 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
 
         def lastOption = commandLine.lastOption()
 
-
         for (arg in desc.flags) {
             def argName = arg.name
             def flag = "-$argName".toString()
@@ -63,4 +61,5 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
         }
         return cursor
     }
+
 }

@@ -43,6 +43,7 @@ import org.grails.cli.profile.ProjectContext
  */
 @CompileStatic
 class GradleUtil {
+
     private static final boolean DEFAULT_SUPPRESS_OUTPUT = true
 
     public static ProjectConnection openGradleConnection(File baseDir) {
@@ -69,8 +70,10 @@ class GradleUtil {
         gradleConnector.connect()
     }
 
-    public static <T> T withProjectConnection(File baseDir, boolean suppressOutput = DEFAULT_SUPPRESS_OUTPUT,
-                                              @ClosureParams(value = SimpleType.class, options = "org.gradle.tooling.ProjectConnection") Closure<T> closure) {
+    static <T> T withProjectConnection(File baseDir,
+                                       boolean suppressOutput = DEFAULT_SUPPRESS_OUTPUT,
+                                       @ClosureParams(value = SimpleType.class, options = "org.gradle.tooling.ProjectConnection")
+                                               Closure<T> closure) {
         ProjectConnection projectConnection = openGradleConnection(baseDir)
         try {
             if (suppressOutput) {
@@ -88,7 +91,8 @@ class GradleUtil {
     }
 
     public static void runBuildWithConsoleOutput(ExecutionContext context,
-                                                 @ClosureParams(value = SimpleType.class, options = "org.gradle.tooling.BuildLauncher") Closure<?> buildLauncherCustomizationClosure) {
+                                                 @ClosureParams(value = SimpleType.class, options = "org.gradle.tooling.BuildLauncher")
+                                                         Closure<?> buildLauncherCustomizationClosure) {
         withProjectConnection(context.getBaseDir(), DEFAULT_SUPPRESS_OUTPUT) { ProjectConnection projectConnection ->
             BuildLauncher launcher = projectConnection.newBuild()
             setupConsoleOutput(context, launcher)
@@ -101,8 +105,8 @@ class GradleUtil {
     public static LongRunningOperation setupConsoleOutput(ProjectContext context, LongRunningOperation operation) {
         GrailsConsole grailsConsole = context.console
         operation.colorOutput = grailsConsole.ansiEnabled
-        operation.standardOutput = new GrailsConsolePrintStream( grailsConsole.out )
-        operation.standardError = new GrailsConsoleErrorPrintStream( grailsConsole.err )
+        operation.standardOutput = new GrailsConsolePrintStream(grailsConsole.out)
+        operation.standardError = new GrailsConsoleErrorPrintStream(grailsConsole.err)
         operation
     }
 
@@ -111,8 +115,9 @@ class GradleUtil {
         runBuildActionWithConsoleOutput(context, buildAction, null)
     }
 
-    public static <T> T runBuildActionWithConsoleOutput(ProjectContext context, BuildAction<T> buildAction,
-                                                        @ClosureParams(value = FromString.class, options = "org.gradle.tooling.BuildActionExecuter<T>") Closure<?> buildActionExecuterCustomizationClosure) {
+    static <T> T runBuildActionWithConsoleOutput(ProjectContext context, BuildAction<T> buildAction,
+                                                 @ClosureParams(value = FromString.class, options = "org.gradle.tooling.BuildActionExecuter<T>")
+                                                         Closure<?> buildActionExecuterCustomizationClosure) {
         withProjectConnection(context.getBaseDir(), DEFAULT_SUPPRESS_OUTPUT) { ProjectConnection projectConnection ->
             runBuildActionWithConsoleOutput(projectConnection, context, buildAction, buildActionExecuterCustomizationClosure)
         }
@@ -123,13 +128,15 @@ class GradleUtil {
         runBuildActionWithConsoleOutput(connection, context, buildAction, null)
     }
 
-    public static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction, @ClosureParams(value=FromString.class, options="org.gradle.tooling.BuildActionExecuter<T>") Closure<?> buildActionExecuterCustomizationClosure) {
+    public static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction,
+                                                        @ClosureParams(value=FromString.class, options="org.gradle.tooling.BuildActionExecuter<T>")
+                                                                Closure<?> buildActionExecuterCustomizationClosure) {
         BuildActionExecuter<T> buildActionExecuter = connection.action(buildAction)
         setupConsoleOutput(context, buildActionExecuter)
         buildActionExecuterCustomizationClosure?.call(buildActionExecuter)
         return buildActionExecuter.run()
     }
-    
+
     public static wireCancellationSupport(ExecutionContext context, BuildLauncher buildLauncher) {
         DefaultCancellationTokenSource cancellationTokenSource = new DefaultCancellationTokenSource()
         buildLauncher.withCancellationToken(cancellationTokenSource.token())
@@ -137,4 +144,5 @@ class GradleUtil {
             cancellationTokenSource.cancel()
         })
     }
+
 }

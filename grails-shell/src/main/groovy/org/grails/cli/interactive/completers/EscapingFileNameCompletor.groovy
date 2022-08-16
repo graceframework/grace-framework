@@ -17,7 +17,6 @@ package org.grails.cli.interactive.completers
 
 import jline.console.completer.FileNameCompleter
 
-
 /**
  * JLine Completor that does file path matching like FileNameCompletor,
  * but in addition it escapes whitespace in completions with the '\'
@@ -27,6 +26,7 @@ import jline.console.completer.FileNameCompleter
  * @since 2.0
  */
 class EscapingFileNameCompletor extends FileNameCompleter {
+
     /**
      * <p>Gets FileNameCompletor to create a list of candidates and then
      * inserts '\' before any whitespace characters in each of the candidates.
@@ -43,4 +43,5 @@ class EscapingFileNameCompletor extends FileNameCompleter {
 
         return retval
     }
+
 }

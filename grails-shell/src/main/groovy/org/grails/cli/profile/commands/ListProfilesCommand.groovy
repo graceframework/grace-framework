@@ -44,10 +44,11 @@ class ListProfilesCommand implements Command, ProfileRepositoryAware {
         def console = executionContext.console
         console.addStatus("Available Profiles")
         console.log('--------------------')
-        for(Profile p in allProfiles) {
+        for (Profile p in allProfiles) {
             console.log("* $p.name - ${p.description}")
         }
 
         return true
     }
+
 }

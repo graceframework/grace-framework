@@ -17,8 +17,6 @@ package org.grails.cli.interactive.completers
 
 import grails.util.BuildSettings
 
-
-
 /**
  * A completer that completes all classes in the project
  *
@@ -26,9 +24,11 @@ import grails.util.BuildSettings
  * @since 3.0
  */
 class AllClassCompleter extends ClassNameCompleter {
+
     AllClassCompleter() {
         super(new File(BuildSettings.BASE_DIR, "grails-app")
                         ?.listFiles()
                         ?.findAll() { File f -> f.isDirectory() && !f.isHidden() && !f.name.startsWith('.') } as File[])
     }
+
 }

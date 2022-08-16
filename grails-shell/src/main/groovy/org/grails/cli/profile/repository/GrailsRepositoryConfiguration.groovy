@@ -32,7 +32,6 @@ class GrailsRepositoryConfiguration {
         this.snapshotsEnabled = snapshotsEnabled
     }
 
-
     /**
      * Creates a new {@code GrailsRepositoryConfiguration} instance.
      * @param name The name of the repository
@@ -90,4 +89,5 @@ class GrailsRepositoryConfiguration {
         }
         return hash;
     }
+
 }

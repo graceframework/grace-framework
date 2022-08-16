@@ -47,7 +47,8 @@ import org.grails.cli.profile.commands.templates.TemplateRendererImpl
  * @since 3.0
  */
 @CompileStatic
-abstract class GroovyScriptCommand extends Script implements ProfileCommand, ProfileRepositoryAware, ConsoleLogger, ModelBuilder, FileSystemInteraction, TemplateRenderer, CommandEvents, ServerInteraction {
+abstract class GroovyScriptCommand extends Script implements ProfileCommand, ProfileRepositoryAware, ConsoleLogger, ModelBuilder,
+        FileSystemInteraction, TemplateRenderer, CommandEvents, ServerInteraction {
 
     Profile profile
     ProfileRepository profileRepository
@@ -62,10 +63,12 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * Allows invoking of Gradle commands
      */
     GradleInvoker gradle
+
     /**
      * Allows invoking of Spring Boot's CLI
      */
     SpringInvoker spring = SpringInvoker.getInstance()
+
     /**
      * Access to Ant via AntBuilder
      */
@@ -75,6 +78,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * The location of the user.home directory
      */
     String userHome = System.getProperty('user.home')
+
     /**
      * The version of Grails being used
      */
@@ -107,7 +111,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * @return The flag information, or null if it isn't set by the user
      */
     def flag(String name) {
-        if(commandLine.hasOption(name)) {
+        if (commandLine.hasOption(name)) {
             return commandLine.optionValue(name)
         }
         else {
@@ -152,7 +156,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         notify("${name}Start", executionContext)
         def result = run()
         notify("${name}End", executionContext)
-        if(result instanceof Boolean) {
+        if (result instanceof Boolean) {
             return ((Boolean)result)
         }
         return true
@@ -168,7 +172,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         Object[] argsArray = (Object[])args
         def commandName = GrailsNameUtils.getScriptName(name)
         def context = executionContext
-        if(profile?.hasCommand(context, commandName )) {
+        if (profile?.hasCommand(context, commandName)) {
             def commandLine = context.commandLine
             def newArgs = [commandName]
             newArgs.addAll argsArray.collect() { it.toString() }
@@ -186,10 +190,11 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         this.templateRenderer = new TemplateRendererImpl(executionContext, profile, profileRepository)
         this.fileSystemInteraction = new FileSystemInteractionImpl(executionContext)
         this.gradle = new GradleInvoker(executionContext)
-        setDefaultPackage( executionContext.navigateConfig('grails', 'codegen', 'defaultPackage') )
+        setDefaultPackage(executionContext.navigateConfig('grails', 'codegen', 'defaultPackage'))
     }
 
     ExecutionContext getExecutionContext() {
         return executionContext
     }
+
 }
