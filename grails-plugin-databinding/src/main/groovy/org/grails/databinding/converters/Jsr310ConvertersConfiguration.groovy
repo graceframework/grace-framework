@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.databinding.converters;
 
 import grails.databinding.TypedStructuredBindingEditor
@@ -37,6 +36,7 @@ class Jsr310ConvertersConfiguration {
 
     FormattedValueConverter offsetDateTimeConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 OffsetDateTime.parse((CharSequence)value, DateTimeFormatter.ofPattern(format))
@@ -46,11 +46,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetDateTime
             }
+
         }
     }
 
     ValueConverter offsetDateTimeValueConverter() {
         new Jsr310DateValueConverter<OffsetDateTime>() {
+
             @Override
             OffsetDateTime convert(Object value) {
                 convert(value) { String format ->
@@ -62,11 +64,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetDateTime
             }
+
         }
     }
 
     TypedStructuredBindingEditor offsetDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<OffsetDateTime>() {
+
             @Override
             OffsetDateTime getDate(Calendar c) {
                 OffsetDateTime.ofInstant(c.toInstant(), c.timeZone.toZoneId())
@@ -76,11 +80,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetDateTime
             }
+
         }
     }
 
     FormattedValueConverter offsetTimeConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 OffsetTime.parse((CharSequence) value, DateTimeFormatter.ofPattern(format))
@@ -90,11 +96,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetTime
             }
+
         }
     }
 
     ValueConverter offsetTimeValueConverter() {
         new Jsr310DateValueConverter<OffsetTime>() {
+
             @Override
             OffsetTime convert(Object value) {
                 convert(value) { String format ->
@@ -106,11 +114,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetTime
             }
+
         }
     }
 
     TypedStructuredBindingEditor offsetTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<OffsetTime>() {
+
             @Override
             OffsetTime getDate(Calendar c) {
                 OffsetTime.ofInstant(c.toInstant(), c.timeZone.toZoneId())
@@ -120,11 +130,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 OffsetTime
             }
+
         }
     }
 
     FormattedValueConverter localDateTimeConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 LocalDateTime.parse((CharSequence) value, DateTimeFormatter.ofPattern(format))
@@ -134,11 +146,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalDateTime
             }
+
         }
     }
 
     ValueConverter localDateTimeValueConverter() {
         new Jsr310DateValueConverter<LocalDateTime>() {
+
             @Override
             LocalDateTime convert(Object value) {
                 convert(value) { String format ->
@@ -150,11 +164,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalDateTime
             }
+
         }
     }
 
     TypedStructuredBindingEditor localDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalDateTime>() {
+
             @Override
             LocalDateTime getDate(Calendar c) {
                 LocalDateTime.ofInstant(c.toInstant(), c.timeZone.toZoneId())
@@ -164,11 +180,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalDateTime
             }
+
         }
     }
 
     FormattedValueConverter localDateConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 LocalDate.parse((CharSequence) value, DateTimeFormatter.ofPattern(format))
@@ -178,11 +196,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalDate
             }
+
         }
     }
 
     ValueConverter localDateValueConverter() {
         new Jsr310DateValueConverter<LocalDate>() {
+
             @Override
             LocalDate convert(Object value) {
                 convert(value) { String format ->
@@ -194,25 +214,29 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalDate
             }
+
         }
     }
 
     TypedStructuredBindingEditor localDateStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalDate>() {
+
             @Override
             LocalDate getDate(Calendar c) {
-                LocalDate.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1, c.get(Calendar.DAY_OF_MONTH))
+                LocalDate.of(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH))
             }
 
             @Override
             Class<?> getTargetType() {
                 LocalDate
             }
+
         }
     }
 
     FormattedValueConverter localTimeConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 LocalTime.parse((CharSequence) value, DateTimeFormatter.ofPattern(format))
@@ -222,11 +246,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalTime
             }
+
         }
     }
 
     ValueConverter localTimeValueConverter() {
         new Jsr310DateValueConverter<LocalTime>() {
+
             @Override
             LocalTime convert(Object value) {
                 convert(value) { String format ->
@@ -238,11 +264,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalTime
             }
+
         }
     }
 
     TypedStructuredBindingEditor localTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<LocalTime>() {
+
             @Override
             LocalTime getDate(Calendar c) {
                 LocalTime.of(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND))
@@ -252,11 +280,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 LocalTime
             }
+
         }
     }
 
     FormattedValueConverter zonedDateTimeConverter() {
         new FormattedValueConverter() {
+
             @Override
             Object convert(Object value, String format) {
                 ZonedDateTime.parse((CharSequence)value, DateTimeFormatter.ofPattern(format))
@@ -266,11 +296,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 ZonedDateTime
             }
+
         }
     }
 
     ValueConverter zonedDateTimeValueConverter() {
         new Jsr310DateValueConverter<ZonedDateTime>() {
+
             @Override
             ZonedDateTime convert(Object value) {
                 convert(value) { String format ->
@@ -282,11 +314,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 ZonedDateTime
             }
+
         }
     }
 
     TypedStructuredBindingEditor zonedDateTimeStructuredBindingEditor() {
         new CustomDateBindingEditor<ZonedDateTime>() {
+
             @Override
             ZonedDateTime getDate(Calendar c) {
                 ZonedDateTime.ofInstant(c.toInstant(), c.timeZone.toZoneId())
@@ -296,11 +330,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 ZonedDateTime
             }
+
         }
     }
 
     ValueConverter periodValueConverter() {
         new Jsr310DateValueConverter<Period>() {
+
             @Override
             Period convert(Object value) {
                 Period.parse((CharSequence) value)
@@ -310,15 +346,18 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 Period
             }
+
         }
     }
 
     ValueConverter instantStringValueConverter() {
         new ValueConverter() {
+
             @Override
             boolean canConvert(Object value) {
                 value instanceof CharSequence
             }
+
             @Override
             Object convert(Object value) {
                 Instant.parse((CharSequence) value)
@@ -328,11 +367,13 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 Instant
             }
+
         }
     }
 
     ValueConverter instantValueConverter() {
         new ValueConverter() {
+
             @Override
             boolean canConvert(Object value) {
                 value instanceof Number
@@ -347,6 +388,7 @@ class Jsr310ConvertersConfiguration {
             Class<?> getTargetType() {
                 Instant
             }
+
         }
     }
 
@@ -360,7 +402,7 @@ class Jsr310ConvertersConfiguration {
         T convert(Object value, Closure callable) {
             T dateValue
             if (value instanceof String) {
-                if(!value) {
+                if (!value) {
                     return null
                 }
                 def firstException
@@ -373,7 +415,7 @@ class Jsr310ConvertersConfiguration {
                         }
                     }
                 }
-                if(dateValue == null && firstException) {
+                if (dateValue == null && firstException) {
                     throw firstException
                 }
             }
@@ -382,9 +424,11 @@ class Jsr310ConvertersConfiguration {
 
         @Override
         abstract Class<?> getTargetType()
+
     }
 
     abstract class CustomDateBindingEditor<T> extends AbstractStructuredDateBindingEditor<T> implements TypedStructuredBindingEditor<T> {
 
     }
+
 }

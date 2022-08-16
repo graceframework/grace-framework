@@ -38,7 +38,8 @@ class LocaleAwareBigDecimalConverter extends LocaleAwareNumberConverter {
             throw new IllegalStateException("Cannot support non-DecimalFormat: " + nf)
         }
 
-        ((DecimalFormat)nf).setParseBigDecimal(true)
+        ((DecimalFormat) nf).setParseBigDecimal(true)
         nf
     }
+
 }
