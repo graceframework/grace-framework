@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse
  */
 @CompileStatic
 trait RequestForwarder implements WebAttributes {
+
     private UrlConverter urlConverter
     private LinkGenerator linkGenerator
 
@@ -51,7 +52,7 @@ trait RequestForwarder implements WebAttributes {
     }
 
     private LinkGenerator lookupLinkGenerator() {
-        if(this.linkGenerator == null) {
+        if (this.linkGenerator == null) {
             this.linkGenerator = webRequest.getApplicationContext().getBean(LinkGenerator)
         }
         return this.linkGenerator
@@ -65,36 +66,35 @@ trait RequestForwarder implements WebAttributes {
      */
     @Generated
     String forward(Map params) {
-
         GrailsWebRequest webRequest = getWebRequest()
 
         if (webRequest) {
             def controllerName
-            if(params.controller) {
+            if (params.controller) {
                 controllerName = params.controller
             } else {
                 controllerName = webRequest.controllerName
             }
 
-            if(controllerName) {
+            if (controllerName) {
                 def convertedControllerName = convert(controllerName.toString())
                 webRequest.controllerName = convertedControllerName
             }
             params.controller = webRequest.controllerName
 
-            if(params.action) {
+            if (params.action) {
                 params.action = convert(params.action.toString())
             }
 
-            if(params.namespace) {
+            if (params.namespace) {
                 params.namespace = params.namespace
             }
 
-            if(params.plugin) {
+            if (params.plugin) {
                 params.plugin = params.plugin
             }
 
-            if ( !params.params ) {
+            if (!params.params) {
                 params.params =  UrlMappingUtils.findAllParamsNotInKeys(
                         UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(webRequest.params),
                         webRequest.originalParams.keySet()
@@ -114,7 +114,6 @@ trait RequestForwarder implements WebAttributes {
         request.setAttribute(GrailsApplicationAttributes.FORWARD_IN_PROGRESS, true)
         params.includeContext = false
         String fowardURI = lookupLinkGenerator().link(params)
-
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(fowardURI)
 
@@ -138,8 +137,8 @@ trait RequestForwarder implements WebAttributes {
         return fowardURI
     }
 
-
     private String convert(String value) {
         (urlConverter) ? urlConverter.toUrlElement(value) : value
     }
+
 }

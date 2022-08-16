@@ -11,7 +11,8 @@ import java.lang.annotation.Target
  * Created by graemerocher on 28/05/14.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( [ ElementType.TYPE ] )
+@Target([ElementType.TYPE])
 @GroovyASTTransformationClass("org.grails.compiler.web.ControllerArtefactTypeTransformation")
 public @interface Controller {
+
 }

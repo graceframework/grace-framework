@@ -18,7 +18,6 @@ package org.grails.plugins.web.servlet.mvc
 import groovy.transform.CompileStatic
 import org.grails.web.servlet.mvc.AbstractTokenResponseHandler
 
-
 /**
  * Handles a valid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
  *
@@ -35,5 +34,8 @@ class ValidResponseHandler extends AbstractTokenResponseHandler {
         this.model = model
     }
 
-    protected Object invalidTokenInternal(Closure callable) { model }
+    protected Object invalidTokenInternal(Closure callable) {
+        model
+    }
+
 }

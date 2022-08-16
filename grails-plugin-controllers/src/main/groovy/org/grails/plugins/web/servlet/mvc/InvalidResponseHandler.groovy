@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.plugins.web.servlet.mvc
 
 import groovy.transform.CompileStatic
 import org.grails.web.servlet.mvc.AbstractTokenResponseHandler
-
 
 /**
  * Handles an invalid token response. See {@link org.grails.web.servlet.mvc.TokenResponseHandler}
@@ -36,5 +34,5 @@ class InvalidResponseHandler extends AbstractTokenResponseHandler {
     protected Object invalidTokenInternal(Closure callable) {
         callable?.call()
     }
-}
 
+}

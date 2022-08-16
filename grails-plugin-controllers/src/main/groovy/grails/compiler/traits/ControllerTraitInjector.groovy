@@ -30,7 +30,7 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 class ControllerTraitInjector implements TraitInjector {
-    
+
     @Override
     Class getTrait() {
         Controller
@@ -40,4 +40,5 @@ class ControllerTraitInjector implements TraitInjector {
     String[] getArtefactTypes() {
         ['Controller'] as String[]
     }
+
 }

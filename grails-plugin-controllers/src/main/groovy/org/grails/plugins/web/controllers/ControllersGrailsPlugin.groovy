@@ -64,113 +64,116 @@ class ControllersGrailsPlugin extends Plugin {
     def dependsOn = [core: version, i18n: version, urlMappings: version]
 
     @Override
-    Closure doWithSpring(){ { ->
-        def application = grailsApplication
-        def config = application.config
+    Closure doWithSpring() {
+        { ->
+            def application = grailsApplication
+            def config = application.config
 
-        boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
-        String uploadTmpDir = config.getProperty(Settings.CONTROLLERS_UPLOAD_LOCATION, System.getProperty("java.io.tmpdir"))
-        long maxFileSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_FILE_SIZE, Long, 1048576L)
-        long maxRequestSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_REQUEST_SIZE, Long, 10485760L)
-        int fileSizeThreashold = config.getProperty(Settings.CONTROLLERS_UPLOAD_FILE_SIZE_THRESHOLD, Integer, 0)
-        String filtersEncoding = config.getProperty(Settings.FILTER_ENCODING, 'utf-8')
-        boolean filtersForceEncoding = config.getProperty(Settings.FILTER_FORCE_ENCODING, Boolean, false)
-        boolean isTomcat = ClassUtils.isPresent("org.apache.catalina.startup.Tomcat", application.classLoader)
-        String grailsServletPath = config.getProperty(Settings.WEB_SERVLET_PATH, isTomcat ? Settings.DEFAULT_TOMCAT_SERVLET_PATH : Settings.DEFAULT_WEB_SERVLET_PATH)
-        int resourcesCachePeriod = config.getProperty(Settings.RESOURCES_CACHE_PERIOD, Integer, 0)
-        boolean resourcesEnabled = config.getProperty(Settings.RESOURCES_ENABLED, Boolean, true)
-        String resourcesPattern = config.getProperty(Settings.RESOURCES_PATTERN, String, Settings.DEFAULT_RESOURCE_PATTERN)
+            boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
+            String uploadTmpDir = config.getProperty(Settings.CONTROLLERS_UPLOAD_LOCATION, System.getProperty("java.io.tmpdir"))
+            long maxFileSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_FILE_SIZE, Long, 1048576L)
+            long maxRequestSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_REQUEST_SIZE, Long, 10485760L)
+            int fileSizeThreashold = config.getProperty(Settings.CONTROLLERS_UPLOAD_FILE_SIZE_THRESHOLD, Integer, 0)
+            String filtersEncoding = config.getProperty(Settings.FILTER_ENCODING, 'utf-8')
+            boolean filtersForceEncoding = config.getProperty(Settings.FILTER_FORCE_ENCODING, Boolean, false)
+            boolean isTomcat = ClassUtils.isPresent("org.apache.catalina.startup.Tomcat", application.classLoader)
+            String grailsServletPath = config.getProperty(Settings.WEB_SERVLET_PATH, isTomcat ? Settings.DEFAULT_TOMCAT_SERVLET_PATH :
+                    Settings.DEFAULT_WEB_SERVLET_PATH)
+            int resourcesCachePeriod = config.getProperty(Settings.RESOURCES_CACHE_PERIOD, Integer, 0)
+            boolean resourcesEnabled = config.getProperty(Settings.RESOURCES_ENABLED, Boolean, true)
+            String resourcesPattern = config.getProperty(Settings.RESOURCES_PATTERN, String, Settings.DEFAULT_RESOURCE_PATTERN)
 
-        if (!Boolean.parseBoolean(System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP))) {
-            bootStrapClassRunner(BootStrapClassRunner)
-        }
-
-        tokenResponseActionResultTransformer(TokenResponseActionResultTransformer)
-
-        def catchAllMapping = [Settings.DEFAULT_WEB_SERVLET_PATH]
-
-        characterEncodingFilter(FilterRegistrationBean) {
-            filter = bean(CharacterEncodingFilter) {
-                encoding = filtersEncoding
-                forceEncoding = filtersForceEncoding
+            if (!Boolean.parseBoolean(System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP))) {
+                bootStrapClassRunner(BootStrapClassRunner)
             }
-            urlPatterns = catchAllMapping
-            order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 10
-        }
 
-        hiddenHttpMethodFilter(FilterRegistrationBean) {
-            filter = bean(HiddenHttpMethodFilter)
-            urlPatterns = catchAllMapping
-            order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 20
-        }
+            tokenResponseActionResultTransformer(TokenResponseActionResultTransformer)
 
-        grailsWebRequestFilter(FilterRegistrationBean) {
-            filter = bean(GrailsWebRequestFilter)
-            urlPatterns = catchAllMapping
-            order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 30
-            dispatcherTypes = EnumSet.of(
-                    DispatcherType.FORWARD,
-                    DispatcherType.INCLUDE,
-                    DispatcherType.REQUEST
-            )
-        }
+            def catchAllMapping = [Settings.DEFAULT_WEB_SERVLET_PATH]
 
-        exceptionHandler(GrailsExceptionResolver) {
-            exceptionMappings = ['java.lang.Exception': '/error']
-        }
+            characterEncodingFilter(FilterRegistrationBean) {
+                filter = bean(CharacterEncodingFilter) {
+                    encoding = filtersEncoding
+                    forceEncoding = filtersForceEncoding
+                }
+                urlPatterns = catchAllMapping
+                order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 10
+            }
 
-        multipartResolver(StandardServletMultipartResolver)
+            hiddenHttpMethodFilter(FilterRegistrationBean) {
+                filter = bean(HiddenHttpMethodFilter)
+                urlPatterns = catchAllMapping
+                order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 20
+            }
 
-        "${CompositeViewResolver.BEAN_NAME}"(CompositeViewResolver)
+            grailsWebRequestFilter(FilterRegistrationBean) {
+                filter = bean(GrailsWebRequestFilter)
+                urlPatterns = catchAllMapping
+                order = OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER + 30
+                dispatcherTypes = EnumSet.of(
+                        DispatcherType.FORWARD,
+                        DispatcherType.INCLUDE,
+                        DispatcherType.REQUEST
+                )
+            }
 
-        multipartConfigElement(MultipartConfigElement, uploadTmpDir, maxFileSize, maxRequestSize, fileSizeThreashold)
+            exceptionHandler(GrailsExceptionResolver) {
+                exceptionMappings = ['java.lang.Exception': '/error']
+            }
 
-        def handlerInterceptors = springConfig.containsBean("localeChangeInterceptor") ? [ref("localeChangeInterceptor")] : []
-        def interceptorsClosure = {
-            interceptors = handlerInterceptors
-        }
-        // allow @Controller annotated beans
-        annotationHandlerMapping(RequestMappingHandlerMapping, interceptorsClosure)
-        annotationHandlerAdapter(RequestMappingHandlerAdapter)
+            multipartResolver(StandardServletMultipartResolver)
 
-        // add Grails webmvc config
-        webMvcConfig(GrailsWebMvcConfigurer, resourcesCachePeriod, resourcesEnabled, resourcesPattern)
+            "${CompositeViewResolver.BEAN_NAME}"(CompositeViewResolver)
 
-        // add the dispatcher servlet
-        dispatcherServlet(GrailsDispatcherServlet)
-        dispatcherServletRegistration(DispatcherServletRegistrationBean, ref("dispatcherServlet"), grailsServletPath) {
-            loadOnStartup = 2
-            asyncSupported = true
-            multipartConfig = multipartConfigElement
-        }
+            multipartConfigElement(MultipartConfigElement, uploadTmpDir, maxFileSize, maxRequestSize, fileSizeThreashold)
 
-        def start = System.currentTimeMillis()
-        def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)
-        for (controller in controllerClasses) {
-            log.debug "Configuring controller $controller.fullName"
-            if (controller.available) {
-                def lazyInit = controller.hasProperty("lazyInit") ? controller.getPropertyValue("lazyInit") : true
-                "${controller.fullName}"(controller.clazz) { bean ->
-                    bean.lazyInit = lazyInit
-                    def beanScope = controller.getScope()
-                    bean.scope = beanScope
-                    bean.autowire =  "byName"
-                    if (beanScope == 'prototype') {
-                        bean.beanDefinition.dependencyCheck = AbstractBeanDefinition.DEPENDENCY_CHECK_NONE
-                    }
-                    if (useJsessionId) {
-                        useJessionId = useJsessionId
+            def handlerInterceptors = springConfig.containsBean("localeChangeInterceptor") ? [ref("localeChangeInterceptor")] : []
+            def interceptorsClosure = {
+                interceptors = handlerInterceptors
+            }
+            // allow @Controller annotated beans
+            annotationHandlerMapping(RequestMappingHandlerMapping, interceptorsClosure)
+            annotationHandlerAdapter(RequestMappingHandlerAdapter)
+
+            // add Grails webmvc config
+            webMvcConfig(GrailsWebMvcConfigurer, resourcesCachePeriod, resourcesEnabled, resourcesPattern)
+
+            // add the dispatcher servlet
+            dispatcherServlet(GrailsDispatcherServlet)
+            dispatcherServletRegistration(DispatcherServletRegistrationBean, ref("dispatcherServlet"), grailsServletPath) {
+                loadOnStartup = 2
+                asyncSupported = true
+                multipartConfig = multipartConfigElement
+            }
+
+            def start = System.currentTimeMillis()
+            def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)
+            for (controller in controllerClasses) {
+                log.debug "Configuring controller $controller.fullName"
+                if (controller.available) {
+                    def lazyInit = controller.hasProperty("lazyInit") ? controller.getPropertyValue("lazyInit") : true
+                    "${controller.fullName}"(controller.clazz) { bean ->
+                        bean.lazyInit = lazyInit
+                        def beanScope = controller.getScope()
+                        bean.scope = beanScope
+                        bean.autowire =  "byName"
+                        if (beanScope == 'prototype') {
+                            bean.beanDefinition.dependencyCheck = AbstractBeanDefinition.DEPENDENCY_CHECK_NONE
+                        }
+                        if (useJsessionId) {
+                            useJessionId = useJsessionId
+                        }
                     }
                 }
             }
-        }
-        log.info(String.format("Found %d Controllers: initialization completed in %d ms", controllerClasses.size(), (System.currentTimeMillis() - start)))
+            log.info(String.format("Found %d Controllers: initialization completed in %d ms",
+                    controllerClasses.size(), (System.currentTimeMillis() - start)))
 
-        if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean.class, false)) {
-            log.warn("'grails.json.legacy.builder' is set to TRUE but is NOT supported in this version of Grails.")
+            if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean.class, false)) {
+                log.warn("'grails.json.legacy.builder' is set to TRUE but is NOT supported in this version of Grails.")
+            }
         }
-    } }
-
+    }
 
     @CompileStatic
     static class GrailsWebMvcConfigurer implements WebMvcConfigurer {
@@ -217,6 +220,7 @@ class ControllersGrailsPlugin extends Plugin {
                         .setCachePeriod(cachePeriod)
             }
         }
+
     }
 
     @Override
@@ -234,7 +238,8 @@ class ControllersGrailsPlugin extends Plugin {
                 return
             }
 
-            GrailsControllerClass controllerClass = (GrailsControllerClass)application.addArtefact(ControllerArtefactHandler.TYPE, (Class)event.source)
+            GrailsControllerClass controllerClass =
+                    (GrailsControllerClass) application.addArtefact(ControllerArtefactHandler.TYPE, (Class) event.source)
             beans {
                 "${controllerClass.fullName}"(controllerClass.clazz) { bean ->
                     def beanScope = controllerClass.getScope()
