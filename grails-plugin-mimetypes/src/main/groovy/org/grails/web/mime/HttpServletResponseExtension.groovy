@@ -251,8 +251,12 @@ class HttpServletResponseExtension {
 
             boolean disabledForUserAgent = !(useAcceptHeaderXhr && request.xhr) && disableForUserAgents != null &&
                     userAgent ? disableForUserAgents.matcher(userAgent).find() : false
-            if (msie) header = "*/*"
-            if (!header && useAcceptHeader && !disabledForUserAgent) header = request.getHeader(HttpHeaders.ACCEPT)
+            if (msie) {
+                header = "*/*"
+            }
+            if (!header && useAcceptHeader && !disabledForUserAgent) {
+                header = request.getHeader(HttpHeaders.ACCEPT)
+            }
             result = parser.parse(header)
 
             // GRAILS-8341 - If no header the parser would have returned all configured mime types.  Since no format

@@ -106,7 +106,9 @@ class DefaultAcceptHeaderParser implements AcceptHeaderParser {
             def appXmlIndex = mimes.indexOf(appXml)
             def appXmlQuality = appXml.qualityAsNumber
             for (mime in specificTypes) {
-                if (mime.qualityAsNumber < appXmlQuality) continue
+                if (mime.qualityAsNumber < appXmlQuality) {
+                    continue
+                }
 
                 def mimeIndex = mimes.indexOf(mime)
                 if (mimeIndex > appXmlIndex) {
@@ -142,8 +144,12 @@ class QualityComparator implements Comparator<MimeType> {
     int compare(MimeType t, MimeType t1) {
         BigDecimal left = t.qualityAsNumber
         BigDecimal right = t1.qualityAsNumber
-        if (left > right) return -1
-        if (left < right) return 1
+        if (left > right) {
+            return -1
+        }
+        if (left < right) {
+            return 1
+        }
         return 0
     }
 
