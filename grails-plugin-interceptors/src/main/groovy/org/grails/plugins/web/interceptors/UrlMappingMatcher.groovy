@@ -59,7 +59,9 @@ class UrlMappingMatcher implements Matcher {
         boolean hasUriPatterns = !uriPatterns.isEmpty()
 
         boolean isExcluded = this.isExcluded(uri, info)
-        if (matchAll && !isExcluded) return true
+        if (matchAll && !isExcluded) {
+            return true
+        }
 
         if (!isExcluded) {
             if (hasUriPatterns) {
@@ -156,13 +158,17 @@ class UrlMappingMatcher implements Matcher {
 
     private Pattern regexMatch(Map arguments, String type, Pattern defaultPattern = WILD_CARD_PATTERN) {
         def value = arguments.get(type)
-        if (!value) return defaultPattern
+        if (!value) {
+            return defaultPattern
+        }
         if (value instanceof Pattern) {
             return (Pattern)value
         }
         else {
             def str = value.toString()
-            if (str == '*') return defaultPattern
+            if (str == '*') {
+                return defaultPattern
+            }
             else {
                 return Pattern.compile(str)
             }

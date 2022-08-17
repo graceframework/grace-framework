@@ -45,7 +45,9 @@ class InterceptorsGrailsPlugin extends Plugin {
     Closure doWithSpring() {
         { ->
             GrailsClass[] interceptors = grailsApplication.getArtefacts(InterceptorArtefactHandler.TYPE)
-            if (interceptors.length == 0) return
+            if (interceptors.length == 0) {
+                return
+            }
 
             grailsInterceptorMappedInterceptor(MappedInterceptor, ['/**'] as String[], bean(GrailsInterceptorHandlerInterceptorAdapter))
 
