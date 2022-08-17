@@ -66,7 +66,9 @@ class SystemOutAndErrSwapper {
      * @throws IllegalStateException if a swap is already on
      */
     List<OutputStream> swapIn(OutputStream outStream, OutputStream errStream) {
-        if (swapped) throw new IllegalStateException("swapIn() called during a swap")
+        if (swapped) {
+            throw new IllegalStateException("swapIn() called during a swap")
+        }
 
         swappedOutOut = System.out
         swappedOutErr = System.err
@@ -92,7 +94,9 @@ class SystemOutAndErrSwapper {
      * @throws IllegalStateException if not in a swap
      */
     List<OutputStream> swapOut() {
-        if (!swapped) throw new IllegalStateException("swapOut() called while not during a swap")
+        if (!swapped) {
+            throw new IllegalStateException("swapOut() called while not during a swap")
+        }
 
         System.out = swappedOutOut
         System.err = swappedOutErr

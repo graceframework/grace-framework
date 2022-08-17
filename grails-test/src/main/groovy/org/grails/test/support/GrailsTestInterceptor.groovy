@@ -57,7 +57,9 @@ class GrailsTestInterceptor {
     }
 
     protected autowireIfNecessary() {
-        if (mode.autowire) createAutowirer().autowire(test)
+        if (mode.autowire) {
+            createAutowirer().autowire(test)
+        }
     }
 
     protected initTransactionIfNecessary() {

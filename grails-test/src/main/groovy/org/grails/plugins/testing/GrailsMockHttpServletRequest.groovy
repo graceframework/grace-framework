@@ -154,7 +154,9 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      */
     String getForwardURI() {
         def result = getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE)
-        if (!result) result = requestURI
+        if (!result) {
+            result = requestURI
+        }
         return result
     }
 
