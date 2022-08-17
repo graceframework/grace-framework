@@ -34,7 +34,7 @@ import org.springframework.util.ClassUtils
 class GrailsSwingConsole extends GrailsApp {
 
     static {
-        System.setProperty("java.awt.headless", "false");
+        System.setProperty("java.awt.headless", "false")
     }
 
     GrailsSwingConsole(Class<?>... sources) {
@@ -63,7 +63,7 @@ class GrailsSwingConsole extends GrailsApp {
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     public static ConfigurableApplicationContext run(Class<?> source, String... args) {
-        return run([ source ] as Class[], args);
+        return run([ source ] as Class[], args)
     }
 
     /**
@@ -74,7 +74,7 @@ class GrailsSwingConsole extends GrailsApp {
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     public static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
-        return new GrailsSwingConsole(sources).run(args);
+        return new GrailsSwingConsole(sources).run(args)
     }
 
     /**
