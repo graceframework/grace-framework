@@ -26,7 +26,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindingEditor<T> {
 
-    public T assemble(String propertyName, DataBindingSource fieldValues) throws IllegalArgumentException {
+    T assemble(String propertyName, DataBindingSource fieldValues) throws IllegalArgumentException {
         final prefix = propertyName + '_'
         assert fieldValues.containsProperty(prefix + "year"), "Can't populate a date without a year"
 
@@ -69,7 +69,7 @@ abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindi
         ['month', 'day', 'hour', 'minute']
     }
 
-    public T getPropertyValue(obj, String propertyName, DataBindingSource source) {
+    T getPropertyValue(obj, String propertyName, DataBindingSource source) {
         assemble(propertyName, source)
     }
 
