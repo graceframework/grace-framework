@@ -17,12 +17,16 @@ class ExceptionUtils {
     public static final String EXCEPTION_ATTRIBUTE = "exception";
 
     static RuntimeException getFirstRuntimeException(Throwable e) {
-        if (e instanceof RuntimeException) return (RuntimeException) e
+        if (e instanceof RuntimeException) {
+            return (RuntimeException) e
+        }
 
         Throwable ex = e
         while (ex.cause && ex != ex.cause) {
             ex = ex.cause
-            if (ex instanceof RuntimeException) return (RuntimeException) ex
+            if (ex instanceof RuntimeException) {
+                return (RuntimeException) ex
+            }
         }
     }
 

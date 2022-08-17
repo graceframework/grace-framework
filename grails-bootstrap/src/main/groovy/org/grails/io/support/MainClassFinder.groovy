@@ -70,7 +70,9 @@ class MainClassFinder {
 
             for (File dir in searchDirs) {
                 mainClass = findMainClass(dir)
-                if (mainClass) break
+                if (mainClass) {
+                    break
+                }
             }
             if (mainClass != null) {
                 mainClasses.put(pathStr, mainClass)

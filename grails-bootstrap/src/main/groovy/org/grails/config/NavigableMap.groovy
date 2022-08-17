@@ -325,7 +325,9 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     private Object navigateMap(Map<String, Object> map, String... path) {
-        if (map == null || path == null) return null
+        if (map == null || path == null) {
+            return null
+        }
         if (path.length == 0) {
             return map
         } else if (path.length == 1) {
@@ -491,7 +493,9 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         boolean containsKey(Object key) {
             NavigableMap parentMap = parent.navigateSubMap(path, false)
-            if (parentMap == null) return false
+            if (parentMap == null) {
+                return false
+            }
             else {
                 return parentMap.containsKey(key)
             }
@@ -601,7 +605,9 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         public Object asType(Class c) {
-            if (c == Boolean || c == boolean) return false
+            if (c == Boolean || c == boolean) {
+                return false
+            }
             return null
         }
 

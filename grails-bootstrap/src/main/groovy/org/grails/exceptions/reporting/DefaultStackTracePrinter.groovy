@@ -24,8 +24,12 @@ import org.codehaus.groovy.control.MultipleCompilationErrorsException
 class DefaultStackTracePrinter implements StackTracePrinter {
 
     String prettyPrint(Throwable t) {
-        if (t == null) return ''
-        if (!t.stackTrace) return 'No stack trace available'
+        if (t == null) {
+            return ''
+        }
+        if (!t.stackTrace) {
+            return 'No stack trace available'
+        }
         final sw = new StringWriter()
         def sb = new PrintWriter(sw)
         def mln = Math.max(4, t.stackTrace.lineNumber.max())
@@ -52,7 +56,9 @@ class DefaultStackTracePrinter implements StackTracePrinter {
             if (!first) {
                 printCausedByMessage(sb, e)
             }
-            if (e instanceof MultipleCompilationErrorsException) break
+            if (e instanceof MultipleCompilationErrorsException) {
+                break
+            }
             if (last > 0) {
                 stackTrace[0..-1].eachWithIndex { te, idx ->
                     def fileName = getFileName(te)
@@ -73,7 +79,9 @@ class DefaultStackTracePrinter implements StackTracePrinter {
                         lineNumber = te.lineNumber.toString().padLeft(lineNumWidth)
                     }
 
-                    if (prevLn == lineNumber && idx != last) return // no point duplicating lines
+                    if (prevLn == lineNumber && idx != last) {
+                        return
+                    } // no point duplicating lines
                     if ((idx == 0) || fileName) {
                         prevLn = lineNumber
                         if (prevFn && (prevFn == fileName)) {
@@ -105,7 +113,9 @@ class DefaultStackTracePrinter implements StackTracePrinter {
             }
 
             first = false
-            if (shouldSkipNextCause(e)) break
+            if (shouldSkipNextCause(e)) {
+                break
+            }
             e = e.cause
         }
 
