@@ -123,7 +123,7 @@ abstract class GrailsArrayUtils {
             int len2 = Array.getLength(otherArray)
 
             def newArray = Array.newInstance(type, len + len2)
-            System.arraycopy(array, 0, newArray, 0, len);
+            System.arraycopy(array, 0, newArray, 0, len)
             try {
                 System.arraycopy otherArray, 0, newArray, len, len2
             } catch (ArrayStoreException ase) {

@@ -263,7 +263,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     public Iterator<Map.Entry<String, Object>> iterator() {
-        return DefaultGroovyMethods.iterator(configMap);
+        return DefaultGroovyMethods.iterator(configMap)
     }
 
     public <T> T getProperty(String name, Class<T> requiredType) {

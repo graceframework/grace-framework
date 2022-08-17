@@ -13,7 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 @CompileStatic
 class CachingPathMatchingResourcePatternResolver extends PathMatchingResourcePatternResolver {
 
-    public static final CachingPathMatchingResourcePatternResolver INSTANCE = new CachingPathMatchingResourcePatternResolver();
+    public static final CachingPathMatchingResourcePatternResolver INSTANCE = new CachingPathMatchingResourcePatternResolver()
 
     private CachingPathMatchingResourcePatternResolver() {
     }
