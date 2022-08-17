@@ -22,7 +22,7 @@ import org.springframework.http.HttpMethod
 
 import javax.servlet.http.HttpServletRequest
 
-import org.grails.databinding.bindingsource.DataBindingSourceCreationException;
+import org.grails.databinding.bindingsource.DataBindingSourceCreationException
 
 import grails.web.mime.MimeType
 import grails.web.servlet.mvc.GrailsParameterMap

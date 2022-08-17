@@ -15,9 +15,9 @@
  */
 package org.grails.web.databinding.bindingsource
 
-import grails.databinding.CollectionDataBindingSource;
-import grails.databinding.DataBindingSource;
-import grails.databinding.SimpleMapDataBindingSource;
+import grails.databinding.CollectionDataBindingSource
+import grails.databinding.DataBindingSource
+import grails.databinding.SimpleMapDataBindingSource
 import groovy.transform.CompileStatic
 import groovy.xml.slurpersupport.GPathResult
 import grails.web.mime.MimeType

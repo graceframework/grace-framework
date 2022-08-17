@@ -15,11 +15,11 @@
  */
 package org.grails.web.databinding.bindingsource
 
-import grails.databinding.CollectionDataBindingSource;
-import grails.databinding.DataBindingSource;
+import grails.databinding.CollectionDataBindingSource
+import grails.databinding.DataBindingSource
 import grails.databinding.SimpleMapDataBindingSource
 import groovy.json.JsonException
-import groovy.json.JsonSlurper;
+import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
 
 import java.util.regex.Pattern

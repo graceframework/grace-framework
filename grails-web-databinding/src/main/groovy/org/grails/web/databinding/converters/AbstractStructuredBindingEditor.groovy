@@ -15,8 +15,8 @@
  */
 package org.grails.web.databinding.converters
 
-import grails.databinding.DataBindingSource;
-import grails.databinding.TypedStructuredBindingEditor;
+import grails.databinding.DataBindingSource
+import grails.databinding.TypedStructuredBindingEditor
 import groovy.transform.CompileStatic
 
 import java.lang.reflect.ParameterizedType

@@ -15,7 +15,7 @@
  */
 package org.grails.web.databinding.bindingsource
 
-import grails.databinding.DataBindingSource;
+import grails.databinding.DataBindingSource
 import groovy.transform.CompileStatic
 
 import grails.web.mime.MimeType
