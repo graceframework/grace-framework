@@ -260,7 +260,9 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                     def allProfiles = profileRepository.getProfileAndDependencies(profile)
                     for (parent in allProfiles) {
                         f = parent.getTemplate(path)
-                        if (f.exists()) break
+                        if (f.exists()) {
+                            break
+                        }
                     }
                 }
             }

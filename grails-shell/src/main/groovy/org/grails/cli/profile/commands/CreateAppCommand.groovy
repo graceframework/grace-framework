@@ -227,7 +227,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     boolean handle(CreateAppCommandObject cmd) {
-        if (profileRepository == null) throw new IllegalStateException("Property 'profileRepository' must be set")
+        if (profileRepository == null) {
+            throw new IllegalStateException("Property 'profileRepository' must be set")
+        }
 
         String profileName = cmd.profileName
 

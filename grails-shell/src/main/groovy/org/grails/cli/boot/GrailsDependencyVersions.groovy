@@ -103,8 +103,9 @@ class GrailsDependencyVersions implements DependencyManagement {
     @Override
     Dependency find(String artifactId) {
         def groupAndArtifact = artifactToGroupAndArtifact[artifactId]
-        if (groupAndArtifact)
+        if (groupAndArtifact) {
             return groupAndArtifactToDependency[groupAndArtifact]
+        }
     }
 
     Iterator<Dependency> iterator() {

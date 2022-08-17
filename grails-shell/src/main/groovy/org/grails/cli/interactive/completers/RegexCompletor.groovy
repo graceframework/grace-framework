@@ -52,7 +52,9 @@ class RegexCompletor implements Completer {
             candidates << buffer
             return 0
         }
-        else return -1
+        else {
+            return -1
+        }
     }
 
 }

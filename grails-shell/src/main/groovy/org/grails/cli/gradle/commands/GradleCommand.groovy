@@ -63,10 +63,12 @@ class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
         initializeCompleter()
 
-        if (completer)
+        if (completer) {
             return completer.complete(buffer, cursor, candidates)
-        else
+        }
+        else {
             return cursor
+        }
     }
 
     private void initializeCompleter() {

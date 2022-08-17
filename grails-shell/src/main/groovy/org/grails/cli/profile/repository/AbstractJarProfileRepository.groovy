@@ -90,7 +90,9 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
     }
 
     protected void registerProfile(URL url, ClassLoader parent) {
-        if (registeredUrls.contains(url)) return
+        if (registeredUrls.contains(url)) {
+            return
+        }
 
         def classLoader = new URLClassLoader([url] as URL[], parent)
         def profileYml = classLoader.getResource("META-INF/grails-profile/profile.yml")

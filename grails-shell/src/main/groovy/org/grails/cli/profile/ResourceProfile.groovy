@@ -47,12 +47,18 @@ class ResourceProfile extends AbstractProfile implements Profile {
     }
 
     boolean equals(o) {
-        if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (this.is(o)) {
+            return true
+        }
+        if (getClass() != o.class) {
+            return false
+        }
 
         ResourceProfile that = (ResourceProfile) o
 
-        if (name != that.name) return false
+        if (name != that.name) {
+            return false
+        }
 
         return true
     }

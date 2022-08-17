@@ -286,8 +286,9 @@ abstract class AbstractProfile implements Profile {
         for (profile in parents) {
             def dependencies = profile.buildPlugins
             for (dep in dependencies) {
-                if (!buildExcludes.contains(dep))
+                if (!buildExcludes.contains(dep)) {
                     calculatedPlugins.add(dep)
+                }
             }
         }
         calculatedPlugins.addAll(buildPlugins)

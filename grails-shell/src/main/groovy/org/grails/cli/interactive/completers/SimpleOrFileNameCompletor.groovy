@@ -52,7 +52,9 @@ class SimpleOrFileNameCompletor implements Completer {
         // both simple completor and file path completor candidates appear
         // correctly in the command prompt. If neither competors have matches,
         // we of course return -1.
-        if (retval == -1) retval = fileRetval
+        if (retval == -1) {
+            retval = fileRetval
+        }
         return candidates ? retval : -1
     }
 

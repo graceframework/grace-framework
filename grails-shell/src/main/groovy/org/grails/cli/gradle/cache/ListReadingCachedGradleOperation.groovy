@@ -37,7 +37,9 @@ abstract class ListReadingCachedGradleOperation<T> extends CachedGradleOperation
 
     @Override
     void writeToCache(PrintWriter writer, List<T> data) {
-        for (url in data) writer.println(url.toString())
+        for (url in data) {
+            writer.println(url.toString())
+        }
     }
 
 }

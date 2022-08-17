@@ -42,8 +42,9 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
             def data = readCommandFile(resource)
 
             def command = createCommand(profile, commandName, resource, data)
-            if (command)
+            if (command) {
                 commands << command
+            }
         }
         return commands
     }

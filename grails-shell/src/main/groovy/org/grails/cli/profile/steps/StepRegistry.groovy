@@ -47,10 +47,14 @@ class StepRegistry {
      * @return A step or null if it doesn't exist for the given name
      */
     static Step getStep(String name, Command command, Map parameters) {
-        if (!name) return null
+        if (!name) {
+            return null
+        }
         for (StepFactory sf in registeredStepFactories) {
             def step = sf.createStep(name, command, parameters)
-            if (step) return step
+            if (step) {
+                return step
+            }
         }
     }
 
