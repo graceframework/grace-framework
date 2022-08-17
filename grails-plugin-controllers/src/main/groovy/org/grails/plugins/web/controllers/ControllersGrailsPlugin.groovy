@@ -203,7 +203,7 @@ class ControllersGrailsPlugin extends Plugin {
         }
 
         @Override
-        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        void addResourceHandlers(ResourceHandlerRegistry registry) {
             if (!addMappings) {
                 return
             }
