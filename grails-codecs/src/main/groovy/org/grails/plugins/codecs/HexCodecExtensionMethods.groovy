@@ -39,7 +39,9 @@ class HexCodecExtensionMethods {
     }
 
     static decodeHex(theTarget) {
-        if (!theTarget) return null
+        if (!theTarget) {
+            return null
+        }
 
         def output = []
 
