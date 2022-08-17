@@ -15,7 +15,6 @@
  */
 package org.grails.cli.profile.commands
 
-import grails.build.logging.GrailsConsole
 import jline.console.completer.Completer
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser

@@ -18,7 +18,6 @@ package org.grails.cli
 import grails.build.logging.GrailsConsole
 import grails.build.proxy.SystemPropertiesAuthenticator
 import grails.config.ConfigMap
-import grails.io.support.SystemOutErrCapturer
 import grails.io.support.SystemStreamsRedirector
 import grails.util.BuildSettings
 import grails.util.Environment
@@ -41,7 +40,13 @@ import org.grails.cli.interactive.completers.EscapingFileNameCompletor
 import org.grails.cli.interactive.completers.RegexCompletor
 import org.grails.cli.interactive.completers.SortedAggregateCompleter
 import org.grails.cli.interactive.completers.StringsCompleter
-import org.grails.cli.profile.*
+import org.grails.cli.profile.Command
+import org.grails.cli.profile.CommandArgument
+import org.grails.cli.profile.CommandCancellationListener
+import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.Profile
+import org.grails.cli.profile.ProfileRepository
+import org.grails.cli.profile.ProjectContext
 import org.grails.cli.profile.commands.CommandCompleter
 import org.grails.cli.profile.commands.CommandRegistry
 import org.grails.cli.profile.repository.GrailsRepositoryConfiguration
@@ -51,7 +56,11 @@ import org.grails.config.CodeGenConfig
 import org.grails.config.NavigableMap
 import org.grails.exceptions.ExceptionUtils
 
-import java.util.concurrent.*
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 /**
  * Main class for the Grails command line.

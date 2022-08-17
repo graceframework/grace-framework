@@ -25,8 +25,6 @@ import org.grails.io.support.Resource
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
-import java.util.regex.Pattern
-
 /**
  * A {@link CommandFactory} that can discover commands defined in YAML or JSON
  *
