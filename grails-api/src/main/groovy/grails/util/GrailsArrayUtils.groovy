@@ -165,7 +165,7 @@ abstract class GrailsArrayUtils {
         }
     }
 
-    public static boolean contains(Object[] array, Object elementToSearchFor) {
+    static boolean contains(Object[] array, Object elementToSearchFor) {
         boolean found = false
         if (array) {
             found = DefaultGroovyMethods.contains(array, elementToSearchFor)

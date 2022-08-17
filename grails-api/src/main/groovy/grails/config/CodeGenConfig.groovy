@@ -217,15 +217,15 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         throw new RuntimeException("conversion of $value to $requiredType.name not implemented")
     }
 
-    public Object navigate(String... path) {
+    Object navigate(String... path) {
         return navigate(Object, path)
     }
 
-    public boolean asBoolean() {
+    boolean asBoolean() {
         return !configMap.isEmpty()
     }
 
-    public Object asType(Class type) {
+    Object asType(Class type) {
         if (type == Boolean || type == boolean) {
             return asBoolean()
         } else if (type == String) {
@@ -239,22 +239,22 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         }
     }
 
-    public Object getAt(Object key) {
+    Object getAt(Object key) {
         getProperty(String.valueOf(key))
     }
 
-    public void setAt(Object key, Object value) {
+    void setAt(Object key, Object value) {
         setProperty(String.valueOf(key), value)
     }
 
-    public Object getProperty(String name) {
+    Object getProperty(String name) {
         if ("configMap".equals(name)) {
             return this.configMap
         }
         return configMap.get(name)
     }
 
-    public Object get(String name) {
+    Object get(String name) {
         if ("configMap".equals(name)) {
             return this.configMap
         }
@@ -262,11 +262,11 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     @Override
-    public Iterator<Map.Entry<String, Object>> iterator() {
+    Iterator<Map.Entry<String, Object>> iterator() {
         return DefaultGroovyMethods.iterator(configMap)
     }
 
-    public <T> T getProperty(String name, Class<T> requiredType) {
+    <T> T getProperty(String name, Class<T> requiredType) {
         return convertToType(configMap.get(name), requiredType)
     }
 
@@ -279,7 +279,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         return v
     }
 
-    public void setProperty(String name, Object value) {
+    void setProperty(String name, Object value) {
         configMap.setProperty(name, value)
     }
 
