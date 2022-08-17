@@ -29,7 +29,7 @@ class HTMLCodecFactory implements CodecFactory {
 
         @Override
         public CodecIdentifier getCodecIdentifier() {
-            return HTMLEncoder.HTML_CODEC_IDENTIFIER;
+            return HTMLEncoder.HTML_CODEC_IDENTIFIER
         }
 
     }
