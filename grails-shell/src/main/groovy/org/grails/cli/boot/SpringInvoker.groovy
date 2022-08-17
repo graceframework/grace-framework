@@ -30,7 +30,7 @@ import org.springframework.boot.cli.command.CommandRunner
 @CompileStatic
 class SpringInvoker {
 
-    CommandRunner runner = new CommandRunner("spring");
+    CommandRunner runner = new CommandRunner("spring")
 
     private SpringInvoker() {
         addServiceLoaderCommands(runner)

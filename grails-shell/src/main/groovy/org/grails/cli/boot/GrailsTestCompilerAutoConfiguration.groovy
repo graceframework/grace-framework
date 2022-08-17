@@ -51,7 +51,7 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     @Override
     void applyImports(ImportCustomizer imports) throws CompilationFailedException {
-        imports.addStarImports(DEFAULT_IMPORTS);
+        imports.addStarImports(DEFAULT_IMPORTS)
     }
 
     @Override
@@ -61,7 +61,7 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
                     "org.grails",
                     "grails-plugin-testing",
                     Environment.class.getPackage().getImplementationVersion(), null, null, true)
-            lastMatch.addAnnotation(annotation);
+            lastMatch.addAnnotation(annotation)
         }
     }
 

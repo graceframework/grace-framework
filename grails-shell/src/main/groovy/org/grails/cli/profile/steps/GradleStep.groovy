@@ -63,7 +63,7 @@ class GradleStep extends AbstractStep {
             context.console.error("Gradle build terminated with error: ${cause.message}", cause)
             return false
         }
-        return true;
+        return true
     }
 
     protected void initialize() {
