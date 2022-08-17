@@ -16,7 +16,7 @@
 package grails.web.mime
 
 import grails.util.Holders
-import groovy.transform.CompileStatic;
+import groovy.transform.CompileStatic
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
@@ -125,7 +125,7 @@ class MimeType {
 
     int hashCode() {
         def result = name.hashCode()
-        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0)
         return result
     }
 
