@@ -64,7 +64,9 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
         URL url = GrailsASTUtils.getSourceUrl(source)
 
-        if (!url || !isProjectSource(new UrlResource(url))) return
+        if (!url || !isProjectSource(new UrlResource(url))) {
+            return
+        }
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
@@ -90,7 +92,9 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
 
-            if (!isGrailsResource(new UrlResource(url))) continue
+            if (!isGrailsResource(new UrlResource(url))) {
+                continue
+            }
 
             classNode.getModule().addImport("Autowired",
                     ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
@@ -140,7 +144,9 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
     static boolean updateGrailsFactoriesWithType(ClassNode classNode, ClassNode superType, File compilationTargetDirectory) {
         if (isSubclassOfOrImplementsInterface(classNode, superType)) {
-            if (Modifier.isAbstract(classNode.getModifiers())) return false
+            if (Modifier.isAbstract(classNode.getModifiers())) {
+                return false
+            }
 
             def classNodeName = classNode.name
             def props = new Properties()

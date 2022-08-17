@@ -69,7 +69,9 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         ModuleNode ast = source.getAST()
 
         URL url = GrailsASTUtils.getSourceUrl(source)
-        if (!url || !isProjectSource(new UrlResource(url))) return
+        if (!url || !isProjectSource(new UrlResource(url))) {
+            return
+        }
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
 
@@ -100,7 +102,9 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 continue
             }
 
-            if (!isGrailsResource(new UrlResource(url))) continue
+            if (!isGrailsResource(new UrlResource(url))) {
+                continue
+            }
 
             if (projectName && projectVersion) {
                 Map<String, Object> members = [
