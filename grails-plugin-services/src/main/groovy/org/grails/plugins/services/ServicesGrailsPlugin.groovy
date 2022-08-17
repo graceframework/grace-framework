@@ -91,7 +91,9 @@ class ServicesGrailsPlugin extends Plugin  {
             def application = grailsApplication
             Class javaClass = event.source
             // do nothing for abstract classes
-            if (Modifier.isAbstract(javaClass.modifiers)) return
+            if (Modifier.isAbstract(javaClass.modifiers)) {
+                return
+            }
             def serviceClass = (GrailsServiceClass) application.addArtefact(ServiceArtefactHandler.TYPE, (Class) event.source)
             def serviceName = "${serviceClass.propertyName}"
             def scope = serviceClass.getPropertyValue("scope")
