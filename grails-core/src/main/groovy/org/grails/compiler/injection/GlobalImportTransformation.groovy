@@ -34,7 +34,7 @@ class GlobalImportTransformation implements ASTTransformation {
 
     @Override
     void visit(ASTNode[] nodes, SourceUnit source) {
-        ModuleNode ast = source.getAST();
+        ModuleNode ast = source.getAST()
         ast.addImport("Autowired", ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
     }
 
