@@ -115,9 +115,12 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                 }
                 else if (includeContext) {
                     def cp = attrs.get(ATTRIBUTE_CONTEXT_PATH)
-                    if (cp == null) cp = getContextPath()
-                    if (cp != null)
+                    if (cp == null) {
+                        cp = getContextPath()
+                    }
+                    if (cp != null) {
                         writer.append cp
+                    }
                 }
             }
             writer.append uri
@@ -164,8 +167,9 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
                 if (resourceAttribute) {
                     String resource
-                    if (resourceAttribute instanceof CharSequence)
+                    if (resourceAttribute instanceof CharSequence) {
                         resource = resourceAttribute.toString()
+                    }
                     else {
                         PersistentEntity persistentEntity = (mappingContext != null) ?
                                 mappingContext.getPersistentEntity(resourceAttribute.getClass().getName()) : null
@@ -207,7 +211,9 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     else if (methodAttribute && !action) {
                         def method = methodAttribute.toString().toUpperCase()
                         httpMethod = method
-                        if (method == 'GET' && id) method = "${method}_ID".toString()
+                        if (method == 'GET' && id) {
+                            method = "${method}_ID".toString()
+                        }
                         action = REST_RESOURCE_HTTP_METHOD_TO_ACTION_MAP[method]
                     }
                     else {
