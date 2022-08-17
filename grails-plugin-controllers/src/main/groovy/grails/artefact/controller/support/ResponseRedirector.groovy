@@ -168,7 +168,9 @@ trait ResponseRedirector implements WebAttributes {
 
         // Make sure that if an ID was given, it is used to evaluate
         // the reverse URL mapping.
-        if (id) params.id = id
+        if (id) {
+            params.id = id
+        }
 
         UrlCreator creator = mappings.getReverseMapping(controller, action, namespace, plugin, params)
         def response = currentWebRequest.getCurrentResponse()

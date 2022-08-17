@@ -588,7 +588,9 @@ trait ResponseRenderer extends WebAttributes {
         Object pluginName = argMap.get(ARGUMENT_PLUGIN)
         if (pluginName != null) {
             GrailsPlugin plugin = getPluginManager(webRequest).getGrailsPlugin(pluginName.toString())
-            if (plugin != null && !plugin.isBasePlugin()) contextPath = plugin.getPluginPath()
+            if (plugin != null && !plugin.isBasePlugin()) {
+                contextPath = plugin.getPluginPath()
+            }
         }
         contextPath
     }

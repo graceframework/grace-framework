@@ -302,13 +302,19 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         final request = webRequest.getCurrentRequest()
         SynchronizerTokensHolder tokensHolderInSession = (SynchronizerTokensHolder) request.getSession(false)?.getAttribute(
                 SynchronizerTokensHolder.HOLDER)
-        if (!tokensHolderInSession) return false
+        if (!tokensHolderInSession) {
+            return false
+        }
 
         String tokenInRequest = webRequest.params[SynchronizerTokensHolder.TOKEN_KEY]
-        if (!tokenInRequest) return false
+        if (!tokenInRequest) {
+            return false
+        }
 
         String urlInRequest = webRequest.params[SynchronizerTokensHolder.TOKEN_URI]
-        if (!urlInRequest) return false
+        if (!urlInRequest) {
+            return false
+        }
 
         try {
             return tokensHolderInSession.isValid(urlInRequest, tokenInRequest)
@@ -331,7 +337,9 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         if (urlInRequest && tokenInRequest) {
             tokensHolderInSession.resetToken(urlInRequest, tokenInRequest)
         }
-        if (tokensHolderInSession.isEmpty()) request.getSession(false)?.removeAttribute(SynchronizerTokensHolder.HOLDER)
+        if (tokensHolderInSession.isEmpty()) {
+            request.getSession(false)?.removeAttribute(SynchronizerTokensHolder.HOLDER)
+        }
     }
 
     @Generated
