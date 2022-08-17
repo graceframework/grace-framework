@@ -437,7 +437,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     boolean isAsyncSupported() { true }
 
     @Override
-    public ServletInputStream getInputStream() {
+    ServletInputStream getInputStream() {
         if (cachedInputStream == null) {
             cachedInputStream = super.getInputStream()
         }
