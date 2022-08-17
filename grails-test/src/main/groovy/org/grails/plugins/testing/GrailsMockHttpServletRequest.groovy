@@ -65,12 +65,12 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     private ServletInputStream cachedInputStream
 
     public GrailsMockHttpServletRequest() {
-        super();
+        super()
         method = 'GET'
     }
 
     public GrailsMockHttpServletRequest(ServletContext servletContext) {
-        super(servletContext);
+        super(servletContext)
         method = 'GET'
     }
 
