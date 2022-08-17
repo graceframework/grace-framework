@@ -20,7 +20,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
     GrailsApplication grailsApplication
     private ListableBeanFactory beanFactory
 
-    public TomcatJDBCPoolMBeanExporter() {
+    TomcatJDBCPoolMBeanExporter() {
         super()
         this.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING)
     }
@@ -79,7 +79,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
     }
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) {
+    void setBeanFactory(BeanFactory beanFactory) {
         super.setBeanFactory(beanFactory)
         this.beanFactory = (ListableBeanFactory)beanFactory
     }
