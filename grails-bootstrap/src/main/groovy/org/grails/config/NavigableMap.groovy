@@ -33,7 +33,7 @@ import java.util.regex.Pattern
 @CompileStatic
 class NavigableMap implements Map<String, Object>, Cloneable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NavigableMap.class)
+    private static final Logger LOG = LoggerFactory.getLogger(NavigableMap)
 
     private static final Pattern SPLIT_PATTERN = ~/\./
     private static final String SPRING_PROFILES = 'spring.profiles.active'

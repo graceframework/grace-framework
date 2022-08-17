@@ -57,7 +57,7 @@ enum Environment {
     /** A custom environment */
     CUSTOM
 
-    private static final Supplier<Logger> LOG = SupplierUtil.memoized(() -> LoggerFactory.getLogger(Environment.class))
+    private static final Supplier<Logger> LOG = SupplierUtil.memoized(() -> LoggerFactory.getLogger(Environment))
 
     /**
      * Constant used to resolve the environment via System.getProperty(Environment.KEY)
@@ -135,11 +135,11 @@ enum Environment {
     private static final boolean WAR_DEPLOYED
 
     static {
-        Package p = Environment.class.getPackage()
+        Package p = Environment.getPackage()
         String version = p != null ? p.getImplementationVersion() : null
         if (version == null || isBlank(version)) {
             try {
-                URL manifestURL = IOUtils.findResourceRelativeToClass(Environment.class, "/META-INF/MANIFEST.MF")
+                URL manifestURL = IOUtils.findResourceRelativeToClass(Environment, "/META-INF/MANIFEST.MF")
                 Manifest grailsManifest = null
                 if (manifestURL != null) {
                     Resource r = new UrlResource(manifestURL)
@@ -177,7 +177,7 @@ enum Environment {
         }
         GRAILS_VERSION = version
 
-        URL url = Environment.class.getResource("")
+        URL url = Environment.getResource("")
         if (url != null) {
             String protocol = url.getProtocol()
             if (protocol == "jar") {
@@ -200,7 +200,7 @@ enum Environment {
             STANDALONE_DEPLOYED = false
         }
 
-        URL loadedLocation = Environment.class.getClassLoader().getResource(Metadata.FILE)
+        URL loadedLocation = Environment.getClassLoader().getResource(Metadata.FILE)
         if (loadedLocation != null) {
             String path = loadedLocation.getPath()
             WAR_DEPLOYED = isWebPath(path)
@@ -456,7 +456,7 @@ enum Environment {
      * @return true if is
      */
     static boolean isWithinShell() {
-        return DefaultGroovyMethods.getRootLoader(Environment.class.getClassLoader()) != null
+        return DefaultGroovyMethods.getRootLoader(Environment.getClassLoader()) != null
     }
 
     /**
