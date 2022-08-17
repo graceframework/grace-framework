@@ -79,14 +79,14 @@ class MimeTypesFactoryBean implements FactoryBean<MimeType[]>, ApplicationContex
     }
 
     @Override
-    Class<?> getObjectType() { MimeType[].class }
+    Class<?> getObjectType() { MimeType[] }
 
     @Override
     boolean isSingleton() { true }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected Map<CharSequence, CharSequence> getMimeConfig(Config config) {
-        return config.getProperty(Settings.MIME_TYPES, Map.class)
+        return config.getProperty(Settings.MIME_TYPES, Map)
     }
 
 }
