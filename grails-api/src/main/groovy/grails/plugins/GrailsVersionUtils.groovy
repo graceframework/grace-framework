@@ -74,7 +74,9 @@ class GrailsVersionUtils {
      * @return
      */
     static boolean isVersionGreaterThan(String leftVersion, String rightVersion) {
-        if (leftVersion == rightVersion) return false
+        if (leftVersion == rightVersion) {
+            return false
+        }
         def versions = [leftVersion, rightVersion]
         versions.sort(true, new VersionComparator())
         return versions[1] == rightVersion

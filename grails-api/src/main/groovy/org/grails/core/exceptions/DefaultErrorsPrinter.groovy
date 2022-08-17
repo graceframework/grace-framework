@@ -60,7 +60,9 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
 
         Throwable cause = exception
         while (cause) {
-            if (!cause.stackTrace) break
+            if (!cause.stackTrace) {
+                break
+            }
             if (cause.getClass().name == 'org.springframework.web.util.NestedServletException') {
                 cause = cause.cause
                 continue
@@ -84,7 +86,9 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
 
                 res = res ?: resourceLocator?.findResourceForClassName(className)
                 if (res != null) {
-                    if (lineNumbersShown[res.filename].contains(lineNumber)) continue // don't repeat the same lines twice
+                    if (lineNumbersShown[res.filename].contains(lineNumber)) {
+                        continue // don't repeat the same lines twice
+                    }
 
                     lineNumbersShown[res.filename] << lineNumber
                     pw.print formatCodeSnippetStart(res, lineNumber)
@@ -133,7 +137,9 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                 }
             }
 
-            if (shouldSkipNextCause(cause)) break
+            if (shouldSkipNextCause(cause)) {
+                break
+            }
             cause = cause.cause
         }
 
@@ -170,7 +176,9 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
             }
 
             start = start.cause
-            if (start == null || start == start.cause) break
+            if (start == null || start == start.cause) {
+                break
+            }
         }
         return res
     }

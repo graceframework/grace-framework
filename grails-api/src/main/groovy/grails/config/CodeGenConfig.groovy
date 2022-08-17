@@ -248,14 +248,16 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     public Object getProperty(String name) {
-        if ("configMap".equals(name))
+        if ("configMap".equals(name)) {
             return this.configMap
+        }
         return configMap.get(name)
     }
 
     public Object get(String name) {
-        if ("configMap".equals(name))
+        if ("configMap".equals(name)) {
             return this.configMap
+        }
         return configMap.get(name)
     }
 

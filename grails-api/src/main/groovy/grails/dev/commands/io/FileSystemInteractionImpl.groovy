@@ -132,7 +132,9 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
      */
     @Override
     FileSystemInteractionImpl copy(Resource from, File to) {
-        if (!to?.exists()) mkdir(to)
+        if (!to?.exists()) {
+            mkdir(to)
+        }
         if (from && to) {
             if (to.isDirectory()) {
                 mkdir(to)
@@ -152,8 +154,12 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
      */
     @Override
     File file(Object path) {
-        if (path instanceof File) return (File)path
-        else if (path instanceof Resource) return ((Resource)path).file
+        if (path instanceof File) {
+            return (File) path
+        }
+        else if (path instanceof Resource) {
+            return ((Resource) path).file
+        }
         else {
             new File(baseDir ?: new File("."), path.toString())
         }
@@ -210,8 +216,12 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
      */
     @Override
     Resource resource(Object path) {
-        if (!path) return null
-        if (path instanceof Resource) return (Resource)path
+        if (!path) {
+            return null
+        }
+        if (path instanceof Resource) {
+            return (Resource) path
+        }
         def f = file(path)
         if (f?.exists() && f.isFile()) {
             return new FileSystemResource(f)

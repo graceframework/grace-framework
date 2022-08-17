@@ -60,7 +60,9 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param token The token to match
      */
     static String substringBefore(String str, String token)  {
-        if (token == null) return str
+        if (token == null) {
+            return str
+        }
         def i = str.indexOf(token)
 
         if (i > -1) {
@@ -85,7 +87,9 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param token The token to match
      */
     static String substringBeforeLast(String str, String token)  {
-        if (token == null) return str
+        if (token == null) {
+            return str
+        }
         def i = str.lastIndexOf(token)
 
         if (i > -1) {
@@ -110,7 +114,9 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param token The token to match
      */
     static String substringAfter(String str, String token)  {
-        if (token == null) return str
+        if (token == null) {
+            return str
+        }
         def i = str.indexOf(token)
 
         if (i > -1) {
@@ -135,7 +141,9 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param token The token to match
      */
     static String substringAfterLast(String str, String token)  {
-        if (token == null) return str
+        if (token == null) {
+            return str
+        }
         def i = str.lastIndexOf(token)
 
         if (i > -1) {

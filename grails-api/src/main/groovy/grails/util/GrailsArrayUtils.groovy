@@ -145,8 +145,12 @@ abstract class GrailsArrayUtils {
     static Object subarray(Object args, int start, int end) {
         def len = Array.getLength(args)
 
-        if (start < 0) start = 0
-        if (end > len) end = len
+        if (start < 0) {
+            start = 0
+        }
+        if (end > len) {
+            end = len
+        }
 
         def type = args.getClass().componentType
 
