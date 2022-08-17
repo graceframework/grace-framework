@@ -164,7 +164,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
                 conversionService.addConverter(new Converter<String, Resource>() {
 
                     @Override
-                    public Resource convert(String source) {
+                    Resource convert(String source) {
                         return applicationContext.getResource(source)
                     }
 
@@ -172,7 +172,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
                 conversionService.addConverter(new Converter<NavigableMap.NullSafeNavigator, String>() {
 
                     @Override
-                    public String convert(NavigableMap.NullSafeNavigator source) {
+                    String convert(NavigableMap.NullSafeNavigator source) {
                         return null
                     }
 
@@ -180,7 +180,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
                 conversionService.addConverter(new Converter<NavigableMap.NullSafeNavigator, Object>() {
 
                     @Override
-                    public Object convert(NavigableMap.NullSafeNavigator source) {
+                    Object convert(NavigableMap.NullSafeNavigator source) {
                         return null
                     }
 
