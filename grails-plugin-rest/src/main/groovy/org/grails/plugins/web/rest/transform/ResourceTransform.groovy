@@ -150,7 +150,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             addConstructor(newControllerClassNode, parent, isReadOnly)
 
             List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE,
-                    GrailsAwareInjectionOperation.getClassInjectors());
+                    GrailsAwareInjectionOperation.getClassInjectors())
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
                     injectors.findAll { !(it instanceof ControllerActionTransformer) })

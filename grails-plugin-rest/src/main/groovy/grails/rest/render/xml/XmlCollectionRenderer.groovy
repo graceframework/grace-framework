@@ -40,7 +40,7 @@ class XmlCollectionRenderer extends XmlRenderer implements ContainerRenderer {
     }
 
     public XmlCollectionRenderer(Class targetType, MimeType... mimeTypes) {
-        super(targetType, mimeTypes);
+        super(targetType, mimeTypes)
     }
 
     @Override

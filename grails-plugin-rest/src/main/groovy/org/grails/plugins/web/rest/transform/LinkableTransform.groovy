@@ -53,7 +53,7 @@ import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class LinkableTransform implements ASTTransformation {
 
-    private static final ClassNode MY_TYPE = new ClassNode(Linkable);
+    private static final ClassNode MY_TYPE = new ClassNode(Linkable)
     public static final String LINK_METHOD = "link"
     public static final String RESOURCE_LINKS_FIELD = '$resourceLinks'
     public static final String LINKS_METHOD = "links"
@@ -77,7 +77,7 @@ class LinkableTransform implements ASTTransformation {
             def linkParameter = new Parameter(new ClassNode(Link), LINK_METHOD)
             def linkMethod2 = new MethodNode(LINK_METHOD, PUBLIC, ClassHelper.VOID_TYPE,
                     [linkParameter] as Parameter[], null, new ExpressionStatement(new MethodCallExpression(
-                    resourceLinksVariable, "add", new VariableExpression(linkParameter))));
+                    resourceLinksVariable, "add", new VariableExpression(linkParameter))))
             classNode.addMethod(linkMethod2)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod2)
         }
@@ -95,10 +95,10 @@ class LinkableTransform implements ASTTransformation {
             throw new RuntimeException('Internal error: wrong types: $node.class / $parent.class')
         }
 
-        ClassNode parent = (ClassNode) astNodes[1];
-        AnnotationNode annotationNode = (AnnotationNode) astNodes[0];
+        ClassNode parent = (ClassNode) astNodes[1]
+        AnnotationNode annotationNode = (AnnotationNode) astNodes[0]
         if (!MY_TYPE.equals(annotationNode.getClassNode())) {
-            return;
+            return
         }
 
         addLinkingMethods(parent)
