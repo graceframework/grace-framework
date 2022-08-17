@@ -103,7 +103,7 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
         }
     }
 
-    public boolean isTrait(ClassNode cNode) {
+    boolean isTrait(ClassNode cNode) {
         org.codehaus.groovy.transform.trait.Traits.isTrait(cNode) || cNode.name.endsWith('$Trait$Helper')
     }
 

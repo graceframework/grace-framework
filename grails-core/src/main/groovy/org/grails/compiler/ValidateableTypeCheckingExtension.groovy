@@ -29,7 +29,7 @@ import org.codehaus.groovy.transform.stc.GroovyTypeCheckingExtensionSupport.Type
 class ValidateableTypeCheckingExtension extends TypeCheckingDSL {
 
     @Override
-    public Object run() {
+    Object run() {
         setup { newScope() }
 
         finish { scopeExit() }

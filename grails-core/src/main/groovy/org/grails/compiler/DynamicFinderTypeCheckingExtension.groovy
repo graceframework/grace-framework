@@ -32,7 +32,7 @@ import static org.codehaus.groovy.ast.ClassHelper.LIST_TYPE
 class DynamicFinderTypeCheckingExtension extends TypeCheckingDSL {
 
     @Override
-    public Object run() {
+    Object run() {
         methodNotFound { ClassNode receiver, String name, ArgumentListExpression argList, ClassNode[] argTypes, MethodCall call ->
             def dynamicCall
             if (receiver == CLASS_Type) {

@@ -30,7 +30,7 @@ import org.codehaus.groovy.transform.stc.GroovyTypeCheckingExtensionSupport.Type
 class DomainMappingTypeCheckingExtension extends TypeCheckingDSL {
 
     @Override
-    public Object run() {
+    Object run() {
         setup { newScope() }
 
         finish { scopeExit() }
