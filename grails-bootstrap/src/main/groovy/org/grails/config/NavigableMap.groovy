@@ -46,14 +46,14 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     final Map<String, Object> delegateMap
     final String dottedPath
 
-    public NavigableMap() {
+    NavigableMap() {
         rootConfig = this
         path = []
         dottedPath = ""
         delegateMap = new LinkedHashMap<>()
     }
 
-    public NavigableMap(NavigableMap rootConfig, List<String> path) {
+    NavigableMap(NavigableMap rootConfig, List<String> path) {
         super()
         this.rootConfig = rootConfig
         this.path = path
@@ -74,7 +74,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     @CompileDynamic
-    public NavigableMap clone() {
+    NavigableMap clone() {
         return new NavigableMap(rootConfig, path, delegateMap.clone())
     }
 
@@ -143,7 +143,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         delegateMap.entrySet()
     }
 
-    public void merge(Map sourceMap, boolean parseFlatKeys=false) {
+    void merge(Map sourceMap, boolean parseFlatKeys=false) {
         mergeMaps(this, "", this, sourceMap, parseFlatKeys)
     }
 
@@ -294,15 +294,15 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         targetMap.put(sourceKey, newValue)
     }
 
-    public Object getAt(Object key) {
+    Object getAt(Object key) {
         getProperty(String.valueOf(key))
     }
 
-    public void setAt(Object key, Object value) {
+    void setAt(Object key, Object value) {
         setProperty(String.valueOf(key), value)
     }
 
-    public Object getProperty(String name) {
+    Object getProperty(String name) {
         if (!containsKey(name)) {
             return new NullSafeNavigator(this, [name].asImmutable())
         }
@@ -316,11 +316,11 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         return result
     }
 
-    public void setProperty(String name, Object value) {
+    void setProperty(String name, Object value) {
         mergeMapEntry(rootConfig, dottedPath, this, name, value, false, true)
     }
 
-    public Object navigate(String... path) {
+    Object navigate(String... path) {
         return navigateMap(this, path)
     }
 
@@ -349,7 +349,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
     }
 
-    public NavigableMap navigateSubMap(List<String> path, boolean createMissing) {
+    NavigableMap navigateSubMap(List<String> path, boolean createMissing) {
         NavigableMap rootMap = this
         NavigableMap currentMap = this
         StringBuilder accumulatedPath = new StringBuilder()
@@ -386,13 +386,13 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         currentMap
     }
 
-    public Map<String, Object> toFlatConfig() {
+    Map<String, Object> toFlatConfig() {
         Map<String,Object> flatConfig = [:]
         flattenKeys(flatConfig, this, [], false)
         flatConfig
     }
 
-    public Properties toProperties() {
+    Properties toProperties() {
         Properties properties = new Properties()
         flattenKeys(properties as Map<String, Object>, this, [] as List<String>, true)
         properties
@@ -571,47 +571,47 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             }
         }
 
-        public void setProperty(String name, Object value) {
+        void setProperty(String name, Object value) {
             NavigableMap parentMap = parent.navigateSubMap(path, true)
             parentMap.setProperty(name, value)
         }
 
-        public boolean asBoolean() {
+        boolean asBoolean() {
             false
         }
 
-        public Object invokeMethod(String name, Object args) {
+        Object invokeMethod(String name, Object args) {
             throw new NullPointerException("Cannot invoke method " + name + "() on NullSafeNavigator")
         }
 
-        public boolean equals(Object to) {
+        boolean equals(Object to) {
             return to == null || DefaultGroovyMethods.is(this, to)
         }
 
-        public Iterator iterator() {
+        Iterator iterator() {
             return Collections.EMPTY_LIST.iterator()
         }
 
-        public Object plus(String s) {
+        Object plus(String s) {
             return toString() + s
         }
 
-        public Object plus(Object o) {
+        Object plus(Object o) {
             throw new NullPointerException("Cannot invoke method plus on NullSafeNavigator")
         }
 
-        public boolean is(Object other) {
+        boolean is(Object other) {
             return other == null || DefaultGroovyMethods.is(this, other)
         }
 
-        public Object asType(Class c) {
+        Object asType(Class c) {
             if (c == Boolean || c == boolean) {
                 return false
             }
             return null
         }
 
-        public String toString() {
+        String toString() {
             return null
         }
 
