@@ -130,7 +130,9 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Override
     def <C, T> Renderer<C> findContainerRenderer(MimeType mimeType, Class<C> containerType, T object) {
-        if (object == null) return null
+        if (object == null) {
+            return null
+        }
         if (proxyHandler != null) {
             object = (T)proxyHandler.unwrapIfProxy(object)
         }
@@ -147,21 +149,29 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
             while (targetClass != null) {
                 renderer = containerRenderers.get(key)
-                if (renderer != null) break
+                if (renderer != null) {
+                    break
+                }
                 else {
                     key = new ContainerRendererCacheKey(containerType, targetClass, mimeType)
                     renderer = containerRenderers.get(key)
-                    if (renderer != null) break
+                    if (renderer != null) {
+                        break
+                    }
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
                         final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
                         for (Class i in containerInterfaces) {
                             key = new ContainerRendererCacheKey(i, targetClass, mimeType)
                             renderer = containerRenderers.get(key)
-                            if (renderer != null) break
+                            if (renderer != null) {
+                                break
+                            }
                         }
                     }
-                    if (targetClass == Object) break
+                    if (targetClass == Object) {
+                        break
+                    }
                     targetClass = targetClass.getSuperclass()
                 }
             }
@@ -173,14 +183,18 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                 for (Class i in interfaces) {
                     key = new ContainerRendererCacheKey(containerType, i, mimeType)
                     renderer = containerRenderers.get(key)
-                    if (renderer) break
+                    if (renderer) {
+                        break
+                    }
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
                         final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
                         for (Class ci in containerInterfaces) {
                             key = new ContainerRendererCacheKey(ci, i, mimeType)
                             renderer = containerRenderers.get(key)
-                            if (renderer != null) break outer
+                            if (renderer != null) {
+                                break outer
+                            }
                         }
                     }
                 }

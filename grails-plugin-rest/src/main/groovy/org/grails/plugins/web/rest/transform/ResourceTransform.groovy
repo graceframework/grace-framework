@@ -176,7 +176,10 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                 else if (responseFormatsAttr instanceof ListExpression) {
                     responseFormatsExpression = (ListExpression)responseFormatsAttr
                     for (Expression expr in responseFormatsExpression.expressions) {
-                        if (expr.text.equalsIgnoreCase('html')) hasHtml = true; break
+                        if (expr.text.equalsIgnoreCase('html')) {
+                            hasHtml = true
+                            break
+                        }
                     }
                 }
             } else {

@@ -44,7 +44,9 @@ class VndErrorJsonRenderer extends AbstractVndErrorRenderer {
 
     @Override
     void render(Errors object, RenderContext context) {
-        if (messageSource == null) throw new IllegalStateException("messageSource property null")
+        if (messageSource == null) {
+            throw new IllegalStateException("messageSource property null")
+        }
         if (object instanceof BeanPropertyBindingResult) {
             context.setContentType(GrailsWebUtil.getContentType(MIME_TYPE.name, encoding))
             context.setStatus(HttpStatus.UNPROCESSABLE_ENTITY)

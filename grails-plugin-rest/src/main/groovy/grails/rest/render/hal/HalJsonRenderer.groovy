@@ -188,7 +188,9 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
         final propertyDescriptors = bean.propertyDescriptors
         for (pd in propertyDescriptors) {
             final propertyName = pd.name
-            if (DEFAULT_EXCLUDES.contains(propertyName)) continue
+            if (DEFAULT_EXCLUDES.contains(propertyName)) {
+                continue
+            }
             if (shouldIncludeProperty(context, object, propertyName)) {
                 if (pd.readMethod && pd.writeMethod) {
                     final value = bean.getPropertyValue(propertyName)

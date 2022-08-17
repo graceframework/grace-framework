@@ -82,8 +82,9 @@ class ServletRenderContext extends AbstractRenderContext {
     @CompileStatic(TypeCheckingMode.SKIP)
     MimeType getAcceptMimeType() {
         final response = webRequest.response
-        if (response.hasProperty('mimeType'))
+        if (response.hasProperty('mimeType')) {
             return response.mimeType
+        }
         return null
     }
 

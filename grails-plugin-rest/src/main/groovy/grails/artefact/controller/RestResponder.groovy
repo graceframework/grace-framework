@@ -203,7 +203,9 @@ trait RestResponder {
                 }
             }
 
-            if (renderer) break
+            if (renderer) {
+                break
+            }
         }
 
         if (renderer) {
