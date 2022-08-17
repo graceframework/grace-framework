@@ -168,7 +168,7 @@ class ControllersGrailsPlugin extends Plugin {
             log.info(String.format("Found %d Controllers: initialization completed in %d ms",
                     controllerClasses.size(), (System.currentTimeMillis() - start)))
 
-            if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean.class, false)) {
+            if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean, false)) {
                 log.warn("'grails.json.legacy.builder' is set to TRUE but is NOT supported in this version of Grails.")
             }
         }

@@ -174,7 +174,7 @@ trait ResponseRenderer extends WebAttributes {
     }
 
     private void renderJsonInternal(HttpServletResponse response,
-                                    @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate.class,
+                                    @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate,
                                             strategy = Closure.DELEGATE_FIRST) Closure callable) {
         response.setContentType(GrailsWebUtil.getContentType(MimeType.JSON.getName(), response.getCharacterEncoding() ?: "UTF-8"))
         def jsonBuilder = new StreamingJsonBuilder(response.writer)
