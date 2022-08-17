@@ -46,12 +46,14 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
     void setPluginName(String plugin) { pluginName = plugin }
     void setView(String view) { viewName = view }
     String getView() { viewName }
+
     void setParams(Map params) {
         if (params) {
             parameters = params
         }
     }
-    public Map<String, Object> getParams() {
+
+    Map<String, Object> getParams() {
         return parameters
     }
 
