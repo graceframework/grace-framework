@@ -43,7 +43,9 @@ public class URLCodecFactory implements CodecFactory {
         }
 
         public Object encode(Object o) {
-            if (o == null) return o;
+            if (o == null) {
+                return null;
+            }
             URLEncoder.encode(String.valueOf(o), resolveEncoding());
         }
 
@@ -68,7 +70,9 @@ public class URLCodecFactory implements CodecFactory {
 
         @Override
         public Object decode(Object o) {
-            if (o == null) return o;
+            if (o == null) {
+                return null;
+            }
             URLDecoder.decode(String.valueOf(o), resolveEncoding());
         }
 
