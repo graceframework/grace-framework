@@ -15,7 +15,6 @@
  */
 package org.grails.web.mapping
 
-import grails.gorm.validation.Constrained
 import grails.gorm.validation.ConstrainedProperty
 import groovy.transform.PackageScope
 

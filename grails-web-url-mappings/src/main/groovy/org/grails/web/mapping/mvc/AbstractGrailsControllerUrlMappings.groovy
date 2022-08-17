@@ -20,7 +20,10 @@ import grails.core.GrailsClass
 import grails.core.GrailsControllerClass
 import grails.util.GrailsNameUtils
 import grails.web.UrlConverter
-import grails.web.mapping.*
+import grails.web.mapping.UrlCreator
+import grails.web.mapping.UrlMapping
+import grails.web.mapping.UrlMappingInfo
+import grails.web.mapping.UrlMappings
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
 import org.grails.core.artefact.ControllerArtefactHandler
@@ -30,7 +33,7 @@ import org.springframework.http.HttpMethod
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * A {@link UrlMappingsHolder} implementation that matches URLs directly onto controller instances
+ * A {@link grails.web.mapping.UrlMappingsHolder} implementation that matches URLs directly onto controller instances
  *
  * @author Graeme Rocher
  * @since 3.0

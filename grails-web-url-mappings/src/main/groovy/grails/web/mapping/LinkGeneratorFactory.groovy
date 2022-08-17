@@ -4,7 +4,6 @@ import grails.web.CamelCaseUrlConverter
 import grails.web.UrlConverter
 import groovy.transform.CompileStatic
 import org.grails.web.mapping.DefaultLinkGenerator
-import org.grails.web.mapping.DefaultUrlMappingEvaluator
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
