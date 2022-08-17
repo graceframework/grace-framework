@@ -52,7 +52,7 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
         }
     }
     public Map<String, Object> getParams() {
-        return parameters;
+        return parameters
     }
 
     Map getParameters() {
