@@ -28,7 +28,7 @@ class HTMLCodecFactory implements CodecFactory {
     Decoder decoder = new HTML4Decoder() {
 
         @Override
-        public CodecIdentifier getCodecIdentifier() {
+        CodecIdentifier getCodecIdentifier() {
             return HTMLEncoder.HTML_CODEC_IDENTIFIER
         }
 
