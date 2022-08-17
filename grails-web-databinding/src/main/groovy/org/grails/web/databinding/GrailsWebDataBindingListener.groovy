@@ -54,7 +54,9 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
     }
 
     protected String getPropertyName(String className, String classAsPropertyName, String propertyName) {
-        if (!messageSource) return propertyName
+        if (!messageSource) {
+            return propertyName
+        }
 
         final Locale locale = LocaleContextHolder.getLocale()
         String propertyNameCode = className + '.' + propertyName + ".label"

@@ -76,17 +76,23 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     def get(Object key) {
-        if (!cpf) return null
-        def property = key.toString()
-        if (cpf.isReadableProperty(property))
-            cpf.getPropertyValue target, property
-        else
+        if (!cpf) {
             return null
+        }
+        def property = key.toString()
+        if (cpf.isReadableProperty(property)) {
+            return cpf.getPropertyValue(target, property)
+        }
+        else {
+            return null
+        }
     }
 
     @Override
     def put(String key, def value) {
-        if (!cpf) return null
+        if (!cpf) {
+            return null
+        }
         def old = get(key)
         def mc = GroovySystem.metaClassRegistry.getMetaClass(target.getClass())
         mc.setProperty(target, key, value)
@@ -100,7 +106,9 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     void putAll(Map<? extends String, ?> m) {
-        if (!cpf) return
+        if (!cpf) {
+            return
+        }
         for (String property in m.keySet()) {
             put(property, m.get(property))
         }
@@ -113,7 +121,9 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     Set<String> keySet() {
-        if (!cpf) return [] as Set<String>
+        if (!cpf) {
+            return [] as Set<String>
+        }
         else {
             return new HashSet<String>(
                     cpf.metaProperties.collect {
@@ -125,7 +135,9 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     Collection<Object> values() {
-        if (!cpf) return []
+        if (!cpf) {
+            return []
+        }
         else {
             keySet().collect() {
                 String property -> cpf.getPropertyValue(property)
@@ -135,7 +147,9 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     Set<Map.Entry<String, Object>> entrySet() {
-        if (!cpf) return [] as Set<Map.Entry<String, Object>>
+        if (!cpf) {
+            return [] as Set<Map.Entry<String, Object>>
+        }
         else {
             return new HashSet<Map.Entry<String, Object>>(
                     keySet().collect() {
