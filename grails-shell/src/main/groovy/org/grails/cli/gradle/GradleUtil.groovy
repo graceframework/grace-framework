@@ -46,7 +46,7 @@ class GradleUtil {
 
     private static final boolean DEFAULT_SUPPRESS_OUTPUT = true
 
-    public static ProjectConnection openGradleConnection(File baseDir) {
+    static ProjectConnection openGradleConnection(File baseDir) {
         GradleConnector gradleConnector = GradleConnector.newConnector().forProjectDirectory(baseDir)
         if (System.getenv("GRAILS_GRADLE_HOME")) {
             gradleConnector.useInstallation(new File(System.getenv("GRAILS_GRADLE_HOME")))
@@ -90,7 +90,7 @@ class GradleUtil {
         }
     }
 
-    public static void runBuildWithConsoleOutput(ExecutionContext context,
+    static void runBuildWithConsoleOutput(ExecutionContext context,
                                                  @ClosureParams(value = SimpleType.class, options = "org.gradle.tooling.BuildLauncher")
                                                          Closure<?> buildLauncherCustomizationClosure) {
         withProjectConnection(context.getBaseDir(), DEFAULT_SUPPRESS_OUTPUT) { ProjectConnection projectConnection ->
@@ -102,7 +102,7 @@ class GradleUtil {
         }
     }
 
-    public static LongRunningOperation setupConsoleOutput(ProjectContext context, LongRunningOperation operation) {
+    static LongRunningOperation setupConsoleOutput(ProjectContext context, LongRunningOperation operation) {
         GrailsConsole grailsConsole = context.console
         operation.colorOutput = grailsConsole.ansiEnabled
         operation.standardOutput = new GrailsConsolePrintStream(grailsConsole.out)
@@ -110,7 +110,7 @@ class GradleUtil {
         operation
     }
 
-    public static <T> T runBuildActionWithConsoleOutput(ProjectContext context, BuildAction<T> buildAction) {
+    static <T> T runBuildActionWithConsoleOutput(ProjectContext context, BuildAction<T> buildAction) {
         // workaround for GROOVY-7211, static type checking problem when default parameters are used
         runBuildActionWithConsoleOutput(context, buildAction, null)
     }
@@ -123,12 +123,12 @@ class GradleUtil {
         }
     }
 
-    public static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction) {
+    static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction) {
         // workaround for GROOVY-7211, static type checking problem when default parameters are used
         runBuildActionWithConsoleOutput(connection, context, buildAction, null)
     }
 
-    public static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction,
+    static <T> T runBuildActionWithConsoleOutput(ProjectConnection connection, ProjectContext context, BuildAction<T> buildAction,
                                                         @ClosureParams(value=FromString.class, options="org.gradle.tooling.BuildActionExecuter<T>")
                                                                 Closure<?> buildActionExecuterCustomizationClosure) {
         BuildActionExecuter<T> buildActionExecuter = connection.action(buildAction)
@@ -137,7 +137,7 @@ class GradleUtil {
         return buildActionExecuter.run()
     }
 
-    public static wireCancellationSupport(ExecutionContext context, BuildLauncher buildLauncher) {
+    static wireCancellationSupport(ExecutionContext context, BuildLauncher buildLauncher) {
         DefaultCancellationTokenSource cancellationTokenSource = new DefaultCancellationTokenSource()
         buildLauncher.withCancellationToken(cancellationTokenSource.token())
         context.addCancelledListener({

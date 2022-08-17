@@ -213,7 +213,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             Files.walkFileTree(projectDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
                 @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
+                FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
                         throws IOException {
                     if (path.fileName.toString() == fileName) {
                         files.add(path.toFile())

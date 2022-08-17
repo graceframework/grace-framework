@@ -131,7 +131,7 @@ class GrailsCli {
      * @param targetType the expected type of the property value
      * @param defaultValue The default value
      */
-    public static <T> T getSetting(String key, Class<T> targetType = Object.class, T defaultValue = null) {
+    static <T> T getSetting(String key, Class<T> targetType = Object.class, T defaultValue = null) {
         def value = SETTINGS_MAP.get(key, defaultValue)
         if (value == null) {
             return null
@@ -154,7 +154,7 @@ class GrailsCli {
      *
      * @param args The arguments
      */
-    public static void main(String[] args) {
+    static void main(String[] args) {
         Authenticator.setDefault(getSetting(BuildSettings.AUTHENTICATOR, Authenticator, new SystemPropertiesAuthenticator()))
         def proxySelector = getSetting(BuildSettings.PROXY_SELECTOR, ProxySelector)
         if (proxySelector != null) {
@@ -202,7 +202,7 @@ class GrailsCli {
      * @param args The arguments
      * @return The exit status code
      */
-    public int execute(String... args) {
+    int execute(String... args) {
         CommandLine mainCommandLine = cliParser.parse(args)
 
         if (mainCommandLine.hasOption(CommandLine.VERBOSE_ARGUMENT)) {
@@ -724,7 +724,7 @@ class GrailsCli {
         CodeGenConfig grailsConfig
 
         @Override
-        public String navigateConfig(String... path) {
+        String navigateConfig(String... path) {
             grailsConfig.navigate(path)
         }
 
@@ -734,7 +734,7 @@ class GrailsCli {
         }
 
         @Override
-        public <T> T navigateConfigForType(Class<T> requiredType, String... path) {
+        <T> T navigateConfigForType(Class<T> requiredType, String... path) {
             grailsConfig.navigate(requiredType, path)
         }
 
