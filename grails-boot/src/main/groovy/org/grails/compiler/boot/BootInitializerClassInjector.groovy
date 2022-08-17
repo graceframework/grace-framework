@@ -59,7 +59,9 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
             return
         }
         // don't generate for plugins
-        if (classNode.getNodeMetaData('isPlugin')) return
+        if (classNode.getNodeMetaData('isPlugin')) {
+            return
+        }
 
         if (GrailsASTUtils.isAssignableFrom(GRAILS_CONFIGURATION_CLASS_NODE, classNode) &&
                 !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {

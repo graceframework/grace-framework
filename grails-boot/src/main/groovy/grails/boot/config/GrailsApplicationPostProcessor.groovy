@@ -165,26 +165,26 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
 
                     @Override
                     public Resource convert(String source) {
-                        return applicationContext.getResource(source);
+                        return applicationContext.getResource(source)
                     }
 
-                });
+                })
                 conversionService.addConverter(new Converter<NavigableMap.NullSafeNavigator, String>() {
 
                     @Override
                     public String convert(NavigableMap.NullSafeNavigator source) {
-                        return null;
+                        return null
                     }
 
-                });
+                })
                 conversionService.addConverter(new Converter<NavigableMap.NullSafeNavigator, Object>() {
 
                     @Override
                     public Object convert(NavigableMap.NullSafeNavigator source) {
-                        return null;
+                        return null
                     }
 
-                });
+                })
             }
             def propertySources = environment.getPropertySources()
             def plugins = pluginManager.allPlugins

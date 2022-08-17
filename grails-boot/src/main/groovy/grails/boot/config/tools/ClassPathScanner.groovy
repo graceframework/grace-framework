@@ -134,7 +134,9 @@ class ClassPathScanner {
                     Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         Set<Class> classes = []
         for (String pkg in packageNames.unique()) {
-            if (pkg == null) continue
+            if (pkg == null) {
+                continue
+            }
             if (ignoredRootPackages().contains(pkg)) {
                 continue
             }
@@ -147,7 +149,7 @@ class ClassPathScanner {
             }
             else {
                 String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                        ClassUtils.convertClassNameToResourcePath(pkg) + Settings.CLASS_RESOURCE_PATTERN;
+                        ClassUtils.convertClassNameToResourcePath(pkg) + Settings.CLASS_RESOURCE_PATTERN
 
                 scanUsingPattern(resourcePatternResolver, pattern, classLoader, annotationFilter, classes)
             }
