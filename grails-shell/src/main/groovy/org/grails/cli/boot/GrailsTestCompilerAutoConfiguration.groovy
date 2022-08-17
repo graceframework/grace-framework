@@ -60,7 +60,7 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
             def annotation = GrailsApplicationCompilerAutoConfiguration.createGrabAnnotation(
                     "org.grails",
                     "grails-plugin-testing",
-                    Environment.class.getPackage().getImplementationVersion(), null, null, true)
+                    Environment.getPackage().getImplementationVersion(), null, null, true)
             lastMatch.addAnnotation(annotation)
         }
     }
