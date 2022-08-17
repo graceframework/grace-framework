@@ -74,7 +74,9 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
     }
 
     R findMatchingObjectForMimeType(MimeType mimeType, object) {
-        if (object == null) return null
+        if (object == null) {
+            return null
+        }
 
         final clazz = object instanceof Class ? (Class)object : object.getClass()
 
@@ -88,14 +90,18 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
                     resolvedObjectCache.put(cacheKey, registeredObject)
                     return registeredObject
                 }
-                if (currentClass == Object) break
+                if (currentClass == Object) {
+                    break
+                }
                 currentClass = currentClass.getSuperclass()
             }
 
             final interfaces = GrailsClassUtils.getAllInterfaces(object)
             for (i in interfaces) {
                 registeredObject = findRegisteredObjectForType(i, mimeType)
-                if (registeredObject) break
+                if (registeredObject) {
+                    break
+                }
             }
 
             if (registeredObject == null) {

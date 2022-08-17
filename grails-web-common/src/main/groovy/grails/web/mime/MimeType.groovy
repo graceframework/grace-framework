@@ -162,7 +162,9 @@ class MimeType {
         BigDecimal bd
         try {
             def q = mt.parameters.q
-            if (q == null) return QUALITY_RATING_NUMBER
+            if (q == null) {
+                return QUALITY_RATING_NUMBER
+            }
             else {
                 bd = q.toString().toBigDecimal()
                 // replace to avoid expensive conversion again
