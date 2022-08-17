@@ -16,7 +16,7 @@ import org.springframework.jmx.support.RegistrationPolicy
 @CompileStatic
 class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
 
-    private static final Log log = LogFactory.getLog(TomcatJDBCPoolMBeanExporter.class)
+    private static final Log log = LogFactory.getLog(TomcatJDBCPoolMBeanExporter)
     GrailsApplication grailsApplication
     private ListableBeanFactory beanFactory
 
@@ -27,7 +27,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
 
     @Override
     protected void registerBeans() {
-        Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSourceBeans = beanFactory.getBeansOfType(org.apache.tomcat.jdbc.pool.DataSource.class)
+        Map<String, org.apache.tomcat.jdbc.pool.DataSource> dataSourceBeans = beanFactory.getBeansOfType(org.apache.tomcat.jdbc.pool.DataSource)
         for (Map.Entry<String, org.apache.tomcat.jdbc.pool.DataSource> entry : dataSourceBeans.entrySet()) {
             boolean jmxEnabled = false
             try {
