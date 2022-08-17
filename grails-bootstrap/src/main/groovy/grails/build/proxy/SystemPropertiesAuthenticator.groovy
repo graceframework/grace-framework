@@ -33,7 +33,7 @@ class SystemPropertiesAuthenticator extends Authenticator {
         if (getRequestorType() == RequestorType.PROXY) {
             return new PasswordAuthentication(
                     System.getProperty(BuildSettings.PROXY_HTTP_USER, ""),
-                    System.getProperty(BuildSettings.PROXY_HTTP_PASSWORD, "").toCharArray());
+                    System.getProperty(BuildSettings.PROXY_HTTP_PASSWORD, "").toCharArray())
         }
         return null
     }

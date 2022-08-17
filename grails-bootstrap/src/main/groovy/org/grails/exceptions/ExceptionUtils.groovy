@@ -14,7 +14,7 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage
 @CompileStatic
 class ExceptionUtils {
 
-    public static final String EXCEPTION_ATTRIBUTE = "exception";
+    public static final String EXCEPTION_ATTRIBUTE = "exception"
 
     static RuntimeException getFirstRuntimeException(Throwable e) {
         if (e instanceof RuntimeException) {
