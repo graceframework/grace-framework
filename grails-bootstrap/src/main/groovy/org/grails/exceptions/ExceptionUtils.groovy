@@ -39,7 +39,7 @@ class ExceptionUtils {
         while (ex.cause && ex != ex.cause) {
             ex = ex.cause
         }
-        return ex
+        ex
     }
 
     static int extractLineNumber(CompilationFailedException e) {
@@ -52,7 +52,7 @@ class ExceptionUtils {
                 lineNumber = sem.cause.line
             }
         }
-        return lineNumber
+        lineNumber
     }
 
 }

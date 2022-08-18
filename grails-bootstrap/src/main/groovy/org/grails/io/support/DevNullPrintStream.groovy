@@ -120,37 +120,37 @@ class DevNullPrintStream extends PrintStream {
 
     @Override
     PrintStream printf(String format, Object... args) {
-        return this
+        this
     }
 
     @Override
     PrintStream printf(Locale l, String format, Object... args) {
-        return this
+        this
     }
 
     @Override
     PrintStream format(String format, Object... args) {
-        return this
+        this
     }
 
     @Override
     PrintStream format(Locale l, String format, Object... args) {
-        return this
+        this
     }
 
     @Override
     PrintStream append(CharSequence csq) {
-        return this
+        this
     }
 
     @Override
     PrintStream append(CharSequence csq, int start, int end) {
-        return this
+        this
     }
 
     @Override
     PrintStream append(char c) {
-        return this
+        this
     }
 
     @Override

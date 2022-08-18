@@ -29,11 +29,11 @@ class EnvironmentBlockEvaluator {
     private Closure<?> callable
 
     Closure<?> getCallable() {
-        return callable
+        callable
     }
 
     Object execute() {
-        return callable == null ? null : callable.call()
+        callable == null ? null : callable.call()
     }
 
     @PackageScope

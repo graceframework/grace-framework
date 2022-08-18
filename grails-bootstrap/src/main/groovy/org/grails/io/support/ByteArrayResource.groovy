@@ -36,7 +36,7 @@ class ByteArrayResource implements Resource {
     }
 
     InputStream getInputStream() {
-        return new ByteArrayInputStream(bytes)
+        new ByteArrayInputStream(bytes)
     }
 
     boolean exists() { true }

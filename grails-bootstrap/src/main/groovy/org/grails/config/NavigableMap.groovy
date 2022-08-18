@@ -75,7 +75,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
     @CompileDynamic
     NavigableMap clone() {
-        return new NavigableMap(rootConfig, path, delegateMap.clone())
+        new NavigableMap(rootConfig, path, delegateMap.clone())
     }
 
     @Override
@@ -179,7 +179,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             sourceMap.get(SPRING) instanceof Map && ((Map)sourceMap.get(SPRING)).get(PROFILES) ||
             path == SPRING && sourceMap.get(PROFILES)
 
-        return !springProfileDefined && hasSpringProfiles
+        !springProfileDefined && hasSpringProfiles
     }
 
     protected void mergeMapEntry(NavigableMap rootMap, String path, NavigableMap targetMap, String sourceKey, Object sourceValue,
@@ -313,7 +313,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                         "Use 'config.getProperty(key, targetClass)' instead.", name)
             }
         }
-        return result
+        result
     }
 
     void setProperty(String name, Object value) {
@@ -321,7 +321,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     Object navigate(String... path) {
-        return navigateMap(this, path)
+        navigateMap(this, path)
     }
 
     private Object navigateMap(Map<String, Object> map, String... path) {
@@ -332,13 +332,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             return map
         } else if (path.length == 1) {
             return map.get(path[0])
-        } else {
-            def submap = map.get(path[0])
-            if (submap instanceof Map) {
-                return navigateMap((Map<String, Object>) submap, path.tail())
-            }
-            return submap
         }
+        def submap = map.get(path[0])
+        if (submap instanceof Map) {
+            return navigateMap((Map<String, Object>) submap, path.tail())
+        }
+        submap
     }
 
     private void fill(List list, Integer toIndex, Object value) {
@@ -437,12 +436,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
     @Override
     int hashCode() {
-        return delegateMap.hashCode()
+        delegateMap.hashCode()
     }
 
     @Override
     boolean equals(Object obj) {
-        return delegateMap.equals(obj)
+        delegateMap.equals(obj)
     }
 
     /**
@@ -479,7 +478,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.size()
             }
-            return 0
+            0
         }
 
         @Override
@@ -488,17 +487,15 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.isEmpty()
             }
-            return true
+            true
         }
 
         boolean containsKey(Object key) {
             NavigableMap parentMap = parent.navigateSubMap(path, false)
-            if (parentMap == null) {
-                return false
+            if (parentMap != null) {
+                parentMap.containsKey(key)
             }
-            else {
-                return parentMap.containsKey(key)
-            }
+            false
         }
 
         @Override
@@ -507,12 +504,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.containsValue(value)
             }
-            return false
+            false
         }
 
         @Override
         Object get(Object key) {
-            return getAt(key)
+            getAt(key)
         }
 
         @Override
@@ -541,7 +538,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.keySet()
             }
-            return Collections.emptySet()
+            Collections.emptySet()
         }
 
         @Override
@@ -550,7 +547,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.values()
             }
-            return Collections.emptySet()
+            Collections.emptySet()
         }
 
         @Override
@@ -559,16 +556,15 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             if (parentMap != null) {
                 return parentMap.entrySet()
             }
-            return Collections.emptySet()
+            Collections.emptySet()
         }
 
         Object getProperty(String name) {
             NavigableMap parentMap = parent.navigateSubMap(path, false)
-            if (parentMap == null) {
-                return new NullSafeNavigator(parent, ((path + [name]) as List<String>).asImmutable())
-            } else {
+            if (parentMap != null) {
                 return parentMap.get(name)
             }
+            new NullSafeNavigator(parent, ((path + [name]) as List<String>).asImmutable())
         }
 
         void setProperty(String name, Object value) {
@@ -585,15 +581,15 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         boolean equals(Object to) {
-            return to == null || DefaultGroovyMethods.is(this, to)
+            to == null || DefaultGroovyMethods.is(this, to)
         }
 
         Iterator iterator() {
-            return Collections.EMPTY_LIST.iterator()
+            Collections.EMPTY_LIST.iterator()
         }
 
         Object plus(String s) {
-            return toString() + s
+            toString() + s
         }
 
         Object plus(Object o) {
@@ -601,18 +597,18 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         boolean is(Object other) {
-            return other == null || DefaultGroovyMethods.is(this, other)
+            other == null || DefaultGroovyMethods.is(this, other)
         }
 
         Object asType(Class c) {
             if (c == Boolean || c == boolean) {
                 return false
             }
-            return null
+            null
         }
 
         String toString() {
-            return null
+            null
         }
 
 //        public int hashCode() {

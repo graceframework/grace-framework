@@ -228,7 +228,7 @@ enum Environment {
      * @return The current Grails version
      */
     static String getGrailsVersion() {
-        return GRAILS_VERSION
+        GRAILS_VERSION
     }
 
     static void setCurrentReloadError(Throwable currentReloadError) {
@@ -236,15 +236,15 @@ enum Environment {
     }
 
     static MultipleCompilationErrorsException getCurrentCompilationError() {
-        return currentCompilationError
+        currentCompilationError
     }
 
     static Throwable getCurrentReloadError() {
-        return currentReloadError
+        currentReloadError
     }
 
     static boolean isReloadInProgress() {
-        return Boolean.getBoolean("grails.reloading.in.progress")
+        Boolean.getBoolean("grails.reloading.in.progress")
     }
 
     private void initialize() {
@@ -272,7 +272,7 @@ enum Environment {
         if (current != null) {
             return current
         }
-        return cacheCurrentEnvironment()
+        cacheCurrentEnvironment()
     }
 
     private static Environment resolveCurrentEnvironment() {
@@ -301,13 +301,13 @@ enum Environment {
             env = CUSTOM
             env.setName(envName)
         }
-        return env
+        env
     }
 
     private static Environment cacheCurrentEnvironment() {
         Environment env = resolveCurrentEnvironment()
         cachedCurrentEnvironment.set(env)
-        return env
+        env
     }
 
     /**
@@ -315,7 +315,7 @@ enum Environment {
      * @return the current environment
      */
     static Environment getCurrentEnvironment() {
-        return getCurrent()
+        getCurrent()
     }
 
     /**
@@ -332,7 +332,7 @@ enum Environment {
      * @return true if the application is running in development mode
      */
     static boolean isDevelopmentMode() {
-        return DEVELOPMENT_MODE
+        DEVELOPMENT_MODE
     }
 
     /**
@@ -341,7 +341,7 @@ enum Environment {
      * @return True if the development sources are present
      */
     static boolean isDevelopmentEnvironmentAvailable() {
-        return BuildSettings.GRAILS_APP_DIR_PRESENT && !isStandaloneDeployed() && !isWarDeployed()
+        BuildSettings.GRAILS_APP_DIR_PRESENT && !isStandaloneDeployed() && !isWarDeployed()
     }
 
     /**
@@ -351,7 +351,7 @@ enum Environment {
      */
     static boolean isDevelopmentRun() {
         Environment env = getCurrent()
-        return isDevelopmentEnvironmentAvailable() && Boolean.getBoolean(RUN_ACTIVE) && (env == DEVELOPMENT)
+        isDevelopmentEnvironmentAvailable() && Boolean.getBoolean(RUN_ACTIVE) && (env == DEVELOPMENT)
     }
 
     /**
@@ -382,7 +382,7 @@ enum Environment {
             LOG.get().error("spring-dev-tools restart detection error: {}", ex)
         }
         LOG.get().debug("spring-dev-tools restart: {}", isDevToolsRestart)
-        return isDevToolsRestart
+        isDevToolsRestart
     }
 
     private static void writeDevToolsPidFile(File pidFile, String content) {
@@ -411,12 +411,12 @@ enum Environment {
         if (!isStandalone()) {
             return WAR_DEPLOYED
         }
-        return false
+        false
     }
 
     private static boolean isWebPath(String path) {
         // Workaround for WebLogic who repacks files from 'classes' into a new jar under lib/
-        return path.contains("/WEB-INF/classes") || path.contains("_wl_cls_gen.jar!/")
+        path.contains("/WEB-INF/classes") || path.contains("_wl_cls_gen.jar!/")
     }
 
     /**
@@ -428,7 +428,7 @@ enum Environment {
      * @return True if it is running standalone outside of a servlet container
      */
     static boolean isStandalone() {
-        return Boolean.getBoolean(STANDALONE)
+        Boolean.getBoolean(STANDALONE)
     }
 
     /**
@@ -440,7 +440,7 @@ enum Environment {
      * @return True if it is running standalone outside a servlet container from within a JAR or WAR file
      */
     static boolean isStandaloneDeployed() {
-        return isStandalone() && STANDALONE_DEPLOYED
+        isStandalone() && STANDALONE_DEPLOYED
     }
 
     /**
@@ -448,7 +448,7 @@ enum Environment {
      * @return True if it is a fork
      */
     static boolean isFork() {
-        return Boolean.getBoolean("grails.fork.active")
+        Boolean.getBoolean("grails.fork.active")
     }
 
     /**
@@ -456,14 +456,14 @@ enum Environment {
      * @return true if is
      */
     static boolean isWithinShell() {
-        return DefaultGroovyMethods.getRootLoader(Environment.getClassLoader()) != null
+        DefaultGroovyMethods.getRootLoader(Environment.getClassLoader()) != null
     }
 
     /**
      * @return Return true if the environment has been set as a System property
      */
     static boolean isSystemSet() {
-        return getEnvironmentInternal() != null
+        getEnvironmentInternal() != null
     }
 
     /**
@@ -475,12 +475,11 @@ enum Environment {
         final String envName = envNameMappings.get(shortName)
         if (envName != null) {
             return valueOf(envName.toUpperCase())
-        } else {
-            try {
-                return valueOf(shortName.toUpperCase())
-            } catch (IllegalArgumentException ise) {
-                return null
-            }
+        }
+        try {
+            return valueOf(shortName.toUpperCase())
+        } catch (IllegalArgumentException ise) {
+            return null
         }
     }
 
@@ -501,7 +500,7 @@ enum Environment {
      */
     static Closure<?> getEnvironmentSpecificBlock(Closure<?> closure) {
         final Environment env = getCurrent()
-        return getEnvironmentSpecificBlock(env, closure)
+        getEnvironmentSpecificBlock(env, closure)
     }
 
     /**
@@ -526,7 +525,7 @@ enum Environment {
         }
 
         final EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
-        return evaluator.getCallable()
+        evaluator.getCallable()
     }
 
     /**
@@ -546,7 +545,7 @@ enum Environment {
      */
     static Object executeForCurrentEnvironment(Closure<?> closure) {
         final Environment env = getCurrent()
-        return executeForEnvironment(env, closure)
+        executeForEnvironment(env, closure)
     }
 
     /**
@@ -571,25 +570,25 @@ enum Environment {
         }
 
         final EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
-        return evaluator.execute()
+        evaluator.execute()
     }
 
     private static EnvironmentBlockEvaluator evaluateEnvironmentSpecificBlock(Environment environment, Closure<?> closure) {
         final EnvironmentBlockEvaluator evaluator = new EnvironmentBlockEvaluator(environment)
         closure.setDelegate(evaluator)
         closure.call()
-        return evaluator
+        evaluator
     }
 
     private static boolean isBlank(String value) {
-        return value == null || value.trim().length() == 0
+        value == null || value.trim().length() == 0
     }
 
     /**
      * @return the name of the environment
      */
     String getName() {
-        return name
+        name
     }
 
     /**
@@ -607,8 +606,7 @@ enum Environment {
         final boolean reloadOverride = Boolean.getBoolean(RELOAD_ENABLED)
         getReloadLocation()
         final boolean reloadLocationSpecified = hasLocation(reloadLocation)
-        return this == DEVELOPMENT && reloadLocationSpecified ||
-                reloadOverride && reloadLocationSpecified
+        this == DEVELOPMENT && reloadLocationSpecified || reloadOverride && reloadLocationSpecified
     }
 
     /**
@@ -616,7 +614,7 @@ enum Environment {
      * @return Whether interactive mode is enabled
      */
     static boolean isInteractiveMode() {
-        return Boolean.getBoolean(INTERACTIVE_MODE_ENABLED)
+        Boolean.getBoolean(INTERACTIVE_MODE_ENABLED)
     }
 
     /**
@@ -624,7 +622,7 @@ enum Environment {
      * @return Whether interactive mode is enabled
      */
     static boolean isInitializing() {
-        return initializingState
+        initializingState
     }
 
     static void setInitializing(boolean initializing) {
@@ -656,7 +654,7 @@ enum Environment {
                 RELOADING_AGENT_ENABLED = false
             }
         }
-        return RELOADING_AGENT_ENABLED
+        RELOADING_AGENT_ENABLED
     }
 
     /**
@@ -671,11 +669,11 @@ enum Environment {
             reloadLocation = location
             return location
         }
-        return "." // default to the current directory
+        "." // default to the current directory
     }
 
     private static boolean hasLocation(String location) {
-        return location != null && location.length() > 0
+        location != null && location.length() > 0
     }
 
     /**
@@ -683,7 +681,7 @@ enum Environment {
      */
     boolean hasReloadLocation() {
         getReloadLocation()
-        return hasLocation(reloadLocation)
+        hasLocation(reloadLocation)
     }
 
     private static String getReloadLocationInternal() {
@@ -703,12 +701,12 @@ enum Environment {
                 }
             }
         }
-        return location
+        location
     }
 
     private static String getEnvironmentInternal() {
         String envName = System.getProperty(KEY)
-        return isBlank(envName) ? System.getenv(ENV_KEY) : envName
+        isBlank(envName) ? System.getenv(ENV_KEY) : envName
     }
 
 }

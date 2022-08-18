@@ -91,12 +91,10 @@ class MainClassFinder {
                 if (new File(parent, "build.gradle").exists() || new File(parent, "grails-app").exists()) {
                     return parent
                 }
-                else {
-                    parent = parent.parentFile
-                }
+                parent = parent.parentFile
             }
         }
-        return null
+        null
     }
 
     static String findMainClass(File rootFolder = BuildSettings.CLASSES_DIR) {
@@ -149,7 +147,7 @@ class MainClassFinder {
                 }
             }
         }
-        return null
+        null
     }
 
     protected static boolean isMainClass(ClassReader classReader) {
@@ -158,7 +156,7 @@ class MainClassFinder {
             classReader.accept(mainMethodFinder, ClassReader.SKIP_CODE)
             return mainMethodFinder.found
         }
-        return false
+        false
     }
 
     @CompileStatic
@@ -179,11 +177,11 @@ class MainClassFinder {
                     this.found = true
                 }
             }
-            return null
+            null
         }
 
         private boolean isAccess(int access, int... requiredOpsCodes) {
-            return !requiredOpsCodes.any { int requiredOpsCode -> (access & requiredOpsCode) == 0 }
+            !requiredOpsCodes.any { int requiredOpsCode -> (access & requiredOpsCode) == 0 }
         }
 
     }

@@ -111,7 +111,7 @@ class IOUtils extends SpringIOUtils {
      */
     static boolean isWithinBinary(URL url) {
         String protocol = url.protocol
-        return protocol == null || protocol != 'file'
+        protocol == null || protocol != 'file'
     }
 
     /**
@@ -126,7 +126,7 @@ class IOUtils extends SpringIOUtils {
             final jarPath = absolutePath.substring("file:".length(), absolutePath.lastIndexOf("!"))
             new File(jarPath)
         }
-        return null
+        null
     }
 
     /**
@@ -146,7 +146,7 @@ class IOUtils extends SpringIOUtils {
                 }
             }
         }
-        return null
+        null
     }
 
     /**
@@ -197,7 +197,7 @@ class IOUtils extends SpringIOUtils {
             }
             return new URL(rootPath)
         }
-        return null
+        null
     }
 
     /**
@@ -217,7 +217,7 @@ class IOUtils extends SpringIOUtils {
                 return new URL("${newPath}!/")
             }
         }
-        return null
+        null
     }
 
     /**
@@ -237,7 +237,7 @@ class IOUtils extends SpringIOUtils {
             }
             return new URL("$rootPath$path")
         }
-        return null
+        null
     }
 
     @Memoized
@@ -249,7 +249,7 @@ class IOUtils extends SpringIOUtils {
                 return f
             }
         }
-        return null
+        null
     }
 
     /**
@@ -267,17 +267,16 @@ class IOUtils extends SpringIOUtils {
                 def buildClassespath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
                 if (rootPath.contains(buildClassespath)) {
                     return new File(rootPath - buildClassespath)
-                } else {
-                    File appDir = findGrailsApp(rootFile)
-                    if (appDir != null) {
-                        return appDir
-                    }
+                }
+                File appDir = findGrailsApp(rootFile)
+                if (appDir != null) {
+                    return appDir
                 }
             } catch (FileNotFoundException fnfe) {
                 return null
             }
         }
-        return null
+        null
     }
 
     /**
@@ -297,7 +296,7 @@ class IOUtils extends SpringIOUtils {
 
                 @Override
                 boolean accept(File f) {
-                    return f.isDirectory() && !f.isHidden() && !f.name.startsWith('.')
+                    f.isDirectory() && !f.isHidden() && !f.name.startsWith('.')
                 }
 
             })
@@ -312,7 +311,7 @@ class IOUtils extends SpringIOUtils {
                 }
             }
         }
-        return file
+        file
     }
 
     /**
@@ -364,7 +363,7 @@ class IOUtils extends SpringIOUtils {
             // ignore
         }
         applicationDirectory = location
-        return location
+        location
     }
 
     private static File findGrailsApp(File file) {
@@ -373,11 +372,10 @@ class IOUtils extends SpringIOUtils {
             File grailsApp = new File(parent, "grails-app")
             if (grailsApp.isDirectory()) {
                 return parent
-            } else {
-                parent = parent.parentFile
             }
+            parent = parent.parentFile
         }
-        return null
+        null
     }
 
 }

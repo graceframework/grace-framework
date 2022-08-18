@@ -83,7 +83,7 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     Resource getMetadataFile() {
-        return metadataFile
+        metadataFile
     }
 
     /**
@@ -119,7 +119,7 @@ class Metadata extends PropertySourcePropertyResolver {
             m = new Metadata()
             holder.set(new SoftReference<Metadata>(m))
         }
-        return m
+        m
     }
 
     private void loadFromDefault() {
@@ -197,7 +197,7 @@ class Metadata extends PropertySourcePropertyResolver {
     static Metadata getInstance(InputStream inputStream) {
         Metadata m = new Metadata(inputStream)
         holder.set(new FinalReference<Metadata>(m))
-        return m
+        m
     }
 
     /**
@@ -206,7 +206,7 @@ class Metadata extends PropertySourcePropertyResolver {
      * @return A Metadata object
      */
     static Metadata getInstance(File file) {
-        return getInstance(new FileSystemResource(file))
+        getInstance(new FileSystemResource(file))
     }
 
     /**
@@ -220,17 +220,16 @@ class Metadata extends PropertySourcePropertyResolver {
             Metadata metadata = ref.get()
             if (metadata != null && metadata.getMetadataFile() != null && metadata.getMetadataFile().equals(file)) {
                 return metadata
-            } else {
-                createAndBindNew(file)
             }
+            createAndBindNew(file)
         }
-        return createAndBindNew(file)
+        createAndBindNew(file)
     }
 
     private static Metadata createAndBindNew(Resource file) {
         Metadata m = new Metadata(file)
         holder.set(new FinalReference<Metadata>(m))
-        return m
+        m
     }
 
     /**
@@ -243,21 +242,21 @@ class Metadata extends PropertySourcePropertyResolver {
             return getInstance(f)
         }
 
-        return f == null ? new Metadata() : new Metadata(f)
+        f == null ? new Metadata() : new Metadata(f)
     }
 
     /**
      * @return The application version
      */
     String getApplicationVersion() {
-        return ((PropertyResolver) this).getProperty(APPLICATION_VERSION, String).orElse(null)
+        ((PropertyResolver) this).getProperty(APPLICATION_VERSION, String).orElse(null)
     }
 
     /**
      * @return The Grails version used to build the application
      */
     String getGrailsVersion() {
-        return ((PropertyResolver) this).getProperty(APPLICATION_GRAILS_VERSION, String)
+        ((PropertyResolver) this).getProperty(APPLICATION_GRAILS_VERSION, String)
                 .orElse(getClass().getPackage().getImplementationVersion())
     }
 
@@ -265,14 +264,14 @@ class Metadata extends PropertySourcePropertyResolver {
      * @return The environment the application expects to run in
      */
     String getEnvironment() {
-        return ((PropertyResolver) this).getProperty(Environment.KEY, String).orElse(null)
+        ((PropertyResolver) this).getProperty(Environment.KEY, String).orElse(null)
     }
 
     /**
      * @return The application name
      */
     String getApplicationName() {
-        return ((PropertyResolver) this).getProperty(APPLICATION_NAME, String).orElse(DEFAULT_APPLICATION_NAME)
+        ((PropertyResolver) this).getProperty(APPLICATION_NAME, String).orElse(DEFAULT_APPLICATION_NAME)
     }
 
     /**
@@ -301,7 +300,7 @@ class Metadata extends PropertySourcePropertyResolver {
      * @return True if the development sources are present
      */
     boolean isDevelopmentEnvironmentAvailable() {
-        return Environment.isDevelopmentEnvironmentAvailable()
+        Environment.isDevelopmentEnvironmentAvailable()
     }
 
     private static void closeQuietly(Closeable c) {
@@ -317,16 +316,16 @@ class Metadata extends PropertySourcePropertyResolver {
 
     private static Metadata getFromMap() {
         Reference<Metadata> metadata = holder.get()
-        return metadata == null ? null : metadata.get()
+        metadata == null ? null : metadata.get()
     }
 
     boolean containsKey(Object key) {
-        return containsProperty(key.toString())
+        containsProperty(key.toString())
     }
 
     @Deprecated
     Object get(Object key) {
-        return ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(null)
+        ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(null)
     }
 
     void clear() {
@@ -354,7 +353,7 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     Object getOrDefault(Object key, Object defaultValue) {
-        return ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(defaultValue)
+        ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(defaultValue)
     }
 
     static class FinalReference<T> extends SoftReference<T> {
@@ -368,31 +367,31 @@ class Metadata extends PropertySourcePropertyResolver {
 
         @Override
         T get() {
-            return ref
+            ref
         }
 
     }
 
     @Override
     <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
-        return ((PropertyResolver) this).getProperty(key, targetType).orElse(defaultValue)
+        ((PropertyResolver) this).getProperty(key, targetType).orElse(defaultValue)
     }
 
     @Override
     <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
-        return ((PropertyResolver) this).getProperty(key, Object)
+        ((PropertyResolver) this).getProperty(key, Object)
                 .map(value -> value.asType(targetType))
                 .orElseThrow(() -> new IllegalStateException("Value for key [" + key + "] cannot be resolved"))
     }
 
     @Deprecated
     Object navigate(String... path) {
-        return ((Optional<Object>) ((PropertyResolver) this).getProperty(path.join(".").toString(), Object)).orElse(null)
+        ((Optional<Object>) ((PropertyResolver) this).getProperty(path.join(".").toString(), Object)).orElse(null)
     }
 
     @Deprecated
     Object getProperty(String propertyName) {
-        return get(propertyName)
+        get(propertyName)
     }
 
 }

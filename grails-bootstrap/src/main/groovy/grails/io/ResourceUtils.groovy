@@ -35,7 +35,7 @@ class ResourceUtils extends GrailsResourceUtils {
      * @return The project package names
      */
     static Iterable<String> getProjectPackageNames() {
-        return getProjectPackageNames(BuildSettings.BASE_DIR)
+        getProjectPackageNames(BuildSettings.BASE_DIR)
     }
 
     @Memoized
@@ -53,7 +53,7 @@ class ResourceUtils extends GrailsResourceUtils {
             }
         }
 
-        return packageNames
+        packageNames
     }
 
     protected static populatePackages(File rootDir, File[] files, Collection<String> packageNames, String prefix) {

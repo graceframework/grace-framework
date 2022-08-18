@@ -45,7 +45,7 @@ class FactoriesLoaderSupport {
      */
     static String[] loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader = FactoriesLoaderSupport.classLoader) {
         String factoryClassName = factoryClass.getName()
-        return loadFactoryNames(factoryClassName, classLoader)
+        loadFactoryNames(factoryClassName, classLoader)
     }
 
     /**

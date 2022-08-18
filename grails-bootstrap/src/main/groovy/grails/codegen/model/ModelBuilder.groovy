@@ -40,7 +40,7 @@ trait ModelBuilder {
      * @return The {@link Model} instance
      */
     Model model(Class cls) {
-        return new ModelImpl(cls.getName())
+        new ModelImpl(cls.getName())
     }
 
     /**
@@ -53,9 +53,7 @@ trait ModelBuilder {
         if (defaultPackage && !className.contains('.')) {
             return new ModelImpl("${defaultPackage}.$className")
         }
-        else {
-            return new ModelImpl(className)
-        }
+        new ModelImpl(className)
     }
 
     /**

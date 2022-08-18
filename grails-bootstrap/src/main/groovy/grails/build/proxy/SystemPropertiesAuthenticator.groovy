@@ -35,7 +35,7 @@ class SystemPropertiesAuthenticator extends Authenticator {
                     System.getProperty(BuildSettings.PROXY_HTTP_USER, ""),
                     System.getProperty(BuildSettings.PROXY_HTTP_PASSWORD, "").toCharArray())
         }
-        return null
+        null
     }
 
 }

@@ -119,7 +119,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
             e = e.cause
         }
 
-        return sw.toString()
+        sw.toString()
     }
 
     static String makeRelativeIfPossible(String fileName) {
@@ -127,11 +127,11 @@ class DefaultStackTracePrinter implements StackTracePrinter {
         if (base) {
             fileName = fileName - base
         }
-        return fileName
+        fileName
     }
 
     protected boolean shouldSkipNextCause(Throwable e) {
-        return e.cause == null || e == e.cause
+        e.cause == null || e == e.cause
     }
 
     protected void printCausedByMessage(PrintWriter sb, Throwable e) {
