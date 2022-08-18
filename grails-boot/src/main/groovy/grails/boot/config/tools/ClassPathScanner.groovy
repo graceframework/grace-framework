@@ -52,7 +52,7 @@ class ClassPathScanner {
      * @return A set of classes
      */
     Set<Class> scan(Class applicationClass) {
-        return scan(applicationClass, [applicationClass.package.name])
+        scan(applicationClass, [applicationClass.package.name])
     }
 
     /**
@@ -64,7 +64,7 @@ class ClassPathScanner {
      * @return A set of classes
      */
     Set<Class> scan(Class applicationClass, Class<? extends Annotation> annotationFilter) {
-        return scan(applicationClass, [applicationClass.package.name], annotationFilter)
+        scan(applicationClass, [applicationClass.package.name], annotationFilter)
     }
 
     /**
@@ -76,7 +76,7 @@ class ClassPathScanner {
      * @return A set of classes
      */
     Set<Class> scan(Class applicationClass, Closure<Boolean> annotationFilter) {
-        return scan(applicationClass, [applicationClass.package.name], annotationFilter)
+        scan(applicationClass, [applicationClass.package.name], annotationFilter)
     }
     /**
      * Scans for classes relative to the given class
@@ -90,7 +90,7 @@ class ClassPathScanner {
     Set<Class> scan(Class applicationClass, Collection<String> packageNames, Class<? extends Annotation> annotationFilter) {
         ResourcePatternResolver resourcePatternResolver = new GrailsClasspathIgnoringResourceResolver(applicationClass)
 
-        return scan(applicationClass.getClassLoader(), resourcePatternResolver, packageNames, { String annotation ->
+        scan(applicationClass.getClassLoader(), resourcePatternResolver, packageNames, { String annotation ->
             annotationFilter.name == annotation
         })
     }
@@ -105,7 +105,7 @@ class ClassPathScanner {
     Set<Class> scan(Class applicationClass, Collection<String> packageNames,
                     Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         ResourcePatternResolver resourcePatternResolver = new GrailsClasspathIgnoringResourceResolver(applicationClass)
-        return scan(applicationClass.getClassLoader(), resourcePatternResolver, packageNames, annotationFilter)
+        scan(applicationClass.getClassLoader(), resourcePatternResolver, packageNames, annotationFilter)
     }
 
     /**
@@ -118,7 +118,7 @@ class ClassPathScanner {
     Set<Class> scan(ResourcePatternResolver resourcePatternResolver, Collection<String> packageNames,
                     Closure<Boolean> annotationFilter = { String annotation -> annotation.startsWith('grails.') }) {
         ClassLoader classLoader = resourcePatternResolver.getClassLoader()
-        return scan(classLoader, resourcePatternResolver, packageNames, annotationFilter)
+        scan(classLoader, resourcePatternResolver, packageNames, annotationFilter)
     }
 
     /**
@@ -154,7 +154,7 @@ class ClassPathScanner {
                 scanUsingPattern(resourcePatternResolver, pattern, classLoader, annotationFilter, classes)
             }
         }
-        return classes
+        classes
     }
 
     /**
@@ -165,7 +165,7 @@ class ClassPathScanner {
      */
     protected boolean isExcluded(Resource res) {
         String filename = res.filename
-        return filename.contains('$') || filename.startsWith("gsp_") || filename.endsWith("_gson.class")
+        filename.contains('$') || filename.startsWith("gsp_") || filename.endsWith("_gson.class")
     }
 
     /**
@@ -211,17 +211,17 @@ class ClassPathScanner {
                     result.add(convertClassLoaderURL(url))
                 }
             }
-            return result
+            result
         }
 
         @Memoized
         protected Resource[] findAllClassPathResources(String location) throws IOException {
-            return super.findAllClassPathResources(location)
+            super.findAllClassPathResources(location)
         }
 
         @Memoized
         protected Resource[] findPathMatchingResources(String locationPattern) throws IOException {
-            return super.findPathMatchingResources(locationPattern)
+            super.findPathMatchingResources(locationPattern)
         }
 
     }
@@ -252,9 +252,7 @@ class ClassPathScanner {
             if (jarDeployed && name == '') {
                 return applicationClass.getClassLoader().getResources(name)
             }
-            else {
-                return super.findResources(name)
-            }
+            super.findResources(name)
         }
 
         @Override

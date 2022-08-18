@@ -18,7 +18,7 @@ class GrailsAppBuilder extends SpringApplicationBuilder {
 
     @Override
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class < ? > ... sources) {
-        return new GrailsApp(resourceLoader, sources)
+        new GrailsApp(resourceLoader, sources)
     }
 
 }

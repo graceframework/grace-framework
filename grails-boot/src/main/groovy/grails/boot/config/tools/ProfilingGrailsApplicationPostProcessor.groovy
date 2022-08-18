@@ -50,7 +50,7 @@ class ProfilingGrailsApplicationPostProcessor extends GrailsApplicationPostProce
     @Override
     Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         startTime = System.currentTimeMillis()
-        return bean
+        bean
     }
 
     @Override
@@ -59,7 +59,7 @@ class ProfilingGrailsApplicationPostProcessor extends GrailsApplicationPostProce
         if (totalTime > 10) {
             println "Creating bean $beanName of type ${bean.getClass()} took ${totalTime}ms"
         }
-        return bean
+        bean
     }
 
 }

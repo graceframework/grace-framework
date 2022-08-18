@@ -68,7 +68,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      */
     @Bean
     GrailsApplicationPostProcessor grailsApplicationPostProcessor() {
-        return new GrailsApplicationPostProcessor(this, applicationContext, classes() as Class[])
+        new GrailsApplicationPostProcessor(this, applicationContext, classes() as Class[])
     }
 
     /**
@@ -94,7 +94,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
             }
         }
 
-        return classes
+        classes
     }
 
     /**
@@ -104,7 +104,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      * @return True if scanning should be limited to the application and should not include dependant JAR files
      */
     protected boolean limitScanningToApplication() {
-        return true
+        true
     }
 
     /**

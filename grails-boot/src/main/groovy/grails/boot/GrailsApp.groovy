@@ -112,7 +112,7 @@ class GrailsApp extends SpringApplication {
             environment.isDevtoolsRestart()
         }
         printRunStatus(applicationContext)
-        return applicationContext
+        applicationContext
     }
 
     @Override
@@ -126,7 +126,7 @@ class GrailsApp extends SpringApplication {
             applicationContext.getBeanFactory().addBeanPostProcessor(processor)
             applicationContext.addApplicationListener(processor)
         }
-        return applicationContext
+        applicationContext
     }
 
     @Override
@@ -283,7 +283,7 @@ class GrailsApp extends SpringApplication {
     }
 
     static boolean isDevelopmentModeActive() {
-        return developmentModeActive
+        developmentModeActive
     }
 
     static void setDevelopmentModeActive(boolean active) {
@@ -343,7 +343,7 @@ class GrailsApp extends SpringApplication {
      */
     protected static DirectoryWatcher.FileChangeListener createPluginManagerListener(ConfigurableApplicationContext applicationContext) {
         def pluginManager = applicationContext.getBean(GrailsPluginManager)
-        return new DirectoryWatcher.FileChangeListener() {
+        new DirectoryWatcher.FileChangeListener() {
 
             @Override
             void onChange(File file) {
@@ -400,7 +400,7 @@ class GrailsApp extends SpringApplication {
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     static ConfigurableApplicationContext run(Class<?> source, String... args) {
-        return run([ source ] as Class[], args)
+        run([ source ] as Class[], args)
     }
 
     /**
@@ -413,7 +413,7 @@ class GrailsApp extends SpringApplication {
     static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
         GrailsApp grailsApp = new GrailsApp(sources)
         grailsApp.banner = new ResourceBanner(new ClassPathResource(GRAILS_BANNER))
-        return grailsApp.run(args)
+        grailsApp.run(args)
     }
 
 }

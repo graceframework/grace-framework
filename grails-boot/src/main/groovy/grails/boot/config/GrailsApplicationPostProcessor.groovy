@@ -165,7 +165,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
 
                     @Override
                     Resource convert(String source) {
-                        return applicationContext.getResource(source)
+                        applicationContext.getResource(source)
                     }
 
                 })
@@ -173,7 +173,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
 
                     @Override
                     String convert(NavigableMap.NullSafeNavigator source) {
-                        return null
+                        null
                     }
 
                 })
@@ -181,7 +181,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
 
                     @Override
                     Object convert(NavigableMap.NullSafeNavigator source) {
-                        return null
+                        null
                     }
 
                 })
