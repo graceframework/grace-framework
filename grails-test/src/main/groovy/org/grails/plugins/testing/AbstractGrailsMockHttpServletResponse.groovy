@@ -129,7 +129,7 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
             return super.getHeader("Location")
         }
 
-        return super.getRedirectedUrl()
+        super.getRedirectedUrl()
     }
 
 }

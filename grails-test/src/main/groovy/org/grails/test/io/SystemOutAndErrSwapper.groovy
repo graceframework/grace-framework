@@ -46,7 +46,7 @@ class SystemOutAndErrSwapper {
     }
 
     boolean isSwapped() {
-        return swapped
+        swapped
     }
 
     /**

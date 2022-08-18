@@ -29,7 +29,7 @@ class GrailsApplicationContextLoader extends SpringBootContextLoader {
 
     @Override
     protected SpringApplication getSpringApplication() {
-        return new GrailsApp()
+        new GrailsApp()
     }
 
 }

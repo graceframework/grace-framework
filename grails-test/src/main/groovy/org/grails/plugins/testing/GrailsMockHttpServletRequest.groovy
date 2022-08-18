@@ -157,7 +157,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         if (!result) {
             result = requestURI
         }
-        return result
+        result
     }
 
     /**
@@ -173,7 +173,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * AJAX request, otherwise <code>false</code>.
      */
     boolean isXhr() {
-        return getHeader("X-Requested-With") == "XMLHttpRequest"
+        getHeader("X-Requested-With") == "XMLHttpRequest"
     }
 
     /**
@@ -189,7 +189,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * Map-like access to request attributes, e.g. request["count"].
      */
     def getAt(String key) {
-        return getAttribute(key)
+        getAttribute(key)
     }
 
     /**
@@ -204,7 +204,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      */
     def getProperty(String name) {
         def mp = getClass().metaClass.getMetaProperty(name)
-        return mp ? mp.getProperty(this) : getAttribute(name)
+        mp ? mp.getProperty(this) : getAttribute(name)
     }
 
     /**
@@ -232,7 +232,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         if (!cachedXml) {
             cachedXml = GrailsMockHttpServletRequest.classLoader.loadClass("grails.converters.XML").parse(this)
         }
-        return cachedXml
+        cachedXml
     }
 
     /**
@@ -244,7 +244,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         if (!cachedJson) {
             cachedJson = GrailsMockHttpServletRequest.classLoader.loadClass("grails.converters.JSON").parse(this)
         }
-        return cachedJson
+        cachedJson
     }
 
     /**
@@ -274,7 +274,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
             }
         }
 
-        return result
+        result
     }
 
     /**
@@ -327,35 +327,35 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * {@inheritDoc }
      */
     Iterator<String> getFileNames() {
-        return multipartFiles.keySet().iterator()
+        multipartFiles.keySet().iterator()
     }
 
     /**
      * {@inheritDoc }
      */
     MultipartFile getFile(String name) {
-        return multipartFiles.getFirst(name)
+        multipartFiles.getFirst(name)
     }
 
     /**
      * {@inheritDoc }
      */
     List<MultipartFile> getFiles(String name) {
-        return multipartFiles.get(name)
+        multipartFiles.get(name)
     }
 
     /**
      * {@inheritDoc }
      */
     Map<String, MultipartFile> getFileMap() {
-        return multipartFiles.toSingleValueMap()
+        multipartFiles.toSingleValueMap()
     }
 
     /**
      * {@inheritDoc }
      */
     MultiValueMap<String, MultipartFile> getMultiFileMap() {
-        return multipartFiles
+        multipartFiles
     }
 
     /**
@@ -393,19 +393,19 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     }
 
     String getMultipartContentType(String paramOrFileName) {
-        return multipartContentTypes.get(paramOrFileName)
+        multipartContentTypes.get(paramOrFileName)
     }
 
     String setMultipartContentType(String paramOrFileName, String contentType) {
-        return multipartContentTypes.put(paramOrFileName, contentType)
+        multipartContentTypes.put(paramOrFileName, contentType)
     }
 
     HttpHeaders getMultipartHeaders(String paramOrFileName) {
-        return multipartHeaders.get(paramOrFileName)
+        multipartHeaders.get(paramOrFileName)
     }
 
     HttpHeaders setMultipartHeaders(String paramOrFileName, HttpHeaders headers) {
-        return multipartHeaders.put(paramOrFileName, headers)
+        multipartHeaders.put(paramOrFileName, headers)
     }
 
     Collection<Part> getParts() {
@@ -414,9 +414,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
 
     Part getPart(String name) {
         MultipartFile file = getFile(name)
-        if (file) {
-            return new MockPart(file)
-        }
+        file ? new MockPart(file) : null
     }
 
     AsyncContext startAsync() {
@@ -429,7 +427,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     }
 
     AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) {
-        return new MockAsyncContext(servletRequest, servletResponse)
+        new MockAsyncContext(servletRequest, servletResponse)
     }
 
     boolean isAsyncStarted() { asyncContext != null }
@@ -492,17 +490,17 @@ class MockPart implements Part {
 
     @Override
     String getHeader(String name) {
-        return headers.getFirst(name)
+        headers.getFirst(name)
     }
 
     @Override
     Collection<String> getHeaders(String name) {
-        return headers[name]
+        headers[name]
     }
 
     @Override
     Collection<String> getHeaderNames() {
-        return headers.keySet()
+        headers.keySet()
     }
 
 }
@@ -521,7 +519,7 @@ class MockAsyncContext implements AsyncContext {
     }
 
     boolean hasOriginalRequestAndResponse() {
-        return true
+        true
     }
 
     void dispatch() {
@@ -568,7 +566,7 @@ class MockAsyncContext implements AsyncContext {
     }
 
     def <T extends AsyncListener> T createListener(Class<T> clazz) {
-        return clazz.newInstance()
+        clazz.newInstance()
     }
 
 }
