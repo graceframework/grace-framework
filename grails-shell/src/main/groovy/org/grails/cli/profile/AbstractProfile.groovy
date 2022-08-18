@@ -104,7 +104,7 @@ abstract class AbstractProfile implements Profile {
     }
 
     String getVersion() {
-        return version
+        version
     }
 
     protected void initialize() {
@@ -215,7 +215,7 @@ abstract class AbstractProfile implements Profile {
             calculatedBinaryExtensions.addAll(profile.binaryExtensions)
         }
         calculatedBinaryExtensions.addAll(binaryExtensions)
-        return calculatedBinaryExtensions
+        calculatedBinaryExtensions
     }
 
     Set<String> getExecutablePatterns() {
@@ -225,7 +225,7 @@ abstract class AbstractProfile implements Profile {
             calculatedExecutablePatterns.addAll(profile.executablePatterns)
         }
         calculatedExecutablePatterns.addAll(executablePatterns)
-        return calculatedExecutablePatterns
+        calculatedExecutablePatterns
     }
 
     @Override
@@ -239,7 +239,7 @@ abstract class AbstractProfile implements Profile {
         if (requiredFeatureInstances.size() != requiredFeatureNames.size()) {
             throw new IllegalStateException("One or more required features were not found on the classpath. Required features: $requiredFeatureNames")
         }
-        return requiredFeatureInstances
+        requiredFeatureInstances
     }
 
     @Override
@@ -250,7 +250,7 @@ abstract class AbstractProfile implements Profile {
         for (profile in parents) {
             calculatedFeatures.addAll profile.features
         }
-        return calculatedFeatures
+        calculatedFeatures
     }
 
     @Override
@@ -258,14 +258,13 @@ abstract class AbstractProfile implements Profile {
         if (buildMerge != null) {
             return this.buildMerge
         }
-        else {
-            List<String> mergeNames = []
-            for (parent in getExtends()) {
-                mergeNames.add(parent.name)
-            }
-            mergeNames.add(name)
-            return mergeNames
+
+        List<String> mergeNames = []
+        for (parent in getExtends()) {
+            mergeNames.add(parent.name)
         }
+        mergeNames.add(name)
+        mergeNames
     }
 
     @Override
@@ -276,7 +275,7 @@ abstract class AbstractProfile implements Profile {
             calculatedRepositories.addAll(profile.buildRepositories)
         }
         calculatedRepositories.addAll(buildRepositories)
-        return calculatedRepositories
+        calculatedRepositories
     }
 
     @Override
@@ -292,7 +291,7 @@ abstract class AbstractProfile implements Profile {
             }
         }
         calculatedPlugins.addAll(buildPlugins)
-        return calculatedPlugins
+        calculatedPlugins
     }
 
     @Override
@@ -303,7 +302,7 @@ abstract class AbstractProfile implements Profile {
             calculatedRepositories.addAll(profile.repositories)
         }
         calculatedRepositories.addAll(repositories)
-        return calculatedRepositories
+        calculatedRepositories
     }
 
     List<Dependency> getDependencies() {
@@ -318,11 +317,11 @@ abstract class AbstractProfile implements Profile {
             }
         }
         calculatedDependencies.addAll(dependencies)
-        return calculatedDependencies
+        calculatedDependencies
     }
 
     ProfileRepository getProfileRepository() {
-        return profileRepository
+        profileRepository
     }
 
     void setProfileRepository(ProfileRepository profileRepository) {
@@ -330,7 +329,7 @@ abstract class AbstractProfile implements Profile {
     }
 
     Resource getProfileDir() {
-        return profileDir
+        profileDir
     }
 
     @Override
@@ -340,17 +339,17 @@ abstract class AbstractProfile implements Profile {
 
     @Override
     Resource getTemplate(String path) {
-        return profileDir.createRelative("templates/$path")
+        profileDir.createRelative("templates/$path")
     }
 
     @Override
     Iterable<Profile> getExtends() {
-        return parentNames.collect() { String name ->
+        parentNames.collect() { String name ->
             def parent = profileRepository.getProfile(name, true)
             if (parent == null) {
                 throw new IllegalStateException("Profile [$name] declares an invalid dependency on parent profile [$name]")
             }
-            return parent
+            parent
         }
     }
 
@@ -391,13 +390,13 @@ abstract class AbstractProfile implements Profile {
             }
         }
 
-        return completers
+        completers
     }
 
     @Override
     Command getCommand(ProjectContext context, String name) {
         getCommands(context)
-        return commandsByName[name]
+        commandsByName[name]
     }
 
     @Override
@@ -436,7 +435,7 @@ abstract class AbstractProfile implements Profile {
                 registerParentCommands(context, parents, registerCommand)
             }
         }
-        return commandsByName.values()
+        commandsByName.values()
     }
 
     protected void registerParentCommands(ProjectContext context, Iterable<Profile> parents, Closure registerCommand) {
@@ -453,7 +452,7 @@ abstract class AbstractProfile implements Profile {
     @Override
     boolean hasCommand(ProjectContext context, String name) {
         getCommands(context) // ensure initialization
-        return commandsByName.containsKey(name)
+        commandsByName.containsKey(name)
     }
 
     @Override
@@ -471,28 +470,25 @@ abstract class AbstractProfile implements Profile {
                         "Type 'grails help $commandName' for more info."
                 return false
             }
-            else {
-                return cmd.handle(context)
-            }
+
+            return cmd.handle(context)
         }
-        else {
-            // Apply command name expansion (rA for run-app, tA for test-app etc.)
-            cmd = commandsByName.values().find() { Command c ->
-                ScriptNameResolver.resolvesTo(commandName, c.name)
-            }
-            if (cmd) {
-                return cmd.handle(context)
-            }
-            else {
-                context.console.error("Command not found ${context.commandLine.commandName}")
-                def mostSimilar = CosineSimilarity.mostSimilar(commandName, commandsByName.keySet())
-                List<String> topMatches = mostSimilar.subList(0, Math.min(3, mostSimilar.size()))
-                if (topMatches) {
-                    context.console.log("Did you mean: ${topMatches.join(' or ')}?")
-                }
-                return false
-            }
+
+        // Apply command name expansion (rA for run-app, tA for test-app etc.)
+        cmd = commandsByName.values().find() { Command c ->
+            ScriptNameResolver.resolvesTo(commandName, c.name)
         }
+        if (cmd) {
+            return cmd.handle(context)
+        }
+
+        context.console.error("Command not found ${context.commandLine.commandName}")
+        def mostSimilar = CosineSimilarity.mostSimilar(commandName, commandsByName.keySet())
+        List<String> topMatches = mostSimilar.subList(0, Math.min(3, mostSimilar.size()))
+        if (topMatches) {
+            context.console.log("Did you mean: ${topMatches.join(' or ')}?")
+        }
+        false
     }
 
     @Override
@@ -502,11 +498,7 @@ abstract class AbstractProfile implements Profile {
 
     @Override
     File getParentSkeletonDir(File parent) {
-        if (parentSkeletonDir) {
-            new File(parent, parentSkeletonDir)
-        } else {
-            parent
-        }
+        parentSkeletonDir ? new File(parent, parentSkeletonDir) : parent
     }
 
     List<String> getSkeletonExcludes() {

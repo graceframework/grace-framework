@@ -235,7 +235,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
         Collection<Resource> resList = []
         resList.addAll(resources(pattern))
         resList.addAll(resources("classpath*:META-INF/templates/$pattern"))
-        return resList.unique()
+        resList.unique()
     }
 
     /**
@@ -270,7 +270,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 return resource("classpath*:META-INF/templates/" + location)
             }
         }
-        return resource(f)
+        resource(f)
     }
 
     private static void writeTemplateToDestination(Template template, Map model, File destination) {

@@ -140,12 +140,11 @@ class GrailsCli {
         else if (targetType.isInstance(value)) {
             return (T)value
         }
-        else {
-            try {
-                return value.asType(targetType)
-            } catch (Throwable e) {
-                return null
-            }
+
+        try {
+            return value.asType(targetType)
+        } catch (Throwable e) {
+            return null
         }
     }
 
@@ -181,7 +180,7 @@ class GrailsCli {
     }
 
     static boolean isInteractiveModeActive() {
-        return interactiveModeActive
+        interactiveModeActive
     }
 
     static void tiggerAppLoad() {
@@ -193,7 +192,7 @@ class GrailsCli {
         this.execute "list-profiles"
         System.out.println "\nType 'grails help' or 'grails -h' for more information."
 
-        return 1
+        1
     }
 
     /**
@@ -252,10 +251,8 @@ class GrailsCli {
                     if (cmd != null) {
                         return executeCommandWithArgumentValidation(cmd, cl)
                     }
-                    else {
-                        console.error("Command not found [$name]")
-                        return false
-                    }
+                    console.error("Command not found [$name]")
+                    false
                 } ] as Profile
 
                 startInteractiveMode(console)
@@ -265,18 +262,15 @@ class GrailsCli {
             if (cmd) {
                 return executeCommandWithArgumentValidation(cmd, mainCommandLine) ? 0 : 1
             }
-            else {
-                return getBaseUsage()
-            }
+            getBaseUsage()
         } else {
             initializeApplication(mainCommandLine)
             if (mainCommandLine.commandName) {
                 return handleCommand(mainCommandLine) ? 0 : 1
-            } else {
-                handleInteractiveMode()
             }
+            handleInteractiveMode()
         }
-        return 0
+        0
     }
 
     protected boolean executeCommandWithArgumentValidation(Command cmd, CommandLine mainCommandLine) {
@@ -285,9 +279,8 @@ class GrailsCli {
         if (mainCommandLine.remainingArgs.size() < requiredArgs) {
             outputMissingArgumentsMessage cmd
             return false
-        } else {
-            return cmd.handle(createExecutionContext(mainCommandLine))
         }
+        cmd.handle(createExecutionContext(mainCommandLine))
     }
 
     protected void initializeApplication(CommandLine mainCommandLine) {
@@ -335,7 +328,7 @@ class GrailsCli {
                 }
             }
         }
-        return new MavenProfileRepository(profileRepositories)
+        new MavenProfileRepository(profileRepositories)
     }
 
     protected void outputMissingArgumentsMessage(Command cmd) {
@@ -422,7 +415,7 @@ class GrailsCli {
 
         completers.addAll((profile.getCompleters(projectContext) ?: []) as Collection)
         consoleReader.addCompleter(aggregateCompleter)
-        return console
+        console
     }
 
     protected void startInteractiveMode(GrailsConsole console) {
@@ -500,9 +493,8 @@ class GrailsCli {
             } catch (ExecutionException e) {
                 throw e.cause
             }
-        } else {
-            return false
         }
+        false
     }
 
     private initializeProfile() {
@@ -538,9 +530,7 @@ class GrailsCli {
                         if (value instanceof List) {
                             return ((List)value).collect() { new URL(it.toString()) } as List<URL>
                         }
-                        else {
-                            return []
-                        }
+                        []
                     }
 
                     @Override
@@ -557,7 +547,7 @@ class GrailsCli {
                             GrailsConsole.instance.error("${grailsClasspath.error} Type 'gradle dependencies' for more information")
                             exit 1
                         }
-                        return [
+                        [
                             dependencies: grailsClasspath.dependencies,
                             profiles: grailsClasspath.profileDependencies
                         ]
@@ -604,22 +594,19 @@ class GrailsCli {
         if (commandName && commandName.size() > 1 && commandName.startsWith('!')) {
             return executeProcess(context, commandLine.rawArguments)
         }
-        else {
-            switch (commandName) {
-                case '!':
-                    return bang(context)
-                case 'exit':
-                    exitInteractiveMode()
-                    return true
-                    break
-                case 'quit':
-                    exitInteractiveMode()
-                    return true
-                    break
-            }
-        }
 
-        return false
+        switch (commandName) {
+            case '!':
+                return bang(context)
+            case 'exit':
+                exitInteractiveMode()
+                return true
+            case 'quit':
+                exitInteractiveMode()
+                return true
+            default:
+                false
+        }
     }
 
     protected boolean executeProcess(ExecutionContext context, String[] args) {
@@ -639,7 +626,7 @@ class GrailsCli {
      * Removes '\' escape characters from the given string.
      */
     private String unescape(String str) {
-        return str.replace('\\', '')
+        str.replace('\\', '')
     }
 
     protected Boolean bang(ExecutionContext context) {
@@ -661,7 +648,7 @@ class GrailsCli {
         else {
             return handleCommand(cliParser.parseString(historicalCommand))
         }
-        return false
+        false
     }
 
     private void exitInteractiveMode() {
@@ -730,7 +717,7 @@ class GrailsCli {
 
         @Override
         ConfigMap getConfig() {
-            return grailsConfig
+            grailsConfig
         }
 
         @Override

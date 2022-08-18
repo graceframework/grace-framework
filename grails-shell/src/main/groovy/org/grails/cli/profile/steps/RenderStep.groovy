@@ -82,12 +82,11 @@ class RenderStep extends AbstractStep {
         Resource templateFile = profile.getTemplate(template)
         if (templateFile.exists()) {
             return templateFile
-        } else {
-            for (parent in profile.extends) {
-                templateFile = searchTemplateDepthFirst(parent, template)
-                if (templateFile) {
-                    return templateFile
-                }
+        }
+        for (parent in profile.extends) {
+            templateFile = searchTemplateDepthFirst(parent, template)
+            if (templateFile) {
+                return templateFile
             }
         }
         null

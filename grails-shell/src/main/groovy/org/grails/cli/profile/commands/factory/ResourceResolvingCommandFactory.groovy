@@ -46,7 +46,7 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
                 commands << command
             }
         }
-        return commands
+        commands
     }
 
     protected String evaluateFileName(String fileName) {
@@ -58,7 +58,7 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
         for (CommandResourceResolver resolver in getCommandResolvers(inherited)) {
             allResources.addAll resolver.findCommandResources(profile)
         }
-        return allResources
+        allResources
     }
 
     protected Collection<CommandResourceResolver> getCommandResolvers(boolean inherited) {
@@ -68,27 +68,26 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
             commandResolvers.add(profileCommandsResolver)
             return commandResolvers
         }
-        else {
-            def localCommandsResolver1 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
 
-                @Override
-                protected Resource getCommandsDirectory(Profile profile) {
-                    return new FileSystemResource("${BuildSettings.BASE_DIR}/src/main/scripts/")
-                }
+        def localCommandsResolver1 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
 
+            @Override
+            protected Resource getCommandsDirectory(Profile profile) {
+                new FileSystemResource("${BuildSettings.BASE_DIR}/src/main/scripts/")
             }
-            def localCommandsResolver2 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
 
-                @Override
-                protected Resource getCommandsDirectory(Profile profile) {
-                    return new FileSystemResource("${BuildSettings.BASE_DIR}/commands/")
-                }
-
-            }
-            commandResolvers.addAll([profileCommandsResolver, localCommandsResolver1, localCommandsResolver2,
-                                     new ClasspathCommandResourceResolver(matchingFileExtensions)])
-            return commandResolvers
         }
+        def localCommandsResolver2 = new FileSystemCommandResourceResolver(matchingFileExtensions) {
+
+            @Override
+            protected Resource getCommandsDirectory(Profile profile) {
+                new FileSystemResource("${BuildSettings.BASE_DIR}/commands/")
+            }
+
+        }
+        commandResolvers.addAll([profileCommandsResolver, localCommandsResolver1, localCommandsResolver2,
+                                 new ClasspathCommandResourceResolver(matchingFileExtensions)])
+        commandResolvers
     }
 
     protected abstract T readCommandFile(Resource resource)

@@ -91,7 +91,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @Override
     String getName() {
-        return NAME
+        NAME
     }
 
     @Override
@@ -147,7 +147,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
         }
-        return super.complete(commandLine, desc, candidates, cursor)
+        super.complete(commandLine, desc, candidates, cursor)
     }
 
     protected File getDestinationDirectory(File srcFile) {
@@ -218,7 +218,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     if (path.fileName.toString() == fileName) {
                         files.add(path.toFile())
                     }
-                    return FileVisitResult.CONTINUE
+                    FileVisitResult.CONTINUE
                 }
 
             })
@@ -336,10 +336,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             GrailsCli.tiggerAppLoad()
             return true
         }
-        else {
-            System.err.println "Cannot find profile $profileName"
-            return false
-        }
+
+        System.err.println "Cannot find profile $profileName"
+        false
     }
 
     private boolean isDirectoryEmpty(File target) {
@@ -348,7 +347,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return !entries.findFirst().isPresent()
             }
         }
-        return false
+        false
     }
 
     @Override
@@ -385,7 +384,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             console: executionContext.console
         )
 
-        return this.handle(cmd)
+        this.handle(cmd)
     }
 
     protected boolean validateProfile(Profile profileInstance, String profileName) {
@@ -393,7 +392,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             GrailsConsole.instance.error("Profile not found for name [$profileName]")
             return false
         }
-        return true
+        true
     }
 
     private Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
@@ -410,7 +409,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             ant.unzip(src: jarFile, dest: tmpDir)
             unzippedDirectories.put(url, tmpDir)
         }
-        return tmpDir
+        tmpDir
     }
 
     @CompileDynamic
@@ -524,9 +523,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             return (profile.features.findAll() { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
         }
-        else {
-            return (profile.defaultFeatures + profile.requiredFeatures).unique()
-        }
+
+        (profile.defaultFeatures + profile.requiredFeatures).unique()
     }
 
     protected String getDefaultProfile() {
@@ -614,7 +612,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             groupname = parts[0..-2].join('.')
             defaultPackage = groupname
         }
-        return defaultPackage
+        defaultPackage
     }
 
     private String createValidPackageName() {
@@ -628,7 +626,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             throw new IllegalArgumentException("Cannot create a valid package name for [$appname]. " +
                     "Please specify a name that is also a valid Java package.")
         }
-        return defaultPackage
+        defaultPackage
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -757,7 +755,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         def artifact = dep.artifact
         def v = artifact.version.replace('BOM', '')
 
-        return v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
+        v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
     }
 
     private void deleteDirectory(File directory) {

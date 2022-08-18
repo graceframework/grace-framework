@@ -113,10 +113,9 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         if (commandLine.hasOption(name)) {
             return commandLine.optionValue(name)
         }
-        else {
-            def value = commandLine?.undeclaredOptions?.get(name)
-            return value ?: null
-        }
+
+        def value = commandLine?.undeclaredOptions?.get(name)
+        value ?: null
     }
 
     /**
@@ -158,7 +157,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         if (result instanceof Boolean) {
             return ((Boolean)result)
         }
-        return true
+        true
     }
 
     /**
@@ -178,9 +177,8 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
             def newContext = new GrailsCli.ExecutionContextImpl(commandLine.parseNew(newArgs as String[]), context)
             return profile.handleCommand(newContext)
         }
-        else {
-            throw new MissingMethodException(name, getClass(), argsArray)
-        }
+
+        throw new MissingMethodException(name, getClass(), argsArray)
     }
 
     void setExecutionContext(ExecutionContext executionContext) {
@@ -193,7 +191,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     }
 
     ExecutionContext getExecutionContext() {
-        return executionContext
+        executionContext
     }
 
 }

@@ -58,37 +58,37 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             console.error("No profile repository provided")
             return false
         }
+
+        def profileName = executionContext.commandLine.remainingArgs[0]
+
+        def profile = profileRepository.getProfile(profileName)
+        if (profile == null) {
+            console.error("Profile not found for name [$profileName]")
+        }
         else {
-            def profileName = executionContext.commandLine.remainingArgs[0]
+            console.log("Profile: ${profile.name}")
+            console.log('--------------------')
+            console.log(profile.description)
+            console.log('')
+            console.log('Provided Commands:')
+            console.log('--------------------')
+            Iterable<Command> commands = findCommands(profile, console).toUnique { Command c -> c.name }
 
-            def profile = profileRepository.getProfile(profileName)
-            if (profile == null) {
-                console.error("Profile not found for name [$profileName]")
+            for (cmd in commands) {
+                def description = cmd.description
+                console.log("* ${description.name} - ${description.description}")
             }
-            else {
-                console.log("Profile: ${profile.name}")
-                console.log('--------------------')
-                console.log(profile.description)
-                console.log('')
-                console.log('Provided Commands:')
-                console.log('--------------------')
-                Iterable<Command> commands = findCommands(profile, console).toUnique { Command c -> c.name }
+            console.log('')
+            console.log('Provided Features:')
+            console.log('--------------------')
+            def features = profile.features
 
-                for (cmd in commands) {
-                    def description = cmd.description
-                    console.log("* ${description.name} - ${description.description}")
-                }
-                console.log('')
-                console.log('Provided Features:')
-                console.log('--------------------')
-                def features = profile.features
-
-                for (feature in features) {
-                    console.log("* ${feature.name} - ${feature.description}")
-                }
+            for (feature in features) {
+                console.log("* ${feature.name} - ${feature.description}")
             }
         }
-        return true
+
+        true
     }
 
     protected Iterable<Command> findCommands(Profile profile, GrailsConsole console) {
@@ -101,22 +101,22 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
 
             @Override
             File getBaseDir() {
-                return new File(".")
+                new File(".")
             }
 
             @Override
             ConfigMap getConfig() {
-                return new CodeGenConfig()
+                new CodeGenConfig()
             }
 
             @Override
             String navigateConfig(String... path) {
-                return config.navigate(path)
+                config.navigate(path)
             }
 
             @Override
             def <T> T navigateConfigForType(Class<T> requiredType, String... path) {
-                return (T) config.navigate(path)
+                (T) config.navigate(path)
             }
 
         })

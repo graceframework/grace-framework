@@ -48,7 +48,7 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
 
     @Override
     String getName() {
-        return NAME
+        NAME
     }
 
     @Override
@@ -89,26 +89,26 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
             }
             console.error "Help for command $helpCommandName not found"
             return false
-        } else {
-            console.log '''
+        }
+
+        console.log '''
 Usage (optionals marked with *):'
 grails [environment]* [target] [arguments]*'
 
 '''
-            console.addStatus("Examples:")
-            console.log('$ grails dev run-app')
-            console.log('$ grails create-app books')
-            console.log ''
-            console.addStatus('Available Commands (type grails help \'command-name\' for more info):')
-            console.addStatus("${'Command Name'.padRight(37)} Command Description")
-            console.println('-' * 100)
-            for (CommandDescription desc : allCommands) {
-                console.println "${desc.name.padRight(40)}${desc.description}"
-            }
-            console.println()
-            console.addStatus("Detailed usage with help [command]")
-            return true
+        console.addStatus("Examples:")
+        console.log('$ grails dev run-app')
+        console.log('$ grails create-app books')
+        console.log ''
+        console.addStatus('Available Commands (type grails help \'command-name\' for more info):')
+        console.addStatus("${'Command Name'.padRight(37)} Command Description")
+        console.println('-' * 100)
+        for (CommandDescription desc : allCommands) {
+            console.println "${desc.name.padRight(40)}${desc.description}"
         }
+        console.println()
+        console.addStatus("Detailed usage with help [command]")
+        true
     }
 
     @Override
@@ -125,7 +125,7 @@ grails [environment]* [target] [arguments]*'
                 candidates << cmd
             }
         }
-        return cursor
+        cursor
     }
 
     protected Collection<CommandDescription> findAllCommands() {
@@ -138,10 +138,9 @@ grails [environment]* [target] [arguments]*'
                 !(cmd instanceof ProjectCommand)
             }
         }
-        return commands
-                    .collect() { Command cmd -> cmd.description }
-                    .unique() { CommandDescription cmd -> cmd.name }
-                    .sort(false) { CommandDescription itDesc ->  itDesc.name }
+        commands.collect() { Command cmd -> cmd.description }
+                .unique() { CommandDescription cmd -> cmd.name }
+                .sort(false) { CommandDescription itDesc ->  itDesc.name }
     }
 
 }

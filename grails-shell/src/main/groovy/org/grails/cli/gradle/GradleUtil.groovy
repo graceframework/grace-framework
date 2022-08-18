@@ -134,7 +134,7 @@ class GradleUtil {
         BuildActionExecuter<T> buildActionExecuter = connection.action(buildAction)
         setupConsoleOutput(context, buildActionExecuter)
         buildActionExecuterCustomizationClosure?.call(buildActionExecuter)
-        return buildActionExecuter.run()
+        buildActionExecuter.run()
     }
 
     static wireCancellationSupport(ExecutionContext context, BuildLauncher buildLauncher) {

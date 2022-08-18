@@ -45,21 +45,21 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
 
     @Override
     Profile getProfile(String profileName) {
-        return profilesByName[profileName]
+        profilesByName[profileName]
     }
 
     @Override
     Profile getProfile(String profileName, Boolean parentProfile) {
-        return getProfile(profileName)
+        getProfile(profileName)
     }
 
     List<Profile> getAllProfiles() {
-        return allProfiles
+        allProfiles
     }
 
     @Override
     Resource getProfileDirectory(String profile) {
-        return getProfile(profile)?.profileDir
+        getProfile(profile)?.profileDir
     }
 
     @Override
@@ -67,7 +67,7 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
         List<Profile> sortedProfiles = []
         Set<Profile> visitedProfiles = [] as Set
         visitTopologicalSort(profile, sortedProfiles, visitedProfiles)
-        return sortedProfiles
+        sortedProfiles
     }
 
     Artifact getProfileArtifact(String profileName) {
@@ -86,7 +86,7 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
             version = data.get("version")
         }
 
-        return new DefaultArtifact(groupId, profileName, null, version)
+        new DefaultArtifact(groupId, profileName, null, version)
     }
 
     protected void registerProfile(URL url, ClassLoader parent) {
@@ -138,7 +138,7 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
                 commandsByName[cmd.name] = cmd
             }
 
-            return commandsByName.values()
+            commandsByName.values()
         }
 
     }

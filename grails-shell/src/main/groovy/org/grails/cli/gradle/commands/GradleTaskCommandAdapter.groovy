@@ -52,7 +52,7 @@ class GradleTaskCommandAdapter implements ProfileCommand {
         else {
             description = ""
         }
-        return new CommandDescription(adapted.name, description)
+        new CommandDescription(adapted.name, description)
     }
 
     @Override
@@ -68,12 +68,12 @@ class GradleTaskCommandAdapter implements ProfileCommand {
             invoker."${method}"()
         }
 
-        return true
+        true
     }
 
     @Override
     String getName() {
-        return adapted.name
+        adapted.name
     }
 
 }

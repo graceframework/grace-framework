@@ -56,7 +56,7 @@ class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
                 buildLauncher.withArguments(args)
             }
         }
-        return true
+        true
     }
 
     @Override
@@ -66,9 +66,8 @@ class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
         if (completer) {
             return completer.complete(buffer, cursor, candidates)
         }
-        else {
-            return cursor
-        }
+
+        cursor
     }
 
     private void initializeCompleter() {

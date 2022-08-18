@@ -55,7 +55,7 @@ class SimpleOrFileNameCompletor implements Completer {
         if (retval == -1) {
             retval = fileRetval
         }
-        return candidates ? retval : -1
+        candidates ? retval : -1
     }
 
 }

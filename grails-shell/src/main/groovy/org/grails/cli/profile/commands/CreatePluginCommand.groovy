@@ -53,9 +53,8 @@ class CreatePluginCommand extends CreateAppCommand {
             executionContext.console.error("No valid plugin profile found for name [$profileName]")
             return false
         }
-        else {
-            return super.validateProfile(profileInstance, profileName)
-        }
+
+        super.validateProfile(profileInstance, profileName)
     }
 
 }

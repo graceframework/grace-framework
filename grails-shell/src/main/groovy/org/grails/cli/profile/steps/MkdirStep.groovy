@@ -55,9 +55,7 @@ class MkdirStep extends AbstractStep {
             File destination = variableResolver.resolveFile(location, context)
             return destination.mkdirs()
         }
-        else {
-            return new File(context.baseDir, location).mkdirs()
-        }
+        new File(context.baseDir, location).mkdirs()
     }
 
 }

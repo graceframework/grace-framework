@@ -59,7 +59,7 @@ class SpringInvoker {
                 currentThread.contextClassLoader = existing
             }
         }
-        return null
+        null
     }
 
     @InheritConstructors
@@ -83,18 +83,16 @@ class SpringInvoker {
                         URL nextElement() {
                             URL i = current
                             current = null
-                            return i
+                            i
                         }
 
                     }
                 }
-                else {
-                    return resources
-                }
+
+                resources
             }
-            else {
-                return super.getResources(name)
-            }
+
+            super.getResources(name)
         }
 
     }

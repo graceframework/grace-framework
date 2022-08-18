@@ -42,7 +42,7 @@ abstract class MapReadingCachedGradleOperation <V> extends CachedGradleOperation
         for (entry in map.entrySet()) {
             newMap.put(entry.key, createMapValue(entry.value))
         }
-        return newMap
+        newMap
     }
 
     abstract V createMapValue(Object value)
@@ -55,9 +55,7 @@ abstract class MapReadingCachedGradleOperation <V> extends CachedGradleOperation
             if (val instanceof Iterable) {
                 return [(key): val.collect() { it.toString() }]
             }
-            else {
-                return [(key): val.toString()]
-            }
+            [(key): val.toString()]
         }
         new Yaml(new SafeConstructor(), new Representer(), options).dump(toWrite, writer)
     }

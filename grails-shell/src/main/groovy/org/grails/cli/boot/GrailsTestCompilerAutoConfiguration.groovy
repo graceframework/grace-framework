@@ -46,7 +46,7 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
         if (matches) {
             lastMatch = classNode
         }
-        return matches
+        matches
     }
 
     @Override

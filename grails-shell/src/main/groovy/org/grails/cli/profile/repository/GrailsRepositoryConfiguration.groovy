@@ -26,7 +26,7 @@ class GrailsRepositoryConfiguration {
      * @param uri The uri of the repository
      * @param snapshotsEnabled {@code true} if the repository should enable access to snapshots, {@code false} otherwise
      */
-    public GrailsRepositoryConfiguration(String name, URI uri, boolean snapshotsEnabled) {
+    GrailsRepositoryConfiguration(String name, URI uri, boolean snapshotsEnabled) {
         this.name = name
         this.uri = uri
         this.snapshotsEnabled = snapshotsEnabled
@@ -40,7 +40,7 @@ class GrailsRepositoryConfiguration {
      * @param username The username needed to authenticate with the repository
      * @param password The password needed to authenticate with the repository
      */
-    public GrailsRepositoryConfiguration(String name, URI uri, boolean snapshotsEnabled, String username, String password) {
+    GrailsRepositoryConfiguration(String name, URI uri, boolean snapshotsEnabled, String username, String password) {
         this.name = name
         this.uri = uri
         this.snapshotsEnabled = snapshotsEnabled
@@ -87,7 +87,7 @@ class GrailsRepositoryConfiguration {
         for (char element : array) {
             hash = MULTIPLIER * hash + element
         }
-        return hash
+        hash
     }
 
 }

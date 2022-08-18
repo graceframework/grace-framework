@@ -39,14 +39,13 @@ class CommandCompleter implements Completer {
             if (trimmed.split(/\s/).size() > 1) {
                 return trimmed.startsWith(it.name)
             }
-            else {
-                return trimmed == it.name
-            }
+
+            trimmed == it.name
         }
         if (cmd instanceof Completer) {
             return ((Completer)cmd).complete(buffer, cursor, candidates)
         }
-        return cursor
+        cursor
     }
 
 }

@@ -143,7 +143,7 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                 return cons
             }
         }
-        return null
+        null
     }
 
 }

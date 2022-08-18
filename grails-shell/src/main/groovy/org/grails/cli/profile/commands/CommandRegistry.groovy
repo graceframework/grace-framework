@@ -66,7 +66,7 @@ class CommandRegistry {
         if (command instanceof ProfileRepositoryAware) {
             command.profileRepository = repository
         }
-        return command
+        command
     }
 
     static Collection<Command> findCommands(ProfileRepository repository) {
@@ -74,7 +74,7 @@ class CommandRegistry {
             if (cmd instanceof ProfileRepositoryAware) {
                 ((ProfileRepositoryAware)cmd).profileRepository = repository
             }
-            return cmd
+            cmd
         }
     }
 
@@ -99,7 +99,7 @@ class CommandRegistry {
                             ((ProfileCommand) c).profile == profile
                 }
         )
-        return commands
+        commands
     }
 
 }

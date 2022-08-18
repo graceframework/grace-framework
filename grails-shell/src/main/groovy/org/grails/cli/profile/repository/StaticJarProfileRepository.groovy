@@ -43,7 +43,7 @@ class StaticJarProfileRepository extends AbstractJarProfileRepository {
             def art = new DefaultArtifact(profileName)
             profile = super.getProfile(art.artifactId)
         }
-        return profile
+        profile
     }
 
 }

@@ -47,7 +47,7 @@ class GrailsAetherGrapeEngineFactory {
 
         new DefaultRepositorySystemSessionAutoConfiguration().apply(repositorySystemSession, repositorySystem)
 
-        return new AetherGrapeEngine(classLoader, repositorySystem,
+        new AetherGrapeEngine(classLoader, repositorySystem,
                 repositorySystemSession, createRepositories(repositoryConfigurations),
                 dependencyResolutionContext, false)
     }
@@ -59,7 +59,7 @@ class GrailsAetherGrapeEngineFactory {
                 BasicRepositoryConnectorFactory)
         locator.addService(TransporterFactory, HttpTransporterFactory)
         locator.addService(TransporterFactory, FileTransporterFactory)
-        return locator
+        locator
     }
 
     private static List<RemoteRepository> createRepositories(List<GrailsRepositoryConfiguration> repositoryConfigurations) {
@@ -82,7 +82,7 @@ class GrailsAetherGrapeEngineFactory {
             }
             repositories.add(builder.build())
         }
-        return repositories
+        repositories
     }
 
 }

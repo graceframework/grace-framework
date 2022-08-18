@@ -93,7 +93,7 @@ class DefaultMultiStepCommand extends MultiStepCommand {
         } catch (Throwable e) {
             GrailsConsole.getInstance().error("Invalid $name found in [$profile.name] profile ${map}: ${e.message}", e)
         }
-        return false
+        false
     }
 
     List<Step> getSteps() {

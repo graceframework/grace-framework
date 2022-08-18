@@ -56,7 +56,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
         } finally {
             is?.close()
         }
-        return data
+        data
     }
 
     protected Command createCommand(Profile profile, String commandName, Resource resource, Map data) {
@@ -66,7 +66,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
             command.minArguments = minArguments instanceof Integer ? (Integer)minArguments : 1
             return command
         }
-        return null
+        null
     }
 
 }

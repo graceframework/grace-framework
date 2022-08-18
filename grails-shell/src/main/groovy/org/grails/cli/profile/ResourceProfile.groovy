@@ -42,8 +42,7 @@ class ResourceProfile extends AbstractProfile implements Profile {
     }
 
     static Profile create(ProfileRepository repository, String name, Resource profileDir) {
-        Profile profile = new ResourceProfile(repository, name, profileDir)
-        return profile
+        new ResourceProfile(repository, name, profileDir)
     }
 
     boolean equals(o) {
@@ -56,15 +55,11 @@ class ResourceProfile extends AbstractProfile implements Profile {
 
         ResourceProfile that = (ResourceProfile) o
 
-        if (name != that.name) {
-            return false
-        }
-
-        return true
+        name == that.name
     }
 
     int hashCode() {
-        return (name != null ? name.hashCode() : 0)
+        name != null ? name.hashCode() : 0
     }
 
 }

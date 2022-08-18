@@ -30,7 +30,7 @@ abstract class ListReadingCachedGradleOperation<T> extends CachedGradleOperation
 
     @Override
     List<T> readFromCached(File f) {
-        return f.text.split('\n').collect() { String str -> createListEntry(str) }
+        f.text.split('\n').collect() { String str -> createListEntry(str) }
     }
 
     protected abstract T createListEntry(String str)

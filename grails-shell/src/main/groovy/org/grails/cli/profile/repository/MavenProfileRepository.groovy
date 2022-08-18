@@ -68,11 +68,10 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         if (!profilesByName.containsKey(profileShortName)) {
             if (parentProfile && profileDependencyVersions.find(DEFAULT_PROFILE_GROUPID, profileShortName)) {
                 return resolveProfile(profileShortName)
-            } else {
-                return resolveProfile(profileName)
             }
+            return resolveProfile(profileName)
         }
-        return super.getProfile(profileShortName)
+        super.getProfile(profileShortName)
     }
 
     @Override
@@ -104,7 +103,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         }
 
         processUrls()
-        return super.getProfile(art.artifactId)
+        super.getProfile(art.artifactId)
     }
 
     @CompileDynamic
@@ -153,7 +152,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             processUrls()
             resolved = true
         }
-        return super.getAllProfiles()
+        super.getAllProfiles()
     }
 
 }

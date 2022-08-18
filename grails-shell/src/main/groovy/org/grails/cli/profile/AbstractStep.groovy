@@ -40,7 +40,7 @@ abstract class AbstractStep implements Step {
      */
     def flag(CommandLine commandLine, String name) {
         def value = commandLine?.undeclaredOptions?.get(name)
-        return value ?: null
+        value ?: null
     }
 
 }

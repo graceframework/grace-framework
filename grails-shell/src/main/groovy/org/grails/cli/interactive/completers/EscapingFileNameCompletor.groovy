@@ -41,7 +41,7 @@ class EscapingFileNameCompletor extends FileNameCompleter {
             candidates[i] = candidates[i].replaceAll(/(\s)(?!$)/, '\\\\$1')
         }
 
-        return retval
+        retval
     }
 
 }

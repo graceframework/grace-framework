@@ -32,7 +32,7 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
     final int complete(String buffer, int cursor, List<CharSequence> candidates) {
         def desc = getDescription()
         def commandLine = cliParser.parseString(buffer)
-        return complete(commandLine, desc, candidates, cursor)
+        complete(commandLine, desc, candidates, cursor)
     }
 
     protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
@@ -58,7 +58,7 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
                 }
             }
         }
-        return cursor
+        cursor
     }
 
 }

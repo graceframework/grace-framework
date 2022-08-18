@@ -98,7 +98,7 @@ class CommandDescription {
      */
     CommandDescription synonyms(String...synonyms) {
         this.synonyms.addAll(synonyms)
-        return this
+        this
     }
 
     /**
@@ -109,7 +109,7 @@ class CommandDescription {
      */
     CommandDescription completer(Class<Completer> completer) {
         this.completer = completer.newInstance()
-        return this
+        this
     }
 
     /**
@@ -120,7 +120,7 @@ class CommandDescription {
      */
     CommandDescription completer(Completer completer) {
         this.completer = completer
-        return this
+        this
     }
 
     /**
@@ -135,7 +135,7 @@ class CommandDescription {
         if (name) {
             arguments[name] = arg
         }
-        return this
+        this
     }
 
     /**
@@ -151,7 +151,7 @@ class CommandDescription {
             arg.required = false
             flags[name] = arg
         }
-        return this
+        this
     }
 
 }

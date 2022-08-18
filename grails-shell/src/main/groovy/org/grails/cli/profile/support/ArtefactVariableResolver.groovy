@@ -59,7 +59,7 @@ class ArtefactVariableResolver {
         }
         variables['artifact.name'] = artifactName
         variables['artifact.propertyName'] = GrailsNameUtils.getPropertyName(artifactName)
-        return variables
+        variables
     }
 
     File resolveFile(String pathToResolve, ExecutionContext context) {
@@ -69,7 +69,7 @@ class ArtefactVariableResolver {
         if (!destination.getParentFile().exists()) {
             destination.getParentFile().mkdirs()
         }
-        return destination
+        destination
     }
 
 }

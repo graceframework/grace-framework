@@ -48,7 +48,7 @@ class FileSystemCommandResourceResolver implements CommandResourceResolver {
             commandFiles = commandFiles.sort(false) { Resource file -> file.filename }
             return commandFiles
         }
-        return []
+        []
     }
 
     protected Resource getCommandsDirectory(Profile profile) {

@@ -57,7 +57,7 @@ class GradleInvoker {
     }
 
     GradleAsyncInvoker getAsync() {
-        return new GradleAsyncInvoker(this)
+        new GradleAsyncInvoker(this)
     }
 
 }

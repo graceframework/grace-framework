@@ -61,12 +61,12 @@ class OpenCommand implements ProjectCommand, Completer {
         else {
             return true
         }
-        return false
+        false
     }
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        return new FileNameCompleter().complete(buffer, cursor, candidates)
+        new FileNameCompleter().complete(buffer, cursor, candidates)
     }
 
 }

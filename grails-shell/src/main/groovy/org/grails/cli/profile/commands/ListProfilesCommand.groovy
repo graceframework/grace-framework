@@ -47,7 +47,7 @@ class ListProfilesCommand implements Command, ProfileRepositoryAware {
             console.log("* $p.name - ${p.description}")
         }
 
-        return true
+        true
     }
 
 }

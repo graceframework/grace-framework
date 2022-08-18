@@ -83,33 +83,31 @@ class GrailsDependencyVersions implements DependencyManagement {
     }
 
     Dependency find(String groupId, String artifactId) {
-        return groupAndArtifactToDependency["$groupId:$artifactId".toString()]
+        groupAndArtifactToDependency["$groupId:$artifactId".toString()]
     }
 
     @Override
     List<Dependency> getDependencies() {
-        return dependencies
+        dependencies
     }
 
     Map<String, String> getVersionProperties() {
-        return versionProperties
+        versionProperties
     }
 
     @Override
     String getSpringBootVersion() {
-        return find("spring-boot").getVersion()
+        find("spring-boot").getVersion()
     }
 
     @Override
     Dependency find(String artifactId) {
         def groupAndArtifact = artifactToGroupAndArtifact[artifactId]
-        if (groupAndArtifact) {
-            return groupAndArtifactToDependency[groupAndArtifact]
-        }
+        groupAndArtifact ? groupAndArtifactToDependency[groupAndArtifact] : null
     }
 
     Iterator<Dependency> iterator() {
-        return groupAndArtifactToDependency.values().iterator()
+        groupAndArtifactToDependency.values().iterator()
     }
 
 }

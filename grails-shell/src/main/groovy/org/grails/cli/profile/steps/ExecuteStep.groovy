@@ -60,7 +60,7 @@ class ExecuteStep extends AbstractStep {
 
     @Override
     boolean handle(ExecutionContext context) {
-        return target.handle(context)
+        target.handle(context)
     }
 
 }

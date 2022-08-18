@@ -58,7 +58,7 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         def configuration = new CompilerConfiguration()
         // TODO: Report bug, this fails with @CompileStatic with a ClassCastException
         String baseClassName = GroovyScriptCommand.getName()
-        return createClassLoaderForBaseClass(configuration, baseClassName)
+        createClassLoaderForBaseClass(configuration, baseClassName)
     }
 
     private static GroovyClassLoader createClassLoaderForBaseClass(CompilerConfiguration configuration, String baseClassName) {
@@ -70,19 +70,19 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         importCustomizer.addStarImports("grails.codegen.model")
         configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
         def classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, configuration)
-        return classLoader
+        classLoader
     }
 
     @Override
     protected String evaluateFileName(String fileName) {
         def fn = super.evaluateFileName(fileName)
-        return fn.contains('-') ? fn.toLowerCase() : GrailsNameUtils.getScriptName(fn)
+        fn.contains('-') ? fn.toLowerCase() : GrailsNameUtils.getScriptName(fn)
     }
 
     @Override
     protected Command createCommand(Profile profile, String commandName, Resource resource, GroovyScriptCommand data) {
         data.setProfile(profile)
-        return data
+        data
     }
 
 }
