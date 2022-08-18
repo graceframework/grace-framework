@@ -110,7 +110,7 @@ class HttpServletResponseExtension {
                 request.setAttribute(GrailsApplicationAttributes.RESPONSE_FORMAT, result)
             }
         }
-        return result
+        result
     }
 
     /**
@@ -122,7 +122,7 @@ class HttpServletResponseExtension {
     @CompileStatic
     static MimeType getMimeType(HttpServletResponse response) {
         final webRequest = GrailsWebRequest.lookup()
-        return getMimeTypeForRequest(webRequest)
+        getMimeTypeForRequest(webRequest)
     }
 
     private static MimeType getMimeTypeForRequest(GrailsWebRequest webRequest) {
@@ -154,7 +154,7 @@ class HttpServletResponseExtension {
                 result = getMimeTypesInternal(request)[0]
             }
         }
-        return result
+        result
     }
 
     /**
@@ -164,7 +164,7 @@ class HttpServletResponseExtension {
      * @return The configured mime types
      */
     static MimeType[] getMimeTypes(HttpServletResponse response) {
-        return getMimeTypesInternal(GrailsWebRequest.lookup().currentRequest)
+        getMimeTypesInternal(GrailsWebRequest.lookup().currentRequest)
     }
 
     /**
@@ -203,7 +203,7 @@ class HttpServletResponseExtension {
                 result = getMimeTypesInternal(request)
             }
         }
-        return result
+        result
     }
 
     /**
@@ -273,7 +273,7 @@ class HttpServletResponseExtension {
 
             request.setAttribute(GrailsApplicationAttributes.RESPONSE_FORMATS, result)
         }
-        return result
+        result
     }
 
 }

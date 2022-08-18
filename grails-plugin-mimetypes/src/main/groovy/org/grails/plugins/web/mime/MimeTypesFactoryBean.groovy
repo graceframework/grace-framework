@@ -86,7 +86,7 @@ class MimeTypesFactoryBean implements FactoryBean<MimeType[]>, ApplicationContex
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected Map<CharSequence, CharSequence> getMimeConfig(Config config) {
-        return config.getProperty(Settings.MIME_TYPES, Map)
+        config.getProperty(Settings.MIME_TYPES, Map)
     }
 
 }

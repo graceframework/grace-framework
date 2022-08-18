@@ -144,13 +144,8 @@ class QualityComparator implements Comparator<MimeType> {
     int compare(MimeType t, MimeType t1) {
         BigDecimal left = t.qualityAsNumber
         BigDecimal right = t1.qualityAsNumber
-        if (left > right) {
-            return -1
-        }
-        if (left < right) {
-            return 1
-        }
-        return 0
+
+        (left > right) ? -1 : (left < right ? 1 : 0)
     }
 
 }

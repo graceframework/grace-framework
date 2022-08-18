@@ -40,7 +40,7 @@ class DefaultMimeTypeResolver implements MimeTypeResolver {
         if (webRequest != null) {
             return HttpServletResponseExtension.getMimeType(webRequest.response)
         }
-        return null
+        null
     }
 
     /**
@@ -57,7 +57,7 @@ class DefaultMimeTypeResolver implements MimeTypeResolver {
                 return allMimeTypes[0]
             }
         }
-        return null
+        null
     }
 
 }

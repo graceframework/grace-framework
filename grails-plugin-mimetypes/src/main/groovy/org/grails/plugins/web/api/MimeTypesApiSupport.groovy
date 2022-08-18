@@ -37,11 +37,11 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
 class MimeTypesApiSupport {
 
     def <T> T withFormat(HttpServletRequest request, Closure<T> callable) {
-        return (T)withFormatInternal(request, getDefinedFormats(callable))
+        (T)withFormatInternal(request, getDefinedFormats(callable))
     }
 
     def <T> T withFormat(HttpServletResponse response, Closure<T> callable) {
-        return (T)withFormatInternal(response, getDefinedFormats(callable))
+        (T)withFormatInternal(response, getDefinedFormats(callable))
     }
 
     protected Object withFormatInternal(formatProvider, LinkedHashMap<String, Object> formats) {
@@ -79,7 +79,7 @@ class MimeTypesApiSupport {
                 }
             }
         }
-        return result
+        result
     }
 
     /**
@@ -127,7 +127,7 @@ class MimeTypesApiSupport {
             callable.delegate = original
             callable.resolveStrategy = Closure.OWNER_FIRST
         }
-        return formats
+        formats
     }
 
     private Object getResponseForFormat(formatResponse, format, formatProvider) {
@@ -141,9 +141,7 @@ class MimeTypesApiSupport {
         if (formatResponse instanceof Closure) {
             return formatResponse?.call()
         }
-        else {
-            return formatResponse
-        }
+        formatResponse
     }
 
 }
