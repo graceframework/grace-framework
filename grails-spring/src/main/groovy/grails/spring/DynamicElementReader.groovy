@@ -144,7 +144,7 @@ class DynamicElementReader extends GroovyObjectSupport {
             afterInvocation()
         }
 
-        return element
+        element
     }
 
 }
