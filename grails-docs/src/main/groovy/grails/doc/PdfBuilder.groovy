@@ -69,15 +69,15 @@ class PdfBuilder {
 
     static boolean cleanHtml = System.getProperty('grails.docs.clean.html') == null ? true : Boolean.getBoolean("grails.docs.clean.html")
     static boolean debugPdf = Boolean.getBoolean("grails.docs.debug.pdf")
-    
+
     private static String cleanupHtml(File htmlFile, String xml) {
         String result = cleanHtml ? Jsoup.parse(xml, "", Parser.xmlParser()).outerHtml() : xml
         result = removeCssLinks(result)
         result = result.replaceAll('</head>', pdfCss() + '</head>')
-        if(debugPdf) {
+        if (debugPdf) {
             File before = new File(htmlFile.absolutePath + '.before.xml')
             before.setText(xml, 'UTF-8')
-            if(result != xml) {
+            if (result != xml) {
                 File after = new File(htmlFile.absolutePath + '.after.xml')
                 after.setText(result, 'UTF-8')
             }
@@ -98,10 +98,9 @@ class PdfBuilder {
     static String removeCssLinks(String html) {
         String str = html
         for (;;) {
-
             int index =  str.indexOf('<link rel="stylesheet"')
             println "index $index"
-            if ( index == -1 ) {
+            if (index == -1) {
                 break
             }
             str = removeCssLink(str)
@@ -113,7 +112,7 @@ class PdfBuilder {
         """<style type="text/css">
          pre, code {
           font-size: 10px;
-         } 
+         }
          .toc-item { margin-bottom: 2px; }
          .toc-item strong { margin-right: 2px; }
         .contribute-btn, #navigation, #ref-button, #toggle-col1 { display: none; }
@@ -152,6 +151,6 @@ class PdfBuilder {
     static void createPdf(String xml, File outputFile, File urlBase) {
         Document doc = createDocument(xml)
         createPdfWithDocument(doc, outputFile, urlBase)
-
     }
+
 }

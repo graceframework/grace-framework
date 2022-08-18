@@ -58,19 +58,13 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
             return 1
         } else if (this.isSnapshot() && o.isSnapshot()) {
             return this.getSnapshot() <=> o.getSnapshot()
-        } else {
-            return 0
         }
+        0
     }
 
     @Override
-    public String toString() {
-        return "SoftwareVersion{" +
-                "major=" + major +
-                ", minor=" + minor +
-                ", patch=" + patch +
-                ", snapshot=" + snapshot +
-                ", versionText='" + versionText + '\'' +
-                '}';
+    String toString() {
+        "SoftwareVersion { major=$major, minor=$minor, patch=$patch, snapshot=$snapshot, versionText='$versionText' }"
     }
+
 }

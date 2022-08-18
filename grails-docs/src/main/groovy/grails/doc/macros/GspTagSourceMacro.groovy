@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2015 original authors
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,15 @@ import org.radeox.util.Encoder
 
 class GspTagSourceMacro extends BaseMacro implements Serializable {
 
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L
 
     @InputDirectory
     List baseDirs
 
     GspTagSourceMacro(basedir) {
-        if (!(basedir instanceof Collection || basedir.class.array)) basedir = [ basedir ]
+        if (!(basedir instanceof Collection || basedir.class.array)) {
+            basedir = [ basedir ]
+        }
         baseDirs = basedir.collect { f -> f as File }
     }
 
@@ -44,21 +46,21 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
         def source = params.params.get("0")
 
         def i = source.indexOf('=')
-        def type = source[0..i-1]
-        def name = source[i+1..-1]
+        def type = source[0..i - 1]
+        def name = source[i + 1..-1]
 
         switch (type) {
             case "tag":
                 def j = name.indexOf('.')
-                def className = name[0..j-1]
-                def tagName = name[j+1..-1]
+                def className = name[0..j - 1]
+                def tagName = name[j + 1..-1]
 
                 // Recursively search for the tag library source file in the
                 // configured base directory.
                 def tagLibFile = null
                 baseDirs.find { dir ->
                     dir.traverse(nameFilter: /${className}.groovy/) { tagLibFile = it }
-                    return tagLibFile
+                    tagLibFile
                 }
 
                 def text = tagLibFile?.getText("UTF-8") ?: ""
@@ -89,7 +91,9 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
      * @return  source code for the tag Closure or an empty string if not found
      */
     String extractTagClosureSource(String tagName, String sourceText) {
-        if (!sourceText) return ''
+        if (!sourceText) {
+            return ''
+        }
         String source = ''
         Pattern regex = ~/(?s)(?:\s*\n)*(\s*?(?:Closure)\s+?${tagName}\s*?=\s*?\{.*?->.+?)(.*)/
         def matcher = regex.matcher(sourceText)
@@ -98,7 +102,7 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
             String remaining = matcher.group(2)
             source = signature + substringToClosingBrace(remaining)
         }
-        return source
+        source
     }
 
     //
@@ -134,7 +138,7 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
                 break
             }
         }
-        return sb.toString()
+        sb.toString()
     }
 
 }

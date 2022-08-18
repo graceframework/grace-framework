@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,16 @@ package grails.doc.gradle
 
 import grails.doc.LegacyDocMigrator
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
 
 /**
  * Gradle task for migrating Grails 1.x gdocs to the newer Grails 2.x form with
  * a YAML-based table of contents.
  */
 class MigrateLegacyDocs extends DefaultTask {
+
     @InputDirectory File guideDir = new File(project.projectDir, "src/guide")
     @InputDirectory File resourcesDir = new File(project.projectDir, "resources")
     @OutputDirectory File outputDir = new File(project.projectDir, "src/guide.migrated")
@@ -30,12 +33,15 @@ class MigrateLegacyDocs extends DefaultTask {
     @TaskAction
     def migrate() {
         def props = new Properties()
-        new File("${resourcesDir}/doc.properties").withInputStream {input ->
+        new File("${resourcesDir}/doc.properties").withInputStream { input ->
             props.load(input)
         }
-        props = props.findAll { it.key.startsWith("alias.") }.collectEntries { [it.key[6..-1], it.value] }
+        props = props.findAll { it.key.startsWith("alias.") }.collectEntries {
+            [it.key[6..-1], it.value]
+        }
 
         def migrator = new LegacyDocMigrator(guideDir, outputDir, props)
         migrator.migrate()
     }
+
 }

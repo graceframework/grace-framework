@@ -15,4 +15,5 @@ class PdfPublisher {
         File urlBase = new File(outputDir, "guide/single.html")
         pdfBuilder.createPdfWithDocument(doc, outputFile, urlBase)
     }
+
 }

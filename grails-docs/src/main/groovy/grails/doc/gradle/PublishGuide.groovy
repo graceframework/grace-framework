@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,17 @@ import grails.doc.DocPublisher
 import grails.doc.macros.HiddenMacro
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
 
 /**
  * Gradle task for generating a gdoc-based HTML user guide.
  */
 class PublishGuide extends DefaultTask {
+
     @InputDirectory File sourceDir = new File(project.projectDir, "src")
     @OutputDirectory File targetDir = new File(project.buildDir, "docs")
     @InputDirectory @Optional File resourcesDir = new File(project.projectDir, "resources")
@@ -39,7 +44,7 @@ class PublishGuide extends DefaultTask {
     def publishGuide() {
         def props = new Properties()
         def docProperties = new File("${resourcesDir}/doc.properties")
-        if(docProperties.exists()) {
+        if (docProperties.exists()) {
             docProperties.withInputStream { input ->
                 props.load(input)
             }
@@ -47,7 +52,7 @@ class PublishGuide extends DefaultTask {
 
         // Add properties from any optional properties files too.
         for (f in propertiesFiles) {
-            (f as File).withInputStream {input ->
+            (f as File).withInputStream { input ->
                 props.load(input)
             }
         }
@@ -101,5 +106,5 @@ class PublishGuide extends DefaultTask {
         // Restore the old context class loader.
         Thread.currentThread().contextClassLoader = oldClassLoader
     }
-}
 
+}

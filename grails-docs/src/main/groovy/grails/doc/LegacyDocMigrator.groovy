@@ -25,6 +25,7 @@ import grails.doc.internal.StringEscapeCategory
  * </p>
  */
 class LegacyDocMigrator {
+
     private static final String EOL = System.getProperty("line.separator")
 
     private guideSrcDir
@@ -105,11 +106,13 @@ class LegacyDocMigrator {
             alias = naturalNameToCamelCase(section.title)
             aliasMap[section.name] = alias
         }
-        return alias
+        alias
     }
 
     private naturalNameToCamelCase(name) {
-        if (!name) return name
+        if (!name) {
+            return name
+        }
 
         // Start by breaking the natural name into words.
         def parts = name.split(/\s+/)
@@ -122,6 +125,7 @@ class LegacyDocMigrator {
             parts[i] = parts[i].capitalize()
         }
 
-        return parts.join('')
+        parts.join('')
     }
+
 }

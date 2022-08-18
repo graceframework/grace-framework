@@ -1,6 +1,5 @@
 package grails.doc.dropdown
 
-
 class Snapshot implements Comparable<Snapshot> {
 
     private String text
@@ -31,7 +30,6 @@ class Snapshot implements Comparable<Snapshot> {
 
     @Override
     int compareTo(Snapshot o) {
-
         if (this.buildSnapshot && !o.buildSnapshot) {
             return 1
         } else if (!this.buildSnapshot && o.buildSnapshot) {
@@ -56,7 +54,7 @@ class Snapshot implements Comparable<Snapshot> {
             return this.milestoneVersion <=> o.milestoneVersion
         }
 
-        return 0
+        0
     }
-}
 
+}

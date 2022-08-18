@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,18 @@ import grails.doc.filters.HeaderFilter
 import grails.doc.filters.LinkTestFilter
 import grails.doc.filters.ListFilter
 
-import java.util.regex.Pattern
-
 import org.radeox.api.engine.WikiRenderEngine
 import org.radeox.api.engine.context.InitialRenderContext
 import org.radeox.engine.BaseRenderEngine
+import org.radeox.filter.FilterPipe
+import org.radeox.filter.MacroFilter
 import org.radeox.filter.context.FilterContext
 import org.radeox.filter.regex.RegexFilter
 import org.radeox.filter.regex.RegexTokenFilter
 import org.radeox.macro.BaseMacro
-import org.radeox.macro.CodeMacro
 import org.radeox.macro.MacroLoader
-import org.radeox.macro.parameter.BaseMacroParameter
 import org.radeox.macro.parameter.MacroParameter
 import org.radeox.regex.MatchResult
-import org.radeox.filter.*
-import org.radeox.util.Encoder
 
 /**
  * A Radeox Wiki engine for generating documentation using a confluence style syntax.
@@ -67,7 +63,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
     boolean exists(String name) {
         int barIndex = name.indexOf('|')
         if (barIndex > -1) {
-            def refItem = name[0..barIndex-1]
+            def refItem = name[0..barIndex - 1]
             def refCategory = name[barIndex + 1..-1]
 
             if (refCategory.startsWith("http://") || refCategory.startsWith("https://")) {
@@ -86,7 +82,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
                     return true
                 }
 
-                emitWarning(name,ref,"page")
+                emitWarning(name, ref, "page")
             }
             else if (refCategory.startsWith("api:")) {
                 def ref = refCategory[4..-1]
@@ -96,19 +92,21 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
 
                 ref = ref.replace('.' as char, '/' as char)
                 if (ref.indexOf('#') > -1) {
-                    ref = ref[0..ref.indexOf("#")-1]
+                    ref = ref[0..ref.indexOf("#") - 1]
                 }
 
                 def apiBase = initialContext.get(API_BASE_PATH)
                 if (apiBase) {
-                    def apiDocExists = [ "api", "gapi" ].any { dir ->
+                    def apiDocExists = ["api", "gapi"].any { dir ->
                         def path = "${apiBase}/${dir}/${ref}.html"
                         new File(path).exists()
                     }
-                    if (apiDocExists) return true
+                    if (apiDocExists) {
+                        return true
+                    }
                 }
 
-                emitWarning(name,ref,"class")
+                emitWarning(name, ref, "class")
             }
             else {
                 String dir = getNaturalName(refCategory)
@@ -118,11 +116,11 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
                     return true
                 }
 
-                emitWarning(name,ref,"page")
+                emitWarning(name, ref, "page")
             }
         }
 
-        return false
+        false
     }
 
     private void emitWarning(String name, String ref, String type) {
@@ -136,10 +134,10 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
     }
 
     protected void init() {
-        engineProperties?.findAll { it.key?.startsWith("api.")}?.each {
+        engineProperties?.findAll { it.key?.startsWith("api.") }?.each {
             EXTERNAL_DOCS[it.key[4..-1]] = it.value
         }
-        engineProperties?.findAll { it.key?.startsWith("alias.")}?.each {
+        engineProperties?.findAll { it.key?.startsWith("alias.") }?.each {
             ALIAS[it.key[6..-1]] = it.value
         }
 
@@ -195,7 +193,9 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
 
             // Deal with aliases that include a '/'-separated path.
             def i = alias.lastIndexOf('/')
-            if (i >= 0) alias = alias[(i + 1)..-1]
+            if (i >= 0) {
+                alias = alias[(i + 1)..-1]
+            }
 
             buffer << "<a href=\"$contextPath/guide/single.html#${alias.encodeAsUrlFragment()}\" class=\"guide\">$view</a>"
         }
@@ -212,7 +212,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
                 def apiBase = initialContext.get(API_BASE_PATH)
                 contextPath = initialContext.get(API_CONTEXT_PATH)
 
-                def apiDir = [ "api", "gapi" ].find { dir -> new File("${apiBase}/${dir}/${link}").exists() }
+                def apiDir = ["api", "gapi"].find { dir -> new File("${apiBase}/${dir}/${link}").exists() }
                 buffer << "<a href=\"$contextPath/$apiDir/$link${anchor ? '#' + anchor : ''}\" class=\"api\">$view</a>"
             }
         }
@@ -224,7 +224,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
     }
 
     void appendLink(StringBuffer buffer, String name, String view) {
-        appendLink(buffer,name,view,"")
+        appendLink(buffer, name, view, "")
     }
 
     void appendCreateLink(StringBuffer buffer, String name, String view) {
@@ -263,7 +263,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
                 }
                 else if (w.length() > 1 && Character.isUpperCase(w.charAt(w.length() - 1))) {
                     w = ""
-                    words.add(++i,w)
+                    words.add(++i, w)
                 }
 
                 words.set(i, w + c)
@@ -279,54 +279,75 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
         }
 
         nameCache[name] = words.join(' ')
-        return nameCache[name]
+        nameCache[name]
     }
+
 }
 
 class WarningMacro extends BaseMacro {
-    String getName() {"warning"}
+
+    String getName() {
+        "warning"
+    }
+
     void execute(Writer writer, MacroParameter params) {
         writer << '<blockquote class="warning">' << params.content << "</blockquote>"
     }
+
 }
 
 class NoteMacro extends BaseMacro {
-    String getName() {"note"}
+
+    String getName() {
+        "note"
+    }
+
     void execute(Writer writer, MacroParameter params) {
         writer << '<blockquote class="note">' << params.content << "</blockquote>"
     }
+
 }
 
 class BlockQuoteFilter extends RegexTokenFilter {
+
     BlockQuoteFilter() {
-        super(/(?m)^bc.\s*?(.*?)\n\n/);
+        super(/(?m)^bc.\s*?(.*?)\n\n/)
     }
+
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         buffer << "<pre class=\"bq\"><code>${result.group(1)}</code></pre>\n\n"
     }
+
 }
 
 class ItalicFilter extends RegexTokenFilter {
+
     ItalicFilter() {
-        super(/\b_([^\n]*?)_\b/);
+        super(/\b_([^\n]*?)_\b/)
     }
+
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         buffer << " <em class=\"italic\">${result.group(1)}</em> "
     }
+
 }
 
 class BoldFilter extends RegexTokenFilter {
+
     BoldFilter() {
-        super(/\*([^\n]*?)\*/);
+        super(/\*([^\n]*?)\*/)
     }
+
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         buffer << "<strong class=\"bold\">${result.group(1)}</strong>"
     }
+
 }
 
 class CodeFilter extends RegexTokenFilter {
+
     CodeFilter() {
-        super(/@([^\n]*?)@/);
+        super(/@([^\n]*?)@/)
     }
 
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
@@ -339,11 +360,13 @@ class CodeFilter extends RegexTokenFilter {
             buffer << "<code>${text}</code>"
         }
     }
+
 }
 
 class ImageFilter extends RegexTokenFilter {
+
     ImageFilter() {
-        super(/!([^\n<>=]*?\.(jpg|png|gif))!/);
+        super(/!([^\n<>=]*?\.(jpg|png|gif))!/)
     }
 
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
@@ -356,11 +379,13 @@ class ImageFilter extends RegexTokenFilter {
             buffer << "<img border=\"0\" class=\"center\" src=\"$path/img/$img\"></img>"
         }
     }
+
 }
 
 class TextileLinkFilter extends RegexTokenFilter {
+
     TextileLinkFilter() {
-        super(/"([^"]+?)":(\S+?)(\s)/);
+        super(/"([^"]+?)":(\S+?)(\s)/)
     }
 
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
@@ -375,4 +400,5 @@ class TextileLinkFilter extends RegexTokenFilter {
             buffer << "<a href=\"$link\">$text</a>$space"
         }
     }
+
 }

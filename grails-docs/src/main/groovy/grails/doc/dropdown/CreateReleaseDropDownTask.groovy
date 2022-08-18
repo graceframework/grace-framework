@@ -9,7 +9,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 @CompileStatic
-class CreateReleasesDropdownTask extends DefaultTask {
+class CreateReleaseDropDownTask extends DefaultTask {
 
     @Input
     String slug
@@ -25,7 +25,6 @@ class CreateReleasesDropdownTask extends DefaultTask {
 
     @TaskAction
     void modifyHtmlAndAddReleasesDropdown() {
-
         String selectHtml = composeSelectHtml()
 
         String versionHtml = "<p><strong>Version:</strong> ${version}</p>"
@@ -67,4 +66,5 @@ class CreateReleasesDropdownTask extends DefaultTask {
     List<SoftwareVersion> parseSoftwareVersions(Object result) {
         result.findAll { it.name.startsWith('v') }.collect { SoftwareVersion.build(it.name.replace('v', '')) }.sort().unique().reverse()
     }
+
 }

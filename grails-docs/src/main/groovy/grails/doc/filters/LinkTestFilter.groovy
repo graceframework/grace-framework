@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import org.radeox.regex.MatchResult
 import org.radeox.filter.context.FilterContext
 import org.radeox.api.engine.WikiRenderEngine
 import org.radeox.util.StringBufferWriter
-import org.radeox.filter.interwiki.InterWiki
 import org.radeox.util.Encoder
 
 /**
@@ -41,7 +40,7 @@ class LinkTestFilter extends RegexTokenFilter {
      * @return view The view of the wiki name
      */
     protected String getWikiView(String name) {
-        return name
+        name
     }
 
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
@@ -57,8 +56,8 @@ class LinkTestFilter extends RegexTokenFilter {
         String original = name
 
         if (name == null) {
-           buffer.append(Encoder.escape(result.group(0)))
-           return
+            buffer.append(Encoder.escape(result.group(0)))
+            return
         }
 
         // trim the name and unescape it
@@ -80,8 +79,8 @@ class LinkTestFilter extends RegexTokenFilter {
             name = name.substring(0, hashIndex)
         }
 
-        if (name.indexOf("http://")>-1 || name.indexOf("https://")>-1) {
-            buffer << "<a href=\"${name}${hash ? '#'+hash:''}\" target=\"blank\">${Encoder.escape(alias)}</a>"
+        if (name.indexOf("http://") > -1 || name.indexOf("https://") > -1) {
+            buffer << "<a href=\"${name}${ hash ? '#' + hash : '' }\" target=\"blank\">${Encoder.escape(alias)}</a>"
             return
         }
 
@@ -110,4 +109,5 @@ class LinkTestFilter extends RegexTokenFilter {
             buffer.append(name)
         }
     }
+
 }

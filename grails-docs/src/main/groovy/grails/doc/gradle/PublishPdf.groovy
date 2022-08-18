@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  */
 package grails.doc.gradle
 
-import grails.doc.PdfBuilder
 import grails.doc.PdfPublisher
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
 
 /**
  * Gradle task for generating a gdoc-based PDF user guide. Assumes the
@@ -25,6 +26,7 @@ import org.gradle.api.tasks.*
  * location.
  */
 class PublishPdf extends DefaultTask {
+
     @Input String pdfName = "single.pdf"
     @Input String language = ""
     @OutputDirectory @Input File outputDirectory = project.outputDir as File
@@ -39,4 +41,5 @@ class PublishPdf extends DefaultTask {
             ex.printStackTrace()
         }
     }
+
 }

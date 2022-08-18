@@ -7,6 +7,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
  * Class representing a Grails user guide table of contents defined in YAML.
  */
 class YamlTocStrategy {
+
     private final parser = new Yaml(new SafeConstructor())
     private resourceChecker
     private String ext = ".gdoc"
@@ -17,31 +18,31 @@ class YamlTocStrategy {
     }
 
     UserGuideNode generateToc(yaml) {
-        return load(yaml)
+        load(yaml)
     }
 
     protected UserGuideNode load(String yaml) {
-        return process(parser.load(yaml))
+        process(parser.load(yaml))
     }
 
     protected UserGuideNode load(File file) {
         file.withInputStream { input ->
-            return process(parser.load(input))
+            process(parser.load(input))
         }
     }
 
     protected UserGuideNode load(InputStream input) {
-        return process(parser.load(input))
+        process(parser.load(input))
     }
 
     protected UserGuideNode load(Reader input) {
-        return process(parser.load(input))
+        process(parser.load(input))
     }
 
     private process(yamlDoc) {
         def rootNode = new UserGuideNode()
         processSection(yamlDoc, rootNode)
-        return rootNode
+        rootNode
     }
 
     private processSection(Map sections, UserGuideNode node) {
@@ -99,6 +100,7 @@ class YamlTocStrategy {
             }
         }
 
-        return null
+        null
     }
+
 }

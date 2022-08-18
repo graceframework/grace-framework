@@ -4,6 +4,7 @@ import groovy.transform.ToString
 
 @ToString(excludes="parent, children")
 class UserGuideNode {
+
     UserGuideNode parent
     List children = []
 
@@ -21,5 +22,5 @@ class UserGuideNode {
      * of the gdoc source directory. Uses Unix style path separators, i.e. '/'/
      */
     String file
-}
 
+}

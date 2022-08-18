@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.doc
 
 import grails.doc.asciidoc.AsciiDocEngine
-import grails.doc.internal.*
+import grails.doc.internal.FileResourceChecker
+import grails.doc.internal.LegacyTocStrategy
+import grails.doc.internal.YamlTocStrategy
+
 import groovy.io.FileType
 import groovy.text.Template
 
@@ -27,8 +29,6 @@ import org.radeox.engine.context.BaseRenderContext
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
-import java.util.regex.Pattern
-
 /**
  * Coordinated the DocEngine the produce documentation based on the gdoc format.
  *
@@ -38,62 +38,132 @@ import java.util.regex.Pattern
  * @since 1.2
  */
 class DocPublisher {
+
     static final String TOC_FILENAME = "toc.yml"
 
-    /** The source directory of the documentation */
+    /**
+     * The source directory of the documentation
+     */
     File src
-    /** The target directory to publish to */
+
+    /**
+     * The target directory to publish to
+     */
     File target
-    /** The temporary work directory */
+
+    /**
+     * The temporary work directory
+     */
     File workDir
-    /** Directory containing the project's API documentation. */
+
+    /**
+     * Directory containing the project's API documentation.
+     */
     File apiDir
-    /** The directory containing any images to use (will override defaults) **/
+
+    /**
+     * The directory containing any images to use (will override defaults)
+     */
     File images
-    /** The directory containing any CSS to use (will override defaults) **/
+
+    /**
+     * The directory containing any CSS to use (will override defaults)
+     */
     File css
-    /** The directory containing any fonts to use (will override defaults) **/
+
+    /**
+     * The directory containing any fonts to use (will override defaults)
+     */
     File fonts
-    /** The directory containing any Javascript to use (will override defaults) **/
+
+    /**
+     * The directory containing any Javascript to use (will override defaults)
+     */
     File js
-    /** The directory cotnaining any templates to use (will override defaults) **/
+
+    /**
+     * The directory cotnaining any templates to use (will override defaults)
+     */
     File style
+
     /**
      * The properties fie to populate the engine properties from
      */
     File propertiesFile
-    /** The AntBuilder instance to use */
+
+    /**
+     * The AntBuilder instance to use
+     */
     AntBuilder ant
-    /** The language we're generating for (gets its own sub-directory). Defaults to '' */
+
+    /**
+     * The language we're generating for (gets its own sub-directory). Defaults to ''
+     */
     String language = ""
-    /** The encoding to use (default is UTF-8) */
+
+    /**
+     * The encoding to use (default is UTF-8)
+     */
     String encoding = "UTF-8"
-    /** The title of the documentation */
+
+    /**
+     * The title of the documentation
+     */
     String title
-    /** The subtitle of the documentation */
+
+    /**
+     * The subtitle of the documentation
+     */
     String subtitle = ""
-    /** The version of the documentation */
+
+    /**
+     * The version of the documentation
+     */
     String version
-    /** The authors of the documentation */
+
+    /**
+     * The authors of the documentation
+     */
     String authors = ""
-    /** The translators of the documentation (if any) */
+
+    /**
+     * The translators of the documentation (if any)
+     */
     String translators = ""
-    /** The documentation license */
+
+    /**
+     * The documentation license
+     */
     String license = ""
-    /** The copyright message */
+
+    /**
+     * The copyright message
+     */
     String copyright = ""
-    /** The footer to include */
+
+    /**
+     * The footer to include
+     */
     String footer = ""
-    /** HTML markup that renders the left logo */
+
+    /**
+     * HTML markup that renders the left logo
+     */
     String logo
-    /** HTML markup that renders the right logo */
+
+    /**
+     * HTML markup that renders the right logo
+     */
     String sponsorLogo
+
     /**
      * The source repository
      */
     String sourceRepo
 
-    /** Properties used to configure the DocEngine */
+    /**
+     * Properties used to configure the DocEngine
+     */
     Properties engineProperties
 
     boolean asciidoc = false
@@ -115,21 +185,28 @@ class DocPublisher {
         try {
             engineProperties.load(getClass().classLoader.getResourceAsStream("grails/doc/doc.properties"))
         }
-        catch (e) {
-            // ignore
+        catch (ignore) {
         }
     }
 
-    /** Returns the engine properties. */
-    Properties getEngineProperties() { engineProperties }
+    /**
+     * Returns the engine properties.
+     */
+    Properties getEngineProperties() {
+        engineProperties
+    }
 
-    /** Sets the engine properties. Allows clients to override the defaults. */
+    /**
+     * Sets the engine properties.
+     * Allows clients to override the defaults.
+     */
     void setEngineProperties(Properties p) {
         engineProperties = p
     }
 
     /**
-     * Registers a custom Radeox macro. If the macro has an 'initialContext'
+     * Registers a custom Radeox macro.
+     * If the macro has an 'initialContext'
      * property, it is set to the render context before first use.
      */
     void registerMacro(macro) {
@@ -167,7 +244,7 @@ class DocPublisher {
         String imgsDir = new File(refDocsDir, calculatePathToResources("img")).path
         File fontsDir = new File(refDocsDir, calculatePathToResources("fonts"))
         ant.mkdir(dir: imgsDir)
-        ant.mkdir(dir: fontsDir )
+        ant.mkdir(dir: fontsDir)
         String cssDir = new File(refDocsDir, calculatePathToResources("css")).path
         ant.mkdir(dir: cssDir)
         String jsDir = new File(refDocsDir, calculatePathToResources("js")).path
@@ -179,7 +256,7 @@ class DocPublisher {
         }
 
         if (images && images.exists()) {
-            ant.copy(todir: imgsDir, overwrite: true, failonerror:false) {
+            ant.copy(todir: imgsDir, overwrite: true, failonerror: false) {
                 fileset(dir: images)
             }
         }
@@ -192,12 +269,12 @@ class DocPublisher {
         }
 
         if (css && css.exists()) {
-            ant.copy(todir: cssDir, overwrite: true, failonerror:false) {
+            ant.copy(todir: cssDir, overwrite: true, failonerror: false) {
                 fileset(dir: css)
             }
         }
         if (fonts && fonts.exists()) {
-            ant.copy(todir: fontsDir, overwrite: true, failonerror:false) {
+            ant.copy(todir: fontsDir, overwrite: true, failonerror: false) {
                 fileset(dir: fonts)
             }
         }
@@ -205,12 +282,12 @@ class DocPublisher {
             fileset(dir: "${docResources}/js")
         }
         if (js && js.exists()) {
-            ant.copy(todir: jsDir, overwrite: true, failonerror:false) {
+            ant.copy(todir: jsDir, overwrite: true, failonerror: false) {
                 fileset(dir: js)
             }
         }
         if (style && style.exists()) {
-            ant.copy(todir: "${docResources}/style", overwrite: true, failonerror:false) {
+            ant.copy(todir: "${docResources}/style", overwrite: true, failonerror: false) {
                 fileset(dir: style)
             }
         }
@@ -251,7 +328,6 @@ class DocPublisher {
             }
         }
         else {
-
             def files = guideSrcDir.listFiles()?.findAll { it.name.endsWith(ext) } ?: []
             guide = new LegacyTocStrategy().generateToc(files)
         }
@@ -308,18 +384,15 @@ class DocPublisher {
             sourceRepo: sourceRepo,
         )
 
-        if(engine instanceof AsciiDocEngine) {
+        if (engine instanceof AsciiDocEngine) {
             // pass attributes to asciidoc
-            ((AsciiDocEngine)engine).attributes.putAll(
+            ((AsciiDocEngine) engine).attributes.putAll(
                     version: version,
                     apiDocs: "http://docs.grails.org/${version}/api/",
                     sourceRepo: sourceRepo
             )
-            ((AsciiDocEngine)engine).attributes.putAll(
-                    engineProperties
-            )
+            ((AsciiDocEngine) engine).attributes.putAll(engineProperties)
         }
-
 
         // Build the user guide sections first.
         def template = templateEngine.createTemplate(new File("${docResources}/style/guideItem.html").newReader(encoding))
@@ -328,7 +401,7 @@ class DocPublisher {
 
         def chapterVars
         def chapters = guide.children
-        chapters.eachWithIndex{ chapter, i ->
+        chapters.eachWithIndex { chapter, i ->
             chapterVars = [*:vars, chapterNumber: i + 1]
             if (i != 0) {
                 chapterVars['prev'] = chapters[i - 1]
@@ -357,7 +430,7 @@ class DocPublisher {
                 vars.section = section
 
                 new File("${refDocsDir}/ref/${section}").mkdirs()
-                def textiles = f.listFiles().findAll { it.name.endsWith(ext)}.sort()
+                def textiles = f.listFiles().findAll { it.name.endsWith(ext) }.sort()
                 def usageFile = new File("${src}/ref/${section}${ext}")
                 if (usageFile.exists()) {
                     def data = usageFile.getText("UTF-8")
@@ -367,7 +440,7 @@ class DocPublisher {
                     output.warn "Rendering document file $usageFile.name"
                     vars.content = engine.render(data, context)
                     vars.sourcePath = "ref/$usageFile.name"
-                    new File("${refDocsDir}/ref/${section}/Usage.html").withWriter(encoding) {out ->
+                    new File("${refDocsDir}/ref/${section}/Usage.html").withWriter(encoding) { out ->
                         template.make(vars).writeTo(out)
                     }
                 }
@@ -380,7 +453,7 @@ class DocPublisher {
                     output.warn "Rendering document file $txt.name"
                     vars.content = engine.render(data, context)
                     vars.sourcePath = "ref/${section}/$txt.name"
-                    new File("${refDocsDir}/ref/${section}/${name}.html").withWriter(encoding) {out ->
+                    new File("${refDocsDir}/ref/${section}/${name}.html").withWriter(encoding) { out ->
                         template.make(vars).writeTo(out)
                     }
                 }
@@ -398,13 +471,13 @@ class DocPublisher {
         vars.resourcesPath = calculatePathToResources(pathToRoot)
 
         template = templateEngine.createTemplate(new File("${docResources}/style/layout.html").newReader(encoding))
-        new File("${refGuideDir}/single.html").withWriter(encoding) {out ->
+        new File("${refGuideDir}/single.html").withWriter(encoding) { out ->
             template.make(vars).writeTo(out)
         }
 
         vars.content = ""
         vars.single = false
-        new File("${refGuideDir}/index.html").withWriter(encoding) {out ->
+        new File("${refGuideDir}/index.html").withWriter(encoding) { out ->
             template.make(vars).writeTo(out)
         }
 
@@ -414,7 +487,7 @@ class DocPublisher {
         vars.path = pathToRoot
         vars.resourcesPath = calculatePathToResources(pathToRoot)
 
-        new File("${refDocsDir}/index.html").withWriter(encoding) {out ->
+        new File("${refDocsDir}/index.html").withWriter(encoding) { out ->
             template.make(vars).writeTo(out)
         }
 
@@ -488,7 +561,9 @@ class DocPublisher {
         // Create the HTML page for this section, which includes the content
         // from all the sub-sections too.
         if (subDir) {
-            if (subDir.endsWith('/')) subDir = subDir[0..-2]
+            if (subDir.endsWith('/')) {
+                subDir = subDir[0..-2]
+            }
             targetDir = "$targetDir/$subDir"
 
             varsCopy.path = "../${path}"
@@ -501,7 +576,7 @@ class DocPublisher {
             layoutTemplate.make(varsCopy).writeTo(writer)
         }
 
-        return varsCopy.content
+        varsCopy.content
     }
 
     protected void initialize() {
@@ -520,7 +595,7 @@ class DocPublisher {
         }
         def metaProps = DocPublisher.metaClass.properties
         Properties props
-        if(engineProperties != null) {
+        if (engineProperties != null) {
             props = engineProperties
         }
         else {
@@ -528,30 +603,26 @@ class DocPublisher {
             engineProperties = props
         }
 
-
-        if(propertiesFile?.exists()) {
-            if(propertiesFile.name.endsWith('.properties')) {
+        if (propertiesFile?.exists()) {
+            if (propertiesFile.name.endsWith('.properties')) {
                 propertiesFile.withInputStream {
                     props.load(it)
                 }
             }
-            else if(propertiesFile.name.endsWith('.yml')) {
+            else if (propertiesFile.name.endsWith('.yml')) {
                 propertiesFile.withInputStream { input ->
                     def ymls = new Yaml(new SafeConstructor()).loadAll(input)
-                    for(yml in ymls) {
-                        if(yml instanceof Map) {
+                    for (yml in ymls) {
+                        if (yml instanceof Map) {
                             def config = yml.grails?.doc
-                            if(config instanceof Map) {
-                                flattenKeys(props, (Map) config,[], true)
+                            if (config instanceof Map) {
+                                flattenKeys(props, (Map) config, [], true)
                             }
                         }
                     }
                 }
-
             }
-
         }
-
 
         for (MetaProperty mp in metaProps) {
             if (mp.type == String) {
@@ -565,7 +636,7 @@ class DocPublisher {
         context = new BaseInitialRenderContext()
         initContext(context, "..")
 
-        if(asciidoc) {
+        if (asciidoc) {
             engine = new AsciiDocEngine(context)
         }
         else {
@@ -587,24 +658,24 @@ class DocPublisher {
     private void flattenKeys(Map<String, Object> flatConfig, Map currentMap, List<String> path, boolean forceStrings) {
         currentMap.each { key, value ->
             String stringKey = String.valueOf(key)
-            if(value != null) {
-                if(value instanceof Map) {
+            if (value != null) {
+                if (value instanceof Map) {
                     flattenKeys(flatConfig, (Map)value, ((path + [stringKey]) as List<String>).asImmutable(), forceStrings)
                 } else {
                     String fullKey
-                    if(path) {
+                    if (path) {
                         fullKey = path.join('.') + '.' + stringKey
                     } else {
                         fullKey = stringKey
                     }
-                    if(value instanceof Collection) {
-                        if(forceStrings) {
+                    if (value instanceof Collection) {
+                        if (forceStrings) {
                             flatConfig.put(fullKey, ((Collection)value).join(","))
                         } else {
                             flatConfig.put(fullKey, value)
                         }
                         int index = 0
-                        for(Object item: (Collection)value) {
+                        for (Object item: (Collection)value) {
                             String collectionKey = "${fullKey}[${index}]".toString()
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++
@@ -618,7 +689,7 @@ class DocPublisher {
     }
 
     /**
-     * Checks the table of contents (a tree of {@link UserGuideNode}s) for
+     * Checks the table of contents (a tree of {@link grails.doc.internal.UserGuideNode}s) for
      * duplicate section/alias names and invalid file paths.
      * @return <code>false</code> if any errors are detected.
      */
@@ -628,7 +699,9 @@ class DocPublisher {
         def gdocsNotInToc = gdocFiles as Set
 
         // Defensive copy
-        if (gdocsNotInToc.is(gdocFiles)) gdocsNotInToc = new HashSet(gdocFiles)
+        if (gdocsNotInToc.is(gdocFiles)) {
+            gdocsNotInToc = new HashSet(gdocFiles)
+        }
 
         for (ch in toc.children) {
             hasErrors |= verifyTocInternal(baseDir, ch, sectionsFound, gdocsNotInToc, [])
@@ -640,7 +713,7 @@ class DocPublisher {
             }
         }
 
-        return !hasErrors
+        !hasErrors
     }
 
     private verifyTocInternal(File baseDir, section, existing, gdocFiles, pathElements) {
@@ -669,26 +742,28 @@ class DocPublisher {
             hasErrors |= verifyTocInternal(baseDir, s, existing, gdocFiles, pathElements + section.name)
         }
 
-        return hasErrors
+        hasErrors
     }
 
     private String calculateLanguageDir(startPath, endPath = '') {
         def elements = [startPath, language, endPath]
         elements = elements.findAll { it }
-        return elements.join('/')
+        elements.join('/')
     }
 
     private String injectPath(String source, String path) {
-        if (!source) return source
+        if (!source) {
+            return source
+        }
 
         def templateEngine = new groovy.text.SimpleTemplateEngine()
         def out = new StringWriter()
         templateEngine.createTemplate(source).make(path: calculatePathToResources(path)).writeTo(out)
-        return out.toString()
+        out.toString()
     }
 
     private String calculatePathToResources(String pathToRoot) {
-        return language ? '../' + pathToRoot : pathToRoot
+        language ? '../' + pathToRoot : pathToRoot
     }
 
     private initContext(context, path) {
@@ -697,11 +772,10 @@ class DocPublisher {
         context.set(DocEngine.API_BASE_PATH, apiDir.absolutePath)
         context.set(DocEngine.API_CONTEXT_PATH, calculatePathToResources(path))
         context.set(DocEngine.RESOURCES_CONTEXT_PATH, calculatePathToResources(path))
-        return context
+        context
     }
 
     private unpack(Map args) {
-
         def dir = args["dest"] ?: "."
         def src = args["src"]
         def overwriteOption = args["overwrite"] == null ? true : args["overwrite"]
@@ -730,7 +804,7 @@ class DocPublisher {
         }
         finally {
             // Don't need the JAR file any more, so remove it.
-            ant.delete(file: "${dir}/${src}", failonerror:false)
+            ant.delete(file: "${dir}/${src}", failonerror: false)
         }
     }
 
@@ -741,4 +815,5 @@ class DocPublisher {
             overrideAliasesFromToc(section)
         }
     }
+
 }
