@@ -65,7 +65,7 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
     }
 
     protected DataBindingSourceCreationException createBindingSourceCreationException(Exception e) {
-        return new DataBindingSourceCreationException(e)
+        new DataBindingSourceCreationException(e)
     }
 
     @Override
@@ -98,13 +98,13 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
     }
 
     protected DataBindingSource createBindingSource(InputStream inputStream, String charsetName) {
-        return createBindingSource(new InputStreamReader(inputStream, charsetName ?: 'UTF-8'))
+        createBindingSource(new InputStreamReader(inputStream, charsetName ?: 'UTF-8'))
     }
 
     protected abstract DataBindingSource createBindingSource(Reader reader)
 
     protected CollectionDataBindingSource createCollectionBindingSource(InputStream inputStream, String charsetName) {
-        return createCollectionBindingSource(new InputStreamReader(inputStream, charsetName ?: 'UTF-8'))
+        createCollectionBindingSource(new InputStreamReader(inputStream, charsetName ?: 'UTF-8'))
     }
 
     protected abstract CollectionDataBindingSource createCollectionBindingSource(Reader reader)

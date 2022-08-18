@@ -56,7 +56,7 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     int size() {
-        return cpf ? cpf.metaProperties.size() : 0
+        cpf ? cpf.metaProperties.size() : 0
     }
 
     @Override
@@ -83,9 +83,7 @@ class LazyBeanMap implements Map<String, Object> {
         if (cpf.isReadableProperty(property)) {
             return cpf.getPropertyValue(target, property)
         }
-        else {
-            return null
-        }
+        null
     }
 
     @Override
@@ -96,7 +94,7 @@ class LazyBeanMap implements Map<String, Object> {
         def old = get(key)
         def mc = GroovySystem.metaClassRegistry.getMetaClass(target.getClass())
         mc.setProperty(target, key, value)
-        return old
+        old
     }
 
     @Override
@@ -124,13 +122,12 @@ class LazyBeanMap implements Map<String, Object> {
         if (!cpf) {
             return [] as Set<String>
         }
-        else {
-            return new HashSet<String>(
-                    cpf.metaProperties.collect {
-                        MetaProperty pd -> pd.name
-                    }
-            )
-        }
+
+        new HashSet<String>(
+                cpf.metaProperties.collect { MetaProperty pd ->
+                    pd.name
+                }
+        )
     }
 
     @Override
@@ -138,10 +135,9 @@ class LazyBeanMap implements Map<String, Object> {
         if (!cpf) {
             return []
         }
-        else {
-            keySet().collect() {
-                String property -> cpf.getPropertyValue(property)
-            }
+
+        keySet().collect() { String property ->
+            cpf.getPropertyValue(property)
         }
     }
 
@@ -150,13 +146,12 @@ class LazyBeanMap implements Map<String, Object> {
         if (!cpf) {
             return [] as Set<Map.Entry<String, Object>>
         }
-        else {
-            return new HashSet<Map.Entry<String, Object>>(
-                    keySet().collect() {
-                        String property -> new AbstractMap.SimpleEntry<String, Object>(property, cpf.getPropertyValue(property))
-                    }
-            )
-        }
+
+        new HashSet<Map.Entry<String, Object>>(
+                keySet().collect() { String property ->
+                    new AbstractMap.SimpleEntry<String, Object>(property, cpf.getPropertyValue(property))
+                }
+        )
     }
 
 }

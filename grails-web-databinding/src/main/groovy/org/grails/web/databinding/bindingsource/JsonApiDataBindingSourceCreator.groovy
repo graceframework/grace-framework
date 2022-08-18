@@ -72,9 +72,8 @@ class JsonApiDataBindingSourceCreator extends JsonDataBindingSourceCreator {
             }
             return jsonMap
         }
-        else {
-            return super.createJsonMap(jsonElement)
-        }
+
+        super.createJsonMap(jsonElement)
     }
 
 }

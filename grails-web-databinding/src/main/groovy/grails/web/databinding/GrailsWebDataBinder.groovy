@@ -234,7 +234,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     }
 
     protected boolean isDomainClass(final Class<?> clazz) {
-        return DomainClassArtefactHandler.isDomainClass(clazz) || AnnotationDomainClassArtefactHandler.isJPADomainClass(clazz)
+        DomainClassArtefactHandler.isDomainClass(clazz) || AnnotationDomainClassArtefactHandler.isJPADomainClass(clazz)
     }
 
     protected getIdentifierValueFrom(source) {
@@ -505,7 +505,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             return ((ThreadManagedMetaBeanProperty)metaProperty).getGetter().invoke(delegate, MetaClassHelper.EMPTY_ARRAY)
         }
 
-        return metaProperty.getProperty(delegate)
+        metaProperty.getProperty(delegate)
     }
 
     @Override

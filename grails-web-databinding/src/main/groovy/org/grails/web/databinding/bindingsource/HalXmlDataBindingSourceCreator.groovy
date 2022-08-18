@@ -38,7 +38,7 @@ class HalXmlDataBindingSourceCreator extends XmlDataBindingSourceCreator {
     protected DataBindingSource createBindingSource(Reader reader) {
         def gpath = SpringIOUtils.createXmlSlurper().parse(reader)
         def gpathMap = new HalGPathResultMap(gpath)
-        return new SimpleMapDataBindingSource(gpathMap)
+        new SimpleMapDataBindingSource(gpathMap)
     }
 
 }

@@ -50,7 +50,7 @@ class HalGPathResultMap extends GPathResultMap {
                 }
             }
         }
-        return super.get(key)
+        super.get(key)
     }
 
     protected String getPropertyNameForNodeChild(NodeChild child) {

@@ -65,7 +65,7 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
             propertyNameCode = classAsPropertyName + '.' + propertyName + ".label"
             resolvedPropertyName = messageSource.getMessage(propertyNameCode, null, propertyName, locale)
         }
-        return resolvedPropertyName
+        resolvedPropertyName
     }
 
 }

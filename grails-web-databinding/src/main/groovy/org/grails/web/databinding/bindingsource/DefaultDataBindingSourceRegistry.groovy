@@ -51,7 +51,7 @@ class DefaultDataBindingSourceRegistry extends ClassAndMimeTypeRegistry<DataBind
         if (bindingSourceCreator == null) {
             bindingSourceCreator = new DefaultDataBindingSourceCreator()
         }
-        return bindingSourceCreator
+        bindingSourceCreator
     }
 
     @Override
@@ -73,7 +73,7 @@ class DefaultDataBindingSourceRegistry extends ClassAndMimeTypeRegistry<DataBind
 
     @Override
     DataBindingSourceCreatorCacheKey createCacheKey(Class type, MimeType mimeType) {
-        return new DataBindingSourceCreatorCacheKey(type, mimeType)
+        new DataBindingSourceCreatorCacheKey(type, mimeType)
     }
 
     @Canonical

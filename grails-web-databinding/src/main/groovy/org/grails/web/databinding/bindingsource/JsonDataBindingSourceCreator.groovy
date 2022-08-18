@@ -62,9 +62,8 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
         else if (bindingSource instanceof JSONObject) {
             return new SimpleMapDataBindingSource((JSONObject)bindingSource)
         }
-        else {
-            return super.createDataBindingSource(mimeType, bindingTargetType, bindingSource)
-        }
+
+        super.createDataBindingSource(mimeType, bindingTargetType, bindingSource)
     }
 
     @Override
@@ -78,7 +77,7 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
                 new SimpleMapDataBindingSource(Collections.emptyMap())
             }
         }
-        return new CollectionDataBindingSource() {
+        new CollectionDataBindingSource() {
 
             List<DataBindingSource> getDataBindingSources() {
                 (List<DataBindingSource>)dataBindingSources
@@ -94,9 +93,8 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
         if (jsonElement instanceof Map) {
             return new SimpleMapDataBindingSource(createJsonMap(jsonElement))
         }
-        else {
-            return new SimpleMapDataBindingSource(Collections.emptyMap())
-        }
+
+        new SimpleMapDataBindingSource(Collections.emptyMap())
     }
 
     protected Map createJsonMap(Object jsonElement) {
@@ -108,7 +106,7 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
         if (e instanceof JsonException) {
             return new InvalidRequestBodyException(e)
         }
-        return super.createBindingSourceCreationException(e)
+        super.createBindingSourceCreationException(e)
     }
 
 }
