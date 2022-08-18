@@ -288,7 +288,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                 writer.append urlAttribute
             }
         }
-        return writer.toString()
+        writer.toString()
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -297,7 +297,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         if (id) {
             return id.toString()
         }
-        return null
+        null
     }
 
     protected boolean isAbsolute(Map attrs) {
@@ -316,7 +316,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                 }
             }
         }
-        return absolute
+        absolute
     }
 
     /**
@@ -369,14 +369,14 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
             url.append file
         }
 
-        return url.toString()
+        url.toString()
     }
 
     String getContextPath() {
         if (contextPath == null) {
             contextPath = requestStateLookupStrategy.getContextPath()
         }
-        return contextPath
+        contextPath
     }
 
     /**
@@ -400,7 +400,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
     private boolean isUriAbsolute(String uri) {
         // not using new URI(uri).absolute in order to avoid create the URI object, which is slow
-        return absoluteUrlPattern.matcher(uri).matches()
+        absoluteUrlPattern.matcher(uri).matches()
     }
 
     /**
@@ -418,11 +418,11 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
             }
         }
         log.trace("Resolved base server URL: $u")
-        return u
+        u
     }
 
     String getServerBaseURL() {
-        return makeServerURL()
+        makeServerURL()
     }
 
     void setPluginManager(GrailsPluginManager pluginManager) {

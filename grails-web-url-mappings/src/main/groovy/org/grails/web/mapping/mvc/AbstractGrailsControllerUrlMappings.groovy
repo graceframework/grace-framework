@@ -122,17 +122,17 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     @Override
     UrlMappingInfo match(String uri) {
         def info = urlMappingsHolderDelegate.match(uri)
-        return collectControllerMapping(info)
+        collectControllerMapping(info)
     }
 
     @Override
     UrlMappingInfo matchStatusCode(int responseCode) {
-        return collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode))
+        collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode))
     }
 
     @Override
     UrlMappingInfo matchStatusCode(int responseCode, Throwable e) {
-        return collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode, e))
+        collectControllerMapping(urlMappingsHolderDelegate.matchStatusCode(responseCode, e))
     }
 
     void registerController(GrailsControllerClass controller) {
@@ -206,9 +206,8 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
             GrailsControllerClass controllerClass = info ? mappingsToGrailsControllerMap.get(controllerKey) : null
             if (controllerClass) {
                 return new GrailsControllerUrlMappingInfo(controllerClass, info)
-            } else {
-                return info
             }
+            info
         }) as UrlMappingInfo[]
     }
 
@@ -218,9 +217,8 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
 
         if (controllerClass && info) {
             return new GrailsControllerUrlMappingInfo(controllerClass, info)
-        } else {
-            return info
         }
+        info
     }
 
     @Canonical

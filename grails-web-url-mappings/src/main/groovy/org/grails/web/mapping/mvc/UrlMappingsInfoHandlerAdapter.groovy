@@ -132,7 +132,7 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                 return new ModelAndView(new InternalResourceView(info.getURI()))
             }
         }
-        return null
+        null
     }
 
     @Override

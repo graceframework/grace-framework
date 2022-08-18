@@ -19,12 +19,12 @@ class UrlMappingsFactory implements ApplicationContextAware {
 
     UrlMappings create(Closure mappings) {
         def evaluator = new DefaultUrlMappingEvaluator(applicationContext)
-        return new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
+        new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
     }
 
     UrlMappings create(Class mappings) {
         def evaluator = new DefaultUrlMappingEvaluator(applicationContext)
-        return new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
+        new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
     }
 
 }

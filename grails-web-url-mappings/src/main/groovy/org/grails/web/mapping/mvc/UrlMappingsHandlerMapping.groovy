@@ -111,7 +111,7 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
         }
 
         chain.addInterceptor(new ErrorHandlingHandler())
-        return chain
+        chain
     }
 
     @CompileDynamic
@@ -154,31 +154,30 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
             request.setAttribute(MATCHED_REQUEST, info)
             return info
         }
-        else {
-            def infos = urlMappingsHolder.matchAll(uri, request.getMethod(), version != null ? version : UrlMapping.ANY_VERSION)
 
-            for (UrlMappingInfo info in infos) {
-                if (info) {
-                    if (info.redirectInfo) {
-                        return info
-                    }
+        def infos = urlMappingsHolder.matchAll(uri, request.getMethod(), version != null ? version : UrlMapping.ANY_VERSION)
 
-                    webRequest.resetParams()
-                    info.configure(webRequest)
-                    if (info instanceof GrailsControllerUrlMappingInfo) {
-                        request.setAttribute(MATCHED_REQUEST, info)
-                        request.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS,
-                                ((GrailsControllerUrlMappingInfo) info).controllerClass)
-                        return info
-                    }
-                    else if (info.viewName || info.URI) {
-                        return info
-                    }
+        for (UrlMappingInfo info in infos) {
+            if (info) {
+                if (info.redirectInfo) {
+                    return info
+                }
+
+                webRequest.resetParams()
+                info.configure(webRequest)
+                if (info instanceof GrailsControllerUrlMappingInfo) {
+                    request.setAttribute(MATCHED_REQUEST, info)
+                    request.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS,
+                            ((GrailsControllerUrlMappingInfo) info).controllerClass)
+                    return info
+                }
+                else if (info.viewName || info.URI) {
+                    return info
                 }
             }
-
-            return null
         }
+
+        null
     }
 
     protected String findRequestedVersion(GrailsWebRequest currentRequest) {
@@ -187,14 +186,14 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
             MimeType mimeType = mimeTypeResolver.resolveResponseMimeType(currentRequest)
             version = mimeType.version
         }
-        return version
+        version
     }
 
     static class ErrorHandlingHandler implements HandlerInterceptor {
 
         @Override
         boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-            return true
+            true
         }
 
         @Override

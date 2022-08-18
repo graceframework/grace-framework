@@ -54,18 +54,18 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     Map<String, Object> getParams() {
-        return parameters
+        parameters
     }
 
     Map getParameters() {
         if (id) {
             parameters.id = id
         }
-        return parameters
+        parameters
     }
 
     boolean isParsingRequest() {
-        return false
+        false
     }
 
     @Override

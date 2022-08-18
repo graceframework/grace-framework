@@ -149,7 +149,7 @@ class ResponseRedirector {
         if (requestDataValueProcessor) {
             link = requestDataValueProcessor.processUrl(request, link)
         }
-        return link
+        link
     }
 
 }
