@@ -39,7 +39,7 @@ abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
 
     @Override
     boolean shouldInject(URL url) {
-        return true
+        true
     }
 
 }

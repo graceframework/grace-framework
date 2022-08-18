@@ -74,7 +74,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     String[] getArtefactTypes() {
-        return [ApplicationArtefactHandler.TYPE] as String[]
+        [ApplicationArtefactHandler.TYPE] as String[]
     }
 
     @Override
@@ -151,7 +151,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
             return false
         }
         def res = new UrlResource(url)
-        return GrailsResourceUtils.isGrailsResource(res) && res.filename == "Application.groovy"
+        GrailsResourceUtils.isGrailsResource(res) && res.filename == "Application.groovy"
     }
 
 }

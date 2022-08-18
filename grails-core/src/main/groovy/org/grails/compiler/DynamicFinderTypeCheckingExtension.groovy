@@ -61,7 +61,7 @@ class DynamicFinderTypeCheckingExtension extends TypeCheckingDSL {
                     }
                 }
             }
-            return dynamicCall
+            dynamicCall
         }
         null
     }

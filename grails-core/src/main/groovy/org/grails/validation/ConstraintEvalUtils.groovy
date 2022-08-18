@@ -54,7 +54,7 @@ class ConstraintEvalUtils {
                 defaultConstraintsMap = Collections.emptyMap()
             }
         }
-        return defaultConstraintsMap
+        defaultConstraintsMap
     }
 
     static void clearDefaultConstraints() {

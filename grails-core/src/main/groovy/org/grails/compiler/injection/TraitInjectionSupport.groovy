@@ -32,19 +32,9 @@ class TraitInjectionSupport {
         injectors.sort { TraitInjector o1, TraitInjector o2 ->
             final Class t1 = o1.trait
             final Class t2 = o2.trait
-            if (t1 == t2) {
-                return 0
-            }
-
-            // lower priority of core traits so that plugins can override
-            if (o1.getClass().name.startsWith('grails.compiler.traits')) {
-                return -1
-            }
-            else {
-                return 1
-            }
+            (t1 == t2) ? 0 : (o1.getClass().name.startsWith('grails.compiler.traits') ? -1 : 1)
         }
-        return injectors
+        injectors
     }
 
 }

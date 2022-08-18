@@ -52,7 +52,7 @@ import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
 
     static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make("grails.core.ArtefactHandler")
-    static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact.class)
+    static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact)
     static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make("grails.compiler.traits.TraitInjector")
     static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make("grails.dev.commands.ApplicationCommand")
 
@@ -103,7 +103,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 if (handler.isArtefact(classNode)) {
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
                         transformedClasses.add classNodeName
-                        def annotationNode = new AnnotationNode(new ClassNode(Artefact.class))
+                        def annotationNode = new AnnotationNode(new ClassNode(Artefact))
                         annotationNode.addMember("value", new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
@@ -170,7 +170,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             }
             return true
         }
-        return false
+        false
     }
 
     private static void loadFromFile(Properties props, File factoriesFile) {

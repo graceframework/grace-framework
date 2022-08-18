@@ -60,7 +60,7 @@ class GroovyEclipseCompilationHelper {
                 return null
             }
         }
-        return null
+        null
     }
 
 }

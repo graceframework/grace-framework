@@ -22,7 +22,7 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
 
     @Override
     int getOrder() {
-        return DEFAULT_POSITION
+        DEFAULT_POSITION
     }
 
     @Override
@@ -60,12 +60,12 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
                 }
             })
         }
-        return Optional.empty()
+        Optional.empty()
     }
 
     @Override
     Set<String> getExtensions() {
-        return Collections.singleton("groovy")
+        Collections.singleton("groovy")
     }
 
 }
