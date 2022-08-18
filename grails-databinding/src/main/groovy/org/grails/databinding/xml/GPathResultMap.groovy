@@ -61,7 +61,7 @@ class GPathResultMap implements Map {
         if (this.@id != null) {
             entries << new AbstractMap.SimpleImmutableEntry('id', this.@id)
         }
-        return entries
+        entries
     }
 
     Object get(key) {

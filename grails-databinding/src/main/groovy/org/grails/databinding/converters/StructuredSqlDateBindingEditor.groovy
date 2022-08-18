@@ -28,7 +28,7 @@ class StructuredSqlDateBindingEditor extends AbstractStructuredDateBindingEditor
 
     @Override
     Date getDate(Calendar c) {
-        return new Date(c.time.time)
+        new Date(c.time.time)
     }
 
 }

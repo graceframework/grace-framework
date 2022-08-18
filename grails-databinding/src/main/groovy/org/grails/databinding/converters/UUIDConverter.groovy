@@ -35,7 +35,7 @@ class UUIDConverter implements ValueConverter {
                 return null
             }
         }
-        return null
+        null
     }
 
     @Override

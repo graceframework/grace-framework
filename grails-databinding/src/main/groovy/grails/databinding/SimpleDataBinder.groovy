@@ -422,7 +422,7 @@ class SimpleDataBinder implements DataBinder {
         } else {
             isOk = (index < autoGrowCollectionLimit || index < collection.size())
         }
-        return isOk
+        isOk
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -447,7 +447,7 @@ class SimpleDataBinder implements DataBinder {
         if (obj[propertyName] == null) {
             obj[propertyName] = [:]
         }
-        return (Map)obj[propertyName]
+        (Map) obj[propertyName]
     }
 
     protected Collection initializeCollection(obj, String propertyName, Class type, boolean reuseExistingCollectionIfExists = true) {
@@ -459,7 +459,7 @@ class SimpleDataBinder implements DataBinder {
             val = getDefaultCollectionInstanceForType(type)
             obj[propertyName] = val
         }
-        return (Collection)val
+        (Collection) val
     }
 
     protected getDefaultCollectionInstanceForType(Class type) {
@@ -510,7 +510,7 @@ class SimpleDataBinder implements DataBinder {
                 field = getField(superClass, fieldName)
             }
         }
-        return field
+        field
     }
 
     protected ValueConverter getValueConverterForField(obj, String propName) {

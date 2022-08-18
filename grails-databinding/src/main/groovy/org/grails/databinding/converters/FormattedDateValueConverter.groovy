@@ -36,11 +36,10 @@ class FormattedDateValueConverter implements FormattedValueConverter {
             if (!dateStr) {
                 return null
             }
-            else {
-                def fmt = new SimpleDateFormat(format)
-                fmt.lenient = false
-                fmt.parse((String) value)
-            }
+
+            def fmt = new SimpleDateFormat(format)
+            fmt.lenient = false
+            fmt.parse((String) value)
         }
     }
 
