@@ -122,7 +122,7 @@ class I18nGrailsPlugin extends Plugin {
             }
             currentFile = currentFile.parentFile
         }
-        return false
+        false
     }
 
 }
