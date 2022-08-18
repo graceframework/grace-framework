@@ -135,7 +135,7 @@ class UrlMappingsGrailsPlugin extends Plugin {
     private static UrlMappingsHolder createUrlMappingsHolder(ApplicationContext applicationContext) {
         def factory = new UrlMappingsHolderFactoryBean(applicationContext: applicationContext)
         factory.afterPropertiesSet()
-        return factory.getObject()
+        factory.getObject()
     }
 
     @CompileDynamic
