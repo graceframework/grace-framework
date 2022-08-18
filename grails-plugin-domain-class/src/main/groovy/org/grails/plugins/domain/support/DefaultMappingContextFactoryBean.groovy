@@ -46,17 +46,17 @@ class DefaultMappingContextFactoryBean implements FactoryBean<MappingContext>, I
 
     @Override
     MappingContext getObject() throws Exception {
-        return mappingContext
+        mappingContext
     }
 
     @Override
     Class<?> getObjectType() {
-        return MappingContext
+        MappingContext
     }
 
     @Override
     boolean isSingleton() {
-        return true
+        true
     }
 
     @Autowired(required = false)

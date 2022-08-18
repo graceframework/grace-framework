@@ -24,17 +24,17 @@ class ValidatorRegistryFactoryBean implements FactoryBean<ValidatorRegistry> {
 
     @Override
     ValidatorRegistry getObject() throws Exception {
-        return mappingContext.validatorRegistry
+        mappingContext.validatorRegistry
     }
 
     @Override
     Class<?> getObjectType() {
-        return ValidatorRegistry
+        ValidatorRegistry
     }
 
     @Override
     boolean isSingleton() {
-        return true
+        true
     }
 
 }

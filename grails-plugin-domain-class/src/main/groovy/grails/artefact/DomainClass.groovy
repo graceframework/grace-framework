@@ -45,9 +45,9 @@ trait DomainClass {
         PersistentEntity persistentEntity = mappingContext?.getPersistentEntity(this.name)
         if (persistentEntity) {
             return new DefaultConstrainedDiscovery().findConstrainedProperties(persistentEntity)
-        } else {
-            return Collections.<String,Constrained>emptyMap()
         }
+
+        Collections.<String,Constrained>emptyMap()
     }
 
 }
