@@ -259,7 +259,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         }
 
         List<GrailsApplicationLifeCycle> lifeCycleBeans = this.applicationContext.getBeansOfType(
-                GrailsApplicationLifeCycle.class).values().asList()
+                GrailsApplicationLifeCycle).values().asList()
         Collections.sort(lifeCycleBeans, OrderComparator.INSTANCE)
         for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
             def withSpring = lifeCycle.doWithSpring()
