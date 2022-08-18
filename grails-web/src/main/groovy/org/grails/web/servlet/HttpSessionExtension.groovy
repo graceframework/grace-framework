@@ -34,7 +34,7 @@ class HttpSessionExtension {
 
     static getProperty(HttpSession session, String name) {
         def mp = session.class.metaClass.getMetaProperty(name)
-        return mp ? mp.getProperty(session) : session.getAttribute(name)
+        mp ? mp.getProperty(session) : session.getAttribute(name)
     }
 
     static propertyMissing(HttpSession session, String name, value) {
