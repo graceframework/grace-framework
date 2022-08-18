@@ -73,7 +73,7 @@ class LocaleAwareNumberConverter implements ValueConverter {
         if (locale == null) {
             locale = Locale.default
         }
-        return locale
+        locale
     }
 
 }
