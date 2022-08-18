@@ -290,7 +290,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         }
 
         webRequest.request.setAttribute(TokenResponseHandler.KEY, handler)
-        return handler
+        handler
     }
 
     /**

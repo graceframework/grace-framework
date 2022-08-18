@@ -73,7 +73,7 @@ trait ResponseRedirector implements WebAttributes {
         if (this.linkGenerator == null) {
             this.linkGenerator = webRequest.getApplicationContext().getBean(LinkGenerator)
         }
-        return this.linkGenerator
+        this.linkGenerator
     }
 
     /**
@@ -129,7 +129,7 @@ trait ResponseRedirector implements WebAttributes {
      */
     @Generated
     Map getChainModel() {
-        (Map)getFlash().get(FlashScope.CHAIN_MODEL)
+        (Map) getFlash().get(FlashScope.CHAIN_MODEL)
     }
 
     /**
@@ -188,7 +188,7 @@ trait ResponseRedirector implements WebAttributes {
 
     @Generated
     boolean isUseJsessionId() {
-        return useJsessionId
+        useJsessionId
     }
 
     @Generated

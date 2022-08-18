@@ -498,7 +498,7 @@ trait ResponseRenderer extends WebAttributes {
         if (statusSet) {
             webRequest.renderView = false
         }
-        return statusSet
+        statusSet
     }
 
     private void renderMarkupInternal(GrailsWebRequest webRequest,
@@ -515,7 +515,7 @@ trait ResponseRenderer extends WebAttributes {
 
     private boolean isJSONResponse(HttpServletResponse response) {
         String contentType = response.getContentType()
-        return contentType != null && (contentType.indexOf("application/json") > -1 ||
+        contentType != null && (contentType.indexOf("application/json") > -1 ||
                 contentType.indexOf("text/json") > -1)
     }
 
@@ -656,7 +656,7 @@ trait ResponseRenderer extends WebAttributes {
                 return true
             }
         }
-        return false
+        false
     }
 
 }

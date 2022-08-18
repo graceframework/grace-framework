@@ -55,7 +55,7 @@ trait RequestForwarder implements WebAttributes {
         if (this.linkGenerator == null) {
             this.linkGenerator = webRequest.getApplicationContext().getBean(LinkGenerator)
         }
-        return this.linkGenerator
+        this.linkGenerator
     }
 
     /**
@@ -134,7 +134,7 @@ trait RequestForwarder implements WebAttributes {
             webRequest.removeAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, requestScope)
             webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, requestScope)
         }
-        return fowardURI
+        fowardURI
     }
 
     private String convert(String value) {
