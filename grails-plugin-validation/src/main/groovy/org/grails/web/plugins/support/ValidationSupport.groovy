@@ -62,7 +62,7 @@ class ValidationSupport {
             object.errors = localErrors
         }
 
-        return !object.errors.hasErrors()
+        !object.errors.hasErrors()
     }
 
     @CompileDynamic
@@ -91,7 +91,7 @@ class ValidationSupport {
         for (entry in evaluatedConstraints) {
             finalConstraints.put(entry.key, new ConstrainedDelegate(entry.value))
         }
-        return finalConstraints
+        finalConstraints
     }
 
 }

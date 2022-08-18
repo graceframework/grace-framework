@@ -26,7 +26,7 @@ class DefaultConstrainedDiscovery implements ConstrainedDiscovery {
             Map<String, ConstrainedProperty> constrainedProperties = constrainedEntity.getConstrainedProperties()
             return adaptConstraints(constrainedProperties)
         }
-        return Collections.emptyMap()
+        Collections.emptyMap()
     }
 
     private static Map<String, Constrained> adaptConstraints(Map<String, ConstrainedProperty> evaluated) {
@@ -34,7 +34,7 @@ class DefaultConstrainedDiscovery implements ConstrainedDiscovery {
         for (Map.Entry<String, ConstrainedProperty> entry : evaluated.entrySet()) {
             finalConstraints.put(entry.getKey(), new ConstrainedDelegate(entry.getValue()))
         }
-        return finalConstraints
+        finalConstraints
     }
 
 }

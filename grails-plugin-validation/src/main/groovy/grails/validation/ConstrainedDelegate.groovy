@@ -27,17 +27,17 @@ class ConstrainedDelegate implements Constrained, ConstrainedProperty {
      * @return Returns the appliedConstraints.
      */
     Collection<Constraint> getAppliedConstraints() {
-        return property.appliedConstraints
+        property.appliedConstraints
     }
 
     @Override
     String getPropertyName() {
-        return property.getPropertyName()
+        property.getPropertyName()
     }
 
     @Override
     grails.gorm.validation.Constraint getAppliedConstraint(String name) {
-        return property.getAppliedConstraint(name)
+        property.getAppliedConstraint(name)
     }
 
     @Override
@@ -47,122 +47,122 @@ class ConstrainedDelegate implements Constrained, ConstrainedProperty {
 
     @Override
     String getWidget() {
-        return property.getWidget()
+        property.getWidget()
     }
 
     @Override
     boolean hasAppliedConstraint(String constraintName) {
-        return property.hasAppliedConstraint(constraintName)
+        property.hasAppliedConstraint(constraintName)
     }
 
     @Override
     Class<?> getPropertyType() {
-        return property.getPropertyType()
+        property.getPropertyType()
     }
 
     @Override
     Comparable getMax() {
-        return property.getMax()
+        property.getMax()
     }
 
     @Override
     Comparable getMin() {
-        return property.getMin()
+        property.getMin()
     }
 
     @Override
     List getInList() {
-        return property.getInList()
+        property.getInList()
     }
 
     @Override
     Range getRange() {
-        return property.getRange()
+        property.getRange()
     }
 
     @Override
     Integer getScale() {
-        return property.getScale()
+        property.getScale()
     }
 
     @Override
     Range getSize() {
-        return property.getSize()
+        property.getSize()
     }
 
     @Override
     boolean isBlank() {
-        return property.isBlank()
+        property.isBlank()
     }
 
     @Override
     boolean isEmail() {
-        return property.isEmail()
+        property.isEmail()
     }
 
     @Override
     boolean isCreditCard() {
-        return property.isCreditCard()
+        property.isCreditCard()
     }
 
     @Override
     String getMatches() {
-        return property.getMatches()
+        property.getMatches()
     }
 
     @Override
     Object getNotEqual() {
-        return property.getNotEqual()
+        property.getNotEqual()
     }
 
     @Override
     Integer getMaxSize() {
-        return property.getMaxSize()
+        property.getMaxSize()
     }
 
     @Override
     Integer getMinSize() {
-        return property.getMinSize()
+        property.getMinSize()
     }
 
     @Override
     boolean isNullable() {
-        return property.isNullable()
+        property.isNullable()
     }
 
     @Override
     boolean isUrl() {
-        return property.isUrl()
+        property.isUrl()
     }
 
     @Override
     boolean isDisplay() {
-        return property.isDisplay()
+        property.isDisplay()
     }
 
     @Override
     boolean isEditable() {
-        return property.isEditable()
+        property.isEditable()
     }
 
     @Override
     int getOrder() {
-        return property.getOrder()
+        property.getOrder()
     }
 
     @Override
     String getFormat() {
-        return property.getFormat()
+        property.getFormat()
     }
 
     @Override
     boolean isPassword() {
-        return property.isPassword()
+        property.isPassword()
     }
 
     @Override
     boolean supportsContraint(String constraintName) {
-        return property.supportsContraint(constraintName)
+        property.supportsContraint(constraintName)
     }
 
     @Override
@@ -172,7 +172,7 @@ class ConstrainedDelegate implements Constrained, ConstrainedProperty {
 
     @Override
     Class getOwner() {
-        return property.getOwner()
+        property.getOwner()
     }
 
 }

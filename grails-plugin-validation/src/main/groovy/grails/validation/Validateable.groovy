@@ -93,7 +93,7 @@ trait Validateable {
 
             constraintsMapInternal = finalConstraints
         }
-        return constraintsMapInternal
+        constraintsMapInternal
     }
 
     /**
@@ -189,7 +189,7 @@ trait Validateable {
         } else {
             errors = localErrors
         }
-        return !errors.hasErrors()
+        !errors.hasErrors()
     }
 
     private ValidationErrors doValidate(Map<String, grails.gorm.validation.ConstrainedProperty> constraints, List fieldsToValidate) {
