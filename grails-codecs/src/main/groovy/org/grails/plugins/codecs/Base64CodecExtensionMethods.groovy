@@ -34,7 +34,7 @@ class Base64CodecExtensionMethods {
             return new String(Base64.encodeBase64(theTarget))
         }
 
-        return new String(Base64.encodeBase64(theTarget.toString().getBytes("UTF-8")))
+        new String(Base64.encodeBase64(theTarget.toString().getBytes("UTF-8")))
     }
 
     static decodeBase64(theTarget) {
@@ -46,7 +46,7 @@ class Base64CodecExtensionMethods {
             return Base64.decodeBase64(theTarget)
         }
 
-        return Base64.decodeBase64(theTarget.toString().getBytes("UTF-8"))
+        Base64.decodeBase64(theTarget.toString().getBytes("UTF-8"))
     }
 
 }

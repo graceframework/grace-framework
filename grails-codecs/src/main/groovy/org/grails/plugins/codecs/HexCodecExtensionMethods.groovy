@@ -35,7 +35,7 @@ class HexCodecExtensionMethods {
             result << HexCodecExtensionMethods.HEXDIGITS[(it & 0xF0) >> 4]
             result << HexCodecExtensionMethods.HEXDIGITS[it & 0x0F]
         }
-        return result.toString()
+        result.toString()
     }
 
     static decodeHex(theTarget) {
@@ -63,7 +63,7 @@ class HexCodecExtensionMethods {
 
         def result = new byte[output.size()]
         output.eachWithIndex { v, i -> result[i] = v }
-        return result
+        result
     }
 
 }

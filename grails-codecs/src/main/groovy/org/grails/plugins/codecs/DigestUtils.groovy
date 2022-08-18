@@ -38,7 +38,7 @@ abstract class DigestUtils {
             src = data.toString().getBytes("UTF-8")
         }
         md.update(src) // This probably needs to use the thread's Locale encoding
-        return md.digest()
+        md.digest()
     }
 
 }
