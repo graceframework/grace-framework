@@ -92,17 +92,16 @@ abstract class GrailsArrayUtils {
             newArray[pos] = newObject
             return newArray
         }
-        else {
-            def type = array.getClass().componentType
-            int len = Array.getLength(array)
-            def newArray = Array.newInstance(type, len + 1)
-            System.arraycopy array, 0, newArray, 0, pos
-            Array.set newArray, pos, newObject
-            if (pos < len) {
-                System.arraycopy array, pos, newArray, pos + 1, len - pos
-            }
-            return newArray
+
+        def type = array.getClass().componentType
+        int len = Array.getLength(array)
+        def newArray = Array.newInstance(type, len + 1)
+        System.arraycopy array, 0, newArray, 0, pos
+        Array.set newArray, pos, newObject
+        if (pos < len) {
+            System.arraycopy array, pos, newArray, pos + 1, len - pos
         }
+        newArray
     }
 
     /**
@@ -117,21 +116,20 @@ abstract class GrailsArrayUtils {
         if (array == null) {
             return otherArray
         }
-        else {
-            def type = array.getClass().componentType
-            int len = Array.getLength(array)
-            int len2 = Array.getLength(otherArray)
 
-            def newArray = Array.newInstance(type, len + len2)
-            System.arraycopy(array, 0, newArray, 0, len)
-            try {
-                System.arraycopy otherArray, 0, newArray, len, len2
-            } catch (ArrayStoreException ase) {
-                throw new IllegalArgumentException("Component types of passed arrays do not match [${array.getClass().componentType}] " +
-                        "and [${otherArray.getClass().componentType}]", ase)
-            }
-            return newArray
+        def type = array.getClass().componentType
+        int len = Array.getLength(array)
+        int len2 = Array.getLength(otherArray)
+
+        def newArray = Array.newInstance(type, len + len2)
+        System.arraycopy(array, 0, newArray, 0, len)
+        try {
+            System.arraycopy otherArray, 0, newArray, len, len2
+        } catch (ArrayStoreException ase) {
+            throw new IllegalArgumentException("Component types of passed arrays do not match [${array.getClass().componentType}] " +
+                    "and [${otherArray.getClass().componentType}]", ase)
         }
+        newArray
     }
 
     /**
@@ -158,11 +156,9 @@ abstract class GrailsArrayUtils {
         if (newLen <= 0) {
             return Array.newInstance(type, 0)
         }
-        else {
-            def newArray = Array.newInstance(type, newLen)
-            System.arraycopy args, start, newArray, 0, newLen
-            return newArray
-        }
+        def newArray = Array.newInstance(type, newLen)
+        System.arraycopy args, start, newArray, 0, newLen
+        newArray
     }
 
     static boolean contains(Object[] array, Object elementToSearchFor) {

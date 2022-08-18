@@ -42,7 +42,7 @@ class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
 
     @Override
     List<PropertySource<?>> load(String name, Resource resource) throws IOException {
-        return load(name, resource, Collections.<String>emptyList())
+        load(name, resource, Collections.<String>emptyList())
     }
 
     List<PropertySource<?>> load(String name, Resource resource, List<String> filteredKeys) throws IOException {
@@ -80,7 +80,7 @@ class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
                 }
             }
         }
-        return Collections.emptyList()
+        Collections.emptyList()
     }
 
 }

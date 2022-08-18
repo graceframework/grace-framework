@@ -42,71 +42,71 @@ class TypeConvertingMap extends AbstractTypeConvertingMap {
     }
 
     Byte 'byte'(String name) {
-        return getByte(name)
+        getByte(name)
     }
 
     Byte 'byte'(String name, Integer defaultValue) {
-        return getByte(name, defaultValue)
+        getByte(name, defaultValue)
     }
 
     Character 'char'(String name) {
-        return getChar(name)
+        getChar(name)
     }
 
     Character 'char'(String name, Character defaultValue) {
-        return getChar(name, defaultValue?.charValue() as Integer)
+        getChar(name, defaultValue?.charValue() as Integer)
     }
 
     Character 'char'(String name, Integer defaultValue) {
-        return getChar(name, defaultValue)
+        getChar(name, defaultValue)
     }
 
     Integer 'int'(String name) {
-        return getInt(name)
+        getInt(name)
     }
 
     Integer 'int'(String name, Integer defaultValue) {
-        return getInt(name, defaultValue)
+        getInt(name, defaultValue)
     }
 
     Long 'long'(String name) {
-        return getLong(name)
+        getLong(name)
     }
 
     Long 'long'(String name, Long defaultValue) {
-        return getLong(name, defaultValue)
+        getLong(name, defaultValue)
     }
 
     Short 'short'(String name) {
-        return getShort(name)
+        getShort(name)
     }
 
     Short 'short'(String name, Integer defaultValue) {
-        return getShort(name, defaultValue)
+        getShort(name, defaultValue)
     }
 
     Double 'double'(String name) {
-        return getDouble(name)
+        getDouble(name)
     }
 
     Double 'double'(String name, Double defaultValue) {
-        return getDouble(name, defaultValue)
+        getDouble(name, defaultValue)
     }
 
     Float 'float'(String name) {
-        return getFloat(name)
+        getFloat(name)
     }
 
     Float 'float'(String name, Float defaultValue) {
-        return getFloat(name, defaultValue)
+        getFloat(name, defaultValue)
     }
 
     Boolean 'boolean'(String name) {
-        return getBoolean(name)
+        getBoolean(name)
     }
 
     Boolean 'boolean'(String name, Boolean defaultValue) {
-        return getBoolean(name, defaultValue)
+        getBoolean(name, defaultValue)
     }
 
 }

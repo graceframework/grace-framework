@@ -44,7 +44,7 @@ class NavigableMapPropertySource extends MapPropertySource {
 
     @Override
     String[] getPropertyNames() {
-        return propertyNames
+        propertyNames
     }
 
     @Override
@@ -55,7 +55,7 @@ class NavigableMapPropertySource extends MapPropertySource {
         } else if (value instanceof NavigableMap || value instanceof NavigableMap.NullSafeNavigator) {
             return null
         }
-        return value
+        value
     }
 
     Object getNavigableProperty(String name) {

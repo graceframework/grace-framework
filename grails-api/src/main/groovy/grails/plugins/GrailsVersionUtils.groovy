@@ -27,7 +27,7 @@ class GrailsVersionUtils {
     @CompileStatic
     static String getPluginName(Class clazz) {
         GrailsPlugin ann = clazz?.getAnnotation(GrailsPlugin)
-        return ann?.name()
+        ann?.name()
     }
 
     /**
@@ -36,7 +36,7 @@ class GrailsVersionUtils {
     @CompileStatic
     static String getPluginVersion(Class clazz) {
         GrailsPlugin ann = clazz?.getAnnotation(GrailsPlugin)
-        return ann?.version()
+        ann?.version()
     }
 
     /**
@@ -64,7 +64,7 @@ class GrailsVersionUtils {
             return true
         }
 
-        return false
+        false
     }
 
     /**
@@ -79,20 +79,20 @@ class GrailsVersionUtils {
         }
         def versions = [leftVersion, rightVersion]
         versions.sort(true, new VersionComparator())
-        return versions[1] == rightVersion
+        versions[1] == rightVersion
     }
     /**
      * Returns the upper version of a Grails version number expression in a plugin
      */
     static String getUpperVersion(String pluginVersion) {
-        return getPluginVersionInternal(pluginVersion, 1)
+        getPluginVersionInternal(pluginVersion, 1)
     }
 
     /**
      * Returns the lower version of a Grails version number expression in a plugin
      */
     static String getLowerVersion(String pluginVersion) {
-        return getPluginVersionInternal(pluginVersion, 0)
+        getPluginVersionInternal(pluginVersion, 0)
     }
 
     static boolean supportsAtLeastVersion(String pluginVersion, String requiredVersion) {
@@ -106,7 +106,7 @@ class GrailsVersionUtils {
             return tokens[index].trim()
         }
 
-        return pluginVersion.trim()
+        pluginVersion.trim()
     }
 
     private static String trimTag(String pluginVersion) {
@@ -116,7 +116,7 @@ class GrailsVersionUtils {
         }
         def tokens = pluginVersion.split(/\./)
 
-        return tokens.findAll { String it -> it ==~ /\d+/ || it == '*' }.join(".")
+        tokens.findAll { String it -> it ==~ /\d+/ || it == '*' }.join(".")
     }
 
 }

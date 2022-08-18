@@ -102,9 +102,8 @@ class VersionComparator implements Comparator<String> {
         String suffix = SNAPSHOT_SUFFIXES.find { String it -> version?.endsWith(it) }
         if (suffix) {
             return version[0..-(suffix.size() + 1)]
-        } else {
-            return version
         }
+        version
     }
 
     @CompileStatic

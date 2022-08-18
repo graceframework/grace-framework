@@ -56,7 +56,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     @Override
     FileSystemInteractionImpl mkdir(path) {
         file(path)?.mkdirs()
-        return this
+        this
     }
 
     /**
@@ -67,7 +67,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     @Override
     FileSystemInteractionImpl delete(path) {
         file(path)?.delete()
-        return this
+        this
     }
 
     /**
@@ -89,7 +89,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
                 copy(spec.from, spec.into)
             }
         }
-        return this
+        this
     }
 
     /**
@@ -103,7 +103,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         def from = resource(path)
         def to = file(destination)
         copy(from, to)
-        return this
+        this
     }
 
     /**
@@ -120,7 +120,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
             def to = file(destination)
             copy(from, to)
         }
-        return this
+        this
     }
 
     /**
@@ -143,7 +143,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
             SpringIOUtils.copy(from, to)
             println("Copied ${from.filename} to location ${to.canonicalPath}")
         }
-        return this
+        this
     }
 
     /**
@@ -160,9 +160,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         else if (path instanceof Resource) {
             return ((Resource) path).file
         }
-        else {
-            new File(baseDir ?: new File("."), path.toString())
-        }
+        new File(baseDir ?: new File("."), path.toString())
     }
 
     /**
@@ -226,22 +224,17 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         if (f?.exists() && f.isFile()) {
             return new FileSystemResource(f)
         }
-        else {
-            def pathStr = path.toString()
-            def resource = resourceLoader.getResource(pathStr)
-            if (resource.exists()) {
-                return resource
-            }
-            else {
-                def allResources = resources(pathStr)
-                if (allResources) {
-                    return allResources[0]
-                }
-                else {
-                    return resource
-                }
-            }
+        def pathStr = path.toString()
+        def resource = resourceLoader.getResource(pathStr)
+        if (resource.exists()) {
+            return resource
         }
+
+        def allResources = resources(pathStr)
+        if (allResources) {
+            return allResources[0]
+        }
+        resource
     }
 
     /**
@@ -272,7 +265,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
             def basePath = baseDir.canonicalPath
             return (file.canonicalPath - basePath).substring(1)
         }
-        return ""
+        ""
     }
 
     /**

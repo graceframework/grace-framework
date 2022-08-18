@@ -24,12 +24,12 @@ class CachingPathMatchingResourcePatternResolver extends PathMatchingResourcePat
 
     @Memoized(maxCacheSize = 20)
     protected Set<Resource> doFindAllClassPathResources(String path) throws IOException {
-        return super.doFindAllClassPathResources(path)
+        super.doFindAllClassPathResources(path)
     }
 
     @Memoized(maxCacheSize = 20)
     protected Resource[] findPathMatchingResources(String locationPattern) throws IOException {
-        return super.findPathMatchingResources(locationPattern)
+        super.findPathMatchingResources(locationPattern)
     }
 
 }

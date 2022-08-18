@@ -45,12 +45,12 @@ class PrefixedMapPropertySource extends EnumerablePropertySource {
             String key = name - prefix - '.'
             return source.getProperty(key)
         }
-        return null
+        null
     }
 
     @Override
     boolean containsProperty(String name) {
-        return this.propertyNames.contains(name)
+        this.propertyNames.contains(name)
     }
 
     String[] getPropertyNames() {

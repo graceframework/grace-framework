@@ -40,12 +40,12 @@ trait ApplicationCommand implements Named, Described {
     }
 
     ConfigurableApplicationContext getApplicationContext() {
-        return this.applicationContext
+        this.applicationContext
     }
 
     @Override
     String getName() {
-        return GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(getClass().getName(), "Command"))
+        GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(getClass().getName(), "Command"))
     }
 
     @Override

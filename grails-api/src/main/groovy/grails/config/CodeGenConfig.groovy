@@ -105,12 +105,12 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     Set<String> keySet() {
-        return configMap.keySet()
+        configMap.keySet()
     }
 
     @Override
     Collection<Object> values() {
-        return configMap.values()
+        configMap.values()
     }
 
     @Override
@@ -124,7 +124,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         if (value == null) {
             throw new IllegalStateException("Property [$key] not found")
         }
-        return value
+        value
     }
 
     void loadYml(File ymlFile) {
@@ -170,7 +170,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         if (result == null) {
             return null
         }
-        return convertToType(result, requiredType)
+        convertToType(result, requiredType)
     }
 
     protected <T> T convertToType(Object value, Class<T> requiredType) {
@@ -191,26 +191,22 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         } else if (requiredType == Integer) {
             if (value instanceof Number) {
                 return Integer.valueOf(((Number)value).intValue())
-            } else {
-                return Integer.valueOf(String.valueOf(value))
             }
+            return Integer.valueOf(String.valueOf(value))
         } else if (requiredType == Long) {
             if (value instanceof Number) {
                 return Long.valueOf(((Number)value).longValue())
-            } else {
-                return Long.valueOf(String.valueOf(value))
             }
+            return Long.valueOf(String.valueOf(value))
         } else if (requiredType == Double) {
             if (value instanceof Number) {
                 return Double.valueOf(((Number)value).doubleValue())
-            } else {
-                return Double.valueOf(String.valueOf(value))
             }
+            return Double.valueOf(String.valueOf(value))
         } else if (requiredType == BigDecimal) {
             return new BigDecimal(String.valueOf(value))
-        } else {
-            return convertToOtherTypes(value, requiredType)
         }
+        convertToOtherTypes(value, requiredType)
     }
 
     protected <T> T convertToOtherTypes(Object value, Class<T> requiredType) {
@@ -218,11 +214,11 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     Object navigate(String... path) {
-        return navigate(Object, path)
+        navigate(Object, path)
     }
 
     boolean asBoolean() {
-        return !configMap.isEmpty()
+        !configMap.isEmpty()
     }
 
     Object asType(Class type) {
@@ -234,9 +230,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
             return this
         } else if (type == CodeGenConfig) {
             return new CodeGenConfig(this)
-        } else {
-            throw new GroovyCastException(this, type)
         }
+        throw new GroovyCastException(this, type)
     }
 
     Object getAt(Object key) {
@@ -251,23 +246,23 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         if ("configMap".equals(name)) {
             return this.configMap
         }
-        return configMap.get(name)
+        configMap.get(name)
     }
 
     Object get(String name) {
         if ("configMap".equals(name)) {
             return this.configMap
         }
-        return configMap.get(name)
+        configMap.get(name)
     }
 
     @Override
     Iterator<Map.Entry<String, Object>> iterator() {
-        return DefaultGroovyMethods.iterator(configMap)
+        DefaultGroovyMethods.iterator(configMap)
     }
 
     <T> T getProperty(String name, Class<T> requiredType) {
-        return convertToType(configMap.get(name), requiredType)
+        convertToType(configMap.get(name), requiredType)
     }
 
     @Override
@@ -276,7 +271,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         if (v == null) {
             return defaultValue
         }
-        return v
+        v
     }
 
     void setProperty(String name, Object value) {
@@ -358,7 +353,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
                 return Boolean.FALSE
             }
         }
-        return null
+        null
     }
 
 }

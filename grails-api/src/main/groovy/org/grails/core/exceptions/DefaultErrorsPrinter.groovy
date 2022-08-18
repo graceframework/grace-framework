@@ -143,7 +143,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
             cause = cause.cause
         }
 
-        return sw.toString()
+        sw.toString()
     }
 
     protected Resource getFileNameInfo(Throwable cause, Resource res) {
@@ -180,7 +180,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                 break
             }
         }
-        return res
+        res
     }
 
     protected int getLineNumberInfo(Throwable cause, int defaultInfo) {
@@ -197,7 +197,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                 lineNumber = sem.getCause().getLine()
             }
         }
-        return lineNumber
+        lineNumber
     }
 
     String formatCodeSnippetEnd(Resource resource, int lineNumber) {
@@ -228,7 +228,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
         while (ex.getCause() != null && !ex.is(ex.getCause())) {
             ex = ex.getCause()
         }
-        return ex
+        ex
     }
 
 }

@@ -34,13 +34,13 @@ class ConfigProperties extends Properties {
 
     @Override
     Set<String> stringPropertyNames() {
-        return config.keySet()
+        config.keySet()
     }
 
     @Override
     Enumeration<?> propertyNames() {
         def i = config.keySet().iterator()
-        return ([
+        ([
             hasMoreElements: { -> i.hasNext() },
             nextElement: { -> i.next() }
         ]) as Enumeration
@@ -48,32 +48,32 @@ class ConfigProperties extends Properties {
 
     @Override
     String getProperty(String key) {
-        return config.getProperty(key)
+        config.getProperty(key)
     }
 
     @Override
     Object get(Object key) {
-        return getProperty(key?.toString())
+        getProperty(key?.toString())
     }
 
     @Override
     String getProperty(String key, String defaultValue) {
-        return config.getProperty(key, defaultValue)
+        config.getProperty(key, defaultValue)
     }
 
     @Override
     Enumeration<Object> keys() {
-        return (Enumeration<Object>)propertyNames()
+        (Enumeration<Object>)propertyNames()
     }
 
     @Override
     Set<Object> keySet() {
-        return stringPropertyNames() as Set<Object>
+        stringPropertyNames() as Set<Object>
     }
 
     @Override
     String toString() {
-        return config.toString()
+        config.toString()
     }
 
 }

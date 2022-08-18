@@ -77,7 +77,7 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
                 result.add clazz
             }
         }
-        return result
+        result
     }
 
     private static <T> Class<? extends T> loadFactoryClass(String instanceClassName, Class<T> factoryClass, ClassLoader classLoader) {

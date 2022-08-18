@@ -68,7 +68,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (i > -1) {
             return str.substring(0, i)
         }
-        return str
+        str
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (i > -1) {
             return str.substring(0, i)
         }
-        return str
+        str
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (i > -1) {
             return str.substring(i + token.length())
         }
-        return str
+        str
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (i > -1) {
             return str.substring(i + token.length())
         }
-        return str
+        str
     }
     /**
      * Trims the start of the string
@@ -162,9 +162,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (!str || !start || !str.startsWith(start)) {
             return str
         }
-        else {
-            return str.substring(start.length())
-        }
+        str.substring(start.length())
     }
 
     /**
