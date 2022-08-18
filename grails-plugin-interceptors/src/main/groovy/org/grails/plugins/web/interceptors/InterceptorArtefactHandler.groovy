@@ -39,7 +39,7 @@ class InterceptorArtefactHandler extends ArtefactHandlerAdapter {
 
     @Override
     String getPluginName() {
-        return PLUGIN_NAME
+        PLUGIN_NAME
     }
 
 }

@@ -80,7 +80,7 @@ class GrailsInterceptorHandlerInterceptorAdapter implements HandlerInterceptor {
                 }
             }
         }
-        return true
+        true
     }
 
     @Override

@@ -107,7 +107,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
                 return true
             }
         }
-        return false
+        false
     }
 
     /**
@@ -118,7 +118,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
         def matcher = new UrlMappingMatcher(this)
         matcher.matchAll()
         matchers << matcher
-        return matcher
+        matcher
     }
 
     /**
@@ -127,7 +127,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     @Generated
     Map<String, Object> getModel() {
         def modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
-        return modelAndView?.modelMap
+        modelAndView?.modelMap
     }
 
     /**
@@ -152,7 +152,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     @Generated
     String getView() {
         def modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
-        return modelAndView?.viewName
+        modelAndView?.viewName
     }
 
     /**
@@ -213,7 +213,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
         def matcher = new UrlMappingMatcher(this)
         matcher.matches(arguments)
         matchers << matcher
-        return matcher
+        matcher
     }
 
     /**
@@ -291,7 +291,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     int getOrder() {
-        return order
+        order
     }
 
     /**
@@ -307,7 +307,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     Collection<Matcher> getMatchers() {
-        return matchers
+        matchers
     }
 
 }

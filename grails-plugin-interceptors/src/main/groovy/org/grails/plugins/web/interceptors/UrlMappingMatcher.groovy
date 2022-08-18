@@ -52,7 +52,7 @@ class UrlMappingMatcher implements Matcher {
     }
 
     boolean doesMatch(String uri, UrlMappingInfo info) {
-        return doesMatch(uri, info, null)
+        doesMatch(uri, info, null)
     }
 
     boolean doesMatch(String uri, UrlMappingInfo info, String method) {
@@ -77,7 +77,7 @@ class UrlMappingMatcher implements Matcher {
                 }
             }
         }
-        return false
+        false
     }
 
     protected boolean isExcluded(String uri, UrlMappingInfo info) {
@@ -93,7 +93,7 @@ class UrlMappingMatcher implements Matcher {
                 }
             }
         }
-        return false
+        false
     }
 
     protected boolean doesMatchInternal(UrlMappingInfo info, String method) {
@@ -107,7 +107,7 @@ class UrlMappingMatcher implements Matcher {
     @Override
     Matcher matchAll() {
         matchAll = true
-        return this
+        this
     }
 
     @Override
@@ -121,7 +121,7 @@ class UrlMappingMatcher implements Matcher {
             namespaceRegex = regexMatch(arguments, "namespace")
             methodRegex = regexMatch(arguments, "method")
         }
-        return this
+        this
     }
 
     @Override
@@ -137,7 +137,7 @@ class UrlMappingMatcher implements Matcher {
             exclude.methodExcludesRegex = regexMatch(arguments, "method", null)
             excludes << exclude
         }
-        return this
+        this
     }
 
     @Override
@@ -148,12 +148,12 @@ class UrlMappingMatcher implements Matcher {
     @Override
     Matcher excludes(Closure<Boolean> condition) {
         excludes << new ClosureExclude(interceptor, condition)
-        return this
+        this
     }
 
     @Override
     boolean isExclude() {
-        return excludes || uriExcludePatterns
+        excludes || uriExcludePatterns
     }
 
     private Pattern regexMatch(Map arguments, String type, Pattern defaultPattern = WILD_CARD_PATTERN) {
@@ -162,17 +162,15 @@ class UrlMappingMatcher implements Matcher {
             return defaultPattern
         }
         if (value instanceof Pattern) {
-            return (Pattern)value
+            return (Pattern) value
         }
-        else {
-            def str = value.toString()
-            if (str == '*') {
-                return defaultPattern
-            }
-            else {
-                return Pattern.compile(str)
-            }
+
+        def str = value.toString()
+        if (str == '*') {
+            return defaultPattern
         }
+
+        Pattern.compile(str)
     }
 
     static interface Exclude {
@@ -197,7 +195,7 @@ class UrlMappingMatcher implements Matcher {
                 callable.delegate = interceptor
                 return callable.call()
             }
-            return false
+            false
         }
 
     }
@@ -227,7 +225,7 @@ class UrlMappingMatcher implements Matcher {
         int hash = HashCodeHelper.initHash()
         hash = HashCodeHelper.updateHash(hash, interceptor)
         hash = HashCodeHelper.updateHash(hash, info)
-        return hash
+        hash
     }
 
 }
