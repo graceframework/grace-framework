@@ -118,9 +118,8 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     protected boolean isDomainResource(Class clazz) {
         if (mappingContext != null) {
             return mappingContext.isPersistentEntity(clazz)
-        } else {
-            DomainClassArtefactHandler.isDomainClass(clazz, true)
         }
+        DomainClassArtefactHandler.isDomainClass(clazz, true)
     }
 
     protected String getLinkTitle(PersistentEntity entity, Locale locale) {
@@ -144,7 +143,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
         if (object.respondsTo('links')) {
             return object.links()
         }
-        return Collections.emptyList()
+        Collections.emptyList()
     }
 
     protected Map<Association, Object> writeAssociationLinks(RenderContext context, object, Locale locale, writer,

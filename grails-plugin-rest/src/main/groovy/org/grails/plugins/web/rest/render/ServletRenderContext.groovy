@@ -71,7 +71,7 @@ class ServletRenderContext extends AbstractRenderContext {
         if (resourcePath == null) {
             return WebUtils.getForwardURI(webRequest.request)
         }
-        return resourcePath
+        resourcePath
     }
 
     void setResourcePath(String resourcePath) {
@@ -82,10 +82,7 @@ class ServletRenderContext extends AbstractRenderContext {
     @CompileStatic(TypeCheckingMode.SKIP)
     MimeType getAcceptMimeType() {
         final response = webRequest.response
-        if (response.hasProperty('mimeType')) {
-            return response.mimeType
-        }
-        return null
+        response.hasProperty('mimeType') ? response.mimeType : null
     }
 
     @Override
@@ -124,10 +121,7 @@ class ServletRenderContext extends AbstractRenderContext {
     String getViewName() {
         final request = webRequest.currentRequest
         ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
-        if (modelAndView) {
-            return modelAndView.viewName
-        }
-        return null
+        modelAndView ? modelAndView.viewName : null
     }
 
     protected ModelAndView getModelAndView() {
@@ -162,12 +156,12 @@ class ServletRenderContext extends AbstractRenderContext {
 
     @Override
     String getControllerNamespace() {
-        return webRequest.controllerNamespace
+        webRequest.controllerNamespace
     }
 
     @Override
     boolean wasWrittenTo() {
-        return writerObtained
+        writerObtained
     }
 
 }

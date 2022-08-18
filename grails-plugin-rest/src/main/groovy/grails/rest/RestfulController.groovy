@@ -213,9 +213,8 @@ class RestfulController<T> {
         if (readOnly) {
             render status: METHOD_NOT_ALLOWED.value()
             return true
-        } else {
-            return false
         }
+        false
     }
 
     /**

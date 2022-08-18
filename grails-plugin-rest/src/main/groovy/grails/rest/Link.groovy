@@ -92,7 +92,7 @@ class Link implements Serializable {
                 ((GroovyObject) link).setProperty(entry.key, value)
             }
         }
-        return link
+        link
     }
 
 }

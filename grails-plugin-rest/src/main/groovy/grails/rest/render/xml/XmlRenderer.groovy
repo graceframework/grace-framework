@@ -76,12 +76,12 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
 
                 @Override
                 protected boolean includesProperty(Object o, String property) {
-                    return includes == null || includes.contains(property)
+                    includes == null || includes.contains(property)
                 }
 
                 @Override
                 protected boolean excludesProperty(Object o, String property) {
-                    return excludes.contains(property)
+                    excludes.contains(property)
                 }
 
             }
@@ -90,12 +90,12 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
 
                 @Override
                 protected boolean includesProperty(Object o, String property) {
-                    return includes == null || includes.contains(property)
+                    includes == null || includes.contains(property)
                 }
 
                 @Override
                 protected boolean excludesProperty(Object o, String property) {
-                    return excludes.contains(property)
+                    excludes.contains(property)
                 }
 
             }

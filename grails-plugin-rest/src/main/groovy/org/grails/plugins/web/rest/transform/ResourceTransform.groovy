@@ -287,7 +287,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
         ConstructorNode constructorNode = controllerClassNode.addConstructor(Modifier.PUBLIC, ZERO_PARAMETERS,
                 ClassNode.EMPTY_ARRAY, constructorBody)
         AnnotatedNodeUtils.markAsGenerated(controllerClassNode, constructorNode)
-        return constructorNode
+        constructorNode
     }
 
     void setCompilationUnit(CompilationUnit unit) {

@@ -53,7 +53,7 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
     }
 
     Class<T> getTargetType() {
-        return targetType
+        targetType
     }
 
     @Override
@@ -140,11 +140,11 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
                 return GrailsNameUtils.getPropertyName(object.getClass()) + suffix
             }
         }
-        return null
+        null
     }
 
     MimeType[] getMimeTypes() {
-        return mimeTypes
+        mimeTypes
     }
 
 }

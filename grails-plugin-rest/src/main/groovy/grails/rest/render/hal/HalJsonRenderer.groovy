@@ -301,7 +301,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                     writeAssociationLinks(context, object, locale, delegate, entity, metaClass) : [:]) as Map<Association,Object>
             associationMap
         }
-        return associationMap
+        associationMap
     }
 
     protected void writeLink(Link link, Locale locale, writer) {

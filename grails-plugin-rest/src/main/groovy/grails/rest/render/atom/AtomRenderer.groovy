@@ -128,7 +128,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             url = "${url.substring(0, i)}${dateCreatedId}:${ id ?: url.substring(i, url.length())}"
         }
 
-        return "tag:$url"
+        "tag:$url"
     }
 
     protected void writeDomainWithEmbeddedAndLinks(PersistentEntity entity, Object object,
@@ -219,7 +219,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
         final objectId = object[name]
         final dateCreated = object.dateCreated
         final url = linkGenerator.link(resource: object, method: HttpMethod.GET, absolute: true)
-        return generateIdForURI(url, dateCreated, objectId)
+        generateIdForURI(url, dateCreated, objectId)
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -240,7 +240,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
 
     protected String formatAtomDate(Date dateCreated) {
         def dateFormat = ATOM_DATE_FORMAT.format(dateCreated)
-        return dateFormat.substring(0, 19) + dateFormat.substring(22, dateFormat.length())
+        dateFormat.substring(0, 19) + dateFormat.substring(22, dateFormat.length())
     }
 
 }

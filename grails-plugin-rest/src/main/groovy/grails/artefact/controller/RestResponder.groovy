@@ -60,7 +60,7 @@ trait RestResponder {
 
     @Generated
     RendererRegistry getRendererRegistry() {
-        return this.rendererRegistry
+        this.rendererRegistry
     }
 
     @Generated
@@ -71,7 +71,7 @@ trait RestResponder {
 
     @Generated
     ProxyHandler getProxyHandler() {
-        return this.proxyHandler
+        this.proxyHandler
     }
 
     /**
@@ -247,7 +247,7 @@ trait RestResponder {
             }
             return getDefaultResponseFormats(value)
         }
-        return getDefaultResponseFormats(value)
+        getDefaultResponseFormats(value)
     }
 
     @CompileDynamic
@@ -264,7 +264,7 @@ trait RestResponder {
         if (errors instanceof Errors) {
             return errors
         }
-        return null
+        null
     }
 
     private List<String> getDefaultResponseFormats(value) {
@@ -272,7 +272,7 @@ trait RestResponder {
         if (resAnn) {
             return resAnn.formats().toList()
         }
-        return MimeType.getConfiguredMimeTypes().collect { MimeType mt -> mt.extension }
+        MimeType.getConfiguredMimeTypes().collect { MimeType mt -> mt.extension }
     }
 
 }

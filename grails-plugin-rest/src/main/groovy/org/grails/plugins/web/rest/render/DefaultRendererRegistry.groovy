@@ -125,7 +125,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     @Override
     def <T> Renderer<T> findRenderer(MimeType mimeType, T object) {
-        return findMatchingObjectForMimeType(mimeType, object)
+        findMatchingObjectForMimeType(mimeType, object)
     }
 
     @Override
@@ -205,7 +205,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
             }
         }
 
-        return renderer
+        renderer
     }
 
     protected Class<? extends Object> getTargetClassForContainer(Class containerClass, Object object) {
@@ -242,20 +242,19 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                 targetClass = target.getClass()
             }
         }
-        return targetClass
+        targetClass
     }
 
     @Override
     boolean isContainerType(Class<?> aClass) {
-        if (containerRenderers.keySet().any { ContainerRendererCacheKey key -> key.containerType.isAssignableFrom(aClass) }) {
-            return true
+        containerRenderers.keySet().any {
+            ContainerRendererCacheKey key -> key.containerType.isAssignableFrom(aClass)
         }
-        return false
     }
 
     @Override
     RendererCacheKey createCacheKey(Class type, MimeType mimeType) {
-        return new RendererCacheKey(type, mimeType)
+        new RendererCacheKey(type, mimeType)
     }
 
     @Canonical
