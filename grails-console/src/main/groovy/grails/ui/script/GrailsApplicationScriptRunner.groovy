@@ -92,7 +92,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
             }
         }
 
-        return ctx
+        ctx
     }
 
     /**
@@ -100,7 +100,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
      *
      * @param args The last argument is the Application class name. All other args are script names
      */
-    public static void main(String[] args) {
+    static void main(String[] args) {
         if (args.size() > 1) {
             Class applicationClass
             try {

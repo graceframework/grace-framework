@@ -62,8 +62,8 @@ class GrailsSwingConsole extends GrailsApp {
      * @param args the application arguments (usually passed from a Java main method)
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
-    public static ConfigurableApplicationContext run(Class<?> source, String... args) {
-        return run([ source ] as Class[], args)
+    static ConfigurableApplicationContext run(Class<?> source, String... args) {
+        run([ source ] as Class[], args)
     }
 
     /**
@@ -73,8 +73,8 @@ class GrailsSwingConsole extends GrailsApp {
      * @param args the application arguments (usually passed from a Java main method)
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
-    public static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
-        return new GrailsSwingConsole(sources).run(args)
+    static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
+        new GrailsSwingConsole(sources).run(args)
     }
 
     /**
@@ -82,7 +82,7 @@ class GrailsSwingConsole extends GrailsApp {
      *
      * @param args The first argument is the Application class name
      */
-    public static void main(String[] args) {
+    static void main(String[] args) {
         if (args) {
             def applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
             new GrailsSwingConsole(applicationClass).run(args)

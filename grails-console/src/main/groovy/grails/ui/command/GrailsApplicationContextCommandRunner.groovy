@@ -78,7 +78,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
             System.err.println("Command not found for name: $commandName")
             System.exit(1)
         }
-        return null
+        null
     }
 
     /**
@@ -86,7 +86,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
      *
      * @param args The first argument is the Command name, the last argument is the Application class name
      */
-    public static void main(String[] args) {
+    static void main(String[] args) {
         if (args.size() > 1) {
             Class applicationClass
             try {
