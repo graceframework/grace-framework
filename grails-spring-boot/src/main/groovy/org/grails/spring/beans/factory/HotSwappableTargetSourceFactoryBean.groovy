@@ -34,7 +34,7 @@ class HotSwappableTargetSourceFactoryBean implements FactoryBean<HotSwappableTar
 
     @Override
     HotSwappableTargetSource getObject() throws Exception {
-        return targetSource
+        targetSource
     }
 
     @Override
@@ -42,7 +42,7 @@ class HotSwappableTargetSourceFactoryBean implements FactoryBean<HotSwappableTar
 
     @Override
     boolean isSingleton() {
-        return true
+        true
     }
 
     void setTarget(Object object) {
