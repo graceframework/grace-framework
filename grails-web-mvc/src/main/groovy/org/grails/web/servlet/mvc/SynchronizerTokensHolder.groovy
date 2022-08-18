@@ -47,7 +47,7 @@ class SynchronizerTokensHolder implements Serializable {
     String generateToken(String url) {
         final UUID uuid = UUID.randomUUID()
         getTokens(url).add(uuid)
-        return uuid
+        uuid
     }
 
     void resetToken(String url) {
@@ -69,7 +69,7 @@ class SynchronizerTokensHolder implements Serializable {
     }
 
     boolean isEmpty() {
-        return currentTokens.isEmpty() || currentTokens.every { String url, Set<UUID> uuids -> uuids.isEmpty() }
+        currentTokens.isEmpty() || currentTokens.every { String url, Set<UUID> uuids -> uuids.isEmpty() }
     }
 
     protected Set<UUID> getTokens(String url) {
@@ -86,7 +86,7 @@ class SynchronizerTokensHolder implements Serializable {
             tokensHolder = new SynchronizerTokensHolder()
             session.setAttribute(HOLDER, tokensHolder)
         }
-        return tokensHolder
+        tokensHolder
     }
 
 }

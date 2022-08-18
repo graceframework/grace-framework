@@ -54,21 +54,19 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
         if (previousAttributes == null || !(previousAttributes instanceof GrailsWebRequest)) {
             return buildGrailsWebRequest(request, response)
         }
-        else {
-            GrailsWebRequest webRequest = (GrailsWebRequest) previousAttributes
-            if (webRequest.isActive()) {
-                return webRequest
-            }
-            else {
-                return buildGrailsWebRequest(request, response)
-            }
+
+        GrailsWebRequest webRequest = (GrailsWebRequest) previousAttributes
+        if (webRequest.isActive()) {
+            return webRequest
         }
+
+        buildGrailsWebRequest(request, response)
     }
 
     protected GrailsWebRequest buildGrailsWebRequest(HttpServletRequest request, HttpServletResponse response) {
         def webRequest = new GrailsWebRequest(request, response, request.getServletContext())
         webRequest.informParameterCreationListeners()
-        return webRequest
+        webRequest
     }
 
     @Override
@@ -83,7 +81,7 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
                 }
             }
         }
-        return request
+        request
     }
 
     @Override

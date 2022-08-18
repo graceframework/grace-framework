@@ -49,7 +49,7 @@ class TokenResponseActionResultTransformer implements ActionResultTransformer {
                 throw new ControllerExecutionException("I/O error sending redirect to URI: " + uri, e)
             }
         }
-        return actionResult
+        actionResult
     }
 
 }
