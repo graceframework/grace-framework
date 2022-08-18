@@ -59,7 +59,7 @@ class DataSourceUtils {
             }
             DriverManager.deregisterDriver(driver)
         }
-        return driverNames
+        driverNames
     }
 
 }

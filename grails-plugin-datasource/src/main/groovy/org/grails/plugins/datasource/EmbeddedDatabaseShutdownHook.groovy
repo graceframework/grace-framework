@@ -45,17 +45,17 @@ class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContext
 
     @Override
     boolean isRunning() {
-        return running
+        running
     }
 
     @Override
     int getPhase() {
-        return Integer.MIN_VALUE
+        Integer.MIN_VALUE
     }
 
     @Override
     boolean isAutoStartup() {
-        return true
+        true
     }
 
     @Override
@@ -80,7 +80,7 @@ class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContext
                 }
             }
         }
-        return false
+        false
     }
 
     protected shutdownEmbeddedDatabase(DataSource dataSource) {

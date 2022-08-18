@@ -48,7 +48,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
     }
 
     protected boolean isJmxEnabled(String beanName, org.apache.tomcat.jdbc.pool.DataSource dataSource) {
-        return dataSource.createPool().poolProperties.jmxEnabled
+        dataSource.createPool().poolProperties.jmxEnabled
     }
 
     protected ObjectName createJmxObjectName(String beanName, org.apache.tomcat.jdbc.pool.DataSource dataSource)
@@ -75,7 +75,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
             properties.pool = poolName
         }
 
-        return new ObjectName('grails.dataSource', properties)
+        new ObjectName('grails.dataSource', properties)
     }
 
     @Override

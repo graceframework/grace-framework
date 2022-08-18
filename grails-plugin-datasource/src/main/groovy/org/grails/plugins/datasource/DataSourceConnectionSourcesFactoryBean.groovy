@@ -37,17 +37,17 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
 
     @Override
     ConnectionSources<DataSource, DataSourceSettings> getObject() throws Exception {
-        return connectionSources
+        connectionSources
     }
 
     @Override
     Class<?> getObjectType() {
-        return ConnectionSources
+        ConnectionSources
     }
 
     @Override
     boolean isSingleton() {
-        return true
+        true
     }
 
     @Override
