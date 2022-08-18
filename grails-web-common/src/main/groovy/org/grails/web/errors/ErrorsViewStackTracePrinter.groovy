@@ -34,7 +34,7 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
 
     @Override
     protected boolean shouldSkipNextCause(Throwable e) {
-        return super.shouldSkipNextCause(e)
+        super.shouldSkipNextCause(e)
     }
 
     @Override
@@ -42,7 +42,7 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
         if (t instanceof GrailsWrappedRuntimeException) {
             t = t.cause
         }
-        return super.prettyPrint(t)
+        super.prettyPrint(t)
     }
 
     @Override
@@ -50,7 +50,7 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
         if (t instanceof GrailsWrappedRuntimeException) {
             t = t.cause
         }
-        return super.prettyPrintCodeSnippet(t)
+        super.prettyPrintCodeSnippet(t)
     }
 
     @Override
@@ -88,7 +88,7 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
 
     @Override
     protected int getLineNumberInfo(Throwable cause, int defaultInfo) {
-        return super.getLineNumberInfo(cause, defaultInfo)
+        super.getLineNumberInfo(cause, defaultInfo)
     }
 
 }

@@ -45,7 +45,7 @@ trait ServletAttributes implements WebAttributes {
 
     @Generated
     HttpSession getSession() {
-        return currentRequestAttributes().getSession()
+        currentRequestAttributes().getSession()
     }
 
     /**

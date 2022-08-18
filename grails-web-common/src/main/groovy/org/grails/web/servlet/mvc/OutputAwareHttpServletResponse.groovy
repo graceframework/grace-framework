@@ -25,13 +25,13 @@ class OutputAwareHttpServletResponse extends HttpServletResponseWrapper {
 
     @Override
     PrintWriter getWriter() throws IOException {
-        return super.getWriter()
+        super.getWriter()
     }
 
     @Override
     ServletOutputStream getOutputStream() throws IOException {
         writerAvailable = false
-        return super.getOutputStream()
+        super.getOutputStream()
     }
 
 }

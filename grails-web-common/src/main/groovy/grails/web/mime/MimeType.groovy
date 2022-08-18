@@ -82,7 +82,7 @@ class MimeType {
      * @return The quality of the Mime type
      */
     String getQuality() {
-        return parameters.q ?: QUALITY_RATING
+        parameters.q ?: QUALITY_RATING
     }
 
     /**
@@ -92,14 +92,14 @@ class MimeType {
         if (this.qualityNumberField == null) {
             this.qualityNumberField = getOrConvertQualityParameterToBigDecimal(this)
         }
-        return this.qualityNumberField
+        this.qualityNumberField
     }
 
     /**
      * @return The version of the Mime type
      */
     String getVersion() {
-        return parameters.v ?: null
+        parameters.v ?: null
     }
 
     boolean equals(o) {
@@ -120,13 +120,13 @@ class MimeType {
             return false
         }
 
-        return true
+        true
     }
 
     int hashCode() {
         def result = name.hashCode()
         result = 31 * result + (version != null ? version.hashCode() : 0)
-        return result
+        result
     }
 
     String toString() {
@@ -165,11 +165,9 @@ class MimeType {
             if (q == null) {
                 return QUALITY_RATING_NUMBER
             }
-            else {
-                bd = q.toString().toBigDecimal()
-                // replace to avoid expensive conversion again
-                mt.parameters.q = bd
-            }
+            bd = q.toString().toBigDecimal()
+            // replace to avoid expensive conversion again
+            mt.parameters.q = bd
             return bd
         } catch (NumberFormatException e) {
             bd = QUALITY_RATING_NUMBER

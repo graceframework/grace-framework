@@ -48,12 +48,9 @@ class ServletEnvironmentGrailsApplicationDiscoveryStrategy implements GrailsAppl
         if (context) {
             return context.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication)
         }
-        else {
-            def webReq = GrailsWebRequest.lookup()
-            if (webReq) {
-                webReq.applicationContext?.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication)
-            }
-        }
+
+        def webReq = GrailsWebRequest.lookup()
+        webReq?.applicationContext?.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication)
     }
 
     @Override
@@ -68,7 +65,7 @@ class ServletEnvironmentGrailsApplicationDiscoveryStrategy implements GrailsAppl
         if (context) {
             return context
         }
-        return GrailsWebRequest.lookup()?.applicationContext
+        GrailsWebRequest.lookup()?.applicationContext
     }
 
 }

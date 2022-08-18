@@ -27,7 +27,7 @@ class CompositeViewResolver {
                 return view
             }
         }
-        return null
+        null
     }
 
 }

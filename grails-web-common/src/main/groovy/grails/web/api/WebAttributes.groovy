@@ -95,7 +95,7 @@ trait WebAttributes {
     String getPluginContextPath() {
         GrailsPluginManager manager = getGrailsApplication().getMainContext().getBean(GrailsPluginManager)
         final String pluginPath = manager ? manager.getPluginPathForInstance(this) : null
-        return pluginPath ?: ""
+        pluginPath ?: ""
     }
 
     /**

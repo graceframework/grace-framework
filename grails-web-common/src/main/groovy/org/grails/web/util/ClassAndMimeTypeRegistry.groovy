@@ -70,7 +70,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             registeredObjects = new ConcurrentLinkedQueue<R>()
             registeredObjectsByType.put(targetType, registeredObjects)
         }
-        return registeredObjects
+        registeredObjects
     }
 
     R findMatchingObjectForMimeType(MimeType mimeType, object) {
@@ -118,7 +118,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
         else if (NULL_RESOLVE.is(registeredObject)) {
             return null
         }
-        return registeredObject
+        registeredObject
     }
 
     protected R findRegisteredObjectForType(Class currentClass, MimeType mimeType) {
