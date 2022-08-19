@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ class MD5BytesCodecExtensionMethods {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
-        DigestUtils.digest("MD5", theTarget)
+        DigestUtils.digest('MD5', theTarget)
     }
 
     static decodeMD5Bytes(theTarget) {
-        throw new UnsupportedOperationException("Cannot decode MD5 hashes")
+        throw new UnsupportedOperationException('Cannot decode MD5 hashes')
     }
 
 }

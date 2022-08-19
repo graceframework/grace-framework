@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@ class SHA1BytesCodecExtensionMethods {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
-        DigestUtils.digest("SHA-1", theTarget)
+        DigestUtils.digest('SHA-1', theTarget)
     }
 
     static decodeSHA1Bytes(theTarget) {
-        throw new UnsupportedOperationException("Cannot decode SHA-1 hashes")
+        throw new UnsupportedOperationException('Cannot decode SHA-1 hashes')
     }
 
 }

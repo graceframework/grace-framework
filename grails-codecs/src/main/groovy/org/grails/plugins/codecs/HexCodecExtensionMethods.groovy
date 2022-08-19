@@ -29,7 +29,7 @@ class HexCodecExtensionMethods {
 
         def result = new StringBuilder()
         if (theTarget instanceof String) {
-            theTarget = theTarget.getBytes("UTF-8")
+            theTarget = theTarget.getBytes('UTF-8')
         }
         theTarget.each() {
             result << HexCodecExtensionMethods.HEXDIGITS[(it & 0xF0) >> 4]
@@ -47,7 +47,7 @@ class HexCodecExtensionMethods {
 
         def str = theTarget.toString().toLowerCase()
         if (str.size() % 2) {
-            throw new UnsupportedOperationException("Decode of hex strings requires strings of even length")
+            throw new UnsupportedOperationException('Decode of hex strings requires strings of even length')
         }
 
         def currentByte

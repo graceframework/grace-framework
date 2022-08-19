@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ abstract class DigestUtils {
             data.eachWithIndex { v, i -> src[i] = v }
         }
         else {
-            src = data.toString().getBytes("UTF-8")
+            src = data.toString().getBytes('UTF-8')
         }
         md.update(src) // This probably needs to use the thread's Locale encoding
         md.digest()
