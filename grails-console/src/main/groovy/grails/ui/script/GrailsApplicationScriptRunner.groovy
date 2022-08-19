@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
         }
 
         def binding = new Binding()
-        binding.setVariable("ctx", ctx)
+        binding.setVariable('ctx', ctx)
 
         Config config = ctx.getBean('grailsApplication', GrailsApplication).config
         String defaultPackageKey = 'grails.codegen.defaultPackage'
@@ -106,7 +106,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
             try {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
             } catch (Throwable e) {
-                System.err.println("Application class not found")
+                System.err.println('Application class not found')
                 System.exit(1)
             }
             String[] scriptNames = args.init() as String[]
@@ -123,7 +123,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
 
             new GrailsApplicationScriptRunner(scripts, applicationClass).run(args)
         } else {
-            System.err.println("Missing application class name and script name arguments")
+            System.err.println('Missing application class name and script name arguments')
             System.exit(1)
         }
     }

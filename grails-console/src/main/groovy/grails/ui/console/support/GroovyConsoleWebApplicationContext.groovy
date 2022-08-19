@@ -1,13 +1,5 @@
-package grails.ui.console.support
-
-import grails.core.GrailsApplication
-import grails.persistence.support.PersistenceContextInterceptor
-import grails.ui.support.DevelopmentWebApplicationContext
-import groovy.transform.CompileStatic
-import groovy.transform.InheritConstructors
-
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +13,13 @@ import groovy.transform.InheritConstructors
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package grails.ui.console.support
+
+import grails.core.GrailsApplication
+import grails.persistence.support.PersistenceContextInterceptor
+import grails.ui.support.DevelopmentWebApplicationContext
+import groovy.transform.CompileStatic
+import groovy.transform.InheritConstructors
 
 /**
  * A {@org.springframework.web.context.WebApplicationContext} for use in the embedded Grails console
@@ -40,7 +39,7 @@ class GroovyConsoleWebApplicationContext extends DevelopmentWebApplicationContex
 
     protected void startConsole() {
         Binding binding = new Binding()
-        binding.setVariable("ctx", this)
+        binding.setVariable('ctx', this)
         binding.setVariable(GrailsApplication.APPLICATION_ID, getBean(GrailsApplication))
 
         final GroovyConsoleWebApplicationContext self = this

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.springframework.util.ClassUtils
 class GrailsSwingConsole extends GrailsApp {
 
     static {
-        System.setProperty("java.awt.headless", "false")
+        System.setProperty('java.awt.headless', 'false')
     }
 
     GrailsSwingConsole(Class<?>... sources) {
@@ -48,7 +48,7 @@ class GrailsSwingConsole extends GrailsApp {
     }
 
     void configureApplicationContextClass() {
-        if (ClassUtils.isPresent("javax.servlet.ServletContext", Thread.currentThread().contextClassLoader)) {
+        if (ClassUtils.isPresent('javax.servlet.ServletContext', Thread.currentThread().contextClassLoader)) {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleWebApplicationContext))
         } else {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleApplicationContext))
@@ -88,7 +88,7 @@ class GrailsSwingConsole extends GrailsApp {
             new GrailsSwingConsole(applicationClass).run(args)
         }
         else {
-            System.err.println("Missing application class name argument")
+            System.err.println('Missing application class name argument')
         }
     }
 

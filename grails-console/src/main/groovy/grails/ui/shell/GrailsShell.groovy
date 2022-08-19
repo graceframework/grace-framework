@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ class GrailsShell extends GrailsApp {
     }
 
     private void configureApplicationContextClass() {
-        if (ClassUtils.isPresent("javax.servlet.ServletContext", Thread.currentThread().contextClassLoader)) {
+        if (ClassUtils.isPresent('javax.servlet.ServletContext', Thread.currentThread().contextClassLoader)) {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyshWebApplicationContext))
         } else {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyshApplicationContext))
@@ -86,7 +86,7 @@ class GrailsShell extends GrailsApp {
             new GrailsShell(applicationClass).run(args)
         }
         else {
-            System.err.println("Missing application class name argument")
+            System.err.println('Missing application class name argument')
         }
     }
 
