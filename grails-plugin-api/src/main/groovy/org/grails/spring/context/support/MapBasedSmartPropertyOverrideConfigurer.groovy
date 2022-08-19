@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
         for (beanName in beans.keySet()) {
             def beanProperties = beans.get(beanName)
             if (!(beanProperties instanceof Map)) {
-                throw new IllegalArgumentException("Entry in bean config for bean '" + beanName + "' must be a Map")
+                throw new IllegalArgumentException("Entry in bean config for bean '$beanName' must be a Map")
             }
             else {
                 final beanPropertiesMap = (Map) beanProperties
@@ -70,7 +70,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected Map<String, Object> getBeansConfig() {
-        grailsApplication?.config?.getProperty("beans", Map)
+        grailsApplication?.config?.getProperty('beans', Map)
     }
 
     protected ClassLoader getClassLoader() {
@@ -114,7 +114,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
 
         if (TransactionProxyFactoryBean.isAssignableFrom(beanClass)) {
             getTargetBeanDefinition(factory, beanName,
-                    (BeanDefinition)beanDefinition.propertyValues.getPropertyValue("target").value)
+                    (BeanDefinition)beanDefinition.propertyValues.getPropertyValue('target').value)
         }
         else {
             beanDefinition
