@@ -36,8 +36,8 @@ import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
 @Slf4j
 class DomainClassGrailsPlugin extends Plugin {
 
-    def watchedResources = ["file:./grails-app/domain/**/*.groovy",
-                            "file:./plugins/*/grails-app/domain/**/*.groovy"]
+    def watchedResources = ['file:./grails-app/domain/**/*.groovy',
+                            'file:./plugins/*/grails-app/domain/**/*.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [i18n: version]
@@ -47,9 +47,9 @@ class DomainClassGrailsPlugin extends Plugin {
             GrailsApplication application = grailsApplication
             validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
                 bean.lazyInit = true
-                bean.role = "infrastructure"
+                bean.role = 'infrastructure'
             }
-            "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref("validateableConstraintsEvaluator")) { bean ->
+            "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref('validateableConstraintsEvaluator')) { bean ->
                 bean.lazyInit = true
             }
             grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext) { bean ->
@@ -60,7 +60,7 @@ class DomainClassGrailsPlugin extends Plugin {
             }
 
             def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
-            log.info(String.format("Found %d Domains", domainClasses.size()))
+            log.info(String.format('Found %d Domains', domainClasses.size()))
         }
     }
 
