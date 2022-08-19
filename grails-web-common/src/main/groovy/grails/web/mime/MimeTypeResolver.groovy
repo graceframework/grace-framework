@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
  * @author Graeme Rocher
  * @since 2.3
  */
-public interface MimeTypeResolver {
+interface MimeTypeResolver {
 
-    String BEAN_NAME = "mimeTypeResolver"
+    String BEAN_NAME = 'mimeTypeResolver'
 
     /**
      * @return The response format requested by the client
