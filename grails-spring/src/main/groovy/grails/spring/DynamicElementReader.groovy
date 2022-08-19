@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ class DynamicElementReader extends GroovyObjectSupport {
             invokeAfterInterceptor = true
             firstCall = false
         }
-        if (name.equals("doCall")) {
+        if (name == 'doCall') {
             def callable = args[0]
             callable.resolveStrategy = Closure.DELEGATE_FIRST
             callable.delegate = this
