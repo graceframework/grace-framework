@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import org.grails.cli.profile.ProfileCommand
  */
 class ExecuteStep extends AbstractStep {
 
-    public static final String NAME = "execute"
-    public static final String CLASS_NAME = "class"
+    public static final String NAME = 'execute'
+    public static final String CLASS_NAME = 'class'
 
     Command target
 

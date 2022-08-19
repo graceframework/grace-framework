@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,23 +29,23 @@ import org.grails.cli.profile.Profile
 @CompileStatic
 class CreatePluginCommand extends CreateAppCommand {
 
-    public static final String NAME = "create-plugin"
+    public static final String NAME = 'create-plugin'
 
     CreatePluginCommand() {
-        description.description = "Creates a plugin"
-        description.usage = "create-plugin [NAME]"
+        description.description = 'Creates a plugin'
+        description.usage = 'create-plugin [NAME]'
     }
 
     @Override
     protected void populateDescription() {
-        description.argument(name: "Plugin Name", description: "The name of the plugin to create.", required: false)
+        description.argument(name: 'Plugin Name', description: 'The name of the plugin to create.', required: false)
     }
 
     @Override
     String getName() { NAME }
 
     @Override
-    protected String getDefaultProfile() { "web-plugin" }
+    protected String getDefaultProfile() { 'web-plugin' }
 
     protected boolean validateProfile(Profile profileInstance, String profileName, ExecutionContext executionContext) {
         def pluginProfile = profileInstance.extends.find() { Profile parent -> parent.name == 'plugin' }

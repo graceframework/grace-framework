@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
     T call() throws Exception {
         def depsFile = new File(BuildSettings.TARGET_DIR, fileName)
         try {
-            if (depsFile.exists() && depsFile.lastModified() > new File(projectContext.baseDir, "build.gradle").lastModified()) {
+            if (depsFile.exists() && depsFile.lastModified() > new File(projectContext.baseDir, 'build.gradle').lastModified()) {
                 T cached = readFromCached(depsFile)
                 if (cached) {
                     return cached

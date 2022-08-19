@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class GrailsDependencyVersions implements DependencyManagement {
     }
 
     GrailsDependencyVersions(GrapeEngine grape) {
-        this(grape, [group: "org.grails", module: "grails-bom", version: GrailsDependencyVersions.package.implementationVersion, type: "pom"])
+        this(grape, [group: 'org.grails', module: 'grails-bom', version: GrailsDependencyVersions.package.implementationVersion, type: 'pom'])
     }
 
     GrailsDependencyVersions(GrapeEngine grape, Map<String, String> bomCoords) {
@@ -61,7 +61,7 @@ class GrailsDependencyVersions implements DependencyManagement {
 
     static GrapeEngine getDefaultEngine() {
         def grape = Grape.getInstance()
-        grape.addResolver([name: "grailsCentral", root: "https://repo.grails.org/grails/core"] as Map<String, Object>)
+        grape.addResolver([name: 'grailsCentral', root: 'https://repo.grails.org/grails/core'] as Map<String, Object>)
         grape
     }
 
@@ -97,7 +97,7 @@ class GrailsDependencyVersions implements DependencyManagement {
 
     @Override
     String getSpringBootVersion() {
-        find("spring-boot").getVersion()
+        find('spring-boot').getVersion()
     }
 
     @Override

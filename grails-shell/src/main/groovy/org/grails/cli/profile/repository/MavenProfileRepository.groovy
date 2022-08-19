@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.springframework.boot.cli.compiler.grape.DependencyResolutionFailedExc
 class MavenProfileRepository extends AbstractJarProfileRepository {
 
     public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration(
-            "grailsCentral", new URI("https://repo.grails.org/grails/core"), true)
+            'grailsCentral', new URI('https://repo.grails.org/grails/core'), true)
 
     List<GrailsRepositoryConfiguration> repositoryConfigurations
     AetherGrapeEngine grapeEngine
@@ -85,7 +85,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         try {
             grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
         } catch (DependencyResolutionFailedException e) {
-            def localData = new File(System.getProperty("user.home"),
+            def localData = new File(System.getProperty('user.home'),
                     "/.m2/repository/${art.groupId.replace('.', '/')}/$art.artifactId/maven-metadata-local.xml")
             if (localData.exists()) {
                 def currentVersion = parseCurrentVersion(localData)
@@ -123,7 +123,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         if (!resolved) {
             List<Map> profiles = []
             resolutionContext.managedDependencies.each { Dependency dep ->
-                if (dep.artifact.groupId == "org.grails.profiles") {
+                if (dep.artifact.groupId == 'org.grails.profiles') {
                     profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId])
                 }
             }
@@ -133,11 +133,11 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 grapeEngine.grab(profile)
             }
 
-            def localData = new File(System.getProperty("user.home"), "/.m2/repository/org/grails/profiles")
+            def localData = new File(System.getProperty('user.home'), '/.m2/repository/org/grails/profiles')
             if (localData.exists()) {
                 localData.eachDir { File dir ->
                     if (!dir.name.startsWith('.')) {
-                        def profileData = new File(dir, "/maven-metadata-local.xml")
+                        def profileData = new File(dir, '/maven-metadata-local.xml')
                         if (profileData.exists()) {
                             def currentVersion = parseCurrentVersion(profileData)
                             def profileFile = new File(dir, "$currentVersion/${dir.name}-${currentVersion}.jar")

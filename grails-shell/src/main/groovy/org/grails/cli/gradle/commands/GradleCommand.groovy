@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,10 @@ import org.grails.cli.profile.ProjectContextAware
 @CompileStatic
 class GradleCommand implements ProjectCommand, Completer, ProjectContextAware {
 
-    public static final String GRADLE = "gradle"
+    public static final String GRADLE = 'gradle'
 
     final String name = GRADLE
-    final CommandDescription description = new CommandDescription(name, "Allows running of Gradle tasks", "gradle [task name]")
+    final CommandDescription description = new CommandDescription(name, 'Allows running of Gradle tasks', 'gradle [task name]')
     ProjectContext projectContext
 
     private ReadGradleTasks readTasks

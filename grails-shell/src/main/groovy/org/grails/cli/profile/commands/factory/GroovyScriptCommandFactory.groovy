@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.nio.charset.StandardCharsets
 @CompileStatic
 class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyScriptCommand> {
 
-    final Collection<String> matchingFileExtensions = ["groovy"]
+    final Collection<String> matchingFileExtensions = ['groovy']
     final String fileNamePattern = /^.*\.(groovy)$/
 
     @Override
@@ -65,9 +65,9 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
         configuration.setScriptBaseClass(baseClassName)
 
         def importCustomizer = new ImportCustomizer()
-        importCustomizer.addStarImports("org.grails.cli.interactive.completers")
-        importCustomizer.addStarImports("grails.util")
-        importCustomizer.addStarImports("grails.codegen.model")
+        importCustomizer.addStarImports('org.grails.cli.interactive.completers')
+        importCustomizer.addStarImports('grails.util')
+        importCustomizer.addStarImports('grails.codegen.model')
         configuration.addCompilationCustomizers(importCustomizer, new ASTTransformationCustomizer(new GroovyScriptCommandTransform()))
         def classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader, configuration)
         classLoader

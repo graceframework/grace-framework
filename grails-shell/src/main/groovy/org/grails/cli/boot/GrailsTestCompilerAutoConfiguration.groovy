@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,17 +32,18 @@ import org.springframework.boot.cli.compiler.DependencyCustomizer
 class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     public static final String[] DEFAULT_IMPORTS = [
-        "spock.lang",
-        "grails.test.mixin",
-        "grails.test.mixin.integration",
-        "grails.test.mixin.support",
-        "grails.artefact" ] as String[]
+        'spock.lang',
+        'grails.test.mixin',
+        'grails.test.mixin.integration',
+        'grails.test.mixin.support',
+        'grails.artefact'
+    ] as String[]
 
     ClassNode lastMatch = null
 
     @Override
     boolean matches(ClassNode classNode) {
-        def matches = AstUtils.subclasses(classNode, "Specification")
+        def matches = AstUtils.subclasses(classNode, 'Specification')
         if (matches) {
             lastMatch = classNode
         }
@@ -58,8 +59,8 @@ class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
     void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
         if (lastMatch != null) {
             def annotation = GrailsApplicationCompilerAutoConfiguration.createGrabAnnotation(
-                    "org.grails",
-                    "grails-plugin-testing",
+                    'org.grails',
+                    'grails-plugin-testing',
                     Environment.getPackage().getImplementationVersion(), null, null, true)
             lastMatch.addAnnotation(annotation)
         }

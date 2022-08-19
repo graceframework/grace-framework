@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ trait ServerInteraction {
      * @param host The host
      * @param port The port
      */
-    void waitForStartup(String host = "localhost", int port = 8080) {
+    void waitForStartup(String host = 'localhost', int port = 8080) {
         while (!isServerAvailable(host, port)) {
             sleep 100
         }
@@ -49,7 +49,7 @@ trait ServerInteraction {
      * @param host The host
      * @param port The port
      */
-    boolean isServerAvailable(String host = "localhost", int port = 8080) {
+    boolean isServerAvailable(String host = 'localhost', int port = 8080) {
         try {
             new Socket(host, port)
             return true

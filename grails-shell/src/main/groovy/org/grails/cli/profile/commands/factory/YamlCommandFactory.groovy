@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
     // LAX parser for JSON: http://mrhaki.blogspot.ie/2014/08/groovy-goodness-relax-groovy-will-parse.html
     protected JsonSlurper jsonSlurper = new JsonSlurper().setType(JsonParserType.LAX)
 
-    final Collection<String> matchingFileExtensions = ["yml", "json"]
+    final Collection<String> matchingFileExtensions = ['yml', 'json']
     final String fileNamePattern = /^.*\.(yml|json)$/
 
     @Override
@@ -49,7 +49,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
         try {
             is = resource.inputStream
             if (resource.filename.endsWith('.json')) {
-                data = jsonSlurper.parse(is, "UTF-8") as Map
+                data = jsonSlurper.parse(is, 'UTF-8') as Map
             } else {
                 data = yamlParser.<Map>load(is)
             }

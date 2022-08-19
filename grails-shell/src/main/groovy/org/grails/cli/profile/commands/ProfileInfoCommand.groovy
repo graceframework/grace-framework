@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,12 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
     public static final String NAME = 'profile-info'
 
     final String name = NAME
-    final CommandDescription description = new CommandDescription(name, "Display information about a given profile")
+    final CommandDescription description = new CommandDescription(name, 'Display information about a given profile')
 
     ProfileRepository profileRepository
 
     ProfileInfoCommand() {
-        description.argument(name: "Profile Name", description: "The name or coordinates of the profile", required: true)
+        description.argument(name: 'Profile Name', description: 'The name or coordinates of the profile', required: true)
     }
 
     void setProfileRepository(ProfileRepository profileRepository) {
@@ -55,7 +55,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
     boolean handle(ExecutionContext executionContext) {
         def console = executionContext.console
         if (profileRepository == null) {
-            console.error("No profile repository provided")
+            console.error('No profile repository provided')
             return false
         }
 
@@ -101,7 +101,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
 
             @Override
             File getBaseDir() {
-                new File(".")
+                new File('.')
             }
 
             @Override
@@ -115,7 +115,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             }
 
             @Override
-            def <T> T navigateConfigForType(Class<T> requiredType, String... path) {
+            <T> T navigateConfigForType(Class<T> requiredType, String... path) {
                 (T) config.navigate(path)
             }
 

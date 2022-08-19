@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ class DefaultFeature implements Feature {
         this.profile = profile
         this.name = name
         this.location = location
-        def featureYml = location.createRelative("feature.yml")
+        def featureYml = location.createRelative('feature.yml')
         Map<String, Object> featureConfig = new Yaml(new SafeConstructor()).<Map<String, Object>>load(featureYml.getInputStream())
         configuration.merge(featureConfig)
-        def dependenciesConfig = configuration.get("dependencies")
+        def dependenciesConfig = configuration.get('dependencies')
 
         if (dependenciesConfig instanceof List) {
             for (entry in ((List) dependenciesConfig)) {
@@ -68,27 +68,27 @@ class DefaultFeature implements Feature {
                 }
             }
         }
-        this.buildPlugins = (List<String>) configuration.get("build.plugins", [])
-        this.buildRepositories = (List<String>) configuration.get("build.repositories", [])
+        this.buildPlugins = (List<String>) configuration.get('build.plugins', [])
+        this.buildRepositories = (List<String>) configuration.get('build.repositories', [])
     }
 
     @Override
     String getDescription() {
-        configuration.get("description", '').toString()
+        configuration.get('description', '').toString()
     }
 
     static boolean isSupportedOs(String os) {
         os = os.toLowerCase(Locale.ENGLISH).trim()
-        String osName = System.getProperty("os.name")?.toLowerCase(Locale.ENGLISH) ?: "unix"
+        String osName = System.getProperty('os.name')?.toLowerCase(Locale.ENGLISH) ?: 'unix'
         switch (os) {
-            case "windows":
-                return osName.contains("windows")
-            case "osx":
-                return osName.contains("mac os x") || osName.contains("darwin") || osName.contains("osx")
-            case "unix":
-                return osName.contains("mac os x") || osName.contains("darwin") || osName.contains("osx") ||
-                        osName.contains("sunos") || osName.contains("solaris") || osName.contains("linux") ||
-                        osName.contains("freebsd")
+            case 'windows':
+                return osName.contains('windows')
+            case 'osx':
+                return osName.contains('mac os x') || osName.contains('darwin') || osName.contains('osx')
+            case 'unix':
+                return osName.contains('mac os x') || osName.contains('darwin') || osName.contains('osx') ||
+                        osName.contains('sunos') || osName.contains('solaris') || osName.contains('linux') ||
+                        osName.contains('freebsd')
             default:
                 return false
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class GradleStep extends AbstractStep {
             'verbose': '-d'
     ]
     protected List<String> tasks = []
-    protected String baseArguments = ""
+    protected String baseArguments = ''
     protected boolean passArguments = true
 
     GradleStep(ProfileCommand command, Map<String, Object> parameters) {
@@ -49,7 +49,9 @@ class GradleStep extends AbstractStep {
     }
 
     @Override
-    String getName() { "gradle" }
+    String getName() {
+        'gradle'
+    }
 
     @Override
     boolean handle(ExecutionContext context) {

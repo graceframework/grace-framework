@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,20 +58,20 @@ class GradleDependency {
         }
         artifactString.append('"')
 
-        def ln = System.getProperty("line.separator")
+        def ln = System.getProperty('line.separator')
 
         if (dependency.exclusions != null && !dependency.exclusions.empty) {
-            artifactString.append(") {").append(ln)
+            artifactString.append(') {').append(ln)
             for (e in dependency.exclusions) {
-                artifactString.append("    ")
-                        .append("exclude")
+                artifactString.append('    ')
+                        .append('exclude')
 
-                artifactString.append(" group: ").append('"').append(e.groupId).append('",')
-                artifactString.append(" module: ").append('"').append(e.artifactId).append('"')
+                artifactString.append(' group: ').append('"').append(e.groupId).append('",')
+                artifactString.append(' module: ').append('"').append(e.artifactId).append('"')
 
                 artifactString.append(ln)
             }
-            artifactString.append("}")
+            artifactString.append('}')
         }
         this.dependency = artifactString.toString()
     }

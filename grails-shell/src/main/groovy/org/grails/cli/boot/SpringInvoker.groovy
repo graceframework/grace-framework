@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.springframework.boot.cli.command.CommandRunner
 @CompileStatic
 class SpringInvoker {
 
-    CommandRunner runner = new CommandRunner("spring")
+    CommandRunner runner = new CommandRunner('spring')
 
     private SpringInvoker() {
         addServiceLoaderCommands(runner)
@@ -67,7 +67,7 @@ class SpringInvoker {
 
         @Override
         Enumeration<URL> getResources(String name) throws IOException {
-            if ("org/slf4j/impl/StaticLoggerBinder.class" == name) {
+            if ('org/slf4j/impl/StaticLoggerBinder.class' == name) {
                 def resources = super.getResources(name)
                 def oneRes = (URL)resources.find() { URL url -> !url.toString().contains('slf4j-simple') }
                 if (oneRes) {

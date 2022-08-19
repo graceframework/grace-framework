@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,7 +195,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 if (t == null) {
                     try {
                         def templateEngine = new GStringTemplateEngine()
-                        def reader = new InputStreamReader(template.inputStream, "UTF-8")
+                        def reader = new InputStreamReader(template.inputStream, 'UTF-8')
                         try {
                             t = templateEngine.createTemplate(reader)
                         } finally {
@@ -267,7 +267,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 }
             }
             if (!f?.exists()) {
-                return resource("classpath*:META-INF/templates/" + location)
+                return resource("classpath*:META-INF/templates/$location")
             }
         }
         resource(f)
@@ -275,7 +275,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
 
     private static void writeTemplateToDestination(Template template, Map model, File destination) {
         destination.parentFile.mkdirs()
-        destination.withWriter("UTF-8") { Writer w ->
+        destination.withWriter('UTF-8') { Writer w ->
             template.make(model).writeTo(w)
             w.flush()
         }

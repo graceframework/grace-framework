@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ import java.awt.Desktop
 @CompileStatic
 class OpenCommand implements ProjectCommand, Completer {
 
-    public static final String NAME = "open"
+    public static final String NAME = 'open'
 
     @Override
     String getName() {
         NAME
     }
 
-    CommandDescription description = new CommandDescription(NAME, "Opens a file in the project", "open [FILE PATH]")
+    CommandDescription description = new CommandDescription(NAME, 'Opens a file in the project', 'open [FILE PATH]')
 
     @Override
     boolean handle(ExecutionContext executionContext) {
@@ -55,7 +55,7 @@ class OpenCommand implements ProjectCommand, Completer {
                 }
             }
             else {
-                executionContext.console.error("File opening not supported by JVM, use native OS command")
+                executionContext.console.error('File opening not supported by JVM, use native OS command')
             }
         }
         else {

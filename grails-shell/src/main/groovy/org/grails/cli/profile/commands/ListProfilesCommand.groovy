@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 
 /**
- * Lists the available {@link org.grails.cli.profile.Profile} instances 
+ * Lists the available {@link org.grails.cli.profile.Profile} instances
  *
  * @author Graeme Rocher
  * @since 3.0
@@ -32,8 +32,8 @@ import org.grails.cli.profile.ProfileRepositoryAware
 @CompileStatic
 class ListProfilesCommand implements Command, ProfileRepositoryAware {
 
-    final String name = "list-profiles"
-    final CommandDescription description = new CommandDescription(name, "Lists the available profiles", "grails list-profiles")
+    final String name = 'list-profiles'
+    final CommandDescription description = new CommandDescription(name, 'Lists the available profiles', 'grails list-profiles')
 
     ProfileRepository profileRepository
 
@@ -41,7 +41,7 @@ class ListProfilesCommand implements Command, ProfileRepositoryAware {
     boolean handle(ExecutionContext executionContext) {
         def allProfiles = profileRepository.allProfiles
         def console = executionContext.console
-        console.addStatus("Available Profiles")
+        console.addStatus('Available Profiles')
         console.log('--------------------')
         for (Profile p in allProfiles) {
             console.log("* $p.name - ${p.description}")

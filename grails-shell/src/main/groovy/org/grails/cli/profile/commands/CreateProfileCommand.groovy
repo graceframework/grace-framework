@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,22 +23,22 @@ package org.grails.cli.profile.commands
  */
 class CreateProfileCommand extends CreateAppCommand {
 
-    public static final String NAME = "create-profile"
+    public static final String NAME = 'create-profile'
 
     CreateProfileCommand() {
-        description.description = "Creates a profile"
-        description.usage = "create-profile [NAME]"
+        description.description = 'Creates a profile'
+        description.usage = 'create-profile [NAME]'
     }
 
     @Override
     protected void populateDescription() {
-        description.argument(name: "Profile Name", description: "The name of the plugin to create.", required: false)
+        description.argument(name: 'Profile Name', description: 'The name of the plugin to create.', required: false)
     }
 
     @Override
     String getName() { NAME }
 
     @Override
-    protected String getDefaultProfile() { "profile" }
+    protected String getDefaultProfile() { 'profile' }
 
 }

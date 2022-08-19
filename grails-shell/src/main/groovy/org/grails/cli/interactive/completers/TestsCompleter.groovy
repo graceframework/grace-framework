@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ import org.grails.io.support.Resource
 class TestsCompleter  extends ClassNameCompleter {
 
     TestsCompleter() {
-        super(new File(BuildSettings.BASE_DIR, "src/test/groovy"), new File(BuildSettings.BASE_DIR, "src/integration-test/groovy"))
+        super(new File(BuildSettings.BASE_DIR, 'src/test/groovy'),
+                new File(BuildSettings.BASE_DIR, 'src/integration-test/groovy'))
     }
 
     @Override

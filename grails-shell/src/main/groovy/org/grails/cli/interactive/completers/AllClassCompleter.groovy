@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import grails.util.BuildSettings
 class AllClassCompleter extends ClassNameCompleter {
 
     AllClassCompleter() {
-        super(new File(BuildSettings.BASE_DIR, "grails-app")
+        super(new File(BuildSettings.BASE_DIR, 'grails-app')
                         ?.listFiles()
                         ?.findAll() { File f -> f.isDirectory() && !f.isHidden() && !f.name.startsWith('.') } as File[])
     }
