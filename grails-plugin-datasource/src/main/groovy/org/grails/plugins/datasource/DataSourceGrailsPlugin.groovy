@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,8 +71,8 @@ class DataSourceGrailsPlugin extends Plugin {
                     }
                 }
                 if (dataSources) {
-                    "dataSourceConnectionSources"(DataSourceConnectionSourcesFactoryBean, grailsApplication.config)
-                    "dataSource"(InstanceFactoryBean, "#{dataSourceConnectionSources.defaultConnectionSource.source}", DataSource)
+                    dataSourceConnectionSources(DataSourceConnectionSourcesFactoryBean, grailsApplication.config)
+                    dataSource(InstanceFactoryBean, '#{dataSourceConnectionSources.defaultConnectionSource.source}', DataSource)
                 }
             }
 
@@ -88,7 +88,7 @@ class DataSourceGrailsPlugin extends Plugin {
                     }
                 } catch (e) {
                     if (!Environment.isDevelopmentMode() && Environment.isWarDeployed()) {
-                        log.warn("Cannot locate JMX MBeanServer. Disabling autoregistering dataSource pools to JMX.", e)
+                        log.warn('Cannot locate JMX MBeanServer. Disabling autoregistering dataSource pools to JMX.', e)
                     }
                 }
             }
