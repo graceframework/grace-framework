@@ -1,4 +1,5 @@
-/* Copyright 2004-2022 the original author or authors.
+/*
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -388,7 +389,7 @@ class DocPublisher {
             // pass attributes to asciidoc
             ((AsciiDocEngine) engine).attributes.putAll(
                     version: version,
-                    apiDocs: 'http://docs.grails.org/${version}/api/',
+                    apiDocs: "http://docs.grails.org/${version}/api/",
                     sourceRepo: sourceRepo
             )
             ((AsciiDocEngine) engine).attributes.putAll(engineProperties)
