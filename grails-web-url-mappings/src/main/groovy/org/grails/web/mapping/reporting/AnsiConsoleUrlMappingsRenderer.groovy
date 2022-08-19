@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,10 +67,10 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
         for (controller in controllerNames) {
             if (controller == null) {
-                targetStream.println(header("Dynamic Mappings"))
+                targetStream.println(header('Dynamic Mappings'))
             }
             else {
-                targetStream.println(header("Controller", controller.toString()))
+                targetStream.println(header('Controller', controller.toString()))
             }
             final controllerUrlMappings = mappingsByController.get(controller)
             for (UrlMapping urlMapping in controllerUrlMappings) {
@@ -99,7 +99,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     protected String establishUrlPattern(UrlMapping urlMapping, boolean withAnsi = isAnsiEnabled, int padding = -1) {
         if (urlMapping instanceof ResponseCodeUrlMapping) {
-            def errorCode = "ERROR: " + ((ResponseCodeMappingData) urlMapping.urlData).responseCode
+            def errorCode = 'ERROR: ' + ((ResponseCodeMappingData) urlMapping.urlData).responseCode
             if (withAnsi) {
                 return padAnsi(error(errorCode), errorCode, padding)
             }
@@ -155,7 +155,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
     protected String padAnsi(String ansiString, String nonAnsiString, int padding) {
         def toPad = padding - nonAnsiString.length()
         if (toPad > 0) {
-            final padText = getPadding(" ", toPad)
+            final padText = getPadding(' ', toPad)
             return "${ansiString}$padText".toString()
         }
         ansiString.toString()
@@ -193,16 +193,16 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     String yellowBar() {
         if (isAnsiEnabled) {
-            return ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(YELLOW).a(" | ").a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(DEFAULT)
+            return ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(YELLOW).a(' | ').a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(DEFAULT)
         }
-        " | "
+        ' | '
     }
 
     String endBar() {
         if (isAnsiEnabled) {
-            return ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(YELLOW).a(" |").a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(DEFAULT)
+            return ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(YELLOW).a(' |').a(Ansi.Attribute.INTENSITY_BOLD_OFF).fg(DEFAULT)
         }
-        " |"
+        ' |'
     }
 
 }

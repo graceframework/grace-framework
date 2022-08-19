@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ class UrlMappingsReportCommand implements ApplicationCommand {
     @Override
     boolean handle(ExecutionContext executionContext) {
         try {
-            def urlMappings = applicationContext.getBean("grailsUrlMappingsHolder", UrlMappings)
+            def urlMappings = applicationContext.getBean('grailsUrlMappingsHolder', UrlMappings)
 
             UrlMappingsRenderer renderer = new AnsiConsoleUrlMappingsRenderer()
             renderer.render(urlMappings.getUrlMappings().toList())

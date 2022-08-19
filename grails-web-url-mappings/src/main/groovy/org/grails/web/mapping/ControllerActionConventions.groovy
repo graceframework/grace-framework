@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ package org.grails.web.mapping
  */
 class ControllerActionConventions {
 
-    static String ACTION_SAVE = "save"
-    static String ACTION_UPDATE = "update"
-    static String ACTION_SHOW = "show"
-    static String ACTION_INDEX = "index"
-    static String ACTION_DELETE = "delete"
-    static String ACTION_EDIT = "edit"
-    static String ACTION_CREATE = "create"
+    static String ACTION_INDEX = 'index'
+    static String ACTION_CREATE = 'create'
+    static String ACTION_SAVE = 'save'
+    static String ACTION_SHOW = 'show'
+    static String ACTION_EDIT = 'edit'
+    static String ACTION_UPDATE = 'update'
+    static String ACTION_DELETE = 'delete'
 
 }

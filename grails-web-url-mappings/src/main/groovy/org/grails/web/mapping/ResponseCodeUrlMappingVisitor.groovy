@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@ class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
     List<String> responseCodes = []
 
     void visitProperty(PropertyNode node) {
-        if (node?.name == "mappings") {
+        if (node?.name == 'mappings') {
             insideMapping = true
         }
         super.visitProperty(node)
-        if (node?.name == "mappings") {
+        if (node?.name == 'mappings') {
             insideMapping = false
         }
     }
