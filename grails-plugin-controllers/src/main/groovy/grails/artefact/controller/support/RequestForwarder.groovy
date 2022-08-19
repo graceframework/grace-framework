@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ trait RequestForwarder implements WebAttributes {
         webRequest.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, requestScope)
         webRequest.removeAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, requestScope)
         webRequest.removeAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, requestScope)
-        webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, requestScope)
+        webRequest.removeAttribute('grailsWebRequestFilter' + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, requestScope)
         try {
             dispatcher.forward(request, response)
             request.setAttribute(GrailsApplicationAttributes.FORWARD_ISSUED, true)
@@ -132,7 +132,7 @@ trait RequestForwarder implements WebAttributes {
             webRequest.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, requestScope)
             webRequest.removeAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, requestScope)
             webRequest.removeAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, requestScope)
-            webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, requestScope)
+            webRequest.removeAttribute('grailsWebRequestFilter' + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, requestScope)
         }
         fowardURI
     }

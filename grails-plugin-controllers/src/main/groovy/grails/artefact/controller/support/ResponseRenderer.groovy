@@ -101,7 +101,7 @@ trait ResponseRenderer extends WebAttributes {
 
     @Generated
     @Autowired(required = false)
-    @Qualifier("grailsMimeUtility")
+    @Qualifier('grailsMimeUtility')
     void setMimeUtility(MimeUtility mimeUtility) {
         this.mimeUtility = mimeUtility
     }
@@ -128,7 +128,7 @@ trait ResponseRenderer extends WebAttributes {
             response.writer.write object.inspect()
         }
         catch (IOException e) {
-            throw new ControllerExecutionException("I/O error obtaining response writer: " + e.getMessage(), e)
+            throw new ControllerExecutionException("I/O error obtaining response writer: ${e.getMessage()}", e)
         }
     }
 
@@ -176,7 +176,7 @@ trait ResponseRenderer extends WebAttributes {
     private void renderJsonInternal(HttpServletResponse response,
                                     @DelegatesTo(value = StreamingJsonBuilder.StreamingJsonDelegate,
                                             strategy = Closure.DELEGATE_FIRST) Closure callable) {
-        response.setContentType(GrailsWebUtil.getContentType(MimeType.JSON.getName(), response.getCharacterEncoding() ?: "UTF-8"))
+        response.setContentType(GrailsWebUtil.getContentType(MimeType.JSON.getName(), response.getCharacterEncoding() ?: 'UTF-8'))
         def jsonBuilder = new StreamingJsonBuilder(response.writer)
         jsonBuilder.call callable
     }
@@ -294,7 +294,7 @@ trait ResponseRenderer extends WebAttributes {
                 model = [:]
             }
 
-            ((GroovyObject)this).setProperty "modelAndView", new ModelAndView(viewUri, model)
+            ((GroovyObject)this).setProperty 'modelAndView', new ModelAndView(viewUri, model)
             applySiteMeshLayout webRequest.currentRequest, true, explicitSiteMeshLayout
         }
         else if (argMap.containsKey(ARGUMENT_TEMPLATE)) {
@@ -382,7 +382,7 @@ trait ResponseRenderer extends WebAttributes {
                 throw new ControllerExecutionException("Error rendering template [$templateName]: ${gre.message}", gre)
             }
             catch (IOException ioex) {
-                throw new ControllerExecutionException("I/O error executing render method for arguments [$argMap]: ${ioex.message}" , ioex)
+                throw new ControllerExecutionException("I/O error executing render method for arguments [$argMap]: ${ioex.message}", ioex)
             }
         }
         else if (argMap.containsKey(ARGUMENT_FILE)) {
@@ -403,7 +403,7 @@ trait ResponseRenderer extends WebAttributes {
                 }
                 if (!hasContentType) {
                     throw new ControllerExecutionException(
-                            "Argument [file] of render method specified without valid [contentType] argument")
+                            'Argument [file] of render method specified without valid [contentType] argument')
                 }
 
                 InputStream input
@@ -490,7 +490,7 @@ trait ResponseRenderer extends WebAttributes {
                     }
                     catch (NumberFormatException e) {
                         throw new ControllerExecutionException(
-                                "Argument [status] of method [render] must be a valid integer.")
+                                'Argument [status] of method [render] must be a valid integer.')
                     }
                 }
             }
@@ -515,8 +515,8 @@ trait ResponseRenderer extends WebAttributes {
 
     private boolean isJSONResponse(HttpServletResponse response) {
         String contentType = response.getContentType()
-        contentType != null && (contentType.indexOf("application/json") > -1 ||
-                contentType.indexOf("text/json") > -1)
+        contentType != null && (contentType.indexOf('application/json') > -1 ||
+                contentType.indexOf('text/json') > -1)
     }
 
     private void renderWritable(Writable writable, HttpServletResponse response) {
@@ -583,7 +583,7 @@ trait ResponseRenderer extends WebAttributes {
 
     private String getContextPath(GrailsWebRequest webRequest, Map argMap) {
         def cp = argMap.get(ARGUMENT_CONTEXTPATH)
-        String contextPath = (cp != null ? cp.toString() : "")
+        String contextPath = (cp != null ? cp.toString() : '')
 
         Object pluginName = argMap.get(ARGUMENT_PLUGIN)
         if (pluginName != null) {

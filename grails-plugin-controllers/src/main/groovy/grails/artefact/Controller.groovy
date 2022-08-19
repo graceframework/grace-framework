@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -392,8 +392,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             }
             if (entityIdentifierValue instanceof String) {
                 entityIdentifierValue = ((String) entityIdentifierValue).trim()
-                if ("".equals(entityIdentifierValue)
-                        || "null".equals(entityIdentifierValue)) {
+                if (''.equals(entityIdentifierValue)
+                        || 'null'.equals(entityIdentifierValue)) {
                     entityIdentifierValue = null
                 }
             }
@@ -402,14 +402,11 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
 
             if (entityIdentifierValue != null) {
                 try {
-                    commandObjectInstance = InvokerHelper.invokeStaticMethod(type, "get", entityIdentifierValue)
+                    commandObjectInstance = InvokerHelper.invokeStaticMethod(type, 'get', entityIdentifierValue)
                 } catch (Exception e) {
                     final Errors errors = getErrors()
                     if (errors != null) {
-                        errors.reject(getClass().getName()
-                                + ".commandObject."
-                                + commandObjectParameterName + ".error",
-                                e.getMessage())
+                        errors.reject("${getClass().getName()}.commandObject.${commandObjectParameterName}.error", e.getMessage())
                     }
                 }
             } else if (requestMethod == HttpMethod.POST || !isDomainClass) {
@@ -443,10 +440,10 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                 throw e
             }
             commandObjectInstance = type.newInstance()
-            final o = GrailsMetaClassUtils.invokeMethodIfExists(commandObjectInstance, "getErrors")
+            final o = GrailsMetaClassUtils.invokeMethodIfExists(commandObjectInstance, 'getErrors')
             if (o instanceof BindingResult) {
                 final BindingResult errors = (BindingResult)o
-                String msg = "Error occurred initializing command object [" + commandObjectParameterName + "]. " + e.getMessage()
+                String msg = "Error occurred initializing command object [${commandObjectParameterName}]. ${e.getMessage()}"
                 ObjectError error = new ObjectError(commandObjectParameterName, msg)
                 errors.addError(error)
             }
@@ -485,7 +482,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
     }
 
     @Generated
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings('unchecked')
     Method getExceptionHandlerMethodFor(final Class<? extends Exception> exceptionType) throws Exception {
         if (!Exception.isAssignableFrom(exceptionType)) {
             throw new IllegalArgumentException("exceptionType [${exceptionType.getName()}] argument must be Exception or a subclass of Exception")

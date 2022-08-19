@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ trait ResponseRedirector implements WebAttributes {
             }
         }
         throw new CannotRedirectException("Cannot redirect for object [${object}] it is not a domain or has no identifier. " +
-                "Use an explicit redirect instead ")
+                'Use an explicit redirect instead.')
     }
 
     /**
@@ -147,8 +147,8 @@ trait ResponseRedirector implements WebAttributes {
         String namespace = args.remove('namespace')
         String plugin = args.remove('plugin')?.toString()
         def id = args.id
-        def params = CollectionUtils.getOrCreateChildMap(args, "params")
-        def model = CollectionUtils.getOrCreateChildMap(args, "model")
+        def params = CollectionUtils.getOrCreateChildMap(args, 'params')
+        def model = CollectionUtils.getOrCreateChildMap(args, 'model')
 
         def actionParams = params.findAll { Map.Entry it -> it.key?.toString()?.startsWith('_action_') }
         actionParams.each { Map.Entry it -> params.remove(it.key) }

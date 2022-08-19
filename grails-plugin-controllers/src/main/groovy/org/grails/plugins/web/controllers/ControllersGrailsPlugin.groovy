@@ -55,8 +55,8 @@ import javax.servlet.MultipartConfigElement
 class ControllersGrailsPlugin extends Plugin {
 
     def watchedResources = [
-            "file:./grails-app/controllers/**/*Controller.groovy",
-            "file:./plugins/*/grails-app/controllers/**/*Controller.groovy"]
+            'file:./grails-app/controllers/**/*Controller.groovy',
+            'file:./plugins/*/grails-app/controllers/**/*Controller.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def observe = ['domainClass']
@@ -69,13 +69,13 @@ class ControllersGrailsPlugin extends Plugin {
             def config = application.config
 
             boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
-            String uploadTmpDir = config.getProperty(Settings.CONTROLLERS_UPLOAD_LOCATION, System.getProperty("java.io.tmpdir"))
+            String uploadTmpDir = config.getProperty(Settings.CONTROLLERS_UPLOAD_LOCATION, System.getProperty('java.io.tmpdir'))
             long maxFileSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_FILE_SIZE, Long, 1048576L)
             long maxRequestSize = config.getProperty(Settings.CONTROLLERS_UPLOAD_MAX_REQUEST_SIZE, Long, 10485760L)
             int fileSizeThreashold = config.getProperty(Settings.CONTROLLERS_UPLOAD_FILE_SIZE_THRESHOLD, Integer, 0)
             String filtersEncoding = config.getProperty(Settings.FILTER_ENCODING, 'utf-8')
             boolean filtersForceEncoding = config.getProperty(Settings.FILTER_FORCE_ENCODING, Boolean, false)
-            boolean isTomcat = ClassUtils.isPresent("org.apache.catalina.startup.Tomcat", application.classLoader)
+            boolean isTomcat = ClassUtils.isPresent('org.apache.catalina.startup.Tomcat', application.classLoader)
             String grailsServletPath = config.getProperty(Settings.WEB_SERVLET_PATH, isTomcat ? Settings.DEFAULT_TOMCAT_SERVLET_PATH :
                     Settings.DEFAULT_WEB_SERVLET_PATH)
             int resourcesCachePeriod = config.getProperty(Settings.RESOURCES_CACHE_PERIOD, Integer, 0)
@@ -126,7 +126,7 @@ class ControllersGrailsPlugin extends Plugin {
 
             multipartConfigElement(MultipartConfigElement, uploadTmpDir, maxFileSize, maxRequestSize, fileSizeThreashold)
 
-            def handlerInterceptors = springConfig.containsBean("localeChangeInterceptor") ? [ref("localeChangeInterceptor")] : []
+            def handlerInterceptors = springConfig.containsBean('localeChangeInterceptor') ? [ref('localeChangeInterceptor')] : []
             def interceptorsClosure = {
                 interceptors = handlerInterceptors
             }
@@ -139,7 +139,7 @@ class ControllersGrailsPlugin extends Plugin {
 
             // add the dispatcher servlet
             dispatcherServlet(GrailsDispatcherServlet)
-            dispatcherServletRegistration(DispatcherServletRegistrationBean, ref("dispatcherServlet"), grailsServletPath) {
+            dispatcherServletRegistration(DispatcherServletRegistrationBean, ref('dispatcherServlet'), grailsServletPath) {
                 loadOnStartup = 2
                 asyncSupported = true
                 multipartConfig = multipartConfigElement
@@ -150,12 +150,12 @@ class ControllersGrailsPlugin extends Plugin {
             for (controller in controllerClasses) {
                 log.debug "Configuring controller $controller.fullName"
                 if (controller.available) {
-                    def lazyInit = controller.hasProperty("lazyInit") ? controller.getPropertyValue("lazyInit") : true
+                    def lazyInit = controller.hasProperty('lazyInit') ? controller.getPropertyValue('lazyInit') : true
                     "${controller.fullName}"(controller.clazz) { bean ->
                         bean.lazyInit = lazyInit
                         def beanScope = controller.getScope()
                         bean.scope = beanScope
-                        bean.autowire =  "byName"
+                        bean.autowire =  'byName'
                         if (beanScope == 'prototype') {
                             bean.beanDefinition.dependencyCheck = AbstractBeanDefinition.DEPENDENCY_CHECK_NONE
                         }
@@ -165,7 +165,7 @@ class ControllersGrailsPlugin extends Plugin {
                     }
                 }
             }
-            log.info(String.format("Found %d Controllers: initialization completed in %d ms",
+            log.info(String.format('Found %d Controllers: initialization completed in %d ms',
                     controllerClasses.size(), (System.currentTimeMillis() - start)))
 
             if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean, false)) {
@@ -177,11 +177,11 @@ class ControllersGrailsPlugin extends Plugin {
     @CompileStatic
     static class GrailsWebMvcConfigurer implements WebMvcConfigurer {
 
-        private static final String[] SERVLET_RESOURCE_LOCATIONS = [ "/" ]
+        private static final String[] SERVLET_RESOURCE_LOCATIONS = [ '/' ]
 
         private static final String[] CLASSPATH_RESOURCE_LOCATIONS = [
-            "classpath:/META-INF/resources/", "classpath:/resources/",
-            "classpath:/static/", "classpath:/public/" ]
+            'classpath:/META-INF/resources/', 'classpath:/resources/',
+            'classpath:/static/', 'classpath:/public/' ]
 
         private static final String[] RESOURCE_LOCATIONS
         static {
@@ -208,9 +208,9 @@ class ControllersGrailsPlugin extends Plugin {
                 return
             }
 
-            if (!registry.hasMappingForPattern("/webjars/**")) {
-                registry.addResourceHandler("/webjars/**")
-                        .addResourceLocations("classpath:/META-INF/resources/webjars/")
+            if (!registry.hasMappingForPattern('/webjars/**')) {
+                registry.addResourceHandler('/webjars/**')
+                        .addResourceLocations('classpath:/META-INF/resources/webjars/')
                         .setCachePeriod(cachePeriod)
             }
             if (!registry.hasMappingForPattern(resourcesPattern)) {
@@ -243,7 +243,7 @@ class ControllersGrailsPlugin extends Plugin {
                 "${controllerClass.fullName}"(controllerClass.clazz) { bean ->
                     def beanScope = controllerClass.getScope()
                     bean.scope = beanScope
-                    bean.autowire = "byName"
+                    bean.autowire = 'byName'
                     if (beanScope == 'prototype') {
                         bean.beanDefinition.dependencyCheck = AbstractBeanDefinition.DEPENDENCY_CHECK_NONE
                     }
