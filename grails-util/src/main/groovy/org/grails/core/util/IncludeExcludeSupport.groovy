@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class IncludeExcludeSupport<T> {
 
-    static final String INCLUDES_PROPERTY = "includes"
-    static final String EXCLUDES_PROPERTY = "excludes"
+    static final String INCLUDES_PROPERTY = 'includes'
+    static final String EXCLUDES_PROPERTY = 'excludes'
 
     List<T> defaultIncludes
     List<T> defaultExcludes
