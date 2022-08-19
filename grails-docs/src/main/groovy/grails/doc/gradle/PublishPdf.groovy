@@ -27,15 +27,15 @@ import org.gradle.api.tasks.TaskAction
  */
 class PublishPdf extends DefaultTask {
 
-    @Input String pdfName = "single.pdf"
-    @Input String language = ""
+    @Input String pdfName = 'single.pdf'
+    @Input String language = ''
     @OutputDirectory @Input File outputDirectory = project.outputDir as File
 
     @TaskAction
     def publish() {
-        File outputDir = new File(outputDirectory, language ?: "")
+        File outputDir = new File(outputDirectory, language ?: '')
         try {
-            PdfPublisher.publishPdfFromHtml(outputDir, "guide/single.html", pdfName)
+            PdfPublisher.publishPdfFromHtml(outputDir, 'guide/single.html', pdfName)
         }
         catch (Exception ex) {
             ex.printStackTrace()

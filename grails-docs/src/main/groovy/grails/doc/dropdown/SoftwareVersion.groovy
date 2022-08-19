@@ -1,3 +1,17 @@
+/* Copyright 2020-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.doc.dropdown
 
 class SoftwareVersion implements Comparable<SoftwareVersion> {
@@ -11,7 +25,7 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
     String versionText
 
     static SoftwareVersion build(String version) {
-        String[] parts = version.split("\\.")
+        String[] parts = version.split('\\.')
         SoftwareVersion softVersion
         if (parts.length >= 3) {
             softVersion = new SoftwareVersion()
@@ -21,9 +35,9 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
             if (parts.length > 3) {
                 softVersion.snapshot = new Snapshot(parts[3])
             } else if (parts[2].contains('-')) {
-                String[] subparts = parts[2].split("-")
+                String[] subparts = parts[2].split('-')
                 softVersion.patch = subparts.first() as int
-                softVersion.snapshot = new Snapshot(subparts[1..-1].join("-"))
+                softVersion.snapshot = new Snapshot(subparts[1..-1].join('-'))
                 return softVersion
             }
             softVersion.patch = parts[2].toInteger()

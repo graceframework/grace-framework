@@ -1,3 +1,17 @@
+/* Copyright 2011-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.doc
 
 import grails.doc.internal.LegacyTocStrategy
@@ -26,14 +40,14 @@ import grails.doc.internal.StringEscapeCategory
  */
 class LegacyDocMigrator {
 
-    private static final String EOL = System.getProperty("line.separator")
+    private static final String EOL = System.getProperty('line.separator')
 
     private guideSrcDir
     private aliasMap
     private outDir
 
     LegacyDocMigrator(File guideSrcDir, aliasMap) {
-        this(guideSrcDir, new File(guideSrcDir.parentFile, "migratedGuide"), aliasMap)
+        this(guideSrcDir, new File(guideSrcDir.parentFile, 'migratedGuide'), aliasMap)
     }
 
     LegacyDocMigrator(File guideSrcDir, File outDir, aliasMap) {
@@ -45,21 +59,21 @@ class LegacyDocMigrator {
     def migrate() {
         outDir.mkdirs()
 
-        def files = guideSrcDir.listFiles()?.findAll { it.name.endsWith(".gdoc") } ?: []
+        def files = guideSrcDir.listFiles()?.findAll { it.name.endsWith('.gdoc') } ?: []
         def guide = new LegacyTocStrategy().generateToc(files)
 
-        def legacyLinkMap = new File(outDir, "links.yml")
+        def legacyLinkMap = new File(outDir, 'links.yml')
         legacyLinkMap.withWriter('UTF-8') { w ->
             guide.children.each(this.&migrateSection.rcurry([], w))
         }
 
-        def tocFile = new File(outDir, "toc.yml")
+        def tocFile = new File(outDir, 'toc.yml')
         tocFile.withWriter('UTF-8') { w ->
             guide.children.each(this.&writeSectionToToc.rcurry(w, 0))
         }
 
         // A mapping that can be utilised by Apache HTTPD URL rewriting.
-        def rewriteRulesFile = new File(outDir, "rewriteRules.txt")
+        def rewriteRulesFile = new File(outDir, 'rewriteRules.txt')
         rewriteRulesFile.withPrintWriter('UTF-8') { w ->
             for (section in guide.children) {
                 w.println "${StringEscapeCategory.encodeAsUrlPath(section.name)}.html -> ${StringEscapeCategory.encodeAsUrlPath(alias(section))}.html"
@@ -86,10 +100,10 @@ class LegacyDocMigrator {
     }
 
     private writeSectionToToc(section, writer, indent) {
-        writer << '  ' * indent << alias(section) << ": "
+        writer << '  ' * indent << alias(section) << ': '
         if (section.children) {
             indent++
-            writer << EOL << '  ' * indent << "title: " << section.title << EOL
+            writer << EOL << '  ' * indent << 'title: ' << section.title << EOL
 
             for (s in section.children) {
                 writeSectionToToc s, writer, indent

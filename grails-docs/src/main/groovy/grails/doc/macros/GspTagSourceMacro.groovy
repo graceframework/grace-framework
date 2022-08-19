@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2010-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,17 +40,19 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
     }
 
     @Input
-    String getName() { "source" }
+    String getName() {
+        'source'
+    }
 
     void execute(Writer out, MacroParameter params) {
-        def source = params.params.get("0")
+        def source = params.params.get('0')
 
         def i = source.indexOf('=')
         def type = source[0..i - 1]
         def name = source[i + 1..-1]
 
         switch (type) {
-            case "tag":
+            case 'tag':
                 def j = name.indexOf('.')
                 def className = name[0..j - 1]
                 def tagName = name[j + 1..-1]
@@ -63,7 +65,7 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
                     tagLibFile
                 }
 
-                def text = tagLibFile?.getText("UTF-8") ?: ""
+                def text = tagLibFile?.getText('UTF-8') ?: ''
                 String closureSource = extractTagClosureSource(tagName, text)
                 if (closureSource) {
                     out << '<p><a href="#' + tagName +
@@ -77,7 +79,7 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
                     def macroParams = new BaseMacroParameter()
                     macroParams.content = text
                     macro.execute(out, macroParams)
-                    out << "</div>"
+                    out << '</div>'
                 }
                 break
         }

@@ -25,7 +25,7 @@ class ListFilter extends org.radeox.filter.ListFilter {
 
     void handleMatch(StringBuffer buffer, MatchResult result, FilterContext context) {
         super.handleMatch(buffer, result, context)
-        buffer << "\n\n"
+        buffer << '\n\n'
     }
 
 }

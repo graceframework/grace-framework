@@ -29,11 +29,11 @@ import org.gradle.api.tasks.TaskAction
  */
 class PublishGuide extends DefaultTask {
 
-    @InputDirectory File sourceDir = new File(project.projectDir, "src")
-    @OutputDirectory File targetDir = new File(project.buildDir, "docs")
-    @InputDirectory @Optional File resourcesDir = new File(project.projectDir, "resources")
+    @InputDirectory File sourceDir = new File(project.projectDir, 'src')
+    @OutputDirectory File targetDir = new File(project.buildDir, 'docs')
+    @InputDirectory @Optional File resourcesDir = new File(project.projectDir, 'resources')
     @Input @Optional List propertiesFiles = []
-    @Input @Optional String language = ""
+    @Input @Optional String language = ''
     @Input @Optional Boolean asciidoc = false
     @Input @Optional String sourceRepo
     @Input @Optional Properties properties = new Properties()
@@ -71,7 +71,7 @@ class PublishGuide extends DefaultTask {
         publisher.fonts = project.file("${resourcesDir}/fonts")
         publisher.js = project.file("${resourcesDir}/js")
         publisher.style = project.file("${resourcesDir}/style")
-        publisher.version = props."grails.version"
+        publisher.version = props.'grails.version'
 
         // Override doc.properties properties with their language-specific counterparts (if
         // those are defined). You just need to add entries like es.title or pt_PT.subtitle.

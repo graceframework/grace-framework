@@ -26,9 +26,9 @@ import org.gradle.api.tasks.TaskAction
  */
 class MigrateLegacyDocs extends DefaultTask {
 
-    @InputDirectory File guideDir = new File(project.projectDir, "src/guide")
-    @InputDirectory File resourcesDir = new File(project.projectDir, "resources")
-    @OutputDirectory File outputDir = new File(project.projectDir, "src/guide.migrated")
+    @InputDirectory File guideDir = new File(project.projectDir, 'src/guide')
+    @InputDirectory File resourcesDir = new File(project.projectDir, 'resources')
+    @OutputDirectory File outputDir = new File(project.projectDir, 'src/guide.migrated')
 
     @TaskAction
     def migrate() {
@@ -36,7 +36,7 @@ class MigrateLegacyDocs extends DefaultTask {
         new File("${resourcesDir}/doc.properties").withInputStream { input ->
             props.load(input)
         }
-        props = props.findAll { it.key.startsWith("alias.") }.collectEntries {
+        props = props.findAll { it.key.startsWith('alias.') }.collectEntries {
             [it.key[6..-1], it.value]
         }
 

@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 the original author or authors.
+/* Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,16 +46,16 @@ class PdfBuilder {
     static void build(Map options) {
         File baseDir = new File(options.basedir).canonicalFile
 
-        File guideDir = new File(baseDir, "guide")
-        File htmlFile = new File(guideDir, "single.html")
-        File outputFile = new File(guideDir, "single.pdf")
+        File guideDir = new File(baseDir, 'guide')
+        File htmlFile = new File(guideDir, 'single.html')
+        File outputFile = new File(guideDir, 'single.pdf')
 
         String xml = createXml(htmlFile, baseDir.absolutePath)
         createPdf xml, outputFile, guideDir
     }
 
     static String createXml(File htmlFile, String base) {
-        String xml = htmlFile.getText("UTF-8")
+        String xml = htmlFile.getText('UTF-8')
 
         // fix inner anchors
         xml = xml.replaceAll('<a href="\\.\\./guide/single\\.html', '<a href="')
@@ -67,11 +67,11 @@ class PdfBuilder {
         cleanupHtml(htmlFile, xml)
     }
 
-    static boolean cleanHtml = System.getProperty('grails.docs.clean.html') == null ? true : Boolean.getBoolean("grails.docs.clean.html")
-    static boolean debugPdf = Boolean.getBoolean("grails.docs.debug.pdf")
+    static boolean cleanHtml = System.getProperty('grails.docs.clean.html') == null ? true : Boolean.getBoolean('grails.docs.clean.html')
+    static boolean debugPdf = Boolean.getBoolean('grails.docs.debug.pdf')
 
     private static String cleanupHtml(File htmlFile, String xml) {
-        String result = cleanHtml ? Jsoup.parse(xml, "", Parser.xmlParser()).outerHtml() : xml
+        String result = cleanHtml ? Jsoup.parse(xml, '', Parser.xmlParser()).outerHtml() : xml
         result = removeCssLinks(result)
         result = result.replaceAll('</head>', pdfCss() + '</head>')
         if (debugPdf) {
@@ -109,7 +109,7 @@ class PdfBuilder {
     }
 
     static String pdfCss() {
-        """<style type="text/css">
+        '''<style type="text/css">
          pre, code {
           font-size: 10px;
          }
@@ -120,17 +120,17 @@ class PdfBuilder {
             width: 595px;
         }
         </style>
-        """
+        '''
     }
 
     static Document createDocument(String xml) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance()
         dbf.validating = false
-        dbf.setFeature "http://apache.org/xml/features/nonvalidating/load-external-dtd", false
-        dbf.setFeature "http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false
+        dbf.setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
+        dbf.setFeature 'http://apache.org/xml/features/nonvalidating/load-dtd-grammar', false
 
         DocumentBuilder builder = dbf.newDocumentBuilder()
-        builder.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")))
+        builder.parse(new ByteArrayInputStream(xml.getBytes('UTF-8')))
     }
 
     static void createPdfWithDocument(Document doc, File outputFile, File urlBase) {
