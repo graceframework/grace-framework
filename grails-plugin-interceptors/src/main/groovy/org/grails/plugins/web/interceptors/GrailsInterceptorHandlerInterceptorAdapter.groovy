@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse
 class GrailsInterceptorHandlerInterceptorAdapter implements HandlerInterceptor {
 
     private static final Log LOG = LogFactory.getLog(Interceptor)
-    private static final String ATTRIBUTE_MATCHED_INTERCEPTORS = "org.grails.web.MATCHED_INTERCEPTORS"
+    private static final String ATTRIBUTE_MATCHED_INTERCEPTORS = 'org.grails.web.MATCHED_INTERCEPTORS'
 
     static final String INTERCEPTOR_RENDERED_VIEW = 'interceptor_rendered_view'
 
@@ -59,9 +59,9 @@ class GrailsInterceptorHandlerInterceptorAdapter implements HandlerInterceptor {
         this.interceptors = interceptors.sort(new OrderComparator()) as List<Interceptor>
         this.reverseInterceptors = this.interceptors.reverse()
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Computed interceptor execution order:")
+            LOG.debug('Computed interceptor execution order:')
             for (Interceptor i in interceptors) {
-                LOG.debug("- ${GrailsNameUtils.getLogicalPropertyName(i.getClass().name, "Interceptor")} (order: ${i.order}) ")
+                LOG.debug("- ${GrailsNameUtils.getLogicalPropertyName(i.getClass().name, 'Interceptor')} (order: ${i.order})")
             }
         }
     }

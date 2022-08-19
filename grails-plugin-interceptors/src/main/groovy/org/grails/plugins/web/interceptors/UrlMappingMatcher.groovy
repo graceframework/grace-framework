@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,10 +116,10 @@ class UrlMappingMatcher implements Matcher {
             uriPatterns << arguments.uri.toString()
         }
         else {
-            controllerRegex = regexMatch(arguments, "controller")
-            actionRegex = regexMatch(arguments, "action")
-            namespaceRegex = regexMatch(arguments, "namespace")
-            methodRegex = regexMatch(arguments, "method")
+            controllerRegex = regexMatch(arguments, 'controller')
+            actionRegex = regexMatch(arguments, 'action')
+            namespaceRegex = regexMatch(arguments, 'namespace')
+            methodRegex = regexMatch(arguments, 'method')
         }
         this
     }
@@ -131,10 +131,10 @@ class UrlMappingMatcher implements Matcher {
         }
         else {
             def exclude = new MapExclude()
-            exclude.controllerExcludesRegex = regexMatch(arguments, "controller", null)
-            exclude.actionExcludesRegex = regexMatch(arguments, "action", null)
-            exclude.namespaceExcludesRegex = regexMatch(arguments, "namespace", null)
-            exclude.methodExcludesRegex = regexMatch(arguments, "method", null)
+            exclude.controllerExcludesRegex = regexMatch(arguments, 'controller', null)
+            exclude.actionExcludesRegex = regexMatch(arguments, 'action', null)
+            exclude.namespaceExcludesRegex = regexMatch(arguments, 'namespace', null)
+            exclude.methodExcludesRegex = regexMatch(arguments, 'method', null)
             excludes << exclude
         }
         this

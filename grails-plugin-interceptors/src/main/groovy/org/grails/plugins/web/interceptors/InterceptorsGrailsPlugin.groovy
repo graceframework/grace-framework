@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class InterceptorsGrailsPlugin extends Plugin {
 
     def final version = GrailsUtil.getGrailsVersion()
     def final dependsOn = [controllers: version, urlMappings: version]
-    def final watchedResources = "file:./grails-app/controllers/**/*Interceptor.groovy"
+    def final watchedResources = 'file:./grails-app/controllers/**/*Interceptor.groovy'
     def final loadAfter = ['domainClass', 'hibernate']
 
     GrailsInterceptorHandlerInterceptorAdapter interceptorAdapter
@@ -65,9 +65,9 @@ class InterceptorsGrailsPlugin extends Plugin {
 
     @Override
     void doWithApplicationContext() {
-        if (applicationContext.containsBeanDefinition("grailsInterceptorMappedInterceptor")) {
+        if (applicationContext.containsBeanDefinition('grailsInterceptorMappedInterceptor')) {
             interceptorAdapter = (GrailsInterceptorHandlerInterceptorAdapter)applicationContext
-                    .getBean("grailsInterceptorMappedInterceptor", MappedInterceptor).getInterceptor()
+                    .getBean('grailsInterceptorMappedInterceptor', MappedInterceptor).getInterceptor()
         }
     }
 
@@ -80,7 +80,7 @@ class InterceptorsGrailsPlugin extends Plugin {
             def grailsClass = grailsApplication.addArtefact(InterceptorArtefactHandler.TYPE, interceptorClass)
             def interceptorAdapter = this.interceptorAdapter ?:
                     (GrailsInterceptorHandlerInterceptorAdapter)applicationContext
-                            .getBean("grailsInterceptorMappedInterceptor", MappedInterceptor)
+                            .getBean('grailsInterceptorMappedInterceptor', MappedInterceptor)
                             .getInterceptor()
 
             defineInterceptorBean(grailsClass, interceptorClass, enableJsessionId)
