@@ -102,12 +102,12 @@ class GrailsApp extends SpringApplication {
         ConfigurableApplicationContext applicationContext = super.run(args)
         Environment environment = Environment.getCurrent()
 
-        log.info("Application starting in environment: {}", environment.getName())
-        log.debug("Application directory discovered as: {}", IOUtils.findApplicationDirectory())
-        log.debug("Current base directory is [{}]. Reloading base directory is [{}]", new File("."), BuildSettings.BASE_DIR)
+        log.info('Application starting in environment: {}', environment.getName())
+        log.debug('Application directory discovered as: {}', IOUtils.findApplicationDirectory())
+        log.debug('Current base directory is [{}]. Reloading base directory is [{}]', new File('.'), BuildSettings.BASE_DIR)
 
         if (environment.isReloadEnabled()) {
-            log.debug("Reloading status: {}", environment.isReloadEnabled())
+            log.debug('Reloading status: {}', environment.isReloadEnabled())
             enableDevelopmentModeWatch(environment, applicationContext)
             environment.isDevtoolsRestart()
         }
@@ -165,7 +165,7 @@ class GrailsApp extends SpringApplication {
                     changedFiles << file.canonicalFile
                     // For some bizarro reason Windows fires onNew events even for files that have
                     // just been modified and not created
-                    if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
+                    if (System.getProperty('os.name').toLowerCase().indexOf('windows') != -1) {
                         return
                     }
                     newFiles << file.canonicalFile
@@ -315,7 +315,7 @@ class GrailsApp extends SpringApplication {
             }
             else {
                 log.error("Cannot recompile [$changedFile.name], " +
-                        "the current JVM is not a JDK (recompilation will not work on a JRE missing the compiler APIs).")
+                        'the current JVM is not a JDK (recompilation will not work on a JRE missing the compiler APIs).')
             }
         }
         else {
@@ -363,9 +363,9 @@ class GrailsApp extends SpringApplication {
     }
 
     protected void configureDirectoryWatcher(DirectoryWatcher directoryWatcher, String location) {
-        directoryWatcher.addWatchDirectory(new File(location, "grails-app"), ['groovy', 'java'])
-        directoryWatcher.addWatchDirectory(new File(location, "src/main/groovy"), ['groovy', 'java'])
-        directoryWatcher.addWatchDirectory(new File(location, "src/main/java"), ['groovy', 'java'])
+        directoryWatcher.addWatchDirectory(new File(location, 'grails-app'), ['groovy', 'java'])
+        directoryWatcher.addWatchDirectory(new File(location, 'src/main/groovy'), ['groovy', 'java'])
+        directoryWatcher.addWatchDirectory(new File(location, 'src/main/java'), ['groovy', 'java'])
     }
 
     protected printRunStatus(ConfigurableApplicationContext applicationContext) {

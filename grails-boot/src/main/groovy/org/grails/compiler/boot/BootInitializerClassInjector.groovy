@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.compiler.boot
 
 import grails.boot.GrailsPluginApplication
@@ -65,7 +80,7 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
 
         if (GrailsASTUtils.isAssignableFrom(GRAILS_CONFIGURATION_CLASS_NODE, classNode) &&
                 !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {
-            def methods = classNode.getMethods("main")
+            def methods = classNode.getMethods('main')
             for (MethodNode mn in methods) {
                 if (Modifier.isStatic(mn.modifiers) && Modifier.isPublic(mn.modifiers)) {
                     def mainMethodBody = mn.code
@@ -74,7 +89,7 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
                         if (!bs.statements.isEmpty()) {
                             def methodCallExpression = new MethodCallExpression(
                                     new ClassExpression(ClassHelper.make(System)),
-                                    "setProperty",
+                                    'setProperty',
                                     new ArgumentListExpression(
                                             new ConstantExpression(Environment.STANDALONE),
                                             new ConstantExpression(Boolean.TRUE.toString())
@@ -92,12 +107,12 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
 
                     def springApplicationBuilder = ClassHelper.make(SpringApplicationBuilder)
 
-                    def parameter = new Parameter(springApplicationBuilder, "application")
+                    def parameter = new Parameter(springApplicationBuilder, 'application')
                     def methodBody = new BlockStatement()
 
                     methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(
-                            new VariableExpression(parameter), "sources", new ClassExpression(classNode))))
-                    loaderClassNode.addMethod(new MethodNode("configure", Modifier.PROTECTED,
+                            new VariableExpression(parameter), 'sources', new ClassExpression(classNode))))
+                    loaderClassNode.addMethod(new MethodNode('configure', Modifier.PROTECTED,
                             springApplicationBuilder, [parameter] as Parameter[], [] as ClassNode[], methodBody))
                     source.getAST().addClass(loaderClassNode)
 

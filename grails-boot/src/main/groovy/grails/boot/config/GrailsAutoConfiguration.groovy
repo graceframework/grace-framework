@@ -42,7 +42,7 @@ import java.lang.reflect.Field
 // WARNING: Never add logging to the source of this class, early initialization causes problems
 class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationContextAware {
 
-    private static final String APC_PRIORITY_LIST_FIELD = "APC_PRIORITY_LIST"
+    private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
 
     static {
         try {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 original authors
+ * Copyright 2016-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,10 +141,10 @@ class ClassPathScanner {
                 continue
             }
 
-            if (pkg == "") {
+            if (pkg == '') {
                 // try the default package in case of a script without recursing into subpackages
-                log.warn("The application defines a Groovy source using the default package. Please move all Groovy sources into a package.")
-                String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +  "*.class"
+                log.warn('The application defines a Groovy source using the default package. Please move all Groovy sources into a package.')
+                String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +  '*.class'
                 scanUsingPattern(resourcePatternResolver, pattern, classLoader, annotationFilter, classes)
             }
             else {
@@ -165,7 +165,7 @@ class ClassPathScanner {
      */
     protected boolean isExcluded(Resource res) {
         String filename = res.filename
-        filename.contains('$') || filename.startsWith("gsp_") || filename.endsWith("_gson.class")
+        filename.contains('$') || filename.startsWith('gsp_') || filename.endsWith('_gson.class')
     }
 
     /**
@@ -238,7 +238,7 @@ class ClassPathScanner {
             this.rootResource = getURLs()[0]
             this.applicationClass = applicationClass
             String urlStr = rootResource.toString()
-            jarDeployed = urlStr.startsWith("jar:")
+            jarDeployed = urlStr.startsWith('jar:')
             try {
                 URL withoutBang = new URL("${urlStr.substring(0, urlStr.length() - 2)}/")
                 addURL(withoutBang)

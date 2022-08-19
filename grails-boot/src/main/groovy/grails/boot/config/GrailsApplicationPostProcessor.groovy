@@ -125,7 +125,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
 
     protected final void initializeGrailsApplication(ApplicationContext applicationContext) {
         if (applicationContext == null) {
-            throw new IllegalStateException("ApplicationContext should not be null")
+            throw new IllegalStateException('ApplicationContext should not be null')
         }
         Environment.setInitializing(true)
         grailsApplication.applicationContext = applicationContext
@@ -245,9 +245,9 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         }
 
         Binding b = new Binding()
-        b.setVariable("application", grailsApplication)
+        b.setVariable('application', grailsApplication)
         b.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
-        b.setVariable("manager", pluginManager)
+        b.setVariable('manager', pluginManager)
         if (lifeCycle) {
             def withSpring = lifeCycle.doWithSpring()
             if (withSpring) {
@@ -297,7 +297,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             if (applicationContext instanceof ConfigurableApplicationContext) {
                 def configurable = (ConfigurableApplicationContext) applicationContext
                 configurable.addApplicationListener(this)
-                configurable.environment.addActiveProfile(grailsApplication.getConfig().getProperty(Settings.PROFILE, String, "web"))
+                configurable.environment.addActiveProfile(grailsApplication.getConfig().getProperty(Settings.PROFILE, String, 'web'))
             }
         }
     }
@@ -310,9 +310,9 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             // Only act if the event is for our context
             Collection<GrailsApplicationLifeCycle> lifeCycleBeans = context.getBeansOfType(GrailsApplicationLifeCycle).values()
             if (event instanceof ContextRefreshedEvent) {
-                if (context.containsBean("grailsDomainClassMappingContext")) {
+                if (context.containsBean('grailsDomainClassMappingContext')) {
                     grailsApplication.setMappingContext(
-                        context.getBean("grailsDomainClassMappingContext", MappingContext)
+                        context.getBean('grailsDomainClassMappingContext', MappingContext)
                     )
                 }
                 Environment.setInitializing(false)
