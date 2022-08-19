@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.grails.encoder.Encoder
 @CompileStatic
 class URLCodecFactory implements CodecFactory {
 
-    static final CodecIdentifier URL_CODEC_IDENTIFIER = new DefaultCodecIdentifier("URL")
+    static final CodecIdentifier URL_CODEC_IDENTIFIER = new DefaultCodecIdentifier('URL')
 
     Encoder encoder = new Encoder() {
 

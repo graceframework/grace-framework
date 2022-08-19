@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ import org.springframework.util.Assert
 class CodecMetaClassSupport {
 
     static final Object[] EMPTY_ARGS = []
-    static final String ENCODE_AS_PREFIX = "encodeAs"
-    static final String DECODE_PREFIX = "decode"
+    static final String ENCODE_AS_PREFIX = 'encodeAs'
+    static final String DECODE_PREFIX = 'decode'
 
     /**
      * Adds "encodeAs*" and "decode*" metamethods for given codecClass
@@ -48,7 +48,7 @@ class CodecMetaClassSupport {
         Closure<String> decodeMethodNameClosure = { String codecName -> "${DECODE_PREFIX}${codecName}".toString() }
 
         String codecName = resolveCodecName(codecFactory)
-        Assert.hasText(codecName, "No resolvable codec name")
+        Assert.hasText(codecName, 'No resolvable codec name')
 
         String encodeMethodName = encodeMethodNameClosure(codecName)
         String decodeMethodName = decodeMethodNameClosure(codecName)
