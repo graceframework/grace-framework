@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ class SynchronizerTokensHolder implements Serializable {
 
     private static final long serialVersionUID = 1
 
-    public static final String HOLDER = "SYNCHRONIZER_TOKENS_HOLDER"
-    public static final String TOKEN_KEY = "SYNCHRONIZER_TOKEN"
-    public static final String TOKEN_URI = "SYNCHRONIZER_URI"
+    public static final String HOLDER = 'SYNCHRONIZER_TOKENS_HOLDER'
+    public static final String TOKEN_KEY = 'SYNCHRONIZER_TOKEN'
+    public static final String TOKEN_URI = 'SYNCHRONIZER_URI'
 
     Map<String, Set<UUID>> currentTokens = [:]
 

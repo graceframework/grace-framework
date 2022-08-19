@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ class TokenResponseActionResultTransformer implements ActionResultTransformer {
                 return null
             }
             catch (IOException e) {
-                throw new ControllerExecutionException("I/O error sending redirect to URI: " + uri, e)
+                throw new ControllerExecutionException("I/O error sending redirect to URI: $uri", e)
             }
         }
         actionResult
