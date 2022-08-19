@@ -39,16 +39,16 @@ class ServicesGrailsPlugin extends Plugin  {
     def version = GrailsUtil.getGrailsVersion()
     def loadAfter = ['hibernate']
 
-    def watchedResources = ["file:./grails-app/services/**/*Service.groovy",
-                            "file:./plugins/*/grails-app/services/**/*Service.groovy"]
+    def watchedResources = ['file:./grails-app/services/**/*Service.groovy',
+                            'file:./plugins/*/grails-app/services/**/*Service.groovy']
 
     Closure doWithSpring() {
         { ->
             GrailsApplication application = grailsApplication
             final boolean springTransactionManagement = config.getProperty(Settings.SPRING_TRANSACTION_MANAGEMENT, Boolean, false)
             if (springTransactionManagement) {
-                throw new GrailsConfigurationException("Spring proxy-based transaction management no longer supported." +
-                        "Yes the @grails.gorm.transactions.Transactional annotation instead")
+                throw new GrailsConfigurationException('Spring proxy-based transaction management no longer supported.' +
+                        'Yes the @grails.gorm.transactions.Transactional annotation instead')
             }
 
             def start = System.currentTimeMillis()
@@ -62,8 +62,8 @@ class ServicesGrailsPlugin extends Plugin  {
                 } else {
                     beanName = serviceClass.propertyName
                 }
-                def scope = serviceClass.getPropertyValue("scope")
-                def lazyInit = serviceClass.hasProperty("lazyInit") ? serviceClass.getPropertyValue("lazyInit") : true
+                def scope = serviceClass.getPropertyValue('scope')
+                def lazyInit = serviceClass.hasProperty('lazyInit') ? serviceClass.getPropertyValue('lazyInit') : true
 
                 "${beanName}"(serviceClass.getClazz()) { bean ->
                     bean.autowire =  true
@@ -75,7 +75,7 @@ class ServicesGrailsPlugin extends Plugin  {
                     }
                 }
             }
-            log.info(String.format("Found %d Services: initialization completed in %d ms",
+            log.info(String.format('Found %d Services: initialization completed in %d ms',
                     serviceClasses.size(), (System.currentTimeMillis() - start)))
 
             serviceBeanAliasPostProcessor(ServiceBeanAliasPostProcessor)
@@ -96,7 +96,7 @@ class ServicesGrailsPlugin extends Plugin  {
             }
             def serviceClass = (GrailsServiceClass) application.addArtefact(ServiceArtefactHandler.TYPE, (Class) event.source)
             def serviceName = "${serviceClass.propertyName}"
-            def scope = serviceClass.getPropertyValue("scope")
+            def scope = serviceClass.getPropertyValue('scope')
 
             beans {
                 "$serviceName"(serviceClass.getClazz()) { bean ->
