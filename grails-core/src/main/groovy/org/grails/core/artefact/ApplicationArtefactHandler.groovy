@@ -30,7 +30,7 @@ import org.codehaus.groovy.ast.ClassNode
 @CompileStatic
 class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static final String TYPE = "Application"
+    public static final String TYPE = 'Application'
 
     ApplicationArtefactHandler() {
         super(TYPE, GrailsClass, DefaultGrailsClass, null, false)
@@ -43,7 +43,7 @@ class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
     }
 
     @Override
-    boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
+    boolean isArtefactClass(@SuppressWarnings('rawtypes') Class clazz) {
         clazz.simpleName.endsWith('Application') &&
                 (clazz.superclass.name == 'grails.boot.config.GrailsAutoConfiguration')
     }

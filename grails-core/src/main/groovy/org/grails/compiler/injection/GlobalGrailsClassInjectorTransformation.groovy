@@ -51,10 +51,10 @@ import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 @CompileStatic
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
 
-    static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make("grails.core.ArtefactHandler")
+    static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make('grails.core.ArtefactHandler')
     static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact)
-    static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make("grails.compiler.traits.TraitInjector")
-    static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make("grails.dev.commands.ApplicationCommand")
+    static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make('grails.compiler.traits.TraitInjector')
+    static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make('grails.dev.commands.ApplicationCommand')
 
     CompilationUnit compilationUnit
 
@@ -96,15 +96,15 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
 
-            classNode.getModule().addImport("Autowired",
-                    ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
+            classNode.getModule().addImport('Autowired',
+                    ClassHelper.make('org.springframework.beans.factory.annotation.Autowired'))
 
             for (ArtefactHandler handler in artefactHandlers) {
                 if (handler.isArtefact(classNode)) {
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
                         transformedClasses.add classNodeName
                         def annotationNode = new AnnotationNode(new ClassNode(Artefact))
-                        annotationNode.addMember("value", new ConstantExpression(handler.type))
+                        annotationNode.addMember('value', new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
                         List<ClassInjector> injectors = injectorsCache[handler.type]
@@ -131,13 +131,13 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
     static File resolveCompilationTargetDirectory(SourceUnit source) {
         File targetDirectory = null
-        if (source.class.name == "org.codehaus.jdt.groovy.control.EclipseSourceUnit") {
+        if (source.class.name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
         } else {
             targetDirectory = source.configuration.targetDirectory
 		}
         if (!targetDirectory) {
-            targetDirectory = new File("build/classes/main")
+            targetDirectory = new File('build/classes/main')
         }
         targetDirectory
     }
@@ -153,20 +153,20 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             def superTypeName = superType.name
 
             // generate META-INF/grails.factories
-            File factoriesFile = new File(compilationTargetDirectory, "META-INF/grails.factories")
+            File factoriesFile = new File(compilationTargetDirectory, 'META-INF/grails.factories')
             if (!factoriesFile.parentFile.exists()) {
                 factoriesFile.parentFile.mkdirs()
             }
             loadFromFile(props, factoriesFile)
 
             File sourceDirectory = findSourceDirectory(compilationTargetDirectory)
-            File sourceFactoriesFile = new File(sourceDirectory, "src/main/resources/META-INF/grails.factories")
+            File sourceFactoriesFile = new File(sourceDirectory, 'src/main/resources/META-INF/grails.factories')
             loadFromFile(props, sourceFactoriesFile)
 
             addToProps(props, superTypeName, classNodeName)
 
             factoriesFile.withWriter {  Writer writer ->
-                props.store(writer, "Grails Factories File")
+                props.store(writer, 'Grails Factories File')
             }
             return true
         }
@@ -200,7 +200,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
     private static File findSourceDirectory(File compilationTargetDirectory) {
         File sourceDirectory = compilationTargetDirectory
-        while (sourceDirectory && !(sourceDirectory.name in ["build", "target"])) {
+        while (sourceDirectory && !(sourceDirectory.name in ['build', 'target'])) {
             sourceDirectory = sourceDirectory.parentFile
         }
         sourceDirectory.parentFile

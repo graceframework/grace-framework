@@ -61,7 +61,7 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.stmt
 @AstTransformer
 class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
-    public static final String EXCLUDE_MEMBER = "exclude"
+    public static final String EXCLUDE_MEMBER = 'exclude'
     public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = [
             'org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration',
             'org.springframework.boot.autoconfigure.reactor.ReactorAutoConfiguration',
@@ -97,11 +97,11 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
                 def arguments = new ArgumentListExpression(new ClassExpression(classNode))
                 def enableAgentMethodCall = new MethodCallExpression(new ClassExpression(ClassHelper.make(Support)),
-                        "enableAgentIfNotPresent", arguments)
+                        'enableAgentIfNotPresent', arguments)
                 def methodCallStatement = new ExpressionStatement(enableAgentMethodCall)
 
                 List<Statement> statements = [
-                        stmt(callX(classX(System), "setProperty", args(propX(classX(BuildSettings), "MAIN_CLASS_NAME"),
+                        stmt(callX(classX(System), 'setProperty', args(propX(classX(BuildSettings), 'MAIN_CLASS_NAME'),
                                 constX(classNode.name)))),
                         methodCallStatement
                 ]
@@ -121,10 +121,10 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                         if (packageNames.any() { ConstantExpression packageName -> ['org', 'com', 'io', 'net'].contains(packageName.text) }) {
                             GrailsASTUtils.error(source, classNode,
                                     "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' " +
-                                            "as this can result in performance degradation of classpath scanning")
+                                            'as this can result in performance degradation of classpath scanning')
                         }
                         packageNamesBody.addStatement(new ReturnStatement(new ExpressionStatement(new ListExpression(packageNames.toList()))))
-                        AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod("packageNames", Modifier.PUBLIC,
+                        AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod('packageNames', Modifier.PUBLIC,
                                 collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
                     }
                 }
@@ -151,7 +151,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
             return false
         }
         def res = new UrlResource(url)
-        GrailsResourceUtils.isGrailsResource(res) && res.filename == "Application.groovy"
+        GrailsResourceUtils.isGrailsResource(res) && res.filename == 'Application.groovy'
     }
 
 }

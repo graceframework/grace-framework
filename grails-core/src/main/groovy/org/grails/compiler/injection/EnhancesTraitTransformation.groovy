@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
         ClassNode cNode = (ClassNode) parent
 
         if (isTrait(cNode)) {
-            def expr = ann.getMember("value")
+            def expr = ann.getMember('value')
             if (!(expr instanceof ListExpression)) {
                 def newList = new ListExpression()
                 newList.addExpression(expr)
@@ -82,13 +82,13 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
 
             def classNodeRef = ClassHelper.make(traitClassName).getPlainNodeReference()
             MethodNode getTraitMethodNode = transformerNode.addMethod(
-                    "getTrait", PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
+                    'getTrait', PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
                     GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(new ClassExpression(classNodeRef)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getTraitMethodNode)
 
             def strArrayType = ClassHelper.STRING_TYPE.makeArray()
             MethodNode getArtefactTypesMethodNode = transformerNode.addMethod(
-                    "getArtefactTypes", PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
+                    'getArtefactTypes', PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
                     new ReturnStatement(CastExpression.asExpression(strArrayType, expr)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getArtefactTypesMethodNode)
 

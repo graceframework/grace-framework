@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class GlobalImportTransformation implements ASTTransformation {
     @Override
     void visit(ASTNode[] nodes, SourceUnit source) {
         ModuleNode ast = source.getAST()
-        ast.addImport("Autowired", ClassHelper.make("org.springframework.beans.factory.annotation.Autowired"))
+        ast.addImport('Autowired', ClassHelper.make('org.springframework.beans.factory.annotation.Autowired'))
     }
 
 }
