@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentMap
 class FactoriesLoaderSupport {
 
     /** The location to look for the factories. Can be present in multiple JAR files. */
-    static final String FACTORIES_RESOURCE_LOCATION = "META-INF/grails.factories"
+    static final String FACTORIES_RESOURCE_LOCATION = 'META-INF/grails.factories'
 
     private static ConcurrentMap<Integer, Map<String,String[]>> loadedPropertiesForClassLoader =
             new ConcurrentHashMap<Integer, Map<String,String[]>>()

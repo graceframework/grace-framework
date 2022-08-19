@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class ResourceUtils extends GrailsResourceUtils {
 
     @Memoized
     static Iterable<String> getProjectPackageNames(File baseDir) {
-        File rootDir = baseDir ? new File(baseDir, "grails-app") : null
+        File rootDir = baseDir ? new File(baseDir, 'grails-app') : null
         Set<String> packageNames = []
         if (rootDir?.exists()) {
             File[] allFiles = rootDir.listFiles()
@@ -48,7 +48,7 @@ class ResourceUtils extends GrailsResourceUtils {
                 def dirName = dir.name
                 if (!dir.hidden && !dirName.startsWith('.') && !['conf', 'i18n', 'assets', 'views', 'migrations'].contains(dirName)) {
                     File[] files = dir.listFiles()
-                    populatePackages(dir, files, packageNames, "")
+                    populatePackages(dir, files, packageNames, '')
                 }
             }
         }
@@ -77,8 +77,8 @@ class ResourceUtils extends GrailsResourceUtils {
                     }
                 }
                 else {
-                    if (dir.name.endsWith('.groovy') && prefix == "") {
-                        packageNames.add("")
+                    if (dir.name.endsWith('.groovy') && prefix == '') {
+                        packageNames.add('')
                     }
                 }
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import groovy.transform.CompileStatic
 class ByteArrayResource implements Resource {
 
     byte[] bytes
-    String description = "resource loaded from byte array"
+    String description = 'resource loaded from byte array'
 
     ByteArrayResource(byte[] bytes) {
         this.bytes = bytes
@@ -44,15 +44,15 @@ class ByteArrayResource implements Resource {
     boolean isReadable() { true }
 
     URL getURL() {
-        throw new UnsupportedOperationException("Method getURL not supported")
+        throw new UnsupportedOperationException('Method getURL not supported')
     }
 
     URI getURI() {
-        throw new UnsupportedOperationException("Method getURI not supported")
+        throw new UnsupportedOperationException('Method getURI not supported')
     }
 
     File getFile() {
-        throw new UnsupportedOperationException("Method getFile not supported")
+        throw new UnsupportedOperationException('Method getFile not supported')
     }
 
     long contentLength() { bytes.length }
@@ -63,7 +63,7 @@ class ByteArrayResource implements Resource {
 
     //Fully qualified name to work around Groovy bug
     org.grails.io.support.Resource createRelative(String relativePath) {
-        throw new UnsupportedOperationException("Method createRelative not supported")
+        throw new UnsupportedOperationException('Method createRelative not supported')
     }
 
 }

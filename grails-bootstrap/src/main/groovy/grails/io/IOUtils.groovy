@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ import java.nio.file.Paths
 @CompileStatic
 class IOUtils extends SpringIOUtils {
 
-    public static final String RESOURCE_JAR_PREFIX = ".jar!"
-    public static final String RESOURCE_WAR_PREFIX = ".war!"
+    public static final String RESOURCE_JAR_PREFIX = '.jar!'
+    public static final String RESOURCE_WAR_PREFIX = '.war!'
 
     private static String applicationDirectory
 
@@ -123,7 +123,7 @@ class IOUtils extends SpringIOUtils {
     static File findJarFile(Resource resource) {
         def absolutePath = resource?.getFilename()
         if (absolutePath) {
-            final jarPath = absolutePath.substring("file:".length(), absolutePath.lastIndexOf("!"))
+            final jarPath = absolutePath.substring('file:'.length(), absolutePath.lastIndexOf('!'))
             new File(jarPath)
         }
         null
@@ -140,7 +140,7 @@ class IOUtils extends SpringIOUtils {
             def absolutePath = resource?.path
             if (absolutePath) {
                 try {
-                    return Paths.get(new URL(absolutePath.substring(0, absolutePath.lastIndexOf("!"))).toURI()).toFile()
+                    return Paths.get(new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!'))).toURI()).toFile()
                 } catch (MalformedURLException e) {
                     return null
                 }
@@ -156,7 +156,7 @@ class IOUtils extends SpringIOUtils {
      * @return The URL to class file or null
      */
     static URL findClassResource(Class targetClass) {
-        targetClass.getResource('/' + targetClass.name.replace(".", "/") + ".class")
+        targetClass.getResource('/' + targetClass.name.replace('.', '/') + '.class')
     }
 
     /**
@@ -166,13 +166,13 @@ class IOUtils extends SpringIOUtils {
      * @return The URL to class file or null
      */
     static URL findRootResource(Class targetClass) {
-        def pathToClassFile = '/' + targetClass.name.replace(".", "/") + ".class"
+        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
         def classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
             def rootPath = classRes.toString() - pathToClassFile
             return new URL("$rootPath/")
         }
-        throw new IllegalStateException("Root classpath resource not found! Check your disk permissions")
+        throw new IllegalStateException('Root classpath resource not found! Check your disk permissions')
     }
 
     /**
@@ -186,7 +186,7 @@ class IOUtils extends SpringIOUtils {
      * @return
      */
     static URL findRootResourcesURL(Class targetClass) {
-        def pathToClassFile = '/' + targetClass.name.replace(".", "/") + ".class"
+        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
         def classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
             String rootPath = classRes.toString() - pathToClassFile
@@ -210,7 +210,7 @@ class IOUtils extends SpringIOUtils {
         def classUrl = findClassResource(targetClass)
         if (classUrl != null) {
             def urlPath = classUrl.toString()
-            def bang = urlPath.lastIndexOf("!")
+            def bang = urlPath.lastIndexOf('!')
 
             if (bang > -1) {
                 def newPath = urlPath.substring(0, bang)
@@ -228,7 +228,7 @@ class IOUtils extends SpringIOUtils {
      * @return
      */
     static URL findResourceRelativeToClass(Class targetClass, String path) {
-        def pathToClassFile = '/' + targetClass.name.replace(".", "/") + ".class"
+        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
         def classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
             def rootPath = classRes.toString() - pathToClassFile
@@ -291,8 +291,8 @@ class IOUtils extends SpringIOUtils {
         File file = null
         if (applicationDir != null) {
             String fileName = className.replace('.' as char, File.separatorChar) + '.groovy'
-            List<File> allFiles = [ new File(applicationDir, "src/main/groovy") ]
-            File[] files = new File(applicationDir, "grails-app").listFiles(new FileFilter() {
+            List<File> allFiles = [ new File(applicationDir, 'src/main/groovy') ]
+            File[] files = new File(applicationDir, 'grails-app').listFiles(new FileFilter() {
 
                 @Override
                 boolean accept(File f) {
@@ -333,7 +333,7 @@ class IOUtils extends SpringIOUtils {
                     for (lastElement in stackTraceElements) {
                         def className = lastElement.className
                         def methodName = lastElement.methodName
-                        if (className.endsWith(".Application") && methodName == '<clinit>') {
+                        if (className.endsWith('.Application') && methodName == '<clinit>') {
                             mainClassName = className
                             break
                         }
@@ -369,7 +369,7 @@ class IOUtils extends SpringIOUtils {
     private static File findGrailsApp(File file) {
         File parent = file.parentFile
         while (parent != null) {
-            File grailsApp = new File(parent, "grails-app")
+            File grailsApp = new File(parent, 'grails-app')
             if (grailsApp.isDirectory()) {
                 return parent
             }

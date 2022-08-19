@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ class EnvironmentBlockEvaluator {
         current = e
     }
 
-    @SuppressWarnings("unused")
     void environments(Closure<?> c) {
         if (c != null) {
             c.setDelegate(this)
@@ -49,21 +48,18 @@ class EnvironmentBlockEvaluator {
         }
     }
 
-    @SuppressWarnings("unused")
     void production(Closure<?> c) {
         if (current == Environment.PRODUCTION) {
             callable = c
         }
     }
 
-    @SuppressWarnings("unused")
     void development(Closure<?> c) {
         if (current == Environment.DEVELOPMENT) {
             callable = c
         }
     }
 
-    @SuppressWarnings("unused")
     void test(Closure<?> c) {
         if (current == Environment.TEST) {
             callable = c

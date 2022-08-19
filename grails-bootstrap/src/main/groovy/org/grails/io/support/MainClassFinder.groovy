@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.io.support
 
 import grails.util.BuildSettings
@@ -22,7 +37,7 @@ class MainClassFinder {
 
     private static final Type MAIN_METHOD_TYPE = Type.getMethodType(Type.VOID_TYPE, STRING_ARRAY_TYPE)
 
-    private static final String MAIN_METHOD_NAME = "main"
+    private static final String MAIN_METHOD_NAME = 'main'
 
     static final Map<String, String> mainClasses = new ConcurrentHashMap<>()
 
@@ -60,7 +75,7 @@ class MainClassFinder {
                     searchDirs << rootClassesDir
                 }
 
-                rootClassesDir = new File(rootDir, "build/classes/groovy/main")
+                rootClassesDir = new File(rootDir, 'build/classes/groovy/main')
                 if (rootClassesDir.exists()) {
                     searchDirs << rootClassesDir
                 }
@@ -88,7 +103,7 @@ class MainClassFinder {
             def parent = file.parentFile
 
             while (parent != null) {
-                if (new File(parent, "build.gradle").exists() || new File(parent, "grails-app").exists()) {
+                if (new File(parent, 'build.gradle').exists() || new File(parent, 'grails-app').exists()) {
                     return parent
                 }
                 parent = parent.parentFile
@@ -100,7 +115,7 @@ class MainClassFinder {
     static String findMainClass(File rootFolder = BuildSettings.CLASSES_DIR) {
         if (rootFolder == null) {
             // try current directory
-            rootFolder = new File("build/classes/main")
+            rootFolder = new File('build/classes/main')
         }
 
         def rootFolderPath = rootFolder.canonicalPath

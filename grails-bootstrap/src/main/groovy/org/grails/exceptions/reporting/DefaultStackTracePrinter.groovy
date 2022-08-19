@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 SpringSource
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
         def lineNumWidth = mln.toString().size()
         def methodNameBaseWidth = t.stackTrace.methodName*.size().max() + 1
 
-        def lh = "Line".padLeft(lineNumWidth + 4)
+        def lh = 'Line'.padLeft(lineNumWidth + 4)
         String header = "$lh | Method"
         printHeader(sb, header)
 
@@ -123,7 +123,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
     }
 
     static String makeRelativeIfPossible(String fileName) {
-        final base = System.getProperty("base.dir")
+        final base = System.getProperty('base.dir')
         if (base) {
             fileName = fileName - base
         }
@@ -153,7 +153,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
 
     protected void printFailureLocation(PrintWriter sb, String lineNumber, String methodName, String fileName) {
         sb.println "->> $lineNumber | $methodName in $fileName"
-        sb << "- " * 36
+        sb << '- ' * 36
         sb.println()
     }
 

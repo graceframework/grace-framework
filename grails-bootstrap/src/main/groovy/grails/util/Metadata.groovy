@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,17 +40,17 @@ import java.lang.ref.SoftReference
 class Metadata extends PropertySourcePropertyResolver {
 
     private static final long serialVersionUID = -582452926111226898L
-    public static final String FILE = "application.yml"
-    public static final String APPLICATION_VERSION = "info.app.version"
-    public static final String APPLICATION_NAME = "info.app.name"
-    public static final String DEFAULT_APPLICATION_NAME = "grailsApplication"
-    public static final String APPLICATION_GRAILS_VERSION = "info.app.grailsVersion"
-    public static final String SERVLET_VERSION = "info.app.servletVersion"
-    public static final String WAR_DEPLOYED = "info.app.warDeployed"
-    public static final String DEFAULT_SERVLET_VERSION = "3.0"
+    public static final String FILE = 'application.yml'
+    public static final String APPLICATION_VERSION = 'info.app.version'
+    public static final String APPLICATION_NAME = 'info.app.name'
+    public static final String DEFAULT_APPLICATION_NAME = 'grailsApplication'
+    public static final String APPLICATION_GRAILS_VERSION = 'info.app.grailsVersion'
+    public static final String SERVLET_VERSION = 'info.app.servletVersion'
+    public static final String WAR_DEPLOYED = 'info.app.warDeployed'
+    public static final String DEFAULT_SERVLET_VERSION = '3.0'
 
-    private static Holder<Reference<Metadata>> holder = new Holder<Reference<Metadata>>("Metadata")
-    public static final String BUILD_INFO_FILE = "META-INF/grails.build.info"
+    private static Holder<Reference<Metadata>> holder = new Holder<Reference<Metadata>>('Metadata')
+    public static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'
 
     private Resource metadataFile
     private boolean warDeployed
@@ -104,7 +104,7 @@ class Metadata extends PropertySourcePropertyResolver {
 
         if (!containsProperty(APPLICATION_NAME)) {
             final Map<String, Object> m = [(APPLICATION_NAME): (Object) DEFAULT_APPLICATION_NAME]
-            addPropertySource("appName", m)
+            addPropertySource('appName', m)
             resetCaches()
         }
         warDeployed = ((PropertyResolver) this).getProperty(WAR_DEPLOYED, Boolean).orElse(false)
@@ -131,7 +131,7 @@ class Metadata extends PropertySourcePropertyResolver {
             }
             if (url != null) {
                 url.withInputStream { input ->
-                    addPropertySource(PropertySource.of("application", new YamlPropertySourceLoader().read("application", input)))
+                    addPropertySource(PropertySource.of('application', new YamlPropertySourceLoader().read('application', input)))
                 }
                 this.metadataFile = new UrlResource(url)
             }
@@ -140,18 +140,18 @@ class Metadata extends PropertySourcePropertyResolver {
             if (url != null) {
                 if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
                     url.withInputStream { input ->
-                        def buildInfo = new PropertiesPropertySourceLoader().read("build.info", input)
-                        addPropertySource(PropertySource.of("build.info", buildInfo))
+                        def buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
+                        addPropertySource(PropertySource.of('build.info', buildInfo))
                     }
                 }
             } else {
                 // try WAR packaging resolve
-                url = classLoader.getResource("../../" + BUILD_INFO_FILE)
+                url = classLoader.getResource('../../' + BUILD_INFO_FILE)
                 if (url != null) {
                     if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
                         url.withInputStream { input ->
-                            def buildInfo = new PropertiesPropertySourceLoader().read("build.info", input)
-                            addPropertySource(PropertySource.of("build.info", buildInfo))
+                            def buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
+                            addPropertySource(PropertySource.of('build.info', buildInfo))
                         }
                     }
                 }
@@ -159,12 +159,12 @@ class Metadata extends PropertySourcePropertyResolver {
             afterLoading()
         }
         catch (Exception e) {
-            throw new RuntimeException("Cannot load application metadata:" + e.getMessage(), e)
+            throw new RuntimeException("Cannot load application metadata: ${e.getMessage()}", e)
         }
     }
 
     private void loadYml(InputStream input) {
-        addPropertySource(PropertySource.of(new YamlPropertySourceLoader().read("metadata", input)))
+        addPropertySource(PropertySource.of(new YamlPropertySourceLoader().read('metadata', input)))
     }
 
     private void loadFromInputStream(InputStream inputStream) {
@@ -181,7 +181,7 @@ class Metadata extends PropertySourcePropertyResolver {
                 afterLoading()
             }
             catch (Exception e) {
-                throw new RuntimeException("Cannot load application metadata:" + e.getMessage(), e)
+                throw new RuntimeException('Cannot load application metadata:' + e.getMessage(), e)
             }
             finally {
                 closeQuietly(input)
@@ -381,12 +381,12 @@ class Metadata extends PropertySourcePropertyResolver {
     <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
         ((PropertyResolver) this).getProperty(key, Object)
                 .map(value -> value.asType(targetType))
-                .orElseThrow(() -> new IllegalStateException("Value for key [" + key + "] cannot be resolved"))
+                .orElseThrow(() -> new IllegalStateException("Value for key [$key] cannot be resolved"))
     }
 
     @Deprecated
     Object navigate(String... path) {
-        ((Optional<Object>) ((PropertyResolver) this).getProperty(path.join(".").toString(), Object)).orElse(null)
+        ((Optional<Object>) ((PropertyResolver) this).getProperty(path.join('.').toString(), Object)).orElse(null)
     }
 
     @Deprecated

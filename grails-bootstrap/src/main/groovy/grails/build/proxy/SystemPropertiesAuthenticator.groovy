@@ -1,10 +1,5 @@
-package grails.build.proxy
-
-import grails.util.BuildSettings
-import groovy.transform.CompileStatic
-
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +13,10 @@ import groovy.transform.CompileStatic
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package grails.build.proxy
+
+import grails.util.BuildSettings
+import groovy.transform.CompileStatic
 
 /**
  * An Authenticator that authenticates via System properties
@@ -32,8 +31,8 @@ class SystemPropertiesAuthenticator extends Authenticator {
     protected PasswordAuthentication getPasswordAuthentication() {
         if (getRequestorType() == RequestorType.PROXY) {
             return new PasswordAuthentication(
-                    System.getProperty(BuildSettings.PROXY_HTTP_USER, ""),
-                    System.getProperty(BuildSettings.PROXY_HTTP_PASSWORD, "").toCharArray())
+                    System.getProperty(BuildSettings.PROXY_HTTP_USER, ''),
+                    System.getProperty(BuildSettings.PROXY_HTTP_PASSWORD, '').toCharArray())
         }
         null
     }

@@ -49,7 +49,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     NavigableMap() {
         rootConfig = this
         path = []
-        dottedPath = ""
+        dottedPath = ''
         delegateMap = new LinkedHashMap<>()
     }
 
@@ -144,7 +144,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     void merge(Map sourceMap, boolean parseFlatKeys=false) {
-        mergeMaps(this, "", this, sourceMap, parseFlatKeys)
+        mergeMaps(this, '', this, sourceMap, parseFlatKeys)
     }
 
     private void mergeMaps(NavigableMap rootMap,
@@ -355,7 +355,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         boolean isFirst = true
         for (String pathElement : path) {
             if (!isFirst) {
-                accumulatedPath.append(".").append(pathElement)
+                accumulatedPath.append('.').append(pathElement)
             }
             else {
                 isFirst = false
@@ -416,7 +416,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     }
                     if (value instanceof Collection) {
                         if (forceStrings) {
-                            flatConfig.put(fullKey, ((Collection)value).join(","))
+                            flatConfig.put(fullKey, ((Collection)value).join(','))
                         } else {
                             flatConfig.put(fullKey, value)
                         }
@@ -514,22 +514,22 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         Object put(String key, Object value) {
-            throw new UnsupportedOperationException("Configuration cannot be modified")
+            throw new UnsupportedOperationException('Configuration cannot be modified')
         }
 
         @Override
         Object remove(Object key) {
-            throw new UnsupportedOperationException("Configuration cannot be modified")
+            throw new UnsupportedOperationException('Configuration cannot be modified')
         }
 
         @Override
         void putAll(Map<? extends String, ?> m) {
-            throw new UnsupportedOperationException("Configuration cannot be modified")
+            throw new UnsupportedOperationException('Configuration cannot be modified')
         }
 
         @Override
         void clear() {
-            throw new UnsupportedOperationException("Configuration cannot be modified")
+            throw new UnsupportedOperationException('Configuration cannot be modified')
         }
 
         @Override
@@ -577,7 +577,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         Object invokeMethod(String name, Object args) {
-            throw new NullPointerException("Cannot invoke method " + name + "() on NullSafeNavigator")
+            throw new NullPointerException("Cannot invoke method $name() on NullSafeNavigator")
         }
 
         boolean equals(Object to) {
@@ -593,7 +593,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         Object plus(Object o) {
-            throw new NullPointerException("Cannot invoke method plus on NullSafeNavigator")
+            throw new NullPointerException('Cannot invoke method plus on NullSafeNavigator')
         }
 
         boolean is(Object other) {
