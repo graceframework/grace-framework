@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,13 +55,13 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
 
     protected static List<String> DEFAULT_EXCLUDES = ['metaClass', 'class']
 
-    public static final String RELATIONSHIP_SELF = "self"
-    public static final String HREF_ATTRIBUTE = "href"
-    public static final String TITLE_ATTRIBUTE = "title"
-    public static final String HREFLANG_ATTRIBUTE = "hreflang"
-    public static final String TYPE_ATTRIBUTE = "type"
-    public static final String TEMPLATED_ATTRIBUTE = "templated"
-    public static final String DEPRECATED_ATTRIBUTE = "deprecated"
+    public static final String RELATIONSHIP_SELF = 'self'
+    public static final String HREF_ATTRIBUTE = 'href'
+    public static final String TITLE_ATTRIBUTE = 'title'
+    public static final String HREFLANG_ATTRIBUTE = 'hreflang'
+    public static final String TYPE_ATTRIBUTE = 'type'
+    public static final String TEMPLATED_ATTRIBUTE = 'templated'
+    public static final String DEPRECATED_ATTRIBUTE = 'deprecated'
 
     @Autowired
     MessageSource messageSource
@@ -124,7 +124,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
 
     protected String getLinkTitle(PersistentEntity entity, Locale locale) {
         final propertyName = entity.decapitalizedName
-        messageSource.getMessage("resource.${propertyName}.href.title", [propertyName, entity.name] as Object[], "", locale)
+        messageSource.getMessage("resource.${propertyName}.href.title", [propertyName, entity.name] as Object[], '', locale)
     }
 
     protected String getResourceTitle(String uri, Locale locale) {
@@ -135,7 +135,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
             uri = uri.substring(0, uri.length() - 1)
         }
         uri = uri.replace('/', '.')
-        messageSource.getMessage("resource.${uri}.href.title", [uri] as Object[], "", locale)
+        messageSource.getMessage("resource.${uri}.href.title", [uri] as Object[], '', locale)
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ import static org.springframework.http.HttpStatus.OK
  * @author Graeme Rocher
  * @since 2.3
  */
-@Artefact("Controller")
+@Artefact('Controller')
 @ReadOnly
 class RestfulController<T> {
 
-    static allowedMethods = [save: "POST", update: ["PUT", "POST"], patch: "PATCH", delete: "DELETE"]
+    static allowedMethods = [save: 'POST', update: ['PUT', 'POST'], patch: 'PATCH', delete: 'DELETE']
 
     Class<T> resource
     String resourceName
@@ -198,7 +198,7 @@ class RestfulController<T> {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [classMessageArg, instance.id])
-                redirect action: "index", method: "GET"
+                redirect action: 'index', method: 'GET'
             }
             '*' { render status: NO_CONTENT } // NO CONTENT STATUS CODE
         }
@@ -284,7 +284,7 @@ class RestfulController<T> {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [classMessageArg, params.id])
-                redirect action: "index", method: "GET"
+                redirect action: 'index', method: 'GET'
             }
             '*' { render status: NOT_FOUND }
         }

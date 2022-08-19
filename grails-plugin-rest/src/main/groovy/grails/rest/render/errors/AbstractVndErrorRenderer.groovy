@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ import org.springframework.validation.ObjectError
 abstract class AbstractVndErrorRenderer  implements ContainerRenderer<Errors, Object> {
 
     public static final String LOGREF_ATTRIBUTE = 'logref'
-    public static final String MESSAGE_ATTRIBUTE = "message"
-    public static final String PATH_ATTRIBUTE = "path"
-    public static final String RESOURCE_ATTRIBUTE = "resource"
-    public static final String HREF_ATTRIBUTE = "href"
+    public static final String MESSAGE_ATTRIBUTE = 'message'
+    public static final String PATH_ATTRIBUTE = 'path'
+    public static final String RESOURCE_ATTRIBUTE = 'resource'
+    public static final String HREF_ATTRIBUTE = 'href'
 
     String encoding = GrailsWebUtil.DEFAULT_ENCODING
     boolean absoluteLinks = true

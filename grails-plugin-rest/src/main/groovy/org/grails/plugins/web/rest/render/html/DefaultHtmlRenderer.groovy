@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
     @Autowired(required = false)
     ProxyHandler proxyHandler
 
-    String suffix = ""
+    String suffix = ''
 
     DefaultHtmlRenderer(Class<T> targetType) {
         this.targetType = targetType
@@ -99,13 +99,13 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
 
             Class<?> type = object.getClass()
             if (type.isArray()) {
-                return GrailsNameUtils.getPropertyName(type.getComponentType()) + suffix + "Array"
+                return GrailsNameUtils.getPropertyName(type.getComponentType()) + suffix + 'Array'
             }
 
             if (object instanceof Collection) {
                 Collection coll = (Collection) object
                 if (coll.isEmpty()) {
-                    return "emptyCollection"
+                    return 'emptyCollection'
                 }
 
                 Object first = coll.iterator().next()
@@ -113,19 +113,19 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
                     first = proxyHandler.unwrapIfProxy(first)
                 }
                 if (coll instanceof List) {
-                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + "List"
+                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'List'
                 }
                 if (coll instanceof Set) {
-                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + "Set"
+                    return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'Set'
                 }
-                return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + "Collection"
+                return GrailsNameUtils.getPropertyName(first.getClass()) + suffix + 'Collection'
             }
 
             if (object instanceof Map) {
                 Map map = (Map)object
 
                 if (map.isEmpty()) {
-                    return "emptyMap"
+                    return 'emptyMap'
                 }
 
                 Object entry = map.values().iterator().next()
@@ -133,7 +133,7 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
                     if (proxyHandler != null) {
                         entry = proxyHandler.unwrapIfProxy(entry)
                     }
-                    return GrailsNameUtils.getPropertyName(entry.getClass()) + suffix + "Map"
+                    return GrailsNameUtils.getPropertyName(entry.getClass()) + suffix + 'Map'
                 }
             }
             else {

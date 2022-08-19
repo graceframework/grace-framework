@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,9 @@ import org.springframework.http.HttpMethod
 class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
 
     public static final MimeType MIME_TYPE = MimeType.HAL_XML
-    public static final String RESOURCE_TAG = "resource"
-    public static final String LINK_TAG = "link"
-    public static final String RELATIONSHIP_ATTRIBUTE = "rel"
+    public static final String RESOURCE_TAG = 'resource'
+    public static final String LINK_TAG = 'link'
+    public static final String RELATIONSHIP_ATTRIBUTE = 'rel'
 
     private static final MimeType[] DEFAULT_MIME_TYPES = [MIME_TYPE] as MimeType[]
 
@@ -67,7 +67,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         boolean isDomain = entity != null
 
         Set writtenObjects = []
-        w.startDocument(encoding, "1.0")
+        w.startDocument(encoding, '1.0')
 
         if (isDomain) {
             writeDomainWithEmbeddedAndLinks(entity, object, context, xml, writtenObjects)
@@ -181,10 +181,10 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         }
 
         if (link.templated) {
-            writer.attribute(TEMPLATED_ATTRIBUTE, "true")
+            writer.attribute(TEMPLATED_ATTRIBUTE, 'true')
         }
         if (link.deprecated) {
-            writer.attribute(DEPRECATED_ATTRIBUTE, "true")
+            writer.attribute(DEPRECATED_ATTRIBUTE, 'true')
         }
         writer.end()
     }

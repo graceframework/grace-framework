@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import grails.web.controllers.ControllerMethod
 import grails.web.mapping.UrlMappings
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-
-import java.lang.reflect.Modifier
 
 import javax.annotation.PostConstruct
 
@@ -98,17 +96,17 @@ import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 class ResourceTransform implements ASTTransformation, CompilationUnitAware {
 
     private static final ClassNode MY_TYPE = new ClassNode(Resource)
-    public static final String ATTR_READY_ONLY = "readOnly"
-    public static final String ATTR_SUPER_CLASS = "superClass"
-    public static final String RESPOND_METHOD = "respond"
-    public static final String ATTR_RESPONSE_FORMATS = "formats"
-    public static final String ATTR_URI = "uri"
-    public static final String PARAMS_VARIABLE = "params"
+    public static final String ATTR_READY_ONLY = 'readOnly'
+    public static final String ATTR_SUPER_CLASS = 'superClass'
+    public static final String RESPOND_METHOD = 'respond'
+    public static final String ATTR_RESPONSE_FORMATS = 'formats'
+    public static final String ATTR_URI = 'uri'
+    public static final String PARAMS_VARIABLE = 'params'
     public static final ConstantExpression CONSTANT_STATUS = new ConstantExpression(ARGUMENT_STATUS)
-    public static final String ATTR_NAMESPACE = "namespace"
-    public static final String RENDER_METHOD = "render"
-    public static final String ARGUMENT_STATUS = "status"
-    public static final String REDIRECT_METHOD = "redirect"
+    public static final String ATTR_NAMESPACE = 'namespace'
+    public static final String RENDER_METHOD = 'render'
+    public static final String ARGUMENT_STATUS = 'status'
+    public static final String REDIRECT_METHOD = 'redirect'
     public static final ClassNode AUTOWIRED_CLASS_NODE = new ClassNode(Autowired).getPlainNodeReference()
 
     private CompilationUnit unit
@@ -116,7 +114,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
     @Override
     void visit(ASTNode[] astNodes, SourceUnit source) {
         if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof ClassNode)) {
-            throw new RuntimeException('Internal error: wrong types: $node.class / $parent.class')
+            throw new RuntimeException("Internal error: wrong types: ${astNodes[0].class} / ${astNodes[1].class}")
         }
 
         ClassNode parent = (ClassNode) astNodes[1]
@@ -183,8 +181,8 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     }
                 }
             } else {
-                responseFormatsExpression.addExpression(new ConstantExpression("json"))
-                responseFormatsExpression.addExpression(new ConstantExpression("xml"))
+                responseFormatsExpression.addExpression(new ConstantExpression('json'))
+                responseFormatsExpression.addExpression(new ConstantExpression('xml'))
             }
 
             if (uriAttr != null || namespaceAttr != null) {
@@ -200,17 +198,17 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     final urlMappingsField = new FieldNode('$urlMappings', PRIVATE,
                             urlMappingsClassNode, newControllerClassNode, null)
                     newControllerClassNode.addField(urlMappingsField)
-                    final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, "um")
+                    final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, 'um')
                     final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod).getPlainNodeReference())
-                    MethodNode urlMappingsSetter = new MethodNode("setUrlMappings", PUBLIC, VOID_CLASS_NODE,
+                    MethodNode urlMappingsSetter = new MethodNode('setUrlMappings', PUBLIC, VOID_CLASS_NODE,
                             [urlMappingsSetterParam] as Parameter[], null,
                             new ExpressionStatement(new BinaryExpression(new VariableExpression(urlMappingsField.name),
                                     Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression(urlMappingsSetterParam))))
                     final autowiredAnnotation = new AnnotationNode(AUTOWIRED_CLASS_NODE)
-                    autowiredAnnotation.addMember("required", ConstantExpression.FALSE)
+                    autowiredAnnotation.addMember('required', ConstantExpression.FALSE)
 
                     final qualifierAnnotation = new AnnotationNode(new ClassNode(Qualifier).getPlainNodeReference())
-                    qualifierAnnotation.addMember("value", new ConstantExpression("grailsUrlMappingsHolder"))
+                    qualifierAnnotation.addMember('value', new ConstantExpression('grailsUrlMappingsHolder'))
                     urlMappingsSetter.addAnnotation(autowiredAnnotation)
                     urlMappingsSetter.addAnnotation(qualifierAnnotation)
                     urlMappingsSetter.addAnnotation(controllerMethodAnnotation)
@@ -223,7 +221,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
 
                     MapExpression map = new MapExpression()
                     if (uri) {
-                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"),
+                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression('resources'),
                                 new ConstantExpression(domainPropertyName)))
                     }
 
@@ -233,24 +231,24 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                         newControllerClassNode.addField(namespaceField)
                         if (map.getMapEntryExpressions().size() == 0) {
                             uri = "/${namespace}/${domainPropertyName}"
-                            map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("resources"),
+                            map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression('resources'),
                                     new ConstantExpression(domainPropertyName)))
                         }
-                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression("namespace"),
+                        map.addMapEntryExpression(new MapEntryExpression(new ConstantExpression('namespace'),
                                 new ConstantExpression(namespace)))
                     }
 
                     final resourcesUrlMapping = new MethodCallExpression(buildThisExpression(), uri,
-                            new MapExpression([ new MapEntryExpression(new ConstantExpression("resources"),
+                            new MapExpression([ new MapEntryExpression(new ConstantExpression('resources'),
                                     new ConstantExpression(domainPropertyName))]))
                     final urlMappingsClosure = new ClosureExpression(null, new ExpressionStatement(resourcesUrlMapping))
 
                     def addMappingsMethodCall = applyDefaultMethodTarget(new MethodCallExpression(
-                            urlMappingsVar, "addMappings", urlMappingsClosure), urlMappingsClassNode)
+                            urlMappingsVar, 'addMappings', urlMappingsClosure), urlMappingsClassNode)
                     methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new ExpressionStatement(addMappingsMethodCall),
                             new EmptyStatement()))
 
-                    def initialiseUrlMappingsMethod = new MethodNode("initializeUrlMappings", PUBLIC,
+                    def initialiseUrlMappingsMethod = new MethodNode('initializeUrlMappings', PUBLIC,
                             VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
                     initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct).getPlainNodeReference()))
                     initialiseUrlMappingsMethod.addAnnotation(controllerMethodAnnotation)
@@ -262,9 +260,9 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
 
             final publicStaticFinal = PUBLIC | STATIC | FINAL
 
-            newControllerClassNode.addProperty("scope", publicStaticFinal, ClassHelper.STRING_TYPE,
-                    new ConstantExpression("singleton"), null, null)
-            newControllerClassNode.addProperty("responseFormats", publicStaticFinal,
+            newControllerClassNode.addProperty('scope', publicStaticFinal, ClassHelper.STRING_TYPE,
+                    new ConstantExpression('singleton'), null, null)
+            newControllerClassNode.addProperty('responseFormats', publicStaticFinal,
                     new ClassNode(List).getPlainNodeReference(), responseFormatsExpression, null, null)
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
@@ -273,7 +271,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             newControllerClassNode.setModule(ast)
 
             final artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))
-            artefactAnnotation.addMember("value", new ConstantExpression(ControllerArtefactHandler.TYPE))
+            artefactAnnotation.addMember('value', new ConstantExpression(ControllerArtefactHandler.TYPE))
             newControllerClassNode.addAnnotation(artefactAnnotation)
 
             ast.classes.add(newControllerClassNode)
@@ -284,7 +282,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
         BlockStatement constructorBody = new BlockStatement()
         constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER,
                 new TupleExpression(new ClassExpression(domainClassNode), new ConstantExpression(readOnly, true)))))
-        ConstructorNode constructorNode = controllerClassNode.addConstructor(Modifier.PUBLIC, ZERO_PARAMETERS,
+        ConstructorNode constructorNode = controllerClassNode.addConstructor(PUBLIC, ZERO_PARAMETERS,
                 ClassNode.EMPTY_ARRAY, constructorBody)
         AnnotatedNodeUtils.markAsGenerated(controllerClassNode, constructorNode)
         constructorNode

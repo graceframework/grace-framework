@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ import org.springframework.http.HttpStatus
 @CompileStatic
 class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
 
-    public static final MimeType MIME_TYPE = new MimeType("application/vnd.error+xml", "xml")
-    public static final String ERRORS_TAG = "errors"
-    public static final String ERROR_TAG = "error"
-    public static final String LINK_TAG = "link"
+    public static final MimeType MIME_TYPE = new MimeType('application/vnd.error+xml', 'xml')
+    public static final String ERRORS_TAG = 'errors'
+    public static final String ERROR_TAG = 'error'
+    public static final String LINK_TAG = 'link'
 
     MimeType[] mimeTypes = [MIME_TYPE, MimeType.HAL_XML, MimeType.XML, MimeType.TEXT_XML] as MimeType[]
 
@@ -55,7 +55,7 @@ class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
 
             final streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
             XMLStreamWriter w = prettyPrint ? new PrettyPrintXMLStreamWriter(streamingWriter) : new XMLStreamWriter(streamingWriter)
-            w.startDocument(encoding, "1.0")
+            w.startDocument(encoding, '1.0')
             w.startNode(ERRORS_TAG)
                 .attribute('xml:lang', language)
             for (ObjectError oe in object.allErrors) {
@@ -66,8 +66,8 @@ class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
                         .characters(messageSource.getMessage(oe, locale))
                     .end()
                     .startNode(LINK_TAG)
-                        .attribute("rel", "resource")
-                        .attribute("href", linkGenerator.link(resource: target, method: "GET", absolute: true))
+                        .attribute('rel', 'resource')
+                        .attribute('href', linkGenerator.link(resource: target, method: 'GET', absolute: true))
                     .end()
                 .end()
             }
