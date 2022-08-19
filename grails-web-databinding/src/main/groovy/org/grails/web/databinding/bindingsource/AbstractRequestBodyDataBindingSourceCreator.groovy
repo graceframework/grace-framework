@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
             }
             if (bindingSource instanceof InputStream) {
                 def is = (InputStream)bindingSource
-                return createBindingSource(is, "UTF-8")
+                return createBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
                 def is = (Reader)bindingSource
@@ -84,7 +84,7 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
             }
             if (bindingSource instanceof InputStream) {
                 def is = (InputStream)bindingSource
-                return createCollectionBindingSource(is, "UTF-8")
+                return createCollectionBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
                 def is = (Reader)bindingSource

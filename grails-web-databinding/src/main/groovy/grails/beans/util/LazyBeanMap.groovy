@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     Object remove(Object key) {
-        throw new UnsupportedOperationException("Method remove(key) not implemented")
+        throw new UnsupportedOperationException('Method remove(key) not implemented')
     }
 
     @Override
@@ -114,7 +114,7 @@ class LazyBeanMap implements Map<String, Object> {
 
     @Override
     void clear() {
-        throw new UnsupportedOperationException("Method clear() not implemented")
+        throw new UnsupportedOperationException('Method clear() not implemented')
     }
 
     @Override

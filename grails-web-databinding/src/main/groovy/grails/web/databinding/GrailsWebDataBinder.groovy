@@ -156,10 +156,10 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             bindingResult = newResult
         }
         def mc = GroovySystem.getMetaClassRegistry().getMetaClass(obj.getClass())
-        if (mc.hasProperty(obj, "errors") != null && bindingResult != null) {
+        if (mc.hasProperty(obj, 'errors') != null && bindingResult != null) {
             def errors = new ValidationErrors(obj)
             errors.addAllErrors(bindingResult)
-            mc.setProperty(obj, "errors", errors)
+            mc.setProperty(obj, 'errors', errors)
         }
     }
 
@@ -378,7 +378,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             def propName = indexedPropertyReferenceDescriptor.propertyName
 
             def idValue = getIdentifierValueFrom(val)
-            if (idValue != null && idValue != "") {
+            if (idValue != null && idValue != '') {
                 def propertyType = getDomainClassType(obj, propName)
                 def referencedType = getReferencedTypeForCollection propName, obj
                 if (referencedType != null && isDomainClass(referencedType)) {
@@ -395,7 +395,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
                             }
                             if (instance == null) {
                                 def message = "Illegal attempt to update element in [${propName}] Set with id [${idValue}]. " +
-                                        "No such record was found."
+                                        'No such record was found.'
                                 Exception e = new IllegalArgumentException(message)
                                 addBindingError(obj, propName, idValue, e, listener, errors)
                             } else {
@@ -567,7 +567,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             if (trimStrings) {
                 stringValue = stringValue.trim()
             }
-            if (convertEmptyStringsToNull && "".equals(stringValue)) {
+            if (convertEmptyStringsToNull && ''.equals(stringValue)) {
                 stringValue = null
             }
             return stringValue

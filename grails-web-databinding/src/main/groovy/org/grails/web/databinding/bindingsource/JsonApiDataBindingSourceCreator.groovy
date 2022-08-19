@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class JsonApiDataBindingSourceCreator extends JsonDataBindingSourceCreator {
 
-    protected static final String DATA = "data"
-    protected static final String RELATIONSHIPS = "relationships"
-    protected static final String ID = "id"
-    protected static final String ATTRIBUTES = "attributes"
+    protected static final String DATA = 'data'
+    protected static final String ID = 'id'
+    protected static final String ATTRIBUTES = 'attributes'
+    protected static final String RELATIONSHIPS = 'relationships'
 
     @Override
     MimeType[] getMimeTypes() {
