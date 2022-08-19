@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class LocaleAwareBigDecimalConverter extends LocaleAwareNumberConverter {
     protected NumberFormat getNumberFormatter() {
         def nf = super.getNumberFormatter()
         if (!(nf instanceof DecimalFormat)) {
-            throw new IllegalStateException("Cannot support non-DecimalFormat: " + nf)
+            throw new IllegalStateException("Cannot support non-DecimalFormat: $nf")
         }
 
         ((DecimalFormat) nf).setParseBigDecimal(true)
