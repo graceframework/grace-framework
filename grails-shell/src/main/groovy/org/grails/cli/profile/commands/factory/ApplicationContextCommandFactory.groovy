@@ -44,7 +44,7 @@ class ApplicationContextCommandFactory implements CommandFactory {
                 return []
             }
             def commands = registry.findCommands()
-            return commands.collect() { Named named -> new GradleTaskCommandAdapter(profile, named) }
+            return commands.collect { Named named -> new GradleTaskCommandAdapter(profile, named) }
         } catch (Throwable e) {
             GrailsConsole.instance.error("Error occurred loading commands: $e.message", e)
             return []

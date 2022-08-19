@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ abstract class MapReadingCachedGradleOperation <V> extends CachedGradleOperation
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK)
         Map toWrite = data.collectEntries { String key, V val ->
             if (val instanceof Iterable) {
-                return [(key): val.collect() { it.toString() }]
+                return [(key): val.collect { it.toString() }]
             }
             [(key): val.toString()]
         }

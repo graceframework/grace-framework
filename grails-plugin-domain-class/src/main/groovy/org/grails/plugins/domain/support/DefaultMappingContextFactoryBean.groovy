@@ -92,7 +92,7 @@ class DefaultMappingContextFactoryBean implements FactoryBean<MappingContext>, I
         )
 
         GrailsClass[] persistentClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
-        mappingContext.addPersistentEntities(persistentClasses.collect() { GrailsClass cls -> cls.clazz } as Class[])
+        mappingContext.addPersistentEntities(persistentClasses.collect { GrailsClass cls -> cls.clazz } as Class[])
     }
 
 }

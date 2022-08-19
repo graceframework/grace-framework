@@ -273,7 +273,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     if (subMap instanceof Map) {
                         subMap.remove(sourceKey)
                     }
-                    def keysToRemove = rootMap.keySet().findAll() { String key ->
+                    def keysToRemove = rootMap.keySet().findAll { String key ->
                         key.startsWith("${path}.")
                     }
                     for (key in keysToRemove) {

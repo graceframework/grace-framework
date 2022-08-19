@@ -64,7 +64,7 @@ class ResourceUtils extends GrailsResourceUtils {
                     if (!dir.hidden && !dirName.startsWith('.')) {
                         def dirFiles = dir.listFiles()
                         if (dirFiles != null) {
-                            boolean hasGroovySources = dirFiles?.find() { File f -> f.name.endsWith('.groovy') }
+                            boolean hasGroovySources = dirFiles?.find { File f -> f.name.endsWith('.groovy') }
                             if (hasGroovySources) {
                                 // if there are Groovy sources stop here, no need to add child packages
                                 packageNames.add "${prefix}${dirName}".toString()

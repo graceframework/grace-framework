@@ -36,7 +36,7 @@ class PrefixedMapPropertySource extends EnumerablePropertySource {
         super(prefix + '_' + source.getName())
         this.prefix = prefix
         this.source = source
-        this.propertyNames = source.propertyNames.collect() { String n -> "${prefix}.$n".toString() } as String[]
+        this.propertyNames = source.propertyNames.collect { String n -> "${prefix}.$n".toString() } as String[]
     }
 
     @Override

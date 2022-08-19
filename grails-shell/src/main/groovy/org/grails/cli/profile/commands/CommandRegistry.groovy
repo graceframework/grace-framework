@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ class CommandRegistry {
     }
 
     static Collection<Command> findCommands(ProfileRepository repository) {
-        registeredCommands.values().collect() { Command cmd ->
+        registeredCommands.values().collect { Command cmd ->
             if (cmd instanceof ProfileRepositoryAware) {
                 ((ProfileRepositoryAware)cmd).profileRepository = repository
             }
@@ -93,8 +93,8 @@ class CommandRegistry {
         }
 
         commands.addAll(registeredCommands.values()
-                .findAll {
-                    Command c -> (c instanceof ProjectCommand) ||
+                .findAll { Command c ->
+                    (c instanceof ProjectCommand) ||
                             (c instanceof ProfileCommand) &&
                             ((ProfileCommand) c).profile == profile
                 }

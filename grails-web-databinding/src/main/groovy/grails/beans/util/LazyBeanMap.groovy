@@ -136,7 +136,7 @@ class LazyBeanMap implements Map<String, Object> {
             return []
         }
 
-        keySet().collect() { String property ->
+        keySet().collect { String property ->
             cpf.getPropertyValue(property)
         }
     }
@@ -148,7 +148,7 @@ class LazyBeanMap implements Map<String, Object> {
         }
 
         new HashSet<Map.Entry<String, Object>>(
-                keySet().collect() { String property ->
+                keySet().collect { String property ->
                     new AbstractMap.SimpleEntry<String, Object>(property, cpf.getPropertyValue(property))
                 }
         )

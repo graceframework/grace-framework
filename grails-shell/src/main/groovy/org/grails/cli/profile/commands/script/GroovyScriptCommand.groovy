@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         if (profile?.hasCommand(context, commandName)) {
             def commandLine = context.commandLine
             def newArgs = [commandName]
-            newArgs.addAll argsArray.collect() { it.toString() }
+            newArgs.addAll argsArray.collect { it.toString() }
             def newContext = new GrailsCli.ExecutionContextImpl(commandLine.parseNew(newArgs as String[]), context)
             return profile.handleCommand(newContext)
         }

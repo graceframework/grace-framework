@@ -280,7 +280,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
      */
     @Override
     Collection<File> files(String pattern) {
-        resources(pattern).collect() { Resource res -> res.file }
+        resources(pattern).collect { Resource res -> res.file }
     }
 
 }

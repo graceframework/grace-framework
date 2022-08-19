@@ -85,7 +85,7 @@ class Support {
         else if (grailsHome) {
             def parentDir = new File(grailsHome, 'lib/org.springframework/springloaded/jars')
             if (parentDir.exists()) {
-                return parentDir.listFiles()?.find() { File f -> f.name.endsWith('.RELEASE.jar') }
+                return parentDir.listFiles()?.find { File f -> f.name.endsWith('.RELEASE.jar') }
             }
         }
     }

@@ -94,7 +94,7 @@ class GradleStep extends AbstractStep {
         }
 
         if (passArguments) {
-            argList.addAll(commandLine.remainingArgs.collect() { String arg -> "-${arg}".toString() })
+            argList.addAll(commandLine.remainingArgs.collect { String arg -> "-${arg}".toString() })
         }
 
         if (argList) {

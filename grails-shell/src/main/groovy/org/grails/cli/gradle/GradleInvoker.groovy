@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ class GradleInvoker {
                 arguments << '-Dgrails.full.stacktrace=true'
             }
 
-            arguments.addAll argArray.collect() { it.toString() }
+            arguments.addAll argArray.collect { it.toString() }
             buildLauncher.withArguments(arguments as String[])
         }
     }

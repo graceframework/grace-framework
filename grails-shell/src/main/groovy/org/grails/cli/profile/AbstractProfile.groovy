@@ -117,7 +117,7 @@ abstract class AbstractProfile implements Profile {
 
         def parents = profileConfig.get('extends')
         if (parents) {
-            parentNames = parents.toString().split(',').collect() { String name -> name.trim() }
+            parentNames = parents.toString().split(',').collect { String name -> name.trim() }
         }
         if (this.name == null) {
             throw new IllegalStateException("Profile name not set. Profile for path ${profileDir.URL} is invalid")
@@ -230,12 +230,12 @@ abstract class AbstractProfile implements Profile {
 
     @Override
     Iterable<Feature> getDefaultFeatures() {
-        getFeatures().findAll() { Feature f -> defaultFeaturesNames.contains(f.name) }
+        getFeatures().findAll { Feature f -> defaultFeaturesNames.contains(f.name) }
     }
 
     @Override
     Iterable<Feature> getRequiredFeatures() {
-        def requiredFeatureInstances = getFeatures().findAll() { Feature f -> requiredFeatureNames.contains(f.name) }
+        def requiredFeatureInstances = getFeatures().findAll { Feature f -> requiredFeatureNames.contains(f.name) }
         if (requiredFeatureInstances.size() != requiredFeatureNames.size()) {
             throw new IllegalStateException("One or more required features were not found on the classpath. Required features: $requiredFeatureNames")
         }
@@ -344,7 +344,7 @@ abstract class AbstractProfile implements Profile {
 
     @Override
     Iterable<Profile> getExtends() {
-        parentNames.collect() { String name ->
+        parentNames.collect { String name ->
             def parent = profileRepository.getProfile(name, true)
             if (parent == null) {
                 throw new IllegalStateException("Profile [$name] declares an invalid dependency on parent profile [$name]")
@@ -371,7 +371,7 @@ abstract class AbstractProfile implements Profile {
                         completers  << new ArgumentCompleter(
                                 commandNameCompleter,
                                 description.completer,
-                                new StringsCompleter(description.flags.collect() { CommandArgument arg -> "-$arg.name".toString() }))
+                                new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
                     }
                     else {
                         completers  << new ArgumentCompleter(commandNameCompleter, description.completer)
@@ -381,7 +381,7 @@ abstract class AbstractProfile implements Profile {
                     if (description.flags) {
                         completers  << new ArgumentCompleter(
                                 commandNameCompleter,
-                                new StringsCompleter(description.flags.collect() { CommandArgument arg -> "-$arg.name".toString() }))
+                                new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
                     }
                     else {
                         completers  << commandNameCompleter
@@ -464,7 +464,7 @@ abstract class AbstractProfile implements Profile {
         def cmd = commandsByName[commandName]
         if (cmd) {
             def requiredArguments = cmd?.description?.arguments
-            int requiredArgumentCount = requiredArguments?.findAll() { CommandArgument ca -> ca.required }?.size() ?: 0
+            int requiredArgumentCount = requiredArguments?.findAll { CommandArgument ca -> ca.required }?.size() ?: 0
             if (commandLine.remainingArgs.size() < requiredArgumentCount) {
                 context.console.error "Command [$commandName] missing required arguments: ${requiredArguments*.name}. " +
                         "Type 'grails help $commandName' for more info."
@@ -475,7 +475,7 @@ abstract class AbstractProfile implements Profile {
         }
 
         // Apply command name expansion (rA for run-app, tA for test-app etc.)
-        cmd = commandsByName.values().find() { Command c ->
+        cmd = commandsByName.values().find { Command c ->
             ScriptNameResolver.resolvesTo(commandName, c.name)
         }
         if (cmd) {

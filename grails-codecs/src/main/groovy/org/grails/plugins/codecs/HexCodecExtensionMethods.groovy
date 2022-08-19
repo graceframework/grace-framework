@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ class HexCodecExtensionMethods {
         if (theTarget instanceof String) {
             theTarget = theTarget.getBytes('UTF-8')
         }
-        theTarget.each() {
+        theTarget.each {
             result << HexCodecExtensionMethods.HEXDIGITS[(it & 0xF0) >> 4]
             result << HexCodecExtensionMethods.HEXDIGITS[it & 0x0F]
         }

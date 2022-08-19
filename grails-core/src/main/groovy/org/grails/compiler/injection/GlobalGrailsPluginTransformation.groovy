@@ -195,7 +195,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                         def antPathMatcher = new AntPathMatcher()
                         resources {
                             for (String cn in artefactClasses) {
-                                if (!pluginExcludes.any() { String exc -> antPathMatcher.match(exc, cn.replace('.', '/')) }) {
+                                if (!pluginExcludes.any { String exc -> antPathMatcher.match(exc, cn.replace('.', '/')) }) {
                                     resource cn
                                 }
                             }
@@ -273,7 +273,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         if (pluginExcludes) {
             def antPathMatcher = new AntPathMatcher()
             pluginXml.resources.resource.each { res ->
-                if (pluginExcludes.any() { String exc -> antPathMatcher.match(exc, res.text().replace('.', '/')) }) {
+                if (pluginExcludes.any { String exc -> antPathMatcher.match(exc, res.text().replace('.', '/')) }) {
                     res.replaceNode {
                     }
                 }

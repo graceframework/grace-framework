@@ -241,7 +241,7 @@ class GrailsCli {
                 def console = GrailsConsole.getInstance()
                 // force resolve of all profiles
                 profileRepository.getAllProfiles()
-                def commandNames = CommandRegistry.findCommands(profileRepository).collect() { Command cmd -> cmd.name }
+                def commandNames = CommandRegistry.findCommands(profileRepository).collect { Command cmd -> cmd.name }
                 console.reader.addCompleter(new StringsCompleter(commandNames))
                 console.reader.addCompleter(new CommandCompleter(CommandRegistry.findCommands(profileRepository)))
                 profile = [handleCommand: { ExecutionContext context ->
@@ -527,10 +527,10 @@ class GrailsCli {
 
                     @Override
                     List<URL> createMapValue(Object value) {
-                        if (value instanceof List) {
-                            return ((List)value).collect() { new URL(it.toString()) } as List<URL>
+                        if (value !instanceof List) {
+                            return []
                         }
-                        []
+                        ((List) value).collect { new URL(it.toString()) } as List<URL>
                     }
 
                     @Override

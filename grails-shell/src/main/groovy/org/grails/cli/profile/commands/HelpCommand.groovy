@@ -113,7 +113,7 @@ grails [environment]* [target] [arguments]*'
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        def allCommands = findAllCommands().collect() { CommandDescription desc -> desc.name }
+        def allCommands = findAllCommands().collect { CommandDescription desc -> desc.name }
 
         for (cmd in allCommands) {
             if (buffer) {
@@ -134,12 +134,12 @@ grails [environment]* [target] [arguments]*'
             commands = profile.getCommands(projectContext)
         }
         else {
-            commands = CommandRegistry.findCommands(profileRepository).findAll() { Command cmd ->
+            commands = CommandRegistry.findCommands(profileRepository).findAll { Command cmd ->
                 !(cmd instanceof ProjectCommand)
             }
         }
-        commands.collect() { Command cmd -> cmd.description }
-                .unique() { CommandDescription cmd -> cmd.name }
+        commands.collect { Command cmd -> cmd.description }
+                .unique { CommandDescription cmd -> cmd.name }
                 .sort(false) { CommandDescription itDesc ->  itDesc.name }
     }
 

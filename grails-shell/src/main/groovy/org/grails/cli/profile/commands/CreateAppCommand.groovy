@@ -99,7 +99,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         def lastOption = commandLine.lastOption()
         if (lastOption != null) {
             // if value == true it means no profile is specified and only the flag is present
-            def profileNames = profileRepository.allProfiles.collect() { Profile p -> p.name }
+            def profileNames = profileRepository.allProfiles.collect { Profile p -> p.name }
             if (lastOption.key == PROFILE_FLAG) {
                 def val = lastOption.value
                 if (val == true) {
@@ -111,7 +111,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                     def candidateProfiles = profileNames.findAll { String pn ->
                         pn.startsWith(valStr)
-                    }.collect() { String pn ->
+                    }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
                     }
                     candidates.addAll candidateProfiles
@@ -122,7 +122,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 def val = lastOption.value
                 def profile = profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
                         commandLine.optionValue(PROFILE_FLAG).toString() : getDefaultProfile())
-                def featureNames = profile.features.collect() { Feature f -> f.name }
+                def featureNames = profile.features.collect { Feature f -> f.name }
                 if (val == true) {
                     candidates.addAll(featureNames)
                     return cursor
@@ -139,7 +139,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                     def candidatesFeatures = featureNames.findAll { String pn ->
                         pn.startsWith(valStr)
-                    }.collect() { String pn ->
+                    }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
                     }
                     candidates.addAll candidatesFeatures
@@ -424,16 +424,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         def repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
-        def dependencies = profileDependencies.findAll() { Dependency dep ->
+        def dependencies = profileDependencies.findAll { Dependency dep ->
             dep.scope != 'build'
         }
-        def buildDependencies = profileDependencies.findAll() { Dependency dep ->
+        def buildDependencies = profileDependencies.findAll { Dependency dep ->
             dep.scope == 'build'
         }
 
         for (Feature f in features) {
-            dependencies.addAll f.dependencies.findAll() { Dependency dep -> dep.scope != 'build' }
-            buildDependencies.addAll f.dependencies.findAll() { Dependency dep -> dep.scope == 'build' }
+            dependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope != 'build' }
+            buildDependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope == 'build' }
         }
 
         dependencies.add(new Dependency(profileRepository.getProfileArtifact(profileCoords), 'profile'))
@@ -454,17 +454,17 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
         buildRepositories = buildRepositories.collect(repositoryUrl.curry(8)).unique().join(ln)
 
-        buildDependencies = buildDependencies.collect() { Dependency dep ->
+        buildDependencies = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
             "        classpath \"${artifactStr}\"".toString()
         }.unique().join(ln)
 
-        def buildPlugins = profile.buildPlugins.collect() { String name ->
+        def buildPlugins = profile.buildPlugins.collect { String name ->
             "apply plugin:\"$name\""
         }
 
         for (Feature f in features) {
-            buildPlugins.addAll f.buildPlugins.collect() { String name ->
+            buildPlugins.addAll f.buildPlugins.collect { String name ->
                 "apply plugin:\"$name\""
             }
         }
@@ -521,7 +521,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
                 GrailsConsole.getInstance().warn(warning.toString())
             }
-            return (profile.features.findAll() { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
+            return (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
         }
 
         (profile.defaultFeatures + profile.requiredFeatures).unique()

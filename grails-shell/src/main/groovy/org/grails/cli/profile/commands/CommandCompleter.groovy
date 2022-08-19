@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class CommandCompleter implements Completer {
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        def cmd = commands.find() {
+        def cmd = commands.find {
             def trimmed = buffer.trim()
             if (trimmed.split(/\s/).size() > 1) {
                 return trimmed.startsWith(it.name)
