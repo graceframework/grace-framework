@@ -67,7 +67,7 @@ class SystemOutAndErrSwapper {
      */
     List<OutputStream> swapIn(OutputStream outStream, OutputStream errStream) {
         if (swapped) {
-            throw new IllegalStateException("swapIn() called during a swap")
+            throw new IllegalStateException('swapIn() called during a swap')
         }
 
         swappedOutOut = System.out
@@ -95,7 +95,7 @@ class SystemOutAndErrSwapper {
      */
     List<OutputStream> swapOut() {
         if (!swapped) {
-            throw new IllegalStateException("swapOut() called while not during a swap")
+            throw new IllegalStateException('swapOut() called while not during a swap')
         }
 
         System.out = swappedOutOut
@@ -126,7 +126,7 @@ class SystemOutAndErrSwapper {
 
         TestOutputCapturingPrintStream(PrintStream out) {
             super(out)
-            textOut = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"))
+            textOut = new BufferedWriter(new OutputStreamWriter(out, 'UTF-8'))
         }
 
         @Override

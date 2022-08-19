@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class ControllerNameExtractor {
      * @return the controller name or null if nothing could be derived
      */
     static String extractControllerNameFromTestClassName(String testClassName, String[] testClassSuffixes) {
-        def patternSuffix = testClassSuffixes ? "(${testClassSuffixes.join('$|')})" : ""
+        def patternSuffix = testClassSuffixes ? "(${testClassSuffixes.join('$|')})" : ''
         def pattern = ~"(\\w*)Controller\\w*${patternSuffix}"
 
         def matches = testClassName =~ pattern

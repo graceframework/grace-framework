@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class IntegrationSpecConfigurerExtension extends AbstractAnnotationDrivenExtensi
             final instance = invocation.instance ?: invocation.sharedInstance
             if (instance) {
                 GrailsTestInterceptor interceptor = new GrailsTestInterceptor(instance, mode, applicationContext,
-                        ["Spec", "Specification", "Tests", "Test"] as String[])
+                        ['Spec', 'Specification', 'Tests', 'Test'] as String[])
                 interceptor.wrap {
                     invocation.proceed()
                 }

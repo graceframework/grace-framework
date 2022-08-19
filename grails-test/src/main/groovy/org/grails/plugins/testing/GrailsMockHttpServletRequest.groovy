@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 the original author or authors.
+ * Copyright 2008-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,15 +105,15 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         setContentType('application/json; charset=UTF-8')
         setFormat('json')
         if (sourceJson instanceof String) {
-            setContent(sourceJson.getBytes("UTF-8"))
+            setContent(sourceJson.getBytes('UTF-8'))
         }
         else if (sourceJson instanceof JSON) {
-            setContent(sourceJson.toString().getBytes("UTF-8"))
+            setContent(sourceJson.toString().getBytes('UTF-8'))
         }
         else {
-            setContent(new JSON(sourceJson).toString().getBytes("UTF-8"))
+            setContent(new JSON(sourceJson).toString().getBytes('UTF-8'))
         }
-        getAttribute("org.codehaus.groovy.grails.WEB_REQUEST")?.informParameterCreationListeners()
+        getAttribute('org.codehaus.groovy.grails.WEB_REQUEST')?.informParameterCreationListeners()
     }
 
     /**
@@ -122,11 +122,11 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * @param sourceXml
      */
     void setXml(Object sourceXml) {
-        setContentType("text/xml; charset=UTF-8")
-        setFormat("xml")
+        setContentType('text/xml; charset=UTF-8')
+        setFormat('xml')
 
         if (sourceXml instanceof String) {
-            setContent(sourceXml.getBytes("UTF-8"))
+            setContent(sourceXml.getBytes('UTF-8'))
         }
         else {
             XML xml
@@ -135,10 +135,10 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
             } else {
                 xml = new XML(sourceXml)
             }
-            setContent(xml.toString().getBytes("UTF-8"))
+            setContent(xml.toString().getBytes('UTF-8'))
         }
 
-        getAttribute("org.codehaus.groovy.grails.WEB_REQUEST")?.informParameterCreationListeners()
+        getAttribute('org.codehaus.groovy.grails.WEB_REQUEST')?.informParameterCreationListeners()
     }
 
     void setXML(Object sourceXml) {
@@ -173,7 +173,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * AJAX request, otherwise <code>false</code>.
      */
     boolean isXhr() {
-        getHeader("X-Requested-With") == "XMLHttpRequest"
+        getHeader('X-Requested-With') == 'XMLHttpRequest'
     }
 
     /**
@@ -182,7 +182,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * will have to create a new instance.
      */
     void makeAjaxRequest() {
-        addHeader("X-Requested-With", "XMLHttpRequest")
+        addHeader('X-Requested-With', 'XMLHttpRequest')
     }
 
     /**
@@ -220,8 +220,13 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         }
     }
 
-    boolean isGet() { method == "GET" }
-    boolean isPost() { method == "POST" }
+    boolean isGet() {
+        method == 'GET'
+    }
+
+    boolean isPost() {
+        method == 'POST'
+    }
 
     /**
     * Parses the request content as XML using XmlSlurper and returns
@@ -230,7 +235,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     */
     def getXML() {
         if (!cachedXml) {
-            cachedXml = GrailsMockHttpServletRequest.classLoader.loadClass("grails.converters.XML").parse(this)
+            cachedXml = GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.XML').parse(this)
         }
         cachedXml
     }
@@ -242,7 +247,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      */
     def getJSON() {
         if (!cachedJson) {
-            cachedJson = GrailsMockHttpServletRequest.classLoader.loadClass("grails.converters.JSON").parse(this)
+            cachedJson = GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.JSON').parse(this)
         }
         cachedJson
     }
@@ -364,10 +369,10 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * @param file multipart file to be added
      */
     void addFile(MultipartFile file) {
-        setMethod("POST")
-        setContentType("multipart/form-data")
+        setMethod('POST')
+        setContentType('multipart/form-data')
 
-        Assert.notNull(file, "MultipartFile must not be null")
+        Assert.notNull(file, 'MultipartFile must not be null')
         multipartFiles.add(file.getName(), file)
     }
 
@@ -378,8 +383,8 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * @param contents The bytes
      */
     void addFile(String location, byte[] contents) {
-        setMethod("POST")
-        setContentType("multipart/form-data")
+        setMethod('POST')
+        setContentType('multipart/form-data')
 
         multipartFiles.add(location, new GrailsMockMultipartFile(location, contents))
     }
@@ -470,7 +475,7 @@ class MockPart implements Part {
 
     @Override
     String getSubmittedFileName() {
-        "N/A"
+        'N/A'
     }
 
     @Override

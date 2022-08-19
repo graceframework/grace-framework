@@ -105,7 +105,7 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
         final webRequest = GrailsWebRequest.lookup()
         webRequest?.currentRequest?.removeAttribute(GrailsApplicationAttributes.REDIRECT_ISSUED)
         setCommitted(false)
-        def field = ReflectionUtils.findField(MockHttpServletResponse, "writer")
+        def field = ReflectionUtils.findField(MockHttpServletResponse, 'writer')
         ReflectionUtils.makeAccessible(field)
         field.set(this, null)
         webRequest.setOut(getWriter())
@@ -126,7 +126,7 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
         }
 
         if (getStatus() in [301, 302]) {
-            return super.getHeader("Location")
+            return super.getHeader('Location')
         }
 
         super.getRedirectedUrl()
