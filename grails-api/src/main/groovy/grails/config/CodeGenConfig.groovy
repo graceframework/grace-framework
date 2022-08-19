@@ -90,17 +90,17 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     Object remove(Object key) {
-        throw new UnsupportedOperationException("Config cannot be mutated")
+        throw new UnsupportedOperationException('Config cannot be mutated')
     }
 
     @Override
     void putAll(Map<? extends String, ?> m) {
-        throw new UnsupportedOperationException("Config cannot be mutated")
+        throw new UnsupportedOperationException('Config cannot be mutated')
     }
 
     @Override
     void clear() {
-        throw new UnsupportedOperationException("Config cannot be mutated")
+        throw new UnsupportedOperationException('Config cannot be mutated')
     }
 
     @Override
@@ -243,14 +243,14 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     Object getProperty(String name) {
-        if ("configMap".equals(name)) {
+        if ('configMap'.equals(name)) {
             return this.configMap
         }
         configMap.get(name)
     }
 
     Object get(String name) {
-        if ("configMap".equals(name)) {
+        if ('configMap'.equals(name)) {
             return this.configMap
         }
         configMap.get(name)
@@ -284,7 +284,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
      * @return
      */
     private static Boolean toBooleanObject(String str) {
-        if (str.is("true")) {
+        if (str.is('true')) {
             return Boolean.TRUE
         }
         if (str == null) {

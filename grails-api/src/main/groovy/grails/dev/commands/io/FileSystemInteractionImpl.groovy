@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         else if (path instanceof Resource) {
             return ((Resource) path).file
         }
-        new File(baseDir ?: new File("."), path.toString())
+        new File(baseDir ?: new File('.'), path.toString())
     }
 
     /**
@@ -265,7 +265,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
             def basePath = baseDir.canonicalPath
             return (file.canonicalPath - basePath).substring(1)
         }
-        ""
+        ''
     }
 
     /**

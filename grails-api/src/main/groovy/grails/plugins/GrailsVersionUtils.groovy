@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package grails.plugins
 import groovy.transform.CompileStatic
 import grails.plugins.metadata.GrailsPlugin
 
+/**
+ * @author Graeme Rocher
+ */
 @CompileStatic
 class GrailsVersionUtils {
 
@@ -51,7 +54,7 @@ class GrailsVersionUtils {
         pluginVersion = trimTag(pluginVersion)
 
         if (requiredVersion.indexOf('>') > -1) {
-            def tokens = requiredVersion.split(">")*.trim()
+            def tokens = requiredVersion.split('>')*.trim()
             tokens = tokens.stream().collect({ String it -> trimTag(it) })
             tokens << pluginVersion
             tokens.sort(true, vc)
@@ -102,7 +105,7 @@ class GrailsVersionUtils {
 
     private static getPluginVersionInternal(String pluginVersion, Integer index) {
         if (pluginVersion.indexOf('>') > -1) {
-            def tokens = pluginVersion.split(">")*.trim()
+            def tokens = pluginVersion.split('>')*.trim()
             return tokens[index].trim()
         }
 
@@ -116,7 +119,7 @@ class GrailsVersionUtils {
         }
         def tokens = pluginVersion.split(/\./)
 
-        tokens.findAll { String it -> it ==~ /\d+/ || it == '*' }.join(".")
+        tokens.findAll { String it -> it ==~ /\d+/ || it == '*' }.join('.')
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -201,7 +201,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
     }
 
     String formatCodeSnippetEnd(Resource resource, int lineNumber) {
-        ""
+        ''
     }
 
     String formatCodeSnippetStart(Resource resource, int lineNumber) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ import groovy.transform.CompileStatic
 
 /**
  * A comparator capable of sorting versions from from newest to oldest
+ * @author Graeme Rocher
  */
 @CompileStatic
 class VersionComparator implements Comparator<String> {
 
-    static private final List<String> SNAPSHOT_SUFFIXES = ["-SNAPSHOT", ".BUILD-SNAPSHOT"].asImmutable()
+    static private final List<String> SNAPSHOT_SUFFIXES = ['-SNAPSHOT', '.BUILD-SNAPSHOT'].asImmutable()
 
     int compare(String o1, String o2) {
         int result = 0

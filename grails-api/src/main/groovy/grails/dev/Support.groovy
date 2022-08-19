@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ import java.lang.management.ManagementFactory
 @Commons
 class Support {
 
-    public static final String PROPERTY_RELOAD_AGENT_PATH = "reload.agent.path"
-    public static final String ENV_RELOAD_AGENT_PATH = "RELOAD_AGENT_PATH"
+    public static final String PROPERTY_RELOAD_AGENT_PATH = 'reload.agent.path'
+    public static final String ENV_RELOAD_AGENT_PATH = 'RELOAD_AGENT_PATH'
 
     /**
      * Enables the reloading agent at runtime if it isn't present
@@ -47,8 +47,8 @@ class Support {
 
         def environment = Environment.current
         if (environment.isReloadEnabled() &&
-                (!ClassUtils.isPresent("org.springsource.loaded.SpringLoaded", System.classLoader) ||
-                        !ClassUtils.isPresent("org.springsource.loaded.TypeRegistry", System.classLoader))) {
+                (!ClassUtils.isPresent('org.springsource.loaded.SpringLoaded', System.classLoader) ||
+                        !ClassUtils.isPresent('org.springsource.loaded.TypeRegistry', System.classLoader))) {
             def grailsHome = System.getenv(Environment.ENV_GRAILS_HOME)
 
             if (grailsHome) {
@@ -61,8 +61,8 @@ class Support {
                     def runtimeMxBean = ManagementFactory.runtimeMXBean
                     def arguments = runtimeMxBean.inputArguments
                     if (!arguments.contains('-Xverify:none') && !arguments.contains('-noverify')) {
-                        log.warn("Reloading is disabled. Development time reloading requires disabling the Java verifier. " +
-                                "Please pass the argument '-Xverify:none' to the JVM")
+                        log.warn('Reloading is disabled. Development time reloading requires disabling the Java verifier. ' +
+                                'Please pass the argument \'-Xverify:none\' to the JVM')
                     }
                     else {
                         def vmName = runtimeMxBean.name
@@ -83,7 +83,7 @@ class Support {
             return new File(agentPath)
         }
         else if (grailsHome) {
-            def parentDir = new File(grailsHome, "lib/org.springframework/springloaded/jars")
+            def parentDir = new File(grailsHome, 'lib/org.springframework/springloaded/jars')
             if (parentDir.exists()) {
                 return parentDir.listFiles()?.find() { File f -> f.name.endsWith('.RELEASE.jar') }
             }
@@ -94,7 +94,7 @@ class Support {
     private static void attachAgentClassToProcess(Class<?> vmClass, String pid, File file) {
         try {
             def vm = vmClass.attach(pid)
-            vm.loadAgent(file.absolutePath, "")
+            vm.loadAgent(file.absolutePath, '')
             vm.detach()
         } catch (e) {
             System.err.println("WARNING: Could not attach reloading agent. Reloading disabled. Message: $e.message")
