@@ -49,7 +49,7 @@ import org.springframework.context.ApplicationContext
  */
 class UrlMappingsGrailsPlugin extends Plugin {
 
-    def watchedResources = ["file:./grails-app/controllers/*UrlMappings.groovy"]
+    def watchedResources = ['file:./grails-app/controllers/*UrlMappings.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [core: version]
@@ -75,14 +75,14 @@ class UrlMappingsGrailsPlugin extends Plugin {
 
             grailsCorsConfiguration(GrailsCorsConfiguration)
 
-            urlMappingsHandlerMapping(UrlMappingsHandlerMapping, ref("grailsUrlMappingsHolder")) {
+            urlMappingsHandlerMapping(UrlMappingsHandlerMapping, ref('grailsUrlMappingsHolder')) {
                 if (!corsFilterEnabled) {
-                    grailsCorsConfiguration = ref("grailsCorsConfiguration")
+                    grailsCorsConfiguration = ref('grailsCorsConfiguration')
                 }
             }
 
             if (corsFilterEnabled) {
-                grailsCorsFilter(GrailsCorsFilter, ref("grailsCorsConfiguration"))
+                grailsCorsFilter(GrailsCorsFilter, ref('grailsCorsConfiguration'))
             }
 
             urlMappingsInfoHandlerAdapter(UrlMappingsInfoHandlerAdapter)
@@ -92,19 +92,19 @@ class UrlMappingsGrailsPlugin extends Plugin {
             if (isReloadEnabled) {
                 urlMappingsTargetSource(UrlMappingsTargetSourceFactoryBean) {
                     it.lazyInit = true
-                    it.role = "infrastructure"
+                    it.role = 'infrastructure'
                     applicationContext = ctx
                 }
                 grailsUrlMappingsHolder(ProxyFactoryBean) {
                     it.lazyInit = true
-                    it.role = "infrastructure"
+                    it.role = 'infrastructure'
                     targetSource = urlMappingsTargetSource
                     proxyInterfaces = [UrlMappings]
                 }
             } else {
                 grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
                     bean.lazyInit = true
-                    bean.role = "infrastructure"
+                    bean.role = 'infrastructure'
                 }
             }
         }
@@ -122,10 +122,10 @@ class UrlMappingsGrailsPlugin extends Plugin {
         ApplicationContext ctx = applicationContext
         UrlMappingsHolder urlMappingsHolder = createUrlMappingsHolder(applicationContext)
 
-        HotSwappableTargetSource ts = ctx.getBean("urlMappingsTargetSource", HotSwappableTargetSource)
+        HotSwappableTargetSource ts = ctx.getBean('urlMappingsTargetSource', HotSwappableTargetSource)
         ts.swap urlMappingsHolder
 
-        LinkGenerator linkGenerator = ctx.getBean("grailsLinkGenerator", LinkGenerator)
+        LinkGenerator linkGenerator = ctx.getBean('grailsLinkGenerator', LinkGenerator)
         if (linkGenerator instanceof CachingLinkGenerator) {
             linkGenerator.clearCache()
         }
