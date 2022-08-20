@@ -113,7 +113,7 @@ grails [environment]* [target] [arguments]*'
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        def allCommands = findAllCommands().collect { CommandDescription desc -> desc.name }
+        def allCommands = findAllCommands()*.name
 
         for (cmd in allCommands) {
             if (buffer) {

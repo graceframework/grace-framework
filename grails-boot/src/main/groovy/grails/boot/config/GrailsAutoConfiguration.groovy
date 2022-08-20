@@ -119,7 +119,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
      * @return The package names to scan. Delegates to {@link #packages()} by default
      */
     Collection<String> packageNames() {
-        packages().collect { Package p -> p.name }
+        packages()*.name
     }
 
     GrailsApplication getGrailsApplication() {

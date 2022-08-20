@@ -117,7 +117,7 @@ abstract class AbstractProfile implements Profile {
 
         def parents = profileConfig.get('extends')
         if (parents) {
-            parentNames = parents.toString().split(',').collect { String name -> name.trim() }
+            parentNames = parents.toString().split(',')*.trim()
         }
         if (this.name == null) {
             throw new IllegalStateException("Profile name not set. Profile for path ${profileDir.URL} is invalid")

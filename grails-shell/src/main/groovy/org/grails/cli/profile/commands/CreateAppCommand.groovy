@@ -99,7 +99,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         def lastOption = commandLine.lastOption()
         if (lastOption != null) {
             // if value == true it means no profile is specified and only the flag is present
-            def profileNames = profileRepository.allProfiles.collect { Profile p -> p.name }
+            def profileNames = profileRepository.allProfiles*.name
             if (lastOption.key == PROFILE_FLAG) {
                 def val = lastOption.value
                 if (val == true) {
@@ -122,7 +122,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 def val = lastOption.value
                 def profile = profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
                         commandLine.optionValue(PROFILE_FLAG).toString() : getDefaultProfile())
-                def featureNames = profile.features.collect { Feature f -> f.name }
+                def featureNames = profile.features*.name
                 if (val == true) {
                     candidates.addAll(featureNames)
                     return cursor

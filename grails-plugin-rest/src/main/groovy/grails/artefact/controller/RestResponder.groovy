@@ -272,7 +272,7 @@ trait RestResponder {
         if (resAnn) {
             return resAnn.formats().toList()
         }
-        MimeType.getConfiguredMimeTypes().collect { MimeType mt -> mt.extension }
+        MimeType.getConfiguredMimeTypes()*.extension
     }
 
 }

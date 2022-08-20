@@ -167,13 +167,13 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * @param args The arguments to the command
      */
     def methodMissing(String name, args) {
-        Object[] argsArray = (Object[])args
+        Object[] argsArray = (Object[]) args
         def commandName = GrailsNameUtils.getScriptName(name)
         def context = executionContext
         if (profile?.hasCommand(context, commandName)) {
             def commandLine = context.commandLine
             def newArgs = [commandName]
-            newArgs.addAll argsArray.collect { it.toString() }
+            newArgs.addAll(argsArray*.toString() as Collection<String>)
             def newContext = new GrailsCli.ExecutionContextImpl(commandLine.parseNew(newArgs as String[]), context)
             return profile.handleCommand(newContext)
         }
