@@ -677,7 +677,7 @@ class DocPublisher {
                         }
                         int index = 0
                         for (Object item: (Collection)value) {
-                            String collectionKey = "${fullKey}[${index}]".toString()
+                            String collectionKey = "${fullKey}[${index}]"
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++
                         }

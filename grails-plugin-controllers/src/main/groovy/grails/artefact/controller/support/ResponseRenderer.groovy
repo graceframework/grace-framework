@@ -270,7 +270,7 @@ trait ResponseRenderer extends WebAttributes {
             applySiteMeshLayout webRequest.currentRequest, false, explicitSiteMeshLayout
         }
         else if (argMap.containsKey(ARGUMENT_VIEW)) {
-            String viewName = argMap[ARGUMENT_VIEW].toString()
+            String viewName = argMap[ARGUMENT_VIEW]
             String viewUri = applicationAttributes.getNoSuffixViewURI((GroovyObject) this, viewName)
             String contextPath = getContextPath(webRequest, argMap)
             if (contextPath) {
@@ -305,7 +305,7 @@ trait ResponseRenderer extends WebAttributes {
             if (hasModel) {
                 modelObject = argMap[ARGUMENT_MODEL]
             }
-            String templateName = argMap[ARGUMENT_TEMPLATE].toString()
+            String templateName = argMap[ARGUMENT_TEMPLATE]
             String var
             if (argMap.containsKey(ARGUMENT_VAR)) {
                 var = String.valueOf(argMap[ARGUMENT_VAR])
@@ -454,7 +454,7 @@ trait ResponseRenderer extends WebAttributes {
         }
         else {
             // reached here so only the status was set, just send it back
-            String message = argMap?.message?.toString()
+            String message = argMap?.message
             int statusCode = response.status
             if (message) {
                 response.sendError(statusCode, message)

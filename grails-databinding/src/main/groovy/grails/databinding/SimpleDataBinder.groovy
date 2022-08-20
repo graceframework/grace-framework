@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -286,7 +286,7 @@ class SimpleDataBinder implements DataBinder {
                                                             DataBindingSource source) {
         def propName = indexedPropertyReferenceDescriptor.propertyName
         Map structValues = new HashMap()
-        String prefix = indexedPropertyReferenceDescriptor.toString()
+        String prefix = indexedPropertyReferenceDescriptor
         for (String propertyName: source.propertyNames) {
             if (propertyName.startsWith(prefix)) {
                 String deIndexedPropertyName = propName

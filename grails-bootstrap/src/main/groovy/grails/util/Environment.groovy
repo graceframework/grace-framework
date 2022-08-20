@@ -180,7 +180,7 @@ enum Environment {
         if (url != null) {
             String protocol = url.getProtocol()
             if (protocol == 'jar') {
-                String fullPath = url.toString()
+                String fullPath = url
                 if (fullPath.contains(IOUtils.RESOURCE_WAR_PREFIX)) {
                     STANDALONE_DEPLOYED = true
                 } else {

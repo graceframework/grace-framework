@@ -158,7 +158,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                 final controllerAttribute = urlAttrs.get(ATTRIBUTE_CONTROLLER)
                 final resourceAttribute = urlAttrs.get(ATTRIBUTE_RESOURCE)
                 String controller
-                String action = urlAttrs.get(ATTRIBUTE_ACTION)?.toString()
+                String action = urlAttrs.get(ATTRIBUTE_ACTION)
                 def id = urlAttrs.get(ATTRIBUTE_ID)
                 String httpMethod
                 final methodAttribute = urlAttrs.get(ATTRIBUTE_METHOD)
@@ -239,7 +239,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     convertedActionName = grailsUrlConverter.toUrlElement(action)
                 }
 
-                String frag = urlAttrs.get(ATTRIBUTE_FRAGMENT)?.toString()
+                String frag = urlAttrs.get(ATTRIBUTE_FRAGMENT)
 
                 def mappingName = urlAttrs.get(ATTRIBUTE_MAPPING)
                 if (mappingName != null) {

@@ -142,10 +142,10 @@ trait ResponseRedirector implements WebAttributes {
      */
     @Generated
     void chain(Map args) {
-        String controller = (args.controller ?: GrailsNameUtils.getLogicalPropertyName(getClass().name, ControllerArtefactHandler.TYPE)).toString()
-        String action = args.action?.toString()
+        String controller = args.controller ?: GrailsNameUtils.getLogicalPropertyName(getClass().name, ControllerArtefactHandler.TYPE)
+        String action = args.action
         String namespace = args.remove('namespace')
-        String plugin = args.remove('plugin')?.toString()
+        String plugin = args.remove('plugin')
         def id = args.id
         def params = CollectionUtils.getOrCreateChildMap(args, 'params')
         def model = CollectionUtils.getOrCreateChildMap(args, 'model')

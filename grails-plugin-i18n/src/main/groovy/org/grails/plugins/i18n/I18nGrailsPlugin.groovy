@@ -41,7 +41,7 @@ class I18nGrailsPlugin extends Plugin {
 
     String baseDir = 'grails-app/i18n'
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = "file:./${baseDir}/**/*.properties".toString()
+    String watchedResources = "file:./${baseDir}/**/*.properties"
 
     @Override
     Closure doWithSpring() {

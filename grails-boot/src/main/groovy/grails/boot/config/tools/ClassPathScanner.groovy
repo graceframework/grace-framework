@@ -237,7 +237,7 @@ class ClassPathScanner {
 
             this.rootResource = getURLs()[0]
             this.applicationClass = applicationClass
-            String urlStr = rootResource.toString()
+            String urlStr = rootResource
             jarDeployed = urlStr.startsWith('jar:')
             try {
                 URL withoutBang = new URL("${urlStr.substring(0, urlStr.length() - 2)}/")
