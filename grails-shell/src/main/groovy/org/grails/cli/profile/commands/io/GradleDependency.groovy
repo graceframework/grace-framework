@@ -66,8 +66,8 @@ class GradleDependency {
                 artifactString.append('    ')
                         .append('exclude')
 
-                artifactString.append(' group: ').append('"').append(e.groupId).append('",')
-                artifactString.append(' module: ').append('"').append(e.artifactId).append('"')
+                artifactString.append(' group: "').append(e.groupId).append('",')
+                artifactString.append(' module: "').append(e.artifactId).append('"')
 
                 artifactString.append(ln)
             }
