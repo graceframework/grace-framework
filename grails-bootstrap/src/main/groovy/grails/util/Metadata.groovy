@@ -173,7 +173,7 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     private void loadFromFile(Resource file) {
-        if (file != null && file.exists()) {
+        if (file?.exists()) {
             InputStream input = null
             try {
                 input = file.getInputStream()
@@ -238,7 +238,7 @@ class Metadata extends PropertySourcePropertyResolver {
      */
     static Metadata reload() {
         Resource f = getCurrent().getMetadataFile()
-        if (f != null && f.exists()) {
+        if (f?.exists()) {
             return getInstance(f)
         }
 

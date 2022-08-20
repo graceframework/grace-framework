@@ -352,7 +352,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
 
                 if (domainClass != null) {
                     def property = domainClass.getPropertyByName(metaProperty.name)
-                    if (property != null && property instanceof Association) {
+                    if (property instanceof Association) {
                         Association association = (Association) property
                         if (association.isBidirectional()) {
                             def otherSide = association.inverseSide
@@ -476,7 +476,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         def domainClass = getPersistentEntity(obj.getClass())
         if (domainClass != null) {
             def property = domainClass.getPropertyByName(propertyName)
-            if (property != null && property instanceof Association) {
+            if (property instanceof Association) {
                 Association association = (Association)property
                 if (association.isBidirectional()) {
                     def otherSide = association.inverseSide
@@ -563,7 +563,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     @Override
     protected preprocessValue(propertyValue) {
         if (propertyValue instanceof CharSequence) {
-            String stringValue = propertyValue.toString()
+            String stringValue = propertyValue
             if (trimStrings) {
                 stringValue = stringValue.trim()
             }
@@ -581,7 +581,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         def domainClass = getPersistentEntity(obj.getClass())
         if (domainClass != null) {
             def property = domainClass.getPropertyByName(propName)
-            if (property != null && property instanceof Association) {
+            if (property instanceof Association) {
                 Association association = ((Association)property)
                 if (association.bidirectional) {
                     def otherSide = association.inverseSide
