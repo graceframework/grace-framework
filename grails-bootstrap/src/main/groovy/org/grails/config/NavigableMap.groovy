@@ -393,7 +393,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
     Properties toProperties() {
         Properties properties = new Properties()
-        flattenKeys(properties as Map<String, Object>, this, [] as List<String>, true)
+        flattenKeys(properties as Map<String, Object>, this, [], true)
         properties
     }
 
