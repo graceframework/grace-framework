@@ -363,6 +363,7 @@ subprojects { project ->
     }
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+    apply plugin: 'checkstyle'
     apply plugin: 'codenarc'
     apply plugin: 'project-report'
     apply plugin: 'nebula.optional-base'
@@ -464,6 +465,11 @@ subprojects { project ->
             "Implementation-Vendor": 'grails.org')
     }
 
+    checkstyle {
+        toolVersion = "10.3.2"
+        configDirectory.set(rootProject.file("gradle/checkstyle"))
+    }
+ 
     codenarc {
         toolVersion = '3.1.0'
         setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))

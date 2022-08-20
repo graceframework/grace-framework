@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+
+	<!-- global -->
+	<suppress files="package-info\.java" checks=".*"/>
+	<!-- Ignore third-party code -->
+	<suppress files="org[\\/]grails[\\/]asm[\\/]" checks=".*"/>
+	<suppress files="org[\\/]grails[\\/]web[\\/]json[\\/]JSON(Array|Object|Tokener|Writer)\.java" checks=".*"/>
+	<suppress files="org[\\/]grails[\\/]web[\\/]json[\\/]parser[\\/]" checks=".*"/>
+	<!-- generated sources -->
+	<suppress files="[\\/]build[\\/]generated[\\/]sources[\\/]" checks=".*"/>
+
+</suppressions>
