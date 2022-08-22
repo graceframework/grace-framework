@@ -12,4 +12,21 @@
 		<property name="fileExtensions" value="java" />
 	</module>
 
+	<module name="NewlineAtEndOfFile"/>
+
+	<!-- TreeWalker Checks -->
+	<module name="TreeWalker">
+
+		<!-- Whitespace -->
+		<module name="GenericWhitespace"/>
+		<module name="MethodParamPad"/>
+		<module name="NoWhitespaceAfter">
+			<property name="tokens" value="BNOT, DEC, DOT, INC, LNOT, UNARY_MINUS, UNARY_PLUS, ARRAY_DECLARATOR"/>
+		</module>
+		<module name="NoWhitespaceBefore"/>
+		<module name="ParenPad"/>
+		<module name="TypecastParenPad"/>
+		<module name="WhitespaceAfter"/>
+		<module name="WhitespaceAround"/>
+	</module>
 </module>
