@@ -64,7 +64,7 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
     }
 
     public void applyTransformation(SourceUnit sourceUnit, ClassNode classNode) {
-        if(GrailsASTUtils.isApplied(classNode, EntityASTTransformation.class)) {
+        if (GrailsASTUtils.isApplied(classNode, EntityASTTransformation.class)) {
             return;
         }
         GrailsASTUtils.markApplied(classNode, EntityASTTransformation.class);
@@ -81,7 +81,7 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
                 injector.performInjection(sourceUnit, classNode);
             } catch (RuntimeException e) {
                 try {
-                    System.err.println("Error occurred calling AST injector ["+injector.getClass().getName()+"]: " + e.getMessage());
+                    System.err.println("Error occurred calling AST injector [" + injector.getClass().getName() + "]: " + e.getMessage());
                 } catch (Throwable t) {
                     // ignore
                 }
@@ -89,7 +89,7 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
             }
         }
         
-        if(compilationUnit != null) {
+        if (compilationUnit != null) {
             TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, compilationUnit);
         }
     }

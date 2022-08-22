@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ public class StreamByteBuffer {
                 int len = charbuffer.remaining();
                 char[] ch = charbuffer.array();
                 if (len != ch.length) {
-                    ch = (char[])GrailsArrayUtils.subarray(ch, 0, len);
+                    ch = (char[]) GrailsArrayUtils.subarray(ch, 0, len);
                 }
                 str = StringCharArrayAccessor.createString(ch);
             }
@@ -408,7 +408,7 @@ public class StreamByteBuffer {
 
         @Override
         public synchronized void reset() throws IOException {
-            if (readMode==ReadMode.RETAIN_AFTER_READING) {
+            if (readMode == ReadMode.RETAIN_AFTER_READING) {
                 StreamByteBuffer.this.reset();
             }
             else {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,14 +97,14 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public void sendError(int i, String s) throws IOException {
-        if(isCommitted()) throw new IllegalStateException("Response already committed");
+        if (isCommitted()) throw new IllegalStateException("Response already committed");
         setStatus(i);
         flushBuffer();
     }
 
     @Override
     public void sendError(int i) throws IOException {
-        if(isCommitted()) throw new IllegalStateException("Response already committed");
+        if (isCommitted()) throw new IllegalStateException("Response already committed");
         setStatus(i);
         flushBuffer();
     }
@@ -179,7 +179,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     
     @Override
     public void resetBuffer() {
-       if(isCommitted()) throw new IllegalStateException("Response already committed");
+       if (isCommitted()) throw new IllegalStateException("Response already committed");
        if (usingWriter) {
           charBuffer.reset();
        }

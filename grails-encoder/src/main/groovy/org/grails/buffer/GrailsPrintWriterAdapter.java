@@ -65,7 +65,7 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
 
     public static GrailsPrintWriterAdapter newInstance(Writer wrapped) {
         if (instantiator != null) {
-            GrailsPrintWriterAdapter instance = (GrailsPrintWriterAdapter)instantiator.newInstance();
+            GrailsPrintWriterAdapter instance = (GrailsPrintWriterAdapter) instantiator.newInstance();
             instance.setTarget(wrapped);
             return instance;
         }
@@ -74,7 +74,7 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
 
     public void setTarget(Writer wrapped) {
         if (wrapped instanceof GrailsPrintWriter) {
-            this.target = ((GrailsPrintWriter)wrapped);
+            this.target = ((GrailsPrintWriter) wrapped);
         }
         else {
             this.target = new GrailsPrintWriter(wrapped);

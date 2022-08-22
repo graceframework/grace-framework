@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Graeme Rocher
  * @since 1.2
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ClosureToMapPopulator extends GroovyObjectSupport {
 
     private Map map;
@@ -60,7 +60,7 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
     public Object invokeMethod(String name, Object o) {
         if (o != null) {
             if (o.getClass().isArray()) {
-                Object[] args = (Object[])o;
+                Object[] args = (Object[]) o;
                 if (args.length == 1) {
                     map.put(name, args[0]);
                 }
@@ -69,7 +69,7 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
                 }
             }
             else {
-                map.put(name,o);
+                map.put(name, o);
             }
         }
         return null;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,26 +43,26 @@ public class GrailsControllerUrlMappings extends AbstractGrailsControllerUrlMapp
 
     @Override
     public UrlMappingInfo[] matchAll(String uri) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, String httpMethod) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri, httpMethod) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, String httpMethod, String version) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, HttpMethod httpMethod) {
-        return collectControllerMappings(  getUrlMappingsHolderDelegate().matchAll(uri, httpMethod) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, HttpMethod httpMethod, String version) {
-        return collectControllerMappings(  getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version));
     }
 }

@@ -76,11 +76,11 @@ public abstract class AbstractUrlMapping implements UrlMapping {
 
     private void setGrailsApplication(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
 
             final ApplicationContext applicationContext = grailsApplication.getMainContext();
-            if(applicationContext instanceof WebApplicationContext) {
-                this.servletContext = ((WebApplicationContext)applicationContext).getServletContext();
+            if (applicationContext instanceof WebApplicationContext) {
+                this.servletContext = ((WebApplicationContext) applicationContext).getServletContext();
             }
         }
     }
@@ -145,7 +145,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         return viewName;
     }
 
-    @SuppressWarnings({"unchecked","rawtypes"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void setParameterValues(Map parameterValues) {
         this.parameterValues = Collections.unmodifiableMap(parameterValues);
     }

@@ -64,7 +64,7 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
             return new FastStringPrintWriter();
         }
 
-        FastStringPrintWriter instance = (FastStringPrintWriter)instantiator.newInstance();
+        FastStringPrintWriter instance = (FastStringPrintWriter) instantiator.newInstance();
         if (initialChunkSize > 0) {
             instance.streamBuffer = new StreamCharBuffer(initialChunkSize);
         } else {

@@ -44,24 +44,24 @@ public class DirectoryWatcher extends Thread {
         setDaemon(true);
         AbstractDirectoryWatcher directoryWatcherDelegate;
         try {
-            if(System.getProperty("os.name").equals("Mac OS X")) {
+            if (System.getProperty("os.name").equals("Mac OS X")) {
                 Boolean jnaAvailable = false;
                 try {
-                    Class.forName( "com.sun.jna.Pointer" );
+                    Class.forName("com.sun.jna.Pointer");
                     jnaAvailable = true;
-                } catch( ClassNotFoundException e ) {
-                    if(LOG.isWarnEnabled()) {
+                } catch (ClassNotFoundException e) {
+                    if (LOG.isWarnEnabled()) {
                         LOG.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");    
                     }
                     
                 }
-                if(jnaAvailable) {
+                if (jnaAvailable) {
                     directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
                 } else {
-                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();                    
+                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
                 }
             } else {
-                directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();                
+                directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
             }
 		} catch (Throwable e) {
 			LOG.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). Falling back to PollingDirectoryWatcher.", e);
@@ -123,7 +123,7 @@ public class DirectoryWatcher extends Thread {
      */
     public void addWatchDirectory(File dir, List<String> fileExtensions) {
     	List<String> fileExtensionsWithoutDot = new ArrayList<String>(fileExtensions.size());
-    	for(String fileExtension : fileExtensions){
+    	for (String fileExtension : fileExtensions) {
     		fileExtensionsWithoutDot.add(removeStartingDotIfPresent(fileExtension));
     	}
     	directoryWatcherDelegate.addWatchDirectory(dir, fileExtensions);
@@ -149,7 +149,7 @@ public class DirectoryWatcher extends Thread {
         List<String> fileExtensions = new ArrayList<String>();
         if (extension != null && extension.length() > 0) {
             int i = extension.lastIndexOf('.');
-            if(i > -1) {
+            if (i > -1) {
                 extension = extension.substring(i + 1);
             }
             fileExtensions.add(extension);

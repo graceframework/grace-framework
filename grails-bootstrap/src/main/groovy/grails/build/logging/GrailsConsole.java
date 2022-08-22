@@ -120,7 +120,7 @@ public class GrailsConsole implements ConsoleLogger {
         @Override
         public String toString() {
             if (size() == 1) return peek() + CATEGORY_SEPARATOR;
-            return DefaultGroovyMethods.join((Iterable)this, CATEGORY_SEPARATOR) + CATEGORY_SEPARATOR;
+            return DefaultGroovyMethods.join((Iterable) this, CATEGORY_SEPARATOR) + CATEGORY_SEPARATOR;
         }
     };
 
@@ -135,7 +135,7 @@ public class GrailsConsole implements ConsoleLogger {
     private boolean userInputActive;
 
     public void addShutdownHook() {
-        if( !Environment.isFork() ) {
+        if (!Environment.isFork()) {
             shutdownHookThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -145,14 +145,13 @@ public class GrailsConsole implements ConsoleLogger {
             Runtime.getRuntime().addShutdownHook(shutdownHookThread);
         }
     }
-    
+
     public void removeShutdownHook() {
-        if(shutdownHookThread != null) {
+        if (shutdownHookThread != null) {
             Runtime.getRuntime().removeShutdownHook(shutdownHookThread);
         }
     }
-    
-    
+
     protected GrailsConsole() throws IOException {
         cursorMove = 1;
 
@@ -162,13 +161,13 @@ public class GrailsConsole implements ConsoleLogger {
         maxIndicatorString = new StringBuilder(indicator).append(indicator).append(indicator).append(indicator).append(indicator);
 
     }
-    
+
     /**
      * Use in testing when System.out, System.err or System.in change
      * @throws IOException
      */
     public void reinitialize(InputStream systemIn, PrintStream systemOut, PrintStream systemErr) throws IOException {
-        if(reader != null) {
+        if (reader != null) {
             reader.shutdown();
         }
         initialize(systemIn, systemOut, systemErr);
@@ -207,19 +206,19 @@ public class GrailsConsole implements ConsoleLogger {
     }
     
     private PrintStream unwrapPrintStream(PrintStream printStream) {
-        if(printStream instanceof GrailsConsolePrintStream) {
-            return ((GrailsConsolePrintStream)printStream).getTargetOut();
+        if (printStream instanceof GrailsConsolePrintStream) {
+            return ((GrailsConsolePrintStream) printStream).getTargetOut();
         }
-        if(printStream instanceof GrailsConsoleErrorPrintStream) {
-            return ((GrailsConsoleErrorPrintStream)printStream).getTargetOut();
+        if (printStream instanceof GrailsConsoleErrorPrintStream) {
+            return ((GrailsConsoleErrorPrintStream) printStream).getTargetOut();
         }
         return printStream;
     }
 
     private PrintStream wrapInPrintStream(PrintStream printStream) {
         OutputStream ansiWrapped = ansiWrap(printStream);
-        if(ansiWrapped instanceof PrintStream) {
-            return (PrintStream)ansiWrapped;
+        if (ansiWrapped instanceof PrintStream) {
+            return (PrintStream) ansiWrapped;
         } else {
             return new PrintStream(ansiWrapped, true);
         }
@@ -271,7 +270,7 @@ public class GrailsConsole implements ConsoleLogger {
      */
     protected Terminal createTerminal() {
         terminal = TerminalFactory.create();
-        if(isWindows()) {
+        if (isWindows()) {
             terminal.setEchoEnabled(true);
         }
         return terminal;
@@ -279,7 +278,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     public void resetCompleters() {
         final ConsoleReader reader = getReader();
-        if(reader != null) {
+        if (reader != null) {
             Collection<Completer> completers = reader.getCompleters();
             for (Completer completer : completers) {
                 reader.removeCompleter(completer);
@@ -340,7 +339,7 @@ public class GrailsConsole implements ConsoleLogger {
         if (instance != null) {
             instance.removeShutdownHook();
             instance.restoreOriginalSystemOutAndErr();
-            if(instance.getReader() != null) {
+            if (instance.getReader() != null) {
                 instance.getReader().shutdown();
             }
             instance = null;
@@ -358,7 +357,7 @@ public class GrailsConsole implements ConsoleLogger {
         } catch (Exception e) {
             // ignore
         }
-        if(terminal instanceof UnixTerminal) {
+        if (terminal instanceof UnixTerminal) {
             // workaround for GRAILS-11494
             try {
                 new TerminalLineSettings().set("sane");
@@ -369,9 +368,9 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     protected void persistHistory() {
-        if(history instanceof Flushable) {
+        if (history instanceof Flushable) {
             try {
-                ((Flushable)history).flush();
+                ((Flushable) history).flush();
             }
             catch (Throwable e) {
                 // ignore exception
@@ -388,7 +387,7 @@ public class GrailsConsole implements ConsoleLogger {
         if (force || !(System.out instanceof GrailsConsolePrintStream)) {
             System.setOut(new GrailsConsolePrintStream(out));
         }
-        if (force || !(System.err instanceof GrailsConsoleErrorPrintStream )) {
+        if (force || !(System.err instanceof GrailsConsoleErrorPrintStream)) {
             System.setErr(new GrailsConsoleErrorPrintStream(err));
         }
     }
@@ -525,7 +524,7 @@ public class GrailsConsole implements ConsoleLogger {
         progressIndicatorActive = true;
         String currMsg = lastMessage;
         try {
-            updateStatus(currMsg + ' '+ number + " of " + total);
+            updateStatus(currMsg + ' ' + number + " of " + total);
         } finally {
             lastMessage = currMsg;
         }
@@ -697,7 +696,7 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void error(String msg, Throwable error) {
         try {
-            if ((verbose||stacktrace) && error != null) {
+            if ((verbose || stacktrace) && error != null) {
                 printStackTrace(msg, error);
                 error(ERROR, msg);
             }

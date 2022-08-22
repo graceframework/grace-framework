@@ -32,6 +32,6 @@ public class UrlMappingException extends GrailsException {
     }
 
     public UrlMappingException(String message, Throwable e) {
-        super(message,e);
+        super(message, e);
     }
 }

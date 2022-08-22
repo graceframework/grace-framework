@@ -186,7 +186,7 @@ public class DefaultUrlCreator implements UrlCreator {
             }
             catch (UnsupportedEncodingException ex) {
                 throw new ControllerExecutionException("Error creating URL  [" + url +
-                     "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(),ex);
+                     "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(), ex);
             }
         }
 
@@ -230,7 +230,7 @@ public class DefaultUrlCreator implements UrlCreator {
                 for (int j = 0; j < array.length; j++) {
                     Object currentValue = array[j];
                     appendRequestParam(actualUriBuf, name, currentValue, encoding);
-                    if (j < (array.length-1)) {
+                    if (j < (array.length - 1)) {
                         actualUriBuf.append(ENTITY_AMPERSAND);
                     }
                 }

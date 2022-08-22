@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
         catch (Exception e) {
             Throwable targetException;
             if (e instanceof InvocationTargetException) {
-                targetException = ((InvocationTargetException)e).getTargetException();
+                targetException = ((InvocationTargetException) e).getTargetException();
             }
             else {
                 targetException = e;
@@ -157,7 +157,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     public Object getReferenceInstance() {
         Object obj = BeanUtils.instantiateClass(clazz);
         if (obj instanceof GroovyObject) {
-            ((GroovyObject)obj).setMetaClass(getMetaClass());
+            ((GroovyObject) obj).setMetaClass(getMetaClass());
         }
         return obj;
     }
@@ -172,7 +172,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     private ClassPropertyFetcher resolvePropertyFetcher() {
-        if(classPropertyFetcher == null) {
+        if (classPropertyFetcher == null) {
             classPropertyFetcher = ClassPropertyFetcher.forClass(clazz);
         }
         return classPropertyFetcher;

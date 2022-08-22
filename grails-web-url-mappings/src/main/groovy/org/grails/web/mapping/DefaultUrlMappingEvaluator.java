@@ -580,7 +580,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 callable.setDelegate(this);
                 callable.call();
             } finally {
-                isInCollection = previousState ;
+                isInCollection = previousState;
             }
         }
 
@@ -596,7 +596,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 callable.setDelegate(this);
                 callable.call();
             } finally {
-                isInCollection = previousState ;
+                isInCollection = previousState;
             }
         }
 
@@ -750,7 +750,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                     }
                     return Collections.emptyMap();
                 } else {
-                    LOG.error("Mapping: '"+ mappedURI + "' does not start with " + SLASH + " or is response code.");
+                    LOG.error("Mapping: '" + mappedURI + "' does not start with " + SLASH + " or is response code.");
                     return super.invokeMethod(mappedURI, arg);
                 }
             } finally {
@@ -816,13 +816,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 if (parentResource.controllerName != null) {
                     uriBuilder.append(parentResource.uri);
 
-                    if(!isInCollection) {
+                    if (!isInCollection) {
                         uriBuilder.append(SLASH).append(CAPTURING_WILD_CARD);
                     }
                 }
             }
 
-            if(!SLASH.equals(uri)) {
+            if (!SLASH.equals(uri)) {
                 uriBuilder.append(uri);
             }
             return uriBuilder.toString();
@@ -1182,7 +1182,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
         private Object getControllerName(Map namedArguments, Map bindingVariables) {
             Object fromBinding = getVariableFromNamedArgsOrBinding(namedArguments, bindingVariables, GrailsControllerClass.CONTROLLER, getMetaMappingInfo().getController());
-            if(fromBinding == null && !parentResources.isEmpty()) {
+            if (fromBinding == null && !parentResources.isEmpty()) {
                 return parentResources.peekLast().controllerName;
             }
             else {
@@ -1242,8 +1242,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                     mappingInfo.getConstraints().addAll(parentMappingConstraints);
                 }
                 ParentResource parentResource = parentResources.peek();
-                if(parentResource != null && !parentResource.isSingle) {
-                    if(!isInCollection) {
+                if (parentResource != null && !parentResource.isSingle) {
+                    if (!isInCollection) {
                         mappingInfo.getConstraints().add(new DefaultConstrainedProperty(UrlMapping.class, parentResource.controllerName + "Id", String.class, constraintRegistry));
                     }
                 }

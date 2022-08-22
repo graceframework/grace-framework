@@ -39,7 +39,7 @@ import java.net.URL;
  * @author Graeme Rocher
  * @since 1.0
  */
-@SuppressWarnings( "deprecation" )
+@SuppressWarnings("deprecation")
 public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     protected String type;
@@ -140,7 +140,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
                 return true;
             }
         } catch (Throwable t) {
-            throw new GrailsRuntimeException("Failed to introspect class: "+ aClass, t);
+            throw new GrailsRuntimeException("Failed to introspect class: " + aClass, t);
         }
 
         return false;
@@ -175,16 +175,16 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
             return (GrailsClass) c.newInstance(new Object[] { artefactClass});
         }
         catch (NoSuchMethodException e) {
-            throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for "+artefactClass, e);
+            throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for " + artefactClass, e);
         }
         catch (IllegalAccessException e) {
-            throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for "+artefactClass, e);
+            throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for " + artefactClass, e);
         }
         catch (InvocationTargetException e) {
-            throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type ["+grailsClassImpl+"]: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
+            throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type [" + grailsClassImpl + "]: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
         }
         catch (InstantiationException e) {
-            throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type ["+grailsClassImpl+"]: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
+            throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type [" + grailsClassImpl + "]: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class PluginFilterRetriever {
 
         if (includes != null) {
             if (includes instanceof Collection) {
-                pluginFilter = new IncludingPluginFilter(new HashSet((Collection)includes));
+                pluginFilter = new IncludingPluginFilter(new HashSet((Collection) includes));
             }
             else {
                 String[] includesArray = StringUtils.commaDelimitedListToStringArray(includes.toString());
@@ -67,7 +67,7 @@ public class PluginFilterRetriever {
         }
         else if (excludes != null) {
             if (excludes instanceof Collection) {
-                pluginFilter = new ExcludingPluginFilter(new HashSet((Collection)excludes));
+                pluginFilter = new ExcludingPluginFilter(new HashSet((Collection) excludes));
             }
             else {
                 String[] excludesArray = StringUtils.commaDelimitedListToStringArray(excludes.toString());

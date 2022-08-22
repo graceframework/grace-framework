@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         this.pluginClass = pluginClass;
         Resource resource = readPluginConfiguration(pluginClass);
 
-        if(resource != null && resource.exists()) {
+        if (resource != null && resource.exists()) {
             final String filename = resource.getFilename();
             try {
                 if (filename.equals(PLUGIN_YML)) {
@@ -96,7 +96,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(), "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST).stream().findFirst().orElse(null);
                 }
             } catch (IOException e) {
-                LOG.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() +": " + e.getMessage(), e);
+                LOG.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
             }
         }
     }
@@ -125,13 +125,13 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
         Boolean groovyResourceExists = groovyResource != null && groovyResource.exists();
 
-        if(ymlResource != null && ymlResource.exists()) {
+        if (ymlResource != null && ymlResource.exists()) {
             if (groovyResourceExists) {
                 throw new RuntimeException("A plugin may define a plugin.yml or a plugin.groovy, but not both");
             }
             return ymlResource;
         }
-        if(groovyResourceExists) {
+        if (groovyResourceExists) {
             return groovyResource;
         }
         return null;

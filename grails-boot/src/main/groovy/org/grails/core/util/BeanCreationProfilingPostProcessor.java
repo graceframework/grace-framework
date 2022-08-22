@@ -66,7 +66,7 @@ public class BeanCreationProfilingPostProcessor implements InstantiationAwareBea
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         stopWatch.complete();
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(stopWatch.prettyPrint());
         }
     }

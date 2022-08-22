@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ public class SpringIOUtils {
             final Class<?> type1 = array1.getClass().getComponentType();
             final Class<?> type2 = array2.getClass().getComponentType();
             if (!type1.isAssignableFrom(type2)) {
-                throw new IllegalArgumentException("Cannot store "+type2.getName()+" in an array of "+type1.getName());
+                throw new IllegalArgumentException("Cannot store " + type2.getName() + " in an array of " + type1.getName());
             }
             throw ase; // No, so rethrow original
         }
@@ -366,7 +366,7 @@ public class SpringIOUtils {
      */
     public static void closeQuietly(Closeable closeable) {
         try {
-            if(closeable != null)
+            if (closeable != null)
                 closeable.close();
         } catch (IOException e) {
             // ignore
@@ -397,7 +397,7 @@ public class SpringIOUtils {
 
     private static SAXParserFactory saxParserFactory = null;
     private static SAXParserFactory createParserFactory() throws ParserConfigurationException {
-        if(saxParserFactory == null) {
+        if (saxParserFactory == null) {
             saxParserFactory = FactorySupport.createSaxParserFactory();
             saxParserFactory.setNamespaceAware(true);
             saxParserFactory.setValidating(false);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
 
         Object obj = ClassPropertyFetcher.getInstancePropertyValue(instance, INIT_CLOSURE);
         if (obj instanceof Closure) {
-            return (Closure<?>)obj;
+            return (Closure<?>) obj;
         }
         return BLANK_CLOSURE;
     }
@@ -59,7 +59,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
     public Closure<?> getDestroyClosure() {
         Object obj = ClassPropertyFetcher.getInstancePropertyValue(instance, DESTROY_CLOSURE);
         if (obj instanceof Closure) {
-            return (Closure<?>)obj;
+            return (Closure<?>) obj;
         }
         return BLANK_CLOSURE;
     }
@@ -68,7 +68,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
         Closure<?> init = getInitClosure();
         if (init != null) {
             Class[] parameterTypes = init.getParameterTypes();
-            if(parameterTypes != null) {
+            if (parameterTypes != null) {
                 init = init.curry(new Object[]{servletContext});
             }
             Environment.executeForCurrentEnvironment(init);

@@ -56,8 +56,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
 
     public static boolean DISABLE_AUTOWIRE_BY_NAME_OPTIMIZATIONS = Boolean.getBoolean("grails.disable.optimization.autowirebyname");
 
-    ConcurrentMap<Class<?>, Map<String,PropertyDescriptor>> autowireableBeanPropsCacheForClass =
-            new ConcurrentHashMap<Class<?>, Map<String,PropertyDescriptor>>();
+    ConcurrentMap<Class<?>, Map<String, PropertyDescriptor>> autowireableBeanPropsCacheForClass =
+            new ConcurrentHashMap<Class<?>, Map<String, PropertyDescriptor>>();
     private boolean reloadEnabled;
 
     /**
@@ -216,7 +216,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
             public BeanWrapper call() throws Exception {
                 BeanWrapperImpl bw = new BeanWrapperImpl(false);
                 Class userClass = ClassUtils.getUserClass(existingBean.getClass());
-                if(userClass != existingBean.getClass()) {
+                if (userClass != existingBean.getClass()) {
                     bw.setWrappedInstance(BeanUtils.instantiate(userClass));
                 } else {
                     bw.setWrappedInstance(existingBean);
@@ -232,7 +232,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
         Map<String, PropertyDescriptor> autowireableBeanProps = autowireableBeanPropsCacheForClass.get(beanClass);
         if (autowireableBeanProps == null) {
             autowireableBeanProps = new HashMap<String, PropertyDescriptor>();
-            BeanWrapper bw=null;
+            BeanWrapper bw = null;
             try {
                 bw = beanWrapperCallback.call();
             }

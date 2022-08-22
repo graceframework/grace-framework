@@ -25,7 +25,7 @@ import groovy.lang.Closure;
  * @author Graeme Rocher
  * @since 1.1
  */
-public abstract class AbstractTokenResponseHandler implements TokenResponseHandler{
+public abstract class AbstractTokenResponseHandler implements TokenResponseHandler {
 
     private boolean invoked = false;
     private boolean valid;

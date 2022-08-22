@@ -25,7 +25,7 @@ import org.codehaus.groovy.ast.expr.ArgumentListExpression;
  * @author Graeme Rocher
  * @since 2.0
  */
-public interface GrailsArtefactClassInjector extends ClassInjector{
+public interface GrailsArtefactClassInjector extends ClassInjector {
 
     ArgumentListExpression ZERO_ARGS = new ArgumentListExpression();
 

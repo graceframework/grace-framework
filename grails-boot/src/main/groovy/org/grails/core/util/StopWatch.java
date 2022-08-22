@@ -106,7 +106,7 @@ public class StopWatch {
             throw new IllegalStateException("Can't stop StopWatch: it's not running");
         }
 
-        if(!runningTasks.isEmpty()) {
+        if (!runningTasks.isEmpty()) {
 
             TaskInfo lastTask = runningTasks.pop();
             lastTask.stop();

@@ -50,7 +50,7 @@ class PluginAstReader {
     public GrailsPluginInfo readPluginInfo(ClassNode classNode) throws CompilationFailedException {
         String className = classNode.getNameWithoutPackage();
 
-        if(className.endsWith("GrailsPlugin")) {
+        if (className.endsWith("GrailsPlugin")) {
             visitContents(className, classNode);
         }
 
@@ -61,7 +61,7 @@ class PluginAstReader {
             final String key = entry.getKey();
             final Object value = entry.getValue();
             if (value instanceof String) {
-                String val = (String)value;
+                String val = (String) value;
                 if (val != null && val.length() > 2 && val.startsWith("@") && val.endsWith("@")) {
                     String token = val.substring(1, val.length() - 1);
                     val = String.valueOf(pluginProperties.get(token));
@@ -72,7 +72,7 @@ class PluginAstReader {
                 }
             }
             else if (value instanceof Map) {
-                Map<String, String> map = (Map<String, String>)value;
+                Map<String, String> map = (Map<String, String>) value;
                 for (Map.Entry me : map.entrySet()) {
                     final String k = String.valueOf(me.getKey());
                     final String v = String.valueOf(me.getValue());
@@ -106,23 +106,23 @@ class PluginAstReader {
                     Object value = null;
                     if (expr instanceof ListExpression) {
                         final List<String> list = new ArrayList<String>();
-                        for (Expression i : ((ListExpression)expr).getExpressions()) {
+                        for (Expression i : ((ListExpression) expr).getExpressions()) {
                             list.add(i.getText());
                         }
                         value = list;
                     }
                     else if (expr instanceof MapExpression) {
                         final Map<String, String> map = new LinkedHashMap<String, String>();
-                        MapExpression mapExpr = (MapExpression)expr;
+                        MapExpression mapExpr = (MapExpression) expr;
                         for (MapEntryExpression mee : mapExpr.getMapEntryExpressions()) {
                             Expression keyExpr = mee.getKeyExpression();
                             Expression valueExpr = mee.getValueExpression();
                             String valueObj = valueExpr.getText();
-                            if(valueExpr instanceof ConstantExpression) {
-                                valueObj = String.valueOf(((ConstantExpression)valueExpr).getValue());
+                            if (valueExpr instanceof ConstantExpression) {
+                                valueObj = String.valueOf(((ConstantExpression) valueExpr).getValue());
                             }
                             else if (valueExpr instanceof VariableExpression) {
-                                VariableExpression ve = (VariableExpression)valueExpr;
+                                VariableExpression ve = (VariableExpression) valueExpr;
                                 valueObj = String.format("@%s@", ve.getName());
                             }
                             map.put(keyExpr.getText(), valueObj);
@@ -130,27 +130,27 @@ class PluginAstReader {
                         value = map;
                     }
                     else if (expr instanceof MethodCallExpression) {
-                        Expression objectExpr = ((MethodCallExpression)expr).getObjectExpression();
-                        Expression methodExpr = ((MethodCallExpression)expr).getMethod();
+                        Expression objectExpr = ((MethodCallExpression) expr).getObjectExpression();
+                        Expression methodExpr = ((MethodCallExpression) expr).getMethod();
                         if (objectExpr instanceof ClassExpression && methodExpr instanceof ConstantExpression) {
                             String objectExprName = objectExpr.getText();
-                            String methodNameExprName = String.valueOf(((ConstantExpression)methodExpr).getValue());
+                            String methodNameExprName = String.valueOf(((ConstantExpression) methodExpr).getValue());
                             if (objectExprName.equals("grails.util.GrailsUtil") && methodNameExprName.equals("getGrailsVersion")) {
                                 value = getClass().getPackage().getImplementationVersion();
                             }
                         }
                     }
                     else if (expr instanceof VariableExpression) {
-                        VariableExpression ve = (VariableExpression)expr;
+                        VariableExpression ve = (VariableExpression) expr;
                         value = String.format("@%s@", ve.getName());
                     }
                     else if (expr instanceof ConstantExpression)  {
-                        value = String.valueOf(((ConstantExpression)expr).getValue());
+                        value = String.valueOf(((ConstantExpression) expr).getValue());
                     }
                     else {
                         value = expr.getText();
                     }
-                    if(value != null) {
+                    if (value != null) {
                         pluginInfo.setProperty(name, value);
                         super.visitProperty(node);
                     }
@@ -178,7 +178,7 @@ class PluginAstReader {
 
         private String name;
         private String version;
-        private Map<String,Object> attributes = new ConcurrentHashMap<String,Object>();
+        private Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();
 
         public BasicGrailsPluginInfo() {
         }

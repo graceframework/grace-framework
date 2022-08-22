@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
                 return 0;
             }
         });
-        Map<String,Object> sortedParams = new LinkedHashMap<String,Object>();
-        for(Object key : keys) {
+        Map<String, Object> sortedParams = new LinkedHashMap<String, Object>();
+        for (Object key : keys) {
             sortedParams.put(String.valueOf(key), newParams.get(key));
         }
         this.params = Collections.unmodifiableMap(sortedParams);
@@ -112,7 +112,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     }
 
     protected String evaluateNameForValue(Object value) {
-        if(value instanceof CharSequence) {
+        if (value instanceof CharSequence) {
             return value.toString().trim();
         }
         else {

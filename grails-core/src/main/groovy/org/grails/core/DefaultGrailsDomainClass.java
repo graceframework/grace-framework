@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
                 persistentEntity = mappingContext.getPersistentEntity(this.getFullName());
                 if (persistentEntity == null) {
                     MappingContext concreteMappingContext = getApplication().getMappingContext();
-                    if(concreteMappingContext.getClass() == KeyValueMappingContext.class) {
+                    if (concreteMappingContext.getClass() == KeyValueMappingContext.class) {
                         // In a unit testing context, allow
                         persistentEntity = concreteMappingContext.addPersistentEntity(getClazz());
                     }
@@ -89,7 +89,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
 
     @Override
     public boolean isAutowire() {
-        if(autowire == null) {
+        if (autowire == null) {
             verifyContextIsInitialized();
             autowire = persistentEntity.getMapping().getMappedForm().isAutowire();
         }
@@ -125,9 +125,9 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     @Override
     public Map getConstrainedProperties() {
         verifyContextIsInitialized();
-        if(constrainedProperties == null) {
+        if (constrainedProperties == null) {
             ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery.class);
-            if(constrainedDiscovery == null) {
+            if (constrainedDiscovery == null) {
                 constrainedProperties = Collections.emptyMap();
             }
             else {

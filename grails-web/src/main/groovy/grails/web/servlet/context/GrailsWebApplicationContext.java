@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,11 +100,11 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     private GrailsApplication getGrailsApplication() {
-        if(grailsApplication==null) {
+        if (grailsApplication == null) {
             ApplicationContext parent = getParent();
             if (parent != null) {
-                if(parent instanceof GrailsWebApplicationContext) {
-                    grailsApplication = ((GrailsWebApplicationContext)parent).getGrailsApplication();
+                if (parent instanceof GrailsWebApplicationContext) {
+                    grailsApplication = ((GrailsWebApplicationContext) parent).getGrailsApplication();
                 } else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
                     grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                 }
@@ -187,7 +187,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
         if (configLocations.length > 0) {
             for (String configLocation : configLocations) {
-                BeanBuilder beanBuilder = new BeanBuilder(getParent(),getClassLoader());
+                BeanBuilder beanBuilder = new BeanBuilder(getParent(), getClassLoader());
                 final ServletContextResource resource = new ServletContextResource(getServletContext(), configLocation);
                 beanBuilder.loadBeans(resource);
                 beanBuilder.registerBeans(this);

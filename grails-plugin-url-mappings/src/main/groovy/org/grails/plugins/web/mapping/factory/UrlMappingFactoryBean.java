@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author Graeme Rocher
  * @since 0.3
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements ApplicationContextAware {
 
     private static final Log LOG = LogFactory.getLog(UrlMappingFactoryBean.class);
@@ -48,7 +48,7 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
         if (applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
             Object o = applicationContext.getBean(UrlMappingFactoryBean.URL_MAP_BEAN);
             if (o instanceof Map) {
-                mappings.putAll((Map)o);
+                mappings.putAll((Map) o);
             }
         }
         if (LOG.isDebugEnabled()) {

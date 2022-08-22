@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import groovy.lang.MetaClassRegistryChangeEventListener;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class MetaClassChangeReporter implements MetaClassRegistryChangeEventListener{
+public class MetaClassChangeReporter implements MetaClassRegistryChangeEventListener {
     /**
      * Called when the a constant MetaClass is updated. If the new MetaClass is null, then the MetaClass
      * is removed. Be careful, while this method is executed other updates may happen. If you want this
@@ -37,7 +37,7 @@ public class MetaClassChangeReporter implements MetaClassRegistryChangeEventList
         Class<?> classToUpdate = cmcu.getClassToUpdate();
         MetaClass newMetaClass = cmcu.getNewMetaClass();
 
-        System.out.println("Class ["+classToUpdate+"] updated MetaClass to ["+newMetaClass+"]");
+        System.out.println("Class [" + classToUpdate + "] updated MetaClass to [" + newMetaClass + "]");
         Thread.dumpStack();
     }
 }

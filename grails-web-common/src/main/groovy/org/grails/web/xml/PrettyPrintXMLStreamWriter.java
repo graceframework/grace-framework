@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2008 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import java.io.Writer;
  * @author Siegfried Puchbauer
  * @since 1.1
  */
-public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
+public class PrettyPrintXMLStreamWriter extends XMLStreamWriter {
 
     public static final String DEFAULT_INDENT_STR = "  ";
 
@@ -57,7 +57,7 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
 
     private void indent() throws IOException {
         Writer ue = writer.unescaped();
-        for (int i=0; i<level; i++) {
+        for (int i = 0; i < level; i++) {
             ue.write(indent);
         }
     }

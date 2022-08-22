@@ -80,10 +80,10 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         this.urlData = urlData;
         this.grailsApplication = grailsApplication;
         ApplicationContext applicationContext = null;
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
             applicationContext = grailsApplication.getMainContext();
         }
-        if(applicationContext != null && applicationContext.containsBean(UrlConverter.BEAN_NAME)) {
+        if (applicationContext != null && applicationContext.containsBean(UrlConverter.BEAN_NAME)) {
             urlConverter = applicationContext.getBean(UrlConverter.BEAN_NAME, UrlConverter.class);
         }
         else {
@@ -131,7 +131,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         Assert.notNull(uri, "Argument [uri] cannot be null or blank");
     }
 
-    public DefaultUrlMappingInfo(Object uri,String httpMethod, UrlMappingData data, GrailsApplication grailsApplication) {
+    public DefaultUrlMappingInfo(Object uri, String httpMethod, UrlMappingData data, GrailsApplication grailsApplication) {
         this(Collections.emptyMap(), data, grailsApplication);
         this.uri = uri;
         this.httpMethod = httpMethod;
@@ -255,17 +255,17 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     private boolean isMultipartDisabled() {
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
             return grailsApplication.getConfig().getProperty(SETTING_GRAILS_WEB_DISABLE_MULTIPART, Boolean.class, false);
         }
         return false;
     }
 
     private MultipartResolver getMultipartResolver() {
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
             ApplicationContext ctx = grailsApplication.getMainContext();
-            if(ctx != null) {
-                return (MultipartResolver)ctx.getBean(DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME);
+            if (ctx != null) {
+                return (MultipartResolver) ctx.getBean(DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME);
             }
         }
         return null;
@@ -317,8 +317,8 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         result = 31 * result + (id != null ? (ID_PREFIX + id).hashCode() : 0);
         result = 31 * result + (viewName != null ? (VIEW_PREFIX + viewName).hashCode() : 0);
         result = 31 * result + (uri != null ? uri.hashCode() : 0);
-        result = 31 * result + (httpMethod != null ? (METHOD_PREFIX +httpMethod).hashCode() : 0);
-        result = 31 * result + (version != null ? (VERSION_PREFIX +version).hashCode() : 0);
+        result = 31 * result + (httpMethod != null ? (METHOD_PREFIX + httpMethod).hashCode() : 0);
+        result = 31 * result + (version != null ? (VERSION_PREFIX + version).hashCode() : 0);
         return result;
     }
 }

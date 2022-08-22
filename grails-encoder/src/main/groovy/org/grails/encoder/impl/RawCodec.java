@@ -58,10 +58,10 @@ public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactor
      * @see Encoder#encode(java.lang.Object)
      */
     public Object encode(Object o) {
-        if(o instanceof String) {
+        if (o instanceof String) {
             // create a new copy of the String instance            
-            return new String((String)o);
-        } else if(o instanceof CharSequence) {
+            return new String((String) o);
+        } else if (o instanceof CharSequence) {
             // convert CharSequence to String so that we have a new instance
             return String.valueOf(o);
         } else {

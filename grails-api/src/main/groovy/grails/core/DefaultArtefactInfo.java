@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class DefaultArtefactInfo implements ArtefactInfo {
         Class<?> actualClass = artefactClass.getClazz();
         boolean addToGrailsClasses = true;
         if (artefactClass instanceof InjectableGrailsClass) {
-            addToGrailsClasses = ((InjectableGrailsClass)artefactClass).getAvailable();
+            addToGrailsClasses = ((InjectableGrailsClass) artefactClass).getAvailable();
         }
         if (addToGrailsClasses) {
             GrailsClass oldVersion = grailsClassesByName.put(actualClass.getName(), artefactClass);

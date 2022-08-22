@@ -104,7 +104,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
 
                     for (String pluginType : ph.pluginTypes) {
                         Class<?> pluginClass = attemptCorePluginClassLoad(pluginType);
-                        if(pluginClass != null) {
+                        if (pluginClass != null) {
                             addPlugin(pluginClass);
                             binaryDescriptors.put(pluginClass, new BinaryGrailsPluginDescriptor(resource, ph.pluginClasses));
                         }
@@ -159,11 +159,11 @@ public class CorePluginFinder implements ParentApplicationContextAware {
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            if(localName.equals("type")) {
+            if (localName.equals("type")) {
                 state = PluginParseState.TYPE;
                 buff = new StringBuilder();
             }
-            else if(localName.equals("resource")) {
+            else if (localName.equals("resource")) {
                 state = PluginParseState.RESOURCE;
                 buff = new StringBuilder();
             }

@@ -85,11 +85,11 @@ public class Holders {
     }
 
     public static ApplicationContext getApplicationContext() {
-        for(GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
+        for (GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
             ApplicationContext applicationContext = strategy.findApplicationContext();
-            if(applicationContext != null ) {
+            if (applicationContext != null) {
                 boolean running = ((Lifecycle) applicationContext).isRunning();
-                if(running) {
+                if (running) {
                     return applicationContext;
                 }
             }
@@ -102,9 +102,9 @@ public class Holders {
      * @return The ApplicationContext or null if it doesn't exist
      */
     public static ApplicationContext findApplicationContext() {
-        for(GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
+        for (GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
             ApplicationContext applicationContext = strategy.findApplicationContext();
-            if(applicationContext != null) {
+            if (applicationContext != null) {
                 return applicationContext;
             }
         }
@@ -115,9 +115,9 @@ public class Holders {
      * @return The ApplicationContext or null if it doesn't exist
      */
     public static GrailsApplication findApplication() {
-        for(GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
+        for (GrailsApplicationDiscoveryStrategy strategy : applicationDiscoveryStrategies) {
             GrailsApplication grailsApplication = strategy.findGrailsApplication();
-            if(grailsApplication != null) {
+            if (grailsApplication != null) {
                 return grailsApplication;
             }
         }
@@ -213,7 +213,7 @@ public class Holders {
     private static void createServletContextsHolder() {
         try {
             Class<?> clazz = Holders.class.getClassLoader().loadClass("grails.web.context.WebRequestServletHolder");
-            servletContexts = (Holder)clazz.newInstance();
+            servletContexts = (Holder) clazz.newInstance();
         }
         catch (ClassNotFoundException e) {
             // shouldn't happen

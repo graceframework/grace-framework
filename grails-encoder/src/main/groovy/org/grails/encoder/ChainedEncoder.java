@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
         }
         
         EncodedAppender getCached(final EncodedAppender appender) {
-            if(lastAppenderForCached == appender && lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
+            if (lastAppenderForCached == appender && lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
                 return cachedChainedAppender;
             }
             return null;
@@ -68,16 +68,16 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     }
     
     public static StreamingEncoder createFor(List<StreamingEncoder> encoders, Boolean safe) {
-        if(encoders==null) {
+        if (encoders == null) {
             return null;
-        } else if(encoders.size()==0) {
+        } else if (encoders.size() == 0) {
             return DefaultEncodingStateRegistry.NONE_ENCODER;
-        } else if(encoders.size()==1) {
+        } else if (encoders.size() == 1) {
             return encoders.get(0);
         } else {
-            if(safe == null) {
-                for(StreamingEncoder encoder : encoders) {
-                    if(encoder.isSafe()) {
+            if (safe == null) {
+                for (StreamingEncoder encoder : encoders) {
+                    if (encoder.isSafe()) {
                         safe = true;
                         break;
                     }
@@ -100,8 +100,8 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     public void encodeToStream(Encoder thisInstance, CharSequence source, int offset, int len,
             EncodedAppender appender, EncodingState encodingState) throws IOException {
         EncodedAppender target = chainEncodersAndCachePerThread(appender);
-        StreamingEncoder encoder=encoders[0];
-        if(appender.shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
+        StreamingEncoder encoder = encoders[0];
+        if (appender.shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
             encoder.encodeToStream(encoder, source, offset, len, target, encodingState.getPreviousEncodingState());
         } else {
             target.appendEncoded(encoder, encodingState.getPreviousEncodingState(), source, offset, len);
@@ -112,7 +112,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
         ChainedEncoderCacheItem cacheItem = cacheItemThreadLocal.get();
         
         EncodedAppender target = cacheItem.getCached(appender);
-        if(target == null) {
+        if (target == null) {
             target = doChainEncoders(appender);
             cacheItem.putInCache(appender, target);
         }
@@ -120,10 +120,10 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     }
 
     protected EncodedAppender doChainEncoders(final EncodedAppender appender) {
-        EncodedAppender target=appender;
-        for(int i=encoders.length-1;i >= 1;i--) {
-            StreamingEncoder encoder=encoders[i];
-            target=new StreamingEncoderEncodedAppender(encoder, target);
+        EncodedAppender target = appender;
+        for (int i = encoders.length - 1; i >= 1; i--) {
+            StreamingEncoder encoder = encoders[i];
+            target = new StreamingEncoderEncodedAppender(encoder, target);
             target.setIgnoreEncodingState(appender.isIgnoreEncodingState());
         }
         return target;
@@ -131,7 +131,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public Object encode(Object o) {
-        if(o==null) return o;
+        if (o == null) return o;
         Object encoded = o;
         for (StreamingEncoder encoder : encoders) {
             encoded = encoder.encode(encoded);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -209,7 +209,7 @@ public class AntPathMatcher {
     }
 
     private String[] tokenize(String pattern) {
-        List<String> list = StringGroovyMethods.tokenize((CharSequence)pattern, (CharSequence)pathSeparator);
+        List<String> list = StringGroovyMethods.tokenize((CharSequence) pattern, (CharSequence) pathSeparator);
         return list.toArray(new String[list.size()]);
     }
 
@@ -350,7 +350,7 @@ public class AntPathMatcher {
     }
 
     private boolean hasText(String txt) {
-        return txt != null && txt.length()>0;
+        return txt != null && txt.length() > 0;
     }
 
     /**

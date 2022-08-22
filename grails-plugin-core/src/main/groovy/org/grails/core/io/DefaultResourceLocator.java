@@ -165,7 +165,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
             String fullPluginName = info.pluginName;
             for (GrailsPlugin plugin : pluginManager.getAllPlugins()) {
                 if (plugin.getFileSystemName().equals(fullPluginName) && (plugin instanceof BinaryGrailsPlugin)) {
-                    return ((BinaryGrailsPlugin)plugin).getResource(info.uri);
+                    return ((BinaryGrailsPlugin) plugin).getResource(info.uri);
                 }
             }
         }

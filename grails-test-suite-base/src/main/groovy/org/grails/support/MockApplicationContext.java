@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,7 +184,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         Map<String, T> newMap = new HashMap<String, T>();
         for (int i = 0; i < beanNames.length; i++) {
             String beanName = beanNames[i];
-            newMap.put(beanName, (T)getBean(beanName));
+            newMap.put(beanName, (T) getBean(beanName));
         }
         return newMap;
     }
@@ -253,7 +253,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
             throw new NoSuchBeanDefinitionException(name);
         }
 
-        return (T)beans.get(name);
+        return (T) beans.get(name);
     }
 
     public <T> T getBean(Class<T> tClass) throws BeansException {
@@ -322,7 +322,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     }
 
     public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
-        MessageSource messageSource = (MessageSource)getBean("messageSource");
+        MessageSource messageSource = (MessageSource) getBean("messageSource");
         if (messageSource == null) {
             throw new BeanCreationException("No bean [messageSource] found in MockApplicationContext");
         }
@@ -330,7 +330,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     }
 
     public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
-        MessageSource messageSource = (MessageSource)getBean("messageSource");
+        MessageSource messageSource = (MessageSource) getBean("messageSource");
         if (messageSource == null) {
             throw new BeanCreationException("No bean [messageSource] found in MockApplicationContext");
         }
@@ -338,7 +338,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     }
 
     public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
-        MessageSource messageSource = (MessageSource)getBean("messageSource");
+        MessageSource messageSource = (MessageSource) getBean("messageSource");
         if (messageSource == null) {
             throw new BeanCreationException("No bean [messageSource] found in MockApplicationContext");
         }

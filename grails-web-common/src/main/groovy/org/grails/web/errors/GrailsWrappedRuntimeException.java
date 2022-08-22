@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
     public static final String URL_PREFIX = "/WEB-INF/grails-app/";
     private static final Log LOG  = LogFactory.getLog(GrailsWrappedRuntimeException.class);
     private String className = UNKNOWN;
-    private int lineNumber = - 1;
+    private int lineNumber = -1;
     private String stackTrace;
     private String[] codeSnippet = new String[0];
     private String gspFile;
@@ -98,10 +98,10 @@ public class GrailsWrappedRuntimeException extends GrailsException {
         stackTraceLines = stackTrace.split("\\n");
 
         if (cause instanceof MultipleCompilationErrorsException) {
-            MultipleCompilationErrorsException mcee = (MultipleCompilationErrorsException)cause;
+            MultipleCompilationErrorsException mcee = (MultipleCompilationErrorsException) cause;
             Object message = mcee.getErrorCollector().getErrors().iterator().next();
             if (message instanceof SyntaxErrorMessage) {
-                SyntaxErrorMessage sem = (SyntaxErrorMessage)message;
+                SyntaxErrorMessage sem = (SyntaxErrorMessage) message;
                 lineNumber = sem.getCause().getLine();
                 className = sem.getCause().getSourceLocator();
                 sem.write(pw);

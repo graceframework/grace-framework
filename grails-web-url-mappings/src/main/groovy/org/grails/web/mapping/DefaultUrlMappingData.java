@@ -67,7 +67,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
     }
 
     private String configureUrlPattern(String urlPattern) {
-        return urlPattern.replace( "(*)**", CAPTURED_DOUBLE_WILDCARD);
+        return urlPattern.replace("(*)**", CAPTURED_DOUBLE_WILDCARD);
     }
 
     private DefaultUrlMappingData(String urlPattern, String[] logicalUrls, String[] tokens, List<Boolean> optionalTokens) {
@@ -84,13 +84,13 @@ public class DefaultUrlMappingData implements UrlMappingData {
         String optionalExtensionPattern = UrlMapping.OPTIONAL_EXTENSION_WILDCARD + '?';
         String optionalExtension = null;
 
-        if(tokens.length>0) {
-            String lastToken = tokens[tokens.length-1];
+        if (tokens.length > 0) {
+            String lastToken = tokens[tokens.length - 1];
             hasOptionalExtension = lastToken.endsWith(optionalExtensionPattern);
-            if(hasOptionalExtension) {
+            if (hasOptionalExtension) {
                 int i = lastToken.indexOf(optionalExtensionPattern);
                 optionalExtension = lastToken.substring(i, lastToken.length());
-                tokens[tokens.length-1] = lastToken.substring(0, i);
+                tokens[tokens.length - 1] = lastToken.substring(0, i);
             }
 
         }
@@ -104,7 +104,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
 
             boolean isOptional = false;
             if (token.endsWith(QUESTION_MARK)) {
-                if(optionalExtension != null) {
+                if (optionalExtension != null) {
                     urls.add(buf.toString() + optionalExtension);
                 }
                 else {
@@ -126,7 +126,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
                 optionalTokens.add(Boolean.TRUE);
             }
         }
-        if(optionalExtension != null) {
+        if (optionalExtension != null) {
             urls.add(buf.toString() + optionalExtension);
         }
         else {
@@ -166,6 +166,6 @@ public class DefaultUrlMappingData implements UrlMappingData {
         String[] logicalUrls = urls.toArray(new String[urls.size()]);
 
 
-        return new DefaultUrlMappingData(newPattern,logicalUrls, tokens,optionalTokens);
+        return new DefaultUrlMappingData(newPattern, logicalUrls, tokens, optionalTokens);
     }
 }

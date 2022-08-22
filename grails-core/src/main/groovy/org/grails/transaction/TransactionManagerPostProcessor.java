@@ -65,7 +65,7 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
     public boolean postProcessAfterInstantiation(Object bean, String name) throws BeansException {
         if (bean instanceof TransactionManagerAware) {
             initialize();
-            if(transactionManager != null) {
+            if (transactionManager != null) {
                 TransactionManagerAware tma = (TransactionManagerAware) bean;
                 tma.setTransactionManager(transactionManager);
             }
@@ -74,7 +74,7 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
     }
 
     private void initialize() {
-        if(transactionManager == null && beanFactory != null && !initialized) {
+        if (transactionManager == null && beanFactory != null && !initialized) {
             if (beanFactory.containsBean(GrailsApplication.TRANSACTION_MANAGER_BEAN)) {
                 transactionManager = beanFactory.getBean(GrailsApplication.TRANSACTION_MANAGER_BEAN, PlatformTransactionManager.class);
             } else {
@@ -88,7 +88,7 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
                 // If at least one is found, use the first of them as the
                 // transaction manager for the application.
                 if (beanNames.length > 0) {
-                    transactionManager = (PlatformTransactionManager)beanFactory.getBean(beanNames[0]);
+                    transactionManager = (PlatformTransactionManager) beanFactory.getBean(beanNames[0]);
                 }
             }
             initialized = true;

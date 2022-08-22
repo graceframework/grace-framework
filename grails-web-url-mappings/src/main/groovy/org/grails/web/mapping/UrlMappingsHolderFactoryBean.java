@@ -129,7 +129,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         // call initialize() after settings are in place
         defaultUrlMappingsHolder.initialize();
         final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(grailsApplication, defaultUrlMappingsHolder, grailsUrlConverter);
-        ((ConfigurableApplicationContext)applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
+        ((ConfigurableApplicationContext) applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
             @Override
             public void onApplicationEvent(ArtefactAdditionEvent event) {
                 GrailsClass artefact = event.getArtefact();
@@ -138,7 +138,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
                 }
             }
         });
-        urlMappingsHolder= grailsControllerUrlMappings;
+        urlMappingsHolder = grailsControllerUrlMappings;
     }
 
 
@@ -170,6 +170,6 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
         setGrailsApplication(applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class));
-        setPluginManager( applicationContext.containsBean(GrailsPluginManager.BEAN_NAME) ? applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class) : null);
+        setPluginManager(applicationContext.containsBean(GrailsPluginManager.BEAN_NAME) ? applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class) : null);
     }
 }

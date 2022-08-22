@@ -29,7 +29,7 @@ import java.net.URL;
  * @author Graeme Rocher
  * @since 2.2
  */
-public class SpringResource implements Resource{
+public class SpringResource implements Resource {
     org.springframework.core.io.Resource springResource;
 
     public SpringResource(org.springframework.core.io.Resource springResource) {

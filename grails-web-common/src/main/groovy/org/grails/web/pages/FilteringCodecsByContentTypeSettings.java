@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public class FilteringCodecsByContentTypeSettings {
     private static final String WILDCARD_CONTENT_TYPE = "*/*";
 
     public static final String CONFIG_PROPERTY_CODEC_FOR_CONTENT_TYPE = "grails.views.filteringCodecForContentType";
-    public static final String BEAN_NAME="filteringCodecsByContentTypeSettings";
+    public static final String BEAN_NAME = "filteringCodecsByContentTypeSettings";
 
     Map<String, Encoder> contentTypeToEncoderMapping;
     Map<Pattern, Encoder> contentTypePatternToEncoderMapping;
@@ -42,18 +42,18 @@ public class FilteringCodecsByContentTypeSettings {
 
     @SuppressWarnings("rawtypes")
     public void initialize(GrailsApplication grailsApplication) {
-        contentTypeToEncoderMapping=null;
-        contentTypePatternToEncoderMapping=null;
+        contentTypeToEncoderMapping = null;
+        contentTypePatternToEncoderMapping = null;
         Map codecForContentTypeConfig = getConfigSettings(grailsApplication.getConfig());
         if (codecForContentTypeConfig != null) {
-            contentTypeToEncoderMapping=new LinkedHashMap<String, Encoder>();
-            contentTypePatternToEncoderMapping=new LinkedHashMap<Pattern, Encoder>();
-            Map codecForContentTypeMapping=(Map)codecForContentTypeConfig;
-            for(Iterator i=codecForContentTypeMapping.entrySet().iterator();i.hasNext();) {
-                Map.Entry entry=(Map.Entry)i.next();
-                Encoder encoder=CodecLookupHelper.lookupEncoder(grailsApplication, String.valueOf(entry.getValue()));
+            contentTypeToEncoderMapping = new LinkedHashMap<String, Encoder>();
+            contentTypePatternToEncoderMapping = new LinkedHashMap<Pattern, Encoder>();
+            Map codecForContentTypeMapping = (Map) codecForContentTypeConfig;
+            for (Iterator i = codecForContentTypeMapping.entrySet().iterator(); i.hasNext();) {
+                Map.Entry entry = (Map.Entry) i.next();
+                Encoder encoder = CodecLookupHelper.lookupEncoder(grailsApplication, String.valueOf(entry.getValue()));
                 if (entry.getKey() instanceof Pattern) {
-                    contentTypePatternToEncoderMapping.put((Pattern)entry.getKey(), encoder);
+                    contentTypePatternToEncoderMapping.put((Pattern) entry.getKey(), encoder);
                 } else {
                     contentTypeToEncoderMapping.put(String.valueOf(entry.getKey()), encoder);
                 }
@@ -62,17 +62,17 @@ public class FilteringCodecsByContentTypeSettings {
     }
 
     public Encoder getEncoderForContentType(String contentType) {
-        if (contentTypeToEncoderMapping==null) {
+        if (contentTypeToEncoderMapping == null) {
             return null;
         }
-        if (contentType==null) {
-            contentType=WILDCARD_CONTENT_TYPE;
+        if (contentType == null) {
+            contentType = WILDCARD_CONTENT_TYPE;
         }
-        Encoder encoder=contentTypeToEncoderMapping.get(contentType);
+        Encoder encoder = contentTypeToEncoderMapping.get(contentType);
         if (encoder != null) {
             return encoder;
         }
-        for(Map.Entry<Pattern, Encoder> entry : contentTypePatternToEncoderMapping.entrySet()) {
+        for (Map.Entry<Pattern, Encoder> entry : contentTypePatternToEncoderMapping.entrySet()) {
             if (entry.getKey().matcher(contentType).matches()) {
                 return encoder;
             }

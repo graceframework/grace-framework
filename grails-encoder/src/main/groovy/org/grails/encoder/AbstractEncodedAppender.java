@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
         if (shouldEncode(encoder, encodingState)) {
             EncodingState newEncoders = createNewEncodingState(encoder, encodingState);
             if (encoder instanceof StreamingEncoder) {
-                ((StreamingEncoder)encoder).encodeToStream(encoder, CharSequences.createCharSequence(b, off, len), 0, len, this,
+                ((StreamingEncoder) encoder).encodeToStream(encoder, CharSequences.createCharSequence(b, off, len), 0, len, this,
                         newEncoders);
             }
             else {
@@ -130,7 +130,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
         if (shouldEncode(encoder, encodingState)) {
             EncodingState newEncoders = createNewEncodingState(encoder, encodingState);
             if (encoder instanceof StreamingEncoder) {
-                ((StreamingEncoder)encoder).encodeToStream(encoder, str, off, len, this, newEncoders);
+                ((StreamingEncoder) encoder).encodeToStream(encoder, str, off, len, this, newEncoders);
             }
             else {
                 CharSequence source;

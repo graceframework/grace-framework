@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ public abstract class AbstractGrailsMockTests extends GroovyTestCase {
         ctx = new MockApplicationContext();
         ctx.registerMockBean(GrailsApplication.CLASS_LOADER_BEAN, gcl);
         onSetUp();
-        ga = new DefaultGrailsApplication(gcl.getLoadedClasses(),gcl);
-        if(ClassUtils.isPresent("Config", gcl)) {
+        ga = new DefaultGrailsApplication(gcl.getLoadedClasses(), gcl);
+        if (ClassUtils.isPresent("Config", gcl)) {
             ConfigObject config = new ConfigSlurper().parse(gcl.loadClass("Config"));
             ga.setConfig(new PropertySourcesConfig(config));
         }

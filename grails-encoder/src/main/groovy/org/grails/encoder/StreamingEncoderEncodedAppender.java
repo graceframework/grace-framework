@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,9 +64,9 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
     protected void appendCharSequence(EncodingState encodingState, CharSequence str, int start, int end)
             throws IOException {
         if (shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
-            encoder.encodeToStream(encoder, str, start, end-start, target, encodingState);
+            encoder.encodeToStream(encoder, str, start, end - start, target, encodingState);
         } else {
-            target.appendEncoded(null, encodingState, str, start, end-start);
+            target.appendEncoded(null, encodingState, str, start, end - start);
         }
     }
 }

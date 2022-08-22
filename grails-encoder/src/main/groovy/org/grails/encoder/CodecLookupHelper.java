@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class CodecLookupHelper {
      */
     public static Encoder lookupEncoder(GrailsApplication grailsApplication, String codecName) {
         ApplicationContext ctx = grailsApplication != null ? grailsApplication.getMainContext() : null;
-        if(ctx != null) {
+        if (ctx != null) {
             try {
                 CodecLookup codecLookup = ctx.getBean("codecLookup", CodecLookup.class);
                 return codecLookup.lookupEncoder(codecName);

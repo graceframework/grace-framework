@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
             int hour = getIntegerValue(fieldValues, "hour", 0);
             int minute = getIntegerValue(fieldValues, "minute", 0);
 
-            Calendar c = new GregorianCalendar(year,month - 1,day,hour,minute);
+            Calendar c = new GregorianCalendar(year, month - 1, day, hour, minute);
             if (type == Date.class) {
                 return c.getTime();
             }

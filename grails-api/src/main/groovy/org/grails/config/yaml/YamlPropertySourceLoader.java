@@ -82,7 +82,7 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
             propertySource.merge(map, true);
         });
         propertySources.add(
-                new NavigableMapPropertySource(name ,propertySource));
+                new NavigableMapPropertySource(name, propertySource));
 
         return propertySources;
     }

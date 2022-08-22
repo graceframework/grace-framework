@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class CodecPrintWriter extends GrailsPrintWriter implements EncoderAware,
     public CodecPrintWriter(Writer out, Encoder encoder, EncodingStateRegistry encodingStateRegistry, boolean ignoreEncodingState) {
         super(null);
         this.encoder = encoder;
-        buffer=new StreamCharBuffer();
+        buffer = new StreamCharBuffer();
         buffer.setNotifyParentBuffersEnabled(false);
         allowUnwrappingOut = false;
         buffer.connectTo(out, false);
@@ -51,7 +51,7 @@ public class CodecPrintWriter extends GrailsPrintWriter implements EncoderAware,
     }
 
     public EncodedAppender getEncodedAppender() {
-        EncodedAppender encodedAppender = ((EncodedAppenderFactory)buffer.getWriter()).getEncodedAppender();
+        EncodedAppender encodedAppender = ((EncodedAppenderFactory) buffer.getWriter()).getEncodedAppender();
         encodedAppender.setIgnoreEncodingState(ignoreEncodingState);
         return encodedAppender;
     }

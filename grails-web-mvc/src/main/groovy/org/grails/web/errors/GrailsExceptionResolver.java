@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,11 +160,11 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         Map params = new HashMap();
         try {
             UrlMappingInfo requestInfo = urlMappings.match(request.getRequestURI());
-            if ( requestInfo != null ) {
+            if (requestInfo != null) {
                 params.putAll(UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(requestInfo.getParameters()));
             }
-        } catch( UrlMappingException ulrMappingException) {
-            logger.debug("Could not find urlMapping which matches: " + request.getRequestURI() );
+        } catch (UrlMappingException ulrMappingException) {
+            logger.debug("Could not find urlMapping which matches: " + request.getRequestURI());
         }
         return params;
     }
@@ -174,9 +174,9 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
         UrlMappingInfo info = matchStatusCode(ex, urlMappings);
 
-        if ( info != null ) {
+        if (info != null) {
             Map params = extractRequestParamsWithUrlMappingHolder(urlMappings, request);
-            if ( params != null && !params.isEmpty() ) {
+            if (params != null && !params.isEmpty()) {
                 Map infoParams = info.getParameters();
                 if (infoParams != null) {
                     params.putAll(info.getParameters());
@@ -192,9 +192,9 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             else if (info != null && info.getControllerName() != null) {
                 String uri = determineUri(request);
                 if (!response.isCommitted()) {
-                    if(response instanceof GrailsContentBufferingResponse) {
+                    if (response instanceof GrailsContentBufferingResponse) {
                         // clear the output from sitemesh before rendering error page
-                        ((GrailsContentBufferingResponse)response).deactivateSitemesh();
+                        ((GrailsContentBufferingResponse) response).deactivateSitemesh();
                     }
                     forwardRequest(info, request, response, mv, uri);
                     // return an empty ModelAndView since the error handler has been processed
@@ -221,7 +221,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected String determineUri(HttpServletRequest request) {
-        String uri = (String)request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);
+        String uri = (String) request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);
         if (uri == null) {
             uri = request.getRequestURI();
         }
@@ -253,7 +253,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected Exception findWrappedException(Exception e) {
-        if ((e instanceof InvokerInvocationException)||(e instanceof GrailsMVCException)) {
+        if ((e instanceof InvokerInvocationException) || (e instanceof GrailsMVCException)) {
             Throwable t = getRootCause(e);
             if (t instanceof Exception) {
                 e = (Exception) t;

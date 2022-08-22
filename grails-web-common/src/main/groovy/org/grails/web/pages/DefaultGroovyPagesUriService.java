@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
         String uri = templateURICache.get(key);
         if (uri == null) {
             uri = super.getTemplateURI(controllerName, templateName);
-            String prevuri=templateURICache.putIfAbsent(key, uri);
+            String prevuri = templateURICache.putIfAbsent(key, uri);
             if (prevuri != null) {
                 return prevuri;
             }
@@ -159,7 +159,7 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
     @Override
     public String getNoSuffixViewURI(GroovyObject controller, String viewName) {
         Assert.notNull(controller, "Argument [controller] cannot be null");
-        return getNoSuffixViewURI(getLogicalControllerName(controller),viewName);
+        return getNoSuffixViewURI(getLogicalControllerName(controller), viewName);
     }
 
     /* (non-Javadoc)

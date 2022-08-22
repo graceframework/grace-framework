@@ -48,7 +48,7 @@ public class CommandLineParser {
         DEFAULT_ENVS.put("test-app", Environment.TEST.getName());
     }
 
-    private Map<String, Option> declaredOptions = new HashMap<String, Option> ();
+    private Map<String, Option> declaredOptions = new HashMap<String, Option>();
     private int longestOptionNameLength = 0;
     private String usageMessage;
 
@@ -64,7 +64,7 @@ public class CommandLineParser {
      */
     public void addOption(String name, String description) {
         int length = name.length();
-        if (length >longestOptionNameLength) {
+        if (length > longestOptionNameLength) {
             longestOptionNameLength = length;
         }
         declaredOptions.put(name, new Option(name, description));
@@ -189,7 +189,7 @@ public class CommandLineParser {
         for (String arg : args) {
             if (arg == null) continue;
             String trimmed = arg.trim();
-            if (trimmed != null && trimmed.length()>0) {
+            if (trimmed != null && trimmed.length() > 0) {
                 if (trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"') {
                     trimmed = trimmed.substring(1, trimmed.length() - 1);
                 }
@@ -197,7 +197,7 @@ public class CommandLineParser {
                     lastWasOption = processOption(cl, trimmed);
                 }
                 else {
-                    if(lastWasOption != null) {
+                    if (lastWasOption != null) {
                         cl.addUndeclaredOption(lastWasOption, trimmed);
                         lastWasOption = null;
                         continue;
@@ -286,7 +286,7 @@ public class CommandLineParser {
     protected void processSystemArg(DefaultCommandLine cl, String arg) {
         int i = arg.indexOf("=");
         String name = arg.substring(2, i);
-        String value = arg.substring(i+1,arg.length());
+        String value = arg.substring(i + 1, arg.length());
         cl.addSystemProperty(name, value);
     }
 }

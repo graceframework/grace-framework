@@ -73,12 +73,12 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
                     getAnnotationType().getNameWithoutPackage() + " not allowed for interfaces.");
         }
 
-        if(isApplied(cNode)) {
+        if (isApplied(cNode)) {
             return;
         }
         
         String artefactType = resolveArtefactType(sourceUnit, node, cNode);
-        if(artefactType != null) {
+        if (artefactType != null) {
             AbstractGrailsArtefactTransformer.addToTransformedClasses(cNode.getName());
         }
         performInjectionOnArtefactType(sourceUnit, cNode, artefactType);
@@ -110,10 +110,10 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     }
 
     protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
-        if(!getAnnotationType().equals(annotationNode.getClassNode())) {
+        if (!getAnnotationType().equals(annotationNode.getClassNode())) {
             // add @Artefact annotation to resulting class so that "short cut" annotations like @TagLib 
             // also produce an @Artefact annotation in the resulting class file
-            AnnotationNode annotation=new AnnotationNode(getAnnotationType());
+            AnnotationNode annotation = new AnnotationNode(getAnnotationType());
             annotation.addMember("value", new ConstantExpression(artefactType));
             classNode.addAnnotation(annotation);
         }
@@ -135,13 +135,14 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
                     ClassExpression ce = (ClassExpression) objectExpression;
                     try {
                         Field field = ce.getType().getTypeClass().getDeclaredField(pe.getPropertyAsString());
-                        return (String)field.get(null);
-                    } catch (Exception e) {}
+                        return (String) field.get(null);
+                    } catch (Exception e) {
+                    }
                 }
             }
         }
 
-        throw new RuntimeException("Class ["+classNode.getName()+"] contains an invalid @Artefact annotation. No artefact found for value specified.");
+        throw new RuntimeException("Class [" + classNode.getName() + "] contains an invalid @Artefact annotation. No artefact found for value specified.");
     }
 
     protected boolean isArtefactAnnotationNode(AnnotationNode annotationNode) {
@@ -159,7 +160,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     public void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
         List<ClassInjector> injectors = findInjectors(artefactType, GrailsAwareInjectionOperation.getClassInjectors());
         for (ClassInjector injector : injectors) {
-            if(injector instanceof CompilationUnitAware) {
+            if (injector instanceof CompilationUnitAware) {
                 ((CompilationUnitAware) injector).setCompilationUnit(this.compilationUnit);
             }
         }
@@ -175,7 +176,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors) {
         try {
             for (ClassInjector injector : injectors) {
-                if(!GrailsASTUtils.isApplied(cNode, injector.getClass())) {
+                if (!GrailsASTUtils.isApplied(cNode, injector.getClass())) {
                     GrailsASTUtils.markApplied(cNode, injector.getClass());
                     injector.performInjectionOnAnnotatedClass(sourceUnit, cNode);
                 }
@@ -196,13 +197,13 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
             if (classInjector instanceof AllArtefactClassInjector) {
                 injectors.add(classInjector);
             }
-            else if(classInjector instanceof GlobalClassInjector) {
+            else if (classInjector instanceof GlobalClassInjector) {
                 injectors.add(classInjector);
             }
             else if (classInjector instanceof GrailsArtefactClassInjector) {
                 GrailsArtefactClassInjector gace = (GrailsArtefactClassInjector) classInjector;
 
-                if (hasArtefactType(artefactType,gace)) {
+                if (hasArtefactType(artefactType, gace)) {
                     injectors.add(gace);
                 }
             }
@@ -212,7 +213,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     public static boolean hasArtefactType(String artefactType, GrailsArtefactClassInjector gace) {
         for (String _artefactType : gace.getArtefactTypes()) {
-            if(_artefactType.equals("*")) return true;
+            if (_artefactType.equals("*")) return true;
             if (_artefactType.equals(artefactType)) {
                 return true;
             }

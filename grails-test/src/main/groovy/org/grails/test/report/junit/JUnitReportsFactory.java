@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ public class JUnitReportsFactory {
     public static JUnitReportsFactory createFromBuildBinding(Binding buildBinding) {
         // This is not great, the phase and type names probably shouldn't be sourced from the binding.
         return new JUnitReportsFactory(
-                (String)buildBinding.getProperty("currentTestPhaseName"),
-                (String)buildBinding.getProperty("currentTestTypeName"),
-                (File)buildBinding.getProperty("testReportsDir"),
-                (List<String>)buildBinding.getProperty("reportFormats"));
+                (String) buildBinding.getProperty("currentTestPhaseName"),
+                (String) buildBinding.getProperty("currentTestTypeName"),
+                (File) buildBinding.getProperty("testReportsDir"),
+                (List<String>) buildBinding.getProperty("reportFormats"));
     }
 
     public JUnitReportsFactory(String phaseName, String typeName, File reportsDir, List<String> formats) {

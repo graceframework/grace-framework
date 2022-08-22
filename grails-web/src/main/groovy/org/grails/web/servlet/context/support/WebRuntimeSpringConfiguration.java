@@ -87,7 +87,7 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
         initialiseApplicationContext();
 
         if (context instanceof ConfigurableWebApplicationContext) {
-            ((ConfigurableWebApplicationContext)context).setServletContext(servletContext);
+            ((ConfigurableWebApplicationContext) context).setServletContext(servletContext);
         }
     }
 }

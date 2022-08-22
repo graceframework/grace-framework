@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
     final private Set<String> codecAliases;
 
     public DefaultCodecIdentifier(String codecName) {
-        this(codecName, (Set<String>)null);
+        this(codecName, (Set<String>) null);
     }
 
     public DefaultCodecIdentifier(String codecName, String... codecAliases) {
@@ -80,7 +80,7 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        DefaultCodecIdentifier other = (DefaultCodecIdentifier)obj;
+        DefaultCodecIdentifier other = (DefaultCodecIdentifier) obj;
         if (codecAliases == null) {
             if (other.codecAliases != null)
                 return false;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,16 +61,16 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
         boolean attributesChanged = false;
         try {
             GrailsWebRequest webRequest;
-            if(!(requestAttributes instanceof GrailsWebRequest)) {
+            if (!(requestAttributes instanceof GrailsWebRequest)) {
                 webRequest = createGrailsWebRequest(request, response, request.getServletContext());
                 attributesChanged = true;
                 WebUtils.storeGrailsWebRequest(webRequest);
             } else {
-                webRequest = (GrailsWebRequest)requestAttributes;
+                webRequest = (GrailsWebRequest) requestAttributes;
             }
             renderTemplate(model, webRequest, request, response);
         } finally {
-            if(attributesChanged) {
+            if (attributesChanged) {
                 request.removeAttribute(GrailsApplicationAttributes.WEB_REQUEST);
                 RequestContextHolder.setRequestAttributes(requestAttributes);
             }

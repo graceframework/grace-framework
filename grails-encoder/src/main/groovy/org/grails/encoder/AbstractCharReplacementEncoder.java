@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,10 +66,10 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
 
         CharSequence str = null;
         if (o instanceof CharSequence) {
-            str = (CharSequence)o;
+            str = (CharSequence) o;
         }
         else if (o instanceof Character) {
-            String escaped = escapeCharacter((Character)o, (char)0);
+            String escaped = escapeCharacter((Character) o, (char) 0);
             if (escaped != null) {
                 return escaped;
             }
@@ -96,7 +96,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         StringBuilder sb = null;
         int n = str.length(), i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = 0; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
@@ -136,7 +136,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(str.length(), off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
@@ -167,7 +167,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(buf.length, off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = buf[i];
             if (startPos == -1) {
@@ -206,7 +206,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(str.length(), off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {

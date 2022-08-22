@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import grails.core.support.GrailsApplicationAware;
  * @author Graeme Rocher
  * @since 0.1
  */
-public interface GrailsClass extends GrailsApplicationAware{
+public interface GrailsClass extends GrailsApplicationAware {
 
     /**
      * Whether the class is abstract or not

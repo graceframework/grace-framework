@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
         try {
             WebUtils.storeGrailsWebRequest(webRequest);
 
-            if(!isIncludeOrForward) {
+            if (!isIncludeOrForward) {
                 // Set the flash scope instance to its next state. We do
                 // this here so that the flash is available from Grails
                 // filters in a valid state.
@@ -79,8 +79,8 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
         finally {
             webRequest.requestCompleted();
 
-            if(isIncludeOrForward) {
-                if(previous != null) {
+            if (isIncludeOrForward) {
+                if (previous != null) {
                     WebUtils.storeGrailsWebRequest(previous);
                 }
             }
@@ -117,6 +117,6 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        paramListenerBeans=applicationContext.getBeansOfType(ParameterCreationListener.class).values();
+        paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
     }
 }

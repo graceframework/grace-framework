@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
     private static final String ESCAPED_AMP = "&amp;";
     // some extras
     private static final String ESCAPED_BACKSLASH = xmlEscapeCharacter('\\');
-    private static final char NBSP=(char)160;
+    private static final char NBSP = (char) 160;
     private static final String ESCAPED_NON_BREAKING_SPACE = xmlEscapeCharacter(NBSP);
     private static final String ESCAPED_BACKTICK = xmlEscapeCharacter('`');
     private static final String ESCAPED_AT = xmlEscapeCharacter('@'); // IE Javascript conditional compilation rules
@@ -50,7 +50,7 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
         return "&#" + ((int) ch)  + ";";
     }
     
-    public static final CodecIdentifier XML_CODEC_IDENTIFIER=new DefaultCodecIdentifier("XML");
+    public static final CodecIdentifier XML_CODEC_IDENTIFIER = new DefaultCodecIdentifier("XML");
 
     public BasicXMLEncoder() {
         super(XML_CODEC_IDENTIFIER);
@@ -65,10 +65,10 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
      */
     @Override
     protected String escapeCharacter(char ch, char previousChar) {
-      if(ch < ' ' && ch != '\t' && ch != '\n' && ch != '\r') {
+      if (ch < ' ' && ch != '\t' && ch != '\n' && ch != '\r') {
           return "";
       }
-      switch(ch) {
+      switch (ch) {
           case '&': return ESCAPED_AMP;
           case '<': return ESCAPED_LT;
           case '>': return ESCAPED_GT;
@@ -90,10 +90,10 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
     }
 
     protected Object doEncode(Object o) {
-        if(o == null) {
+        if (o == null) {
             return null;
         }
-        if(o instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
+        if (o instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
             return doCharReplacementEncoding(o);
         } else {
             return encodeAsXmlObject(o);            

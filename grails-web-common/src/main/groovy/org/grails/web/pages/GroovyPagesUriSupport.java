@@ -48,12 +48,12 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
      * @return The template URI
      */
     public String getTemplateURI(GroovyObject controller, String templateName) {
-        return getTemplateURI(getLogicalControllerName(controller),templateName);
+        return getTemplateURI(getLogicalControllerName(controller), templateName);
     }
 
     @Override
     public String getTemplateURI(GroovyObject controller, String templateName, boolean includeExtension) {
-        return getTemplateURI(getLogicalControllerName(controller),templateName, includeExtension);
+        return getTemplateURI(getLogicalControllerName(controller), templateName, includeExtension);
     }
 
     public void clear() {
@@ -81,13 +81,13 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     public String getLogicalControllerName(GroovyObject controller) {
-        if(controller == null) {
+        if (controller == null) {
             GrailsWebRequest webRequest = GrailsWebRequest.lookup();
             return webRequest != null ? webRequest.getControllerName() : null;
         }
         else {
             String simpleName = controller.getClass().getSimpleName();
-            if(!simpleName.endsWith(ControllerArtefactHandler.TYPE)) {
+            if (!simpleName.endsWith(ControllerArtefactHandler.TYPE)) {
                 GrailsWebRequest webRequest = GrailsWebRequest.lookup();
                 return webRequest != null ? webRequest.getControllerName() : null;
             }
@@ -118,7 +118,7 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         if (templateName.startsWith(SLASH_STR)) {
             return getAbsoluteTemplateURI(templateName, includeExtension);
         }
-        else if(templateName.startsWith(RELATIVE_STRING)) {
+        else if (templateName.startsWith(RELATIVE_STRING)) {
             return getRelativeTemplateURIInternal(templateName, includeExtension);
         }
 
@@ -130,7 +130,7 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
             pathToTemplate = templateName.substring(0, lastSlash + 1);
             templateName = templateName.substring(lastSlash + 1);
         }
-        if(controllerName != null) {
+        if (controllerName != null) {
             buf.append(SLASH)
                     .append(controllerName);
         }
@@ -139,7 +139,7 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
                 .append(UNDERSCORE)
                 .append(templateName);
 
-        if(includeExtension) {
+        if (includeExtension) {
             return buf.append(EXTENSION).toString();
         }
         else {
@@ -156,17 +156,17 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
      */
     public String getAbsoluteTemplateURI(String templateName, boolean includeExtension) {
         FastStringWriter buf = new FastStringWriter();
-        String tmp = templateName.substring(1,templateName.length());
+        String tmp = templateName.substring(1, templateName.length());
         if (tmp.indexOf(SLASH) > -1) {
             buf.append(SLASH);
             int i = tmp.lastIndexOf(SLASH);
             buf.append(tmp.substring(0, i));
             buf.append(SLASH_UNDR);
-            buf.append(tmp.substring(i + 1,tmp.length()));
+            buf.append(tmp.substring(i + 1, tmp.length()));
         }
         else {
             buf.append(SLASH_UNDR);
-            buf.append(templateName.substring(1,templateName.length()));
+            buf.append(templateName.substring(1, templateName.length()));
         }
         if (includeExtension) {
             buf.append(EXTENSION);
@@ -234,10 +234,10 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     private String getViewURIInternal(String viewPathPrefix, String viewName, FastStringWriter buf, boolean includeSuffix) {
-        if (viewName != null && (viewName.startsWith(SLASH_STR) )) {
+        if (viewName != null && (viewName.startsWith(SLASH_STR))) {
             return getAbsoluteViewURIInternal(viewName, buf, includeSuffix);
         }
-        else if(viewName.startsWith(RELATIVE_STRING)) {
+        else if (viewName.startsWith(RELATIVE_STRING)) {
             return getRelativeViewURIInternal(viewName, buf, includeSuffix);
         }
 
@@ -254,23 +254,23 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     private String getRelativeViewURIInternal(String viewName, FastStringWriter buf, boolean includeSuffix) {
         String tmp = viewName.substring(RELATIVE_STRING.length() - 1, viewName.length());
         buf.append(tmp);
-        if(includeSuffix) {
+        if (includeSuffix) {
             buf.append(SUFFIX);
         }
         return buf.toString();
     }
 
     private String getAbsoluteViewURIInternal(String viewName, FastStringWriter buf, boolean includeSuffix) {
-        String tmp = viewName.substring(1,viewName.length());
+        String tmp = viewName.substring(1, viewName.length());
         if (tmp.indexOf(SLASH) > -1) {
             buf.append(SLASH);
-            buf.append(tmp.substring(0,tmp.lastIndexOf(SLASH)));
+            buf.append(tmp.substring(0, tmp.lastIndexOf(SLASH)));
             buf.append(SLASH);
-            buf.append(tmp.substring(tmp.lastIndexOf(SLASH) + 1,tmp.length()));
+            buf.append(tmp.substring(tmp.lastIndexOf(SLASH) + 1, tmp.length()));
         }
         else {
             buf.append(SLASH);
-            buf.append(viewName.substring(1,viewName.length()));
+            buf.append(viewName.substring(1, viewName.length()));
         }
         if (includeSuffix) {
             buf.append(SUFFIX);
@@ -279,11 +279,11 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     private String getRelativeTemplateURIInternal(String templateName, boolean includeSuffix) {
-        String tmp = templateName.substring(RELATIVE_STRING.length() , templateName.length());
+        String tmp = templateName.substring(RELATIVE_STRING.length(), templateName.length());
         FastStringWriter buf = new FastStringWriter();
         buf.append("/_");
         buf.append(tmp);
-        if(includeSuffix) {
+        if (includeSuffix) {
             buf.append(SUFFIX);
         }
         return buf.toString();

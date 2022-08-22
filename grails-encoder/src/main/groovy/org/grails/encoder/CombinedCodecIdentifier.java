@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class CombinedCodecIdentifier implements CodecIdentifier {
         int size = encodersOrDecoders.length;
         codecIdentifiers = new CodecIdentifier[size];
         String[] encoderNamesArr = new String[size];
-        for(int i=0;i < size;i++) {
+        for (int i = 0; i < size; i++) {
             int targetIndex = reverseOrder ? (size - 1 - i) : i;
             codecIdentifiers[targetIndex] = encodersOrDecoders[i].getCodecIdentifier();
             encoderNamesArr[targetIndex] = codecIdentifiers[targetIndex].getCodecName();
@@ -55,8 +55,8 @@ public class CombinedCodecIdentifier implements CodecIdentifier {
 
     @Override
     public boolean isEquivalent(CodecIdentifier other) {
-        for(CodecIdentifier codecIdentifier : codecIdentifiers) { 
-            if(codecIdentifier.isEquivalent(other)) {
+        for (CodecIdentifier codecIdentifier : codecIdentifiers) {
+            if (codecIdentifier.isEquivalent(other)) {
                 return true;
             }
         }

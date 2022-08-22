@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -299,7 +299,7 @@ public class GrailsClassUtils {
         }
 
         try {
-            PropertyDescriptor desc=BeanUtils.getPropertyDescriptor(clazz, propertyName);
+            PropertyDescriptor desc = BeanUtils.getPropertyDescriptor(clazz, propertyName);
             if (desc != null) {
                 return desc.getPropertyType();
             }
@@ -337,7 +337,7 @@ public class GrailsClassUtils {
             }
         }
         catch (Exception e) {
-            if(descriptor == null) {
+            if (descriptor == null) {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
             } else {
                 LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
@@ -375,7 +375,7 @@ public class GrailsClassUtils {
             }
         }
         catch (Exception e) {
-            if(descriptor == null) {
+            if (descriptor == null) {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
             } else {
                 LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
@@ -523,7 +523,7 @@ public class GrailsClassUtils {
      */
     @SuppressWarnings("rawtypes")
     public static boolean isStaticProperty(Class clazz, String propertyName) {
-        Method getter = BeanUtils.findDeclaredMethod(clazz, getGetterName(propertyName), (Class[])null);
+        Method getter = BeanUtils.findDeclaredMethod(clazz, getGetterName(propertyName), (Class[]) null);
         if (getter != null) {
             return isPublicStatic(getter);
         }
@@ -583,7 +583,8 @@ public class GrailsClassUtils {
             ReflectionUtils.makeAccessible(field);
             try {
                 return field.get(clazz);
-            } catch (IllegalAccessException ignored) {}
+            } catch (IllegalAccessException ignored) {
+            }
         }
         return null;
     }
@@ -596,7 +597,7 @@ public class GrailsClassUtils {
      * @return The value if there is one, or null if unset OR there is no such property
      */
     public static Object getStaticPropertyValue(Class<?> clazz, String name) {
-        Method getter = BeanUtils.findDeclaredMethod(clazz, getGetterName(name), (Class[])null);
+        Method getter = BeanUtils.findDeclaredMethod(clazz, getGetterName(name), (Class[]) null);
         try {
             if (getter != null) {
                 ReflectionUtils.makeAccessible(getter);
@@ -742,7 +743,7 @@ public class GrailsClassUtils {
      */
     @SuppressWarnings("rawtypes")
     public static boolean isSetter(String name, Class[] args) {
-        if (!StringUtils.hasText(name) || args == null)return false;
+        if (!StringUtils.hasText(name) || args == null) return false;
 
         if (name.startsWith("set")) {
             if (args.length != 1) return false;
@@ -756,13 +757,14 @@ public class GrailsClassUtils {
     public static MetaClass getExpandoMetaClass(Class clazz) {
         MetaClassRegistry registry = GroovySystem.getMetaClassRegistry();
         Assert.isTrue(registry.getMetaClassCreationHandler() instanceof ExpandoMetaClassCreationHandle,
-                "Grails requires an instance of [ExpandoMetaClassCreationHandle] to be set in Groovy's MetaClassRegistry! (current is : "+registry.getMetaClassCreationHandler()+")");
+                "Grails requires an instance of [ExpandoMetaClassCreationHandle] to be set in Groovy's MetaClassRegistry! (current is : " +
+                        registry.getMetaClassCreationHandler() + ")");
 
         MetaClass mc = registry.getMetaClass(clazz);
         AdaptingMetaClass adapter = null;
         if (mc instanceof AdaptingMetaClass) {
             adapter = (AdaptingMetaClass) mc;
-            mc = ((AdaptingMetaClass)mc).getAdaptee();
+            mc = ((AdaptingMetaClass) mc).getAdaptee();
         }
 
         if (!(mc instanceof ExpandoMetaClass)) {
@@ -773,7 +775,7 @@ public class GrailsClassUtils {
                 adapter.setAdaptee(mc);
             }
         }
-        Assert.isTrue(mc instanceof ExpandoMetaClass,"BUG! Method must return an instance of [ExpandoMetaClass]!");
+        Assert.isTrue(mc instanceof ExpandoMetaClass, "BUG! Method must return an instance of [ExpandoMetaClass]!");
         return mc;
     }
 
@@ -829,7 +831,7 @@ public class GrailsClassUtils {
                 return defaultValue;
             }
             if (o instanceof Boolean) {
-                return (Boolean)o;
+                return (Boolean) o;
             }
             return Boolean.valueOf(o.toString());
         }
@@ -990,9 +992,9 @@ public class GrailsClassUtils {
    public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
        boolean hasBeenEnhanced = false;
        final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
-       if(enhancedAnnotation != null) {
+       if (enhancedAnnotation != null) {
            final String[] enhancedFor = enhancedAnnotation.enhancedFor();
-           if(enhancedFor != null) {
+           if (enhancedFor != null) {
                hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
            }
        }
@@ -1003,7 +1005,7 @@ public class GrailsClassUtils {
         FastClass.Generator gen = new FastClass.Generator();
         gen.setType(superClass);
         gen.setClassLoader(superClass.getClassLoader());
-        gen.setUseCache( !Environment.isReloadingAgentEnabled() );
+        gen.setUseCache(!Environment.isReloadingAgentEnabled());
         return gen.create();
     }
 }

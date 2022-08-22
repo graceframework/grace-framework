@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2010-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public abstract class BaseApiProvider {
                     instanceMethods.add(new ReflectionMetaMethod(new CachedMethod(javaMethod)) {
                         {
                             CachedClass[] paramTypes = super.getParameterTypes();
-                            if(paramTypes.length > 0) {
+                            if (paramTypes.length > 0) {
                                 setParametersTypes((CachedClass[]) GrailsArrayUtils.subarray(paramTypes, 1, paramTypes.length));
                             }
                         }
@@ -95,7 +95,7 @@ public abstract class BaseApiProvider {
                             if (arguments.length == 0) {
                                 return super.invoke(apiInstance, new Object[]{object});
                             }
-                            return super.invoke(apiInstance, (Object[])GrailsArrayUtils.add(checkForGStrings(arguments), 0, object));
+                            return super.invoke(apiInstance, (Object[]) GrailsArrayUtils.add(checkForGStrings(arguments), 0, object));
                         }
 
                         private Object[] checkForGStrings(Object[] arguments) {
@@ -123,7 +123,7 @@ public abstract class BaseApiProvider {
     }
 
     private boolean isConstructorCallMethod(Method method) {
-        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) && method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length>0;
+        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) && method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length > 0;
     }
 
     private boolean isNotExcluded(Method method, final int modifiers) {

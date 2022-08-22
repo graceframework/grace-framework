@@ -27,8 +27,8 @@ public class HTMLJSCodec implements CodecFactory {
     protected final Decoder[] decoders;
     
     public HTMLJSCodec() {
-        encoders = new StreamingEncoder[]{(StreamingEncoder)new HTMLEncoder(), (StreamingEncoder)JavaScriptCodec.getENCODER()};
-        decoders = new Decoder[]{JavaScriptCodec.getDECODER(), new HTML4Decoder()}; 
+        encoders = new StreamingEncoder[] { (StreamingEncoder) new HTMLEncoder(), (StreamingEncoder) JavaScriptCodec.getENCODER() };
+        decoders = new Decoder[] { JavaScriptCodec.getDECODER(), new HTML4Decoder() };
     }
 
     @Override
