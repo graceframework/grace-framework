@@ -166,7 +166,9 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         if (constraints != null) {
             for (int i = 0; i < constraints.length; i++) {
                 ConstrainedProperty cp = constraints[i];
-                if (cp.getPropertyName().equals(name)) return true;
+                if (cp.getPropertyName().equals(name)) {
+                    return true;
+                }
             }
         }
         return false;

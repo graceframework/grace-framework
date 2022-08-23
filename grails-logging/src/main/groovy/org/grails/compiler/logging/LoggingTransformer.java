@@ -49,7 +49,9 @@ public class LoggingTransformer implements AllArtefactClassInjector {
 
     @Override
     public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        if (classNode.getNodeMetaData(Slf4j.class) != null) return;
+        if (classNode.getNodeMetaData(Slf4j.class) != null) {
+            return;
+        }
         String packageName = Slf4j.class.getPackage().getName();
 
         // if already annotated skip

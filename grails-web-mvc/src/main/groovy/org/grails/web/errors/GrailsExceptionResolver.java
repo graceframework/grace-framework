@@ -163,7 +163,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             if (requestInfo != null) {
                 params.putAll(UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(requestInfo.getParameters()));
             }
-        } catch (UrlMappingException ulrMappingException) {
+        }
+        catch (UrlMappingException ulrMappingException) {
             logger.debug("Could not find urlMapping which matches: " + request.getRequestURI());
         }
         return params;
@@ -273,7 +274,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
         if (request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE) != null) {
             sb.append(request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE));
-        } else {
+        }
+        else {
             sb.append(request.getRequestURI());
         }
 
@@ -305,7 +307,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
                             if (blackList.contains(param)) {
                                 sb.append("***");
-                            } else {
+                            }
+                            else {
                                 sb.append(values[i]);
                             }
                         }

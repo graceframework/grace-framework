@@ -64,7 +64,8 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 	public WatchServiceDirectoryWatcher() {
 		try {
 			watchService = FileSystems.getDefault().newWatchService();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -91,12 +92,15 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 						if (individualWatchedFiles.contains(child) || individualWatchedFiles.contains(child.normalize())) {
 							if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
 								fireOnNew(childFile);
-							} else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+							}
+							else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
 								fireOnChange(childFile);
-							} else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+							}
+							else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
 								// do nothing... there's no way to communicate deletions
 							}
-						} else {
+						}
+						else {
 							List<String> fileExtensions = watchKeyToExtensionsMap.get(watchKey);
 							if (fileExtensions == null) {
 								// this event didn't match a file in individualWatchedFiles so it's a not an individual file we're interested in
@@ -109,7 +113,8 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 								// Now, /images/b.png is changed. Because java.nio.file.WatchService watches directories, it gets a WatchEvent
 								// for /images/b.png. But we aren't interested in that.
 								LOG.debug("WatchService received an event for a file/directory that it's not interested in.");
-							} else {
+							}
+							else {
 								if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
 									// new directory created, so watch its contents
 									addWatchDirectory(child, fileExtensions);
@@ -127,9 +132,11 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 								if (isValidFileToMonitor(childFile, fileExtensions)) {
 									if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
 										fireOnNew(childFile);
-									} else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+									}
+									else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
 										fireOnChange(childFile);
-									} else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+									}
+									else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
 										// do nothing... there's no way to communicate deletions
 									}
 								}
@@ -138,27 +145,34 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 					}
 					watchKey.reset();
 				}
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				// ignore
 			}
         }
         try {
 			watchService.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			LOG.debug("Exception while closing watchService", e);
 		}
 	}
 
 	@Override
 	public void addWatchFile(File fileToWatch) {
-		if (!isValidFileToMonitor(fileToWatch, Arrays.asList("*"))) return;
+		if (!isValidFileToMonitor(fileToWatch, Arrays.asList("*"))) {
+			return;
+		}
 		try {
-            if (!fileToWatch.exists()) return;
+            if (!fileToWatch.exists()) {
+				return;
+			}
 			Path pathToWatch = fileToWatch.toPath().toAbsolutePath();
 			individualWatchedFiles.add(pathToWatch);
 			pathToWatch.getParent().register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
 					StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -177,9 +191,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 			//add the subdirectories too
 			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
 	            @Override
-	            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-	                throws IOException
-	            {
+	            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 	            	if (!isValidDirectoryToMonitor(dir.toFile())) {
 	            		return FileVisitResult.SKIP_SUBTREE;
 	            	}
@@ -188,7 +200,8 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 	    			final List<String> originalFileExtensions = watchKeyToExtensionsMap.get(watchKey);
 	    			if (originalFileExtensions == null) {
 	    				watchKeyToExtensionsMap.put(watchKey, fileExtensions);
-	    			} else {
+	    			}
+					else {
 	    				final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
 	    				newFileExtensions.addAll(fileExtensions);
 	    				watchKeyToExtensionsMap.put(watchKey, Collections.unmodifiableList(new ArrayList(newFileExtensions)));
@@ -196,7 +209,8 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 	                return FileVisitResult.CONTINUE;
 	            }
 	        });
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

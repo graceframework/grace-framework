@@ -106,7 +106,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                     listExpression.addExpression(new ConstantExpression(propertyName + ".*"));
                 }
             }
-        } else {
+        }
+        else {
             listExpression.addExpression(new ConstantExpression(NO_BINDABLE_PROPERTIES));
         }
 
@@ -129,7 +130,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         final Set<String> propertyNames;
         if (CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.containsKey(parentClassNode)) {
             propertyNames = CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.get(parentClassNode);
-        } else {
+        }
+        else {
             propertyNames = getPropertyNamesToIncludeInWhiteList(sourceUnit, parentClassNode);
         }
         return propertyNames;
@@ -169,11 +171,13 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                                 if (Boolean.TRUE.equals(bindableValue)) {
                                     unbindablePropertyNames.remove(propertyName);
                                     bindablePropertyNames.add(propertyName);
-                                } else {
+                                }
+                                else {
                                     bindablePropertyNames.remove(propertyName);
                                     unbindablePropertyNames.add(propertyName);
                                 }
-                            } else {
+                            }
+                            else {
                                 GrailsASTUtils.warning(sourceUnit, valueExpression, "The bindable constraint for property [" +
                                         propertyName + "] in class [" + classNode.getName() +
                                         "] has a value which is not a boolean literal and will be ignored.");
@@ -238,7 +242,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                 fieldsInTransientsList.contains(fieldName) ||
                 (fieldNode.getType().equals(new ClassNode(Object.class)) && !fieldNode.getType().isUsingGenerics())) {
             shouldInclude = false;
-        } else if (isDomainClass) {
+        }
+        else if (isDomainClass) {
             if (DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT.contains(fieldName)) {
                 shouldInclude = false;
             }

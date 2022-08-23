@@ -87,8 +87,12 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     @Override
     public boolean isArtefact(ClassNode classNode) {
-        if (classNode == null) return false;
-        if (!isValidArtefactClassNode(classNode, classNode.getModifiers())) return false;
+        if (classNode == null) {
+            return false;
+        }
+        if (!isValidArtefactClassNode(classNode, classNode.getModifiers())) {
+            return false;
+        }
 
         URL url = GrailsASTUtils.getSourceUrl(classNode);
         if (url != null) {
@@ -124,11 +128,14 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
             return false;
         }
 
-        if (clazz.isEnum()) return false;
+        if (clazz.isEnum()) {
+            return false;
+        }
         Artefact artefactAnn = null;
         try {
             artefactAnn = clazz.getAnnotation(Artefact.class);
-        } catch (ArrayStoreException e) {
+        }
+        catch (ArrayStoreException e) {
             // happens if a reference to a class that no longer exists is there
         }
 
@@ -139,7 +146,8 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
         Annotation[] annotations = null;
         try {
             annotations = clazz.getAnnotations();
-        } catch (ArrayStoreException e) {
+        }
+        catch (ArrayStoreException e) {
             // happens if a reference to a class that no longer exists is there
         }
 

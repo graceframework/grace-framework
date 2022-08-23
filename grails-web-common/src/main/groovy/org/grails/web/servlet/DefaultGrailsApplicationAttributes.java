@@ -95,7 +95,8 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         try {
             if (appContext.containsBean(name)) {
                 return (T) appContext.getBean(name);
-            } else {
+            }
+            else {
                 return null;
             }
         }

@@ -40,7 +40,8 @@ public class HyphenatedUrlConverter implements UrlConverter {
                     builder.append('-');
                 }
                 builder.append(Character.toLowerCase(c));
-            } else {
+            }
+            else {
                 builder.append(c);
             }
             lastChar = c;

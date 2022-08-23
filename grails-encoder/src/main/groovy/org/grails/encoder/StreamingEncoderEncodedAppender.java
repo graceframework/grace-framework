@@ -46,7 +46,8 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
     protected void write(EncodingState encodingState, char[] b, int off, int len) throws IOException {
         if (shouldEncode(encoder, encodingState)) {
             encoder.encodeToStream(encoder, CharSequences.createCharSequence(b), off, len, target, createNewEncodingState(encoder, encodingState));
-        } else {
+        }
+        else {
             target.appendEncoded(null, encodingState, b, off, len);
         }
     }
@@ -55,7 +56,8 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
     protected void write(EncodingState encodingState, String str, int off, int len) throws IOException {
         if (shouldEncode(encoder, encodingState)) {
             encoder.encodeToStream(encoder, str, off, len, target, createNewEncodingState(encoder, encodingState));
-        } else {
+        }
+        else {
             target.appendEncoded(null, encodingState, str, off, len);
         }
     }
@@ -65,7 +67,8 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
             throws IOException {
         if (shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
             encoder.encodeToStream(encoder, str, start, end - start, target, encodingState);
-        } else {
+        }
+        else {
             target.appendEncoded(null, encodingState, str, start, end - start);
         }
     }

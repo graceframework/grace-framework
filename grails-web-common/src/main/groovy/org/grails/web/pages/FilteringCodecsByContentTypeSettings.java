@@ -54,7 +54,8 @@ public class FilteringCodecsByContentTypeSettings {
                 Encoder encoder = CodecLookupHelper.lookupEncoder(grailsApplication, String.valueOf(entry.getValue()));
                 if (entry.getKey() instanceof Pattern) {
                     contentTypePatternToEncoderMapping.put((Pattern) entry.getKey(), encoder);
-                } else {
+                }
+                else {
                     contentTypeToEncoderMapping.put(String.valueOf(entry.getKey()), encoder);
                 }
             }

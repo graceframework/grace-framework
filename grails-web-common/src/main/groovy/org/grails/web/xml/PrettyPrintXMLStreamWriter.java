@@ -66,8 +66,9 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter {
     protected void endStartTag() throws IOException {
         super.endStartTag();
         newline();
-        if (doIndent)
+        if (doIndent) {
             indent();
+        }
     }
 
     @Override

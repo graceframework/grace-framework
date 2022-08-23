@@ -93,7 +93,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                         request.setAttribute(REQUEST_BODY_PARSED, true);
                         requestMap.putAll(WebUtils.fromQueryString(contents));
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     LOG.error("Error processing form encoded " + request.getMethod() + " request", e);
                 }
             }
@@ -120,7 +121,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     public Object clone() {
         if (wrappedMap.isEmpty()) {
             return new GrailsParameterMap(new LinkedHashMap(), request);
-        } else {
+        }
+        else {
             Map clonedMap = new LinkedHashMap(wrappedMap);
             // deep clone nested entries
             for (Iterator it = clonedMap.entrySet().iterator(); it.hasNext();) {
@@ -151,13 +153,15 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         Object returnValue = null;
         if (nestedDateMap.containsKey(key)) {
             returnValue = nestedDateMap.get(key);
-        } else {
+        }
+        else {
             returnValue = wrappedMap.get(key);
             if (returnValue instanceof String[]) {
                 String[] valueArray = (String[]) returnValue;
                 if (valueArray.length == 1) {
                     returnValue = valueArray[0];
-                } else {
+                }
+                else {
                     returnValue = valueArray;
                 }
             }
@@ -170,9 +174,15 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
     @Override
     public Object put(Object key, Object value) {
-        if (value instanceof CharSequence) value = value.toString();
-        if (key instanceof CharSequence) key = key.toString();
-        if (nestedDateMap.containsKey(key)) nestedDateMap.remove(key);
+        if (value instanceof CharSequence) {
+            value = value.toString();
+        }
+        if (key instanceof CharSequence) {
+            key = key.toString();
+        }
+        if (nestedDateMap.containsKey(key)) {
+            nestedDateMap.remove(key);
+        }
         Object returnValue =  wrappedMap.put(key, value);
         if (key instanceof String) {
             String keyString = (String) key;

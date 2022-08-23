@@ -247,7 +247,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
     @Override
     public UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params) {
-        if (params == null) params = Collections.emptyMap();
+        if (params == null) {
+            params = Collections.emptyMap();
+        }
 
         if (urlCreatorCache != null) {
             UrlCreatorCache.ReverseMappingKey key = urlCreatorCache.createKey(controller, action, namespace, pluginName, httpMethod, params);
@@ -282,7 +284,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
     @Override
     public UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params) {
-        if (params == null) params = Collections.emptyMap();
+        if (params == null) {
+            params = Collections.emptyMap();
+        }
 
         if (urlCreatorCache != null) {
             UrlCreatorCache.ReverseMappingKey key = urlCreatorCache.createKey(controller, action, namespace, pluginName, httpMethod, params);
@@ -436,7 +440,8 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             if (useDefault) {
                 creator = new DefaultUrlCreator(controller, action);
             }
-        } else {
+        }
+        else {
             creator = mapping;
         }
         return creator;
@@ -473,7 +478,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             mappingKeysSet = mappingsListLookup.get(lookupKey);
             secondAttempt = true;
         }
-        if (null == mappingKeysSet) return null;
+        if (null == mappingKeysSet) {
+            return null;
+        }
 
         Set<String> lookupParams = new HashSet<String>(params.keySet());
         if (secondAttempt) {
@@ -530,7 +537,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     }
 
     public UrlMappingInfo[] matchAll(String uri, String httpMethod) {
-        if (isExcluded(uri)) return EMPTY_RESULTS;
+        if (isExcluded(uri)) {
+            return EMPTY_RESULTS;
+        }
 
         boolean anyHttpMethod = httpMethod != null && httpMethod.equalsIgnoreCase(UrlMapping.ANY_HTTP_METHOD);
         UriToUrlMappingKey cacheKey = new UriToUrlMappingKey(uri, httpMethod, UrlMapping.ANY_VERSION);
@@ -549,8 +558,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
                     }
 
                     String mappingHttpMethod = current.getHttpMethod();
-                    if (mappingHttpMethod == null || anyHttpMethod || mappingHttpMethod.equalsIgnoreCase(UrlMapping.ANY_HTTP_METHOD) || mappingHttpMethod.equalsIgnoreCase(httpMethod))
+                    if (mappingHttpMethod == null || anyHttpMethod || mappingHttpMethod.equalsIgnoreCase(UrlMapping.ANY_HTTP_METHOD) || mappingHttpMethod.equalsIgnoreCase(httpMethod)) {
                         matchingUrls.add(current);
+                    }
                 }
             }
             cachedListMatches.put(cacheKey, matchingUrls);
@@ -570,7 +580,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     }
 
     public UrlMappingInfo[] matchAll(String uri, String httpMethod, String version) {
-        if (isExcluded(uri)) return EMPTY_RESULTS;
+        if (isExcluded(uri)) {
+            return EMPTY_RESULTS;
+        }
 
         UriToUrlMappingKey cacheKey = new UriToUrlMappingKey(uri, httpMethod, version);
         List<UrlMappingInfo> matchingUrls = cachedListMatches.getIfPresent(cacheKey);
@@ -617,9 +629,13 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         for (UrlMapping mapping : mappings) {
             if (mapping instanceof ResponseCodeUrlMapping) {
                 ResponseCodeUrlMapping responseCodeUrlMapping = (ResponseCodeUrlMapping) mapping;
-                if (responseCodeUrlMapping.getExceptionType() != null) continue;
+                if (responseCodeUrlMapping.getExceptionType() != null) {
+                    continue;
+                }
                 final UrlMappingInfo current = responseCodeUrlMapping.match(responseCode);
-                if (current != null) return current;
+                if (current != null) {
+                    return current;
+                }
             }
         }
 
@@ -746,18 +762,36 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             UrlMappingKey that = (UrlMappingKey) o;
 
-            if (action != null && !action.equals(that.action)) return false;
-            if (controller != null && !controller.equals(that.controller)) return false;
-            if (namespace != null && !namespace.equals(that.namespace)) return false;
-            if (pluginName != null && !pluginName.equals(that.pluginName)) return false;
-            if (httpMethod != null && !httpMethod.equals(that.httpMethod)) return false;
-            if (version != null && !version.equals(that.version)) return false;
-            if (!paramNames.equals(that.paramNames)) return false;
+            if (action != null && !action.equals(that.action)) {
+                return false;
+            }
+            if (controller != null && !controller.equals(that.controller)) {
+                return false;
+            }
+            if (namespace != null && !namespace.equals(that.namespace)) {
+                return false;
+            }
+            if (pluginName != null && !pluginName.equals(that.pluginName)) {
+                return false;
+            }
+            if (httpMethod != null && !httpMethod.equals(that.httpMethod)) {
+                return false;
+            }
+            if (version != null && !version.equals(that.version)) {
+                return false;
+            }
+            if (!paramNames.equals(that.paramNames)) {
+                return false;
+            }
 
             return true;
         }
@@ -792,27 +826,43 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             final int AFTER = 1;
 
             //this optimization is usually worthwhile, and can always be added
-            if (this == o) return EQUAL;
+            if (this == o) {
+                return EQUAL;
+            }
 
             final UrlMappingKey other = (UrlMappingKey) o;
 
-            if (paramNames.size() < other.paramNames.size()) return BEFORE;
-            if (paramNames.size() > other.paramNames.size()) return AFTER;
+            if (paramNames.size() < other.paramNames.size()) {
+                return BEFORE;
+            }
+            if (paramNames.size() > other.paramNames.size()) {
+                return AFTER;
+            }
 
             int comparison = controller != null ? controller.compareTo(other.controller) : EQUAL;
-            if (comparison != EQUAL) return comparison;
+            if (comparison != EQUAL) {
+                return comparison;
+            }
 
             comparison = action != null ? action.compareTo(other.action) : EQUAL;
-            if (comparison != EQUAL) return comparison;
+            if (comparison != EQUAL) {
+                return comparison;
+            }
 
             comparison = namespace != null ? namespace.compareTo(other.namespace) : EQUAL;
-            if (comparison != EQUAL) return comparison;
+            if (comparison != EQUAL) {
+                return comparison;
+            }
 
             comparison = pluginName != null ? pluginName.compareTo(other.pluginName) : EQUAL;
-            if (comparison != EQUAL) return comparison;
+            if (comparison != EQUAL) {
+                return comparison;
+            }
 
             comparison = httpMethod != null ? httpMethod.compareTo(other.httpMethod) : EQUAL;
-            if (comparison != EQUAL) return comparison;
+            if (comparison != EQUAL) {
+                return comparison;
+            }
 
             return EQUAL;
         }
@@ -844,17 +894,33 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             UrlMappingsListKey that = (UrlMappingsListKey) o;
 
-            if (action != null && !action.equals(that.action)) return false;
-            if (controller != null && !controller.equals(that.controller)) return false;
-            if (namespace != null && !namespace.equals(that.namespace)) return false;
-            if (pluginName != null && !pluginName.equals(that.pluginName)) return false;
-            if (httpMethod != null && !httpMethod.equals(that.httpMethod)) return false;
-            if (version != null && !version.equals(that.version)) return false;
+            if (action != null && !action.equals(that.action)) {
+                return false;
+            }
+            if (controller != null && !controller.equals(that.controller)) {
+                return false;
+            }
+            if (namespace != null && !namespace.equals(that.namespace)) {
+                return false;
+            }
+            if (pluginName != null && !pluginName.equals(that.pluginName)) {
+                return false;
+            }
+            if (httpMethod != null && !httpMethod.equals(that.httpMethod)) {
+                return false;
+            }
+            if (version != null && !version.equals(that.version)) {
+                return false;
+            }
 
             return true;
         }

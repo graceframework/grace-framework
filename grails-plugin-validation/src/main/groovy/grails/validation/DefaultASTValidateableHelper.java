@@ -162,7 +162,8 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
             if (classNode.redirect() == null) {
                 classNode.addMethod(methodNode);
                 AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
-            } else {
+            }
+            else {
                 classNode.redirect().addMethod(methodNode);
                 AnnotatedNodeUtils.markAsGenerated(classNode.redirect(), methodNode);
             }

@@ -67,7 +67,8 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     private void verifyContextIsInitialized() {
         if (mappingContext == null) {
             throw new GrailsConfigurationException("That API cannot be accessed before the spring context is initialized");
-        } else {
+        }
+        else {
             if (log.isWarnEnabled()) {
                 log.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. Use the mapping context API instead");
             }

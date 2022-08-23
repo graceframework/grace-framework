@@ -47,11 +47,13 @@ public class ShutdownOperations {
             for (Runnable shutdownOperation : shutdownOperations) {
                 try {
                     shutdownOperation.run();
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     LOG.warn("Error occurred running shutdown operation: " + e.getMessage(), e);
                 }
             }
-        } finally {
+        }
+        finally {
             shutdownOperations.clear();
             shutdownOperations.addAll(preservedShutdownOperations);
         }

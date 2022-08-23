@@ -38,7 +38,8 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
     static {
         try {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(GrailsPrintWriterAdapter.class);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.debug("Couldn't get direct performance optimized instantiator for GrailsPrintWriterAdapter. Using default instantiation.", e);
         }
     }

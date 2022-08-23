@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2008 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,8 +55,9 @@ public class XMLStreamWriter {
     }
 
     public XMLStreamWriter startNode(String tag) throws IOException {
-        if (mode == TAG)
+        if (mode == TAG) {
             endStartTag();
+        }
 
         startTag();
         writer.unescaped().write(tag);
@@ -73,7 +74,8 @@ public class XMLStreamWriter {
             if (tagStack.pop() == null) {
                 throw new IllegalStateException();
             }
-        } else if (mode == CONTENT) {
+        }
+        else if (mode == CONTENT) {
             ue.write('<');
             ue.write('/');
             String t = tagStack.pop();

@@ -35,7 +35,8 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     static {
         try {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(FastStringPrintWriter.class);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.debug("Couldn't get direct performance optimized instantiator for FastStringPrintWriter. Using default instantiation.", e);
         }
     }
@@ -67,7 +68,8 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
         FastStringPrintWriter instance = (FastStringPrintWriter) instantiator.newInstance();
         if (initialChunkSize > 0) {
             instance.streamBuffer = new StreamCharBuffer(initialChunkSize);
-        } else {
+        }
+        else {
             instance.streamBuffer = new StreamCharBuffer();
         }
         instance.setTarget(instance.streamBuffer.getWriter());

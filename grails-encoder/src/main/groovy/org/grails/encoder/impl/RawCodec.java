@@ -37,7 +37,9 @@ import org.grails.encoder.StreamingEncoder;
 public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactory {
     static final CodecIdentifier RAW_CODEC_IDENTIFIER = new DefaultCodecIdentifier("Raw") {
         // using RawCodec will prevent all other codecs from encoding a part encoded with this codec
-        public boolean isEquivalent(CodecIdentifier other) { return true; };
+        public boolean isEquivalent(CodecIdentifier other) {
+            return true;
+        }
     };
 
     /* (non-Javadoc)
@@ -61,10 +63,12 @@ public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactor
         if (o instanceof String) {
             // create a new copy of the String instance            
             return new String((String) o);
-        } else if (o instanceof CharSequence) {
+        }
+        else if (o instanceof CharSequence) {
             // convert CharSequence to String so that we have a new instance
             return String.valueOf(o);
-        } else {
+        }
+        else {
             return o;
         }
     }

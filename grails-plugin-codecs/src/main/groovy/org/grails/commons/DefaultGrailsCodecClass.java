@@ -61,7 +61,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
     }
 
     private void initializeCodec() {
-        if (initialized) return;
+        if (initialized) {
+            return;
+        }
         initialized = true;
         Integer orderSetting = getStaticPropertyValue("order", Integer.class);
         if (orderSetting != null) {
@@ -104,7 +106,8 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         if (encoder != null) {
             if (encoder instanceof StreamingEncoder) {
                 encoder = new StreamingStateAwareEncoderWrapper((StreamingEncoder) encoder);
-            } else {
+            }
+            else {
                 encoder = new StateAwareEncoderWrapper(encoder);
             }
         }
@@ -154,13 +157,15 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
                     Object owner;
                     if (Modifier.isStatic(method.getModifiers())) {
                         owner = clazz;
-                    } else {
+                    }
+                    else {
                         owner = codecInstance;
                     }
                     return new MethodCallingClosure(owner, method);
                 }
                 return null;
-            } else {
+            }
+            else {
                 return closure;
             }
         }
@@ -207,8 +212,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
                 }
             }
             Object encoded = delegate.encode(target);
-            if (encodingState != null && encoded instanceof CharSequence)
+            if (encodingState != null && encoded instanceof CharSequence) {
                 encodingState.registerEncodedWith(this, (CharSequence) encoded);
+            }
             return encoded;
         }
 
@@ -259,7 +265,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         }
 
         public Object encode(Object target) {
-            if (target == null) return null;
+            if (target == null) {
+                return null;
+            }
             return closure.call(target);
         }
 
@@ -298,8 +306,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         protected Object doCall(Object[] args) {
             Object target = null;
-            if (args != null && args.length > 0)
+            if (args != null && args.length > 0) {
                 target = args[0];
+            }
             if (target == null) {
                 return null;
             }

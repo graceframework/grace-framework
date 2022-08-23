@@ -68,7 +68,8 @@ public class MimeTypesConfiguration {
         MimeType[] mimeTypes;
         if (mimeConfig == null || mimeConfig.isEmpty()) {
             mimeTypes = MimeType.createDefaults();
-        } else {
+        }
+        else {
             List<MimeType> mimes = new ArrayList<>();
             for (Map.Entry<CharSequence, Object> entry : mimeConfig.entrySet()) {
                 final String key = entry.getKey().toString();

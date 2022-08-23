@@ -83,7 +83,8 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
             Object instanceToUpdate = cmcu.getInstance();
             if (instanceToUpdate == null && (cmcu.getNewMetaClass() instanceof ExpandoMetaClass)) {
                 updateMetaClassOfClass(oldMetaClass, classToUpdate);
-            } else if (instanceToUpdate != null) {
+            }
+            else if (instanceToUpdate != null) {
                 updateMetaClassOfInstance(oldMetaClass, instanceToUpdate);
             }
         }
@@ -96,7 +97,8 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
             if (current == null || current == NO_CUSTOM_METACLASS) {
                 alteredInstances.put(key, oldMetaClass);
             }
-        } else {
+        }
+        else {
             alteredInstances.put(key, NO_CUSTOM_METACLASS);
         }
     }
@@ -119,7 +121,8 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
             MetaClassRegistryImpl registry = (MetaClassRegistryImpl) GroovySystem.getMetaClassRegistry();
             cleanMetaClassOfClass(registry);
             cleanMetaClassOfInstance(registry);
-        } finally {
+        }
+        finally {
             cleaning = false;
         }
     }

@@ -122,9 +122,9 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
         if (controllerName != null) {
             if (grailsApplication == null) {
                 final GrailsWebRequest grailsWebRequest = getWebRequest();
-                if (grailsWebRequest != null)
+                if (grailsWebRequest != null) {
                     grailsApplication = grailsWebRequest.getAttributes().getGrailsApplication();
-
+                }
             }
             return getActionName(grailsApplication, controllerName);
         }

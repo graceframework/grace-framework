@@ -94,17 +94,23 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
         if (resource.exists()) {
             try {
                 url = resource.getURL();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
 
-        if (url == null) return false;
+        if (url == null) {
+            return false;
+        }
 
         try {
             UrlResource urlResource = new UrlResource(url);
-            if (!isArtefactResource(urlResource)) return false;
-        } catch (IOException e) {
+            if (!isArtefactResource(urlResource)) {
+                return false;
+            }
+        }
+        catch (IOException e) {
             return false;
         }
 
@@ -139,7 +145,8 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
             if (isArtefactClass(aClass)) {
                 return true;
             }
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             throw new GrailsRuntimeException("Failed to introspect class: " + aClass, t);
         }
 
@@ -153,7 +160,9 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      * @return true if it is an artefact of this type
      */
     public boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
-        if (clazz == null) return false;
+        if (clazz == null) {
+            return false;
+        }
 
         boolean ok = clazz.getName().endsWith(artefactSuffix) && !Closure.class.isAssignableFrom(clazz);
         if (ok && !allowAbstract) {

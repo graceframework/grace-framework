@@ -79,7 +79,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         this.baseResource = new UrlResource(rootResource);
         try {
             this.isJar = ResourceUtils.isJarURL(baseResource.getURL());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new PluginException("Cannot evaluate plugin location for plugin " + pluginClass, e);
         }
         this.projectDirectory = isJar ? null : IOUtils.findApplicationDirectoryFile(pluginClass);
@@ -89,7 +90,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 if (projectDirectory.getCanonicalPath().startsWith(BuildSettings.BASE_DIR.getCanonicalPath())) {
                     isBase = true;
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
@@ -116,7 +118,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         Resource viewsPropertiesResource = null;
         try {
             viewsPropertiesResource = descriptorResource.createRelative(VIEWS_PROPERTIES);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // ignore
         }
 
@@ -128,7 +131,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                     URL newUrl = new URL(urlString + RELATIVE_VIEWS_PROPERTIES);
                     viewsPropertiesResource = new UrlResource(newUrl);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
@@ -148,16 +152,22 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 try {
                     final Class<?> viewClass = grailsApplication.getClassLoader().loadClass(viewClassName);
                     precompiledViewMap.put(viewName, viewClass);
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     throw new PluginException("Failed to initialize view [" + viewName + "] from plugin [" + getName() + "] : " + e.getMessage(), e);
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.error("Error loading views for binary plugin [" + this + "]: " + e.getMessage(), e);
-        } finally {
+        }
+        finally {
             try {
-                if (input != null) input.close();
-            } catch (IOException e) {
+                if (input != null) {
+                    input.close();
+                }
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
@@ -171,7 +181,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             for (String className : classNames) {
                 try {
                     artefacts.add(classLoader.loadClass(className));
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     throw new PluginException("Failed to initialize class [" + className + "] from plugin [" + getName() + "] : " + e.getMessage(), e);
                 }
 
@@ -207,7 +218,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             if (resource.exists()) {
                 return resource;
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return null;
         }
         return null;
@@ -254,7 +266,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
 
                     loadFromResources(properties, resources);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 return null;
             }
         }
@@ -291,10 +304,12 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             InputStream inputStream = messageResource.getInputStream();
             try {
                 properties.load(new InputStreamReader(inputStream, Charset.forName(System.getProperty("file.encoding", DEFAULT_PROPERTIES_ENCODING))));
-            } finally {
+            }
+            finally {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     // ignore
                 }
             }

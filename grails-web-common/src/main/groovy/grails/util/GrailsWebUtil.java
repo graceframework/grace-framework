@@ -120,7 +120,9 @@ public class GrailsWebUtil {
         if (name.indexOf(';') > -1 && CHARSET_IN_CONTENT_TYPE_REGEXP.matcher(name).find()) {
             return name;
         }
-        if (GrailsStringUtils.isBlank(encoding)) encoding = DEFAULT_ENCODING;
+        if (GrailsStringUtils.isBlank(encoding)) {
+            encoding = DEFAULT_ENCODING;
+        }
         return name + CHARSET_ATTRIBUTE + encoding;
     }
 }

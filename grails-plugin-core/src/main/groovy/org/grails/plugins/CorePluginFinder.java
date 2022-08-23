@@ -65,10 +65,12 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             Resource[] resources = resolvePluginResources();
             if (resources.length > 0) {
                 loadCorePluginsFromResources(resources);
-            } else {
+            }
+            else {
                 throw new IllegalStateException("Grails was unable to load plugins dynamically. This is normally a problem with the container class loader configuration, see troubleshooting and FAQ for more info. ");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
         }
         return foundPluginClasses.toArray(new Class[foundPluginClasses.size()]);
@@ -110,15 +112,18 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                         }
                     }
 
-                } finally {
+                }
+                finally {
                     if (input != null) {
                         input.close();
                     }
                 }
             }
-        } catch (ParserConfigurationException e) {
+        }
+        catch (ParserConfigurationException e) {
             throw new GrailsConfigurationException("XML parsing error loading core plugins: " + e.getMessage(), e);
-        } catch (SAXException e) {
+        }
+        catch (SAXException e) {
             throw new GrailsConfigurationException("XML parsing error loading core plugins: " + e.getMessage(), e);
         }
     }
@@ -128,7 +133,8 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         try {
             final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             return classLoader.loadClass(pluginClassName);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             LOG.warn("[GrailsPluginManager] Core plugin [" + pluginClassName +
                     "] not found, resuming load without..");
             if (LOG.isDebugEnabled()) {

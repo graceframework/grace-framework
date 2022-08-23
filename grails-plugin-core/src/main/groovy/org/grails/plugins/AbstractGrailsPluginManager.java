@@ -182,7 +182,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             return;
         }
 
-        if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) return;
+        if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+            return;
+        }
 
         String[] dependencyNames = plugin.getDependencyNames();
         doRuntimeConfigurationForDependencies(dependencyNames, springConfig);
@@ -207,7 +209,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             if (pluginDependencies.length > 0) {
                 doRuntimeConfigurationForDependencies(pluginDependencies, springConfig);
             }
-            if (isPluginDisabledForProfile(current)) continue;
+            if (isPluginDisabledForProfile(current)) {
+                continue;
+            }
             current.doWithRuntimeConfiguration(springConfig);
         }
     }
@@ -218,7 +222,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public void doPostProcessing(ApplicationContext ctx) {
         checkInitialised();
         for (GrailsPlugin plugin : pluginList) {
-            if (isPluginDisabledForProfile(plugin)) continue;
+            if (isPluginDisabledForProfile(plugin)) {
+                continue;
+            }
             if (plugin.supportsCurrentScopeAndEnvironment()) {
                 plugin.doWithApplicationContext(ctx);
             }
@@ -268,7 +274,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             }
             ApplicationContext ctx = applicationContext;
             for (GrailsPlugin plugin : pluginList) {
-                if (!plugin.isEnabled(ctx.getEnvironment().getActiveProfiles())) continue;
+                if (!plugin.isEnabled(ctx.getEnvironment().getActiveProfiles())) {
+                    continue;
+                }
                 plugin.doWithDynamicMethods(ctx);
             }
         }
@@ -306,7 +314,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         Collections.reverse(plugins);
         for (GrailsPlugin plugin : plugins) {
             if (plugin.supportsCurrentScopeAndEnvironment()) {
-                if (isPluginDisabledForProfile(plugin)) continue;
+                if (isPluginDisabledForProfile(plugin)) {
+                    continue;
+                }
                 for (Class<?> artefact : plugin.getProvidedArtefacts()) {
                     String shortName = GrailsNameUtils.getShortName(artefact);
                     if (artefact.getName().equals(shortName)) {
@@ -332,7 +342,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public void doArtefactConfiguration() {
         checkInitialised();
         for (GrailsPlugin plugin : pluginList) {
-            if (isPluginDisabledForProfile(plugin)) continue;
+            if (isPluginDisabledForProfile(plugin)) {
+                continue;
+            }
             if (plugin.supportsCurrentScopeAndEnvironment()) {
                 plugin.doArtefactConfiguration();
             }
@@ -359,12 +371,15 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             Collections.reverse(reversePluginList);
 
             for (GrailsPlugin plugin : reversePluginList) {
-                if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) continue;
+                if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+                    continue;
+                }
                 if (plugin.supportsCurrentScopeAndEnvironment()) {
                     plugin.notifyOfEvent(GrailsPlugin.EVENT_ON_SHUTDOWN, plugin);
                 }
             }
-        } finally {
+        }
+        finally {
             shutdown = true;
         }
 
@@ -400,7 +415,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
         GrailsPlugin plugin = getGrailsPlugin(pluginName);
         if (plugin != null) {
-            if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) return;
+            if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+                return;
+            }
             plugin.notifyOfEvent(GrailsPlugin.EVENT_ON_CHANGE, aClass);
         }
         else {
@@ -441,7 +458,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         if (plugin != null && !plugin.isBasePlugin()) {
             if (forceCamelCase) {
                 return plugin.getPluginPathCamelCase();
-            } else {
+            }
+            else {
                 return plugin.getPluginPath();
             }
         }
@@ -516,7 +534,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 application.getConfig().merge(flat);
                 application.configChanged();
                 informPluginsOfConfigChange();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 // ignore
                 LOG.debug("Error in changing Config", e);
             }
@@ -549,7 +568,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                             grailsPlugin.notifyOfEvent(GrailsPlugin.EVENT_ON_CHANGE, cls);
                         }
                         Environment.setCurrentReloadError(null);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         LOG.error("Plugin " + grailsPlugin + " could not reload changes to file [" +
                                 file + "]: " + e.getMessage(), e);
                         Environment.setCurrentReloadError(e);
@@ -563,7 +583,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         Class<?> cls = null;
         try {
             cls = application.getClassLoader().loadClass(className);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             // ignore
         }
         return cls;

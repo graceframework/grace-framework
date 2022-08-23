@@ -39,7 +39,8 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
     public void encodeToWriter(CharSequence str, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (shouldEncodeWith(encoder, encodingState)) {
             encoder.encodeToStream(encoder, str, off, len, new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
-        } else {
+        }
+        else {
             CharSequences.writeCharSequence(writer, str, off, len);
         }
     }
@@ -48,7 +49,8 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
     public void encodeToWriter(char[] buf, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (shouldEncodeWith(encoder, encodingState)) {
             encoder.encodeToStream(encoder, CharSequences.createCharSequence(buf, off, len), 0, len, new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
-        } else {
+        }
+        else {
             writer.write(buf, off, len);
         }
     }

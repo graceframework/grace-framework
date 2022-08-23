@@ -289,7 +289,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Map<String, Object> fromQueryString(String queryString) {
         Map<String, Object> result = new LinkedHashMap<String, Object>();
-        if (queryString.startsWith("?")) queryString = queryString.substring(1);
+        if (queryString.startsWith("?")) {
+            queryString = queryString.substring(1);
+        }
 
         String[] pairs = queryString.split("&");
 
@@ -313,7 +315,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
                     else {
                         result.put(name, value);
                     }
-                } catch (UnsupportedEncodingException e) {
+                }
+                catch (UnsupportedEncodingException e) {
                     // ignore
                 }
             }
@@ -331,14 +334,18 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      */
     @SuppressWarnings("rawtypes")
     public static String toQueryString(Map params, String encoding) throws UnsupportedEncodingException {
-        if (encoding == null) encoding = "UTF-8";
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
         StringBuilder queryString = new StringBuilder("?");
 
         for (Iterator i = params.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             boolean hasMore = i.hasNext();
             boolean wasAppended = appendEntry(entry, queryString, encoding, "");
-            if (hasMore && wasAppended) queryString.append('&');
+            if (hasMore && wasAppended) {
+                queryString.append('&');
+            }
         }
         return queryString.toString();
     }
@@ -359,8 +366,12 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         String name = entry.getKey().toString();
         Object value = entry.getValue();
 
-        if (name.indexOf(".") > -1 && (value instanceof GrailsParameterMap)) return false; // multi-d params handled by recursion
-        else if (value == null) value = "";
+        if (name.indexOf(".") > -1 && (value instanceof GrailsParameterMap)) {
+            return false; // multi-d params handled by recursion
+        }
+        else if (value == null) {
+            value = "";
+        }
         else if (value instanceof GrailsParameterMap) {
             GrailsParameterMap child = (GrailsParameterMap) value;
             Set nestedEntrySet = child.entrySet();
@@ -368,7 +379,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
                 Map.Entry childEntry = (Map.Entry) i.next();
                 appendEntry(childEntry, queryString, encoding, entry.getKey().toString() + '.');
                 boolean hasMore = i.hasNext();
-                if (hasMore) queryString.append('&');
+                if (hasMore) {
+                    queryString.append('&');
+                }
             }
         }
         else {
@@ -411,7 +424,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
                 String extension =  lastToken.substring(idx + 1, lastToken.length());
                 if (mimeTypes != null) {
                     for (MimeType mimeType : mimeTypes) {
-                        if (mimeType.getExtension().equals(extension)) return extension;
+                        if (mimeType.getExtension().equals(extension)) {
+                            return extension;
+                        }
                     }
                 }
             }
@@ -481,7 +496,9 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      */
     public static String getForwardURI(HttpServletRequest request) {
         String result = (String) request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);
-        if (GrailsStringUtils.isBlank(result)) result = request.getRequestURI();
+        if (GrailsStringUtils.isBlank(result)) {
+            result = request.getRequestURI();
+        }
         return result;
     }
 

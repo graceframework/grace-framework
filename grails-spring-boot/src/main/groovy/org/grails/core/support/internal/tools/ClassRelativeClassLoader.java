@@ -45,7 +45,8 @@ class ClassRelativeClassLoader extends URLClassLoader {
         if (BuildSettings.RESOURCES_DIR != null && BuildSettings.RESOURCES_DIR.exists()) {
             try {
                 return new URL[] { root, new FileSystemResource(BuildSettings.RESOURCES_DIR.getCanonicalFile()).getURL() };
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 return new URL[] { root };
             }
         }

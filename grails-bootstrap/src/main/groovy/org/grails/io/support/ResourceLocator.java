@@ -78,7 +78,8 @@ public class ResourceLocator {
                     classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // ignore
         }
 
@@ -201,7 +202,8 @@ public class ResourceLocator {
             if (resources != null && resources.length > 0) {
                 return resources[0];
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return null;
         }
         return null;

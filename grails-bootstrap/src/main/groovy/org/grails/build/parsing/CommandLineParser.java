@@ -111,7 +111,8 @@ public class CommandLineParser {
                     if ("\'".equals(nextTok)) {
                         lastTokenHasBeenQuoted = true;
                         state = normal;
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     break;
@@ -119,21 +120,25 @@ public class CommandLineParser {
                     if ("\"".equals(nextTok)) {
                         lastTokenHasBeenQuoted = true;
                         state = normal;
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     break;
                 default:
                     if ("\'".equals(nextTok)) {
                         state = inQuote;
-                    } else if ("\"".equals(nextTok)) {
+                    }
+                    else if ("\"".equals(nextTok)) {
                         state = inDoubleQuote;
-                    } else if (" ".equals(nextTok)) {
+                    }
+                    else if (" ".equals(nextTok)) {
                         if (lastTokenHasBeenQuoted || current.length() != 0) {
                             result.add(current.toString());
                             current.setLength(0);
                         }
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     lastTokenHasBeenQuoted = false;
@@ -187,7 +192,9 @@ public class CommandLineParser {
         cl.setRawArguments(args);
         String lastWasOption = null;
         for (String arg : args) {
-            if (arg == null) continue;
+            if (arg == null) {
+                continue;
+            }
             String trimmed = arg.trim();
             if (trimmed != null && trimmed.length() > 0) {
                 if (trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"') {
@@ -280,7 +287,9 @@ public class CommandLineParser {
     }
 
     private void validateOptionName(String name) {
-        if (name.contains(" ")) throw new ParseException("Invalid argument: " + name);
+        if (name.contains(" ")) {
+            throw new ParseException("Invalid argument: " + name);
+        }
     }
 
     protected void processSystemArg(DefaultCommandLine cl, String arg) {

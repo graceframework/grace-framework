@@ -27,9 +27,8 @@ import static jline.internal.Preconditions.checkNotNull;
  * @author Graeme Rocher
  * @since 3.0
  */
-public class StringsCompleter
-    implements Completer
-{
+public class StringsCompleter implements Completer {
+
     private SortedSet<String> strings = new TreeSet<String>();
 
     public StringsCompleter() {
@@ -73,4 +72,5 @@ public class StringsCompleter
 
         return candidates.isEmpty() ? -1 : 0;
     }
+
 }

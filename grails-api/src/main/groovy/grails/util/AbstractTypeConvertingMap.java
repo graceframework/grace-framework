@@ -44,7 +44,9 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     }
 
     public AbstractTypeConvertingMap(Map map) {
-        if (map == null) map = new LinkedHashMap();
+        if (map == null) {
+            map = new LinkedHashMap();
+        }
         wrappedMap = map;
     }
     
@@ -355,7 +357,8 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
         Boolean value;
         if (containsKey(name)) {
             value = getBoolean(name);
-        } else {
+        }
+        else {
             value = defaultValue;
         }
         return value;
@@ -385,7 +388,8 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
         if (value != null) {
             try {
                 return new SimpleDateFormat(format).parse(value.toString());
-            } catch (ParseException e) {
+            }
+            catch (ParseException e) {
                 // ignore
             }
         }
@@ -427,7 +431,9 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     private Date getDate(String name, Collection<String> formats) {
         for (String format : formats) {
             Date date = getDate(name, format);
-            if (date != null) return date;
+            if (date != null) {
+                return date;
+            }
         }
         return null;
     }

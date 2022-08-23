@@ -41,7 +41,8 @@ public class CharSequences {
     public static CharSequence createCharSequence(CharSequence str, int start, int count) {
         if (canUseOriginalForSubSequence(str, start, count)) {
             return str;
-        } else {
+        }
+        else {
             return new SubCharSequence(str, start, count);
         }
     }
@@ -60,7 +61,9 @@ public class CharSequences {
      * @return true if input is String, StringBuilder or StringBuffer class, start is 0 and count is length of input sequence
      */
     public static boolean canUseOriginalForSubSequence(CharSequence str, int start, int count) {
-        if (start != 0) return false;
+        if (start != 0) {
+            return false;
+        }
         final Class<?> csqClass = str.getClass();
         return (csqClass == String.class || csqClass == StringBuilder.class || csqClass == StringBuffer.class) && count == str.length();
     }

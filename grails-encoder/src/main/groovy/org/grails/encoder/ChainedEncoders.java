@@ -48,7 +48,8 @@ public class ChainedEncoders {
         List<StreamingEncoder> streamingEncoders = toStreamingEncoders(encoders);
         if (streamingEncoders != null) {
             chainStreamingEncode(streamEncodeable, appender, streamingEncoders);
-        } else {
+        }
+        else {
             chainMixedEncode(streamEncodeable, appender, encoders);
         }
     }
@@ -57,13 +58,15 @@ public class ChainedEncoders {
             List<Encoder> encoders) throws IOException {
         if (encoders == null || encoders.isEmpty()) {
             streamEncodeable.encodeTo(appender, null);
-        } else {     
+        }
+        else {
             StreamEncodeable lastStreamEncodeable = streamEncodeable;
             if (encoders.size() > 1) {
                 StreamCharBuffer buffer;
                 if (streamEncodeable instanceof StreamCharBuffer) {
                     buffer = (StreamCharBuffer) streamEncodeable;
-                } else {
+                }
+                else {
                     buffer = new StreamCharBuffer();
                     streamEncodeable.encodeTo(((StreamCharBuffer.StreamCharBufferWriter) buffer.getWriter()).getEncodedAppender(), null);
                 }
@@ -82,7 +85,8 @@ public class ChainedEncoders {
         if (encoders != null && encoders.size() > 0) {
             target = chainAllButLastEncoders(appender, encoders);
             lastEncoder = encoders.get(0);
-        } else {
+        }
+        else {
             target = appender;
             lastEncoder = null;
         }
@@ -115,10 +119,12 @@ public class ChainedEncoders {
                 joined.addAll(encoders);
                 joined.add(encodeToEncoder);
                 nextEncoders = Collections.unmodifiableList(joined);
-            } else {
+            }
+            else {
                 nextEncoders = Collections.singletonList(encodeToEncoder);
             }
-        } else {
+        }
+        else {
             nextEncoders = encoders;
         }
         return nextEncoders;

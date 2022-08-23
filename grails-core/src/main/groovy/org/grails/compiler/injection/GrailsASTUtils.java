@@ -122,7 +122,9 @@ public class GrailsASTUtils {
         }
 
         final MethodNode method = classNode.getMethod(GrailsNameUtils.getGetterName(propertyName), Parameter.EMPTY_ARRAY);
-        if (method != null) return true;
+        if (method != null) {
+            return true;
+        }
 
         // check read-only field with setter
         if (classNode.getField(propertyName) != null && !classNode.getMethods(GrailsNameUtils.getSetterName(propertyName)).isEmpty()) {
@@ -279,7 +281,8 @@ public class GrailsASTUtils {
             VariableExpression apiVar = addApiVariableDeclaration(delegate, declaredMethod, methodBody);
             IfStatement ifStatement = createIfElseStatementForApiMethodCall(methodCallExpression, apiVar, missingMethodException);
             methodBody.addStatement(ifStatement);
-        } else {
+        }
+        else {
             methodBody.addStatement(new ExpressionStatement(methodCallExpression));
         }
         
@@ -418,7 +421,8 @@ public class GrailsASTUtils {
             VariableExpression apiVar = addApiVariableDeclaration(delegate, delegateMethod, methodBody);
             IfStatement ifStatement = createIfElseStatementForApiMethodCall(methodCallExpression, apiVar, missingMethodException);
             methodBody.addStatement(ifStatement);
-        } else {
+        }
+        else {
             methodBody.addStatement(new ExpressionStatement(methodCallExpression));
         }
         
@@ -470,7 +474,8 @@ public class GrailsASTUtils {
                         constructorNode.setCode(constructorBody);
                     }
                 }
-            } else {
+            }
+            else {
                 constructorNode = new ConstructorNode(Modifier.PUBLIC, constructorBody);
                 classNode.addConstructor(constructorNode);
                 AnnotatedNodeUtils.markAsGenerated(classNode, constructorNode);
@@ -599,12 +604,14 @@ public class GrailsASTUtils {
             final ClassNode placeHolderType;
             if (genericsPlaceholders.containsKey(type.getUnresolvedName())) {
                 placeHolderType = genericsPlaceholders.get(type.getUnresolvedName());
-            } else {
+            }
+            else {
                 placeHolderType = defaultPlaceholder;
             }
             if (placeHolderType != null) {
                 return placeHolderType.getPlainNodeReference();
-            } else {
+            }
+            else {
                 return ClassHelper.make(Object.class).getPlainNodeReference();
             }
         }
@@ -615,7 +622,8 @@ public class GrailsASTUtils {
             nonGen.setGenericsPlaceHolder(false);
             nonGen.setGenericsTypes(null);
             nonGen.setUsingGenerics(false);
-        } else {
+        }
+        else {
             if (type.isUsingGenerics()) {
                 GenericsType[] parameterized = type.getGenericsTypes();
                 if (parameterized != null && parameterized.length > 0) {
@@ -627,10 +635,12 @@ public class GrailsASTUtils {
                             ClassNode placeHolderType = genericsPlaceholders.get(parameterizedType.getName());
                             if (placeHolderType != null) {
                                 copiedGenericsType = new GenericsType(placeHolderType.getPlainNodeReference());
-                            } else {
+                            }
+                            else {
                                 copiedGenericsType = new GenericsType(ClassHelper.make(Object.class).getPlainNodeReference());
                             }
-                        } else {
+                        }
+                        else {
                             copiedGenericsType = new GenericsType(replaceGenericsPlaceholders(parameterizedType.getType(), genericsPlaceholders));
                         }
                         copiedGenericsTypes[i] = copiedGenericsType;
@@ -684,7 +694,9 @@ public class GrailsASTUtils {
         ClassNode currentClassNode = classNode;
         while (currentClassNode != null && !currentClassNode.getName().equals(OBJECT_CLASS)) {
             ClassNode[] interfaces = currentClassNode.getInterfaces();
-            if (implementsInterfaceInternal(interfaces, interfaceName)) return true;
+            if (implementsInterfaceInternal(interfaces, interfaceName)) {
+                return true;
+            }
             currentClassNode = currentClassNode.getSuperClass();
         }
         return false;
@@ -896,7 +908,8 @@ public class GrailsASTUtils {
                 enhancedAnnotationNode.setMember("version", new ConstantExpression(grailsVersion));
             }
             classNode.addAnnotation(enhancedAnnotationNode);
-        } else {
+        }
+        else {
             enhancedAnnotationNode = annotations.get(0);
         }
         
@@ -981,7 +994,8 @@ public class GrailsASTUtils {
         if (annotations.size() > 0) {
             methodNode.getAnnotations().removeAll(annotations);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -1044,7 +1058,8 @@ public class GrailsASTUtils {
                     if (expression instanceof MethodCallExpression) {
                         methodExpressions.add((MethodCallExpression) expression);
                     }
-                } else if (closureStatement instanceof ReturnStatement) {
+                }
+                else if (closureStatement instanceof ReturnStatement) {
                     final ReturnStatement returnStatement = (ReturnStatement) closureStatement;
                     Expression expression = returnStatement.getExpression();
                     if (expression instanceof MethodCallExpression) {
@@ -1119,7 +1134,9 @@ public class GrailsASTUtils {
             Set<ClassNode> interfaces = classNode.getAllInterfaces();
 
             for (ClassNode anInterface : interfaces) {
-                if (anInterface.equals(interfaceNode)) return anInterface;
+                if (anInterface.equals(interfaceNode)) {
+                    return anInterface;
+                }
 
             }
             classNode = classNode.getSuperClass();
@@ -1129,9 +1146,13 @@ public class GrailsASTUtils {
 
     public static boolean hasZeroArgsConstructor(ClassNode implementationNode) {
         List<ConstructorNode> constructors = implementationNode.getDeclaredConstructors();
-        if (constructors.isEmpty()) return true;
+        if (constructors.isEmpty()) {
+            return true;
+        }
         for (ConstructorNode constructor : constructors) {
-            if (constructor.getParameters().length == 0) return true;
+            if (constructor.getParameters().length == 0) {
+                return true;
+            }
         }
         return false;
     }
@@ -1155,7 +1176,9 @@ public class GrailsASTUtils {
     public static boolean isSubclassOf(ClassNode classNode, String parentClassName) {
         ClassNode currentSuper = classNode.getSuperClass();
         while (currentSuper != null && !currentSuper.getName().equals(OBJECT_CLASS)) {
-            if (currentSuper.getName().equals(parentClassName)) return true;
+            if (currentSuper.getName().equals(parentClassName)) {
+                return true;
+            }
             currentSuper = currentSuper.getSuperClass();
         }
         return false;
@@ -1232,7 +1255,9 @@ public class GrailsASTUtils {
      */
     public static MethodCallExpression applyMethodTarget(final MethodCallExpression methodCallExpression, final ClassNode targetClassNode, final ClassNode... targetParameterTypes) {
         String methodName = methodCallExpression.getMethodAsString();
-        if (methodName == null) return methodCallExpression;
+        if (methodName == null) {
+            return methodCallExpression;
+        }
         int argumentCount = methodCallExpression.getArguments() != null ? ((TupleExpression) methodCallExpression.getArguments()).getExpressions().size() : 0;
         
         String methodFoundInClass = null;
@@ -1245,7 +1270,8 @@ public class GrailsASTUtils {
                 if (methodFoundInClass == null) {
                     methodCallExpression.setMethodTarget(method);
                     methodFoundInClass = methodFromClass;
-                } else if (methodFromClass.equals(methodFoundInClass)) {
+                }
+                else if (methodFromClass.equals(methodFoundInClass)) {
                     throw new RuntimeException("Multiple methods with same name '" + methodName + "' and argument count (" + argumentCount + ") in " + targetClassNode.getName() + ". Cannot apply default method target.");
                 }
             }
@@ -1289,7 +1315,9 @@ public class GrailsASTUtils {
     }
 
     private static boolean parameterTypesMatch(Parameter[] parameters, ClassNode[] targetParameterTypes) {
-        if (targetParameterTypes == null || targetParameterTypes.length == 0) return true;
+        if (targetParameterTypes == null || targetParameterTypes.length == 0) {
+            return true;
+        }
         for (int i = 0; i < parameters.length; i++) {
             if (targetParameterTypes.length > i && targetParameterTypes[i] != null && !parameters[i].getType().getName().equals(targetParameterTypes[i].getName())) {
                 return false;
@@ -1374,7 +1402,8 @@ public class GrailsASTUtils {
     public static Expression buildGetThisObjectExpression(boolean inClosureBlock) {
         if (!inClosureBlock) {
             return buildThisExpression();
-        } else {
+        }
+        else {
             return buildGetPropertyExpression(buildThisExpression(), "thisObject", ClassHelper.make(Closure.class).getPlainNodeReference());
         }
     }
@@ -1459,7 +1488,8 @@ public class GrailsASTUtils {
         VariableScopeVisitor scopeVisitor = new VariableScopeVisitor(source);
         if (methodNode == null) {
             scopeVisitor.visitClass(classNode);
-        } else {
+        }
+        else {
             scopeVisitor.prepareVisit(classNode);
             scopeVisitor.visitMethod(methodNode);
         }
@@ -1504,7 +1534,8 @@ public class GrailsASTUtils {
         if (resource.exists()) {
             try {
                 url = resource.getURL();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }

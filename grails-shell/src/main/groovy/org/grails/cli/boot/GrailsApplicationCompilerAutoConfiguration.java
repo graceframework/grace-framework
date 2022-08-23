@@ -64,7 +64,9 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     public boolean matches(ClassNode classNode) {
         boolean matches = AstUtils.hasAtLeastOneAnnotation(classNode, "grails.persistence.Entity", "grails.rest.Resource", "Resource",
                 "grails.artefact.Artefact", "grails.web.Controller");
-        if (matches) lastMatch = classNode;
+        if (matches) {
+            lastMatch = classNode;
+        }
         return matches;
     }
 
@@ -127,7 +129,8 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         try {
             enableAutoAnnotation.addMember("exclude", new ClassExpression(
                     ClassHelper.make("org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")));
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // ignore
         }
         applicationClassNode.addAnnotation(enableAutoAnnotation);

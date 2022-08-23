@@ -86,7 +86,8 @@ public class PropertySourcesConfig extends NavigableMapConfig {
             final String applicationConfig = "applicationConfigurationProperties";
             if (propertySources.contains(applicationConfig)) {
                 ((MutablePropertySources) propertySources).addBefore(applicationConfig, environmentAwarePropertySource);
-            } else {
+            }
+            else {
                 ((MutablePropertySources) propertySources).addLast(environmentAwarePropertySource);
             }
         }
@@ -104,15 +105,19 @@ public class PropertySourcesConfig extends NavigableMapConfig {
     private void mergeEnumerablePropertySource(EnumerablePropertySource enumerablePropertySource) {
         if (enumerablePropertySource instanceof NavigableMapPropertySource) {
             configMap.merge(((NavigableMapPropertySource) enumerablePropertySource).getSource(), false);
-        } else {
+        }
+        else {
             Map<String, Object> map = new LinkedHashMap<String, Object>();
 
             final String[] propertyNames = enumerablePropertySource.getPropertyNames();
             for (String propertyName : propertyNames) {
                 Object value = enumerablePropertySource.getProperty(propertyName);
                 if (value instanceof ConfigObject) {
-                    if (((ConfigObject) value).isEmpty()) continue;
-                } else {
+                    if (((ConfigObject) value).isEmpty()) {
+                        continue;
+                    }
+                }
+                else {
                     value = processAndEvaluate(value);
                 }
                 map.put(propertyName, value);
@@ -125,13 +130,15 @@ public class PropertySourcesConfig extends NavigableMapConfig {
     private Object processAndEvaluate(Object value) {
         if (value instanceof CharSequence) {
             value = resolvePlaceholders(value.toString());
-        } else if (value instanceof List) {
+        }
+        else if (value instanceof List) {
             List<Object> result = new ArrayList<>();
             for (Object element : (List) value) {
                 result.add(processAndEvaluate(element));
             }
             return result;
-        } else if (value instanceof Map) {
+        }
+        else if (value instanceof Map) {
             Map<Object, Object> result = new LinkedHashMap<>();
             for (Object key : ((Map) value).keySet()) {
                 result.put(key, processAndEvaluate(((Map) value).get(key)));

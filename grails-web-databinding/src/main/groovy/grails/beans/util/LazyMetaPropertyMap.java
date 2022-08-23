@@ -73,7 +73,9 @@ public class LazyMetaPropertyMap implements Map {
      * @see java.util.Map#containsKey(java.lang.Object)
      */
     public boolean containsKey(Object propertyName) {
-        if (propertyName instanceof CharSequence) propertyName = propertyName.toString();
+        if (propertyName instanceof CharSequence) {
+            propertyName = propertyName.toString();
+        }
         Assert.isInstanceOf(String.class, propertyName, "This map implementation only supports String based keys!");
 
         String pn = propertyName.toString();
@@ -168,7 +170,9 @@ public class LazyMetaPropertyMap implements Map {
     public Set<String> keySet() {
         Set<String> names = new HashSet<>();
         for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
+            if (isExcluded(mp)) {
+                continue;
+            }
             names.add(mp.getName());
         }
         return names;
@@ -177,7 +181,9 @@ public class LazyMetaPropertyMap implements Map {
     public Collection<Object> values() {
         Collection<Object> values = new ArrayList<>();
         for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
+            if (isExcluded(mp)) {
+                continue;
+            }
             values.add(mp.getProperty(instance));
         }
         return values;
@@ -209,7 +215,9 @@ public class LazyMetaPropertyMap implements Map {
     public Set<MapEntry> entrySet() {
         Set<MapEntry> entries = new HashSet<>();
         for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
+            if (isExcluded(mp)) {
+                continue;
+            }
 
             entries.add(new MapEntry(mp.getName(), mp.getProperty(instance)));
         }

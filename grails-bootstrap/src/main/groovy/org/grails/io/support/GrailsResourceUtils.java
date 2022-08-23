@@ -215,7 +215,9 @@ public class GrailsResourceUtils {
      */
 
     public static boolean isDomainClass(URL url) {
-        if (url == null) return false;
+        if (url == null) {
+            return false;
+        }
         return KNOWN_DOMAIN_CLASSES.get(url.getFile());
     }
 
@@ -722,15 +724,21 @@ public class GrailsResourceUtils {
     }
 
     public static Resource getViewsDir(Resource resource) {
-        if (resource == null) return null;
+        if (resource == null) {
+            return null;
+        }
 
         Resource appDir = getAppDir(resource);
-        if (appDir == null) return null;
+        if (appDir == null) {
+            return null;
+        }
         return appDir.createRelative("views");
     }
 
     public static Resource getAppDir(Resource resource) {
-        if (resource == null) return null;
+        if (resource == null) {
+            return null;
+        }
 
         try {
             File file = resource.getFile();
@@ -740,7 +748,8 @@ public class GrailsResourceUtils {
             if (file != null) {
                 return new FileSystemResource(file.getAbsolutePath() + '/');
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         }
 
         try {
@@ -772,7 +781,9 @@ public class GrailsResourceUtils {
      * @return The relative URL of the file inside the WEB-INF dir at deployment time or null if it cannot be established
      */
     public static String getRelativeInsideWebInf(Resource resource) {
-        if (resource == null) return null;
+        if (resource == null) {
+            return null;
+        }
 
         try {
             String url = resource.getURL().toString();
@@ -808,8 +819,12 @@ public class GrailsResourceUtils {
      */
     public static String getStaticResourcePathForResource(Resource resource, String contextPath) {
 
-        if (contextPath == null) contextPath = "";
-        if (resource == null) return contextPath;
+        if (contextPath == null) {
+            contextPath = "";
+        }
+        if (resource == null) {
+            return contextPath;
+        }
 
         String url;
         try {
@@ -871,7 +886,8 @@ public class GrailsResourceUtils {
                     String canonicalPath = new File(path).getCanonicalPath();
                     return canonicalPath.contains(basePath) ? canonicalPath.substring(basePath.length() + 1) : canonicalPath;
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
@@ -923,7 +939,9 @@ public class GrailsResourceUtils {
      * @return a uri
      */
     public static String appendPiecesForUri(String... pieces) {
-        if (pieces == null || pieces.length == 0) return "";
+        if (pieces == null || pieces.length == 0) {
+            return "";
+        }
 
         // join parts && strip double slashes
         StringBuilder builder = new StringBuilder(16 * pieces.length);

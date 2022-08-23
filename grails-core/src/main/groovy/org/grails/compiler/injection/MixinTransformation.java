@@ -90,7 +90,8 @@ public class MixinTransformation implements ASTTransformation {
                             initialValue = new ConstructorCallExpression(mixinClassNode, new MapExpression(
                                     Arrays.asList(new MapEntryExpression(new ConstantExpression("target"), new VariableExpression("this")))
                             ));
-                        }  else {
+                        }
+                        else {
                             initialValue = new ConstructorCallExpression(mixinClassNode, GrailsASTUtils.ZERO_ARGUMENTS);
                         }
                         classNode.addField(fieldName, Modifier.PRIVATE, mixinClassNode, initialValue);
@@ -127,7 +128,8 @@ public class MixinTransformation implements ASTTransformation {
         ListExpression values = null;
         if (value instanceof ListExpression) {
             values = (ListExpression) value;
-        } else if (value instanceof ClassExpression) {
+        }
+        else if (value instanceof ClassExpression) {
             values = new ListExpression();
             values.addExpression(value);
         }

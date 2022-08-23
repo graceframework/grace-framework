@@ -121,7 +121,8 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
                         try {
                             mh = lookup.findVirtual(superClass, methodName, MethodType.methodType(method.getReturnType()));
                             methodNames.put(methodName, new MethodHandleInvoker(mh));
-                        } catch (NoSuchMethodException | IllegalAccessException e) {
+                        }
+                        catch (NoSuchMethodException | IllegalAccessException e) {
                             methodNames.put(methodName, new ReflectionInvoker(method));
                         }
                     }
@@ -182,9 +183,13 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
      */
     @Override
     public Object invoke(Object controller, String action) throws Throwable {
-        if (action == null) action = this.defaultActionName;
+        if (action == null) {
+            action = this.defaultActionName;
+        }
         ActionInvoker handle = actions.get(action);
-        if (handle == null) throw new IllegalArgumentException("Invalid action name: " + action);
+        if (handle == null) {
+            throw new IllegalArgumentException("Invalid action name: " + action);
+        }
         return handle.invoke(controller);
     }
 

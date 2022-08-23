@@ -42,8 +42,11 @@ public class CompositeEditor extends PropertyEditorSupport {
                 propertyEditor.setAsText(s);
                 converted = true;
                 break;
-            } catch (IllegalArgumentException e) {
-                if (first == null) first = e;
+            }
+            catch (IllegalArgumentException e) {
+                if (first == null) {
+                    first = e;
+                }
             }
         }
 

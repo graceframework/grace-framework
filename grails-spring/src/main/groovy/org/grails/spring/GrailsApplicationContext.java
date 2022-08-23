@@ -70,9 +70,11 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     public boolean containsBeanDefinition(String beanName) {
         if (super.containsBeanDefinition(beanName)) {
             return true;
-        } else if (getParent() != null && "grailsApplication".equals(beanName)) {
+        }
+        else if (getParent() != null && "grailsApplication".equals(beanName)) {
             return getParent().containsBeanDefinition(beanName);
-        } else {
+        }
+        else {
             return false;
         }
     }

@@ -59,7 +59,8 @@ public class GrailsEclipseConsole extends GrailsConsole {
         if (DEBUG) {
             try {
                 out.write(("<<<" + ECLIPSE_SUPPORTS_ANSI_PROP + ":" + eclipseSupportsAnsi() + ">>>\n").getBytes("UTF-8"));
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
             }
         }
         //This method is called from the super constructor so eclipseSupportsAnsi field
@@ -81,7 +82,8 @@ public class GrailsEclipseConsole extends GrailsConsole {
         try {
             String prop =  System.getProperty(propName);
             return prop != null && Boolean.valueOf(prop);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return false;
         }
     }

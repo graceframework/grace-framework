@@ -128,10 +128,12 @@ public class UrlMappingUtils {
             String viewName = info.getViewName();
             if (viewName.startsWith("/")) {
                 forwardUrl.append(viewName);
-            } else {
+            }
+            else {
                 forwardUrl.append(WebUtils.SLASH).append(viewName);
             }
-        } else {
+        }
+        else {
             forwardUrl.append(WebUtils.SLASH).append(info.getControllerName());
 
             if (!GrailsStringUtils.isBlank(info.getActionName())) {
@@ -143,7 +145,8 @@ public class UrlMappingUtils {
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e) {
                 throw new ControllerExecutionException("Unable to include ");
             }
         }
@@ -163,10 +166,12 @@ public class UrlMappingUtils {
             String viewName = info.getViewName();
             if (viewName.startsWith("/")) {
                 forwardUrl.append(viewName);
-            } else {
+            }
+            else {
                 forwardUrl.append(WebUtils.SLASH).append(viewName);
             }
-        } else {
+        }
+        else {
             Map<String, Object> urlAttrs = new HashMap<>();
             urlAttrs.put("controller", info.getControllerName());
             urlAttrs.put("action", info.getActionName());
@@ -181,7 +186,8 @@ public class UrlMappingUtils {
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e) {
                 throw new ControllerExecutionException("Unable to include ");
             }
         }
@@ -341,7 +347,8 @@ public class UrlMappingUtils {
                     if (currentMv != null) {
                         webRequest.setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, currentMv, 0);
                     }
-                } else {
+                }
+                else {
                     RequestContextHolder.setRequestAttributes(null);
                 }
             }

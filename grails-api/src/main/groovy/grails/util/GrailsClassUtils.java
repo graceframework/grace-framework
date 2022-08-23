@@ -339,7 +339,8 @@ public class GrailsClassUtils {
         catch (Exception e) {
             if (descriptor == null) {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
-            } else {
+            }
+            else {
                 LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
             }
             // if there are any errors in instantiating just return null for the moment
@@ -360,7 +361,9 @@ public class GrailsClassUtils {
      * @return An array of PropertyDescriptor instances
      */
     public static PropertyDescriptor[] getPropertiesAssignableToType(Class<?> clazz, Class<?> propertySuperType) {
-        if (clazz == null || propertySuperType == null) return new PropertyDescriptor[0];
+        if (clazz == null || propertySuperType == null) {
+            return new PropertyDescriptor[0];
+        }
 
         Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
         PropertyDescriptor descriptor = null;
@@ -377,7 +380,8 @@ public class GrailsClassUtils {
         catch (Exception e) {
             if (descriptor == null) {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
-            } else {
+            }
+            else {
                 LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
             }
             return new PropertyDescriptor[0];
@@ -439,7 +443,9 @@ public class GrailsClassUtils {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Object[] collectionToObjectArray(Collection c) {
-        if (c == null) return new Object[0];
+        if (c == null) {
+            return new Object[0];
+        }
         return c.toArray(new Object[c.size()]);
     }
 
@@ -583,7 +589,8 @@ public class GrailsClassUtils {
             ReflectionUtils.makeAccessible(field);
             try {
                 return field.get(clazz);
-            } catch (IllegalAccessException ignored) {
+            }
+            catch (IllegalAccessException ignored) {
             }
         }
         return null;
@@ -691,7 +698,9 @@ public class GrailsClassUtils {
      */
     @SuppressWarnings("rawtypes")
     public static boolean isPropertyInherited(Class clz, String propertyName) {
-        if (clz == null) return false;
+        if (clz == null) {
+            return false;
+        }
         Assert.isTrue(StringUtils.hasText(propertyName), "Argument [propertyName] cannot be null or blank");
 
         Class<?> superClass = clz.getSuperclass();
@@ -743,10 +752,14 @@ public class GrailsClassUtils {
      */
     @SuppressWarnings("rawtypes")
     public static boolean isSetter(String name, Class[] args) {
-        if (!StringUtils.hasText(name) || args == null) return false;
+        if (!StringUtils.hasText(name) || args == null) {
+            return false;
+        }
 
         if (name.startsWith("set")) {
-            if (args.length != 1) return false;
+            if (args.length != 1) {
+                return false;
+            }
             return GrailsNameUtils.isPropertyMethodSuffix(name.substring(3));
         }
 
@@ -824,7 +837,9 @@ public class GrailsClassUtils {
      * @return A boolean value which will be false if the map is null, the map doesn't contain the key or the value is false
      */
     public static boolean getBooleanFromMap(String key, Map<?, ?> map, boolean defaultValue) {
-        if (map == null) return defaultValue;
+        if (map == null) {
+            return defaultValue;
+        }
         if (map.containsKey(key)) {
             Object o = map.get(key);
             if (o == null) {

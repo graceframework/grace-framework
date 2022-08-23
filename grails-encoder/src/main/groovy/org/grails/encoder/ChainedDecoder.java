@@ -35,7 +35,9 @@ public class ChainedDecoder implements Decoder {
 
     @Override
     public Object decode(Object o) {
-        if (o == null) return o;
+        if (o == null) {
+            return o;
+        }
         Object decoded = o;
         for (Decoder decoder : decoders) {
             decoded = decoder.decode(decoded);

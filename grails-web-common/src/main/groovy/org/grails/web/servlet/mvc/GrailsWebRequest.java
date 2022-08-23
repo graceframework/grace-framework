@@ -159,7 +159,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
         if (out == null) {
             try {
                 return getCurrentResponse().getWriter();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new ControllerExecutionException("Error retrieving response writer: " + e.getMessage(), e);
             }
         }
@@ -224,7 +225,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     public HttpServletResponse getCurrentResponse() {
         if (wrappedResponse != null) {
             return wrappedResponse;
-        } else {
+        }
+        else {
             return getResponse();
         }
     }
@@ -268,7 +270,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     public void addParametersFrom(Map previousParams) {
         if (previousParams instanceof GrailsParameterMap) {
             getParams().addParametersFrom((GrailsParameterMap) previousParams);
-        } else {
+        }
+        else {
             for (Object key : previousParams.keySet()) {
                 String name = String.valueOf(key);
                 getParams().put(name, previousParams.get(key));
@@ -390,11 +393,17 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
             controllerClass = (GrailsControllerClass) controllerClassObject;
         }
 
-        if (controllerClass == null) return false;
+        if (controllerClass == null) {
+            return false;
+        }
 
         String actionName = getActionName();
-        if (actionName == null) actionName = controllerClass.getDefaultAction();
-        if (actionName == null) return false;
+        if (actionName == null) {
+            actionName = controllerClass.getDefaultAction();
+        }
+        if (actionName == null) {
+            return false;
+        }
 
         return false;
     }

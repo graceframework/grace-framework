@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,14 +137,18 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public void write(int b) throws IOException {
-            if (!calculationActive) return;
+            if (!calculationActive) {
+                return;
+            }
             writeBuffer[0] = (char) b;
             update(writeBuffer, 0, 1);
         }
 
         @Override
         public Writer append(CharSequence csq, int start, int end) throws IOException {
-            if (!calculationActive) return this;
+            if (!calculationActive) {
+                return this;
+            }
 
             if (csq instanceof StringBuilder || csq instanceof StringBuffer) {
                 int len = end - start;
@@ -171,7 +175,9 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public Writer append(CharSequence csq) throws IOException {
-            if (!calculationActive) return this;
+            if (!calculationActive) {
+                return this;
+            }
 
             if (csq == null) {
                 write("null");
@@ -184,13 +190,17 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public void write(String str, int off, int len) throws IOException {
-            if (!calculationActive) return;
+            if (!calculationActive) {
+                return;
+            }
             StringCharArrayAccessor.writeStringAsCharArray(this, str, off, len);
         }
 
         @Override
         public void write(String str) throws IOException {
-            if (!calculationActive) return;
+            if (!calculationActive) {
+                return;
+            }
             StringCharArrayAccessor.writeStringAsCharArray(this, str);
         }
 

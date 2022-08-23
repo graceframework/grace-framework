@@ -105,7 +105,8 @@ public class SpringIOUtils {
                 md.update(buf, 0, len);
             }
             return md.digest();
-        } finally {
+        }
+        finally {
             is.close();
         }
     }
@@ -117,7 +118,8 @@ public class SpringIOUtils {
         }
         try {
             return MessageDigest.getInstance(mdAlgorithm);
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("unknown algorithm " + algorithm);
         }
     }
@@ -134,7 +136,8 @@ public class SpringIOUtils {
         System.arraycopy(array1, 0, joinedArray, 0, array1.length);
         try {
             System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
-        } catch (ArrayStoreException ase) {
+        }
+        catch (ArrayStoreException ase) {
             final Class<?> type1 = array1.getClass().getComponentType();
             final Class<?> type2 = array2.getClass().getComponentType();
             if (!type1.isAssignableFrom(type2)) {
@@ -366,9 +369,11 @@ public class SpringIOUtils {
      */
     public static void closeQuietly(Closeable closeable) {
         try {
-            if (closeable != null)
+            if (closeable != null) {
                 closeable.close();
-        } catch (IOException e) {
+            }
+        }
+        catch (IOException e) {
             // ignore
         }
     }
@@ -404,32 +409,38 @@ public class SpringIOUtils {
 
             try {
                 saxParserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
-            } catch (Exception pce) {
+            }
+            catch (Exception pce) {
                 // ignore, parser doesn't support
             }
             try {
                 saxParserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            } catch (Exception pce) {
+            }
+            catch (Exception pce) {
                 // ignore, parser doesn't support
             }
             try {
                 saxParserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            } catch (Exception pce) {
+            }
+            catch (Exception pce) {
                 // ignore, parser doesn't support
             }
             try {
                 saxParserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 // ignore, parser doesn't support
             }
             try {
                 saxParserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 // ignore, parser doesn't support
             }
             try {
                 saxParserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 // ignore, parser doesn't support
             }
         }

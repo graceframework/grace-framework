@@ -118,17 +118,22 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
         try {
             initialisePlugin(pluginClass);
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             throw new PluginException("Error initialising plugin for class [" + pluginClass.getName() + "]:" + e.getMessage(), e);
         }
     }
 
     @Override
     public boolean isEnabled(String[] activeProfiles) {
-        if (profiles == null) return true;
+        if (profiles == null) {
+            return true;
+        }
         else {
             for (String activeProfile : activeProfiles) {
-                if (profiles.contains(activeProfile)) return true;
+                if (profiles.contains(activeProfile)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -223,7 +228,9 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             public Object call(Object arguments) {
                 String envName = (String) arguments;
                 Environment env = Environment.getEnvironment(envName);
-                if (env != null) return env.getName();
+                if (env != null) {
+                    return env.getName();
+                }
                 return arguments;
             }
         });
@@ -408,9 +415,12 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     private String getResourcePatternForBaseLocation(String baseLocation, String resourcePath) {
         String location = baseLocation;
-        if (!location.endsWith(File.separator)) location = location + File.separator;
+        if (!location.endsWith(File.separator)) {
+            location = location + File.separator;
+        }
         if (resourcePath.startsWith("./")) {
-            return "file:" + location + resourcePath.substring(2);        }
+            return "file:" + location + resourcePath.substring(2);
+        }
         else if (resourcePath.startsWith("file:./")) {
             return "file:" + location + resourcePath.substring(7);
         }
@@ -578,7 +588,9 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             map.put(EXCLUDES, excludes);
         }
         Collection includes = (Collection) map.get(INCLUDES);
-        if (includes != null) includes.remove(o);
+        if (includes != null) {
+            includes.remove(o);
+        }
         excludes.add(o);
     }
 
@@ -691,7 +703,8 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         GroovyClassLoader gcl = new GroovyClassLoader(parent);
         try {
             initialisePlugin(gcl.parseClass(descriptor.getFile()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error refreshing plugin: " + e.getMessage(), e);
         }
     }
@@ -808,7 +821,8 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         for (BeanFactoryPostProcessor postProcessor : ctx.getBeanFactoryPostProcessors()) {
             try {
                 postProcessor.postProcessBeanFactory(beanFactory);
-            } catch (IllegalStateException e) {
+            }
+            catch (IllegalStateException e) {
                 // post processor doesn't allow running again, just continue
             }
         }

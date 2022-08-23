@@ -45,11 +45,13 @@ public class DataBindingLazyMetaPropertyMap extends LazyMetaPropertyMap {
     public Object put(Object propertyName, Object propertyValue) {
         if (propertyName instanceof List) {
             DataBindingUtils.bindObjectToInstance(getInstance(), propertyValue, (List) propertyName, null, null);
-        } else {
+        }
+        else {
             final Map bindingSource;
             if (propertyValue instanceof Map) {
                 bindingSource = (Map) propertyValue;
-            } else {
+            }
+            else {
                 bindingSource = new HashMap();
                 bindingSource.put(propertyName, propertyValue);
             }

@@ -64,7 +64,8 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
                 if (returnType == Encoder.class) {
                     return (T) NONE_ENCODER;
                 }
-            } else {
+            }
+            else {
                 T resultObject = map.get(codecName);
                 if (resultObject == null) {
                     resultObject = createCodec(codecName, map, returnType);
@@ -92,7 +93,8 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
         T previousInstance = map.putIfAbsent(codecName, createdInstance);
         if (previousInstance != null) {
             return previousInstance;
-        } else {
+        }
+        else {
             return createdInstance;
         }
     }
@@ -110,10 +112,12 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
             List<StreamingEncoder> streamingEncoders = ChainedEncoders.toStreamingEncoders((List<Encoder>) codecInstances);
             if (streamingEncoders == null) {
                 throw new RuntimeException("ChainedEncoder only supports StreamingEncoder instances. Couldn't build chained encoder for '" + codecName + "'");
-            } else {
+            }
+            else {
                 return (T) ChainedEncoder.createFor(streamingEncoders);
             }
-        } else {
+        }
+        else {
             Collections.reverse(codecInstances);
             return (T) new ChainedDecoder(codecInstances.toArray(new Decoder[codecInstances.size()]));
         }

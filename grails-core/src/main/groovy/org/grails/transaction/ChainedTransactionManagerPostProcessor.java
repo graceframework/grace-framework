@@ -215,7 +215,8 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     protected String resolveDataSourceSuffix(String transactionManagerBeanName) {
         if (TRANSACTION_MANAGER.equals(transactionManagerBeanName)) {
             return "";
-        } else {
+        }
+        else {
             Matcher matcher = SUFFIX_PATTERN.matcher(transactionManagerBeanName);
             if (matcher.matches()) {
                 return matcher.group(1);

@@ -92,7 +92,8 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
                     classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // ignore
         }
 
@@ -131,7 +132,8 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
                                         resource = pluginFile;
                                     }
                                 }
-                            } catch (IOException e) {
+                            }
+                            catch (IOException e) {
                                 // ignore
                             }
                         }
@@ -224,7 +226,8 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
             if (resources != null && resources.length > 0) {
                 return resources[0];
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return null;
         }
         return null;

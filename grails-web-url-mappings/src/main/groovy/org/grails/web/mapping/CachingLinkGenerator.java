@@ -95,7 +95,8 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         if (params == null || params.isEmpty()) {
             buffer.append(EMPTY_MAP_STRING);
             buffer.append(OPENING_BRACKET);
-        } else {
+        }
+        else {
             buffer.append(OPENING_BRACKET);
             Map map = new LinkedHashMap<>(params);
             final String requestControllerName = getRequestStateLookupStrategy().getControllerName();
@@ -114,7 +115,9 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
             for (Object o : map.entrySet()) {
                 Map.Entry entry = (Map.Entry) o;
                 Object value = entry.getValue();
-                if (value == null) continue;
+                if (value == null) {
+                    continue;
+                }
                 first = appendCommaIfNotFirst(buffer, first);
                 Object key = entry.getKey();
                 if (RESOURCE_PREFIX.equals(key)) {
@@ -132,7 +135,8 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         Object idValue = GrailsMetaClassUtils.invokeMethodIfExists(o, "ident", new Object[0]);
         if (idValue != null) {
             builder.append(idValue.toString());
-        } else {
+        }
+        else {
             builder.append(o);
         }
         return builder.toString();
@@ -141,7 +145,8 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
     private boolean appendCommaIfNotFirst(StringBuilder buffer, boolean first) {
         if (first) {
             first = false;
-        } else {
+        }
+        else {
             buffer.append(COMMA_SEPARATOR);
         }
         return first;
@@ -152,7 +157,8 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
               .append(KEY_VALUE_SEPARATOR);
         if (value == map) {
             buffer.append(THIS_MAP);
-        } else {
+        }
+        else {
             buffer.append(DefaultGroovyMethods.toString(value));
         }
     }
@@ -174,9 +180,10 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         if (getConfiguredServerBaseURL() == null && isAbsolute(attrs)) {
             if (attrs.get(ATTRIBUTE_BASE) != null) {
                 sb.append(attrs.get(ATTRIBUTE_BASE));
-            } else {
+            }
+            else {
                 GrailsWebRequest webRequest = GrailsWebRequest.lookup();
-            if (webRequest != null) {
+                if (webRequest != null) {
                     sb.append(webRequest.getBaseUrl());
                 }
             }

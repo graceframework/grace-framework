@@ -583,7 +583,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
 		clearCache();
 		if (getParentMessageSource() instanceof ReloadableResourceBundleMessageSource) {
 			((ReloadableResourceBundleMessageSource) getParentMessageSource()).clearCacheIncludingAncestors();
-		} else if (getParentMessageSource() instanceof org.springframework.context.support.ReloadableResourceBundleMessageSource) {
+		}
+		else if (getParentMessageSource() instanceof org.springframework.context.support.ReloadableResourceBundleMessageSource) {
             ((org.springframework.context.support.ReloadableResourceBundleMessageSource) getParentMessageSource()).clearCacheIncludingAncestors();
 		}
 	}
@@ -612,7 +613,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
         }
         if (resource.exists()) {
             return resource;
-        } else {
+        }
+		else {
             return null;
         }
     }	
@@ -660,7 +662,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
                 long newFileTimestamp;
                 try {
                     newFileTimestamp = resource.lastModified();
-                } catch (IOException ex) {
+                }
+				catch (IOException ex) {
                     if (logger.isDebugEnabled()) {
                         logger.debug(
                                 resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
@@ -724,7 +727,8 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
 	                String msg = properties.getProperty(code);
 	                if (msg != null) {
 	                    return createMessageFormat(msg, locale);
-	                } else {
+	                }
+					else {
 	                    return null;
 	                }
 	            }

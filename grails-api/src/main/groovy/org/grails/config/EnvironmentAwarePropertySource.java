@@ -56,7 +56,9 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
         for (PropertySource propertySource : source) {
             if (propertySource != this) {
                 Object value = propertySource.getProperty(key);
-                if (value != null) return value;
+                if (value != null) {
+                    return value;
+                }
             }
         }
         return null;

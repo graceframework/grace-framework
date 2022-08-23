@@ -75,7 +75,9 @@ public class ClosureClassIgnoringComponentScanBeanDefinitionParser extends Compo
             public boolean match(String pattern, String path) {
                 if (path.endsWith(".class")) {
                     String filename = GrailsStringUtils.getFileBasename(path);
-                    if (filename.contains("$")) return false;
+                    if (filename.contains("$")) {
+                        return false;
+                    }
                 }
                 return super.match(pattern, path);
             }

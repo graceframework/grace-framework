@@ -47,12 +47,14 @@ public class MockRequestDataValueProcessor implements RequestDataValueProcessor 
         String toAppend;
         if (url.indexOf("?") > -1) {
             toAppend = "&requestDataValueProcessorParamName=paramValue";
-        } else {
+        }
+        else {
             toAppend = "?requestDataValueProcessorParamName=paramValue";
         }
         if (url.indexOf("#") > -1) {
             url = url.replace("#", toAppend + "#");
-        } else {
+        }
+        else {
             url = url + toAppend;
         }
         return url;

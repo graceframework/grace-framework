@@ -70,11 +70,14 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     public static StreamingEncoder createFor(List<StreamingEncoder> encoders, Boolean safe) {
         if (encoders == null) {
             return null;
-        } else if (encoders.size() == 0) {
+        }
+        else if (encoders.size() == 0) {
             return DefaultEncodingStateRegistry.NONE_ENCODER;
-        } else if (encoders.size() == 1) {
+        }
+        else if (encoders.size() == 1) {
             return encoders.get(0);
-        } else {
+        }
+        else {
             if (safe == null) {
                 for (StreamingEncoder encoder : encoders) {
                     if (encoder.isSafe()) {
@@ -103,7 +106,8 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
         StreamingEncoder encoder = encoders[0];
         if (appender.shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
             encoder.encodeToStream(encoder, source, offset, len, target, encodingState.getPreviousEncodingState());
-        } else {
+        }
+        else {
             target.appendEncoded(encoder, encodingState.getPreviousEncodingState(), source, offset, len);
         }
     }
@@ -131,7 +135,9 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public Object encode(Object o) {
-        if (o == null) return o;
+        if (o == null) {
+            return o;
+        }
         Object encoded = o;
         for (StreamingEncoder encoder : encoders) {
             encoded = encoder.encode(encoded);

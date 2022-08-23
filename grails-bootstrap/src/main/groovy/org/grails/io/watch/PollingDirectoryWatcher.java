@@ -60,7 +60,8 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
                     checkForNewFiles();
                 }
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 // ignore
             }
         }

@@ -124,7 +124,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             ConstraintRegistry constraintRegistry;
             try {
                 constraintRegistry = applicationContext.getBean(ConstraintRegistry.class);
-            } catch (BeansException e) {
+            }
+            catch (BeansException e) {
                 constraintRegistry = new DefaultConstraintRegistry(applicationContext);
             }
             this.constraintRegistry = constraintRegistry;
@@ -132,7 +133,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             ConstraintsEvaluator constraintEvaluator;
             try {
                 constraintEvaluator = applicationContext.getBean(ConstraintsEvaluator.class);
-            } catch (BeansException e) {
+            }
+            catch (BeansException e) {
                 constraintEvaluator = new DefaultConstraintEvaluator(constraintRegistry, new KeyValueMappingContext("test"), Collections.<String, Object>emptyMap());
             }
             this.constraintsEvaluator = constraintEvaluator;
@@ -150,9 +152,11 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         try {
             inputStream = resource.getInputStream();
             return evaluateMappings(classLoader.parseClass(IOGroovyMethods.getText(inputStream, "UTF-8")));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new UrlMappingException("Unable to read mapping file [" + resource.getFilename() + "]: " + e.getMessage(), e);
-        } finally {
+        }
+        finally {
             IOUtils.closeQuietly(inputStream);
         }
     }
@@ -197,7 +201,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         closure.setResolveStrategy(Closure.DELEGATE_FIRST);
         if (closure.getParameterTypes().length == 0) {
             closure.call();
-        } else {
+        }
+        else {
             closure.call(applicationContext);
         }
         builder.urlDefiningMode = false;
@@ -405,7 +410,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 mappings.setResolveStrategy(Closure.DELEGATE_FIRST);
                 mappings.call();
                 inGroupConstraints = false;
-            } finally {
+            }
+            finally {
                 mappingInfoDeque.pop();
                 parentResources.pop();
             }
@@ -579,7 +585,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             try {
                 callable.setDelegate(this);
                 callable.call();
-            } finally {
+            }
+            finally {
                 isInCollection = previousState;
             }
         }
@@ -595,7 +602,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             try {
                 callable.setDelegate(this);
                 callable.call();
-            } finally {
+            }
+            finally {
                 isInCollection = previousState;
             }
         }
@@ -643,10 +651,12 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             if (mappingInfo.getUri() != null) {
                                 try {
                                     urlMapping = new RegexUrlMapping(urlData, new URI(mappingInfo.getUri().toString()), constraints, grailsApplication);
-                                } catch (URISyntaxException e) {
+                                }
+                                catch (URISyntaxException e) {
                                     throw new UrlMappingException("Cannot map to invalid URI: " + e.getMessage(), e);
                                 }
-                            } else {
+                            }
+                            else {
                                 urlMapping = createURLMapping(urlData, isResponseCode, mappingInfo.getRedirectInfo(), mappingInfo.getController(), mappingInfo.getAction(), mappingInfo.getNamespace(), mappingInfo.getPlugin(), mappingInfo.getView(), mappingInfo.getHttpMethod(), null, constraints);
                             }
 
@@ -684,7 +694,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                                 if (namedArguments.containsKey(RESOURCE)) {
                                     GrailsUtil.deprecated("The " + RESOURCE + " syntax is deprecated and will be removed in a future release. Use " + SINGLE + " instead.");
                                     controller = namedArguments.get(RESOURCE);
-                                } else {
+                                }
+                                else {
                                     controller = namedArguments.get(SINGLE);
                                 }
                                 String controllerName = controller.toString();
@@ -692,14 +703,16 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                                 parentResources.push(new ParentResource(controllerName, uri, true));
                                 try {
                                     invokeLastArgumentIfClosure(args);
-                                } finally {
+                                }
+                                finally {
                                     parentResources.pop();
                                 }
                                 if (controller != null) {
 
                                     createSingleResourceRestfulMappings(controllerName, mappingInfo.getPlugin(), mappingInfo.getNamespace(), version, urlData, currentConstraints, calculateIncludes(namedArguments, DEFAULT_RESOURCE_INCLUDES));
                                 }
-                            } else if (namedArguments.containsKey(RESOURCES)) {
+                            }
+                            else if (namedArguments.containsKey(RESOURCES)) {
                                 Object controller = namedArguments.get(RESOURCES);
                                 String controllerName = controller.toString();
                                 mappingInfo.setController(controllerName);
@@ -707,7 +720,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                                 try {
                                     urlDefiningMode = true;
                                     invokeLastArgumentIfClosure(args);
-                                } finally {
+                                }
+                                finally {
                                     parentResources.pop();
                                     hasParent = !parentResources.isEmpty();
                                     if (!hasParent) {
@@ -726,7 +740,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             }
                         }
                         return null;
-                    } finally {
+                    }
+                    finally {
                         if (binding != null) {
                             variables.clear();
                         }
@@ -734,7 +749,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             urlDefiningMode = true;
                         }
                     }
-                } else if ((!urlDefiningMode || (parentResources.size() > 0 && parentResources.peek().isGroup)) && CONSTRAINTS.equals(mappedURI)) {
+                }
+                else if ((!urlDefiningMode || (parentResources.size() > 0 && parentResources.peek().isGroup)) && CONSTRAINTS.equals(mappedURI)) {
                     if (args.length > 0 && (args[0] instanceof Closure)) {
 
                         Closure callable = (Closure) args[0];
@@ -749,11 +765,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
                     }
                     return Collections.emptyMap();
-                } else {
+                }
+                else {
                     LOG.error("Mapping: '" + mappedURI + "' does not start with " + SLASH + " or is response code.");
                     return super.invokeMethod(mappedURI, arg);
                 }
-            } finally {
+            }
+            finally {
                 mappingInfoDeque.pop();
             }
         }
@@ -772,7 +790,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             includes.remove(excStr);
                         }
                     }
-                } else {
+                }
+                else {
                     includes.remove(excludesObject.toString());
                 }
             }
@@ -788,7 +807,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             includes.add(incStr);
                         }
                     }
-                } else {
+                }
+                else {
                     includes.clear();
                     includes.add(includesObject.toString());
                 }
@@ -812,7 +832,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             if (parentResource.isSingle) {
                 uriBuilder.append(parentResource.uri);
-            } else {
+            }
+            else {
                 if (parentResource.controllerName != null) {
                     uriBuilder.append(parentResource.uri);
 
@@ -1101,7 +1122,9 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
         private boolean isResponseCode(String s) {
             for (int count = s.length(), i = 0; i < count; i++) {
-                if (!Character.isDigit(s.charAt(i))) return false;
+                if (!Character.isDigit(s.charAt(i))) {
+                    return false;
+                }
             }
 
             return true;
@@ -1131,10 +1154,12 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             if (uri != null) {
                 try {
                     urlMapping = new RegexUrlMapping(urlData, new URI(uri.toString()), constraints, grailsApplication);
-                } catch (URISyntaxException e) {
+                }
+                catch (URISyntaxException e) {
                     throw new UrlMappingException("Cannot map to invalid URI: " + e.getMessage(), e);
                 }
-            } else {
+            }
+            else {
                 urlMapping = createURLMapping(urlData, isResponseCode, redirectInfo, controllerName, actionName, namespace, pluginName, viewName, httpMethod != null ? httpMethod.toString() : null, version != null ? version.toString() : null, constraints);
             }
 
@@ -1145,10 +1170,12 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                     Class exClass = (Class) exceptionArg;
                     if (Throwable.class.isAssignableFrom(exClass)) {
                         ((ResponseCodeUrlMapping) urlMapping).setExceptionType(exClass);
-                    } else {
+                    }
+                    else {
                         LOG.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a subclass of java.lang.Throwable");
                     }
-                } else {
+                }
+                else {
                     LOG.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a valid class");
                 }
             }

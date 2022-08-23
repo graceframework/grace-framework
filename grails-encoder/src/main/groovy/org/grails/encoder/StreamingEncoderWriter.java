@@ -31,7 +31,8 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
         this.encoder = encoder;
         if (encoder instanceof EncodesToWriter) {
             this.encodesToWriter = ((EncodesToWriter) encoder);
-        } else {
+        }
+        else {
             this.encodesToWriter = new EncodesToWriterAdapter(encoder, true); 
         }
         this.encodingStateRegistry = encodingStateRegistry;
@@ -47,7 +48,8 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
         final EncodingState encodingState = lookupEncodingState(str, off, len);
         if (shouldEncodeWith(encoder, encodingState)) {
             encodesToWriter.encodeToWriter(str, off, len, out, encodingState);
-        } else {
+        }
+        else {
             out.write(str, off, len);
         }
     }
@@ -60,7 +62,8 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
     protected EncodingState lookupEncodingState(String str, int off, int len) {
         if (encodingStateRegistry != null) {
             return encodingStateRegistry.getEncodingStateFor(str);
-        } else {
+        }
+        else {
             return null;
         }
     }

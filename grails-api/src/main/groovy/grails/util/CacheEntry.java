@@ -134,14 +134,16 @@ public class CacheEntry<V> {
                     if (!writeLock.tryLock()) {
                         if (isInitialized()) {
                             return getValueWhileUpdating(cacheRequestObject);
-                        } else {
+                        }
+                        else {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("Locking cache for update");
                             }
                             writeLock.lock();
                         }
                     }
-                } else {
+                }
+                else {
                     LOG.debug("Locking cache for update");
                     writeLock.lock();
                 }
@@ -158,12 +160,14 @@ public class CacheEntry<V> {
                     catch (Exception e) {
                         throw new UpdateException(e);
                     }
-                } else {
+                }
+                else {
                     value = getValue();
                     resetTimestamp(false);
                 }
                 return value;
-            } finally {
+            }
+            finally {
                 if (lockAcquired) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Unlocking cache for update");
@@ -171,7 +175,8 @@ public class CacheEntry<V> {
                     writeLock.unlock();
                 }
             }
-        } else {
+        }
+        else {
             return getValue();
         }
     }
@@ -188,7 +193,8 @@ public class CacheEntry<V> {
         try {
             readLock.lock();
             return valueRef.get();
-        } finally {
+        }
+        finally {
             readLock.unlock();
         }
     }
@@ -199,7 +205,8 @@ public class CacheEntry<V> {
             valueRef.set(val);
             setInitialized(true);
             resetTimestamp(true);
-        } finally {
+        }
+        finally {
             writeLock.unlock();
         }
     }

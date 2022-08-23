@@ -105,7 +105,8 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
             if (parent != null) {
                 if (parent instanceof GrailsWebApplicationContext) {
                     grailsApplication = ((GrailsWebApplicationContext) parent).getGrailsApplication();
-                } else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
+                }
+                else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
                     grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                 }
             }

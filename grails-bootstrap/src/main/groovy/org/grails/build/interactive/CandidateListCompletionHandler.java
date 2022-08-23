@@ -93,7 +93,8 @@ public class CandidateListCompletionHandler implements CompletionHandler {
         for (int i = 0, count = first.length(); i < count; i++) {
             if (startsWith(first.substring(0, i + 1), strings)) {
                 candidate.append(first.charAt(i));
-            } else {
+            }
+            else {
                 break;
             }
         }

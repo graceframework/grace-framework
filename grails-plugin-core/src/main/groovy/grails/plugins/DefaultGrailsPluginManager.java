@@ -122,7 +122,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
         try {
             pluginResources = resolver.getResources(resourcePath);
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe) {
             LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
         }
         //corePlugins = new PathMatchingResourcePatternResolver().getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
@@ -138,7 +139,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         for (String resourcePath : pluginResources) {
             try {
                 resourceList.addAll(Arrays.asList(resolver.getResources(resourcePath)));
-            } catch (IOException ioe) {
+            }
+            catch (IOException ioe) {
                 LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
             }
         }
@@ -193,7 +195,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         if (wildcardObservers != null) {
             if (c != null) {
                 c.addAll(wildcardObservers);
-            } else {
+            }
+            else {
                 c = wildcardObservers;
             }
         }
@@ -213,11 +216,15 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         if (plugin == null) {
             return;
         }
-        if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) return;
+        if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+            return;
+        }
 
         for (GrailsPlugin observingPlugin : getPluginObservers(plugin)) {
 
-            if (!observingPlugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) continue;
+            if (!observingPlugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+                continue;
+            }
 
             observingPlugin.notifyOfEvent(event);
         }
@@ -344,7 +351,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             if (grailsCorePlugins != null) {
                 if (grailsCorePlugins.contains(plugin)) {
                     orderedCorePlugins.add(plugin);
-                } else {
+                }
+                else {
                     orderedUserPlugins.add(plugin);
                 }
             }
@@ -375,7 +383,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 GrailsPlugin plugin;
                 if (binaryDescriptor != null) {
                     plugin = createBinaryGrailsPlugin(pluginClass, binaryDescriptor);
-                } else {
+                }
+                else {
                     plugin = createGrailsPlugin(pluginClass);
                 }
                 plugin.setApplicationContext(applicationContext);
@@ -443,7 +452,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                         pluginGrailsVersion + " but app is " + appGrailsVersion);
                 return false;
             }
-        } else {
+        }
+        else {
             // Case 2: both max and min version specified. Strict compatibility expected
 
             // minimum version required by plugin cannot be greater than grails app version
@@ -492,7 +502,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 //attemptPluginLoad(plugin);
                 isCompatiblePlugin(plugin);
                 grailsUserPlugins.add(plugin);
-            } else {
+            }
+            else {
                 LOG.warn("Class [" + pluginClass + "] not loaded as plugin. Grails plugins must end with the convention 'GrailsPlugin'!");
             }
         }
@@ -503,7 +514,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 //attemptPluginLoad(plugin);
                 isCompatiblePlugin(plugin);
                 grailsUserPlugins.add(plugin);
-            } else {
+            }
+            else {
                 LOG.warn("Class [" + pluginClass + "] not loaded as plugin. Grails plugins must end with the convention 'GrailsPlugin'!");
             }
         }
@@ -540,10 +552,12 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             if (areDependenciesResolved(plugin)) {
                 if (!hasValidPluginsToLoadBefore(plugin)) {
                     registerPlugin(plugin);
-                } else {
+                }
+                else {
                     delayedLoadPlugins.add(plugin);
                 }
-            } else {
+            }
+            else {
                 // ok, it still hasn't resolved the dependency after the initial
                 // load of all plugins. All hope is not lost, however, so lets first
                 // look inside the remaining delayed loads before giving up
@@ -556,7 +570,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 }
                 if (foundInDelayed) {
                     delayedLoadPlugins.add(plugin);
-                } else {
+                }
+                else {
                     failedPlugins.put(plugin.getName(), plugin);
                     LOG.error("ERROR: Plugin [" + plugin.getName() + "] cannot be loaded because its dependencies [" +
                             DefaultGroovyMethods.inspect(plugin.getDependencyNames()) + "] cannot be resolved");
@@ -582,7 +597,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         String[] dependencyNames = other.getDependencyNames();
         for (String dependencyName : dependencyNames) {
             for (GrailsPlugin grailsPlugin : delayedLoadPlugins) {
-                if (grailsPlugin.getName().equals(dependencyName)) return true;
+                if (grailsPlugin.getName().equals(dependencyName)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -600,8 +617,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             String requiredVersion = plugin.getDependentVersion(name);
 
             if (name.equals(dependency.getName()) &&
-                    GrailsVersionUtils.isValidVersion(dependency.getVersion(), requiredVersion))
+                    GrailsVersionUtils.isValidVersion(dependency.getVersion(), requiredVersion)) {
                 return true;
+            }
         }
         return false;
     }
@@ -638,21 +656,26 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                     LOG.info("Parsing & compiling " + r.getFilename());
                 }
                 pluginClass = ((GroovyClassLoader) cl).parseClass(IOGroovyMethods.getText(r.getInputStream(), "UTF-8"));
-            } catch (CompilationFailedException e) {
+            }
+            catch (CompilationFailedException e) {
                 throw new PluginException("Error compiling plugin [" + r.getFilename() + "] " + e.getMessage(), e);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new PluginException("Error reading plugin [" + r.getFilename() + "] " + e.getMessage(), e);
             }
-        } else {
+        }
+        else {
             String className = null;
             try {
                 className = GrailsResourceUtils.getClassName(r.getFile().getAbsolutePath());
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new PluginException("Cannot find plugin class [" + className + "] resource: [" + r.getFilename() + "]", e);
             }
             try {
                 pluginClass = Class.forName(className, true, cl);
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {
                 throw new PluginException("Cannot find plugin class [" + className + "] resource: [" + r.getFilename() + "]", e);
             }
         }
@@ -668,7 +691,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     private void attemptPluginLoad(GrailsPlugin plugin) {
         if (areDependenciesResolved(plugin) && areNoneToLoadBefore(plugin)) {
             registerPlugin(plugin);
-        } else {
+        }
+        else {
             delayedLoadPlugins.add(plugin);
         }
     }
@@ -782,7 +806,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             if (plugin.supportsCurrentScopeAndEnvironment()) {
                 try {
                     plugin.doWithDynamicMethods(applicationContext);
-                } catch (Throwable t) {
+                }
+                catch (Throwable t) {
                     throw new GrailsConfigurationException("Error configuring dynamic methods for plugin " + plugin + ": " + t.getMessage(), t);
                 }
             }

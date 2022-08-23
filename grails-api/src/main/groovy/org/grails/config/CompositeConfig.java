@@ -90,7 +90,9 @@ public class CompositeConfig implements Config {
     public Object getAt(Object key) {
         for (Config c : configs) {
             Object v = c.getAt(key);
-            if (v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -104,7 +106,9 @@ public class CompositeConfig implements Config {
     public Object navigate(String... path) {
         for (Config c : configs) {
             Object v = c.navigate(path);
-            if (v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -132,7 +136,9 @@ public class CompositeConfig implements Config {
     @Override
     public boolean containsKey(Object key) {
         for (Config config : configs) {
-            if (config.containsKey(key)) return true;
+            if (config.containsKey(key)) {
+                return true;
+            }
         }
         return false;
     }
@@ -140,7 +146,9 @@ public class CompositeConfig implements Config {
     @Override
     public boolean containsValue(Object value) {
         for (Config config : configs) {
-            if (config.containsValue(value)) return true;
+            if (config.containsValue(value)) {
+                return true;
+            }
         }
         return false;
     }
@@ -149,7 +157,9 @@ public class CompositeConfig implements Config {
     public Object get(Object key) {
         for (Config config : configs) {
             Object v = config.get(key);
-            if (v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -221,7 +231,9 @@ public class CompositeConfig implements Config {
     public <T> T getProperty(String key, Class<T> targetType) {
         for (Config config : configs) {
             T v = config.getProperty(key, targetType);
-            if (v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }

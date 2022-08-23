@@ -57,7 +57,8 @@ public class GrailsI18nPluginConfiguration {
     public LocaleResolver localeResolver() {
         if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.FIXED) {
             return new FixedLocaleResolver(this.webProperties.getLocale());
-        } else if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.ACCEPT_HEADER) {
+        }
+        else if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.ACCEPT_HEADER) {
             AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
             localeResolver.setDefaultLocale(this.webProperties.getLocale());
             return localeResolver;

@@ -49,7 +49,8 @@ public abstract class AbstractArtefactTypeAstTransformation implements ASTTransf
                     }
                 }
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             System.err.println("Error occurred calling AST injector [" + getClass() + "]: " + e.getMessage());
             throw e;
         }

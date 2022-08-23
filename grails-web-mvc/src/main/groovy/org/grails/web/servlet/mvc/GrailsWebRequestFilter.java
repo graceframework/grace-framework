@@ -110,7 +110,8 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
             for (ParameterCreationListener creationListenerBean : paramListenerBeans) {
                 webRequest.addParameterListener(creationListenerBean);
             }
-        } else {
+        }
+        else {
             logger.warn("paramListenerBeans isn't initialized.");
         }
     }

@@ -57,7 +57,9 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         if (GrailsASTUtils.isDomainClass(classNode, source) && shouldInjectClass(classNode)) {
-            if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) return;
+            if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
+                return;
+            }
             performInjectionOnAnnotatedEntity(classNode);
         }
     }
@@ -112,7 +114,8 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
                     if (name.equals(GormProperties.HAS_ONE)) {
                         final String message = "WARNING: The hasOne property in class [" + classNode.getName() + "] should have an initial expression of type Map or Class.";
                         System.err.println(message);
-                    } else if (!(initialExpression instanceof ListExpression)) {
+                    }
+                    else if (!(initialExpression instanceof ListExpression)) {
                         final String message = "WARNING: The belongsTo property in class [" + classNode.getName() + "] should have an initial expression of type List, Map or Class.";
                         System.err.println(message);
                     }
@@ -206,7 +209,9 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
     private boolean isEnum(ClassNode classNode) {
         ClassNode parent = classNode.getSuperClass();
         while (parent != null) {
-            if (parent.getName().equals("java.lang.Enum")) return true;
+            if (parent.getName().equals("java.lang.Enum")) {
+                return true;
+            }
             parent = parent.getSuperClass();
         }
         return false;

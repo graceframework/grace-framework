@@ -111,7 +111,9 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        if (shouldSkipInjection(classNode) || hasArtefactAnnotation(classNode)) return;
+        if (shouldSkipInjection(classNode) || hasArtefactAnnotation(classNode)) {
+            return;
+        }
         performInjectionOnAnnotatedClass(source, context, classNode);
     }
 
@@ -121,7 +123,9 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        if (shouldSkipInjection(classNode)) return;
+        if (shouldSkipInjection(classNode)) {
+            return;
+        }
 
         final String className = classNode.getName();
         KNOWN_TRANSFORMED_CLASSES.add(className);
@@ -149,7 +153,8 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         try {
             implementationNode = GrailsASTUtils.replaceGenericsPlaceholders(ClassHelper.make(instanceImplementation), genericsPlaceholders);
             constructorCallExpression = GrailsASTUtils.hasZeroArgsConstructor(implementationNode) ? new ConstructorCallExpression(implementationNode, ZERO_ARGS) : null;
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // if we get here it means we have reached a point where there were errors loading the class to perform injection with, probably due to missing dependencies
             // this may well be ok, as we want to be able to compile against, for example, non servlet environments. In this case just bail out.
             return;
@@ -234,9 +239,15 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     protected boolean isValidTargetClassNode(ClassNode classNode) {
-        if (classNode.isEnum()) return false; // don't transform enums
-        if (classNode instanceof InnerClassNode) return false;
-        if (classNode.getName().contains("$")) return false;
+        if (classNode.isEnum()) {
+            return false; // don't transform enums
+        }
+        if (classNode instanceof InnerClassNode) {
+            return false;
+        }
+        if (classNode.getName().contains("$")) {
+            return false;
+        }
         return true;
     }
 
@@ -264,8 +275,12 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     private boolean isValidArtefactTypeByConvention(ClassNode classNode) {
         String[] artefactTypes = getArtefactTypes();
         for (String artefactType : artefactTypes) {
-            if (artefactType.equals("*")) return true;
-            if (classNode.getName().endsWith(artefactType)) return true;
+            if (artefactType.equals("*")) {
+                return true;
+            }
+            if (classNode.getName().endsWith(artefactType)) {
+                return true;
+            }
         }
         return false;
     }

@@ -95,7 +95,8 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
         }
         if (o instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
             return doCharReplacementEncoding(o);
-        } else {
+        }
+        else {
             return encodeAsXmlObject(o);            
         }
     }

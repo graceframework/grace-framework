@@ -85,7 +85,9 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
         BeanDefinitionVisitor visitor = new BeanDefinitionVisitor(valueResolver) {
             @Override
             protected void visitMap(Map<?, ?> mapVal) {
-                if (mapVal instanceof Config) return;
+                if (mapVal instanceof Config) {
+                    return;
+                }
                 super.visitMap(mapVal);
             }
         };

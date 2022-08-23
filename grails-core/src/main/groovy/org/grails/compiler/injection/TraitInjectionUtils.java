@@ -54,7 +54,8 @@ public class TraitInjectionUtils {
         ClassNode traitClassNode = ClassHelper.make(trait);
         try {
             implementsTrait = classNode.declaresInterface(traitClassNode);
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // if we reach this point, the trait injector could not be loaded due to missing dependencies (for example missing servlet-api). This is ok, as we want to be able to compile against non-servlet environments.
             traitNotLoaded = true;
         }
@@ -131,12 +132,14 @@ public class TraitInjectionUtils {
             if (injectorsToUse.size() > 0) {
                 doInjectionInternal(compilationUnit, sourceUnit, cNode, injectorsToUse);
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             try {
                 System.err.println("Error occurred calling Trait injector [" + TraitInjectionUtils.class.getName() + "]: "
                         + e.getMessage());
                 e.printStackTrace();
-            } catch (Throwable t) {
+            }
+            catch (Throwable t) {
                 // ignore it
             }
             throw e;

@@ -196,7 +196,8 @@ public class BeanBuilder extends GroovyObjectSupport {
             for (Resource resource : resources) {
                 importBeans(resource);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.error("Error loading beans for resource pattern: " + resourcePattern, e);
         }
     }
@@ -689,7 +690,8 @@ public class BeanBuilder extends GroovyObjectSupport {
                     //factory-method requires args
                     int endOfConstructArgs = hasClosureArgument ? args.length - 1 : args.length;
                     currentBeanConfig = springConfig.addSingletonBean(name, null, resolveConstructorArguments(args, 1, endOfConstructArgs));
-                } else {
+                }
+                else {
                     currentBeanConfig = springConfig.addSingletonBean(name);
                 }
                 currentBeanConfig.setFactoryBean(factoryBeanEntry.getKey().toString());
@@ -727,7 +729,8 @@ public class BeanBuilder extends GroovyObjectSupport {
         for (int i = 0; i < constructorArgs.length; i++) {
             if (constructorArgs[i] instanceof List) {
                 constructorArgs[i] = manageListIfNecessary(constructorArgs[i]);
-            } else if (constructorArgs[i] instanceof Map) {
+            }
+            else if (constructorArgs[i] instanceof Map) {
                 constructorArgs[i] = manageMapIfNecessary(constructorArgs[i]);
             }
         }

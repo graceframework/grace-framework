@@ -86,13 +86,21 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             ControllerObjectKey that = (ControllerObjectKey) o;
 
-            if (controllerHashCode != that.controllerHashCode) return false;
-            if (!controllerClassName.equals(that.controllerClassName)) return false;
+            if (controllerHashCode != that.controllerHashCode) {
+                return false;
+            }
+            if (!controllerClassName.equals(that.controllerClassName)) {
+                return false;
+            }
 
             return true;
         }

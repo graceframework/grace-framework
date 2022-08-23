@@ -72,30 +72,39 @@ public class EncodingStateImpl implements EncodingState {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         EncodingStateImpl other = (EncodingStateImpl) obj;
         if (encoders == null) {
-            if (other.encoders != null && other.encoders.size() > 0)
+            if (other.encoders != null && other.encoders.size() > 0) {
                 return false;
+            }
         }
-        else if (!encoders.equals(other.encoders))
+        else if (!encoders.equals(other.encoders)) {
             return false;
+        }
         return true;
     }
 
     public EncodingState appendEncoder(Encoder encoder) {
-        if (encoder == null) return this;
+        if (encoder == null) {
+            return this;
+        }
         Set<Encoder> newEncoders;
         if (encoders == null || encoders.size() == 0) {
             newEncoders = Collections.singleton(encoder);
-        } else if (encoders.size() == 1 && encoders.contains(encoder)) {
+        }
+        else if (encoders.size() == 1 && encoders.contains(encoder)) {
             return this;
-        } else {
+        }
+        else {
             newEncoders = new LinkedHashSet<Encoder>();
             newEncoders.addAll(encoders);
             newEncoders.add(encoder);
@@ -113,7 +122,8 @@ public class EncodingStateImpl implements EncodingState {
             for (Encoder encoder : encoders) {
                 if (!first) {
                     sb.append(", ");
-                } else {
+                }
+                else {
                     first = false;
                 }
                 sb.append("[@");
@@ -123,7 +133,8 @@ public class EncodingStateImpl implements EncodingState {
                 sb.append("]");
             }
             sb.append("]");
-        } else {
+        }
+        else {
             sb.append("[no encoders]");
         }
         return sb.toString();

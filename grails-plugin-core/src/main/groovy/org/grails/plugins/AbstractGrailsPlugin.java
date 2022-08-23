@@ -91,11 +91,13 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
                 if (filename.equals(PLUGIN_YML)) {
                     YamlPropertySourceLoader propertySourceLoader = new YamlPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(), "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST).stream().findFirst().orElse(null);
-                } else if (filename.equals(PLUGIN_GROOVY)) {
+                }
+                else if (filename.equals(PLUGIN_GROOVY)) {
                     GroovyConfigPropertySourceLoader propertySourceLoader = new GroovyConfigPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(), "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST).stream().findFirst().orElse(null);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 LOG.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
             }
         }
@@ -237,13 +239,21 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AbstractGrailsPlugin)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractGrailsPlugin)) {
+            return false;
+        }
 
         AbstractGrailsPlugin that = (AbstractGrailsPlugin) o;
 
-        if (!pluginClass.equals(that.pluginClass)) return false;
-        if (!version.equals(that.version)) return false;
+        if (!pluginClass.equals(that.pluginClass)) {
+            return false;
+        }
+        if (!version.equals(that.version)) {
+            return false;
+        }
 
         return true;
     }
@@ -257,20 +267,30 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     public int compareTo(Object o) {
         AbstractGrailsPlugin that = (AbstractGrailsPlugin) o;
-        if (equals(that)) return 0;
+        if (equals(that)) {
+            return 0;
+        }
 
         String thatName = that.getName();
         for (String pluginName : getLoadAfterNames()) {
-            if (pluginName.equals(thatName)) return -1;
+            if (pluginName.equals(thatName)) {
+                return -1;
+            }
         }
         for (String pluginName : getLoadBeforeNames()) {
-            if (pluginName.equals(thatName)) return 1;
+            if (pluginName.equals(thatName)) {
+                return 1;
+            }
         }
         for (String pluginName : that.getLoadAfterNames()) {
-            if (pluginName.equals(getName())) return 1;
+            if (pluginName.equals(getName())) {
+                return 1;
+            }
         }
         for (String pluginName : that.getLoadBeforeNames()) {
-            if (pluginName.equals(getName())) return -1;
+            if (pluginName.equals(getName())) {
+                return -1;
+            }
         }
 
         return 0;

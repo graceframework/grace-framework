@@ -40,7 +40,8 @@ public class CodecLookupHelper {
             try {
                 CodecLookup codecLookup = ctx.getBean("codecLookup", CodecLookup.class);
                 return codecLookup.lookupEncoder(codecName);
-            } catch (NoSuchBeanDefinitionException e) {
+            }
+            catch (NoSuchBeanDefinitionException e) {
                 // ignore missing codecLookup bean in tests
                 log.debug("codecLookup bean is missing from test context.", e);
             }

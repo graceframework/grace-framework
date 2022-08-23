@@ -66,12 +66,14 @@ public class DeferredBindingActions {
                     if (runnable != null) {
                         try {
                             runnable.run();
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                             LOG.error("Error running deferred data binding: " + e.getMessage(), e);
                         }
                     }
                 }
-            } finally {
+            }
+            finally {
                 clear();
             }
         }

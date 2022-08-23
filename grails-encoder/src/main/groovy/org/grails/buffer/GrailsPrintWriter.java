@@ -281,8 +281,9 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public void write(final int c) {
         usageFlag = true;
-        if (trouble)
+        if (trouble) {
             return;
+        }
 
         try {
             getOut().write(c);
@@ -302,8 +303,9 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public void write(final char buf[], final int off, final int len) {
         usageFlag = true;
-        if (trouble || buf == null || len == 0)
+        if (trouble || buf == null || len == 0) {
             return;
+        }
         try {
             getOut().write(buf, off, len);
         }
@@ -322,8 +324,9 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public void write(final String s, final int off, final int len) {
         usageFlag = true;
-        if (trouble || s == null || s.length() == 0)
+        if (trouble || s == null || s.length() == 0) {
             return;
+        }
 
         try {
             getOut().write(s, off, len);
@@ -439,10 +442,12 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     public GrailsPrintWriter append(final CharSequence csq, final int start, final int end) {
         try {
             usageFlag = true;
-            if (csq == null)
+            if (csq == null) {
                 appendNullCharSequence();
-            else
+            }
+            else {
                 CharSequences.writeCharSequence(getOut(), csq, start, end);
+            }
         }
         catch (IOException e) {
             handleIOException(e);
@@ -458,10 +463,12 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     public GrailsPrintWriter append(final CharSequence csq) {
         try {
             usageFlag = true;
-            if (csq == null)
+            if (csq == null) {
                 appendNullCharSequence();
-            else
+            }
+            else {
                 CharSequences.writeCharSequence(getOut(), csq);
+            }
         }
         catch (IOException e) {
             handleIOException(e);
@@ -481,8 +488,9 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
 
     public void write(final StreamCharBuffer otherBuffer) {
         usageFlag = true;
-        if (trouble)
+        if (trouble) {
             return;
+        }
 
         try {
             otherBuffer.writeTo(findStreamCharBufferTarget(true));
@@ -561,8 +569,9 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         }
         
         usageFlag = true;
-        if (trouble)
+        if (trouble) {
             return;
+        }
 
         try {
             writable.writeTo(getOut());
@@ -654,12 +663,14 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         Writer target = null;
         if (getOut() instanceof EncodedAppenderWriterFactory && getOut() != this) {
             target = getOut();
-        } else {
+        }
+        else {
             target = findStreamCharBufferTarget(false);
         }
         if (target instanceof EncodedAppenderWriterFactory && target != this) {
             return ((EncodedAppenderWriterFactory) target).getWriterForEncoder(encoder, encodingStateRegistry);
-        } else if (target instanceof EncodedAppenderFactory) {
+        }
+        else if (target instanceof EncodedAppenderFactory) {
             EncodedAppender encodedAppender = ((EncodedAppenderFactory) target).getEncodedAppender();
             if (encodedAppender != null) {
                 return new EncodedAppenderWriter(encodedAppender, encoder, encodingStateRegistry);
@@ -668,10 +679,12 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         if (target != null) {
             if (encoder instanceof StreamingEncoder) {
                 return new StreamingEncoderWriter(target, (StreamingEncoder) encoder, encodingStateRegistry);
-            } else {
+            }
+            else {
                 return new CodecPrintWriter(target, encoder, encodingStateRegistry);
             }
-        } else {
+        }
+        else {
             return null;
         }
     }

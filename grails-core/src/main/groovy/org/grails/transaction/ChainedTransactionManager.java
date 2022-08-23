@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2013 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,7 +106,8 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
 				mts.registerTransactionManager(definition, transactionManager);
 			}
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 
 			Map<PlatformTransactionManager, TransactionStatus> transactionStatuses = mts.getTransactionStatuses();
 
@@ -115,7 +116,8 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
 					if (transactionStatuses.get(transactionManager) != null) {
 						transactionManager.rollback(transactionStatuses.get(transactionManager));
 					}
-				} catch (Exception ex2) {
+				}
+				catch (Exception ex2) {
 					LOGGER.warn("Rollback exception (" + transactionManager + ") " + ex2.getMessage(), ex2);
 				}
 			}
@@ -154,19 +156,22 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
 
 				try {
 					multiTransactionStatus.commit(transactionManager);
-				} catch (Exception ex) {
+				}
+				catch (Exception ex) {
 					commit = false;
 					commitException = ex;
 					commitExceptionTransactionManager = transactionManager;
 				}
 
-			} else {
+			}
+			else {
 
 				// after unsucessfull commit we must try to rollback remaining transaction managers
 
 				try {
 					multiTransactionStatus.rollback(transactionManager);
-				} catch (Exception ex) {
+				}
+				catch (Exception ex) {
 					LOGGER.warn("Rollback exception (after commit) (" + transactionManager + ") " + ex.getMessage(), ex);
 				}
 			}
@@ -198,11 +203,13 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
 		for (PlatformTransactionManager transactionManager : reverse(transactionManagers)) {
 			try {
 				multiTransactionStatus.rollback(transactionManager);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				if (rollbackException == null) {
 					rollbackException = ex;
 					rollbackExceptionTransactionManager = transactionManager;
-				} else {
+				}
+				else {
 					LOGGER.warn("Rollback exception (" + transactionManager + ") " + ex.getMessage(), ex);
 				}
 			}

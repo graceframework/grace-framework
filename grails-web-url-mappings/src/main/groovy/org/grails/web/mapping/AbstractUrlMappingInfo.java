@@ -54,9 +54,15 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
                 Object rightValue = newParams.get(rightKey);
                 boolean leftIsClosure = leftValue instanceof Closure;
                 boolean rightIsClosure = rightValue instanceof Closure;
-                if (leftIsClosure && rightIsClosure) return 0;
-                if (leftIsClosure && !rightIsClosure) return 1;
-                if (rightIsClosure && !leftIsClosure) return -1;
+                if (leftIsClosure && rightIsClosure) {
+                    return 0;
+                }
+                if (leftIsClosure && !rightIsClosure) {
+                    return 1;
+                }
+                if (rightIsClosure && !leftIsClosure) {
+                    return -1;
+                }
                 return 0;
             }
         });
@@ -80,7 +86,9 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     protected void populateParamsForMapping(GrailsWebRequest webRequest) {
         Map dispatchParams = webRequest.getParams();
         String encoding = webRequest.getRequest().getCharacterEncoding();
-        if (encoding == null) encoding = "UTF-8";
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             String name = entry.getKey();
@@ -105,7 +113,8 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
         if (!GrailsStringUtils.isBlank(id)) {
             try {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, UriUtils.decode(id, encoding));
-            } catch (IllegalArgumentException e) {
+            }
+            catch (IllegalArgumentException e) {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, id);
             }
         }

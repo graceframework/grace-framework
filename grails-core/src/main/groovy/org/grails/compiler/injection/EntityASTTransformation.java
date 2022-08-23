@@ -79,10 +79,12 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
         for (ClassInjector injector : domainInjectors) {
             try {
                 injector.performInjection(sourceUnit, classNode);
-            } catch (RuntimeException e) {
+            }
+            catch (RuntimeException e) {
                 try {
                     System.err.println("Error occurred calling AST injector [" + injector.getClass().getName() + "]: " + e.getMessage());
-                } catch (Throwable t) {
+                }
+                catch (Throwable t) {
                     // ignore
                 }
                 throw e;

@@ -129,7 +129,9 @@ public abstract class BaseApiProvider {
     private boolean isNotExcluded(Method method, final int modifiers) {
         final String name = method.getName();
 
-        if (EXCLUDED_METHODS.contains(name)) return false;
+        if (EXCLUDED_METHODS.contains(name)) {
+            return false;
+        }
 
         boolean isStatic = Modifier.isStatic(modifiers);
 

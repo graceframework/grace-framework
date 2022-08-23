@@ -117,7 +117,8 @@ public class DataBindingUtils {
             final Class<? extends Object> objectClass = object.getClass();
             if (CLASS_TO_BINDING_INCLUDE_LIST.containsKey(objectClass)) {
                 includeList = CLASS_TO_BINDING_INCLUDE_LIST.get(objectClass);
-            } else {
+            }
+            else {
                 final Field whiteListField = objectClass.getDeclaredField(DefaultASTDatabindingHelper.DEFAULT_DATABINDING_WHITELIST);
                 if (whiteListField != null) {
                     if ((whiteListField.getModifiers() & Modifier.STATIC) != 0) {
@@ -131,7 +132,8 @@ public class DataBindingUtils {
                     CLASS_TO_BINDING_INCLUDE_LIST.put(objectClass, includeList);
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
         }
         return includeList;
     }
@@ -167,7 +169,8 @@ public class DataBindingUtils {
         if (application != null) {
             try {
                 entity = application.getMappingContext().getPersistentEntity(targetType.getClass().getName());
-            } catch (GrailsConfigurationException e) {
+            }
+            catch (GrailsConfigurationException e) {
                 //no-op
             }
         }
@@ -205,7 +208,8 @@ public class DataBindingUtils {
         if (application != null) {
             try {
                 entity = application.getMappingContext().getPersistentEntity(object.getClass().getName());
-            } catch (GrailsConfigurationException e) {
+            }
+            catch (GrailsConfigurationException e) {
                 //no-op
             }
         }
@@ -236,14 +240,16 @@ public class DataBindingUtils {
             final DataBindingSource bindingSource = createDataBindingSource(grailsApplication, object.getClass(), source);
             final DataBinder grailsWebDataBinder = getGrailsWebDataBinder(grailsApplication);
             grailsWebDataBinder.bind(object, bindingSource, filter, include, exclude);
-        } catch (InvalidRequestBodyException e) {
+        }
+        catch (InvalidRequestBodyException e) {
             String messageCode = "invalidRequestBody";
             Class objectType = object.getClass();
             String defaultMessage = "An error occurred parsing the body of the request";
             String[] codes = getMessageCodes(messageCode, objectType);
             bindingResult = new BeanPropertyBindingResult(object, objectType.getName());
             bindingResult.addError(new ObjectError(bindingResult.getObjectName(), codes, null, defaultMessage));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             bindingResult = new BeanPropertyBindingResult(object, object.getClass().getName());
             bindingResult.addError(new ObjectError(bindingResult.getObjectName(), e.getMessage()));
         }

@@ -128,21 +128,25 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
             try {
                 if (searchClasspath) {
                     resources = resourceResolver.getResources(messageBundleLocationPattern);
-                } else {
+                }
+                else {
                     DefaultGrailsApplication defaultGrailsApplication = (DefaultGrailsApplication) application;
                     if (defaultGrailsApplication != null) {
                         GrailsApplicationClass applicationClass = defaultGrailsApplication.getApplicationClass();
                         if (applicationClass != null) {
                             ResourcePatternResolver resourcePatternResolver = new ClassRelativeResourcePatternResolver(applicationClass.getClass());
                             resources = resourcePatternResolver.getResources(messageBundleLocationPattern);
-                        } else {
+                        }
+                        else {
                             resources = resourceResolver.getResources(messageBundleLocationPattern);
                         }
-                    } else {
+                    }
+                    else {
                         resources = resourceResolver.getResources(messageBundleLocationPattern);
                     }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 resources = new Resource[0];
             }
         }
@@ -155,8 +159,9 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
             if (i > -1) {
                 baseName = baseName.substring(0, i);
             }
-            if (!basenames.contains(baseName) && !baseName.equals(""))
+            if (!basenames.contains(baseName) && !baseName.equals("")) {
                 basenames.add(baseName);
+            }
         }
 
         setBasenames(basenames.toArray(new String[basenames.size()]));
@@ -213,7 +218,9 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         }
         else {
             String result = findCodeInBinaryPlugins(code, locale);
-            if (result != null) return result;
+            if (result != null) {
+                return result;
+            }
 
         }
         return null;
@@ -270,7 +277,9 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         }
         else {
             MessageFormat result = findMessageFormatInBinaryPlugins(code, locale);
-            if (result != null) return result;
+            if (result != null) {
+                return result;
+            }
         }
         return null;
     }

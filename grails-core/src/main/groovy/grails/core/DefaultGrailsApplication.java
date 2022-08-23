@@ -170,9 +170,11 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
             Class<?> aClass;
             try {
                 aClass = classLoader.loadClass(GrailsResourceUtils.getClassName(resource.getFile().getAbsolutePath()));
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {
                 throw new GrailsConfigurationException("Class not found loading Grails application: " + e.getMessage(), e);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new GrailsConfigurationException("Class not found loading Grails application: " + e.getMessage(), e);
             }
             loadedClasses.add(aClass);
@@ -190,9 +192,11 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
             Class<?> aClass;
             try {
                 aClass = classLoader.loadClass(GrailsResourceUtils.getClassName(resource.getFile().getAbsolutePath()));
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {
                 throw new GrailsConfigurationException("Class not found loading Grails application: " + e.getMessage(), e);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new GrailsConfigurationException("Class not found loading Grails application: " + e.getMessage(), e);
             }
             loadedClasses.add(aClass);
@@ -644,7 +648,9 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
         match.find();
         if (match.matches()) {
             if (argsv.length > 0) {
-                if (argsv[0] instanceof CharSequence) argsv[0] = argsv[0].toString();
+                if (argsv[0] instanceof CharSequence) {
+                    argsv[0] = argsv[0].toString();
+                }
                 if ((argsv.length != 1) || !(argsv[0] instanceof String)) {
                     throw new IllegalArgumentException(
                             "Dynamic method get<Artefact>Class(artefactName) requires a single String parameter");
@@ -720,7 +726,9 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
 
     private static boolean extensionMethodsInitialized = false;
     protected static void initialiseGroovyExtensionModules() {
-        if (extensionMethodsInitialized) return;
+        if (extensionMethodsInitialized) {
+            return;
+        }
 
         extensionMethodsInitialized = true;
         Map<CachedClass, List<MetaMethod>> map = new HashMap<CachedClass, List<MetaMethod>>();
@@ -814,7 +822,8 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
             GrailsClass artefactGrailsClass;
             if (handler instanceof DomainClassArtefactHandler) {
                 artefactGrailsClass = ((DomainClassArtefactHandler) handler).newArtefactClass(artefactClass, proxyMappingContext);
-            } else {
+            }
+            else {
                 artefactGrailsClass = handler.newArtefactClass(artefactClass);
             }
             artefactGrailsClass.setGrailsApplication(this);

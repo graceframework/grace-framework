@@ -63,17 +63,21 @@ public class BinaryGrailsPluginDescriptor {
             InputStream inputStream;
             try {
                 inputStream = resource.getInputStream();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
             }
             try {
                 parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
-            } finally {
+            }
+            finally {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     // ignore
                 }
             }

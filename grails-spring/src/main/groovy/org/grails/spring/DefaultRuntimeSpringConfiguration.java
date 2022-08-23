@@ -283,7 +283,8 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
                 }
 
                 registry.registerBeanDefinition(beanName, bc.getBeanDefinition());
-            } else {
+            }
+            else {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Bean '" + beanName + "' is not registered with bean.condition = false");
                 }
@@ -334,7 +335,8 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
                 }
 
                 targetSpringConfig.addBeanConfiguration(beanEntry.getKey(), beanEntry.getValue());
-            } else {
+            }
+            else {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Bean '" + beanName + "' is not registered with bean.condition = false");
                 }

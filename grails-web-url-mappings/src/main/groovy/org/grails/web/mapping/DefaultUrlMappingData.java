@@ -112,13 +112,15 @@ public class DefaultUrlMappingData implements UrlMappingData {
                 }
                 buf.append(SLASH).append(token);
                 isOptional = true;
-            } else {
+            }
+            else {
                 buf.append(SLASH).append(token);
             }
             if (CAPTURED_WILDCARD.equals(token)) {
                 if (isOptional) {
                     optionalTokens.add(Boolean.TRUE);
-                } else {
+                }
+                else {
                     optionalTokens.add(Boolean.FALSE);
                 }
             }
@@ -149,7 +151,9 @@ public class DefaultUrlMappingData implements UrlMappingData {
     }
 
     public boolean isOptional(int index) {
-        if (index >= optionalTokens.size()) return true;
+        if (index >= optionalTokens.size()) {
+            return true;
+        }
         return optionalTokens.get(index).equals(Boolean.TRUE);
     }
 

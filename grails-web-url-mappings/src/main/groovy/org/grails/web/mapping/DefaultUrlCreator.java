@@ -57,7 +57,9 @@ public class DefaultUrlCreator implements UrlCreator {
     }
 
     public String createURL(Map parameterValues, String encoding) {
-        if (parameterValues == null) parameterValues = Collections.emptyMap();
+        if (parameterValues == null) {
+            parameterValues = Collections.emptyMap();
+        }
         GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.getRequestAttributes();
         return createURLWithWebRequest(parameterValues, webRequest, true);
     }
@@ -123,7 +125,9 @@ public class DefaultUrlCreator implements UrlCreator {
     private String createURLInternal(String controller, String action, Map<String, String> parameterValues, boolean includeContextPath) {
         GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.getRequestAttributes();
 
-        if (parameterValues == null) parameterValues = new HashMap<String, String>();
+        if (parameterValues == null) {
+            parameterValues = new HashMap<String, String>();
+        }
         boolean blankController = GrailsStringUtils.isBlank(controller);
         boolean blankAction = GrailsStringUtils.isBlank(action);
 

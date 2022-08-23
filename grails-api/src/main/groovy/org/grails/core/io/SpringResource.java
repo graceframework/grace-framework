@@ -79,7 +79,8 @@ public class SpringResource implements Resource {
     public Resource createRelative(String relativePath) {
         try {
             return new SpringResource(springResource.createRelative(relativePath));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             return null;
         }
     }

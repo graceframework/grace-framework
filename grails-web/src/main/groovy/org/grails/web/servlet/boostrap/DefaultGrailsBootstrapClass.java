@@ -33,7 +33,9 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
     @SuppressWarnings("rawtypes")
     private static final Closure BLANK_CLOSURE = new Closure(DefaultGrailsBootstrapClass.class) {
         @Override
-        public Object call(Object... args) { return null; }
+        public Object call(Object... args) {
+            return null;
+        }
     };
     private final Object instance;
 

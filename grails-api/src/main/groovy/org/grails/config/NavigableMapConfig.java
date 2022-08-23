@@ -173,7 +173,9 @@ public abstract class NavigableMapConfig implements Config {
     }
 
     public Object asType(Class c) {
-        if (c == Boolean.class || c == boolean.class) return false;
+        if (c == Boolean.class || c == boolean.class) {
+            return false;
+        }
         return null;
     }
 
@@ -280,17 +282,20 @@ public abstract class NavigableMapConfig implements Config {
         for (Map.Entry<String, Object> entry: from.entrySet()) {
             if (entry.getValue() instanceof NavigableMap) {
                 to.put(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
-            } else if (entry.getValue() instanceof List) {
+            }
+            else if (entry.getValue() instanceof List) {
                 List<Object> newList = new ArrayList<>();
                 for (Object o: (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
-                    } else {
+                    }
+                    else {
                         newList.add(o);
                     }
                 }
                 to.put(entry.getKey(), newList);
-            } else {
+            }
+            else {
                 to.put(entry.getKey(), entry.getValue());
             }
         }
@@ -303,12 +308,14 @@ public abstract class NavigableMapConfig implements Config {
             final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
             if (entry.getValue() instanceof NavigableMap) {
                 config.setProperty(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
-            } else if (entry.getValue() instanceof List) {
+            }
+            else if (entry.getValue() instanceof List) {
                 final List<Object> newList = new ArrayList<>();
                 for (Object o: (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
-                    } else {
+                    }
+                    else {
                         newList.add(o);
                     }
                 }
@@ -324,10 +331,12 @@ public abstract class NavigableMapConfig implements Config {
                 if (originalValue instanceof NavigableMap && targetType.equals(Map.class)) {
                     final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
                     return (T) convertToMap((NavigableMap) originalValue, cache);
-                } else {
+                }
+                else {
                     return (T) originalValue;
                 }
-            } else {
+            }
+            else {
                 if (!(originalValue instanceof NavigableMap) || Map.class.isAssignableFrom(targetType)) {
                     try {
                         T value = conversionService.convert(originalValue, targetType);
@@ -335,13 +344,15 @@ public abstract class NavigableMapConfig implements Config {
                             convertPropsToMap((ConfigObject) value);
                         }
                         return DefaultGroovyMethods.asBoolean(value) ? value : defaultValue;
-                    } catch (ConversionException e) {
+                    }
+                    catch (ConversionException e) {
                         if (targetType.isEnum()) {
                             String stringValue = originalValue.toString();
                             try {
                                 T value = (T) toEnumValue(targetType, stringValue);
                                 return value;
-                            } catch (Throwable e2) {
+                            }
+                            catch (Throwable e2) {
                                 // ignore e2 and throw original
                             }
                         }
@@ -407,7 +418,8 @@ public abstract class NavigableMapConfig implements Config {
         for (int i = 0; i < keys.size(); i++) {
             if (i == 0) {
                 value = configMap.get(keys.get(i));
-            } else if (value instanceof Map) {
+            }
+            else if (value instanceof Map) {
                 value = ((Map) value).get(keys.get(i));
             }
         }

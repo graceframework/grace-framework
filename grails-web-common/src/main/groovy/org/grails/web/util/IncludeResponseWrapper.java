@@ -97,21 +97,27 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public void sendError(int i, String s) throws IOException {
-        if (isCommitted()) throw new IllegalStateException("Response already committed");
+        if (isCommitted()) {
+            throw new IllegalStateException("Response already committed");
+        }
         setStatus(i);
         flushBuffer();
     }
 
     @Override
     public void sendError(int i) throws IOException {
-        if (isCommitted()) throw new IllegalStateException("Response already committed");
+        if (isCommitted()) {
+            throw new IllegalStateException("Response already committed");
+        }
         setStatus(i);
         flushBuffer();
     }
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-        if (usingWriter) throw new IllegalStateException("Method getWriter() already called");
+        if (usingWriter) {
+            throw new IllegalStateException("Method getWriter() already called");
+        }
 
         if (!usingStream) {
             usingStream = true;
@@ -150,7 +156,9 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public PrintWriter getWriter() throws IOException {
-        if (usingStream) throw new IllegalStateException("Method getOutputStream() already called");
+        if (usingStream) {
+            throw new IllegalStateException("Method getOutputStream() already called");
+        }
 
         if (!usingWriter) {
             usingWriter = true;
@@ -179,7 +187,9 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     
     @Override
     public void resetBuffer() {
-       if (isCommitted()) throw new IllegalStateException("Response already committed");
+       if (isCommitted()) {
+           throw new IllegalStateException("Response already committed");
+       }
        if (usingWriter) {
           charBuffer.reset();
        }

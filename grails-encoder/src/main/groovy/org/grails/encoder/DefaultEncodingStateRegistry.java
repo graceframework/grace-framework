@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,8 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
             if (charSequenceReference != null && string == charSequenceReference.get()) {
                 if (result == null) {
                     result = Collections.singleton(entry.getKey());
-                } else {
+                }
+                else {
                     if (result.size() == 1) {
                         result = new HashSet<Encoder>(result);
                     }
@@ -97,7 +98,9 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
      * @see EncodingStateRegistry#shouldEncodeWith(Encoder, java.lang.CharSequence)
      */
     public boolean shouldEncodeWith(Encoder encoderToApply, CharSequence string) {
-        if (isNoneEncoder(encoderToApply)) return false;
+        if (isNoneEncoder(encoderToApply)) {
+            return false;
+        }
         EncodingState encodingState = getEncodingStateFor(string);
         return shouldEncodeWith(encoderToApply, encodingState);
     }
@@ -110,7 +113,9 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
      * @return true, if should encode
      */
     public static boolean shouldEncodeWith(Encoder encoderToApply, EncodingState currentEncodingState) {
-        if (isNoneEncoder(encoderToApply)) return false;
+        if (isNoneEncoder(encoderToApply)) {
+            return false;
+        }
         if (currentEncodingState != null && currentEncodingState.getEncoders() != null) {
             for (Encoder encoder : currentEncodingState.getEncoders()) {
                 if (isPreviousEncoderSafeOrEqual(encoderToApply, encoder)) {

@@ -66,7 +66,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     }
 
     public void addInternalPackage(String name) {
-        if (name == null) throw new IllegalArgumentException("Package name cannot be null");
+        if (name == null) {
+            throw new IllegalArgumentException("Package name cannot be null");
+        }
         packagesToFilter.add(name);
     }
 
@@ -117,7 +119,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             if (!foundGroovy && fileName != null && fileName.endsWith(".groovy")) {
                 foundGroovy = true;
             }
-            if (endPackage != null && className.startsWith(endPackage) && foundGroovy) break;
+            if (endPackage != null && className.startsWith(endPackage) && foundGroovy) {
+                break;
+            }
             if (isApplicationClass(className)) {
                 if (stackTraceElement.getLineNumber() > -1) {
                     newTrace.add(stackTraceElement);
@@ -134,7 +138,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
      */
     protected boolean isApplicationClass(String className) {
         for (String packageName : packagesToFilter) {
-            if (className.startsWith(packageName)) return false;
+            if (className.startsWith(packageName)) {
+                return false;
+            }
         }
         return true;
     }

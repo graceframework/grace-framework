@@ -136,7 +136,8 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
                     try {
                         Field field = ce.getType().getTypeClass().getDeclaredField(pe.getPropertyAsString());
                         return (String) field.get(null);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                     }
                 }
             }
@@ -181,10 +182,12 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
                     injector.performInjectionOnAnnotatedClass(sourceUnit, cNode);
                 }
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             try {
                 GrailsConsole.getInstance().error("Error occurred calling AST injector: " + e.getMessage(), e);
-            } catch (Throwable t) {
+            }
+            catch (Throwable t) {
                 // ignore it
             }
             throw e;
@@ -213,7 +216,9 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     public static boolean hasArtefactType(String artefactType, GrailsArtefactClassInjector gace) {
         for (String _artefactType : gace.getArtefactTypes()) {
-            if (_artefactType.equals("*")) return true;
+            if (_artefactType.equals("*")) {
+                return true;
+            }
             if (_artefactType.equals(artefactType)) {
                 return true;
             }

@@ -83,7 +83,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                         }
                         try {
                             constructorToUse = clazz.getDeclaredConstructor((Class[]) null);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex) {
                             throw new BeanInstantiationException(clazz, "No default constructor found", ex);
                         }
 
@@ -116,10 +117,12 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
         if (autowireMode == AUTOWIRE_BY_NAME) {
             if (DISABLE_AUTOWIRE_BY_NAME_OPTIMIZATIONS || dependencyCheck || existingBean instanceof Aware) {
                 super.autowireBeanProperties(existingBean, autowireMode, dependencyCheck);
-            } else {
+            }
+            else {
                 try {
                     populateBeanInAutowireByName(existingBean);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     logger.error("Bean couldn't be autowired using grails optimization: " + e.getMessage());
                     logger.error("Retrying using spring autowire");
 
@@ -131,7 +134,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                     super.autowireBeanProperties(existingBean, autowireMode, dependencyCheck);
                 }
             }
-        } else {
+        }
+        else {
             super.autowireBeanProperties(existingBean, autowireMode, dependencyCheck);
         }
     }
@@ -157,7 +161,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                     }
                 }
             }
-        } else {
+        }
+        else {
             super.autowireByName(beanName, mbd, bw, pvs);
         }
     }
@@ -218,7 +223,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                 Class userClass = ClassUtils.getUserClass(existingBean.getClass());
                 if (userClass != existingBean.getClass()) {
                     bw.setWrappedInstance(BeanUtils.instantiate(userClass));
-                } else {
+                }
+                else {
                     bw.setWrappedInstance(existingBean);
                 }
                 bw.setConversionService(getConversionService());

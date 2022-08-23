@@ -113,7 +113,9 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
             final Set<Class> injectorClasses = new HashSet<Class>();
             for (Resource resource : resources) {
                 // ignore not readable classes and closures
-                if (!resource.isReadable() || resource.getFilename().contains("$_")) continue;
+                if (!resource.isReadable() || resource.getFilename().contains("$_")) {
+                    continue;
+                }
                 InputStream inputStream = resource.getInputStream();
                 try {
 
@@ -126,7 +128,9 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                             try {
                                 if (visible && desc.contains(astTransformerClassName)) {
                                     Class<?> injectorClass = finalClassLoader.loadClass(classReader.getClassName().replace('/', '.'));
-                                    if (injectorClasses.contains(injectorClass)) return super.visitAnnotation(desc, true);
+                                    if (injectorClasses.contains(injectorClass)) {
+                                        return super.visitAnnotation(desc, true);
+                                    }
                                     if (ClassInjector.class.isAssignableFrom(injectorClass)) {
 
                                         injectorClasses.add(injectorClass);
@@ -137,20 +141,25 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                                         }
                                     }
                                 }
-                            } catch (ClassNotFoundException e) {
+                            }
+                            catch (ClassNotFoundException e) {
                                 // ignore
-                            } catch (InstantiationException e) {
+                            }
+                            catch (InstantiationException e) {
                                 // ignore
-                            } catch (IllegalAccessException e) {
+                            }
+                            catch (IllegalAccessException e) {
                                 // ignore
                             }
                             return super.visitAnnotation(desc, visible);
                         }
                     }, ClassReader.SKIP_CODE);
 
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     // ignore
-                } catch (NoClassDefFoundError e) {
+                }
+                catch (NoClassDefFoundError e) {
                     // ignore
                 }
                 finally {
@@ -170,7 +179,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
             });
             classInjectors = injectors.toArray(new ClassInjector[injectors.size()]);
             globalClassInjectors = globalInjectors.toArray(new ClassInjector[globalInjectors.size()]);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // ignore
         }
 
@@ -194,7 +204,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         if (resource.exists()) {
             try {
                 url = resource.getURL();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 // ignore
             }
         }
