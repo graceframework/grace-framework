@@ -119,8 +119,8 @@ trait ResponseRedirector implements WebAttributes {
         redirector.setRequestDataValueProcessor requestDataValueProcessor
         redirector.setUseJessionId useJsessionId
 
-        def webRequest = webRequest
-        redirector.redirect webRequest.getRequest(), webRequest.getResponse(), argMap
+        def currentWebRequest = webRequest
+        redirector.redirect currentWebRequest.getRequest(), currentWebRequest.getResponse(), argMap
     }
 
     /**

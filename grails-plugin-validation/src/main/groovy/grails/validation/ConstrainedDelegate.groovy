@@ -36,7 +36,7 @@ class ConstrainedDelegate implements Constrained, ConstrainedProperty {
     }
 
     @Override
-    grails.gorm.validation.Constraint getAppliedConstraint(String name) {
+    Constraint getAppliedConstraint(String name) {
         property.getAppliedConstraint(name)
     }
 

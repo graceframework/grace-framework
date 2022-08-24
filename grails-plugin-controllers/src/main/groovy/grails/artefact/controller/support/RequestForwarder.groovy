@@ -86,14 +86,6 @@ trait RequestForwarder implements WebAttributes {
                 params.action = convert(params.action.toString())
             }
 
-            if (params.namespace) {
-                params.namespace = params.namespace
-            }
-
-            if (params.plugin) {
-                params.plugin = params.plugin
-            }
-
             if (!params.params) {
                 params.params =  UrlMappingUtils.findAllParamsNotInKeys(
                         UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(webRequest.params),
