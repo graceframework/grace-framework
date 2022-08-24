@@ -15,10 +15,12 @@
  */
 package org.grails.web.servlet.mvc;
 
-import org.grails.core.artefact.ControllerArtefactHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.grails.core.artefact.ControllerArtefactHandler;
 
 /**
  * Default implementation that uses the web request to obtain information about the currently

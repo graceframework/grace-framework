@@ -15,9 +15,14 @@
  */
 package org.grails.config.yaml;
 
-import grails.util.Environment;
-import org.grails.config.NavigableMap;
-import org.grails.config.NavigableMapPropertySource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.Ordered;
@@ -25,9 +30,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import grails.util.Environment;
+
+import org.grails.config.NavigableMap;
+import org.grails.config.NavigableMapPropertySource;
 
 /**
  * Replacement for Spring Boot's YAML loader that uses Grails' NavigableMap.

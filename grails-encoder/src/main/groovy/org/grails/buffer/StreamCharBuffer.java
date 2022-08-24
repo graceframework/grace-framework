@@ -15,9 +15,6 @@
  */
 package org.grails.buffer;
 
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.Writable;
-
 import java.io.EOFException;
 import java.io.Externalizable;
 import java.io.IOException;
@@ -40,15 +37,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import groovy.lang.GroovyObjectSupport;
+import groovy.lang.Writable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.codehaus.groovy.runtime.StringGroovyMethods;
-import org.grails.encoder.AbstractEncodedAppender;
-import org.grails.encoder.ChainedEncoders;
+
 import org.grails.charsequences.CharArrayAccessible;
 import org.grails.charsequences.CharSequences;
+import org.grails.encoder.AbstractEncodedAppender;
+import org.grails.encoder.ChainedEncoders;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.DefaultCodecIdentifier;
 import org.grails.encoder.Encodeable;

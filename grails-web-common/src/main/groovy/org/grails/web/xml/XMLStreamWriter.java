@@ -15,12 +15,11 @@
  */
 package org.grails.web.xml;
 
-import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
-import static org.grails.web.xml.XMLStreamWriter.Mode.*;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Stack;
+
+import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
 
 /**
  * A simple XML Stream Writer that leverages the StreamingMarkupWriter of Groovy
@@ -32,7 +31,7 @@ public class XMLStreamWriter {
 
     protected StreamingMarkupWriter writer;
 
-    protected Mode mode = INIT;
+    protected Mode mode = Mode.INIT;
 
     protected Stack<String> tagStack = new Stack<String>();
 
@@ -43,7 +42,7 @@ public class XMLStreamWriter {
     }
 
     public XMLStreamWriter startDocument(String encoding, String version) throws IOException {
-        if (mode != INIT) {
+        if (mode != Mode.INIT) {
             throw new IllegalStateException();
         }
         writer.unescaped().write(String.format("<?xml version=\"%s\" encoding=\"%s\"?>", version, encoding));
@@ -55,7 +54,7 @@ public class XMLStreamWriter {
     }
 
     public XMLStreamWriter startNode(String tag) throws IOException {
-        if (mode == TAG) {
+        if (mode == Mode.TAG) {
             endStartTag();
         }
 
@@ -63,19 +62,19 @@ public class XMLStreamWriter {
         writer.unescaped().write(tag);
 
         tagStack.push(tag);
-        mode = TAG;
+        mode = Mode.TAG;
         return this;
     }
 
     public XMLStreamWriter end() throws IOException {
         Writer ue = writer.unescaped();
-        if (mode == TAG) {
+        if (mode == Mode.TAG) {
             ue.write(" />");
             if (tagStack.pop() == null) {
                 throw new IllegalStateException();
             }
         }
-        else if (mode == CONTENT) {
+        else if (mode == Mode.CONTENT) {
             ue.write('<');
             ue.write('/');
             String t = tagStack.pop();
@@ -85,12 +84,12 @@ public class XMLStreamWriter {
             ue.write(t);
             ue.write('>');
         }
-        mode = CONTENT;
+        mode = Mode.CONTENT;
         return this;
     }
 
     public XMLStreamWriter attribute(String name, String value) throws IOException {
-        if (mode != TAG) {
+        if (mode != Mode.TAG) {
             throw new IllegalStateException();
         }
         Writer ue = writer.unescaped();
@@ -111,10 +110,10 @@ public class XMLStreamWriter {
     }
 
     public XMLStreamWriter characters(String data) throws IOException {
-        if (mode == TAG) {
+        if (mode == Mode.TAG) {
             endStartTag();
         }
-        mode = CONTENT;
+        mode = Mode.CONTENT;
         writer.escaped().write(data);
 
         return this;

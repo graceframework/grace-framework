@@ -15,10 +15,11 @@
  */
 package grails.web.context;
 
-import grails.util.Holder;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-
 import javax.servlet.ServletContext;
+
+import grails.util.Holder;
+
+import org.grails.web.servlet.mvc.GrailsWebRequest;
 
 /**
  * @author Burt Beckwith

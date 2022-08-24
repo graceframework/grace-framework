@@ -15,6 +15,26 @@
  */
 package org.grails.spring.context.support;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.Assert;
+
 import grails.core.DefaultGrailsApplication;
 import grails.core.GrailsApplication;
 import grails.core.GrailsApplicationClass;
@@ -26,28 +46,10 @@ import grails.util.BuildSettings;
 import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsStringUtils;
+
 import org.grails.core.io.CachingPathMatchingResourcePatternResolver;
 import org.grails.core.support.internal.tools.ClassRelativeResourcePatternResolver;
 import org.grails.plugins.BinaryGrailsPlugin;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.Assert;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * A ReloadableResourceBundleMessageSource that is capable of loading message sources from plugins.

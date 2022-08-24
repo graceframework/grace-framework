@@ -15,18 +15,23 @@
  */
 package org.grails.compiler.logging;
 
-import grails.compiler.ast.AllArtefactClassInjector;
-import grails.compiler.ast.AstTransformer;
+import java.lang.reflect.Modifier;
+import java.net.URL;
+
 import groovy.lang.GroovyClassLoader;
 import groovy.util.logging.Slf4j;
-import org.codehaus.groovy.ast.*;
+import org.codehaus.groovy.ast.ASTNode;
+import org.codehaus.groovy.ast.AnnotationNode;
+import org.codehaus.groovy.ast.ClassHelper;
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.LogASTTransformation;
 
-import java.lang.reflect.Modifier;
-import java.net.URL;
+import grails.compiler.ast.AllArtefactClassInjector;
+import grails.compiler.ast.AstTransformer;
 
 /**
  * Adds a log field to all artifacts.

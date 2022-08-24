@@ -15,10 +15,10 @@
  */
 package org.grails.web.xml;
 
-import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
 
 /**
  * A XMLStreamWriter dedicated to create indented/pretty printed output.

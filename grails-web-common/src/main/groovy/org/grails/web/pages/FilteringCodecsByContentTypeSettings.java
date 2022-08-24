@@ -15,15 +15,15 @@
  */
 package org.grails.web.pages;
 
-import grails.config.Config;
-import grails.config.Settings;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import grails.config.Config;
+import grails.config.Settings;
 import grails.core.GrailsApplication;
+
 import org.grails.encoder.CodecLookupHelper;
 import org.grails.encoder.Encoder;
 

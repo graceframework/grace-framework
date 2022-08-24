@@ -15,6 +15,9 @@
  */
 package grails.util;
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import groovy.lang.AdaptingMetaClass;
 import groovy.lang.Closure;
 import groovy.lang.ClosureInvokingMethod;
@@ -26,10 +29,6 @@ import groovy.lang.MetaClass;
 import groovy.lang.MetaClassRegistry;
 import groovy.lang.MetaMethod;
 import groovy.lang.MetaProperty;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.runtime.metaclass.ThreadManagedMetaBeanProperty;

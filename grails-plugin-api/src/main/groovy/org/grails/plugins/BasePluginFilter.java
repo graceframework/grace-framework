@@ -15,9 +15,6 @@
  */
 package org.grails.plugins;
 
-import grails.plugins.GrailsPlugin;
-import grails.plugins.PluginFilter;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import grails.plugins.GrailsPlugin;
+import grails.plugins.PluginFilter;
 
 /**
  * Base functionality shared by <code>IncludingPluginFilter</code> and

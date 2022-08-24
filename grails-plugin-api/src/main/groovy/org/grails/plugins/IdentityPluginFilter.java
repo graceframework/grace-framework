@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2007 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.grails.plugins;
 
-import grails.plugins.PluginFilter;
-
 import java.util.List;
+
+import grails.plugins.PluginFilter;
 
 /**
  * No-op implementation of <code>PluginFilter</code>.

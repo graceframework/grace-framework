@@ -15,22 +15,6 @@
  */
 package org.grails.web.mapping;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.Weigher;
-import grails.core.GrailsControllerClass;
-import grails.gorm.validation.Constrained;
-import grails.gorm.validation.ConstrainedProperty;
-import grails.util.CollectionUtils;
-import grails.util.Holders;
-import grails.web.mapping.UrlCreator;
-import grails.web.mapping.UrlMapping;
-import grails.web.mapping.UrlMappingEvaluator;
-import grails.web.mapping.UrlMappingInfo;
-import grails.web.mapping.UrlMappings;
-import grails.web.mapping.UrlMappingsHolder;
-import groovy.lang.Closure;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -45,6 +29,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Weigher;
+import groovy.lang.Closure;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.style.ToStringCreator;
@@ -53,6 +41,17 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
+import grails.core.GrailsControllerClass;
+import grails.gorm.validation.Constrained;
+import grails.gorm.validation.ConstrainedProperty;
+import grails.util.CollectionUtils;
+import grails.util.Holders;
+import grails.web.mapping.UrlCreator;
+import grails.web.mapping.UrlMapping;
+import grails.web.mapping.UrlMappingEvaluator;
+import grails.web.mapping.UrlMappingInfo;
+import grails.web.mapping.UrlMappings;
+import grails.web.mapping.UrlMappingsHolder;
 
 /**
  * Default implementation of the UrlMappingsHolder interface that takes a list of mappings and

@@ -15,9 +15,9 @@
  */
 package org.grails.encoder;
 
-import org.grails.charsequences.CharSequences;
-
 import java.io.IOException;
+
+import org.grails.charsequences.CharSequences;
 
 /**
  * EncodedAppender implementation used for piping / chaining several StreamingEncoders

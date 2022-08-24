@@ -15,13 +15,14 @@
  */
 package org.grails.compiler.injection;
 
-import grails.artefact.Artefact;
-import grails.compiler.ast.AnnotatedClassInjector;
-import grails.compiler.ast.GrailsArtefactClassInjector;
-import groovy.lang.Mixin;
-
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -49,11 +50,16 @@ import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.ThrowStatement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.codehaus.groovy.runtime.MetaClassHelper;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import grails.artefact.Artefact;
+import grails.compiler.ast.AnnotatedClassInjector;
+import grails.compiler.ast.GrailsArtefactClassInjector;
+
+import org.grails.core.artefact.DomainClassArtefactHandler;
 
 /**
  * Abstract transformer that takes an implementation class and creates methods

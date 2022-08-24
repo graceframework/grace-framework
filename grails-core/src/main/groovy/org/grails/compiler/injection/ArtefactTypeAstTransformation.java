@@ -15,19 +15,12 @@
  */
 package org.grails.compiler.injection;
 
-import grails.artefact.Artefact;
-import grails.build.logging.GrailsConsole;
-import grails.compiler.ast.AllArtefactClassInjector;
-import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GlobalClassInjector;
-import grails.compiler.ast.GrailsArtefactClassInjector;
-import groovy.transform.CompilationUnitAware;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import groovy.transform.CompilationUnitAware;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -40,6 +33,13 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
+
+import grails.artefact.Artefact;
+import grails.build.logging.GrailsConsole;
+import grails.compiler.ast.AllArtefactClassInjector;
+import grails.compiler.ast.ClassInjector;
+import grails.compiler.ast.GlobalClassInjector;
+import grails.compiler.ast.GrailsArtefactClassInjector;
 
 /**
  * A transformation used to apply transformers to classes not located in Grails

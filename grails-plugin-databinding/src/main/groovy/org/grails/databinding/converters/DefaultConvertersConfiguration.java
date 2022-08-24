@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.databinding.converters;
 
-import grails.databinding.TypedStructuredBindingEditor;
-import grails.databinding.converters.FormattedValueConverter;
-import grails.databinding.converters.ValueConverter;
-import org.grails.databinding.converters.web.LocaleAwareBigDecimalConverter;
-import org.grails.databinding.converters.web.LocaleAwareNumberConverter;
-import org.grails.plugins.databinding.DataBindingConfigurationProperties;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import grails.databinding.TypedStructuredBindingEditor;
+import grails.databinding.converters.FormattedValueConverter;
+import grails.databinding.converters.ValueConverter;
+
+import org.grails.databinding.converters.web.LocaleAwareBigDecimalConverter;
+import org.grails.databinding.converters.web.LocaleAwareNumberConverter;
+import org.grails.plugins.databinding.DataBindingConfigurationProperties;
 
 /**
  * Default converters configuration.

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.grails.cli.gradle;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import org.gradle.tooling.model.Task;
 import org.gradle.tooling.model.TaskSelector;
 import org.gradle.tooling.model.gradle.BasicGradleProject;
 import org.gradle.tooling.model.gradle.BuildInvocations;
+
 import org.grails.cli.gradle.FetchAllTaskSelectorsBuildAction.AllTasksModel;
 
 /**

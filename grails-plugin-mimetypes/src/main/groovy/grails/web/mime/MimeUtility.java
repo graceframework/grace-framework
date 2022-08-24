@@ -15,8 +15,6 @@
  */
 package grails.web.mime;
 
-import grails.web.mime.MimeType;
-
 import java.util.List;
 
 /**

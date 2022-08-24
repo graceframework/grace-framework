@@ -15,21 +15,24 @@
  */
 package org.grails.core;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ClassUtils;
+import org.springframework.validation.Validator;
+
 import grails.core.GrailsDomainClass;
 import grails.util.GrailsNameUtils;
 import grails.validation.Constrained;
+
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.model.PersistentEntity;
 import org.grails.validation.discovery.ConstrainedDiscovery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.ClassUtils;
-import org.springframework.validation.Validator;
-
-import java.util.*;
 
 /**
  * Default implementation of the {@link GrailsDomainClass} interface

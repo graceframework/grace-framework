@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.plugins.databinding;
 
-import grails.core.GrailsApplication;
-import grails.databinding.TypedStructuredBindingEditor;
-import grails.databinding.converters.FormattedValueConverter;
-import grails.databinding.converters.ValueConverter;
-import grails.databinding.events.DataBindingListener;
-import grails.web.databinding.GrailsWebDataBinder;
-import org.grails.databinding.bindingsource.DataBindingSourceCreator;
-import org.grails.databinding.converters.DefaultConvertersConfiguration;
-import org.grails.web.databinding.bindingsource.*;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -33,6 +23,23 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+
+import grails.core.GrailsApplication;
+import grails.databinding.TypedStructuredBindingEditor;
+import grails.databinding.converters.FormattedValueConverter;
+import grails.databinding.converters.ValueConverter;
+import grails.databinding.events.DataBindingListener;
+import grails.web.databinding.GrailsWebDataBinder;
+
+import org.grails.databinding.bindingsource.DataBindingSourceCreator;
+import org.grails.databinding.converters.DefaultConvertersConfiguration;
+import org.grails.web.databinding.bindingsource.DataBindingSourceRegistry;
+import org.grails.web.databinding.bindingsource.DefaultDataBindingSourceRegistry;
+import org.grails.web.databinding.bindingsource.HalJsonDataBindingSourceCreator;
+import org.grails.web.databinding.bindingsource.HalXmlDataBindingSourceCreator;
+import org.grails.web.databinding.bindingsource.JsonApiDataBindingSourceCreator;
+import org.grails.web.databinding.bindingsource.JsonDataBindingSourceCreator;
+import org.grails.web.databinding.bindingsource.XmlDataBindingSourceCreator;
 
 /**
  * Plugin for configuring the data binding features of Grails

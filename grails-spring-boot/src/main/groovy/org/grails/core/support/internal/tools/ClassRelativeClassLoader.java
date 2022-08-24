@@ -15,16 +15,15 @@
  */
 package org.grails.core.support.internal.tools;
 
-import grails.io.IOUtils;
-import grails.util.BuildSettings;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+
+import org.springframework.core.io.FileSystemResource;
+
+import grails.io.IOUtils;
+import grails.util.BuildSettings;
 
 /**
  * A classloader that only finds resources and classes that are in the same jar as the given class

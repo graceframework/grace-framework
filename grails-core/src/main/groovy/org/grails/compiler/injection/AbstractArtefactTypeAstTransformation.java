@@ -17,14 +17,15 @@ package org.grails.compiler.injection;
 
 import java.util.List;
 
-import grails.compiler.ast.AllArtefactClassInjector;
-import grails.compiler.ast.AnnotatedClassInjector;
-import grails.compiler.ast.ClassInjector;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
+
+import grails.compiler.ast.AllArtefactClassInjector;
+import grails.compiler.ast.AnnotatedClassInjector;
+import grails.compiler.ast.ClassInjector;
 
 /**
  * Base implementation for the artefact type transformation.

@@ -15,9 +15,7 @@
  */
 package org.grails.build.logging;
 
-import grails.build.logging.GrailsConsole;
 import groovy.ant.AntBuilder;
-
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.DefaultLogger;
@@ -26,6 +24,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.types.LogLevel;
 import org.apache.tools.ant.util.StringUtils;
+
+import grails.build.logging.GrailsConsole;
 
 /**
  * Silences ant builder output.

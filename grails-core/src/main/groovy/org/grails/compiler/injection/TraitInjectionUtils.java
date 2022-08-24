@@ -15,8 +15,13 @@
  */
 package org.grails.compiler.injection;
 
-import grails.compiler.ast.SupportsClassNode;
-import grails.compiler.traits.TraitInjector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.GenericsType;
@@ -24,9 +29,11 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.trait.TraitComposer;
-import org.grails.core.io.support.GrailsFactoriesLoader;
 
-import java.util.*;
+import grails.compiler.ast.SupportsClassNode;
+import grails.compiler.traits.TraitInjector;
+
+import org.grails.core.io.support.GrailsFactoriesLoader;
 
 /**
  *

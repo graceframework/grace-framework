@@ -27,8 +27,8 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of a {@link AbstractDirectoryWatcher} that uses {@link java.nio.WatchService}.
+ * Implementation of a {@link AbstractDirectoryWatcher} that uses {@link java.nio.file.WatchService}.
  * This implementation is used for Java 7 and later.
  * @author Craig Andrews
  * @since 2.4

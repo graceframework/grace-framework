@@ -15,6 +15,8 @@
  */
 package org.grails.core.util;
 
+import java.beans.PropertyDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -22,8 +24,6 @@ import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
-import java.beans.PropertyDescriptor;
 
 /**
  * Adds timings of bean creation times logged to the "org.grails.startup" group

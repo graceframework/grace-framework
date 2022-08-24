@@ -15,10 +15,10 @@
  */
 package grails.web.mapping;
 
-import grails.util.CollectionUtils;
-
 import java.util.Map;
 import java.util.Set;
+
+import grails.util.CollectionUtils;
 
 /**
  * Generates links for a Grails application based on URL mapping rules and/or base context settings.

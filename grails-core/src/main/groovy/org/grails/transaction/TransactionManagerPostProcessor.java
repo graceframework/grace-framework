@@ -15,8 +15,6 @@
  */
 package org.grails.transaction;
 
-import grails.core.GrailsApplication;
-import grails.transaction.TransactionManagerAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -27,6 +25,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.Assert;
+
+import grails.core.GrailsApplication;
+import grails.transaction.TransactionManagerAware;
 
 /**
  * Injects the platform transaction manager into beans that implement {@link grails.transaction.TransactionManagerAware}.

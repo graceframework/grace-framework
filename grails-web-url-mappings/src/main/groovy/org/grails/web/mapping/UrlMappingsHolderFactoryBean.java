@@ -15,6 +15,21 @@
  */
 package org.grails.web.mapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import groovy.lang.Script;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
@@ -27,22 +42,9 @@ import grails.plugins.PluginManagerAware;
 import grails.web.UrlConverter;
 import grails.web.mapping.UrlMapping;
 import grails.web.mapping.UrlMappings;
-import groovy.lang.Script;
+
 import org.grails.core.artefact.UrlMappingsArtefactHandler;
 import org.grails.web.mapping.mvc.GrailsControllerUrlMappings;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Constructs the UrlMappingsHolder from the registered UrlMappings class within a GrailsApplication.

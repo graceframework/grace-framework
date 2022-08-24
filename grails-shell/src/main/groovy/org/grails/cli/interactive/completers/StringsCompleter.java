@@ -15,11 +15,14 @@
  */
 package org.grails.cli.interactive.completers;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import jline.console.completer.Completer;
-
-import java.util.*;
-
-import static jline.internal.Preconditions.checkNotNull;
+import jline.internal.Preconditions;
 
 /**
  * A completer that completes based on a collection of Strings
@@ -36,7 +39,7 @@ public class StringsCompleter implements Completer {
     }
 
     public StringsCompleter(final Collection<String> strings) {
-        checkNotNull(strings);
+        Preconditions.checkNotNull(strings);
         getStrings().addAll(strings);
     }
 
@@ -55,7 +58,7 @@ public class StringsCompleter implements Completer {
 
     public int complete(final String buffer, final int cursor, final List<CharSequence> candidates) {
         // buffer could be null
-        checkNotNull(candidates);
+        Preconditions.checkNotNull(candidates);
 
         if (buffer == null) {
             candidates.addAll(getStrings());

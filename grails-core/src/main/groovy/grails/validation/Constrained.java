@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package grails.validation;
 
-import groovy.lang.Range;
-
 import java.util.List;
+
+import groovy.lang.Range;
 
 /**
  * A interface for something that is constrained by various criteria

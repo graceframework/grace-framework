@@ -15,8 +15,8 @@
  */
 package org.grails.spring.context.annotation;
 
-import grails.plugins.GrailsPluginManager;
-import grails.util.GrailsStringUtils;
+import java.util.List;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -29,7 +29,8 @@ import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.AntPathMatcher;
 import org.w3c.dom.Element;
 
-import java.util.List;
+import grails.plugins.GrailsPluginManager;
+import grails.util.GrailsStringUtils;
 
 /**
  * Extends Spring's default &lt;context:component-scan/&gt; element to ignore

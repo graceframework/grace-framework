@@ -15,16 +15,19 @@
  */
 package org.grails.buffer;
 
-import groovy.lang.GroovyObject;
-import groovy.lang.MetaClass;
-import groovy.lang.Writable;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import groovy.lang.GroovyObject;
+import groovy.lang.MetaClass;
+import groovy.lang.Writable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.groovy.runtime.GStringImpl;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
+
 import org.grails.charsequences.CharSequences;
 import org.grails.encoder.EncodedAppender;
 import org.grails.encoder.EncodedAppenderFactory;
@@ -34,9 +37,6 @@ import org.grails.encoder.Encoder;
 import org.grails.encoder.EncodingStateRegistry;
 import org.grails.encoder.StreamingEncoder;
 import org.grails.encoder.StreamingEncoderWriter;
-import org.codehaus.groovy.runtime.GStringImpl;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
 /**
  * PrintWriter implementation that doesn't have synchronization. null object

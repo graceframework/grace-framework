@@ -15,25 +15,25 @@
  */
 package org.grails.core;
 
-import grails.config.Settings;
-import grails.core.GrailsApplication;
-import grails.core.GrailsControllerClass;
-import grails.util.Environment;
-import grails.util.GrailsClassUtils;
-import grails.web.Action;
-import grails.web.UrlConverter;
-import groovy.lang.GroovyObject;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.springframework.cglib.reflect.FastClass;
-import org.springframework.cglib.reflect.FastMethod;
-import org.springframework.util.ReflectionUtils;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import groovy.lang.GroovyObject;
+import org.springframework.util.ReflectionUtils;
+
+import grails.config.Settings;
+import grails.core.GrailsApplication;
+import grails.core.GrailsControllerClass;
+import grails.util.Environment;
+import grails.web.Action;
+import grails.web.UrlConverter;
 
 /**
  * Evaluates the conventions contained within controllers to perform auto-configuration.

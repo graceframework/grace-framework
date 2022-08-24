@@ -15,29 +15,31 @@
  */
 package org.grails.core;
 
-import grails.core.GrailsApplication;
-import grails.core.GrailsClass;
-import grails.plugins.GrailsVersionUtils;
-import grails.util.GrailsMetaClassUtils;
-import grails.util.GrailsNameUtils;
-import grails.web.Action;
-import groovy.lang.GroovyObject;
-import groovy.lang.MetaClass;
-import groovy.lang.MetaProperty;
-import org.grails.core.exceptions.NewInstanceCreationException;
-import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
+
+import groovy.lang.GroovyObject;
+import groovy.lang.MetaClass;
+import groovy.lang.MetaProperty;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
+
+import grails.core.GrailsApplication;
+import grails.core.GrailsClass;
+import grails.plugins.GrailsVersionUtils;
+import grails.util.GrailsMetaClassUtils;
+import grails.util.GrailsNameUtils;
+import grails.web.Action;
+
+import org.grails.core.exceptions.NewInstanceCreationException;
+import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 
 /**
  * Abstract base class for Grails types that provides common functionality for

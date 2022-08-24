@@ -15,19 +15,23 @@
  */
 package org.grails.spring;
 
-import grails.spring.BeanBuilder;
-import grails.util.CollectionUtils;
-import groovy.lang.*;
+import java.io.IOException;
+
+import groovy.lang.Binding;
+import groovy.lang.Closure;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyCodeSource;
+import groovy.lang.Script;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import grails.core.GrailsApplication;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
-import org.grails.spring.RuntimeSpringConfiguration;
 
-import java.io.IOException;
+import grails.core.GrailsApplication;
+import grails.spring.BeanBuilder;
+import grails.util.CollectionUtils;
 
 /**
  * @since 2.4

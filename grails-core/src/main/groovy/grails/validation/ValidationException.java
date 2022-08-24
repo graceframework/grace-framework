@@ -15,9 +15,10 @@
  */
 package grails.validation;
 
-import org.grails.core.exceptions.GrailsException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+
+import org.grails.core.exceptions.GrailsException;
 
 /**
  * Thrown when validation fails during a .save().

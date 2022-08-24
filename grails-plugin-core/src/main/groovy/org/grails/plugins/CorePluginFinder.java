@@ -15,10 +15,20 @@
  */
 package org.grails.plugins;
 
-import grails.core.GrailsApplication;
-import grails.core.support.ParentApplicationContextAware;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.io.support.SpringIOUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -28,12 +38,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
+import grails.core.GrailsApplication;
+import grails.core.support.ParentApplicationContextAware;
+
+import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.io.support.SpringIOUtils;
 
 /**
  * Loads core plugin classes. Contains functionality moved in from <code>DefaultGrailsPluginManager</code>.

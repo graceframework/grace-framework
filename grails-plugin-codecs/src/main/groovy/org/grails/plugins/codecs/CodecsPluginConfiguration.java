@@ -15,13 +15,15 @@
  */
 package org.grails.plugins.codecs;
 
-import grails.core.GrailsApplication;
-import org.grails.encoder.CodecLookup;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
+import grails.core.GrailsApplication;
+
+import org.grails.encoder.CodecLookup;
 
 /**
  * Beans for Codecs

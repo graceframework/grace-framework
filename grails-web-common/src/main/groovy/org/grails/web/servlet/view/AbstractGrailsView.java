@@ -15,8 +15,6 @@
  */
 package org.grails.web.servlet.view;
 
-import groovy.text.Template;
-
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Map;
 
@@ -24,13 +22,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.grails.web.util.GrailsApplicationAttributes;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.util.WebUtils;
+import groovy.text.Template;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.util.GrailsApplicationAttributes;
+import org.grails.web.util.WebUtils;
 
 /**
  * A view applied to a Grails application that ensures an appropriate web request is bound

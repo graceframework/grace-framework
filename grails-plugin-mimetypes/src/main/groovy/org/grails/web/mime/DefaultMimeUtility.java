@@ -15,13 +15,13 @@
  */
 package org.grails.web.mime;
 
-import grails.web.mime.MimeUtility;
-import grails.web.mime.MimeType;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import grails.web.mime.MimeType;
+import grails.web.mime.MimeUtility;
 
 /**
  * @author Graeme Rocher

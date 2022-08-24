@@ -15,20 +15,20 @@
  */
 package org.grails.core.metaclass;
 
-import grails.util.GrailsNameUtils;
-import groovy.lang.GString;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import grails.util.GrailsArrayUtils;
-import grails.util.GrailsClassUtils;
+import groovy.lang.GString;
 import org.codehaus.groovy.reflection.CachedClass;
 import org.codehaus.groovy.reflection.CachedMethod;
 import org.codehaus.groovy.runtime.metaclass.ReflectionMetaMethod;
+
+import grails.util.GrailsArrayUtils;
+import grails.util.GrailsClassUtils;
+import grails.util.GrailsNameUtils;
 
 /**
  * @author Graeme Rocher

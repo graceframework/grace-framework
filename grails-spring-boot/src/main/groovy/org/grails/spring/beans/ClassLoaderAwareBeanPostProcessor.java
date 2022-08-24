@@ -15,9 +15,10 @@
  */
 package org.grails.spring.beans;
 
-import grails.core.support.ClassLoaderAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+
+import grails.core.support.ClassLoaderAware;
 
 public class ClassLoaderAwareBeanPostProcessor implements BeanPostProcessor {
 

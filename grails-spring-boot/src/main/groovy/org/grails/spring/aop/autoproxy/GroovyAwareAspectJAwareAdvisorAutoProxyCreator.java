@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@ package org.grails.spring.aop.autoproxy;
 
 import groovy.lang.GroovyObject;
 import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
-import org.springframework.aop.config.AopConfigUtils;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * Enables AspectJ weaving from the application context.

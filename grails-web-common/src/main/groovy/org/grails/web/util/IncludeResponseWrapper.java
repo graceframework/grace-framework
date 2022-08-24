@@ -15,10 +15,6 @@
  */
 package org.grails.web.util;
 
-import org.grails.buffer.GrailsPrintWriterAdapter;
-import org.grails.buffer.StreamByteBuffer;
-import org.grails.buffer.StreamCharBuffer;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -29,6 +25,10 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+
+import org.grails.buffer.GrailsPrintWriterAdapter;
+import org.grails.buffer.StreamByteBuffer;
+import org.grails.buffer.StreamCharBuffer;
 
 /**
  * Response wrapper used to capture the content of a response (such as within in an include).

@@ -15,20 +15,6 @@
  */
 package org.grails.spring.beans.factory;
 
-import grails.util.Environment;
-import grails.util.GrailsUtil;
-import groovy.lang.Closure;
-import org.springframework.beans.*;
-import org.springframework.beans.factory.Aware;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.util.ClassUtils;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
@@ -44,6 +30,29 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import groovy.lang.Closure;
+import org.springframework.beans.BeanInstantiationException;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.MethodInvocationException;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.Aware;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.util.ClassUtils;
+
+import grails.util.Environment;
+import grails.util.GrailsUtil;
+
 /**
  *
  * Applies autowiring performance optimizations to Spring

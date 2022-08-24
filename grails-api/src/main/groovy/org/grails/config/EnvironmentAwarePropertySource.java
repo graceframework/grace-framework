@@ -15,14 +15,14 @@
  */
 package org.grails.config;
 
-import grails.util.Environment;
-import groovy.transform.CompileStatic;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.PropertySources;
 
-import java.util.ArrayList;
-import java.util.List;
+import grails.util.Environment;
 
 /**
  * A PropertySource aware of the Grails environment and that resolves keys based on the environment from other property sources
@@ -30,7 +30,6 @@ import java.util.List;
  * @author Graeme Rocher
  * @since 3.0
  */
-
 public class EnvironmentAwarePropertySource extends EnumerablePropertySource<PropertySources> {
     EnvironmentAwarePropertySource(PropertySources source) {
         super("grails.environment", source);

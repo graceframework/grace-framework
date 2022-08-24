@@ -15,13 +15,9 @@
  */
 package org.grails.compiler.injection;
 
-import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GrailsDomainClassInjector;
-import grails.persistence.Entity;
-import groovy.transform.CompilationUnitAware;
-
 import java.util.List;
 
+import groovy.transform.CompilationUnitAware;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -31,8 +27,12 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 
+import grails.compiler.ast.ClassInjector;
+import grails.compiler.ast.GrailsDomainClassInjector;
+import grails.persistence.Entity;
+
+import org.grails.core.artefact.DomainClassArtefactHandler;
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class EntityASTTransformation implements ASTTransformation, CompilationUnitAware {

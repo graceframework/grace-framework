@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,12 @@
  */
 package org.grails.encoder.impl;
 
+import org.springframework.web.util.HtmlUtils;
+
 import org.grails.encoder.CodecFactory;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.Decoder;
 import org.grails.encoder.Encoder;
-import org.springframework.web.util.HtmlUtils;
 
 public class XMLCodecFactory implements CodecFactory {
     protected Encoder encoder = new BasicXMLEncoder();

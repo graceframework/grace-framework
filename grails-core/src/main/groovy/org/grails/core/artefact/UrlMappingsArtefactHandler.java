@@ -17,6 +17,7 @@ package org.grails.core.artefact;
 
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsUrlMappingsClass;
+
 import org.grails.core.DefaultGrailsUrlMappingsClass;
 
 /**

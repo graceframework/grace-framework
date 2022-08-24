@@ -15,9 +15,14 @@
  */
 package org.grails.build.parsing;
 
-import grails.util.Environment;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-import java.util.*;
+import grails.util.Environment;
 
 /**
  * Implementation of the {@link CommandLine} interface.

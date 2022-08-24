@@ -15,10 +15,9 @@
  */
 package org.grails.build.logging;
 
-import grails.build.logging.GrailsConsole;
-
-import java.io.OutputStream;
 import java.io.PrintStream;
+
+import grails.build.logging.GrailsConsole;
 
 /**
  * Used to replace default System.err with one that routes calls through GrailsConsole.

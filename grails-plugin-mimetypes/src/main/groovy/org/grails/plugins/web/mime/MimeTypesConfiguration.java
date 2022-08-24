@@ -15,6 +15,17 @@
  */
 package org.grails.plugins.web.mime;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
 import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
@@ -25,16 +36,6 @@ import grails.web.mime.MimeUtility;
 
 import org.grails.web.mime.DefaultMimeTypeResolver;
 import org.grails.web.mime.DefaultMimeUtility;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Configuration for Codecs

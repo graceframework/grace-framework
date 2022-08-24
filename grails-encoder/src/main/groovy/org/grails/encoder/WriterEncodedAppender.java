@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.grails.encoder;
 
-import org.grails.charsequences.CharSequences;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import org.grails.charsequences.CharSequences;
 
 /**
  * An EncodedAppender implementation that writes to a java.io.Writer.

@@ -15,14 +15,14 @@
  */
 package org.grails.plugins;
 
-import grails.config.Config;
-import grails.plugins.PluginFilter;
-
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import grails.config.Config;
+import grails.plugins.PluginFilter;
 
 /**
  * Implements mechanism for figuring out what <code>PluginFilter</code>

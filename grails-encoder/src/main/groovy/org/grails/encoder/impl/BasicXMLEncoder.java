@@ -15,10 +15,11 @@
  */
 package org.grails.encoder.impl;
 
+import org.springframework.util.ClassUtils;
+
 import org.grails.encoder.AbstractCharReplacementEncoder;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.DefaultCodecIdentifier;
-import org.springframework.util.ClassUtils;
 
 /**
  * Encoder implementation that escapes some characters for inclusion in XML documents

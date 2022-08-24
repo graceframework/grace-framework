@@ -15,7 +15,12 @@
  */
 package org.grails.cli.boot;
 
-import grails.util.Environment;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import groovy.lang.Grab;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -38,8 +43,7 @@ import org.springframework.boot.cli.compiler.dependencies.Dependency;
 import org.springframework.boot.cli.compiler.dependencies.DependencyManagement;
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
 
-import java.lang.reflect.Modifier;
-import java.util.*;
+import grails.util.Environment;
 
 /**
  * A {@link org.springframework.boot.cli.compiler.CompilerAutoConfiguration} for Grails Micro Service applications

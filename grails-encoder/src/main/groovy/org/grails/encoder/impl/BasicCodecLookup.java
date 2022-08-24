@@ -15,8 +15,6 @@
  */
 package org.grails.encoder.impl;
 
-import grails.util.GrailsNameUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,6 +25,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.springframework.beans.factory.InitializingBean;
+
+import grails.util.GrailsNameUtils;
+
 import org.grails.encoder.ChainedDecoder;
 import org.grails.encoder.ChainedEncoder;
 import org.grails.encoder.ChainedEncoders;
@@ -36,7 +38,6 @@ import org.grails.encoder.CodecLookup;
 import org.grails.encoder.Decoder;
 import org.grails.encoder.Encoder;
 import org.grails.encoder.StreamingEncoder;
-import org.springframework.beans.factory.InitializingBean;
 
 public class BasicCodecLookup implements CodecLookup, InitializingBean {
     private static final String NONE_CODEC_NAME = "none";

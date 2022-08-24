@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import junit.framework.Test;
-
 import org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter;
+
 import org.grails.test.support.TestStacktraceSanitizer;
 
 /**

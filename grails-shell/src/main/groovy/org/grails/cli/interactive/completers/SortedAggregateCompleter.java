@@ -15,11 +15,16 @@
  */
 package org.grails.cli.interactive.completers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import jline.console.completer.Completer;
-
-import java.util.*;
-
-import static jline.internal.Preconditions.checkNotNull;
+import jline.internal.Preconditions;
 
 /**
  * Copied from jline AggregateCompleter
@@ -42,7 +47,7 @@ public class SortedAggregateCompleter implements Completer {
      * @param completers the collection of completers
      */
     public SortedAggregateCompleter(final Collection<Completer> completers) {
-        checkNotNull(completers);
+        Preconditions.checkNotNull(completers);
         this.completers.addAll(completers);
     }
 
@@ -73,7 +78,7 @@ public class SortedAggregateCompleter implements Completer {
      */
     public int complete(final String buffer, final int cursor, final List<CharSequence> candidates) {
         // buffer could be null
-        checkNotNull(candidates);
+        Preconditions.checkNotNull(candidates);
 
         List<Completion> completions = new ArrayList<Completion>(completers.size());
 
@@ -120,12 +125,12 @@ public class SortedAggregateCompleter implements Completer {
         public int cursor;
 
         public Completion(final List<CharSequence> candidates) {
-            checkNotNull(candidates);
+            Preconditions.checkNotNull(candidates);
             this.candidates = new LinkedList<CharSequence>(candidates);
         }
 
         public void complete(final Completer completer, final String buffer, final int cursor) {
-            checkNotNull(completer);
+            Preconditions.checkNotNull(completer);
             this.cursor = completer.complete(buffer, cursor, candidates);
         }
     }

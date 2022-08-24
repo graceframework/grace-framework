@@ -15,11 +15,11 @@
  */
 package org.grails.encoder;
 
-import org.grails.charsequences.CharSequences;
-
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+
+import org.grails.charsequences.CharSequences;
 
 public class StreamingEncoderWriter extends FilterWriter implements EncodedAppenderFactory, EncoderAware {
     private EncodesToWriter encodesToWriter;

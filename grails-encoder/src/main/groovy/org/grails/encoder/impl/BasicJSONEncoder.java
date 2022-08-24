@@ -15,11 +15,12 @@
  */
 package org.grails.encoder.impl;
 
+import org.codehaus.groovy.runtime.StringGroovyMethods;
+import org.springframework.util.ClassUtils;
+
 import org.grails.encoder.AbstractCharReplacementEncoder;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.DefaultCodecIdentifier;
-import org.codehaus.groovy.runtime.StringGroovyMethods;
-import org.springframework.util.ClassUtils;
 
 /**
  * Escapes characters in JSON output

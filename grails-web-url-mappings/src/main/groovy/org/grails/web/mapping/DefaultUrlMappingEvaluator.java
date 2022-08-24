@@ -15,6 +15,40 @@
  */
 package org.grails.web.mapping;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+
+import groovy.lang.Binding;
+import groovy.lang.Closure;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyObject;
+import groovy.lang.GroovyObjectSupport;
+import groovy.lang.Script;
+import org.codehaus.groovy.runtime.IOGroovyMethods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.StaticMessageSource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.Assert;
+import org.springframework.web.context.WebApplicationContext;
+
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
 import grails.core.support.ClassLoaderAware;
@@ -29,44 +63,13 @@ import grails.web.mapping.UrlMappingData;
 import grails.web.mapping.UrlMappingEvaluator;
 import grails.web.mapping.UrlMappingParser;
 import grails.web.mapping.exceptions.UrlMappingException;
-import groovy.lang.Binding;
-import groovy.lang.Closure;
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyObject;
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.Script;
-import org.codehaus.groovy.runtime.IOGroovyMethods;
+
 import org.grails.datastore.gorm.validation.constraints.builder.ConstrainedPropertyBuilder;
 import org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator;
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator;
 import org.grails.datastore.gorm.validation.constraints.registry.ConstraintRegistry;
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry;
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.StaticMessageSource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.Assert;
-import org.springframework.web.context.WebApplicationContext;
-
-import javax.servlet.ServletContext;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>A UrlMapping evaluator that evaluates Groovy scripts that are in the form:</p>

@@ -15,11 +15,13 @@
  */
 package org.grails.core.lifecycle;
 
-import grails.util.Holders;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import grails.util.Holders;
 
 /**
  * Operations that should be executed on shutdown.

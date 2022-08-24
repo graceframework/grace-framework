@@ -15,14 +15,9 @@
  */
 package grails.web.servlet.context;
 
-import grails.spring.BeanBuilder;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import grails.core.GrailsApplication;
-import grails.web.servlet.context.support.GrailsEnvironment;
-import org.grails.spring.GrailsApplicationContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -40,6 +35,12 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.ServletContextResourcePatternResolver;
 import org.springframework.web.context.support.StandardServletEnvironment;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import grails.core.GrailsApplication;
+import grails.spring.BeanBuilder;
+import grails.web.servlet.context.support.GrailsEnvironment;
+
+import org.grails.spring.GrailsApplicationContext;
 
 /**
  * A WebApplicationContext that extends StaticApplicationContext to allow for programmatic

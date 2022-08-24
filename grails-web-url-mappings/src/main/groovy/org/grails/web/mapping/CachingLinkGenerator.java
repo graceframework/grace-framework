@@ -20,13 +20,15 @@ import java.util.Map;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+
+import grails.util.GrailsMetaClassUtils;
 import grails.util.GrailsStringUtils;
 import grails.web.mapping.LinkGenerator;
 import grails.web.mapping.UrlMapping;
-import grails.util.GrailsMetaClassUtils;
 import grails.web.servlet.mvc.GrailsParameterMap;
+
 import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 /**
  * A link generator that uses a LRU cache to cache generated links.

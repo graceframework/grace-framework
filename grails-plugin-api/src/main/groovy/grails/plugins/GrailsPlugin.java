@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
  */
 package grails.plugins;
 
-import grails.util.Environment;
-import groovy.lang.GroovyObject;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import grails.core.GrailsApplication;
-import org.grails.spring.RuntimeSpringConfiguration;
-import org.grails.plugins.support.WatchPattern;
+import groovy.lang.GroovyObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.filter.TypeFilter;
+
+import grails.core.GrailsApplication;
+import grails.util.Environment;
+
+import org.grails.plugins.support.WatchPattern;
+import org.grails.spring.RuntimeSpringConfiguration;
 
 /**
  * <p>Plugin interface that adds Spring {@link org.springframework.beans.factory.config.BeanDefinition}s

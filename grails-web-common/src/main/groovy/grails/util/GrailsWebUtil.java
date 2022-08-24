@@ -15,12 +15,6 @@
  */
 package grails.util;
 
-import grails.core.ApplicationAttributes;
-import grails.core.GrailsApplication;
-import org.grails.web.util.GrailsApplicationAttributes;
-import groovy.lang.GroovyObject;
-import groovy.util.ConfigObject;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -28,11 +22,17 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.grails.web.servlet.mvc.GrailsWebRequest;
+import groovy.lang.GroovyObject;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import grails.core.ApplicationAttributes;
+import grails.core.GrailsApplication;
+
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
  * Utility methods for clients using the web framework.
