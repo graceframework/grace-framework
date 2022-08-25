@@ -15,13 +15,12 @@
  */
 package org.grails.web.beans
 
-import grails.databinding.DataBinder
-import grails.util.Environment
-import groovy.transform.CompileStatic
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 
-import org.grails.web.binding.CompositeEditor
-import org.grails.web.binding.StructuredDateEditor
-import org.grails.web.servlet.mvc.GrailsWebRequest
+import javax.servlet.ServletContext
+
+import groovy.transform.CompileStatic
 import org.springframework.beans.PropertyEditorRegistrar
 import org.springframework.beans.PropertyEditorRegistry
 import org.springframework.beans.propertyeditors.CustomDateEditor
@@ -29,9 +28,12 @@ import org.springframework.beans.propertyeditors.CustomNumberEditor
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
 
-import javax.servlet.ServletContext
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
+import grails.databinding.DataBinder
+import grails.util.Environment
+
+import org.grails.web.binding.CompositeEditor
+import org.grails.web.binding.StructuredDateEditor
+import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  * @author Graeme Rocher

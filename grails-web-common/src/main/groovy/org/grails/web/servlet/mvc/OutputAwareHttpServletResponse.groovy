@@ -15,11 +15,11 @@
  */
 package org.grails.web.servlet.mvc
 
-import groovy.transform.CompileStatic
-import groovy.transform.InheritConstructors
-
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletResponseWrapper
+
+import groovy.transform.CompileStatic
+import groovy.transform.InheritConstructors
 
 /**
  * Tracks whether getOutputStream() was called in order to prevent calls to getWriter() after

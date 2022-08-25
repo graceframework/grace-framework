@@ -15,9 +15,8 @@
  */
 package org.grails.compiler.injection
 
-import grails.core.ArtefactHandler
-import grails.io.IOUtils
-import grails.plugins.metadata.GrailsPlugin
+import java.lang.reflect.Modifier
+
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
@@ -36,17 +35,16 @@ import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
+
+import grails.core.ArtefactHandler
+import grails.io.IOUtils
+import grails.plugins.metadata.GrailsPlugin
+import grails.util.GrailsNameUtils
+
 import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.io.support.AntPathMatcher
+import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.UrlResource
-
-import java.lang.reflect.Modifier
-
-import static grails.util.GrailsNameUtils.getLogicalPropertyName
-import static grails.util.GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName
-import static org.grails.compiler.injection.GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory
-import static org.grails.io.support.GrailsResourceUtils.isGrailsResource
-import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 
 /**
  * A global transformation that applies Grails' transformations to classes within a Grails project
@@ -69,7 +67,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         ModuleNode ast = source.getAST()
 
         URL url = GrailsASTUtils.getSourceUrl(source)
-        if (!url || !isProjectSource(new UrlResource(url))) {
+        if (!url || !GrailsResourceUtils.isProjectSource(new UrlResource(url))) {
             return
         }
 
@@ -102,13 +100,13 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 continue
             }
 
-            if (!isGrailsResource(new UrlResource(url))) {
+            if (!GrailsResourceUtils.isGrailsResource(new UrlResource(url))) {
                 continue
             }
 
             if (projectName && projectVersion) {
                 Map<String, Object> members = [
-                        name: getPropertyNameForLowerCaseHyphenSeparatedName(String.valueOf(projectName)),
+                        name: GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(String.valueOf(projectName)),
                         version: projectVersion]
                 GrailsASTUtils.addAnnotationOrGetExisting(classNode, GrailsPlugin, members)
             }
@@ -129,7 +127,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
     static File resolveCompilationTargetDirectory(SourceUnit source) {
         File targetDirectory = null
         if (source.class.name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
-            targetDirectory = resolveEclipseCompilationTargetDirectory(source)
+            targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
         } else {
             targetDirectory = source.configuration.targetDirectory
         }
@@ -172,7 +170,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
 
             pluginXmlFile.withWriter('UTF-8') { Writer writer ->
                 def mkp = new MarkupBuilder(writer)
-                def pluginName = getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
+                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
 
                 def pluginProperties = info.getProperties()
                 def pluginVersion = pluginProperties['version'] ?: projectVersion
@@ -220,7 +218,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 def info = pluginAstReader.readPluginInfo(pluginClassNode)
 
                 def pluginProperties = info.getProperties()
-                def pluginName = getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
+                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
                 def pluginVersion = pluginProperties['version'] ?: projectVersion
                 def grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
 

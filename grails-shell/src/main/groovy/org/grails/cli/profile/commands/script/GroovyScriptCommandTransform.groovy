@@ -15,6 +15,8 @@
  */
 package org.grails.cli.profile.commands.script
 
+import java.lang.reflect.Modifier
+
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
@@ -34,9 +36,8 @@ import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
-import org.grails.cli.profile.CommandDescription
 
-import java.lang.reflect.Modifier
+import org.grails.cli.profile.CommandDescription
 
 /**
  * Transformation applied to command scripts

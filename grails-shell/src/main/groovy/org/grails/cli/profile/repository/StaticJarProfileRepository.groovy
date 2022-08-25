@@ -17,6 +17,7 @@ package org.grails.cli.profile.repository
 
 import groovy.transform.CompileStatic
 import org.eclipse.aether.artifact.DefaultArtifact
+
 import org.grails.cli.profile.Profile
 
 /**

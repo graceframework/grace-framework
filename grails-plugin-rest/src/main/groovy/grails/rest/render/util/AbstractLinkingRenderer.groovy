@@ -15,6 +15,16 @@
  */
 package grails.rest.render.util
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.MessageSource
+import org.springframework.http.HttpMethod
+
+import grails.core.support.proxy.DefaultProxyHandler
+import grails.core.support.proxy.EntityProxyHandler
+import grails.core.support.proxy.ProxyHandler
 import grails.rest.Link
 import grails.rest.render.AbstractIncludeExcludeRenderer
 import grails.rest.render.RenderContext
@@ -22,15 +32,10 @@ import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
 import grails.util.Environment
 import grails.util.GrailsWebUtil
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
-import org.grails.core.artefact.DomainClassArtefactHandler
-import grails.core.support.proxy.DefaultProxyHandler
-import grails.core.support.proxy.EntityProxyHandler
-import grails.core.support.proxy.ProxyHandler
 import grails.web.mapping.LinkGenerator
 import grails.web.mime.MimeType
-import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
+
+import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
@@ -39,10 +44,7 @@ import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.datastore.mapping.model.types.ToOne
 import org.grails.plugins.web.rest.render.html.DefaultHtmlRenderer
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.MessageSource
-import org.springframework.http.HttpMethod
+import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 
 /**
  * Abstract base class for HAL renderers

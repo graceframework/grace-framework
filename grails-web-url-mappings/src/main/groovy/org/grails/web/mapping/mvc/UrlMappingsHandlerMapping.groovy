@@ -15,19 +15,11 @@
  */
 package org.grails.web.mapping.mvc
 
-import grails.web.mapping.cors.GrailsCorsConfiguration
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import grails.web.mapping.UrlMapping
-import grails.web.mapping.UrlMappingInfo
-import grails.web.mapping.UrlMappingsHolder
-import grails.web.mime.MimeType
-import grails.web.mime.MimeTypeResolver
-import grails.web.http.HttpHeaders
-import org.grails.exceptions.ExceptionUtils
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.util.GrailsApplicationAttributes
-import org.grails.web.util.WebUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
 import org.springframework.web.context.request.WebRequestInterceptor
@@ -39,8 +31,18 @@ import org.springframework.web.servlet.handler.MappedInterceptor
 import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapter
 import org.springframework.web.util.UrlPathHelper
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import grails.web.http.HttpHeaders
+import grails.web.mapping.UrlMapping
+import grails.web.mapping.UrlMappingInfo
+import grails.web.mapping.UrlMappingsHolder
+import grails.web.mapping.cors.GrailsCorsConfiguration
+import grails.web.mime.MimeType
+import grails.web.mime.MimeTypeResolver
+
+import org.grails.exceptions.ExceptionUtils
+import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.util.GrailsApplicationAttributes
+import org.grails.web.util.WebUtils
 
 /**
  *

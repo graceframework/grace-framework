@@ -15,8 +15,8 @@
  */
 package org.grails.plugins.web.rest.transform
 
-import grails.rest.Link
-import grails.rest.Linkable
+import java.lang.reflect.Modifier
+
 import groovy.transform.CompileStatic
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils
 import org.codehaus.groovy.ast.ASTNode
@@ -38,10 +38,10 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
-import static java.lang.reflect.Modifier.PRIVATE
-import static java.lang.reflect.Modifier.PUBLIC
-import static java.lang.reflect.Modifier.TRANSIENT
-import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
+import grails.rest.Link
+import grails.rest.Linkable
+
+import org.grails.compiler.injection.GrailsASTUtils
 
 /**
  * Implementation of the {@link Linkable} transform
@@ -59,7 +59,7 @@ class LinkableTransform implements ASTTransformation {
     public static final String LINKS_METHOD = 'links'
 
     static void addLinkingMethods(ClassNode classNode) {
-        def linksField = new FieldNode(RESOURCE_LINKS_FIELD, PRIVATE | TRANSIENT,
+        def linksField = new FieldNode(RESOURCE_LINKS_FIELD, Modifier.PRIVATE | Modifier.TRANSIENT,
                 new ClassNode(Set).getPlainNodeReference(), classNode, new ListExpression())
         classNode.addField(linksField)
 
@@ -70,20 +70,20 @@ class LinkableTransform implements ASTTransformation {
             final linkArg = new MethodCallExpression(new ClassExpression(new ClassNode(Link)),
                     'createLink', new VariableExpression(mapParameter))
             linkMethodBody.addStatement(new ExpressionStatement(new MethodCallExpression(resourceLinksVariable, 'add', linkArg)))
-            def linkMethod = new MethodNode(LINK_METHOD, PUBLIC, ClassHelper.VOID_TYPE, [mapParameter] as Parameter[], null, linkMethodBody)
+            def linkMethod = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE, [mapParameter] as Parameter[], null, linkMethodBody)
             classNode.addMethod(linkMethod)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod)
 
             def linkParameter = new Parameter(new ClassNode(Link), LINK_METHOD)
-            def linkMethod2 = new MethodNode(LINK_METHOD, PUBLIC, ClassHelper.VOID_TYPE,
+            def linkMethod2 = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE,
                     [linkParameter] as Parameter[], null, new ExpressionStatement(new MethodCallExpression(
                     resourceLinksVariable, 'add', new VariableExpression(linkParameter))))
             classNode.addMethod(linkMethod2)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod2)
         }
         if (classNode.getMethods(LINKS_METHOD).isEmpty()) {
-            def linksMethod = new MethodNode(LINKS_METHOD, PUBLIC, new ClassNode(Collection),
-                    ZERO_PARAMETERS, null, new ReturnStatement(resourceLinksVariable))
+            def linksMethod = new MethodNode(LINKS_METHOD, Modifier.PUBLIC, new ClassNode(Collection),
+                    GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(resourceLinksVariable))
             classNode.addMethod(linksMethod)
             AnnotatedNodeUtils.markAsGenerated(classNode, linksMethod)
         }

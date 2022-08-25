@@ -15,12 +15,14 @@
  */
 package org.grails.web.mapping
 
-import grails.core.GrailsApplication
-import grails.plugins.GrailsPluginManager
 import groovy.transform.CompileStatic
-import org.grails.spring.beans.factory.HotSwappableTargetSourceFactoryBean
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
+
+import grails.core.GrailsApplication
+import grails.plugins.GrailsPluginManager
+
+import org.grails.spring.beans.factory.HotSwappableTargetSourceFactoryBean
 
 /**
  * Creates a HotSwappableTargetSource for UrlMappings

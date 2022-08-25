@@ -15,8 +15,9 @@
  */
 package org.grails.compiler.injection
 
-import grails.compiler.traits.TraitInjector
 import groovy.transform.CompileStatic
+
+import grails.compiler.traits.TraitInjector
 
 /**
  * Utility methods used by {@link TraitInjectionUtils}

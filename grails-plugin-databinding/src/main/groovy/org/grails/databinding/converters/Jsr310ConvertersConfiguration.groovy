@@ -15,11 +15,6 @@
  */
 package org.grails.databinding.converters
 
-import grails.databinding.TypedStructuredBindingEditor
-import grails.databinding.converters.FormattedValueConverter
-import grails.databinding.converters.ValueConverter
-import org.grails.plugins.databinding.DataBindingConfigurationProperties
-
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,6 +24,12 @@ import java.time.OffsetTime
 import java.time.Period
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+
+import grails.databinding.TypedStructuredBindingEditor
+import grails.databinding.converters.FormattedValueConverter
+import grails.databinding.converters.ValueConverter
+
+import org.grails.plugins.databinding.DataBindingConfigurationProperties
 
 class Jsr310ConvertersConfiguration {
 

@@ -15,7 +15,6 @@
  */
 package org.grails.cli.boot
 
-import grails.util.Environment
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.control.CompilationFailedException
@@ -23,6 +22,8 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.springframework.boot.cli.compiler.AstUtils
 import org.springframework.boot.cli.compiler.CompilerAutoConfiguration
 import org.springframework.boot.cli.compiler.DependencyCustomizer
+
+import grails.util.Environment
 
 /**
  * @author Graeme Rocher

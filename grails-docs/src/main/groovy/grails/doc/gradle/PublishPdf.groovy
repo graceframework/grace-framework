@@ -14,11 +14,12 @@
  */
 package grails.doc.gradle
 
-import grails.doc.PdfPublisher
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+
+import grails.doc.PdfPublisher
 
 /**
  * Gradle task for generating a gdoc-based PDF user guide. Assumes the

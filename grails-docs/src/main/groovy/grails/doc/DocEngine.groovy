@@ -14,10 +14,6 @@
  */
 package grails.doc
 
-import grails.doc.filters.HeaderFilter
-import grails.doc.filters.LinkTestFilter
-import grails.doc.filters.ListFilter
-
 import org.radeox.api.engine.WikiRenderEngine
 import org.radeox.api.engine.context.InitialRenderContext
 import org.radeox.engine.BaseRenderEngine
@@ -30,6 +26,10 @@ import org.radeox.macro.BaseMacro
 import org.radeox.macro.MacroLoader
 import org.radeox.macro.parameter.MacroParameter
 import org.radeox.regex.MatchResult
+
+import grails.doc.filters.HeaderFilter
+import grails.doc.filters.LinkTestFilter
+import grails.doc.filters.ListFilter
 
 /**
  * A Radeox Wiki engine for generating documentation using a confluence style syntax.

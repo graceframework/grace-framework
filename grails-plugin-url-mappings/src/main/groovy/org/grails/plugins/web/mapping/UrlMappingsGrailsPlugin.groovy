@@ -15,30 +15,32 @@
  */
 package org.grails.plugins.web.mapping
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import org.springframework.aop.framework.ProxyFactoryBean
+import org.springframework.aop.target.HotSwappableTargetSource
+import org.springframework.context.ApplicationContext
+
 import grails.config.Settings
 import grails.plugins.Plugin
 import grails.util.Environment
 import grails.util.GrailsUtil
 import grails.web.CamelCaseUrlConverter
 import grails.web.HyphenatedUrlConverter
-import grails.web.mapping.cors.GrailsCorsFilter
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import org.grails.core.artefact.UrlMappingsArtefactHandler
-import grails.web.mapping.cors.GrailsCorsConfiguration
-import org.grails.web.mapping.CachingLinkGenerator
-import org.grails.web.mapping.DefaultLinkGenerator
 import grails.web.mapping.LinkGenerator
 import grails.web.mapping.UrlMappings
 import grails.web.mapping.UrlMappingsHolder
+import grails.web.mapping.cors.GrailsCorsConfiguration
+import grails.web.mapping.cors.GrailsCorsFilter
+
+import org.grails.core.artefact.UrlMappingsArtefactHandler
+import org.grails.web.mapping.CachingLinkGenerator
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
 import org.grails.web.mapping.UrlMappingsTargetSourceFactoryBean
 import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping
 import org.grails.web.mapping.mvc.UrlMappingsInfoHandlerAdapter
 import org.grails.web.mapping.servlet.UrlMappingsErrorPageCustomizer
-import org.springframework.aop.framework.ProxyFactoryBean
-import org.springframework.aop.target.HotSwappableTargetSource
-import org.springframework.context.ApplicationContext
 
 /**
  * Handles the configuration of URL mappings.

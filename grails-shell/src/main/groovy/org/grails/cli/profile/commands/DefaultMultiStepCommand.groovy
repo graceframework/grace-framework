@@ -15,9 +15,11 @@
  */
 package org.grails.cli.profile.commands
 
-import grails.build.logging.GrailsConsole
 import groovy.transform.CompileDynamic
 import jline.console.completer.Completer
+
+import grails.build.logging.GrailsConsole
+
 import org.grails.cli.profile.AbstractStep
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.MultiStepCommand

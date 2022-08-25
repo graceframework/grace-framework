@@ -16,6 +16,7 @@
 package org.grails.cli.profile
 
 import groovy.transform.CompileStatic
+
 import org.grails.io.support.Resource
 
 /**

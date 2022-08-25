@@ -15,23 +15,26 @@
  */
 package org.grails.web.mime
 
+import java.util.regex.Pattern
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
+
 import grails.config.Config
 import grails.config.Settings
 import grails.core.GrailsApplication
 import grails.web.http.HttpHeaders
 import grails.web.mime.MimeType
 import grails.web.mime.MimeUtility
-import groovy.transform.CompileDynamic
-import org.grails.web.util.GrailsApplicationAttributes
-import groovy.transform.CompileStatic
+
 import org.grails.core.lifecycle.ShutdownOperations
 import org.grails.plugins.web.api.MimeTypesApiSupport
 import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
-
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import java.util.regex.Pattern
+import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  *

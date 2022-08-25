@@ -15,10 +15,11 @@
  */
 package org.grails.web.servlet.mvc
 
-import grails.util.Holders
+import javax.servlet.ServletContext
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 import groovy.transform.CompileStatic
-import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
-import org.grails.web.util.WebUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.web.context.ServletContextAware
 import org.springframework.web.context.WebApplicationContext
@@ -27,9 +28,10 @@ import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.multipart.MultipartException
 import org.springframework.web.servlet.DispatcherServlet
 
-import javax.servlet.ServletContext
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import grails.util.Holders
+
+import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
+import org.grails.web.util.WebUtils
 
 /**
  * Simple extension to the Spring {@link DispatcherServlet} implementation that makes sure a {@link GrailsWebRequest} is bound

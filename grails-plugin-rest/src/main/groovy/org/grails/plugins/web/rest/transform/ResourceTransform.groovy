@@ -15,22 +15,13 @@
  */
 package org.grails.plugins.web.rest.transform
 
-import grails.io.IOUtils
-import org.apache.groovy.ast.tools.AnnotatedNodeUtils
-import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
-
-import grails.artefact.Artefact
-import grails.compiler.ast.ClassInjector
-import grails.rest.Resource
-import grails.rest.RestfulController
-import grails.util.GrailsNameUtils
-import grails.web.controllers.ControllerMethod
-import grails.web.mapping.UrlMappings
-import groovy.transform.CompilationUnitAware
-import groovy.transform.CompileStatic
+import java.lang.reflect.Modifier
 
 import javax.annotation.PostConstruct
 
+import groovy.transform.CompilationUnitAware
+import groovy.transform.CompileStatic
+import org.apache.groovy.ast.tools.AnnotatedNodeUtils
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.AnnotationNode
 import org.codehaus.groovy.ast.ClassHelper
@@ -39,19 +30,7 @@ import org.codehaus.groovy.ast.ConstructorNode
 import org.codehaus.groovy.ast.FieldNode
 import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.Parameter
-import org.codehaus.groovy.ast.expr.BinaryExpression
-import org.codehaus.groovy.ast.expr.BooleanExpression
-import org.codehaus.groovy.ast.expr.ClassExpression
-import org.codehaus.groovy.ast.expr.ClosureExpression
-import org.codehaus.groovy.ast.expr.ConstantExpression
-import org.codehaus.groovy.ast.expr.ConstructorCallExpression
-import org.codehaus.groovy.ast.expr.Expression
-import org.codehaus.groovy.ast.expr.ListExpression
-import org.codehaus.groovy.ast.expr.MapEntryExpression
-import org.codehaus.groovy.ast.expr.MapExpression
-import org.codehaus.groovy.ast.expr.MethodCallExpression
-import org.codehaus.groovy.ast.expr.TupleExpression
-import org.codehaus.groovy.ast.expr.VariableExpression
+import org.codehaus.groovy.ast.expr.*
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.EmptyStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
@@ -63,24 +42,31 @@ import org.codehaus.groovy.syntax.Token
 import org.codehaus.groovy.syntax.Types
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+
+import grails.artefact.Artefact
+import grails.compiler.ast.ClassInjector
+import grails.io.IOUtils
+import grails.rest.Resource
+import grails.rest.RestfulController
+import grails.util.GrailsNameUtils
+import grails.web.controllers.ControllerMethod
+import grails.web.mapping.UrlMappings
+
 import org.grails.compiler.injection.ArtefactTypeAstTransformation
 import org.grails.compiler.injection.GrailsAwareInjectionOperation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.compiler.web.ControllerActionTransformer
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import org.grails.datastore.gorm.transactions.transform.TransactionalTransform
 
-import static java.lang.reflect.Modifier.FINAL
-import static java.lang.reflect.Modifier.PRIVATE
-import static java.lang.reflect.Modifier.PUBLIC
-import static java.lang.reflect.Modifier.STATIC
+import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
+import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 import static org.grails.compiler.injection.GrailsASTUtils.applyDefaultMethodTarget
 import static org.grails.compiler.injection.GrailsASTUtils.buildThisExpression
 import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
 import static org.grails.compiler.injection.GrailsASTUtils.processVariableScopes
-import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
-import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 
 /**
  * The Resource transform automatically exposes a domain class as a RESTful resource.
@@ -137,7 +123,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             }
 
             final ast = source.getAST()
-            final newControllerClassNode = new ClassNode(className, PUBLIC, nonGeneric(superClassNode, parent))
+            final newControllerClassNode = new ClassNode(className, Modifier.PUBLIC, nonGeneric(superClassNode, parent))
 
             final transactionalAnn = new AnnotationNode(TransactionalTransform.MY_TYPE)
             transactionalAnn.addMember(ATTR_READY_ONLY, ConstantExpression.PRIM_TRUE)
@@ -191,16 +177,16 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                 if (uri || namespace) {
                     final urlMappingsClassNode = new ClassNode(UrlMappings).getPlainNodeReference()
 
-                    final lazyInitField = new FieldNode('lazyInit', PUBLIC | STATIC | FINAL,
+                    final lazyInitField = new FieldNode('lazyInit', Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL,
                             ClassHelper.Boolean_TYPE, newControllerClassNode, new ConstantExpression(Boolean.FALSE))
                     newControllerClassNode.addField(lazyInitField)
 
-                    final urlMappingsField = new FieldNode('$urlMappings', PRIVATE,
+                    final urlMappingsField = new FieldNode('$urlMappings', Modifier.PRIVATE,
                             urlMappingsClassNode, newControllerClassNode, null)
                     newControllerClassNode.addField(urlMappingsField)
                     final urlMappingsSetterParam = new Parameter(urlMappingsClassNode, 'um')
                     final controllerMethodAnnotation = new AnnotationNode(new ClassNode(ControllerMethod).getPlainNodeReference())
-                    MethodNode urlMappingsSetter = new MethodNode('setUrlMappings', PUBLIC, VOID_CLASS_NODE,
+                    MethodNode urlMappingsSetter = new MethodNode('setUrlMappings', Modifier.PUBLIC, VOID_CLASS_NODE,
                             [urlMappingsSetterParam] as Parameter[], null,
                             new ExpressionStatement(new BinaryExpression(new VariableExpression(urlMappingsField.name),
                                     Token.newSymbol(Types.EQUAL, 0, 0), new VariableExpression(urlMappingsSetterParam))))
@@ -226,7 +212,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     }
 
                     if (namespace) {
-                        final namespaceField = new FieldNode('namespace', STATIC, ClassHelper.STRING_TYPE,
+                        final namespaceField = new FieldNode('namespace', Modifier.STATIC, ClassHelper.STRING_TYPE,
                                 newControllerClassNode, new ConstantExpression(namespace))
                         newControllerClassNode.addField(namespaceField)
                         if (map.getMapEntryExpressions().size() == 0) {
@@ -248,7 +234,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     methodBody.addStatement(new IfStatement(new BooleanExpression(urlMappingsVar), new ExpressionStatement(addMappingsMethodCall),
                             new EmptyStatement()))
 
-                    def initialiseUrlMappingsMethod = new MethodNode('initializeUrlMappings', PUBLIC,
+                    def initialiseUrlMappingsMethod = new MethodNode('initializeUrlMappings', Modifier.PUBLIC,
                             VOID_CLASS_NODE, ZERO_PARAMETERS, null, methodBody)
                     initialiseUrlMappingsMethod.addAnnotation(new AnnotationNode(new ClassNode(PostConstruct).getPlainNodeReference()))
                     initialiseUrlMappingsMethod.addAnnotation(controllerMethodAnnotation)
@@ -258,7 +244,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                 }
             }
 
-            final publicStaticFinal = PUBLIC | STATIC | FINAL
+            final publicStaticFinal = Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL
 
             newControllerClassNode.addProperty('scope', publicStaticFinal, ClassHelper.STRING_TYPE,
                     new ConstantExpression('singleton'), null, null)
@@ -282,7 +268,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
         BlockStatement constructorBody = new BlockStatement()
         constructorBody.addStatement(new ExpressionStatement(new ConstructorCallExpression(ClassNode.SUPER,
                 new TupleExpression(new ClassExpression(domainClassNode), new ConstantExpression(readOnly, true)))))
-        ConstructorNode constructorNode = controllerClassNode.addConstructor(PUBLIC, ZERO_PARAMETERS,
+        ConstructorNode constructorNode = controllerClassNode.addConstructor(Modifier.PUBLIC, ZERO_PARAMETERS,
                 ClassNode.EMPTY_ARRAY, constructorBody)
         AnnotatedNodeUtils.markAsGenerated(controllerClassNode, constructorNode)
         constructorNode

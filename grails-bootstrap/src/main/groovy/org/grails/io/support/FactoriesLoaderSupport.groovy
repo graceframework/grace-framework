@@ -15,10 +15,10 @@
  */
 package org.grails.io.support
 
-import groovy.transform.CompileStatic
-
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+
+import groovy.transform.CompileStatic
 
 /**
  * Base functionality for loading grails.factories

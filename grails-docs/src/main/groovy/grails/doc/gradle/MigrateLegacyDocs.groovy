@@ -14,11 +14,12 @@
  */
 package grails.doc.gradle
 
-import grails.doc.LegacyDocMigrator
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+
+import grails.doc.LegacyDocMigrator
 
 /**
  * Gradle task for migrating Grails 1.x gdocs to the newer Grails 2.x form with

@@ -15,15 +15,15 @@
  */
 package grails.web.api
 
-import groovy.transform.CompileStatic
-import groovy.transform.Generated
-import org.springframework.context.ApplicationContext
-import org.springframework.web.context.support.WebApplicationContextUtils
-
 import javax.servlet.ServletContext
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
+
+import groovy.transform.CompileStatic
+import groovy.transform.Generated
+import org.springframework.context.ApplicationContext
+import org.springframework.web.context.support.WebApplicationContextUtils
 
 /**
  * A trait that adds attributes specific to the Servlet API

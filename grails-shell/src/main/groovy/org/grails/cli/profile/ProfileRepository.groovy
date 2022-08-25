@@ -16,6 +16,7 @@
 package org.grails.cli.profile
 
 import org.eclipse.aether.artifact.Artifact
+
 import org.grails.io.support.Resource
 
 /**

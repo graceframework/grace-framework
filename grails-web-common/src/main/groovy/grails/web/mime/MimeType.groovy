@@ -15,8 +15,9 @@
  */
 package grails.web.mime
 
-import grails.util.Holders
 import groovy.transform.CompileStatic
+
+import grails.util.Holders
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
 

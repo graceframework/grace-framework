@@ -15,14 +15,15 @@
  */
 package grails.dev
 
-import grails.util.BuildSettings
-import grails.util.Environment
+import java.lang.management.ManagementFactory
+
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Commons
 import org.springframework.util.ClassUtils
 
-import java.lang.management.ManagementFactory
+import grails.util.BuildSettings
+import grails.util.Environment
 
 /**
  * Methods to support the development environment

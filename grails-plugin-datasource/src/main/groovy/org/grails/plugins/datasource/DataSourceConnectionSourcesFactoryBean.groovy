@@ -15,13 +15,9 @@
  */
 package org.grails.plugins.datasource
 
+import javax.sql.DataSource
+
 import groovy.transform.CompileStatic
-import org.grails.datastore.gorm.jdbc.connections.DataSourceConnectionSourceFactory
-import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
-import org.grails.datastore.mapping.core.connections.ConnectionSource
-import org.grails.datastore.mapping.core.connections.ConnectionSourceSettings
-import org.grails.datastore.mapping.core.connections.ConnectionSources
-import org.grails.datastore.mapping.core.connections.ConnectionSourcesInitializer
 import org.springframework.beans.factory.FactoryBean
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
@@ -30,7 +26,12 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.env.PropertyResolver
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 
-import javax.sql.DataSource
+import org.grails.datastore.gorm.jdbc.connections.DataSourceConnectionSourceFactory
+import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
+import org.grails.datastore.mapping.core.connections.ConnectionSource
+import org.grails.datastore.mapping.core.connections.ConnectionSourceSettings
+import org.grails.datastore.mapping.core.connections.ConnectionSources
+import org.grails.datastore.mapping.core.connections.ConnectionSourcesInitializer
 
 /**
  * A factory bean for creating the data sources

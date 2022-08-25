@@ -15,17 +15,18 @@
  */
 package org.grails.web.mime
 
-import grails.web.http.HttpHeaders
-import grails.web.mime.MimeType
-import grails.web.mime.MimeUtility
+import javax.servlet.http.HttpServletRequest
+
 import groovy.transform.CompileStatic
-import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.WebApplicationContextUtils
 
-import javax.servlet.http.HttpServletRequest
+import grails.web.http.HttpHeaders
+import grails.web.mime.MimeType
+import grails.web.mime.MimeUtility
 
 import org.grails.plugins.web.api.MimeTypesApiSupport
+import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  * An extension that adds methods to the {@link HttpServletRequest} object for mime types

@@ -15,18 +15,19 @@
  */
 package org.grails.web.databinding.bindingsource
 
+import groovy.transform.CompileStatic
+import groovy.xml.slurpersupport.GPathResult
+import org.xml.sax.SAXParseException
+
 import grails.databinding.CollectionDataBindingSource
 import grails.databinding.DataBindingSource
 import grails.databinding.SimpleMapDataBindingSource
-import groovy.transform.CompileStatic
-import groovy.xml.slurpersupport.GPathResult
 import grails.web.mime.MimeType
 
-import org.grails.databinding.bindingsource.DataBindingSourceCreator
 import org.grails.databinding.bindingsource.DataBindingSourceCreationException
+import org.grails.databinding.bindingsource.DataBindingSourceCreator
 import org.grails.databinding.xml.GPathResultCollectionDataBindingSource
 import org.grails.databinding.xml.GPathResultMap
-import org.xml.sax.SAXParseException
 import org.grails.io.support.SpringIOUtils
 
 /**

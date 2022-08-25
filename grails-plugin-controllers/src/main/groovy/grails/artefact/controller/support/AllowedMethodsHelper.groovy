@@ -15,9 +15,9 @@
  */
 package grails.artefact.controller.support
 
-import groovy.transform.CompileStatic
-
 import javax.servlet.http.HttpServletRequest
+
+import groovy.transform.CompileStatic
 
 /**
  * A helper class for interrogating the allowedMethods property.

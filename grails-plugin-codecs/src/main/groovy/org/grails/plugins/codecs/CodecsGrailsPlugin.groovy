@@ -17,6 +17,7 @@ package org.grails.plugins.codecs
 
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
+
 import org.grails.encoder.impl.HTML4Codec
 import org.grails.encoder.impl.HTMLJSCodec
 import org.grails.encoder.impl.JavaScriptCodec

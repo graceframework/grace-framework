@@ -16,6 +16,7 @@
 package grails.compiler.traits
 
 import grails.web.databinding.WebDataBinding
+
 import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**

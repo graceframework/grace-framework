@@ -17,7 +17,6 @@ package grails.rest.render.hal
 
 import grails.rest.render.ContainerRenderer
 import grails.util.GrailsNameUtils
-
 import grails.web.mime.MimeType
 
 /**

@@ -16,6 +16,7 @@
 package org.grails.cli.profile
 
 import org.eclipse.aether.graph.Dependency
+
 import org.grails.config.NavigableMap
 import org.grails.io.support.Resource
 

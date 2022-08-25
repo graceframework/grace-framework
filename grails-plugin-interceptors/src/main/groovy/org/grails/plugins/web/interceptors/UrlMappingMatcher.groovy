@@ -15,14 +15,15 @@
  */
 package org.grails.plugins.web.interceptors
 
-import grails.artefact.Interceptor
-import grails.interceptors.Matcher
-import grails.web.mapping.UrlMappingInfo
+import java.util.regex.Pattern
+
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.util.HashCodeHelper
 import org.springframework.util.AntPathMatcher
 
-import java.util.regex.Pattern
+import grails.artefact.Interceptor
+import grails.interceptors.Matcher
+import grails.web.mapping.UrlMappingInfo
 
 /**
  * Used to match {@link UrlMappingInfo} instance by {@link grails.artefact.Interceptor} instances

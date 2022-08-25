@@ -18,12 +18,13 @@ package org.grails.cli.profile.commands.factory
 import groovy.json.JsonParserType
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.SafeConstructor
+
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
 import org.grails.io.support.Resource
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.SafeConstructor
 
 /**
  * A {@link CommandFactory} that can discover commands defined in YAML or JSON

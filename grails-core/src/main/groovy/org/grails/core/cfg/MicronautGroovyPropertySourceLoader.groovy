@@ -15,16 +15,18 @@
  */
 package org.grails.core.cfg
 
-import grails.util.BuildSettings
-import grails.util.Environment
-import grails.util.Metadata
+import java.util.stream.Stream
+
 import groovy.transform.CompileStatic
 import io.micronaut.context.env.AbstractPropertySourceLoader
 import io.micronaut.context.exceptions.ConfigurationException
 import io.micronaut.core.io.ResourceLoader
-import org.grails.config.NavigableMap
 
-import java.util.stream.Stream
+import grails.util.BuildSettings
+import grails.util.Environment
+import grails.util.Metadata
+
+import org.grails.config.NavigableMap
 
 /**
  * Loads properties from a Groovy script.

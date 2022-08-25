@@ -15,8 +15,10 @@
  */
 package grails.dev.commands.io
 
-import grails.util.BuildSettings
 import groovy.transform.CompileStatic
+
+import grails.util.BuildSettings
+
 import org.grails.io.support.DefaultResourceLoader
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.GrailsResourceUtils

@@ -15,11 +15,13 @@
  */
 package org.grails.plugins.domain
 
+import groovy.util.logging.Slf4j
+
 import grails.core.GrailsApplication
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
-import groovy.util.logging.Slf4j
 import grails.validation.ConstraintsEvaluator
+
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
 import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean

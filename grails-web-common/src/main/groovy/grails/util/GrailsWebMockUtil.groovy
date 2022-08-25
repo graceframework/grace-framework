@@ -15,19 +15,19 @@
  */
 package grails.util
 
-import org.grails.web.util.GrailsApplicationAttributes
-import groovy.transform.CompileStatic
-
 import javax.servlet.ServletContext
 
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.servlet.mvc.ParameterCreationListener
+import groovy.transform.CompileStatic
 import org.springframework.context.ApplicationContext
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.mock.web.MockServletContext
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
+
+import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.servlet.mvc.ParameterCreationListener
+import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  *

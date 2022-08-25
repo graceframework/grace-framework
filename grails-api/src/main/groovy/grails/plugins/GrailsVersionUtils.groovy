@@ -16,6 +16,7 @@
 package grails.plugins
 
 import groovy.transform.CompileStatic
+
 import grails.plugins.metadata.GrailsPlugin
 
 /**

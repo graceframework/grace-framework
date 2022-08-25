@@ -14,12 +14,11 @@
  */
 package grails.doc
 
-import org.jsoup.parser.Parser
-
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
 import org.jsoup.Jsoup
+import org.jsoup.parser.Parser
 import org.w3c.dom.Document
 import org.xhtmlrenderer.pdf.ITextRenderer
 

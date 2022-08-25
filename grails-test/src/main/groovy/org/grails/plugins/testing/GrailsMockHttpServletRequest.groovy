@@ -15,9 +15,6 @@
  */
 package org.grails.plugins.testing
 
-import grails.converters.JSON
-import grails.converters.XML
-
 import javax.servlet.AsyncContext
 import javax.servlet.AsyncEvent
 import javax.servlet.AsyncListener
@@ -29,10 +26,7 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.Part
-import grails.web.mime.MimeType
-import org.grails.web.util.GrailsApplicationAttributes
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.util.WebUtils
+
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.mock.web.MockHttpServletRequest
@@ -41,6 +35,14 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.MultipartHttpServletRequest
+
+import grails.converters.JSON
+import grails.converters.XML
+import grails.web.mime.MimeType
+
+import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.util.GrailsApplicationAttributes
+import org.grails.web.util.WebUtils
 
 /**
  * A custom mock HTTP servlet request that provides the extra properties

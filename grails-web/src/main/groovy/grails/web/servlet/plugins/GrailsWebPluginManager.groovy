@@ -15,14 +15,15 @@
  */
 package grails.web.servlet.plugins
 
+import javax.servlet.ServletContext
+
 import groovy.transform.CompileStatic
-import grails.core.GrailsApplication
-import grails.plugins.DefaultGrailsPluginManager
-import grails.plugins.GrailsPlugin
 import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.core.io.Resource
 
-import javax.servlet.ServletContext
+import grails.core.GrailsApplication
+import grails.plugins.DefaultGrailsPluginManager
+import grails.plugins.GrailsPlugin
 
 /**
  * @author Graeme Rocher

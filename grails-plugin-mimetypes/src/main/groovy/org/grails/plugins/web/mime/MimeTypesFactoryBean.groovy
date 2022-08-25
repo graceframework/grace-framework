@@ -15,17 +15,18 @@
  */
 package org.grails.plugins.web.mime
 
-import grails.config.Config
-import grails.config.Settings
-import grails.core.GrailsApplication
-import grails.web.mime.MimeType
-import grails.web.mime.MimeTypeProvider
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.springframework.beans.factory.FactoryBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
+
+import grails.config.Config
+import grails.config.Settings
+import grails.core.GrailsApplication
+import grails.web.mime.MimeType
+import grails.web.mime.MimeTypeProvider
 
 /**
  * Creates the MimeType[] object that defines the configured mime types.

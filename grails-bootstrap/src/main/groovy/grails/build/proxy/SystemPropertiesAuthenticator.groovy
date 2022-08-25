@@ -15,8 +15,9 @@
  */
 package grails.build.proxy
 
-import grails.util.BuildSettings
 import groovy.transform.CompileStatic
+
+import grails.util.BuildSettings
 
 /**
  * An Authenticator that authenticates via System properties

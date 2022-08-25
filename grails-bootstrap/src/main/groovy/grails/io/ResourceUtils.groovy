@@ -15,9 +15,11 @@
  */
 package grails.io
 
-import grails.util.BuildSettings
 import groovy.transform.CompileStatic
 import groovy.transform.Memoized
+
+import grails.util.BuildSettings
+
 import org.grails.io.support.GrailsResourceUtils
 
 /**

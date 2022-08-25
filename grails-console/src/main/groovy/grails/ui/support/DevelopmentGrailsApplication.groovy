@@ -15,11 +15,12 @@
  */
 package grails.ui.support
 
-import grails.boot.GrailsApp
 import groovy.transform.CompileStatic
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.util.ClassUtils
 import org.springframework.web.context.support.GenericWebApplicationContext
+
+import grails.boot.GrailsApp
 
 /**
  * @author Graeme Rocher

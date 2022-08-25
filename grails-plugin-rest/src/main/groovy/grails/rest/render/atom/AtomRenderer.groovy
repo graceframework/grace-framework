@@ -15,21 +15,23 @@
  */
 package grails.rest.render.atom
 
+import java.text.SimpleDateFormat
+
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import org.springframework.http.HttpMethod
+
 import grails.converters.XML
 import grails.rest.Link
 import grails.rest.render.RenderContext
 import grails.rest.render.hal.HalXmlRenderer
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
 import grails.web.mime.MimeType
+
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.types.ToOne
 import org.grails.web.xml.PrettyPrintXMLStreamWriter
 import org.grails.web.xml.StreamingMarkupWriter
 import org.grails.web.xml.XMLStreamWriter
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.types.ToOne
-import org.springframework.http.HttpMethod
-
-import java.text.SimpleDateFormat
 
 /**
  *

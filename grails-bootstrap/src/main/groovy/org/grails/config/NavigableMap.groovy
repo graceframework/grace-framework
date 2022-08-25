@@ -15,14 +15,14 @@
  */
 package org.grails.config
 
+import java.util.regex.Pattern
+
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-import java.util.regex.Pattern
 
 /**
  * @deprecated This class is deprecated to reduce complexity, improve performance, and increase maintainability.

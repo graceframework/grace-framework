@@ -15,13 +15,14 @@
  */
 package grails.doc.asciidoc
 
-import grails.doc.DocEngine
 import groovy.transform.InheritConstructors
+import org.asciidoctor.Asciidoctor
 import org.asciidoctor.OptionsBuilder
 import org.asciidoctor.SafeMode
 import org.radeox.api.engine.context.RenderContext
 
-import org.asciidoctor.Asciidoctor
+import grails.doc.DocEngine
+
 import static org.asciidoctor.Asciidoctor.Factory.create
 
 /**

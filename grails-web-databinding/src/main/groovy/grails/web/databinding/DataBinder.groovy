@@ -15,10 +15,11 @@
  */
 package grails.web.databinding
 
-import grails.databinding.CollectionDataBindingSource
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.springframework.validation.BindingResult
+
+import grails.databinding.CollectionDataBindingSource
 
 /**
  *

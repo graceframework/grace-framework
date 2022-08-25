@@ -15,9 +15,8 @@
  */
 package org.grails.compiler.injection
 
-import grails.artefact.Artefact
-import grails.compiler.ast.ClassInjector
-import grails.core.ArtefactHandler
+import java.lang.reflect.Modifier
+
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ASTNode
@@ -31,14 +30,14 @@ import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
+
+import grails.artefact.Artefact
+import grails.compiler.ast.ClassInjector
+import grails.core.ArtefactHandler
+
 import org.grails.core.io.support.GrailsFactoriesLoader
+import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.UrlResource
-
-import java.lang.reflect.Modifier
-
-import static org.grails.compiler.injection.GrailsASTUtils.isSubclassOfOrImplementsInterface
-import static org.grails.io.support.GrailsResourceUtils.isGrailsResource
-import static org.grails.io.support.GrailsResourceUtils.isProjectSource
 
 /**
  * A global transformation that applies Grails' transformations to classes within a Grails project
@@ -64,7 +63,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
         URL url = GrailsASTUtils.getSourceUrl(source)
 
-        if (!url || !isProjectSource(new UrlResource(url))) {
+        if (!url || !GrailsResourceUtils.isProjectSource(new UrlResource(url))) {
             return
         }
 
@@ -92,7 +91,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
 
-            if (!isGrailsResource(new UrlResource(url))) {
+            if (!GrailsResourceUtils.isGrailsResource(new UrlResource(url))) {
                 continue
             }
 
@@ -143,7 +142,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
     }
 
     static boolean updateGrailsFactoriesWithType(ClassNode classNode, ClassNode superType, File compilationTargetDirectory) {
-        if (isSubclassOfOrImplementsInterface(classNode, superType)) {
+        if (GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, superType)) {
             if (Modifier.isAbstract(classNode.getModifiers())) {
                 return false
             }

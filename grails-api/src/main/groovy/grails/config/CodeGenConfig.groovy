@@ -15,8 +15,6 @@
  */
 package org.grails.config
 
-import grails.config.ConfigMap
-import grails.util.Environment
 import groovy.transform.Canonical
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
@@ -24,6 +22,9 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import org.codehaus.groovy.runtime.typehandling.GroovyCastException
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
+
+import grails.config.ConfigMap
+import grails.util.Environment
 
 /**
  * A {@link ConfigMap} implementation used at codegen time

@@ -15,17 +15,18 @@
  */
 package org.grails.plugins.web.api
 
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
-import grails.web.mime.MimeType
-
 import javax.servlet.ServletRequest
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+
+import grails.web.mime.MimeType
+
 import org.grails.plugins.web.mime.FormatInterceptor
-import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  * Support class for dealing with calls to withFormat.

@@ -15,6 +15,20 @@
  */
 package grails.web.databinding
 
+import java.lang.annotation.Annotation
+
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import groovy.xml.slurpersupport.GPathResult
+import org.codehaus.groovy.runtime.InvokerHelper
+import org.codehaus.groovy.runtime.MetaClassHelper
+import org.codehaus.groovy.runtime.metaclass.ThreadManagedMetaBeanProperty
+import org.springframework.context.MessageSource
+import org.springframework.validation.BeanPropertyBindingResult
+import org.springframework.validation.BindingResult
+import org.springframework.validation.FieldError
+import org.springframework.validation.ObjectError
+
 import grails.core.GrailsApplication
 import grails.databinding.BindingFormat
 import grails.databinding.DataBindingSource
@@ -29,12 +43,7 @@ import grails.util.GrailsMetaClassUtils
 import grails.util.GrailsNameUtils
 import grails.validation.DeferredBindingActions
 import grails.validation.ValidationErrors
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
-import groovy.xml.slurpersupport.GPathResult
-import org.codehaus.groovy.runtime.InvokerHelper
-import org.codehaus.groovy.runtime.MetaClassHelper
-import org.codehaus.groovy.runtime.metaclass.ThreadManagedMetaBeanProperty
+
 import org.grails.core.artefact.AnnotationDomainClassArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.core.exceptions.GrailsConfigurationException
@@ -53,13 +62,6 @@ import org.grails.web.databinding.GrailsWebDataBindingListener
 import org.grails.web.databinding.SpringConversionServiceAdapter
 import org.grails.web.databinding.converters.ByteArrayMultipartFileValueConverter
 import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.springframework.context.MessageSource
-import org.springframework.validation.BeanPropertyBindingResult
-import org.springframework.validation.BindingResult
-import org.springframework.validation.FieldError
-import org.springframework.validation.ObjectError
-
-import java.lang.annotation.Annotation
 
 import static grails.web.databinding.DataBindingUtils.getBindingIncludeList
 

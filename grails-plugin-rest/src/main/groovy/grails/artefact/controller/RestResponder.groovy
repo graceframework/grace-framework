@@ -15,7 +15,17 @@
  */
 package grails.artefact.controller
 
+import javax.servlet.http.HttpServletResponse
+
 import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import groovy.transform.Generated
+import groovy.transform.TypeCheckingMode
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.validation.BeanPropertyBindingResult
+import org.springframework.validation.Errors
+
 import grails.artefact.Controller
 import grails.artefact.controller.support.ResponseRenderer
 import grails.core.support.proxy.ProxyHandler
@@ -23,20 +33,11 @@ import grails.rest.Resource
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
 import grails.web.mime.MimeType
-import groovy.transform.Generated
+
 import org.grails.datastore.mapping.model.config.GormProperties
-import org.grails.web.util.GrailsApplicationAttributes
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
-
-import javax.servlet.http.HttpServletResponse
-
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.plugins.web.rest.render.ServletRenderContext
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.validation.BeanPropertyBindingResult
-import org.springframework.validation.Errors
+import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  *

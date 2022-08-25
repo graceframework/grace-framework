@@ -15,11 +15,12 @@
  */
 package org.grails.core.artefact
 
+import groovy.transform.CompileStatic
+import org.codehaus.groovy.ast.ClassNode
+
 import grails.core.ArtefactHandlerAdapter
 import grails.core.DefaultGrailsClass
 import grails.core.GrailsClass
-import groovy.transform.CompileStatic
-import org.codehaus.groovy.ast.ClassNode
 
 /**
  * An {@link grails.core.ArtefactHandler} that identifies the Application class

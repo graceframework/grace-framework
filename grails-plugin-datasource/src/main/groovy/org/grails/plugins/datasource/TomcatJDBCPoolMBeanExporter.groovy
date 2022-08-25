@@ -15,18 +15,18 @@
  */
 package org.grails.plugins.datasource
 
-import groovy.transform.CompileStatic
-
 import javax.management.MalformedObjectNameException
 import javax.management.ObjectName
 
+import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-import grails.core.GrailsApplication
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.ListableBeanFactory
 import org.springframework.jmx.export.MBeanExporter
 import org.springframework.jmx.support.RegistrationPolicy
+
+import grails.core.GrailsApplication
 
 @CompileStatic
 class TomcatJDBCPoolMBeanExporter extends MBeanExporter {

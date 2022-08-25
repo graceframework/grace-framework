@@ -17,6 +17,7 @@ package org.grails.cli.profile.commands.events
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
+
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 
 /**

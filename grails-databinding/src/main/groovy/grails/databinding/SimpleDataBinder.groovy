@@ -15,13 +15,21 @@
  */
 package grails.databinding
 
+import java.lang.annotation.Annotation
+import java.lang.reflect.Array
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
+
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import groovy.xml.slurpersupport.GPathResult
+
 import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
 import grails.databinding.events.DataBindingListener
 import grails.databinding.initializers.ValueInitializer
-import groovy.transform.CompileStatic
-import groovy.transform.TypeCheckingMode
-import groovy.xml.slurpersupport.GPathResult
+
 import org.grails.databinding.ClosureValueConverter
 import org.grails.databinding.ClosureValueInitializer
 import org.grails.databinding.IndexedPropertyReferenceDescriptor
@@ -32,12 +40,6 @@ import org.grails.databinding.converters.StructuredDateBindingEditor
 import org.grails.databinding.converters.StructuredSqlDateBindingEditor
 import org.grails.databinding.errors.SimpleBindingError
 import org.grails.databinding.xml.GPathResultMap
-
-import java.lang.annotation.Annotation
-import java.lang.reflect.Array
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
-import java.lang.reflect.ParameterizedType
 
 /**
  * A data binder that will bind nested Maps to an object.

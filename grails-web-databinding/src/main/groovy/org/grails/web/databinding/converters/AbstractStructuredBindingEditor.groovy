@@ -15,11 +15,12 @@
  */
 package org.grails.web.databinding.converters
 
-import grails.databinding.DataBindingSource
-import grails.databinding.TypedStructuredBindingEditor
+import java.lang.reflect.ParameterizedType
+
 import groovy.transform.CompileStatic
 
-import java.lang.reflect.ParameterizedType
+import grails.databinding.DataBindingSource
+import grails.databinding.TypedStructuredBindingEditor
 
 /**
  * An abstract base class for StructuredBindingEditor instances which can be auto-discovered

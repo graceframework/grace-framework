@@ -15,11 +15,13 @@
  */
 package org.grails.cli.profile.commands.templates
 
-import grails.codegen.model.Model
 import groovy.text.GStringTemplateEngine
 import groovy.text.Template
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+
+import grails.codegen.model.Model
+
 import org.grails.cli.interactive.completers.ClassNameCompleter
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile

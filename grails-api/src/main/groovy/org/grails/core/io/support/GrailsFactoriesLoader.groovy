@@ -16,10 +16,11 @@
 package org.grails.core.io.support
 
 import groovy.transform.CompileStatic
-import org.grails.io.support.FactoriesLoaderSupport
 import org.springframework.core.OrderComparator
 import org.springframework.util.Assert
 import org.springframework.util.ClassUtils
+
+import org.grails.io.support.FactoriesLoaderSupport
 
 /**
  * General purpose factory loading mechanism for internal use within the framework.

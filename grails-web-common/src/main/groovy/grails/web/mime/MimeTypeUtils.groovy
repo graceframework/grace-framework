@@ -15,9 +15,9 @@
  */
 package grails.web.mime
 
-import groovy.transform.CompileStatic
-
 import javax.servlet.http.HttpServletRequest
+
+import groovy.transform.CompileStatic
 
 /**
  * Utility methods for MimeType handling

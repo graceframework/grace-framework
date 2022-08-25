@@ -15,7 +15,9 @@
  */
 package grails.util
 
-import grails.io.IOUtils
+import java.lang.ref.Reference
+import java.lang.ref.SoftReference
+
 import groovy.transform.CompileStatic
 import io.micronaut.context.env.PropertiesPropertySourceLoader
 import io.micronaut.context.env.PropertySource
@@ -23,12 +25,12 @@ import io.micronaut.context.env.PropertySourcePropertyResolver
 import io.micronaut.context.env.SystemPropertiesPropertySource
 import io.micronaut.context.env.yaml.YamlPropertySourceLoader
 import io.micronaut.core.value.PropertyResolver
+
+import grails.io.IOUtils
+
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 import org.grails.io.support.UrlResource
-
-import java.lang.ref.Reference
-import java.lang.ref.SoftReference
 
 /**
  * Represents the application Metadata and loading mechanics.

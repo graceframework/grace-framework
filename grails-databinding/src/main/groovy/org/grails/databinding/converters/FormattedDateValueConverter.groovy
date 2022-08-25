@@ -15,10 +15,11 @@
  */
 package org.grails.databinding.converters
 
-import grails.databinding.converters.FormattedValueConverter
+import java.text.SimpleDateFormat
+
 import groovy.transform.CompileStatic
 
-import java.text.SimpleDateFormat
+import grails.databinding.converters.FormattedValueConverter
 
 /**
  * @author Jeff Brown

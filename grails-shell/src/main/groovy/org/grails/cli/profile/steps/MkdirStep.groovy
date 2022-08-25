@@ -16,6 +16,7 @@
 package org.grails.cli.profile.steps
 
 import groovy.transform.CompileStatic
+
 import org.grails.cli.profile.AbstractStep
 import org.grails.cli.profile.CommandException
 import org.grails.cli.profile.ExecutionContext

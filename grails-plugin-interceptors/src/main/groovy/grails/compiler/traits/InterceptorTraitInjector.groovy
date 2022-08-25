@@ -15,8 +15,9 @@
  */
 package grails.compiler.traits
 
-import grails.artefact.Interceptor
 import groovy.transform.CompileStatic
+
+import grails.artefact.Interceptor
 
 /**
  * Injects the {@link Interceptor} trait by convention

@@ -15,17 +15,18 @@
  */
 package org.grails.databinding.converters.web
 
-import grails.databinding.converters.ValueConverter
-import groovy.transform.CompileStatic
-
 import java.text.NumberFormat
 import java.text.ParsePosition
 
 import javax.servlet.http.HttpServletRequest
 
-import org.grails.web.servlet.mvc.GrailsWebRequest
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.servlet.LocaleResolver
+
+import grails.databinding.converters.ValueConverter
+
+import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  * A ValueConverter that knows how to convert a String to any numeric type and is Locale aware.  The

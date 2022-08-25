@@ -15,17 +15,19 @@
  */
 package org.grails.plugins.services
 
+import java.lang.reflect.Modifier
+
+import groovy.util.logging.Slf4j
+
 import grails.config.Settings
 import grails.core.GrailsApplication
 import grails.core.GrailsServiceClass
 import grails.plugins.GrailsPlugin
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
-import groovy.util.logging.Slf4j
+
 import org.grails.core.artefact.ServiceArtefactHandler
 import org.grails.core.exceptions.GrailsConfigurationException
-
-import java.lang.reflect.Modifier
 
 /**
  * Configures services in the Spring context.

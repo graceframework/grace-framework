@@ -20,11 +20,12 @@ import groovy.transform.CompileStatic
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
-import org.grails.cli.boot.GrailsDependencyVersions
-import org.grails.cli.profile.Profile
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngine
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionFailedException
+
+import org.grails.cli.boot.GrailsDependencyVersions
+import org.grails.cli.profile.Profile
 
 /**
  *  Resolves profiles from a configured list of repositories using Aether

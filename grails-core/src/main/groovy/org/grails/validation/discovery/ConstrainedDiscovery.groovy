@@ -16,6 +16,7 @@
 package org.grails.validation.discovery
 
 import grails.validation.Constrained
+
 import org.grails.datastore.mapping.model.PersistentEntity
 
 /**

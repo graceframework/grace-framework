@@ -15,8 +15,10 @@
  */
 package org.grails.cli.profile.commands.templates
 
-import grails.codegen.model.Model
 import groovy.transform.CompileDynamic
+
+import grails.codegen.model.Model
+
 import org.grails.io.support.Resource
 
 /**

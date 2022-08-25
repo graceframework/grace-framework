@@ -15,13 +15,13 @@
  */
 package org.grails.encoder
 
-import grails.util.Environment
 import groovy.transform.CompileStatic
-
-import grails.util.GrailsMetaClassUtils
 import org.codehaus.groovy.runtime.GStringImpl
 import org.codehaus.groovy.runtime.NullObject
 import org.springframework.util.Assert
+
+import grails.util.Environment
+import grails.util.GrailsMetaClassUtils
 
 /**
  * Helper methods for Codec metaclass operations.

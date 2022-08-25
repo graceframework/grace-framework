@@ -16,6 +16,7 @@
 package grails.compiler.traits
 
 import grails.artefact.DomainClass
+
 import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**

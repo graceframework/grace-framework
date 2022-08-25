@@ -15,15 +15,17 @@
  */
 package org.grails.cli.gradle.cache
 
-import grails.util.BuildSettings
+import java.util.concurrent.Callable
+
 import groovy.transform.CompileStatic
 import org.gradle.tooling.ProjectConnection
 import org.gradle.tooling.internal.consumer.ConnectorServices
 import org.gradle.tooling.internal.consumer.DefaultGradleConnector
+
+import grails.util.BuildSettings
+
 import org.grails.cli.gradle.GradleUtil
 import org.grails.cli.profile.ProjectContext
-
-import java.util.concurrent.Callable
 
 /**
  * Utility class for performing cached operations that retrieve data from Gradle.

@@ -15,8 +15,10 @@
  */
 package org.grails.cli.interactive.completers
 
-import grails.util.BuildSettings
 import groovy.transform.CompileStatic
+
+import grails.util.BuildSettings
+
 import org.grails.io.support.Resource
 
 /**

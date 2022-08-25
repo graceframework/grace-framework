@@ -15,8 +15,10 @@
  */
 package org.grails.cli.profile.support
 
-import grails.util.GrailsNameUtils
 import groovy.transform.CompileStatic
+
+import grails.util.GrailsNameUtils
+
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.commands.templates.SimpleTemplate
 

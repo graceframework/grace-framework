@@ -17,7 +17,6 @@ package grails.spring
 
 import groovy.xml.StreamingMarkupBuilder
 import org.apache.commons.logging.LogFactory
-import org.grails.spring.BeanConfiguration
 import org.springframework.beans.factory.config.BeanDefinitionHolder
 import org.springframework.beans.factory.parsing.BeanDefinitionParsingException
 import org.springframework.beans.factory.parsing.Location
@@ -33,6 +32,8 @@ import org.w3c.dom.Element
 import org.xml.sax.EntityResolver
 import org.xml.sax.ErrorHandler
 import org.xml.sax.InputSource
+
+import org.grails.spring.BeanConfiguration
 
 /**
  * Used by BeanBuilder to read a Spring namespace expression in the Groovy DSL.

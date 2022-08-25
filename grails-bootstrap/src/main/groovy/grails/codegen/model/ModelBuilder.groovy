@@ -15,9 +15,11 @@
  */
 package grails.codegen.model
 
-import grails.util.GrailsNameUtils
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.MetaClassHelper
+
+import grails.util.GrailsNameUtils
+
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.Resource

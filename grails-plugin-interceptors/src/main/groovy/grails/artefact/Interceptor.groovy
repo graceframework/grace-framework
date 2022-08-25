@@ -15,6 +15,17 @@
  */
 package grails.artefact
 
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.regex.Pattern
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+import groovy.transform.CompileStatic
+import groovy.transform.Generated
+import org.springframework.core.Ordered
+import org.springframework.web.servlet.ModelAndView
+
 import grails.artefact.controller.support.RequestForwarder
 import grails.artefact.controller.support.ResponseRedirector
 import grails.artefact.controller.support.ResponseRenderer
@@ -24,8 +35,7 @@ import grails.web.api.ServletAttributes
 import grails.web.api.WebAttributes
 import grails.web.databinding.DataBinder
 import grails.web.mapping.UrlMappingInfo
-import groovy.transform.CompileStatic
-import groovy.transform.Generated
+
 import org.grails.plugins.web.controllers.metaclass.RenderDynamicMethod
 import org.grails.plugins.web.interceptors.GrailsInterceptorHandlerInterceptorAdapter
 import org.grails.plugins.web.interceptors.InterceptorArtefactHandler
@@ -34,13 +44,6 @@ import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping
 import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException
 import org.grails.web.servlet.view.CompositeViewResolver
 import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.core.Ordered
-import org.springframework.web.servlet.ModelAndView
-
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.regex.Pattern
 
 /**
  * An interceptor can be used to intercept requests to controllers and URIs

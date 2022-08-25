@@ -15,10 +15,11 @@
  */
 package grails.ui.console.support
 
-import grails.core.GrailsApplication
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.springframework.context.support.GenericApplicationContext
+
+import grails.core.GrailsApplication
 
 /**
  * An {@link org.springframework.context.ApplicationContext} that loads the GroovyConsole

@@ -15,8 +15,9 @@
  */
 package org.grails.databinding.converters
 
-import grails.databinding.converters.ValueConverter
 import groovy.transform.CompileStatic
+
+import grails.databinding.converters.ValueConverter
 
 @CompileStatic
 class UUIDConverter implements ValueConverter {

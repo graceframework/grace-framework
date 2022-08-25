@@ -17,10 +17,11 @@ package org.grails.plugins.web.mime
 
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
-import org.grails.web.mime.DefaultMimeTypeResolver
-import grails.web.mime.MimeTypeResolver
-import org.grails.web.mime.DefaultMimeUtility
 import grails.web.mime.MimeType
+import grails.web.mime.MimeTypeResolver
+
+import org.grails.web.mime.DefaultMimeTypeResolver
+import org.grails.web.mime.DefaultMimeUtility
 
 /**
  * Provides content negotiation capabilities to Grails via a new withFormat method on controllers

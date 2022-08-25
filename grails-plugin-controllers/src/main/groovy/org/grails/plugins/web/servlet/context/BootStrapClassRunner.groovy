@@ -15,6 +15,15 @@
  */
 package org.grails.plugins.web.servlet.context
 
+import javax.servlet.ServletContext
+
+import groovy.transform.CompileStatic
+import groovy.util.logging.Commons
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
+import org.springframework.web.context.ServletContextAware
+import org.springframework.web.context.WebApplicationContext
+
 import grails.core.GrailsApplication
 import grails.core.GrailsApplicationLifeCycleAdapter
 import grails.core.GrailsClass
@@ -22,16 +31,9 @@ import grails.core.support.GrailsApplicationAware
 import grails.plugins.GrailsPluginManager
 import grails.plugins.PluginManagerAware
 import grails.web.servlet.bootstrap.GrailsBootstrapClass
-import groovy.transform.CompileStatic
-import groovy.util.logging.Commons
+
 import org.grails.web.servlet.boostrap.BootstrapArtefactHandler
 import org.grails.web.servlet.context.GrailsConfigUtils
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
-import org.springframework.web.context.ServletContextAware
-import org.springframework.web.context.WebApplicationContext
-
-import javax.servlet.ServletContext
 
 /**
  * Runs the BootStrap classes on startup

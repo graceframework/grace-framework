@@ -15,10 +15,10 @@
  */
 package grails.doc.macros
 
+import java.util.regex.Pattern
+
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
-
-import java.util.regex.Pattern
 import org.radeox.macro.BaseMacro
 import org.radeox.macro.CodeMacro
 import org.radeox.macro.parameter.BaseMacroParameter

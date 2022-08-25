@@ -15,18 +15,20 @@
  */
 package org.grails.plugins.domain.support
 
+import org.springframework.beans.factory.FactoryBean
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.MessageSource
+import org.springframework.context.annotation.Lazy
+
 import grails.core.GrailsApplication
+
 import org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
 import org.grails.datastore.gorm.validation.constraints.registry.ConstraintRegistry
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.validation.ConstraintEvalUtils
-import org.springframework.beans.factory.FactoryBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.MessageSource
-import org.springframework.context.annotation.Lazy
 
 class DefaultConstraintEvaluatorFactoryBean implements FactoryBean<ConstraintsEvaluator> {
 

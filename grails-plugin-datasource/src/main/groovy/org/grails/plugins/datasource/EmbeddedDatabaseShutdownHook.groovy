@@ -15,20 +15,20 @@
  */
 package org.grails.plugins.datasource
 
-import groovy.sql.Sql
-import groovy.transform.CompileStatic
-
 import java.sql.Connection
 
 import javax.sql.DataSource
 
+import groovy.sql.Sql
+import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-import org.grails.core.lifecycle.ShutdownOperations
 import org.springframework.beans.BeansException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.SmartLifecycle
+
+import org.grails.core.lifecycle.ShutdownOperations
 
 @CompileStatic
 class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContextAware {

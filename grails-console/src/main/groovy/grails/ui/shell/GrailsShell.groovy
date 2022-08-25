@@ -15,15 +15,16 @@
  */
 package grails.ui.shell
 
-import grails.boot.GrailsApp
-import grails.ui.shell.support.GroovyshApplicationContext
-import grails.ui.shell.support.GroovyshWebApplicationContext
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
+
+import grails.boot.GrailsApp
+import grails.ui.shell.support.GroovyshApplicationContext
+import grails.ui.shell.support.GroovyshWebApplicationContext
 
 /**
  * A Shell

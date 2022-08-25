@@ -15,10 +15,10 @@
  */
 package org.grails.plugins.datasource
 
-import groovy.transform.CompileStatic
-
 import java.sql.Driver
 import java.sql.DriverManager
+
+import groovy.transform.CompileStatic
 
 /**
  * @author Graeme Rocher

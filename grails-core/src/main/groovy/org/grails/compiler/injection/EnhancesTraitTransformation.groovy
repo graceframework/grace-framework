@@ -15,8 +15,8 @@
  */
 package org.grails.compiler.injection
 
-import grails.artefact.Enhances
-import grails.compiler.traits.TraitInjector
+import java.lang.reflect.Modifier
+
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils
@@ -35,8 +35,10 @@ import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.GroovyASTTransformation
+import org.codehaus.groovy.transform.trait.Traits
 
-import static java.lang.reflect.Modifier.PUBLIC
+import grails.artefact.Enhances
+import grails.compiler.traits.TraitInjector
 
 /**
  * Implementation for {@link Enhances)
@@ -77,18 +79,18 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
                 traitClassName = traitClassName[0..-14]
             }
 
-            ClassNode transformerNode = new ClassNode("${traitClassName}TraitInjector", PUBLIC,
+            ClassNode transformerNode = new ClassNode("${traitClassName}TraitInjector", Modifier.PUBLIC,
                     ClassHelper.OBJECT_TYPE, interfaces, MixinNode.EMPTY_ARRAY)
 
             def classNodeRef = ClassHelper.make(traitClassName).getPlainNodeReference()
             MethodNode getTraitMethodNode = transformerNode.addMethod(
-                    'getTrait', PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
+                    'getTrait', Modifier.PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
                     GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(new ClassExpression(classNodeRef)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getTraitMethodNode)
 
             def strArrayType = ClassHelper.STRING_TYPE.makeArray()
             MethodNode getArtefactTypesMethodNode = transformerNode.addMethod(
-                    'getArtefactTypes', PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
+                    'getArtefactTypes', Modifier.PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
                     new ReturnStatement(CastExpression.asExpression(strArrayType, expr)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getArtefactTypesMethodNode)
 
@@ -104,7 +106,7 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
     }
 
     boolean isTrait(ClassNode cNode) {
-        org.codehaus.groovy.transform.trait.Traits.isTrait(cNode) || cNode.name.endsWith('$Trait$Helper')
+        Traits.isTrait(cNode) || cNode.name.endsWith('$Trait$Helper')
     }
 
 }

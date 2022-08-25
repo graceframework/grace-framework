@@ -15,11 +15,11 @@
  */
 package grails.rest.render.xml
 
+import groovy.transform.CompileStatic
+
 import grails.converters.XML
 import grails.rest.render.ContainerRenderer
 import grails.rest.render.RenderContext
-import groovy.transform.CompileStatic
-
 import grails.web.mime.MimeType
 
 /**
