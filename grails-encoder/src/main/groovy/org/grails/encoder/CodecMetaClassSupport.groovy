@@ -55,7 +55,22 @@ class CodecMetaClassSupport {
 
         Closure encoderClosure
         Closure decoderClosure
-        if (!cacheLookup) {
+        if (cacheLookup) {
+            // Resolve codec methods once only at startup
+            def encoder = codecFactory.getEncoder()
+            if (encoder) {
+                encoderClosure = { -> encoder.encode(CodecMetaClassSupport.filterNullObject(delegate)) }
+            } else {
+                encoderClosure = { -> throw new MissingMethodException(encodeMethodName, delegate.getClass(), EMPTY_ARGS) }
+            }
+            def decoder = codecFactory.getDecoder()
+            if (decoder) {
+                decoderClosure = { -> decoder.decode(CodecMetaClassSupport.filterNullObject(delegate)) }
+            } else {
+                decoderClosure = { -> throw new MissingMethodException(decodeMethodName, delegate.getClass(), EMPTY_ARGS) }
+            }
+        }
+        else {
             // Resolve codecs in every call in case of a codec reload
             encoderClosure = { ->
                 def encoder = codecFactory.getEncoder()
@@ -79,21 +94,6 @@ class CodecMetaClassSupport {
                 // this is because the delegate might be a Map, in which case delegate.class doesn't
                 // do what we want here...
                 throw new MissingMethodException(decodeMethodName, delegate.getClass(), EMPTY_ARGS)
-            }
-        }
-        else {
-            // Resolve codec methods once only at startup
-            def encoder = codecFactory.getEncoder()
-            if (encoder) {
-                encoderClosure = { -> encoder.encode(CodecMetaClassSupport.filterNullObject(delegate)) }
-            } else {
-                encoderClosure = { -> throw new MissingMethodException(encodeMethodName, delegate.getClass(), EMPTY_ARGS) }
-            }
-            def decoder = codecFactory.getDecoder()
-            if (decoder) {
-                decoderClosure = { -> decoder.decode(CodecMetaClassSupport.filterNullObject(delegate)) }
-            } else {
-                decoderClosure = { -> throw new MissingMethodException(decodeMethodName, delegate.getClass(), EMPTY_ARGS) }
             }
         }
 

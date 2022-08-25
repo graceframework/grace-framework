@@ -243,11 +243,7 @@ class BuildSettings {
 
     static {
         boolean grailsAppDirPresent = new File('grails-app').exists() || new File('Application.groovy').exists()
-        if (!grailsAppDirPresent) {
-            CLASSES_DIR = null
-            BUILD_CLASSES_PATH = 'build/classes/main'
-        }
-        else {
+        if (grailsAppDirPresent) {
             String fromSystem = System.getProperty(PROJECT_CLASSES_DIR)
             if (fromSystem) {
                 CLASSES_DIR = new File(fromSystem)
@@ -264,6 +260,10 @@ class BuildSettings {
                     CLASSES_DIR = new File('build/classes/main')
                 }
             }
+        }
+        else {
+            CLASSES_DIR = null
+            BUILD_CLASSES_PATH = 'build/classes/main'
         }
         BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR))
                 : (IOUtils.findApplicationDirectoryFile() ?: new File('.'))

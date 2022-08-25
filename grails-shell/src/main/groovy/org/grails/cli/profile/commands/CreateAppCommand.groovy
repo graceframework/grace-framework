@@ -684,9 +684,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File destDir = getDestinationDirectory(srcFile)
             File destFile = new File(destDir, GRADLE_PROPERTIES)
 
-            if (!destFile.exists()) {
-                ant.copy file: srcFile, tofile: destFile
-            } else {
+            if (destFile.exists()) {
                 def concatGradlePropertiesFile = "${destDir}/concat-gradle.properties"
                 ant.move(file: destFile, tofile: concatGradlePropertiesFile)
                 ant.concat([destfile: destFile, fixlastline: true], {
@@ -696,6 +694,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                 })
                 ant.delete(file: concatGradlePropertiesFile, failonerror: false)
+            } else {
+                ant.copy file: srcFile, tofile: destFile
             }
         }
 

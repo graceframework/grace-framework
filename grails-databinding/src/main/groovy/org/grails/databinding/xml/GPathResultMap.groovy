@@ -65,7 +65,7 @@ class GPathResultMap implements Map {
     }
 
     Object get(key) {
-        if ('id' == key && this.@id) {
+        if (key == 'id' && this.@id) {
             return this.@id
         }
 
@@ -77,16 +77,16 @@ class GPathResultMap implements Map {
             def list = []
             value.iterator().each {
                 def theId = it.@id.text()
-                if (!''.equals(theId)) {
-                    def theMap = new GPathResultMap(it)
-                    list << theMap
-                } else {
+                if (theId == '') {
                     if (it.children().size() > 0) {
                         def theMap = new GPathResultMap(it)
                         list << theMap
                     } else {
                         list << it.text()
                     }
+                } else {
+                    def theMap = new GPathResultMap(it)
+                    list << theMap
                 }
             }
             return list

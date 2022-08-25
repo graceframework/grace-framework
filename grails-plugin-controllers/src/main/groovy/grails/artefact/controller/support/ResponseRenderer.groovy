@@ -67,6 +67,7 @@ import static org.grails.plugins.web.controllers.metaclass.RenderDynamicMethod.*
  * @since 3.0
  */
 @CompileStatic
+@SuppressWarnings('NoWildcardImports')
 trait ResponseRenderer extends WebAttributes {
 
     private Collection<ActionResultTransformer> actionResultTransformers = []

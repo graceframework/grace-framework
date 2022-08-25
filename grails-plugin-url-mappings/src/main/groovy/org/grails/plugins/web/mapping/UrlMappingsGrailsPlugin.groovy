@@ -71,7 +71,7 @@ class UrlMappingsGrailsPlugin extends Plugin {
             boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.current.isReloadEnabled()
             boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean, !isReloadEnabled)
 
-            "${grails.web.UrlConverter.BEAN_NAME}"('hyphenated' == urlConverterType ? HyphenatedUrlConverter : CamelCaseUrlConverter)
+            "${grails.web.UrlConverter.BEAN_NAME}"(urlConverterType == 'hyphenated' ? HyphenatedUrlConverter : CamelCaseUrlConverter)
 
             boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean, true)
 

@@ -141,7 +141,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
             ALIAS[it.key[6..-1]] = it.value
         }
 
-        if (null == fp) {
+        if (fp == null) {
             fp = new FilterPipe(initialContext)
 
             def filters = [ParamFilter,

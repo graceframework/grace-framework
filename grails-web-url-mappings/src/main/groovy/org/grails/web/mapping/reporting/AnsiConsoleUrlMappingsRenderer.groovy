@@ -180,7 +180,8 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     String header(String text, String description) {
         if (isAnsiEnabled) {
-            Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.GREEN).a("$text: ".toString()).fg(Color.DEFAULT).a(description).a(Ansi.Attribute.INTENSITY_BOLD_OFF)
+            Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD).fg(Color.GREEN).a("$text: ".toString())
+                    .fg(Color.DEFAULT).a(description).a(Ansi.Attribute.INTENSITY_BOLD_OFF)
         }
 
         "$text: $description"

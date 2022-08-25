@@ -354,12 +354,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         StringBuilder accumulatedPath = new StringBuilder()
         boolean isFirst = true
         for (String pathElement : path) {
-            if (!isFirst) {
-                accumulatedPath.append('.').append(pathElement)
-            }
-            else {
+            if (isFirst) {
                 isFirst = false
                 accumulatedPath.append(pathElement)
+            }
+            else {
+                accumulatedPath.append('.').append(pathElement)
             }
 
             Object currentItem = currentMap.get(pathElement)

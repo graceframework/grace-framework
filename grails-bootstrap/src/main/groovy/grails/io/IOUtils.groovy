@@ -47,10 +47,7 @@ class IOUtils extends SpringIOUtils {
      * @return The stream
      */
     static BufferedInputStream openStream(File file)  {
-        if (!file.exists()) {
-            throw new FileNotFoundException("File $file does not exist")
-        }
-        else {
+        if (file.exists()) {
             if (file.directory) {
                 throw new IOException("File $file exists but is a directory")
             }
@@ -60,6 +57,9 @@ class IOUtils extends SpringIOUtils {
             else {
                 file.newInputStream()
             }
+        }
+        else {
+            throw new FileNotFoundException("File $file does not exist")
         }
     }
 

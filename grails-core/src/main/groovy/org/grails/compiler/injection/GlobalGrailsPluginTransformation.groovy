@@ -146,11 +146,11 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
 
         // if the class being transformed is a *GrailsPlugin class then if it doesn't exist create it
         if (pluginClassNode && !pluginClassNode.isAbstract()) {
-            if (!pluginXmlExists) {
-                writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
-            } else {
-                // otherwise if the file does exist, update it with the plugin name
+            if (pluginXmlExists) {
+                // if the file does exist, update it with the plugin name
                 updatePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
+            } else {
+                writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
             }
         } else if (pluginXmlExists) {
             // if the class isn't the *GrailsPlugin class then only update the plugin.xml if it already exists

@@ -277,7 +277,7 @@ class SimpleDataBinder implements DataBinder {
     protected processProperty(obj, MetaProperty metaProperty, val, DataBindingSource source, DataBindingListener listener, errors) {
         def propName = metaProperty.name
         def propertyType = metaProperty.type
-        if (structuredEditors.containsKey(propertyType) && ('struct' == val || 'date.struct' == val)) {
+        if (structuredEditors.containsKey(propertyType) && (val == 'struct' || val == 'date.struct')) {
             def structuredEditor = structuredEditors[propertyType]
             val = structuredEditor.getPropertyValue obj, propName, source
         }
@@ -309,7 +309,7 @@ class SimpleDataBinder implements DataBinder {
         def propertyType = metaProperty.type
         Class genericType = getReferencedTypeForCollection(propName, obj)
 
-        if (structuredEditors.containsKey(genericType) && ('struct' == val || 'date.struct' == val)) {
+        if (structuredEditors.containsKey(genericType) && (val == 'struct' || val == 'date.struct')) {
             def structuredEditor = structuredEditors[genericType]
             val = structuredEditor.getPropertyValue obj, propName, splitIndexedStruct(indexedPropertyReferenceDescriptor, source)
         }

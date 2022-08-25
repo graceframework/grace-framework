@@ -52,12 +52,12 @@ class HexCodecExtensionMethods {
 
         def currentByte
         str.eachWithIndex { val, idx ->
-            if (!(idx % 2)) {
-                currentByte = HEXDIGITS.indexOf(val) << 4
-            }
-            else {
+            if (idx % 2) {
                 output << (currentByte | HEXDIGITS.indexOf(val))
                 currentByte = 0
+            }
+            else {
+                currentByte = HEXDIGITS.indexOf(val) << 4
             }
         }
 

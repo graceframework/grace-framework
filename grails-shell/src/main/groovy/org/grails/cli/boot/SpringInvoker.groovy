@@ -67,7 +67,7 @@ class SpringInvoker {
 
         @Override
         Enumeration<URL> getResources(String name) throws IOException {
-            if ('org/slf4j/impl/StaticLoggerBinder.class' == name) {
+            if (name == 'org/slf4j/impl/StaticLoggerBinder.class') {
                 def resources = super.getResources(name)
                 def oneRes = (URL)resources.find { URL url -> !url.toString().contains('slf4j-simple') }
                 if (oneRes) {

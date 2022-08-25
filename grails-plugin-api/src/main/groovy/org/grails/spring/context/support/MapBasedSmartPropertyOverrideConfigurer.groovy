@@ -48,15 +48,15 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
         }
         for (beanName in beans.keySet()) {
             def beanProperties = beans.get(beanName)
-            if (!(beanProperties instanceof Map)) {
-                throw new IllegalArgumentException("Entry in bean config for bean '$beanName' must be a Map")
-            }
-            else {
+            if (beanProperties instanceof Map) {
                 final beanPropertiesMap = (Map) beanProperties
                 for (beanPropertyName in beanPropertiesMap.keySet()) {
                     final beanPropertyValue = beanPropertiesMap.get(beanPropertyName)
                     applyPropertyValue(factory, beanName.toString(), beanPropertyName.toString(), beanPropertyValue)
                 }
+            }
+            else {
+                throw new IllegalArgumentException("Entry in bean config for bean '$beanName' must be a Map")
             }
         }
     }

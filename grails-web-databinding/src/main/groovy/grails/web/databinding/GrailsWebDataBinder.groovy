@@ -135,10 +135,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
                 if (error instanceof FieldError) {
                     def fieldError = (FieldError)error
                     final boolean isBlank = ''.equals(fieldError.getRejectedValue())
-                    if (!isBlank) {
-                        newResult.addError(fieldError)
-                    }
-                    else {
+                    if (isBlank) {
                         PersistentProperty prop = domain.getPropertyByName(fieldError.getField())
                         if (prop != null) {
                             final boolean isOptional = prop.isNullable()
@@ -149,6 +146,9 @@ class GrailsWebDataBinder extends SimpleDataBinder {
                         else {
                             newResult.addError(fieldError)
                         }
+                    }
+                    else {
+                        newResult.addError(fieldError)
                     }
                 }
                 else {
@@ -415,7 +415,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
                     } else if (Collection.isAssignableFrom(metaProperty.type)) {
                         def collection = initializeCollection obj, propName, metaProperty.type
                         def idx = Integer.parseInt(indexedPropertyReferenceDescriptor.index)
-                        if ('null' == idValue) {
+                        if (idValue == 'null') {
                             if (idx < collection.size()) {
                                 def element = collection[idx]
                                 if (element != null) {

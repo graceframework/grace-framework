@@ -267,7 +267,12 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
                 boolean absolute = isAbsolute(attrs)
 
-                if (!absolute) {
+                if (absolute) {
+                    url = mapping.createRelativeURL(convertedControllerName, convertedActionName, namespace, pluginName, params, encoding, frag)
+                    writer.append handleAbsolute(attrs)
+                    writer.append url
+                }
+                else {
                     url = mapping.createRelativeURL(convertedControllerName, convertedActionName, namespace, pluginName, params, encoding, frag)
                     final contextPathAttribute = attrs.get(ATTRIBUTE_CONTEXT_PATH)
                     final cp = contextPathAttribute == null ? getContextPath() : contextPathAttribute
@@ -278,11 +283,6 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     else if (includeContext) {
                         writer.append cp
                     }
-                    writer.append url
-                }
-                else {
-                    url = mapping.createRelativeURL(convertedControllerName, convertedActionName, namespace, pluginName, params, encoding, frag)
-                    writer.append handleAbsolute(attrs)
                     writer.append url
                 }
             } else {
