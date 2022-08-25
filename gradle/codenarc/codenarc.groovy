@@ -111,8 +111,8 @@ ruleset {
     // IfStatementCouldBeTernary
     // ImplicitClosureParameter
     // ImplicitReturnStatement
-    // InvertedCondition
-    // InvertedIfElse
+    InvertedCondition
+    InvertedIfElse
     // LongLiteralWithLowerCaseL
     // MethodParameterTypeRequired
     // MethodReturnTypeRequired
