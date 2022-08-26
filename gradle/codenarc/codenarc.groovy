@@ -23,19 +23,19 @@ ruleset {
     // DuplicateCaseStatement
     // DuplicateMapKey
     // DuplicateSetValue
-    // EmptyCatchBlock
-    // EmptyClass
-    // EmptyElseBlock
-    // EmptyFinallyBlock
-    // EmptyForStatement
-    // EmptyIfStatement
-    // EmptyInstanceInitializer
+    EmptyCatchBlock
+    EmptyClass
+    EmptyElseBlock
+    EmptyFinallyBlock
+    EmptyForStatement
+    EmptyIfStatement
+    EmptyInstanceInitializer
     // EmptyMethod
-    // EmptyStaticInitializer
-    // EmptySwitchStatement
-    // EmptySynchronizedStatement
-    // EmptyTryBlock
-    // EmptyWhileStatement
+    EmptyStaticInitializer
+    EmptySwitchStatement
+    EmptySynchronizedStatement
+    EmptyTryBlock
+    EmptyWhileStatement
     // EqualsAndHashCode
     // EqualsOverloaded
     // ExplicitGarbageCollection
