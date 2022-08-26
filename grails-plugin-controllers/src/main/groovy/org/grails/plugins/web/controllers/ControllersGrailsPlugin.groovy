@@ -230,7 +230,7 @@ class ControllersGrailsPlugin extends Plugin {
             return
         }
         def application = grailsApplication
-        if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, (Class)event.source)) {
+        if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, (Class) event.source)) {
             ApplicationContext context = applicationContext
             if (!context) {
                 if (log.isDebugEnabled()) {

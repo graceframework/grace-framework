@@ -53,7 +53,8 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
             ConfigurableApplicationContext ctx = null
             try {
                 ctx = super.run(args)
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 System.err.println("Context failed to load: $e.message")
                 System.exit(1)
             }
@@ -64,14 +65,16 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
                 command.applicationContext = ctx
                 def result = command.handle(new ExecutionContext(commandLine))
                 result ? System.exit(0) : System.exit(1)
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 System.err.println("Command execution error: $e.message")
                 System.exit(1)
             }
             finally {
                 try {
                     ctx?.close()
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     // ignore
                 }
             }
@@ -93,7 +96,8 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
             Class applicationClass
             try {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 System.err.println('Application class not found')
                 System.exit(1)
             }

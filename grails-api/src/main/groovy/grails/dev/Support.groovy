@@ -97,7 +97,8 @@ class Support {
             def vm = vmClass.attach(pid)
             vm.loadAgent(file.absolutePath, '')
             vm.detach()
-        } catch (e) {
+        }
+        catch (e) {
             System.err.println("WARNING: Could not attach reloading agent. Reloading disabled. Message: $e.message")
         }
     }

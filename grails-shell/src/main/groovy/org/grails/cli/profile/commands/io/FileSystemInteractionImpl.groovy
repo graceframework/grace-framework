@@ -87,7 +87,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         callable.call()
         if (spec.from && spec.into) {
             if (spec.from instanceof Iterable) {
-                copyAll((Iterable)spec.from, spec.into)
+                copyAll((Iterable) spec.from, spec.into)
             }
             else {
                 copy(spec.from, spec.into)
@@ -158,7 +158,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     @Override
     File file(Object path) {
         if (path instanceof File) {
-            return (File)path
+            return (File) path
         }
         else if (path instanceof Resource) {
             return ((Resource) path).file
@@ -223,7 +223,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
             return null
         }
         if (path instanceof Resource) {
-            return (Resource)path
+            return (Resource) path
         }
         def f = file(path)
         if (f?.exists() && f.isFile()) {
@@ -253,7 +253,8 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     Collection<Resource> resources(String pattern) {
         try {
             return resourcePatternResolver.getResources(pattern).toList()
-        } catch (e) {
+        }
+        catch (e) {
             return []
         }
     }

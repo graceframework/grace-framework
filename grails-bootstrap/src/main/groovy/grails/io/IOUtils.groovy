@@ -143,7 +143,8 @@ class IOUtils extends SpringIOUtils {
             if (absolutePath) {
                 try {
                     return Paths.get(new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!'))).toURI()).toFile()
-                } catch (MalformedURLException e) {
+                }
+                catch (MalformedURLException e) {
                     return null
                 }
             }
@@ -194,7 +195,8 @@ class IOUtils extends SpringIOUtils {
             String rootPath = classRes.toString() - pathToClassFile
             if (rootPath.endsWith(BuildSettings.BUILD_CLASSES_PATH)) {
                 rootPath = rootPath.replace('/build/classes/groovy/', '/build/resources/')
-            } else {
+            }
+            else {
                 rootPath = "$rootPath/"
             }
             return new URL(rootPath)
@@ -274,7 +276,8 @@ class IOUtils extends SpringIOUtils {
                 if (appDir != null) {
                     return appDir
                 }
-            } catch (FileNotFoundException fnfe) {
+            }
+            catch (FileNotFoundException fnfe) {
                 return null
             }
         }
@@ -351,7 +354,8 @@ class IOUtils extends SpringIOUtils {
                     String buildClassesPath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
                     if (path.contains(buildClassesPath)) {
                         location = path.substring(0, path.indexOf(buildClassesPath) - 1)
-                    } else {
+                    }
+                    else {
                         File appDir = findGrailsApp(file)
                         if (appDir != null) {
                             location = appDir.canonicalPath
@@ -359,9 +363,11 @@ class IOUtils extends SpringIOUtils {
                     }
                 }
             }
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             // ignore
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // ignore
         }
         applicationDirectory = location

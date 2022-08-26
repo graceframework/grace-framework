@@ -244,7 +244,8 @@ class ClassPathScanner {
             try {
                 URL withoutBang = new URL("${urlStr.substring(0, urlStr.length() - 2)}/")
                 addURL(withoutBang)
-            } catch (MalformedURLException e) {
+            }
+            catch (MalformedURLException e) {
                 // ignore, running as a WAR
             }
         }
@@ -261,7 +262,8 @@ class ClassPathScanner {
         protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
             try {
                 return super.loadClass(name, resolve)
-            } catch (ClassNotFoundException cnfe) {
+            }
+            catch (ClassNotFoundException cnfe) {
                 return applicationClass.getClassLoader().loadClass(name)
             }
         }

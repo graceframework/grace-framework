@@ -660,27 +660,31 @@ class DocPublisher {
             String stringKey = String.valueOf(key)
             if (value != null) {
                 if (value instanceof Map) {
-                    flattenKeys(flatConfig, (Map)value, ((path + [stringKey]) as List<String>).asImmutable(), forceStrings)
-                } else {
+                    flattenKeys(flatConfig, (Map) value, ((path + [stringKey]) as List<String>).asImmutable(), forceStrings)
+                }
+                else {
                     String fullKey
                     if (path) {
                         fullKey = path.join('.') + '.' + stringKey
-                    } else {
+                    }
+                    else {
                         fullKey = stringKey
                     }
                     if (value instanceof Collection) {
                         if (forceStrings) {
-                            flatConfig.put(fullKey, ((Collection)value).join(','))
-                        } else {
+                            flatConfig.put(fullKey, ((Collection) value).join(','))
+                        }
+                        else {
                             flatConfig.put(fullKey, value)
                         }
                         int index = 0
-                        for (Object item: (Collection)value) {
+                        for (Object item: (Collection) value) {
                             String collectionKey = "${fullKey}[${index}]"
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++
                         }
-                    } else {
+                    }
+                    else {
                         flatConfig.put(fullKey, forceStrings ? String.valueOf(value) : value)
                     }
                 }

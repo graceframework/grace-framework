@@ -51,7 +51,8 @@ class GrailsTestInterceptor {
         init()
         try {
             body()
-        } finally {
+        }
+        finally {
             destroy()
         }
     }

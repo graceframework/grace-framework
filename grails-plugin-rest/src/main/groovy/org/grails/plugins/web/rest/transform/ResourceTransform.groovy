@@ -129,8 +129,9 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             ClassNode superClassNode
             Expression superClassAttribute = annotationNode.getMember(ATTR_SUPER_CLASS)
             if (superClassAttribute instanceof ClassExpression) {
-                superClassNode = ((ClassExpression)superClassAttribute).getType()
-            } else {
+                superClassNode = ((ClassExpression) superClassAttribute).getType()
+            }
+            else {
                 superClassNode = ClassHelper.make(RestfulController)
             }
 
@@ -170,7 +171,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     responseFormatsExpression.addExpression(responseFormatsAttr)
                 }
                 else if (responseFormatsAttr instanceof ListExpression) {
-                    responseFormatsExpression = (ListExpression)responseFormatsAttr
+                    responseFormatsExpression = (ListExpression) responseFormatsAttr
                     for (Expression expr in responseFormatsExpression.expressions) {
                         if (expr.text.equalsIgnoreCase('html')) {
                             hasHtml = true
@@ -178,7 +179,8 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 responseFormatsExpression.addExpression(new ConstantExpression('json'))
                 responseFormatsExpression.addExpression(new ConstantExpression('xml'))
             }

@@ -44,7 +44,7 @@ class CommandCompleter implements Completer {
             trimmed == it.name
         }
         if (cmd instanceof Completer) {
-            return ((Completer)cmd).complete(buffer, cursor, candidates)
+            return ((Completer) cmd).complete(buffer, cursor, candidates)
         }
         cursor
     }

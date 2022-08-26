@@ -160,7 +160,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
      */
     @Generated
     ModelAndView getModelAndView() {
-        (ModelAndView)currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
+        (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
     }
 
     /**
@@ -226,14 +226,14 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             throw new IllegalArgumentException("Invalid arguments to method 'redirect': $argMap")
         }
 
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
 
         if (this instanceof GroovyObject) {
-            GroovyObject controller = (GroovyObject)this
+            GroovyObject controller = (GroovyObject) this
 
             // if there are errors add it to the list of errors
             Errors controllerErrors = getErrorsInternal(webRequest)
-            Errors errors = (Errors)argMap.get(GormProperties.ERRORS)
+            Errors errors = (Errors) argMap.get(GormProperties.ERRORS)
             if (controllerErrors != null && errors != null) {
                 controllerErrors.addAllErrors errors
             }
@@ -332,7 +332,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
      */
     private synchronized resetToken(GrailsWebRequest webRequest) {
         final request = webRequest.getCurrentRequest()
-        SynchronizerTokensHolder tokensHolderInSession = (SynchronizerTokensHolder)request.getSession(false)?.getAttribute(
+        SynchronizerTokensHolder tokensHolderInSession = (SynchronizerTokensHolder) request.getSession(false)?.getAttribute(
                 SynchronizerTokensHolder.HOLDER)
         String urlInRequest = webRequest.params[SynchronizerTokensHolder.TOKEN_URI]
         String tokenInRequest = webRequest.params[SynchronizerTokensHolder.TOKEN_KEY]
@@ -382,7 +382,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             final boolean isDomainClass
             if (GroovyObject.isAssignableFrom(type)) {
                 isDomainClass = DomainClass.isAssignableFrom(type)
-            } else {
+            }
+            else {
                 isDomainClass = DomainClassArtefactHandler
                         .isDomainClass(type)
             }
@@ -406,13 +407,15 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             if (entityIdentifierValue != null) {
                 try {
                     commandObjectInstance = InvokerHelper.invokeStaticMethod(type, 'get', entityIdentifierValue)
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     final Errors errors = getErrors()
                     if (errors != null) {
                         errors.reject("${getClass().getName()}.commandObject.${commandObjectParameterName}.error", e.getMessage())
                     }
                 }
-            } else if (requestMethod == HttpMethod.POST || !isDomainClass) {
+            }
+            else if (requestMethod == HttpMethod.POST || !isDomainClass) {
                 commandObjectInstance = type.newInstance()
             }
 
@@ -429,7 +432,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                         default:
                             shouldDoDataBinding = false
                     }
-                } else {
+                }
+                else {
                     shouldDoDataBinding = true
                 }
 
@@ -437,7 +441,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                     bindData(commandObjectInstance, commandObjectBindingSource, Collections.EMPTY_MAP, null)
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             final exceptionHandlerMethodFor = getExceptionHandlerMethodFor(e.getClass())
             if (exceptionHandlerMethodFor != null) {
                 throw e
@@ -477,7 +482,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             def innerValue = params[prefix]
             if (innerValue instanceof DataBindingSource) {
                 commandParams = (DataBindingSource) innerValue
-            } else if (innerValue instanceof Map) {
+            }
+            else if (innerValue instanceof Map) {
                 commandParams = new SimpleMapDataBindingSource(innerValue)
             }
         }
@@ -493,7 +499,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
 
         Method handlerMethod
         final List<ControllerExceptionHandlerMetaData> exceptionHandlerMetaDataInstances =
-                (List<ControllerExceptionHandlerMetaData>)GrailsClassUtils.getStaticFieldValue(this.getClass(),
+                (List<ControllerExceptionHandlerMetaData>) GrailsClassUtils.getStaticFieldValue(this.getClass(),
                         ControllerActionTransformer.EXCEPTION_HANDLER_META_DATA_FIELD_NAME)
 
         if (exceptionHandlerMetaDataInstances) {

@@ -52,7 +52,8 @@ class GradleUtil {
         GradleConnector gradleConnector = GradleConnector.newConnector().forProjectDirectory(baseDir)
         if (System.getenv('GRAILS_GRADLE_HOME')) {
             gradleConnector.useInstallation(new File(System.getenv('GRAILS_GRADLE_HOME')))
-        } else {
+        }
+        else {
             def userHome = System.getProperty('user.home')
             if (userHome) {
                 File gradleFile = new File(baseDir, 'gradle.properties')
@@ -82,12 +83,14 @@ class GradleUtil {
                 SystemOutErrCapturer.withNullOutput {
                     closure(projectConnection)
                 }
-            } else {
+            }
+            else {
                 SystemStreamsRedirector.withOriginalIO {
                     closure(projectConnection)
                 }
             }
-        } finally {
+        }
+        finally {
             projectConnection.close()
         }
     }

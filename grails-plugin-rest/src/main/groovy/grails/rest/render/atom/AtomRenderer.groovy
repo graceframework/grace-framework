@@ -74,7 +74,8 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
 
         if (isDomain) {
             writeDomainWithEmbeddedAndLinks(entity, object, context, xml, writtenObjects)
-        } else if (object instanceof Collection) {
+        }
+        else if (object instanceof Collection) {
             final locale = context.locale
             String resourceHref = linkGenerator.link(uri: context.resourcePath, method: HttpMethod.GET, absolute: true)
             final title = getResourceTitle(context.resourcePath, locale)
@@ -103,14 +104,16 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                 final currentEntity = mappingContext.getPersistentEntity(o.class.name)
                 if (currentEntity) {
                     writeDomainWithEmbeddedAndLinks(currentEntity, o, context, xml, writtenObjects, false)
-                } else {
+                }
+                else {
                     throw new IllegalArgumentException("Cannot render object [$o] using Atom. " +
                             "The AtomRenderer can only be used with domain classes that specify 'dateCreated' and 'lastUpdated' properties")
                 }
             }
             writer.end()
             context.writer.flush()
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Cannot render object [$object] using Atom. " +
                     "The AtomRenderer can only be used with domain classes that specify 'dateCreated' and 'lastUpdated' properties")
         }
@@ -199,7 +202,8 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                             writeDomainWithEmbeddedAndLinks(associatedEntity, value, context, xml, writtenObjects, false)
                         }
                     }
-                } else {
+                }
+                else {
                     final associatedEntity = property.associatedEntity
                     if (associatedEntity) {
                         writer.startNode(property.name)

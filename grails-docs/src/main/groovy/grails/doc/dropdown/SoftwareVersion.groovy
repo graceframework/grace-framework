@@ -34,7 +34,8 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
             softVersion.minor = parts[1].toInteger()
             if (parts.length > 3) {
                 softVersion.snapshot = new Snapshot(parts[3])
-            } else if (parts[2].contains('-')) {
+            }
+            else if (parts[2].contains('-')) {
                 String[] subparts = parts[2].split('-')
                 softVersion.patch = subparts.first() as int
                 softVersion.snapshot = new Snapshot(subparts[1..-1].join('-'))
@@ -68,9 +69,11 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
 
         if (this.isSnapshot() && !o.isSnapshot()) {
             return -1
-        } else if (!this.isSnapshot() && o.isSnapshot()) {
+        }
+        else if (!this.isSnapshot() && o.isSnapshot()) {
             return 1
-        } else if (this.isSnapshot() && o.isSnapshot()) {
+        }
+        else if (this.isSnapshot() && o.isSnapshot()) {
             return this.getSnapshot() <=> o.getSnapshot()
         }
         0

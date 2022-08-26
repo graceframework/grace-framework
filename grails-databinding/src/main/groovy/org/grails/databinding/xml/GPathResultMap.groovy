@@ -81,10 +81,12 @@ class GPathResultMap implements Map {
                     if (it.children().size() > 0) {
                         def theMap = new GPathResultMap(it)
                         list << theMap
-                    } else {
+                    }
+                    else {
                         list << it.text()
                     }
-                } else {
+                }
+                else {
                     def theMap = new GPathResultMap(it)
                     list << theMap
                 }

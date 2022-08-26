@@ -51,10 +51,12 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
                     def lastArg = lastOption.key
                     if (arg.name.startsWith(lastArg)) {
                         candidates.add("${argName.substring(lastArg.length())} ".toString())
-                    } else if (!invalidOptions) {
+                    }
+                    else if (!invalidOptions) {
                         candidates.add "$flag ".toString()
                     }
-                } else {
+                }
+                else {
                     candidates.add "$flag ".toString()
                 }
             }

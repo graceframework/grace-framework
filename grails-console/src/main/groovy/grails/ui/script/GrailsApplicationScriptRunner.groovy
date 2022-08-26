@@ -46,7 +46,8 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
         ConfigurableApplicationContext ctx
         try {
             ctx = super.run(args)
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             System.err.println("Context failed to load: $e.message")
             System.exit(1)
         }
@@ -77,18 +78,21 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
                     for (i in interceptors) {
                         i.destroy()
                     }
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     System.err.println("Script execution error: $e.message")
                     System.exit(1)
                 }
             }
-        } finally {
+        }
+        finally {
             try {
                 for (i in interceptors) {
                     i.destroy()
                 }
                 ctx?.close()
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 // ignore
             }
         }
@@ -106,7 +110,8 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
             Class applicationClass
             try {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 System.err.println('Application class not found')
                 System.exit(1)
             }
@@ -116,14 +121,16 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
                 File script = new File(scriptName)
                 if (script.exists()) {
                     scripts.add(script)
-                } else {
+                }
+                else {
                     System.err.println("Specified script [${scriptName}] not found")
                     System.exit(1)
                 }
             }
 
             new GrailsApplicationScriptRunner(scripts, applicationClass).run(args)
-        } else {
+        }
+        else {
             System.err.println('Missing application class name and script name arguments')
             System.exit(1)
         }

@@ -53,7 +53,7 @@ class GrailsWebPluginManager extends DefaultGrailsPluginManager {
         for (GrailsPlugin plugin in allPlugins) {
             def instance = plugin.instance
             if (instance instanceof ServletContextInitializer) {
-                ((ServletContextInitializer)instance).onStartup(servletContext)
+                ((ServletContextInitializer) instance).onStartup(servletContext)
             }
         }
     }

@@ -72,12 +72,13 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
         }
 
         if (object instanceof Errors) {
-            Errors errors = (Errors)object
+            Errors errors = (Errors) object
             def target = errors instanceof BeanPropertyBindingResult ? errors.getTarget() : null
             if (target) {
                 applyModel(context, target)
             }
-        } else {
+        }
+        else {
             applyModel(context, object)
         }
     }
@@ -122,7 +123,7 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
             }
 
             if (object instanceof Map) {
-                Map map = (Map)object
+                Map map = (Map) object
 
                 if (map.isEmpty()) {
                     return 'emptyMap'

@@ -71,7 +71,8 @@ class GrailsTestTransactionInterceptor {
         transactionManagers.each { datasourceName, PlatformTransactionManager transactionManager ->
             if (transactionStatuses[datasourceName] == null) {
                 transactionStatuses[datasourceName] = transactionManager.getTransaction(new DefaultTransactionDefinition())
-            } else {
+            }
+            else {
                 throw new RuntimeException("init() called on test transaction interceptor during transaction for datasource $datasourceName")
             }
         }

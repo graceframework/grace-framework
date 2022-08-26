@@ -36,11 +36,13 @@ class AllowedMethodsHelper {
             def value = allowedMethods[actionName]
             if (value instanceof String) {
                 isAllowed = method.equalsIgnoreCase(value)
-            } else if (value instanceof List) {
+            }
+            else if (value instanceof List) {
                 isAllowed = value.find { s ->
                     method.equalsIgnoreCase(String.valueOf(s))
                 }
-            } else {
+            }
+            else {
                 isAllowed = false
             }
         }

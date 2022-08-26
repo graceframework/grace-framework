@@ -61,7 +61,8 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
                     return cached
                 }
             }
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             throw e
         }
 
@@ -72,10 +73,12 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
                 def data = readFromGradle(projectConnection)
                 storeData(data)
                 return data
-            } finally {
+            }
+            finally {
                 projectConnection.close()
             }
-        } finally {
+        }
+        finally {
             DefaultGradleConnector.close()
             ConnectorServices.reset()
         }
@@ -91,7 +94,8 @@ abstract class CachedGradleOperation<T> implements Callable<T> {
             depsFile.withPrintWriter { PrintWriter writer ->
                 writeToCache(writer, data)
             }
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // ignore
         }
     }

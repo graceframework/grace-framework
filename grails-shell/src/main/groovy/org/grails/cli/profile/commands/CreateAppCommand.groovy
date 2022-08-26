@@ -158,7 +158,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File destDir
         if (srcDir.absolutePath.endsWith(searchDir)) {
             destDir = targetDirectory
-        } else {
+        }
+        else {
             int index = srcDir.absolutePath.lastIndexOf(searchDir) + searchDir.size() + 1
             String relativePath = (srcDir.absolutePath - srcDir.absolutePath.substring(0, index))
             destDir = new File(targetDirectory, relativePath)
@@ -176,7 +177,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             String oldText = (oldYml.isFile()) ? oldYml.getText(ENCODING) : null
             if (oldText) {
                 appendToYmlSubDocument(newYml, oldText, oldYml)
-            } else {
+            }
+            else {
                 oldYml.text = newYml.getText(ENCODING)
             }
         }
@@ -202,7 +204,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         profile.extends.each { Profile p ->
             if (profile.parentSkeletonDir) {
                 targetDir[p] = profile.getParentSkeletonDir(projectDir)
-            } else {
+            }
+            else {
                 targetDir[p] = targetDir[profile]
             }
             buildTargetFolders(p, targetDir, projectDir)
@@ -543,7 +546,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             appended.append(previousYml).append(ln + '---' + ln)
             appended.append(newYml)
             appended.toString()
-        } else {
+        }
+        else {
             newYml
         }
     }
@@ -579,7 +583,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         try {
             defaultpackagename = establishGroupAndAppName(groupAndAppName)
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             GrailsConsole.instance.error(e.message)
             return false
         }
@@ -609,7 +614,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             appname = parts[0]
             defaultPackage = createValidPackageName()
             groupname = defaultPackage
-        } else {
+        }
+        else {
             appname = parts[-1]
             groupname = parts[0..-2].join('.')
             defaultPackage = groupname
@@ -665,7 +671,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             if (!destFile.exists()) {
                 ant.copy file: srcFile, tofile: destFile
-            } else if (buildMergeProfileNames.contains(participatingProfile.name)) {
+            }
+            else if (buildMergeProfileNames.contains(participatingProfile.name)) {
                 def concatFile = "${destDir}/concat-build.gradle"
                 ant.move(file: destFile, tofile: concatFile)
                 ant.concat([destfile: destFile, fixlastline: true], {
@@ -694,7 +701,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                 })
                 ant.delete(file: concatGradlePropertiesFile, failonerror: false)
-            } else {
+            }
+            else {
                 ant.copy file: srcFile, tofile: destFile
             }
         }
@@ -763,7 +771,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     private void deleteDirectory(File directory) {
         try {
             directory?.deleteDir()
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             // Ignore error deleting temporal directory
         }
     }

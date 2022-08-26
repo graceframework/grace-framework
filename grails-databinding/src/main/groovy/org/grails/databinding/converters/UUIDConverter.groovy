@@ -32,7 +32,8 @@ class UUIDConverter implements ValueConverter {
         if (value) {
             try {
                 return UUID.fromString(value as String)
-            } catch (IllegalArgumentException ignore) {
+            }
+            catch (IllegalArgumentException ignore) {
                 return null
             }
         }

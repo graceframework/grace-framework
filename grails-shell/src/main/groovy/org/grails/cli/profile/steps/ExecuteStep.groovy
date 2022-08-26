@@ -43,14 +43,15 @@ class ExecuteStep extends AbstractStep {
                                   .newInstance() : null
             if (cmd instanceof Command) {
                 if (cmd instanceof ProfileCommand) {
-                    ((ProfileCommand)cmd).profile = command.profile
+                    ((ProfileCommand) cmd).profile = command.profile
                 }
                 this.target = cmd
             }
             else {
                 throw new CommandException("Invalid command class [$className] specified")
             }
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             throw new CommandException("Unable to create step for command [${command.name}] for parameters $parameters", e)
         }
     }

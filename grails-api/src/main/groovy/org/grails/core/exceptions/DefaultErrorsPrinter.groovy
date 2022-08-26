@@ -126,7 +126,8 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                     finally {
                         try {
                             input?.close()
-                        } catch (ignore) {
+                        }
+                        catch (ignore) {
                         }
                         pw.print formatCodeSnippetEnd(res, lineNumber)
                     }
@@ -160,14 +161,15 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                             break
                         }
                     }
-                } catch (ignore) {
+                }
+                catch (ignore) {
                 }
             }
             else if (start instanceof MultipleCompilationErrorsException) {
                 MultipleCompilationErrorsException mcee = start
                 Object message = mcee.getErrorCollector().getErrors().iterator().next()
                 if (message instanceof SyntaxErrorMessage) {
-                    SyntaxErrorMessage sem = (SyntaxErrorMessage)message
+                    SyntaxErrorMessage sem = (SyntaxErrorMessage) message
                     final tmp = new FileSystemResource(sem.getCause().getSourceLocator())
                     if (tmp.exists()) {
                         res = tmp
@@ -194,7 +196,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
             MultipleCompilationErrorsException mcee = cause
             Object message = mcee.getErrorCollector().getErrors().iterator().next()
             if (message instanceof SyntaxErrorMessage) {
-                SyntaxErrorMessage sem = (SyntaxErrorMessage)message
+                SyntaxErrorMessage sem = (SyntaxErrorMessage) message
                 lineNumber = sem.getCause().getLine()
             }
         }

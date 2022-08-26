@@ -45,7 +45,8 @@ class UrlMappingsReportCommand implements ApplicationCommand {
             UrlMappingsRenderer renderer = new AnsiConsoleUrlMappingsRenderer()
             renderer.render(urlMappings.getUrlMappings().toList())
             return true
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             log.error("Failed to render URL mappings: ${e.message}", e)
             return false
         }

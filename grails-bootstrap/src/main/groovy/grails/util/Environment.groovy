@@ -150,11 +150,12 @@ enum Environment {
                         try {
                             inputStream = r.getInputStream()
                             mf = new Manifest(inputStream)
-                        } finally {
+                        }
+                        finally {
                             try {
                                 inputStream.close()
-                            } catch (IOException e) {
-                                // ignore
+                            }
+                            catch (IOException ignore) {
                             }
                         }
                         String implTitle = mf.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_TITLE)
@@ -185,19 +186,23 @@ enum Environment {
                 String fullPath = url
                 if (fullPath.contains(IOUtils.RESOURCE_WAR_PREFIX)) {
                     STANDALONE_DEPLOYED = true
-                } else {
+                }
+                else {
                     int i = fullPath.indexOf(IOUtils.RESOURCE_JAR_PREFIX)
                     if (i > -1) {
                         fullPath = fullPath.substring(i + IOUtils.RESOURCE_JAR_PREFIX.length())
                         STANDALONE_DEPLOYED = fullPath.contains(IOUtils.RESOURCE_JAR_PREFIX)
-                    } else {
+                    }
+                    else {
                         STANDALONE_DEPLOYED = false
                     }
                 }
-            } else {
+            }
+            else {
                 STANDALONE_DEPLOYED = false
             }
-        } else {
+        }
+        else {
             STANDALONE_DEPLOYED = false
         }
 
@@ -205,12 +210,14 @@ enum Environment {
         if (loadedLocation != null) {
             String path = loadedLocation.getPath()
             WAR_DEPLOYED = isWebPath(path)
-        } else {
+        }
+        else {
             loadedLocation = Thread.currentThread().getContextClassLoader().getResource(Metadata.FILE)
             if (loadedLocation != null) {
                 String path = loadedLocation.getPath()
                 WAR_DEPLOYED = isWebPath(path)
-            } else {
+            }
+            else {
                 WAR_DEPLOYED = false
             }
         }
@@ -370,16 +377,19 @@ enum Environment {
                     if (pid == Files.readAllLines(pidFile.toPath()).get(0)) {
                         LOG.get().debug('spring-dev-tools restart detected.')
                         isDevToolsRestart = true
-                    } else {
+                    }
+                    else {
                         LOG.get().debug('spring-dev-tools first app start - creating pid file.')
                         writeDevToolsPidFile(pidFile, pid)
                     }
-                } else {
+                }
+                else {
                     LOG.get().debug('spring-dev-tools pid file did not exist.')
                     writeDevToolsPidFile(pidFile, pid)
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOG.get().error('spring-dev-tools restart detection error: {}', ex)
         }
         LOG.get().debug('spring-dev-tools restart: {}', isDevToolsRestart)
@@ -391,15 +401,18 @@ enum Environment {
         try {
             writer = new BufferedWriter(new FileWriter(pidFile))
             writer.write(content)
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOG.get().error('spring-dev-tools restart unable to write pid file: {}', ex)
-        } finally {
+        }
+        finally {
             try {
                 if (writer != null) {
                     writer.flush()
                     writer.close()
                 }
-            } catch (Exception ignored) {
+            }
+            catch (Exception ignored) {
             }
         }
     }
@@ -479,7 +492,8 @@ enum Environment {
         }
         try {
             return valueOf(shortName.toUpperCase())
-        } catch (IllegalArgumentException ise) {
+        }
+        catch (IllegalArgumentException ise) {
             return null
         }
     }
@@ -694,7 +708,8 @@ enum Environment {
             File current = new File('.', 'grails-app')
             if (current.exists()) {
                 location = current.getParentFile().getAbsolutePath()
-            } else {
+            }
+            else {
                 current = new File('.', 'settings.gradle')
                 if (current.exists()) {
                     // multi-project build

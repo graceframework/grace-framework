@@ -98,9 +98,10 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
     @Override
     def <T> void addRenderer(Renderer<T> renderer) {
         if (renderer instanceof ContainerRenderer) {
-            ContainerRenderer cr = (ContainerRenderer)renderer
+            ContainerRenderer cr = (ContainerRenderer) renderer
             addContainerRenderer(cr.componentType, cr)
-        } else {
+        }
+        else {
             Class targetType = renderer.targetType
             addToRegisteredObjects(targetType, renderer)
         }
@@ -135,14 +136,14 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
             return null
         }
         if (proxyHandler != null) {
-            object = (T)proxyHandler.unwrapIfProxy(object)
+            object = (T) proxyHandler.unwrapIfProxy(object)
         }
 
         def originalTargetClass = object instanceof Class ? (Class) object : object.getClass()
         originalTargetClass = getTargetClassForContainer(originalTargetClass, object)
         def originalKey = new ContainerRendererCacheKey(containerType, originalTargetClass, mimeType)
 
-        Renderer<C> renderer = (Renderer<C>)containerRendererCache.getIfPresent(originalKey)
+        Renderer<C> renderer = (Renderer<C>) containerRendererCache.getIfPresent(originalKey)
 
         if (renderer == null) {
             def key = originalKey
@@ -213,7 +214,8 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
         Class targetClass = containerClass
         if (containerClass.isArray()) {
             targetClass = containerClass.getComponentType()
-        } else if (object instanceof Iterable) {
+        }
+        else if (object instanceof Iterable) {
             if (object) {
                 final iterator = object.iterator()
                 def first = iterator.next()
@@ -224,7 +226,8 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                     targetClass = first.getClass()
                 }
             }
-        } else if (object instanceof Map) {
+        }
+        else if (object instanceof Map) {
             if (object) {
                 def first = object.values().iterator().next()
                 if (first) {
@@ -234,7 +237,8 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                     targetClass = first.getClass()
                 }
             }
-        } else if (object instanceof BeanPropertyBindingResult) {
+        }
+        else if (object instanceof BeanPropertyBindingResult) {
             def target = ((BeanPropertyBindingResult) object).target
             if (target) {
                 if (proxyHandler != null) {

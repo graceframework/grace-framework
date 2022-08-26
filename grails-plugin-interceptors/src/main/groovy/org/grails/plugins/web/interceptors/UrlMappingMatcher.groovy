@@ -72,7 +72,8 @@ class UrlMappingMatcher implements Matcher {
                         return true
                     }
                 }
-            } else if (info) {
+            }
+            else if (info) {
                 if (doesMatchInternal(info, method)) {
                     return true
                 }

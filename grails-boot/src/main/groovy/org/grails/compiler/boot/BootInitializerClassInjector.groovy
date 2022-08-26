@@ -87,7 +87,7 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
                 if (Modifier.isStatic(mn.modifiers) && Modifier.isPublic(mn.modifiers)) {
                     def mainMethodBody = mn.code
                     if (mainMethodBody instanceof BlockStatement) {
-                        BlockStatement bs = (BlockStatement)mainMethodBody
+                        BlockStatement bs = (BlockStatement) mainMethodBody
                         if (!bs.statements.isEmpty()) {
                             def methodCallExpression = new MethodCallExpression(
                                     new ClassExpression(ClassHelper.make(System)),

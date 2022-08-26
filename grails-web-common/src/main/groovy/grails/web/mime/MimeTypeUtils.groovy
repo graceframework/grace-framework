@@ -43,7 +43,8 @@ class MimeTypeUtils {
             else {
                 mimeType = MimeType.ALL
             }
-        } else {
+        }
+        else {
             mimeType = MimeType.ALL
         }
         mimeType

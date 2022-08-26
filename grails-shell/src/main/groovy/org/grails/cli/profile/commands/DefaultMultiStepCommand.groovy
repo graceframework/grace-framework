@@ -47,14 +47,14 @@ class DefaultMultiStepCommand extends MultiStepCommand {
 
         def description = data?.description
         if (description instanceof List) {
-            List descList = (List)description
+            List descList = (List) description
             if (descList) {
                 this.description = new CommandDescription(name: name, description: descList.get(0).toString(), usage: data?.usage)
 
                 if (descList.size() > 1) {
                     for (arg in descList[1..-1]) {
                         if (arg instanceof Map) {
-                            Map map = (Map)arg
+                            Map map = (Map) arg
                             if (map.containsKey('usage')) {
                                 this.description.usage = map.get('usage')?.toString()
                             }
@@ -62,9 +62,10 @@ class DefaultMultiStepCommand extends MultiStepCommand {
                                 def completerClass = map.get('completer')
                                 if (completerClass) {
                                     try {
-                                        this.description.completer = (Completer)Thread.currentThread().contextClassLoader
+                                        this.description.completer = (Completer) Thread.currentThread().contextClassLoader
                                                 .loadClass(completerClass.toString()).newInstance()
-                                    } catch (e) {
+                                    }
+                                    catch (e) {
                                         // ignore
                                     }
                                 }
@@ -92,7 +93,8 @@ class DefaultMultiStepCommand extends MultiStepCommand {
                 this.description."$name"(map)
                 return true
             }
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             GrailsConsole.getInstance().error("Invalid $name found in [$profile.name] profile ${map}: ${e.message}", e)
         }
         false

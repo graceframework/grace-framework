@@ -57,7 +57,8 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
                 def propertySource = new NavigableMap()
                 propertySource.merge(configObject.flatten(), false)
                 finalMap.putAll(propertySource)
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 throw new ConfigurationException("Exception occurred reading configuration [${name}]: ${e.getMessage()}", e)
             }
         }
@@ -72,7 +73,8 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
             return config.flatMap({ url ->
                 try {
                     return Optional.of(url.openStream())
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     throw new ConfigurationException("Exception occurred reading configuration [${fileName}]: ${e.getMessage()}", e)
                 }
             })

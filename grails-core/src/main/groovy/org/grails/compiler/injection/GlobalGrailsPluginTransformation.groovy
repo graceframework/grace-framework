@@ -128,7 +128,8 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         File targetDirectory = null
         if (source.class.name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
-        } else {
+        }
+        else {
             targetDirectory = source.configuration.targetDirectory
         }
         if (!targetDirectory) {
@@ -149,13 +150,16 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             if (pluginXmlExists) {
                 // if the file does exist, update it with the plugin name
                 updatePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
-            } else {
+            }
+            else {
                 writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
             }
-        } else if (pluginXmlExists) {
+        }
+        else if (pluginXmlExists) {
             // if the class isn't the *GrailsPlugin class then only update the plugin.xml if it already exists
             updatePluginXml(null, projectVersion, pluginXmlFile, artefactClasses)
-        } else {
+        }
+        else {
             // otherwise add it to a list of pending classes to populated when the plugin.xml is created
             pendingArtefactClasses.addAll(transformedClasses)
         }
@@ -260,7 +264,8 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             }
 
             pendingArtefactClasses.clear()
-        } catch (ignored) {
+        }
+        catch (ignored) {
             // corrupt, recreate
             writePluginXml(pluginClassNode, projectVersion, pluginXmlFile, artefactClasses)
         }

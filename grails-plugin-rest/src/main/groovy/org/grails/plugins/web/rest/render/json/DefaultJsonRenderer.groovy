@@ -84,8 +84,9 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
             if (htmlRenderer == null) {
                 htmlRenderer = new DefaultHtmlRenderer(targetType)
             }
-            htmlRenderer.render((Object)object, context)
-        } else {
+            htmlRenderer.render((Object) object, context)
+        }
+        else {
             if (object instanceof Errors) {
                 context.setStatus(errorsHttpStatus)
             }
@@ -105,7 +106,8 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
             JSON.use(namedConfiguration) {
                 converter = object as JSON
             }
-        } else {
+        }
+        else {
             converter = object as JSON
         }
         renderJson(converter, context)

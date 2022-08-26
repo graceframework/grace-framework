@@ -74,7 +74,8 @@ trait RequestForwarder implements WebAttributes {
             def controllerName
             if (params.controller) {
                 controllerName = params.controller
-            } else {
+            }
+            else {
                 controllerName = webRequest.controllerName
             }
 
@@ -89,14 +90,14 @@ trait RequestForwarder implements WebAttributes {
             }
 
             if (!params.params) {
-                params.params =  UrlMappingUtils.findAllParamsNotInKeys(
+                params.params = UrlMappingUtils.findAllParamsNotInKeys(
                         UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(webRequest.params),
                         webRequest.originalParams.keySet()
                 )
             }
         }
 
-        Map model = params.model instanceof Map ? (Map)params.model : Collections.EMPTY_MAP
+        Map model = params.model instanceof Map ? (Map) params.model : Collections.EMPTY_MAP
 
         HttpServletRequest request = webRequest.currentRequest
         HttpServletResponse response = webRequest.currentResponse
@@ -120,7 +121,8 @@ trait RequestForwarder implements WebAttributes {
         try {
             dispatcher.forward(request, response)
             request.setAttribute(GrailsApplicationAttributes.FORWARD_ISSUED, true)
-        } finally {
+        }
+        finally {
             // cleanup after forward
             webRequest.removeAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, requestScope)
             webRequest.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, requestScope)

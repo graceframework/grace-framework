@@ -101,7 +101,8 @@ class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContext
     protected shutdownEmbeddedDatabase(DataSource dataSource) {
         try {
             addShutdownOperation(dataSource.getConnection())
-        } catch (e) {
+        }
+        catch (e) {
             log.error 'Error shutting down datasource', e
         }
     }
@@ -112,10 +113,15 @@ class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContext
             try {
                 Sql sql = new Sql(connection)
                 sql.executeUpdate('SHUTDOWN')
-            } catch (e) {
+            }
+            catch (e) {
                 // already closed, ignore
-            } finally {
-                try { connection?.close() } catch (ignored) {
+            }
+            finally {
+                try {
+                    connection?.close()
+                }
+                catch (ignored) {
                 }
             }
         } as Runnable

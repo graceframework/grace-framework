@@ -112,7 +112,8 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 try {
                     def t = templateEngine.createTemplate(template.toString())
                     writeTemplateToDestination(t, model, destination)
-                } catch (e) {
+                }
+                catch (e) {
                     destination.delete()
                     throw new TemplateException("Error rendering template to destination ${projectPath( destination )}: ${e.message}", e)
                 }
@@ -149,7 +150,8 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                     try {
                         def templateEngine = new GStringTemplateEngine()
                         t = templateEngine.createTemplate(template)
-                    } catch (e) {
+                    }
+                    catch (e) {
                         throw new TemplateException(
                                 "Error rendering template [$template] to destination ${projectPath( destination )}: ${e.message}", e)
                     }
@@ -157,7 +159,8 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 try {
                     writeTemplateToDestination(t, model, destination)
                     executionContext.console.addStatus("Rendered template ${template.name} to destination ${projectPath( destination )}")
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     destination.delete()
                     throw new TemplateException(
                             "Error rendering template [$template] to destination ${projectPath( destination )}: ${e.message}", e)
@@ -200,14 +203,17 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                         def reader = new InputStreamReader(template.inputStream, 'UTF-8')
                         try {
                             t = templateEngine.createTemplate(reader)
-                        } finally {
+                        }
+                        finally {
                             try {
                                 reader.close()
-                            } catch (e) {
+                            }
+                            catch (e) {
                                 // ignore
                             }
                         }
-                    } catch (e) {
+                    }
+                    catch (e) {
                         throw new TemplateException(
                                 "Error rendering template [$template.filename] to destination ${projectPath(destination)}: ${e.message}", e)
                     }
@@ -217,7 +223,8 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                         writeTemplateToDestination(t, model, destination)
                         executionContext.console.addStatus(
                                 "Rendered template ${template.filename} to destination ${projectPath(destination)}")
-                    } catch (Throwable e) {
+                    }
+                    catch (Throwable e) {
                         destination.delete()
                         throw new TemplateException(
                                 "Error rendering template [$template.filename] to destination ${projectPath(destination)}: ${e.message}", e)

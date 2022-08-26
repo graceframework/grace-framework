@@ -114,7 +114,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
 
         if (TransactionProxyFactoryBean.isAssignableFrom(beanClass)) {
             getTargetBeanDefinition(factory, beanName,
-                    (BeanDefinition)beanDefinition.propertyValues.getPropertyValue('target').value)
+                    (BeanDefinition) beanDefinition.propertyValues.getPropertyValue('target').value)
         }
         else {
             beanDefinition

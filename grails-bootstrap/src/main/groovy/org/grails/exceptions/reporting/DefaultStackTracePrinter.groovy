@@ -86,7 +86,8 @@ class DefaultStackTracePrinter implements StackTracePrinter {
                         prevLn = lineNumber
                         if (prevFn && (prevFn == fileName)) {
                             fileName = "    ''"
-                        } else {
+                        }
+                        else {
                             prevFn = fileName
                         }
                         if (!fileName) {
@@ -103,9 +104,11 @@ class DefaultStackTracePrinter implements StackTracePrinter {
 
                         if (idx == 0) {
                             printFailureLocation(sb, lineNumber, methodName, fileName)
-                        } else if (idx < last - 1) {
+                        }
+                        else if (idx < last - 1) {
                             printStackLine(sb, lineNumber, methodName, fileName)
-                        } else {
+                        }
+                        else {
                             printLastEntry(sb, lineNumber, methodName, fileName)
                         }
                     }

@@ -85,7 +85,8 @@ class VersionComparator implements Comparator<String> {
 
             if (o1IsSnapshot && !o2IsSnapshot) {
                 result = -1
-            } else if (!o1IsSnapshot && o2IsSnapshot) {
+            }
+            else if (!o1IsSnapshot && o2IsSnapshot) {
                 result = 1
             }
         }

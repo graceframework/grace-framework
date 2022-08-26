@@ -65,7 +65,7 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
 
     @Override
     ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        UrlMappingInfo info = (UrlMappingInfo)handler
+        UrlMappingInfo info = (UrlMappingInfo) handler
 
         GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
 
@@ -73,12 +73,12 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
         if (isAsyncRequest) {
             Object modelAndView = request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
             if (modelAndView instanceof ModelAndView) {
-                return (ModelAndView)modelAndView
+                return (ModelAndView) modelAndView
             }
         }
         else {
             if (info instanceof GrailsControllerUrlMappingInfo) {
-                GrailsControllerUrlMappingInfo controllerUrlMappingInfo = (GrailsControllerUrlMappingInfo)info
+                GrailsControllerUrlMappingInfo controllerUrlMappingInfo = (GrailsControllerUrlMappingInfo) info
                 GrailsControllerClass controllerClass = controllerUrlMappingInfo.controllerClass
                 Object controller
 
@@ -122,16 +122,17 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                     if (!flashScope.isEmpty()) {
                         def chainModel = flashScope.get(FlashScope.CHAIN_MODEL)
                         if (chainModel instanceof Map) {
-                            finalModel.putAll((Map)chainModel)
+                            finalModel.putAll((Map) chainModel)
                         }
                     }
-                    finalModel.putAll((Map)result)
+                    finalModel.putAll((Map) result)
 
                     return new ModelAndView(viewName, finalModel)
                 }
                 else if (result instanceof ModelAndView) {
                     return (ModelAndView) result
-                } else if (result == null && webRequest.renderView) {
+                }
+                else if (result == null && webRequest.renderView) {
                     return new ModelAndView(controllerClass.actionUriToViewName(action))
                 }
             }
@@ -146,7 +147,8 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                 else {
                     redirector?.redirect(uri: i.toString())
                 }
-            } else if (info.getURI()) {
+            }
+            else if (info.getURI()) {
                 return new ModelAndView(new InternalResourceView(info.getURI()))
             }
         }

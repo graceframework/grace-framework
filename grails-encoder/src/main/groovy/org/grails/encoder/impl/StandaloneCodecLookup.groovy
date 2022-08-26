@@ -49,7 +49,7 @@ class StandaloneCodecLookup extends BasicCodecLookup {
     @Override
     protected void registerCodecs() {
         codecFactoryClasses.each { Class clazz ->
-            registerCodecFactory((CodecFactory)clazz.newInstance())
+            registerCodecFactory((CodecFactory) clazz.newInstance())
         }
     }
 

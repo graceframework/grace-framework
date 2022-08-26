@@ -80,7 +80,8 @@ class ResponseRedirector {
         def permanentArgument = arguments.get(ARGUMENT_PERMANENT)
         if (permanentArgument instanceof String) {
             permanent = Boolean.valueOf(permanentArgument)
-        } else {
+        }
+        else {
             permanent = Boolean.TRUE == permanentArgument
         }
 
@@ -93,7 +94,8 @@ class ResponseRedirector {
         def absoluteArgument = arguments.get(ARGUMENT_ABSOLUTE)
         if (absoluteArgument instanceof String) {
             absolute = Boolean.valueOf(absoluteArgument)
-        } else {
+        }
+        else {
             absolute = (absoluteArgument == null) ? true : (Boolean.TRUE == absoluteArgument)
         }
 
@@ -128,7 +130,8 @@ class ResponseRedirector {
         String redirectURI
         if (absolute) {
             redirectURI = processedActualUri.contains('://') ? processedActualUri : serverBaseURL + processedActualUri
-        } else {
+        }
+        else {
             redirectURI = processedActualUri
         }
 

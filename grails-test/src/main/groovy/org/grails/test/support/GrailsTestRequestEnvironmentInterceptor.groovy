@@ -74,7 +74,8 @@ class GrailsTestRequestEnvironmentInterceptor {
         init(controllerName)
         try {
             body()
-        } finally {
+        }
+        finally {
             destroy()
         }
     }

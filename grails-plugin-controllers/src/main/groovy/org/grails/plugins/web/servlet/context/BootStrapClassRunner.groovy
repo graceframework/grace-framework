@@ -63,8 +63,9 @@ class BootStrapClassRunner extends GrailsApplicationLifeCycleAdapter
         if (grailsApplication && applicationContext) {
             for (GrailsClass cls in grailsApplication.getArtefacts(BootstrapArtefactHandler.TYPE)) {
                 try {
-                    ((GrailsBootstrapClass)cls).callDestroy()
-                } catch (Throwable e) {
+                    ((GrailsBootstrapClass) cls).callDestroy()
+                }
+                catch (Throwable e) {
                     log.error("Error occurred running Bootstrap destroy method: ${e.getMessage()}", e)
                 }
             }

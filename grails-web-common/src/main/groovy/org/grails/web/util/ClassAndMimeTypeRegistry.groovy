@@ -78,10 +78,10 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             return null
         }
 
-        final clazz = object instanceof Class ? (Class)object : object.getClass()
+        final clazz = object instanceof Class ? (Class) object : object.getClass()
 
         final K cacheKey = createCacheKey(clazz, mimeType)
-        R registeredObject = (R)resolvedObjectCache.getIfPresent(cacheKey)
+        R registeredObject = (R) resolvedObjectCache.getIfPresent(cacheKey)
         if (registeredObject == null) {
             Class currentClass = clazz
             while (currentClass != null) {
@@ -105,7 +105,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             }
 
             if (registeredObject == null) {
-                registeredObject = (R)defaultObjectsByMimeType.get(mimeType)
+                registeredObject = (R) defaultObjectsByMimeType.get(mimeType)
             }
             if (registeredObject != null) {
                 resolvedObjectCache.put(cacheKey, registeredObject)
@@ -113,7 +113,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
         }
 
         if (registeredObject == null && !Environment.isDevelopmentMode()) {
-            resolvedObjectCache.put(cacheKey, (R)NULL_RESOLVE)
+            resolvedObjectCache.put(cacheKey, (R) NULL_RESOLVE)
         }
         else if (NULL_RESOLVE.is(registeredObject)) {
             return null
@@ -125,15 +125,15 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
         R findObject = null
         final objectList = registeredObjectsByType.get(currentClass)
         if (objectList) {
-            findObject = (R)objectList.find {
-                MimeTypeProvider r = (MimeTypeProvider)it
+            findObject = (R) objectList.find {
+                MimeTypeProvider r = (MimeTypeProvider) it
                 r.mimeTypes.any { MimeType mt ->
                     mt  == mimeType
                 }
             }
             if (findObject == null) {
-                findObject = (R)objectList.find {
-                    MimeTypeProvider r = (MimeTypeProvider)it
+                findObject = (R) objectList.find {
+                    MimeTypeProvider r = (MimeTypeProvider) it
                     r.mimeTypes.any { MimeType mt ->
                         mt.name == mimeType.name
                     }

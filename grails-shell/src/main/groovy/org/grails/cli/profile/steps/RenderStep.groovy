@@ -71,7 +71,8 @@ class RenderStep extends AbstractStep {
             context.console.addStatus("Created $relPath")
 
             return true
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             GrailsConsole.instance.error("Failed to render template to destination: ${e.message}", e)
             return false
         }
@@ -113,7 +114,8 @@ class RenderStep extends AbstractStep {
         if (parts.size() == 1) {
             artifactName = parts[0]
             artifactPackage = context.navigateConfig('grails', 'codegen', 'defaultPackage') ?: ''
-        } else {
+        }
+        else {
             artifactName = parts[-1]
             artifactPackage = parts[0..-2].join('.')
         }

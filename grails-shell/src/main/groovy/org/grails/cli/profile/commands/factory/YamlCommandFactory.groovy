@@ -51,10 +51,12 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
             is = resource.inputStream
             if (resource.filename.endsWith('.json')) {
                 data = jsonSlurper.parse(is, 'UTF-8') as Map
-            } else {
+            }
+            else {
                 data = yamlParser.<Map>load(is)
             }
-        } finally {
+        }
+        finally {
             is?.close()
         }
         data
@@ -64,7 +66,7 @@ class YamlCommandFactory extends ResourceResolvingCommandFactory<Map> {
         if (!data.profile || profile.name == data.profile?.toString()) {
             Command command = new DefaultMultiStepCommand(commandName, profile, data)
             Object minArguments = data?.minArguments
-            command.minArguments = minArguments instanceof Integer ? (Integer)minArguments : 1
+            command.minArguments = minArguments instanceof Integer ? (Integer) minArguments : 1
             return command
         }
         null

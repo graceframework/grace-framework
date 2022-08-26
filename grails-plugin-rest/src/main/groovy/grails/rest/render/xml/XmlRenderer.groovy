@@ -87,7 +87,8 @@ class XmlRenderer<T> extends DefaultXmlRenderer<T> {
                 }
 
             }
-        } else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
+        }
+        else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
             marshaller = new GroovyBeanMarshaller() {
 
                 @Override

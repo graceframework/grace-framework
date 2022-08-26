@@ -61,7 +61,8 @@ class GradleStep extends AbstractStep {
                 buildLauncher.forTasks(tasks as String[])
                 fillArguments(context, buildLauncher)
             }
-        } catch (BuildException e) {
+        }
+        catch (BuildException e) {
             def cause = ExceptionUtils.getRootCause(e)
             context.console.error("Gradle build terminated with error: ${cause.message}", cause)
             return false
@@ -70,7 +71,7 @@ class GradleStep extends AbstractStep {
     }
 
     protected void initialize() {
-        tasks = (List<String>)parameters.tasks
+        tasks = (List<String>) parameters.tasks
         baseArguments = parameters.baseArguments ?: ''
         passArguments = Boolean.valueOf(parameters.passArguments?.toString() ?: 'true')
     }

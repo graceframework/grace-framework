@@ -42,7 +42,7 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
             throws DataBindingSourceCreationException {
         try {
             if (bindingSource instanceof HttpServletRequest) {
-                def req = (HttpServletRequest)bindingSource
+                def req = (HttpServletRequest) bindingSource
                 HttpMethod method = HttpMethod.resolve(req.method)
                 if (req.contentLength != 0 && !ignoredRequestBodyMethods.contains(method)) {
                     def is = req.getInputStream()
@@ -50,16 +50,17 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
                 }
             }
             if (bindingSource instanceof InputStream) {
-                def is = (InputStream)bindingSource
+                def is = (InputStream) bindingSource
                 return createBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
-                def is = (Reader)bindingSource
+                def is = (Reader) bindingSource
                 return createBindingSource(is)
             }
 
             return super.createDataBindingSource(mimeType, bindingTargetType, bindingSource)
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw createBindingSourceCreationException(e)
         }
     }
@@ -78,21 +79,22 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
                 return createCollectionBindingSource(is, req.getCharacterEncoding())
             }
             if (bindingSource instanceof HttpServletRequest) {
-                def req = (HttpServletRequest)bindingSource
+                def req = (HttpServletRequest) bindingSource
                 def is = req.getInputStream()
                 return createCollectionBindingSource(is, req.getCharacterEncoding())
             }
             if (bindingSource instanceof InputStream) {
-                def is = (InputStream)bindingSource
+                def is = (InputStream) bindingSource
                 return createCollectionBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
-                def is = (Reader)bindingSource
+                def is = (Reader) bindingSource
                 return createCollectionBindingSource(is)
             }
 
             return super.createCollectionDataBindingSource(mimeType, bindingTargetType, bindingSource)
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new DataBindingSourceCreationException(e)
         }
     }

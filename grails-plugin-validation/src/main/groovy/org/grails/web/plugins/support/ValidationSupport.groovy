@@ -49,7 +49,8 @@ class ValidationSupport {
                     if (originalErrors.getFieldError(originalError.field)?.bindingFailure) {
                         localErrors.addError originalError
                     }
-                } else {
+                }
+                else {
                     localErrors.addError originalError
                 }
             }
@@ -80,7 +81,8 @@ class ValidationSupport {
         if (ctx != null) {
             try {
                 evaluator = ctx.getBean(org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator)
-            } catch (NoSuchBeanDefinitionException e) {
+            }
+            catch (NoSuchBeanDefinitionException e) {
                 evaluator = new DefaultConstraintEvaluator()
             }
         }

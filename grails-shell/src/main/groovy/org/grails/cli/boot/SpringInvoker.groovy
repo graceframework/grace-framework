@@ -55,7 +55,8 @@ class SpringInvoker {
             try {
                 currentThread.contextClassLoader = new Slf4jBindingAwareClassLoader()
                 return runner.runAndHandleErrors(argList as String[])
-            } finally {
+            }
+            finally {
                 currentThread.contextClassLoader = existing
             }
         }
@@ -69,7 +70,7 @@ class SpringInvoker {
         Enumeration<URL> getResources(String name) throws IOException {
             if (name == 'org/slf4j/impl/StaticLoggerBinder.class') {
                 def resources = super.getResources(name)
-                def oneRes = (URL)resources.find { URL url -> !url.toString().contains('slf4j-simple') }
+                def oneRes = (URL) resources.find { URL url -> !url.toString().contains('slf4j-simple') }
                 if (oneRes) {
                     return new Enumeration<URL>() {
 

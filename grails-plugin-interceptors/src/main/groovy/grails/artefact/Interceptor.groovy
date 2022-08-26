@@ -106,7 +106,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
                 // Exclude interceptors are special because with only one of the conditions being false the interceptor
                 // won't be applied to the request
                 return true
-            } else if (!matcher.isExclude() && (matchUri || (checkNoCtxUri && matchNoCtxUri))) {
+            }
+            else if (!matcher.isExclude() && (matchUri || (checkNoCtxUri && matchNoCtxUri))) {
                 return true
             }
         }
@@ -280,11 +281,13 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
                     view.render(mav.model, req, resp)
                     mav.clear()
                     previous?.clear()
-                } else {
+                }
+                else {
                     throw new ControllerExecutionException("No view found for name [$mav.viewName]")
                 }
             }
-        } else {
+        }
+        else {
             ResponseRenderer.super.render(argMap)
         }
     }

@@ -47,7 +47,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
                 if (!listener.beforeBinding(target, errors)) {
                     bind = false
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 log.error "An error occurred invoking beforeBinding on the ${listener.getClass().getName()} listener.", e
             }
         }
@@ -62,7 +63,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
                 if (!listener.beforeBinding(obj, propertyName, value, errors)) {
                     bind = false
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 log.error "An error occurred invoking beforeBinding on the ${listener.getClass().getName()} listener.", e
             }
         }
@@ -75,7 +77,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
             for (DataBindingListener listener : listeners) {
                 try {
                     listener.afterBinding obj, propertyName, errors
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     log.error "An error occurred invoking afterBinding on the ${listener.getClass().getName()} listener.", e
                 }
             }
@@ -88,7 +91,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
             for (DataBindingListener listener : listeners) {
                 try {
                     listener.afterBinding target, errors
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     log.error "An error occurred invoking afterBinding on the ${listener.getClass().getName()} listener.", e
                 }
             }
@@ -101,7 +105,8 @@ class DataBindingEventMulticastListener implements DataBindingListener {
             for (DataBindingListener listener : listeners) {
                 try {
                     listener.bindingError error, errors
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     log.error "An error occurred invoking bindingError on the ${listener.getClass().getName()} listener.", e
                 }
             }

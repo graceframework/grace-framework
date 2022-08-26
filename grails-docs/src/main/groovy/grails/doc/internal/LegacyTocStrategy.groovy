@@ -49,7 +49,8 @@ class LegacyTocStrategy {
         // on their section numbers.
         if (files) {
             Collections.sort files, sectionNumberComparator
-        } else {
+        }
+        else {
             files = []
         }
 

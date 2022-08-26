@@ -73,7 +73,7 @@ class CommandRegistry {
     static Collection<Command> findCommands(ProfileRepository repository) {
         registeredCommands.values().collect { Command cmd ->
             if (cmd instanceof ProfileRepositoryAware) {
-                ((ProfileRepositoryAware)cmd).profileRepository = repository
+                ((ProfileRepositoryAware) cmd).profileRepository = repository
             }
             cmd
         }

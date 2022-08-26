@@ -128,10 +128,12 @@ trait RestResponder {
             final statusValue = args.status
             if (statusValue instanceof Number) {
                 statusCode = statusValue.intValue()
-            } else {
+            }
+            else {
                 if (statusValue instanceof HttpStatus) {
                     statusCode = ((HttpStatus) statusValue).value()
-                } else {
+                }
+                else {
                     statusCode = statusValue.toString().toInteger()
                 }
             }
@@ -199,7 +201,8 @@ trait RestResponder {
                     if (renderer == null) {
                         renderer = registry.findRenderer(mimeType, value)
                     }
-                } else {
+                }
+                else {
                     renderer = registry.findRenderer(mimeType, value)
                 }
             }

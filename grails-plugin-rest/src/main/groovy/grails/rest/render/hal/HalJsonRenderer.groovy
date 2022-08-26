@@ -123,7 +123,8 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                 writer.call {
                     writeDomainWithEmbeddedAndLinks(context, clazz, object, delegate, context.locale, mimeType, [] as Set, new Stack())
                 }
-            } else if (object instanceof Collection) {
+            }
+            else if (object instanceof Collection) {
                 writer.call {
                     call(LINKS_ATTRIBUTE) {
                         writeLinkForCurrentPath(context, mimeType, delegate)
@@ -141,19 +142,22 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                                 if (isDomainResource(o.getClass())) {
                                     writeDomainWithEmbeddedAndLinks(context, o.class, o, (StreamingJsonBuilder.StreamingJsonDelegate) delegate,
                                             context.locale, mimeType, writtenObjects, new Stack())
-                                } else {
+                                }
+                                else {
                                     writeSimpleObjectAndLink(o, context, (StreamingJsonBuilder.StreamingJsonDelegate) delegate, mimeType)
                                 }
                             }
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 writer.call {
                     writeSimpleObjectAndLink(object, context, delegate, mimeType)
                 }
             }
-        } finally {
+        }
+        finally {
             targetWriter.flush()
         }
 
@@ -164,12 +168,13 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
 
     protected renderEmbeddedAttributes(StreamingJsonBuilder.StreamingJsonDelegate writer, object, RenderContext context, MimeType mimeType) {
         final writtenObjects = [] as Set
-        writer.call(collectionName, ((Collection)object)) { o ->
+        writer.call(collectionName, ((Collection) object)) { o ->
             if (o) {
                 if (isDomainResource(o.getClass())) {
                     writeDomainWithEmbeddedAndLinks(context, o.class, o, (StreamingJsonBuilder.StreamingJsonDelegate) delegate,
                             context.locale, mimeType, writtenObjects, new Stack())
-                } else {
+                }
+                else {
                     writeSimpleObjectAndLink(o, context, (StreamingJsonBuilder.StreamingJsonDelegate) delegate, mimeType)
                 }
             }
@@ -267,7 +272,8 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                                 }
                             }
                         }
-                    } else {
+                    }
+                    else {
                         Iterable iterable = (Iterable) entry.value
 
                         delegate.call(property.name, iterable == null ? Collections.emptyList() : iterable) { obj ->

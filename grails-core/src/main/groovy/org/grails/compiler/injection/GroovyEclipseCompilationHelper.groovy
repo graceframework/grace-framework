@@ -45,7 +45,8 @@ class GroovyEclipseCompilationHelper {
                 if (targetDirectory == null) {
                     // Resolve as before.
                     targetDirectory = ((File) new SpelExpressionParser().parseExpression(EXPRESSION).getValue(context))
-				} else if (!targetDirectory.isAbsolute()) {
+				}
+                else if (!targetDirectory.isAbsolute()) {
                     // Target directory is set and is not absolute.
                     // We should assume that this is a path relative to the current eclipse project,
                     // and needs resolving appropriately.
@@ -55,7 +56,8 @@ class GroovyEclipseCompilationHelper {
 				}
                 // Else absolute file location. We should return as-is.
                 return targetDirectory
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 // Not running Eclipse IDE, probably using the Eclipse compiler with Maven
                 return null
             }

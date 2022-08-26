@@ -104,7 +104,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
                                    GrailsPluginManager pluginManager, Class...classes) {
         this.lifeCycle = lifeCycle
         if (lifeCycle instanceof GrailsApplicationClass) {
-            this.applicationClass = (GrailsApplicationClass)lifeCycle
+            this.applicationClass = (GrailsApplicationClass) lifeCycle
         }
         else {
             this.applicationClass = null
@@ -112,12 +112,14 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         this.classes = classes != null ? classes : [] as Class[]
         if (grailsApplication != null) {
             this.grailsApplication = grailsApplication
-        } else {
+        }
+        else {
             this.grailsApplication = new DefaultGrailsApplication(applicationClass)
         }
         if (pluginManager != null) {
             this.pluginManager = pluginManager
-        } else {
+        }
+        else {
             this.pluginManager = new DefaultGrailsPluginManager(this.grailsApplication)
         }
         if (applicationContext != null) {
@@ -228,7 +230,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             if (beanResources?.exists()) {
                 try {
                     RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, application, beanResources)
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     log.error("Error loading spring/resources.groovy file: ${e.message}", e)
                     throw new GrailsConfigurationException("Error loading spring/resources.groovy file: ${e.message}", e)
                 }
@@ -239,7 +242,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
                 try {
                     new BeanBuilder(null, springConfig, application.classLoader)
                             .importBeans(beanResources)
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     log.error("Error loading spring/resources.xml file: ${e.message}", e)
                     throw new GrailsConfigurationException("Error loading spring/resources.xml file: ${e.message}", e)
                 }
@@ -283,7 +287,8 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             ConfigurableBeanFactory configurableBeanFactory = parentBeanFactory
             configurableBeanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
             configurableBeanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, pluginManager)
-        } else {
+        }
+        else {
             beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
             beanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, pluginManager)
         }

@@ -57,7 +57,8 @@ class CreateReleaseDropDownTask extends DefaultTask {
         String snapshotHref = "https://${org}.github.io/${repo}/snapshot/guide/single.html"
         if (version.endsWith('-SNAPSHOT')) {
             selectHtml += "<option selected='selected' value='${snapshotHref}'>SNAPSHOT</option>"
-        } else {
+        }
+        else {
             selectHtml += "<option value='${snapshotHref}'>SNAPSHOT</option>"
         }
         parseSoftwareVersions(result).each { softwareVersion ->
@@ -68,7 +69,8 @@ class CreateReleaseDropDownTask extends DefaultTask {
             }
             if (version == versionName) {
                 selectHtml += "<option selected='selected' value='${href}'>${versionName}</option>"
-            } else {
+            }
+            else {
                 selectHtml += "<option value='${href}'>${versionName}</option>"
             }
         }

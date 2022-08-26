@@ -142,7 +142,8 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                             writeDomainWithEmbeddedAndLinks(associatedEntity, value, context, xml, writtenObjects)
                         }
                     }
-                } else {
+                }
+                else {
                     final associatedEntity = property.associatedEntity
                     if (associatedEntity) {
                         for (obj in entry.value) {

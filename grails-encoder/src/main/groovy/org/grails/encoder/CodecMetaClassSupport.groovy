@@ -60,13 +60,15 @@ class CodecMetaClassSupport {
             def encoder = codecFactory.getEncoder()
             if (encoder) {
                 encoderClosure = { -> encoder.encode(CodecMetaClassSupport.filterNullObject(delegate)) }
-            } else {
+            }
+            else {
                 encoderClosure = { -> throw new MissingMethodException(encodeMethodName, delegate.getClass(), EMPTY_ARGS) }
             }
             def decoder = codecFactory.getDecoder()
             if (decoder) {
                 decoderClosure = { -> decoder.decode(CodecMetaClassSupport.filterNullObject(delegate)) }
-            } else {
+            }
+            else {
                 decoderClosure = { -> throw new MissingMethodException(decodeMethodName, delegate.getClass(), EMPTY_ARGS) }
             }
         }

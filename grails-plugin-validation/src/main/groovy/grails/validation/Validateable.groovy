@@ -188,7 +188,8 @@ trait Validateable {
         boolean clearErrors = Boolean.valueOf(params?.clearErrors?.toString() ?: 'true')
         if (errors && !clearErrors) {
             errors.addAllErrors(localErrors)
-        } else {
+        }
+        else {
             errors = localErrors
         }
         !errors.hasErrors()
@@ -200,10 +201,11 @@ trait Validateable {
             Errors originalErrors = getErrors()
             for (originalError in originalErrors.allErrors) {
                 if (originalError instanceof FieldError) {
-                    if (originalErrors.getFieldError(((FieldError)originalError).field)?.bindingFailure) {
+                    if (originalErrors.getFieldError(((FieldError) originalError).field)?.bindingFailure) {
                         localErrors.addError originalError
                     }
-                } else {
+                }
+                else {
                     localErrors.addError originalError
                 }
             }
@@ -232,7 +234,8 @@ trait Validateable {
             org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator evaluator =
                     ctx.getBean(org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator)
             return evaluator
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             MessageSource messageSource = Holders.findApplicationContext() ?: new StaticMessageSource()
             Map<String, Object> defaultConstraints = Holders.findApplication() ?
                     ConstraintEvalUtils.getDefaultConstraints(Holders.grailsApplication.config) : Collections.<String, Object>emptyMap()
@@ -249,7 +252,8 @@ trait Validateable {
             ApplicationContext ctx = Holders.findApplicationContext()
             MessageSource messageSource = ctx?.containsBean('messageSource') ? ctx.getBean('messageSource', MessageSource) : null
             return messageSource
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             return null
         }
     }

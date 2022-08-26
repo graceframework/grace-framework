@@ -164,10 +164,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     Map actualTarget = targetMap.navigateSubMap(pathParts as List, true)
                     sourceKey = keyParts[-1]
                     mergeMapEntry(rootMap, pathParts.join('.'), actualTarget, sourceKey, sourceValue, parseFlatKeys)
-                } else {
+                }
+                else {
                     mergeMapEntry(rootMap, path, targetMap, sourceKey, sourceValue, parseFlatKeys)
                 }
-            } else {
+            }
+            else {
                 mergeMapEntry(rootMap, path, targetMap, sourceKey, sourceValue, parseFlatKeys)
             }
         }
@@ -176,7 +178,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     private boolean shouldSkipBlock(Map sourceMap, String path) {
         Object springProfileDefined = System.properties.getProperty(SPRING_PROFILES)
         boolean hasSpringProfiles =
-            sourceMap.get(SPRING) instanceof Map && ((Map)sourceMap.get(SPRING)).get(PROFILES) ||
+            sourceMap.get(SPRING) instanceof Map && ((Map) sourceMap.get(SPRING)).get(PROFILES) ||
             path == SPRING && sourceMap.get(PROFILES)
 
         !springProfileDefined && hasSpringProfiles
@@ -200,35 +202,40 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                         if (list.size() > i) {
                             def v = list.get(i)
                             if (v instanceof Map) {
-                                ((Map)v).put(remainder, sourceValue)
-                            } else {
+                                ((Map) v).put(remainder, sourceValue)
+                            }
+                            else {
                                 Map newMap = [:]
                                 newMap.put(remainder, sourceValue)
                                 fill(list, i, null)
                                 list.set(i, newMap)
                             }
-                        } else {
+                        }
+                        else {
                             Map newMap = [:]
                             newMap.put(remainder, sourceValue)
                             fill(list, i, null)
                             list.set(i, newMap)
                         }
                         targetMap.put(k, list)
-                    } else {
+                    }
+                    else {
                         def currentValue = targetMap.get(k)
                         Map nestedMap = currentValue instanceof Map ? currentValue : [:]
                         targetMap.put(k, nestedMap)
 
                         def v = nestedMap.get(index)
                         if (v instanceof Map) {
-                            ((Map)v).put(remainder, sourceValue)
-                        } else {
+                            ((Map) v).put(remainder, sourceValue)
+                        }
+                        else {
                             Map newMap = [:]
                             newMap.put(remainder, sourceValue)
                             nestedMap.put(index, newMap)
                         }
                     }
-                } else {
+                }
+                else {
                     def currentValue = targetMap.get(k)
                     if (index.isNumber()) {
                         List list = currentValue instanceof List ? currentValue : []
@@ -236,7 +243,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                         fill(list, i, null)
                         list.set(i, sourceValue)
                         targetMap.put(k, list)
-                    } else {
+                    }
+                    else {
                         Map nestedMap = currentValue instanceof Map ? currentValue : [:]
                         targetMap.put(k, nestedMap)
                         nestedMap.put(index, sourceValue)
@@ -244,7 +252,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     targetMap.put(sourceKey, sourceValue)
                 }
             }
-        } else {
+        }
+        else {
             Object currentValue = targetMap.containsKey(sourceKey) ? targetMap.get(sourceKey) : null
             Object newValue
             if (sourceValue instanceof Map) {
@@ -253,18 +262,19 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                 newPathList.add(sourceKey)
                 NavigableMap subMap
                 if (currentValue instanceof NavigableMap) {
-                    subMap = (NavigableMap)currentValue
+                    subMap = (NavigableMap) currentValue
                 }
                 else {
-                    subMap = new NavigableMap((NavigableMap)targetMap.rootConfig, newPathList.asImmutable())
+                    subMap = new NavigableMap((NavigableMap) targetMap.rootConfig, newPathList.asImmutable())
                     if (currentValue instanceof Map) {
-                        subMap.putAll((Map)currentValue)
+                        subMap.putAll((Map) currentValue)
                     }
                 }
                 String newPath = path ? "${path}.${sourceKey}" : sourceKey
-                mergeMaps(rootMap, newPath , subMap, (Map)sourceValue, parseFlatKeys)
+                mergeMaps(rootMap, newPath , subMap, (Map) sourceValue, parseFlatKeys)
                 newValue = subMap
-            } else {
+            }
+            else {
                 newValue = sourceValue
             }
             if (isNestedSet && newValue == null) {
@@ -281,7 +291,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     }
                 }
                 targetMap.remove(sourceKey)
-            } else {
+            }
+            else {
                 if (path) {
                     rootMap.put("${path}.${sourceKey}".toString(), newValue)
                 }
@@ -330,7 +341,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
         if (path.length == 0) {
             return map
-        } else if (path.length == 1) {
+        }
+        else if (path.length == 1) {
             return map.get(path[0])
         }
         def submap = map.get(path[0])
@@ -364,13 +376,14 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
             Object currentItem = currentMap.get(pathElement)
             if (currentItem instanceof NavigableMap) {
-                currentMap = (NavigableMap)currentItem
-            } else if (createMissing) {
+                currentMap = (NavigableMap) currentItem
+            }
+            else if (createMissing) {
                 List<String> newPathList = []
                 newPathList.addAll(currentMap.getPath())
                 newPathList.add(pathElement)
 
-                Map<String, Object> newMap = new NavigableMap((NavigableMap)currentMap.rootConfig, newPathList.asImmutable())
+                Map<String, Object> newMap = new NavigableMap((NavigableMap) currentMap.rootConfig, newPathList.asImmutable())
                 currentMap.put(pathElement, newMap)
 
                 def fullPath = accumulatedPath.toString()
@@ -378,7 +391,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     rootMap.put(fullPath, newMap)
                 }
                 currentMap = newMap
-            } else {
+            }
+            else {
                 return null
             }
         }
@@ -406,27 +420,31 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     newPathList.addAll(path)
                     newPathList.add(stringKey)
 
-                    flattenKeys(flatConfig, (Map)value, newPathList.asImmutable(), forceStrings)
-                } else {
+                    flattenKeys(flatConfig, (Map) value, newPathList.asImmutable(), forceStrings)
+                }
+                else {
                     String fullKey
                     if (path) {
                         fullKey = path.join('.') + '.' + stringKey
-                    } else {
+                    }
+                    else {
                         fullKey = stringKey
                     }
                     if (value instanceof Collection) {
                         if (forceStrings) {
-                            flatConfig.put(fullKey, ((Collection)value).join(','))
-                        } else {
+                            flatConfig.put(fullKey, ((Collection) value).join(','))
+                        }
+                        else {
                             flatConfig.put(fullKey, value)
                         }
                         int index = 0
-                        for (Object item: (Collection)value) {
+                        for (Object item: (Collection) value) {
                             String collectionKey = "${fullKey}[${index}]"
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++
                         }
-                    } else {
+                    }
+                    else {
                         flatConfig.put(fullKey, forceStrings ? String.valueOf(value) : value)
                     }
                 }

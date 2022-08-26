@@ -103,7 +103,8 @@ class UrlMappingsGrailsPlugin extends Plugin {
                     targetSource = urlMappingsTargetSource
                     proxyInterfaces = [UrlMappings]
                 }
-            } else {
+            }
+            else {
                 grailsUrlMappingsHolder(UrlMappingsHolderFactoryBean) { bean ->
                     bean.lazyInit = true
                     bean.role = 'infrastructure'

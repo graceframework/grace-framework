@@ -183,7 +183,7 @@ class GrailsApp extends SpringApplication {
             List<File> watchBaseDirectories = [baseDir]
             for (GrailsPlugin plugin in pluginManager.allPlugins) {
                 if (plugin instanceof BinaryGrailsPlugin) {
-                    BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin)plugin
+                    BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin) plugin
                     def pluginDirectory = binaryGrailsPlugin.projectDirectory
                     if (pluginDirectory != null) {
                         watchBaseDirectories << pluginDirectory
@@ -272,7 +272,8 @@ class GrailsApp extends SpringApplication {
                         }
 
                         newFiles.clear()
-                    } catch (CompilationFailedException cfe) {
+                    }
+                    catch (CompilationFailedException cfe) {
                         log.error("Compilation Error: $cfe.message", cfe)
                     }
 
@@ -378,7 +379,7 @@ class GrailsApp extends SpringApplication {
                         new ApplicationPreparedEvent(
                                 this,
                                 new String[0],
-                                (ConfigurableApplicationContext)applicationContext.getParent())
+                                (ConfigurableApplicationContext) applicationContext.getParent())
                 )
             }
             String contextPath = app.config.getProperty('server.servlet.context-path', '')
@@ -388,7 +389,8 @@ class GrailsApp extends SpringApplication {
                 port = applicationContext.webServer.port
             }
             println("Grails application running at ${protocol}://${hostName}:${port}${contextPath} in environment: ${Environment.current.name}")
-        } catch (e) {
+        }
+        catch (e) {
             // ignore
         }
     }

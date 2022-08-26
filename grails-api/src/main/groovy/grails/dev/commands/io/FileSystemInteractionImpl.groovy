@@ -85,7 +85,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         callable.call()
         if (spec.from && spec.into) {
             if (spec.from instanceof Iterable) {
-                copyAll((Iterable)spec.from, spec.into)
+                copyAll((Iterable) spec.from, spec.into)
             }
             else {
                 copy(spec.from, spec.into)
@@ -249,7 +249,8 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
     Collection<Resource> resources(String pattern) {
         try {
             return resourcePatternResolver.getResources(pattern).toList()
-        } catch (e) {
+        }
+        catch (e) {
             return []
         }
     }

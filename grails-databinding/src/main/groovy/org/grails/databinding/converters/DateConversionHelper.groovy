@@ -53,8 +53,9 @@ class DateConversionHelper implements ValueConverter {
                     DateFormat formatter = new SimpleDateFormat(format)
                     try {
                         formatter.lenient = dateParsingLenient
-                        dateValue = formatter.parse((String)value)
-                    } catch (Exception e) {
+                        dateValue = formatter.parse((String) value)
+                    }
+                    catch (Exception e) {
                         firstException = firstException ?: e
                     }
                 }

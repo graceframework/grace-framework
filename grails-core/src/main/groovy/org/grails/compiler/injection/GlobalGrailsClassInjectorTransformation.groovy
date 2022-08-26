@@ -109,7 +109,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                         List<ClassInjector> injectors = injectorsCache[handler.type]
                         for (ClassInjector injector: injectors) {
                             if (injector instanceof CompilationUnitAware) {
-                                ((CompilationUnitAware)injector).compilationUnit = compilationUnit
+                                ((CompilationUnitAware) injector).compilationUnit = compilationUnit
                             }
                         }
                         ArtefactTypeAstTransformation.performInjection(source, classNode, injectors)
@@ -132,7 +132,8 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         File targetDirectory = null
         if (source.class.name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
-        } else {
+        }
+        else {
             targetDirectory = source.configuration.targetDirectory
 		}
         if (!targetDirectory) {
@@ -190,7 +191,8 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             String existing = props.getProperty(superTypeName)
             if (!existing) {
                 props.put(superTypeName, classNodeName)
-            } else if (existing && !existing.contains(classNodeName)) {
+            }
+            else if (existing && !existing.contains(classNodeName)) {
                 props.put(superTypeName, [existing, classNodeName].join(','))
             }
         })

@@ -93,7 +93,8 @@ class ClassNameCompleter extends StringsCompleter {
                 allStrings.addAll(strings)
             }
             setStrings(allStrings)
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // ignore
         }
     }

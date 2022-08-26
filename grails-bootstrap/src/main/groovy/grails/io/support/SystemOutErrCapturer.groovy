@@ -55,7 +55,8 @@ class SystemOutErrCapturer {
         SystemOutErrCapturer capturer = new SystemOutErrCapturer().capture()
         try {
             return closure.call(capturer)
-        } finally {
+        }
+        finally {
             capturer.close()
         }
     }
@@ -64,7 +65,8 @@ class SystemOutErrCapturer {
         SystemOutErrCapturer capturer = new SystemOutErrCapturer().redirectToNull()
         try {
             return closure.call(capturer)
-        } finally {
+        }
+        finally {
             capturer.close()
         }
     }

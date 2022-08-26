@@ -23,7 +23,7 @@ import org.springframework.core.env.PropertyResolver
  * @author Graeme Rocher
  * @since 3.0
  */
-public interface Config extends PropertyResolver, ConfigMap {
+interface Config extends PropertyResolver, ConfigMap {
 
     /**
      * @return The flat version of the config
@@ -55,6 +55,6 @@ public interface Config extends PropertyResolver, ConfigMap {
      *
      * @see #getRequiredProperty(String, Class)
      */
-    public <T> T getProperty(String key, Class<T> targetType, T defaultValue, List<T> allowedValues);
+    <T> T getProperty(String key, Class<T> targetType, T defaultValue, List<T> allowedValues);
 
 }

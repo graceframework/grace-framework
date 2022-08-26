@@ -84,8 +84,9 @@ class DefaultXmlRenderer<T> implements Renderer<T> {
             if (htmlRenderer == null) {
                 htmlRenderer = new DefaultHtmlRenderer(targetType)
             }
-            htmlRenderer.render((Object)object, context)
-        } else {
+            htmlRenderer.render((Object) object, context)
+        }
+        else {
             if (object instanceof Errors) {
                 context.setStatus(HttpStatus.UNPROCESSABLE_ENTITY)
             }
@@ -106,7 +107,8 @@ class DefaultXmlRenderer<T> implements Renderer<T> {
             XML.use(namedConfiguration) {
                 converter = object as XML
             }
-        } else {
+        }
+        else {
             converter = object as XML
         }
         renderXml(converter, context)

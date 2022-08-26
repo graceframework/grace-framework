@@ -157,7 +157,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
         def result = run()
         notify("${name}End", executionContext)
         if (result instanceof Boolean) {
-            return ((Boolean)result)
+            return ((Boolean) result)
         }
         true
     }

@@ -64,7 +64,8 @@ class DataSourceGrailsPlugin extends Plugin {
                 if (ClassUtils.isPresent('org.h2.Driver', this.class.classLoader)) {
                     embeddedDatabaseShutdownHook(EmbeddedDatabaseShutdownHook)
                 }
-            } else {
+            }
+            else {
                 def dataSources = config.getProperty('dataSources', Map, [:])
                 if (!dataSources) {
                     def defaultDataSource = config.getProperty('dataSource', Map)
@@ -88,7 +89,8 @@ class DataSourceGrailsPlugin extends Plugin {
                             server = jmxMBeanServer
                         }
                     }
-                } catch (e) {
+                }
+                catch (e) {
                     if (!Environment.isDevelopmentMode() && Environment.isWarDeployed()) {
                         log.warn('Cannot locate JMX MBeanServer. Disabling autoregistering dataSource pools to JMX.', e)
                     }

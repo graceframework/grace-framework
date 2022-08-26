@@ -153,7 +153,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
             Map urlAttrs = attrs
             final urlAttribute = attrs.get(ATTRIBUTE_URL)
             if (urlAttribute instanceof Map) {
-                urlAttrs = (Map)urlAttribute
+                urlAttrs = (Map) urlAttribute
             }
             if (!urlAttribute || urlAttribute instanceof Map) {
                 final controllerAttribute = urlAttrs.get(ATTRIBUTE_CONTROLLER)
@@ -178,12 +178,15 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                         if (persistentEntity != null) {
                             resource = persistentEntity.getDecapitalizedName()
                             hasId = true
-                        } else if (DomainClassArtefactHandler.isDomainClass(resourceAttribute.getClass(), true)) {
+                        }
+                        else if (DomainClassArtefactHandler.isDomainClass(resourceAttribute.getClass(), true)) {
                             resource = GrailsNameUtils.getPropertyName(resourceAttribute.getClass())
                             hasId = true
-                        } else if (resourceAttribute instanceof Class) {
+                        }
+                        else if (resourceAttribute instanceof Class) {
                             resource = GrailsNameUtils.getPropertyName(resourceAttribute)
-                        } else {
+                        }
+                        else {
                             resource = resourceAttribute.toString()
                         }
                         if (!id && hasId) {
@@ -285,7 +288,8 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     }
                     writer.append url
                 }
-            } else {
+            }
+            else {
                 writer.append urlAttribute
             }
         }
@@ -306,14 +310,16 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         def o = attrs.get(ATTRIBUTE_ABSOLUTE)
         if (o instanceof Boolean) {
             absolute = o
-        } else {
+        }
+        else {
             if (o != null) {
                 try {
                     def str = o.toString()
                     if (str) {
                         absolute = Boolean.parseBoolean(str)
                     }
-                } catch (e) {
+                }
+                catch (e) {
                 }
             }
         }

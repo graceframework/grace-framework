@@ -49,7 +49,7 @@ class GradleTaskCommandAdapter implements ProfileCommand {
     CommandDescription getDescription() {
         String description
         if (adapted instanceof Described) {
-            description = ((Described)adapted).description
+            description = ((Described) adapted).description
         }
         else {
             description = ''
@@ -66,7 +66,8 @@ class GradleTaskCommandAdapter implements ProfileCommand {
         def commandLine = executionContext.commandLine
         if (commandLine.remainingArgs || commandLine.undeclaredOptions) {
             invoker."${method}"("-Pargs=${commandLine.remainingArgsWithOptionsString}")
-        } else {
+        }
+        else {
             invoker."${method}"()
         }
 

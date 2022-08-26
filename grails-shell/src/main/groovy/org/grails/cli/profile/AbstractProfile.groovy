@@ -133,7 +133,7 @@ abstract class AbstractProfile implements Profile {
             for (clsName in  commandsMap.keySet()) {
                 def fileName = commandsMap[clsName].toString()
                 if (fileName.endsWith('.groovy')) {
-                    GroovyScriptCommand cmd = (GroovyScriptCommand)classLoader.loadClass(clsName.toString()).newInstance()
+                    GroovyScriptCommand cmd = (GroovyScriptCommand) classLoader.loadClass(clsName.toString()).newInstance()
                     cmd.profile = this
                     cmd.profileRepository = profileRepository
                     internalCommands.add cmd
@@ -144,7 +144,7 @@ abstract class AbstractProfile implements Profile {
                         Map<String, Object> data = new Yaml(new SafeConstructor()).<Map>load(yamlCommand.getInputStream())
                         Command cmd = new DefaultMultiStepCommand(clsName.toString(), this, data)
                         Object minArguments = data?.minArguments
-                        cmd.minArguments = minArguments instanceof Integer ? (Integer)minArguments : 1
+                        cmd.minArguments = minArguments instanceof Integer ? (Integer) minArguments : 1
                         internalCommands.add cmd
                     }
                 }
@@ -181,7 +181,8 @@ abstract class AbstractProfile implements Profile {
                         def artifact = new DefaultArtifact(coords)
                         exclusions.add(new Exclusion(artifact.groupId ?: null, artifact.artifactId ?: null,
                                 artifact.classifier ?: null, artifact.extension ?: null))
-                    } else {
+                    }
+                    else {
                         Dependency dependency = createDependency(coords, scope, entry)
                         dependencies.add(dependency)
                     }
@@ -367,7 +368,8 @@ abstract class AbstractProfile implements Profile {
 
             if (cmd instanceof Completer) {
                 completers << new ArgumentCompleter(commandNameCompleter, (Completer) cmd)
-            } else {
+            }
+            else {
                 if (description.completer) {
                     if (description.flags) {
                         completers  << new ArgumentCompleter(
@@ -410,7 +412,7 @@ abstract class AbstractProfile implements Profile {
                 def name = command.name
                 if (!commandsByName.containsKey(name) && !excludes.contains(name)) {
                     if (command instanceof ProfileRepositoryAware) {
-                        ((ProfileRepositoryAware)command).setProfileRepository(profileRepository)
+                        ((ProfileRepositoryAware) command).setProfileRepository(profileRepository)
                     }
                     commandsByName.put(name, command)
                     def desc = command.description
@@ -421,10 +423,10 @@ abstract class AbstractProfile implements Profile {
                         }
                     }
                     if (command instanceof ProjectContextAware) {
-                        ((ProjectContextAware)command).projectContext = context
+                        ((ProjectContextAware) command).projectContext = context
                     }
                     if (command instanceof ProfileCommand) {
-                        ((ProfileCommand)command).profile = this
+                        ((ProfileCommand) command).profile = this
                     }
                 }
             }
@@ -433,7 +435,7 @@ abstract class AbstractProfile implements Profile {
 
             def parents = getExtends()
             if (parents) {
-                excludes = (List)configuration.navigate('command', 'excludes') ?: []
+                excludes = (List) configuration.navigate('command', 'excludes') ?: []
                 registerParentCommands(context, parents, registerCommand)
             }
         }

@@ -63,7 +63,7 @@ class ConfigProperties extends Properties {
 
     @Override
     Enumeration<Object> keys() {
-        (Enumeration<Object>)propertyNames()
+        (Enumeration<Object>) propertyNames()
     }
 
     @Override

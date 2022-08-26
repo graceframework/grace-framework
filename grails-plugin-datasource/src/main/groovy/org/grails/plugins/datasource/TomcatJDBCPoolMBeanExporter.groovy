@@ -47,7 +47,8 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
             boolean jmxEnabled = false
             try {
                 jmxEnabled = isJmxEnabled(entry.key, entry.value)
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 log.warn("Unable to access dataSource bean ${entry.key}", e)
             }
             if (jmxEnabled) {
@@ -55,7 +56,8 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
                 try {
                     objectName = createJmxObjectName(entry.key, entry.value)
                     doRegister(entry.value.pool.jmxPool, objectName)
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     log.warn("Unable to register JMX MBean for ${objectName} beanName:${entry.key}", e)
                 }
             }
@@ -80,7 +82,8 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
                 dataSourceName = 'default'
             }
             properties.dataSource = dataSourceName
-        } else {
+        }
+        else {
             if (poolName.startsWith('Tomcat Connection Pool[')) {
                 // use bean name if the pool has a default name
                 poolName = beanName
@@ -96,7 +99,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
     @Override
     void setBeanFactory(BeanFactory beanFactory) {
         super.setBeanFactory(beanFactory)
-        this.beanFactory = (ListableBeanFactory)beanFactory
+        this.beanFactory = (ListableBeanFactory) beanFactory
     }
 
 }

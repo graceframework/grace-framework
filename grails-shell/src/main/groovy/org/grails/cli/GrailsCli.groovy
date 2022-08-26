@@ -93,7 +93,8 @@ class GrailsCli {
         if (BuildSettings.SETTINGS_FILE.exists()) {
             try {
                 SETTINGS_MAP.merge new ConfigSlurper().parse(BuildSettings.SETTINGS_FILE.toURI().toURL())
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 e.printStackTrace()
                 System.err.println("ERROR: Problem loading $BuildSettings.SETTINGS_FILE: ${e.message}")
             }
@@ -104,11 +105,13 @@ class GrailsCli {
                         Thread.start {
                             currentExecutionContext?.cancel()
                         }.join(1000)
-                    } catch (Throwable e) {
+                    }
+                    catch (Throwable e) {
                         // ignore
                     }
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 // ignore
             }
         }
@@ -138,14 +141,14 @@ class GrailsCli {
         if (value == null) {
             return null
         }
-
         else if (targetType.isInstance(value)) {
-            return (T)value
+            return (T) value
         }
 
         try {
             return value.asType(targetType)
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             return null
         }
     }
@@ -265,7 +268,8 @@ class GrailsCli {
                 return executeCommandWithArgumentValidation(cmd, mainCommandLine) ? 0 : 1
             }
             getBaseUsage()
-        } else {
+        }
+        else {
             initializeApplication(mainCommandLine)
             if (mainCommandLine.commandName) {
                 return handleCommand(mainCommandLine) ? 0 : 1
@@ -321,7 +325,8 @@ class GrailsCli {
                         if (username != null && password != null) {
                             repositoryConfiguration = new GrailsRepositoryConfiguration(repoName.toString(),
                                     new URI(uri.toString()), enableSnapshots, username, password)
-                        } else {
+                        }
+                        else {
                             repositoryConfiguration = new GrailsRepositoryConfiguration(repoName.toString(),
                                     new URI(uri.toString()), enableSnapshots)
                         }
@@ -361,7 +366,8 @@ class GrailsCli {
                 def mainCommandLine = context.getCommandLine()
                 if (mainCommandLine.hasOption(CommandLine.STACKTRACE_ARGUMENT)) {
                     console.setStacktrace(true)
-                } else {
+                }
+                else {
                     console.setStacktrace(false)
                 }
 
@@ -379,7 +385,8 @@ class GrailsCli {
                         try {
                             initializeApplication(context.commandLine)
                             setupCompleters()
-                        } finally {
+                        }
+                        finally {
                             tiggerAppLoad = false
                         }
                     }
@@ -390,7 +397,8 @@ class GrailsCli {
             catch (Throwable e) {
                 console.error("Command [${context.commandLine.commandName}] error: ${e.message}", e)
                 return false
-            } finally {
+            }
+            finally {
                 currentExecutionContext = null
             }
         }
@@ -425,13 +433,14 @@ class GrailsCli {
         ExecutorService commandExecutor = Executors.newFixedThreadPool(1)
         try {
             interactiveModeLoop(console, commandExecutor)
-        } finally {
+        }
+        finally {
             commandExecutor.shutdownNow()
         }
     }
 
     private void interactiveModeLoop(GrailsConsole console, ExecutorService commandExecutor) {
-        NonBlockingInputStream nonBlockingInput = (NonBlockingInputStream)console.reader.getInput()
+        NonBlockingInputStream nonBlockingInput = (NonBlockingInputStream) console.reader.getInput()
         interactiveModeActive = true
         boolean firstRun = true
         while (keepRunning) {
@@ -444,18 +453,23 @@ class GrailsCli {
                 if (commandLine == null) {
                     // CTRL-D was pressed, exit interactive mode
                     exitInteractiveMode()
-                } else if (commandLine.trim()) {
+                }
+                else if (commandLine.trim()) {
                     if (nonBlockingInput.isNonBlockingEnabled()) {
                         handleCommandWithCancellationSupport(console, commandLine, commandExecutor, nonBlockingInput)
-                    } else {
+                    }
+                    else {
                         handleCommand(cliParser.parseString(commandLine))
                     }
                 }
-            } catch (BuildCancelledException cancelledException) {
+            }
+            catch (BuildCancelledException cancelledException) {
                 console.updateStatus('Build stopped.')
-            } catch (UserInterruptException e) {
+            }
+            catch (UserInterruptException e) {
                 exitInteractiveMode()
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 console.error "Caught exception ${e.message}", e
             }
         }
@@ -484,7 +498,8 @@ class GrailsCli {
                     }
                 }
             }
-        } finally {
+        }
+        finally {
             if (terminal instanceof UnixTerminal) {
                 ((UnixTerminal) terminal).enableInterruptCharacter()
             }
@@ -492,7 +507,8 @@ class GrailsCli {
         if (!commandFuture.isCancelled()) {
             try {
                 return commandFuture.get()
-            } catch (ExecutionException e) {
+            }
+            catch (ExecutionException e) {
                 throw e.cause
             }
         }
@@ -561,7 +577,8 @@ class GrailsCli {
                 try {
                     // add tools.jar
                     urls.add(new File("${System.getenv('JAVA_HOME')}/lib/tools.jar").toURI().toURL())
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     // ignore
                 }
                 def profiles = (List<URL>) dependencyMap.get('profiles')
@@ -569,7 +586,8 @@ class GrailsCli {
                 this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])
                 Thread.currentThread().contextClassLoader = classLoader
             }
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             e = ExceptionUtils.getRootCause(e)
             GrailsConsole.instance.error("Error initializing classpath: $e.message", e)
             exit(1)
@@ -618,7 +636,8 @@ class GrailsCli {
             def process = new ProcessBuilder(args).redirectErrorStream(true).start()
             console.log process.inputStream.getText('UTF-8')
             return true
-        } catch (e) {
+        }
+        catch (e) {
             console.error "Error occurred executing process: $e.message"
             return false
         }
@@ -657,7 +676,8 @@ class GrailsCli {
         keepRunning = false
         try {
             GradleAsyncInvoker.POOL.shutdownNow()
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             // ignore
         }
     }
@@ -692,7 +712,8 @@ class GrailsCli {
             for (CommandCancellationListener listener : cancelListeners) {
                 try {
                     listener.commandCancelled()
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     console.error('Error notifying listener about cancelling command', e)
                 }
             }

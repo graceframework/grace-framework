@@ -134,7 +134,8 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
             XML xml
             if (sourceXml instanceof XML) {
                 xml = (XML)sourceXml
-            } else {
+            }
+            else {
                 xml = new XML(sourceXml)
             }
             setContent(xml.toString().getBytes('UTF-8'))
@@ -556,7 +557,8 @@ class MockAsyncContext implements AsyncContext {
                 AsyncListener al = listener.listener
                 al.onComplete(listener.event)
             }
-        } catch (e) {
+        }
+        catch (e) {
             for (listener in asyncListeners) {
                 AsyncListener al = listener.listener
                 al.onError(new AsyncEvent(this, e))

@@ -83,12 +83,14 @@ class TemplateRendererImpl implements TemplateRenderer {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
                 println("Warning | Destination file ${projectPath(destination)} already exists, skipping...")
-            } else {
+            }
+            else {
                 def templateEngine = new GStringTemplateEngine()
                 try {
                     def t = templateEngine.createTemplate(template.toString())
                     writeTemplateToDestination(t, model, destination)
-                } catch (e) {
+                }
+                catch (e) {
                     destination.delete()
                     throw new TemplateException("Error rendering template to destination ${projectPath(destination)}: ${e.message}", e)
                 }
@@ -118,13 +120,15 @@ class TemplateRendererImpl implements TemplateRenderer {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
                 println("Warning | Destination file ${projectPath(destination)} already exists, skipping...")
-            } else {
+            }
+            else {
                 Template t = templateCache[template.absolutePath]
                 if (t == null) {
                     try {
                         def templateEngine = new GStringTemplateEngine()
                         t = templateEngine.createTemplate(template)
-                    } catch (e) {
+                    }
+                    catch (e) {
                         throw new TemplateException("Error rendering template [$template] " +
                                 "to destination ${projectPath(destination)}: ${e.message}", e)
                     }
@@ -132,7 +136,8 @@ class TemplateRendererImpl implements TemplateRenderer {
                 try {
                     writeTemplateToDestination(t, model, destination)
                     println("Rendered template ${template.name} to destination ${projectPath(destination)}")
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     destination.delete()
                     throw new TemplateException("Error rendering template [$template] " +
                             "to destination ${projectPath(destination)}: ${e.message}", e)
@@ -163,9 +168,11 @@ class TemplateRendererImpl implements TemplateRenderer {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
                 println("Warning | Destination file ${projectPath(destination)} already exists, skipping...")
-            } else if (!template?.exists()) {
+            }
+            else if (!template?.exists()) {
                 throw new TemplateException("Template [$template.filename] not found.")
-            } else {
+            }
+            else {
                 Template t = templateCache[template.filename]
                 if (t == null) {
                     try {
@@ -173,13 +180,16 @@ class TemplateRendererImpl implements TemplateRenderer {
                         def reader = new InputStreamReader(template.inputStream, 'UTF-8')
                         try {
                             t = templateEngine.createTemplate(reader)
-                        } finally {
+                        }
+                        finally {
                             try {
                                 reader.close()
-                            } catch (ignore) {
+                            }
+                            catch (ignore) {
                             }
                         }
-                    } catch (e) {
+                    }
+                    catch (e) {
                         throw new TemplateException("Error rendering template [$template.filename] " +
                                 "to destination ${projectPath(destination)}: ${e.message}", e)
                     }
@@ -188,7 +198,8 @@ class TemplateRendererImpl implements TemplateRenderer {
                     try {
                         writeTemplateToDestination(t, model, destination)
                         println("Rendered template ${template.filename} to destination ${projectPath(destination)}")
-                    } catch (Throwable e) {
+                    }
+                    catch (Throwable e) {
                         destination.delete()
                         throw new TemplateException("Error rendering template [$template.filename] " +
                                 "to destination ${projectPath(destination)}: ${e.message}", e)

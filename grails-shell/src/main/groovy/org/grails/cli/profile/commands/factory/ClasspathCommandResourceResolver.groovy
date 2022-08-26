@@ -53,7 +53,8 @@ class ClasspathCommandResourceResolver implements CommandResourceResolver {
                 resources.addAll resourcePatternResolver.getResources("classpath*:META-INF/commands/*.$ext").toList()
             }
             return resources
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             return []
         }
     }

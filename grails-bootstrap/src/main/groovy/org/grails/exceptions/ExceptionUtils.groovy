@@ -63,7 +63,7 @@ class ExceptionUtils {
             MultipleCompilationErrorsException mcee = (MultipleCompilationErrorsException)e
             Object message = mcee.errorCollector.errors.iterator().next()
             if (message instanceof SyntaxErrorMessage) {
-                SyntaxErrorMessage sem = (SyntaxErrorMessage)message
+                SyntaxErrorMessage sem = (SyntaxErrorMessage) message
                 lineNumber = sem.cause.line
             }
         }

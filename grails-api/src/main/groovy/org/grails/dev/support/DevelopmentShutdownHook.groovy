@@ -40,9 +40,10 @@ class DevelopmentShutdownHook implements ApplicationContextAware {
         Runtime.runtime.addShutdownHook {
             try {
                 Thread.start {
-                    ((ConfigurableApplicationContext)applicationContext).close()
+                    ((ConfigurableApplicationContext) applicationContext).close()
                 }.join(2000)
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 LoggerFactory.getLogger(DevelopmentShutdownHook).warn("Error shutting down application: ${e.message}", e)
             }
         }

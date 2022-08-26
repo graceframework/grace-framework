@@ -41,7 +41,8 @@ class ValidateableTypeCheckingExtension extends TypeCheckingDSL {
                     constraintsClosureCode = constraintsProperty.initialExpression.code
                 }
                 constraintsProperty.initialExpression.code = new EmptyStatement()
-            } else {
+            }
+            else {
                 newScope()
             }
         }

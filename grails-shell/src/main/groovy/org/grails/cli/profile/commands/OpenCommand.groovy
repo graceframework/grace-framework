@@ -51,7 +51,8 @@ class OpenCommand implements ProjectCommand, Completer {
                 try {
                     Desktop.desktop.open(new File(filePath))
                     return true
-                } catch (e) {
+                }
+                catch (e) {
                     executionContext.console.error("Error opening file $filePath: $e.message", e)
                 }
             }

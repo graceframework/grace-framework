@@ -42,7 +42,8 @@ class NamedQueryTypeCheckingExtension extends TypeCheckingDSL {
                     namedQueryClosureCode = namedQueryProperty.initialExpression.code
                 }
                 namedQueryProperty.initialExpression.code = new EmptyStatement()
-            } else {
+            }
+            else {
                 newScope()
             }
         }

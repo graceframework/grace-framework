@@ -182,7 +182,8 @@ trait ResponseRedirector implements WebAttributes {
         if (requestDataValueProcessor) {
             HttpServletRequest request = currentWebRequest.getCurrentRequest()
             url = response.encodeRedirectURL(requestDataValueProcessor.processUrl(request, url))
-        } else {
+        }
+        else {
             url = response.encodeRedirectURL(url)
         }
         response.sendRedirect url

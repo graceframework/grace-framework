@@ -66,7 +66,8 @@ class MainClassFinder {
             Collection<File> searchDirs
             if (classesDir == null) {
                 searchDirs = []
-            } else {
+            }
+            else {
                 searchDirs = [classesDir]
             }
 
@@ -94,7 +95,8 @@ class MainClassFinder {
                 mainClasses.put(pathStr, mainClass)
             }
             return mainClass
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             return null
         }
     }
@@ -146,7 +148,8 @@ class MainClassFinder {
                         mainClasses.put(rootFolderPath, mainClassName)
                         return mainClassName
                     }
-                } finally {
+                }
+                finally {
                     inputStream?.close()
                 }
             }

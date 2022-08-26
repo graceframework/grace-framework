@@ -67,7 +67,7 @@ class InterceptorsGrailsPlugin extends Plugin {
     @Override
     void doWithApplicationContext() {
         if (applicationContext.containsBeanDefinition('grailsInterceptorMappedInterceptor')) {
-            interceptorAdapter = (GrailsInterceptorHandlerInterceptorAdapter)applicationContext
+            interceptorAdapter = (GrailsInterceptorHandlerInterceptorAdapter) applicationContext
                     .getBean('grailsInterceptorMappedInterceptor', MappedInterceptor).getInterceptor()
         }
     }
@@ -80,7 +80,7 @@ class InterceptorsGrailsPlugin extends Plugin {
             def interceptorClass = (Class) source
             def grailsClass = grailsApplication.addArtefact(InterceptorArtefactHandler.TYPE, interceptorClass)
             def interceptorAdapter = this.interceptorAdapter ?:
-                    (GrailsInterceptorHandlerInterceptorAdapter)applicationContext
+                    (GrailsInterceptorHandlerInterceptorAdapter) applicationContext
                             .getBean('grailsInterceptorMappedInterceptor', MappedInterceptor)
                             .getInterceptor()
 

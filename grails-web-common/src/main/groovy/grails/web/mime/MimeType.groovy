@@ -170,7 +170,8 @@ class MimeType {
             // replace to avoid expensive conversion again
             mt.parameters.q = bd
             return bd
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             bd = QUALITY_RATING_NUMBER
             return bd
         }

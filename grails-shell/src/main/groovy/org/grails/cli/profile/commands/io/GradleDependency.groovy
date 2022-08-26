@@ -47,7 +47,8 @@ class GradleDependency {
         StringBuilder artifactString = new StringBuilder()
         if (dependency.exclusions != null && !dependency.exclusions.empty) {
             artifactString.append('(')
-        } else {
+        }
+        else {
             artifactString.append(' ')
         }
         artifactString.append('"')

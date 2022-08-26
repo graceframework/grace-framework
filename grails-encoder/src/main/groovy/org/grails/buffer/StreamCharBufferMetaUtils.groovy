@@ -29,11 +29,14 @@ class StreamCharBufferMetaUtils {
         StreamCharBuffer.metaClass.asType = { Class clazz ->
             if (clazz == String) {
                 delegate.toString()
-            } else if (clazz == char[]) {
+            }
+            else if (clazz == char[]) {
                 delegate.toCharArray()
-            } else if (clazz == Boolean || clazz == boolean) {
+            }
+            else if (clazz == Boolean || clazz == boolean) {
                 delegate.asBoolean()
-            } else {
+            }
+            else {
                 delegate.toString().asType(clazz)
             }
         }

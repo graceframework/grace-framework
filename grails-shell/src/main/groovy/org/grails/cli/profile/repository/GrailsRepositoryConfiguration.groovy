@@ -88,7 +88,8 @@ class GrailsRepositoryConfiguration {
         String name = null
         if (obj instanceof RepositoryConfiguration) {
             name = obj.name
-        } else if (obj instanceof GrailsRepositoryConfiguration) {
+        }
+        else if (obj instanceof GrailsRepositoryConfiguration) {
             name = obj.name
         }
         this.name == name

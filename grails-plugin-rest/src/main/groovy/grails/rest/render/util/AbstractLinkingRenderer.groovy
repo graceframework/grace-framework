@@ -109,8 +109,9 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
             if (htmlRenderer == null) {
                 htmlRenderer = new DefaultHtmlRenderer(targetType)
             }
-            htmlRenderer.render((Object)object, context)
-        } else {
+            htmlRenderer.render((Object) object, context)
+        }
+        else {
             renderInternal(object, context)
         }
     }
@@ -168,7 +169,8 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
                     if (a instanceof Embedded) {
                         // no links for embedded
                         associationMap[a] = value
-                    } else if (value != null) {
+                    }
+                    else if (value != null) {
                         final href = linkGenerator.link(resource: value, method: HttpMethod.GET, absolute: absoluteLinks)
                         final associationTitle = getLinkTitle(associatedEntity, locale)
                         final link = new Link(propertyName, href)
@@ -177,10 +179,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
                         writeLink(link, locale, writer)
                         associationMap[a] = value
                     }
-                } else if (!(a instanceof Basic)) {
+                }
+                else if (!(a instanceof Basic)) {
                     associationMap[a] = metaClass.getProperty(object, propertyName)
                 }
-            } else if ((a instanceof ToOne) && (proxyHandler instanceof EntityProxyHandler)) {
+            }
+            else if ((a instanceof ToOne) && (proxyHandler instanceof EntityProxyHandler)) {
                 if (associatedEntity) {
                     final proxy = mappingContext.getEntityReflector(a.owner).getProperty(object, propertyName)
                     final id = proxyHandler.getProxyIdentifier(proxy)

@@ -61,7 +61,8 @@ class ServicesGrailsPlugin extends Plugin  {
                 String beanName
                 if (providingPlugin && !serviceClass.shortName.toLowerCase().startsWith(providingPlugin.name.toLowerCase())) {
                     beanName = "${providingPlugin.name}${serviceClass.shortName}"
-                } else {
+                }
+                else {
                     beanName = serviceClass.propertyName
                 }
                 def scope = serviceClass.getPropertyValue('scope')

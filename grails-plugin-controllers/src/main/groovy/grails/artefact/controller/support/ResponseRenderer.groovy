@@ -101,7 +101,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(object) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         webRequest.renderView = false
         applyContentType response, null, object
@@ -122,7 +122,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(@DelegatesTo(strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
 
         setContentType response, TEXT_HTML, DEFAULT_ENCODING, true
@@ -138,7 +138,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(Map argMap, @DelegatesTo(strategy = Closure.DELEGATE_FIRST) Closure closure) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         String explicitSiteMeshLayout = argMap[ARGUMENT_LAYOUT]?.toString() ?: null
 
@@ -171,7 +171,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(Map argMap, CharSequence body) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         String explicitSiteMeshLayout = argMap[ARGUMENT_LAYOUT]?.toString() ?: null
 
@@ -188,13 +188,13 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(CharSequence txt) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         applyContentType response, null, txt
         try {
             PrintWriter writer = response.getWriter()
             if (writer instanceof PrintWriter) {
-                ((PrintWriter)writer).print txt
+                ((PrintWriter) writer).print txt
             }
             else {
                 writer.write txt.toString()
@@ -215,7 +215,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(Map argMap, Writable writable) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         String explicitSiteMeshLayout = argMap[ARGUMENT_LAYOUT]?.toString() ?: null
 
@@ -233,7 +233,7 @@ trait ResponseRenderer extends WebAttributes {
      */
     @Generated
     void render(Map argMap) {
-        GrailsWebRequest webRequest = (GrailsWebRequest)RequestContextHolder.currentRequestAttributes()
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes()
         HttpServletResponse response = webRequest.currentResponse
         String explicitSiteMeshLayout = argMap[ARGUMENT_LAYOUT]?.toString() ?: null
         boolean statusSet = handleStatusArgument(argMap, webRequest, response)
@@ -243,10 +243,11 @@ trait ResponseRenderer extends WebAttributes {
             def textArg = argMap[ARGUMENT_TEXT]
             applyContentType response, argMap, textArg
             if (textArg instanceof Writable) {
-                renderWritable((Writable)textArg, response)
+                renderWritable((Writable) textArg, response)
                 webRequest.renderView = false
-            } else {
-                CharSequence text = (textArg instanceof CharSequence) ? ((CharSequence)textArg) : textArg.toString()
+            }
+            else {
+                CharSequence text = (textArg instanceof CharSequence) ? ((CharSequence) textArg) : textArg.toString()
                 render text
             }
             applySiteMeshLayout webRequest.currentRequest, false, explicitSiteMeshLayout
@@ -276,7 +277,7 @@ trait ResponseRenderer extends WebAttributes {
                 model = [:]
             }
 
-            ((GroovyObject)this).setProperty 'modelAndView', new ModelAndView(viewUri, model)
+            ((GroovyObject) this).setProperty 'modelAndView', new ModelAndView(viewUri, model)
             applySiteMeshLayout webRequest.currentRequest, true, explicitSiteMeshLayout
         }
         else if (argMap.containsKey(ARGUMENT_TEMPLATE)) {
@@ -294,7 +295,7 @@ trait ResponseRenderer extends WebAttributes {
             }
 
             // get the template uri
-            String templateUri = applicationAttributes.getTemplateURI((GroovyObject)this, templateName, false)
+            String templateUri = applicationAttributes.getTemplateURI((GroovyObject) this, templateName, false)
 
             // retrieve view resolver
             def applicationContext = applicationAttributes.getApplicationContext()
@@ -302,7 +303,7 @@ trait ResponseRenderer extends WebAttributes {
             try {
                 View view = viewResolver.resolveView(templateUri, webRequest.locale)
                 if (view instanceof GroovyPageView) {
-                    ((GroovyPageTemplate)((GroovyPageView)view).template).allowSettingContentType = true
+                    ((GroovyPageTemplate)((GroovyPageView) view).template).allowSettingContentType = true
                 }
                 if (view == null) {
                     throw new ControllerExecutionException("Unable to load template for uri [$templateUri]. Template not found.")
@@ -312,14 +313,15 @@ trait ResponseRenderer extends WebAttributes {
                         webRequest.getCurrentRequest().getAttribute(GrailsLayoutDecoratorMapper.LAYOUT_ATTRIBUTE))
                 // if automatic decoration occurred unwrap, since this is a partial
                 if (view instanceof GrailsLayoutView) {
-                    view = ((GrailsLayoutView)view).getInnerView()
+                    view = ((GrailsLayoutView) view).getInnerView()
                 }
 
                 if (renderWithLayout && groovyPageLayoutFinder) {
                     applySiteMeshLayout webRequest.currentRequest, false, explicitSiteMeshLayout
                     try {
                         view = new GrailsLayoutView(groovyPageLayoutFinder, view)
-                    } catch (NoSuchBeanDefinitionException e) {
+                    }
+                    catch (NoSuchBeanDefinitionException e) {
                         // ignore
                     }
                 }
@@ -345,14 +347,14 @@ trait ResponseRenderer extends WebAttributes {
                     Object colObject = argMap[ARGUMENT_COLLECTION]
                     if (hasModel) {
                         if (modelObject instanceof Map) {
-                            setTemplateModel webRequest, binding, (Map)modelObject
+                            setTemplateModel webRequest, binding, (Map) modelObject
                         }
                     }
                     renderTemplateForCollection webRequest, view, binding, colObject, var
                 }
                 else if (hasModel) {
                     if (modelObject instanceof Map) {
-                        setTemplateModel webRequest, binding, (Map)modelObject
+                        setTemplateModel webRequest, binding, (Map) modelObject
                     }
                     renderViewForTemplate webRequest, view, binding
                 }
@@ -397,21 +399,23 @@ trait ResponseRenderer extends WebAttributes {
                         input = (InputStream)o
                     }
                     else if (o instanceof byte[]) {
-                        input = new ByteArrayInputStream((byte[])o)
+                        input = new ByteArrayInputStream((byte[]) o)
                     }
                     else {
                         input = IOUtils.openStream(new File(o.toString()))
                     }
                     SpringIOUtils.copy input, response.getOutputStream()
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     throw new ControllerExecutionException(
                             "I/O error copying file to response: ${e.message}", e)
                 }
                 finally {
                     if (input) {
                         try {
-                            ((InputStream)input).close()
-                        } catch (IOException e) {
+                            ((InputStream) input).close()
+                        }
+                        catch (IOException e) {
                             // ignore
                         }
                     }
@@ -462,9 +466,10 @@ trait ResponseRenderer extends WebAttributes {
             def statusObj = argMap.get(ARGUMENT_STATUS)
             if (statusObj != null) {
                 if (statusObj instanceof HttpStatus) {
-                    response.status = ((HttpStatus)statusObj).value()
+                    response.status = ((HttpStatus) statusObj).value()
                     statusSet = true
-                } else {
+                }
+                else {
                     try {
                         final int statusCode = statusObj instanceof Number ? ((Number) statusObj).intValue() : Integer.parseInt(statusObj.toString())
                         response.status = statusCode

@@ -53,7 +53,8 @@ class SystemStreamsRedirector {
         SystemStreamsRedirector previous = redirect()
         try {
             return closure.call()
-        } finally {
+        }
+        finally {
             previous.redirect()
         }
     }

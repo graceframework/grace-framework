@@ -67,7 +67,7 @@ class EnvironmentBlockEvaluator {
     }
 
     Object methodMissing(String name, Object args) {
-        Object[] argsArray = (Object[])args
+        Object[] argsArray = (Object[]) args
         if (args != null && argsArray.length > 0 && (argsArray[0] instanceof Closure)) {
             if (current == Environment.CUSTOM && current.name == name) {
                 callable = (Closure<?>) argsArray[0]

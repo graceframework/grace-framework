@@ -97,7 +97,7 @@ class PropertyEditorRegistryUtils {
             return
         }
 
-        Map<String, PropertyEditorRegistrar> editors = (Map<String, PropertyEditorRegistrar>)servletContext.getAttribute(PROPERTY_EDITOR_REGISTRARS)
+        Map<String, PropertyEditorRegistrar> editors = (Map<String, PropertyEditorRegistrar>) servletContext.getAttribute(PROPERTY_EDITOR_REGISTRARS)
         if (editors == null) {
             editors = context.getBeansOfType(PropertyEditorRegistrar)
             if (!Environment.isDevelopmentMode()) {

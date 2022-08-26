@@ -38,7 +38,8 @@ trait ServerInteraction {
         }
         try {
             new URL("http://${host ?: 'localhost'}:${port ?: 8080}/is-tomcat-running").text
-        } catch (ignored) {
+        }
+        catch (ignored) {
             // ignore
         }
     }
@@ -53,7 +54,8 @@ trait ServerInteraction {
         try {
             new Socket(host, port)
             return true
-        } catch (e) {
+        }
+        catch (e) {
             return false
         }
     }

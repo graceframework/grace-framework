@@ -51,7 +51,8 @@ class GrailsSwingConsole extends GrailsApp {
     void configureApplicationContextClass() {
         if (ClassUtils.isPresent('javax.servlet.ServletContext', Thread.currentThread().contextClassLoader)) {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleWebApplicationContext))
-        } else {
+        }
+        else {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleApplicationContext))
         }
     }

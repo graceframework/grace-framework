@@ -88,7 +88,7 @@ abstract class GrailsArrayUtils {
      */
     static Object add(Object array, int pos, Object newObject) {
         if (array == null) {
-            Object[] newArray = (Object[])Array.newInstance(newObject.getClass(), 1)
+            Object[] newArray = (Object[]) Array.newInstance(newObject.getClass(), 1)
             newArray[pos] = newObject
             return newArray
         }
@@ -125,7 +125,8 @@ abstract class GrailsArrayUtils {
         System.arraycopy(array, 0, newArray, 0, len)
         try {
             System.arraycopy otherArray, 0, newArray, len, len2
-        } catch (ArrayStoreException ase) {
+        }
+        catch (ArrayStoreException ase) {
             throw new IllegalArgumentException("Component types of passed arrays do not match [${array.getClass().componentType}] " +
                     "and [${otherArray.getClass().componentType}]", ase)
         }

@@ -146,7 +146,8 @@ class Metadata extends PropertySourcePropertyResolver {
                         addPropertySource(PropertySource.of('build.info', buildInfo))
                     }
                 }
-            } else {
+            }
+            else {
                 // try WAR packaging resolve
                 url = classLoader.getResource('../../' + BUILD_INFO_FILE)
                 if (url != null) {
@@ -338,10 +339,12 @@ class Metadata extends PropertySourcePropertyResolver {
         resetCaches()
         if (metadataFile != null) {
             loadFromFile(metadataFile)
-        } else if (props != null) {
+        }
+        else if (props != null) {
             addPropertySource(PropertySource.of(props))
             afterLoading()
-        } else {
+        }
+        else {
             loadFromDefault()
         }
     }

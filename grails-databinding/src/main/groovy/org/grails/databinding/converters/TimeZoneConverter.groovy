@@ -33,7 +33,7 @@ class TimeZoneConverter implements ValueConverter {
 
     @Override
     def convert(value) {
-        TimeZone.getTimeZone((String)value)
+        TimeZone.getTimeZone((String) value)
     }
 
     @Override

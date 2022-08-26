@@ -110,12 +110,12 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
                 String finalToken = token
                 while (hasTokens) {
                     if (finalToken.contains(UrlMapping.CAPTURED_WILDCARD)) {
-                        ConstrainedProperty constraint = (ConstrainedProperty)constraints[constraintIndex++]
+                        ConstrainedProperty constraint = (ConstrainedProperty) constraints[constraintIndex++]
                         def prop = '\\${' + constraint.propertyName + '}'
                         finalToken = finalToken.replaceFirst(/\(\*\)/, withAnsi ? variable(prop) : prop)
                     }
                     else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
-                        ConstrainedProperty constraint = (ConstrainedProperty)constraints[constraintIndex++]
+                        ConstrainedProperty constraint = (ConstrainedProperty) constraints[constraintIndex++]
                         def prop = '\\\${' + constraint.propertyName + '}**'
                         finalToken =  finalToken.replaceFirst(/\(\*\*\)/, prop)
                     }
@@ -133,7 +133,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
         }
         if (urlMapping.urlData.hasOptionalExtension()) {
             final allConstraints = urlMapping.constraints
-            ConstrainedProperty lastConstraint = (ConstrainedProperty)allConstraints[-1]
+            ConstrainedProperty lastConstraint = (ConstrainedProperty) allConstraints[-1]
             urlPattern << "(.\${${lastConstraint.propertyName})?"
         }
         if (padding) {

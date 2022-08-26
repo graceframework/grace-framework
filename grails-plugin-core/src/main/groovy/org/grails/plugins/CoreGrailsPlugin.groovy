@@ -79,7 +79,8 @@ class CoreGrailsPlugin extends Plugin {
             if (ClassUtils.isPresent('org.aspectj.lang.annotation.Around', application.classLoader) &&
                     !config.getProperty(Settings.SPRING_DISABLE_ASPECTJ, Boolean)) {
                 proxyCreatorClazz = GroovyAwareAspectJAwareAdvisorAutoProxyCreator
-            } else {
+            }
+            else {
                 proxyCreatorClazz = GroovyAwareInfrastructureAdvisorAutoProxyCreator
             }
 
@@ -127,9 +128,9 @@ class CoreGrailsPlugin extends Plugin {
     @Override
     @CompileStatic
     void onChange(Map<String, Object> event) {
-        GenericApplicationContext applicationContext = (GenericApplicationContext)this.applicationContext
+        GenericApplicationContext applicationContext = (GenericApplicationContext) this.applicationContext
         if (event.source instanceof Resource) {
-            Resource res = (Resource)event.source
+            Resource res = (Resource) event.source
             if (res.filename.endsWith('.xml')) {
                 def xmlBeans = new DefaultListableBeanFactory()
                 new XmlBeanDefinitionReader(xmlBeans).loadBeanDefinitions(res)

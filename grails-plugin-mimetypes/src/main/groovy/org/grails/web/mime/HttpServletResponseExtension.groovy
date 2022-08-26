@@ -83,7 +83,8 @@ class HttpServletResponseExtension {
                 try {
                     mimeTypes = context.getBean(MimeUtility).getKnownMimeTypes() as MimeType[]
                     loadMimeTypeConfig(context.getBean(GrailsApplication).config)
-                } catch (NoSuchBeanDefinitionException e) {
+                }
+                catch (NoSuchBeanDefinitionException e) {
                     mimeTypes = MimeType.createDefaults()
                 }
             }
@@ -153,7 +154,8 @@ class HttpServletResponseExtension {
                 //   - *before* the "format" parameter is added to the map
                 //   - so the saved format is wrong
                 request.setAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPE, result)
-            } else {
+            }
+            else {
                 result = getMimeTypesInternal(request)[0]
             }
         }
@@ -202,7 +204,8 @@ class HttpServletResponseExtension {
                 //   - *before* the "format" parameter is added to the map
                 //   - so the saved format is wrong
                 request.setAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPES, result)
-            } else {
+            }
+            else {
                 result = getMimeTypesInternal(request)
             }
         }
@@ -232,11 +235,13 @@ class HttpServletResponseExtension {
         if (config.containsKey(Settings.MIME_DISABLE_ACCEPT_HEADER_FOR_USER_AGENTS)) {
             final disableForUserAgentsConfig = config.getProperty(Settings.MIME_DISABLE_ACCEPT_HEADER_FOR_USER_AGENTS, Object)
             if (disableForUserAgentsConfig instanceof Pattern) {
-                this.disableForUserAgents = (Pattern)disableForUserAgentsConfig
-            } else if (disableForUserAgentsConfig instanceof Collection && disableForUserAgentsConfig) {
+                this.disableForUserAgents = (Pattern) disableForUserAgentsConfig
+            }
+            else if (disableForUserAgentsConfig instanceof Collection && disableForUserAgentsConfig) {
                 final userAgents = disableForUserAgentsConfig.join('(?i)|')
                 this.disableForUserAgents = Pattern.compile("(${userAgents})")
-            } else {
+            }
+            else {
                 this.disableForUserAgents = null
             }
         }
@@ -244,7 +249,7 @@ class HttpServletResponseExtension {
 
     @CompileDynamic
     private static MimeType[] getMimeTypesInternal(HttpServletRequest request) {
-        MimeType[] result = (MimeType[])request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMATS)
+        MimeType[] result = (MimeType[]) request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMATS)
         if (!result) {
             def userAgent = request.getHeader(HttpHeaders.USER_AGENT)
             def msie = userAgent && userAgent ==~ /msie(?i)/ ?: false

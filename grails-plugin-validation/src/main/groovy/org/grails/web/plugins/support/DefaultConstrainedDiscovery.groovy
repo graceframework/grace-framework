@@ -39,7 +39,7 @@ class DefaultConstrainedDiscovery implements ConstrainedDiscovery {
     Map<String, Constrained> findConstrainedProperties(PersistentEntity entity) {
         Validator validator = entity.getMappingContext().getEntityValidator(entity)
         if (validator instanceof ConstrainedEntity) {
-            ConstrainedEntity constrainedEntity = (ConstrainedEntity)validator
+            ConstrainedEntity constrainedEntity = (ConstrainedEntity) validator
             Map<String, ConstrainedProperty> constrainedProperties = constrainedEntity.getConstrainedProperties()
             return adaptConstraints(constrainedProperties)
         }

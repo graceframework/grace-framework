@@ -33,7 +33,8 @@ class ReadGradleTasks extends ListReadingCachedGradleOperation<String> {
     private static final Closure<String> taskNameFormatter = { String projectPath, String taskName ->
         if (projectPath == ':') {
             ":$taskName".toString()
-        } else {
+        }
+        else {
             "$projectPath:$taskName".toString()
         }
     }
@@ -48,7 +49,7 @@ class ReadGradleTasks extends ListReadingCachedGradleOperation<String> {
     @Override
     List<String> readFromGradle(ProjectConnection connection) {
         SystemOutErrCapturer.withNullOutput {
-            FetchAllTaskSelectorsBuildAction.AllTasksModel allTasksModel = (FetchAllTaskSelectorsBuildAction.AllTasksModel)connection.action(
+            FetchAllTaskSelectorsBuildAction.AllTasksModel allTasksModel = (FetchAllTaskSelectorsBuildAction.AllTasksModel) connection.action(
                     new FetchAllTaskSelectorsBuildAction(projectContext.getBaseDir())).run()
             Collection<String> allTaskSelectors = []
 

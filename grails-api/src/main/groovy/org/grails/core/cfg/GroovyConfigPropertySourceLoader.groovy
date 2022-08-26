@@ -76,7 +76,8 @@ class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
                     final NavigableMapPropertySource navigableMapPropertySource = new NavigableMapPropertySource(name, propertySource)
                     loadedFiles.add(name)
                     return Collections.<PropertySource<?>>singletonList(navigableMapPropertySource)
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     log.error("Unable to load $resource.filename: $e.message", e)
                     throw new GrailsConfigurationException("Error loading $resource.filename due to [${e.getClass().name}]: $e.message", e)
                 }

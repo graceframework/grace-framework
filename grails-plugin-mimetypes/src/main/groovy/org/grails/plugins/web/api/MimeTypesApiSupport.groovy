@@ -38,11 +38,11 @@ import org.grails.web.util.GrailsApplicationAttributes
 class MimeTypesApiSupport {
 
     def <T> T withFormat(HttpServletRequest request, Closure<T> callable) {
-        (T)withFormatInternal(request, getDefinedFormats(callable))
+        (T) withFormatInternal(request, getDefinedFormats(callable))
     }
 
     def <T> T withFormat(HttpServletResponse response, Closure<T> callable) {
-        (T)withFormatInternal(response, getDefinedFormats(callable))
+        (T) withFormatInternal(response, getDefinedFormats(callable))
     }
 
     protected Object withFormatInternal(formatProvider, LinkedHashMap<String, Object> formats) {
@@ -96,7 +96,8 @@ class MimeTypesApiSupport {
         if (formats.containsKey('*')) {
             formatKey = '*'
             format = 'all'
-        } else {
+        }
+        else {
             // choose first key
             formatKey = formats.keySet().iterator().next()
             format = formatKey

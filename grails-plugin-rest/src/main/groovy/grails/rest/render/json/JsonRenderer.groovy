@@ -97,7 +97,8 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
             }
 
             marshaller = domainClassMarshaller
-        } else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
+        }
+        else if (!Collection.isAssignableFrom(targetType) && !Map.isAssignableFrom(targetType)) {
             marshaller = (ObjectMarshaller<JSON>) new GroovyBeanMarshaller() {
 
                 @Override

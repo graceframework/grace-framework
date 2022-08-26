@@ -47,7 +47,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     CodeGenConfig(CodeGenConfig copyOf) {
-        this((Map<String, Object>)copyOf.configMap)
+        this((Map<String, Object>) copyOf.configMap)
     }
 
     CodeGenConfig(Map<String, Object> copyOf) {
@@ -157,7 +157,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         Yaml yaml = new Yaml(new SafeConstructor())
         for (Object yamlObject : yaml.loadAll(input)) {
             if (yamlObject instanceof Map) { // problem here with CompileStatic
-                mergeMap((Map)yamlObject)
+                mergeMap((Map) yamlObject)
             }
         }
     }
@@ -179,32 +179,38 @@ class CodeGenConfig implements Cloneable, ConfigMap {
             return null
         }
         else if (requiredType.isInstance(value)) {
-            return (T)value
+            return (T) value
         }
         if (requiredType == String) {
             return String.valueOf(value)
-        } else if (requiredType == Boolean) {
+        }
+        else if (requiredType == Boolean) {
             Boolean booleanObject = toBooleanObject(String.valueOf(value))
             return booleanObject != null ? booleanObject : Boolean.FALSE
-        } else if (requiredType == boolean) {
+        }
+        else if (requiredType == boolean) {
             Boolean booleanObject = toBooleanObject(String.valueOf(value))
             return booleanObject != null ? booleanObject.booleanValue() : Boolean.FALSE.booleanValue()
-        } else if (requiredType == Integer) {
+        }
+        else if (requiredType == Integer) {
             if (value instanceof Number) {
-                return Integer.valueOf(((Number)value).intValue())
+                return Integer.valueOf(((Number) value).intValue())
             }
             return Integer.valueOf(String.valueOf(value))
-        } else if (requiredType == Long) {
+        }
+        else if (requiredType == Long) {
             if (value instanceof Number) {
-                return Long.valueOf(((Number)value).longValue())
+                return Long.valueOf(((Number) value).longValue())
             }
             return Long.valueOf(String.valueOf(value))
-        } else if (requiredType == Double) {
+        }
+        else if (requiredType == Double) {
             if (value instanceof Number) {
-                return Double.valueOf(((Number)value).doubleValue())
+                return Double.valueOf(((Number) value).doubleValue())
             }
             return Double.valueOf(String.valueOf(value))
-        } else if (requiredType == BigDecimal) {
+        }
+        else if (requiredType == BigDecimal) {
             return new BigDecimal(String.valueOf(value))
         }
         convertToOtherTypes(value, requiredType)
@@ -225,11 +231,14 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     Object asType(Class type) {
         if (type == Boolean || type == boolean) {
             return asBoolean()
-        } else if (type == String) {
+        }
+        else if (type == String) {
             return toString()
-        } else if (type == Map) {
+        }
+        else if (type == Map) {
             return this
-        } else if (type == CodeGenConfig) {
+        }
+        else if (type == CodeGenConfig) {
             return new CodeGenConfig(this)
         }
         throw new GroovyCastException(this, type)
@@ -244,14 +253,14 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     Object getProperty(String name) {
-        if ('configMap'.equals(name)) {
+        if (name == 'configMap') {
             return this.configMap
         }
         configMap.get(name)
     }
 
     Object get(String name) {
-        if ('configMap'.equals(name)) {
+        if (name == 'configMap') {
             return this.configMap
         }
         configMap.get(name)
@@ -294,7 +303,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         int strlen = str.length()
         if (strlen == 0) {
             return null
-        } else if (strlen == 1) {
+        }
+        else if (strlen == 1) {
             char ch0 = str.charAt(0)
             if ((ch0 == 'y' || ch0 == 'Y') ||
                 (ch0 == 't' || ch0 == 'T')) {
@@ -304,7 +314,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
                 (ch0 == 'f' || ch0 == 'F')) {
                 return Boolean.FALSE
             }
-        } else if (strlen == 2) {
+        }
+        else if (strlen == 2) {
             char ch0 = str.charAt(0)
             char ch1 = str.charAt(1)
             if ((ch0 == 'o' || ch0 == 'O') &&
@@ -315,7 +326,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
                 (ch1 == 'o' || ch1 == 'O')) {
                 return Boolean.FALSE
             }
-        } else if (strlen == 3) {
+        }
+        else if (strlen == 3) {
             char ch0 = str.charAt(0)
             char ch1 = str.charAt(1)
             char ch2 = str.charAt(2)
@@ -329,7 +341,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
                 (ch2 == 'f' || ch2 == 'F')) {
                 return Boolean.FALSE
             }
-        } else if (strlen == 4) {
+        }
+        else if (strlen == 4) {
             char ch0 = str.charAt(0)
             char ch1 = str.charAt(1)
             char ch2 = str.charAt(2)
@@ -340,7 +353,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
                 (ch3 == 'e' || ch3 == 'E')) {
                 return Boolean.TRUE
             }
-        } else if (strlen == 5) {
+        }
+        else if (strlen == 5) {
             char ch0 = str.charAt(0)
             char ch1 = str.charAt(1)
             char ch2 = str.charAt(2)

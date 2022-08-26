@@ -46,7 +46,8 @@ class DomainMappingTypeCheckingExtension extends TypeCheckingDSL {
                     }
                     mappingProperty.initialExpression.code = new EmptyStatement()
                 }
-            } else {
+            }
+            else {
                 newScope()
             }
         }
