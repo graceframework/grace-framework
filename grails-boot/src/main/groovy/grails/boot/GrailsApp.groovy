@@ -390,8 +390,7 @@ class GrailsApp extends SpringApplication {
             }
             println("Grails application running at ${protocol}://${hostName}:${port}${contextPath} in environment: ${Environment.current.name}")
         }
-        catch (e) {
-            // ignore
+        catch (ignored) {
         }
     }
 

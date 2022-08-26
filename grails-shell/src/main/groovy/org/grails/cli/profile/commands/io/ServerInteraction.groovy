@@ -40,7 +40,6 @@ trait ServerInteraction {
             new URL("http://${host ?: 'localhost'}:${port ?: 8080}/is-tomcat-running").text
         }
         catch (ignored) {
-            // ignore
         }
     }
 

@@ -208,8 +208,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                             try {
                                 reader.close()
                             }
-                            catch (e) {
-                                // ignore
+                            catch (ignored) {
                             }
                         }
                     }

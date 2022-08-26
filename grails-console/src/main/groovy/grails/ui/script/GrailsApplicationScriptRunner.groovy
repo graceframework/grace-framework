@@ -92,8 +92,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
                 }
                 ctx?.close()
             }
-            catch (Throwable e) {
-                // ignore
+            catch (Throwable ignored) {
             }
         }
 

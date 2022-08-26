@@ -561,7 +561,7 @@ class SimpleDataBinder implements DataBinder {
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
         }
         converter
     }
@@ -619,7 +619,7 @@ class SimpleDataBinder implements DataBinder {
         try {
             enumClass.valueOf(value)
         }
-        catch (IllegalArgumentException iae) {
+        catch (IllegalArgumentException ignored) {
         }
     }
 
@@ -815,7 +815,7 @@ class SimpleDataBinder implements DataBinder {
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
         }
         initializer
     }

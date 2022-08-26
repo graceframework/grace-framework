@@ -72,7 +72,7 @@ class RestResponderGrailsPlugin extends Plugin {
                     try {
                         app.addArtefact(ControllerArtefactHandler.TYPE, app.classLoader.loadClass(controllerClassName))
                     }
-                    catch (ClassNotFoundException cnfe) {
+                    catch (ClassNotFoundException ignored) {
                     }
                 }
             }

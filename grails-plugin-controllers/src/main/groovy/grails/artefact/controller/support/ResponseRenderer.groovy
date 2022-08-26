@@ -321,8 +321,7 @@ trait ResponseRenderer extends WebAttributes {
                     try {
                         view = new GrailsLayoutView(groovyPageLayoutFinder, view)
                     }
-                    catch (NoSuchBeanDefinitionException e) {
-                        // ignore
+                    catch (NoSuchBeanDefinitionException ignored) {
                     }
                 }
 
@@ -415,8 +414,7 @@ trait ResponseRenderer extends WebAttributes {
                         try {
                             ((InputStream) input).close()
                         }
-                        catch (IOException e) {
-                            // ignore
+                        catch (IOException ignored) {
                         }
                     }
                 }

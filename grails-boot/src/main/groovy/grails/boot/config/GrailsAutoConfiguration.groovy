@@ -58,8 +58,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
                 list.add(GroovyAwareAspectJAwareAdvisorAutoProxyCreator)
             }
         }
-        catch (Throwable e) {
-            // ignore
+        catch (Throwable ignored) {
         }
     }
 
@@ -93,8 +92,7 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
             try {
                 classes << classLoader.loadClass(cls)
             }
-            catch (ClassNotFoundException cnfe) {
-                // ignore
+            catch (ClassNotFoundException ignored) {
             }
         }
 

@@ -94,8 +94,7 @@ class ClassNameCompleter extends StringsCompleter {
             }
             setStrings(allStrings)
         }
-        catch (Throwable e) {
-            // ignore
+        catch (Throwable ignored) {
         }
     }
 

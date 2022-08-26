@@ -185,7 +185,7 @@ class DocPublisher {
         try {
             engineProperties.load(getClass().classLoader.getResourceAsStream('grails/doc/doc.properties'))
         }
-        catch (ignore) {
+        catch (ignored) {
         }
     }
 

@@ -312,7 +312,6 @@ class Metadata extends PropertySourcePropertyResolver {
                 c.close()
             }
             catch (Exception ignored) {
-                // ignored
             }
         }
     }

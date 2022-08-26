@@ -185,7 +185,7 @@ class TemplateRendererImpl implements TemplateRenderer {
                             try {
                                 reader.close()
                             }
-                            catch (ignore) {
+                            catch (ignored) {
                             }
                         }
                     }

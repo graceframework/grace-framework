@@ -114,7 +114,7 @@ class EmbeddedDatabaseShutdownHook implements SmartLifecycle, ApplicationContext
                 Sql sql = new Sql(connection)
                 sql.executeUpdate('SHUTDOWN')
             }
-            catch (e) {
+            catch (ignored) {
                 // already closed, ignore
             }
             finally {

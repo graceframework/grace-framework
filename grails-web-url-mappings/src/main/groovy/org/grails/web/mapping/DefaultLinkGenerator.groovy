@@ -319,7 +319,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                         absolute = Boolean.parseBoolean(str)
                     }
                 }
-                catch (e) {
+                catch (ignored) {
                 }
             }
         }

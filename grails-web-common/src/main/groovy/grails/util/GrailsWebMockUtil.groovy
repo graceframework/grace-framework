@@ -52,8 +52,6 @@ class GrailsWebMockUtil {
      */
     static GrailsWebRequest bindMockWebRequest(WebApplicationContext ctx) {
         def servletContext = ctx.getServletContext()
-        if (servletContext == null) {
-        }
         bindMockWebRequest(ctx, new MockHttpServletRequest(servletContext), new MockHttpServletResponse())
     }
 
