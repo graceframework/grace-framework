@@ -686,26 +686,22 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             def locale = getLocale()
             formatString = messageSource.getMessage((String) code, [] as Object[], locale)
         }
-        if (!formatString) {
-            formatString = super.getFormatString(annotation)
-        }
-        formatString
+
+        formatString ?: super.getFormatString(annotation)
     }
 
     protected Locale getLocale() {
         def request = GrailsWebRequest.lookup()
-        request ? request.getLocale() : Locale.getDefault()
+        request?.getLocale() ?: Locale.getDefault()
     }
 
     private PersistentEntity getPersistentEntity(Class clazz) {
-        if (grailsApplication != null) {
-            try {
-                return grailsApplication.mappingContext.getPersistentEntity(clazz.name)
-            }
-            catch (GrailsConfigurationException ignored) {
-            }
+        try {
+            return grailsApplication?.mappingContext?.getPersistentEntity(clazz.name)
         }
-        null
+        catch (GrailsConfigurationException ignored) {
+            return null
+        }
     }
 
 }

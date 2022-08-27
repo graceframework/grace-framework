@@ -60,7 +60,7 @@ class ConstraintEvalUtils {
     }
 
     static void clearDefaultConstraints() {
-        defaultConstraintsMap =  null
+        defaultConstraintsMap = null
         configId = null
     }
 

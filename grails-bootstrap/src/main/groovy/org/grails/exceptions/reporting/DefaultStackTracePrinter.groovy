@@ -90,9 +90,8 @@ class DefaultStackTracePrinter implements StackTracePrinter {
                         else {
                             prevFn = fileName
                         }
-                        if (!fileName) {
-                            fileName = te.className
-                        }
+
+                        fileName = fileName ?: te.className
 
                         def padChar = (evenRow || idx == 0) ? ' ' : ' .'
                         evenRow = !evenRow

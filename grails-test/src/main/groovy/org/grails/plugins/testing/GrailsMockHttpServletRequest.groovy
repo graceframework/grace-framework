@@ -91,10 +91,8 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         def mimeType = MimeType.configuredMimeTypes?.find { mt ->
             mt?.name == newContentType
         }
+        mimeType = mimeType ?: new MimeType(newContentType)
 
-        if (!mimeType) {
-            mimeType = new MimeType(newContentType)
-        }
         setAttribute(GrailsApplicationAttributes.REQUEST_FORMATS, [mimeType] as MimeType[])
     }
 
@@ -156,11 +154,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * Implementation of the dynamic "forwardURI" property.
      */
     String getForwardURI() {
-        def result = getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE)
-        if (!result) {
-            result = requestURI
-        }
-        result
+        getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE) ?: requestURI
     }
 
     /**
@@ -237,10 +231,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     * content or the content is not valid XML.
     */
     def getXML() {
-        if (!cachedXml) {
-            cachedXml = GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.XML').parse(this)
-        }
-        cachedXml
+        cachedXml = cachedXml ?: GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.XML').parse(this)
     }
 
     /**
@@ -249,10 +240,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
      * not valid JSON.
      */
     def getJSON() {
-        if (!cachedJson) {
-            cachedJson = GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.JSON').parse(this)
-        }
-        cachedJson
+        cachedJson = cachedJson ?: GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.JSON').parse(this)
     }
 
     /**

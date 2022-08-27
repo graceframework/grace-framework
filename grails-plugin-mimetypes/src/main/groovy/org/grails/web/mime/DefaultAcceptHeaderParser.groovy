@@ -90,7 +90,7 @@ class DefaultAcceptHeaderParser implements AcceptHeaderParser {
 
         // remove duplicate text/xml and application/xml entries
         MimeType textXml = mimes.find { MimeType it -> it.name == 'text/xml' }
-        MimeType appXml = mimes.find { MimeType it -> it.name ==  MimeType.XML.name }
+        MimeType appXml = mimes.find { MimeType it -> it.name == MimeType.XML.name }
         if (textXml && appXml) {
             // take the largest q value
             appXml.parameters.q = [textXml.qualityAsNumber, appXml.qualityAsNumber].max()

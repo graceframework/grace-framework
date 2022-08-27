@@ -157,7 +157,7 @@ class ControllersGrailsPlugin extends Plugin {
                         bean.lazyInit = lazyInit
                         def beanScope = controller.getScope()
                         bean.scope = beanScope
-                        bean.autowire =  'byName'
+                        bean.autowire = 'byName'
                         if (beanScope == 'prototype') {
                             bean.beanDefinition.dependencyCheck = AbstractBeanDefinition.DEPENDENCY_CHECK_NONE
                         }

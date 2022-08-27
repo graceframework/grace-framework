@@ -117,7 +117,7 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
                     else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
                         ConstrainedProperty constraint = (ConstrainedProperty) constraints[constraintIndex++]
                         def prop = '\\\${' + constraint.propertyName + '}**'
-                        finalToken =  finalToken.replaceFirst(/\(\*\*\)/, prop)
+                        finalToken = finalToken.replaceFirst(/\(\*\*\)/, prop)
                     }
                     hasTokens = finalToken.contains(UrlMapping.CAPTURED_WILDCARD) || finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
                 }

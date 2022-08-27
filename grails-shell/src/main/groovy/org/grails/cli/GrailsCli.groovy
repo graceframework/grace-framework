@@ -555,7 +555,7 @@ class GrailsCli {
 
                         BuildActionExecuter buildActionExecuter = connection.action(new ClasspathBuildAction())
                         buildActionExecuter.standardOutput = System.out
-                        buildActionExecuter.standardError  = System.err
+                        buildActionExecuter.standardError = System.err
                         buildActionExecuter.withArguments("-Dgrails.profile=${config.navigate('grails', 'profile')}")
 
                         def grailsClasspath = buildActionExecuter.run()

@@ -134,13 +134,12 @@ class HttpServletResponseExtension {
         MimeType result = (MimeType) request.getAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPE)
         if (!result) {
             def formatOverride = webRequest?.params?.format
-            if (!formatOverride) {
-                formatOverride = request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMAT)
-            }
+            formatOverride = formatOverride ?: request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMAT)
+
             if (formatOverride) {
                 def allMimes = getMimeTypes()
                 MimeType mime = allMimes?.find { MimeType it -> it.extension == formatOverride }
-                result = mime ? mime : allMimes?.find { it }
+                result = mime ?: allMimes?.find { it }
 
                 // Save the evaluated format as a request attribute.
                 // This is a blatant hack because we should to this
@@ -184,13 +183,12 @@ class HttpServletResponseExtension {
         MimeType[] result = (MimeType[]) request.getAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPES)
         if (!result) {
             def formatOverride = webRequest?.params?.format
-            if (!formatOverride) {
-                formatOverride = request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMAT)
-            }
+            formatOverride = formatOverride ?: request.getAttribute(GrailsApplicationAttributes.RESPONSE_FORMAT)
+
             if (formatOverride) {
                 def allMimes = getMimeTypes()
                 MimeType mime = allMimes.find { MimeType it -> it.extension == formatOverride }
-                result = [ mime ? mime : getMimeTypes()[0] ] as MimeType[]
+                result = [ mime ?: getMimeTypes()[0] ] as MimeType[]
 
                 // Save the evaluated format as a request attribute.
                 // This is a blatant hack because we should to this

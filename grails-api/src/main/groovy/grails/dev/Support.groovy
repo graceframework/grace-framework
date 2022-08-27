@@ -53,10 +53,8 @@ class Support {
             def grailsHome = System.getenv(Environment.ENV_GRAILS_HOME)
 
             if (grailsHome) {
-                def agentPath = System.getProperty(PROPERTY_RELOAD_AGENT_PATH)
-                if (!agentPath) {
-                    agentPath = System.getenv(ENV_RELOAD_AGENT_PATH)
-                }
+                def agentPath = System.getProperty(PROPERTY_RELOAD_AGENT_PATH) ?: System.getenv(ENV_RELOAD_AGENT_PATH)
+
                 def file = findAgentJar(agentPath, grailsHome)
                 if (file?.exists()) {
                     def runtimeMxBean = ManagementFactory.runtimeMXBean

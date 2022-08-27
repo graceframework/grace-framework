@@ -87,7 +87,7 @@ class PdfBuilder {
     private static String removeCssLink(String htmlString) {
         String output
         String str = htmlString
-        int index =  str.indexOf('<link rel="stylesheet"')
+        int index = str.indexOf('<link rel="stylesheet"')
         output = str.substring(0, index)
         String end = str.substring(index, str.size())
         output += end.substring(end.indexOf('/>') + '/>'.length(), end.size())
@@ -97,7 +97,7 @@ class PdfBuilder {
     static String removeCssLinks(String html) {
         String str = html
         for (;;) {
-            int index =  str.indexOf('<link rel="stylesheet"')
+            int index = str.indexOf('<link rel="stylesheet"')
             println "index $index"
             if (index == -1) {
                 break

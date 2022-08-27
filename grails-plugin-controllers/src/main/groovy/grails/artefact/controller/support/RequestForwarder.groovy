@@ -89,12 +89,10 @@ trait RequestForwarder implements WebAttributes {
                 params.action = convert(params.action.toString())
             }
 
-            if (!params.params) {
-                params.params = UrlMappingUtils.findAllParamsNotInKeys(
-                        UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(webRequest.params),
-                        webRequest.originalParams.keySet()
-                )
-            }
+            params.params = params.params ?: UrlMappingUtils.findAllParamsNotInKeys(
+                    UrlMappingUtils.findAllParamsNotInUrlMappingKeywords(webRequest.params),
+                    webRequest.originalParams.keySet()
+            )
         }
 
         Map model = params.model instanceof Map ? (Map) params.model : Collections.EMPTY_MAP

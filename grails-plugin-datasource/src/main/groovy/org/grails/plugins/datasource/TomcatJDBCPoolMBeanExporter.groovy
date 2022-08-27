@@ -78,9 +78,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
 
         if (beanName.startsWith('dataSourceUnproxied')) {
             def dataSourceName = beanName - ~/^dataSourceUnproxied_?/
-            if (!dataSourceName) {
-                dataSourceName = 'default'
-            }
+            dataSourceName = dataSourceName ?: 'default'
             properties.dataSource = dataSourceName
         }
         else {

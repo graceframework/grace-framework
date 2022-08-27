@@ -72,7 +72,7 @@ class JsonRenderer <T> extends DefaultJsonRenderer<T> {
     void registerCustomConverter() {
         def domain = grailsApplication != null ? grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, targetType.name) : null
 
-        ObjectMarshaller<JSON> marshaller  = null
+        ObjectMarshaller<JSON> marshaller = null
 
         if (domain) {
             DeepDomainClassMarshaller domainClassMarshaller = new DeepDomainClassMarshaller(false, proxyHandler, grailsApplication) {

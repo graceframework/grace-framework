@@ -207,10 +207,8 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                         }
                     }
                     if (!methodAttribute && action) {
-                        httpMethod =  REST_RESOURCE_ACTION_TO_HTTP_METHOD_MAP.get(action.toString())
-                        if (!httpMethod) {
-                            httpMethod = HttpMethod.GET.toString()
-                        }
+                        httpMethod = REST_RESOURCE_ACTION_TO_HTTP_METHOD_MAP.get(action.toString())
+                        httpMethod = httpMethod ?: HttpMethod.GET.toString()
                     }
                     else if (methodAttribute && !action) {
                         def method = methodAttribute.toString().toUpperCase()

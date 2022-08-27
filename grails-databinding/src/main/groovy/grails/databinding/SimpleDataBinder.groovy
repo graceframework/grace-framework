@@ -608,9 +608,7 @@ class SimpleDataBinder implements DataBinder {
 
     protected ValueConverter getValueConverter(obj, String propName) {
         def converter = getValueConverterForField obj, propName
-        if (!converter) {
-            converter = getValueConverterForClass obj, propName
-        }
+        converter = converter ?: getValueConverterForClass(obj, propName)
         converter
     }
 

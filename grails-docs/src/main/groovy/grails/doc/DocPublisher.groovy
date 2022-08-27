@@ -584,15 +584,10 @@ class DocPublisher {
             src = new File(src, language)
         }
 
-        if (!workDir) {
-            workDir = new File(System.getProperty('java.io.tmpdir'))
-        }
-        if (!apiDir) {
-            apiDir = target
-        }
-        if (!ant) {
-            ant = new AntBuilder()
-        }
+        workDir = workDir ?: new File(System.getProperty('java.io.tmpdir'))
+        apiDir = apiDir ?: target
+        ant = ant ?: new AntBuilder()
+
         def metaProps = DocPublisher.metaClass.properties
         Properties props
         if (engineProperties != null) {

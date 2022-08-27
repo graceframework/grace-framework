@@ -132,7 +132,7 @@ class MainClassFinder {
         if (!rootFolder.isDirectory()) {
             throw new IllegalArgumentException("Invalid root folder '$rootFolder'")
         }
-        String prefix =  "${rootFolderPath}/"
+        String prefix = "${rootFolderPath}/"
         def stack = new ArrayDeque<File>()
         stack.push rootFolder
 

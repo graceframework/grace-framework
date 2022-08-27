@@ -77,9 +77,7 @@ class HttpServletRequestExtension {
                     MimeType.getConfiguredMimeTypes()
             def parser = new DefaultAcceptHeaderParser(mimeTypes)
             String header = request.contentType
-            if (!header) {
-                header = request.getHeader(HttpHeaders.CONTENT_TYPE)
-            }
+            header = header ?: request.getHeader(HttpHeaders.CONTENT_TYPE)
             result = parser.parse(header, header ? new MimeType(header) : MimeType.HTML)
 
             request.setAttribute(GrailsApplicationAttributes.REQUEST_FORMATS, result)

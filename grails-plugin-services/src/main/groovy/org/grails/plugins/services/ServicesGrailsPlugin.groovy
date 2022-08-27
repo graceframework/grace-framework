@@ -69,7 +69,7 @@ class ServicesGrailsPlugin extends Plugin  {
                 def lazyInit = serviceClass.hasProperty('lazyInit') ? serviceClass.getPropertyValue('lazyInit') : true
 
                 "${beanName}"(serviceClass.getClazz()) { bean ->
-                    bean.autowire =  true
+                    bean.autowire = true
                     if (lazyInit instanceof Boolean) {
                         bean.lazyInit = lazyInit
                     }

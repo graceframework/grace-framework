@@ -571,9 +571,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String groupAndAppName = appName
         if (inplace) {
             appname = new File('.').canonicalFile.name
-            if (!groupAndAppName) {
-                groupAndAppName = appname
-            }
+            groupAndAppName = groupAndAppName ?: appname
         }
 
         if (!groupAndAppName) {

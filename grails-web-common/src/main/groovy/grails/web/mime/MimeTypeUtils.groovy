@@ -32,7 +32,7 @@ class MimeTypeUtils {
         final MimeType mimeType
         if (mimeTypeResolver) {
             def resolvedMimeType = mimeTypeResolver.resolveRequestMimeType()
-            mimeType = resolvedMimeType ? resolvedMimeType : MimeType.ALL
+            mimeType = resolvedMimeType ?: MimeType.ALL
         }
         else if (source instanceof HttpServletRequest) {
             HttpServletRequest req = (HttpServletRequest) source

@@ -377,9 +377,7 @@ trait ResponseRenderer extends WebAttributes {
             if (o) {
                 boolean hasContentType = applyContentType(response, argMap, null, false)
                 if (fileName) {
-                    if (!hasContentType) {
-                        hasContentType = detectContentTypeFromFileName(webRequest, response, argMap, fileName)
-                    }
+                    hasContentType = hasContentType ?: detectContentTypeFromFileName(webRequest, response, argMap, fileName)
                     if (fnO) {
                         response.setHeader HttpHeaders.CONTENT_DISPOSITION, "$DISPOSITION_HEADER_PREFIX\"$fileName\""
                     }
@@ -410,7 +408,7 @@ trait ResponseRenderer extends WebAttributes {
                             "I/O error copying file to response: ${e.message}", e)
                 }
                 finally {
-                    if (input) {
+                    if (input && (input instanceof InputStream)) {
                         try {
                             ((InputStream) input).close()
                         }

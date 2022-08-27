@@ -81,10 +81,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         List<ClassNode> classes = new ArrayList<>(ast.getClasses())
         for (ClassNode classNode : classes) {
             projectName = classNode.getNodeMetaData('projectName')
-            projectVersion = classNode.getNodeMetaData('projectVersion')
-            if (!projectVersion) {
-                projectVersion = getClass().getPackage().getImplementationVersion()
-            }
+            projectVersion = classNode.getNodeMetaData('projectVersion') ?: getClass().getPackage().getImplementationVersion()
 
             def classNodeName = classNode.name
 
@@ -132,10 +129,8 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         else {
             targetDirectory = source.configuration.targetDirectory
         }
-        if (!targetDirectory) {
-            targetDirectory = new File('build/classes/main')
-        }
-        targetDirectory
+
+        targetDirectory ?: new File('build/classes/main')
     }
 
     static void generatePluginXml(ClassNode pluginClassNode, String projectVersion,
