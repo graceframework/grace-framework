@@ -5,24 +5,24 @@ ruleset {
         '''
 
     // rulesets/basic.xml
-    // AssertWithinFinallyBlock
-    // AssignmentInConditional
-    // BigDecimalInstantiation
-    // BitwiseOperatorInConditional
+    AssertWithinFinallyBlock
+    AssignmentInConditional
+    BigDecimalInstantiation
+    BitwiseOperatorInConditional
     // BooleanGetBoolean
-    // BrokenNullCheck
-    // BrokenOddnessCheck
+    BrokenNullCheck
+    BrokenOddnessCheck
     // ClassForName
-    // ComparisonOfTwoConstants
-    // ComparisonWithSelf
-    // ConstantAssertExpression
-    // ConstantIfExpression
-    // ConstantTernaryExpression
-    // DeadCode
-    // DoubleNegative
-    // DuplicateCaseStatement
-    // DuplicateMapKey
-    // DuplicateSetValue
+    ComparisonOfTwoConstants
+    ComparisonWithSelf
+    ConstantAssertExpression
+    ConstantIfExpression
+    ConstantTernaryExpression
+    DeadCode
+    DoubleNegative
+    DuplicateCaseStatement
+    DuplicateMapKey
+    DuplicateSetValue
     EmptyCatchBlock
     EmptyClass
     EmptyElseBlock
@@ -37,18 +37,18 @@ ruleset {
     EmptyTryBlock
     EmptyWhileStatement
     // EqualsAndHashCode
-    // EqualsOverloaded
-    // ExplicitGarbageCollection
-    // ForLoopShouldBeWhileLoop
-    // HardCodedWindowsFileSeparator
-    // HardCodedWindowsRootDirectory
-    // IntegerGetInteger
-    // MultipleUnaryOperators
-    // ParameterAssignmentInFilterClosure
-    // RandomDoubleCoercedToZero
-    // RemoveAllOnSelf
-    // ReturnFromFinallyBlock
-    // ThrowExceptionFromFinallyBlock
+    EqualsOverloaded
+    ExplicitGarbageCollection
+    ForLoopShouldBeWhileLoop
+    HardCodedWindowsFileSeparator
+    HardCodedWindowsRootDirectory
+    IntegerGetInteger
+    MultipleUnaryOperators
+    ParameterAssignmentInFilterClosure
+    RandomDoubleCoercedToZero
+    RemoveAllOnSelf
+    ReturnFromFinallyBlock
+    ThrowExceptionFromFinallyBlock
 
     // rulesets/braces.xml
     ElseBlockBraces
@@ -104,7 +104,7 @@ ruleset {
     // rulesets/convention.xml
     // CompileStatic
     // ConfusingTernary
-    // CouldBeElvis
+    CouldBeElvis
     // CouldBeSwitchStatement
     // FieldTypeRequired
     // HashtableIsObsolete
@@ -120,12 +120,12 @@ ruleset {
     // NoDouble
     // NoFloat
     // NoJavaUtilDate
-    // NoTabCharacter
+    NoTabCharacter
     // ParameterReassignment
     // PublicMethodsBeforeNonPublicMethods
     // StaticFieldsBeforeInstanceFields
     // StaticMethodsBeforeInstanceMethods
-    // TernaryCouldBeElvis
+    TernaryCouldBeElvis
     // TrailingComma
     // VariableTypeRequired
     // VectorIsObsolete
