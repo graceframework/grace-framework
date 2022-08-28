@@ -112,7 +112,8 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
 
     private String getActionName(GrailsApplication application, String controllerName) {
         if (application != null) {
-            final GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(ControllerArtefactHandler.TYPE, controllerName);
+            final GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(
+                    ControllerArtefactHandler.TYPE, controllerName);
             if (controllerClass != null) {
                 return controllerClass.getDefaultAction();
             }

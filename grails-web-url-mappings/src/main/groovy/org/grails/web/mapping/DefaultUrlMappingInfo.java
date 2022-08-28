@@ -93,15 +93,18 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     @SuppressWarnings("rawtypes")
-    public DefaultUrlMappingInfo(Object redirectInfo, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName, Map params,
+    public DefaultUrlMappingInfo(Object redirectInfo, Object controllerName, Object actionName,
+                                 Object namespace, Object pluginName, Object viewName, Map params,
             UrlMappingData urlData, GrailsApplication grailsApplication) {
-        this(redirectInfo, controllerName, actionName, namespace, pluginName, viewName, null, UrlMapping.ANY_VERSION, params, urlData, grailsApplication);
+        this(redirectInfo, controllerName, actionName, namespace, pluginName, viewName, null,
+                UrlMapping.ANY_VERSION, params, urlData, grailsApplication);
     }
 
     public DefaultUrlMappingInfo(Object redirectInfo, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName,
                                  String httpMethod, String version, Map<?, ?> params, UrlMappingData urlData, GrailsApplication grailsApplication) {
         this(params, urlData, grailsApplication);
-        Assert.isTrue(redirectInfo != null || controllerName != null || viewName != null, "URL mapping must either provide redirect information, a controller or a view name to map to!");
+        Assert.isTrue(redirectInfo != null || controllerName != null || viewName != null,
+                "URL mapping must either provide redirect information, a controller or a view name to map to!");
         Assert.notNull(params, "Argument [params] cannot be null");
         this.controllerName = controllerName;
         this.actionName = actionName;
@@ -188,7 +191,8 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         String name = evaluateNameForValue(controllerName);
         if (name == null && getViewName() == null && uri == null) {
             throw new UrlMappingException("Unable to establish controller name to dispatch for [" +
-                    controllerName + "]. Dynamic closure invocation returned null. Check your mapping file is correct, when assigning the controller name as a request parameter it cannot be an optional token!");
+                    controllerName + "]. Dynamic closure invocation returned null. Check your mapping file is correct, " +
+                    "when assigning the controller name as a request parameter it cannot be an optional token!");
         }
         return urlConverter.toUrlElement(name);
     }
@@ -247,7 +251,8 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     private MultipartHttpServletRequest getResolvedRequest(HttpServletRequest request, MultipartResolver resolver) {
-        MultipartHttpServletRequest resolvedMultipartRequest = (MultipartHttpServletRequest) request.getAttribute(MultipartHttpServletRequest.class.getName());
+        MultipartHttpServletRequest resolvedMultipartRequest = (MultipartHttpServletRequest) request.getAttribute(
+                MultipartHttpServletRequest.class.getName());
         if (resolvedMultipartRequest == null) {
             resolvedMultipartRequest = resolver.resolveMultipart(request);
             request.setAttribute(MultipartHttpServletRequest.class.getName(), resolvedMultipartRequest);

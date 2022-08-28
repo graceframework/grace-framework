@@ -126,16 +126,15 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
 	private ResourceLoader resourceLoader = new DefaultResourceLoader();
 	
 	/** Cache to hold filename lists per Locale */
-	private final ConcurrentMap<Pair<String, Locale>, CacheEntry<List<Pair<String, Resource>>>> cachedFilenames =
-			new ConcurrentHashMap<Pair<String, Locale>, CacheEntry<List<Pair<String, Resource>>>>();
+	private final ConcurrentMap<Pair<String, Locale>, CacheEntry<List<Pair<String, Resource>>>> cachedFilenames = new ConcurrentHashMap<>();
 
 	/** Cache to hold already loaded properties per filename */
-	private final ConcurrentMap<String, CacheEntry<PropertiesHolder>> cachedProperties = new ConcurrentHashMap<String, CacheEntry<PropertiesHolder>>();
+	private final ConcurrentMap<String, CacheEntry<PropertiesHolder>> cachedProperties = new ConcurrentHashMap<>();
 
 	/** Cache to hold merged loaded properties per locale */
-	private final ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedProperties = new ConcurrentHashMap<Locale, CacheEntry<PropertiesHolder>>();
+	private final ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedProperties = new ConcurrentHashMap<>();
 	
-	private final ConcurrentMap<String, CacheEntry<Resource>> cachedResources = new ConcurrentHashMap<String, CacheEntry<Resource>>();
+	private final ConcurrentMap<String, CacheEntry<Resource>> cachedResources = new ConcurrentHashMap<>();
 
 
 	/**

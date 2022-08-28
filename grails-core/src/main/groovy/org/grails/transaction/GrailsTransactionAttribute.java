@@ -26,7 +26,8 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
- * Extended version of {@link RuleBasedTransactionAttribute} that ensures all exception types are rolled back and allows inheritance of setRollbackOnly
+ * Extended version of {@link RuleBasedTransactionAttribute}
+ * that ensures all exception types are rolled back and allows inheritance of setRollbackOnly
  *
  * @author Graeme Rocher
  * @since 3.0

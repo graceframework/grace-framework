@@ -76,7 +76,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
        add(new ClassNode(URL.class));
     }};
     
-    private static final Set<String> DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT = CollectionUtils.newSet("id", "version", "dateCreated", "lastUpdated");
+    private static final Set<String> DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT = CollectionUtils.newSet("id",
+            "version", "dateCreated", "lastUpdated");
     
     public void injectDatabindingCode(final SourceUnit source, final GeneratorContext context, final ClassNode classNode) {
         addDefaultDatabindingWhitelistField(source, classNode);
@@ -153,7 +154,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
             final Expression constraintsInitialExpression = constraintsFieldNode.getInitialExpression();
             if (constraintsInitialExpression instanceof ClosureExpression) {
 
-                final Map<String, Map<String, Expression>> constraintsInfo = GrailsASTUtils.getConstraintMetadata((ClosureExpression) constraintsInitialExpression);
+                final Map<String, Map<String, Expression>> constraintsInfo =
+                        GrailsASTUtils.getConstraintMetadata((ClosureExpression) constraintsInitialExpression);
 
                 for (Entry<String, Map<String, Expression>> constraintConfig : constraintsInfo.entrySet()) {
                     final String propertyName = constraintConfig.getKey();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,8 @@ public interface UrlMappingsHolder {
      * @return A URI for the given arguments
      */
     @SuppressWarnings("rawtypes")
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, String httpMethod, Map params);
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, String httpMethod, Map params);
 
     /**
      * Retrieves the best guess of a URI for the given controller, action and parameters
@@ -86,7 +87,8 @@ public interface UrlMappingsHolder {
      * @return A URI for the given arguments
      */
     @SuppressWarnings("rawtypes")
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params);
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, String httpMethod, String version, Map params);
 
     /**
      * Retrieves the best guess of a URI for the given controller, action and parameters
@@ -99,7 +101,8 @@ public interface UrlMappingsHolder {
      * @return A URI for the given arguments
      */
     @SuppressWarnings("rawtypes")
-    UrlCreator getReverseMapping(String controller, String action, String namespace, String pluginName, Map params);
+    UrlCreator getReverseMapping(String controller, String action, String namespace,
+                                 String pluginName, Map params);
 
     /**
      * Retrieves the best guess of a URI for the given controller, action and parameters
@@ -135,7 +138,8 @@ public interface UrlMappingsHolder {
      * @return A URI for the given arguments
      */
     @SuppressWarnings("rawtypes")
-    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace, String pluginName, String httpMethod, Map params);
+    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
+                                          String pluginName, String httpMethod, Map params);
 
     /**
      * Retrieves the best guess of a URI for the given controller, action and parameters or null if non could be found.
@@ -149,7 +153,8 @@ public interface UrlMappingsHolder {
      * @return A URI for the given arguments
      */
     @SuppressWarnings("rawtypes")
-    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace, String pluginName, String httpMethod, String version, Map params);
+    UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
+                                          String pluginName, String httpMethod, String version, Map params);
     /**
      * Match and return the first UrlMappingInfo instance possible
      *

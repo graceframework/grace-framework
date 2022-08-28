@@ -122,11 +122,13 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
                 if ((!(initialExpression instanceof MapExpression)) &&
                         (!(initialExpression instanceof ClassExpression))) {
                     if (name.equals(GormProperties.HAS_ONE)) {
-                        final String message = "WARNING: The hasOne property in class [" + classNode.getName() + "] should have an initial expression of type Map or Class.";
+                        final String message = "WARNING: The hasOne property in class [" + classNode.getName() +
+                                "] should have an initial expression of type Map or Class.";
                         System.err.println(message);
                     }
                     else if (!(initialExpression instanceof ListExpression)) {
-                        final String message = "WARNING: The belongsTo property in class [" + classNode.getName() + "] should have an initial expression of type List, Map or Class.";
+                        final String message = "WARNING: The belongsTo property in class [" + classNode.getName() +
+                                "] should have an initial expression of type List, Map or Class.";
                         System.err.println(message);
                     }
                 }
@@ -232,7 +234,8 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
 
         if (!hasVersion) {
             ClassNode parent = GrailsASTUtils.getFurthestUnresolvedParent(classNode);
-            parent.addProperty(GormProperties.VERSION, Modifier.PUBLIC, new ClassNode(Long.class), null, null, null);
+            parent.addProperty(GormProperties.VERSION, Modifier.PUBLIC, new ClassNode(Long.class),
+                    null, null, null);
         }
     }
 
@@ -243,7 +246,8 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
             // inject into furthest relative
             ClassNode parent = GrailsASTUtils.getFurthestUnresolvedParent(classNode);
 
-            parent.addProperty(GormProperties.IDENTITY, Modifier.PUBLIC, new ClassNode(Long.class), null, null, null);
+            parent.addProperty(GormProperties.IDENTITY, Modifier.PUBLIC, new ClassNode(Long.class),
+                    null, null, null);
         }
     }
 

@@ -166,7 +166,9 @@ public class DataBindingUtils {
      * @param collectionBindingSource A CollectionDataBindingSource
      * @since 2.3
      */
-    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate, final CollectionDataBindingSource collectionBindingSource) throws InstantiationException, IllegalAccessException {
+    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate,
+                                            final CollectionDataBindingSource collectionBindingSource)
+            throws InstantiationException, IllegalAccessException {
         final GrailsApplication application = Holders.findApplication();
         PersistentEntity entity = null;
         if (application != null) {
@@ -185,7 +187,9 @@ public class DataBindingUtils {
         }
     }
 
-    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate, final ServletRequest request) throws InstantiationException, IllegalAccessException {
+    public static <T> void bindToCollection(final Class<T> targetType,
+                                            final Collection<T> collectionToPopulate, final ServletRequest request)
+            throws InstantiationException, IllegalAccessException {
         final GrailsApplication grailsApplication = Holders.findApplication();
         final CollectionDataBindingSource collectionDataBindingSource = createCollectionDataBindingSource(grailsApplication, targetType, request);
         bindToCollection(targetType, collectionToPopulate, collectionDataBindingSource);
@@ -323,7 +327,8 @@ public class DataBindingUtils {
         return registry.createDataBindingSource(mimeType, bindingTargetType, bindingSource);
     }
 
-    public static CollectionDataBindingSource createCollectionDataBindingSource(GrailsApplication grailsApplication, Class bindingTargetType, Object bindingSource) {
+    public static CollectionDataBindingSource createCollectionDataBindingSource(GrailsApplication grailsApplication,
+                                                                                Class bindingTargetType, Object bindingSource) {
         final DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
         final MimeType mimeType = getMimeType(grailsApplication, bindingSource);
         return registry.createCollectionDataBindingSource(mimeType, bindingTargetType, bindingSource);

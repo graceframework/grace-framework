@@ -66,11 +66,14 @@ public class CacheEntry<V> {
      * @param updater callback to create/update value
      * @param cacheEntryClass CacheEntry implementation class to use
      * @param returnExpiredWhileUpdating when true, return expired value while updating new value
-     * @param cacheRequestObject context object that gets passed to hasExpired, shouldUpdate and updateValue methods, not used in default implementation
+     * @param cacheRequestObject context object that gets passed to hasExpired,
+     *                           shouldUpdate and updateValue methods, not used in default implementation
      * @return
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory, boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
+    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
+                                    Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory,
+                                    boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
         CacheEntry<V> cacheEntry = map.get(key);
         if (cacheEntry == null) {
             try {
@@ -106,7 +109,8 @@ public class CacheEntry<V> {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, true, null);
     }
 
-    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater, boolean returnExpiredWhileUpdating) {
+    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
+                                    Callable<V> updater, boolean returnExpiredWhileUpdating) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, returnExpiredWhileUpdating, null);
     }
     
@@ -259,13 +263,13 @@ public class CacheEntry<V> {
 
             throw this;
         }
-        
+
         public void rethrowRuntimeException() {
             if (getCause() instanceof RuntimeException) {
                 throw (RuntimeException) getCause();
             }
             throw this;
         }
-        
+
     }
 }

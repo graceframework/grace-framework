@@ -96,11 +96,15 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
             try {
                 if (filename.equals(PLUGIN_YML)) {
                     YamlPropertySourceLoader propertySourceLoader = new YamlPropertySourceLoader();
-                    this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(), "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST).stream().findFirst().orElse(null);
+                    this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
+                            "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST)
+                            .stream().findFirst().orElse(null);
                 }
                 else if (filename.equals(PLUGIN_GROOVY)) {
                     GroovyConfigPropertySourceLoader propertySourceLoader = new GroovyConfigPropertySourceLoader();
-                    this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(), "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST).stream().findFirst().orElse(null);
+                    this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
+                            "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST)
+                            .stream().findFirst().orElse(null);
                 }
             }
             catch (IOException e) {

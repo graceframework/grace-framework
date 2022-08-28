@@ -340,7 +340,8 @@ public class GrailsClassUtils {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
             }
             else {
-                LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
+                LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s",
+                        clazz.getName(), descriptor.getName()), e);
             }
             // if there are any errors in instantiating just return null for the moment
             return new PropertyDescriptor[0];
@@ -381,7 +382,8 @@ public class GrailsClassUtils {
                 LOG.error(String.format("Got exception while checking property descriptors for class %s", clazz.getName()), e);
             }
             else {
-                LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s", clazz.getName(), descriptor.getName()), e);
+                LOG.error(String.format("Got exception while checking PropertyDescriptor.propertyType for field %s.%s",
+                        clazz.getName(), descriptor.getName()), e);
             }
             return new PropertyDescriptor[0];
         }
@@ -718,7 +720,8 @@ public class GrailsClassUtils {
      * @return true if the method is a property getter
      */
     public static boolean isPropertyGetter(Method method) {
-        return !Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) && GrailsNameUtils.isGetter(method.getName(), method.getReturnType(), method.getParameterTypes());
+        return !Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) &&
+                GrailsNameUtils.isGetter(method.getName(), method.getReturnType(), method.getParameterTypes());
     }
 
     /**
@@ -916,7 +919,8 @@ public class GrailsClassUtils {
      *
      * @param getterName The getter name
      * @return The property name equivalent
-     * @deprecated Use {@link #getPropertyForGetter(String, Class)} instead because this method has a defect for "is.." method with Boolean return types.
+     * @deprecated Use {@link #getPropertyForGetter(String, Class)} instead
+     * because this method has a defect for "is.." method with Boolean return types.
      */
     public static String getPropertyForGetter(String getterName) {
         return GrailsNameUtils.getPropertyForGetter(getterName);

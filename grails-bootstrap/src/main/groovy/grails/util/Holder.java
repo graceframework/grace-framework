@@ -75,6 +75,7 @@ public class Holder<T> {
     }
 
     private int getClassLoaderId() {
-        return Environment.isWarDeployed() ? System.identityHashCode(Thread.currentThread().getContextClassLoader()) : System.identityHashCode(getClass().getClassLoader());
+        return Environment.isWarDeployed() ? System.identityHashCode(Thread.currentThread().getContextClassLoader()) :
+                System.identityHashCode(getClass().getClassLoader());
     }
 }

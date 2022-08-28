@@ -152,7 +152,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
     @Override
     protected void autowireByName(String beanName, AbstractBeanDefinition mbd, final BeanWrapper bw, MutablePropertyValues pvs) {
         if (!DISABLE_AUTOWIRE_BY_NAME_OPTIMIZATIONS && mbd.isPrototype()) {
-            Map<String, PropertyDescriptor> autowireableBeanProps = resolveAutowireablePropertyDescriptorsForClass(bw.getWrappedClass(), new Callable<BeanWrapper>() {
+            Map<String, PropertyDescriptor> autowireableBeanProps = resolveAutowireablePropertyDescriptorsForClass(bw.getWrappedClass(),
+                    new Callable<BeanWrapper>() {
                 public BeanWrapper call() throws Exception {
                     return bw;
                 }
@@ -242,7 +243,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
         });
     }
 
-    protected Map<String, PropertyDescriptor> resolveAutowireablePropertyDescriptorsForClass(Class<?> beanClass, final Callable<BeanWrapper> beanWrapperCallback) {
+    protected Map<String, PropertyDescriptor> resolveAutowireablePropertyDescriptorsForClass(Class<?> beanClass,
+                                                                                             final Callable<BeanWrapper> beanWrapperCallback) {
         beanClass = ClassUtils.getUserClass(beanClass);
         Map<String, PropertyDescriptor> autowireableBeanProps = autowireableBeanPropsCacheForClass.get(beanClass);
         if (autowireableBeanProps == null) {

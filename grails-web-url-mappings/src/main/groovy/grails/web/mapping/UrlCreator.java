@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,7 +144,8 @@ public interface UrlCreator {
      * @param fragment The fragment to append to the end
      * @return The created URL for the given arguments
      */
-    String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment);
+    String createRelativeURL(String controller, String action, String namespace,
+                             String pluginName, Map parameterValues, String encoding, String fragment);
 
     /**
      * Creates a URL for the given parameters values, controller and action names

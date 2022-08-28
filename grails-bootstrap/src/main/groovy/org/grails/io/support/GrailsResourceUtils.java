@@ -117,14 +117,17 @@ public class GrailsResourceUtils {
      Domain path is always matched against the normalized File representation of an URL and
      can therefore work with slashes as separators.
      */
-    public static Pattern DOMAIN_PATH_PATTERN = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR + REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
+    public static Pattern DOMAIN_PATH_PATTERN = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
+            REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
 
     /*
      This pattern will match any resource within a given directory inside grails-app
      */
-    public static Pattern RESOURCE_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR + REGEX_FILE_SEPARATOR + "(.+?)" + REGEX_FILE_SEPARATOR + "(.+?\\.(groovy|java))");
+    public static Pattern RESOURCE_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
+            REGEX_FILE_SEPARATOR + "(.+?)" + REGEX_FILE_SEPARATOR + "(.+?\\.(groovy|java))");
 
-    public static Pattern SPRING_SCRIPTS_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR + REGEX_FILE_SEPARATOR + "conf" + REGEX_FILE_SEPARATOR + "spring" + REGEX_FILE_SEPARATOR + "(.+?\\.groovy)");
+    public static Pattern SPRING_SCRIPTS_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
+            REGEX_FILE_SEPARATOR + "conf" + REGEX_FILE_SEPARATOR + "spring" + REGEX_FILE_SEPARATOR + "(.+?\\.groovy)");
 
     public static Pattern[] COMPILER_ROOT_PATTERNS = {
         SPRING_SCRIPTS_PATH_PATTERN,
@@ -500,6 +503,7 @@ public class GrailsResourceUtils {
     private static String collectionToDelimitedString(Collection<?> coll, String delim) {
         return collectionToDelimitedString(coll, delim, "", "");
     }
+
     private static String collectionToDelimitedString(Collection<?> coll, String delim, String prefix, String suffix) {
         if (coll == null || coll.isEmpty()) {
             return "";

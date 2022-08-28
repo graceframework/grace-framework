@@ -107,7 +107,8 @@ public class UrlCreatorCache {
 
         public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues,
                 String encoding, String fragment) {
-            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null, parameterValues, encoding, fragment, 0);
+            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
+                    parameterValues, encoding, fragment, 0);
             String url = cache.get(key);
             if (url == null) {
                 url = delegate.createRelativeURL(controller, action, namespace, pluginName, parameterValues, encoding, fragment);
@@ -121,7 +122,8 @@ public class UrlCreatorCache {
         }
 
         public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding) {
-            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null, parameterValues, encoding, null, 0);
+            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
+                    parameterValues, encoding, null, 0);
             String url = cache.get(key);
             if (url == null) {
                 url = delegate.createRelativeURL(controller, action, namespace, pluginName, parameterValues, encoding);
@@ -138,8 +140,10 @@ public class UrlCreatorCache {
             return createURL(controller, action, null, pluginName, parameterValues, encoding);
         }
 
-        public String createURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment) {
-            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null, parameterValues, encoding, fragment, 1);
+        public String createURL(String controller, String action, String namespace,
+                                String pluginName, Map parameterValues, String encoding, String fragment) {
+            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
+                    parameterValues, encoding, fragment, 1);
             String url = cache.get(key);
             if (url == null) {
                 url = delegate.createURL(controller, action, namespace, pluginName, parameterValues, encoding, fragment);
@@ -152,8 +156,10 @@ public class UrlCreatorCache {
             return createURL(controller, action, null, null, parameterValues, encoding);
         }
 
-        public String createURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding) {
-            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null, parameterValues, encoding, null, 1);
+        public String createURL(String controller, String action, String namespace,
+                                String pluginName, Map parameterValues, String encoding) {
+            UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
+                    parameterValues, encoding, null, 1);
             String url = cache.get(key);
             if (url == null) {
                 url = delegate.createURL(controller, action, namespace, pluginName, parameterValues, encoding);
@@ -182,7 +188,8 @@ public class UrlCreatorCache {
         protected final String[] paramKeys;
         protected final String[] paramValues;
 
-        public ReverseMappingKey(String controller, String action, String namespace, String pluginName, String httpMethod, Map<Object, Object> params) {
+        public ReverseMappingKey(String controller, String action, String namespace,
+                                 String pluginName, String httpMethod, Map<Object, Object> params) {
             this.controller = controller;
             this.action = action;
             this.namespace = namespace;
@@ -314,7 +321,8 @@ public class UrlCreatorCache {
 
         @Override
         public String toString() {
-            return "UrlCreatorCache.ReverseMappingKey [action=" + action + ", controller=" + controller + ", namespace=" + namespace + ", plugin=" + pluginName +
+            return "UrlCreatorCache.ReverseMappingKey [action=" + action + ", controller=" + controller +
+                    ", namespace=" + namespace + ", plugin=" + pluginName +
                 ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" +
                 Arrays.toString(paramValues) + "]";
         }
@@ -325,7 +333,8 @@ public class UrlCreatorCache {
         protected final String fragment;
         protected final int urlType;
 
-        public UrlCreatorKey(String controller, String action, String namespace, String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
+        public UrlCreatorKey(String controller, String action, String namespace,
+                             String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
                 String fragment, int urlType) {
             super(controller, action, namespace, pluginName, httpMethod, params);
             this.encoding = (encoding != null) ? encoding.toLowerCase() : null;
@@ -380,9 +389,9 @@ public class UrlCreatorCache {
         @Override
         public String toString() {
             return "UrlCreatorCache.UrlCreatorKey [encoding=" + encoding + ", fragment=" + fragment +
-                ", urlType=" + urlType + ", action=" + action + ", controller=" + controller + ", namespace=" + namespace + ", plugin=" + pluginName +
-                ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" +
-                Arrays.toString(paramValues) + "]";
+                    ", urlType=" + urlType + ", action=" + action + ", controller=" + controller +
+                    ", namespace=" + namespace + ", plugin=" + pluginName +
+                    ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" + Arrays.toString(paramValues) + "]";
         }
     }
 }

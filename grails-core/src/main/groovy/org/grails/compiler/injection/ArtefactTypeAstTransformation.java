@@ -143,7 +143,8 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
             }
         }
 
-        throw new RuntimeException("Class [" + classNode.getName() + "] contains an invalid @Artefact annotation. No artefact found for value specified.");
+        throw new RuntimeException("Class [" + classNode.getName() +
+                "] contains an invalid @Artefact annotation. No artefact found for value specified.");
     }
 
     protected boolean isArtefactAnnotationNode(AnnotationNode annotationNode) {

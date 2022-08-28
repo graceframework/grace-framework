@@ -57,18 +57,22 @@ public class DirectoryWatcher extends Thread {
                     
                 }
                 if (jnaAvailable) {
-                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
+                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
+                            "org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
                 }
                 else {
-                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
+                            "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
                 }
             }
             else {
-                directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
+                        "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
             }
 		}
         catch (Throwable e) {
-			LOG.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). Falling back to PollingDirectoryWatcher.", e);
+            LOG.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). " +
+                    "Falling back to PollingDirectoryWatcher.", e);
 	        directoryWatcherDelegate = new PollingDirectoryWatcher();
 		}
         this.directoryWatcherDelegate = directoryWatcherDelegate;

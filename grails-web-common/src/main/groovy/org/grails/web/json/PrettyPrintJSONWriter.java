@@ -91,7 +91,8 @@ public class PrettyPrintJSONWriter extends JSONWriter {
             return this;
         }
 
-        throw new JSONException("Value out of sequence: expected mode to be OBJECT or ARRAY when writing '" + writableValue + "' but was " + this.mode);
+        throw new JSONException("Value out of sequence: expected mode to be OBJECT or ARRAY when writing '" +
+                writableValue + "' but was " + this.mode);
     }
 
     @Override

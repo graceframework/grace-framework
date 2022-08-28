@@ -34,23 +34,24 @@ import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.util.Assert;
 
 /**
- * {@link PlatformTransactionManager} implementation that orchestrates transaction creation, commits and rollbacks to a
- * list of delegates. Using this implementation assumes that errors causing a transaction rollback will usually happen
- * before the transaction completion or during the commit of the most inner {@link PlatformTransactionManager}.
+ * {@link org.springframework.transaction.PlatformTransactionManager} implementation that orchestrates transaction creation,
+ * commits and rollbacks to a list of delegates. Using this implementation assumes that errors causing a transaction rollback will usually happen
+ * before the transaction completion or during the commit of the most inner {@link org.springframework.transaction.PlatformTransactionManager}.
  * <p />
  * The configured instances will start transactions in the order given and commit/rollback in <em>reverse</em> order,
- * which means the {@link PlatformTransactionManager} most likely to break the transaction should be the <em>last</em>
- * in the list configured. A {@link PlatformTransactionManager} throwing an exception during commit will automatically
+ * which means the {@link org.springframework.transaction.PlatformTransactionManager} most likely to break the transaction should be the <em>last</em>
+ * in the list configured. A {@link org.springframework.transaction.PlatformTransactionManager} throwing an exception during commit will automatically
  * cause the remaining transaction managers to roll back instead of committing.
- * 
- * original source: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/transaction/ChainedTransactionManager.java
- * 
+ *
+ * original source:
+ * {@link org.springframework.data.transaction.ChainedTransactionManager}
+ *
  * @author Michael Hunger
  * @author Oliver Gierke
  * @author Lari Hotari
  * @author Graeme Rocher
  *
- * @since  2.3.6
+ * @since 2.3.6
  */
 public class ChainedTransactionManager implements PlatformTransactionManager {
 

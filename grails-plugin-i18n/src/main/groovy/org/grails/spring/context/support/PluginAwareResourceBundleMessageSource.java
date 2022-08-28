@@ -58,15 +58,16 @@ import org.grails.plugins.BinaryGrailsPlugin;
  * @author Michael Yan
  * @since 1.1
  */
-public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBundleMessageSource implements GrailsApplicationAware, PluginManagerAware, InitializingBean, SmartInitializingSingleton {
+public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBundleMessageSource
+        implements GrailsApplicationAware, PluginManagerAware, InitializingBean, SmartInitializingSingleton {
     private static final String GRAILS_APP_I18N_PATH_COMPONENT = "/grails-app/i18n/";
     protected GrailsApplication application;
     protected GrailsPluginManager pluginManager;
     protected List<String> pluginBaseNames = new ArrayList<String>();
     private ResourceLoader localResourceLoader;
     private PathMatchingResourcePatternResolver resourceResolver;
-    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedPluginProperties = new ConcurrentHashMap<Locale, CacheEntry<PropertiesHolder>>();
-    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedBinaryPluginProperties = new ConcurrentHashMap<Locale, CacheEntry<PropertiesHolder>>();
+    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedPluginProperties = new ConcurrentHashMap<>();
+    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedBinaryPluginProperties = new ConcurrentHashMap<>();
     private long pluginCacheMillis = Long.MIN_VALUE;
     private boolean searchClasspath = false;
     private String messageBundleLocationPattern = "classpath*:*.properties";

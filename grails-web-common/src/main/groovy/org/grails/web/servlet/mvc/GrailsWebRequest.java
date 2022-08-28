@@ -71,8 +71,10 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
 
     private static final String REDIRECT_CALLED = GrailsApplicationAttributes.REDIRECT_ISSUED;
 
-    private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass = GrailsFactoriesLoader.loadFactoryClasses(GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
-    private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor = ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
+    private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass =
+            GrailsFactoriesLoader.loadFactoryClasses(GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
+    private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor =
+            ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
     private GrailsApplicationAttributes attributes;
     private GrailsParameterMap params;
     private GrailsParameterMap originalParams;
@@ -109,7 +111,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
         inheritEncodingStateRegistry();
     }
 
-    public GrailsWebRequest(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext, ApplicationContext applicationContext) {
+    public GrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
+                            ServletContext servletContext, ApplicationContext applicationContext) {
         this(request, response, servletContext);
         this.applicationContext = applicationContext;
     }
@@ -337,13 +340,15 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
      */
     public GrailsControllerClass getControllerClass() {
         HttpServletRequest currentRequest = getCurrentRequest();
-        GrailsControllerClass controllerClass = (GrailsControllerClass) currentRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS);
+        GrailsControllerClass controllerClass = (GrailsControllerClass) currentRequest.getAttribute(
+                GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS);
         if (controllerClass == null) {
             Object controllerNameObject = currentRequest.getAttribute(GrailsApplicationAttributes.CONTROLLER_NAME_ATTRIBUTE);
             if (controllerNameObject != null) {
                 controllerClass = (GrailsControllerClass) getAttributes()
                                                             .getGrailsApplication()
-                                                            .getArtefactByLogicalPropertyName(ControllerArtefactHandler.TYPE, controllerNameObject.toString());
+                                                            .getArtefactByLogicalPropertyName(
+                                                                    ControllerArtefactHandler.TYPE, controllerNameObject.toString());
                 if (controllerClass != null) {
                     currentRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS, controllerClass);
                 }
@@ -527,8 +532,10 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     }
 
     public Encoder lookupFilteringEncoder() {
-        if (filteringEncoder == null && applicationContext != null && applicationContext.containsBean(FilteringCodecsByContentTypeSettings.BEAN_NAME)) {
-            filteringEncoder = applicationContext.getBean(FilteringCodecsByContentTypeSettings.BEAN_NAME, FilteringCodecsByContentTypeSettings.class).getEncoderForContentType(getResponse().getContentType());
+        if (filteringEncoder == null && applicationContext != null &&
+                applicationContext.containsBean(FilteringCodecsByContentTypeSettings.BEAN_NAME)) {
+            filteringEncoder = applicationContext.getBean(FilteringCodecsByContentTypeSettings.BEAN_NAME, FilteringCodecsByContentTypeSettings.class)
+                    .getEncoderForContentType(getResponse().getContentType());
         }
         return filteringEncoder;
     }

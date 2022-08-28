@@ -128,7 +128,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         catch (IOException ioe) {
             LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
         }
-        //corePlugins = new PathMatchingResourcePatternResolver().getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
+        //corePlugins = new PathMatchingResourcePatternResolver()
+        // .getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
         this.application = application;
         setPluginFilter();
     }
@@ -156,7 +157,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         super(application);
         pluginClasses = plugins;
         resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
-        //this.corePlugins = new PathMatchingResourcePatternResolver().getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
+        //this.corePlugins = new PathMatchingResourcePatternResolver()
+        // .getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
         this.application = application;
         setPluginFilter();
     }
@@ -318,7 +320,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         return loadOrderDependencies;
     }
 
-    private void visitTopologicalSort(GrailsPlugin plugin, List<GrailsPlugin> sortedPlugins, Set<GrailsPlugin> visitedPlugins, Map<GrailsPlugin, List<GrailsPlugin>> loadOrderDependencies) {
+    private void visitTopologicalSort(GrailsPlugin plugin, List<GrailsPlugin> sortedPlugins,
+                                      Set<GrailsPlugin> visitedPlugins, Map<GrailsPlugin, List<GrailsPlugin>> loadOrderDependencies) {
         if (plugin != null && !visitedPlugins.contains(plugin)) {
             visitedPlugins.add(plugin);
             List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.get(plugin);

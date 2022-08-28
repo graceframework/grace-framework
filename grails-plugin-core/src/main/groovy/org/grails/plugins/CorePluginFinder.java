@@ -76,11 +76,13 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                 loadCorePluginsFromResources(resources);
             }
             else {
-                throw new IllegalStateException("Grails was unable to load plugins dynamically. This is normally a problem with the container class loader configuration, see troubleshooting and FAQ for more info. ");
+                throw new IllegalStateException("Grails was unable to load plugins dynamically. " +
+                        "This is normally a problem with the container class loader configuration, see troubleshooting and FAQ for more info. ");
             }
         }
         catch (IOException e) {
-            throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
+            throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. " +
+                    "This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
         }
         return foundPluginClasses.toArray(new Class[foundPluginClasses.size()]);
     }

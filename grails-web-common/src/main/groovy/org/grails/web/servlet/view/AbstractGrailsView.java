@@ -49,7 +49,8 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      * @throws Exception When an error occurs rendering the view
      */
     @Override
-    protected final void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected final void renderMergedOutputModel(Map<String, Object> model,
+                                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
         exposeModelAsRequestAttributes(model, request);
         renderWithinGrailsWebRequest(model, request, response);
     }
@@ -87,7 +88,8 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      *
      * @throws java.io.IOException Thrown when an error occurs writing the response
      */
-    abstract protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    abstract protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest,
+                                           HttpServletRequest request, HttpServletResponse response) throws Exception;
     
     protected GrailsWebRequest createGrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
             ServletContext servletContext) {

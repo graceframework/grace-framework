@@ -48,7 +48,8 @@ public class BeanCreationProfilingPostProcessor implements InstantiationAwareBea
     }
 
     @Override
-    public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds,
+                                                    Object bean, String beanName) throws BeansException {
         return pvs;
     }
 

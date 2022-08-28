@@ -73,7 +73,8 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
         }
         else {
             if (log.isWarnEnabled()) {
-                log.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. Use the mapping context API instead");
+                log.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. " +
+                        "Use the mapping context API instead");
             }
             if (persistentEntity == null) {
                 persistentEntity = mappingContext.getPersistentEntity(this.getFullName());
@@ -84,7 +85,8 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
                         persistentEntity = concreteMappingContext.addPersistentEntity(getClazz());
                     }
                     else {
-                        throw new GrailsConfigurationException("Could not retrieve the respective entity for domain " + this.getName() + " in the mapping context API");
+                        throw new GrailsConfigurationException("Could not retrieve the respective entity for domain " +
+                                this.getName() + " in the mapping context API");
                     }
                 }
             }

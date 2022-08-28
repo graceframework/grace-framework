@@ -456,7 +456,8 @@ public class GrailsNameUtils {
     }
 
     /**
-     * Returns an appropriate property name for the given object. If the object is a collection will append List, Set, Collection or Map to the property name
+     * Returns an appropriate property name for the given object.
+     * If the object is a collection will append List, Set, Collection or Map to the property name
      * @param object The object
      * @return The property name convention
      */
@@ -510,7 +511,8 @@ public class GrailsNameUtils {
         return true;
     }
     /**
-     * Returns an appropriate property name for the given object. If the object is a collection will append List, Set, Collection or Map to the property name
+     * Returns an appropriate property name for the given object.
+     * If the object is a collection will append List, Set, Collection or Map to the property name
      * @param object The object
      * @param suffix The suffix to append to the name.
      * @return The property name convention

@@ -39,7 +39,8 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     private Map parameterValues = Collections.emptyMap();
     private Class<?> exceptionType;
 
-    public ResponseCodeUrlMapping(UrlMappingData urlData, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+    public ResponseCodeUrlMapping(UrlMappingData urlData, Object controllerName, Object actionName, Object namespace,
+                                  Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         super(null, controllerName, actionName, namespace, pluginName, viewName, constraints, grailsApplication);
         this.urlData = (ResponseCodeMappingData) urlData;
 
@@ -120,7 +121,8 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
         throw new UnsupportedOperationException("Method createRelativeURL not implemented in " + getClass());
     }
 
-    public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map values, String encoding, String fragment) {
+    public String createRelativeURL(String controller, String action, String namespace,
+                                    String pluginName, Map values, String encoding, String fragment) {
         throw new UnsupportedOperationException("Method createRelativeURL not implemented in " + getClass());
     }
 
@@ -128,7 +130,8 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
         throw new UnsupportedOperationException("Method createURL not implemented in " + getClass());
     }
 
-    public String createURL(String controller, String action, String namespace, String pluginName, Map values, String encoding, String fragment) {
+    public String createURL(String controller, String action, String namespace,
+                            String pluginName, Map values, String encoding, String fragment) {
         throw new UnsupportedOperationException("Method createURL not implemented in " + getClass());
     }
 

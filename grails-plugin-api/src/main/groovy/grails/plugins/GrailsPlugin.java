@@ -357,13 +357,17 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     Class<?>[] getProvidedArtefacts();
 
     /**
-     * Returns the name of the plugin as represented in the file system including the version. For example TagLibGrailsPlugin would result in "tag-lib-0.1"
+     * Returns the name of the plugin as represented in the file system including the version.
+     * For example TagLibGrailsPlugin would result in "tag-lib-0.1"
+     *
      * @return The file system representation of the plugin name
      */
     String getFileSystemName();
 
     /**
-     * Returns the name of the plugin as represented on the file system without the version. For example TagLibGrailsPlugin would result in "tag-lib"
+     * Returns the name of the plugin as represented on the file system without the version.
+     * For example TagLibGrailsPlugin would result in "tag-lib"
+     *
      * @return The file system name
      */
     String getFileSystemShortName();
@@ -381,7 +385,8 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     List<String> getPluginExcludes();
 
     /**
-     * Returns whether this plugin is loaded from the current plugin. In other words when you execute grails run-app from a plugin project
+     * Returns whether this plugin is loaded from the current plugin.
+     * In other words when you execute grails run-app from a plugin project
      * the plugin project's *GrailsPlugin.groovy file represents the base plugin and this method will return true for this plugin
      *
      * @return true if it is the base plugin

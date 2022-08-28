@@ -48,7 +48,8 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
     @Override
     public void encodeToWriter(char[] buf, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (shouldEncodeWith(encoder, encodingState)) {
-            encoder.encodeToStream(encoder, CharSequences.createCharSequence(buf, off, len), 0, len, new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
+            encoder.encodeToStream(encoder, CharSequences.createCharSequence(buf, off, len), 0, len,
+                    new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
         }
         else {
             writer.write(buf, off, len);
@@ -86,7 +87,9 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
         return chained;
     }
 
-    public static EncodesToWriterAdapter createChainingEncodesToWriter(StreamingEncoder baseEncoder, List<StreamingEncoder> additionalEncoders, boolean applyAdditionalFirst) {
+    public static EncodesToWriterAdapter createChainingEncodesToWriter(StreamingEncoder baseEncoder,
+                                                                       List<StreamingEncoder> additionalEncoders,
+                                                                       boolean applyAdditionalFirst) {
         boolean baseEncoderShouldBeApplied = ChainedEncoders.shouldApplyEncoder(baseEncoder);
         List<StreamingEncoder> allEncoders = new ArrayList<StreamingEncoder>(additionalEncoders.size() + 1);
         if (!applyAdditionalFirst && baseEncoderShouldBeApplied) {

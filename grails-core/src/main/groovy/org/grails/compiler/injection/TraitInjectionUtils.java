@@ -63,7 +63,8 @@ public class TraitInjectionUtils {
             implementsTrait = classNode.declaresInterface(traitClassNode);
         }
         catch (Throwable e) {
-            // if we reach this point, the trait injector could not be loaded due to missing dependencies (for example missing servlet-api). This is ok, as we want to be able to compile against non-servlet environments.
+            // if we reach this point, the trait injector could not be loaded due to missing dependencies (for example missing servlet-api).
+            // This is ok, as we want to be able to compile against non-servlet environments.
             traitNotLoaded = true;
         }
         if (!implementsTrait && !traitNotLoaded) {

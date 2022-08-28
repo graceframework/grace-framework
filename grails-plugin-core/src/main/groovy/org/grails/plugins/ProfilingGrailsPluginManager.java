@@ -82,7 +82,8 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
 
                     plugin.doWithDynamicMethods(applicationContext);
 
-                    System.out.println("doWithDynamicMethods for plugin [" + plugin.getName() + "] took " + (System.currentTimeMillis() - pluginTime));
+                    System.out.println("doWithDynamicMethods for plugin [" + plugin.getName() + "] took " +
+                            (System.currentTimeMillis() - pluginTime));
                 }
                 catch (Throwable t) {
                     throw new GrailsConfigurationException("Error configuring dynamic methods for plugin " + plugin + ": " + t.getMessage(), t);
@@ -119,7 +120,8 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
                 long pluginTime = System.currentTimeMillis();
                 System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] started");
                 plugin.doWithApplicationContext(ctx);
-                System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] took " + (System.currentTimeMillis() - pluginTime));
+                System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] took " +
+                        (System.currentTimeMillis() - pluginTime));
             }
         }
         System.out.println("doWithApplicationContext took " + (System.currentTimeMillis() - time));

@@ -75,7 +75,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     protected StackTraceFilterer stackFilterer;
 
     /* (non-Javadoc)
-     * @see org.springframework.web.servlet.handler.SimpleMappingExceptionResolver#resolveException(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
+     * @see org.springframework.web.servlet.handler.SimpleMappingExceptionResolver#resolveException(javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
      */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
@@ -285,7 +286,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         }
 
         Config config = grailsApplication != null ? grailsApplication.getConfig() : null;
-        final boolean shouldLogRequestParameters = config != null ? config.getProperty(Settings.SETTING_LOG_REQUEST_PARAMETERS, Boolean.class, Environment.getCurrent() == Environment.DEVELOPMENT) : false;
+        final boolean shouldLogRequestParameters = config != null ? config.getProperty(Settings.SETTING_LOG_REQUEST_PARAMETERS,
+                Boolean.class, Environment.getCurrent() == Environment.DEVELOPMENT) : false;
 
         if (shouldLogRequestParameters) {
             Enumeration<String> params = request.getParameterNames();
@@ -297,7 +299,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
                 sb.append(" - parameters:");
                 @SuppressWarnings("unchecked")
-                List<String> blackList = (config.getProperty(Settings.SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES, List.class, Collections.emptyList()));
+                List<String> blackList = (config.getProperty(Settings.SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES,
+                        List.class, Collections.emptyList()));
 
                 if (blackList == null) {
                     blackList = Collections.emptyList();
@@ -333,7 +336,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     protected void createStackFilterer() {
         try {
-            Class filtererClass = grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS, Class.class, DefaultStackTraceFilterer.class);
+            Class filtererClass = grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
+                    Class.class, DefaultStackTraceFilterer.class);
             stackFilterer = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
         }
         catch (Throwable t) {

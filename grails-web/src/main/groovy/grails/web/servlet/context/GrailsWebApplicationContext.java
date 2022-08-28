@@ -89,7 +89,8 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
         super(defaultListableBeanFactory, parent);
     }
 
-    public GrailsWebApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory, ApplicationContext parent, GrailsApplication grailsApplication) {
+    public GrailsWebApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory,
+                                       ApplicationContext parent, GrailsApplication grailsApplication) {
         super(defaultListableBeanFactory, parent);
         this.grailsApplication = grailsApplication;
     }

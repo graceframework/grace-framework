@@ -198,7 +198,8 @@ public class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, grails.web.mapping.UrlMappingInfo, java.util.Map)
+     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * grails.web.mapping.UrlMappingInfo, java.util.Map)
      */
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info) throws ServletException, IOException {
@@ -206,7 +207,8 @@ public class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, grails.web.mapping.UrlMappingInfo, java.util.Map, boolean)
+     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * grails.web.mapping.UrlMappingInfo, java.util.Map, boolean)
      */
     @SuppressWarnings("rawtypes")
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
@@ -228,8 +230,9 @@ public class UrlMappingUtils {
      * @throws java.io.IOException Thrown when an error occurs executing the forward
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
-            HttpServletResponse response, UrlMappingInfo info, Map<String, Object> model, boolean includeParams) throws ServletException, IOException {
+    public static String forwardRequestForUrlMappingInfo(HttpServletRequest request, HttpServletResponse response,
+                                                         UrlMappingInfo info, Map<String, Object> model, boolean includeParams)
+            throws ServletException, IOException {
 
         String forwardUrl = buildDispatchUrlForMapping(info, includeParams);
 
@@ -380,8 +383,10 @@ public class UrlMappingUtils {
 
         final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
         final boolean hasPreviousWebRequest = webRequest != null;
-        final Object previousControllerClass = hasPreviousWebRequest ? webRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST) : null;
-        final Object previousMatchedRequest = hasPreviousWebRequest ? webRequest.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST) : null;
+        final Object previousControllerClass = hasPreviousWebRequest ?
+                webRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST) : null;
+        final Object previousMatchedRequest = hasPreviousWebRequest ?
+                webRequest.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST) : null;
 
         try {
             if (hasPreviousWebRequest) {
@@ -403,7 +408,8 @@ public class UrlMappingUtils {
                 if (hasPreviousWebRequest) {
                     WebUtils.storeGrailsWebRequest(webRequest);
                     if (webRequest.isActive()) {
-                        webRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, previousControllerClass, WebRequest.SCOPE_REQUEST);
+                        webRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, previousControllerClass,
+                                WebRequest.SCOPE_REQUEST);
                         webRequest.setAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, previousMatchedRequest, WebRequest.SCOPE_REQUEST);
                     }
                 }

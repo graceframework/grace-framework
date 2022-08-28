@@ -51,7 +51,8 @@ public class GrailsEnvironment extends StandardServletEnvironment {
     private class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
 
         public GrailsConfigPropertySource() {
-            super(StringUtils.hasText(grailsApplication.getMetadata().getApplicationName()) ? grailsApplication.getMetadata().getApplicationName() : "grailsApplication", grailsApplication);
+            super(StringUtils.hasText(grailsApplication.getMetadata().getApplicationName()) ?
+                    grailsApplication.getMetadata().getApplicationName() : "grailsApplication", grailsApplication);
         }
 
         @Override

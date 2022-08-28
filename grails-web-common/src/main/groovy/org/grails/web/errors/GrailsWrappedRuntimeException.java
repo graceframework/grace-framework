@@ -56,8 +56,10 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * @since 0.1
  */
 public class GrailsWrappedRuntimeException extends GrailsException {
-    private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass = GrailsFactoriesLoader.loadFactoryClasses(GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
-    private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor = ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
+    private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass = GrailsFactoriesLoader.loadFactoryClasses(
+            GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
+    private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor =
+            ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
 
     private static final long serialVersionUID = 7284065617154554366L;
     private static final Pattern ANY_GSP_DETAILS = Pattern.compile("_gsp.run");
@@ -158,7 +160,8 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                     if (gspFile == null) {
                         fileName = className.replace('.', '/') + ".groovy";
 
-                        GrailsApplication application = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext).getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+                        GrailsApplication application = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
+                                .getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                         // @todo Refactor this to get the urlPrefix from the ArtefactHandler
                         if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, className)) {
                             urlPrefix += "/controllers/";

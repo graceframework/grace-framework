@@ -94,16 +94,21 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         final String getConstraintsMethodName = "getConstraints";
         MethodNode getConstraintsMethod = classNode.getMethod(getConstraintsMethodName, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (getConstraintsMethod == null || !getConstraintsMethod.getDeclaringClass().equals(classNode)) {
-            final BooleanExpression isConstraintsPropertyNull = new BooleanExpression(new BinaryExpression(new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(
+            final BooleanExpression isConstraintsPropertyNull = new BooleanExpression(new BinaryExpression(
+                    new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(
                         Types.COMPARE_EQUAL, 0, 0), new ConstantExpression(null)));
 
             final BlockStatement ifConstraintsPropertyIsNullBlockStatement = new BlockStatement();
             final ArgumentListExpression getConstrainedPropertiesForClassArguments = new ArgumentListExpression();
             getConstrainedPropertiesForClassArguments.addExpression(new VariableExpression("this"));
             getConstrainedPropertiesForClassArguments.addExpression(new ConstantExpression(defaultNullable));
-            final Expression getConstraintsMethodCall = new StaticMethodCallExpression(ClassHelper.make(ValidationSupport.class), "getConstrainedPropertiesForClass", getConstrainedPropertiesForClassArguments);
-            final Expression initializeConstraintsFieldExpression = new BinaryExpression(new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(Types.EQUALS, 0, 0), getConstraintsMethodCall);
-            final Statement ifConstraintsPropertyIsNullStatement = new IfStatement(isConstraintsPropertyNull, ifConstraintsPropertyIsNullBlockStatement, new ExpressionStatement(new EmptyExpression()));
+            final Expression getConstraintsMethodCall = new StaticMethodCallExpression(ClassHelper.make(ValidationSupport.class),
+                    "getConstrainedPropertiesForClass", getConstrainedPropertiesForClassArguments);
+            final Expression initializeConstraintsFieldExpression = new BinaryExpression(
+                    new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(Types.EQUALS, 0, 0),
+                    getConstraintsMethodCall);
+            final Statement ifConstraintsPropertyIsNullStatement = new IfStatement(isConstraintsPropertyNull,
+                    ifConstraintsPropertyIsNullBlockStatement, new ExpressionStatement(new EmptyExpression()));
 
             ifConstraintsPropertyIsNullBlockStatement.addStatement(new ExpressionStatement(initializeConstraintsFieldExpression));
             if (!defaultNullable) {
@@ -157,7 +162,8 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
             final Statement returnStatement = new ReturnStatement(new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME));
             methodBlockStatement.addStatement(returnStatement);
 
-            final MethodNode methodNode = new MethodNode(getConstraintsMethodName, Modifier.STATIC | Modifier.PUBLIC, new ClassNode(Map.class), GrailsArtefactClassInjector.ZERO_PARAMETERS, null, methodBlockStatement);
+            final MethodNode methodNode = new MethodNode(getConstraintsMethodName, Modifier.STATIC | Modifier.PUBLIC,
+                    new ClassNode(Map.class), GrailsArtefactClassInjector.ZERO_PARAMETERS, null, methodBlockStatement);
             if (classNode.redirect() == null) {
                 classNode.addMethod(methodNode);
                 AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
@@ -215,14 +221,16 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
 
     protected void addValidateMethod(final ClassNode classNode) {
         String fieldsToValidateParameterName = "$fieldsToValidate";
-        final MethodNode listArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME, new Parameter[]{new Parameter(new ClassNode(List.class), fieldsToValidateParameterName)});
+        final MethodNode listArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME,
+                new Parameter[]{new Parameter(new ClassNode(List.class), fieldsToValidateParameterName)});
         if (listArgValidateMethod == null) {
             final BlockStatement validateMethodCode = new BlockStatement();
             final ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
             validateInstanceArguments.addExpression(new VariableExpression("this"));
             validateInstanceArguments.addExpression(new VariableExpression(fieldsToValidateParameterName, ClassHelper.LIST_TYPE));
             final ClassNode validationSupportClassNode = ClassHelper.make(ValidationSupport.class);
-            final StaticMethodCallExpression invokeValidateInstanceExpression = new StaticMethodCallExpression(validationSupportClassNode, "validateInstance", validateInstanceArguments);
+            final StaticMethodCallExpression invokeValidateInstanceExpression = new StaticMethodCallExpression(validationSupportClassNode,
+                    "validateInstance", validateInstanceArguments);
             validateMethodCode.addStatement(new ExpressionStatement(invokeValidateInstanceExpression));
             final Parameter fieldsToValidateParameter = new Parameter(new ClassNode(List.class), fieldsToValidateParameterName);
             MethodNode methodNode = new MethodNode(
@@ -237,7 +245,8 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
 
             final ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
             validateInstanceArguments.addExpression(new CastExpression(new ClassNode(List.class), new ConstantExpression(null)));
-            final Expression callListArgValidateMethod = new MethodCallExpression(new VariableExpression("this"), VALIDATE_METHOD_NAME, validateInstanceArguments);
+            final Expression callListArgValidateMethod = new MethodCallExpression(new VariableExpression("this"),
+                    VALIDATE_METHOD_NAME, validateInstanceArguments);
             validateMethodCode.addStatement(new ReturnStatement(callListArgValidateMethod));
             MethodNode methodNode = new MethodNode(
                     VALIDATE_METHOD_NAME, Modifier.PUBLIC, ClassHelper.boolean_TYPE,

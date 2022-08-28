@@ -158,10 +158,12 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         final ConstructorCallExpression constructorCallExpression;
         try {
             implementationNode = GrailsASTUtils.replaceGenericsPlaceholders(ClassHelper.make(instanceImplementation), genericsPlaceholders);
-            constructorCallExpression = GrailsASTUtils.hasZeroArgsConstructor(implementationNode) ? new ConstructorCallExpression(implementationNode, ZERO_ARGS) : null;
+            constructorCallExpression = GrailsASTUtils.hasZeroArgsConstructor(implementationNode) ?
+                    new ConstructorCallExpression(implementationNode, ZERO_ARGS) : null;
         }
         catch (Throwable e) {
-            // if we get here it means we have reached a point where there were errors loading the class to perform injection with, probably due to missing dependencies
+            // if we get here it means we have reached a point where there were errors loading the class to perform injection with,
+            // probably due to missing dependencies
             // this may well be ok, as we want to be able to compile against, for example, non servlet environments. In this case just bail out.
             return;
         }
@@ -176,7 +178,8 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
             ((MethodCallExpression) apiInstance).setMethodTarget(lookupMethod);
         }
         else if (requiresAutowiring()) {
-            PropertyNode propertyNode = new PropertyNode(apiInstanceProperty, Modifier.PUBLIC, implementationNode, classNode, constructorCallExpression, null, null);
+            PropertyNode propertyNode = new PropertyNode(apiInstanceProperty, Modifier.PUBLIC, implementationNode, classNode,
+                    constructorCallExpression, null, null);
             propertyNode.addAnnotation(AUTO_WIRED_ANNOTATION);
             if (getMarkerAnnotation() != null) {
                 propertyNode.addAnnotation(getMarkerAnnotation());
@@ -269,13 +272,16 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         return genericsPlaceHolders;
     }
 
-    protected void addDelegateInstanceMethod(ClassNode classNode, Expression delegate, MethodNode declaredMethod, AnnotationNode markerAnnotation, Map<String, ClassNode> genericsPlaceholders) {
-        GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateInstanceMethod(classNode, delegate, declaredMethod, getMarkerAnnotation(), true, genericsPlaceholders, true));
+    protected void addDelegateInstanceMethod(ClassNode classNode, Expression delegate, MethodNode declaredMethod, AnnotationNode markerAnnotation,
+                                             Map<String, ClassNode> genericsPlaceholders) {
+        GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateInstanceMethod(classNode, delegate, declaredMethod,
+                getMarkerAnnotation(), true, genericsPlaceholders, true));
     }
 
     protected void addDelegateStaticMethod(ClassNode classNode, MethodCallExpression apiLookupMethod,
             MethodNode declaredMethod, Map<String, ClassNode> genericsPlaceholders) {
-        GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateStaticMethod(apiLookupMethod, classNode, declaredMethod, getMarkerAnnotation(), genericsPlaceholders, true));
+        GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateStaticMethod(apiLookupMethod, classNode, declaredMethod,
+                getMarkerAnnotation(), genericsPlaceholders, true));
     }
 
     private boolean isValidArtefactTypeByConvention(ClassNode classNode) {
@@ -296,7 +302,8 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     protected boolean isStaticCandidateMethod(ClassNode classNode, MethodNode declaredMethod) {
-        return isStaticMethodIncluded(classNode, declaredMethod) || (!isStaticMethodExcluded(classNode, declaredMethod) && GrailsASTUtils.isCandidateMethod(declaredMethod));
+        return isStaticMethodIncluded(classNode, declaredMethod) || (!isStaticMethodExcluded(classNode, declaredMethod) &&
+                GrailsASTUtils.isCandidateMethod(declaredMethod));
     }
 
     protected boolean isStaticMethodExcluded(ClassNode classNode, MethodNode declaredMethod) {
@@ -340,11 +347,13 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         
         BlockStatement ifBlock = new BlockStatement();
         ArgumentListExpression arguments = new ArgumentListExpression();
-        arguments.addExpression(new ConstantExpression("Method on class [" + classNode + "] was used outside of a Grails application. If running in the context of a test using the mocking API or bootstrap Grails correctly."));
+        arguments.addExpression(new ConstantExpression("Method on class [" + classNode + "] was used outside of a Grails application. " +
+                "If running in the context of a test using the mocking API or bootstrap Grails correctly."));
         ifBlock.addStatement(new ThrowStatement(new ConstructorCallExpression(new ClassNode(IllegalStateException.class), arguments)));        
         BlockStatement elseBlock = new BlockStatement();
         elseBlock.addStatement(new ReturnStatement(apiVar));
-        methodBody.addStatement(new IfStatement(new BooleanExpression(new BinaryExpression(apiVar, GrailsASTUtils.EQUALS_OPERATOR, GrailsASTUtils.NULL_EXPRESSION)), ifBlock, elseBlock));
+        methodBody.addStatement(new IfStatement(new BooleanExpression(new BinaryExpression(apiVar, GrailsASTUtils.EQUALS_OPERATOR,
+                GrailsASTUtils.NULL_EXPRESSION)), ifBlock, elseBlock));
         
         MethodNode methodNode = new MethodNode(methodName, PUBLIC_STATIC_MODIFIER, implementationNode, ZERO_PARAMETERS, null, methodBody);
         return methodNode;
@@ -354,7 +363,8 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
             String apiProperty, Expression initialValueExpression) {
         FieldNode fieldNode = classNode.getField(apiProperty);
         if (fieldNode == null || !fieldNode.getDeclaringClass().equals(classNode)) {
-            fieldNode = new FieldNode(apiProperty, Modifier.PRIVATE | Modifier.STATIC, implementationNode, classNode, initialValueExpression);
+            fieldNode = new FieldNode(apiProperty, Modifier.PRIVATE | Modifier.STATIC,
+                    implementationNode, classNode, initialValueExpression);
             classNode.addField(fieldNode);
             
             String setterName = "set" + MetaClassHelper.capitalize(apiProperty);
@@ -364,13 +374,15 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
                     new ClassExpression(classNode), new ConstantExpression(apiProperty)), Token.newSymbol(Types.EQUAL, 0, 0),
                     new VariableExpression(setterParameter))));
 
-            MethodNode methodNode = classNode.addMethod(setterName, Modifier.PUBLIC | Modifier.STATIC, ClassHelper.VOID_TYPE, new Parameter[]{setterParameter}, null, setterBody);
+            MethodNode methodNode = classNode.addMethod(setterName, Modifier.PUBLIC | Modifier.STATIC, ClassHelper.VOID_TYPE,
+                    new Parameter[]{setterParameter}, null, setterBody);
             GrailsASTUtils.addCompileStaticAnnotation(methodNode);
             AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
         }
     }
 
-    protected MethodNode populateDefaultApiLookupMethod(ClassNode implementationNode, String apiInstanceProperty, String methodName, BlockStatement methodBody) {
+    protected MethodNode populateDefaultApiLookupMethod(ClassNode implementationNode, String apiInstanceProperty,
+                                                        String methodName, BlockStatement methodBody) {
         methodBody.addStatement(new ReturnStatement(new VariableExpression(apiInstanceProperty, implementationNode)));
         return new MethodNode(methodName, Modifier.PRIVATE, implementationNode, ZERO_PARAMETERS, null, methodBody);
     }

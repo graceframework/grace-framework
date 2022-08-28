@@ -38,7 +38,8 @@ import grails.util.Metadata;
 
 import org.grails.config.PropertySourcesConfig;
 
-public abstract class AbstractGrailsApplication extends GroovyObjectSupport implements GrailsApplication, ApplicationContextAware, BeanClassLoaderAware, SmartApplicationListener {
+public abstract class AbstractGrailsApplication extends GroovyObjectSupport
+        implements GrailsApplication, ApplicationContextAware, BeanClassLoaderAware, SmartApplicationListener {
     protected ClassLoader classLoader;
     protected Config config;
     @SuppressWarnings("rawtypes")

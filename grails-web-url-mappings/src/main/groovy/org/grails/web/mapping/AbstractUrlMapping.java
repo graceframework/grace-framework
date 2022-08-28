@@ -63,7 +63,8 @@ public abstract class AbstractUrlMapping implements UrlMapping {
      * @param constraints Any constraints that apply to the mapping
      * @param grailsApplication The GrailsApplication instance
      */
-    public AbstractUrlMapping(Object redirectInfo, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+    public AbstractUrlMapping(Object redirectInfo, Object controllerName, Object actionName, Object namespace,
+                              Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         this.controllerName = controllerName;
         this.actionName = actionName;
         this.namespace = namespace;

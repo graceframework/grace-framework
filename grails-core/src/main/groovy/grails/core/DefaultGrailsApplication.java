@@ -606,7 +606,8 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
         ArtefactInfo info = getArtefactInfo(handler.getType());
         // Only init those that have data
         if (info != null) {
-            //System.out.println("Initialising artefacts of kind " + handler.getType() + " with registered artefacts" + info.getGrailsClassesByName());
+            // System.out.println("Initialising artefacts of kind " + handler.getType() + " with registered artefacts" +
+            // info.getGrailsClassesByName());
             handler.initialize(info);
         }
     }
@@ -852,7 +853,8 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
             if (isInitialised()) {
                 initializeArtefacts(artefactType);
                 ApplicationContext context = getMainContext();
-                if (context instanceof ConfigurableApplicationContext && contextInitialized && ((ConfigurableApplicationContext) context).isActive()) {
+                if (context instanceof ConfigurableApplicationContext && contextInitialized &&
+                        ((ConfigurableApplicationContext) context).isActive()) {
 
                     context.publishEvent(new ArtefactAdditionEvent(artefactGrailsClass));
                 }

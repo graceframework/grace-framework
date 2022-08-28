@@ -190,7 +190,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                     artefacts.add(classLoader.loadClass(className));
                 }
                 catch (Throwable e) {
-                    throw new PluginException("Failed to initialize class [" + className + "] from plugin [" + getName() + "] : " + e.getMessage(), e);
+                    throw new PluginException("Failed to initialize class [" + className + "] from plugin [" +
+                            getName() + "] : " + e.getMessage(), e);
                 }
 
             }
@@ -310,7 +311,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         for (Resource messageResource : resources) {
             InputStream inputStream = messageResource.getInputStream();
             try {
-                properties.load(new InputStreamReader(inputStream, Charset.forName(System.getProperty("file.encoding", DEFAULT_PROPERTIES_ENCODING))));
+                properties.load(new InputStreamReader(inputStream, Charset.forName(
+                        System.getProperty("file.encoding", DEFAULT_PROPERTIES_ENCODING))));
             }
             finally {
                 try {

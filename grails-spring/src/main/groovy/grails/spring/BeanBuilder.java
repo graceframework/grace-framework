@@ -565,7 +565,9 @@ public class BeanBuilder extends GroovyObjectSupport {
             return invokeBeanDefiningMethod(name, args);
         }
 
-        if (args.length > 0 && args[0] instanceof Class || args.length > 0 && args[0] instanceof RuntimeBeanReference || args.length > 0 && args[0] instanceof Map) {
+        if (args.length > 0 && args[0] instanceof Class ||
+                args.length > 0 && args[0] instanceof RuntimeBeanReference ||
+                args.length > 0 && args[0] instanceof Map) {
             return invokeBeanDefiningMethod(name, args);
         }
 
@@ -817,7 +819,8 @@ public class BeanBuilder extends GroovyObjectSupport {
                     constructorArgs = resolveConstructorArguments(args, 0, index);
                 }
             }
-            currentBeanConfig =  constructorArgs == null ? springConfig.createSingletonBean(type) : springConfig.createSingletonBean(type, constructorArgs);
+            currentBeanConfig =  constructorArgs == null ? springConfig.createSingletonBean(type) :
+                    springConfig.createSingletonBean(type, constructorArgs);
             if (callable != null) {
                 callable.call(new Object[]{currentBeanConfig});
             }

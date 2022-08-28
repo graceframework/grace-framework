@@ -123,7 +123,8 @@ public abstract class BaseApiProvider {
     }
 
     private boolean isConstructorCallMethod(Method method) {
-        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) && method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length > 0;
+        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) &&
+                method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length > 0;
     }
 
     private boolean isNotExcluded(Method method, final int modifiers) {
@@ -136,7 +137,8 @@ public abstract class BaseApiProvider {
         boolean isStatic = Modifier.isStatic(modifiers);
 
         // skip plain setters/getters by default for instance methods (non-static)
-        if (!isStatic && (GrailsClassUtils.isSetter(name, method.getParameterTypes()) || GrailsNameUtils.isGetter(name, method.getReturnType(), method.getParameterTypes()))) {
+        if (!isStatic && (GrailsClassUtils.isSetter(name, method.getParameterTypes()) || GrailsNameUtils.isGetter(name, method.getReturnType(),
+                method.getParameterTypes()))) {
             return false;
         }
 

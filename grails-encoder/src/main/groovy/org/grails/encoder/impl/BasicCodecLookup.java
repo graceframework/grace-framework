@@ -112,7 +112,8 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
         if (returnType == Encoder.class) {
             List<StreamingEncoder> streamingEncoders = ChainedEncoders.toStreamingEncoders((List<Encoder>) codecInstances);
             if (streamingEncoders == null) {
-                throw new RuntimeException("ChainedEncoder only supports StreamingEncoder instances. Couldn't build chained encoder for '" + codecName + "'");
+                throw new RuntimeException("ChainedEncoder only supports StreamingEncoder instances. Couldn't build chained encoder for '" +
+                        codecName + "'");
             }
             else {
                 return (T) ChainedEncoder.createFor(streamingEncoders);

@@ -115,7 +115,8 @@ public class MixinTransformation implements ASTTransformation {
                                     GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateStaticMethod(classNode, mixinMethod));
                                 }
                                 else {
-                                    GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateInstanceMethod(classNode, fieldReference, mixinMethod, false));
+                                    GrailsASTUtils.addCompileStaticAnnotation(GrailsASTUtils.addDelegateInstanceMethod(classNode,
+                                            fieldReference, mixinMethod, false));
                                 }
                             }
                         }

@@ -71,7 +71,7 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
             for (PropertySource propertySource : source) {
 
                 if ((propertySource != this) &&
-                        !propertySource.getName().contains("plugin") && // plugin default configuration is not allowed to be environment aware (GRAILS-12123)
+                        !propertySource.getName().contains("plugin") &&
                         propertySource instanceof EnumerablePropertySource) {
                     EnumerablePropertySource enumerablePropertySource = (EnumerablePropertySource) propertySource;
 

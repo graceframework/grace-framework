@@ -129,7 +129,8 @@ public class EncodingStateImpl implements EncodingState {
                 sb.append("[@");
                 sb.append(System.identityHashCode(encoder));
                 sb.append(" ");
-                sb.append(encoder.getCodecIdentifier().getCodecName() + " safe:" + encoder.isSafe() + " apply to safe:" + encoder.isApplyToSafelyEncoded());
+                sb.append(encoder.getCodecIdentifier().getCodecName() + " safe:" + encoder.isSafe() +
+                        " apply to safe:" + encoder.isApplyToSafelyEncoded());
                 sb.append("]");
             }
             sb.append("]");

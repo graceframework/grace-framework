@@ -325,8 +325,8 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
     }
 
     public void configureCodecMethods() {
-        // for compatibility. Not everything (especially unit tests written by existing Grails applications) call afterPropertiesSet(), but everything calls
-        // configureCodecMethods() at least once
+        // for compatibility. Not everything (especially unit tests written by existing Grails applications) call afterPropertiesSet(),
+        // but everything calls configureCodecMethods() at least once
         initializeCodec();
 
         new CodecMetaClassSupport().configureCodecMethods(this);

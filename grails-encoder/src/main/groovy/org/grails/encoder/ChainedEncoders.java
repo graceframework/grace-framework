@@ -79,7 +79,8 @@ public class ChainedEncoders {
         }
     }
 
-    public static void chainStreamingEncode(StreamEncodeable streamEncodeable, EncodedAppender appender, List<StreamingEncoder> encoders) throws IOException {
+    public static void chainStreamingEncode(StreamEncodeable streamEncodeable, EncodedAppender appender,
+                                            List<StreamingEncoder> encoders) throws IOException {
         EncodedAppender target;
         Encoder lastEncoder;
         if (encoders != null && encoders.size() > 0) {

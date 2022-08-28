@@ -32,7 +32,8 @@ import org.grails.exceptions.reporting.StackTraceFilterer;
 public class GrailsUtil {
 
     private static final Log LOG = LogFactory.getLog(GrailsUtil.class);
-    private static final boolean LOG_DEPRECATED = Boolean.valueOf(System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
+    private static final boolean LOG_DEPRECATED = Boolean.parseBoolean(
+            System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
     private static final StackTraceFilterer stackFilterer = new DefaultStackTraceFilterer();
 
     private GrailsUtil() {

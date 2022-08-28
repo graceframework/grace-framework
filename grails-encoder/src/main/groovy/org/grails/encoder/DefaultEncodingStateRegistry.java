@@ -89,7 +89,8 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
      * @see EncodingStateRegistry#registerEncodedWith(Encoder, java.lang.CharSequence)
      */
     public void registerEncodedWith(Encoder encoder, CharSequence escaped) {
-        WeakReference<CharSequence> previousValue = getEncodedCharSequencesForEncoder(encoder).put(calculateKey(escaped), new WeakReference<>(escaped));
+        WeakReference<CharSequence> previousValue = getEncodedCharSequencesForEncoder(encoder).put(calculateKey(escaped),
+                new WeakReference<>(escaped));
         if (previousValue != null && previousValue.get() != escaped) {
             LOG.warn("Hash collision for encoded value between '{}' and '{}', encoder is {}", escaped, previousValue.get(), encoder);
         }

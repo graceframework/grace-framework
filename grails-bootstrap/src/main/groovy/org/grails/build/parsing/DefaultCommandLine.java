@@ -86,7 +86,8 @@ public class DefaultCommandLine implements CommandLine {
             env = lookupEnvironmentForCommand();
         }
         else {
-            String fallbackEnv = System.getProperty(Environment.KEY) != null ? System.getProperty(Environment.KEY) : Environment.DEVELOPMENT.getName();
+            String fallbackEnv = System.getProperty(Environment.KEY) != null ? System.getProperty(Environment.KEY) :
+                    Environment.DEVELOPMENT.getName();
             env = environment != null ? environment : fallbackEnv;
         }
 

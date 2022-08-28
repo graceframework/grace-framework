@@ -97,7 +97,9 @@ public class RuntimeSpringConfigUtilities {
         }
     }
 
-    public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config, GrailsApplication application, Class<?> groovySpringResourcesClass) throws InstantiationException, IllegalAccessException {
+    public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config,
+                                                          GrailsApplication application,
+                                                          Class<?> groovySpringResourcesClass) throws InstantiationException, IllegalAccessException {
         springGroovyResourcesBeanBuilder = new BeanBuilder(null, config, Thread.currentThread().getContextClassLoader());
         springGroovyResourcesBeanBuilder.setBinding(new Binding(CollectionUtils.newMap(
             "application", application,
@@ -110,7 +112,8 @@ public class RuntimeSpringConfigUtilities {
         return springGroovyResourcesBeanBuilder;
     }
 
-    public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config, GrailsApplication application, Resource resource) throws InstantiationException, IllegalAccessException, IOException {
+    public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config, GrailsApplication application, Resource resource)
+            throws InstantiationException, IllegalAccessException, IOException {
         GroovyClassLoader gcl = new GroovyClassLoader(application.getClassLoader());
         Class<?> groovySpringResourcesClass = gcl.parseClass(new GroovyCodeSource(resource.getURI()));
         springGroovyResourcesBeanBuilder = new BeanBuilder(null, config, Thread.currentThread().getContextClassLoader());

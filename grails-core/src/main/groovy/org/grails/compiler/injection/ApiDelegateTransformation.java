@@ -58,7 +58,8 @@ public class ApiDelegateTransformation implements ASTTransformation {
                 supportedType = value.getType();
             }
 
-            GrailsASTUtils.addDelegateInstanceMethods(supportedType, owner, type, new VariableExpression(fieldNode.getName()), resolveGenericsPlaceHolders(supportedType), isNoNullCheck(), isUseCompileStatic());
+            GrailsASTUtils.addDelegateInstanceMethods(supportedType, owner, type, new VariableExpression(fieldNode.getName()),
+                    resolveGenericsPlaceHolders(supportedType), isNoNullCheck(), isUseCompileStatic());
         }
     }
     
