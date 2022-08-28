@@ -38,7 +38,7 @@ public abstract class BasePluginFilter implements PluginFilter {
     /**
      * The supplied included plugin names (a String).
      */
-    private final Set<String> suppliedNames = new HashSet<>();;
+    private final Set<String> suppliedNames = new HashSet<>();
 
     /**
      * Plugins corresponding with the supplied names.
