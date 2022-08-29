@@ -13,10 +13,17 @@
 	</module>
 
 	<module name="NewlineAtEndOfFile"/>
+	<module name="LineLength">
+		<property name="fileExtensions" value="java"/>
+		<property name="ignorePattern" value="^$"/>
+		<property name="max" value="150"/>
+	</module>
 
 	<!-- TreeWalker Checks -->
 	<module name="TreeWalker">
 
+		<!-- Coding -->
+		<module name="OneStatementPerLine"/>
 		<!-- Imports -->
 		<module name="AvoidStarImport"/>
 		<module name="AvoidStaticImport">
