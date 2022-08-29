@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-
 /**
  * A ResourcePatternResolver implementation that is able to resolve a
  * specified resource location path into one or more matching Resources.
@@ -145,7 +144,6 @@ import java.util.jar.JarFile;
 public class PathMatchingResourcePatternResolver {
 
     private static final String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
-
 
     private final ResourceLoader resourceLoader;
 
@@ -533,4 +531,5 @@ public class PathMatchingResourcePatternResolver {
             }
         }
     }
+
 }

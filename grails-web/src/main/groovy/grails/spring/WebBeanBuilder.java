@@ -48,4 +48,5 @@ public class WebBeanBuilder extends BeanBuilder {
     protected RuntimeSpringConfiguration createRuntimeSpringConfiguration(ApplicationContext parent, ClassLoader classLoader) {
         return new WebRuntimeSpringConfiguration(parent, classLoader);
     }
+
 }

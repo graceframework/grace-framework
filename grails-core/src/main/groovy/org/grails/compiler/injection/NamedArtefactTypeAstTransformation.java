@@ -41,4 +41,5 @@ public class NamedArtefactTypeAstTransformation extends AbstractArtefactTypeAstT
             performInjectionOnArtefactType(source, node, artefactType);
         }
     }
+
 }

@@ -57,6 +57,7 @@ public class GrailsResourceUtils {
     private static final String CURRENT_PATH = ".";
 
     private static final String FOLDER_SEPARATOR = "/";
+
     public static final String JAR_URL_SEPARATOR = "!/";
 
     /** Pseudo URL prefix for loading from the class path: "classpath:" */
@@ -85,6 +86,7 @@ public class GrailsResourceUtils {
 
     /** URL protocol for an entry from an OC4J jar file: "code-source" */
     public static final String URL_PROTOCOL_CODE_SOURCE = "code-source";
+
     /**
      * The relative path to the WEB-INF directory
      */
@@ -104,6 +106,7 @@ public class GrailsResourceUtils {
      * The path to the views directory
      */
     public static final String VIEWS_DIR_PATH = GRAILS_APP_DIR + "/views/";
+
     /**
      * The path to the views directory without a trailing slash
      */
@@ -130,8 +133,8 @@ public class GrailsResourceUtils {
             REGEX_FILE_SEPARATOR + "conf" + REGEX_FILE_SEPARATOR + "spring" + REGEX_FILE_SEPARATOR + "(.+?\\.groovy)");
 
     public static Pattern[] COMPILER_ROOT_PATTERNS = {
-        SPRING_SCRIPTS_PATH_PATTERN,
-        RESOURCE_PATH_PATTERN
+            SPRING_SCRIPTS_PATH_PATTERN,
+            RESOURCE_PATH_PATTERN
     };
 
     /*
@@ -139,15 +142,25 @@ public class GrailsResourceUtils {
     specific File.separator.
      */
     public static final Pattern GRAILS_RESOURCE_PATTERN_FIRST_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_SECOND_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_THIRD_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_FOURTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_FIFTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_SIXTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_SEVENTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_EIGHTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_NINTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_TENTH_MATCH;
+
     public static final Pattern GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH;
 
     static {
@@ -163,26 +176,27 @@ public class GrailsResourceUtils {
         GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "src" + fs + "test" + fs + "functional"));
 
         GRAILS_RESOURCE_PATTERN_FIFTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
+
         fs = "/";
         GRAILS_RESOURCE_PATTERN_SECOND_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "conf" + fs + "spring"));
         GRAILS_RESOURCE_PATTERN_FOURTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "[\\w-]+"));
         GRAILS_RESOURCE_PATTERN_SIXTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
     }
 
-    public static final Pattern[] patterns = new Pattern[]{
-        GRAILS_RESOURCE_PATTERN_FIRST_MATCH,
-        GRAILS_RESOURCE_PATTERN_THIRD_MATCH,
-        GRAILS_RESOURCE_PATTERN_SEVENTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_EIGHTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_FOURTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_FIFTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_SIXTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_NINTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_TENTH_MATCH,
-        GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH
+    public static final Pattern[] patterns = new Pattern[] {
+            GRAILS_RESOURCE_PATTERN_FIRST_MATCH,
+            GRAILS_RESOURCE_PATTERN_THIRD_MATCH,
+            GRAILS_RESOURCE_PATTERN_SEVENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_EIGHTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FOURTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FIFTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_SIXTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_NINTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_TENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH
     };
 
-    public static final Pattern[] grailsAppResourcePatterns = new Pattern[]{
+    public static final Pattern[] grailsAppResourcePatterns = new Pattern[] {
             GRAILS_RESOURCE_PATTERN_FIRST_MATCH,
             GRAILS_RESOURCE_PATTERN_THIRD_MATCH,
             GRAILS_RESOURCE_PATTERN_FOURTH_MATCH,
@@ -286,7 +300,7 @@ public class GrailsResourceUtils {
             return getClassName(resource.getFile().getAbsolutePath());
         }
         catch (IOException e) {
-             return null;
+            return null;
         }
     }
 
@@ -305,7 +319,6 @@ public class GrailsResourceUtils {
         }
         return null;
     }
-
 
     /**
      * Returns the class name for a compiled class file
@@ -364,6 +377,7 @@ public class GrailsResourceUtils {
                 URL_PROTOCOL_WSJAR.equals(protocol) ||
                 (URL_PROTOCOL_CODE_SOURCE.equals(protocol) && url.getPath().contains(JAR_URL_SEPARATOR)));
     }
+
     /**
      * Resolve the given resource URI to a <code>java.io.File</code>,
      * i.e. to a file in the file system.
@@ -382,6 +396,7 @@ public class GrailsResourceUtils {
         }
         return new File(resourceUri.getSchemeSpecificPart());
     }
+
     /**
      * Resolve the given resource URI to a <code>java.io.File</code>,
      * i.e. to a file in the file system.
@@ -438,6 +453,7 @@ public class GrailsResourceUtils {
         }
         return relativePath;
     }
+
     /**
      * Normalize the path by suppressing sequences like "path/.." and
      * inner simple dots.
@@ -717,6 +733,7 @@ public class GrailsResourceUtils {
             return false;
         }
     }
+
     /**
      * Checks whether the specific resources is a Grails resource. A Grails resource is a Groovy or Java class under the grails-app directory
      *
@@ -994,4 +1011,5 @@ public class GrailsResourceUtils {
     private static Class<?> forName(String className, ClassLoader defaultClassLoader) throws ClassNotFoundException {
         return defaultClassLoader.loadClass(className);
     }
+
 }

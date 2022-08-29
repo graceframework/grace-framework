@@ -44,4 +44,5 @@ public class HTML4Decoder implements Decoder {
     public CodecIdentifier getCodecIdentifier() {
         return HTML4Encoder.HTML4_CODEC_IDENTIFIER;
     }
+
 }

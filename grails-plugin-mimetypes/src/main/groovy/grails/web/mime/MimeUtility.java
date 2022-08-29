@@ -45,4 +45,5 @@ public interface MimeUtility {
      * @return The MimeType instance or null if not known
      */
     MimeType getMimeTypeForURI(String uri);
+
 }

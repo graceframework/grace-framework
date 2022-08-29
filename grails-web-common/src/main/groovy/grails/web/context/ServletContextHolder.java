@@ -37,4 +37,5 @@ public class ServletContextHolder {
     public static ServletContext getServletContext() {
         return (ServletContext) Holders.getServletContext();
     }
+
 }

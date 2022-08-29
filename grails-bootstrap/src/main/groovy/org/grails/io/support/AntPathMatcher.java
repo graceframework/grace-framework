@@ -82,7 +82,7 @@ public class AntPathMatcher {
      * @return <code>true</code> if the supplied <code>path</code> matched, <code>false</code> if it didn't
      */
     protected boolean doMatch(String pattern, String path, boolean fullMatch,
-                              Map<String, String> uriTemplateVariables) {
+            Map<String, String> uriTemplateVariables) {
 
         if (path.startsWith(pathSeparator) != pattern.startsWith(pathSeparator)) {
             return false;
@@ -270,7 +270,8 @@ public class AntPathMatcher {
 
     public Map<String, String> extractUriTemplateVariables(String pattern, String path) {
         Map<String, String> variables = new LinkedHashMap<String, String>();
-        /*boolean result =*/ doMatch(pattern, path, true, variables);
+        /*boolean result =*/
+        doMatch(pattern, path, true, variables);
         return variables;
     }
 
@@ -450,6 +451,7 @@ public class AntPathMatcher {
             Matcher m = VARIABLE_PATTERN.matcher(pattern);
             return m.replaceAll("#").length();
         }
+
     }
 
     /**
@@ -463,7 +465,7 @@ public class AntPathMatcher {
      * @author Rossen Stoyanchev
      * @since 3.0
      */
-     static class AntPathStringMatcher {
+    static class AntPathStringMatcher {
 
         private static final Pattern GLOB_PATTERN = Pattern.compile("\\?|\\*|\\{((?:\\{[^/]+?\\}|[^/{}]|\\\\[{}])+?)\\}");
 
@@ -544,6 +546,7 @@ public class AntPathMatcher {
             }
             return true;
         }
+
     }
 
     /**
@@ -564,4 +567,5 @@ public class AntPathMatcher {
         }
         return count;
     }
+
 }

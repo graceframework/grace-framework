@@ -40,4 +40,5 @@ public interface StreamEncodeable {
      *             Signals that an I/O exception has occurred.
      */
     void encodeTo(EncodedAppender appender, Encoder encoder) throws IOException;
+
 }

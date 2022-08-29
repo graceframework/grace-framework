@@ -86,4 +86,5 @@ public class ClosureClassIgnoringComponentScanBeanDefinitionParser extends Compo
         scanner.setResourceLoader(resourceResolver);
         return scanner;
     }
+
 }

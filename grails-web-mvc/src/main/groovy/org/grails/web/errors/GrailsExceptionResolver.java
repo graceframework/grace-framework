@@ -68,10 +68,13 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     public static final String EXCEPTION_ATTRIBUTE = WebUtils.EXCEPTION_ATTRIBUTE;
 
     protected static final Log LOG = LogFactory.getLog(GrailsExceptionResolver.class);
+
     protected static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     protected ServletContext servletContext;
+
     protected GrailsApplication grailsApplication;
+
     protected StackTraceFilterer stackFilterer;
 
     /* (non-Javadoc)
@@ -79,11 +82,10 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
      * javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
      */
     @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
-                                         Object handler, Exception ex) {
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         // don't reuse cached controller attribute 
-        request.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE);        
-        
+        request.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE);
+
         ex = findWrappedException(ex);
 
         filterStackTrace(ex);
@@ -113,8 +115,6 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     public void setServletContext(ServletContext servletContext) {
-
-
         this.servletContext = servletContext;
     }
 
@@ -122,6 +122,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         this.grailsApplication = grailsApplication;
         createStackFilterer();
     }
+
     /**
      * Obtains the root cause of the given exception
      * @param ex The exception
@@ -218,6 +219,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     protected void forwardRequest(UrlMappingInfo info, HttpServletRequest request, HttpServletResponse response,
             ModelAndView mv, String uri) throws ServletException, IOException {
+
         info.configure(WebUtils.retrieveGrailsWebRequest());
         String forwardUrl = UrlMappingUtils.forwardRequestForUrlMappingInfo(
                 request, response, info, mv.getModel(), true);
@@ -269,14 +271,12 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         return e;
     }
 
-
-
     protected String getRequestLogMessage(String exceptionName, HttpServletRequest request, String message) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(exceptionName)
-          .append(" occurred when processing request: ")
-          .append("[").append(request.getMethod().toUpperCase()).append("] ");
+                .append(" occurred when processing request: ")
+                .append("[").append(request.getMethod().toUpperCase()).append("] ");
 
         if (request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE) != null) {
             sb.append(request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE));
@@ -345,4 +345,5 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             stackFilterer = new DefaultStackTraceFilterer();
         }
     }
+
 }

@@ -51,7 +51,6 @@ public interface ClassInjector {
      */
     void performInjection(SourceUnit source, ClassNode classNode);
 
-
     /**
      * Handles injection of properties, methods etc. into a class.
      *
@@ -67,4 +66,5 @@ public interface ClassInjector {
      * @return true if injection should occur
      */
     boolean shouldInject(URL url);
+
 }

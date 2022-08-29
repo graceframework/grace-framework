@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 import grails.core.GrailsApplication;
 
 public class CodecLookupHelper {
+
     private static final Logger log = LoggerFactory.getLogger(CodecLookupHelper.class);
 
     private CodecLookupHelper() {
@@ -49,4 +50,5 @@ public class CodecLookupHelper {
         }
         return null;
     }
+
 }

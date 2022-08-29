@@ -27,6 +27,7 @@ public class DefaultGrailsUrlMappingsClass extends AbstractGrailsClass implement
     public static final String URL_MAPPINGS = "UrlMappings";
 
     private static final String MAPPINGS_CLOSURE = "mappings";
+
     private static final String EXCLUDE_PATTERNS = "excludes";
 
     public DefaultGrailsUrlMappingsClass(Class<?> clazz) {
@@ -36,7 +37,7 @@ public class DefaultGrailsUrlMappingsClass extends AbstractGrailsClass implement
     public Closure<?> getMappingsClosure() {
         Closure<?> result = getStaticPropertyValue(MAPPINGS_CLOSURE, Closure.class);
         if (result == null) {
-            throw new RuntimeException(MAPPINGS_CLOSURE + " closure does not exists for class " +  getClazz().getName());
+            throw new RuntimeException(MAPPINGS_CLOSURE + " closure does not exists for class " + getClazz().getName());
         }
         return result;
     }
@@ -45,4 +46,5 @@ public class DefaultGrailsUrlMappingsClass extends AbstractGrailsClass implement
     public List getExcludePatterns() {
         return getStaticPropertyValue(EXCLUDE_PATTERNS, ArrayList.class);
     }
+
 }

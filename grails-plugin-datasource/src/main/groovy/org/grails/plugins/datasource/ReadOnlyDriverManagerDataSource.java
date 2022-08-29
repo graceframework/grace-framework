@@ -34,4 +34,5 @@ public class ReadOnlyDriverManagerDataSource extends DriverManagerDataSource {
         connection.setReadOnly(true);
         return connection;
     }
+
 }

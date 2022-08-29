@@ -91,4 +91,5 @@ public interface GrailsDataSource extends InjectableGrailsClass {
      * @return true if SQL logging is enabled
      */
     boolean isLoggingSql();
+
 }

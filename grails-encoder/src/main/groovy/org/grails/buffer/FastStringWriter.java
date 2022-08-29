@@ -66,4 +66,5 @@ public class FastStringWriter extends GrailsPrintWriter {
     public Reader getReader() {
         return streamBuffer.getReader();
     }
+
 }

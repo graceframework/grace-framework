@@ -20,24 +20,25 @@ import java.io.Writer;
 
 /**
  * Utility functions for handling java.lang.CharSequence instances
- * 
- * 
+ *
+ *
  * @author Lari Hotari
  * @since 2.3.10
  *
  */
 public class CharSequences {
+
     private CharSequences() {
     }
 
     public static CharSequence createCharSequence(char[] chars) {
         return new CharArrayCharSequence(chars, 0, chars.length);
     }
-    
+
     public static CharSequence createCharSequence(char[] chars, int start, int count) {
         return new CharArrayCharSequence(chars, start, count);
     }
-    
+
     public static CharSequence createCharSequence(CharSequence str, int start, int count) {
         if (canUseOriginalForSubSequence(str, start, count)) {
             return str;
@@ -46,11 +47,11 @@ public class CharSequences {
             return new SubCharSequence(str, start, count);
         }
     }
-    
+
     /**
      * Checks if start == 0 and count == length of CharSequence
      * It does this check only for String, StringBuilder and StringBuffer classes which have a fast way to check length
-     * 
+     *
      * Calculating length on GStringImpl requires building the result which is costly.
      * This helper method is to avoid calling length on other that String, StringBuilder and StringBuffer classes
      * when checking if the input CharSequence instance is already the same as the requested sub sequence
@@ -67,19 +68,19 @@ public class CharSequences {
         final Class<?> csqClass = str.getClass();
         return (csqClass == String.class || csqClass == StringBuilder.class || csqClass == StringBuffer.class) && count == str.length();
     }
-    
+
     public static CharSequence createSingleCharSequence(int c) {
         return new SingleCharCharSequence(c);
     }
-    
+
     public static CharSequence createSingleCharSequence(char ch) {
         return new SingleCharCharSequence(ch);
     }
-    
+
     /**
      * Writes a CharSequence instance in the most optimal way to the target writer
-     * 
-     * 
+     *
+     *
      * @param target writer
      * @param csq source CharSequence instance
      * @param start start/offset index
@@ -111,15 +112,15 @@ public class CharSequences {
             target.write(str, 0, str.length());
         }
     }
-    
+
     public static void writeCharSequence(Writer target, CharSequence csq) throws IOException {
         writeCharSequence(target, csq, 0, csq.length());
     }
-    
+
     /**
      * Provides an optimized way to copy CharSequence content to target array.
      * Uses getChars method available on String, StringBuilder and StringBuffer classes.
-     * 
+     *
      * Characters are copied from the source sequence <code>csq</code> into the
      * destination character array <code>dst</code>. The first character to
      * be copied is at index <code>srcBegin</code>; the last character to
@@ -136,9 +137,9 @@ public class CharSequences {
      * @param      srcEnd     stop copying at this offset.
      * @param      dst        the array to copy the data into.
      * @param      dstBegin   offset into <code>dst</code>.
-     * @throws     NullPointerException if <code>dst</code> is
+     * @throws NullPointerException if <code>dst</code> is
      *             <code>null</code>.
-     * @throws     IndexOutOfBoundsException  if any of the following is true:
+     * @throws IndexOutOfBoundsException  if any of the following is true:
      *             <ul>
      *             <li><code>srcBegin</code> is negative
      *             <li><code>dstBegin</code> is negative
@@ -149,7 +150,7 @@ public class CharSequences {
      *             <li><code>dstBegin+srcEnd-srcBegin</code> is greater than
      *             <code>dst.length</code>
      *             </ul>
-     */    
+     */
     public static void getChars(CharSequence csq, int srcBegin, int srcEnd, char dst[], int dstBegin) {
         final Class<?> csqClass = csq.getClass();
         if (csqClass == String.class) {
@@ -169,4 +170,5 @@ public class CharSequences {
             str.getChars(0, str.length(), dst, dstBegin);
         }
     }
+
 }

@@ -24,9 +24,11 @@ import org.grails.charsequences.CharSequences;
  *
  */
 public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
+
     private final StreamingEncoder encoder;
+
     private final EncodedAppender target;
-    
+
     public StreamingEncoderEncodedAppender(StreamingEncoder encoder, EncodedAppender target) {
         this.encoder = encoder;
         this.target = target;
@@ -36,7 +38,7 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
     public void close() throws IOException {
         target.close();
     }
-    
+
     @Override
     public void flush() throws IOException {
         target.flush();
@@ -72,4 +74,5 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
             target.appendEncoded(null, encodingState, str, start, end - start);
         }
     }
+
 }

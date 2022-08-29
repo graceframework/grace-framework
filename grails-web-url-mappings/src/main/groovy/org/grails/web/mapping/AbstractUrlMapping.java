@@ -38,21 +38,36 @@ import grails.web.mapping.UrlMapping;
 public abstract class AbstractUrlMapping implements UrlMapping {
 
     protected final ConstrainedProperty[] constraints;
+
     protected Object controllerName;
+
     protected Object actionName;
+
     protected Object namespace;
+
     protected Object pluginName;
+
     protected Object viewName;
+
     protected Object forwardURI;
+
     protected Object redirectInfo;
+
     protected ServletContext servletContext;
+
     protected GrailsApplication grailsApplication;
+
     @SuppressWarnings("rawtypes")
     protected Map parameterValues = Collections.emptyMap();
+
     protected boolean parseRequest;
+
     protected String mappingName;
+
     protected String httpMethod = ANY_HTTP_METHOD;
+
     protected String version = ANY_VERSION;
+
     protected Integer pluginIndex;
 
     /**
@@ -64,7 +79,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
      * @param grailsApplication The GrailsApplication instance
      */
     public AbstractUrlMapping(Object redirectInfo, Object controllerName, Object actionName, Object namespace,
-                              Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+            Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         this.controllerName = controllerName;
         this.actionName = actionName;
         this.namespace = namespace;
@@ -146,7 +161,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         return viewName;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void setParameterValues(Map parameterValues) {
         this.parameterValues = Collections.unmodifiableMap(parameterValues);
     }
@@ -179,7 +194,6 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         return redirectInfo;
     }
 
-
     public void setPluginIndex(int pluginIndex) {
         this.pluginIndex = pluginIndex;
     }
@@ -191,4 +205,5 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     public boolean isDefinedInPlugin() {
         return pluginIndex != null;
     }
+
 }

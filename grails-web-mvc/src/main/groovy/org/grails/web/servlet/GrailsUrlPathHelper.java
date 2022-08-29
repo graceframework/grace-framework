@@ -28,6 +28,7 @@ import org.springframework.web.util.UrlPathHelper;
 public class GrailsUrlPathHelper extends UrlPathHelper {
 
     public static final String GRAILS_DISPATCH_EXTENSION = ".dispatch";
+
     public static final String GRAILS_SERVLET_PATH = "/grails";
 
     @Override
@@ -41,4 +42,5 @@ public class GrailsUrlPathHelper extends UrlPathHelper {
         }
         return uri;
     }
+
 }

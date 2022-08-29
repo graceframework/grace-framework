@@ -42,6 +42,7 @@ import grails.web.mapping.UrlMapping;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class UrlCreatorCache {
+
     private final Cache<ReverseMappingKey, CachingUrlCreator> cacheMap;
 
     private enum CachingUrlCreatorWeigher implements Weigher<ReverseMappingKey, CachingUrlCreator> {
@@ -81,8 +82,11 @@ public class UrlCreatorCache {
     }
 
     private class CachingUrlCreator implements UrlCreator {
+
         private UrlCreator delegate;
+
         private ConcurrentHashMap<UrlCreatorKey, String> cache = new ConcurrentHashMap<UrlCreatorKey, String>();
+
         private final int weight;
 
         public CachingUrlCreator(UrlCreator delegate, int weight) {
@@ -141,7 +145,7 @@ public class UrlCreatorCache {
         }
 
         public String createURL(String controller, String action, String namespace,
-                                String pluginName, Map parameterValues, String encoding, String fragment) {
+                String pluginName, Map parameterValues, String encoding, String fragment) {
             UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
                     parameterValues, encoding, fragment, 1);
             String url = cache.get(key);
@@ -157,7 +161,7 @@ public class UrlCreatorCache {
         }
 
         public String createURL(String controller, String action, String namespace,
-                                String pluginName, Map parameterValues, String encoding) {
+                String pluginName, Map parameterValues, String encoding) {
             UrlCreatorKey key = new UrlCreatorKey(controller, action, namespace, pluginName, null,
                     parameterValues, encoding, null, 1);
             String url = cache.get(key);
@@ -177,19 +181,28 @@ public class UrlCreatorCache {
         public String createURL(Map parameterValues, String encoding) {
             return delegate.createURL(parameterValues, encoding);
         }
+
     }
 
     public static class ReverseMappingKey {
+
         protected final String controller;
+
         protected final String action;
+
         protected final String namespace;
+
         protected final String pluginName;
+
         protected final String httpMethod;
+
         protected final String[] paramKeys;
+
         protected final String[] paramValues;
 
         public ReverseMappingKey(String controller, String action, String namespace,
-                                 String pluginName, String httpMethod, Map<Object, Object> params) {
+                String pluginName, String httpMethod, Map<Object, Object> params) {
+
             this.controller = controller;
             this.action = action;
             this.namespace = namespace;
@@ -200,6 +213,7 @@ public class UrlCreatorCache {
             else {
                 this.httpMethod = null;
             }
+
             if (params != null) {
                 paramKeys = new String[params.size()];
                 paramValues = new String[params.size()];
@@ -214,7 +228,7 @@ public class UrlCreatorCache {
                         value = DefaultGroovyMethods.join((Iterable) entry.getValue(), ",");
                     }
                     else if (entry.getValue() instanceof Object[]) {
-                        value = DefaultGroovyMethods.join((Object[])  entry.getValue(), ",");
+                        value = DefaultGroovyMethods.join((Object[]) entry.getValue(), ",");
                     }
                     else {
                         value = String.valueOf(entry.getValue());
@@ -323,18 +337,22 @@ public class UrlCreatorCache {
         public String toString() {
             return "UrlCreatorCache.ReverseMappingKey [action=" + action + ", controller=" + controller +
                     ", namespace=" + namespace + ", plugin=" + pluginName +
-                ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" +
-                Arrays.toString(paramValues) + "]";
+                    ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" +
+                    Arrays.toString(paramValues) + "]";
         }
+
     }
 
     private static class UrlCreatorKey extends ReverseMappingKey {
+
         protected final String encoding;
+
         protected final String fragment;
+
         protected final int urlType;
 
         public UrlCreatorKey(String controller, String action, String namespace,
-                             String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
+                String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
                 String fragment, int urlType) {
             super(controller, action, namespace, pluginName, httpMethod, params);
             this.encoding = (encoding != null) ? encoding.toLowerCase() : null;
@@ -393,5 +411,7 @@ public class UrlCreatorCache {
                     ", namespace=" + namespace + ", plugin=" + pluginName +
                     ", paramKeys=" + Arrays.toString(paramKeys) + ", paramValues=" + Arrays.toString(paramValues) + "]";
         }
+
     }
+
 }

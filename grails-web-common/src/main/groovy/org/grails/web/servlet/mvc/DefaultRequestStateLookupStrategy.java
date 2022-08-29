@@ -32,7 +32,9 @@ import org.grails.core.artefact.ControllerArtefactHandler;
 public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLookupStrategy {
 
     public static final String DEFAULT_REQUEST_ENCODING = "UTF-8";
+
     private GrailsApplication grailsApplication;
+
     private GrailsWebRequest webRequest;
 
     public DefaultRequestStateLookupStrategy() {
@@ -137,4 +139,5 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     public GrailsWebRequest getWebRequest() {
         return webRequest != null ? webRequest : GrailsWebRequest.lookup();
     }
+
 }

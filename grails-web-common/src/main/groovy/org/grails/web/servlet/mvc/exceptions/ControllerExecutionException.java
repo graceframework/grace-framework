@@ -40,4 +40,5 @@ public class ControllerExecutionException extends GrailsMVCException {
     public ControllerExecutionException(Throwable cause) {
         super(cause);
     }
+
 }

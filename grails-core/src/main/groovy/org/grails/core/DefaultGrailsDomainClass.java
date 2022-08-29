@@ -46,10 +46,12 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
 
     private static final Logger log = LoggerFactory.getLogger(DefaultGrailsDomainClass.class);
 
-
     private PersistentEntity persistentEntity;
+
     private MappingContext mappingContext;
+
     private Map<String, Constrained> constrainedProperties;
+
     private Boolean autowire = null;
 
     public DefaultGrailsDomainClass(Class<?> clazz, MappingContext mappingContext) {
@@ -65,7 +67,6 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     public DefaultGrailsDomainClass(Class<?> clazz) {
         super(clazz, "");
     }
-
 
     private void verifyContextIsInitialized() {
         if (mappingContext == null) {

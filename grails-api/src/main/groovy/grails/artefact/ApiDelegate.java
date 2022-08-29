@@ -31,7 +31,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  */
 @java.lang.annotation.Documented
 @Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.FIELD})
+@Target({ ElementType.FIELD })
 @GroovyASTTransformationClass("org.grails.compiler.injection.ApiDelegateTransformation")
 public @interface ApiDelegate {
 
@@ -39,4 +39,5 @@ public @interface ApiDelegate {
      * @return The super class to check for in the first argument of api methods
      */
     Class<?> value();
+
 }

@@ -53,20 +53,26 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * @since 0.3
  */
 public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttributes {
+
     protected static final String DEFAULT_NAMESPACE = "g";
-    
+
     private static Log LOG = LogFactory.getLog(DefaultGrailsApplicationAttributes.class);
 
     private UrlPathHelper urlHelper = new UrlPathHelper();
 
     private ServletContext context;
+
     private ApplicationContext appContext;
 
     // Beans used very often
     private ResourceAwareTemplateEngine pagesTemplateEngine;
+
     private GrailsApplication grailsApplication;
+
     private GroovyPagesUriService groovyPagesUriService;
+
     private MessageSource messageSource;
+
     private GrailsPluginManager pluginManager;
 
     public DefaultGrailsApplicationAttributes(ServletContext context) {
@@ -238,7 +244,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
     }
 
     public String getNoSuffixViewURI(GroovyObject controller, String viewName) {
-   		return getGroovyPagesUriService().getNoSuffixViewURI(controller, viewName);
+        return getGroovyPagesUriService().getNoSuffixViewURI(controller, viewName);
     }
 
     public String getTemplateURI(GroovyObject controller, String templateName) {
@@ -266,4 +272,5 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         }
         return messageSource;
     }
+
 }

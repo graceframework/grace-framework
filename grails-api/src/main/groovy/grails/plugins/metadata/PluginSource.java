@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
  * @since 3.1.7
  */
 @Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface PluginSource {
+
 }

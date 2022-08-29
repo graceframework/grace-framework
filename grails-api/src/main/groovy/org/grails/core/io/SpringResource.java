@@ -30,6 +30,7 @@ import org.grails.io.support.Resource;
  * @since 2.2
  */
 public class SpringResource implements Resource {
+
     org.springframework.core.io.Resource springResource;
 
     public SpringResource(org.springframework.core.io.Resource springResource) {

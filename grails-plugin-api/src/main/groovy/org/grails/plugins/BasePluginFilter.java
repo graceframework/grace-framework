@@ -89,8 +89,7 @@ public abstract class BasePluginFilter implements PluginFilter {
     /**
      * Template method shared by subclasses of <code>BasePluginFilter</code>.
      */
-    public List<GrailsPlugin>  filterPluginList(List<GrailsPlugin> original) {
-
+    public List<GrailsPlugin> filterPluginList(List<GrailsPlugin> original) {
         originalPlugins = Collections.unmodifiableList(original);
 
         buildNameMap();
@@ -109,7 +108,6 @@ public abstract class BasePluginFilter implements PluginFilter {
      * <code>explicitlyNamedPlugins</code> through a dependency relationship
      */
     private void buildDerivedPluginList() {
-
         // find their dependencies
         for (int i = 0; i < explicitlyNamedPlugins.size(); i++) {
             GrailsPlugin plugin = explicitlyNamedPlugins.get(i);
@@ -130,7 +128,6 @@ public abstract class BasePluginFilter implements PluginFilter {
      * @return true if <code>plugin</code> depends on <code>pluginName</code>
      */
     protected boolean isDependentOn(GrailsPlugin plugin, String pluginName) {
-
         // check if toCompare depends on the current plugin
         String[] dependencyNames = plugin.getDependencyNames();
         for (int i = 0; i < dependencyNames.length; i++) {
@@ -156,12 +153,10 @@ public abstract class BasePluginFilter implements PluginFilter {
      *         constructor
      */
     private void buildExplicitlyNamedList() {
-
         // each plugin must either be in included set or must be a dependent of
         // included set
-
         for (GrailsPlugin plugin : originalPlugins) {
-        // find explicitly included plugins
+            // find explicitly included plugins
             String name = plugin.getName();
             if (suppliedNames.contains(name)) {
                 explicitlyNamedPlugins.add(plugin);
@@ -183,7 +178,7 @@ public abstract class BasePluginFilter implements PluginFilter {
     /**
      * Adds a plugin to the additional if this hasn't happened already
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void registerDependency(List additionalList, GrailsPlugin plugin) {
         if (!addedNames.contains(plugin.getName())) {
             addedNames.add(plugin.getName());
@@ -204,4 +199,5 @@ public abstract class BasePluginFilter implements PluginFilter {
     protected Set<String> getSuppliedNames() {
         return suppliedNames;
     }
+
 }

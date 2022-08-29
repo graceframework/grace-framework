@@ -114,8 +114,8 @@ public class SortedAggregateCompleter implements Completer {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-            "completers=" + completers +
-            '}';
+                "completers=" + completers +
+                '}';
     }
 
     private class Completion {
@@ -133,6 +133,7 @@ public class SortedAggregateCompleter implements Completer {
             Preconditions.checkNotNull(completer);
             this.cursor = completer.complete(buffer, cursor, candidates);
         }
+
     }
 
 }

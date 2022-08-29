@@ -48,4 +48,5 @@ public class AnnotationDomainClassArtefactHandler extends DomainClassArtefactHan
     public static boolean isJPADomainClass(Class<?> clazz) {
         return clazz != null && clazz.getAnnotation(Entity.class) != null;
     }
+
 }

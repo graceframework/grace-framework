@@ -28,12 +28,15 @@ import org.grails.encoder.CodecLookupHelper;
 import org.grails.encoder.Encoder;
 
 public class FilteringCodecsByContentTypeSettings {
+
     private static final String WILDCARD_CONTENT_TYPE = "*/*";
 
     public static final String CONFIG_PROPERTY_CODEC_FOR_CONTENT_TYPE = "grails.views.filteringCodecForContentType";
+
     public static final String BEAN_NAME = "filteringCodecsByContentTypeSettings";
 
     Map<String, Encoder> contentTypeToEncoderMapping;
+
     Map<Pattern, Encoder> contentTypePatternToEncoderMapping;
 
     public FilteringCodecsByContentTypeSettings(GrailsApplication grailsApplication) {
@@ -49,7 +52,7 @@ public class FilteringCodecsByContentTypeSettings {
             contentTypeToEncoderMapping = new LinkedHashMap<String, Encoder>();
             contentTypePatternToEncoderMapping = new LinkedHashMap<Pattern, Encoder>();
             Map codecForContentTypeMapping = (Map) codecForContentTypeConfig;
-            for (Iterator i = codecForContentTypeMapping.entrySet().iterator(); i.hasNext();) {
+            for (Iterator i = codecForContentTypeMapping.entrySet().iterator(); i.hasNext(); ) {
                 Map.Entry entry = (Map.Entry) i.next();
                 Encoder encoder = CodecLookupHelper.lookupEncoder(grailsApplication, String.valueOf(entry.getValue()));
                 if (entry.getKey() instanceof Pattern) {
@@ -80,8 +83,9 @@ public class FilteringCodecsByContentTypeSettings {
         }
         return contentTypeToEncoderMapping.get(WILDCARD_CONTENT_TYPE);
     }
-    
+
     protected Map getConfigSettings(Config config) {
         return config.getProperty(Settings.VIEWS_FILTERING_CODEC_FOR_CONTENT_TYPE, Map.class);
     }
+
 }

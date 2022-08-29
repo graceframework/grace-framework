@@ -52,4 +52,5 @@ public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcesso
             ((GrailsConfigurationAware) bean).setConfiguration(grailsApplication.getConfig());
         }
     }
+
 }

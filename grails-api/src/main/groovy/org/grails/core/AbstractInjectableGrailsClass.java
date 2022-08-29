@@ -42,4 +42,5 @@ public abstract class AbstractInjectableGrailsClass extends AbstractGrailsClass 
     public boolean getAvailable() {
         return true;
     }
+
 }

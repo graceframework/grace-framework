@@ -20,53 +20,63 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ChainedEncoder implements Encoder, StreamingEncoder {
+
     private final StreamingEncoder[] encoders;
+
     private final CodecIdentifier combinedCodecIdentifier;
+
     private final boolean safe;
-    // this ThreadLocal lives as long as the instance of this ChainedEncoder class, this isn't a static ThreadLocal 
+
+    // this ThreadLocal lives as long as the instance of this ChainedEncoder class, this isn't a static ThreadLocal
     private final ThreadLocal<ChainedEncoderCacheItem> cacheItemThreadLocal = new ThreadLocal<ChainedEncoder.ChainedEncoderCacheItem>() {
-      protected ChainedEncoderCacheItem initialValue() {
-          return new ChainedEncoderCacheItem();
-      };  
+
+        protected ChainedEncoderCacheItem initialValue() {
+            return new ChainedEncoderCacheItem();
+        }
+
     };
-    
+
     private static class ChainedEncoderCacheItem {
+
         EncodedAppender lastAppenderForCached;
+
         boolean lastIgnoreEncodingStateForCached;
+
         EncodedAppender cachedChainedAppender;
-        
+
         void putInCache(final EncodedAppender appender, EncodedAppender target) {
             lastAppenderForCached = appender;
             lastIgnoreEncodingStateForCached = appender.isIgnoreEncodingState();
             cachedChainedAppender = target;
         }
-        
+
         EncodedAppender getCached(final EncodedAppender appender) {
             if (lastAppenderForCached == appender && lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
                 return cachedChainedAppender;
             }
             return null;
         }
+
     }
-    
+
     public ChainedEncoder(List<StreamingEncoder> encoders, boolean safe) {
         this(encoders.toArray(new StreamingEncoder[encoders.size()]), safe);
     }
-    
+
     public ChainedEncoder(StreamingEncoder[] encoders, boolean safe) {
         this.encoders = Arrays.copyOf(encoders, encoders.length);
         this.combinedCodecIdentifier = createCodecIdentifier(encoders);
         this.safe = safe;
     }
-    
+
     public static StreamingEncoder createFor(StreamingEncoder[] encoders) {
         return createFor(Arrays.asList(encoders));
     }
-    
+
     public static StreamingEncoder createFor(List<StreamingEncoder> encoders) {
         return createFor(encoders, null);
     }
-    
+
     public static StreamingEncoder createFor(List<StreamingEncoder> encoders, Boolean safe) {
         if (encoders == null) {
             return null;
@@ -93,7 +103,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     protected CombinedCodecIdentifier createCodecIdentifier(StreamingEncoder[] encoders) {
         return new CombinedCodecIdentifier(encoders);
     }
-    
+
     @Override
     public CodecIdentifier getCodecIdentifier() {
         return combinedCodecIdentifier;
@@ -114,7 +124,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     protected EncodedAppender chainEncodersAndCachePerThread(final EncodedAppender appender) {
         ChainedEncoderCacheItem cacheItem = cacheItemThreadLocal.get();
-        
+
         EncodedAppender target = cacheItem.getCached(appender);
         if (target == null) {
             target = doChainEncoders(appender);
@@ -157,6 +167,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public void markEncoded(CharSequence string) {
-        
+
     }
+
 }

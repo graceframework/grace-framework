@@ -39,15 +39,25 @@ import org.grails.buffer.StreamCharBuffer;
 public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
     private StreamCharBuffer charBuffer;
+
     private PrintWriter pw;
+
     private StreamByteBuffer byteBuffer;
+
     private OutputStream os;
+
     private ServletOutputStream sos;
+
     private boolean usingStream;
+
     private boolean usingWriter;
+
     private int status;
+
     private String contentType;
+
     private boolean committed;
+
     private String redirectURL;
 
     public IncludeResponseWrapper(HttpServletResponse httpServletResponse) {
@@ -124,6 +134,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
             byteBuffer = new StreamByteBuffer();
             os = byteBuffer.getOutputStream();
             sos = new ServletOutputStream() {
+
                 @Override
                 public void write(byte[] b, int off, int len) throws IOException {
                     os.write(b, off, len);
@@ -148,6 +159,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
                 public void setWriteListener(WriteListener writeListener) {
                     //no op
                 }
+
             };
         }
 
@@ -184,38 +196,39 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
         return "";
     }
-    
+
     @Override
     public void resetBuffer() {
-       if (isCommitted()) {
-           throw new IllegalStateException("Response already committed");
-       }
-       if (usingWriter) {
-          charBuffer.reset();
-       }
+        if (isCommitted()) {
+            throw new IllegalStateException("Response already committed");
+        }
+        if (usingWriter) {
+            charBuffer.reset();
+        }
 
-       if (usingStream) {
-          byteBuffer.reset();
-       }
+        if (usingStream) {
+            byteBuffer.reset();
+        }
     }
 
     @Override
     public void reset() {
         resetBuffer();
-    }    
+    }
 
     @Override
     public void setContentLength(int len) {
-       // do nothing
+        // do nothing
     }
-    
+
     @Override
     public void setStatus(int sc, String sm) {
-       setStatus(sc);
+        setStatus(sc);
     }
-    
+
     @Override
     public void flushBuffer() {
-       // do nothing
+        // do nothing
     }
+
 }

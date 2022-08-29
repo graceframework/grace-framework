@@ -51,7 +51,9 @@ import org.slf4j.LoggerFactory;
 class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(WatchServiceDirectoryWatcher.class);
+
     private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<WatchKey, List<String>>();
+
     private Set<Path> individualWatchedFiles = new HashSet<Path>();
 
     private final WatchService watchService;

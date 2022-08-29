@@ -38,7 +38,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
  * @author Graeme Rocher
  * @since 1.2
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
 
     private Map<String, Object> params = Collections.emptyMap();
@@ -167,4 +167,5 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     public Object getRedirectInfo() {
         return null;
     }
+
 }

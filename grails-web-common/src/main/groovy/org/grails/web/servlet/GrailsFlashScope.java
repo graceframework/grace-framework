@@ -39,13 +39,17 @@ import org.grails.web.util.GrailsApplicationAttributes;
  *
  * @author Graeme Rocher
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class GrailsFlashScope implements FlashScope {
 
     private static final long serialVersionUID = 1457772347769500476L;
+
     private Map current = new ConcurrentHashMap();
+
     private Map next = new ConcurrentHashMap();
+
     public static final String ERRORS_PREFIX = "org.codehaus.groovy.grails.ERRORS_";
+
     private static final String ERRORS_PROPERTY = "errors";
 
     private final boolean registerWithSession;
@@ -167,7 +171,7 @@ public class GrailsFlashScope implements FlashScope {
     public Object put(String key, Object value) {
         // create the session if it doesn't exist
         registerWithSessionIfNecessary();
-       
+
         if (current.containsKey(key)) {
             current.remove(key);
         }
@@ -219,4 +223,5 @@ public class GrailsFlashScope implements FlashScope {
             }
         }
     }
+
 }

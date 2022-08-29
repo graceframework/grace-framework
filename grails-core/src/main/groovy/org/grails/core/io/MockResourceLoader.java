@@ -44,4 +44,5 @@ public class MockResourceLoader extends DefaultResourceLoader {
     private static boolean isNotPrefixed(String location) {
         return !location.startsWith("classpath:") && !location.startsWith("classpath*:") && !location.startsWith("file:");
     }
+
 }

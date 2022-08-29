@@ -46,9 +46,13 @@ import org.grails.io.support.Resource;
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements GrailsApplicationAware, Ordered {
 
     public static final String TYPE = "Domain";
+
     public static final String PLUGIN_NAME = "domainClass";
-    private  static final String ENTITY_ANN_NAME = "Entity";
+
+    private static final String ENTITY_ANN_NAME = "Entity";
+
     private static final String GRAILS_PACKAGE_PREFIX = "grails.";
+
     private static final String JAVAX_PERSISTENCE = "javax.persistence";
 
     public DomainClassArtefactHandler() {
@@ -85,7 +89,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
         return !classNode.isEnum() && !(classNode instanceof InnerClassNode);
     }
 
-
     @Override
     public boolean isArtefact(ClassNode classNode) {
         if (classNode == null) {
@@ -117,7 +120,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
         }
         return retval;
     }
-    
+
     public static boolean isDomainClass(Class<?> clazz) {
         return clazz != null && doIsDomainClassCheck(clazz);
 
@@ -170,4 +173,5 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     public int getOrder() {
         return 1;
     }
+
 }

@@ -105,16 +105,26 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     protected static final Class<?>[] COMMON_CLASSES = {
             Boolean.class, Byte.class, Character.class, Class.class, Double.class, Float.class,
             Integer.class, Long.class, Number.class, Short.class, String.class, BigInteger.class,
-            BigDecimal.class, URL.class, URI.class};
+            BigDecimal.class, URL.class, URI.class };
+
     private static final Log LOG = LogFactory.getLog(DefaultGrailsPluginManager.class);
+
     private static final String GRAILS_VERSION = "grailsVersion";
+
     private static final String GRAILS_PLUGIN_SUFFIX = "GrailsPlugin";
+
     private List<GrailsPlugin> delayedLoadPlugins = new LinkedList<GrailsPlugin>();
+
     private ApplicationContext parentCtx;
+
     private PathMatchingResourcePatternResolver resolver;
+
     private Map<GrailsPlugin, String[]> delayedEvictions = new HashMap<GrailsPlugin, String[]>();
+
     private Map<String, Set<GrailsPlugin>> pluginToObserverMap = new HashMap<String, Set<GrailsPlugin>>();
+
     private PluginFilter pluginFilter;
+
     private List<GrailsPlugin> userPlugins = new ArrayList<GrailsPlugin>();
 
     public DefaultGrailsPluginManager(String resourcePath, GrailsApplication application) {
@@ -225,7 +235,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         }
 
         for (GrailsPlugin observingPlugin : getPluginObservers(plugin)) {
-
             if (!observingPlugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
                 continue;
             }
@@ -321,7 +330,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private void visitTopologicalSort(GrailsPlugin plugin, List<GrailsPlugin> sortedPlugins,
-                                      Set<GrailsPlugin> visitedPlugins, Map<GrailsPlugin, List<GrailsPlugin>> loadOrderDependencies) {
+            Set<GrailsPlugin> visitedPlugins, Map<GrailsPlugin, List<GrailsPlugin>> loadOrderDependencies) {
         if (plugin != null && !visitedPlugins.contains(plugin)) {
             visitedPlugins.add(plugin);
             List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.get(plugin);
@@ -336,7 +345,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private void attemptLoadPlugins(ClassLoader gcl) {
         // retrieve load core plugins first
-
         List<GrailsPlugin> grailsCorePlugins = loadCorePlugins ? findCorePlugins() : new ArrayList<GrailsPlugin>();
 
         List<GrailsPlugin> grailsUserPlugins = findUserPlugins(gcl);
@@ -833,4 +841,5 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     public List<GrailsPlugin> getPluginList() {
         return Collections.unmodifiableList(pluginList);
     }
+
 }

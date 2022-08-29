@@ -30,6 +30,7 @@ import grails.web.mime.MimeUtility;
 public class DefaultMimeUtility implements MimeUtility {
 
     private List<MimeType> mimeTypes;
+
     private Map<String, MimeType> extensionToMimeMap = new HashMap<String, MimeType>();
 
     public DefaultMimeUtility(MimeType[] mimeTypes) {
@@ -77,4 +78,5 @@ public class DefaultMimeUtility implements MimeUtility {
 
         return null;
     }
+
 }

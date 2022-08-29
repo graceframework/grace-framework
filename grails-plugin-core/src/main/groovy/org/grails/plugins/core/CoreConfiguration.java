@@ -35,6 +35,7 @@ import grails.core.GrailsApplication;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureOrder
 public class CoreConfiguration {
+
     private final GrailsApplication grailsApplication;
 
     public CoreConfiguration(ObjectProvider<GrailsApplication> grailsApplication) {
@@ -54,4 +55,5 @@ public class CoreConfiguration {
     public ConfigProperties grailsConfigProperties() {
         return new ConfigProperties(grailsApplication.getConfig());
     }
+
 }

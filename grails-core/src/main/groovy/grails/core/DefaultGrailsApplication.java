@@ -90,24 +90,37 @@ import org.grails.io.support.GrailsResourceUtils;
 public class DefaultGrailsApplication extends AbstractGrailsApplication implements BeanClassLoaderAware {
 
     protected static final Pattern GETCLASSESPROP_PATTERN = Pattern.compile("(\\w+)(Classes)");
+
     protected static final Pattern GETCLASSESMETH_PATTERN = Pattern.compile("(get)(\\w+)(Classes)");
+
     protected static final Pattern ISCLASS_PATTERN = Pattern.compile("(is)(\\w+)(Class)");
+
     protected static final Pattern GETCLASS_PATTERN = Pattern.compile("(get)(\\w+)Class");
 
     protected Class<?>[] allClasses = new Class[0];
+
     protected static Log log = LogFactory.getLog(DefaultGrailsApplication.class);
 
     protected Set<Class<?>> loadedClasses = new LinkedHashSet<Class<?>>();
+
     protected ArtefactHandler[] artefactHandlers;
+
     protected Map<String, ArtefactHandler> artefactHandlersByName = new HashMap<String, ArtefactHandler>();
+
     protected List<Class<?>> allArtefactClasses = new ArrayList<Class<?>>();
+
     protected Map<String, ArtefactInfo> artefactInfo = new HashMap<String, ArtefactInfo>();
+
     protected Class<?>[] allArtefactClassesArray;
+
     protected Resource[] resources;
+
     protected boolean initialised = false;
+
     protected GrailsApplicationClass applicationClass;
 
     protected MappingContext proxyMappingContext = buildMappingContextProxy(this);
+
     protected MappingContext mappingContext;
 
     private static MappingContext buildMappingContextProxy(final DefaultGrailsApplication application) {
@@ -121,7 +134,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
                 return ReflectionUtils.invokeMethod(method, realContext, args);
             }
         };
-        return (MappingContext) Proxy.newProxyInstance(application.getClass().getClassLoader(), new Class[]{MappingContext.class}, proxyHandler);
+        return (MappingContext) Proxy.newProxyInstance(application.getClass().getClassLoader(), new Class[] { MappingContext.class }, proxyHandler);
     }
 
     /**
@@ -138,7 +151,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
         this(new GroovyClassLoader());
         this.applicationClass = applicationClass;
     }
-    
+
     public DefaultGrailsApplication(ClassLoader classLoader) {
         super();
         this.classLoader = classLoader;
@@ -239,7 +252,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     private void updateArtefactHandlers() {
         // Cache the list as an array
         artefactHandlers = artefactHandlersByName.values().toArray(
-            new ArtefactHandler[artefactHandlersByName.size()]);
+                new ArtefactHandler[artefactHandlersByName.size()]);
     }
 
     /**
@@ -650,7 +663,6 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
      */
     @Override
     public Object invokeMethod(String methodName, Object args) {
-
         Object[] argsv = (Object[]) args;
 
         Matcher match = GETCLASS_PATTERN.matcher(methodName);
@@ -735,6 +747,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     }
 
     private static boolean extensionMethodsInitialized = false;
+
     protected static void initialiseGroovyExtensionModules() {
         if (extensionMethodsInitialized) {
             return;
@@ -863,8 +876,6 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
             return artefactGrailsClass;
         }
 
-
-
         throw new GrailsConfigurationException("Cannot add " + artefactType + " class [" +
                 artefactClass + "]. It is not a " + artefactType + "!");
     }
@@ -881,5 +892,6 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     public void setMappingContext(MappingContext mappingContext) {
         this.mappingContext = mappingContext;
     }
+
 }
 

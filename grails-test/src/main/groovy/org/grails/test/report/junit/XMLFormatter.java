@@ -56,4 +56,5 @@ public class XMLFormatter extends XMLJUnitResultFormatter {
         TestStacktraceSanitizer.sanitize(throwable);
         super.addError(test, throwable);
     }
+
 }

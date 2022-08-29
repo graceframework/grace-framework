@@ -15,8 +15,6 @@
  */
 package org.grails.databinding.bindingsource;
 
-
-
 /**
  * Thrown if an unrecoverable problem occurs creating a DataBindingSource.
  *
@@ -29,4 +27,5 @@ public class DataBindingSourceCreationException extends RuntimeException {
     public DataBindingSourceCreationException(Throwable cause) {
         super(cause);
     }
+
 }

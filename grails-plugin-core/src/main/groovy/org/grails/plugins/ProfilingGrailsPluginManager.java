@@ -134,4 +134,5 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
         super.doArtefactConfiguration();
         System.out.println("doArtefactConfiguration took " + (System.currentTimeMillis() - time));
     }
+
 }

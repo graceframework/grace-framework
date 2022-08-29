@@ -31,4 +31,5 @@ public interface Decoder extends CodecIdentifierProvider {
      * @return the decoded object
      */
     Object decode(Object o);
+
 }

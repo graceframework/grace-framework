@@ -18,6 +18,7 @@ package org.grails.web.servlet.mvc;
 import grails.core.support.proxy.EntityProxyHandler;
 
 public class MockHibernateProxyHandler implements EntityProxyHandler {
+
     public boolean isProxy(Object o) {
         return false;
     }
@@ -44,4 +45,5 @@ public class MockHibernateProxyHandler implements EntityProxyHandler {
     public Class<?> getProxiedClass(Object o) {
         return null;
     }
+
 }

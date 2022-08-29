@@ -62,6 +62,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
         String dayString = (String) fieldValues.get("day");
         String hourString = (String) fieldValues.get("hour");
         String minuteString = (String) fieldValues.get("minute");
+
         if (GrailsStringUtils.isBlank(yearString)
                 && GrailsStringUtils.isBlank(monthString)
                 && GrailsStringUtils.isBlank(dayString)
@@ -69,7 +70,9 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
                 && GrailsStringUtils.isBlank(minuteString)) {
             return null;
         }
+
         int year;
+
         try {
             Assert.isTrue(!GrailsStringUtils.isBlank(yearString), "Can't populate a date without a year");
 
@@ -101,4 +104,5 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
         }
         return defaultValue;
     }
+
 }

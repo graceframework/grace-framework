@@ -62,6 +62,7 @@ import grails.artefact.Enhanced;
 public class GrailsClassUtils {
 
     private static final Log LOG = LogFactory.getLog(GrailsClassUtils.class);
+
     public static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_COMPATIBLE_CLASSES = new HashMap<Class<?>, Class<?>>();
 
     /**
@@ -165,7 +166,6 @@ public class GrailsClassUtils {
         }
         return interfaces;
     }
-
 
     /**
      * Check whether the given class is visible in the given ClassLoader.
@@ -440,7 +440,7 @@ public class GrailsClassUtils {
     /**
      * Convenience method for converting a collection to an Object[]
      * @param c The collection
-     * @return  An object array
+     * @return An object array
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Object[] collectionToObjectArray(Collection c) {
@@ -997,27 +997,27 @@ public class GrailsClassUtils {
         return ClassUtils.forName(className, ClassUtils.getDefaultClassLoader()).newInstance();
     }
 
-   /**
-    * Checks to see if a class is marked with @grails.artefact.Enhanced and if the enhancedFor
-    * attribute of the annotation contains a specific feature name
-    *
-    * @param controllerClass The class to inspect
-    * @param featureName The name of a feature to check for
-    * @return true if controllerClass is marked with Enhanced and the enhancedFor attribute includes featureName, otherwise returns false
-    * @see Enhanced
-    * @see Enhanced#enhancedFor()
-    */
-   public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
-       boolean hasBeenEnhanced = false;
-       final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
-       if (enhancedAnnotation != null) {
-           final String[] enhancedFor = enhancedAnnotation.enhancedFor();
-           if (enhancedFor != null) {
-               hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
-           }
-       }
-       return hasBeenEnhanced;
-   }
+    /**
+     * Checks to see if a class is marked with @grails.artefact.Enhanced and if the enhancedFor
+     * attribute of the annotation contains a specific feature name
+     *
+     * @param controllerClass The class to inspect
+     * @param featureName The name of a feature to check for
+     * @return true if controllerClass is marked with Enhanced and the enhancedFor attribute includes featureName, otherwise returns false
+     * @see Enhanced
+     * @see Enhanced#enhancedFor()
+     */
+    public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
+        boolean hasBeenEnhanced = false;
+        final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
+        if (enhancedAnnotation != null) {
+            final String[] enhancedFor = enhancedAnnotation.enhancedFor();
+            if (enhancedFor != null) {
+                hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
+            }
+        }
+        return hasBeenEnhanced;
+    }
 
     public static FastClass fastClass(Class superClass) {
         FastClass.Generator gen = new FastClass.Generator();
@@ -1026,4 +1026,5 @@ public class GrailsClassUtils {
         gen.setUseCache(!Environment.isReloadingAgentEnabled());
         return gen.create();
     }
+
 }

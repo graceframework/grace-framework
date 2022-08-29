@@ -37,22 +37,31 @@ import grails.gorm.validation.Constrained;
 public interface UrlMapping extends Comparable, UrlCreator {
 
     String WILDCARD = "*";
+
     String CAPTURED_WILDCARD = "(*)";
+
     String OPTIONAL_EXTENSION_WILDCARD = "(.(*))";
+
     String SLASH = "/";
+
     char QUESTION_MARK = '?';
+
     char AMPERSAND = '&';
+
     String DOUBLE_WILDCARD = "**";
+
     String CAPTURED_DOUBLE_WILDCARD = "(**)";
 
     /**
      * The controller this mapping matches
      */
     String CONTROLLER = "controller";
+
     /**
      * The action this mapping matches
      */
     String ACTION = "action";
+
     /**
      * The HTTP method this mapping matches
      */
@@ -82,15 +91,16 @@ public interface UrlMapping extends Comparable, UrlCreator {
      * The URI of the URL mapping
      */
     String URI = "uri";
+
     /**
      * The plugin of the URL Mapping
      */
     String PLUGIN = "plugin";
+
     /**
      * The namespace of the URL mapping
      */
     String NAMESPACE = "namespace";
-
 
     String VIEW = "view";
 
@@ -255,4 +265,5 @@ public interface UrlMapping extends Comparable, UrlCreator {
      * @return True if the URL mapping comes from a plugin
      */
     boolean isDefinedInPlugin();
+
 }

@@ -67,4 +67,5 @@ public interface EncodingStateRegistry {
      *            the CharSequence
      */
     void registerEncodedWith(Encoder encoder, CharSequence escaped);
+
 }

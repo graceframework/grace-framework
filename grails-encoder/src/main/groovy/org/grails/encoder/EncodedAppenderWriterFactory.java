@@ -38,4 +38,5 @@ public interface EncodedAppenderWriterFactory {
      * @return the java.io.Writer instance
      */
     Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry);
+
 }

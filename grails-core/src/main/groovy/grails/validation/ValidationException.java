@@ -27,8 +27,11 @@ import org.grails.core.exceptions.GrailsException;
  * @since 1.2
  */
 public class ValidationException extends GrailsException {
+
     private static final long serialVersionUID = 1L;
+
     private Errors errors;
+
     private String fullMessage;
 
     public ValidationException(String msg, Errors e) {
@@ -41,14 +44,14 @@ public class ValidationException extends GrailsException {
         return errors;
     }
 
-    public String getMessage() { 
-        return fullMessage; 
+    public String getMessage() {
+        return fullMessage;
     }
-    
+
     public static String formatErrors(Errors errors) {
         return formatErrors(errors, null);
     }
-    
+
     public static String formatErrors(Errors errors, String msg) {
         StringBuilder b = new StringBuilder();
         if (msg != null && msg.length() > 0) {
@@ -59,4 +62,5 @@ public class ValidationException extends GrailsException {
         }
         return b.toString();
     }
+
 }

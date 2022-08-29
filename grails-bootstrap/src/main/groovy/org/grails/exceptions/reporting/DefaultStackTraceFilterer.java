@@ -29,31 +29,35 @@ import org.apache.commons.logging.LogFactory;
  * @author Graeme Rocher
  */
 public class DefaultStackTraceFilterer implements StackTraceFilterer {
+
     public static final String STACK_LOG_NAME = "StackTrace";
+
     public static final Log STACK_LOG = LogFactory.getLog(STACK_LOG_NAME);
 
     private static final String[] DEFAULT_INTERNAL_PACKAGES = new String[] {
-        "org.codehaus.groovy.runtime.",
-        "org.codehaus.groovy.reflection.",
-        "org.codehaus.groovy.ast.",
-        "org.springframework.web.filter",
-        "org.springframework.boot.actuate",
-        "org.mortbay.",
-        "groovy.lang.",
-        "org.apache.catalina.",
-        "org.apache.coyote.",
-        "org.apache.tomcat.",
-        "net.sf.cglib.proxy.",
-        "sun.",
-        "java.lang.reflect.",
-        "org.springframework.boot.devtools.",
-        "org.springsource.loaded.",
-        "com.opensymphony.",
-        "javax.servlet."
+            "org.codehaus.groovy.runtime.",
+            "org.codehaus.groovy.reflection.",
+            "org.codehaus.groovy.ast.",
+            "org.springframework.web.filter",
+            "org.springframework.boot.actuate",
+            "org.mortbay.",
+            "groovy.lang.",
+            "org.apache.catalina.",
+            "org.apache.coyote.",
+            "org.apache.tomcat.",
+            "net.sf.cglib.proxy.",
+            "sun.",
+            "java.lang.reflect.",
+            "org.springframework.boot.devtools.",
+            "org.springsource.loaded.",
+            "com.opensymphony.",
+            "javax.servlet."
     };
 
     private List<String> packagesToFilter = new ArrayList<String>();
+
     private boolean shouldFilter;
+
     private String cutOffPackage = null;
 
     public DefaultStackTraceFilterer() {
@@ -148,4 +152,5 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     public void setShouldFilter(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
     }
+
 }

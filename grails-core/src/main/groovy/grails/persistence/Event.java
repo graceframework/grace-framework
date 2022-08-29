@@ -28,18 +28,20 @@ public enum Event {
     onLoad, onSave, beforeLoad, beforeInsert, beforeUpdate, beforeDelete, afterLoad, afterInsert, afterUpdate, afterDelete;
 
     private static final String[] allEvents;
+
     static {
         List<String> events = new ArrayList<String>();
         for (Event e : values()) {
             events.add(e.toString());
         }
         allEvents = events.toArray(new String[events.size()]);
-
     }
+
     /**
      * @return The names of all persistence events
      */
     public static String[] getAllEvents() {
         return allEvents;
     }
+
 }

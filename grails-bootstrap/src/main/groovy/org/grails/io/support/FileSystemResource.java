@@ -36,6 +36,7 @@ import java.net.URL;
 public class FileSystemResource implements Resource {
 
     private final File file;
+
     private final String path;
 
     /**
@@ -200,4 +201,5 @@ public class FileSystemResource implements Resource {
     public String toString() {
         return file.toString();
     }
+
 }

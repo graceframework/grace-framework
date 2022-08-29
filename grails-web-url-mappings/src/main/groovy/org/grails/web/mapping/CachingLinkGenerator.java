@@ -40,14 +40,23 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
 public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private static final int MAX_SIZE = 5000;
+
     public static final String LINK_PREFIX = "link";
+
     public static final String RESOURCE_PREFIX = "resource";
+
     public static final String USED_ATTRIBUTES_SUFFIX = "-used-attributes";
+
     public static final String EMPTY_MAP_STRING = "[:]";
+
     private static final String OPENING_BRACKET = "[";
+
     private static final String CLOSING_BRACKET = "]";
+
     private static final String COMMA_SEPARATOR = ", ";
+
     private static final String KEY_VALUE_SEPARATOR = ":";
+
     private static final String THIS_MAP = "(this Map)";
 
     private Cache<String, Object> linkCache;
@@ -130,7 +139,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         }
         buffer.append(CLOSING_BRACKET);
     }
-    
+
     protected String getCacheKeyValueForResource(Object o) {
         StringBuilder builder = new StringBuilder(o.getClass().getName());
         builder.append("->");
@@ -156,7 +165,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     protected void appendKeyValue(StringBuilder buffer, Map map, Object key, Object value) {
         buffer.append(key)
-              .append(KEY_VALUE_SEPARATOR);
+                .append(KEY_VALUE_SEPARATOR);
         if (value == map) {
             buffer.append(THIS_MAP);
         }
@@ -196,11 +205,12 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private Cache<String, Object> createDefaultCache() {
         return Caffeine.newBuilder()
-                                .maximumSize(MAX_SIZE)
-                                .build();
+                .maximumSize(MAX_SIZE)
+                .build();
     }
 
     public void clearCache() {
         linkCache.invalidateAll();
     }
+
 }

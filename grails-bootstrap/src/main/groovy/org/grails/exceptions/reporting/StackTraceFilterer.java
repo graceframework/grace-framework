@@ -24,6 +24,7 @@ package org.grails.exceptions.reporting;
 public interface StackTraceFilterer {
 
     String FULL_STACK_TRACE_MESSAGE = "Full Stack Trace:";
+
     String SYS_PROP_DISPLAY_FULL_STACKTRACE = "grails.full.stacktrace";
 
     /**
@@ -60,4 +61,5 @@ public interface StackTraceFilterer {
      * @param shouldFilter Whether to filter stack traces or not
      */
     void setShouldFilter(boolean shouldFilter);
+
 }

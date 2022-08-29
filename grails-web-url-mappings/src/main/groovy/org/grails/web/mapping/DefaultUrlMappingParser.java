@@ -33,7 +33,9 @@ import grails.web.mapping.UrlMappingParser;
  * Time: 8:35:26 AM
  */
 public class DefaultUrlMappingParser implements UrlMappingParser {
+
     public UrlMappingData parse(String url) {
         return new DefaultUrlMappingData(url);
     }
+
 }

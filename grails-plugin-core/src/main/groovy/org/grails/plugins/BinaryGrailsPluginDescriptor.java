@@ -33,7 +33,9 @@ import org.grails.io.support.SpringIOUtils;
 public class BinaryGrailsPluginDescriptor {
 
     private final Resource resource;
+
     private final List<String> providedlassNames;
+
     private GPathResult parsedXml;
 
     public BinaryGrailsPluginDescriptor(Resource resource, List<String> providedlassNames) {
@@ -86,4 +88,5 @@ public class BinaryGrailsPluginDescriptor {
         }
         return parsedXml;
     }
+
 }

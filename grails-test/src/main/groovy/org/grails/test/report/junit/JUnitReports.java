@@ -84,4 +84,5 @@ public class JUnitReports implements JUnitResultFormatter {
             report.endTestSuite(suite);
         }
     }
+
 }

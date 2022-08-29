@@ -275,4 +275,5 @@ public class ClassPathResource extends AbstractFileResolvingResource {
     public int hashCode() {
         return path.hashCode();
     }
+
 }

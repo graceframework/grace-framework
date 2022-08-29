@@ -26,8 +26,11 @@ import java.util.Set;
  * @since 2.3
  */
 public class EncodingStateImpl implements EncodingState {
+
     public static final EncodingState UNDEFINED_ENCODING_STATE = new EncodingStateImpl((Set<Encoder>) null, null);
+
     private final Set<Encoder> encoders;
+
     private final EncodingState previousEncodingState;
 
     /**
@@ -145,4 +148,5 @@ public class EncodingStateImpl implements EncodingState {
     public EncodingState getPreviousEncodingState() {
         return previousEncodingState;
     }
+
 }

@@ -49,6 +49,7 @@ import org.grails.io.support.Resource;
  * @since 3.0
  */
 class PluginAstReader {
+
     private BasicGrailsPluginInfo pluginInfo;
 
     public PluginAstReader() {
@@ -156,7 +157,7 @@ class PluginAstReader {
                         VariableExpression ve = (VariableExpression) expr;
                         value = String.format("@%s@", ve.getName());
                     }
-                    else if (expr instanceof ConstantExpression)  {
+                    else if (expr instanceof ConstantExpression) {
                         value = String.valueOf(((ConstantExpression) expr).getValue());
                     }
                     else {
@@ -179,7 +180,6 @@ class PluginAstReader {
         classNode.visitContents(visitor);
     }
 
-
     /**
      * Simple Javabean implementation of the GrailsPluginInfo interface.
      *
@@ -189,7 +189,9 @@ class PluginAstReader {
     public class BasicGrailsPluginInfo implements GrailsPluginInfo {
 
         private String name;
+
         private String version;
+
         private Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();
 
         public BasicGrailsPluginInfo() {
@@ -216,7 +218,7 @@ class PluginAstReader {
         }
 
         public Object getProperty(String property) {
-           return attributes.get(property);
+            return attributes.get(property);
         }
 
         public String getFullName() {
@@ -244,4 +246,5 @@ class PluginAstReader {
         }
 
     }
+
 }

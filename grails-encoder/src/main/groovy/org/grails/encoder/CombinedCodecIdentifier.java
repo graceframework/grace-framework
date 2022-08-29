@@ -22,14 +22,17 @@ import java.util.Set;
 import org.springframework.util.StringUtils;
 
 public class CombinedCodecIdentifier implements CodecIdentifier {
+
     private CodecIdentifier[] codecIdentifiers;
+
     private String codecName;
+
     private String codecAlias;
-    
+
     CombinedCodecIdentifier(CodecIdentifierProvider[] encodersOrDecoders) {
         this(encodersOrDecoders, false);
     }
-    
+
     CombinedCodecIdentifier(CodecIdentifierProvider[] encodersOrDecoders, boolean reverseOrder) {
         int size = encodersOrDecoders.length;
         codecIdentifiers = new CodecIdentifier[size];
@@ -62,4 +65,5 @@ public class CombinedCodecIdentifier implements CodecIdentifier {
         }
         return false;
     }
+
 }

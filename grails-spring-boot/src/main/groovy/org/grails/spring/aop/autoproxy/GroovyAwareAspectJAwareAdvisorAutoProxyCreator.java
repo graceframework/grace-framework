@@ -26,12 +26,11 @@ import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProx
  */
 public class GroovyAwareAspectJAwareAdvisorAutoProxyCreator extends AnnotationAwareAspectJAutoProxyCreator {
 
-
-
     private static final long serialVersionUID = 1;
 
     @Override
     protected boolean shouldProxyTargetClass(Class<?> beanClass, String beanName) {
         return GroovyObject.class.isAssignableFrom(beanClass) || super.shouldProxyTargetClass(beanClass, beanName);
     }
+
 }

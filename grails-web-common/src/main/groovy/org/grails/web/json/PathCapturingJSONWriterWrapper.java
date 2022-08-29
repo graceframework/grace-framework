@@ -31,7 +31,9 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     private final Log log = LogFactory.getLog(getClass());
 
     private final boolean debugCurrentStack = true;
+
     private JSONWriter delegate;
+
     private Stack<PathElement> pathStack = new Stack<PathElement>();
 
     public PathCapturingJSONWriterWrapper(JSONWriter delegate) {
@@ -263,6 +265,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     }
 
     private class PropertyElement extends PathElement {
+
         private String property;
 
         private PropertyElement(String property) {
@@ -273,9 +276,11 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
         public String toString() {
             return "." + property;
         }
+
     }
 
     private class IndexElement extends PathElement {
+
         private int index;
 
         private IndexElement(int index) {
@@ -286,6 +291,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
         public String toString() {
             return "[" + index + "]";
         }
+
     }
 
     public String getStackReference(int depth) {
@@ -304,4 +310,5 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
         }
         return out.toString();
     }
+
 }

@@ -48,25 +48,36 @@ import org.grails.core.io.StaticResourceLoader;
  *
  * @see grails.plugins.GrailsPlugin
  *
- * @author  Graeme Rocher
+ * @author Graeme Rocher
  * @since 2.0
  */
 @SuppressWarnings("rawtypes")
 public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
 
     public static final String VIEWS_PROPERTIES = "views.properties";
+
     public static final String RELATIVE_VIEWS_PROPERTIES = "gsp/views.properties";
+
     public static final char UNDERSCORE = '_';
+
     public static final String PROPERTIES_EXTENSION = ".properties";
+
     public static final String DEFAULT_PROPERTIES_ENCODING = "UTF-8";
+
     public static final String PLUGIN_DESCRIPTOR_PATH = "META-INF/grails-plugin.xml";
 
     private final BinaryGrailsPluginDescriptor descriptor;
+
     private Class[] providedArtefacts = {};
+
     private final Map<String, Class> precompiledViewMap = new HashMap<String, Class>();
+
     private final Resource baseResource;
+
     private final Resource baseResourcesResource;
+
     private final boolean isJar;
+
     private final File projectDirectory;
 
     /**
@@ -181,7 +192,6 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     }
 
     protected void initializeProvidedArtefacts(List<String> classNames) {
-
         List<Class> artefacts = new ArrayList<Class>();
         if (!classNames.isEmpty()) {
             final ClassLoader classLoader = grailsApplication.getClassLoader();
@@ -268,7 +278,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                             return 0;
                         }
                         else {
-                            return firstUnderscoreCount > secondUnderscoreCount ?  1 : -1;
+                            return firstUnderscoreCount > secondUnderscoreCount ? 1 : -1;
                         }
                     });
 
@@ -281,7 +291,6 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         }
         return properties;
     }
-
 
     private Resource[] filterResources(Resource[] resources, Locale locale) {
         List<Resource> finalResources = new ArrayList<Resource>(resources.length);
@@ -332,7 +341,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
      *
      * @return The view class which is a subclass of GroovyPage
      */
-    public Class resolveView(String viewName)  {
+    public Class resolveView(String viewName) {
 
         // this is a workaround for GRAILS-9234; in that scenario the viewName will be
         // "/WEB-INF/grails-app/views/plugins/plugin9234-0.1/junk/_book.gsp" with the
@@ -343,4 +352,5 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
 
         return precompiledViewMap.get(viewName);
     }
+
 }

@@ -48,30 +48,45 @@ import org.springframework.util.Assert;
 public class DefaultBeanConfiguration extends GroovyObjectSupport implements BeanConfiguration {
 
     private static final String AUTOWIRE = "autowire";
+
     private static final String SINGLETON = "singleton";
+
     private static final String CONSTRUCTOR_ARGS = "constructorArgs";
+
     private static final String DESTROY_METHOD = "destroyMethod";
+
     private static final String FACTORY_BEAN = "factoryBean";
+
     private static final String FACTORY_METHOD = "factoryMethod";
+
     private static final String INIT_METHOD = "initMethod";
+
     private static final String BY_NAME = "byName";
+
     private static final String PARENT = "parent";
+
     private static final String BY_TYPE = "byType";
+
     private static final String BY_CONSTRUCTOR = "constructor";
+
     private static final String ROLE = "role";
+
     private static final String ROLE_APPLICATION = "application";
+
     private static final String ROLE_SUPPORT = "support";
+
     private static final String ROLE_INFRASTRUCTURE = "infrastructure";
+
     private static final List<String> DYNAMIC_PROPS = Arrays.asList(
-        AUTOWIRE,
-        CONSTRUCTOR_ARGS,
-        DESTROY_METHOD,
-        FACTORY_BEAN,
-        FACTORY_METHOD,
-        INIT_METHOD,
-        BY_NAME,
-        BY_TYPE,
-        BY_CONSTRUCTOR);
+            AUTOWIRE,
+            CONSTRUCTOR_ARGS,
+            DESTROY_METHOD,
+            FACTORY_BEAN,
+            FACTORY_METHOD,
+            INIT_METHOD,
+            BY_NAME,
+            BY_TYPE,
+            BY_CONSTRUCTOR);
 
     private String parentName;
 
@@ -154,7 +169,7 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
                 bd.setInitMethodName(newValue.toString());
             }
         }
-         // singleton property
+        // singleton property
         else if (SINGLETON.equals(property)) {
             bd.setScope(Boolean.TRUE.equals(newValue) ? BeanDefinition.SCOPE_SINGLETON : BeanDefinition.SCOPE_PROTOTYPE);
         }
@@ -168,14 +183,19 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     }
 
     private Class<?> clazz;
+
     private String name;
+
     private boolean singleton = true;
+
     private AbstractBeanDefinition definition;
 
     private Resource resource;
+
     private boolean condition = true;
 
     private Collection<?> constructorArgs = Collections.emptyList();
+
     private BeanWrapper wrapper;
 
     public DefaultBeanConfiguration(String name, Class<?> clazz) {
@@ -270,8 +290,8 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
             propertyValue = ((BeanConfiguration) propertyValue).getBeanDefinition();
         }
         getBeanDefinition()
-            .getPropertyValues()
-            .addPropertyValue(propertyName, propertyValue);
+                .getPropertyValues()
+                .addPropertyValue(propertyName, propertyValue);
 
         return this;
     }
@@ -320,8 +340,8 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
 
     public Object getPropertyValue(String propName) {
         PropertyValue propertyValue = getBeanDefinition()
-            .getPropertyValues()
-            .getPropertyValue(propName);
+                .getPropertyValues()
+                .getPropertyValue(propName);
         if (propertyValue == null) {
             return null;
         }
@@ -361,4 +381,5 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     public boolean isConditionOn() {
         return condition;
     }
+
 }

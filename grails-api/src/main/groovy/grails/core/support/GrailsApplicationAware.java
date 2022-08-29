@@ -28,6 +28,7 @@ import grails.core.GrailsApplication;
  * @see GrailsApplication
  */
 public interface GrailsApplicationAware extends Aware {
+
     /**
      * <p>This method is called by the {@link org.springframework.context.ApplicationContext} that
      * loads the Grails application. The {@link GrailsApplication} instance that represents
@@ -36,4 +37,5 @@ public interface GrailsApplicationAware extends Aware {
      * @param grailsApplication the {@link GrailsApplication} object that represents this Grails application
      */
     void setGrailsApplication(GrailsApplication grailsApplication);
+
 }

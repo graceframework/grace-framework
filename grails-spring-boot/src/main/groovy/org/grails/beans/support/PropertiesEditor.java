@@ -21,9 +21,9 @@ import java.util.Set;
 
 /**
  * Fixed version of Spring's PropertiesEditor that converts all keys and values to String values
- * 
+ *
  * java.util.Properties should only contain String keys and values
- * 
+ *
  * @author Lari Hotari
  * @since 2.3.6
  *

@@ -16,8 +16,11 @@
 package grails.util;
 
 public class Triple<A, B, C> {
+
     final A aValue;
+
     final B bValue;
+
     final C cValue;
 
     public Triple(A aValue, B bValue, C cValue) {
@@ -91,4 +94,5 @@ public class Triple<A, B, C> {
     public String toString() {
         return "Triple [aValue=" + aValue + ", bValue=" + bValue + ", cValue=" + cValue + "]";
     }
+
 }

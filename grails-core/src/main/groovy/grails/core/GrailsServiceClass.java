@@ -21,7 +21,9 @@ package grails.core;
 public interface GrailsServiceClass extends InjectableGrailsClass {
 
     String DATA_SOURCE = "datasource";
+
     String DEFAULT_DATA_SOURCE = "DEFAULT";
+
     String ALL_DATA_SOURCES = "ALL";
 
     /**
@@ -42,4 +44,5 @@ public interface GrailsServiceClass extends InjectableGrailsClass {
      * @param name the name
      */
     boolean usesDatasource(String name);
+
 }

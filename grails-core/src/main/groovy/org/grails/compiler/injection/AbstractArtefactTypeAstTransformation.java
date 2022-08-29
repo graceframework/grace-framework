@@ -35,6 +35,7 @@ import grails.compiler.ast.ClassInjector;
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public abstract class AbstractArtefactTypeAstTransformation implements ASTTransformation {
+
     protected void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
         try {
             ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors();
@@ -56,4 +57,5 @@ public abstract class AbstractArtefactTypeAstTransformation implements ASTTransf
             throw e;
         }
     }
+
 }

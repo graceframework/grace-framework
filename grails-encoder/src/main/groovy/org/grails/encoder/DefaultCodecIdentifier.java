@@ -27,7 +27,9 @@ import java.util.Set;
  * @since 2.3
  */
 public class DefaultCodecIdentifier implements CodecIdentifier {
+
     final private String codecName;
+
     final private Set<String> codecAliases;
 
     public DefaultCodecIdentifier(String codecName) {
@@ -127,4 +129,5 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
         }
         return false;
     }
+
 }

@@ -43,6 +43,7 @@ import org.grails.config.NavigableMapPropertySource;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class YamlPropertySourceLoader extends YamlProcessor implements PropertySourceLoader {
+
     private static final String ENVIRONMENTS = "environments";
 
     @Override
@@ -94,10 +95,10 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
         return propertySources;
     }
 
-
     public List<Map<String, Object>> load() {
         final List<Map<String, Object>> result = new ArrayList<>();
         process((properties, map) -> result.add(getFlattenedMap(map)));
         return result;
     }
+
 }

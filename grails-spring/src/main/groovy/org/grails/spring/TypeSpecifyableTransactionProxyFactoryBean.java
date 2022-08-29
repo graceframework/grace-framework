@@ -44,4 +44,5 @@ public class TypeSpecifyableTransactionProxyFactoryBean extends TransactionProxy
 
         return super.getObjectType();
     }
+
 }

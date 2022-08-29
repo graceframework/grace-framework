@@ -57,7 +57,7 @@ public class GrailsAwareClassLoader extends GroovyClassLoader {
     public void setClassInjectors(ClassInjector[] classInjectors) {
         this.classInjectors = classInjectors;
     }
-    
+
     /**
      * @see groovy.lang.GroovyClassLoader#createCompilationUnit(org.codehaus.groovy.control.CompilerConfiguration, java.security.CodeSource)
      */
@@ -78,4 +78,5 @@ public class GrailsAwareClassLoader extends GroovyClassLoader {
 
         return cu;
     }
+
 }

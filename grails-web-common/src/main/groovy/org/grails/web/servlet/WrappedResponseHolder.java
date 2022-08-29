@@ -34,8 +34,9 @@ public class WrappedResponseHolder {
             }
         }, true);
     }
+
     private static ThreadLocal<HttpServletResponse> wrappedResponseHolder =
-        new ThreadLocal<HttpServletResponse>();
+            new ThreadLocal<HttpServletResponse>();
 
     /**
      * Bind the given HttpServletResponse to the current thread.
@@ -52,4 +53,5 @@ public class WrappedResponseHolder {
     public static HttpServletResponse getWrappedResponse() {
         return wrappedResponseHolder.get();
     }
+
 }

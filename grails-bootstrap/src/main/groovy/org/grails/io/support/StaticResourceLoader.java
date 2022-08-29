@@ -15,7 +15,6 @@
  */
 package org.grails.io.support;
 
-
 /**
  * Loads relative to a static base resource
  *
@@ -37,5 +36,6 @@ public class StaticResourceLoader implements ResourceLoader {
     public ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
+
 }
 

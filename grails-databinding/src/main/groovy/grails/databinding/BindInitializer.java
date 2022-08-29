@@ -50,5 +50,7 @@ class User {
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BindInitializer {
+
     Class<?> value();
+
 }

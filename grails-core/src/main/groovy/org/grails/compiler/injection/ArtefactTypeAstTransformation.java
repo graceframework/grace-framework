@@ -51,14 +51,15 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransformation implements CompilationUnitAware {
+
     private static final ClassNode MY_TYPE = new ClassNode(Artefact.class);
-    
+
     protected CompilationUnit compilationUnit;
 
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
         AnnotatedNode parent = (AnnotatedNode) astNodes[1];
         AnnotationNode node = (AnnotationNode) astNodes[0];
-        
+
         if (!(node instanceof AnnotationNode) || !(parent instanceof AnnotatedNode)) {
             throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
         }
@@ -76,18 +77,18 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         if (isApplied(cNode)) {
             return;
         }
-        
+
         String artefactType = resolveArtefactType(sourceUnit, node, cNode);
         if (artefactType != null) {
             AbstractGrailsArtefactTransformer.addToTransformedClasses(cNode.getName());
         }
         performInjectionOnArtefactType(sourceUnit, cNode, artefactType);
-        
+
         performTraitInjectionOnArtefactType(sourceUnit, cNode, artefactType);
-        
+
         postProcess(sourceUnit, node, cNode, artefactType);
-        
-        markApplied(cNode);        
+
+        markApplied(cNode);
     }
 
     protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
@@ -227,8 +228,9 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         return false;
     }
 
-	@Override
-	public void setCompilationUnit(CompilationUnit unit) {
-		compilationUnit = unit;
-	}
+    @Override
+    public void setCompilationUnit(CompilationUnit unit) {
+        compilationUnit = unit;
+    }
+
 }

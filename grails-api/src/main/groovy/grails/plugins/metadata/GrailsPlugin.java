@@ -27,8 +27,11 @@ import java.lang.annotation.Target;
  * @since 1.2
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface GrailsPlugin {
+
     String name();
+
     String version();
+
 }

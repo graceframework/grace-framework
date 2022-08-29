@@ -29,4 +29,5 @@ public class BootstrapArtefactHandler extends ArtefactHandlerAdapter {
         super(TYPE, GrailsBootstrapClass.class, DefaultGrailsBootstrapClass.class,
                 DefaultGrailsBootstrapClass.BOOT_STRAP);
     }
+
 }

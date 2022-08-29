@@ -35,8 +35,11 @@ import org.grails.encoder.impl.NoneEncoder;
  * @since 2.3
  */
 public final class DefaultEncodingStateRegistry implements EncodingStateRegistry {
+
     private static final Logger LOG = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
+
     private Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
+
     public static final StreamingEncoder NONE_ENCODER = BasicCodecLookup.NONE_ENCODER;
 
     private long calculateKey(CharSequence charSequence) {
@@ -143,4 +146,5 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         return previousEncoder == encoderToApply || !encoderToApply.isApplyToSafelyEncoded() && previousEncoder.isSafe() && encoderToApply.isSafe()
                 || previousEncoder.getCodecIdentifier().isEquivalent(encoderToApply.getCodecIdentifier());
     }
+
 }

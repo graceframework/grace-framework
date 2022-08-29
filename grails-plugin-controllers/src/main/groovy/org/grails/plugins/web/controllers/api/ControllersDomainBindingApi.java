@@ -39,7 +39,6 @@ public class ControllersDomainBindingApi {
 
     public static final String AUTOWIRE_DOMAIN_METHOD = "autowireDomain";
 
-
     /**
      * Autowires the instance
      *
@@ -111,4 +110,5 @@ public class ControllersDomainBindingApi {
             }
         }
     }
+
 }

@@ -22,6 +22,7 @@ package grails.build.logging;
  * @since 3.0
  */
 public interface ConsoleLogger {
+
     /**
      * Indicates progress with the default progress indicator
      */
@@ -127,6 +128,5 @@ public interface ConsoleLogger {
      * @param msg The message
      */
     void verbose(String msg);
-
 
 }

@@ -33,19 +33,29 @@ import grails.util.Environment;
  * @since 3.0
  */
 public class ResourceLocator {
+
     public static final String WILDCARD = "*";
+
     public static final String FILE_SEPARATOR = File.separator;
+
     public static final String CLOSURE_MARKER = "$";
+
     public static final String WEB_APP_DIR = "web-app";
 
     protected static final Resource NULL_RESOURCE = new ByteArrayResource("null".getBytes());
 
     protected PathMatchingResourcePatternResolver patchMatchingResolver;
+
     protected List<String> classSearchDirectories = new ArrayList<String>();
+
     protected List<String> resourceSearchDirectories = new ArrayList<String>();
+
     protected Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<String, Resource>();
+
     protected Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<String, Resource>();
-    protected ResourceLoader defaultResourceLoader =  new FileSystemResourceLoader();
+
+    protected ResourceLoader defaultResourceLoader = new FileSystemResourceLoader();
+
     protected boolean warDeployed = Environment.isWarDeployed();
 
     public void setSearchLocation(String searchLocation) {
@@ -91,7 +101,6 @@ public class ResourceLocator {
     public Resource findResourceForURI(String uri) {
         Resource resource = uriToResourceCache.get(uri);
         if (resource == null) {
-
             PluginResourceInfo info = inferPluginNameFromURI(uri);
             if (warDeployed) {
                 Resource defaultResource = defaultResourceLoader.getResource(uri);
@@ -122,7 +131,6 @@ public class ResourceLocator {
                 }
             }
 
-
             if (resource == null || !resource.exists()) {
                 Resource tmp = defaultResourceLoader != null ? defaultResourceLoader.getResource(uri) : null;
                 if (tmp != null && tmp.exists()) {
@@ -140,7 +148,6 @@ public class ResourceLocator {
         return resource == NULL_RESOURCE ? null : resource;
     }
 
-
     private PluginResourceInfo inferPluginNameFromURI(String uri) {
         if (uri.startsWith("/plugins/")) {
             String withoutPluginsPath = uri.substring("/plugins/".length(), uri.length());
@@ -156,10 +163,10 @@ public class ResourceLocator {
     }
 
     public Resource findResourceForClassName(String className) {
-
         if (className.contains(CLOSURE_MARKER)) {
             className = className.substring(0, className.indexOf(CLOSURE_MARKER));
         }
+
         Resource resource = classNameToResourceCache.get(className);
         if (resource == null) {
             String classNameWithPathSeparator = className.replace(".", FILE_SEPARATOR);
@@ -180,12 +187,12 @@ public class ResourceLocator {
                 }
             }
         }
+
         return resource != null && resource.exists() ? resource : null;
     }
 
     private List<String> getSearchPatternForExtension(String classNameWithPathSeparator, String... extensions) {
-
-        List<String> searchPatterns = new ArrayList<String>();
+        List<String> searchPatterns = new ArrayList<>();
         for (String extension : extensions) {
             String filename = classNameWithPathSeparator + extension;
             for (String classSearchDirectory : classSearchDirectories) {
@@ -206,6 +213,7 @@ public class ResourceLocator {
         catch (IOException e) {
             return null;
         }
+
         return null;
     }
 
@@ -213,9 +221,12 @@ public class ResourceLocator {
         defaultResourceLoader = resourceLoader;
     }
 
-
     class PluginResourceInfo {
+
         String pluginName;
+
         String uri;
+
     }
+
 }

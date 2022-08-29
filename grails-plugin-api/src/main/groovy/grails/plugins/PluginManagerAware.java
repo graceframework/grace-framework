@@ -33,4 +33,5 @@ public interface PluginManagerAware extends Aware {
      * @param pluginManager The PluginManager
      */
     void setPluginManager(GrailsPluginManager pluginManager);
+
 }

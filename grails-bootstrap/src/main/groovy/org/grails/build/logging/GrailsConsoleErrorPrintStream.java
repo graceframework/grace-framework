@@ -58,4 +58,5 @@ public class GrailsConsoleErrorPrintStream extends PrintStream {
             GrailsConsole.getInstance().error(o.toString());
         }
     }
+
 }

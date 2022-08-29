@@ -87,4 +87,5 @@ public class LoggingTransformer implements AllArtefactClassInjector {
     public boolean shouldInject(URL url) {
         return true; // Add log property to all artifact types
     }
+
 }

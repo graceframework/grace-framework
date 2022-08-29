@@ -80,7 +80,7 @@ public class ChainedEncoders {
     }
 
     public static void chainStreamingEncode(StreamEncodeable streamEncodeable, EncodedAppender appender,
-                                            List<StreamingEncoder> encoders) throws IOException {
+            List<StreamingEncoder> encoders) throws IOException {
         EncodedAppender target;
         Encoder lastEncoder;
         if (encoders != null && encoders.size() > 0) {
@@ -133,7 +133,7 @@ public class ChainedEncoders {
 
     /**
      * checks that the encoder isn't a NoneEncoder instance
-     * 
+     *
      * @param encoder
      * @return
      */

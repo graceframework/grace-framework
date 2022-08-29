@@ -45,13 +45,21 @@ import org.grails.encoder.StreamingEncoderWriter;
  * @author Lari Hotari, Sagire Software Oy
  */
 public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, EncodedAppenderWriterFactory, GroovyObject {
+
     protected static final Log LOG = LogFactory.getLog(GrailsPrintWriter.class);
+
     protected static final char CRLF[] = { '\r', '\n' };
+
     protected boolean trouble = false;
+
     protected Writer out;
+
     protected boolean allowUnwrappingOut = true;
+
     protected boolean usageFlag = false;
+
     protected Writer streamCharBufferTarget = null;
+
     protected Writer previousOut = null;
 
     public GrailsPrintWriter(Writer out) {
@@ -128,7 +136,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
                 handleIOException(e);
             }
         }
-        else {        
+        else {
             InvokerHelper.write(this, obj);
         }
         return this;
@@ -567,7 +575,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
             write((StreamCharBuffer) writable);
             return;
         }
-        
+
         usageFlag = true;
         if (trouble) {
             return;
@@ -714,4 +722,5 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     public void setMetaClass(MetaClass metaClass) {
         this.metaClass = metaClass;
     }
+
 }

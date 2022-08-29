@@ -44,7 +44,9 @@ import org.grails.web.util.GrailsApplicationAttributes;
 public class GrailsWebUtil {
 
     public static final String DEFAULT_ENCODING = "UTF-8";
+
     private static final String CHARSET_ATTRIBUTE = ";charset=";
+
     private static final Pattern CHARSET_IN_CONTENT_TYPE_REGEXP = Pattern.compile(";\\s*charset\\s*=", Pattern.CASE_INSENSITIVE);
 
     private GrailsWebUtil() {
@@ -125,4 +127,5 @@ public class GrailsWebUtil {
         }
         return name + CHARSET_ATTRIBUTE + encoding;
     }
+
 }

@@ -31,6 +31,7 @@ import grails.util.Environment;
  * @since 3.0
  */
 public class EnvironmentAwarePropertySource extends EnumerablePropertySource<PropertySources> {
+
     EnvironmentAwarePropertySource(PropertySources source) {
         super("grails.environment", source);
     }
@@ -84,4 +85,5 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
             }
         }
     }
+
 }

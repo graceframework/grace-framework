@@ -39,11 +39,17 @@ import org.grails.buffer.StringCharArrayAccessor;
  * @author Lari Hotari, Sagire Software Oy
  */
 public class BoundedCharsAsEncodedBytesCounter {
+
     private String encoding;
+
     private int capacity;
+
     private ByteBuffer bb;
+
     private CharsetEncoder ce;
+
     private boolean calculationActive = true;
+
     private BoundedCharsAsEncodedBytesCounterWriter writer;
 
     public BoundedCharsAsEncodedBytesCounter() {
@@ -123,6 +129,7 @@ public class BoundedCharsAsEncodedBytesCounter {
     }
 
     class BoundedCharsAsEncodedBytesCounterWriter extends Writer {
+
         char[] writeBuffer = new char[8192];
 
         @Override
@@ -208,6 +215,7 @@ public class BoundedCharsAsEncodedBytesCounter {
         public void flush() throws IOException {
             // do nothing
         }
+
     }
 
     public String getEncoding() {
@@ -225,4 +233,5 @@ public class BoundedCharsAsEncodedBytesCounter {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
+
 }

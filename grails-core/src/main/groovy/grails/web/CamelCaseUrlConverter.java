@@ -48,4 +48,5 @@ public class CamelCaseUrlConverter implements UrlConverter {
             return GrailsNameUtils.getPropertyName(propertyOrClassName);
         }
     }
+
 }

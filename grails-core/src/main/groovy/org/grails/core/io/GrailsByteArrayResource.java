@@ -50,4 +50,5 @@ public class GrailsByteArrayResource extends ByteArrayResource {
     public String getFilename() throws IllegalStateException {
         return super.getDescription();
     }
+
 }

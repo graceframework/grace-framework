@@ -43,7 +43,9 @@ import org.springframework.beans.BeanUtils;
 public class GrailsMetaClassUtils {
 
     private static final int MAX_DELEGATE_LEVELS = 10;
+
     private static final Log LOG = LogFactory.getLog(GrailsMetaClassUtils.class);
+
     private static final Object[] NO_ARGS = new Object[0];
 
     /**
@@ -62,11 +64,9 @@ public class GrailsMetaClassUtils {
      * @param toClass  The destination class
      * @param removeSource Whether to remove the source class after completion. True if yes
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void copyExpandoMetaClass(Class<?> fromClass, Class<?> toClass, boolean removeSource) {
-
         MetaClassRegistry registry = getRegistry();
-
         MetaClass oldMetaClass = registry.getMetaClass(fromClass);
 
         AdaptingMetaClass adapter = null;
@@ -126,7 +126,7 @@ public class GrailsMetaClassUtils {
             }
             try {
                 Constructor c = adapter.getClass().getConstructor(new Class[] { MetaClass.class });
-                MetaClass newAdapter = (MetaClass) BeanUtils.instantiateClass(c, new Object[] { replacement });
+                MetaClass newAdapter = (MetaClass) BeanUtils.instantiateClass(c, new Object[] {replacement});
                 registry.setMetaClass(toClass, newAdapter);
             }
             catch (NoSuchMethodException e) {
@@ -139,8 +139,8 @@ public class GrailsMetaClassUtils {
 
     public static ExpandoMetaClass getExpandoMetaClass(Class<?> aClass) {
         MetaClassRegistry registry = getRegistry();
-
         MetaClass mc = registry.getMetaClass(aClass);
+
         if (mc instanceof ExpandoMetaClass) {
             ExpandoMetaClass emc = (ExpandoMetaClass) mc;
             registry.setMetaClass(aClass, emc); // make permanent
@@ -148,6 +148,7 @@ public class GrailsMetaClassUtils {
         }
 
         registry.removeMetaClass(aClass);
+
         mc = registry.getMetaClass(aClass);
         if (mc instanceof ExpandoMetaClass) {
             return (ExpandoMetaClass) mc;
@@ -163,7 +164,6 @@ public class GrailsMetaClassUtils {
         if (instance instanceof GroovyObject) {
             GroovyObject groovyObject = (GroovyObject) instance;
             MetaClass metaClass = groovyObject.getMetaClass();
-
             metaClass = unwrapDelegatingMetaClass(metaClass);
 
             if (!(metaClass instanceof ExpandoMetaClass)) {
@@ -206,8 +206,8 @@ public class GrailsMetaClassUtils {
     @SuppressWarnings("unchecked")
     public static <T> T getPropertyIfExists(Object instance, String property, Class<T> requiredType) {
         MetaClass metaClass = getMetaClass(instance);
-
         MetaProperty metaProperty = metaClass.getMetaProperty(property);
+
         if (metaProperty != null) {
             Object value = metaProperty.getProperty(instance);
             if (value != null && requiredType.isInstance(value)) {
@@ -245,4 +245,5 @@ public class GrailsMetaClassUtils {
         }
         return null;
     }
+
 }

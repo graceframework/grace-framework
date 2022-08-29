@@ -21,16 +21,20 @@ import java.io.Writer;
 /**
  * A java.io.Writer implementation that writes to a {@link EncodedAppender} with
  * a certain encoder
- * 
+ *
  * This class isn't thread-safe.
  *
  * @author Lari Hotari
  * @since 2.3
  */
 public class EncodedAppenderWriter extends Writer implements EncodedAppenderWriterFactory, EncodedAppenderFactory, EncoderAware {
+
     protected EncodedAppender encodedAppender;
+
     protected Encoder encoder;
+
     protected EncodingStateRegistry encodingStateRegistry;
+
     private char[] singleCharBuffer = new char[1];
 
     /**
@@ -93,10 +97,11 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void write(String str, int off, int len) throws IOException {
-        encodedAppender.append(
-                encoder,
-                (encodingStateRegistry != null && off == 0 && len == str.length()) ? encodingStateRegistry
-                        .getEncodingStateFor(str) : null, str, off, len);
+        encodedAppender.append(encoder,
+                (encodingStateRegistry != null && off == 0 && len == str.length())
+                        ? encodingStateRegistry.getEncodingStateFor(str)
+                        : null,
+                str, off, len);
     }
 
     /*
@@ -106,8 +111,8 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
     @Override
     public Writer append(CharSequence csq) throws IOException {
         encodedAppender.append(encoder,
-                (encodingStateRegistry != null) ? encodingStateRegistry.getEncodingStateFor(csq) : null, csq, 0,
-                csq.length());
+                (encodingStateRegistry != null) ? encodingStateRegistry.getEncodingStateFor(csq) : null,
+                csq, 0, csq.length());
         return this;
     }
 
@@ -160,4 +165,5 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
     public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
         return new EncodedAppenderWriter(encodedAppender, encoder, encodingStateRegistry);
     }
+
 }

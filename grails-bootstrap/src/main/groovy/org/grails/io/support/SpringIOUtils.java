@@ -63,13 +63,16 @@ public class SpringIOUtils {
 
     @SuppressWarnings("rawtypes")
     private static Map algorithms = new HashMap();
+
     static {
         algorithms.put("md5", "MD5");
         algorithms.put("sha1", "SHA-1");
     }
+
     // byte to hex string converter
     private static final char[] CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        'a', 'b', 'c', 'd', 'e', 'f'};
+            'a', 'b', 'c', 'd', 'e', 'f'};
+
     public static final int BUFFER_SIZE = 4096;
 
     /**
@@ -416,6 +419,7 @@ public class SpringIOUtils {
     }
 
     private static SAXParserFactory saxParserFactory = null;
+
     private static SAXParserFactory createParserFactory() throws ParserConfigurationException {
         if (saxParserFactory == null) {
             saxParserFactory = FactorySupport.createSaxParserFactory();
@@ -461,4 +465,5 @@ public class SpringIOUtils {
         }
         return saxParserFactory;
     }
+
 }

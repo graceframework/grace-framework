@@ -39,6 +39,7 @@ public class StopWatch {
     private final String id;
 
     private final Deque<TaskInfo> runningTasks = new LinkedList<TaskInfo>();
+
     private final Deque<TaskInfo> taskList = new LinkedList<TaskInfo>();
 
     /** Is the stop watch currently running? */
@@ -53,7 +54,6 @@ public class StopWatch {
 
     /** Total running time */
     private long totalTimeMillis;
-
 
     /**
      * Construct a new stop watch. Does not start any task.
@@ -72,8 +72,6 @@ public class StopWatch {
     public StopWatch(String id) {
         this.id = id;
     }
-
-
 
     /**
      * Start an unnamed task. The results are undefined if {@link #stop()}
@@ -130,7 +128,6 @@ public class StopWatch {
         return this.running;
     }
 
-
     /**
      * Return the time taken by the last task.
      */
@@ -161,7 +158,6 @@ public class StopWatch {
         return this.lastTaskInfo;
     }
 
-
     /**
      * Return the total time in milliseconds for all tasks.
      */
@@ -189,7 +185,6 @@ public class StopWatch {
     public TaskInfo[] getTaskInfo() {
         return this.taskList.toArray(new TaskInfo[this.taskList.size()]);
     }
-
 
     /**
      * Return a short description of the total running time.
@@ -244,7 +239,6 @@ public class StopWatch {
         return sb.toString();
     }
 
-
     /**
      * Inner class to hold data about one task executed within the stop watch.
      */
@@ -253,8 +247,8 @@ public class StopWatch {
         private final String taskName;
 
         private final long startTime;
-        private long endTime;
 
+        private long endTime;
 
         TaskInfo(String taskName, long startTime) {
             this.taskName = taskName;
@@ -285,6 +279,7 @@ public class StopWatch {
         public double getTimeSeconds() {
             return this.getTimeMillis() / 1000.0;
         }
+
     }
 
 }

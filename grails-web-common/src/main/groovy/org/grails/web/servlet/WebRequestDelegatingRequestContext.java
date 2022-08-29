@@ -99,4 +99,5 @@ public class WebRequestDelegatingRequestContext implements GrailsRequestContext 
 
         return uri;
     }
+
 }

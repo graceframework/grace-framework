@@ -32,8 +32,8 @@ import grails.plugins.exceptions.PluginException;
  * @since 0.4
  */
 public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
-    private boolean checkForChangesExpected = false;
 
+    private boolean checkForChangesExpected = false;
 
     public MockGrailsPluginManager(GrailsApplication application) {
         super(application);

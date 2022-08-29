@@ -25,6 +25,7 @@ import java.io.IOException;
  * @since 2.3
  */
 public interface EncodedAppender {
+
     /**
      * Encodes a portion of a string and appends it to the buffer.
      *
@@ -116,21 +117,21 @@ public interface EncodedAppender {
     void flush() throws IOException;
 
     public void close() throws IOException;
-    
-    
+
+
     /**
      * When enabled, will encode all input regardless of it's current state
      * disables double-encoding prevention.
-     *  
+     *
      * @param ignoreEncodingState
      */
     void setIgnoreEncodingState(boolean ignoreEncodingState);
-    
+
     /**
      * @return current state of ignoreEncodingState setting
      */
     public boolean isIgnoreEncodingState();
-    
+
     /**
      * Check if the encoder should be used to a input with certain encodingState
      *
@@ -141,4 +142,5 @@ public interface EncodedAppender {
      * @return true, if should encode
      */
     public boolean shouldEncode(Encoder encoderToApply, EncodingState encodingState);
+
 }

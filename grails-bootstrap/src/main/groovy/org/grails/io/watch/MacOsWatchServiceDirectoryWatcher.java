@@ -51,35 +51,37 @@ import org.slf4j.LoggerFactory;
  */
 class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
+
     private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<WatchKey, List<String>>();
+
     private Set<Path> individualWatchedFiles = new HashSet<Path>();
 
-	private final WatchService watchService;
+    private final WatchService watchService;
 
     @SuppressWarnings("unchecked")
     private static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
     }
 
-	public MacOsWatchServiceDirectoryWatcher() {
-		try {
-			watchService = new MacOSXListeningWatchService();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public MacOsWatchServiceDirectoryWatcher() {
+        try {
+            watchService = new MacOSXListeningWatchService();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
         while (active) {
-			try {
+            try {
                 WatchKey watchKey;
                 try {
                     watchKey = watchService.take();
                 }
-				catch (InterruptedException x) {
+                catch (InterruptedException x) {
                     return;
                 }
                 for (WatchEvent<?> watchEvent : watchKey.pollEvents()) {
@@ -96,14 +98,14 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                             fireOnNew(childFile);
                         }
-						else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+                        else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
                             fireOnChange(childFile);
                         }
-						else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+                        else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
                             // do nothing... there's no way to communicate deletions
                         }
                     }
-					else {
+                    else {
                         List<String> fileExtensions = watchKeyToExtensionsMap.get(watchKey);
                         if (fileExtensions == null) {
                             // this event didn't match a file in individualWatchedFiles so it's a not an individual file we're interested in
@@ -117,7 +119,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                             // for /images/b.png. But we aren't interested in that.
                             LOG.debug("WatchService received an event for a file/directory that it's not interested in.");
                         }
-						else {
+                        else {
                             if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                                 // new directory created, so watch its contents
                                 addWatchDirectory(child, fileExtensions);
@@ -136,10 +138,10 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                                     fireOnNew(childFile);
                                 }
-								else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+                                else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
                                     fireOnChange(childFile);
                                 }
-								else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+                                else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
                                     // do nothing... there's no way to communicate deletions
                                 }
                             }
@@ -147,79 +149,79 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     }
                 }
                 watchKey.reset();
-			}
-			catch (Exception e) {
+            }
+            catch (Exception e) {
                 LOG.error(e.toString());
                 // ignore
-			}
+            }
         }
         try {
-			watchService.close();
-		}
-		catch (IOException e) {
-			LOG.debug("Exception while closing watchService", e);
-		}
-	}
+            watchService.close();
+        }
+        catch (IOException e) {
+            LOG.debug("Exception while closing watchService", e);
+        }
+    }
 
-	@Override
-	public void addWatchFile(File fileToWatch) {
-		if (!isValidFileToMonitor(fileToWatch, Arrays.asList("*"))) {
-			return;
-		}
-		try {
+    @Override
+    public void addWatchFile(File fileToWatch) {
+        if (!isValidFileToMonitor(fileToWatch, Arrays.asList("*"))) {
+            return;
+        }
+        try {
             if (!fileToWatch.exists()) {
-				return;
-			}
-			Path pathToWatch = fileToWatch.toPath().toAbsolutePath();
-			individualWatchedFiles.add(pathToWatch);
+                return;
+            }
+            Path pathToWatch = fileToWatch.toPath().toAbsolutePath();
+            individualWatchedFiles.add(pathToWatch);
             WatchablePath watchPath = new WatchablePath(pathToWatch);
-			Kind[] events = new Kind[] { StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
-					StandardWatchEventKinds.ENTRY_MODIFY };
-			watchPath.register(watchService, events);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            Kind[] events = new Kind[] {StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
+                    StandardWatchEventKinds.ENTRY_MODIFY};
+            watchPath.register(watchService, events);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public void addWatchDirectory(File dir, final List<String> fileExtensions) {
-		Path dirPath = dir.toPath();
-		addWatchDirectory(dirPath, fileExtensions);
-	}
+    @Override
+    public void addWatchDirectory(File dir, final List<String> fileExtensions) {
+        Path dirPath = dir.toPath();
+        addWatchDirectory(dirPath, fileExtensions);
+    }
 
-	private void addWatchDirectory(Path dir, final List<String> fileExtensions) {
-		if (!isValidDirectoryToMonitor(dir.toFile())) {
-			return;
-		}
-		try {
-			//add the subdirectories too
-			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
-	            @Override
-	            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-	            	if (!isValidDirectoryToMonitor(dir.toFile())) {
-	            		return FileVisitResult.SKIP_SUBTREE;
-	            	}
+    private void addWatchDirectory(Path dir, final List<String> fileExtensions) {
+        if (!isValidDirectoryToMonitor(dir.toFile())) {
+            return;
+        }
+        try {
+            //add the subdirectories too
+            Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    if (!isValidDirectoryToMonitor(dir.toFile())) {
+                        return FileVisitResult.SKIP_SUBTREE;
+                    }
                     WatchablePath watchPath = new WatchablePath(dir);
-	            	Kind[] events = new Kind[] { StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
-							StandardWatchEventKinds.ENTRY_MODIFY };
-					WatchKey watchKey = watchPath.register(watchService, events);
-	    			final List<String> originalFileExtensions = watchKeyToExtensionsMap.get(watchKey);
-	    			if (originalFileExtensions == null) {
-	    				watchKeyToExtensionsMap.put(watchKey, fileExtensions);
-	    			}
-					else {
-	    				final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
-	    				newFileExtensions.addAll(fileExtensions);
-	    				watchKeyToExtensionsMap.put(watchKey, Collections.unmodifiableList(new ArrayList(newFileExtensions)));
-	    			}
-	                return FileVisitResult.CONTINUE;
-	            }
-	        });
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+                    Kind[] events = new Kind[] {StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
+                            StandardWatchEventKinds.ENTRY_MODIFY};
+                    WatchKey watchKey = watchPath.register(watchService, events);
+                    final List<String> originalFileExtensions = watchKeyToExtensionsMap.get(watchKey);
+                    if (originalFileExtensions == null) {
+                        watchKeyToExtensionsMap.put(watchKey, fileExtensions);
+                    }
+                    else {
+                        final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
+                        newFileExtensions.addAll(fileExtensions);
+                        watchKeyToExtensionsMap.put(watchKey, Collections.unmodifiableList(new ArrayList(newFileExtensions)));
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

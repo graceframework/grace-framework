@@ -128,4 +128,5 @@ public interface UrlMappingInfo {
      * @return The UrlMappingData instance
      */
     UrlMappingData getUrlData();
+
 }

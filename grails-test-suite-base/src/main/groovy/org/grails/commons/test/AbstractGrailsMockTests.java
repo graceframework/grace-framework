@@ -47,10 +47,12 @@ public abstract class AbstractGrailsMockTests extends GroovyTestCase {
      * A GroovyClassLoader instance
      */
     public GroovyClassLoader gcl = new GroovyClassLoader();
+
     /**
      * The GrailsApplication instance created during setup
      */
     public DefaultGrailsApplication ga;
+
     public MockApplicationContext ctx;
 
     @Override
@@ -107,4 +109,5 @@ public abstract class AbstractGrailsMockTests extends GroovyTestCase {
     protected MessageSource createMessageSource() {
         return new StaticMessageSource();
     }
+
 }

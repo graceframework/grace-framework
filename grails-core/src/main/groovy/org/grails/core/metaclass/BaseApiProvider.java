@@ -41,11 +41,14 @@ public abstract class BaseApiProvider {
     private static List<String> EXCLUDED_METHODS = Arrays.asList("setMetaClass", "getMetaClass", "setProperties", "getProperties");
 
     public static final String CONSTRUCTOR_METHOD = "initialize";
+
     public static final String CTOR_GROOVY_METHOD = "<ctor>";
 
     @SuppressWarnings("rawtypes")
     protected List instanceMethods = new ArrayList();
+
     protected List<Method> staticMethods = new ArrayList<Method>();
+
     protected List<Method> constructors = new ArrayList<Method>();
 
     @SuppressWarnings("unchecked")
@@ -80,7 +83,7 @@ public abstract class BaseApiProvider {
                                 setParametersTypes((CachedClass[]) GrailsArrayUtils.subarray(paramTypes, 1, paramTypes.length));
                             }
                         }
-                        
+
                         @Override
                         public String getName() {
                             String methodName = super.getName();
@@ -89,11 +92,11 @@ public abstract class BaseApiProvider {
                             }
                             return methodName;
                         }
-                        
+
                         @Override
                         public Object invoke(Object object, Object[] arguments) {
                             if (arguments.length == 0) {
-                                return super.invoke(apiInstance, new Object[]{object});
+                                return super.invoke(apiInstance, new Object[] { object });
                             }
                             return super.invoke(apiInstance, (Object[]) GrailsArrayUtils.add(checkForGStrings(arguments), 0, object));
                         }
@@ -147,7 +150,8 @@ public abstract class BaseApiProvider {
         return Modifier.isPublic(modifiers) &&
                 !(method.isSynthetic() || method.isBridge()) &&
                 !Modifier.isAbstract(modifiers) &&
-                    !name.contains("$") &&
-                      (method.getParameterTypes().length >= minParameters);
+                !name.contains("$") &&
+                (method.getParameterTypes().length >= minParameters);
     }
+
 }

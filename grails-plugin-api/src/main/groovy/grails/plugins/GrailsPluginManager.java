@@ -342,4 +342,5 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param pluginFilter The plugin filter
      */
     public void setPluginFilter(PluginFilter pluginFilter);
+
 }

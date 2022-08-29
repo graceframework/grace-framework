@@ -37,11 +37,15 @@ import java.lang.reflect.Field;
  *
  */
 public class StringCharArrayAccessor {
+
     static volatile boolean enabled = Boolean.getBoolean("stringchararrayaccessor.disabled");
+
     static volatile boolean jdk7_string = false;
 
     static Field valueField;
+
     static Field countField;
+
     static Field offsetField;
 
     static {
@@ -85,7 +89,7 @@ public class StringCharArrayAccessor {
      * @param  str
      *         A String
      *
-     * @throws  IOException
+     * @throws IOException
      *          If an I/O error occurs
      */
     static public void writeStringAsCharArray(Writer writer, String str) throws IOException {
@@ -107,7 +111,7 @@ public class StringCharArrayAccessor {
      * @param  len
      *         Number of characters to write
      *
-     * @throws  IOException
+     * @throws IOException
      *          If an I/O error occurs
      */
     static public void writeStringAsCharArray(Writer writer, String str, int off, int len) throws IOException {
@@ -214,4 +218,5 @@ public class StringCharArrayAccessor {
     static public boolean isEnabled() {
         return enabled;
     }
+
 }

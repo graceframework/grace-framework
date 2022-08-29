@@ -41,12 +41,14 @@ import org.grails.datastore.mapping.reflect.NameUtils;
  *
  * @author Graeme Rocher
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @CompileStatic
 public class LazyMetaPropertyMap implements Map {
 
     private MetaClass metaClass;
+
     private Object instance;
+
     private static List<String> EXCLUDES = Arrays.asList("class", "constraints", "hasMany", "mapping", "properties",
             GormProperties.IDENTITY, GormProperties.VERSION, "domainClass", "dirty", GormProperties.ERRORS, "dirtyPropertyNames");
 
@@ -240,4 +242,5 @@ public class LazyMetaPropertyMap implements Map {
                         NameUtils.isConfigurational(mp.getName()) ||
                         (mp instanceof MetaBeanProperty) && (((MetaBeanProperty) mp).getGetter()) == null;
     }
+
 }

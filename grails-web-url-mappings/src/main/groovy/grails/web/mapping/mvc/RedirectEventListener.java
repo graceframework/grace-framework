@@ -29,4 +29,5 @@ public interface RedirectEventListener {
      * @param url The URL or the redirect
      */
     void responseRedirected(String url);
+
 }

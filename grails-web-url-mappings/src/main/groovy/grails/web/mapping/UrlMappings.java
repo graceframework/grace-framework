@@ -35,4 +35,5 @@ public interface UrlMappings extends UrlMappingsHolder {
      * @return Only the added mappings. To obtain all mappings use {@link UrlMappingsHolder#getUrlMappings()}
      */
     Collection<UrlMapping> addMappings(Closure mappings);
+
 }

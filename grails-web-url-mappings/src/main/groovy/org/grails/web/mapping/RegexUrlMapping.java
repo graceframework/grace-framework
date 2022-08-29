@@ -73,12 +73,19 @@ import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
 public class RegexUrlMapping extends AbstractUrlMapping {
 
     public static final String FORMAT_PARAMETER = "format";
+
     private Pattern[] patterns;
+
     private Map<Integer, List<Pattern>> patternByTokenCount = new HashMap<Integer, List<Pattern>>();
+
     private UrlMappingData urlData;
+
     private static final String DEFAULT_ENCODING = "UTF-8";
+
     private static final Logger LOG = LoggerFactory.getLogger(RegexUrlMapping.class);
+
     public static final Pattern DOUBLE_WILDCARD_PATTERN = Pattern.compile("\\(\\*\\*?\\)\\??");
+
     public static final Pattern OPTIONAL_EXTENSION_WILDCARD_PATTERN = Pattern.compile("[^/]+\\(\\.\\(\\*\\)\\)");
 
     /**
@@ -93,8 +100,9 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         super(uri, constraints, grailsApplication);
         parse(data, constraints);
     }
+
     public RegexUrlMapping(UrlMappingData data, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName,
-                           String httpMethod, String version, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+            String httpMethod, String version, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         this(null, data, controllerName, actionName, namespace, pluginName, viewName, httpMethod, version, constraints, grailsApplication);
     }
 
@@ -115,8 +123,8 @@ public class RegexUrlMapping extends AbstractUrlMapping {
      * @see ConstrainedProperty
      */
     public RegexUrlMapping(Object redirectInfo, UrlMappingData data, Object controllerName, Object actionName, Object namespace,
-                           Object pluginName, Object viewName, String httpMethod, String version, ConstrainedProperty[] constraints,
-                           GrailsApplication grailsApplication) {
+            Object pluginName, Object viewName, String httpMethod, String version, ConstrainedProperty[] constraints,
+            GrailsApplication grailsApplication) {
         super(redirectInfo, controllerName, actionName, namespace, pluginName, viewName,
                 constraints != null ? constraints : new ConstrainedProperty[0], grailsApplication);
         if (httpMethod != null) {
@@ -175,7 +183,6 @@ public class RegexUrlMapping extends AbstractUrlMapping {
                 while (pos == -1) {
                     boolean isLastToken = currentToken == tokensLength - 1;
                     if (currentToken < tokensLength) {
-
                         token = tokens[++currentToken];
                         // special handling for last token to deal with optional extension
                         if (isLastToken) {
@@ -212,7 +219,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     private void setNullable(ConstrainedProperty constraint) {
         ConstrainedProperty constrainedProperty = constraint;
         if (!constrainedProperty.isNullable()) {
-               constrainedProperty.applyConstraint(ConstrainedProperty.NULLABLE_CONSTRAINT, true);
+            constrainedProperty.applyConstraint(ConstrainedProperty.NULLABLE_CONSTRAINT, true);
         }
     }
 
@@ -296,9 +303,8 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         return createURLInternal(paramValues, encoding, true);
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     private String createURLInternal(Map paramValues, String encoding, boolean includeContextPath) {
-
         if (encoding == null) {
             encoding = "utf-8";
         }
@@ -316,7 +322,6 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         StringBuilder uri = new StringBuilder(contextPath);
         Set usedParams = new HashSet();
 
-
         String[] tokens = urlData.getTokens();
         int paramIndex = 0;
         for (int i = 0; i < tokens.length; i++) {
@@ -324,9 +329,9 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             if (i == tokens.length - 1 && urlData.hasOptionalExtension()) {
                 token += OPTIONAL_EXTENSION_WILDCARD;
             }
+
             Matcher m = OPTIONAL_EXTENSION_WILDCARD_PATTERN.matcher(token);
             if (m.find()) {
-
                 boolean tokenSet = false;
                 if (token.startsWith(CAPTURED_WILDCARD)) {
                     ConstrainedProperty prop = constraints[paramIndex++];
@@ -454,7 +459,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
     @SuppressWarnings("unchecked")
     private String createURLInternal(String controller, String action, String namespace, String pluginName, Map paramValues,
-                                     String encoding, boolean includeContextPath) {
+            String encoding, boolean includeContextPath) {
 
         if (paramValues == null) {
             paramValues = new HashMap();
@@ -497,6 +502,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     public String createRelativeURL(String controller, String action, Map paramValues, String encoding) {
         return createRelativeURL(controller, action, null, null, paramValues, encoding);
     }
+
     public String createRelativeURL(String controller, String action, String pluginName, Map paramValues, String encoding) {
         return createRelativeURL(controller, action, null, pluginName, paramValues, encoding);
     }
@@ -510,18 +516,18 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     }
 
     public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map paramValues,
-                                    String encoding, String fragment) {
+            String encoding, String fragment) {
         final String url = createURLInternal(controller, action, namespace, pluginName, paramValues, encoding, false);
         return createUrlWithFragment(url, fragment, encoding);
     }
 
     public String createURL(String controller, String action, Map paramValues,
-                            String encoding, String fragment) {
+            String encoding, String fragment) {
         return createURL(controller, action, null, null, paramValues, encoding, fragment);
     }
 
     public String createURL(String controller, String action, String namespace, String pluginName, Map paramValues,
-                            String encoding, String fragment) {
+            String encoding, String fragment) {
         String url = createURL(controller, action, namespace, pluginName, paramValues, encoding);
         return createUrlWithFragment(url, fragment, encoding);
     }
@@ -571,7 +577,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
                 Object value = paramValues.get(name);
                 if (value != null && value instanceof Collection) {
                     Collection multiValues = (Collection) value;
-                    for (Iterator j = multiValues.iterator(); j.hasNext();) {
+                    for (Iterator j = multiValues.iterator(); j.hasNext(); ) {
                         Object o = j.next();
                         appendValueToURI(encoding, uri, name, o);
                         if (j.hasNext()) {
@@ -669,7 +675,6 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             }
 
         }
-
 
         for (Object key : parameterValues.keySet()) {
             params.put(key, parameterValues.get(key));
@@ -1107,4 +1112,5 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     public String toString() {
         return urlData.getUrlPattern();
     }
+
 }

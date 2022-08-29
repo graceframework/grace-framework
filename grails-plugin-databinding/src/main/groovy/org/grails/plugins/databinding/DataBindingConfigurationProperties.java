@@ -30,9 +30,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DataBindingConfigurationProperties {
 
     private boolean trimStrings = true;
+
     private boolean convertEmptyStringsToNull = true;
+
     private int autoGrowCollectionLimit = 256;
+
     private boolean dateParsingLenient = false;
+
     private List<String> dateFormats = AbstractDataBindingGrailsPlugin.DEFAULT_DATE_FORMATS;
 
     public boolean isTrimStrings() {
@@ -74,4 +78,5 @@ public class DataBindingConfigurationProperties {
     public void setDateFormats(List<String> dateFormats) {
         this.dateFormats = dateFormats;
     }
+
 }

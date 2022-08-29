@@ -29,4 +29,5 @@ public class GrailsContextNamespaceHandler extends NamespaceHandlerSupport {
         registerBeanDefinitionParser("component-scan",
                 new ClosureClassIgnoringComponentScanBeanDefinitionParser());
     }
+
 }

@@ -44,6 +44,7 @@ public class DomainBuilder extends ObjectGraphBuilder {
     }
 
     public static class DefaultGrailsChildPropertySetter implements ChildPropertySetter {
+
         public void setChild(Object parent, Object child, String parentName, String propertyName) {
             if (isCollection(parent, child, parentName, propertyName)) {
                 String propName = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
@@ -66,5 +67,7 @@ public class DomainBuilder extends ObjectGraphBuilder {
 
             return false;
         }
+
     }
+
 }

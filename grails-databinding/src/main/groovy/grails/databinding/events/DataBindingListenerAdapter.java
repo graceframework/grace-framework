@@ -44,4 +44,5 @@ public class DataBindingListenerAdapter implements DataBindingListener {
 
     public void bindingError(BindingError error, Object errors) {
     }
+
 }

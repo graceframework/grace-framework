@@ -53,4 +53,5 @@ public interface Encoder extends CodecIdentifierProvider {
      * @param string a CharSequence to mark as encoded
      */
     void markEncoded(CharSequence string);
+
 }

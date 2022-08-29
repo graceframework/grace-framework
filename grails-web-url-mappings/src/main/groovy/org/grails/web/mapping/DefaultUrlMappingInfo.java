@@ -49,29 +49,51 @@ import org.grails.web.util.WebUtils;
 public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     private static final String SETTING_GRAILS_WEB_DISABLE_MULTIPART = "grails.web.disable.multipart";
+
     private static final String CONTROLLER_PREFIX = "controller:";
+
     private static final String ACTION_PREFIX = "action:";
+
     private static final String PLUGIN_PREFIX = "plugin:";
+
     private static final String NAMESPACE_PREFIX = "namespace:";
+
     private static final String ID_PREFIX = "id:";
+
     private static final String VIEW_PREFIX = "view:";
+
     private static final String METHOD_PREFIX = "method:";
+
     private static final String VERSION_PREFIX = "version:";
 
     private final GrailsApplication grailsApplication;
+
     private Object controllerName;
+
     private Object actionName;
+
     private Object pluginName;
+
     private Object namespace;
+
     private Object redirectInfo;
+
     private Object id;
+
     private static final String ID_PARAM = "id";
+
     private UrlMappingData urlData;
+
     private Object viewName;
+
     private boolean parsingRequest;
+
     private Object uri;
+
     private UrlConverter urlConverter;
+
     private String httpMethod;
+
     private String version;
 
     @SuppressWarnings("rawtypes")
@@ -94,14 +116,14 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     @SuppressWarnings("rawtypes")
     public DefaultUrlMappingInfo(Object redirectInfo, Object controllerName, Object actionName,
-                                 Object namespace, Object pluginName, Object viewName, Map params,
+            Object namespace, Object pluginName, Object viewName, Map params,
             UrlMappingData urlData, GrailsApplication grailsApplication) {
         this(redirectInfo, controllerName, actionName, namespace, pluginName, viewName, null,
                 UrlMapping.ANY_VERSION, params, urlData, grailsApplication);
     }
 
     public DefaultUrlMappingInfo(Object redirectInfo, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName,
-                                 String httpMethod, String version, Map<?, ?> params, UrlMappingData urlData, GrailsApplication grailsApplication) {
+            String httpMethod, String version, Map<?, ?> params, UrlMappingData urlData, GrailsApplication grailsApplication) {
         this(params, urlData, grailsApplication);
         Assert.isTrue(redirectInfo != null || controllerName != null || viewName != null,
                 "URL mapping must either provide redirect information, a controller or a view name to map to!");
@@ -152,7 +174,6 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         this.viewName = info.getViewName();
     }
 
-
     @Override
     public String getHttpMethod() {
         return httpMethod;
@@ -187,6 +208,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         String name = evaluateNameForValue(namespace);
         return urlConverter.toUrlElement(name);
     }
+
     public String getControllerName() {
         String name = evaluateNameForValue(controllerName);
         if (name == null && getViewName() == null && uri == null) {
@@ -350,4 +372,5 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         result = 31 * result + (version != null ? (VERSION_PREFIX + version).hashCode() : 0);
         return result;
     }
+
 }

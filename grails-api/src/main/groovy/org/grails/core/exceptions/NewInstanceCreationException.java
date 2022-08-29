@@ -39,4 +39,5 @@ public class NewInstanceCreationException extends GrailsException {
     public NewInstanceCreationException(Throwable cause) {
         super(cause);
     }
+
 }

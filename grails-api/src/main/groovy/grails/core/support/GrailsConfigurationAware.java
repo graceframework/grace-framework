@@ -28,4 +28,5 @@ import grails.config.Config;
 public interface GrailsConfigurationAware extends Aware {
 
     void setConfiguration(Config co);
+
 }

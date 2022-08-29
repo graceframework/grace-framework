@@ -24,14 +24,17 @@ import org.grails.encoder.EncoderAware;
 import org.grails.encoder.EncodingStateRegistry;
 
 public class CodecPrintWriter extends GrailsPrintWriter implements EncoderAware, EncodedAppenderFactory {
+
     private final Encoder encoder;
+
     private final StreamCharBuffer buffer;
+
     private boolean ignoreEncodingState;
 
     public CodecPrintWriter(Writer out, Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
         this(out, encoder, encodingStateRegistry, false);
     }
-    
+
     public CodecPrintWriter(Writer out, Encoder encoder, EncodingStateRegistry encodingStateRegistry, boolean ignoreEncodingState) {
         super(null);
         this.encoder = encoder;
@@ -60,4 +63,5 @@ public class CodecPrintWriter extends GrailsPrintWriter implements EncoderAware,
     public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
         return buffer.getWriterForEncoder(encoder, encodingStateRegistry, ignoreEncodingState);
     }
+
 }

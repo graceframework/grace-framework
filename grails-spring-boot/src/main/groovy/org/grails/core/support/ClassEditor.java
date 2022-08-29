@@ -66,4 +66,5 @@ public class ClassEditor extends PropertyEditorSupport {
             throw new IllegalArgumentException("Could not load class [" + className + "]!");
         }
     }
+
 }

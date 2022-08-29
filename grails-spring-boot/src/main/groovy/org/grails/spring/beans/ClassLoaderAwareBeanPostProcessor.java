@@ -35,4 +35,5 @@ public class ClassLoaderAwareBeanPostProcessor implements BeanPostProcessor {
         }
         return bean;
     }
+
 }

@@ -26,4 +26,5 @@ class DataBindingGrailsPlugin extends AbstractDataBindingGrailsPlugin {
     public Closure doWithSpring() {
         return super.doWithSpring();
     }
+
 }

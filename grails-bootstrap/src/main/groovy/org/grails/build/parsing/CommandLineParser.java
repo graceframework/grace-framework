@@ -22,7 +22,6 @@ import java.util.StringTokenizer;
 
 import grails.util.Environment;
 
-
 /**
  * Command line parser that parses arguments to the command line. Written as a
  * replacement for Commons CLI because it doesn't support unknown arguments and
@@ -36,8 +35,11 @@ import grails.util.Environment;
 public class CommandLineParser {
 
     static Map<String, String> ENV_ARGS = new HashMap<String, String>();
+
     static Map<String, String> DEFAULT_ENVS = new HashMap<String, String>();
+
     private static CommandLine CURRENT = null;
+
     private static final String DEFAULT_PADDING = "        ";
 
     static {
@@ -49,7 +51,9 @@ public class CommandLineParser {
     }
 
     private Map<String, Option> declaredOptions = new HashMap<String, Option>();
+
     private int longestOptionNameLength = 0;
+
     private String usageMessage;
 
     public static CommandLine getCurrentCommandLine() {
@@ -154,10 +158,10 @@ public class CommandLineParser {
         return result.toArray(new String[result.size()]);
     }
 
-   /**
+    /**
      * Parses a string of all the command line options converting them into an array of arguments to pass to #parse(String..args)
      *
-    *  @param commandName The command name
+     *  @param commandName The command name
      * @param args The string
      * @return The command line
      */
@@ -170,6 +174,7 @@ public class CommandLineParser {
         parseInternal(cl, argArray, false);
         return cl;
     }
+
     /**
      * Parses the given list of command line arguments. Arguments starting with -D become system properties,
      * arguments starting with -- or - become either declared or undeclared options. All other arguments are
@@ -213,13 +218,13 @@ public class CommandLineParser {
                         cl.setEnvironment(ENV_ARGS.get(trimmed));
                     }
                     else {
-                       if (firstArgumentIsCommand) {
-                           cl.setCommandName(trimmed);
-                           firstArgumentIsCommand = false;
-                       }
-                       else {
-                           cl.addRemainingArg(trimmed);
-                       }
+                        if (firstArgumentIsCommand) {
+                            cl.setCommandName(trimmed);
+                            firstArgumentIsCommand = false;
+                        }
+                        else {
+                            cl.addRemainingArg(trimmed);
+                        }
                     }
                 }
             }
@@ -298,4 +303,5 @@ public class CommandLineParser {
         String value = arg.substring(i + 1, arg.length());
         cl.addSystemProperty(name, value);
     }
+
 }

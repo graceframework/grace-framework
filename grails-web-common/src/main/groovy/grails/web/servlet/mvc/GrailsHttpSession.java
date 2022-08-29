@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 public class GrailsHttpSession implements HttpSession {
 
     private HttpSession adaptee;
+
     private HttpServletRequest request;
 
     public GrailsHttpSession(HttpServletRequest request) {
@@ -239,4 +240,5 @@ public class GrailsHttpSession implements HttpSession {
         }
         return sb.toString();
     }
+
 }

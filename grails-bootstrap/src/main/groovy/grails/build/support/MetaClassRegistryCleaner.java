@@ -41,9 +41,13 @@ import org.codehaus.groovy.runtime.metaclass.MetaClassRegistryImpl;
 public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventListener {
 
     private Map<Class, Object> alteredClasses = new ConcurrentHashMap<Class, Object>();
+
     private Map<IdentityWeakReference, Object> alteredInstances = new ConcurrentHashMap<IdentityWeakReference, Object>();
+
     private static final Object NO_CUSTOM_METACLASS = new Object();
+
     private static boolean cleaning;
+
     private static final MetaClassRegistryCleaner INSTANCE = new MetaClassRegistryCleaner();
 
     private MetaClassRegistryCleaner() {

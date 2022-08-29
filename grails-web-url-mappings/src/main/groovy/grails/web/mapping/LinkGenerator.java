@@ -29,67 +29,83 @@ import grails.util.CollectionUtils;
 public interface LinkGenerator {
 
     String ATTRIBUTE_CONTROLLER = "controller";
+
     String ATTRIBUTE_RESOURCE = "resource";
+
     String ATTRIBUTE_ACTION = "action";
+
     String ATTRIBUTE_METHOD = "method";
+
     String ATTRIBUTE_URI = "uri";
+
     String ATTRIBUTE_RELATIVE_URI = "relativeUri";
+
     String ATTRIBUTE_INCLUDE_CONTEXT = "includeContext";
+
     String ATTRIBUTE_CONTEXT_PATH = "contextPath";
+
     String ATTRIBUTE_URL = "url";
+
     String ATTRIBUTE_BASE = "base";
+
     String ATTRIBUTE_ABSOLUTE = "absolute";
+
     String ATTRIBUTE_ID = "id";
+
     String ATTRIBUTE_FRAGMENT = "fragment";
+
     String ATTRIBUTE_PARAMS = "params";
+
     String ATTRIBUTE_MAPPING = "mapping";
+
     String ATTRIBUTE_EVENT = "event";
+
     String ATTRIBUTE_ELEMENT_ID = "elementId";
+
     String ATTRIBUTE_PLUGIN = "plugin";
+
     String ATTRIBUTE_NAMESPACE = "namespace";
-    
 
     Set<String> LINK_ATTRIBUTES = CollectionUtils.newSet(
-       ATTRIBUTE_RESOURCE,
-       ATTRIBUTE_METHOD,
-       ATTRIBUTE_CONTROLLER,
-       ATTRIBUTE_ACTION,
-       ATTRIBUTE_URI,
-       ATTRIBUTE_RELATIVE_URI,
-       ATTRIBUTE_CONTEXT_PATH,
-       ATTRIBUTE_URL,
-       ATTRIBUTE_BASE,
-       ATTRIBUTE_ABSOLUTE,
-       ATTRIBUTE_ID,
-       ATTRIBUTE_FRAGMENT,
-       ATTRIBUTE_PARAMS,
-       ATTRIBUTE_MAPPING,
-       ATTRIBUTE_EVENT,
-       ATTRIBUTE_ELEMENT_ID,
-       ATTRIBUTE_PLUGIN,
-       ATTRIBUTE_NAMESPACE
-       );
+            ATTRIBUTE_RESOURCE,
+            ATTRIBUTE_METHOD,
+            ATTRIBUTE_CONTROLLER,
+            ATTRIBUTE_ACTION,
+            ATTRIBUTE_URI,
+            ATTRIBUTE_RELATIVE_URI,
+            ATTRIBUTE_CONTEXT_PATH,
+            ATTRIBUTE_URL,
+            ATTRIBUTE_BASE,
+            ATTRIBUTE_ABSOLUTE,
+            ATTRIBUTE_ID,
+            ATTRIBUTE_FRAGMENT,
+            ATTRIBUTE_PARAMS,
+            ATTRIBUTE_MAPPING,
+            ATTRIBUTE_EVENT,
+            ATTRIBUTE_ELEMENT_ID,
+            ATTRIBUTE_PLUGIN,
+            ATTRIBUTE_NAMESPACE
+    );
 
     Map<String, String> REST_RESOURCE_ACTION_TO_HTTP_METHOD_MAP = CollectionUtils.<String, String>newMap(
-        "create", "GET",
-        "save",   "POST",
-        "show",   "GET",
-        "index",  "GET",
-        "edit",   "GET",
-        "update", "PUT",
-        "patch",  "PATCH",
-        "delete", "DELETE"
+            "create", "GET",
+            "save", "POST",
+            "show", "GET",
+            "index", "GET",
+            "edit", "GET",
+            "update", "PUT",
+            "patch", "PATCH",
+            "delete", "DELETE"
     );
 
     Map<String, String> REST_RESOURCE_HTTP_METHOD_TO_ACTION_MAP = CollectionUtils.<String, String>newMap(
-        "GET_ID", "show",
-        "GET",    "index",
-        "POST",   "save",
-        "DELETE", "delete",
-        "PUT",    "update",
-        "PATCH",  "patch"
+            "GET_ID", "show",
+            "GET", "index",
+            "POST", "save",
+            "DELETE", "delete",
+            "PUT", "update",
+            "PATCH", "patch"
     );
-
 
     /**
      * Generates a link to a static resource for the given named parameters.
@@ -179,4 +195,5 @@ public interface LinkGenerator {
      * @return The base URL of the server
      */
     String getServerBaseURL();
+
 }

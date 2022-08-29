@@ -37,6 +37,7 @@ public class PluginFilterRetriever {
      * Which plugins to include in the plugin manager
      */
     String PLUGIN_INCLUDES = "grails.plugin.includes";
+
     /**
      * Which plugins to exclude from the plugin manager
      */
@@ -79,4 +80,5 @@ public class PluginFilterRetriever {
         }
         return pluginFilter;
     }
+
 }

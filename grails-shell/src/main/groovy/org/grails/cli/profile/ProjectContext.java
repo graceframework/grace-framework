@@ -27,6 +27,7 @@ import grails.config.ConfigMap;
  * @author Graeme Rocher
  */
 public interface ProjectContext {
+
     /**
      * @return The {@link grails.build.logging.GrailsConsole} instance
      */
@@ -59,4 +60,5 @@ public interface ProjectContext {
      * @return The value or null if not set
      */
     <T> T navigateConfigForType(Class<T> requiredType, String... path);
+
 }

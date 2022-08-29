@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.io.watch;
 
 import java.io.File;
@@ -31,9 +30,9 @@ import org.slf4j.LoggerFactory;
  */
 public class DirectoryWatcher extends Thread {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DirectoryWatcher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DirectoryWatcher.class);
 
-	private final AbstractDirectoryWatcher directoryWatcherDelegate;
+    private final AbstractDirectoryWatcher directoryWatcherDelegate;
 
     public static final String SVN_DIR_NAME = ".svn";
 
@@ -52,9 +51,8 @@ public class DirectoryWatcher extends Thread {
                 }
                 catch (ClassNotFoundException e) {
                     if (LOG.isWarnEnabled()) {
-                        LOG.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");    
+                        LOG.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");
                     }
-                    
                 }
                 if (jnaAvailable) {
                     directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
@@ -69,12 +67,12 @@ public class DirectoryWatcher extends Thread {
                 directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
                         "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
             }
-		}
+        }
         catch (Throwable e) {
             LOG.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). " +
                     "Falling back to PollingDirectoryWatcher.", e);
-	        directoryWatcherDelegate = new PollingDirectoryWatcher();
-		}
+            directoryWatcherDelegate = new PollingDirectoryWatcher();
+        }
         this.directoryWatcherDelegate = directoryWatcherDelegate;
     }
 
@@ -84,7 +82,7 @@ public class DirectoryWatcher extends Thread {
      * @param active False if you want to stop watching
      */
     public void setActive(boolean active) {
-    	directoryWatcherDelegate.setActive(active);
+        directoryWatcherDelegate.setActive(active);
     }
 
     /**
@@ -93,7 +91,7 @@ public class DirectoryWatcher extends Thread {
      * @param sleepTime The sleep time
      */
     public void setSleepTime(long sleepTime) {
-    	directoryWatcherDelegate.setSleepTime(sleepTime);
+        directoryWatcherDelegate.setSleepTime(sleepTime);
     }
 
     /**
@@ -102,7 +100,7 @@ public class DirectoryWatcher extends Thread {
      * @param listener The file listener
      */
     public void addListener(FileChangeListener listener) {
-    	directoryWatcherDelegate.addListener(listener);
+        directoryWatcherDelegate.addListener(listener);
     }
 
     /**
@@ -120,7 +118,7 @@ public class DirectoryWatcher extends Thread {
      * @param fileToWatch The file to watch
      */
     public void addWatchFile(File fileToWatch) {
-    	directoryWatcherDelegate.addWatchFile(fileToWatch);
+        directoryWatcherDelegate.addWatchFile(fileToWatch);
     }
 
     /**
@@ -130,11 +128,11 @@ public class DirectoryWatcher extends Thread {
      * @param fileExtensions The extensions
      */
     public void addWatchDirectory(File dir, List<String> fileExtensions) {
-    	List<String> fileExtensionsWithoutDot = new ArrayList<String>(fileExtensions.size());
-    	for (String fileExtension : fileExtensions) {
-    		fileExtensionsWithoutDot.add(removeStartingDotIfPresent(fileExtension));
-    	}
-    	directoryWatcherDelegate.addWatchDirectory(dir, fileExtensions);
+        List<String> fileExtensionsWithoutDot = new ArrayList<String>(fileExtensions.size());
+        for (String fileExtension : fileExtensions) {
+            fileExtensionsWithoutDot.add(removeStartingDotIfPresent(fileExtension));
+        }
+        directoryWatcherDelegate.addWatchDirectory(dir, fileExtensions);
     }
 
     /**
@@ -143,7 +141,7 @@ public class DirectoryWatcher extends Thread {
      * @param dir The directory
      */
     public void addWatchDirectory(File dir) {
-    	addWatchDirectory(dir, "*");
+        addWatchDirectory(dir, "*");
     }
 
     /**
@@ -172,6 +170,7 @@ public class DirectoryWatcher extends Thread {
      * Interface for FileChangeListeners
      */
     public static interface FileChangeListener {
+
         /**
          * Fired when a file changes
          *
@@ -185,6 +184,7 @@ public class DirectoryWatcher extends Thread {
          * @param file The file that was created
          */
         void onNew(File file);
+
     }
 
     @Override
@@ -198,4 +198,5 @@ public class DirectoryWatcher extends Thread {
         }
         return extension;
     }
+
 }

@@ -30,4 +30,5 @@ public interface EncoderAware {
      * @return the encoder
      */
     Encoder getEncoder();
+
 }

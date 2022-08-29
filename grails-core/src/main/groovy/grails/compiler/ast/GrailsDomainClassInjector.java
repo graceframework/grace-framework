@@ -34,4 +34,5 @@ public interface GrailsDomainClassInjector extends ClassInjector {
      * @since 1.1
      */
     void performInjectionOnAnnotatedEntity(ClassNode classNode);
+
 }

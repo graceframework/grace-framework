@@ -32,4 +32,5 @@ public class GroovyAwareInfrastructureAdvisorAutoProxyCreator extends Infrastruc
     protected boolean shouldProxyTargetClass(Class<?> beanClass, String beanName) {
         return GroovyObject.class.isAssignableFrom(beanClass) || super.shouldProxyTargetClass(beanClass, beanName);
     }
+
 }

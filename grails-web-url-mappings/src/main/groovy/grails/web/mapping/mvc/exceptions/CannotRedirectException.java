@@ -24,6 +24,7 @@ import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
  * @since 1.2
  */
 public class CannotRedirectException extends ControllerExecutionException {
+
     private static final long serialVersionUID = 1L;
 
     public CannotRedirectException() {
@@ -36,4 +37,5 @@ public class CannotRedirectException extends ControllerExecutionException {
     public CannotRedirectException(String message) {
         super(message);
     }
+
 }

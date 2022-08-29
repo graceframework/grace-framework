@@ -30,7 +30,7 @@ public interface DataBinder {
     String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @param filter Only properties beginning with filter will be included in the
@@ -49,10 +49,10 @@ public interface DataBinder {
      * @see DataBindingListener
      */
     void bind(Object obj, DataBindingSource source, String filter, List<String> whiteList,
-              List<String> blackList, DataBindingListener listener);
+            List<String> blackList, DataBindingListener listener);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @param filter Only properties beginning with filter will be included in the
@@ -68,10 +68,10 @@ public interface DataBinder {
      * @see DataBindingSource
      */
     void bind(Object obj, DataBindingSource source, String filter, List<String> whiteList,
-              List<String> blackList);
+            List<String> blackList);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param gpath A GPathResult which represents the data being bound.  
      * @see DataBindingSource
@@ -79,7 +79,7 @@ public interface DataBinder {
     void bind(Object obj, GPathResult gpath);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @param whiteList A list of property names to be included during this 
@@ -90,10 +90,10 @@ public interface DataBinder {
      * @see DataBindingSource
      */
     void bind(Object obj, DataBindingSource source, List<String> whiteList,
-              List<String> blackList);
+            List<String> blackList);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @param whiteList A list of property names to be included during this 
@@ -104,7 +104,7 @@ public interface DataBinder {
     void bind(Object obj, DataBindingSource source, List<String> whiteList);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @param listener A listener which will be notified of data binding events triggered
@@ -115,7 +115,7 @@ public interface DataBinder {
     void bind(Object obj, DataBindingSource source, DataBindingListener listener);
 
     /**
-     * 
+     *
      * @param obj The object being bound to
      * @param source The data binding source
      * @see DataBindingSource

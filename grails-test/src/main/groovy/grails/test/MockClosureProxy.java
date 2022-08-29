@@ -30,6 +30,7 @@ public class MockClosureProxy extends AbstractClosureProxy {
     private static final long serialVersionUID = -1373536726646006925L;
 
     String methodName;
+
     Object expectation;
 
     /**
@@ -46,8 +47,8 @@ public class MockClosureProxy extends AbstractClosureProxy {
         if (!(expectation instanceof LooseExpectation) && !(expectation instanceof StrictExpectation)) {
             throw new IllegalArgumentException(
                     "Expectation must be either groovy.mock.interceptor.LooseExpectation or " +
-                    " groovy.mock.interceptor.StrictExpectation (actual class: " +
-                    expectation.getClass() + ")");
+                            " groovy.mock.interceptor.StrictExpectation (actual class: " +
+                            expectation.getClass() + ")");
         }
     }
 
@@ -87,4 +88,5 @@ public class MockClosureProxy extends AbstractClosureProxy {
     protected Closure<?> createWrapper(Closure<?> c) {
         return new MockClosureProxy(c, methodName, expectation);
     }
+
 }

@@ -60,6 +60,7 @@ import org.grails.web.util.WebUtils;
  * @since 2.4
  */
 public class UrlMappingUtils {
+
     private UrlMappingUtils() {
     }
 
@@ -67,11 +68,11 @@ public class UrlMappingUtils {
      *
      * @return a Map without entries whose key belongs to UrlMapping#KEYWORDS
      */
-    public static  Map findAllParamsNotInUrlMappingKeywords(Map params) {
+    public static Map findAllParamsNotInUrlMappingKeywords(Map params) {
         return findAllParamsNotInKeys(params, UrlMapping.KEYWORDS);
     }
 
-    public static  Map findAllParamsNotInKeys(Map params, Set keys) {
+    public static Map findAllParamsNotInKeys(Map params, Set keys) {
         Map urlParams = new HashMap<>();
         if (params != null && keys != null) {
             for (Object key : params.keySet()) {
@@ -231,7 +232,7 @@ public class UrlMappingUtils {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request, HttpServletResponse response,
-                                                         UrlMappingInfo info, Map<String, Object> model, boolean includeParams)
+            UrlMappingInfo info, Map<String, Object> model, boolean includeParams)
             throws ServletException, IOException {
 
         String forwardUrl = buildDispatchUrlForMapping(info, includeParams);
@@ -288,7 +289,7 @@ public class UrlMappingUtils {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
-           HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
+            HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
 
         final String includeUrl = buildDispatchUrlForMapping(info, true, linkGenerator);
 
@@ -296,7 +297,8 @@ public class UrlMappingUtils {
     }
 
     private static IncludedContent includeForUrlMappingInfoHelper(String includeUrl, HttpServletRequest request,
-                                           HttpServletResponse response, UrlMappingInfo info, Map model) {
+            HttpServletResponse response, UrlMappingInfo info, Map model) {
+
         final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
 
         String currentController = null;
@@ -307,17 +309,21 @@ public class UrlMappingUtils {
         Map currentParams = null;
         Object currentLayoutAttribute = null;
         Object currentRenderingView = null;
+
         if (webRequest != null) {
             currentPageBinding = (Binding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, 0);
             webRequest.removeAttribute(GrailsApplicationAttributes.PAGE_SCOPE, 0);
+
             currentLayoutAttribute = webRequest.getAttribute(WebUtils.LAYOUT_ATTRIBUTE, 0);
             if (currentLayoutAttribute != null) {
                 webRequest.removeAttribute(WebUtils.LAYOUT_ATTRIBUTE, 0);
             }
+
             currentRenderingView = webRequest.getAttribute(WebUtils.RENDERING_VIEW, 0);
             if (currentRenderingView != null) {
                 webRequest.removeAttribute(WebUtils.RENDERING_VIEW, 0);
             }
+
             currentController = webRequest.getControllerName();
             currentAction = webRequest.getActionName();
             currentId = webRequest.getId();
@@ -337,7 +343,6 @@ public class UrlMappingUtils {
         finally {
             if (webRequest != null) {
                 if (webRequest.isActive()) {
-
                     webRequest.setAttribute(GrailsApplicationAttributes.PAGE_SCOPE, currentPageBinding, 0);
                     if (currentLayoutAttribute != null) {
                         webRequest.setAttribute(WebUtils.LAYOUT_ATTRIBUTE, currentLayoutAttribute, 0);
@@ -394,6 +399,7 @@ public class UrlMappingUtils {
                 webRequest.removeAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST);
                 webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, WebRequest.SCOPE_REQUEST);
             }
+
             final IncludeResponseWrapper responseWrapper = new IncludeResponseWrapper(response);
             try {
                 WrappedResponseHolder.setWrappedResponse(responseWrapper);
@@ -424,4 +430,5 @@ public class UrlMappingUtils {
             WebUtils.cleanupIncludeRequestAttributes(request, toRestore);
         }
     }
+
 }

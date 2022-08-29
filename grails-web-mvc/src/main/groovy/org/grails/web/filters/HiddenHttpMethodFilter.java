@@ -41,6 +41,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
     public static final String DEFAULT_METHOD_PARAM = "_method";
 
     private String methodParam = DEFAULT_METHOD_PARAM;
+
     public static final String HEADER_X_HTTP_METHOD_OVERRIDE = "X-HTTP-Method-Override";
 
     /**
@@ -93,5 +94,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
         public String getMethod() {
             return method;
         }
+
     }
+
 }

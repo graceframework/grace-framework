@@ -33,4 +33,5 @@ public class IdentityPluginFilter implements PluginFilter {
     public List filterPluginList(List original) {
         return original;
     }
+
 }

@@ -47,4 +47,5 @@ public interface FlashScope extends Map<String, Object>, Serializable {
      * @return A map
      */
     Map getNow();
+
 }

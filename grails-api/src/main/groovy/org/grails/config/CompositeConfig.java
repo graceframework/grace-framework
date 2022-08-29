@@ -123,7 +123,6 @@ public class CompositeConfig implements Config {
         return null;
     }
 
-
     @Override
     public int size() {
         int size = 0;
@@ -287,4 +286,5 @@ public class CompositeConfig implements Config {
     getProperty(String key) {
         return getProperty(key, String.class);
     }
+
 }

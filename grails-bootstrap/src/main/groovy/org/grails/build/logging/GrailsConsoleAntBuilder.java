@@ -83,6 +83,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
     }
 
     private static class GrailsConsoleLogger extends DefaultLogger {
+
         /**
          * Name of the current target, if it should
          * be displayed on the next message. This is
@@ -91,6 +92,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          * the target is logged.
          */
         protected String targetName;
+
         protected GrailsConsole console = GrailsConsole.getInstance();
 
         /**
@@ -137,5 +139,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
                 targetName = null;
             }
         }
+
     }
+
 }

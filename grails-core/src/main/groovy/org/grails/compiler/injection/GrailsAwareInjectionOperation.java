@@ -71,7 +71,6 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         localClassInjectors = classInjectors;
     }
 
-
     public static ClassInjector[] getClassInjectors() {
         if (classInjectors == null) {
             initializeState();
@@ -97,7 +96,6 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         if (classInjectors != null) {
             return;
         }
-
 
         String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
                 ClassUtils.convertClassNameToResourcePath(INJECTOR_CODEHAUS_SCAN_PACKAGE) + "/**/*.class";
@@ -172,8 +170,6 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                 finally {
                     inputStream.close();
                 }
-
-
             }
             Collections.sort(injectors, new Comparator<ClassInjector>() {
                 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -190,8 +186,6 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         catch (IOException e) {
             // ignore
         }
-
-
     }
 
     private static Resource[] scanForPatterns(PathMatchingResourcePatternResolver resolver, String... patterns) throws IOException {

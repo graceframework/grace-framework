@@ -30,7 +30,9 @@ import org.springframework.util.Assert;
  * @since 0.5
  */
 public class StaticResourceLoader implements ResourceLoader {
+
     private static final Logger LOG = LoggerFactory.getLogger(StaticResourceLoader.class);
+
     private Resource baseResource;
 
     public void setBaseResource(Resource baseResource) {
@@ -61,4 +63,5 @@ public class StaticResourceLoader implements ResourceLoader {
     public ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
+
 }

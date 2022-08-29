@@ -67,29 +67,44 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * @author Graeme Rocher
  * @since 3.0
  */
-public class GrailsWebRequest extends DispatcherServletWebRequest  {
+public class GrailsWebRequest extends DispatcherServletWebRequest {
 
     private static final String REDIRECT_CALLED = GrailsApplicationAttributes.REDIRECT_ISSUED;
 
     private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass =
             GrailsFactoriesLoader.loadFactoryClasses(GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
+
     private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor =
             ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
+
     private GrailsApplicationAttributes attributes;
+
     private GrailsParameterMap params;
+
     private GrailsParameterMap originalParams;
+
     private GrailsHttpSession session;
+
     private boolean renderView = true;
+
     private boolean skipFilteringCodec = false;
+
     private Encoder filteringEncoder;
+
     public static final String ID_PARAMETER = "id";
+
     private final List<ParameterCreationListener> parameterCreationListeners = new ArrayList<ParameterCreationListener>();
+
     private final UrlPathHelper urlHelper = new UrlPathHelper();
+
     private ApplicationContext applicationContext;
+
     private String baseUrl;
+
     private HttpServletResponse wrappedResponse;
 
     private EncodingStateRegistry encodingStateRegistry;
+
     private HttpServletRequest multipartRequest;
 
     public GrailsWebRequest(HttpServletRequest request, HttpServletResponse response, GrailsApplicationAttributes attributes) {
@@ -112,11 +127,10 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     }
 
     public GrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
-                            ServletContext servletContext, ApplicationContext applicationContext) {
+            ServletContext servletContext, ApplicationContext applicationContext) {
         this(request, response, servletContext);
         this.applicationContext = applicationContext;
     }
-
 
     /**
      * Holds a reference to the {@link org.springframework.web.multipart.MultipartRequest}
@@ -346,9 +360,9 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
             Object controllerNameObject = currentRequest.getAttribute(GrailsApplicationAttributes.CONTROLLER_NAME_ATTRIBUTE);
             if (controllerNameObject != null) {
                 controllerClass = (GrailsControllerClass) getAttributes()
-                                                            .getGrailsApplication()
-                                                            .getArtefactByLogicalPropertyName(
-                                                                    ControllerArtefactHandler.TYPE, controllerNameObject.toString());
+                        .getGrailsApplication()
+                        .getArtefactByLogicalPropertyName(
+                                ControllerArtefactHandler.TYPE, controllerNameObject.toString());
                 if (controllerClass != null) {
                     currentRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS, controllerClass);
                 }
@@ -358,8 +372,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     }
 
     /**
-    * @return the controllerNamespace
-    */
+     * @return the controllerNamespace
+     */
     public String getControllerNamespace() {
         return (String) getCurrentRequest().getAttribute(GrailsApplicationAttributes.CONTROLLER_NAMESPACE_ATTRIBUTE);
     }
@@ -481,7 +495,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
             sb.append(scheme).append("://").append(request.getServerName());
 
             int port = request.getServerPort();
-            
+
             //ignore port append if the request was forwarded from a VIP as actual source port is now not known
             if (forwardedScheme == null && (("http".equals(scheme) && port != 80) || ("https".equals(scheme) && port != 443))) {
                 sb.append(":").append(port);
@@ -503,10 +517,12 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     }
 
     private static final class DefaultEncodingStateRegistryLookup implements EncodingStateRegistryLookup {
+
         public EncodingStateRegistry lookup() {
             GrailsWebRequest webRequest = GrailsWebRequest.lookup();
             return webRequest == null ? null : webRequest.getEncodingStateRegistry();
         }
+
     }
 
     static {
@@ -527,6 +543,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     public String getFilteringCodec() {
         return filteringEncoder != null ? filteringEncoder.getCodecIdentifier().getCodecName() : null;
     }
+
     public void setFilteringCodec(String codecName) {
         filteringEncoder = codecName != null ? CodecLookupHelper.lookupEncoder(attributes.getGrailsApplication(), codecName) : null;
     }
@@ -547,4 +564,5 @@ public class GrailsWebRequest extends DispatcherServletWebRequest  {
     public void setFilteringEncoder(Encoder filteringEncoder) {
         this.filteringEncoder = filteringEncoder;
     }
+
 }

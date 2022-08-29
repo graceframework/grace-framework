@@ -28,9 +28,13 @@ import java.lang.annotation.Target;
  * @since 2.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface Enhanced {
+
     String version();
+
     String[] enhancedFor() default {};
+
     Class<?>[] mixins() default {};
+
 }

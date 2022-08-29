@@ -38,11 +38,13 @@ import org.grails.plugins.databinding.DataBindingConfigurationProperties;
 public class DefaultConvertersConfiguration {
 
     private final DataBindingConfigurationProperties configurationProperties;
+
     private final LocaleResolver localResolver;
+
     private final Jsr310ConvertersConfiguration jsr310ConvertersConfiguration;
 
     public DefaultConvertersConfiguration(ObjectProvider<LocaleResolver> localeResolverProvider,
-                                          DataBindingConfigurationProperties configurationProperties) {
+            DataBindingConfigurationProperties configurationProperties) {
         this.configurationProperties = configurationProperties;
         this.jsr310ConvertersConfiguration = new Jsr310ConvertersConfiguration(configurationProperties);
         this.localResolver = localeResolverProvider.getIfAvailable();
@@ -280,4 +282,5 @@ public class DefaultConvertersConfiguration {
         converter.setTargetType(double.class);
         return converter;
     }
+
 }

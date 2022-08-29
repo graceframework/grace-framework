@@ -40,4 +40,5 @@ public class DefaultGrailsClass extends AbstractGrailsClass {
     public DefaultGrailsClass(Class<?> clazz) {
         super(clazz, "");
     }
+
 }

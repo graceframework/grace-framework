@@ -24,8 +24,11 @@ import grails.databinding.errors.BindingError;
 public class SimpleBindingError implements BindingError {
 
     private final Object object;
+
     private final String propertyName;
+
     private final Object rejectedValue;
+
     private final Throwable cause;
 
     public SimpleBindingError(Object object, String propertyName,
@@ -51,4 +54,5 @@ public class SimpleBindingError implements BindingError {
     public Throwable getCause() {
         return cause;
     }
+
 }

@@ -31,4 +31,5 @@ public interface Encodeable {
      * @return the encoded result
      */
     CharSequence encode(Encoder encoder);
+
 }

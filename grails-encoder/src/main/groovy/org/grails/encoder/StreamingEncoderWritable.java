@@ -39,4 +39,5 @@ public interface StreamingEncoderWritable {
      *             Signals that an I/O exception has occurred.
      */
     void encodeTo(Writer writer, EncodesToWriter encoder) throws IOException;
+
 }

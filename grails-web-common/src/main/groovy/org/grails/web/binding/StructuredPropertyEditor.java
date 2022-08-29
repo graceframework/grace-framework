@@ -46,4 +46,5 @@ public interface StructuredPropertyEditor {
      * @throws IllegalArgumentException Thrown in one of the field values is illegal
      */
     Object assemble(Class type, Map fieldValues) throws IllegalArgumentException;
+
 }

@@ -45,11 +45,17 @@ import org.grails.encoder.StreamingEncoder;
  * @since 0.4
  */
 public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass implements InitializingBean, GrailsCodecClass, Ordered {
+
     public static final String CODEC = CodecArtefactHandler.TYPE;
+
     private Encoder encoder;
+
     private Decoder decoder;
+
     private static int instantionCounter = 0;
+
     private int order = 100 + instantionCounter++;
+
     private boolean initialized = false;
 
     public DefaultGrailsCodecClass(Class<?> clazz) {
@@ -124,8 +130,11 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
     }
 
     private class ClosureCodecFactory implements CodecFactory {
+
         private Encoder encoder;
+
         private Decoder decoder;
+
         private final Object codecInstance;
 
         ClosureCodecFactory(Object codecInstance) {
@@ -169,10 +178,13 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
                 return closure;
             }
         }
+
     }
 
     private static class ClosureDecoder implements Decoder {
+
         private CodecIdentifier codecIdentifier;
+
         private Closure<Object> closure;
 
         public ClosureDecoder(String codecName, Closure<Object> closure) {
@@ -187,9 +199,11 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         public Object decode(Object o) {
             return closure.call(o);
         }
+
     }
 
     private static class StateAwareEncoderWrapper implements Encoder {
+
         private Encoder delegate;
 
         public StateAwareEncoderWrapper(Encoder delegate) {
@@ -237,22 +251,29 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         public boolean isApplyToSafelyEncoded() {
             return delegate.isApplyToSafelyEncoded();
         }
+
     }
 
     private static class StreamingStateAwareEncoderWrapper extends StateAwareEncoderWrapper implements StreamingEncoder {
+
         private StreamingEncoder delegate;
+
         public StreamingStateAwareEncoderWrapper(StreamingEncoder delegate) {
             super(delegate);
             this.delegate = delegate;
         }
+
         public void encodeToStream(Encoder thisInstance, CharSequence source, int offset, int len, EncodedAppender appender,
                 EncodingState encodingState) throws IOException {
             delegate.encodeToStream(this, source, offset, len, appender, encodingState);
         }
+
     }
 
     private static class ClosureEncoder implements Encoder {
+
         private CodecIdentifier codecIdentifier;
+
         private Closure<Object> closure;
 
         public ClosureEncoder(String codecName, Closure<Object> closure) {
@@ -282,10 +303,13 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         public boolean isApplyToSafelyEncoded() {
             return true;
         }
+
     }
 
     private static class MethodCallingClosure extends Closure<Object> {
+
         private static final long serialVersionUID = 1L;
+
         private Method method;
 
         public MethodCallingClosure(Object owner, Method method) {
@@ -314,6 +338,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
             }
             return callMethod(target);
         }
+
     }
 
     public Encoder getEncoder() {
@@ -335,4 +360,5 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
     public int getOrder() {
         return order;
     }
+
 }

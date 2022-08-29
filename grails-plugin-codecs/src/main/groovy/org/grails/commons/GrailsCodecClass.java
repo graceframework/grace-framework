@@ -27,5 +27,7 @@ import org.grails.encoder.CodecFactory;
  * @since 0.4
  */
 public interface GrailsCodecClass extends InjectableGrailsClass, CodecFactory {
-    public void configureCodecMethods();
+
+    void configureCodecMethods();
+
 }

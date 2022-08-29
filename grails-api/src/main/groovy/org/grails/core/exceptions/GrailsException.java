@@ -40,4 +40,5 @@ public abstract class GrailsException extends RuntimeException {
     public GrailsException(Throwable cause) {
         super(cause);
     }
+
 }

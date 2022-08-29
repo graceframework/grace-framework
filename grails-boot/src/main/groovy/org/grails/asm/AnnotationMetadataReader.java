@@ -74,7 +74,6 @@ public class AnnotationMetadataReader implements MetadataReader {
             is.close();
         }
 
-
         AnnotationMetadataReadingVisitor visitor;
 
         if(readAttributeValues) {
@@ -97,7 +96,6 @@ public class AnnotationMetadataReader implements MetadataReader {
         this.classMetadata = visitor;
         this.resource = resource;
     }
-
 
     @Override
     public Resource getResource() {

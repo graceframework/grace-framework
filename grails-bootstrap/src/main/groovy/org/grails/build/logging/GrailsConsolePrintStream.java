@@ -58,4 +58,5 @@ public class GrailsConsolePrintStream extends PrintStream {
             GrailsConsole.getInstance().log(o.toString());
         }
     }
+
 }

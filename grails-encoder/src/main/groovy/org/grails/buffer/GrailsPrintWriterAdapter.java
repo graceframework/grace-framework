@@ -30,10 +30,13 @@ import org.springframework.objenesis.instantiator.ObjectInstantiator;
  * @since 2.0
  */
 public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrappedWriter {
+
     private static final Logger LOG = LoggerFactory.getLogger(GrailsPrintWriterAdapter.class);
+
     protected GrailsPrintWriter target;
 
     private static ObjectInstantiator instantiator;
+
     static {
         try {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(GrailsPrintWriterAdapter.class);
@@ -325,4 +328,5 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
     protected void handleIOException(IOException e) {
         target.handleIOException(e);
     }
+
 }

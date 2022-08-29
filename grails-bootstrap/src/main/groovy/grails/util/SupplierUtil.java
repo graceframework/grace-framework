@@ -36,6 +36,7 @@ public class SupplierUtil {
     public static <T> Supplier<T> memoized(Supplier<T> actual) {
         return new Supplier<T>() {
             Supplier<T> delegate = this::initialize;
+
             boolean initialized;
 
             public T get() {
@@ -64,6 +65,7 @@ public class SupplierUtil {
     public static <T> Supplier<T> memoizedNonEmpty(Supplier<T> actual) {
         return new Supplier<T>() {
             Supplier<T> delegate = this::initialize;
+
             boolean initialized;
 
             public T get() {

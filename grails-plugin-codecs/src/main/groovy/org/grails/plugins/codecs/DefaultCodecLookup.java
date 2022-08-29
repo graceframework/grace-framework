@@ -36,7 +36,9 @@ import org.grails.encoder.impl.BasicCodecLookup;
  * @since 2.3
  */
 public class DefaultCodecLookup extends BasicCodecLookup implements GrailsApplicationAware {
+
     protected ApplicationContext applicationContext;
+
     protected GrailsApplication grailsApplication;
 
     public DefaultCodecLookup(GrailsApplication grailsApplication) {
@@ -67,4 +69,5 @@ public class DefaultCodecLookup extends BasicCodecLookup implements GrailsApplic
         this.grailsApplication = grailsApplication;
         this.applicationContext = grailsApplication.getMainContext();
     }
+
 }

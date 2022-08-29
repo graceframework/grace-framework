@@ -40,4 +40,5 @@ public class InvalidVersionException extends RuntimeException {
     public InvalidVersionException(Throwable throwable) {
         super(throwable);
     }
+
 }

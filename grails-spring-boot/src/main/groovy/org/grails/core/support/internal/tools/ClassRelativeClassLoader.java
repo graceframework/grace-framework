@@ -66,6 +66,7 @@ class ClassRelativeClassLoader extends URLClassLoader {
             final int l = urls.length;
             return new Enumeration<URL>() {
                 int i = 0;
+
                 @Override
                 public boolean hasMoreElements() {
                     return i < l;
@@ -81,6 +82,5 @@ class ClassRelativeClassLoader extends URLClassLoader {
             return findResources(name);
         }
     }
-
 
 }

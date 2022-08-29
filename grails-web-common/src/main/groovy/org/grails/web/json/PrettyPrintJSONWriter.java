@@ -31,12 +31,14 @@ public class PrettyPrintJSONWriter extends JSONWriter {
     public static final String DEFAULT_INDENT_STR = "  ";
 
     public static final String NEWLINE;
+
     static {
         String nl = System.getProperty("line.separator");
         NEWLINE = nl != null ? nl : "\n";
     }
 
     private int indentLevel = 0;
+
     private final String indentStr;
 
     public PrettyPrintJSONWriter(Writer w) {
@@ -155,4 +157,5 @@ public class PrettyPrintJSONWriter extends JSONWriter {
         }
         throw new JSONException("Misplaced key: expected mode of KEY but was " + this.mode);
     }
+
 }

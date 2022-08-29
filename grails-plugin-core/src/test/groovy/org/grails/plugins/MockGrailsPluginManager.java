@@ -33,7 +33,6 @@ import org.springframework.util.Assert;
 public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     private boolean checkForChangesExpected = false;
 
-
     public MockGrailsPluginManager(GrailsApplication application) {
         super(application);
         loadPlugins();

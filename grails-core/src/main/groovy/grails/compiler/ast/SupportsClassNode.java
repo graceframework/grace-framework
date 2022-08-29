@@ -24,6 +24,6 @@ import org.codehaus.groovy.ast.ClassNode;
  */
 public interface SupportsClassNode {
 
-	boolean supports(ClassNode classNode);
+    boolean supports(ClassNode classNode);
 
 }

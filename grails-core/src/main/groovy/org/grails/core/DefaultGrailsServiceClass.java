@@ -23,9 +23,11 @@ import grails.core.GrailsServiceClass;
 public class DefaultGrailsServiceClass extends AbstractInjectableGrailsClass implements GrailsServiceClass {
 
     public static final String SERVICE = "Service";
+
     private static final String TRANSACTIONAL = "transactional";
 
     private boolean transactional = true;
+
     private String datasourceName;
 
     public DefaultGrailsServiceClass(Class<?> clazz) {
@@ -59,4 +61,5 @@ public class DefaultGrailsServiceClass extends AbstractInjectableGrailsClass imp
     public boolean usesDatasource(final String name) {
         return getDatasource().equals(name);
     }
+
 }

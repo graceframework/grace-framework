@@ -38,10 +38,12 @@ import grails.core.support.GrailsConfigurationAware;
  */
 public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfigurer implements GrailsConfigurationAware {
 
-
     private Properties properties;
+
     private String beanName;
+
     private BeanFactory beanFactory;
+
     private Config config;
 
     public GrailsPlaceholderConfigurer(String placeHolderPrefix, Properties properties) {
@@ -119,4 +121,5 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
     public void setConfiguration(Config co) {
         this.config = co;
     }
+
 }

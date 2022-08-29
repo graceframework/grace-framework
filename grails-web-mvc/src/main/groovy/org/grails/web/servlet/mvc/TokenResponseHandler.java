@@ -26,6 +26,7 @@ import groovy.lang.Closure;
 public interface TokenResponseHandler {
 
     String INVALID_TOKEN_ATTRIBUTE = "invalidToken";
+
     String KEY = "org.codehaus.groovy.grails.TOKEN_RESPONSE_HANDLER";
 
     /**
@@ -47,4 +48,5 @@ public interface TokenResponseHandler {
      * @return true if it was
      */
     boolean wasInvalidToken();
+
 }

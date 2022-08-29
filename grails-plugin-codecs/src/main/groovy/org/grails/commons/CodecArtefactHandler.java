@@ -38,4 +38,5 @@ public class CodecArtefactHandler extends ArtefactHandlerAdapter {
 
         return clazz.getName().endsWith(DefaultGrailsCodecClass.CODEC) && !DomainClassArtefactHandler.isDomainClass(clazz);
     }
+
 }

@@ -59,5 +59,7 @@ class SomeClass {
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BindUsing {
+
     Class<?> value();
+
 }

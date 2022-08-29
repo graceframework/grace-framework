@@ -59,4 +59,5 @@ public interface ProxyHandler {
      * @return true if has been init
      */
     boolean isInitialized(Object obj, String associationName);
+
 }

@@ -47,9 +47,13 @@ import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
 public class DefaultUrlCreator implements UrlCreator {
 
     private static final char SLASH = '/';
+
     private final String controllerName;
+
     private final String actionName;
+
     public static final String ARGUMENT_ID = "id";
+
     private static final String ENTITY_AMPERSAND = "&";
 
     public DefaultUrlCreator(String controller, String action) {
@@ -72,7 +76,6 @@ public class DefaultUrlCreator implements UrlCreator {
 
     @SuppressWarnings("unchecked")
     private String createURLWithWebRequest(Map parameterValues, GrailsWebRequest webRequest, boolean includeContextPath) {
-
         GrailsRequestStateLookupStrategy requestStateLookupStrategy = new DefaultRequestStateLookupStrategy(webRequest);
 
         final String encoding = requestStateLookupStrategy.getCharacterEncoding();
@@ -157,13 +160,13 @@ public class DefaultUrlCreator implements UrlCreator {
     }
 
     public String createRelativeURL(String controller, String action,
-                                    String pluginName, Map parameterValues, String encoding) {
+            String pluginName, Map parameterValues, String encoding) {
         return createRelativeURL(controller, action, null, null, parameterValues, encoding);
     }
 
     @SuppressWarnings("unchecked")
     public String createRelativeURL(String controller, String action, String namespace,
-                                    String pluginName, Map parameterValues, String encoding) {
+            String pluginName, Map parameterValues, String encoding) {
         return createURLInternal(controller, action, parameterValues, false);
     }
 
@@ -173,9 +176,10 @@ public class DefaultUrlCreator implements UrlCreator {
 
     @SuppressWarnings("unchecked")
     public String createRelativeURL(String controller, String action, String namespace,
-                                    String pluginName, Map parameterValues, String encoding, String fragment) {
+            String pluginName, Map parameterValues, String encoding, String fragment) {
+
         final String url = createURLInternal(controller, action, parameterValues, false);
-        return  createUrlWithFragment(encoding, fragment, url);
+        return createUrlWithFragment(encoding, fragment, url);
     }
 
     public String createURL(String controller, String action, Map parameterValues, String encoding, String fragment) {
@@ -183,7 +187,8 @@ public class DefaultUrlCreator implements UrlCreator {
     }
 
     public String createURL(String controller, String action, String namespace,
-                            String pluginName, Map parameterValues, String encoding, String fragment) {
+            String pluginName, Map parameterValues, String encoding, String fragment) {
+
         String url = createURL(controller, action, namespace, pluginName, parameterValues, encoding);
         return createUrlWithFragment(encoding, fragment, url);
     }
@@ -195,7 +200,7 @@ public class DefaultUrlCreator implements UrlCreator {
             }
             catch (UnsupportedEncodingException ex) {
                 throw new ControllerExecutionException("Error creating URL  [" + url +
-                     "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(), ex);
+                        "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(), ex);
             }
         }
 
@@ -206,7 +211,6 @@ public class DefaultUrlCreator implements UrlCreator {
      * Appends all the request parameters to the URI buffer
      */
     private void appendRequestParams(FastStringWriter actualUriBuf, Map<Object, Object> params, String encoding) {
-
         boolean querySeparator = false;
 
         for (Map.Entry<Object, Object> entry : params.entrySet()) {
@@ -261,8 +265,8 @@ public class DefaultUrlCreator implements UrlCreator {
         }
 
         actualUriBuf.append(urlEncode(name, encoding))
-                    .append('=')
-                    .append(urlEncode(value, encoding));
+                .append('=')
+                .append(urlEncode(value, encoding));
     }
 
     private String urlEncode(Object obj, String charset) {
@@ -281,4 +285,5 @@ public class DefaultUrlCreator implements UrlCreator {
     private void appendUrlToken(FastStringWriter actualUriBuf, Object token, String charset) {
         actualUriBuf.append(SLASH).append(urlEncode(token, charset));
     }
+
 }

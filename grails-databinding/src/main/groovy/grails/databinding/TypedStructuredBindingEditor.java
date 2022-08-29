@@ -15,17 +15,17 @@
  */
 package grails.databinding;
 
-
 /**
- * 
+ *
  * @since 3.0
  * @see StructuredBindingEditor
  */
 public interface TypedStructuredBindingEditor<T> extends StructuredBindingEditor<T> {
 
     /**
-     * 
+     *
      * @return the type that this editor is used for binding to
      */
     Class<T> getTargetType();
+
 }

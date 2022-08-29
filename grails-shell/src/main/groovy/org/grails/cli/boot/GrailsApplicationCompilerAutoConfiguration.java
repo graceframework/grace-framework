@@ -54,14 +54,17 @@ import grails.util.Environment;
 public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     public static final String[] DEFAULT_IMPORTS = new String[] {
-                                                        "grails.persistence",
-                                                        "grails.gorm",
-                                                        "grails.rest",
-                                                        "grails.artefact",
-                                                        "grails.web",
-                                                        "grails.boot.config" };
+            "grails.persistence",
+            "grails.gorm",
+            "grails.rest",
+            "grails.artefact",
+            "grails.web",
+            "grails.boot.config" };
+
     public static final String ENABLE_AUTO_CONFIGURATION = "org.springframework.boot.autoconfigure.EnableAutoConfiguration";
+
     public static final ClassNode ENABLE_AUTO_CONFIGURATION_CLASS_NODE = ClassHelper.make(ENABLE_AUTO_CONFIGURATION);
+
     ClassNode lastMatch = null;
 
     @Override
@@ -99,8 +102,8 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     }
 
     public static AnnotationNode createGrabAnnotation(String group, String module,
-                                                      String version, String classifier,
-                                                      String type, boolean transitive) {
+            String version, String classifier,
+            String type, boolean transitive) {
         AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Grab.class));
         annotationNode.addMember("group", new ConstantExpression(group));
         annotationNode.addMember("module", new ConstantExpression(module));
@@ -123,8 +126,8 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     }
 
     @Override
-    public void applyToMainClass(GroovyClassLoader loader, GroovyCompilerConfiguration configuration, GeneratorContext generatorContext,
-                                 SourceUnit source, ClassNode classNode) throws CompilationFailedException {
+    public void applyToMainClass(GroovyClassLoader loader, GroovyCompilerConfiguration configuration,
+            GeneratorContext generatorContext, SourceUnit source, ClassNode classNode) throws CompilationFailedException {
 
         // if we arrive here then there is no 'Application' class and we need to add one automatically
         ClassNode applicationClassNode = new ClassNode("Application", Modifier.PUBLIC,
@@ -151,6 +154,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         private Map<String, Dependency> groupAndArtifactToDependency = new HashMap<String, Dependency>();
 
         private Map<String, String> artifactToGroupAndArtifact = new HashMap<String, String>();
+
         private List<Dependency> dependencies = new ArrayList<Dependency>();
 
         public GrailsDependencies(List<org.eclipse.aether.graph.Dependency> dependencies) {

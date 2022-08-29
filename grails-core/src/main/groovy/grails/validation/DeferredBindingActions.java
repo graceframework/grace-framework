@@ -32,6 +32,7 @@ import org.grails.core.lifecycle.ShutdownOperations;
 public class DeferredBindingActions {
 
     private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<List<Runnable>>();
+
     private static Log LOG = LogFactory.getLog(DeferredBindingActions.class);
 
     static {
@@ -83,4 +84,5 @@ public class DeferredBindingActions {
     public static void clear() {
         deferredBindingActions.remove();
     }
+
 }

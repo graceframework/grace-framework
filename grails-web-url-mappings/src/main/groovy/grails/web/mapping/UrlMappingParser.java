@@ -38,4 +38,5 @@ public interface UrlMappingParser {
      * @return The UrlMappingData instance
      */
     UrlMappingData parse(String url);
+
 }

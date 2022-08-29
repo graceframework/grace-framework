@@ -52,8 +52,11 @@ import grails.util.MixinTargetAware;
 public class MixinTransformation implements ASTTransformation {
 
     public static final ClassNode GROOVY_OBJECT_CLASS_NODE = new ClassNode(GroovyObjectSupport.class);
+
     private static final ClassNode MY_TYPE = new ClassNode(Mixin.class);
+
     private static final String MY_TYPE_NAME = "@" + MY_TYPE.getNameWithoutPackage();
+
     public static final String OBJECT_CLASS = "java.lang.Object";
 
     public void visit(ASTNode[] astNodes, SourceUnit source) {
@@ -71,7 +74,7 @@ public class MixinTransformation implements ASTTransformation {
         String cName = classNode.getName();
         if (classNode.isInterface()) {
             throw new RuntimeException("Error processing interface '" + cName + "'. " +
-                MY_TYPE_NAME + " not allowed for interfaces.");
+                    MY_TYPE_NAME + " not allowed for interfaces.");
         }
 
         ListExpression values = getListOfClasses(node);
@@ -79,6 +82,7 @@ public class MixinTransformation implements ASTTransformation {
         weaveMixinsIntoClass(classNode, values);
 
     }
+
     public void weaveMixinsIntoClass(ClassNode classNode, ListExpression values) {
         if (values != null) {
             for (Expression current : values.getExpressions()) {
@@ -131,6 +135,7 @@ public class MixinTransformation implements ASTTransformation {
     protected boolean hasDeclaredMethod(ClassNode classNode, MethodNode mixinMethod) {
         return classNode.hasDeclaredMethod(mixinMethod.getName(), mixinMethod.getParameters());
     }
+
     protected ListExpression getListOfClasses(AnnotationNode node) {
         Expression value = node.getMember("value");
         ListExpression values = null;
@@ -153,9 +158,10 @@ public class MixinTransformation implements ASTTransformation {
         ClassNode groovyMethods = GROOVY_OBJECT_CLASS_NODE;
         String methodName = declaredMethod.getName();
         return !declaredMethod.isSynthetic() &&
-            !methodName.contains("$") &&
-            Modifier.isPublic(declaredMethod.getModifiers()) &&
-            !Modifier.isAbstract(declaredMethod.getModifiers()) &&
-            !groovyMethods.hasMethod(declaredMethod.getName(), declaredMethod.getParameters());
+                !methodName.contains("$") &&
+                Modifier.isPublic(declaredMethod.getModifiers()) &&
+                !Modifier.isAbstract(declaredMethod.getModifiers()) &&
+                !groovyMethods.hasMethod(declaredMethod.getName(), declaredMethod.getParameters());
     }
+
 }

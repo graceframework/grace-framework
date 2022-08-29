@@ -32,4 +32,5 @@ public interface EncodedAppenderFactory {
      * @return the EncodedAppender
      */
     EncodedAppender getEncodedAppender();
+
 }

@@ -30,5 +30,6 @@ public interface PluginFilter {
      * @param original the original supplied set of <code>GrailsPlugin</code> instances
      * @return a sublist of these items
      */
-    List<GrailsPlugin> filterPluginList(List<GrailsPlugin>  original);
+    List<GrailsPlugin> filterPluginList(List<GrailsPlugin> original);
+
 }

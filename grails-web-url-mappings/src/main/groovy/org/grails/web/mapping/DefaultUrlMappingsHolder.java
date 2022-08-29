@@ -67,16 +67,20 @@ import grails.web.mapping.UrlMappingsHolder;
 public class DefaultUrlMappingsHolder implements UrlMappings {
 
     private static final transient Log LOG = LogFactory.getLog(DefaultUrlMappingsHolder.class);
+
     private static final int DEFAULT_MAX_WEIGHTED_CAPACITY = 5000;
+
     public static final UrlMappingInfo[] EMPTY_RESULTS = new UrlMappingInfo[0];
 
     private int maxWeightedCacheCapacity = DEFAULT_MAX_WEIGHTED_CAPACITY;
-    private Cache<String, UrlMappingInfo> cachedMatches;
-    private Cache<UriToUrlMappingKey, List<UrlMappingInfo>> cachedListMatches;
 
+    private Cache<String, UrlMappingInfo> cachedMatches;
+
+    private Cache<UriToUrlMappingKey, List<UrlMappingInfo>> cachedListMatches;
 
     private enum CustomListWeigher implements Weigher<UriToUrlMappingKey, List<UrlMappingInfo>> {
         INSTANCE;
+
         @Override
         public int weigh(UriToUrlMappingKey key, List<UrlMappingInfo> value) {
             return value.size() + 1;
@@ -84,19 +88,32 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     }
 
     private List<UrlMapping> urlMappings = new ArrayList<>();
+
     private UrlMapping[] mappings;
+
     private UrlCreatorCache urlCreatorCache;
+
     // capacity of the UrlCreatoreCache is the estimated number of char's stored in cached objects
     private int urlCreatorMaxWeightedCacheCapacity = 160000;
+
     private final List excludePatterns;
+
     private final Map<UrlMappingKey, UrlMapping> mappingsLookup = new HashMap<>();
+
     private final Map<String, UrlMapping> namedMappings = new HashMap<>();
+
     private final UrlMappingsList mappingsListLookup = new UrlMappingsList();
+
     private final Set<String> DEFAULT_NAMESPACE_PARAMS = CollectionUtils.newSet(UrlMapping.NAMESPACE, UrlMapping.CONTROLLER, UrlMapping.ACTION);
+
     private final Set<String> DEFAULT_CONTROLLER_PARAMS = CollectionUtils.newSet(UrlMapping.CONTROLLER, UrlMapping.ACTION);
+
     private final Set<String> DEFAULT_CONTROLLER_ONLY_PARAMS = CollectionUtils.newSet(UrlMapping.CONTROLLER);
+
     private final Set<String> DEFAULT_ACTION_PARAMS = CollectionUtils.newSet(UrlMapping.ACTION);
+
     private final PathMatcher pathMatcher = new AntPathMatcher();
+
     private final AtomicInteger initCounter = new AtomicInteger();
 
     public DefaultUrlMappingsHolder(List<UrlMapping> mappings) {
@@ -131,12 +148,12 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         sortMappings();
 
         cachedMatches = Caffeine.newBuilder()
-            .maximumSize(maxWeightedCacheCapacity)
-            .build();
+                .maximumSize(maxWeightedCacheCapacity)
+                .build();
         cachedListMatches = Caffeine.newBuilder()
-            .maximumWeight(maxWeightedCacheCapacity)
-            .weigher(CustomListWeigher.INSTANCE)
-            .build();
+                .maximumWeight(maxWeightedCacheCapacity)
+                .weigher(CustomListWeigher.INSTANCE)
+                .build();
         if (urlCreatorMaxWeightedCacheCapacity > 0) {
             urlCreatorCache = new UrlCreatorCache(urlCreatorMaxWeightedCacheCapacity);
         }
@@ -148,6 +165,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             if (mappingName != null) {
                 namedMappings.put(mappingName, mapping);
             }
+
             String controllerName = mapping.getControllerName() instanceof String ? mapping.getControllerName().toString() : null;
             String actionName = mapping.getActionName() instanceof String ? mapping.getActionName().toString() : null;
             String pluginName = mapping.getPluginName() instanceof String ? mapping.getPluginName().toString() : null;
@@ -158,6 +176,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             Constrained[] params = mapping.getConstraints();
             Set<String> requiredParams = new HashSet<String>();
             int optionalIndex = -1;
+
             for (int j = 0; j < params.length; j++) {
                 Constrained param = params[j];
                 if (param instanceof ConstrainedProperty) {
@@ -179,7 +198,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Reverse mapping: " + key + " -> " + mapping);
             }
+
             Set<String> requiredParamsAndOptionals = new HashSet<String>(requiredParams);
+
             if (optionalIndex > -1) {
                 for (int j = optionalIndex; j < params.length; j++) {
                     Constrained constrained = params[j];
@@ -242,13 +263,13 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
     @Override
     public UrlCreator getReverseMapping(String controller, String action, String namespace,
-                                        String pluginName, String httpMethod, Map params) {
+            String pluginName, String httpMethod, Map params) {
         return getReverseMapping(controller, action, namespace, pluginName, httpMethod, UrlMapping.ANY_VERSION, params);
     }
 
     @Override
     public UrlCreator getReverseMapping(String controller, String action, String namespace,
-                                        String pluginName, String httpMethod, String version, Map params) {
+            String pluginName, String httpMethod, String version, Map params) {
         if (params == null) {
             params = Collections.emptyMap();
         }
@@ -272,7 +293,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
      * @see UrlMappingsHolder#getReverseMapping(String, String, java.util.Map)
      */
     public UrlCreator getReverseMapping(final String controller, final String action,
-                                        final String namespace, final String pluginName, Map params) {
+            final String namespace, final String pluginName, Map params) {
         return getReverseMapping(controller, action, namespace, pluginName, null, params);
     }
 
@@ -282,13 +303,13 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
     @Override
     public UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
-                                                 String pluginName, String httpMethod, Map params) {
+            String pluginName, String httpMethod, Map params) {
         return getReverseMappingNoDefault(controller, action, namespace, pluginName, httpMethod, UrlMapping.ANY_VERSION, params);
     }
 
     @Override
     public UrlCreator getReverseMappingNoDefault(String controller, String action, String namespace,
-                                                 String pluginName, String httpMethod, String version, Map params) {
+            String pluginName, String httpMethod, String version, Map params) {
         if (params == null) {
             params = Collections.emptyMap();
         }
@@ -312,13 +333,14 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
     @SuppressWarnings("unchecked")
     private UrlCreator resolveUrlCreator(final String controller,
-                                         final String action,
-                                         final String namespace,
-                                         final String pluginName,
-                                         String httpMethod,
-                                         String version,
-                                         Map params,
-                                         boolean useDefault) {
+            final String action,
+            final String namespace,
+            final String pluginName,
+            String httpMethod,
+            String version,
+            Map params,
+            boolean useDefault) {
+
         UrlMapping mapping = null;
 
         if (httpMethod == null) {
@@ -456,6 +478,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         else {
             creator = mapping;
         }
+
         return creator;
     }
 
@@ -474,18 +497,19 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
      */
     @SuppressWarnings("unchecked")
     protected UrlMapping lookupMapping(String controller, String action, String namespace,
-                                       String pluginName, String httpMethod, String version, Map params) {
+            String pluginName, String httpMethod, String version, Map params) {
+
         final UrlMappingsListKey lookupKey = new UrlMappingsListKey(controller, action, namespace, pluginName, httpMethod, version);
         Collection mappingKeysSet = mappingsListLookup.get(lookupKey);
 
         final String actionName = lookupKey.action;
         boolean secondAttempt = false;
         final boolean isIndexAction = GrailsControllerClass.INDEX_ACTION.equals(actionName);
-        if (null == mappingKeysSet) {
+        if (mappingKeysSet == null) {
             lookupKey.httpMethod = UrlMapping.ANY_HTTP_METHOD;
             mappingKeysSet = mappingsListLookup.get(lookupKey);
         }
-        if (null == mappingKeysSet && actionName != null) {
+        if (mappingKeysSet == null && actionName != null) {
             lookupKey.action = null;
 
             mappingKeysSet = mappingsListLookup.get(lookupKey);
@@ -557,6 +581,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         boolean anyHttpMethod = httpMethod != null && httpMethod.equalsIgnoreCase(UrlMapping.ANY_HTTP_METHOD);
         UriToUrlMappingKey cacheKey = new UriToUrlMappingKey(uri, httpMethod, UrlMapping.ANY_VERSION);
         List<UrlMappingInfo> matchingUrls = cachedListMatches.getIfPresent(cacheKey);
+
         if (matchingUrls == null) {
             matchingUrls = new ArrayList<>();
             for (UrlMapping mapping : mappings) {
@@ -600,6 +625,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
         UriToUrlMappingKey cacheKey = new UriToUrlMappingKey(uri, httpMethod, version);
         List<UrlMappingInfo> matchingUrls = cachedListMatches.getIfPresent(cacheKey);
+
         if (matchingUrls == null) {
             matchingUrls = new ArrayList<>();
             boolean anyHttpMethod = httpMethod != null && httpMethod.equals(UrlMapping.ANY_HTTP_METHOD);
@@ -707,8 +733,11 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     }
 
     class UriToUrlMappingKey {
+
         String uri;
+
         String httpMethod;
+
         String version;
 
         UriToUrlMappingKey(String uri, String httpMethod, String version) {
@@ -748,6 +777,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             result = 31 * result + (version != null ? version.hashCode() : 0);
             return result;
         }
+
     }
 
     /**
@@ -755,16 +785,23 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
      */
     @SuppressWarnings("unchecked")
     class UrlMappingKey implements Comparable {
+
         String controller;
+
         String action;
+
         String namespace;
+
         String pluginName;
+
         String httpMethod;
+
         String version;
+
         Set<String> paramNames;
 
         public UrlMappingKey(String controller, String action, String namespace, String pluginName,
-                             String httpMethod, String version, Set<String> paramNames) {
+                String httpMethod, String version, Set<String> paramNames) {
             this.controller = controller;
             this.action = action;
             this.namespace = namespace;
@@ -830,12 +867,12 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         @Override
         public String toString() {
             return new ToStringCreator(this).append(UrlMapping.CONTROLLER, controller)
-                                            .append(UrlMapping.ACTION, action)
-                                            .append(UrlMapping.NAMESPACE, namespace)
-                                            .append(UrlMapping.PLUGIN, pluginName)
-                                            .append("httpMethod", httpMethod)
-                                            .append("params", paramNames)
-                                            .toString();
+                    .append(UrlMapping.ACTION, action)
+                    .append(UrlMapping.NAMESPACE, namespace)
+                    .append(UrlMapping.PLUGIN, pluginName)
+                    .append("httpMethod", httpMethod)
+                    .append("params", paramNames)
+                    .toString();
         }
 
         public int compareTo(Object o) {
@@ -884,17 +921,24 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
             return EQUAL;
         }
+
     }
 
     /**
      * A class used as a key to lookup a all UrlMappings based on only controller and action.
      */
     class UrlMappingsListKey {
+
         String controller;
+
         String action;
+
         String namespace;
+
         String pluginName;
+
         String httpMethod;
+
         String version;
 
         public UrlMappingsListKey(String controller, String action, String namespace, String pluginName, String httpMethod, String version) {
@@ -958,16 +1002,18 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         @Override
         public String toString() {
             return new ToStringCreator(this).append(UrlMapping.CONTROLLER, controller)
-                                            .append(UrlMapping.ACTION, action)
-                                            .append(UrlMapping.NAMESPACE, namespace)
-                                            .append(UrlMapping.PLUGIN, pluginName)
-                                            .append(UrlMapping.HTTP_METHOD, httpMethod)
-                                            .append(UrlMapping.VERSION, version)
-                                            .toString();
+                    .append(UrlMapping.ACTION, action)
+                    .append(UrlMapping.NAMESPACE, namespace)
+                    .append(UrlMapping.PLUGIN, pluginName)
+                    .append(UrlMapping.HTTP_METHOD, httpMethod)
+                    .append(UrlMapping.VERSION, version)
+                    .toString();
         }
+
     }
 
     class UrlMappingsList {
+
         // A map from a UrlMappingsListKey to a list of UrlMappingKeys
         private Map<UrlMappingsListKey, List<UrlMappingKey>> lookup =
                 new HashMap<UrlMappingsListKey, List<UrlMappingKey>>();
@@ -988,6 +1034,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         public Collection<UrlMappingKey> get(UrlMappingsListKey key) {
             return lookup.get(key);
         }
+
     }
 
     public void setMaxWeightedCacheCapacity(int maxWeightedCacheCapacity) {
@@ -997,4 +1044,5 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     public void setUrlCreatorMaxWeightedCacheCapacity(int urlCreatorMaxWeightedCacheCapacity) {
         this.urlCreatorMaxWeightedCacheCapacity = urlCreatorMaxWeightedCacheCapacity;
     }
+
 }

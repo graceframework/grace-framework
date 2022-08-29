@@ -24,11 +24,15 @@ import org.apache.tools.ant.taskdefs.optional.junit.JUnitResultFormatter;
 public class JUnitReportsFactory {
 
     public static final String XML = "xml";
+
     public static final String PLAIN = "plain";
 
     protected final String phaseName;
+
     protected final String typeName;
+
     protected final File reportsDir;
+
     protected final List<String> formats;
 
     @SuppressWarnings("unchecked")
@@ -68,4 +72,5 @@ public class JUnitReportsFactory {
 
         throw new IllegalArgumentException("Unknown format type: " + format);
     }
+
 }

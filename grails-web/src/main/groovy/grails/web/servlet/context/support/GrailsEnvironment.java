@@ -59,5 +59,7 @@ public class GrailsEnvironment extends StandardServletEnvironment {
         public Object getProperty(String key) {
             return grailsApplication.getConfig().getProperty(key, Object.class);
         }
+
     }
+
 }

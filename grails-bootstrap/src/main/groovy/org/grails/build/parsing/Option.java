@@ -24,6 +24,7 @@ package org.grails.build.parsing;
 public class Option {
 
     private String name;
+
     private String description;
 
     public Option(String name, String description) {
@@ -42,4 +43,5 @@ public class Option {
     public String getDescription() {
         return description;
     }
+
 }

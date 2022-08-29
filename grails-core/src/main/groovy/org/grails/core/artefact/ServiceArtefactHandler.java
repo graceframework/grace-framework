@@ -26,6 +26,7 @@ import org.grails.core.DefaultGrailsServiceClass;
 public class ServiceArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Service";
+
     public static final String PLUGIN_NAME = "services";
 
     public ServiceArtefactHandler() {

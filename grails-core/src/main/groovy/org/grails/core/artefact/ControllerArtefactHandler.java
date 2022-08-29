@@ -28,10 +28,11 @@ import org.grails.core.DefaultGrailsControllerClass;
  * <p>Lookups are cached in non-development mode, and the cache size can be controlled using the grails.urlmapping.cache.maxsize config property.</p>
  *
  * @author Marc Palmer (marc@anyware.co.uk)
-*/
+ */
 public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Controller";
+
     public static final String PLUGIN_NAME = "controllers";
 
     public ControllerArtefactHandler() {
@@ -43,6 +44,5 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
     public String getPluginName() {
         return PLUGIN_NAME;
     }
-
 
 }

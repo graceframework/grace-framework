@@ -39,4 +39,5 @@ public class GrailsDomainException extends GrailsException {
     public GrailsDomainException(Throwable cause) {
         super(cause);
     }
+
 }

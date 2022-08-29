@@ -177,7 +177,6 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         return uri;
     }
 
-
     /**
      * Obtains a view URI of the given controller name and view name
      * @param controllerName The name of the controller

@@ -27,6 +27,7 @@ import java.io.IOException;
  * @since 2.3
  */
 public interface StreamingEncoder extends Encoder {
+
     /**
      * Encode and append portion of source CharSequence to the appender.
      *
@@ -45,4 +46,5 @@ public interface StreamingEncoder extends Encoder {
      */
     void encodeToStream(Encoder thisInstance, CharSequence source, int offset, int len, EncodedAppender appender,
             EncodingState encodingState) throws IOException;
+
 }

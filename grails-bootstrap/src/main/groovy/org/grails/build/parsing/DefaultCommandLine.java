@@ -33,11 +33,17 @@ import grails.util.Environment;
 public class DefaultCommandLine implements CommandLine {
 
     Properties systemProperties = new Properties();
+
     LinkedHashMap<String, Object> undeclaredOptions = new LinkedHashMap<>();
+
     LinkedHashMap<String, SpecifiedOption> declaredOptions = new LinkedHashMap<String, SpecifiedOption>();
+
     List<String> remainingArgs = new ArrayList<String>();
+
     private String environment;
+
     private String commandName;
+
     private String[] rawArguments;
 
     public void addDeclaredOption(String name, Option option) {
@@ -216,7 +222,9 @@ public class DefaultCommandLine implements CommandLine {
     }
 
     public static class SpecifiedOption {
+
         private Option option;
+
         private Object value;
 
         public Option getOption() {
@@ -226,5 +234,7 @@ public class DefaultCommandLine implements CommandLine {
         public Object getValue() {
             return value;
         }
+
     }
+
 }

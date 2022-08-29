@@ -17,15 +17,18 @@ package org.grails.charsequences;
 
 /**
  * Wraps a char array and implements CharSequence interface
- * 
- * 
+ *
+ *
  * @author Lari Hotari
  * @since 2.3.10
  *
  */
 class CharArrayCharSequence implements CharSequence, CharArrayAccessible {
+
     private final char[] chars;
+
     private final int count;
+
     private final int start;
 
     CharArrayCharSequence(char[] chars, int start, int count) {
@@ -81,4 +84,5 @@ class CharArrayCharSequence implements CharSequence, CharArrayAccessible {
         }
         System.arraycopy(chars, start + srcBegin, dst, dstBegin, srcEnd - srcBegin);
     }
+
 }

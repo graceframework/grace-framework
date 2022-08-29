@@ -232,4 +232,5 @@ public interface RuntimeSpringConfiguration {
      * @param beanFactory The BeanFactory implementation
      */
     void setBeanFactory(ListableBeanFactory beanFactory);
+
 }

@@ -30,7 +30,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  */
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @GroovyASTTransformationClass("org.grails.compiler.injection.EnhancesTraitTransformation")
 public @interface Enhances {
 
@@ -38,4 +38,5 @@ public @interface Enhances {
      * @return The artefact types (Example: Controller, Service etc.)
      */
     String[] value();
+
 }

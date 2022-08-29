@@ -51,24 +51,41 @@ import org.grails.plugins.support.WatchPattern;
  * @author Graeme Rocher
  */
 public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implements GrailsPlugin {
+
     private static final Logger LOG = LoggerFactory.getLogger(AbstractGrailsPlugin.class);
 
     public static final String PLUGIN_YML = "plugin.yml";
+
     public static final String PLUGIN_YML_PATH = "/" + PLUGIN_YML;
+
     public static final String PLUGIN_GROOVY = "plugin.groovy";
+
     public static final String PLUGIN_GROOVY_PATH = "/" + PLUGIN_GROOVY;
+
     private static final List<String> DEFAULT_CONFIG_IGNORE_LIST = Arrays.asList("dataSource", "hibernate");
+
     private static Resource basePluginResource = null;
+
     protected PropertySource<?> propertySource;
+
     protected GrailsApplication grailsApplication;
+
     protected boolean isBase = false;
+
     protected String version = "1.0";
+
     protected Map<String, Object> dependencies = new HashMap<String, Object>();
+
     protected String[] dependencyNames = {};
+
     protected Class<?> pluginClass;
+
     protected ApplicationContext applicationContext;
+
     protected GrailsPluginManager manager;
+
     protected String[] evictionList = {};
+
     protected Config config;
 
     /**
@@ -77,9 +94,11 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
      * @author Graeme Rocher
      */
     class GrailsPluginClass extends AbstractGrailsClass {
+
         public GrailsPluginClass(Class<?> clazz) {
             super(clazz, TRAILING_NAME);
         }
+
     }
 
     public AbstractGrailsPlugin(Class<?> pluginClass, GrailsApplication application) {
@@ -97,13 +116,13 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
                 if (filename.equals(PLUGIN_YML)) {
                     YamlPropertySourceLoader propertySourceLoader = new YamlPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
-                            "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST)
+                                    "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST)
                             .stream().findFirst().orElse(null);
                 }
                 else if (filename.equals(PLUGIN_GROOVY)) {
                     GroovyConfigPropertySourceLoader propertySourceLoader = new GroovyConfigPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
-                            "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST)
+                                    "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST)
                             .stream().findFirst().orElse(null);
                 }
             }
@@ -119,12 +138,11 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     /* (non-Javadoc)
-                 * @see grails.plugins.GrailsPlugin#refresh()
-                 */
+     * @see grails.plugins.GrailsPlugin#refresh()
+     */
     public void refresh() {
         // do nothing
     }
-
 
     @Override
     public boolean isEnabled(String[] profiles) {
@@ -185,7 +203,6 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     public boolean checkForChanges() {
         return false;
     }
-
 
     public String[] getDependencyNames() {
         return dependencyNames;
@@ -305,4 +322,5 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
         return 0;
     }
+
 }

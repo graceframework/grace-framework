@@ -50,16 +50,27 @@ import grails.validation.ValidationErrors;
  * @author Jeff Brown
  */
 public class ASTValidationErrorsHelper implements ASTErrorsHelper {
+
     private static final ConstantExpression NULL_EXPRESSION = new ConstantExpression(null);
+
     private static final String SET_ERRORS_METHOD_NAME = "setErrors";
+
     private static final String GET_ERRORS_METHOD_NAME = "getErrors";
+
     private static final String HAS_ERRORS_METHOD_NAME = "hasErrors";
+
     private static final String CLEAR_ERRORS_METHOD_NAME = "clearErrors";
+
     private static final String INIT_ERRORS_METHOD_NAME = "initErrors";
+
     private static final String ERRORS_PROPERTY_NAME = "errors";
+
     private static final Token EQUALS_SYMBOL = Token.newSymbol(Types.EQUALS, 0, 0);
+
     private static final ClassNode ERRORS_CLASS_NODE = new ClassNode(Errors.class);
+
     private static final VariableExpression ERRORS_EXPRESSION = new VariableExpression(ERRORS_PROPERTY_NAME);
+
     private static final TupleExpression EMPTY_TUPLE = new TupleExpression();
 
     public void injectErrorsCode(ClassNode classNode) {
@@ -164,16 +175,17 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
     protected void addSetErrorsMethod(final ClassNode paramTypeClassNode) {
         final String errorsArgumentName = "$errorsArg";
         MethodNode setErrorsMethod = paramTypeClassNode.getMethod(SET_ERRORS_METHOD_NAME,
-             new Parameter[] { new Parameter(ERRORS_CLASS_NODE, errorsArgumentName)});
+                new Parameter[] { new Parameter(ERRORS_CLASS_NODE, errorsArgumentName) });
         if (setErrorsMethod == null) {
             final Expression assignErrorsExpression = new BinaryExpression(ERRORS_EXPRESSION,
                     EQUALS_SYMBOL, new VariableExpression(errorsArgumentName));
             setErrorsMethod = new MethodNode(SET_ERRORS_METHOD_NAME,
                     Modifier.PUBLIC, ClassHelper.VOID_TYPE,
-                    new Parameter[]{new Parameter(ERRORS_CLASS_NODE, errorsArgumentName)}, GrailsArtefactClassInjector.EMPTY_CLASS_ARRAY,
+                    new Parameter[] { new Parameter(ERRORS_CLASS_NODE, errorsArgumentName) }, GrailsArtefactClassInjector.EMPTY_CLASS_ARRAY,
                     new ExpressionStatement(assignErrorsExpression));
             paramTypeClassNode.addMethod(setErrorsMethod);
             AnnotatedNodeUtils.markAsGenerated(paramTypeClassNode, setErrorsMethod);
         }
     }
+
 }

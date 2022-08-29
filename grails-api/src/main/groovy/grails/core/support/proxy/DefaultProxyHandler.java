@@ -42,4 +42,5 @@ public class DefaultProxyHandler implements ProxyHandler {
     public void initialize(Object o) {
         // do nothing
     }
+
 }

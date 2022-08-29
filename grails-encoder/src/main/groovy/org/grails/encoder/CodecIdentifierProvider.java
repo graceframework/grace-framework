@@ -30,4 +30,5 @@ public interface CodecIdentifierProvider {
      * @return the codec identifier information
      */
     CodecIdentifier getCodecIdentifier();
+
 }

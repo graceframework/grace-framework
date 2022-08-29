@@ -37,6 +37,7 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
     private static final Logger log = LoggerFactory.getLogger(GrailsTransactionAttribute.class);
 
     private static final long serialVersionUID = 1L;
+
     private boolean inheritRollbackOnly = true;
 
     public GrailsTransactionAttribute() {
@@ -46,7 +47,7 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
     public GrailsTransactionAttribute(int propagationBehavior, List<RollbackRuleAttribute> rollbackRules) {
         super(propagationBehavior, rollbackRules);
     }
-    
+
     public GrailsTransactionAttribute(TransactionAttribute other) {
         super();
         setPropagationBehavior(other.getPropagationBehavior());
@@ -64,11 +65,11 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
         setReadOnly(other.isReadOnly());
         setName(other.getName());
     }
-    
+
     public GrailsTransactionAttribute(GrailsTransactionAttribute other) {
         this((RuleBasedTransactionAttribute) other);
     }
-    
+
     public GrailsTransactionAttribute(RuleBasedTransactionAttribute other) {
         super(other);
         if (other instanceof GrailsTransactionAttribute) {
@@ -110,6 +111,7 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
 
         return !(winner instanceof NoRollbackRuleAttribute);
     }
+
     public boolean isInheritRollbackOnly() {
         return inheritRollbackOnly;
     }
@@ -117,4 +119,5 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
     public void setInheritRollbackOnly(boolean inheritRollbackOnly) {
         this.inheritRollbackOnly = inheritRollbackOnly;
     }
+
 }

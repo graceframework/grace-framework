@@ -35,11 +35,14 @@ import org.grails.encoder.StreamingEncoder;
  * @since 2.3
  */
 public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactory {
+
     static final CodecIdentifier RAW_CODEC_IDENTIFIER = new DefaultCodecIdentifier("Raw") {
+
         // using RawCodec will prevent all other codecs from encoding a part encoded with this codec
         public boolean isEquivalent(CodecIdentifier other) {
             return true;
         }
+
     };
 
     /* (non-Javadoc)
@@ -111,4 +114,5 @@ public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactor
     public Decoder getDecoder() {
         return this;
     }
+
 }

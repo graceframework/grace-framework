@@ -45,6 +45,7 @@ class FormattedStringValueConverter implements FormattedValueConverter {
  * @see org.grails.databinding.SimpleDataBinder#registerFormattedValueConverter(FormattedValueConverter)
  */
 public interface FormattedValueConverter {
+
     /**
      * Return a formatted value
      *
@@ -58,4 +59,5 @@ public interface FormattedValueConverter {
      * @return the output type of this converter
      */
     Class<?> getTargetType();
+
 }

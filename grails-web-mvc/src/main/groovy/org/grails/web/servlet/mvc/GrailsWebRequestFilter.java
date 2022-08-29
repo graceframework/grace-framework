@@ -40,6 +40,7 @@ import org.grails.web.util.WebUtils;
  * @since 0.4
  */
 public class GrailsWebRequestFilter extends OncePerRequestFilter implements ApplicationContextAware {
+
     Collection<ParameterCreationListener> paramListenerBeans;
 
     /* (non-Javadoc)
@@ -121,4 +122,5 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
     }
+
 }

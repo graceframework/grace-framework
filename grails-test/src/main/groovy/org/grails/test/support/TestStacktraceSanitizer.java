@@ -42,4 +42,5 @@ public class TestStacktraceSanitizer {
         t.setStackTrace(newTrace.toArray(new StackTraceElement[newTrace.size()]));
         return t;
     }
+
 }

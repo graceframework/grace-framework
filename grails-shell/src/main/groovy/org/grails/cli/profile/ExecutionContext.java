@@ -17,7 +17,6 @@ package org.grails.cli.profile;
 
 import org.grails.build.parsing.CommandLine;
 
-
 /**
  * Context for the execution of {@link org.grails.cli.profile.Command} instances within a {@link org.grails.cli.profile.Profile}
  *
@@ -42,4 +41,5 @@ public interface ExecutionContext extends ProjectContext {
      * @param listener The {@link CommandCancellationListener}
      */
     void addCancelledListener(CommandCancellationListener listener);
+
 }

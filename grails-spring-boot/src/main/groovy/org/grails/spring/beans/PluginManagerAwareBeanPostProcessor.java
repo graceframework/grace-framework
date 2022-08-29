@@ -32,10 +32,11 @@ import grails.plugins.PluginManagerAware;
 public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
     private GrailsPluginManager pluginManager;
+
     private BeanFactory beanFactory;
-    
+
     public PluginManagerAwareBeanPostProcessor() {
-        
+
     }
 
     public PluginManagerAwareBeanPostProcessor(GrailsPluginManager pluginManager) {
@@ -63,4 +64,5 @@ public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, B
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
+
 }

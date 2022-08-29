@@ -18,7 +18,11 @@ package org.grails.buffer;
 import java.io.Writer;
 
 public interface GrailsWrappedWriter {
-    public boolean isAllowUnwrappingOut();
-    public Writer unwrap();
-    public void markUsed();
+
+    boolean isAllowUnwrappingOut();
+
+    Writer unwrap();
+
+    void markUsed();
+
 }

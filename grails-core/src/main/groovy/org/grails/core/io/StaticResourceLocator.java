@@ -29,6 +29,7 @@ import org.springframework.core.io.Resource;
  * @since 2.0
  */
 public class StaticResourceLocator implements ResourceLocator {
+
     private Map<String, Resource> classToResourceMap = new HashMap<String, Resource>();
 
     public void setSearchLocation(String searchLocation) {
@@ -50,4 +51,5 @@ public class StaticResourceLocator implements ResourceLocator {
     public void addClassResource(String className, Resource res) {
         classToResourceMap.put(className, res);
     }
+
 }

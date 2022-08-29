@@ -30,6 +30,7 @@ import org.grails.charsequences.CharSequences;
  * @since 2.3
  */
 public abstract class AbstractCharReplacementEncoder implements Encoder, StreamingEncoder, EncodesToWriter {
+
     protected CodecIdentifier codecIdentifier;
 
     public AbstractCharReplacementEncoder(CodecIdentifier codecIdentifier) {
@@ -120,7 +121,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             return str;
         }
     }
-    
+
     @Override
     public void encodeToWriter(CharSequence str, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (str == null || len <= 0) {
@@ -151,7 +152,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             CharSequences.writeCharSequence(writer, str, startPos, i);
         }
     }
-    
+
     @Override
     public void encodeToWriter(char[] buf, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (buf == null || len <= 0) {
@@ -182,7 +183,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             writer.write(buf, startPos, i - startPos);
         }
     }
-    
+
     @Override
     public EncodesToWriter createChainingEncodesToWriter(List<StreamingEncoder> encoders, boolean applyAdditionalFirst) {
         return EncodesToWriterAdapter.createChainingEncodesToWriter(this, encoders, applyAdditionalFirst);
@@ -249,4 +250,5 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
     public CodecIdentifier getCodecIdentifier() {
         return codecIdentifier;
     }
+
 }

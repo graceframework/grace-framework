@@ -82,35 +82,59 @@ import org.grails.spring.RuntimeSpringConfiguration;
 public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentApplicationContextAware {
 
     private static final String PLUGIN_CHANGE_EVENT_CTX = "ctx";
+
     private static final String PLUGIN_CHANGE_EVENT_APPLICATION = "application";
+
     private static final String PLUGIN_CHANGE_EVENT_PLUGIN = "plugin";
+
     private static final String PLUGIN_CHANGE_EVENT_SOURCE = "source";
+
     private static final String PLUGIN_CHANGE_EVENT_MANAGER = "manager";
 
     protected static final Log LOG = LogFactory.getLog(DefaultGrailsPlugin.class);
+
     private static final String INCLUDES = "includes";
+
     private static final String EXCLUDES = "excludes";
+
     private GrailsPluginClass pluginGrailsClass;
 
     private GroovyObject plugin;
+
     protected BeanWrapper pluginBean;
+
     private Closure onChangeListener;
+
     private Resource[] watchedResources = {};
 
     private PathMatchingResourcePatternResolver resolver;
+
     private String[] watchedResourcePatternReferences;
+
     private String[] loadAfterNames = {};
+
     private String[] loadBeforeNames = {};
+
     private String status = STATUS_ENABLED;
+
     private String[] observedPlugins;
+
     private Closure onConfigChangeListener;
+
     private Closure onShutdownListener;
+
     private Class<?>[] providedArtefacts = {};
+
     private Collection profiles = null;
+
     private Map pluginEnvs;
+
     private List<String> pluginExcludes = new ArrayList<String>();
+
     private Collection<? extends TypeFilter> typeFilters = new ArrayList<TypeFilter>();
+
     private Resource pluginDescriptor;
+
     private List<WatchPattern> watchedResourcePatterns;
 
     public DefaultGrailsPlugin(Class<?> pluginClass, Resource resource, GrailsApplication application) {
@@ -228,6 +252,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         // Damn I wish Java had closures
         pluginEnvs = evaluateIncludeExcludeProperty(ENVIRONMENTS, new Closure(this) {
             private static final long serialVersionUID = 1;
+
             @Override
             public Object call(Object arguments) {
                 String envName = (String) arguments;
@@ -307,10 +332,9 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     private void evaluateProfiles() {
         Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(pluginBean, plugin, PROFILES);
         if (result instanceof Collection) {
-            profiles =  (Collection) result;
+            profiles = (Collection) result;
         }
     }
-
 
     public DefaultGrailsPlugin(Class<?> pluginClass, GrailsApplication application) {
         this(pluginClass, null, application);
@@ -510,7 +534,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     public BeanBuilder beans(Closure closure) {
         BeanBuilder bb = new BeanBuilder(getParentCtx(), new GroovyClassLoader(grailsApplication.getClassLoader()));
-        bb.invokeMethod("beans", new Object[]{closure});
+        bb.invokeMethod("beans", new Object[] { closure });
         return bb;
     }
 
@@ -556,7 +580,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
                 BeanBuilder bb = new BeanBuilder(getParentCtx(), springConfig, grailsApplication.getClassLoader());
                 bb.setBeanBuildResource(new DescriptiveResource(this.plugin.getClass().getName()));
                 bb.setBinding(b);
-                bb.invokeMethod("beans", new Object[]{c});
+                bb.invokeMethod("beans", new Object[] { c });
             }
         }
         else {
@@ -574,7 +598,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             bb.setBeanBuildResource(new DescriptiveResource(this.plugin.getClass().getName()));
             bb.setBinding(b);
             c.setDelegate(bb);
-            bb.invokeMethod("beans", new Object[]{c});
+            bb.invokeMethod("beans", new Object[] { c });
         }
 
     }
@@ -752,11 +776,11 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     public Map notifyOfEvent(int eventKind, final Object source) {
         @SuppressWarnings("unchecked")
         Map<String, Object> event = CollectionUtils.<String, Object>newMap(
-            PLUGIN_CHANGE_EVENT_SOURCE, source,
-            PLUGIN_CHANGE_EVENT_PLUGIN, plugin,
-            PLUGIN_CHANGE_EVENT_APPLICATION, grailsApplication,
-            PLUGIN_CHANGE_EVENT_MANAGER, getManager(),
-            PLUGIN_CHANGE_EVENT_CTX, applicationContext);
+                PLUGIN_CHANGE_EVENT_SOURCE, source,
+                PLUGIN_CHANGE_EVENT_PLUGIN, plugin,
+                PLUGIN_CHANGE_EVENT_APPLICATION, grailsApplication,
+                PLUGIN_CHANGE_EVENT_MANAGER, getManager(),
+                PLUGIN_CHANGE_EVENT_CTX, applicationContext);
 
         switch (eventKind) {
             case EVENT_ON_CHANGE:
@@ -807,7 +831,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
 
         closureHook.setDelegate(this);
-        closureHook.call(new Object[]{event});
+        closureHook.call(new Object[] { event });
     }
 
     private void invokeOnChangeListener(Map event) {
@@ -836,7 +860,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         if (!pluginBean.isReadableProperty(ARTEFACTS)) {
             return;
         }
-
 
         List l;
         if (plugin instanceof Plugin) {
@@ -909,4 +932,5 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     public Map getProperties() {
         return DefaultGroovyMethods.getProperties(plugin);
     }
+
 }

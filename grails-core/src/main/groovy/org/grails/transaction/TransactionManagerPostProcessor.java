@@ -36,9 +36,13 @@ import grails.transaction.TransactionManagerAware;
  * @since 0.4
  */
 public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostProcessorAdapter implements BeanFactoryAware, PriorityOrdered {
+
     private ConfigurableListableBeanFactory beanFactory;
+
     private PlatformTransactionManager transactionManager;
+
     private int order = Ordered.LOWEST_PRECEDENCE;
+
     private boolean initialized = false;
 
     /**
@@ -100,4 +104,5 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
     public int getOrder() {
         return order;
     }
+
 }

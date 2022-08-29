@@ -37,12 +37,19 @@ import org.slf4j.LoggerFactory;
  * @since 2.3.4
  */
 public class CacheEntry<V> {
+
     private static final Logger LOG = LoggerFactory.getLogger(CacheEntry.class);
+
     private final AtomicReference<V> valueRef = new AtomicReference<V>(null);
+
     private long createdMillis;
+
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
     private final Lock readLock = lock.readLock();
+
     private final Lock writeLock = lock.writeLock();
+
     private volatile boolean initialized = false;
 
     public CacheEntry() {
@@ -56,7 +63,7 @@ public class CacheEntry<V> {
     /**
      * Gets a value from cache. If the key doesn't exist, it will create the value using the updater callback
      * Prevents cache storms with a lock 
-     * 
+     *
      * The key is always added to the cache. Null return values will also be cached.
      * You can use this together with ConcurrentLinkedHashMap to create a bounded LRU cache
      *
@@ -70,10 +77,11 @@ public class CacheEntry<V> {
      *                           shouldUpdate and updateValue methods, not used in default implementation
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
-                                    Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory,
-                                    boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
+            Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory,
+            boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
+
         CacheEntry<V> cacheEntry = map.get(key);
         if (cacheEntry == null) {
             try {
@@ -87,6 +95,7 @@ public class CacheEntry<V> {
                 cacheEntry = previousEntry;
             }
         }
+
         try {
             return cacheEntry.getValue(timeoutMillis, updater, returnExpiredWhileUpdating, cacheRequestObject);
         }
@@ -104,20 +113,20 @@ public class CacheEntry<V> {
             return new CacheEntry();
         }
     };
-    
+
     public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, true, null);
     }
 
     public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
-                                    Callable<V> updater, boolean returnExpiredWhileUpdating) {
+            Callable<V> updater, boolean returnExpiredWhileUpdating) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, returnExpiredWhileUpdating, null);
     }
-    
+
     public V getValue(long timeout, Callable<V> updater) {
         return getValue(timeout, updater, true, null);
     }
-    
+
     /**
      * gets the current value from the entry and updates it if it's older than timeout
      *
@@ -151,6 +160,7 @@ public class CacheEntry<V> {
                     LOG.debug("Locking cache for update");
                     writeLock.lock();
                 }
+
                 lockAcquired = true;
                 V value;
                 if (!isInitialized() || shouldUpdate(beforeLockingCreatedMillis, cacheRequestObject)) {
@@ -184,7 +194,7 @@ public class CacheEntry<V> {
             return getValue();
         }
     }
-    
+
     protected V getValueWhileUpdating(Object cacheRequestObject) {
         return valueRef.get();
     }
@@ -202,7 +212,7 @@ public class CacheEntry<V> {
             readLock.unlock();
         }
     }
-    
+
     public void setValue(V val) {
         try {
             writeLock.lock();
@@ -236,7 +246,7 @@ public class CacheEntry<V> {
     public void expire() {
         createdMillis = 0L;
     }
-    
+
     public boolean isInitialized() {
         return initialized;
     }
@@ -246,6 +256,7 @@ public class CacheEntry<V> {
     }
 
     public static final class UpdateException extends RuntimeException {
+
         private static final long serialVersionUID = 1L;
 
         public UpdateException(String message, Throwable cause) {
@@ -272,4 +283,5 @@ public class CacheEntry<V> {
         }
 
     }
+
 }

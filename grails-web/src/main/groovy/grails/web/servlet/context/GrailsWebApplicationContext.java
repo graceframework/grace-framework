@@ -53,9 +53,13 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
         implements ConfigurableWebApplicationContext, ThemeSource {
 
     private ServletContext servletContext;
+
     private String namespace;
+
     private ServletConfig servletConfig;
+
     private String[] configLocations = new String[0];
+
     private GrailsApplication grailsApplication;
 
     public GrailsWebApplicationContext() throws BeansException {
@@ -90,7 +94,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public GrailsWebApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory,
-                                       ApplicationContext parent, GrailsApplication grailsApplication) {
+            ApplicationContext parent, GrailsApplication grailsApplication) {
         super(defaultListableBeanFactory, parent);
         this.grailsApplication = grailsApplication;
     }
@@ -220,4 +224,5 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
                 "ConfigurableWebApplication environment must be of type ConfigurableWebEnvironment");
         return (ConfigurableWebEnvironment) env;
     }
+
 }

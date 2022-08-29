@@ -34,4 +34,5 @@ public class UrlMappingsArtefactHandler extends ArtefactHandlerAdapter {
         super(TYPE, GrailsUrlMappingsClass.class, DefaultGrailsUrlMappingsClass.class,
                 DefaultGrailsUrlMappingsClass.URL_MAPPINGS);
     }
+
 }

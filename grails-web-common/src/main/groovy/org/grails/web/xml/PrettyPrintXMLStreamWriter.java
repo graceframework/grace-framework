@@ -31,6 +31,7 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter {
     public static final String DEFAULT_INDENT_STR = "  ";
 
     public static final String NEWLINE;
+
     static {
         String nl = System.getProperty("line.separator");
         NEWLINE = nl != null ? nl : "\n";
@@ -111,4 +112,5 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter {
         newline();
         return this;
     }
+
 }

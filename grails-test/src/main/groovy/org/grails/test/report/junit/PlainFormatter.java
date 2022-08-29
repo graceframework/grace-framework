@@ -35,9 +35,11 @@ import org.grails.test.support.TestStacktraceSanitizer;
 public class PlainFormatter extends PlainJUnitResultFormatter {
 
     protected String name;
+
     protected File file;
 
     protected String systemOutput;
+
     protected String systemError;
 
     public PlainFormatter(String name, File file) {
@@ -109,4 +111,5 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
             }
         }
     }
+
 }

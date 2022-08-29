@@ -27,7 +27,9 @@ import java.lang.annotation.Target;
  * @since 2.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 public @interface Action {
+
     Class<?>[] commandObjects() default {};
+
 }

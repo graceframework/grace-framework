@@ -30,4 +30,5 @@ public interface EncodingStateRegistryLookup {
      * @return the encoding state registry
      */
     EncodingStateRegistry lookup();
+
 }

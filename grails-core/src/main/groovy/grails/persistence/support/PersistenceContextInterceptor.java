@@ -68,4 +68,5 @@ public interface PersistenceContextInterceptor {
      * @return Returns whether the persistence context is open
      */
     boolean isOpen();
+
 }

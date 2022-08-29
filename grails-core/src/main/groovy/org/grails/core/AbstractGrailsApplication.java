@@ -40,11 +40,16 @@ import org.grails.config.PropertySourcesConfig;
 
 public abstract class AbstractGrailsApplication extends GroovyObjectSupport
         implements GrailsApplication, ApplicationContextAware, BeanClassLoaderAware, SmartApplicationListener {
+
     protected ClassLoader classLoader;
+
     protected Config config;
+
     @SuppressWarnings("rawtypes")
     protected ApplicationContext parentContext;
+
     protected Metadata applicationMeta = Metadata.getCurrent();
+
     protected boolean contextInitialized;
 
     @Override
@@ -140,4 +145,5 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
     }
+
 }

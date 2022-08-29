@@ -45,8 +45,11 @@ import org.grails.io.support.UrlResource;
 public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     protected String type;
+
     protected Class<?> grailsClassType;
+
     protected Class<?> grailsClassImpl;
+
     protected boolean allowAbstract;
 
     protected String artefactSuffix;
@@ -74,7 +77,6 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
     public String getType() {
         return type;
     }
-
 
     /**
      * Default implementation of {@link grails.core.ArtefactHandler#isArtefact(org.codehaus.groovy.ast.ClassNode)}
@@ -183,9 +185,9 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      */
     public GrailsClass newArtefactClass(@SuppressWarnings("rawtypes") Class artefactClass) {
         try {
-            Constructor<?> c = grailsClassImpl.getDeclaredConstructor(new Class[] { Class.class });
+            Constructor<?> c = grailsClassImpl.getDeclaredConstructor(new Class[] {Class.class});
             // TODO GRAILS-720 plugin class instance created here first
-            return (GrailsClass) c.newInstance(new Object[] { artefactClass});
+            return (GrailsClass) c.newInstance(new Object[] {artefactClass});
         }
         catch (NoSuchMethodException e) {
             throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for " + artefactClass, e);
@@ -218,4 +220,5 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
     public boolean isArtefactGrailsClass(GrailsClass artefactGrailsClass) {
         return grailsClassType.isAssignableFrom(artefactGrailsClass.getClass());
     }
+
 }

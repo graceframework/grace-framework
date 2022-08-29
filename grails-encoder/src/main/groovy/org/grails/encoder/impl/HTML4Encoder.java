@@ -38,10 +38,15 @@ import org.grails.encoder.DefaultCodecIdentifier;
  * @since 2.3
  */
 public class HTML4Encoder extends AbstractCharReplacementEncoder {
+
     private static final Log log = LogFactory.getLog(HTML4Encoder.class);
+
     static final String HTML4_CODEC_NAME = "HTML4";
+
     static final CodecIdentifier HTML4_CODEC_IDENTIFIER = new DefaultCodecIdentifier(HTML4_CODEC_NAME);
+
     Map<Character, String> replacements = new ConcurrentHashMap<Character, String>();
+
     private static final String NULL_MARKER = "NULL_MARKER";
 
     public HTML4Encoder() {
@@ -69,9 +74,13 @@ public class HTML4Encoder extends AbstractCharReplacementEncoder {
      * Calls Spring's HtmlUtils's private method to convert characters to HTML entities.
      */
     private static final class StreamingHTMLEncoderHelper {
+
         private static Object instance;
+
         private static Method mapMethod;
+
         private static boolean disabled = false;
+
         static {
             try {
                 Field instanceField = ReflectionUtils.findField(HtmlUtils.class, "characterEntityReferences");
@@ -94,7 +103,7 @@ public class HTML4Encoder extends AbstractCharReplacementEncoder {
          * @param c the character to convert
          * @return the converted entity, returns null if the character doesn't have a replacement
          */
-        public static final String convertToReference(char c) {
+        public static String convertToReference(char c) {
             if (!disabled) {
                 return (String) ReflectionUtils.invokeMethod(mapMethod, instance, c);
             }
@@ -106,5 +115,7 @@ public class HTML4Encoder extends AbstractCharReplacementEncoder {
             }
             return replacement;
         }
+
     }
+
 }

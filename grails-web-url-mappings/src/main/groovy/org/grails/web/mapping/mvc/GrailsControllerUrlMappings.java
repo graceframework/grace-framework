@@ -30,9 +30,11 @@ import grails.web.mapping.UrlMappings;
  * @since 3.0
  */
 public class GrailsControllerUrlMappings extends AbstractGrailsControllerUrlMappings {
+
     public GrailsControllerUrlMappings(GrailsApplication grailsApplication, UrlMappings urlMappingsHolderDelegate, UrlConverter urlConverter) {
         super(grailsApplication, urlMappingsHolderDelegate, urlConverter);
     }
+
     public GrailsControllerUrlMappings(GrailsApplication grailsApplication, UrlMappings urlMappingsHolderDelegate) {
         super(grailsApplication, urlMappingsHolderDelegate);
     }
@@ -66,4 +68,5 @@ public class GrailsControllerUrlMappings extends AbstractGrailsControllerUrlMapp
     public UrlMappingInfo[] matchAll(String uri, HttpMethod httpMethod, String version) {
         return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version));
     }
+
 }

@@ -33,7 +33,9 @@ import org.grails.buffer.StreamCharBuffer;
 public class IncludedContent implements Writable {
 
     private String contentType = GrailsWebUtil.getContentType("text/html", "UTF-8");
+
     private Object content;
+
     private String redirectURL;
 
     public IncludedContent(String contentType, Object content) {
@@ -105,4 +107,5 @@ public class IncludedContent implements Writable {
 
         return String.valueOf(content).toCharArray();
     }
+
 }

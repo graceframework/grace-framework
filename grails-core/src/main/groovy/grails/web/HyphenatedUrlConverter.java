@@ -47,4 +47,5 @@ public class HyphenatedUrlConverter implements UrlConverter {
         }
         return builder.toString();
     }
+
 }

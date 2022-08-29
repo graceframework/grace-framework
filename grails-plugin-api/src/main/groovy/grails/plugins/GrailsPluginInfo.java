@@ -73,4 +73,5 @@ public interface GrailsPluginInfo {
      */
     @SuppressWarnings("rawtypes")
     Map getProperties();
+
 }

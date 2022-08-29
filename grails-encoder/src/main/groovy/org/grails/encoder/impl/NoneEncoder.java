@@ -29,6 +29,7 @@ import org.grails.encoder.StreamingEncoder;
  * @since 2.3
  */
 public class NoneEncoder implements StreamingEncoder {
+
     static final CodecIdentifier CODEC_IDENTIFIER = new DefaultCodecIdentifier("None");
 
     public Object encode(Object o) {
@@ -44,7 +45,6 @@ public class NoneEncoder implements StreamingEncoder {
     }
 
     public void markEncoded(CharSequence string) {
-
     }
 
     public CodecIdentifier getCodecIdentifier() {
@@ -55,4 +55,5 @@ public class NoneEncoder implements StreamingEncoder {
             EncodingState encodingState) throws IOException {
         appender.append(null, encodingState, source, offset, len);
     }
+
 }

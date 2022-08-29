@@ -36,7 +36,6 @@ import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
  */
 public class GrailsConfigUtils {
 
-
     /**
      * Executes Grails bootstrap classes
      *
@@ -46,9 +45,11 @@ public class GrailsConfigUtils {
      */
     @Deprecated
     public static void executeGrailsBootstraps(GrailsApplication application, WebApplicationContext webContext,
-                                               ServletContext servletContext) {
+            ServletContext servletContext) {
+
         executeGrailsBootstraps(application, webContext, servletContext, null);
     }
+
     /**
      * Executes Grails bootstrap classes
      *
@@ -58,6 +59,7 @@ public class GrailsConfigUtils {
      */
     public static void executeGrailsBootstraps(GrailsApplication application, WebApplicationContext webContext,
             ServletContext servletContext, GrailsPluginManager grailsPluginManager) {
+
         configureServletContextAttributes(
                 servletContext,
                 application,
@@ -67,6 +69,7 @@ public class GrailsConfigUtils {
 
         PersistenceContextInterceptor interceptor = null;
         String[] beanNames = webContext.getBeanNamesForType(PersistenceContextInterceptor.class);
+
         if (beanNames.length > 0) {
             interceptor = (PersistenceContextInterceptor) webContext.getBean(beanNames[0]);
         }
@@ -74,6 +77,7 @@ public class GrailsConfigUtils {
         if (interceptor != null) {
             interceptor.init();
         }
+
         // init the Grails application
         try {
             GrailsClass[] bootstraps = application.getArtefacts(BootstrapArtefactHandler.TYPE);
@@ -84,6 +88,7 @@ public class GrailsConfigUtils {
                         instance, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
                 bootstrapClass.callInit(servletContext);
             }
+
             if (interceptor != null) {
                 interceptor.flush();
             }
@@ -95,10 +100,9 @@ public class GrailsConfigUtils {
         }
     }
 
-
-
     public static void configureServletContextAttributes(ServletContext servletContext, GrailsApplication application,
-                                                         GrailsPluginManager pluginManager, WebApplicationContext webContext) {
+            GrailsPluginManager pluginManager, WebApplicationContext webContext) {
+
         servletContext.setAttribute(ApplicationAttributes.PLUGIN_MANAGER, pluginManager);
         // use config file locations if available
         servletContext.setAttribute(ApplicationAttributes.PARENT_APPLICATION_CONTEXT, webContext.getParent());
@@ -107,8 +111,6 @@ public class GrailsConfigUtils {
         servletContext.setAttribute(ApplicationAttributes.APPLICATION_CONTEXT, webContext);
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, webContext);
     }
-
-
 
     /**
      * Checks if a Config parameter is true or a System property with the same name is true
@@ -125,4 +127,5 @@ public class GrailsConfigUtils {
     public static boolean isConfigTrue(Object application, String propertyName) {
         return false;
     }
+
 }

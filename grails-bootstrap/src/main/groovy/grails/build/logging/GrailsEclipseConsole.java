@@ -40,6 +40,7 @@ import jline.UnsupportedTerminal;
 public class GrailsEclipseConsole extends GrailsConsole {
 
     private static final boolean DEBUG = boolProp("grails.console.eclipse.debug");
+
     private static final String ECLIPSE_SUPPORTS_ANSI_PROP = "grails.console.eclipse.ansi";
 
     private Boolean eclipseSupportsAnsi = null; //lazy initialized because implicitly used from super constructor.
@@ -80,7 +81,7 @@ public class GrailsEclipseConsole extends GrailsConsole {
 
     private static Boolean boolProp(String propName) {
         try {
-            String prop =  System.getProperty(propName);
+            String prop = System.getProperty(propName);
             return prop != null && Boolean.valueOf(prop);
         }
         catch (Exception e) {

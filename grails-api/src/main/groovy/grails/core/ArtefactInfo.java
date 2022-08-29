@@ -73,4 +73,5 @@ public interface ArtefactInfo {
      * @return A GrailsClass or null
      */
     GrailsClass getGrailsClassByLogicalPropertyName(String logicalName);
+
 }

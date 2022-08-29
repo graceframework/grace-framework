@@ -42,8 +42,11 @@ import org.springframework.ui.context.support.UiApplicationContextUtils;
 public class GrailsApplicationContext extends GenericApplicationContext implements GroovyObject {
 
     protected MetaClass metaClass;
+
     private BeanWrapper ctxBean = new BeanWrapperImpl(this);
+
     private ThemeSource themeSource;
+
     private static final String GRAILS_ENVIRONMENT_BEAN_NAME = "springEnvironment";
 
     public GrailsApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory) {
@@ -186,4 +189,5 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     protected void assertBeanFactoryActive() {
         // no-op to prevent excessive synchronization caused by SPR-10307 change
     }
+
 }

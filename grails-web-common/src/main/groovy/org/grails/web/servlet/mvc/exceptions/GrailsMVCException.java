@@ -42,4 +42,5 @@ public abstract class GrailsMVCException extends GrailsException {
     public GrailsMVCException(Throwable cause) {
         super(cause);
     }
+
 }

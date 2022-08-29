@@ -19,14 +19,18 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
+
     private DestinationFactory factory;
+
     private boolean destinationActivated = false;
 
     /**
      * Factory to lazily instantiate the destination.
      */
     public static interface DestinationFactory {
+
         Writer activateDestination() throws IOException;
+
     }
 
     public GrailsLazyProxyPrintWriter(DestinationFactory factory) {
@@ -74,4 +78,5 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
             super.setOut(null);
         }
     }
+
 }

@@ -30,12 +30,18 @@ import java.util.Map;
 public class DefaultArtefactInfo implements ArtefactInfo {
 
     private LinkedList<GrailsClass> grailsClasses = new LinkedList<GrailsClass>();
+
     private Class<?>[] classes;
+
     private Map<String, GrailsClass> grailsClassesByName = new LinkedHashMap<String, GrailsClass>();
+
     private Map<String, Class<?>> classesByName = new LinkedHashMap<String, Class<?>>();
+
     private Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<String, GrailsClass>();
+
     @SuppressWarnings("rawtypes")
     public Map handlerData = new HashMap();
+
     private GrailsClass[] grailsClassesArray;
 
     /**
@@ -112,4 +118,5 @@ public class DefaultArtefactInfo implements ArtefactInfo {
     public void addOverridableGrailsClass(GrailsClass artefactGrailsClass) {
         addGrailsClassInternal(artefactGrailsClass, true);
     }
+
 }

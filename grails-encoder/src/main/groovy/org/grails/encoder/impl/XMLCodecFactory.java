@@ -23,8 +23,11 @@ import org.grails.encoder.Decoder;
 import org.grails.encoder.Encoder;
 
 public class XMLCodecFactory implements CodecFactory {
+
     protected Encoder encoder = new BasicXMLEncoder();
+
     protected Decoder decoder = new Decoder() {
+
         public CodecIdentifier getCodecIdentifier() {
             return BasicXMLEncoder.XML_CODEC_IDENTIFIER;
         }
@@ -35,6 +38,7 @@ public class XMLCodecFactory implements CodecFactory {
             }
             return HtmlUtils.htmlUnescape(String.valueOf(o));
         }
+
     };
 
     /* (non-Javadoc)
@@ -50,4 +54,5 @@ public class XMLCodecFactory implements CodecFactory {
     public Decoder getDecoder() {
         return decoder;
     }
+
 }

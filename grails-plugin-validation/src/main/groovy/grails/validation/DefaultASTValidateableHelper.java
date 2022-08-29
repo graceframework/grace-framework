@@ -61,6 +61,7 @@ import org.grails.web.plugins.support.ValidationSupport;
 public class DefaultASTValidateableHelper implements ASTValidateableHelper {
 
     private static final String CONSTRAINED_PROPERTIES_PROPERTY_NAME = "$constraints";
+
     private static final String VALIDATE_METHOD_NAME = "validate";
 
     public void injectValidateableCode(ClassNode classNode, boolean defaultNullable) {
@@ -76,8 +77,8 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         FieldNode field = classNode.getField(CONSTRAINED_PROPERTIES_PROPERTY_NAME);
         if (field == null || !field.getDeclaringClass().equals(classNode)) {
             classNode.addField(CONSTRAINED_PROPERTIES_PROPERTY_NAME,
-                Modifier.STATIC | Modifier.PRIVATE, new ClassNode(Map.class),
-                new ConstantExpression(null));
+                    Modifier.STATIC | Modifier.PRIVATE, new ClassNode(Map.class),
+                    new ConstantExpression(null));
         }
     }
 
@@ -96,7 +97,7 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         if (getConstraintsMethod == null || !getConstraintsMethod.getDeclaringClass().equals(classNode)) {
             final BooleanExpression isConstraintsPropertyNull = new BooleanExpression(new BinaryExpression(
                     new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(
-                        Types.COMPARE_EQUAL, 0, 0), new ConstantExpression(null)));
+                    Types.COMPARE_EQUAL, 0, 0), new ConstantExpression(null)));
 
             final BlockStatement ifConstraintsPropertyIsNullBlockStatement = new BlockStatement();
             final ArgumentListExpression getConstrainedPropertiesForClassArguments = new ArgumentListExpression();
@@ -179,7 +180,7 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
      * Retrieves a Map describing all of the properties which need to be constrained for the class
      * represented by classNode.  The keys in the Map will be property names and the values are the
      * type of the corresponding property.
-     * 
+     *
      * @param classNode the class to inspect
      * @return a Map describing all of the properties which need to be constrained
      */
@@ -188,10 +189,10 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         final List<FieldNode> allFields = classNode.getFields();
         for (final FieldNode field : allFields) {
             if (!field.isStatic()) {
-                    final PropertyNode property = classNode.getProperty(field.getName());
-                    if (property != null) {
-                        fieldsToConstrain.put(field.getName(), field.getType());
-                    }
+                final PropertyNode property = classNode.getProperty(field.getName());
+                if (property != null) {
+                    fieldsToConstrain.put(field.getName(), field.getType());
+                }
             }
         }
         final Map<String, MethodNode> declaredMethodsMap = classNode.getDeclaredMethodsMap();
@@ -222,7 +223,7 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
     protected void addValidateMethod(final ClassNode classNode) {
         String fieldsToValidateParameterName = "$fieldsToValidate";
         final MethodNode listArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME,
-                new Parameter[]{new Parameter(new ClassNode(List.class), fieldsToValidateParameterName)});
+                new Parameter[] { new Parameter(new ClassNode(List.class), fieldsToValidateParameterName) });
         if (listArgValidateMethod == null) {
             final BlockStatement validateMethodCode = new BlockStatement();
             final ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
@@ -235,7 +236,7 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
             final Parameter fieldsToValidateParameter = new Parameter(new ClassNode(List.class), fieldsToValidateParameterName);
             MethodNode methodNode = new MethodNode(
                     VALIDATE_METHOD_NAME, Modifier.PUBLIC, ClassHelper.boolean_TYPE,
-                    new Parameter[]{fieldsToValidateParameter}, GrailsArtefactClassInjector.EMPTY_CLASS_ARRAY, validateMethodCode);
+                    new Parameter[] { fieldsToValidateParameter }, GrailsArtefactClassInjector.EMPTY_CLASS_ARRAY, validateMethodCode);
             classNode.addMethod(methodNode);
             AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
         }
@@ -255,4 +256,5 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
             AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
         }
     }
+
 }

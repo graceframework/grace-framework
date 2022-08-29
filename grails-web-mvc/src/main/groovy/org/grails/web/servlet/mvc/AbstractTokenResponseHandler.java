@@ -28,6 +28,7 @@ import groovy.lang.Closure;
 public abstract class AbstractTokenResponseHandler implements TokenResponseHandler {
 
     private boolean invoked = false;
+
     private boolean valid;
 
     public AbstractTokenResponseHandler(boolean valid) {
@@ -48,4 +49,5 @@ public abstract class AbstractTokenResponseHandler implements TokenResponseHandl
     public boolean wasInvalidToken() {
         return !valid;
     }
+
 }

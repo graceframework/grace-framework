@@ -49,10 +49,11 @@ import org.grails.web.mime.DefaultMimeUtility;
 public class MimeTypesConfiguration {
 
     private final GrailsApplication grailsApplication;
+
     private final List<MimeTypeProvider> mimeTypeProviders;
 
     public MimeTypesConfiguration(ObjectProvider<GrailsApplication> grailsApplication,
-                                  ObjectProvider<MimeTypeProvider> mimeTypeProviders) {
+            ObjectProvider<MimeTypeProvider> mimeTypeProviders) {
         this.grailsApplication = grailsApplication.getIfAvailable();
         this.mimeTypeProviders = mimeTypeProviders.orderedStream().collect(Collectors.toList());
     }
@@ -118,4 +119,5 @@ public class MimeTypesConfiguration {
             }
         }
     }
+
 }

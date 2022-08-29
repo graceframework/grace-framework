@@ -48,16 +48,25 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
     public static final String CONTROLLER = "Controller";
 
     private static final String DEFAULT_CLOSURE_PROPERTY = "defaultAction";
+
     public static final String ALLOWED_HTTP_METHODS_PROPERTY = "allowedMethods";
+
     public static final Object[] EMPTY_ARGS = new Object[0];
+
     public static final String SCOPE = "scope";
+
     public static final String SCOPE_SINGLETON = "singleton";
+
     private String scope;
+
     private Map<String, ActionInvoker> actions = new HashMap<String, ActionInvoker>();
+
     private String defaultActionName;
+
     private String namespace;
+
     protected Map<String, String> actionUriToViewName = new HashMap<String, String>();
-    
+
     public DefaultGrailsControllerClass(Class<?> clazz) {
         super(clazz, CONTROLLER);
         namespace = getStaticPropertyValue(NAMESPACE_PROPERTY, String.class);
@@ -200,10 +209,13 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
     }
 
     private interface ActionInvoker {
+
         Object invoke(Object controller) throws Throwable;
+
     }
 
     private class ReflectionInvoker implements ActionInvoker {
+
         private final Method method;
 
         public ReflectionInvoker(Method method) {
@@ -215,8 +227,11 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
         public Object invoke(Object controller) throws Throwable {
             return method.invoke(controller);
         }
+
     }
+
     private class MethodHandleInvoker implements ActionInvoker {
+
         private final MethodHandle handle;
 
         public MethodHandleInvoker(MethodHandle handle) {
@@ -227,5 +242,7 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
         public Object invoke(Object controller) throws Throwable {
             return handle.invoke(controller);
         }
+
     }
+
 }

@@ -40,9 +40,11 @@ import org.grails.cli.gradle.FetchAllTaskSelectorsBuildAction.AllTasksModel;
  *
  */
 public class FetchAllTaskSelectorsBuildAction implements BuildAction<AllTasksModel> {
+
     private static final long serialVersionUID = 1L;
+
     private final String currentProjectPath;
-    
+
     public FetchAllTaskSelectorsBuildAction(File currentProjectDir) {
         this.currentProjectPath = currentProjectDir.getAbsolutePath();
     }
@@ -55,20 +57,21 @@ public class FetchAllTaskSelectorsBuildAction implements BuildAction<AllTasksMod
         model.allTasks = allTasks;
         Map<String, String> projectPaths = new HashMap<String, String>();
         model.projectPaths = projectPaths;
-        for (BasicGradleProject project: controller.getBuildModel().getProjects()) {
+
+        for (BasicGradleProject project : controller.getBuildModel().getProjects()) {
             BuildInvocations entryPointsForProject = controller.getModel(project, BuildInvocations.class);
             Set<String> selectorNames = new LinkedHashSet<String>();
             for (TaskSelector selector : entryPointsForProject.getTaskSelectors()) {
                 selectorNames.add(selector.getName());
             }
             allTaskSelectors.put(project.getName(), selectorNames);
-            
+
             Set<String> taskNames = new LinkedHashSet<String>();
             for (Task task : entryPointsForProject.getTasks()) {
                 taskNames.add(task.getName());
             }
             allTasks.put(project.getName(), taskNames);
-            
+
             projectPaths.put(project.getName(), project.getPath());
             if (project.getProjectDirectory().getAbsolutePath().equals(currentProjectPath)) {
                 model.currentProject = project.getName();
@@ -76,12 +79,19 @@ public class FetchAllTaskSelectorsBuildAction implements BuildAction<AllTasksMod
         }
         return model;
     }
-    
+
     public static class AllTasksModel implements Serializable {
+
         private static final long serialVersionUID = 1L;
+
         public Map<String, Set<String>> allTasks;
+
         public Map<String, Set<String>> allTaskSelectors;
+
         public Map<String, String> projectPaths;
+
         public String currentProject;
+
     }
+
 }

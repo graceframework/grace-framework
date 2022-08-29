@@ -22,7 +22,7 @@ package org.grails.plugins.testing;
  * @since 2.1
  */
 public class GrailsMockHttpServletResponse extends AbstractGrailsMockHttpServletResponse {
-    
+
     @Override
     public void setForwardedUrl(final String forwardedUrl) {
         String strippedUrl = forwardedUrl;
@@ -37,4 +37,5 @@ public class GrailsMockHttpServletResponse extends AbstractGrailsMockHttpServlet
         }
         super.setForwardedUrl(strippedUrl);
     }
+
 }

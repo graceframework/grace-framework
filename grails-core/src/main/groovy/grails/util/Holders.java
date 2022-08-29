@@ -44,15 +44,20 @@ import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
 public class Holders {
 
     private static final Log LOG = LogFactory.getLog(Holders.class);
+
     private static Holder<GrailsPluginManager> pluginManagers = new Holder<GrailsPluginManager>("PluginManager");
+
     private static Holder<Boolean> pluginManagersInCreation = new Holder<Boolean>("PluginManagers in creation");
+
     private static Holder<Config> configs = new Holder<Config>("config");
+
     private static Holder<Map<?, ?>> flatConfigs = new Holder<Map<?, ?>>("flat config");
 
     private static List<GrailsApplicationDiscoveryStrategy> applicationDiscoveryStrategies = GrailsFactoriesLoader.loadFactories(
             GrailsApplicationDiscoveryStrategy.class, Holders.class.getClassLoader());
 
     private static Holder servletContexts;
+
     static {
 
         createServletContextsHolder();
@@ -114,6 +119,7 @@ public class Holders {
         }
         return null;
     }
+
     /**
      *
      * @return The ApplicationContext or null if it doesn't exist
@@ -232,4 +238,5 @@ public class Holders {
             LOG.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
         }
     }
+
 }

@@ -32,33 +32,34 @@ import org.springframework.boot.cli.compiler.dependencies.MavenModelDependencyMa
  */
 public class GrailsDependenciesDependencyManagement extends MavenModelDependencyManagement {
 
-	public GrailsDependenciesDependencyManagement() {
-		super(readModel());
-	}
+    public GrailsDependenciesDependencyManagement() {
+        super(readModel());
+    }
 
-	private static Model readModel() {
-		DefaultModelProcessor modelProcessor = new DefaultModelProcessor();
-		modelProcessor.setModelLocator(new DefaultModelLocator());
-		modelProcessor.setModelReader(new DefaultModelReader());
+    private static Model readModel() {
+        DefaultModelProcessor modelProcessor = new DefaultModelProcessor();
+        modelProcessor.setModelLocator(new DefaultModelLocator());
+        modelProcessor.setModelReader(new DefaultModelReader());
 
-		try {
-			return modelProcessor.read(GrailsDependenciesDependencyManagement.class
-					.getResourceAsStream("grails-bom.xml"), null);
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to build model from effective pom", ex);
-		}
-	}
+        try {
+            return modelProcessor.read(GrailsDependenciesDependencyManagement.class
+                    .getResourceAsStream("grails-bom.xml"), null);
+        }
+        catch (IOException ex) {
+            throw new IllegalStateException("Failed to build model from effective pom", ex);
+        }
+    }
 
-	public String getGrailsVersion() {
-		return find("grails-core").getVersion();
-	}
+    public String getGrailsVersion() {
+        return find("grails-core").getVersion();
+    }
 
-	public String getGroovyVersion() {
-		return find("groovy").getVersion();
-	}
+    public String getGroovyVersion() {
+        return find("groovy").getVersion();
+    }
 
-	public String getMicronautVersion() {
-		return find("micronaut-core").getVersion();
-	}
+    public String getMicronautVersion() {
+        return find("micronaut-core").getVersion();
+    }
+
 }

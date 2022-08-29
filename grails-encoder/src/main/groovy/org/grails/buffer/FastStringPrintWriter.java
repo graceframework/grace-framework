@@ -29,9 +29,11 @@ import org.springframework.objenesis.instantiator.ObjectInstantiator;
  * @since 2.0
  */
 public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
+
     private static final Logger LOG = LoggerFactory.getLogger(FastStringPrintWriter.class);
 
     private static ObjectInstantiator instantiator;
+
     static {
         try {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(FastStringPrintWriter.class);
@@ -97,4 +99,5 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     public Reader getReader() {
         return streamBuffer.getReader();
     }
+
 }

@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
  * @author Graeme Rocher
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface AstTransformer {
+
 }

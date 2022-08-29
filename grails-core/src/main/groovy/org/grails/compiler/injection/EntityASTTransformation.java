@@ -38,7 +38,9 @@ import org.grails.core.artefact.DomainClassArtefactHandler;
 public class EntityASTTransformation implements ASTTransformation, CompilationUnitAware {
 
     private static final ClassNode MY_TYPE = new ClassNode(Entity.class);
+
     private static final String MY_TYPE_NAME = "@" + MY_TYPE.getNameWithoutPackage();
+
     protected CompilationUnit compilationUnit;
 
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
@@ -60,7 +62,6 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
         }
 
         applyTransformation(sourceUnit, cNode);
-
     }
 
     public void applyTransformation(SourceUnit sourceUnit, ClassNode classNode) {
@@ -68,7 +69,7 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
             return;
         }
         GrailsASTUtils.markApplied(classNode, EntityASTTransformation.class);
-        
+
         GrailsDomainClassInjector domainInjector = new DefaultGrailsDomainClassInjector();
         domainInjector.performInjectionOnAnnotatedEntity(classNode);
 
@@ -90,7 +91,7 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
                 throw e;
             }
         }
-        
+
         if (compilationUnit != null) {
             TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, compilationUnit);
         }
@@ -100,4 +101,5 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
     public void setCompilationUnit(CompilationUnit unit) {
         compilationUnit = unit;
     }
+
 }

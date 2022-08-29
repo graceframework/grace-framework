@@ -145,4 +145,5 @@ public interface GrailsClass extends GrailsApplicationAware {
      * @return The plugin where the artefact originates from
      */
     String getPluginName();
+
 }

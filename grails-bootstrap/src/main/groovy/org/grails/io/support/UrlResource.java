@@ -158,7 +158,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * relative to the path of the underlying URL of this resource descriptor.
      * @see java.net.URL#URL(java.net.URL, String)
      */
-    public Resource createRelative(String relativePath)  {
+    public Resource createRelative(String relativePath) {
         if (relativePath.startsWith("/")) {
             relativePath = relativePath.substring(1);
         }
@@ -207,4 +207,5 @@ public class UrlResource extends AbstractFileResolvingResource {
     public String toString() {
         return getDescription();
     }
+
 }

@@ -49,4 +49,5 @@ public interface CodecIdentifier {
      * @return true, if is equivalent
      */
     boolean isEquivalent(CodecIdentifier other);
+
 }

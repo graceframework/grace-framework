@@ -32,4 +32,5 @@ import org.codehaus.groovy.ast.ClassNode;
 public interface ASTErrorsHelper {
 
     void injectErrorsCode(ClassNode classNode);
+
 }

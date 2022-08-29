@@ -56,11 +56,17 @@ import org.grails.web.mapping.mvc.GrailsControllerUrlMappings;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, InitializingBean,
         ApplicationContextAware, GrailsApplicationAware, PluginManagerAware {
+
     private static final String URL_MAPPING_CACHE_MAX_SIZE = "grails.urlmapping.cache.maxsize";
+
     private static final String URL_CREATOR_CACHE_MAX_SIZE = "grails.urlcreator.cache.maxsize";
+
     private GrailsApplication grailsApplication;
+
     private UrlMappings urlMappingsHolder;
+
     private GrailsPluginManager pluginManager;
+
     private ApplicationContext applicationContext;
 
     @Autowired
@@ -129,10 +135,13 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         if (urlCreatorCacheSize != null) {
             defaultUrlMappingsHolder.setUrlCreatorMaxWeightedCacheCapacity(urlCreatorCacheSize);
         }
+
         // call initialize() after settings are in place
         defaultUrlMappingsHolder.initialize();
+
         final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(grailsApplication,
                 defaultUrlMappingsHolder, grailsUrlConverter);
+
         ((ConfigurableApplicationContext) applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
             @Override
             public void onApplicationEvent(ArtefactAdditionEvent event) {
@@ -145,11 +154,9 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         urlMappingsHolder = grailsControllerUrlMappings;
     }
 
-
     public void setGrailsApplication(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
     }
-
 
     public void setPluginManager(GrailsPluginManager pluginManager) {
         this.pluginManager = pluginManager;
@@ -177,4 +184,5 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         setPluginManager(applicationContext.containsBean(GrailsPluginManager.BEAN_NAME) ?
                 applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class) : null);
     }
+
 }

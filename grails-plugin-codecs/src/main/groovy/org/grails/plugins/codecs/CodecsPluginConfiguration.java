@@ -43,4 +43,5 @@ public class CodecsPluginConfiguration {
         defaultCodecLookup.reInitialize();
         return defaultCodecLookup;
     }
+
 }

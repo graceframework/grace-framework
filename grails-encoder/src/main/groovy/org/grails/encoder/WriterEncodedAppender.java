@@ -27,6 +27,7 @@ import org.grails.charsequences.CharSequences;
  * @since 2.3
  */
 public class WriterEncodedAppender extends AbstractEncodedAppender {
+
     private Writer target;
 
     /**
@@ -76,9 +77,10 @@ public class WriterEncodedAppender extends AbstractEncodedAppender {
     public void close() throws IOException {
         target.close();
     }
-    
+
     @Override
     protected EncodingState createNewEncodingState(Encoder encoder, EncodingState encodingState) {
         return null;
     }
+
 }

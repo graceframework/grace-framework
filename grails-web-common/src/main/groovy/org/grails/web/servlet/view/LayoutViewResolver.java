@@ -24,5 +24,7 @@ import org.springframework.web.servlet.ViewResolver;
  * @since 2.4
  */
 public interface LayoutViewResolver extends GrailsViewResolver {
-    public ViewResolver getInnerViewResolver();
+
+    ViewResolver getInnerViewResolver();
+
 }

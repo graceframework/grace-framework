@@ -91,4 +91,5 @@ public interface GrailsRequestContext {
      * @return The Request URI
      */
     String getRequestURI();
+
 }

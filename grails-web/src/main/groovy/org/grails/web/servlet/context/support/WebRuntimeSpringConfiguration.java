@@ -37,7 +37,6 @@ import org.grails.spring.DefaultRuntimeSpringConfiguration;
  */
 public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfiguration implements ServletContextAware {
 
-
     private GrailsApplication grailsApplication;
 
     public WebRuntimeSpringConfiguration(ApplicationContext parent) {
@@ -62,7 +61,7 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
     protected GenericApplicationContext createApplicationContext(ApplicationContext parentCtx) {
         if (parentCtx != null && beanFactory != null) {
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
-                "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
+                    "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
             GrailsWebApplicationContext ctx = new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
             ctx.setParent(parentCtx);
@@ -71,7 +70,7 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
 
         if (beanFactory != null) {
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
-                "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
+                    "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
             return new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
         }
@@ -92,4 +91,5 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
             ((ConfigurableWebApplicationContext) context).setServletContext(servletContext);
         }
     }
+
 }

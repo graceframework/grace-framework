@@ -17,15 +17,18 @@ package org.grails.charsequences;
 
 /**
  * Wraps a part of a String and implements the CharSequence interface
- * 
- * 
+ *
+ *
  * @author Lari Hotari
  * @since 2.3.10
  *
  */
 class SubCharSequence implements CharSequence, CharArrayAccessible {
+
     private final CharSequence str;
+
     private final int count;
+
     private final int start;
 
     SubCharSequence(CharSequence str, int start, int count) {
@@ -81,4 +84,5 @@ class SubCharSequence implements CharSequence, CharArrayAccessible {
         }
         CharSequences.getChars(str, start + srcBegin, start + srcEnd, dst, dstBegin);
     }
+
 }

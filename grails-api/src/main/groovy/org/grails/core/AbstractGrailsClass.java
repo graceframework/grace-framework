@@ -53,15 +53,25 @@ import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 public abstract class AbstractGrailsClass implements GrailsClass {
 
     private final Class<?> clazz;
+
     private final String fullName;
+
     private final String name;
+
     private final String packageName;
+
     private final String naturalName;
+
     private final String shortName;
+
     private final String propertyName;
+
     private final String logicalPropertyName;
+
     private ClassPropertyFetcher classPropertyFetcher;
+
     protected GrailsApplication grailsApplication;
+
     private boolean isAbstract;
 
     /**
@@ -113,11 +123,11 @@ public abstract class AbstractGrailsClass implements GrailsClass {
 
     public Object newInstance() {
         try {
-            Constructor<?> defaultConstructor = getClazz().getDeclaredConstructor(new Class[]{});
+            Constructor<?> defaultConstructor = getClazz().getDeclaredConstructor(new Class[] {});
             if (!defaultConstructor.isAccessible()) {
                 defaultConstructor.setAccessible(true);
             }
-            return defaultConstructor.newInstance(new Object[]{});
+            return defaultConstructor.newInstance(new Object[] {});
         }
         catch (Exception e) {
             Throwable targetException;
@@ -164,7 +174,6 @@ public abstract class AbstractGrailsClass implements GrailsClass {
         return obj;
     }
 
-
     /**
      * @deprecated Use {@link #getMetaProperties()} instead
      */
@@ -193,7 +202,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     public boolean isActionMethod(String methodName) {
-        Method m =  ReflectionUtils.findMethod(getClazz(), methodName, new Class[0]);
+        Method m = ReflectionUtils.findMethod(getClazz(), methodName, new Class[0]);
         if (m != null) {
             ReflectionUtils.makeAccessible(m);
         }
@@ -211,7 +220,6 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     public boolean hasMetaProperty(String propName) {
         return (getMetaClass().getMetaProperty(propName) != null);
     }
-
 
     /**
      * <p>Looks for a property of the reference instance with a given name and type.</p>
@@ -252,11 +260,9 @@ public abstract class AbstractGrailsClass implements GrailsClass {
         return ClassPropertyFetcher.getStaticPropertyValue(getClazz(), propName, type);
     }
 
-
     public Object getPropertyValueObject(String propertyNAme) {
         return getPropertyValue(propertyNAme, Object.class);
     }
-
 
     /* (non-Javadoc)
      * @see grails.core.GrailsClass#getPropertyValue(java.lang.String)
@@ -271,8 +277,8 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     /* (non-Javadoc)
-    * @see grails.core.GrailsClass#hasProperty(java.lang.String)
-    */
+     * @see grails.core.GrailsClass#hasProperty(java.lang.String)
+     */
     public boolean hasProperty(String propName) {
         return ClassPropertyFetcher.getPropertyType(getClazz(), propName) != null;
     }
@@ -288,4 +294,5 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     public String toString() {
         return "Artefact > " + getName();
     }
+
 }

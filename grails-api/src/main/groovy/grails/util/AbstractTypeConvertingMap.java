@@ -44,7 +44,9 @@ import org.codehaus.groovy.util.HashCodeHelper;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport implements Map, Cloneable {
+
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
+
     protected Map wrappedMap;
 
     public AbstractTypeConvertingMap() {
@@ -57,10 +59,10 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
         }
         wrappedMap = map;
     }
-    
+
     public boolean equals(Map that) {
         return equals((Object) that);
-    }    
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -95,9 +97,9 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
             final Object key = it.next();
             Object thisValue = wrappedMap.get(key);
             Object thatValue = thatMap.wrappedMap.get(key);
-            if (thisValue == null && thatValue != null || 
-                thisValue != null && thatValue == null || 
-                thisValue != thatValue && !thisValue.equals(thatValue)) {
+            if (thisValue == null && thatValue != null ||
+                    thisValue != null && thatValue == null ||
+                    thisValue != thatValue && !thisValue.equals(thatValue)) {
                 return false;
             }
         }
@@ -223,7 +225,6 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                 return Long.parseLong(o.toString());
             }
             catch (NumberFormatException e) {
-
             }
         }
         return null;
@@ -238,10 +239,10 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     }
 
     /**
-    * Helper method for obtaining short value from parameter
-    * @param name The name of the parameter
-    * @return The short value or null if there isn't one
-    */
+     * Helper method for obtaining short value from parameter
+     * @param name The name of the parameter
+     * @return The short value or null if there isn't one
+     */
     public Short getShort(String name) {
         Object o = get(name);
         if (o instanceof Number) {
@@ -271,10 +272,10 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     }
 
     /**
-    * Helper method for obtaining double value from parameter
-    * @param name The name of the parameter
-    * @return The double value or null if there isn't one
-    */
+     * Helper method for obtaining double value from parameter
+     * @param name The name of the parameter
+     * @return The double value or null if there isn't one
+     */
     public Double getDouble(String name) {
         Object o = get(name);
         if (o instanceof Number) {
@@ -392,7 +393,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
         if (value instanceof Date) {
             return (Date) value;
         }
-        
+
         if (value != null) {
             try {
                 return new SimpleDateFormat(format).parse(value.toString());
@@ -525,4 +526,5 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     public boolean asBoolean() {
         return !isEmpty();
     }
+
 }

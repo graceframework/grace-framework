@@ -40,6 +40,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ApiDelegateTransformation implements ASTTransformation {
+
     public void visit(ASTNode[] nodes, SourceUnit source) {
         if (nodes.length != 2 || !(nodes[0] instanceof AnnotationNode) || !(nodes[1] instanceof AnnotatedNode)) {
             throw new GroovyBugError("Internal error: expecting [AnnotationNode, AnnotatedNode] but got: " + Arrays.asList(nodes));
@@ -62,11 +63,11 @@ public class ApiDelegateTransformation implements ASTTransformation {
                     resolveGenericsPlaceHolders(supportedType), isNoNullCheck(), isUseCompileStatic());
         }
     }
-    
+
     protected boolean isNoNullCheck() {
         return true;
     }
-    
+
     protected boolean isUseCompileStatic() {
         return true;
     }
@@ -74,4 +75,5 @@ public class ApiDelegateTransformation implements ASTTransformation {
     protected Map<String, ClassNode> resolveGenericsPlaceHolders(ClassNode classNode) {
         return null;
     }
+
 }

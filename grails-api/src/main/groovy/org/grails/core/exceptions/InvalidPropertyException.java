@@ -39,4 +39,5 @@ public class InvalidPropertyException extends GrailsException {
     public InvalidPropertyException(Throwable cause) {
         super(cause);
     }
+
 }

@@ -48,19 +48,29 @@ import org.grails.plugins.BinaryGrailsPlugin;
 public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAware, PluginManagerAware {
 
     public static final String WILDCARD = "*";
+
     public static final String FILE_SEPARATOR = File.separator;
+
     public static final String CLOSURE_MARKER = "$";
+
     public static final String WEB_APP_DIR = "web-app";
 
     protected static final Resource NULL_RESOURCE = new ByteArrayResource("null".getBytes());
 
     protected PathMatchingResourcePatternResolver patchMatchingResolver;
+
     protected List<String> classSearchDirectories = new ArrayList<String>();
+
     protected List<String> resourceSearchDirectories = new ArrayList<String>();
+
     protected Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<String, Resource>();
+
     protected Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<String, Resource>();
-    protected ResourceLoader defaultResourceLoader =  new FileSystemResourceLoader();
+
+    protected ResourceLoader defaultResourceLoader = new FileSystemResourceLoader();
+
     protected GrailsPluginManager pluginManager;
+
     protected boolean warDeployed = Environment.isWarDeployed();
 
     public void setSearchLocation(String searchLocation) {
@@ -190,7 +200,6 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     }
 
     public Resource findResourceForClassName(String className) {
-
         if (className.contains(CLOSURE_MARKER)) {
             className = className.substring(0, className.indexOf(CLOSURE_MARKER));
         }
@@ -209,7 +218,6 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     }
 
     private List<String> getSearchPatternForExtension(String classNameWithPathSeparator, String... extensions) {
-
         List<String> searchPatterns = new ArrayList<String>();
         for (String extension : extensions) {
             String filename = classNameWithPathSeparator + extension;
@@ -243,7 +251,11 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     }
 
     class PluginResourceInfo {
+
         String pluginName;
+
         String uri;
+
     }
+
 }

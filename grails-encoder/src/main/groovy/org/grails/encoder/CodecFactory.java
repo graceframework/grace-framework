@@ -38,4 +38,5 @@ public interface CodecFactory {
      * @return the decoder
      */
     Decoder getDecoder();
+
 }

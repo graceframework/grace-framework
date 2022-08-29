@@ -37,7 +37,9 @@ import grails.config.Config;
 public class PrefixedConfig implements Config {
 
     protected String prefix;
+
     protected String[] prefixTokens;
+
     protected Config delegate;
 
     public PrefixedConfig(String prefix, Config delegate) {
@@ -92,7 +94,6 @@ public class PrefixedConfig implements Config {
         properties.putAll(flattened);
         return properties;
     }
-
 
     @Override
     public Object getAt(Object key) {
@@ -247,7 +248,6 @@ public class PrefixedConfig implements Config {
         throw new UnsupportedOperationException("Config cannot be modified");
     }
 
-
     @Override
     public Config merge(Map<String, Object> toMerge) {
         throw new UnsupportedOperationException("Config cannot be modified");
@@ -262,4 +262,5 @@ public class PrefixedConfig implements Config {
     public void setAt(Object key, Object value) {
         throw new UnsupportedOperationException("Config cannot be modified");
     }
+
 }

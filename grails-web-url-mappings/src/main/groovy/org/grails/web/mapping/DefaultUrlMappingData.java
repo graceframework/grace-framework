@@ -33,15 +33,21 @@ import grails.web.mapping.UrlMappingData;
 public class DefaultUrlMappingData implements UrlMappingData {
 
     private static final String CAPTURED_WILDCARD = "(*)";
+
     private static final String CAPTURED_DOUBLE_WILDCARD = "(**)";
+
     private static final String QUESTION_MARK = "?";
+
     private static final String SLASH = "/";
 
     private final String urlPattern;
+
     private final String[] logicalUrls;
+
     private final String[] tokens;
 
     private List<Boolean> optionalTokens = new ArrayList<Boolean>();
+
     private boolean hasOptionalExtension;
 
     public DefaultUrlMappingData(String urlPattern) {
@@ -81,7 +87,6 @@ public class DefaultUrlMappingData implements UrlMappingData {
     private void parseUrls(List<String> urls, String[] tokens, List<Boolean> optionalTokens) {
         StringBuilder buf = new StringBuilder();
 
-
         String optionalExtensionPattern = UrlMapping.OPTIONAL_EXTENSION_WILDCARD + '?';
         String optionalExtension = null;
 
@@ -101,7 +106,6 @@ public class DefaultUrlMappingData implements UrlMappingData {
             if (token.equals(SLASH)) {
                 continue;
             }
-
 
             boolean isOptional = false;
             if (token.endsWith(QUESTION_MARK)) {
@@ -170,7 +174,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
         parseUrls(urls, tokens, optionalTokens);
         String[] logicalUrls = urls.toArray(new String[urls.size()]);
 
-
         return new DefaultUrlMappingData(newPattern, logicalUrls, tokens, optionalTokens);
     }
+
 }

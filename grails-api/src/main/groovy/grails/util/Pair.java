@@ -16,7 +16,9 @@
 package grails.util;
 
 public class Pair<A, B> {
+
     final A aValue;
+
     final B bValue;
 
     public Pair(A aValue, B bValue) {
@@ -76,4 +78,5 @@ public class Pair<A, B> {
     public String toString() {
         return "TupleKey [aValue=" + aValue + ", bValue=" + bValue + "]";
     }
+
 }

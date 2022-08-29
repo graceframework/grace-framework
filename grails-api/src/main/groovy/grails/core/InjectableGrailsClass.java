@@ -44,4 +44,5 @@ public interface InjectableGrailsClass extends GrailsClass {
      * @return available for dependency injection
      */
     boolean getAvailable();
+
 }

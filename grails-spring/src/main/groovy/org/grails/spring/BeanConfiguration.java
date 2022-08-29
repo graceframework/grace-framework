@@ -31,6 +31,7 @@ import org.springframework.core.io.Resource;
 public interface BeanConfiguration {
 
     String AUTOWIRE_BY_TYPE = "byType";
+
     String AUTOWIRE_BY_NAME = "byName";
 
     /**
@@ -149,4 +150,5 @@ public interface BeanConfiguration {
     void setBeanDefinition(BeanDefinition definition);
 
     boolean isConditionOn();
+
 }

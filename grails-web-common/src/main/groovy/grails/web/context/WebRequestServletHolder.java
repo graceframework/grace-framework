@@ -36,4 +36,5 @@ public class WebRequestServletHolder extends Holder<ServletContext> {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup();
         return webRequest == null ? null : webRequest.getServletContext();
     }
+
 }

@@ -100,4 +100,5 @@ public interface Constrained {
     void applyConstraint(String constraintName, Object constrainingValue);
 
     Class getOwner();
+
 }

@@ -16,9 +16,11 @@
 package org.grails.encoder;
 
 public class ChainedDecoder implements Decoder {
+
     protected Decoder[] decoders;
+
     protected CodecIdentifier codecIdentifier;
-    
+
     public ChainedDecoder(Decoder[] decoders) {
         this.decoders = decoders;
         this.codecIdentifier = createCodecIdentifier(decoders);
@@ -44,4 +46,5 @@ public class ChainedDecoder implements Decoder {
         }
         return decoded;
     }
+
 }

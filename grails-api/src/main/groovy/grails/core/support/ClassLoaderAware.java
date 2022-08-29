@@ -33,4 +33,5 @@ public interface ClassLoaderAware extends Aware {
      * @param classLoader the {@link ClassLoader} that loads the Grails application code
      */
     void setClassLoader(ClassLoader classLoader);
+
 }

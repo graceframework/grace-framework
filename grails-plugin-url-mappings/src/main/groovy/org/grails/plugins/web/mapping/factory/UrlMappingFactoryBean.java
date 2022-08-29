@@ -32,12 +32,15 @@ import org.springframework.context.ApplicationContextAware;
  * @author Graeme Rocher
  * @since 0.3
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements ApplicationContextAware {
 
     private static final Log LOG = LogFactory.getLog(UrlMappingFactoryBean.class);
+
     private static final String URL_MAP_BEAN = "urlMappings";
+
     private ApplicationContext applicationContext;
+
     private Map mappings = new HashMap();
 
     /* (non-Javadoc)
@@ -75,4 +78,5 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
+
 }

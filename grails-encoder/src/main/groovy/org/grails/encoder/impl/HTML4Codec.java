@@ -28,9 +28,11 @@ import org.grails.encoder.Encoder;
  * @since 2.3
  */
 public class HTML4Codec implements CodecFactory {
+
     static final String CODEC_NAME = "HTML4";
 
     private static Encoder encoder = new HTML4Encoder();
+
     private static Decoder decoder = new HTML4Decoder();
 
     /* (non-Javadoc)
@@ -46,4 +48,5 @@ public class HTML4Codec implements CodecFactory {
     public Decoder getDecoder() {
         return decoder;
     }
+
 }

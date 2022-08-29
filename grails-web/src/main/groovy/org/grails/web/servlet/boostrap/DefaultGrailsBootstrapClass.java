@@ -31,7 +31,9 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
     public static final String BOOT_STRAP = "BootStrap";
 
     private static final String INIT_CLOSURE = "init";
+
     private static final String DESTROY_CLOSURE = "destroy";
+
     @SuppressWarnings("rawtypes")
     private static final Closure BLANK_CLOSURE = new Closure(DefaultGrailsBootstrapClass.class) {
         @Override
@@ -39,6 +41,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
             return null;
         }
     };
+
     private final Object instance;
 
     public DefaultGrailsBootstrapClass(Class<?> clazz) {
@@ -52,7 +55,6 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
     }
 
     public Closure<?> getInitClosure() {
-
         Object obj = ClassPropertyFetcher.getInstancePropertyValue(instance, INIT_CLOSURE);
         if (obj instanceof Closure) {
             return (Closure<?>) obj;
@@ -73,7 +75,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
         if (init != null) {
             Class[] parameterTypes = init.getParameterTypes();
             if (parameterTypes != null) {
-                init = init.curry(new Object[]{servletContext});
+                init = init.curry(new Object[] { servletContext });
             }
             Environment.executeForCurrentEnvironment(init);
         }
@@ -85,4 +87,5 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
             Environment.executeForCurrentEnvironment(destroy);
         }
     }
+
 }

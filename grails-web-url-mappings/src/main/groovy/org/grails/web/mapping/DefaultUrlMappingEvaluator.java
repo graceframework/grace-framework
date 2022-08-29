@@ -95,30 +95,51 @@ import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingConte
 public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoaderAware, PluginManagerAware {
 
     public static final String ACTION_CREATE = "create";
+
     public static final String ACTION_INDEX = "index";
+
     public static final String ACTION_SHOW = "show";
+
     public static final String ACTION_EDIT = "edit";
+
     public static final String ACTION_UPDATE = "update";
+
     public static final String ACTION_PATCH = "patch";
+
     public static final String ACTION_DELETE = "delete";
+
     public static final String ACTION_SAVE = "save";
+
     public static final List<String> DEFAULT_RESOURCES_INCLUDES = Arrays.asList(ACTION_INDEX, ACTION_CREATE, ACTION_SAVE, ACTION_SHOW,
             ACTION_EDIT, ACTION_UPDATE, ACTION_PATCH, ACTION_DELETE);
+
     public static final List<String> DEFAULT_RESOURCE_INCLUDES = Arrays.asList(ACTION_CREATE, ACTION_SAVE, ACTION_SHOW,
             ACTION_EDIT, ACTION_UPDATE, ACTION_PATCH, ACTION_DELETE);
+
     private static final Logger LOG = LoggerFactory.getLogger(UrlMappingBuilder.class);
+
     private GroovyClassLoader classLoader = new GroovyClassLoader();
+
     private UrlMappingParser urlParser = new DefaultUrlMappingParser();
+
     private static final String EXCEPTION = "exception";
+
     private static final String PARSE_REQUEST = "parseRequest";
+
     private static final String SINGLE = "single";
+
     private static final String RESOURCE = "resource";
+
     private static final String RESOURCES = "resources";
 
     private GrailsPluginManager pluginManager;
+
     private ApplicationContext applicationContext;
+
     private GrailsApplication grailsApplication;
+
     private final ConstraintRegistry constraintRegistry;
+
     private final ConstraintsEvaluator constraintsEvaluator;
 
     public DefaultUrlMappingEvaluator(ApplicationContext applicationContext) {
@@ -152,7 +173,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public List evaluateMappings(Resource resource) {
         InputStream inputStream = null;
         try {
@@ -167,7 +188,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public List<UrlMapping> evaluateMappings(Class theClass) {
         GroovyObject obj = (GroovyObject) BeanUtils.instantiateClass(theClass);
 
@@ -232,6 +253,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
     class MappingCapturingClosure extends Closure {
 
         private static final long serialVersionUID = 2108155626252742722L;
+
         private Closure<?> mappings;
 
         public Closure<?> getMappings() {
@@ -249,6 +271,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             }
             return null;
         }
+
     }
 
     /**
@@ -259,20 +282,33 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
      */
     @SuppressWarnings("rawtypes")
     class UrlMappingBuilder extends GroovyObjectSupport {
+
         private static final String CAPTURING_WILD_CARD = UrlMapping.CAPTURED_WILDCARD;
+
         private static final String SLASH = "/";
+
         private static final String CONSTRAINTS = "constraints";
 
         private boolean urlDefiningMode = true;
+
         private boolean inGroupConstraints = false;
+
         private List<ConstrainedProperty> previousConstraints = new ArrayList<>();
+
         private List<UrlMapping> urlMappings = new ArrayList<>();
+
         private Map<String, Object> parameterValues = new HashMap<>();
+
         private Binding binding;
+
         private Object exception;
+
         private Object parseRequest;
+
         private Deque<ParentResource> parentResources = new ArrayDeque<>();
+
         private Deque<MetaMappingInfo> mappingInfoDeque = new ArrayDeque<>();
+
         private boolean isInCollection;
 
         public UrlMappingBuilder(Binding binding) {
@@ -458,16 +494,17 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping get(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.GET.toString());
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping get(Map arguments, String uri) {
             return get(arguments, uri, null);
         }
+
         public UrlMapping get(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.GET.toString();
             return regexUrlMapping;
         }
-
 
         /**
          * Matches the POST method
@@ -478,11 +515,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping post(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.POST);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping post(Map arguments, String uri) {
             return post(arguments, uri, null);
         }
+
         public UrlMapping post(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.POST.toString();
             return regexUrlMapping;
@@ -497,11 +536,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping put(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.PUT);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping put(Map arguments, String uri) {
             return put(arguments, uri, null);
         }
+
         public UrlMapping put(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.PUT.toString();
             return regexUrlMapping;
@@ -516,11 +557,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping patch(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.PATCH);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping patch(Map arguments, String uri) {
             return patch(arguments, uri, null);
         }
+
         public UrlMapping patch(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.PATCH.toString();
             return regexUrlMapping;
@@ -535,15 +578,18 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping delete(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.DELETE);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping delete(Map arguments, String uri) {
             return delete(arguments, uri, null);
         }
+
         public UrlMapping delete(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.DELETE.toString();
             return regexUrlMapping;
         }
+
         /**
          * Matches the HEAD method
          *
@@ -553,11 +599,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping head(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.HEAD);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping head(Map arguments, String uri) {
             return head(arguments, uri, null);
         }
+
         public UrlMapping head(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.HEAD.toString();
             return regexUrlMapping;
@@ -572,15 +620,18 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          */
         public UrlMapping options(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.OPTIONS);
-            return (UrlMapping) _invoke(uri, new Object[]{ arguments, callable }, this);
+            return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
         }
+
         public UrlMapping options(Map arguments, String uri) {
             return options(arguments, uri, null);
         }
+
         public UrlMapping options(RegexUrlMapping regexUrlMapping) {
             regexUrlMapping.httpMethod = HttpMethod.OPTIONS.toString();
             return regexUrlMapping;
         }
+
         /**
          * Define Url mapping collections that are nested directly below the parent resource (without the id)
          *
@@ -631,7 +682,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                         if (!hasParent) {
                             urlDefiningMode = false;
                         }
-                        args = args != null && args.length > 0 ? args : new Object[]{Collections.emptyMap()};
+                        args = args != null && args.length > 0 ? args : new Object[] { Collections.emptyMap() };
                         if (args[0] instanceof Closure) {
                             UrlMappingData urlData = createUrlMappingData(mappedURI, isResponseCode);
 
@@ -870,8 +921,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected void createResourceRestfulMappings(String controllerName, Object pluginName, Object namespace,
-                                                     String version, UrlMappingData urlData, List<ConstrainedProperty> constrainedList,
-                                                     List<String> includes) {
+                String version, UrlMappingData urlData, List<ConstrainedProperty> constrainedList,
+                List<String> includes) {
             ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[constrainedList.size()]);
 
             if (includes.contains(ACTION_INDEX)) {
@@ -932,8 +983,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createDeleteActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                       Object namespace, String version, UrlMappingData urlData,
-                                                                       List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData deleteUrlMappingData = createRelativeUrlDataWithIdAndFormat(urlData);
             List<ConstrainedProperty> deleteUrlMappingConstraints = createConstraintsWithIdAndFormat(constrainedList);
 
@@ -943,8 +994,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createUpdateActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                       Object namespace, String version, UrlMappingData urlData,
-                                                                       List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData updateUrlMappingData = createRelativeUrlDataWithIdAndFormat(urlData);
             List<ConstrainedProperty> updateUrlMappingConstraints = createConstraintsWithIdAndFormat(constrainedList);
 
@@ -954,8 +1005,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createPatchActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                      Object namespace, String version, UrlMappingData urlData,
-                                                                      List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData patchUrlMappingData = createRelativeUrlDataWithIdAndFormat(urlData);
             List<ConstrainedProperty> patchUrlMappingConstraints = createConstraintsWithIdAndFormat(constrainedList);
 
@@ -965,8 +1016,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createEditActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                     Object namespace, String version, UrlMappingData urlData,
-                                                                     List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData editUrlMappingData = urlData.createRelative('/' + CAPTURING_WILD_CARD + "/edit");
             List<ConstrainedProperty> editUrlMappingConstraints = new ArrayList<ConstrainedProperty>(constrainedList);
             editUrlMappingConstraints.add(new DefaultConstrainedProperty(UrlMapping.class, "id", String.class, constraintRegistry));
@@ -977,8 +1028,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createShowActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                     Object namespace, String version, UrlMappingData urlData,
-                                                                     List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData showUrlMappingData = createRelativeUrlDataWithIdAndFormat(urlData);
             List<ConstrainedProperty> showUrlMappingConstraints = createConstraintsWithIdAndFormat(constrainedList);
 
@@ -1004,10 +1055,9 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             return urlData.createRelative(UrlMapping.OPTIONAL_EXTENSION_WILDCARD + UrlMapping.QUESTION_MARK);
         }
 
-
         protected UrlMapping createSaveActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                     Object namespace, String version, UrlMappingData urlData,
-                                                                     List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData saveActionUrlMappingData = urlData.createRelative(UrlMapping.OPTIONAL_EXTENSION_WILDCARD + UrlMapping.QUESTION_MARK);
             List<ConstrainedProperty> saveUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1017,16 +1067,16 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createCreateActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                       Object namespace, String version, UrlMappingData urlData,
-                                                                       ConstrainedProperty[] constraintArray) {
+                Object namespace, String version, UrlMappingData urlData,
+                ConstrainedProperty[] constraintArray) {
             UrlMappingData createMappingData = urlData.createRelative("/create");
             return new RegexUrlMapping(createMappingData, controllerName, ACTION_CREATE, namespace,
                     pluginName, null, HttpMethod.GET.toString(), version, constraintArray, grailsApplication);
         }
 
         protected UrlMapping createIndexActionResourcesRestfulMapping(String controllerName, Object pluginName,
-                                                                      Object namespace, String version, UrlMappingData urlData,
-                                                                      List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData indexActionUrlMappingData = urlData.createRelative(UrlMapping.OPTIONAL_EXTENSION_WILDCARD + UrlMapping.QUESTION_MARK);
             List<ConstrainedProperty> indexUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1054,8 +1104,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param includes
          */
         protected void createSingleResourceRestfulMappings(String controllerName, Object pluginName,
-                                                           Object namespace, String version, UrlMappingData urlData,
-                                                           List<ConstrainedProperty> constrainedList, List<String> includes) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList, List<String> includes) {
 
             ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[constrainedList.size()]);
 
@@ -1110,8 +1160,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createDeleteActionResourceRestfulMapping(String controllerName, Object pluginName,
-                                                                      Object namespace, String version, UrlMappingData urlData,
-                                                                      List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData deleteUrlMappingData = createFormatOnlyUrlMappingData(urlData);
             List<ConstrainedProperty> deleteUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1121,8 +1171,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createUpdateActionResourceRestfulMapping(String controllerName, Object pluginName,
-                                                                      Object namespace, String version, UrlMappingData urlData,
-                                                                      List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData updateUrlMappingData = createFormatOnlyUrlMappingData(urlData);
             List<ConstrainedProperty> updateUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1132,8 +1182,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createPatchActionResourceRestfulMapping(String controllerName, Object pluginName,
-                                                                     Object namespace, String version, UrlMappingData urlData,
-                                                                     List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData patchUrlMappingData = createFormatOnlyUrlMappingData(urlData);
             List<ConstrainedProperty> patchUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1143,16 +1193,16 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         protected UrlMapping createEditActionResourceRestfulMapping(String controllerName, Object pluginName,
-                                                                    Object namespace, String version, UrlMappingData urlData,
-                                                                    ConstrainedProperty[] constraintArray) {
+                Object namespace, String version, UrlMappingData urlData,
+                ConstrainedProperty[] constraintArray) {
             UrlMappingData editMappingData = urlData.createRelative("/edit");
             return new RegexUrlMapping(editMappingData, controllerName, ACTION_EDIT, namespace,
                     pluginName, null, HttpMethod.GET.toString(), version, constraintArray, grailsApplication);
         }
 
         protected UrlMapping createShowActionResourceRestfulMapping(String controllerName, Object pluginName,
-                                                                    Object namespace, String version, UrlMappingData urlData,
-                                                                    List<ConstrainedProperty> constrainedList) {
+                Object namespace, String version, UrlMappingData urlData,
+                List<ConstrainedProperty> constrainedList) {
             UrlMappingData showUrlMappingData = createFormatOnlyUrlMappingData(urlData);
             List<ConstrainedProperty> showUrlMappingConstraints = createFormatOnlyConstraints(constrainedList);
 
@@ -1214,8 +1264,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         private UrlMapping getURLMappingForNamedArgs(Map namedArguments,
-                                                     UrlMappingData urlData, String mapping,
-                                                     boolean isResponseCode, List<ConstrainedProperty> constrainedList) {
+                UrlMappingData urlData, String mapping,
+                boolean isResponseCode, List<ConstrainedProperty> constrainedList) {
             final Map bindingVariables = binding != null ? binding.getVariables() : null;
             Object controllerName = getControllerName(namedArguments, bindingVariables);
             Object actionName = getActionName(namedArguments, bindingVariables);
@@ -1270,7 +1320,6 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             if (parseRequest instanceof Boolean) {
                 urlMapping.setParseRequest((Boolean) parseRequest);
             }
-
 
             return urlMapping;
         }
@@ -1345,8 +1394,8 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         private UrlMapping createURLMapping(UrlMappingData urlData, boolean isResponseCode, Object redirectInfo,
-                                            Object controllerName, Object actionName, Object namespace, Object pluginName,
-                                            Object viewName, String httpMethod, String version, ConstrainedProperty[] constraints) {
+                Object controllerName, Object actionName, Object namespace, Object pluginName,
+                Object viewName, String httpMethod, String version, ConstrainedProperty[] constraints) {
             if (!isResponseCode) {
                 return new RegexUrlMapping(redirectInfo, urlData, controllerName, actionName, namespace,
                         pluginName, viewName, httpMethod, version, constraints, grailsApplication);
@@ -1386,9 +1435,13 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         class ParentResource {
+
             String controllerName;
+
             String uri;
+
             boolean isSingle;
+
             boolean isGroup;
 
             ParentResource(String controllerName, String uri, boolean single) {
@@ -1404,11 +1457,15 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 isSingle = single;
                 isGroup = group;
             }
+
         }
+
     }
 
     class UrlGroupMappingRecursionBuilder extends UrlMappingBuilder {
+
         private ParentResource parentResource;
+
         public UrlGroupMappingRecursionBuilder(UrlMappingBuilder parent, ParentResource parentResource) {
             super(parent);
 
@@ -1423,5 +1480,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             super.group(uri, mappings);
         }
+
     }
+
 }

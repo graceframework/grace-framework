@@ -29,9 +29,10 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  * @since 2.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @GroovyASTTransformationClass("org.grails.compiler.injection.ArtefactTypeAstTransformation")
 public @interface Artefact {
 
     String value();
+
 }

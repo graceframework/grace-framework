@@ -52,7 +52,9 @@ import org.grails.spring.RuntimeSpringConfiguration;
 public interface GrailsPlugin extends ApplicationContextAware, Comparable, GrailsPluginInfo {
 
     int EVENT_ON_CHANGE = 0;
+
     int EVENT_ON_CONFIG_CHANGE = 1;
+
     int EVENT_ON_SHUTDOWN = 2;
 
     String DO_WITH_DYNAMIC_METHODS = "doWithDynamicMethods";
@@ -193,7 +195,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      */
     void doWithRuntimeConfiguration(RuntimeSpringConfiguration springConfig);
 
-
     /**
      * Makes the plugin excluded for a particular Environment
      * @param env The Environment
@@ -268,7 +269,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @return The version
      */
     String getDependentVersion(String name);
-
 
     PropertySource<?> getPropertySource();
 
@@ -429,4 +429,5 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @param descriptor The descriptor
      */
     void setDescriptor(Resource descriptor);
+
 }

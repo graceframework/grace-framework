@@ -40,6 +40,9 @@ class DateContainer {
 @Target(ElementType.FIELD)
 @GroovyASTTransformationClass("org.grails.databinding.compiler.BindingFormatASTTransformation")
 public @interface BindingFormat {
+
     String value() default "";
+
     String code() default "";
+
 }

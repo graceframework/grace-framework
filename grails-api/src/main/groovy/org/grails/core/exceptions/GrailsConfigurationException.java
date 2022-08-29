@@ -37,4 +37,5 @@ public class GrailsConfigurationException extends GrailsException {
     public GrailsConfigurationException(Throwable cause) {
         super(cause);
     }
+
 }

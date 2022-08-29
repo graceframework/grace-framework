@@ -53,4 +53,5 @@ public interface GrailsBootstrapClass extends GrailsClass {
      */
     @SuppressWarnings("rawtypes")
     Closure getDestroyClosure();
+
 }

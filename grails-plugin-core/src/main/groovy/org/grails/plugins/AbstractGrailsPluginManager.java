@@ -71,25 +71,40 @@ import org.grails.spring.RuntimeSpringConfiguration;
 public abstract class AbstractGrailsPluginManager implements GrailsPluginManager {
 
     private static final Log LOG = LogFactory.getLog(AbstractGrailsPluginManager.class);
+
     private static final String BLANK = "";
+
     public static final String CONFIG_FILE = "application.groovy";
+
     protected List<GrailsPlugin> pluginList = new ArrayList<GrailsPlugin>();
+
     protected GrailsApplication application;
+
     protected Resource[] pluginResources = new Resource[0];
+
     protected Map<String, GrailsPlugin> plugins = new HashMap<String, GrailsPlugin>();
+
     protected Map<String, GrailsPlugin> classNameToPluginMap = new HashMap<String, GrailsPlugin>();
+
     protected Class<?>[] pluginClasses = new Class[0];
+
     protected boolean initialised = false;
+
     protected boolean shutdown = false;
+
     protected ApplicationContext applicationContext;
+
     protected Map<String, GrailsPlugin> failedPlugins = new HashMap<String, GrailsPlugin>();
+
     protected boolean loadCorePlugins = true;
 
     private static final String CONFIG_BINDING_USER_HOME = "userHome";
-    private static final String CONFIG_BINDING_GRAILS_HOME = "grailsHome";
-    private static final String CONFIG_BINDING_APP_NAME = "appName";
-    private static final String CONFIG_BINDING_APP_VERSION = "appVersion";
 
+    private static final String CONFIG_BINDING_GRAILS_HOME = "grailsHome";
+
+    private static final String CONFIG_BINDING_APP_NAME = "appName";
+
+    private static final String CONFIG_BINDING_APP_VERSION = "appVersion";
 
     public AbstractGrailsPluginManager(GrailsApplication application) {
         Assert.notNull(application, "Argument [application] cannot be null!");
@@ -137,6 +152,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public void doRuntimeConfiguration(RuntimeSpringConfiguration springConfig) {
         ApplicationContext context = springConfig.getUnrefreshedApplicationContext();
         AutowireCapableBeanFactory autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
+
         if (autowireCapableBeanFactory instanceof ConfigurableListableBeanFactory) {
             ConfigurableListableBeanFactory beanFactory = (ConfigurableListableBeanFactory) autowireCapableBeanFactory;
             ConversionService existingConversionService = beanFactory.getConversionService();
@@ -157,7 +173,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 }
             });
         }
+
         checkInitialised();
+
         for (GrailsPlugin plugin : pluginList) {
             if (plugin.supportsCurrentScopeAndEnvironment() && plugin.isEnabled(context.getEnvironment().getActiveProfiles())) {
                 plugin.doWithRuntimeConfiguration(springConfig);
@@ -170,6 +188,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
      */
     public void doRuntimeConfiguration(String pluginName, RuntimeSpringConfiguration springConfig) {
         checkInitialised();
+
         GrailsPlugin plugin = getGrailsPlugin(pluginName);
         if (plugin == null) {
             throw new PluginException("Plugin [" + pluginName + "] not found");
@@ -185,6 +204,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
         String[] dependencyNames = plugin.getDependencyNames();
         doRuntimeConfigurationForDependencies(dependencyNames, springConfig);
+
         String[] loadAfters = plugin.getLoadAfterNames();
         for (String name : loadAfters) {
             GrailsPlugin current = getGrailsPlugin(name);
@@ -218,6 +238,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
      */
     public void doPostProcessing(ApplicationContext ctx) {
         checkInitialised();
+
         for (GrailsPlugin plugin : pluginList) {
             if (isPluginDisabledForProfile(plugin)) {
                 continue;
@@ -247,6 +268,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         if (name.indexOf('-') > -1) {
             name = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(name);
         }
+
         GrailsPlugin plugin = plugins.get(name);
         if (plugin != null && GrailsVersionUtils.isValidVersion(plugin.getVersion(), version.toString())) {
             return plugin;
@@ -309,6 +331,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         // load sequence is maintained
         ArrayList<GrailsPlugin> plugins = new ArrayList<GrailsPlugin>(pluginList);
         Collections.reverse(plugins);
+
         for (GrailsPlugin plugin : plugins) {
             if (plugin.supportsCurrentScopeAndEnvironment()) {
                 if (isPluginDisabledForProfile(plugin)) {
@@ -338,6 +361,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public void doArtefactConfiguration() {
         checkInitialised();
+
         for (GrailsPlugin plugin : pluginList) {
             if (isPluginDisabledForProfile(plugin)) {
                 continue;
@@ -362,6 +386,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public void shutdown() {
         checkInitialised();
+
         try {
             // Shutdown plugins in reverse dependency order
             List<GrailsPlugin> reversePluginList = new ArrayList<>(pluginList);
@@ -428,7 +453,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                         File parent = watchPattern.getDirectory();
                         String extension = watchPattern.getExtension();
 
-                        if (parent != null && extension != null)  {
+                        if (parent != null && extension != null) {
                             File f = new File(parent, groovyClass);
                             if (f.exists() && f.getName().endsWith(extension)) {
                                 grailsPlugin.notifyOfEvent(GrailsPlugin.EVENT_ON_CHANGE, aClass);
@@ -452,6 +477,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public String getPluginPath(String name, boolean forceCamelCase) {
         GrailsPlugin plugin = getGrailsPlugin(name);
+
         if (plugin != null && !plugin.isBasePlugin()) {
             if (forceCamelCase) {
                 return plugin.getPluginPathCamelCase();
@@ -480,7 +506,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public GrailsPlugin getPluginForClass(Class<?> theClass) {
         if (theClass != null) {
             grails.plugins.metadata.GrailsPlugin ann =
-                theClass.getAnnotation(grails.plugins.metadata.GrailsPlugin.class);
+                    theClass.getAnnotation(grails.plugins.metadata.GrailsPlugin.class);
             if (ann != null) {
                 return getGrailsPlugin(ann.name());
             }
@@ -538,7 +564,6 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             }
         }
         else {
-
             if (cls != null) {
                 MetaClassRegistry registry = GroovySystem.getMetaClassRegistry();
                 registry.removeMetaClass(cls);
@@ -590,7 +615,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public String getPluginPathForClass(Class<?> theClass) {
         if (theClass != null) {
             grails.plugins.metadata.GrailsPlugin ann =
-                theClass.getAnnotation(grails.plugins.metadata.GrailsPlugin.class);
+                    theClass.getAnnotation(grails.plugins.metadata.GrailsPlugin.class);
             if (ann != null) {
                 return getPluginPath(ann.name());
             }
@@ -614,4 +639,5 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         }
         return null;
     }
+
 }

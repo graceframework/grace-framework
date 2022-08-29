@@ -59,4 +59,5 @@ public interface ResourceLoader {
      * @return the ClassLoader (never <code>null</code>)
      */
     ClassLoader getClassLoader();
+
 }

@@ -36,4 +36,5 @@ public class GrailsRuntimeException extends GrailsException {
     public GrailsRuntimeException(Throwable cause) {
         super(cause);
     }
+
 }

@@ -24,7 +24,9 @@ import grails.web.mapping.UrlMappingData;
  * @since 1.0-RC1
  */
 public class ResponseCodeMappingData implements UrlMappingData {
+
     private final int responseCode;
+
     private final String responseCodeAsString;
 
     public ResponseCodeMappingData(String responseCode) {
@@ -33,11 +35,11 @@ public class ResponseCodeMappingData implements UrlMappingData {
     }
 
     public String[] getTokens() {
-        return new String[] {responseCodeAsString};
+        return new String[] { responseCodeAsString };
     }
 
     public String[] getLogicalUrls() {
-        return new String[] {responseCodeAsString};
+        return new String[] { responseCodeAsString };
     }
 
     public String getUrlPattern() {
@@ -61,4 +63,5 @@ public class ResponseCodeMappingData implements UrlMappingData {
     public int getResponseCode() {
         return responseCode;
     }
+
 }

@@ -35,7 +35,7 @@ import java.net.URL;
  * @see #getURI()
  * @see #getFile()
  */
-public interface Resource  {
+public interface Resource {
 
     /**
      * An input stream
@@ -121,4 +121,5 @@ public interface Resource  {
      * @return The new resource
      */
     Resource createRelative(String relativePath);
+
 }

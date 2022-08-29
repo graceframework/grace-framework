@@ -29,7 +29,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  * @since 1.1
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @GroovyASTTransformationClass("org.grails.compiler.injection.EntityASTTransformation")
 public @interface Entity {
     // no attributes

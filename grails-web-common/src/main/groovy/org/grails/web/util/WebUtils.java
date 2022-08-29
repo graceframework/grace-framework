@@ -67,14 +67,23 @@ import org.grails.web.servlet.view.CompositeViewResolver;
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
     public static final char SLASH = '/';
+
     public static final String ENABLE_FILE_EXTENSIONS = "grails.mime.file.extensions";
+
     public static final String DISPATCH_ACTION_PARAMETER = "_action_";
+
     public static final String SEND_ALLOW_HEADER_FOR_INVALID_HTTP_METHOD = "grails.http.invalid.method.allow.header";
+
     public static final String LAYOUT_ATTRIBUTE = "org.grails.layout.name";
+
     public static final String RENDERING_VIEW = "org.grails.rendering.view";
+
     public static final String GRAILS_DISPATCH_EXTENSION = ".dispatch";
+
     public static final String GRAILS_SERVLET_PATH = "/grails";
+
     public static final String EXCEPTION_ATTRIBUTE = "exception";
+
     public static final String ASYNC_REQUEST_URI_ATTRIBUTE = "javax.servlet.async.request_uri";
 
     public static ViewResolver lookupViewResolver(ServletContext servletContext) {
@@ -169,7 +178,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         return null;
     }
 
-
     /**
      * Locates the ApplicationContext, returns null if not found
      * @param servletContext The servlet context
@@ -262,7 +270,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      * with the attributes exposed by Servlet 2.4+ containers themselves.
      * @param request current servlet request
      */
-
     public static void exposeIncludeRequestAttributes(HttpServletRequest request) {
         exposeRequestAttributeIfNotPresent(request, INCLUDE_REQUEST_URI_ATTRIBUTE, request.getRequestURI());
         exposeRequestAttributeIfNotPresent(request, INCLUDE_CONTEXT_PATH_ATTRIBUTE, request.getContextPath());
@@ -389,8 +396,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         }
         else {
             queryString.append(URLEncoder.encode(path + name, encoding))
-                       .append('=')
-                       .append(URLEncoder.encode(value.toString(), encoding));
+                    .append('=')
+                    .append(URLEncoder.encode(value.toString(), encoding));
         }
         return true;
     }
@@ -424,7 +431,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             String lastToken = uri.substring(idx + 1, uri.length());
             idx = lastToken.lastIndexOf('.');
             if (idx > -1 && idx != lastToken.length() - 1) {
-                String extension =  lastToken.substring(idx + 1, lastToken.length());
+                String extension = lastToken.substring(idx + 1, lastToken.length());
                 if (mimeTypes != null) {
                     for (MimeType mimeType : mimeTypes) {
                         if (mimeType.getExtension().equals(extension)) {
@@ -534,6 +541,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static boolean isError(HttpServletRequest request) {
         return request.getAttribute(ERROR_STATUS_CODE_ATTRIBUTE) != null;
     }
+
     /**
      * Check whether the given request is an include request
      *

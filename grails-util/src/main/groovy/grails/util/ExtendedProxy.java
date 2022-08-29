@@ -61,4 +61,5 @@ public class ExtendedProxy extends Proxy {
         super.setMetaClass(metaClass);
         propertyMap = DefaultGroovyMethods.getProperties(this);
     }
+
 }

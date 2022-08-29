@@ -43,48 +43,62 @@ import org.grails.config.PropertySourcesConfig;
 /**
  *  A {@link BeanDefinitionRegistryPostProcessor} for using the "Best Effort 1 Phase Commit" (BE1PC) in Grails
  *  applications when there are multiple data sources.  
- *  
+ *
  *  When the context contains multiple transactionManager beans, the bean with the name "transactionManager"
  *  will be renamed to "$primaryTransactionManager" and a new ChainedTransactionManager bean will be added with the name
  *  "transactionManager". All transactionManager beans will be registered in the ChainedTransactionManager bean.
  *
  *  The post processor checks if the previous transactionManager bean is an instance of {@link JtaTransactionManager}. 
  *  In that case it will not do anything since it's assumed that JTA/XA is handling transactions spanning multiple datasources.
- *  
+ *
  *  For performance reasons an additional dataSource can be marked as non-transactional by adding a property 'transactional = false' in
  *  it's dataSource configuration. This will leave the dataSource out of the transactions initiated by Grails transactions.
  *  This is the default behaviour in Grails versions before Grails 2.3.6 .  
- *  
- *  
+ *
+ *
  * @author Lari Hotari
  * @since 2.3.6
  *
  */
 public class ChainedTransactionManagerPostProcessor implements BeanDefinitionRegistryPostProcessor, Ordered {
+
     private static final String TRANSACTIONAL = "transactional";
+
     private static final String DEFAULT_TRANSACTION_MANAGER_BEAN_NAME_WHITELIST_PATTERN = "(?i).*transactionManager(_.+)?";
+
     private static final String DEFAULT_TRANSACTION_MANAGER_INTERNAL_BEAN_NAME_BLACKLIST_PATTERN =
             "(?i)chainedTransactionManagerPostProcessor|transactionManagerPostProcessor|.*PostProcessor";
+
     public static final String DATA_SOURCE_SETTING = "dataSource";
+
     public static final String DATA_SOURCES_SETTING = "dataSources";
+
     public static final String DATA_SOURCES_PREFIX = "dataSources.";
+
     private String beanNameWhitelistPattern = DEFAULT_TRANSACTION_MANAGER_BEAN_NAME_WHITELIST_PATTERN;
+
     private String beanNameBlacklistPattern = null;
+
     private String beanNameInternalBlacklistPattern = DEFAULT_TRANSACTION_MANAGER_INTERNAL_BEAN_NAME_BLACKLIST_PATTERN;
+
     private static final Pattern SUFFIX_PATTERN = Pattern.compile("^transactionManager_(.+)$");
+
     private static final String PRIMARY_TRANSACTION_MANAGER = "$primaryTransactionManager";
+
     private static final String TRANSACTION_MANAGER = "transactionManager";
+
     private static final String READONLY = "readOnly";
-    
+
     private Config config;
 
     private Map<String, Map> dsConfigs;
+
     private static String[] transactionManagerBeanNames = null;
 
     public ChainedTransactionManagerPostProcessor(Config config) {
         this(config, null, null);
     }
-    
+
     public ChainedTransactionManagerPostProcessor(Config config, String whitelistPattern, String blacklistPattern) {
         transactionManagerBeanNames = null;
         this.config = config;
@@ -95,19 +109,18 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
             beanNameBlacklistPattern = blacklistPattern;
         }
     }
-    
+
     public ChainedTransactionManagerPostProcessor() {
         this(new PropertySourcesConfig(), null, null);
     }
-    
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        
+
     }
 
     protected void registerAdditionalTransactionManagers(BeanDefinitionRegistry registry, BeanDefinition chainedTransactionManagerBeanDefinition,
-                                                         ManagedList<RuntimeBeanReference> transactionManagerRefs) {
+            ManagedList<RuntimeBeanReference> transactionManagerRefs) {
         String[] allBeanNames = getTransactionManagerBeanNames(registry);
         for (String beanName : allBeanNames) {
             BeanDefinition beanDefinition = registry.getBeanDefinition(beanName);
@@ -121,12 +134,10 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
         }
     }
 
-
     protected static String[] getTransactionManagerBeanNames(BeanDefinitionRegistry registry) {
         if (transactionManagerBeanNames == null) {
-
             if (registry instanceof ListableBeanFactory) {
-                transactionManagerBeanNames =  ((ListableBeanFactory) registry).getBeanNamesForType(PlatformTransactionManager.class,
+                transactionManagerBeanNames = ((ListableBeanFactory) registry).getBeanNamesForType(PlatformTransactionManager.class,
                         false, false);
             }
             else {
@@ -179,7 +190,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
             return null;
         }
         BeanDefinition transactionManagerBeanDefinition = registry.getBeanDefinition(TRANSACTION_MANAGER);
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();            
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Class<?> transactionManagerBeanClass = ClassUtils.resolveClassName(transactionManagerBeanDefinition.getBeanClassName(), classLoader);
         return transactionManagerBeanClass;
     }
@@ -202,14 +213,14 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
         return beanName.matches(beanNameWhitelistPattern) && (beanNameBlacklistPattern == null || !beanName.matches(beanNameBlacklistPattern)) &&
                 !beanName.matches(beanNameInternalBlacklistPattern);
     }
-    
+
     protected boolean isNotTransactional(String suffix) {
         if (suffix == null || config == null) {
             return false;
         }
         Boolean transactional = config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + TRANSACTIONAL, Boolean.class, null);
         if (transactional == null) {
-            Boolean isReadOnly =  config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + READONLY, Boolean.class, null);
+            Boolean isReadOnly = config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + READONLY, Boolean.class, null);
             if (isReadOnly != null && isReadOnly == true) {
                 transactional = false;
             }
@@ -294,4 +305,5 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     public void setBeanNameInternalBlacklistPattern(String beanNameInternalBlacklistPattern) {
         this.beanNameInternalBlacklistPattern = beanNameInternalBlacklistPattern;
     }
+
 }

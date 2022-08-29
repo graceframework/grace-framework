@@ -38,6 +38,7 @@ import org.grails.web.util.WebUtils;
  * @since 2.4
  */
 public abstract class AbstractGrailsView extends AbstractUrlBasedView {
+
     /**
      * Delegates to renderMergedOutputModel(..)
      *
@@ -50,15 +51,17 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      */
     @Override
     protected final void renderMergedOutputModel(Map<String, Object> model,
-                                                 HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
         exposeModelAsRequestAttributes(model, request);
         renderWithinGrailsWebRequest(model, request, response);
     }
 
     private void renderWithinGrailsWebRequest(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         boolean attributesChanged = false;
+
         try {
             GrailsWebRequest webRequest;
             if (!(requestAttributes instanceof GrailsWebRequest)) {
@@ -77,8 +80,8 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
                 RequestContextHolder.setRequestAttributes(requestAttributes);
             }
         }
-    }    
-    
+    }
+
     /**
      * Renders a page with the specified TemplateEngine, mode and response.
      * @param model The model to use
@@ -89,22 +92,23 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      * @throws java.io.IOException Thrown when an error occurs writing the response
      */
     abstract protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest,
-                                           HttpServletRequest request, HttpServletResponse response) throws Exception;
-    
+            HttpServletRequest request, HttpServletResponse response) throws Exception;
+
     protected GrailsWebRequest createGrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
             ServletContext servletContext) {
         return new GrailsWebRequest(request, response, servletContext);
-    }    
+    }
 
     public void rethrowRenderException(Throwable ex, String message) {
         if (ex instanceof Error) {
             throw (Error) ex;
-        }        
+        }
         if (ex instanceof RuntimeException) {
             throw (RuntimeException) ex;
         }
         throw new UndeclaredThrowableException(ex, message);
     }
-    
+
     abstract public Template getTemplate();
+
 }

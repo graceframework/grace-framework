@@ -49,9 +49,13 @@ import org.grails.core.exceptions.GrailsConfigurationException;
  */
 @Deprecated
 public abstract class NavigableMapConfig implements Config {
+
     protected static final Logger LOG = LoggerFactory.getLogger(NavigableMapConfig.class);
+
     protected ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
     protected ConfigurableConversionService conversionService = new DefaultConversionService();
+
     protected NavigableMap configMap = new NavigableMap() {
         @Override
         protected Object mergeMapEntry(NavigableMap targetMap, String sourceKey, Object newValue) {
@@ -282,13 +286,13 @@ public abstract class NavigableMapConfig implements Config {
             return cache.get(from);
         }
         final Map<Object, Object> to = new LinkedHashMap<>();
-        for (Map.Entry<String, Object> entry: from.entrySet()) {
+        for (Map.Entry<String, Object> entry : from.entrySet()) {
             if (entry.getValue() instanceof NavigableMap) {
                 to.put(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
             }
             else if (entry.getValue() instanceof List) {
                 List<Object> newList = new ArrayList<>();
-                for (Object o: (List<?>) entry.getValue()) {
+                for (Object o : (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
                     }
@@ -307,14 +311,14 @@ public abstract class NavigableMapConfig implements Config {
     }
 
     private ConfigObject convertPropsToMap(ConfigObject config) {
-        for (Map.Entry<String, Object> entry: (Set<Map.Entry<String, Object>>) config.entrySet()) {
+        for (Map.Entry<String, Object> entry : (Set<Map.Entry<String, Object>>) config.entrySet()) {
             final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
             if (entry.getValue() instanceof NavigableMap) {
                 config.setProperty(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
             }
             else if (entry.getValue() instanceof List) {
                 final List<Object> newList = new ArrayList<>();
-                for (Object o: (List<?>) entry.getValue()) {
+                for (Object o : (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
                     }
@@ -397,6 +401,7 @@ public abstract class NavigableMapConfig implements Config {
         public ClassConversionException(String actual, Class<?> expected, Exception ex) {
             super(String.format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()), ex);
         }
+
     }
 
     /**
@@ -436,4 +441,5 @@ public abstract class NavigableMapConfig implements Config {
         }
         return elements;
     }
+
 }

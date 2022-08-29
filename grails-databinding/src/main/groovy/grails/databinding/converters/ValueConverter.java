@@ -20,7 +20,11 @@ package grails.databinding.converters;
  * @since 3.0
  */
 public interface ValueConverter {
+
     boolean canConvert(Object value);
+
     Object convert(Object value);
+
     Class<?> getTargetType();
+
 }

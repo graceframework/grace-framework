@@ -32,8 +32,10 @@ import org.grails.exceptions.reporting.StackTraceFilterer;
 public class GrailsUtil {
 
     private static final Log LOG = LogFactory.getLog(GrailsUtil.class);
+
     private static final boolean LOG_DEPRECATED = Boolean.parseBoolean(
             System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
+
     private static final StackTraceFilterer stackFilterer = new DefaultStackTraceFilterer();
 
     private GrailsUtil() {
@@ -113,8 +115,8 @@ public class GrailsUtil {
         StackTraceElement[] trace = t.getStackTrace();
         for (StackTraceElement stackTraceElement : trace) {
             p.println("at " + stackTraceElement.getClassName() +
-                      "(" + stackTraceElement.getMethodName() +
-                      ":" + stackTraceElement.getLineNumber() + ")");
+                    "(" + stackTraceElement.getMethodName() +
+                    ":" + stackTraceElement.getLineNumber() + ")");
         }
     }
 

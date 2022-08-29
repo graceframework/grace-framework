@@ -119,4 +119,5 @@ public class GrailsConsoleBuildListener implements BuildListener {
     public void messageLogged(final BuildEvent event) {
         // empty
     }
+
 }

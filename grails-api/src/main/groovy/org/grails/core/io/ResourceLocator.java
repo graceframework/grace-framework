@@ -58,4 +58,5 @@ public interface ResourceLocator {
      * @return The resource or null
      */
     Resource findResourceForClassName(String className);
+
 }

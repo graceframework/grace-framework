@@ -34,4 +34,5 @@ public class CommandLineResourceLoader extends DefaultResourceLoader {
         }
         return super.getResource(location);
     }
+
 }

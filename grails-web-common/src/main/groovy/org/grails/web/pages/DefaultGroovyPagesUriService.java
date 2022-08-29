@@ -31,19 +31,23 @@ import org.springframework.util.Assert;
 public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
     ConcurrentMap<TupleStringKey, String> templateURICache = new ConcurrentHashMap<TupleStringKey, String>();
+
     ConcurrentMap<TupleStringKey, String> deployedViewURICache = new ConcurrentHashMap<TupleStringKey, String>();
+
     ConcurrentMap<ControllerObjectKey, String> controllerNameCache = new ConcurrentHashMap<ControllerObjectKey, String>();
+
     ConcurrentMap<TupleStringKey, String> noSuffixViewURICache = new ConcurrentHashMap<TupleStringKey, String>();
 
     private static class TupleStringKey {
+
         String keyPart1;
+
         String keyPart2;
 
         TupleStringKey(String keyPart1, String keyPart2) {
             this.keyPart1 = keyPart1;
             this.keyPart2 = keyPart2;
         }
-
 
         @Override
         public boolean equals(Object o) {
@@ -72,10 +76,13 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
             result = 31 * result + (keyPart2 != null ? keyPart2.hashCode() : 0);
             return result;
         }
+
     }
 
     private static class ControllerObjectKey {
+
         private long controllerHashCode;
+
         private String controllerClassName;
 
         ControllerObjectKey(GroovyObject controller) {
@@ -110,6 +117,7 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
             result = 31 * result + controllerClassName.hashCode();
             return result;
         }
+
     }
 
     /* (non-Javadoc)
@@ -204,4 +212,5 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
         controllerNameCache.clear();
         noSuffixViewURICache.clear();
     }
+
 }

@@ -467,7 +467,6 @@ public class GrailsNameUtils {
         return getPropertyNameConvention(object, suffix);
     }
 
-
     /**
      * Test whether the give package name is a valid Java package
      *
@@ -639,7 +638,6 @@ public class GrailsNameUtils {
         }
         return null;
     }
-
 
     /**
      * Returns true if the name of the method specified and the number of arguments make it a javabean property getter.

@@ -53,11 +53,14 @@ import org.grails.io.support.SpringIOUtils;
 public class CorePluginFinder implements ParentApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(CorePluginFinder.class);
+
     public static final String CORE_PLUGIN_PATTERN = "META-INF/grails-plugin.xml";
 
     private final Set<Class<?>> foundPluginClasses = new HashSet<Class<?>>();
+
     @SuppressWarnings("unused")
     private final GrailsApplication application;
+
     @SuppressWarnings("rawtypes")
     private final Map<Class, BinaryGrailsPluginDescriptor> binaryDescriptors = new HashMap<Class, BinaryGrailsPluginDescriptor>();
 
@@ -101,8 +104,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         return resourceList.toArray(new Resource[resourceList.size()]);
     }
 
-
-
     @SuppressWarnings("rawtypes")
     private void loadCorePluginsFromResources(Resource[] resources) throws IOException {
         try {
@@ -139,7 +140,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         }
     }
 
-
     private Class<?> attemptCorePluginClassLoad(String pluginClassName) {
         try {
             final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -155,7 +155,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         return null;
     }
 
-
     private void addPlugin(Class<?> plugin) {
         foundPluginClasses.add(plugin);
     }
@@ -168,10 +167,13 @@ public class CorePluginFinder implements ParentApplicationContextAware {
     }
 
     class PluginHandler extends DefaultHandler {
+
         PluginParseState state = PluginParseState.PARSING;
 
         List<String> pluginTypes = new ArrayList<>();
+
         List<String> pluginClasses = new ArrayList<>();
+
         private StringBuilder buff = new StringBuilder();
 
         @Override
@@ -210,5 +212,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             }
             state = PluginParseState.PARSING;
         }
+
     }
+
 }

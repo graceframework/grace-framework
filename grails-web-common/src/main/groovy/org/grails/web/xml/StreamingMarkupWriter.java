@@ -43,4 +43,5 @@ public class StreamingMarkupWriter extends groovy.xml.streamingmarkupsupport.Str
             super.write(i);
         }
     }
+
 }

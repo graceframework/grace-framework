@@ -255,12 +255,12 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
         performInjection(source, null, classNode);
     }
 
-
     public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         performInjectionOnAnnotatedEntity(classNode);
     }
 
     public String[] getArtefactTypes() {
-        return new String[] {DomainClassArtefactHandler.TYPE};
+        return new String[] { DomainClassArtefactHandler.TYPE };
     }
+
 }

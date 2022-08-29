@@ -34,6 +34,7 @@ import org.grails.core.artefact.ControllerArtefactHandler;
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransformation {
+
     @Override
     protected String resolveArtefactType(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode) {
         return ControllerArtefactHandler.TYPE;
@@ -43,5 +44,6 @@ public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransfo
     protected Class getAnnotationTypeClass() {
         return Controller.class;
     }
+
 }
 

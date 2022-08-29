@@ -36,4 +36,5 @@ public interface BindingHelper<T> {
      * @return The value which should be bound to propertyName
      */
     T getPropertyValue(Object obj, String propertyName, DataBindingSource source);
+
 }

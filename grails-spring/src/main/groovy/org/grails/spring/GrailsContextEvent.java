@@ -40,4 +40,5 @@ public class GrailsContextEvent extends ApplicationEvent {
     public int getEventType() {
         return eventType;
     }
+
 }

@@ -29,7 +29,7 @@ import groovy.lang.GroovyObjectSupport;
  * @author Graeme Rocher
  * @since 1.2
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ClosureToMapPopulator extends GroovyObjectSupport {
 
     private Map map;
@@ -74,4 +74,5 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
         }
         return null;
     }
+
 }

@@ -23,5 +23,7 @@ import org.codehaus.groovy.control.SourceUnit;
  * @author Jeff Brown
  */
 public interface ASTDatabindingHelper {
+
     void injectDatabindingCode(SourceUnit source, GeneratorContext context, ClassNode classNode);
+
 }

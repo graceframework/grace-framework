@@ -53,13 +53,21 @@ import org.springframework.util.Assert;
 public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfiguration {
 
     private static final Log LOG = LogFactory.getLog(DefaultRuntimeSpringConfiguration.class);
+
     protected GenericApplicationContext context;
+
     private Map<String, BeanConfiguration> beanConfigs = new HashMap<String, BeanConfiguration>();
+
     private Map<String, BeanDefinition> beanDefinitions = new HashMap<String, BeanDefinition>();
+
     private Set<String> beanNames = new LinkedHashSet<String>();
+
     protected ApplicationContext parent;
+
     protected ClassLoader classLoader;
+
     protected Map<String, List<String>> aliases = new HashMap<String, List<String>>();
+
     protected ListableBeanFactory beanFactory;
 
     /**
@@ -385,4 +393,5 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
     public void setBeanFactory(ListableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
+
 }

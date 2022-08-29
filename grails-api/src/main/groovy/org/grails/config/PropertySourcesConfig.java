@@ -40,8 +40,8 @@ import grails.util.GrailsStringUtils;
 public class PropertySourcesConfig extends NavigableMapConfig {
 
     protected PropertySources propertySources;
-    protected PropertySourcesPropertyResolver propertySourcesPropertyResolver;
 
+    protected PropertySourcesPropertyResolver propertySourcesPropertyResolver;
 
     public PropertySourcesConfig(PropertySources propertySources) {
         this.propertySources = propertySources;
@@ -72,6 +72,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
         this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(propertySources);
         initializeFromPropertySources(propertySources);
     }
+
     public PropertySources getPropertySources() {
         return propertySources;
     }
@@ -170,6 +171,5 @@ public class PropertySourcesConfig extends NavigableMapConfig {
     public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
         return propertySourcesPropertyResolver.resolveRequiredPlaceholders(text);
     }
-
 
 }

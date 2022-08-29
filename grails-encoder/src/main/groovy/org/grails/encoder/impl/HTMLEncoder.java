@@ -27,13 +27,15 @@ import org.grails.encoder.DefaultCodecIdentifier;
  * @since 2.3
  */
 public class HTMLEncoder extends BasicXMLEncoder {
+
     public static final CodecIdentifier HTML_CODEC_IDENTIFIER = new DefaultCodecIdentifier("HTML");
 
     public HTMLEncoder() {
         super(HTML_CODEC_IDENTIFIER);
     }
-    
+
     protected Object doEncode(Object o) {
         return doCharReplacementEncoding(o);
-    }    
+    }
+
 }

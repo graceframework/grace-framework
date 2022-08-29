@@ -39,6 +39,7 @@ import org.grails.web.i18n.ParamsAwareLocaleChangeInterceptor;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 8)
 public class GrailsI18nPluginConfiguration {
+
     private final WebProperties webProperties;
 
     public GrailsI18nPluginConfiguration(WebProperties webProperties) {
@@ -66,4 +67,5 @@ public class GrailsI18nPluginConfiguration {
         }
         return new SessionLocaleResolver();
     }
+
 }

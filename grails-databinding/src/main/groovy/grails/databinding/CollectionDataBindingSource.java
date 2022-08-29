@@ -22,5 +22,7 @@ import java.util.List;
  * @since 3.0
  */
 public interface CollectionDataBindingSource {
+
     List<DataBindingSource> getDataBindingSources();
+
 }

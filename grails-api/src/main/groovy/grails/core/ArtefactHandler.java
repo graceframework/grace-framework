@@ -44,11 +44,13 @@ public interface ArtefactHandler {
      * @return The aretfact type, as a String
      */
     String getType();
+
     /**
      * @param classNode The ClassNode instance
      * @return True if the given ClassNode instance is an instance of the Artefact type
      */
     boolean isArtefact(ClassNode classNode);
+
     /**
      * <p>Called by the GrailsApplication whenever it needs to know if a given class
      * is considered to be the kind of artefact represented by this handler.</p>
@@ -88,4 +90,5 @@ public interface ArtefactHandler {
      * @return true if this handler manages the specified GrailsClass
      */
     boolean isArtefactGrailsClass(GrailsClass artefactGrailsClass);
+
 }

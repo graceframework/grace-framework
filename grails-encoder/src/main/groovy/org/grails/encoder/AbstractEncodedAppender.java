@@ -26,8 +26,9 @@ import org.grails.charsequences.CharSequences;
  * @since 2.3
  */
 public abstract class AbstractEncodedAppender implements EncodedAppender {
+
     private boolean ignoreEncodingState;
-    
+
     /**
      * Append a portion of a char array to the buffer and attach the
      * encodingState information to it
@@ -224,4 +225,5 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
     public void setIgnoreEncodingState(boolean ignoreEncodingState) {
         this.ignoreEncodingState = ignoreEncodingState;
     }
+
 }

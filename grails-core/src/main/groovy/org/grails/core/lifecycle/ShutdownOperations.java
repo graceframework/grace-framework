@@ -30,9 +30,11 @@ import grails.util.Holders;
  * @since 2.0
  */
 public class ShutdownOperations {
+
     private static final Log LOG = LogFactory.getLog(ShutdownOperations.class);
 
     private static final Collection<Runnable> shutdownOperations = new LinkedHashSet<>();
+
     private static final Collection<Runnable> preservedShutdownOperations = new LinkedHashSet<>();
 
     public static final Runnable DEFAULT_SHUTDOWN_OPERATION = Holders::reset;
@@ -90,4 +92,5 @@ public class ShutdownOperations {
         // default operations
         addOperation(DEFAULT_SHUTDOWN_OPERATION, true);
     }
+
 }

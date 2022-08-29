@@ -44,14 +44,23 @@ public class StreamByteBuffer {
     private static final int DEFAULT_CHUNK_SIZE = 8192;
 
     private LinkedList<StreamByteBufferChunk> chunks = new LinkedList<StreamByteBufferChunk>();
+
     private StreamByteBufferChunk currentWriteChunk;
+
     private StreamByteBufferChunk currentReadChunk = null;
+
     private int chunkSize;
+
     private StreamByteBufferOutputStream output;
+
     private StreamByteBufferInputStream input;
+
     private int totalBytesUnreadInList = 0;
+
     private int totalBytesUnreadInIterator = 0;
+
     private ReadMode readMode;
+
     private Iterator<StreamByteBufferChunk> readIterator;
 
     public enum ReadMode {
@@ -234,9 +243,13 @@ public class StreamByteBuffer {
     }
 
     class StreamByteBufferChunk {
+
         private int pointer = 0;
+
         private byte[] buffer;
+
         private int size;
+
         private int used = 0;
 
         public StreamByteBufferChunk(int size) {
@@ -309,9 +322,11 @@ public class StreamByteBuffer {
         public int spaceLeft() {
             return size - used;
         }
+
     }
 
     class StreamByteBufferOutputStream extends OutputStream {
+
         private boolean closed = false;
 
         @Override
@@ -358,9 +373,11 @@ public class StreamByteBuffer {
         public StreamByteBuffer getBuffer() {
             return StreamByteBuffer.this;
         }
+
     }
 
     class StreamByteBufferInputStream extends InputStream {
+
         @Override
         public int read() throws IOException {
             prepareRead();
@@ -424,6 +441,7 @@ public class StreamByteBuffer {
         public StreamByteBuffer getBuffer() {
             return StreamByteBuffer.this;
         }
+
     }
 
     public void clear() {
@@ -434,4 +452,5 @@ public class StreamByteBuffer {
         currentWriteChunk = new StreamByteBufferChunk(chunkSize);
         readIterator = null;
     }
+
 }

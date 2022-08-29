@@ -38,4 +38,5 @@ public interface EntityProxyHandler extends ProxyHandler {
      * @return The class
      */
     Class<?> getProxiedClass(Object o);
+
 }

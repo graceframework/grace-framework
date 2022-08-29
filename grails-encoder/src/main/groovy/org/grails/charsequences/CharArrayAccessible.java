@@ -41,9 +41,9 @@ public interface CharArrayAccessible {
      * @param      srcEnd     stop copying at this offset.
      * @param      dst        the array to copy the data into.
      * @param      dstBegin   offset into <code>dst</code>.
-     * @throws     NullPointerException if <code>dst</code> is
+     * @throws NullPointerException if <code>dst</code> is
      *             <code>null</code>.
-     * @throws     IndexOutOfBoundsException  if any of the following is true:
+     * @throws IndexOutOfBoundsException  if any of the following is true:
      *             <ul>
      *             <li><code>srcBegin</code> is negative
      *             <li><code>dstBegin</code> is negative
@@ -56,4 +56,5 @@ public interface CharArrayAccessible {
      *             </ul>
      */
     void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin);
+
 }

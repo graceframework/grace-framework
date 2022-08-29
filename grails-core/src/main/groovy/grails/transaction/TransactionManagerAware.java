@@ -32,4 +32,5 @@ public interface TransactionManagerAware extends Aware {
      */
     @Autowired
     void setTransactionManager(PlatformTransactionManager transactionManager);
+
 }

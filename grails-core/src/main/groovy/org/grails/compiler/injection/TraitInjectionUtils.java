@@ -116,11 +116,11 @@ public class TraitInjectionUtils {
             return Collections.emptyList();
         }
     }
-    
-    public static void processTraitsForNode(final SourceUnit sourceUnit, 
-                                            final ClassNode cNode,
-                                            final String artefactType, 
-                                            final CompilationUnit compilationUnit) {
+
+    public static void processTraitsForNode(final SourceUnit sourceUnit,
+            final ClassNode cNode,
+            final String artefactType,
+            final CompilationUnit compilationUnit) {
         final List<TraitInjector> traitInjectors = getTraitInjectors();
         final List<TraitInjector> injectorsToUse = new ArrayList<TraitInjector>();
         for (final TraitInjector injector : traitInjectors) {
@@ -153,4 +153,5 @@ public class TraitInjectionUtils {
             throw e;
         }
     }
+
 }

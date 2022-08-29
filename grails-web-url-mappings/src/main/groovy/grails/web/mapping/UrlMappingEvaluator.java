@@ -58,4 +58,5 @@ public interface UrlMappingEvaluator {
      */
     @SuppressWarnings("rawtypes")
     List<UrlMapping> evaluateMappings(Closure closure);
+
 }

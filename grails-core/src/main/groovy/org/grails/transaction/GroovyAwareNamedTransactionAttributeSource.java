@@ -31,6 +31,7 @@ import grails.util.CollectionUtils;
 public class GroovyAwareNamedTransactionAttributeSource extends NameMatchTransactionAttributeSource {
 
     private static final long serialVersionUID = 3519687998898725875L;
+
     private static final Set<String> NONTRANSACTIONAL_GROOVY_METHODS = CollectionUtils.newSet(
             "invokeMethod",
             "getMetaClass",
@@ -57,4 +58,5 @@ public class GroovyAwareNamedTransactionAttributeSource extends NameMatchTransac
     public void setTransactionalAttributes(Properties properties) {
         super.setProperties(properties);
     }
+
 }
