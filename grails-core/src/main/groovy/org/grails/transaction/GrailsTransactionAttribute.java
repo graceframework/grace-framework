@@ -113,7 +113,7 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
     }
 
     public boolean isInheritRollbackOnly() {
-        return inheritRollbackOnly;
+        return this.inheritRollbackOnly;
     }
 
     public void setInheritRollbackOnly(boolean inheritRollbackOnly) {

@@ -44,7 +44,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     private Map<String, Object> params = Collections.emptyMap();
 
     public Map<String, Object> getParams() {
-        return params;
+        return this.params;
     }
 
     public void setParams(final Map newParams) {
@@ -92,7 +92,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
             encoding = "UTF-8";
         }
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
+        for (Map.Entry<String, Object> entry : this.params.entrySet()) {
             String name = entry.getKey();
             Object param = entry.getValue();
             if (param instanceof Closure) {

@@ -31,13 +31,13 @@ public class FastStringWriter extends GrailsPrintWriter {
 
     public FastStringWriter() {
         super(null);
-        streamBuffer = new StreamCharBuffer();
+        this.streamBuffer = new StreamCharBuffer();
         initOut();
     }
 
     public FastStringWriter(int initialChunkSize) {
         super(null);
-        streamBuffer = new StreamCharBuffer(initialChunkSize);
+        this.streamBuffer = new StreamCharBuffer(initialChunkSize);
         initOut();
     }
 
@@ -47,11 +47,11 @@ public class FastStringWriter extends GrailsPrintWriter {
     }
 
     protected void initOut() {
-        setOut(streamBuffer.getWriter());
+        setOut(this.streamBuffer.getWriter());
     }
 
     public StreamCharBuffer getBuffer() {
-        return streamBuffer;
+        return this.streamBuffer;
     }
 
     @Override
@@ -60,11 +60,11 @@ public class FastStringWriter extends GrailsPrintWriter {
     }
 
     public String getValue() {
-        return streamBuffer.toString();
+        return this.streamBuffer.toString();
     }
 
     public Reader getReader() {
-        return streamBuffer.getReader();
+        return this.streamBuffer.getReader();
     }
 
 }

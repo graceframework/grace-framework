@@ -41,19 +41,19 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
     @Override
     public String[] getPropertyNames() {
         initialize();
-        return propertyNames.toArray(new String[propertyNames.size()]);
+        return this.propertyNames.toArray(new String[this.propertyNames.size()]);
     }
 
     @Override
     public Object getProperty(String name) {
         initialize();
-        if (!propertyNames.contains(name)) {
+        if (!this.propertyNames.contains(name)) {
             return null;
         }
 
         Environment env = Environment.getCurrent();
         String key = "environments." + env.getName() + '.' + name;
-        for (PropertySource propertySource : source) {
+        for (PropertySource propertySource : this.source) {
             if (propertySource != this) {
                 Object value = propertySource.getProperty(key);
                 if (value != null) {
@@ -65,11 +65,11 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
     }
 
     private void initialize() {
-        if (propertyNames == null) {
-            propertyNames = new ArrayList<>();
+        if (this.propertyNames == null) {
+            this.propertyNames = new ArrayList<>();
             Environment env = Environment.getCurrent();
             String key = "environments." + env.getName();
-            for (PropertySource propertySource : source) {
+            for (PropertySource propertySource : this.source) {
 
                 if ((propertySource != this) &&
                         !propertySource.getName().contains("plugin") &&
@@ -78,7 +78,7 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
 
                     for (String propertyName : enumerablePropertySource.getPropertyNames()) {
                         if (propertyName.startsWith(key) && propertyName.length() > key.length()) {
-                            propertyNames.add(propertyName.substring(key.length() + 1));
+                            this.propertyNames.add(propertyName.substring(key.length() + 1));
                         }
                     }
                 }

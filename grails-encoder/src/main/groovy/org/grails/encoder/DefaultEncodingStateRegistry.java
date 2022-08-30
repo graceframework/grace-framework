@@ -50,10 +50,10 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
     }
 
     private Map<Long, WeakReference<CharSequence>> getEncodedCharSequencesForEncoder(Encoder encoder) {
-        Map<Long, WeakReference<CharSequence>> encodedCharSequences = encodedCharSequencesForEncoder.get(encoder);
+        Map<Long, WeakReference<CharSequence>> encodedCharSequences = this.encodedCharSequencesForEncoder.get(encoder);
         if (encodedCharSequences == null) {
             encodedCharSequences = new HashMap<>();
-            encodedCharSequencesForEncoder.put(encoder, encodedCharSequences);
+            this.encodedCharSequencesForEncoder.put(encoder, encodedCharSequences);
         }
         return encodedCharSequences;
     }
@@ -64,7 +64,7 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
     public EncodingState getEncodingStateFor(CharSequence string) {
         Long key = calculateKey(string);
         Set<Encoder> result = null;
-        for (Map.Entry<Encoder, Map<Long, WeakReference<CharSequence>>> entry : encodedCharSequencesForEncoder.entrySet()) {
+        for (Map.Entry<Encoder, Map<Long, WeakReference<CharSequence>>> entry : this.encodedCharSequencesForEncoder.entrySet()) {
             WeakReference<CharSequence> charSequenceReference = entry.getValue().get(key);
             if (charSequenceReference != null && string == charSequenceReference.get()) {
                 if (result == null) {

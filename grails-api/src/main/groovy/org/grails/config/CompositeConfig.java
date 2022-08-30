@@ -51,7 +51,7 @@ public class CompositeConfig implements Config {
      * @param config
      */
     public void addFirst(Config config) {
-        configs.addFirst(config);
+        this.configs.addFirst(config);
     }
 
     /**
@@ -60,14 +60,14 @@ public class CompositeConfig implements Config {
      * @param config
      */
     public void addLast(Config config) {
-        configs.addLast(config);
+        this.configs.addLast(config);
     }
 
     @Override
     @Deprecated
     public Map<String, Object> flatten() {
         Map<String, Object> flattened = new LinkedHashMap<String, Object>();
-        for (Config c : configs) {
+        for (Config c : this.configs) {
             flattened.putAll(c.flatten());
         }
         return flattened;
@@ -76,7 +76,7 @@ public class CompositeConfig implements Config {
     @Override
     public Properties toProperties() {
         Properties properties = new Properties();
-        for (Config c : configs) {
+        for (Config c : this.configs) {
             properties.putAll(c.toProperties());
         }
         return properties;
@@ -98,7 +98,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public Object getAt(Object key) {
-        for (Config c : configs) {
+        for (Config c : this.configs) {
             Object v = c.getAt(key);
             if (v != null) {
                 return v;
@@ -114,7 +114,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public Object navigate(String... path) {
-        for (Config c : configs) {
+        for (Config c : this.configs) {
             Object v = c.navigate(path);
             if (v != null) {
                 return v;
@@ -126,7 +126,7 @@ public class CompositeConfig implements Config {
     @Override
     public int size() {
         int size = 0;
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             size += config.size();
         }
         return size;
@@ -134,7 +134,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public boolean isEmpty() {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             if (!config.isEmpty()) {
                 return false;
             }
@@ -144,7 +144,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public boolean containsKey(Object key) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             if (config.containsKey(key)) {
                 return true;
             }
@@ -154,7 +154,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public boolean containsValue(Object value) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             if (config.containsValue(value)) {
                 return true;
             }
@@ -164,7 +164,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public Object get(Object key) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             Object v = config.get(key);
             if (v != null) {
                 return v;
@@ -201,7 +201,7 @@ public class CompositeConfig implements Config {
     @Override
     public Set<String> keySet() {
         Set<String> entries = new HashSet<String>();
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             entries.addAll(config.keySet());
         }
         return entries;
@@ -210,7 +210,7 @@ public class CompositeConfig implements Config {
     @Override
     public Collection<Object> values() {
         Collection<Object> values = new ArrayList<Object>();
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             values.addAll(config.values());
         }
         return values;
@@ -219,7 +219,7 @@ public class CompositeConfig implements Config {
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
         Set<Map.Entry<String, Object>> entries = new HashSet<Map.Entry<String, Object>>();
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             entries.addAll(config.entrySet());
         }
         return entries;
@@ -238,7 +238,7 @@ public class CompositeConfig implements Config {
 
     @Override
     public <T> T getProperty(String key, Class<T> targetType) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             T v = config.getProperty(key, targetType);
             if (v != null) {
                 return v;

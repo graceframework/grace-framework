@@ -56,16 +56,16 @@ public class DefaultUrlMappingData implements UrlMappingData {
 
         String configuredPattern = configureUrlPattern(urlPattern);
         this.urlPattern = configuredPattern;
-        tokens = tokenizeUrlPattern(configuredPattern);
+        this.tokens = tokenizeUrlPattern(configuredPattern);
         List<String> urls = new ArrayList<String>();
-        parseUrls(urls, tokens, optionalTokens);
+        parseUrls(urls, this.tokens, this.optionalTokens);
 
-        logicalUrls = urls.toArray(new String[urls.size()]);
+        this.logicalUrls = urls.toArray(new String[urls.size()]);
     }
 
     @Override
     public boolean hasOptionalExtension() {
-        return hasOptionalExtension;
+        return this.hasOptionalExtension;
     }
 
     private String[] tokenizeUrlPattern(String urlPattern) {
@@ -92,8 +92,8 @@ public class DefaultUrlMappingData implements UrlMappingData {
 
         if (tokens.length > 0) {
             String lastToken = tokens[tokens.length - 1];
-            hasOptionalExtension = lastToken.endsWith(optionalExtensionPattern);
-            if (hasOptionalExtension) {
+            this.hasOptionalExtension = lastToken.endsWith(optionalExtensionPattern);
+            if (this.hasOptionalExtension) {
                 int i = lastToken.indexOf(optionalExtensionPattern);
                 optionalExtension = lastToken.substring(i, lastToken.length());
                 tokens[tokens.length - 1] = lastToken.substring(0, i);
@@ -144,22 +144,22 @@ public class DefaultUrlMappingData implements UrlMappingData {
     }
 
     public String[] getTokens() {
-        return tokens;
+        return this.tokens;
     }
 
     public String[] getLogicalUrls() {
-        return logicalUrls;
+        return this.logicalUrls;
     }
 
     public String getUrlPattern() {
-        return urlPattern;
+        return this.urlPattern;
     }
 
     public boolean isOptional(int index) {
-        if (index >= optionalTokens.size()) {
+        if (index >= this.optionalTokens.size()) {
             return true;
         }
-        return optionalTokens.get(index).equals(Boolean.TRUE);
+        return this.optionalTokens.get(index).equals(Boolean.TRUE);
     }
 
     @Override

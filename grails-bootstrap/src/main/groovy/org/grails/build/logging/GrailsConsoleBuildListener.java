@@ -106,7 +106,7 @@ public class GrailsConsoleBuildListener implements BuildListener {
      * @see BuildEvent#getException()
      */
     public final void taskFinished(final BuildEvent finish) {
-        ui.indicateProgress();
+        this.ui.indicateProgress();
     }
 
     /** <p>When a message is sent to this logger, Ant calls this method.</p>

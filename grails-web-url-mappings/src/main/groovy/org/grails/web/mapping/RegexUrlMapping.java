@@ -140,16 +140,16 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         Assert.notNull(data, "Argument [data] cannot be null");
 
         String[] urls = data.getLogicalUrls();
-        urlData = data;
-        patterns = new Pattern[urls.length];
+        this.urlData = data;
+        this.patterns = new Pattern[urls.length];
 
         for (int i = 0; i < urls.length; i++) {
             String url = urls[i];
             Integer slashCount = org.springframework.util.StringUtils.countOccurrencesOf(url, "/");
-            List<Pattern> tokenCountPatterns = patternByTokenCount.get(slashCount);
+            List<Pattern> tokenCountPatterns = this.patternByTokenCount.get(slashCount);
             if (tokenCountPatterns == null) {
                 tokenCountPatterns = new ArrayList<>();
-                patternByTokenCount.put(slashCount, tokenCountPatterns);
+                this.patternByTokenCount.put(slashCount, tokenCountPatterns);
             }
 
             Pattern pattern = convertToRegex(url);
@@ -158,7 +158,6 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             }
             tokenCountPatterns.add(pattern);
             this.patterns[i] = pattern;
-
         }
 
         if (constraints != null) {
@@ -284,7 +283,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
      * @see grails.web.mapping.UrlMappingInfo
      */
     public UrlMappingInfo match(String uri) {
-        for (Pattern pattern : patterns) {
+        for (Pattern pattern : this.patterns) {
             Matcher m = pattern.matcher(uri);
             if (m.matches()) {
                 UrlMappingInfo urlInfo = createUrlMappingInfo(uri, m);
@@ -322,11 +321,11 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         StringBuilder uri = new StringBuilder(contextPath);
         Set usedParams = new HashSet();
 
-        String[] tokens = urlData.getTokens();
+        String[] tokens = this.urlData.getTokens();
         int paramIndex = 0;
         for (int i = 0; i < tokens.length; i++) {
             String token = tokens[i];
-            if (i == tokens.length - 1 && urlData.hasOptionalExtension()) {
+            if (i == tokens.length - 1 && this.urlData.hasOptionalExtension()) {
                 token += OPTIONAL_EXTENSION_WILDCARD;
             }
 
@@ -614,12 +613,12 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     }
 
     public UrlMappingData getUrlData() {
-        return urlData;
+        return this.urlData;
     }
 
     @SuppressWarnings("unchecked")
     private UrlMappingInfo createUrlMappingInfo(String uri, Matcher m) {
-        boolean hasOptionalExtension = urlData.hasOptionalExtension();
+        boolean hasOptionalExtension = this.urlData.hasOptionalExtension();
         Map params = new HashMap();
         Errors errors = new MapBindingResult(params, "urlMapping");
         int groupCount = m.groupCount();
@@ -702,14 +701,14 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
         DefaultUrlMappingInfo info;
         if (forwardURI != null && controllerName == null) {
-            info = new DefaultUrlMappingInfo(forwardURI, getHttpMethod(), urlData, grailsApplication);
+            info = new DefaultUrlMappingInfo(forwardURI, getHttpMethod(), this.urlData, grailsApplication);
         }
         else if (viewName != null && controllerName == null) {
-            info = new DefaultUrlMappingInfo(viewName, params, urlData, grailsApplication);
+            info = new DefaultUrlMappingInfo(viewName, params, this.urlData, grailsApplication);
         }
         else {
             info = new DefaultUrlMappingInfo(redirectInfo, controllerName, actionName, namespace, pluginName,
-                    getViewName(), getHttpMethod(), getVersion(), params, urlData, grailsApplication);
+                    getViewName(), getHttpMethod(), getVersion(), params, this.urlData, grailsApplication);
         }
 
         if (parseRequest) {
@@ -749,7 +748,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     }
 
     public String[] getLogicalMappings() {
-        return urlData.getLogicalUrls();
+        return this.urlData.getLogicalUrls();
     }
 
     /**
@@ -1110,7 +1109,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
     @Override
     public String toString() {
-        return urlData.getUrlPattern();
+        return this.urlData.getUrlPattern();
     }
 
 }

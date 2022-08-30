@@ -117,8 +117,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     public GrailsWebRequest(HttpServletRequest request, HttpServletResponse response, ServletContext servletContext) {
         super(request, response);
         try {
-            attributes = grailsApplicationAttributesConstructor.newInstance(servletContext);
-            this.applicationContext = attributes.getApplicationContext();
+            this.attributes = grailsApplicationAttributesConstructor.newInstance(servletContext);
+            this.applicationContext = this.attributes.getApplicationContext();
         }
         catch (Exception e) {
             ReflectionUtils.rethrowRuntimeException(e);
@@ -156,10 +156,10 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Map getParameterMap() {
-        if (params == null) {
+        if (this.params == null) {
             resetParams();
         }
-        return params;
+        return this.params;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return the out
      */
     public Writer getOut() {
-        Writer out = attributes.getOut(getCurrentRequest());
+        Writer out = this.attributes.getOut(getCurrentRequest());
         if (out == null) {
             try {
                 return getCurrentResponse().getWriter();
@@ -196,14 +196,14 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @param out the out to set
      */
     public void setOut(Writer out) {
-        attributes.setOut(getCurrentRequest(), out);
+        this.attributes.setOut(getCurrentRequest(), out);
     }
 
     /**
      * @return The ServletContext instance
      */
     public ServletContext getServletContext() {
-        return attributes.getServletContext();
+        return this.attributes.getServletContext();
     }
 
     /**
@@ -215,7 +215,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
         final HttpServletRequest request = getCurrentRequest();
         String appUri = (String) request.getAttribute(GrailsApplicationAttributes.APP_URI_ATTRIBUTE);
         if (appUri == null) {
-            appUri = urlHelper.getContextPath(request);
+            appUri = this.urlHelper.getContextPath(request);
         }
         return appUri;
     }
@@ -224,15 +224,15 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return The FlashScope instance for the current request
      */
     public FlashScope getFlashScope() {
-        return attributes.getFlashScope(getRequest());
+        return this.attributes.getFlashScope(getRequest());
     }
 
     /**
      * @return The currently executing request
      */
     public HttpServletRequest getCurrentRequest() {
-        if (multipartRequest != null) {
-            return multipartRequest;
+        if (this.multipartRequest != null) {
+            return this.multipartRequest;
         }
         else {
             return getRequest();
@@ -240,8 +240,8 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     public HttpServletResponse getCurrentResponse() {
-        if (wrappedResponse != null) {
-            return wrappedResponse;
+        if (this.wrappedResponse != null) {
+            return this.wrappedResponse;
         }
         else {
             return getResponse();
@@ -249,7 +249,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     public HttpServletResponse getWrappedResponse() {
-        return wrappedResponse;
+        return this.wrappedResponse;
     }
 
     public void setWrappedResponse(HttpServletResponse wrappedResponse) {
@@ -260,27 +260,27 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return The Grails params object
      */
     public GrailsParameterMap getParams() {
-        if (params == null) {
+        if (this.params == null) {
             resetParams();
         }
-        return params;
+        return this.params;
     }
 
     /**
      * @return The Grails params object
      */
     public GrailsParameterMap getOriginalParams() {
-        if (originalParams == null) {
-            originalParams = new GrailsParameterMap(getCurrentRequest());
+        if (this.originalParams == null) {
+            this.originalParams = new GrailsParameterMap(getCurrentRequest());
         }
-        return originalParams;
+        return this.originalParams;
     }
 
     /**
      * Reset params by re-reading & initializing parameters from request
      */
     public void resetParams() {
-        params = (GrailsParameterMap) getOriginalParams().clone();
+        this.params = (GrailsParameterMap) getOriginalParams().clone();
     }
 
     @SuppressWarnings("rawtypes")
@@ -300,7 +300,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * Informs any parameter creation listeners.
      */
     public void informParameterCreationListeners() {
-        for (ParameterCreationListener parameterCreationListener : parameterCreationListeners) {
+        for (ParameterCreationListener parameterCreationListener : this.parameterCreationListeners) {
             parameterCreationListener.paramsCreated(getParams());
         }
     }
@@ -309,18 +309,18 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return The Grails session object
      */
     public GrailsHttpSession getSession() {
-        if (session == null) {
-            session = new GrailsHttpSession(getCurrentRequest());
+        if (this.session == null) {
+            this.session = new GrailsHttpSession(getCurrentRequest());
         }
 
-        return session;
+        return this.session;
     }
 
     /**
      * @return The GrailsApplicationAttributes instance
      */
     public GrailsApplicationAttributes getAttributes() {
-        return attributes;
+        return this.attributes;
     }
 
     public void setActionName(String actionName) {
@@ -388,7 +388,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     public boolean isRenderView() {
         final HttpServletRequest currentRequest = getCurrentRequest();
         HttpServletResponse currentResponse = getCurrentResponse();
-        return renderView &&
+        return this.renderView &&
                 !currentResponse.isCommitted() &&
                 currentResponse.getStatus() < 300 &&
                 currentRequest.getAttribute(REDIRECT_CALLED) == null;
@@ -428,7 +428,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     public void addParameterListener(ParameterCreationListener creationListener) {
-        parameterCreationListeners.add(creationListener);
+        this.parameterCreationListeners.add(creationListener);
     }
 
     /**
@@ -437,7 +437,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return The ApplicationContext
      */
     public ApplicationContext getApplicationContext() {
-        return applicationContext == null ? getAttributes().getApplicationContext() : applicationContext;
+        return this.applicationContext == null ? getAttributes().getApplicationContext() : this.applicationContext;
     }
 
     /**
@@ -487,7 +487,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     public String getBaseUrl() {
-        if (baseUrl == null) {
+        if (this.baseUrl == null) {
             HttpServletRequest request = getCurrentRequest();
             String scheme = request.getScheme();
             String forwardedScheme = request.getHeader("X-Forwarded-Proto");
@@ -504,16 +504,16 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
             if (contextPath != null) {
                 sb.append(contextPath);
             }
-            baseUrl = sb.toString();
+            this.baseUrl = sb.toString();
         }
-        return baseUrl;
+        return this.baseUrl;
     }
 
     public EncodingStateRegistry getEncodingStateRegistry() {
-        if (encodingStateRegistry == null) {
-            encodingStateRegistry = new DefaultEncodingStateRegistry();
+        if (this.encodingStateRegistry == null) {
+            this.encodingStateRegistry = new DefaultEncodingStateRegistry();
         }
-        return encodingStateRegistry;
+        return this.encodingStateRegistry;
     }
 
     private static final class DefaultEncodingStateRegistryLookup implements EncodingStateRegistryLookup {
@@ -533,7 +533,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return true if grails.views.filteringCodecForMimeType settings should be ignored for this request
      */
     public boolean isSkipFilteringCodec() {
-        return skipFilteringCodec;
+        return this.skipFilteringCodec;
     }
 
     public void setSkipFilteringCodec(boolean skipCodec) {
@@ -541,24 +541,25 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     public String getFilteringCodec() {
-        return filteringEncoder != null ? filteringEncoder.getCodecIdentifier().getCodecName() : null;
+        return this.filteringEncoder != null ? this.filteringEncoder.getCodecIdentifier().getCodecName() : null;
     }
 
     public void setFilteringCodec(String codecName) {
-        filteringEncoder = codecName != null ? CodecLookupHelper.lookupEncoder(attributes.getGrailsApplication(), codecName) : null;
+        this.filteringEncoder = codecName != null ? CodecLookupHelper.lookupEncoder(this.attributes.getGrailsApplication(), codecName) : null;
     }
 
     public Encoder lookupFilteringEncoder() {
-        if (filteringEncoder == null && applicationContext != null &&
-                applicationContext.containsBean(FilteringCodecsByContentTypeSettings.BEAN_NAME)) {
-            filteringEncoder = applicationContext.getBean(FilteringCodecsByContentTypeSettings.BEAN_NAME, FilteringCodecsByContentTypeSettings.class)
+        if (this.filteringEncoder == null && this.applicationContext != null &&
+                this.applicationContext.containsBean(FilteringCodecsByContentTypeSettings.BEAN_NAME)) {
+            this.filteringEncoder = this.applicationContext
+                    .getBean(FilteringCodecsByContentTypeSettings.BEAN_NAME, FilteringCodecsByContentTypeSettings.class)
                     .getEncoderForContentType(getResponse().getContentType());
         }
-        return filteringEncoder;
+        return this.filteringEncoder;
     }
 
     public Encoder getFilteringEncoder() {
-        return filteringEncoder;
+        return this.filteringEncoder;
     }
 
     public void setFilteringEncoder(Encoder filteringEncoder) {

@@ -96,25 +96,25 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
     private void updateMetaClassOfInstance(MetaClass oldMetaClass, Object instanceToUpdate) {
         IdentityWeakReference key = new IdentityWeakReference(instanceToUpdate);
         if (oldMetaClass != null) {
-            Object current = alteredInstances.get(key);
+            Object current = this.alteredInstances.get(key);
             if (current == null || current == NO_CUSTOM_METACLASS) {
-                alteredInstances.put(key, oldMetaClass);
+                this.alteredInstances.put(key, oldMetaClass);
             }
         }
         else {
-            alteredInstances.put(key, NO_CUSTOM_METACLASS);
+            this.alteredInstances.put(key, NO_CUSTOM_METACLASS);
         }
     }
 
     private void updateMetaClassOfClass(MetaClass oldMetaClass, Class classToUpdate) {
         if (oldMetaClass != null && !(oldMetaClass.getClass().getName().equals("groovy.mock.interceptor.MockProxyMetaClass"))) {
-            Object current = alteredClasses.get(classToUpdate);
+            Object current = this.alteredClasses.get(classToUpdate);
             if (current == null) {
-                alteredClasses.put(classToUpdate, oldMetaClass);
+                this.alteredClasses.put(classToUpdate, oldMetaClass);
             }
         }
         else {
-            alteredClasses.put(classToUpdate, NO_CUSTOM_METACLASS);
+            this.alteredClasses.put(classToUpdate, NO_CUSTOM_METACLASS);
         }
     }
 
@@ -131,24 +131,24 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
     }
 
     private void cleanMetaClassOfInstance(MetaClassRegistryImpl registry) {
-        List<IdentityWeakReference> keys = new ArrayList<IdentityWeakReference>(alteredInstances.keySet());
+        List<IdentityWeakReference> keys = new ArrayList<IdentityWeakReference>(this.alteredInstances.keySet());
         for (IdentityWeakReference key : keys) {
             Object instance = key.get();
             if (instance != null) {
-                Object alteredMetaClass = alteredInstances.get(key);
+                Object alteredMetaClass = this.alteredInstances.get(key);
                 if (alteredMetaClass == NO_CUSTOM_METACLASS) {
                     alteredMetaClass = null;
                 }
                 registry.setMetaClass(instance, (MetaClass) alteredMetaClass);
             }
         }
-        alteredInstances.clear();
+        this.alteredInstances.clear();
     }
 
     private void cleanMetaClassOfClass(MetaClassRegistryImpl registry) {
-        Set<Class> classes = new HashSet<Class>(alteredClasses.keySet());
+        Set<Class> classes = new HashSet<Class>(this.alteredClasses.keySet());
         for (Class aClass : classes) {
-            Object alteredMetaClass = alteredClasses.get(aClass);
+            Object alteredMetaClass = this.alteredClasses.get(aClass);
             if (alteredMetaClass == NO_CUSTOM_METACLASS) {
                 registry.removeMetaClass(aClass);
             }
@@ -156,7 +156,7 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
                 registry.setMetaClass(aClass, (MetaClass) alteredMetaClass);
             }
         }
-        alteredClasses.clear();
+        this.alteredClasses.clear();
     }
 
     private static final class IdentityWeakReference extends WeakReference<Object> {
@@ -165,12 +165,12 @@ public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventLis
 
         public IdentityWeakReference(Object referent) {
             super(referent);
-            hash = System.identityHashCode(referent);
+            this.hash = System.identityHashCode(referent);
         }
 
         @Override
         public int hashCode() {
-            return hash;
+            return this.hash;
         }
 
         @Override

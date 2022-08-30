@@ -39,7 +39,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * @see java.lang.Thread#getContextClassLoader()
      */
     public DefaultResourceLoader() {
-        classLoader = getDefaultClassLoader();
+        this.classLoader = getDefaultClassLoader();
     }
 
     public static ClassLoader getDefaultClassLoader() {
@@ -80,7 +80,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * Return the ClassLoader to load class path resources with.
      */
     public ClassLoader getClassLoader() {
-        return classLoader == null ? getDefaultClassLoader() : classLoader;
+        return this.classLoader == null ? getDefaultClassLoader() : this.classLoader;
     }
 
     public Resource getResource(String location) {

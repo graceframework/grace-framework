@@ -39,7 +39,7 @@ public class BeanCreationProfilingPostProcessor implements InstantiationAwareBea
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-        stopWatch.start("Create Bean: " + beanName);
+        this.stopWatch.start("Create Bean: " + beanName);
         return null;
     }
 
@@ -61,15 +61,15 @@ public class BeanCreationProfilingPostProcessor implements InstantiationAwareBea
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        stopWatch.stop();
+        this.stopWatch.stop();
         return bean;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        stopWatch.complete();
+        this.stopWatch.complete();
         if (LOG.isDebugEnabled()) {
-            LOG.debug(stopWatch.prettyPrint());
+            LOG.debug(this.stopWatch.prettyPrint());
         }
     }
 

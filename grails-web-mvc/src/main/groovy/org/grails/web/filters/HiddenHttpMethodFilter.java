@@ -69,7 +69,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
     }
 
     protected String getHttpMethodOverride(HttpServletRequest request) {
-        String httpMethod = request.getParameter(methodParam);
+        String httpMethod = request.getParameter(this.methodParam);
 
         if (httpMethod == null) {
             httpMethod = request.getHeader(HEADER_X_HTTP_METHOD_OVERRIDE);
@@ -92,7 +92,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
 
         @Override
         public String getMethod() {
-            return method;
+            return this.method;
         }
 
     }

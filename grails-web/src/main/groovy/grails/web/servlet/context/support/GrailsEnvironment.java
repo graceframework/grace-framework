@@ -51,13 +51,14 @@ public class GrailsEnvironment extends StandardServletEnvironment {
     private class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
 
         public GrailsConfigPropertySource() {
-            super(StringUtils.hasText(grailsApplication.getMetadata().getApplicationName()) ?
-                    grailsApplication.getMetadata().getApplicationName() : "grailsApplication", grailsApplication);
+            super(StringUtils.hasText(GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName())
+                    ? GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName()
+                    : "grailsApplication", GrailsEnvironment.this.grailsApplication);
         }
 
         @Override
         public Object getProperty(String key) {
-            return grailsApplication.getConfig().getProperty(key, Object.class);
+            return GrailsEnvironment.this.grailsApplication.getConfig().getProperty(key, Object.class);
         }
 
     }

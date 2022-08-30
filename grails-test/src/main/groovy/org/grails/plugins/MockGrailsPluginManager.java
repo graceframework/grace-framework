@@ -73,8 +73,8 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public void checkForChanges() {
-        Assert.isTrue(checkForChangesExpected);
-        checkForChangesExpected = false;
+        Assert.isTrue(this.checkForChangesExpected);
+        this.checkForChangesExpected = false;
     }
 
     @Override
@@ -100,12 +100,12 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public void expectCheckForChanges() {
-        Assert.state(!checkForChangesExpected);
-        checkForChangesExpected = true;
+        Assert.state(!this.checkForChangesExpected);
+        this.checkForChangesExpected = true;
     }
 
     public void verify() {
-        Assert.state(!checkForChangesExpected);
+        Assert.state(!this.checkForChangesExpected);
     }
 
 }

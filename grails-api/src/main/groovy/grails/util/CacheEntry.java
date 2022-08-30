@@ -46,9 +46,9 @@ public class CacheEntry<V> {
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    private final Lock readLock = lock.readLock();
+    private final Lock readLock = this.lock.readLock();
 
-    private final Lock writeLock = lock.writeLock();
+    private final Lock writeLock = this.lock.writeLock();
 
     private volatile boolean initialized = false;
 
@@ -142,9 +142,9 @@ public class CacheEntry<V> {
         if (!isInitialized() || hasExpired(timeout, cacheRequestObject)) {
             boolean lockAcquired = false;
             try {
-                long beforeLockingCreatedMillis = createdMillis;
+                long beforeLockingCreatedMillis = this.createdMillis;
                 if (returnExpiredWhileUpdating) {
-                    if (!writeLock.tryLock()) {
+                    if (!this.writeLock.tryLock()) {
                         if (isInitialized()) {
                             return getValueWhileUpdating(cacheRequestObject);
                         }
@@ -152,13 +152,13 @@ public class CacheEntry<V> {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("Locking cache for update");
                             }
-                            writeLock.lock();
+                            this.writeLock.lock();
                         }
                     }
                 }
                 else {
                     LOG.debug("Locking cache for update");
-                    writeLock.lock();
+                    this.writeLock.lock();
                 }
 
                 lockAcquired = true;
@@ -186,7 +186,7 @@ public class CacheEntry<V> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Unlocking cache for update");
                     }
-                    writeLock.unlock();
+                    this.writeLock.unlock();
                 }
             }
         }
@@ -196,7 +196,7 @@ public class CacheEntry<V> {
     }
 
     protected V getValueWhileUpdating(Object cacheRequestObject) {
-        return valueRef.get();
+        return this.valueRef.get();
     }
 
     protected V updateValue(V oldValue, Callable<V> updater, Object cacheRequestObject) throws Exception {
@@ -205,50 +205,50 @@ public class CacheEntry<V> {
 
     public V getValue() {
         try {
-            readLock.lock();
-            return valueRef.get();
+            this.readLock.lock();
+            return this.valueRef.get();
         }
         finally {
-            readLock.unlock();
+            this.readLock.unlock();
         }
     }
 
     public void setValue(V val) {
         try {
-            writeLock.lock();
-            valueRef.set(val);
+            this.writeLock.lock();
+            this.valueRef.set(val);
             setInitialized(true);
             resetTimestamp(true);
         }
         finally {
-            writeLock.unlock();
+            this.writeLock.unlock();
         }
     }
 
     protected boolean hasExpired(long timeout, Object cacheRequestObject) {
-        return timeout >= 0 && System.currentTimeMillis() - timeout > createdMillis;
+        return timeout >= 0 && System.currentTimeMillis() - timeout > this.createdMillis;
     }
 
     protected boolean shouldUpdate(long beforeLockingCreatedMillis, Object cacheRequestObject) {
-        return beforeLockingCreatedMillis == createdMillis || createdMillis == 0L;
+        return beforeLockingCreatedMillis == this.createdMillis || this.createdMillis == 0L;
     }
 
     protected void resetTimestamp(boolean updated) {
         if (updated) {
-            createdMillis = System.currentTimeMillis();
+            this.createdMillis = System.currentTimeMillis();
         }
     }
 
     public long getCreatedMillis() {
-        return createdMillis;
+        return this.createdMillis;
     }
 
     public void expire() {
-        createdMillis = 0L;
+        this.createdMillis = 0L;
     }
 
     public boolean isInitialized() {
-        return initialized;
+        return this.initialized;
     }
 
     public void setInitialized(boolean initialized) {

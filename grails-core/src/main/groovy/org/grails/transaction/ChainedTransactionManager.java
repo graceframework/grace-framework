@@ -94,22 +94,22 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
      * @see org.springframework.transaction.PlatformTransactionManager#getTransaction(org.springframework.transaction.TransactionDefinition)
      */
     public MultiTransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException {
-        MultiTransactionStatus mts = new MultiTransactionStatus(transactionManagers.get(0));
+        MultiTransactionStatus mts = new MultiTransactionStatus(this.transactionManagers.get(0));
 
-        if (!synchronizationManager.isSynchronizationActive() && canCreateTransaction(definition)) {
-            synchronizationManager.initSynchronization();
+        if (!this.synchronizationManager.isSynchronizationActive() && canCreateTransaction(definition)) {
+            this.synchronizationManager.initSynchronization();
             mts.setNewSynchronization();
         }
 
         try {
-            for (PlatformTransactionManager transactionManager : transactionManagers) {
+            for (PlatformTransactionManager transactionManager : this.transactionManagers) {
                 mts.registerTransactionManager(definition, transactionManager);
             }
         }
         catch (Exception ex) {
             Map<PlatformTransactionManager, TransactionStatus> transactionStatuses = mts.getTransactionStatuses();
 
-            for (PlatformTransactionManager transactionManager : transactionManagers) {
+            for (PlatformTransactionManager transactionManager : this.transactionManagers) {
                 try {
                     if (transactionStatuses.get(transactionManager) != null) {
                         transactionManager.rollback(transactionStatuses.get(transactionManager));
@@ -121,7 +121,7 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
             }
 
             if (mts.isNewSynchronization()) {
-                synchronizationManager.clearSynchronization();
+                this.synchronizationManager.clearSynchronization();
             }
 
             throw new CannotCreateTransactionException(ex.getMessage(), ex);
@@ -147,7 +147,7 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
         Exception commitException = null;
         PlatformTransactionManager commitExceptionTransactionManager = null;
 
-        for (PlatformTransactionManager transactionManager : reverse(transactionManagers)) {
+        for (PlatformTransactionManager transactionManager : reverse(this.transactionManagers)) {
             if (commit) {
                 try {
                     multiTransactionStatus.commit(transactionManager);
@@ -170,7 +170,7 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
         }
 
         if (multiTransactionStatus.isNewSynchronization()) {
-            synchronizationManager.clearSynchronization();
+            this.synchronizationManager.clearSynchronization();
         }
 
         if (commitException != null) {
@@ -191,7 +191,7 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
 
         MultiTransactionStatus multiTransactionStatus = (MultiTransactionStatus) status;
 
-        for (PlatformTransactionManager transactionManager : reverse(transactionManagers)) {
+        for (PlatformTransactionManager transactionManager : reverse(this.transactionManagers)) {
             try {
                 multiTransactionStatus.rollback(transactionManager);
             }
@@ -207,7 +207,7 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
         }
 
         if (multiTransactionStatus.isNewSynchronization()) {
-            synchronizationManager.clearSynchronization();
+            this.synchronizationManager.clearSynchronization();
         }
 
         if (rollbackException != null) {
@@ -223,15 +223,15 @@ public class ChainedTransactionManager implements PlatformTransactionManager {
     }
 
     private PlatformTransactionManager getLastTransactionManager() {
-        return transactionManagers.get(lastTransactionManagerIndex());
+        return this.transactionManagers.get(lastTransactionManagerIndex());
     }
 
     private int lastTransactionManagerIndex() {
-        return transactionManagers.size() - 1;
+        return this.transactionManagers.size() - 1;
     }
 
     public List<PlatformTransactionManager> getTransactionManagers() {
-        return transactionManagers;
+        return this.transactionManagers;
     }
 
 }

@@ -36,16 +36,16 @@ public class ValidationException extends GrailsException {
 
     public ValidationException(String msg, Errors e) {
         super(msg);
-        errors = e;
-        fullMessage = formatErrors(e, msg);
+        this.errors = e;
+        this.fullMessage = formatErrors(e, msg);
     }
 
     public Errors getErrors() {
-        return errors;
+        return this.errors;
     }
 
     public String getMessage() {
-        return fullMessage;
+        return this.fullMessage;
     }
 
     public static String formatErrors(Errors errors) {

@@ -49,33 +49,33 @@ public class BinaryGrailsPluginDescriptor {
      * @return The resource instance
      */
     public Resource getResource() {
-        return resource;
+        return this.resource;
     }
 
     /**
      * @return The class names provided by the plugin
      */
     public List<String> getProvidedlassNames() {
-        return providedlassNames;
+        return this.providedlassNames;
     }
 
     /**
      * @return The parsed descriptor
      */
     public GPathResult getParsedXml() {
-        if (parsedXml == null) {
+        if (this.parsedXml == null) {
             InputStream inputStream;
             try {
-                inputStream = resource.getInputStream();
+                inputStream = this.resource.getInputStream();
             }
             catch (IOException e) {
-                throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
+                throw new GrailsConfigurationException("Error parsing plugin descript: " + this.resource.getFilename(), e);
             }
             try {
-                parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
+                this.parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
             }
             catch (Throwable e) {
-                throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
+                throw new GrailsConfigurationException("Error parsing plugin descript: " + this.resource.getFilename(), e);
             }
             finally {
                 try {
@@ -86,7 +86,7 @@ public class BinaryGrailsPluginDescriptor {
                 }
             }
         }
-        return parsedXml;
+        return this.parsedXml;
     }
 
 }

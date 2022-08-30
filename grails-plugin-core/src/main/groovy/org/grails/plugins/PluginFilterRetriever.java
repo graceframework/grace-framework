@@ -36,12 +36,12 @@ public class PluginFilterRetriever {
     /**
      * Which plugins to include in the plugin manager
      */
-    String PLUGIN_INCLUDES = "grails.plugin.includes";
+    private static final String PLUGIN_INCLUDES = "grails.plugin.includes";
 
     /**
      * Which plugins to exclude from the plugin manager
      */
-    String PLUGIN_EXCLUDES = "grails.plugin.excludes";
+    private static final String PLUGIN_EXCLUDES = "grails.plugin.excludes";
 
     @SuppressWarnings("rawtypes")
     public PluginFilter getPluginFilter(Config config) {

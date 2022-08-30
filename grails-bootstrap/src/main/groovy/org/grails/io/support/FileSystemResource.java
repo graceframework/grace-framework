@@ -47,7 +47,7 @@ public class FileSystemResource implements Resource {
     public FileSystemResource(File file) {
         assertNotNull(file, "File must not be null");
         this.file = file;
-        path = GrailsResourceUtils.cleanPath(file.getPath());
+        this.path = GrailsResourceUtils.cleanPath(file.getPath());
     }
 
     /**
@@ -57,7 +57,7 @@ public class FileSystemResource implements Resource {
      */
     public FileSystemResource(String path) {
         assertNotNull(path, "Path must not be null");
-        file = new File(path);
+        this.file = new File(path);
         this.path = GrailsResourceUtils.cleanPath(path);
     }
 
@@ -65,7 +65,7 @@ public class FileSystemResource implements Resource {
      * Return the file path for this resource.
      */
     public final String getPath() {
-        return path;
+        return this.path;
     }
 
     /**
@@ -73,7 +73,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#exists()
      */
     public boolean exists() {
-        return file.exists();
+        return this.file.exists();
     }
 
     /**
@@ -83,7 +83,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#isDirectory()
      */
     public boolean isReadable() {
-        return file.canRead() && !file.isDirectory();
+        return this.file.canRead() && !this.file.isDirectory();
     }
 
     /**
@@ -91,7 +91,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.FileInputStream
      */
     public InputStream getInputStream() throws IOException {
-        return new FileInputStream(file);
+        return new FileInputStream(this.file);
     }
 
     /**
@@ -99,7 +99,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#toURI()
      */
     public URL getURL() throws IOException {
-        return file.toURI().toURL();
+        return this.file.toURI().toURL();
     }
 
     /**
@@ -107,25 +107,25 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#toURI()
      */
     public URI getURI() throws IOException {
-        return file.toURI();
+        return this.file.toURI();
     }
 
     /**
      * This implementation returns the underlying File reference.
      */
     public File getFile() {
-        return file;
+        return this.file;
     }
 
     /**
      * This implementation returns the underlying File's length.
      */
     public long contentLength() throws IOException {
-        return file.length();
+        return this.file.length();
     }
 
     public long lastModified() throws IOException {
-        return file.lastModified();
+        return this.file.lastModified();
     }
 
     /**
@@ -133,7 +133,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#getName()
      */
     public String getFilename() {
-        return file.getName();
+        return this.file.getName();
     }
 
     /**
@@ -142,7 +142,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#getAbsolutePath()
      */
     public String getDescription() {
-        return "file [" + file.getAbsolutePath() + "]";
+        return "file [" + this.file.getAbsolutePath() + "]";
     }
 
     /**
@@ -150,7 +150,7 @@ public class FileSystemResource implements Resource {
      * relative to the path of the underlying file of this resource descriptor.
      */
     public Resource createRelative(String relativePath) {
-        String pathToUse = GrailsResourceUtils.applyRelativePath(path, relativePath);
+        String pathToUse = GrailsResourceUtils.applyRelativePath(this.path, relativePath);
         return new FileSystemResource(pathToUse);
     }
 
@@ -163,7 +163,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.File#isDirectory()
      */
     public boolean isWritable() {
-        return file.canWrite() && !file.isDirectory();
+        return this.file.canWrite() && !this.file.isDirectory();
     }
 
     /**
@@ -171,7 +171,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.FileOutputStream
      */
     public OutputStream getOutputStream() throws IOException {
-        return new FileOutputStream(file);
+        return new FileOutputStream(this.file);
     }
 
     /**
@@ -180,7 +180,7 @@ public class FileSystemResource implements Resource {
     @Override
     public boolean equals(Object obj) {
         return (obj == this ||
-                (obj instanceof FileSystemResource && path.equals(((FileSystemResource) obj).path)));
+                (obj instanceof FileSystemResource && this.path.equals(((FileSystemResource) obj).path)));
     }
 
     /**
@@ -188,7 +188,7 @@ public class FileSystemResource implements Resource {
      */
     @Override
     public int hashCode() {
-        return path.hashCode();
+        return this.path.hashCode();
     }
 
     protected void assertNotNull(Object object, String message) {
@@ -199,7 +199,7 @@ public class FileSystemResource implements Resource {
 
     @Override
     public String toString() {
-        return file.toString();
+        return this.file.toString();
     }
 
 }

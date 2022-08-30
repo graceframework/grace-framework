@@ -38,48 +38,48 @@ public class SpringResource implements Resource {
     }
 
     public InputStream getInputStream() throws IOException {
-        return springResource.getInputStream();
+        return this.springResource.getInputStream();
     }
 
     public boolean exists() {
-        return springResource.exists();
+        return this.springResource.exists();
     }
 
     public boolean isReadable() {
-        return springResource.isReadable();
+        return this.springResource.isReadable();
     }
 
     public URL getURL() throws IOException {
-        return springResource.getURL();
+        return this.springResource.getURL();
     }
 
     public URI getURI() throws IOException {
-        return springResource.getURI();
+        return this.springResource.getURI();
     }
 
     public File getFile() throws IOException {
-        return springResource.getFile();
+        return this.springResource.getFile();
     }
 
     public long contentLength() throws IOException {
-        return springResource.contentLength();
+        return this.springResource.contentLength();
     }
 
     public long lastModified() throws IOException {
-        return springResource.lastModified();
+        return this.springResource.lastModified();
     }
 
     public String getFilename() {
-        return springResource.getFilename();
+        return this.springResource.getFilename();
     }
 
     public String getDescription() {
-        return springResource.getDescription();
+        return this.springResource.getDescription();
     }
 
     public Resource createRelative(String relativePath) {
         try {
-            return new SpringResource(springResource.createRelative(relativePath));
+            return new SpringResource(this.springResource.createRelative(relativePath));
         }
         catch (IOException e) {
             return null;

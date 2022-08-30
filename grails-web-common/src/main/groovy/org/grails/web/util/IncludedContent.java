@@ -56,7 +56,7 @@ public class IncludedContent implements Writable {
      * @return The redirect URL
      */
     public String getRedirectURL() {
-        return redirectURL;
+        return this.redirectURL;
     }
 
     /**
@@ -64,7 +64,7 @@ public class IncludedContent implements Writable {
      * @return The content type
      */
     public String getContentType() {
-        return contentType;
+        return this.contentType;
     }
 
     /**
@@ -72,40 +72,40 @@ public class IncludedContent implements Writable {
      * @return The content
      */
     public Object getContent() {
-        return content;
+        return this.content;
     }
 
     public Writer writeTo(Writer target) throws IOException {
-        if (content == null) {
+        if (this.content == null) {
             return target;
         }
 
-        if (content instanceof StreamCharBuffer) {
-            ((StreamCharBuffer) content).writeTo(target);
+        if (this.content instanceof StreamCharBuffer) {
+            ((StreamCharBuffer) this.content).writeTo(target);
         }
-        else if (content instanceof String) {
-            target.write((String) content);
+        else if (this.content instanceof String) {
+            target.write((String) this.content);
         }
         else {
-            target.write(String.valueOf(content));
+            target.write(String.valueOf(this.content));
         }
         return target;
     }
 
     public char[] getContentAsCharArray() {
-        if (content == null) {
+        if (this.content == null) {
             return new char[0];
         }
 
-        if (content instanceof StreamCharBuffer) {
-            return ((StreamCharBuffer) content).toCharArray();
+        if (this.content instanceof StreamCharBuffer) {
+            return ((StreamCharBuffer) this.content).toCharArray();
         }
 
-        if (content instanceof String) {
-            return ((String) content).toCharArray();
+        if (this.content instanceof String) {
+            return ((String) this.content).toCharArray();
         }
 
-        return String.valueOf(content).toCharArray();
+        return String.valueOf(this.content).toCharArray();
     }
 
 }

@@ -49,14 +49,14 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
      * @see CodecIdentifier#getCodecName()
      */
     public String getCodecName() {
-        return codecName;
+        return this.codecName;
     }
 
     /* (non-Javadoc)
      * @see CodecIdentifier#getCodecAliases()
      */
     public Set<String> getCodecAliases() {
-        return codecAliases;
+        return this.codecAliases;
     }
 
     /* (non-Javadoc)
@@ -66,8 +66,8 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((codecAliases == null) ? 0 : codecAliases.hashCode());
-        result = prime * result + ((codecName == null) ? 0 : codecName.hashCode());
+        result = prime * result + ((this.codecAliases == null) ? 0 : this.codecAliases.hashCode());
+        result = prime * result + ((this.codecName == null) ? 0 : this.codecName.hashCode());
         return result;
     }
 
@@ -86,20 +86,20 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
             return false;
         }
         DefaultCodecIdentifier other = (DefaultCodecIdentifier) obj;
-        if (codecAliases == null) {
+        if (this.codecAliases == null) {
             if (other.codecAliases != null) {
                 return false;
             }
         }
-        else if (!codecAliases.equals(other.codecAliases)) {
+        else if (!this.codecAliases.equals(other.codecAliases)) {
             return false;
         }
-        if (codecName == null) {
+        if (this.codecName == null) {
             if (other.codecName != null) {
                 return false;
             }
         }
-        else if (!codecName.equals(other.codecName)) {
+        else if (!this.codecName.equals(other.codecName)) {
             return false;
         }
         return true;
@@ -111,7 +111,7 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
      */
     @Override
     public String toString() {
-        return "DefaultCodecIdentifier [codecName=" + codecName + ", codecAliases=" + codecAliases + "]";
+        return "DefaultCodecIdentifier [codecName=" + this.codecName + ", codecAliases=" + this.codecAliases + "]";
     }
 
     /* (non-Javadoc)

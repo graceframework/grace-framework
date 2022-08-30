@@ -155,7 +155,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
     private CompilationUnit compilationUnit;
 
     public ControllerActionTransformer() {
-        converterEnabled = Boolean.parseBoolean(System.getProperty(CONVERT_CLOSURES_KEY));
+        this.converterEnabled = Boolean.parseBoolean(System.getProperty(CONVERT_CLOSURES_KEY));
     }
 
     public String[] getArtefactTypes() {
@@ -415,7 +415,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
             if (!property.isStatic() && initialExpression != null &&
                     initialExpression.getClass().equals(ClosureExpression.class)) {
                 closureAction = (ClosureExpression) initialExpression;
-                if (converterEnabled) {
+                if (this.converterEnabled) {
                     transformClosureToMethod(classNode, closureAction, property, source, context);
                 }
                 else {
@@ -765,7 +765,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                             doesModulePathIncludeSubstring(commandObjectModule,
                                     "grails-app" + File.separator + "controllers" + File.separator)) {
 
-                        TraitInjectionUtils.injectTrait(compilationUnit, source, commandObjectNode, Validateable.class);
+                        TraitInjectionUtils.injectTrait(this.compilationUnit, source, commandObjectNode, Validateable.class);
 
                         List<ConstructorNode> declaredConstructors = commandObjectNode.getDeclaredConstructors();
                         List<Statement> objectInitializerStatements = commandObjectNode.getObjectInitializerStatements();

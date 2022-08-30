@@ -69,12 +69,12 @@ class ClassRelativeClassLoader extends URLClassLoader {
 
                 @Override
                 public boolean hasMoreElements() {
-                    return i < l;
+                    return this.i < l;
                 }
 
                 @Override
                 public URL nextElement() {
-                    return urls[i++];
+                    return urls[this.i++];
                 }
             };
         }

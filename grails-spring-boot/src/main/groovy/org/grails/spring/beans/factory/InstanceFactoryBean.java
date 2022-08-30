@@ -49,7 +49,7 @@ public class InstanceFactoryBean<T> implements FactoryBean<T> {
 
     @Override
     public T getObject() {
-        return object;
+        return this.object;
     }
 
     public void setObject(T object) {
@@ -58,7 +58,7 @@ public class InstanceFactoryBean<T> implements FactoryBean<T> {
 
     @Override
     public Class<?> getObjectType() {
-        return objectType != null ? objectType : object.getClass();
+        return this.objectType != null ? this.objectType : this.object.getClass();
     }
 
     public void setObjectType(Class<?> objectType) {

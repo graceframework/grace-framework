@@ -63,14 +63,14 @@ public class GrailsFlashScope implements FlashScope {
     }
 
     public void next() {
-        current.clear();
-        current = new ConcurrentHashMap(next);
-        next.clear();
-        reassociateObjectsWithErrors(current);
+        this.current.clear();
+        this.current = new ConcurrentHashMap(this.next);
+        this.next.clear();
+        reassociateObjectsWithErrors(this.current);
     }
 
     public Map getNow() {
-        return current;
+        return this.current;
     }
 
     private void reassociateObjectsWithErrors(Map scope) {
@@ -103,12 +103,12 @@ public class GrailsFlashScope implements FlashScope {
     }
 
     public int size() {
-        return current.size() + next.size();
+        return this.current.size() + this.next.size();
     }
 
     public void clear() {
-        current.clear();
-        next.clear();
+        this.current.clear();
+        this.next.clear();
     }
 
     public boolean isEmpty() {
@@ -116,17 +116,17 @@ public class GrailsFlashScope implements FlashScope {
     }
 
     public boolean containsKey(Object key) {
-        return (current.containsKey(key) || next.containsKey(key));
+        return (this.current.containsKey(key) || this.next.containsKey(key));
     }
 
     public boolean containsValue(Object value) {
-        return (current.containsValue(value) || next.containsValue(value));
+        return (this.current.containsValue(value) || this.next.containsValue(value));
     }
 
     public Collection<Object> values() {
         Collection c = new ArrayList();
-        c.addAll(current.values());
-        c.addAll(next.values());
+        c.addAll(this.current.values());
+        c.addAll(this.next.values());
         return c;
     }
 
@@ -138,50 +138,50 @@ public class GrailsFlashScope implements FlashScope {
 
     public Set<Map.Entry<String, Object>> entrySet() {
         Set entrySet = new HashSet();
-        entrySet.addAll(current.entrySet());
-        entrySet.addAll(next.entrySet());
+        entrySet.addAll(this.current.entrySet());
+        entrySet.addAll(this.next.entrySet());
         return entrySet;
     }
 
     public Set<String> keySet() {
         Set keySet = new HashSet();
-        keySet.addAll(current.keySet());
-        keySet.addAll(next.keySet());
+        keySet.addAll(this.current.keySet());
+        keySet.addAll(this.next.keySet());
         return keySet;
     }
 
     public Object get(Object key) {
-        if (next.containsKey(key)) {
-            return next.get(key);
+        if (this.next.containsKey(key)) {
+            return this.next.get(key);
         }
         if ("now".equals(key)) {
             return getNow();
         }
-        return current.get(key);
+        return this.current.get(key);
     }
 
     public Object remove(Object key) {
-        if (current.containsKey(key)) {
-            return current.remove(key);
+        if (this.current.containsKey(key)) {
+            return this.current.remove(key);
         }
 
-        return next.remove(key);
+        return this.next.remove(key);
     }
 
     public Object put(String key, Object value) {
         // create the session if it doesn't exist
         registerWithSessionIfNecessary();
 
-        if (current.containsKey(key)) {
-            current.remove(key);
+        if (this.current.containsKey(key)) {
+            this.current.remove(key);
         }
-        storeErrorsIfPossible(next, value);
+        storeErrorsIfPossible(this.next, value);
 
         if (value == null) {
-            return next.remove(key);
+            return this.next.remove(key);
         }
 
-        return next.put(key, value);
+        return this.next.put(key, value);
     }
 
     private void storeErrorsIfPossible(Map scope, Object value) {
@@ -215,7 +215,7 @@ public class GrailsFlashScope implements FlashScope {
     }
 
     private void registerWithSessionIfNecessary() {
-        if (registerWithSession) {
+        if (this.registerWithSession) {
             GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
             HttpSession session = webRequest.getCurrentRequest().getSession(true);
             if (session.getAttribute(GrailsApplicationAttributes.FLASH_SCOPE) == null) {

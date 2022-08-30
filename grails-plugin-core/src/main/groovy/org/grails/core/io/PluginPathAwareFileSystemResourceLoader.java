@@ -35,7 +35,7 @@ public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceL
     ResourceLocator resourceLocator = new DefaultResourceLocator();
 
     public void setSearchLocations(Collection<String> searchLocations) {
-        resourceLocator.setSearchLocations(searchLocations);
+        this.resourceLocator.setSearchLocations(searchLocations);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceL
         if (resourcePath.startsWith(WEB_APP_DIRECTORY)) {
             resourcePath = resourcePath.substring("web-app".length(), resourcePath.length());
         }
-        Resource res = resourceLocator.findResourceForURI(resourcePath);
+        Resource res = this.resourceLocator.findResourceForURI(resourcePath);
         if (res != null) {
             return res;
         }

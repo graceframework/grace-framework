@@ -51,7 +51,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
 
     public PropertySourcesConfig() {
         this.propertySources = new MutablePropertySources();
-        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(propertySources);
+        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(this.propertySources);
     }
 
     public PropertySourcesConfig(Map<String, Object> mapPropertySource) {
@@ -61,24 +61,24 @@ public class PropertySourcesConfig extends NavigableMapConfig {
 
         mutablePropertySources.addFirst(new MapPropertySource("config", map));
         this.propertySources = mutablePropertySources;
-        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(propertySources);
-        initializeFromPropertySources(propertySources);
+        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(this.propertySources);
+        initializeFromPropertySources(this.propertySources);
     }
 
     public PropertySourcesConfig(PropertySource propertySource) {
         MutablePropertySources mutablePropertySources = new MutablePropertySources();
         mutablePropertySources.addFirst(propertySource);
         this.propertySources = mutablePropertySources;
-        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(propertySources);
-        initializeFromPropertySources(propertySources);
+        this.propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(this.propertySources);
+        initializeFromPropertySources(this.propertySources);
     }
 
     public PropertySources getPropertySources() {
-        return propertySources;
+        return this.propertySources;
     }
 
     public void refresh() {
-        initializeFromPropertySources(propertySources);
+        initializeFromPropertySources(this.propertySources);
     }
 
     protected void initializeFromPropertySources(PropertySources propertySources) {
@@ -106,7 +106,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
 
     private void mergeEnumerablePropertySource(EnumerablePropertySource enumerablePropertySource) {
         if (enumerablePropertySource instanceof NavigableMapPropertySource) {
-            configMap.merge(((NavigableMapPropertySource) enumerablePropertySource).getSource(), false);
+            this.configMap.merge(((NavigableMapPropertySource) enumerablePropertySource).getSource(), false);
         }
         else {
             Map<String, Object> map = new LinkedHashMap<String, Object>();
@@ -125,7 +125,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
                 map.put(propertyName, value);
             }
 
-            configMap.merge(map, true);
+            this.configMap.merge(map, true);
         }
     }
 
@@ -162,14 +162,14 @@ public class PropertySourcesConfig extends NavigableMapConfig {
     @Override
     public String resolvePlaceholders(String text) {
         if (!GrailsStringUtils.isBlank(text)) {
-            return propertySourcesPropertyResolver.resolvePlaceholders(text);
+            return this.propertySourcesPropertyResolver.resolvePlaceholders(text);
         }
         return text;
     }
 
     @Override
     public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
-        return propertySourcesPropertyResolver.resolveRequiredPlaceholders(text);
+        return this.propertySourcesPropertyResolver.resolveRequiredPlaceholders(text);
     }
 
 }

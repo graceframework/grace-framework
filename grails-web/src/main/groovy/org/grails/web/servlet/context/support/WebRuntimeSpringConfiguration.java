@@ -63,7 +63,7 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
                     "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
-            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
+            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, this.grailsApplication);
             ctx.setParent(parentCtx);
             return ctx;
         }
@@ -72,11 +72,11 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
                     "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
-            return new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
+            return new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, this.grailsApplication);
         }
 
         if (parentCtx != null) {
-            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext(grailsApplication);
+            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext(this.grailsApplication);
             ctx.setParent(parentCtx);
             return ctx;
         }

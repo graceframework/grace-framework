@@ -169,7 +169,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
      * @return true, if should encode
      */
     public boolean shouldEncode(Encoder encoderToApply, EncodingState encodingState) {
-        return ignoreEncodingState || (encoderToApply != null
+        return this.ignoreEncodingState || (encoderToApply != null
                 && (encodingState == null || shouldEncodeWith(encoderToApply, encodingState)));
     }
 
@@ -219,7 +219,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
     }
 
     public boolean isIgnoreEncodingState() {
-        return ignoreEncodingState;
+        return this.ignoreEncodingState;
     }
 
     public void setIgnoreEncodingState(boolean ignoreEncodingState) {

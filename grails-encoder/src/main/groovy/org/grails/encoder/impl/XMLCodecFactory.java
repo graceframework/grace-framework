@@ -45,14 +45,14 @@ public class XMLCodecFactory implements CodecFactory {
      * @see CodecFactory#getEncoder()
      */
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     /* (non-Javadoc)
      * @see CodecFactory#getDecoder()
      */
     public Decoder getDecoder() {
-        return decoder;
+        return this.decoder;
     }
 
 }

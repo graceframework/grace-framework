@@ -66,14 +66,14 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
 
     public DefaultStackTraceFilterer(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
-        packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
+        this.packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
     }
 
     public void addInternalPackage(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Package name cannot be null");
         }
-        packagesToFilter.add(name);
+        this.packagesToFilter.add(name);
     }
 
     public void setCutOffPackage(String cutOffPackage) {
@@ -92,9 +92,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     }
 
     public Throwable filter(Throwable source) {
-        if (shouldFilter) {
+        if (this.shouldFilter) {
             StackTraceElement[] trace = source.getStackTrace();
-            List<StackTraceElement> newTrace = filterTraceWithCutOff(trace, cutOffPackage);
+            List<StackTraceElement> newTrace = filterTraceWithCutOff(trace, this.cutOffPackage);
 
             if (newTrace.isEmpty()) {
                 // filter with no cut-off so at least there is some trace
@@ -141,7 +141,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
      * @return true if is internal
      */
     protected boolean isApplicationClass(String className) {
-        for (String packageName : packagesToFilter) {
+        for (String packageName : this.packagesToFilter) {
             if (className.startsWith(packageName)) {
                 return false;
             }

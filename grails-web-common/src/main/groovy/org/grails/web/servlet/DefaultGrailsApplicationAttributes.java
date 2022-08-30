@@ -78,32 +78,32 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
     public DefaultGrailsApplicationAttributes(ServletContext context) {
         this.context = context;
         if (context != null) {
-            appContext = (ApplicationContext) context.getAttribute(APPLICATION_CONTEXT);
-            if (appContext == null) {
-                appContext = Holders.findApplicationContext();
+            this.appContext = (ApplicationContext) context.getAttribute(APPLICATION_CONTEXT);
+            if (this.appContext == null) {
+                this.appContext = Holders.findApplicationContext();
             }
         }
     }
 
     public ApplicationContext getApplicationContext() {
-        return appContext;
+        return this.appContext;
     }
 
     private GrailsPluginManager getPluginManager() {
-        if (pluginManager == null) {
-            pluginManager = fetchBeanFromAppCtx(GrailsPluginManager.BEAN_NAME);
+        if (this.pluginManager == null) {
+            this.pluginManager = fetchBeanFromAppCtx(GrailsPluginManager.BEAN_NAME);
         }
-        return pluginManager;
+        return this.pluginManager;
     }
 
     @SuppressWarnings("unchecked")
     private <T> T fetchBeanFromAppCtx(String name) {
-        if (appContext == null) {
+        if (this.appContext == null) {
             return null;
         }
         try {
-            if (appContext.containsBean(name)) {
-                return (T) appContext.getBean(name);
+            if (this.appContext.containsBean(name)) {
+                return (T) this.appContext.getBean(name);
             }
             else {
                 return null;
@@ -161,13 +161,13 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
     public String getApplicationUri(ServletRequest request) {
         String appUri = (String) request.getAttribute(GrailsApplicationAttributes.APP_URI_ATTRIBUTE);
         if (appUri == null) {
-            appUri = urlHelper.getContextPath((HttpServletRequest) request);
+            appUri = this.urlHelper.getContextPath((HttpServletRequest) request);
         }
         return appUri;
     }
 
     public ServletContext getServletContext() {
-        return context;
+        return this.context;
     }
 
     public FlashScope getFlashScope(ServletRequest request) {
@@ -216,23 +216,23 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
     }
 
     public ResourceAwareTemplateEngine getPagesTemplateEngine() {
-        if (pagesTemplateEngine == null) {
-            pagesTemplateEngine = fetchBeanFromAppCtx(ResourceAwareTemplateEngine.BEAN_ID);
+        if (this.pagesTemplateEngine == null) {
+            this.pagesTemplateEngine = fetchBeanFromAppCtx(ResourceAwareTemplateEngine.BEAN_ID);
         }
-        if (pagesTemplateEngine == null && LOG.isWarnEnabled()) {
+        if (this.pagesTemplateEngine == null && LOG.isWarnEnabled()) {
             LOG.warn("No bean named [" + ResourceAwareTemplateEngine.BEAN_ID + "] defined in Spring application context!");
         }
-        return pagesTemplateEngine;
+        return this.pagesTemplateEngine;
     }
 
     public GrailsApplication getGrailsApplication() {
-        if (grailsApplication == null) {
-            grailsApplication = fetchBeanFromAppCtx(GrailsApplication.APPLICATION_ID);
-            if (grailsApplication == null) {
-                grailsApplication = Holders.findApplication();
+        if (this.grailsApplication == null) {
+            this.grailsApplication = fetchBeanFromAppCtx(GrailsApplication.APPLICATION_ID);
+            if (this.grailsApplication == null) {
+                this.grailsApplication = Holders.findApplication();
             }
         }
-        return grailsApplication;
+        return this.grailsApplication;
     }
 
     public Writer getOut(HttpServletRequest request) {
@@ -257,20 +257,20 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
     }
 
     public GroovyPagesUriService getGroovyPagesUriService() {
-        if (groovyPagesUriService == null) {
-            groovyPagesUriService = fetchBeanFromAppCtx(GroovyPagesUriService.BEAN_ID);
-            if (groovyPagesUriService == null) {
-                groovyPagesUriService = new DefaultGroovyPagesUriService();
+        if (this.groovyPagesUriService == null) {
+            this.groovyPagesUriService = fetchBeanFromAppCtx(GroovyPagesUriService.BEAN_ID);
+            if (this.groovyPagesUriService == null) {
+                this.groovyPagesUriService = new DefaultGroovyPagesUriService();
             }
         }
-        return groovyPagesUriService;
+        return this.groovyPagesUriService;
     }
 
     public MessageSource getMessageSource() {
-        if (messageSource == null) {
-            messageSource = fetchBeanFromAppCtx("messageSource");
+        if (this.messageSource == null) {
+            this.messageSource = fetchBeanFromAppCtx("messageSource");
         }
-        return messageSource;
+        return this.messageSource;
     }
 
 }

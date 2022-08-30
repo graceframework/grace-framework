@@ -46,14 +46,14 @@ public class CoreConfiguration {
     @Primary
     @ConditionalOnMissingBean
     public ClassLoader classLoader() {
-        return grailsApplication.getClassLoader();
+        return this.grailsApplication.getClassLoader();
     }
 
     @Bean
     @Primary
     @ConditionalOnMissingBean
     public ConfigProperties grailsConfigProperties() {
-        return new ConfigProperties(grailsApplication.getConfig());
+        return new ConfigProperties(this.grailsApplication.getConfig());
     }
 
 }

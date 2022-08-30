@@ -64,7 +64,7 @@ public class BoundedCharsAsEncodedBytesCounter {
         if (str.length() == 0) {
             return;
         }
-        if (calculationActive) {
+        if (this.calculationActive) {
             update(str.toCharArray());
         }
     }
@@ -74,16 +74,16 @@ public class BoundedCharsAsEncodedBytesCounter {
     }
 
     public void update(char[] buf, int off, int len) {
-        if (calculationActive && len > 0) {
+        if (this.calculationActive && len > 0) {
             try {
                 CharBuffer cb = CharBuffer.wrap(buf, off, len);
-                ce.reset();
-                CoderResult cr = ce.encode(cb, bb, true);
+                this.ce.reset();
+                CoderResult cr = this.ce.encode(cb, this.bb, true);
                 if (!cr.isUnderflow()) {
                     terminateCalculation();
                     return;
                 }
-                cr = ce.flush(bb);
+                cr = this.ce.flush(this.bb);
                 if (!cr.isUnderflow()) {
                     terminateCalculation();
                     return;
@@ -99,33 +99,33 @@ public class BoundedCharsAsEncodedBytesCounter {
     }
 
     private void terminateCalculation() {
-        calculationActive = false;
-        if (bb != null) {
-            bb.clear();
-            bb = null;
+        this.calculationActive = false;
+        if (this.bb != null) {
+            this.bb.clear();
+            this.bb = null;
         }
     }
 
     public int size() {
-        if (calculationActive) {
-            return bb.position();
+        if (this.calculationActive) {
+            return this.bb.position();
         }
 
         return -1;
     }
 
     public boolean isWriterReferenced() {
-        return writer != null;
+        return this.writer != null;
     }
 
     public Writer getCountingWriter() {
-        if (writer == null) {
-            ce = Charset.forName(encoding).newEncoder().onMalformedInput(CodingErrorAction.REPLACE)
+        if (this.writer == null) {
+            this.ce = Charset.forName(this.encoding).newEncoder().onMalformedInput(CodingErrorAction.REPLACE)
                     .onUnmappableCharacter(CodingErrorAction.REPLACE);
-            bb = ByteBuffer.allocate(capacity);
-            writer = new BoundedCharsAsEncodedBytesCounterWriter();
+            this.bb = ByteBuffer.allocate(this.capacity);
+            this.writer = new BoundedCharsAsEncodedBytesCounterWriter();
         }
-        return writer;
+        return this.writer;
     }
 
     class BoundedCharsAsEncodedBytesCounterWriter extends Writer {
@@ -144,24 +144,24 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public void write(int b) throws IOException {
-            if (!calculationActive) {
+            if (!BoundedCharsAsEncodedBytesCounter.this.calculationActive) {
                 return;
             }
-            writeBuffer[0] = (char) b;
-            update(writeBuffer, 0, 1);
+            this.writeBuffer[0] = (char) b;
+            update(this.writeBuffer, 0, 1);
         }
 
         @Override
         public Writer append(CharSequence csq, int start, int end) throws IOException {
-            if (!calculationActive) {
+            if (!BoundedCharsAsEncodedBytesCounter.this.calculationActive) {
                 return this;
             }
 
             if (csq instanceof StringBuilder || csq instanceof StringBuffer) {
                 int len = end - start;
                 char cbuf[];
-                if (len <= writeBuffer.length) {
-                    cbuf = writeBuffer;
+                if (len <= this.writeBuffer.length) {
+                    cbuf = this.writeBuffer;
                 }
                 else {
                     cbuf = new char[len];
@@ -182,7 +182,7 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public Writer append(CharSequence csq) throws IOException {
-            if (!calculationActive) {
+            if (!BoundedCharsAsEncodedBytesCounter.this.calculationActive) {
                 return this;
             }
 
@@ -197,7 +197,7 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public void write(String str, int off, int len) throws IOException {
-            if (!calculationActive) {
+            if (!BoundedCharsAsEncodedBytesCounter.this.calculationActive) {
                 return;
             }
             StringCharArrayAccessor.writeStringAsCharArray(this, str, off, len);
@@ -205,7 +205,7 @@ public class BoundedCharsAsEncodedBytesCounter {
 
         @Override
         public void write(String str) throws IOException {
-            if (!calculationActive) {
+            if (!BoundedCharsAsEncodedBytesCounter.this.calculationActive) {
                 return;
             }
             StringCharArrayAccessor.writeStringAsCharArray(this, str);
@@ -219,7 +219,7 @@ public class BoundedCharsAsEncodedBytesCounter {
     }
 
     public String getEncoding() {
-        return encoding;
+        return this.encoding;
     }
 
     public void setEncoding(String encoding) {
@@ -227,7 +227,7 @@ public class BoundedCharsAsEncodedBytesCounter {
     }
 
     public int getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
     public void setCapacity(int capacity) {

@@ -30,24 +30,24 @@ public class Triple<A, B, C> {
     }
 
     public A getaValue() {
-        return aValue;
+        return this.aValue;
     }
 
     public B getbValue() {
-        return bValue;
+        return this.bValue;
     }
 
     public C getcValue() {
-        return cValue;
+        return this.cValue;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((aValue == null) ? 0 : aValue.hashCode());
-        result = prime * result + ((bValue == null) ? 0 : bValue.hashCode());
-        result = prime * result + ((cValue == null) ? 0 : cValue.hashCode());
+        result = prime * result + ((this.aValue == null) ? 0 : this.aValue.hashCode());
+        result = prime * result + ((this.bValue == null) ? 0 : this.bValue.hashCode());
+        result = prime * result + ((this.cValue == null) ? 0 : this.cValue.hashCode());
         return result;
     }
 
@@ -63,28 +63,28 @@ public class Triple<A, B, C> {
             return false;
         }
         Triple other = (Triple) obj;
-        if (aValue == null) {
+        if (this.aValue == null) {
             if (other.aValue != null) {
                 return false;
             }
         }
-        else if (!aValue.equals(other.aValue)) {
+        else if (!this.aValue.equals(other.aValue)) {
             return false;
         }
-        if (bValue == null) {
+        if (this.bValue == null) {
             if (other.bValue != null) {
                 return false;
             }
         }
-        else if (!bValue.equals(other.bValue)) {
+        else if (!this.bValue.equals(other.bValue)) {
             return false;
         }
-        if (cValue == null) {
+        if (this.cValue == null) {
             if (other.cValue != null) {
                 return false;
             }
         }
-        else if (!cValue.equals(other.cValue)) {
+        else if (!this.cValue.equals(other.cValue)) {
             return false;
         }
         return true;
@@ -92,7 +92,7 @@ public class Triple<A, B, C> {
 
     @Override
     public String toString() {
-        return "Triple [aValue=" + aValue + ", bValue=" + bValue + ", cValue=" + cValue + "]";
+        return "Triple [aValue=" + this.aValue + ", bValue=" + this.bValue + ", cValue=" + this.cValue + "]";
     }
 
 }

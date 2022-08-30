@@ -32,6 +32,8 @@ import grails.compiler.ast.ClassInjector;
  */
 public class GrailsAwareClassLoader extends GroovyClassLoader {
 
+    private ClassInjector[] classInjectors;
+
     public GrailsAwareClassLoader() {
         // default
     }
@@ -52,8 +54,6 @@ public class GrailsAwareClassLoader extends GroovyClassLoader {
         super(loader, config);
     }
 
-    private ClassInjector[] classInjectors;
-
     public void setClassInjectors(ClassInjector[] classInjectors) {
         this.classInjectors = classInjectors;
     }
@@ -67,11 +67,11 @@ public class GrailsAwareClassLoader extends GroovyClassLoader {
 
         GrailsAwareInjectionOperation operation;
 
-        if (classInjectors == null) {
+        if (this.classInjectors == null) {
             operation = new GrailsAwareInjectionOperation();
         }
         else {
-            operation = new GrailsAwareInjectionOperation(classInjectors);
+            operation = new GrailsAwareInjectionOperation(this.classInjectors);
         }
 
         cu.addPhaseOperation(operation, Phases.CANONICALIZATION);

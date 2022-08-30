@@ -78,10 +78,10 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         }
 
         final String key = makeKey(LINK_PREFIX, attrs);
-        Object resourceLink = linkCache.getIfPresent(key);
+        Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.link(attrs, encoding);
-            linkCache.put(key, resourceLink);
+            this.linkCache.put(key, resourceLink);
         }
         return resourceLink.toString();
     }
@@ -177,10 +177,10 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
     @Override
     public String resource(Map attrs) {
         final String key = makeKey(RESOURCE_PREFIX, attrs);
-        Object resourceLink = linkCache.getIfPresent(key);
+        Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.resource(attrs);
-            linkCache.put(key, resourceLink);
+            this.linkCache.put(key, resourceLink);
         }
         return resourceLink.toString();
     }
@@ -210,7 +210,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
     }
 
     public void clearCache() {
-        linkCache.invalidateAll();
+        this.linkCache.invalidateAll();
     }
 
 }

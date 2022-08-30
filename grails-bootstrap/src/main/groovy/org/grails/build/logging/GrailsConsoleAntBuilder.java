@@ -104,7 +104,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void targetStarted(BuildEvent event) {
-            targetName = event.getTarget().getName();
+            this.targetName = event.getTarget().getName();
         }
 
         /**
@@ -114,7 +114,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void targetFinished(BuildEvent event) {
-            targetName = null;
+            this.targetName = null;
         }
 
         /**
@@ -128,15 +128,15 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void messageLogged(BuildEvent event) {
-            if (event.getPriority() > msgOutputLevel ||
+            if (event.getPriority() > this.msgOutputLevel ||
                     null == event.getMessage() ||
                     "".equals(event.getMessage().trim())) {
                 return;
             }
 
-            if (null != targetName) {
-                console.verbose(StringUtils.LINE_SEP + targetName + ":");
-                targetName = null;
+            if (this.targetName != null) {
+                this.console.verbose(StringUtils.LINE_SEP + this.targetName + ":");
+                this.targetName = null;
             }
         }
 

@@ -108,7 +108,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
 
         FastStringPrintWriter pw = FastStringPrintWriter.newInstance();
         cause.printStackTrace(pw);
-        stackTrace = pw.toString();
+        this.stackTrace = pw.toString();
 
         while (cause.getCause() != cause) {
             if (cause.getCause() == null) {
@@ -117,41 +117,41 @@ public class GrailsWrappedRuntimeException extends GrailsException {
             cause = cause.getCause();
         }
 
-        stackTraceLines = stackTrace.split("\\n");
+        this.stackTraceLines = this.stackTrace.split("\\n");
 
         if (cause instanceof MultipleCompilationErrorsException) {
             MultipleCompilationErrorsException mcee = (MultipleCompilationErrorsException) cause;
             Object message = mcee.getErrorCollector().getErrors().iterator().next();
             if (message instanceof SyntaxErrorMessage) {
                 SyntaxErrorMessage sem = (SyntaxErrorMessage) message;
-                lineNumber = sem.getCause().getLine();
-                className = sem.getCause().getSourceLocator();
+                this.lineNumber = sem.getCause().getLine();
+                this.className = sem.getCause().getSourceLocator();
                 sem.write(pw);
             }
         }
         else {
-            Matcher m1 = PARSE_DETAILS_STEP1.matcher(stackTrace);
-            Matcher m2 = PARSE_DETAILS_STEP2.matcher(stackTrace);
-            Matcher gsp = PARSE_GSP_DETAILS_STEP1.matcher(stackTrace);
+            Matcher m1 = PARSE_DETAILS_STEP1.matcher(this.stackTrace);
+            Matcher m2 = PARSE_DETAILS_STEP2.matcher(this.stackTrace);
+            Matcher gsp = PARSE_GSP_DETAILS_STEP1.matcher(this.stackTrace);
             try {
-                if (ANY_GSP_DETAILS.matcher(stackTrace).find() && gsp.find()) {
+                if (ANY_GSP_DETAILS.matcher(this.stackTrace).find() && gsp.find()) {
                     System.out.println(gsp.group(1) + " " + gsp.group(2) + " " + gsp.group(3));
-                    className = gsp.group(1);
-                    lineNumber = Integer.parseInt(gsp.group(3));
-                    gspFile = URL_PREFIX + "views/" + gsp.group(2) + '/' + className;
+                    this.className = gsp.group(1);
+                    this.lineNumber = Integer.parseInt(gsp.group(3));
+                    this.gspFile = URL_PREFIX + "views/" + gsp.group(2) + '/' + this.className;
                 }
                 else {
                     if (m1.find()) {
                         do {
-                            className = m1.group(1);
-                            lineNumber = Integer.parseInt(m1.group(2));
+                            this.className = m1.group(1);
+                            this.lineNumber = Integer.parseInt(m1.group(2));
                         }
                         while (m1.find());
                     }
                     else {
                         while (m2.find()) {
-                            className = m2.group(1);
-                            lineNumber = Integer.parseInt(m2.group(2));
+                            this.className = m2.group(1);
+                            this.lineNumber = Integer.parseInt(m2.group(2));
                         }
                     }
                 }
@@ -170,30 +170,30 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                 String fileLocation;
                 String url = null;
 
-                if (fileName != null) {
-                    fileLocation = fileName;
+                if (this.fileName != null) {
+                    fileLocation = this.fileName;
                 }
                 else {
                     String urlPrefix = "";
-                    if (gspFile == null) {
-                        fileName = className.replace('.', '/') + ".groovy";
+                    if (this.gspFile == null) {
+                        this.fileName = this.className.replace('.', '/') + ".groovy";
 
                         GrailsApplication application = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
                                 .getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                         // @todo Refactor this to get the urlPrefix from the ArtefactHandler
-                        if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, className)) {
+                        if (application.isArtefactOfType(ControllerArtefactHandler.TYPE, this.className)) {
                             urlPrefix += "/controllers/";
                         }
-                        else if (application.isArtefactOfType("TagLib", className)) {
+                        else if (application.isArtefactOfType("TagLib", this.className)) {
                             urlPrefix += "/taglib/";
                         }
-                        else if (application.isArtefactOfType(ServiceArtefactHandler.TYPE, className)) {
+                        else if (application.isArtefactOfType(ServiceArtefactHandler.TYPE, this.className)) {
                             urlPrefix += "/services/";
                         }
-                        url = URL_PREFIX + urlPrefix + fileName;
+                        url = URL_PREFIX + urlPrefix + this.fileName;
                     }
                     else {
-                        url = gspFile;
+                        url = this.gspFile;
                         GrailsApplicationAttributes attrs = null;
                         try {
                             attrs = grailsApplicationAttributesConstructor.newInstance(servletContext);
@@ -202,9 +202,9 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                             ReflectionUtils.rethrowRuntimeException(e);
                         }
                         ResourceAwareTemplateEngine engine = attrs.getPagesTemplateEngine();
-                        lineNumber = engine.mapStackLineNumber(url, lineNumber);
+                        this.lineNumber = engine.mapStackLineNumber(url, this.lineNumber);
                     }
-                    fileLocation = "grails-app" + urlPrefix + fileName;
+                    fileLocation = "grails-app" + urlPrefix + this.fileName;
                 }
 
                 InputStream in = null;
@@ -215,11 +215,11 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                 if (in == null) {
                     Resource r = null;
                     try {
-                        r = resolver.getResource(fileLocation);
+                        r = this.resolver.getResource(fileLocation);
                         in = r.getInputStream();
                     }
                     catch (Throwable e) {
-                        r = resolver.getResource("file:" + fileLocation);
+                        r = this.resolver.getResource("file:" + fileLocation);
                         if (r.exists()) {
                             try {
                                 in = r.getInputStream();
@@ -237,14 +237,14 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                     StringBuilder buf = new StringBuilder();
                     while (currentLine != null) {
                         int currentLineNumber = reader.getLineNumber();
-                        if ((lineNumber > 0 && currentLineNumber == lineNumber - 1) ||
-                                (currentLineNumber == lineNumber)) {
+                        if ((this.lineNumber > 0 && currentLineNumber == this.lineNumber - 1) ||
+                                (currentLineNumber == this.lineNumber)) {
                             buf.append(currentLineNumber)
                                     .append(": ")
                                     .append(currentLine)
                                     .append("\n");
                         }
-                        else if (currentLineNumber == lineNumber + 1) {
+                        else if (currentLineNumber == this.lineNumber + 1) {
                             buf.append(currentLineNumber)
                                     .append(": ")
                                     .append(currentLine);
@@ -252,7 +252,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                         }
                         currentLine = reader.readLine();
                     }
-                    codeSnippet = buf.toString().split("\n");
+                    this.codeSnippet = buf.toString().split("\n");
                 }
             }
         }
@@ -278,13 +278,13 @@ public class GrailsWrappedRuntimeException extends GrailsException {
 
         final SourceCodeAware codeAware = (SourceCodeAware) t;
         if (codeAware.getFileName() != null) {
-            fileName = codeAware.getFileName();
-            if (className == null || UNKNOWN.equals(className)) {
-                className = codeAware.getFileName();
+            this.fileName = codeAware.getFileName();
+            if (this.className == null || UNKNOWN.equals(this.className)) {
+                this.className = codeAware.getFileName();
             }
         }
         if (codeAware.getLineNumber() > -1) {
-            lineNumber = codeAware.getLineNumber();
+            this.lineNumber = codeAware.getLineNumber();
         }
     }
 
@@ -292,35 +292,35 @@ public class GrailsWrappedRuntimeException extends GrailsException {
      * @return Returns the line.
      */
     public String[] getCodeSnippet() {
-        return codeSnippet;
+        return this.codeSnippet;
     }
 
     /**
      * @return Returns the className.
      */
     public String getClassName() {
-        return className;
+        return this.className;
     }
 
     /**
      * @return Returns the lineNumber.
      */
     public int getLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     /**
      * @return Returns the stackTrace.
      */
     public String getStackTraceText() {
-        return stackTrace;
+        return this.stackTrace;
     }
 
     /**
      * @return Returns the stackTrace lines
      */
     public String[] getStackTraceLines() {
-        return stackTraceLines;
+        return this.stackTraceLines;
     }
 
     /* (non-Javadoc)
@@ -328,7 +328,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
      */
     @Override
     public String getMessage() {
-        return cause.getMessage();
+        return this.cause.getMessage();
     }
 
 }

@@ -93,8 +93,8 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
             ClassNode cNode, String artefactType) {
-        if (compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, compilationUnit);
+        if (this.compilationUnit != null) {
+            TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
         }
     }
 
@@ -230,7 +230,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     @Override
     public void setCompilationUnit(CompilationUnit unit) {
-        compilationUnit = unit;
+        this.compilationUnit = unit;
     }
 
 }

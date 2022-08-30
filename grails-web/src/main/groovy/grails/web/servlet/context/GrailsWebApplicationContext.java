@@ -106,21 +106,21 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     private GrailsApplication getGrailsApplication() {
-        if (grailsApplication == null) {
+        if (this.grailsApplication == null) {
             ApplicationContext parent = getParent();
             if (parent != null) {
                 if (parent instanceof GrailsWebApplicationContext) {
-                    grailsApplication = ((GrailsWebApplicationContext) parent).getGrailsApplication();
+                    this.grailsApplication = ((GrailsWebApplicationContext) parent).getGrailsApplication();
                 }
                 else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
-                    grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+                    this.grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                 }
             }
-            if (grailsApplication == null && containsBean(GrailsApplication.APPLICATION_ID)) {
-                grailsApplication = getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+            if (this.grailsApplication == null && containsBean(GrailsApplication.APPLICATION_ID)) {
+                this.grailsApplication = getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
             }
         }
-        return grailsApplication;
+        return this.grailsApplication;
     }
 
     /**
@@ -131,7 +131,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public ServletContext getServletContext() {
-        return servletContext;
+        return this.servletContext;
     }
 
     public void setNamespace(String namespace) {
@@ -142,12 +142,12 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public String getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     public void setConfigLocation(String configLocation) {
         Assert.notNull(configLocation, "Argument [configLocation] cannot be null");
-        configLocations = new String[] { configLocation };
+        this.configLocations = new String[] { configLocation };
     }
 
     public void setConfigLocations(String[] configLocations) {
@@ -156,7 +156,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public String[] getConfigLocations() {
-        return configLocations;
+        return this.configLocations;
     }
 
     /**
@@ -165,9 +165,9 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
      */
     @Override
     protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-        beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(servletContext));
+        beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(this.servletContext));
         beanFactory.ignoreDependencyInterface(ServletContextAware.class);
-        beanFactory.registerResolvableDependency(ServletContext.class, servletContext);
+        beanFactory.registerResolvableDependency(ServletContext.class, this.servletContext);
 
         WebApplicationContextUtils.registerWebApplicationScopes(beanFactory);
     }
@@ -178,7 +178,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
      */
     @Override
     protected Resource getResourceByPath(String path) {
-        return new ServletContextResource(servletContext, path);
+        return new ServletContextResource(this.servletContext, path);
     }
 
     /**
@@ -192,8 +192,8 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
 
     @Override
     protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-        if (configLocations.length > 0) {
-            for (String configLocation : configLocations) {
+        if (this.configLocations.length > 0) {
+            for (String configLocation : this.configLocations) {
                 BeanBuilder beanBuilder = new BeanBuilder(getParent(), getClassLoader());
                 final ServletContextResource resource = new ServletContextResource(getServletContext(), configLocation);
                 beanBuilder.loadBeans(resource);
@@ -208,7 +208,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public ServletConfig getServletConfig() {
-        return servletConfig;
+        return this.servletConfig;
     }
 
     @Override

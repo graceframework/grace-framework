@@ -99,7 +99,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     @SuppressWarnings("rawtypes")
     private DefaultUrlMappingInfo(Map params, UrlMappingData urlData, GrailsApplication grailsApplication) {
         setParams(params);
-        id = getParams().get(ID_PARAM);
+        this.id = getParams().get(ID_PARAM);
         this.urlData = urlData;
         this.grailsApplication = grailsApplication;
         ApplicationContext applicationContext = null;
@@ -107,10 +107,10 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
             applicationContext = grailsApplication.getMainContext();
         }
         if (applicationContext != null && applicationContext.containsBean(UrlConverter.BEAN_NAME)) {
-            urlConverter = applicationContext.getBean(UrlConverter.BEAN_NAME, UrlConverter.class);
+            this.urlConverter = applicationContext.getBean(UrlConverter.BEAN_NAME, UrlConverter.class);
         }
         else {
-            urlConverter = new CamelCaseUrlConverter();
+            this.urlConverter = new CamelCaseUrlConverter();
         }
     }
 
@@ -176,15 +176,15 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     @Override
     public String getHttpMethod() {
-        return httpMethod;
+        return this.httpMethod;
     }
 
     @Override
     public String toString() {
-        if (urlData == null) {
+        if (this.urlData == null) {
             return null;
         }
-        return urlData.getUrlPattern();
+        return this.urlData.getUrlPattern();
     }
 
     @SuppressWarnings("rawtypes")
@@ -193,7 +193,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     public boolean isParsingRequest() {
-        return parsingRequest;
+        return this.parsingRequest;
     }
 
     public void setParsingRequest(boolean parsingRequest) {
@@ -201,22 +201,22 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     public String getPluginName() {
-        return pluginName == null ? null : pluginName.toString();
+        return this.pluginName == null ? null : this.pluginName.toString();
     }
 
     public String getNamespace() {
-        String name = evaluateNameForValue(namespace);
-        return urlConverter.toUrlElement(name);
+        String name = evaluateNameForValue(this.namespace);
+        return this.urlConverter.toUrlElement(name);
     }
 
     public String getControllerName() {
-        String name = evaluateNameForValue(controllerName);
-        if (name == null && getViewName() == null && uri == null) {
+        String name = evaluateNameForValue(this.controllerName);
+        if (name == null && getViewName() == null && this.uri == null) {
             throw new UrlMappingException("Unable to establish controller name to dispatch for [" +
-                    controllerName + "]. Dynamic closure invocation returned null. Check your mapping file is correct, " +
+                    this.controllerName + "]. Dynamic closure invocation returned null. Check your mapping file is correct, " +
                     "when assigning the controller name as a request parameter it cannot be an optional token!");
         }
-        return urlConverter.toUrlElement(name);
+        return this.urlConverter.toUrlElement(name);
     }
 
     public String getActionName() {
@@ -224,17 +224,17 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
         String name = webRequest == null ? null : checkDispatchAction(webRequest.getCurrentRequest());
         if (name == null) {
-            name = evaluateNameForValue(actionName, webRequest);
+            name = evaluateNameForValue(this.actionName, webRequest);
         }
-        return urlConverter.toUrlElement(name);
+        return this.urlConverter.toUrlElement(name);
     }
 
     public String getViewName() {
-        return evaluateNameForValue(viewName);
+        return evaluateNameForValue(this.viewName);
     }
 
     public String getId() {
-        return evaluateNameForValue(id);
+        return evaluateNameForValue(this.id);
     }
 
     private String checkDispatchAction(HttpServletRequest request) {
@@ -283,15 +283,15 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     private boolean isMultipartDisabled() {
-        if (grailsApplication != null) {
-            return grailsApplication.getConfig().getProperty(SETTING_GRAILS_WEB_DISABLE_MULTIPART, Boolean.class, false);
+        if (this.grailsApplication != null) {
+            return this.grailsApplication.getConfig().getProperty(SETTING_GRAILS_WEB_DISABLE_MULTIPART, Boolean.class, false);
         }
         return false;
     }
 
     private MultipartResolver getMultipartResolver() {
-        if (grailsApplication != null) {
-            ApplicationContext ctx = grailsApplication.getMainContext();
+        if (this.grailsApplication != null) {
+            ApplicationContext ctx = this.grailsApplication.getMainContext();
             if (ctx != null) {
                 return (MultipartResolver) ctx.getBean(DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME);
             }
@@ -300,17 +300,17 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
     }
 
     public String getURI() {
-        return evaluateNameForValue(uri);
+        return evaluateNameForValue(this.uri);
     }
 
     @Override
     public Object getRedirectInfo() {
-        return redirectInfo;
+        return this.redirectInfo;
     }
 
     @Override
     public UrlMappingData getUrlData() {
-        return urlData;
+        return this.urlData;
     }
 
     @Override
@@ -324,34 +324,34 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
         DefaultUrlMappingInfo that = (DefaultUrlMappingInfo) o;
 
-        if (actionName != null ? !actionName.equals(that.actionName) : that.actionName != null) {
+        if (this.actionName != null ? !this.actionName.equals(that.actionName) : that.actionName != null) {
             return false;
         }
-        if (controllerName != null ? !controllerName.equals(that.controllerName) : that.controllerName != null) {
+        if (this.controllerName != null ? !this.controllerName.equals(that.controllerName) : that.controllerName != null) {
             return false;
         }
-        if (httpMethod != null ? !httpMethod.equals(that.httpMethod) : that.httpMethod != null) {
+        if (this.httpMethod != null ? !this.httpMethod.equals(that.httpMethod) : that.httpMethod != null) {
             return false;
         }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
+        if (this.id != null ? !this.id.equals(that.id) : that.id != null) {
             return false;
         }
-        if (namespace != null ? !namespace.equals(that.namespace) : that.namespace != null) {
+        if (this.namespace != null ? !this.namespace.equals(that.namespace) : that.namespace != null) {
             return false;
         }
-        if (pluginName != null ? !pluginName.equals(that.pluginName) : that.pluginName != null) {
+        if (this.pluginName != null ? !this.pluginName.equals(that.pluginName) : that.pluginName != null) {
             return false;
         }
-        if (redirectInfo != null ? !redirectInfo.equals(that.redirectInfo) : that.redirectInfo != null) {
+        if (this.redirectInfo != null ? !this.redirectInfo.equals(that.redirectInfo) : that.redirectInfo != null) {
             return false;
         }
-        if (uri != null ? !uri.equals(that.uri) : that.uri != null) {
+        if (this.uri != null ? !this.uri.equals(that.uri) : that.uri != null) {
             return false;
         }
-        if (version != null ? !version.equals(that.version) : that.version != null) {
+        if (this.version != null ? !this.version.equals(that.version) : that.version != null) {
             return false;
         }
-        if (viewName != null ? !viewName.equals(that.viewName) : that.viewName != null) {
+        if (this.viewName != null ? !this.viewName.equals(that.viewName) : that.viewName != null) {
             return false;
         }
 
@@ -360,16 +360,16 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     @Override
     public int hashCode() {
-        int result = controllerName != null ? (CONTROLLER_PREFIX + controllerName).hashCode() : 0;
-        result = 31 * result + (actionName != null ? (ACTION_PREFIX + actionName).hashCode() : 0);
-        result = 31 * result + (pluginName != null ? (PLUGIN_PREFIX + pluginName).hashCode() : 0);
-        result = 31 * result + (namespace != null ? (NAMESPACE_PREFIX + namespace).hashCode() : 0);
-        result = 31 * result + (redirectInfo != null ? redirectInfo.hashCode() : 0);
-        result = 31 * result + (id != null ? (ID_PREFIX + id).hashCode() : 0);
-        result = 31 * result + (viewName != null ? (VIEW_PREFIX + viewName).hashCode() : 0);
-        result = 31 * result + (uri != null ? uri.hashCode() : 0);
-        result = 31 * result + (httpMethod != null ? (METHOD_PREFIX + httpMethod).hashCode() : 0);
-        result = 31 * result + (version != null ? (VERSION_PREFIX + version).hashCode() : 0);
+        int result = this.controllerName != null ? (CONTROLLER_PREFIX + this.controllerName).hashCode() : 0;
+        result = 31 * result + (this.actionName != null ? (ACTION_PREFIX + this.actionName).hashCode() : 0);
+        result = 31 * result + (this.pluginName != null ? (PLUGIN_PREFIX + this.pluginName).hashCode() : 0);
+        result = 31 * result + (this.namespace != null ? (NAMESPACE_PREFIX + this.namespace).hashCode() : 0);
+        result = 31 * result + (this.redirectInfo != null ? this.redirectInfo.hashCode() : 0);
+        result = 31 * result + (this.id != null ? (ID_PREFIX + this.id).hashCode() : 0);
+        result = 31 * result + (this.viewName != null ? (VIEW_PREFIX + this.viewName).hashCode() : 0);
+        result = 31 * result + (this.uri != null ? this.uri.hashCode() : 0);
+        result = 31 * result + (this.httpMethod != null ? (METHOD_PREFIX + this.httpMethod).hashCode() : 0);
+        result = 31 * result + (this.version != null ? (VERSION_PREFIX + this.version).hashCode() : 0);
         return result;
     }
 

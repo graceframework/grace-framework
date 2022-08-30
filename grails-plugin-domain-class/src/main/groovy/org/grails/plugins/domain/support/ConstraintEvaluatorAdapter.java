@@ -35,25 +35,25 @@ public class ConstraintEvaluatorAdapter implements ConstraintsEvaluator {
 
     @Override
     public Map<String, Object> getDefaultConstraints() {
-        return constraintsEvaluator.getDefaultConstraints();
+        return this.constraintsEvaluator.getDefaultConstraints();
     }
 
     @Override
     public Map<String, Constrained> evaluate(Class cls) {
-        final Map<String, ConstrainedProperty> result = constraintsEvaluator.evaluate(cls);
+        final Map<String, ConstrainedProperty> result = this.constraintsEvaluator.evaluate(cls);
         return adapt(result);
     }
 
     @Override
     public Map<String, Constrained> evaluate(Class cls, boolean defaultNullable) {
-        final Map<String, ConstrainedProperty> result = constraintsEvaluator.evaluate(cls, defaultNullable);
+        final Map<String, ConstrainedProperty> result = this.constraintsEvaluator.evaluate(cls, defaultNullable);
         return adapt(result);
     }
 
     @Override
     public Map<String, Constrained> evaluate(Class<?> cls, boolean defaultNullable, boolean useOnlyAdHocConstraints,
             Closure... adHocConstraintsClosures) {
-        final Map<String, ConstrainedProperty> result = constraintsEvaluator.evaluate(cls, defaultNullable, useOnlyAdHocConstraints);
+        final Map<String, ConstrainedProperty> result = this.constraintsEvaluator.evaluate(cls, defaultNullable, useOnlyAdHocConstraints);
         return adapt(result);
     }
 

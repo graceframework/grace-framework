@@ -154,7 +154,7 @@ public class PathMatchingResourcePatternResolver {
      * <p>ClassLoader access will happen via the thread context class loader.
      */
     public PathMatchingResourcePatternResolver() {
-        resourceLoader = new DefaultResourceLoader();
+        this.resourceLoader = new DefaultResourceLoader();
     }
 
     /**
@@ -164,7 +164,7 @@ public class PathMatchingResourcePatternResolver {
      * at the time of actual resource access
      */
     public PathMatchingResourcePatternResolver(ClassLoader classLoader) {
-        resourceLoader = new DefaultResourceLoader(classLoader);
+        this.resourceLoader = new DefaultResourceLoader(classLoader);
     }
 
     /**
@@ -181,7 +181,7 @@ public class PathMatchingResourcePatternResolver {
      * Return the ResourceLoader that this pattern resolver works with.
      */
     public ResourceLoader getResourceLoader() {
-        return resourceLoader;
+        return this.resourceLoader;
     }
 
     /**
@@ -204,7 +204,7 @@ public class PathMatchingResourcePatternResolver {
      * Return the PathMatcher that this resource pattern resolver uses.
      */
     public AntPathMatcher getPathMatcher() {
-        return pathMatcher;
+        return this.pathMatcher;
     }
 
     public Resource getResource(String location) {

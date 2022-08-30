@@ -35,15 +35,15 @@ public class ResponseCodeMappingData implements UrlMappingData {
     }
 
     public String[] getTokens() {
-        return new String[] { responseCodeAsString };
+        return new String[] { this.responseCodeAsString };
     }
 
     public String[] getLogicalUrls() {
-        return new String[] { responseCodeAsString };
+        return new String[] { this.responseCodeAsString };
     }
 
     public String getUrlPattern() {
-        return responseCodeAsString;
+        return this.responseCodeAsString;
     }
 
     public boolean isOptional(int index) {
@@ -61,7 +61,7 @@ public class ResponseCodeMappingData implements UrlMappingData {
     }
 
     public int getResponseCode() {
-        return responseCode;
+        return this.responseCode;
     }
 
 }

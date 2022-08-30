@@ -68,7 +68,7 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public int hashCode() {
-        return configMap.hashCode();
+        return this.configMap.hashCode();
     }
 
     @Override
@@ -81,7 +81,7 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public String toString() {
-        return configMap.toString();
+        return this.configMap.toString();
     }
 
     @Override
@@ -91,17 +91,17 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public void setAt(Object key, Object value) {
-        configMap.put(key.toString(), value);
+        this.configMap.put(key.toString(), value);
     }
 
     @Override
     public int size() {
-        return configMap.size();
+        return this.configMap.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return configMap.isEmpty();
+        return this.configMap.isEmpty();
     }
 
     @Override
@@ -111,47 +111,47 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public boolean containsValue(Object value) {
-        return configMap.containsValue(value);
+        return this.configMap.containsValue(value);
     }
 
     @Override
     public Object get(Object key) {
-        return configMap.getProperty(key.toString());
+        return this.configMap.getProperty(key.toString());
     }
 
     @Override
     public Object put(String key, Object value) {
-        return configMap.put(key, value);
+        return this.configMap.put(key, value);
     }
 
     @Override
     public Object remove(Object key) {
-        return configMap.remove(key);
+        return this.configMap.remove(key);
     }
 
     @Override
     public void putAll(Map<? extends String, ?> m) {
-        configMap.putAll(m);
+        this.configMap.putAll(m);
     }
 
     @Override
     public void clear() {
-        configMap.clear();
+        this.configMap.clear();
     }
 
     @Override
     public Set<String> keySet() {
-        return configMap.keySet();
+        return this.configMap.keySet();
     }
 
     @Override
     public Collection<Object> values() {
-        return configMap.values();
+        return this.configMap.values();
     }
 
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        return configMap.entrySet();
+        return this.configMap.entrySet();
     }
 
     @Override
@@ -160,22 +160,22 @@ public abstract class NavigableMapConfig implements Config {
         if (LOG.isWarnEnabled()) {
             LOG.warn("A plugin or your application called the flatten() method which can degrade startup performance");
         }
-        return configMap;
+        return this.configMap;
     }
 
     @Override
     public Properties toProperties() {
-        return configMap.toProperties();
+        return this.configMap.toProperties();
     }
 
     @Override
     public Object navigate(String... path) {
-        return configMap.navigate(path);
+        return this.configMap.navigate(path);
     }
 
     @Override
     public Config merge(Map<String, Object> toMerge) {
-        configMap.merge(toMerge, true);
+        this.configMap.merge(toMerge, true);
         return this;
     }
 
@@ -188,7 +188,7 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public Iterator<Entry<String, Object>> iterator() {
-        return DefaultGroovyMethods.iterator(configMap);
+        return DefaultGroovyMethods.iterator(this.configMap);
     }
 
     @Override
@@ -224,10 +224,10 @@ public abstract class NavigableMapConfig implements Config {
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
         Object value = findInSystemEnvironment(key);
         if (value == null) {
-            value = getValueWithDotNotatedKeySupport(configMap, key);
+            value = getValueWithDotNotatedKeySupport(this.configMap, key);
         }
         if (value == null) {
-            value = configMap.get(key);
+            value = this.configMap.get(key);
         }
 
         return convertValueIfNecessary(value, targetType, defaultValue);
@@ -346,7 +346,7 @@ public abstract class NavigableMapConfig implements Config {
             else {
                 if (!(originalValue instanceof NavigableMap) || Map.class.isAssignableFrom(targetType)) {
                     try {
-                        T value = conversionService.convert(originalValue, targetType);
+                        T value = this.conversionService.convert(originalValue, targetType);
                         if (value instanceof ConfigObject) {
                             convertPropsToMap((ConfigObject) value);
                         }

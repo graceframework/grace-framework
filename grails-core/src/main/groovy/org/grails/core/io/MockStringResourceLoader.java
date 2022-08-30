@@ -33,8 +33,8 @@ public class MockStringResourceLoader extends MockResourceLoader {
 
     @Override
     public Resource getResource(String location) {
-        if (mockResources.containsKey(location)) {
-            return mockResources.get(location);
+        if (this.mockResources.containsKey(location)) {
+            return this.mockResources.get(location);
         }
 
         return super.getResource(location);
@@ -48,7 +48,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param res The resource itself
      */
     public void registerMockResource(String location, Resource res) {
-        mockResources.put(location, res);
+        this.mockResources.put(location, res);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      */
     public void registerMockResource(String location, String contents) {
         try {
-            mockResources.put(location, new GrailsByteArrayResource(contents.getBytes("UTF-8"), location));
+            this.mockResources.put(location, new GrailsByteArrayResource(contents.getBytes("UTF-8"), location));
         }
         catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
@@ -75,7 +75,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param contents The contents of the resource
      */
     public void registerMockResource(String location, byte[] contents) {
-        mockResources.put(location, new GrailsByteArrayResource(contents, location));
+        this.mockResources.put(location, new GrailsByteArrayResource(contents, location));
     }
 
 }

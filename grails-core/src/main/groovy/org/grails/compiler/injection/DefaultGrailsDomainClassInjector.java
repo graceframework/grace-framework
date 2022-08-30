@@ -202,7 +202,7 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
 
     private void injectToStringMethod(ClassNode classNode) {
         final boolean hasToString = GrailsASTUtils.implementsOrInheritsZeroArgMethod(
-                classNode, "toString", classesWithInjectedToString);
+                classNode, "toString", this.classesWithInjectedToString);
         final boolean hasToStringAnnotation = GrailsASTUtils.hasAnnotation(classNode, groovy.transform.ToString.class);
 
         if (!hasToString && !isEnum(classNode) && !hasToStringAnnotation) {
@@ -213,7 +213,7 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
             Statement s = new ReturnStatement(ge);
             MethodNode mn = new MethodNode("toString", Modifier.PUBLIC, new ClassNode(String.class), new Parameter[0], new ClassNode[0], s);
             classNode.addMethod(mn);
-            classesWithInjectedToString.add(classNode);
+            this.classesWithInjectedToString.add(classNode);
             AnnotatedNodeUtils.markAsGenerated(classNode, mn);
         }
     }

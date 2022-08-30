@@ -91,242 +91,242 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
     }
 
     public GrailsPrintWriter getTarget() {
-        return target;
+        return this.target;
     }
 
     public Writer getOut() {
-        return target.getOut();
+        return this.target.getOut();
     }
 
     public Writer unwrap() {
-        return target.unwrap();
+        return this.target.unwrap();
     }
 
     public GrailsPrintWriter leftShift(Object value) throws IOException {
-        return target.leftShift(value);
+        return this.target.leftShift(value);
     }
 
     public GrailsPrintWriter plus(Object value) throws IOException {
-        return target.plus(value);
+        return this.target.plus(value);
     }
 
     @Override
     public boolean checkError() {
-        return target.checkError();
+        return this.target.checkError();
     }
 
     @Override
     public void setError() {
-        target.setError();
+        this.target.setError();
     }
 
     @Override
     public void flush() {
-        target.flush();
+        this.target.flush();
     }
 
     @Override
     public void print(Object obj) {
-        target.print(obj);
+        this.target.print(obj);
     }
 
     @Override
     public void print(String s) {
-        target.print(s);
+        this.target.print(s);
     }
 
     @Override
     public void write(String s) {
-        target.write(s);
+        this.target.write(s);
     }
 
     @Override
     public void write(int c) {
-        target.write(c);
+        this.target.write(c);
     }
 
     @Override
     public void write(char[] buf, int off, int len) {
-        target.write(buf, off, len);
+        this.target.write(buf, off, len);
     }
 
     @Override
     public void write(String s, int off, int len) {
-        target.write(s, off, len);
+        this.target.write(s, off, len);
     }
 
     @Override
     public void write(char[] buf) {
-        target.write(buf);
+        this.target.write(buf);
     }
 
     @Override
     public void print(boolean b) {
-        target.print(b);
+        this.target.print(b);
     }
 
     @Override
     public void print(char c) {
-        target.print(c);
+        this.target.print(c);
     }
 
     @Override
     public void print(int i) {
-        target.print(i);
+        this.target.print(i);
     }
 
     @Override
     public void print(long l) {
-        target.print(l);
+        this.target.print(l);
     }
 
     @Override
     public void print(float f) {
-        target.print(f);
+        this.target.print(f);
     }
 
     @Override
     public void print(double d) {
-        target.print(d);
+        this.target.print(d);
     }
 
     @Override
     public void print(char[] s) {
-        target.print(s);
+        this.target.print(s);
     }
 
     @Override
     public void println() {
-        target.println();
+        this.target.println();
     }
 
     @Override
     public void println(boolean b) {
-        target.println(b);
+        this.target.println(b);
     }
 
     @Override
     public void println(char c) {
-        target.println(c);
+        this.target.println(c);
     }
 
     @Override
     public void println(int i) {
-        target.println(i);
+        this.target.println(i);
     }
 
     @Override
     public void println(long l) {
-        target.println(l);
+        this.target.println(l);
     }
 
     @Override
     public void println(float f) {
-        target.println(f);
+        this.target.println(f);
     }
 
     @Override
     public void println(double d) {
-        target.println(d);
+        this.target.println(d);
     }
 
     @Override
     public void println(char[] c) {
-        target.println(c);
+        this.target.println(c);
     }
 
     @Override
     public void println(String s) {
-        target.println(s);
+        this.target.println(s);
     }
 
     @Override
     public void println(Object o) {
-        target.println(o);
+        this.target.println(o);
     }
 
     @Override
     public PrintWriter append(char c) {
-        target.append(c);
+        this.target.append(c);
         return this;
     }
 
     @Override
     public PrintWriter append(CharSequence csq, int start, int end) {
-        target.append(csq, start, end);
+        this.target.append(csq, start, end);
         return this;
     }
 
     @Override
     public PrintWriter append(CharSequence csq) {
-        target.append(csq);
+        this.target.append(csq);
         return this;
     }
 
     public PrintWriter append(Object obj) {
-        target.append(obj);
+        this.target.append(obj);
         return this;
     }
 
     public void write(StreamCharBuffer otherBuffer) {
-        target.write(otherBuffer);
+        this.target.write(otherBuffer);
     }
 
     public void print(StreamCharBuffer otherBuffer) {
-        target.print(otherBuffer);
+        this.target.print(otherBuffer);
     }
 
     public void append(StreamCharBuffer otherBuffer) {
-        target.append(otherBuffer);
+        this.target.append(otherBuffer);
     }
 
     public void println(StreamCharBuffer otherBuffer) {
-        target.println(otherBuffer);
+        this.target.println(otherBuffer);
     }
 
     public GrailsPrintWriter leftShift(StreamCharBuffer otherBuffer) {
-        return target.leftShift(otherBuffer);
+        return this.target.leftShift(otherBuffer);
     }
 
     public void write(Writable writable) {
-        target.write(writable);
+        this.target.write(writable);
     }
 
     public void print(Writable writable) {
-        target.print(writable);
+        this.target.print(writable);
     }
 
     public GrailsPrintWriter leftShift(Writable writable) {
-        return target.leftShift(writable);
+        return this.target.leftShift(writable);
     }
 
     public boolean isUsed() {
-        return target.isUsed();
+        return this.target.isUsed();
     }
 
     public void setUsed(boolean newUsed) {
-        target.setUsed(newUsed);
+        this.target.setUsed(newUsed);
     }
 
     public boolean resetUsed() {
-        return target.resetUsed();
+        return this.target.resetUsed();
     }
 
     @Override
     public void close() {
-        target.close();
+        this.target.close();
     }
 
     public void markUsed() {
-        target.markUsed();
+        this.target.markUsed();
     }
 
     protected boolean isTrouble() {
-        return target.isTrouble();
+        return this.target.isTrouble();
     }
 
     protected void handleIOException(IOException e) {
-        target.handleIOException(e);
+        this.target.handleIOException(e);
     }
 
 }

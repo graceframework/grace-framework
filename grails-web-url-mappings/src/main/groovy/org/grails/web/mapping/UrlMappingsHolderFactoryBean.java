@@ -73,7 +73,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
     private UrlConverter grailsUrlConverter;
 
     public UrlMappings getObject() throws Exception {
-        return urlMappingsHolder;
+        return this.urlMappingsHolder;
     }
 
     public Class<UrlMappings> getObjectType() {
@@ -85,16 +85,16 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
     }
 
     public void afterPropertiesSet() throws Exception {
-        Assert.state(applicationContext != null, "Property [applicationContext] must be set!");
-        Assert.state(grailsApplication != null, "Property [grailsApplication] must be set!");
+        Assert.state(this.applicationContext != null, "Property [applicationContext] must be set!");
+        Assert.state(this.grailsApplication != null, "Property [grailsApplication] must be set!");
 
         List urlMappings = new ArrayList();
         List excludePatterns = new ArrayList();
 
-        GrailsClass[] mappings = grailsApplication.getArtefacts(UrlMappingsArtefactHandler.TYPE);
+        GrailsClass[] mappings = this.grailsApplication.getArtefacts(UrlMappingsArtefactHandler.TYPE);
 
-        final DefaultUrlMappingEvaluator mappingEvaluator = new DefaultUrlMappingEvaluator(applicationContext);
-        mappingEvaluator.setPluginManager(pluginManager);
+        final DefaultUrlMappingEvaluator mappingEvaluator = new DefaultUrlMappingEvaluator(this.applicationContext);
+        mappingEvaluator.setPluginManager(this.pluginManager);
 
         if (mappings.length == 0) {
             urlMappings.addAll(mappingEvaluator.evaluateMappings(DefaultUrlMappings.getMappings()));
@@ -126,7 +126,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
 
         DefaultUrlMappingsHolder defaultUrlMappingsHolder = new DefaultUrlMappingsHolder(urlMappings, excludePatterns, true);
 
-        Config config = grailsApplication.getConfig();
+        Config config = this.grailsApplication.getConfig();
         Integer cacheSize = config.getProperty(URL_MAPPING_CACHE_MAX_SIZE, Integer.class, null);
         if (cacheSize != null) {
             defaultUrlMappingsHolder.setMaxWeightedCacheCapacity(cacheSize);
@@ -139,10 +139,10 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         // call initialize() after settings are in place
         defaultUrlMappingsHolder.initialize();
 
-        final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(grailsApplication,
-                defaultUrlMappingsHolder, grailsUrlConverter);
+        final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
+                defaultUrlMappingsHolder, this.grailsUrlConverter);
 
-        ((ConfigurableApplicationContext) applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
+        ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
             @Override
             public void onApplicationEvent(ArtefactAdditionEvent event) {
                 GrailsClass artefact = event.getArtefact();
@@ -151,7 +151,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
                 }
             }
         });
-        urlMappingsHolder = grailsControllerUrlMappings;
+        this.urlMappingsHolder = grailsControllerUrlMappings;
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {

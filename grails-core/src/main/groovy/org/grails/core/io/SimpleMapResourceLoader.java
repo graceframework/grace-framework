@@ -32,11 +32,11 @@ public class SimpleMapResourceLoader implements ResourceLoader {
     private Map<String, Resource> resources = new ConcurrentHashMap<String, Resource>();
 
     public Map<String, Resource> getResources() {
-        return resources;
+        return this.resources;
     }
 
     public Resource getResource(String location) {
-        return resources.get(location);
+        return this.resources.get(location);
     }
 
     public ClassLoader getClassLoader() {

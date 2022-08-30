@@ -40,7 +40,7 @@ public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcesso
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        processAwareInterfaces(grailsApplication, bean);
+        processAwareInterfaces(this.grailsApplication, bean);
         return bean;
     }
 

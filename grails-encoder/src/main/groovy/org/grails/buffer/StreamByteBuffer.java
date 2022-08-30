@@ -79,28 +79,28 @@ public class StreamByteBuffer {
     public StreamByteBuffer(int chunkSize, ReadMode readMode) {
         this.chunkSize = chunkSize;
         this.readMode = readMode;
-        currentWriteChunk = new StreamByteBufferChunk(chunkSize);
-        output = new StreamByteBufferOutputStream();
-        input = new StreamByteBufferInputStream();
+        this.currentWriteChunk = new StreamByteBufferChunk(chunkSize);
+        this.output = new StreamByteBufferOutputStream();
+        this.input = new StreamByteBufferInputStream();
     }
 
     public OutputStream getOutputStream() {
-        return output;
+        return this.output;
     }
 
     public InputStream getInputStream() {
-        return input;
+        return this.input;
     }
 
     public void writeTo(OutputStream target) throws IOException {
         while (prepareRead() != -1) {
-            currentReadChunk.writeTo(target);
+            this.currentReadChunk.writeTo(target);
         }
     }
 
     public byte[] readAsByteArray() {
         byte[] buf = new byte[totalBytesUnread()];
-        input.readImpl(buf, 0, buf.length);
+        this.input.readImpl(buf, 0, buf.length);
         return buf;
     }
 
@@ -118,7 +118,7 @@ public class StreamByteBuffer {
             CharBuffer charbuffer = CharBuffer.allocate(unreadSize);
             ByteBuffer buf = null;
             while (prepareRead() != -1) {
-                buf = currentReadChunk.readToNioBuffer();
+                buf = this.currentReadChunk.readToNioBuffer();
                 boolean endOfInput = (prepareRead() == -1);
                 CoderResult result = decoder.decode(buf, charbuffer, endOfInput);
                 if (endOfInput) {
@@ -154,56 +154,56 @@ public class StreamByteBuffer {
 
     public int totalBytesUnread() {
         int total = 0;
-        if (readMode == ReadMode.REMOVE_AFTER_READING) {
-            total = totalBytesUnreadInList;
+        if (this.readMode == ReadMode.REMOVE_AFTER_READING) {
+            total = this.totalBytesUnreadInList;
         }
-        else if (readMode == ReadMode.RETAIN_AFTER_READING) {
+        else if (this.readMode == ReadMode.RETAIN_AFTER_READING) {
             prepareRetainAfterReading();
-            total = totalBytesUnreadInIterator;
+            total = this.totalBytesUnreadInIterator;
         }
-        if (currentReadChunk != null) {
-            total += currentReadChunk.bytesUnread();
+        if (this.currentReadChunk != null) {
+            total += this.currentReadChunk.bytesUnread();
         }
-        if (currentWriteChunk != currentReadChunk && currentWriteChunk != null) {
-            if (readMode == ReadMode.REMOVE_AFTER_READING) {
-                total += currentWriteChunk.bytesUnread();
+        if (this.currentWriteChunk != null && this.currentWriteChunk != this.currentReadChunk) {
+            if (this.readMode == ReadMode.REMOVE_AFTER_READING) {
+                total += this.currentWriteChunk.bytesUnread();
             }
-            else if (readMode == ReadMode.RETAIN_AFTER_READING) {
-                total += currentWriteChunk.bytesUsed();
+            else if (this.readMode == ReadMode.RETAIN_AFTER_READING) {
+                total += this.currentWriteChunk.bytesUsed();
             }
         }
         return total;
     }
 
     protected int allocateSpace() {
-        int spaceLeft = currentWriteChunk.spaceLeft();
+        int spaceLeft = this.currentWriteChunk.spaceLeft();
         if (spaceLeft == 0) {
-            chunks.add(currentWriteChunk);
-            totalBytesUnreadInList += currentWriteChunk.bytesUnread();
-            currentWriteChunk = new StreamByteBufferChunk(chunkSize);
-            spaceLeft = currentWriteChunk.spaceLeft();
+            this.chunks.add(this.currentWriteChunk);
+            this.totalBytesUnreadInList += this.currentWriteChunk.bytesUnread();
+            this.currentWriteChunk = new StreamByteBufferChunk(this.chunkSize);
+            spaceLeft = this.currentWriteChunk.spaceLeft();
         }
         return spaceLeft;
     }
 
     protected int prepareRead() {
         prepareRetainAfterReading();
-        int bytesUnread = (currentReadChunk != null) ? currentReadChunk.bytesUnread() : 0;
+        int bytesUnread = (this.currentReadChunk != null) ? this.currentReadChunk.bytesUnread() : 0;
         if (bytesUnread == 0) {
-            if (readMode == ReadMode.REMOVE_AFTER_READING && !chunks.isEmpty()) {
-                currentReadChunk = chunks.removeFirst();
-                bytesUnread = currentReadChunk.bytesUnread();
-                totalBytesUnreadInList -= bytesUnread;
+            if (this.readMode == ReadMode.REMOVE_AFTER_READING && !this.chunks.isEmpty()) {
+                this.currentReadChunk = this.chunks.removeFirst();
+                bytesUnread = this.currentReadChunk.bytesUnread();
+                this.totalBytesUnreadInList -= bytesUnread;
             }
-            else if (readMode == ReadMode.RETAIN_AFTER_READING && readIterator.hasNext()) {
-                currentReadChunk = readIterator.next();
-                currentReadChunk.reset();
-                bytesUnread = currentReadChunk.bytesUnread();
-                totalBytesUnreadInIterator -= bytesUnread;
+            else if (this.readMode == ReadMode.RETAIN_AFTER_READING && this.readIterator.hasNext()) {
+                this.currentReadChunk = this.readIterator.next();
+                this.currentReadChunk.reset();
+                bytesUnread = this.currentReadChunk.bytesUnread();
+                this.totalBytesUnreadInIterator -= bytesUnread;
             }
-            else if (currentReadChunk != currentWriteChunk) {
-                currentReadChunk = currentWriteChunk;
-                bytesUnread = currentReadChunk.bytesUnread();
+            else if (this.currentReadChunk != this.currentWriteChunk) {
+                this.currentReadChunk = this.currentWriteChunk;
+                bytesUnread = this.currentReadChunk.bytesUnread();
             }
             else {
                 bytesUnread = -1;
@@ -213,25 +213,25 @@ public class StreamByteBuffer {
     }
 
     public void reset() {
-        if (readMode == ReadMode.RETAIN_AFTER_READING) {
-            readIterator = null;
+        if (this.readMode == ReadMode.RETAIN_AFTER_READING) {
+            this.readIterator = null;
             prepareRetainAfterReading();
-            if (currentWriteChunk != null) {
-                currentWriteChunk.reset();
+            if (this.currentWriteChunk != null) {
+                this.currentWriteChunk.reset();
             }
         }
     }
 
     private void prepareRetainAfterReading() {
-        if (readMode == ReadMode.RETAIN_AFTER_READING && readIterator == null) {
-            readIterator = chunks.iterator();
-            totalBytesUnreadInIterator = totalBytesUnreadInList;
-            currentReadChunk = null;
+        if (this.readMode == ReadMode.RETAIN_AFTER_READING && this.readIterator == null) {
+            this.readIterator = this.chunks.iterator();
+            this.totalBytesUnreadInIterator = this.totalBytesUnreadInList;
+            this.currentReadChunk = null;
         }
     }
 
     public ReadMode getReadMode() {
-        return readMode;
+        return this.readMode;
     }
 
     public void setReadMode(ReadMode readMode) {
@@ -254,19 +254,19 @@ public class StreamByteBuffer {
 
         public StreamByteBufferChunk(int size) {
             this.size = size;
-            buffer = new byte[size];
+            this.buffer = new byte[size];
         }
 
         public ByteBuffer readToNioBuffer() {
-            if (pointer < used) {
+            if (this.pointer < this.used) {
                 ByteBuffer result;
-                if (pointer > 0 || used < size) {
-                    result = ByteBuffer.wrap(buffer, pointer, used - pointer);
+                if (this.pointer > 0 || this.used < this.size) {
+                    result = ByteBuffer.wrap(this.buffer, this.pointer, this.used - this.pointer);
                 }
                 else {
-                    result = ByteBuffer.wrap(buffer);
+                    result = ByteBuffer.wrap(this.buffer);
                 }
-                pointer = used;
+                this.pointer = this.used;
                 return result;
             }
 
@@ -274,8 +274,8 @@ public class StreamByteBuffer {
         }
 
         public boolean write(byte b) {
-            if (used < size) {
-                buffer[used++] = b;
+            if (this.used < this.size) {
+                this.buffer[this.used++] = b;
                 return true;
             }
 
@@ -283,44 +283,44 @@ public class StreamByteBuffer {
         }
 
         public void write(byte[] b, int off, int len) {
-            System.arraycopy(b, off, buffer, used, len);
-            used = used + len;
+            System.arraycopy(b, off, this.buffer, this.used, len);
+            this.used = this.used + len;
         }
 
         public void read(byte[] b, int off, int len) {
-            System.arraycopy(buffer, pointer, b, off, len);
-            pointer = pointer + len;
+            System.arraycopy(this.buffer, this.pointer, b, off, len);
+            this.pointer = this.pointer + len;
         }
 
         public void writeTo(OutputStream target) throws IOException {
-            if (pointer < used) {
-                target.write(buffer, pointer, used - pointer);
-                pointer = used;
+            if (this.pointer < this.used) {
+                target.write(this.buffer, this.pointer, this.used - this.pointer);
+                this.pointer = this.used;
             }
         }
 
         public void reset() {
-            pointer = 0;
+            this.pointer = 0;
         }
 
         public int bytesUsed() {
-            return used;
+            return this.used;
         }
 
         public int bytesUnread() {
-            return used - pointer;
+            return this.used - this.pointer;
         }
 
         public int read() {
-            if (pointer < used) {
-                return buffer[pointer++] & 0xff;
+            if (this.pointer < this.used) {
+                return this.buffer[this.pointer++] & 0xff;
             }
 
             return -1;
         }
 
         public int spaceLeft() {
-            return size - used;
+            return this.size - this.used;
         }
 
     }
@@ -349,7 +349,7 @@ public class StreamByteBuffer {
             while (bytesLeft > 0) {
                 int spaceLeft = allocateSpace();
                 int writeBytes = Math.min(spaceLeft, bytesLeft);
-                currentWriteChunk.write(b, currentOffset, writeBytes);
+                StreamByteBuffer.this.currentWriteChunk.write(b, currentOffset, writeBytes);
                 bytesLeft -= writeBytes;
                 currentOffset += writeBytes;
             }
@@ -357,17 +357,17 @@ public class StreamByteBuffer {
 
         @Override
         public void close() throws IOException {
-            closed = true;
+            this.closed = true;
         }
 
         public boolean isClosed() {
-            return closed;
+            return this.closed;
         }
 
         @Override
         public void write(int b) throws IOException {
             allocateSpace();
-            currentWriteChunk.write((byte) b);
+            StreamByteBuffer.this.currentWriteChunk.write((byte) b);
         }
 
         public StreamByteBuffer getBuffer() {
@@ -381,7 +381,7 @@ public class StreamByteBuffer {
         @Override
         public int read() throws IOException {
             prepareRead();
-            return currentReadChunk.read();
+            return StreamByteBuffer.this.currentReadChunk.read();
         }
 
         @Override
@@ -409,7 +409,7 @@ public class StreamByteBuffer {
             int totalBytesRead = 0;
             while (bytesLeft > 0 && bytesUnread != -1) {
                 int readBytes = Math.min(bytesUnread, bytesLeft);
-                currentReadChunk.read(b, currentOffset, readBytes);
+                StreamByteBuffer.this.currentReadChunk.read(b, currentOffset, readBytes);
                 bytesLeft -= readBytes;
                 currentOffset += readBytes;
                 totalBytesRead += readBytes;
@@ -424,7 +424,7 @@ public class StreamByteBuffer {
 
         @Override
         public synchronized void reset() throws IOException {
-            if (readMode == ReadMode.RETAIN_AFTER_READING) {
+            if (StreamByteBuffer.this.readMode == ReadMode.RETAIN_AFTER_READING) {
                 StreamByteBuffer.this.reset();
             }
             else {
@@ -445,12 +445,12 @@ public class StreamByteBuffer {
     }
 
     public void clear() {
-        chunks.clear();
-        currentReadChunk = null;
-        totalBytesUnreadInList = 0;
-        totalBytesUnreadInIterator = 0;
-        currentWriteChunk = new StreamByteBufferChunk(chunkSize);
-        readIterator = null;
+        this.chunks.clear();
+        this.currentReadChunk = null;
+        this.totalBytesUnreadInList = 0;
+        this.totalBytesUnreadInIterator = 0;
+        this.currentWriteChunk = new StreamByteBufferChunk(this.chunkSize);
+        this.readIterator = null;
     }
 
 }

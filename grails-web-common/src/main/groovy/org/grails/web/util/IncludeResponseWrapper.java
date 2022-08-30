@@ -65,39 +65,39 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public String getRedirectURL() {
-        return redirectURL;
+        return this.redirectURL;
     }
 
     @Override
     public String getContentType() {
-        return contentType;
+        return this.contentType;
     }
 
     @Override
     public void setStatus(int i) {
-        status = i;
+        this.status = i;
     }
 
     @Override
     public boolean isCommitted() {
-        return committed;
+        return this.committed;
     }
 
     @Override
     public void sendRedirect(String s) throws IOException {
-        committed = true;
-        redirectURL = s;
+        this.committed = true;
+        this.redirectURL = s;
         super.sendRedirect(s);
     }
 
     // don't add @Override since it's only a method as of Servlet 3.0
     public int getStatus() {
-        return status;
+        return this.status;
     }
 
     @Override
     public void setContentType(String s) {
-        contentType = s;
+        this.contentType = s;
     }
 
     @Override
@@ -125,29 +125,29 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-        if (usingWriter) {
+        if (this.usingWriter) {
             throw new IllegalStateException("Method getWriter() already called");
         }
 
-        if (!usingStream) {
-            usingStream = true;
-            byteBuffer = new StreamByteBuffer();
-            os = byteBuffer.getOutputStream();
-            sos = new ServletOutputStream() {
+        if (!this.usingStream) {
+            this.usingStream = true;
+            this.byteBuffer = new StreamByteBuffer();
+            this.os = this.byteBuffer.getOutputStream();
+            this.sos = new ServletOutputStream() {
 
                 @Override
                 public void write(byte[] b, int off, int len) throws IOException {
-                    os.write(b, off, len);
+                    IncludeResponseWrapper.this.os.write(b, off, len);
                 }
 
                 @Override
                 public void write(byte[] b) throws IOException {
-                    os.write(b);
+                    IncludeResponseWrapper.this.os.write(b);
                 }
 
                 @Override
                 public void write(int b) throws IOException {
-                    os.write(b);
+                    IncludeResponseWrapper.this.os.write(b);
                 }
 
                 @Override
@@ -163,22 +163,22 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
             };
         }
 
-        return sos;
+        return this.sos;
     }
 
     @Override
     public PrintWriter getWriter() throws IOException {
-        if (usingStream) {
+        if (this.usingStream) {
             throw new IllegalStateException("Method getOutputStream() already called");
         }
 
-        if (!usingWriter) {
-            usingWriter = true;
-            charBuffer = new StreamCharBuffer();
-            charBuffer.setNotifyParentBuffersEnabled(false);
-            pw = GrailsPrintWriterAdapter.newInstance(charBuffer.getWriter());
+        if (!this.usingWriter) {
+            this.usingWriter = true;
+            this.charBuffer = new StreamCharBuffer();
+            this.charBuffer.setNotifyParentBuffersEnabled(false);
+            this.pw = GrailsPrintWriterAdapter.newInstance(this.charBuffer.getWriter());
         }
-        return pw;
+        return this.pw;
     }
 
     public Object getContent() throws CharacterCodingException {
@@ -186,12 +186,12 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public Object getContent(String encoding) throws CharacterCodingException {
-        if (usingWriter) {
-            return charBuffer;
+        if (this.usingWriter) {
+            return this.charBuffer;
         }
 
-        if (usingStream) {
-            return byteBuffer.readAsString(encoding);
+        if (this.usingStream) {
+            return this.byteBuffer.readAsString(encoding);
         }
 
         return "";
@@ -202,12 +202,12 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
         if (isCommitted()) {
             throw new IllegalStateException("Response already committed");
         }
-        if (usingWriter) {
-            charBuffer.reset();
+        if (this.usingWriter) {
+            this.charBuffer.reset();
         }
 
-        if (usingStream) {
-            byteBuffer.reset();
+        if (this.usingStream) {
+            this.byteBuffer.reset();
         }
     }
 

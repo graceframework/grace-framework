@@ -43,14 +43,14 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        encodesToWriter.encodeToWriter(cbuf, off, len, out, null);
+        this.encodesToWriter.encodeToWriter(cbuf, off, len, out, null);
     }
 
     @Override
     public void write(String str, int off, int len) throws IOException {
         final EncodingState encodingState = lookupEncodingState(str, off, len);
-        if (shouldEncodeWith(encoder, encodingState)) {
-            encodesToWriter.encodeToWriter(str, off, len, out, encodingState);
+        if (shouldEncodeWith(this.encoder, encodingState)) {
+            this.encodesToWriter.encodeToWriter(str, off, len, out, encodingState);
         }
         else {
             out.write(str, off, len);
@@ -63,8 +63,8 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
     }
 
     protected EncodingState lookupEncodingState(String str, int off, int len) {
-        if (encodingStateRegistry != null) {
-            return encodingStateRegistry.getEncodingStateFor(str);
+        if (this.encodingStateRegistry != null) {
+            return this.encodingStateRegistry.getEncodingStateFor(str);
         }
         else {
             return null;
@@ -73,19 +73,19 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
 
     @Override
     public void write(int c) throws IOException {
-        encodesToWriter.encodeToWriter(CharSequences.createSingleCharSequence(c), 0, 1, out, null);
+        this.encodesToWriter.encodeToWriter(CharSequences.createSingleCharSequence(c), 0, 1, out, null);
     }
 
     @Override
     public EncodedAppender getEncodedAppender() {
         EncodedAppender encodedAppender = new WriterEncodedAppender(out);
-        encodedAppender.setIgnoreEncodingState(encodingStateRegistry == null);
+        encodedAppender.setIgnoreEncodingState(this.encodingStateRegistry == null);
         return encodedAppender;
     }
 
     @Override
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
 }

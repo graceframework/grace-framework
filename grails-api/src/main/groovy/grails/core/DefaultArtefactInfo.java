@@ -54,8 +54,8 @@ public class DefaultArtefactInfo implements ArtefactInfo {
     }
 
     private void addGrailsClassInternal(GrailsClass artefactClass, boolean atStart) {
-        grailsClassesByName = new LinkedHashMap<String, GrailsClass>(grailsClassesByName);
-        classesByName = new LinkedHashMap<String, Class<?>>(classesByName);
+        this.grailsClassesByName = new LinkedHashMap<String, GrailsClass>(this.grailsClassesByName);
+        this.classesByName = new LinkedHashMap<String, Class<?>>(this.classesByName);
 
         Class<?> actualClass = artefactClass.getClazz();
         boolean addToGrailsClasses = true;
@@ -63,18 +63,18 @@ public class DefaultArtefactInfo implements ArtefactInfo {
             addToGrailsClasses = ((InjectableGrailsClass) artefactClass).getAvailable();
         }
         if (addToGrailsClasses) {
-            GrailsClass oldVersion = grailsClassesByName.put(actualClass.getName(), artefactClass);
-            grailsClasses.remove(oldVersion);
+            GrailsClass oldVersion = this.grailsClassesByName.put(actualClass.getName(), artefactClass);
+            this.grailsClasses.remove(oldVersion);
         }
-        classesByName.put(actualClass.getName(), actualClass);
-        logicalPropertyNameToClassMap.put(artefactClass.getLogicalPropertyName(), artefactClass);
+        this.classesByName.put(actualClass.getName(), actualClass);
+        this.logicalPropertyNameToClassMap.put(artefactClass.getLogicalPropertyName(), artefactClass);
 
-        if (!grailsClasses.contains(artefactClass)) {
+        if (!this.grailsClasses.contains(artefactClass)) {
             if (atStart) {
-                grailsClasses.addFirst(artefactClass);
+                this.grailsClasses.addFirst(artefactClass);
             }
             else {
-                grailsClasses.addLast(artefactClass);
+                this.grailsClasses.addLast(artefactClass);
             }
         }
     }
@@ -83,36 +83,36 @@ public class DefaultArtefactInfo implements ArtefactInfo {
      * Refresh the arrays generated from the maps.
      */
     public synchronized void updateComplete() {
-        grailsClassesByName = Collections.unmodifiableMap(grailsClassesByName);
-        classesByName = Collections.unmodifiableMap(classesByName);
+        this.grailsClassesByName = Collections.unmodifiableMap(this.grailsClassesByName);
+        this.classesByName = Collections.unmodifiableMap(this.classesByName);
 
-        grailsClassesArray = grailsClasses.toArray(new GrailsClass[grailsClasses.size()]);
+        this.grailsClassesArray = this.grailsClasses.toArray(new GrailsClass[this.grailsClasses.size()]);
         // Make classes array
-        classes = classesByName.values().toArray(new Class[classesByName.size()]);
+        this.classes = this.classesByName.values().toArray(new Class[this.classesByName.size()]);
     }
 
     public Class<?>[] getClasses() {
-        return classes;
+        return this.classes;
     }
 
     public GrailsClass[] getGrailsClasses() {
-        return grailsClassesArray;
+        return this.grailsClassesArray;
     }
 
     public Map<String, Class<?>> getClassesByName() {
-        return classesByName;
+        return this.classesByName;
     }
 
     public Map<String, GrailsClass> getGrailsClassesByName() {
-        return grailsClassesByName;
+        return this.grailsClassesByName;
     }
 
     public GrailsClass getGrailsClass(String name) {
-        return grailsClassesByName.get(name);
+        return this.grailsClassesByName.get(name);
     }
 
     public GrailsClass getGrailsClassByLogicalPropertyName(String logicalName) {
-        return logicalPropertyNameToClassMap.get(logicalName);
+        return this.logicalPropertyNameToClassMap.get(logicalName);
     }
 
     public void addOverridableGrailsClass(GrailsClass artefactGrailsClass) {

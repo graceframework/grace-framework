@@ -69,14 +69,14 @@ public abstract class BaseApiProvider {
 
                 if (Modifier.isStatic(modifiers)) {
                     if (isConstructorCallMethod(javaMethod)) {
-                        constructors.add(javaMethod);
+                        this.constructors.add(javaMethod);
                     }
                     else {
-                        staticMethods.add(javaMethod);
+                        this.staticMethods.add(javaMethod);
                     }
                 }
                 else {
-                    instanceMethods.add(new ReflectionMetaMethod(new CachedMethod(javaMethod)) {
+                    this.instanceMethods.add(new ReflectionMetaMethod(new CachedMethod(javaMethod)) {
                         {
                             CachedClass[] paramTypes = super.getParameterTypes();
                             if (paramTypes.length > 0) {

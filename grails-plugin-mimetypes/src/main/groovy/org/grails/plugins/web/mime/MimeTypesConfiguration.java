@@ -65,7 +65,7 @@ public class MimeTypesConfiguration {
 
     @Bean
     public MimeType[] mimeTypes() {
-        final Config config = grailsApplication.getConfig();
+        final Config config = this.grailsApplication.getConfig();
         final Map<CharSequence, Object> mimeConfig = getMimeConfig(config);
         MimeType[] mimeTypes;
         if (mimeConfig == null || mimeConfig.isEmpty()) {

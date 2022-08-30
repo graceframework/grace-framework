@@ -68,7 +68,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public boolean isAllowUnwrappingOut() {
-        return allowUnwrappingOut;
+        return this.allowUnwrappingOut;
     }
 
     public Writer unwrap() {
@@ -79,11 +79,11 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public boolean isDestinationActivated() {
-        return out != null;
+        return this.out != null;
     }
 
     public Writer getOut() {
-        return out;
+        return this.out;
     }
 
     public void setOut(Writer newOut) {
@@ -109,8 +109,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      * @throws IOException
      */
     public GrailsPrintWriter leftShift(Object obj) throws IOException {
-        if (trouble || obj == null) {
-            usageFlag = true;
+        if (this.trouble || obj == null) {
+            this.usageFlag = true;
             return this;
         }
 
@@ -129,7 +129,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         }
         else if (obj instanceof CharSequence) {
             try {
-                usageFlag = true;
+                this.usageFlag = true;
                 CharSequences.writeCharSequence(getOut(), (CharSequence) obj);
             }
             catch (IOException e) {
@@ -143,7 +143,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public GrailsPrintWriter plus(Object value) throws IOException {
-        usageFlag = true;
+        this.usageFlag = true;
         return leftShift(value);
     }
 
@@ -156,11 +156,11 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      *         underlying output stream or during a format conversion.
      */
     public boolean checkError() {
-        return trouble;
+        return this.trouble;
     }
 
     public void setError() {
-        trouble = true;
+        this.trouble = true;
     }
 
     /**
@@ -170,7 +170,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     @Override
     public synchronized void flush() {
-        if (trouble) {
+        if (this.trouble) {
             return;
         }
 
@@ -185,18 +185,18 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     boolean isTrouble() {
-        return trouble;
+        return this.trouble;
     }
 
     void handleIOException(IOException e) {
-        if (trouble) {
+        if (this.trouble) {
             return;
         }
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("I/O exception in GrailsPrintWriter: " + e.getMessage(), e);
         }
-        trouble = true;
+        this.trouble = true;
         setError();
     }
 
@@ -211,8 +211,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      * @see java.lang.Object#toString()
      */
     public void print(final Object obj) {
-        if (trouble || obj == null) {
-            usageFlag = true;
+        if (this.trouble || obj == null) {
+            this.usageFlag = true;
             return;
         }
 
@@ -231,7 +231,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         }
         else if (obj instanceof CharSequence) {
             try {
-                usageFlag = true;
+                this.usageFlag = true;
                 CharSequences.writeCharSequence(getOut(), (CharSequence) obj);
             }
             catch (IOException e) {
@@ -254,7 +254,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     public void print(final String s) {
         if (s == null) {
-            usageFlag = true;
+            this.usageFlag = true;
             return;
         }
         write(s);
@@ -268,8 +268,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     @Override
     public void write(final String s) {
-        usageFlag = true;
-        if (trouble || s == null) {
+        this.usageFlag = true;
+        if (this.trouble || s == null) {
             return;
         }
 
@@ -288,8 +288,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     @Override
     public void write(final int c) {
-        usageFlag = true;
-        if (trouble) {
+        this.usageFlag = true;
+        if (this.trouble) {
             return;
         }
 
@@ -310,8 +310,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     @Override
     public void write(final char buf[], final int off, final int len) {
-        usageFlag = true;
-        if (trouble || buf == null || len == 0) {
+        this.usageFlag = true;
+        if (this.trouble || buf == null || len == 0) {
             return;
         }
         try {
@@ -331,8 +331,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      */
     @Override
     public void write(final String s, final int off, final int len) {
-        usageFlag = true;
-        if (trouble || s == null || s.length() == 0) {
+        this.usageFlag = true;
+        if (this.trouble || s == null || s.length() == 0) {
             return;
         }
 
@@ -385,7 +385,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public void println() {
-        usageFlag = true;
+        this.usageFlag = true;
         write(CRLF);
     }
 
@@ -437,7 +437,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public GrailsPrintWriter append(final char c) {
         try {
-            usageFlag = true;
+            this.usageFlag = true;
             getOut().append(c);
         }
         catch (IOException e) {
@@ -449,7 +449,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public GrailsPrintWriter append(final CharSequence csq, final int start, final int end) {
         try {
-            usageFlag = true;
+            this.usageFlag = true;
             if (csq == null) {
                 appendNullCharSequence();
             }
@@ -470,7 +470,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     @Override
     public GrailsPrintWriter append(final CharSequence csq) {
         try {
-            usageFlag = true;
+            this.usageFlag = true;
             if (csq == null) {
                 appendNullCharSequence();
             }
@@ -495,8 +495,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public void write(final StreamCharBuffer otherBuffer) {
-        usageFlag = true;
-        if (trouble) {
+        this.usageFlag = true;
+        if (this.trouble) {
             return;
         }
 
@@ -512,8 +512,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         boolean allowCaching = markUsed;
 
         Writer currentOut = getOut();
-        if (allowCaching && streamCharBufferTarget != null && previousOut == currentOut) {
-            return streamCharBufferTarget;
+        if (allowCaching && this.streamCharBufferTarget != null && this.previousOut == currentOut) {
+            return this.streamCharBufferTarget;
         }
 
         Writer target = currentOut;
@@ -539,8 +539,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         }
 
         if (allowCaching) {
-            streamCharBufferTarget = result;
-            previousOut = currentOut;
+            this.streamCharBufferTarget = result;
+            this.previousOut = currentOut;
         }
 
         return result;
@@ -576,8 +576,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
             return;
         }
 
-        usageFlag = true;
-        if (trouble) {
+        this.usageFlag = true;
+        if (this.trouble) {
             return;
         }
 
@@ -613,7 +613,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public boolean isUsed() {
-        if (usageFlag) {
+        if (this.usageFlag) {
             return true;
         }
 
@@ -624,16 +624,16 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
                 return true;
             }
         }
-        return usageFlag;
+        return this.usageFlag;
     }
 
     public void setUsed(boolean newUsed) {
-        usageFlag = newUsed;
+        this.usageFlag = newUsed;
     }
 
     public boolean resetUsed() {
-        boolean prevUsed = usageFlag;
-        usageFlag = false;
+        boolean prevUsed = this.usageFlag;
+        this.usageFlag = false;
         return prevUsed;
     }
 
@@ -713,10 +713,10 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     public MetaClass getMetaClass() {
-        if (metaClass == null) {
-            metaClass = InvokerHelper.getMetaClass(getClass());
+        if (this.metaClass == null) {
+            this.metaClass = InvokerHelper.getMetaClass(getClass());
         }
-        return metaClass;
+        return this.metaClass;
     }
 
     public void setMetaClass(MetaClass metaClass) {

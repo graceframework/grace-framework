@@ -62,119 +62,119 @@ public class DefaultConvertersConfiguration {
     public ValueConverter defaultGrailsBigDecimalConverter() {
         LocaleAwareBigDecimalConverter converter = new LocaleAwareBigDecimalConverter();
         converter.setTargetType(BigDecimal.class);
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         return converter;
     }
 
     @Bean
     public FormattedValueConverter offsetDateTimeConverter() {
-        return jsr310ConvertersConfiguration.offsetDateTimeConverter();
+        return this.jsr310ConvertersConfiguration.offsetDateTimeConverter();
     }
 
     @Bean
     public ValueConverter offsetDateTimeValueConverter() {
-        return jsr310ConvertersConfiguration.offsetDateTimeValueConverter();
+        return this.jsr310ConvertersConfiguration.offsetDateTimeValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor offsetDateTimeStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.offsetDateTimeStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.offsetDateTimeStructuredBindingEditor();
     }
 
     @Bean
     public FormattedValueConverter offsetTimeConverter() {
-        return jsr310ConvertersConfiguration.offsetTimeConverter();
+        return this.jsr310ConvertersConfiguration.offsetTimeConverter();
     }
 
     @Bean
     public ValueConverter offsetTimeValueConverter() {
-        return jsr310ConvertersConfiguration.offsetTimeValueConverter();
+        return this.jsr310ConvertersConfiguration.offsetTimeValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor offsetTimeStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.offsetTimeStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.offsetTimeStructuredBindingEditor();
     }
 
     @Bean
     public FormattedValueConverter localDateTimeConverter() {
-        return jsr310ConvertersConfiguration.localDateTimeConverter();
+        return this.jsr310ConvertersConfiguration.localDateTimeConverter();
     }
 
     @Bean
     public ValueConverter localDateTimeValueConverter() {
-        return jsr310ConvertersConfiguration.localDateTimeValueConverter();
+        return this.jsr310ConvertersConfiguration.localDateTimeValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor localDateTimeStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.localDateTimeStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.localDateTimeStructuredBindingEditor();
     }
 
     @Bean
     public FormattedValueConverter localDateConverter() {
-        return jsr310ConvertersConfiguration.localDateConverter();
+        return this.jsr310ConvertersConfiguration.localDateConverter();
     }
 
     @Bean
     public ValueConverter localDateValueConverter() {
-        return jsr310ConvertersConfiguration.localDateValueConverter();
+        return this.jsr310ConvertersConfiguration.localDateValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor localDateStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.localDateStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.localDateStructuredBindingEditor();
     }
 
     @Bean
     public FormattedValueConverter localTimeConverter() {
-        return jsr310ConvertersConfiguration.localTimeConverter();
+        return this.jsr310ConvertersConfiguration.localTimeConverter();
     }
 
     @Bean
     public ValueConverter localTimeValueConverter() {
-        return jsr310ConvertersConfiguration.localTimeValueConverter();
+        return this.jsr310ConvertersConfiguration.localTimeValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor localTimeStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.localTimeStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.localTimeStructuredBindingEditor();
     }
 
     @Bean
     public FormattedValueConverter zonedDateTimeConverter() {
-        return jsr310ConvertersConfiguration.zonedDateTimeConverter();
+        return this.jsr310ConvertersConfiguration.zonedDateTimeConverter();
     }
 
     @Bean
     public ValueConverter zonedDateTimeValueConverter() {
-        return jsr310ConvertersConfiguration.zonedDateTimeValueConverter();
+        return this.jsr310ConvertersConfiguration.zonedDateTimeValueConverter();
     }
 
     @SuppressWarnings("rawtypes")
     @Bean
     public TypedStructuredBindingEditor zonedDateTimeStructuredBindingEditor() {
-        return jsr310ConvertersConfiguration.zonedDateTimeStructuredBindingEditor();
+        return this.jsr310ConvertersConfiguration.zonedDateTimeStructuredBindingEditor();
     }
 
     @Bean
     public ValueConverter periodValueConverter() {
-        return jsr310ConvertersConfiguration.periodValueConverter();
+        return this.jsr310ConvertersConfiguration.periodValueConverter();
     }
 
     @Bean
     public ValueConverter instantStringValueConverter() {
-        return jsr310ConvertersConfiguration.instantStringValueConverter();
+        return this.jsr310ConvertersConfiguration.instantStringValueConverter();
     }
 
     @Bean
     public ValueConverter instantValueConverter() {
-        return jsr310ConvertersConfiguration.instantValueConverter();
+        return this.jsr310ConvertersConfiguration.instantValueConverter();
     }
 
     @Bean
@@ -186,15 +186,15 @@ public class DefaultConvertersConfiguration {
     public ValueConverter defaultGrailsBigIntegerConverter() {
         LocaleAwareBigDecimalConverter converter = new LocaleAwareBigDecimalConverter();
         converter.setTargetType(BigInteger.class);
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         return converter;
     }
 
     @Bean
     public DateConversionHelper defaultDateConverter() {
         DateConversionHelper converter = new DateConversionHelper();
-        converter.setDateParsingLenient(configurationProperties.isDateParsingLenient());
-        converter.setFormatStrings(configurationProperties.getDateFormats());
+        converter.setDateParsingLenient(this.configurationProperties.isDateParsingLenient());
+        converter.setFormatStrings(this.configurationProperties.getDateFormats());
         return converter;
     }
 
@@ -206,7 +206,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultShortConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Short.class);
         return converter;
     }
@@ -214,7 +214,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultshortConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(short.class);
         return converter;
     }
@@ -222,7 +222,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultIntegerConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Integer.class);
         return converter;
     }
@@ -230,7 +230,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultintConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(int.class);
         return converter;
     }
@@ -238,7 +238,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultFloatConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Float.class);
         return converter;
     }
@@ -246,7 +246,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultfloatConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(float.class);
         return converter;
     }
@@ -254,7 +254,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultLongConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Long.class);
         return converter;
     }
@@ -262,7 +262,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultlongConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(long.class);
         return converter;
     }
@@ -270,7 +270,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultDoubleConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Double.class);
         return converter;
     }
@@ -278,7 +278,7 @@ public class DefaultConvertersConfiguration {
     @Bean
     public LocaleAwareNumberConverter defaultdoubleConverter() {
         final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
-        converter.setLocaleResolver(localResolver);
+        converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(double.class);
         return converter;
     }

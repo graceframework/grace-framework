@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,19 +40,19 @@ public class SimpleBindingError implements BindingError {
     }
 
     public Object getObject() {
-        return object;
+        return this.object;
     }
 
     public String getPropertyName() {
-        return propertyName;
+        return this.propertyName;
     }
 
     public Object getRejectedValue() {
-        return rejectedValue;
+        return this.rejectedValue;
     }
 
     public Throwable getCause() {
-        return cause;
+        return this.cause;
     }
 
 }

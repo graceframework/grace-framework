@@ -69,7 +69,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     }
 
     private void verifyContextIsInitialized() {
-        if (mappingContext == null) {
+        if (this.mappingContext == null) {
             throw new GrailsConfigurationException("That API cannot be accessed before the spring context is initialized");
         }
         else {
@@ -77,13 +77,13 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
                 log.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. " +
                         "Use the mapping context API instead");
             }
-            if (persistentEntity == null) {
-                persistentEntity = mappingContext.getPersistentEntity(this.getFullName());
-                if (persistentEntity == null) {
+            if (this.persistentEntity == null) {
+                this.persistentEntity = this.mappingContext.getPersistentEntity(this.getFullName());
+                if (this.persistentEntity == null) {
                     MappingContext concreteMappingContext = getApplication().getMappingContext();
                     if (concreteMappingContext.getClass() == KeyValueMappingContext.class) {
                         // In a unit testing context, allow
-                        persistentEntity = concreteMappingContext.addPersistentEntity(getClazz());
+                        this.persistentEntity = concreteMappingContext.addPersistentEntity(getClazz());
                     }
                     else {
                         throw new GrailsConfigurationException("Could not retrieve the respective entity for domain " +
@@ -96,17 +96,17 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
 
     @Override
     public boolean isAutowire() {
-        if (autowire == null) {
+        if (this.autowire == null) {
             verifyContextIsInitialized();
-            autowire = persistentEntity.getMapping().getMappedForm().isAutowire();
+            this.autowire = this.persistentEntity.getMapping().getMappedForm().isAutowire();
         }
-        return autowire;
+        return this.autowire;
     }
 
     @Override
     public boolean isOwningClass(Class domainClass) {
         verifyContextIsInitialized();
-        return persistentEntity.isOwningEntity(mappingContext.getPersistentEntity(domainClass.getName()));
+        return this.persistentEntity.isOwningEntity(this.mappingContext.getPersistentEntity(domainClass.getName()));
     }
 
     /* (non-Javadoc)
@@ -132,16 +132,16 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     @Override
     public Map getConstrainedProperties() {
         verifyContextIsInitialized();
-        if (constrainedProperties == null) {
+        if (this.constrainedProperties == null) {
             ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery.class);
             if (constrainedDiscovery == null) {
-                constrainedProperties = Collections.emptyMap();
+                this.constrainedProperties = Collections.emptyMap();
             }
             else {
-                constrainedProperties = constrainedDiscovery.findConstrainedProperties(persistentEntity);
+                this.constrainedProperties = constrainedDiscovery.findConstrainedProperties(this.persistentEntity);
             }
         }
-        return constrainedProperties;
+        return this.constrainedProperties;
     }
 
     /* (non-Javadoc)
@@ -149,7 +149,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
      */
     public Validator getValidator() {
         verifyContextIsInitialized();
-        return mappingContext.getEntityValidator(persistentEntity);
+        return this.mappingContext.getEntityValidator(this.persistentEntity);
     }
 
     /* (non-Javadoc)
@@ -157,7 +157,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
      */
     public void setValidator(Validator validator) {
         verifyContextIsInitialized();
-        mappingContext.addEntityValidator(persistentEntity, validator);
+        this.mappingContext.addEntityValidator(this.persistentEntity, validator);
     }
 
 }

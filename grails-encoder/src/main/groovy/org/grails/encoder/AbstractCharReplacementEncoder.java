@@ -248,7 +248,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
      * @see CodecIdentifierProvider#getCodecIdentifier()
      */
     public CodecIdentifier getCodecIdentifier() {
-        return codecIdentifier;
+        return this.codecIdentifier;
     }
 
 }

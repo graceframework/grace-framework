@@ -29,18 +29,18 @@ public class HTMLJSCodec implements CodecFactory {
     protected final Decoder[] decoders;
 
     public HTMLJSCodec() {
-        encoders = new StreamingEncoder[] { (StreamingEncoder) new HTMLEncoder(), (StreamingEncoder) JavaScriptCodec.getENCODER() };
-        decoders = new Decoder[] { JavaScriptCodec.getDECODER(), new HTML4Decoder() };
+        this.encoders = new StreamingEncoder[] { (StreamingEncoder) new HTMLEncoder(), (StreamingEncoder) JavaScriptCodec.getENCODER() };
+        this.decoders = new Decoder[] { JavaScriptCodec.getDECODER(), new HTML4Decoder() };
     }
 
     @Override
     public Encoder getEncoder() {
-        return ChainedEncoder.createFor(encoders);
+        return ChainedEncoder.createFor(this.encoders);
     }
 
     @Override
     public Decoder getDecoder() {
-        return new ChainedDecoder(decoders);
+        return new ChainedDecoder(this.decoders);
     }
 
 }

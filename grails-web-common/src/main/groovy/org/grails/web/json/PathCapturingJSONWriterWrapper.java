@@ -28,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
-    private final Log log = LogFactory.getLog(getClass());
+    private static final Log log = LogFactory.getLog(PathCapturingJSONWriterWrapper.class);
 
     private final boolean debugCurrentStack = true;
 
@@ -44,63 +44,63 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     @Override
     public JSONWriter append(String s) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("append(%s)", s));
+            log.debug(this.delegate.mode.name() + " > " + String.format("append(%s)", s));
         }
-        delegate.append(s);
+        this.delegate.append(s);
         return this;
     }
 
     @Override
     public void comma() {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
             log.debug("comma()");
         }
-        delegate.comma();
+        this.delegate.comma();
     }
 
     @Override
     public JSONWriter array() {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("array()"));
+            log.debug(this.delegate.mode.name() + " > " + String.format("array()"));
         }
-        pathStack.push(new IndexElement(-1));
-        delegate.array();
+        this.pathStack.push(new IndexElement(-1));
+        this.delegate.array();
         return this;
     }
 
     @Override
     public JSONWriter end(Mode m, char c) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("end(%s, %s)", m, c));
+            log.debug(this.delegate.mode.name() + " > " + String.format("end(%s, %s)", m, c));
         }
-        delegate.end(m, c);
+        this.delegate.end(m, c);
         return this;
     }
 
     @Override
     public JSONWriter endArray() {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("endArray()"));
+            log.debug(this.delegate.mode.name() + " > " + String.format("endArray()"));
         }
-        pathStack.pop();
-        delegate.endArray();
-        if (delegate.mode == Mode.KEY) {
-            pathStack.pop();
+        this.pathStack.pop();
+        this.delegate.endArray();
+        if (this.delegate.mode == Mode.KEY) {
+            this.pathStack.pop();
         }
         return this;
     }
@@ -108,14 +108,14 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     @Override
     public JSONWriter endObject() {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("endObject()"));
+            log.debug(this.delegate.mode.name() + " > " + String.format("endObject()"));
         }
-        delegate.endObject();
-        if (delegate.mode != Mode.ARRAY && pathStack.size() > 0) {
-            pathStack.pop();
+        this.delegate.endObject();
+        if (this.delegate.mode != Mode.ARRAY && this.pathStack.size() > 0) {
+            this.pathStack.pop();
         }
         return this;
     }
@@ -123,66 +123,66 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     @Override
     public JSONWriter key(String s) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("key(%s)", s));
+            log.debug(this.delegate.mode.name() + " > " + String.format("key(%s)", s));
         }
-        pathStack.push(new PropertyElement(s));
-        delegate.key(s);
+        this.pathStack.push(new PropertyElement(s));
+        this.delegate.key(s);
         return this;
     }
 
     @Override
     public JSONWriter object() {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("object()"));
+            log.debug(this.delegate.mode.name() + " > " + String.format("object()"));
         }
-        if (delegate.mode == Mode.ARRAY) {
+        if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();
         }
-        delegate.object();
+        this.delegate.object();
         return this;
     }
 
     @Override
     public void pop(Mode c) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("pop(%s)", c));
+            log.debug(this.delegate.mode.name() + " > " + String.format("pop(%s)", c));
         }
-        delegate.pop(c);
+        this.delegate.pop(c);
     }
 
     @Override
     public void push(Mode c) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("push(%s)", c));
+            log.debug(this.delegate.mode.name() + " > " + String.format("push(%s)", c));
         }
-        delegate.push(c);
+        this.delegate.push(c);
     }
 
     private void pushNextIndex() {
         int x = nextIndex();
-        pathStack.pop();
-        pathStack.push(new IndexElement(x));
+        this.pathStack.pop();
+        this.pathStack.push(new IndexElement(x));
     }
 
     private int nextIndex() {
-        int x = ((IndexElement) pathStack.peek()).index + 1;
+        int x = ((IndexElement) this.pathStack.peek()).index + 1;
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("Next index: " + x));
+            log.debug(this.delegate.mode.name() + " > " + String.format("Next index: " + x));
         }
         return x;
     }
@@ -190,73 +190,73 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     @Override
     public JSONWriter value(boolean b) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("value(boolean %b)", b));
+            log.debug(this.delegate.mode.name() + " > " + String.format("value(boolean %b)", b));
         }
-        if (delegate.mode == Mode.ARRAY) {
+        if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();
         }
         else {
-            pathStack.pop();
+            this.pathStack.pop();
         }
-        delegate.value(b);
+        this.delegate.value(b);
         return this;
     }
 
     @Override
     public JSONWriter value(double d) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("value(double %s)", d));
+            log.debug(this.delegate.mode.name() + " > " + String.format("value(double %s)", d));
         }
-        if (delegate.mode == Mode.ARRAY) {
+        if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();
         }
         else {
-            pathStack.pop();
+            this.pathStack.pop();
         }
-        delegate.value(d);
+        this.delegate.value(d);
         return this;
     }
 
     @Override
     public JSONWriter value(long l) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("value(long %s)", l));
+            log.debug(this.delegate.mode.name() + " > " + String.format("value(long %s)", l));
         }
-        if (delegate.mode == Mode.ARRAY) {
+        if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();
         }
         else {
-            pathStack.pop();
+            this.pathStack.pop();
         }
-        delegate.value(l);
+        this.delegate.value(l);
         return this;
     }
 
     @Override
     public JSONWriter value(Object o) {
         if (log.isDebugEnabled()) {
-            if (debugCurrentStack) {
-                log.debug(delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
+            if (this.debugCurrentStack) {
+                log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(delegate.mode.name() + " > " + String.format("value(Object %s)", o));
+            log.debug(this.delegate.mode.name() + " > " + String.format("value(Object %s)", o));
         }
 
-        if (delegate.mode == Mode.ARRAY) {
+        if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();
         }
         else {
-            pathStack.pop();
+            this.pathStack.pop();
         }
-        delegate.value(o);
+        this.delegate.value(o);
         return this;
     }
 
@@ -274,7 +274,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
         @Override
         public String toString() {
-            return "." + property;
+            return "." + this.property;
         }
 
     }
@@ -289,7 +289,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
         @Override
         public String toString() {
-            return "[" + index + "]";
+            return "[" + this.index + "]";
         }
 
     }
@@ -297,7 +297,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
     public String getStackReference(int depth) {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < depth; i++) {
-            PathElement el = pathStack.get(i);
+            PathElement el = this.pathStack.get(i);
             out.append(el.toString());
         }
         return out.toString();
@@ -305,7 +305,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
     public String getCurrentStrackReference() {
         StringBuilder out = new StringBuilder();
-        for (PathElement el : pathStack) {
+        for (PathElement el : this.pathStack) {
             out.append(el.toString());
         }
         return out.toString();

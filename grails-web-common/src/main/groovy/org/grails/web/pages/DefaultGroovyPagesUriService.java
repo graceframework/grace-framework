@@ -60,10 +60,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
             TupleStringKey that = (TupleStringKey) o;
 
-            if (keyPart1 != null ? !keyPart1.equals(that.keyPart1) : that.keyPart1 != null) {
+            if (this.keyPart1 != null ? !this.keyPart1.equals(that.keyPart1) : that.keyPart1 != null) {
                 return false;
             }
-            if (keyPart2 != null ? !keyPart2.equals(that.keyPart2) : that.keyPart2 != null) {
+            if (this.keyPart2 != null ? !this.keyPart2.equals(that.keyPart2) : that.keyPart2 != null) {
                 return false;
             }
 
@@ -72,8 +72,8 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
         @Override
         public int hashCode() {
-            int result = keyPart1 != null ? keyPart1.hashCode() : 0;
-            result = 31 * result + (keyPart2 != null ? keyPart2.hashCode() : 0);
+            int result = this.keyPart1 != null ? this.keyPart1.hashCode() : 0;
+            result = 31 * result + (this.keyPart2 != null ? this.keyPart2.hashCode() : 0);
             return result;
         }
 
@@ -86,8 +86,8 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
         private String controllerClassName;
 
         ControllerObjectKey(GroovyObject controller) {
-            controllerHashCode = controller.getClass().hashCode();
-            controllerClassName = controller.getClass().getName();
+            this.controllerHashCode = controller.getClass().hashCode();
+            this.controllerClassName = controller.getClass().getName();
         }
 
         @Override
@@ -101,10 +101,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
             ControllerObjectKey that = (ControllerObjectKey) o;
 
-            if (controllerHashCode != that.controllerHashCode) {
+            if (this.controllerHashCode != that.controllerHashCode) {
                 return false;
             }
-            if (!controllerClassName.equals(that.controllerClassName)) {
+            if (!this.controllerClassName.equals(that.controllerClassName)) {
                 return false;
             }
 
@@ -113,8 +113,8 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
 
         @Override
         public int hashCode() {
-            int result = (int) (controllerHashCode ^ (controllerHashCode >>> 32));
-            result = 31 * result + controllerClassName.hashCode();
+            int result = (int) (this.controllerHashCode ^ (this.controllerHashCode >>> 32));
+            result = 31 * result + this.controllerClassName.hashCode();
             return result;
         }
 
@@ -126,10 +126,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
     @Override
     public String getTemplateURI(String controllerName, String templateName) {
         TupleStringKey key = new TupleStringKey(controllerName, templateName);
-        String uri = templateURICache.get(key);
+        String uri = this.templateURICache.get(key);
         if (uri == null) {
             uri = super.getTemplateURI(controllerName, templateName);
-            String prevuri = templateURICache.putIfAbsent(key, uri);
+            String prevuri = this.templateURICache.putIfAbsent(key, uri);
             if (prevuri != null) {
                 return prevuri;
             }
@@ -143,10 +143,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
     @Override
     public String getDeployedViewURI(String controllerName, String viewName) {
         TupleStringKey key = new TupleStringKey(controllerName, viewName);
-        String uri = deployedViewURICache.get(key);
+        String uri = this.deployedViewURICache.get(key);
         if (uri == null) {
             uri = super.getDeployedViewURI(controllerName, viewName);
-            String prevuri = deployedViewURICache.putIfAbsent(key, uri);
+            String prevuri = this.deployedViewURICache.putIfAbsent(key, uri);
             if (prevuri != null) {
                 return prevuri;
             }
@@ -157,10 +157,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
     @Override
     public String getLogicalControllerName(GroovyObject controller) {
         ControllerObjectKey key = new ControllerObjectKey(controller);
-        String name = controllerNameCache.get(key);
+        String name = this.controllerNameCache.get(key);
         if (name == null) {
             name = super.getLogicalControllerName(controller);
-            String prevname = name != null ? controllerNameCache.putIfAbsent(key, name) : null;
+            String prevname = name != null ? this.controllerNameCache.putIfAbsent(key, name) : null;
             if (prevname != null) {
                 return prevname;
             }
@@ -183,10 +183,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
     @Override
     public String getNoSuffixViewURI(String controllerName, String viewName) {
         TupleStringKey key = new TupleStringKey(controllerName, viewName);
-        String uri = noSuffixViewURICache.get(key);
+        String uri = this.noSuffixViewURICache.get(key);
         if (uri == null) {
             uri = super.getNoSuffixViewURI(controllerName, viewName);
-            String prevuri = noSuffixViewURICache.putIfAbsent(key, uri);
+            String prevuri = this.noSuffixViewURICache.putIfAbsent(key, uri);
             if (prevuri != null) {
                 return prevuri;
             }
@@ -207,10 +207,10 @@ public class DefaultGroovyPagesUriService extends GroovyPagesUriSupport {
      */
     @Override
     public void clear() {
-        templateURICache.clear();
-        deployedViewURICache.clear();
-        controllerNameCache.clear();
-        noSuffixViewURICache.clear();
+        this.templateURICache.clear();
+        this.deployedViewURICache.clear();
+        this.controllerNameCache.clear();
+        this.noSuffixViewURICache.clear();
     }
 
 }

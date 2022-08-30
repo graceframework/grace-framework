@@ -131,9 +131,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         super(application);
         Assert.notNull(application, "Argument [application] cannot be null!");
 
-        resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
         try {
-            pluginResources = resolver.getResources(resourcePath);
+            this.pluginResources = this.resolver.getResources(resourcePath);
         }
         catch (IOException ioe) {
             LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
@@ -146,12 +146,12 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(String[] pluginResources, GrailsApplication application) {
         super(application);
-        resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
 
         List<Resource> resourceList = new ArrayList<Resource>();
         for (String resourcePath : pluginResources) {
             try {
-                resourceList.addAll(Arrays.asList(resolver.getResources(resourcePath)));
+                resourceList.addAll(Arrays.asList(this.resolver.getResources(resourcePath)));
             }
             catch (IOException ioe) {
                 LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
@@ -165,8 +165,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(Class<?>[] plugins, GrailsApplication application) {
         super(application);
-        pluginClasses = plugins;
-        resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.pluginClasses = plugins;
+        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
         //this.corePlugins = new PathMatchingResourcePatternResolver()
         // .getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
         this.application = application;
@@ -175,8 +175,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(Resource[] pluginFiles, GrailsApplication application) {
         super(application);
-        resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
-        pluginResources = pluginFiles;
+        this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
+        this.pluginResources = pluginFiles;
         this.application = application;
         setPluginFilter();
     }
@@ -186,11 +186,11 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public GrailsPlugin[] getUserPlugins() {
-        return userPlugins.toArray(new GrailsPlugin[userPlugins.size()]);
+        return this.userPlugins.toArray(new GrailsPlugin[this.userPlugins.size()]);
     }
 
     private void setPluginFilter() {
-        pluginFilter = new PluginFilterRetriever().getPluginFilter(application.getConfig());
+        this.pluginFilter = new PluginFilterRetriever().getPluginFilter(this.application.getConfig());
     }
 
     public void refreshPlugin(String name) {
@@ -202,10 +202,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     public Collection<GrailsPlugin> getPluginObservers(GrailsPlugin plugin) {
         Assert.notNull(plugin, "Argument [plugin] cannot be null");
 
-        Collection<GrailsPlugin> c = pluginToObserverMap.get(plugin.getName());
+        Collection<GrailsPlugin> c = this.pluginToObserverMap.get(plugin.getName());
 
         // Add any wildcard observers.
-        Collection<GrailsPlugin> wildcardObservers = pluginToObserverMap.get("*");
+        Collection<GrailsPlugin> wildcardObservers = this.pluginToObserverMap.get("*");
         if (wildcardObservers != null) {
             if (c != null) {
                 c.addAll(wildcardObservers);
@@ -230,12 +230,12 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         if (plugin == null) {
             return;
         }
-        if (!plugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+        if (!plugin.isEnabled(this.applicationContext.getEnvironment().getActiveProfiles())) {
             return;
         }
 
         for (GrailsPlugin observingPlugin : getPluginObservers(plugin)) {
-            if (!observingPlugin.isEnabled(applicationContext.getEnvironment().getActiveProfiles())) {
+            if (!observingPlugin.isEnabled(this.applicationContext.getEnvironment().getActiveProfiles())) {
                 continue;
             }
 
@@ -248,25 +248,25 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
      */
     public void loadPlugins() throws PluginException {
         long time = System.currentTimeMillis();
-        if (initialised) {
+        if (this.initialised) {
             return;
         }
 
-        ClassLoader gcl = application.getClassLoader();
+        ClassLoader gcl = this.application.getClassLoader();
 
         attemptLoadPlugins(gcl);
 
-        if (!delayedLoadPlugins.isEmpty()) {
+        if (!this.delayedLoadPlugins.isEmpty()) {
             loadDelayedPlugins();
         }
-        if (!delayedEvictions.isEmpty()) {
+        if (!this.delayedEvictions.isEmpty()) {
             processDelayedEvictions();
         }
 
-        pluginList = sortPlugins(pluginList);
+        this.pluginList = sortPlugins(this.pluginList);
         initializePlugins();
-        initialised = true;
-        LOG.info(String.format("Total %d plugins loaded successfully, take in %dms.", pluginList.size(), (System.currentTimeMillis() - time)));
+        this.initialised = true;
+        LOG.info(String.format("Total %d plugins loaded successfully, take in %dms.", this.pluginList.size(), (System.currentTimeMillis() - time)));
     }
 
     protected List<GrailsPlugin> sortPlugins(List<GrailsPlugin> toSort) {
@@ -345,10 +345,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private void attemptLoadPlugins(ClassLoader gcl) {
         // retrieve load core plugins first
-        List<GrailsPlugin> grailsCorePlugins = loadCorePlugins ? findCorePlugins() : new ArrayList<GrailsPlugin>();
+        List<GrailsPlugin> grailsCorePlugins = this.loadCorePlugins ? findCorePlugins() : new ArrayList<GrailsPlugin>();
 
         List<GrailsPlugin> grailsUserPlugins = findUserPlugins(gcl);
-        userPlugins = grailsUserPlugins;
+        this.userPlugins = grailsUserPlugins;
 
         List<GrailsPlugin> allPlugins = new ArrayList<GrailsPlugin>(grailsCorePlugins);
         allPlugins.addAll(grailsUserPlugins);
@@ -381,8 +381,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private List<GrailsPlugin> findCorePlugins() {
-        CorePluginFinder finder = new CorePluginFinder(application);
-        finder.setParentApplicationContext(parentCtx);
+        CorePluginFinder finder = new CorePluginFinder(this.application);
+        finder.setParentApplicationContext(this.parentCtx);
 
         List<GrailsPlugin> grailsCorePlugins = new ArrayList<GrailsPlugin>();
 
@@ -400,7 +400,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 else {
                     plugin = createGrailsPlugin(pluginClass);
                 }
-                plugin.setApplicationContext(applicationContext);
+                plugin.setApplicationContext(this.applicationContext);
 
                 isCompatiblePlugin(plugin);
 
@@ -492,22 +492,22 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private GrailsPlugin createBinaryGrailsPlugin(Class<?> pluginClass, BinaryGrailsPluginDescriptor binaryDescriptor) {
-        return new BinaryGrailsPlugin(pluginClass, binaryDescriptor, application);
+        return new BinaryGrailsPlugin(pluginClass, binaryDescriptor, this.application);
     }
 
     protected GrailsPlugin createGrailsPlugin(Class<?> pluginClass) {
-        return new DefaultGrailsPlugin(pluginClass, application);
+        return new DefaultGrailsPlugin(pluginClass, this.application);
     }
 
     protected GrailsPlugin createGrailsPlugin(Class<?> pluginClass, Resource resource) {
-        return new DefaultGrailsPlugin(pluginClass, resource, application);
+        return new DefaultGrailsPlugin(pluginClass, resource, this.application);
     }
 
     private List<GrailsPlugin> findUserPlugins(ClassLoader gcl) {
         List<GrailsPlugin> grailsUserPlugins = new ArrayList<GrailsPlugin>();
 
-        LOG.info("Attempting to load [" + pluginResources.length + "] user defined plugins");
-        for (Resource r : pluginResources) {
+        LOG.info("Attempting to load [" + this.pluginResources.length + "] user defined plugins");
+        for (Resource r : this.pluginResources) {
             Class<?> pluginClass = loadPluginClass(gcl, r);
 
             if (isGrailsPlugin(pluginClass)) {
@@ -521,7 +521,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             }
         }
 
-        for (Class<?> pluginClass : pluginClasses) {
+        for (Class<?> pluginClass : this.pluginClasses) {
             if (isGrailsPlugin(pluginClass)) {
                 GrailsPlugin plugin = createGrailsPlugin(pluginClass);
                 //attemptPluginLoad(plugin);
@@ -540,7 +540,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private void processDelayedEvictions() {
-        for (Map.Entry<GrailsPlugin, String[]> entry : delayedEvictions.entrySet()) {
+        for (Map.Entry<GrailsPlugin, String[]> entry : this.delayedEvictions.entrySet()) {
             GrailsPlugin plugin = entry.getKey();
             for (String pluginName : entry.getValue()) {
                 evictPlugin(plugin, pluginName);
@@ -549,9 +549,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private void initializePlugins() {
-        for (Object plugin : plugins.values()) {
+        for (Object plugin : this.plugins.values()) {
             if (plugin instanceof ApplicationContextAware) {
-                ((ApplicationContextAware) plugin).setApplicationContext(applicationContext);
+                ((ApplicationContextAware) plugin).setApplicationContext(this.applicationContext);
             }
         }
     }
@@ -560,14 +560,14 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
      * This method will attempt to load that plugins not loaded in the first pass
      */
     private void loadDelayedPlugins() {
-        while (!delayedLoadPlugins.isEmpty()) {
-            GrailsPlugin plugin = delayedLoadPlugins.remove(0);
+        while (!this.delayedLoadPlugins.isEmpty()) {
+            GrailsPlugin plugin = this.delayedLoadPlugins.remove(0);
             if (areDependenciesResolved(plugin)) {
                 if (!hasValidPluginsToLoadBefore(plugin)) {
                     registerPlugin(plugin);
                 }
                 else {
-                    delayedLoadPlugins.add(plugin);
+                    this.delayedLoadPlugins.add(plugin);
                 }
             }
             else {
@@ -575,17 +575,17 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 // load of all plugins. All hope is not lost, however, so lets first
                 // look inside the remaining delayed loads before giving up
                 boolean foundInDelayed = false;
-                for (GrailsPlugin remainingPlugin : delayedLoadPlugins) {
+                for (GrailsPlugin remainingPlugin : this.delayedLoadPlugins) {
                     if (isDependentOn(plugin, remainingPlugin)) {
                         foundInDelayed = true;
                         break;
                     }
                 }
                 if (foundInDelayed) {
-                    delayedLoadPlugins.add(plugin);
+                    this.delayedLoadPlugins.add(plugin);
                 }
                 else {
-                    failedPlugins.put(plugin.getName(), plugin);
+                    this.failedPlugins.put(plugin.getName(), plugin);
                     LOG.error("ERROR: Plugin [" + plugin.getName() + "] cannot be loaded because its dependencies [" +
                             DefaultGroovyMethods.inspect(plugin.getDependencyNames()) + "] cannot be resolved");
                 }
@@ -595,7 +595,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private boolean hasValidPluginsToLoadBefore(GrailsPlugin plugin) {
         String[] loadAfterNames = plugin.getLoadAfterNames();
-        for (Object delayedLoadPlugin : delayedLoadPlugins) {
+        for (Object delayedLoadPlugin : this.delayedLoadPlugins) {
             GrailsPlugin other = (GrailsPlugin) delayedLoadPlugin;
             for (String name : loadAfterNames) {
                 if (other.getName().equals(name)) {
@@ -609,7 +609,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     private boolean hasDelayedDependencies(GrailsPlugin other) {
         String[] dependencyNames = other.getDependencyNames();
         for (String dependencyName : dependencyNames) {
-            for (GrailsPlugin grailsPlugin : delayedLoadPlugins) {
+            for (GrailsPlugin grailsPlugin : this.delayedLoadPlugins) {
                 if (grailsPlugin.getName().equals(dependencyName)) {
                     return true;
                 }
@@ -706,7 +706,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             registerPlugin(plugin);
         }
         else {
-            delayedLoadPlugins.add(plugin);
+            this.delayedLoadPlugins.add(plugin);
         }
     }
 
@@ -723,26 +723,26 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         }
 
         if (plugin instanceof ParentApplicationContextAware) {
-            ((ParentApplicationContextAware) plugin).setParentApplicationContext(parentCtx);
+            ((ParentApplicationContextAware) plugin).setParentApplicationContext(this.parentCtx);
         }
         plugin.setManager(this);
         String[] evictionNames = plugin.getEvictionNames();
         if (evictionNames.length > 0) {
-            delayedEvictions.put(plugin, evictionNames);
+            this.delayedEvictions.put(plugin, evictionNames);
         }
 
         String[] observedPlugins = plugin.getObservedPluginNames();
         for (String observedPlugin : observedPlugins) {
-            Set<GrailsPlugin> observers = pluginToObserverMap.get(observedPlugin);
+            Set<GrailsPlugin> observers = this.pluginToObserverMap.get(observedPlugin);
             if (observers == null) {
                 observers = new HashSet<GrailsPlugin>();
-                pluginToObserverMap.put(observedPlugin, observers);
+                this.pluginToObserverMap.put(observedPlugin, observers);
             }
             observers.add(plugin);
         }
-        pluginList.add(plugin);
-        plugins.put(plugin.getName(), plugin);
-        classNameToPluginMap.put(plugin.getPluginClass().getName(), plugin);
+        this.pluginList.add(plugin);
+        this.plugins.put(plugin.getName(), plugin);
+        this.classNameToPluginMap.put(plugin.getPluginClass().getName(), plugin);
     }
 
     protected boolean canRegisterPlugin(GrailsPlugin plugin) {
@@ -751,10 +751,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     protected void evictPlugin(GrailsPlugin evictor, String evicteeName) {
-        GrailsPlugin pluginToEvict = plugins.get(evicteeName);
+        GrailsPlugin pluginToEvict = this.plugins.get(evicteeName);
         if (pluginToEvict != null) {
-            pluginList.remove(pluginToEvict);
-            plugins.remove(pluginToEvict.getName());
+            this.pluginList.remove(pluginToEvict);
+            this.plugins.remove(pluginToEvict.getName());
 
             if (LOG.isInfoEnabled()) {
                 LOG.info("Grails plugin " + pluginToEvict + " was evicted by " + evictor);
@@ -769,13 +769,13 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        for (GrailsPlugin plugin : pluginList) {
+        for (GrailsPlugin plugin : this.pluginList) {
             plugin.setApplicationContext(applicationContext);
         }
     }
 
     public void setParentApplicationContext(ApplicationContext parent) {
-        parentCtx = parent;
+        this.parentCtx = parent;
     }
 
     /**
@@ -789,20 +789,20 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     public void reloadPlugin(GrailsPlugin plugin) {
         plugin.doArtefactConfiguration();
 
-        RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration(parentCtx);
+        RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration(this.parentCtx);
 
         doRuntimeConfiguration(plugin.getName(), springConfig);
-        springConfig.registerBeansWithContext((GenericApplicationContext) applicationContext);
+        springConfig.registerBeansWithContext((GenericApplicationContext) this.applicationContext);
 
-        plugin.doWithApplicationContext(applicationContext);
-        plugin.doWithDynamicMethods(applicationContext);
+        plugin.doWithApplicationContext(this.applicationContext);
+        plugin.doWithDynamicMethods(this.applicationContext);
     }
 
     @Override
     public void setApplication(GrailsApplication application) {
         Assert.notNull(application, "Argument [application] cannot be null");
         this.application = application;
-        for (GrailsPlugin plugin : pluginList) {
+        for (GrailsPlugin plugin : this.pluginList) {
             plugin.setApplication(application);
         }
     }
@@ -815,10 +815,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         for (Class<?> COMMON_CLASS : COMMON_CLASSES) {
             registry.removeMetaClass(COMMON_CLASS);
         }
-        for (GrailsPlugin plugin : pluginList) {
+        for (GrailsPlugin plugin : this.pluginList) {
             if (plugin.supportsCurrentScopeAndEnvironment()) {
                 try {
-                    plugin.doWithDynamicMethods(applicationContext);
+                    plugin.doWithDynamicMethods(this.applicationContext);
                 }
                 catch (Throwable t) {
                     throw new GrailsConfigurationException("Error configuring dynamic methods for plugin " + plugin + ": " + t.getMessage(), t);
@@ -828,10 +828,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private PluginFilter getPluginFilter() {
-        if (pluginFilter == null) {
-            pluginFilter = new IdentityPluginFilter();
+        if (this.pluginFilter == null) {
+            this.pluginFilter = new IdentityPluginFilter();
         }
-        return pluginFilter;
+        return this.pluginFilter;
     }
 
     public void setPluginFilter(PluginFilter pluginFilter) {
@@ -839,7 +839,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public List<GrailsPlugin> getPluginList() {
-        return Collections.unmodifiableList(pluginList);
+        return Collections.unmodifiableList(this.pluginList);
     }
 
 }

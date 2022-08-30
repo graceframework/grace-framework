@@ -38,49 +38,49 @@ public class JUnitReports implements JUnitResultFormatter {
     }
 
     public void startTestSuite(JUnitTest suite) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.startTestSuite(suite);
         }
     }
 
     public void startTest(Test test) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.startTest(test);
         }
     }
 
     public void addError(Test test, Throwable t) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.addError(test, t);
         }
     }
 
     public void addFailure(Test test, AssertionFailedError t) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.addFailure(test, t);
         }
     }
 
     public void endTest(Test test) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.endTest(test);
         }
     }
 
     public void setSystemError(String err) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.setSystemError(err);
         }
     }
 
     public void setSystemOutput(String out) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.setSystemOutput(out);
         }
     }
 
     public void endTestSuite(JUnitTest suite) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.endTestSuite(suite);
         }
     }

@@ -53,21 +53,21 @@ public class JUnitReportsFactory {
     }
 
     public JUnitReports createReports(String name) {
-        JUnitResultFormatter formatters[] = new JUnitResultFormatter[formats.size()];
-        for (int i = 0; i < formats.size(); ++i) {
-            formatters[i] = createReport(formats.get(i), name);
+        JUnitResultFormatter formatters[] = new JUnitResultFormatter[this.formats.size()];
+        for (int i = 0; i < this.formats.size(); ++i) {
+            formatters[i] = createReport(this.formats.get(i), name);
         }
         return new JUnitReports(formatters);
     }
 
     protected JUnitResultFormatter createReport(String format, String name) {
-        String prefix = "TEST-" + phaseName + "-" + typeName + "-" + name;
+        String prefix = "TEST-" + this.phaseName + "-" + this.typeName + "-" + name;
         if (format.equals(PLAIN)) {
-            return new PlainFormatter(prefix, new File(reportsDir, "plain/" + prefix + ".txt"));
+            return new PlainFormatter(prefix, new File(this.reportsDir, "plain/" + prefix + ".txt"));
         }
 
         if (format.equals(XML)) {
-            return new XMLFormatter(new File(reportsDir, prefix + ".xml"));
+            return new XMLFormatter(new File(this.reportsDir, prefix + ".xml"));
         }
 
         throw new IllegalArgumentException("Unknown format type: " + format);

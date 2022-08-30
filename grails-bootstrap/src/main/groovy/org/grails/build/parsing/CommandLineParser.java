@@ -68,10 +68,10 @@ public class CommandLineParser {
      */
     public void addOption(String name, String description) {
         int length = name.length();
-        if (length > longestOptionNameLength) {
-            longestOptionNameLength = length;
+        if (length > this.longestOptionNameLength) {
+            this.longestOptionNameLength = length;
         }
-        declaredOptions.put(name, new Option(name, description));
+        this.declaredOptions.put(name, new Option(name, description));
     }
 
     /**
@@ -233,12 +233,12 @@ public class CommandLineParser {
 
     public String getOptionsHelpMessage() {
         String ls = System.getProperty("line.separator");
-        usageMessage = "Available options:";
-        StringBuilder sb = new StringBuilder(usageMessage);
+        this.usageMessage = "Available options:";
+        StringBuilder sb = new StringBuilder(this.usageMessage);
         sb.append(ls);
-        for (Option option : declaredOptions.values()) {
+        for (Option option : this.declaredOptions.values()) {
             String name = option.getName();
-            int extraPadding = longestOptionNameLength - name.length();
+            int extraPadding = this.longestOptionNameLength - name.length();
             sb.append(" -").append(name);
             for (int i = 0; i < extraPadding; i++) {
                 sb.append(' ');
@@ -272,8 +272,8 @@ public class CommandLineParser {
             String name = split[0].trim();
             validateOptionName(name);
             String value = split[1].trim();
-            if (declaredOptions.containsKey(name)) {
-                cl.addDeclaredOption(name, declaredOptions.get(name), value);
+            if (this.declaredOptions.containsKey(name)) {
+                cl.addDeclaredOption(name, this.declaredOptions.get(name), value);
             }
             else {
                 cl.addUndeclaredOption(name, value);
@@ -282,8 +282,8 @@ public class CommandLineParser {
         }
 
         validateOptionName(arg);
-        if (declaredOptions.containsKey(arg)) {
-            cl.addDeclaredOption(arg, declaredOptions.get(arg));
+        if (this.declaredOptions.containsKey(arg)) {
+            cl.addDeclaredOption(arg, this.declaredOptions.get(arg));
         }
         else {
             cl.addUndeclaredOption(arg);

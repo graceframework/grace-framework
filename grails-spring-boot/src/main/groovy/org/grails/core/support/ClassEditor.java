@@ -58,7 +58,7 @@ public class ClassEditor extends PropertyEditorSupport {
                 setValue(clazz);
             }
             else {
-                final ClassLoader cl = classLoader != null ? classLoader : Thread.currentThread().getContextClassLoader();
+                final ClassLoader cl = this.classLoader != null ? this.classLoader : Thread.currentThread().getContextClassLoader();
                 setValue(cl.loadClass(className));
             }
         }

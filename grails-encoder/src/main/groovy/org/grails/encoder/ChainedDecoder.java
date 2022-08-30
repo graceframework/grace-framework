@@ -32,7 +32,7 @@ public class ChainedDecoder implements Decoder {
 
     @Override
     public CodecIdentifier getCodecIdentifier() {
-        return codecIdentifier;
+        return this.codecIdentifier;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ChainedDecoder implements Decoder {
             return o;
         }
         Object decoded = o;
-        for (Decoder decoder : decoders) {
+        for (Decoder decoder : this.decoders) {
             decoded = decoder.decode(decoded);
         }
         return decoded;

@@ -53,7 +53,7 @@ public class GenericBeanFactoryAccessor {
      * Return the wrapped {@link ListableBeanFactory}.
      */
     public final ListableBeanFactory getBeanFactory() {
-        return beanFactory;
+        return this.beanFactory;
     }
 
     /**
@@ -61,21 +61,21 @@ public class GenericBeanFactoryAccessor {
      */
     @SuppressWarnings("unchecked")
     public <T> T getBean(String name) throws BeansException {
-        return (T) beanFactory.getBean(name);
+        return (T) this.beanFactory.getBean(name);
     }
 
     /**
      * @see org.springframework.beans.factory.BeanFactory#getBean(String, Class)
      */
     public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
-        return beanFactory.getBean(name, requiredType);
+        return this.beanFactory.getBean(name, requiredType);
     }
 
     /**
      * @see ListableBeanFactory#getBeansOfType(Class)
      */
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
-        return beanFactory.getBeansOfType(type);
+        return this.beanFactory.getBeansOfType(type);
     }
 
     /**
@@ -84,7 +84,7 @@ public class GenericBeanFactoryAccessor {
     public <T> Map<String, T> getBeansOfType(Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
             throws BeansException {
 
-        return beanFactory.getBeansOfType(type, includeNonSingletons, allowEagerInit);
+        return this.beanFactory.getBeansOfType(type, includeNonSingletons, allowEagerInit);
     }
 
     /**
@@ -95,9 +95,9 @@ public class GenericBeanFactoryAccessor {
      */
     public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
         Map<String, Object> results = new LinkedHashMap<String, Object>();
-        for (String beanName : beanFactory.getBeanNamesForType(Object.class)) {
+        for (String beanName : this.beanFactory.getBeanNamesForType(Object.class)) {
             if (findAnnotationOnBean(beanName, annotationType) != null) {
-                results.put(beanName, beanFactory.getBean(beanName));
+                results.put(beanName, this.beanFactory.getBean(beanName));
             }
         }
         return results;
@@ -114,11 +114,11 @@ public class GenericBeanFactoryAccessor {
      * @see org.springframework.core.annotation.AnnotationUtils#findAnnotation(Class, Class)
      */
     public <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
-        Class<?> handlerType = beanFactory.getType(beanName);
+        Class<?> handlerType = this.beanFactory.getType(beanName);
         A ann = AnnotationUtils.findAnnotation(handlerType, annotationType);
-        if (ann == null && beanFactory instanceof ConfigurableBeanFactory &&
-                beanFactory.containsBeanDefinition(beanName)) {
-            ConfigurableBeanFactory cbf = (ConfigurableBeanFactory) beanFactory;
+        if (ann == null && this.beanFactory instanceof ConfigurableBeanFactory &&
+                this.beanFactory.containsBeanDefinition(beanName)) {
+            ConfigurableBeanFactory cbf = (ConfigurableBeanFactory) this.beanFactory;
             BeanDefinition bd = cbf.getMergedBeanDefinition(beanName);
             if (bd instanceof AbstractBeanDefinition) {
                 AbstractBeanDefinition abd = (AbstractBeanDefinition) bd;

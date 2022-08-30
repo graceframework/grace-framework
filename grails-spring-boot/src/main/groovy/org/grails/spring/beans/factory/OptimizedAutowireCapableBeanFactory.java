@@ -74,8 +74,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
      * Default constructor.
      */
     public OptimizedAutowireCapableBeanFactory() {
-        reloadEnabled = GrailsUtil.isDevelopmentEnv() || Environment.getCurrent().isReloadEnabled();
-        if (reloadEnabled) {
+        this.reloadEnabled = GrailsUtil.isDevelopmentEnv() || Environment.getCurrent().isReloadEnabled();
+        if (this.reloadEnabled) {
 
             // Implementation note: The default Spring InstantiationStrategy caches constructors.
             // This is no good at development time because if the class reloads then Spring
@@ -136,7 +136,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
 
                     // Remove the cache value in order to asure there is no problem with a previous value
                     Class<?> beanClass = ClassUtils.getUserClass(existingBean.getClass());
-                    autowireableBeanPropsCacheForClass.remove(beanClass);
+                    this.autowireableBeanPropsCacheForClass.remove(beanClass);
 
                     // Calls the spring method
                     super.autowireBeanProperties(existingBean, autowireMode, dependencyCheck);
@@ -245,7 +245,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
     protected Map<String, PropertyDescriptor> resolveAutowireablePropertyDescriptorsForClass(Class<?> beanClass,
             final Callable<BeanWrapper> beanWrapperCallback) {
         beanClass = ClassUtils.getUserClass(beanClass);
-        Map<String, PropertyDescriptor> autowireableBeanProps = autowireableBeanPropsCacheForClass.get(beanClass);
+        Map<String, PropertyDescriptor> autowireableBeanProps = this.autowireableBeanPropsCacheForClass.get(beanClass);
         if (autowireableBeanProps == null) {
             autowireableBeanProps = new HashMap<String, PropertyDescriptor>();
             BeanWrapper bw = null;
@@ -276,8 +276,8 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                     autowireableBeanProps.put(pd.getName(), pd);
                 }
             }
-            if (!reloadEnabled) {
-                autowireableBeanPropsCacheForClass.put(beanClass, autowireableBeanProps);
+            if (!this.reloadEnabled) {
+                this.autowireableBeanPropsCacheForClass.put(beanClass, autowireableBeanProps);
             }
         }
         return autowireableBeanProps;

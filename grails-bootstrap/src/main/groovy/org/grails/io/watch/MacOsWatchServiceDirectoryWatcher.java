@@ -66,7 +66,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     public MacOsWatchServiceDirectoryWatcher() {
         try {
-            watchService = new MacOSXListeningWatchService();
+            this.watchService = new MacOSXListeningWatchService();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -75,11 +75,11 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     @Override
     public void run() {
-        while (active) {
+        while (this.active) {
             try {
                 WatchKey watchKey;
                 try {
-                    watchKey = watchService.take();
+                    watchKey = this.watchService.take();
                 }
                 catch (InterruptedException x) {
                     return;
@@ -94,7 +94,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     WatchEvent<Path> pathWatchEvent = cast(watchEvent);
                     Path child = pathWatchEvent.context();
                     File childFile = child.toFile();
-                    if (individualWatchedFiles.contains(child) || individualWatchedFiles.contains(child.normalize())) {
+                    if (this.individualWatchedFiles.contains(child) || this.individualWatchedFiles.contains(child.normalize())) {
                         if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                             fireOnNew(childFile);
                         }
@@ -106,7 +106,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         }
                     }
                     else {
-                        List<String> fileExtensions = watchKeyToExtensionsMap.get(watchKey);
+                        List<String> fileExtensions = this.watchKeyToExtensionsMap.get(watchKey);
                         if (fileExtensions == null) {
                             // this event didn't match a file in individualWatchedFiles so it's a not an individual file we're interested in
                             // this event also didn't match a directory that we're interested in (if it did, fileExtentions wouldn't be null)
@@ -156,7 +156,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
             }
         }
         try {
-            watchService.close();
+            this.watchService.close();
         }
         catch (IOException e) {
             LOG.debug("Exception while closing watchService", e);
@@ -173,11 +173,11 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                 return;
             }
             Path pathToWatch = fileToWatch.toPath().toAbsolutePath();
-            individualWatchedFiles.add(pathToWatch);
+            this.individualWatchedFiles.add(pathToWatch);
             WatchablePath watchPath = new WatchablePath(pathToWatch);
             Kind[] events = new Kind[] {StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_MODIFY};
-            watchPath.register(watchService, events);
+            watchPath.register(this.watchService, events);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -205,15 +205,16 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     WatchablePath watchPath = new WatchablePath(dir);
                     Kind[] events = new Kind[] {StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
                             StandardWatchEventKinds.ENTRY_MODIFY};
-                    WatchKey watchKey = watchPath.register(watchService, events);
-                    final List<String> originalFileExtensions = watchKeyToExtensionsMap.get(watchKey);
+                    WatchKey watchKey = watchPath.register(MacOsWatchServiceDirectoryWatcher.this.watchService, events);
+                    final List<String> originalFileExtensions = MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
                     if (originalFileExtensions == null) {
-                        watchKeyToExtensionsMap.put(watchKey, fileExtensions);
+                        MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
                         final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
-                        watchKeyToExtensionsMap.put(watchKey, Collections.unmodifiableList(new ArrayList(newFileExtensions)));
+                        MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
+                                Collections.unmodifiableList(new ArrayList(newFileExtensions)));
                     }
                     return FileVisitResult.CONTINUE;
                 }

@@ -108,8 +108,8 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
     }
 
     private void configureParameterCreationListeners(GrailsWebRequest webRequest) {
-        if (paramListenerBeans != null) {
-            for (ParameterCreationListener creationListenerBean : paramListenerBeans) {
+        if (this.paramListenerBeans != null) {
+            for (ParameterCreationListener creationListenerBean : this.paramListenerBeans) {
                 webRequest.addParameterListener(creationListenerBean);
             }
         }
@@ -120,7 +120,7 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
+        this.paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
     }
 
 }

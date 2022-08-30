@@ -41,48 +41,48 @@ class SubCharSequence implements CharSequence, CharArrayAccessible {
     }
 
     public char charAt(int index) {
-        if ((index < 0) || (index + start >= str.length())) {
+        if ((index < 0) || (index + this.start >= this.str.length())) {
             throw new StringIndexOutOfBoundsException(index);
         }
-        return str.charAt(index + start);
+        return this.str.charAt(index + this.start);
     }
 
     public int length() {
-        return count;
+        return this.count;
     }
 
     public CharSequence subSequence(int start, int end) {
         if (start < 0) {
             throw new StringIndexOutOfBoundsException(start);
         }
-        if (end > count) {
+        if (end > this.count) {
             throw new StringIndexOutOfBoundsException(end);
         }
         if (start > end) {
             throw new StringIndexOutOfBoundsException(end - start);
         }
-        if (start == 0 && end == count) {
+        if (start == 0 && end == this.count) {
             return this;
         }
-        return new SubCharSequence(str, this.start + start, end - start);
+        return new SubCharSequence(this.str, this.start + start, end - start);
     }
 
     @Override
     public String toString() {
-        return str.subSequence(start, start + count).toString();
+        return this.str.subSequence(this.start, this.start + this.count).toString();
     }
 
     public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) {
         if (srcBegin < 0) {
             throw new StringIndexOutOfBoundsException(srcBegin);
         }
-        if ((srcEnd < 0) || (srcEnd > start + count)) {
+        if ((srcEnd < 0) || (srcEnd > this.start + this.count)) {
             throw new StringIndexOutOfBoundsException(srcEnd);
         }
         if (srcBegin > srcEnd) {
             throw new StringIndexOutOfBoundsException("srcBegin > srcEnd");
         }
-        CharSequences.getChars(str, start + srcBegin, start + srcEnd, dst, dstBegin);
+        CharSequences.getChars(this.str, this.start + srcBegin, this.start + srcEnd, dst, dstBegin);
     }
 
 }

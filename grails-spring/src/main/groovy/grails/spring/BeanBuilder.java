@@ -174,8 +174,8 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     protected void initializeSpringConfig() {
-        xmlBeanDefinitionReader = new XmlBeanDefinitionReader((GenericApplicationContext) springConfig.getUnrefreshedApplicationContext());
-        initializeBeanBuilderForClassLoader(classLoader);
+        this.xmlBeanDefinitionReader = new XmlBeanDefinitionReader((GenericApplicationContext) this.springConfig.getUnrefreshedApplicationContext());
+        initializeBeanBuilderForClassLoader(this.classLoader);
     }
 
     public void setClassLoader(ClassLoader classLoader) {
@@ -184,10 +184,10 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     protected void initializeBeanBuilderForClassLoader(ClassLoader classLoader) {
-        xmlBeanDefinitionReader.setBeanClassLoader(classLoader);
-        namespaceHandlerResolver = new DefaultNamespaceHandlerResolver(this.classLoader);
-        readerContext = new XmlReaderContext(beanBuildResource, new FailFastProblemReporter(), new EmptyReaderEventListener(),
-                new NullSourceExtractor(), xmlBeanDefinitionReader, namespaceHandlerResolver);
+        this.xmlBeanDefinitionReader.setBeanClassLoader(classLoader);
+        this.namespaceHandlerResolver = new DefaultNamespaceHandlerResolver(this.classLoader);
+        this.readerContext = new XmlReaderContext(this.beanBuildResource, new FailFastProblemReporter(), new EmptyReaderEventListener(),
+                new NullSourceExtractor(), this.xmlBeanDefinitionReader, this.namespaceHandlerResolver);
     }
 
     public void setNamespaceHandlerResolver(NamespaceHandlerResolver namespaceHandlerResolver) {
@@ -209,7 +209,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     public void importBeans(String resourcePattern) {
         try {
-            Resource[] resources = resourcePatternResolver.getResources(resourcePattern);
+            Resource[] resources = this.resourcePatternResolver.getResources(resourcePattern);
             for (Resource resource : resources) {
                 importBeans(resource);
             }
@@ -229,7 +229,7 @@ public class BeanBuilder extends GroovyObjectSupport {
             beanReader.loadBeanDefinitions(resource);
             String[] beanNames = beanRegistry.getBeanDefinitionNames();
             for (String beanName : beanNames) {
-                springConfig.addBeanDefinition(beanName, beanRegistry.getBeanDefinition(beanName));
+                this.springConfig.addBeanDefinition(beanName, beanRegistry.getBeanDefinition(beanName));
             }
         }
     }
@@ -240,7 +240,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @param definition The definition
      */
     public void xmlns(Map<String, String> definition) {
-        Assert.notNull(namespaceHandlerResolver, "You cannot define a Spring namespace without a [namespaceHandlerResolver] set");
+        Assert.notNull(this.namespaceHandlerResolver, "You cannot define a Spring namespace without a [namespaceHandlerResolver] set");
         if (definition.isEmpty()) {
             return;
         }
@@ -251,14 +251,14 @@ public class BeanBuilder extends GroovyObjectSupport {
 
             Assert.notNull(uri, "Namespace definition cannot supply a null URI");
 
-            final NamespaceHandler namespaceHandler = namespaceHandlerResolver.resolve(uri);
+            final NamespaceHandler namespaceHandler = this.namespaceHandlerResolver.resolve(uri);
             if (namespaceHandler == null) {
                 throw new BeanDefinitionParsingException(
                         new Problem("No namespace handler found for URI: " + uri,
-                                new Location(readerContext.getResource())));
+                                new Location(this.readerContext.getResource())));
             }
-            namespaceHandlers.put(namespace, namespaceHandler);
-            namespaces.put(namespace, uri);
+            this.namespaceHandlers.put(namespace, namespaceHandler);
+            this.namespaces.put(namespace, uri);
         }
     }
 
@@ -267,7 +267,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @return The parent ApplicationContext
      */
     public ApplicationContext getParentCtx() {
-        return parentCtx;
+        return this.parentCtx;
     }
 
     /**
@@ -275,7 +275,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @return The RuntimeSpringConfiguration instance
      */
     public RuntimeSpringConfiguration getSpringConfig() {
-        return springConfig;
+        return this.springConfig;
     }
 
     /**
@@ -337,7 +337,7 @@ public class BeanBuilder extends GroovyObjectSupport {
         }
 
         public void setInBeanConfig() {
-            config.addProperty(name, value);
+            this.config.addProperty(this.name, this.value);
         }
 
     }
@@ -358,11 +358,11 @@ public class BeanBuilder extends GroovyObjectSupport {
             super(beanName, toParent);
             Assert.notNull(beanConfig, "Argument [beanConfig] cannot be null");
             this.beanConfig = beanConfig;
-            metaClass = InvokerHelper.getMetaClass(this);
+            this.metaClass = InvokerHelper.getMetaClass(this);
         }
 
         public MetaClass getMetaClass() {
-            return metaClass;
+            return this.metaClass;
         }
 
         public Object getProperty(String property) {
@@ -372,10 +372,10 @@ public class BeanBuilder extends GroovyObjectSupport {
             if (property.equals("source")) {
                 return getSource();
             }
-            if (beanConfig != null) {
-                return new WrappedPropertyValue(property, beanConfig.getPropertyValue(property));
+            if (this.beanConfig != null) {
+                return new WrappedPropertyValue(property, this.beanConfig.getPropertyValue(property));
             }
-            return metaClass.getProperty(this, property);
+            return this.metaClass.getProperty(this, property);
         }
 
         /**
@@ -395,20 +395,20 @@ public class BeanBuilder extends GroovyObjectSupport {
 
             @SuppressWarnings("unused")
             public void leftShift(Object value) {
-                InvokerHelper.invokeMethod(propertyValue, "leftShift", value);
+                InvokerHelper.invokeMethod(this.propertyValue, "leftShift", value);
                 updateDeferredProperties(value);
             }
 
             @SuppressWarnings("unused")
             public boolean add(Object value) {
-                boolean retval = (Boolean) InvokerHelper.invokeMethod(propertyValue, "add", value);
+                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "add", value);
                 updateDeferredProperties(value);
                 return retval;
             }
 
             @SuppressWarnings("unused")
             public boolean addAll(@SuppressWarnings("rawtypes") Collection values) {
-                boolean retval = (Boolean) InvokerHelper.invokeMethod(propertyValue, "addAll", values);
+                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "addAll", values);
                 for (Object value : values) {
                     updateDeferredProperties(value);
                 }
@@ -417,29 +417,30 @@ public class BeanBuilder extends GroovyObjectSupport {
 
             @Override
             public Object invokeMethod(String name, Object args) {
-                return InvokerHelper.invokeMethod(propertyValue, name, args);
+                return InvokerHelper.invokeMethod(this.propertyValue, name, args);
             }
 
             @Override
             public Object getProperty(String name) {
-                return InvokerHelper.getProperty(propertyValue, name);
+                return InvokerHelper.getProperty(this.propertyValue, name);
             }
 
             @Override
             public void setProperty(String name, Object value) {
-                InvokerHelper.setProperty(propertyValue, name, value);
+                InvokerHelper.setProperty(this.propertyValue, name, value);
             }
 
             private void updateDeferredProperties(Object value) {
                 if (value instanceof RuntimeBeanReference) {
-                    deferredProperties.put(beanConfig.getName(), new DeferredProperty(beanConfig, propertyName, propertyValue));
+                    BeanBuilder.this.deferredProperties.put(ConfigurableRuntimeBeanReference.this.beanConfig.getName(),
+                            new DeferredProperty(ConfigurableRuntimeBeanReference.this.beanConfig, this.propertyName, this.propertyValue));
                 }
             }
 
         }
 
         public Object invokeMethod(String name, Object args) {
-            return metaClass.invokeMethod(this, name, args);
+            return this.metaClass.invokeMethod(this, name, args);
         }
 
         public void setMetaClass(MetaClass metaClass) {
@@ -447,8 +448,8 @@ public class BeanBuilder extends GroovyObjectSupport {
         }
 
         public void setProperty(String property, Object newValue) {
-            if (!addToDeferred(beanConfig, property, newValue)) {
-                beanConfig.setPropertyValue(property, newValue);
+            if (!addToDeferred(this.beanConfig, property, newValue)) {
+                this.beanConfig.setPropertyValue(property, newValue);
             }
         }
 
@@ -473,7 +474,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @param resource The resource to load
      */
     public void loadBeans(Resource resource) {
-        beanBuildResource = resource;
+        this.beanBuildResource = resource;
         loadBeans(new Resource[] { resource });
     }
 
@@ -496,7 +497,7 @@ public class BeanBuilder extends GroovyObjectSupport {
         Binding b = new Binding() {
             @Override
             public void setVariable(String name, Object value) {
-                if (currentBeanConfig == null) {
+                if (BeanBuilder.this.currentBeanConfig == null) {
                     super.setVariable(name, value);
                 }
                 else {
@@ -508,7 +509,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
         for (Resource resource : resources) {
             try {
-                GroovyShell shell = classLoader == null ? new GroovyShell(b) : new GroovyShell(classLoader, b);
+                GroovyShell shell = this.classLoader == null ? new GroovyShell(b) : new GroovyShell(this.classLoader, b);
                 shell.evaluate(new InputStreamReader(resource.getInputStream(), "UTF-8"));
             }
             catch (Throwable e) {
@@ -527,11 +528,11 @@ public class BeanBuilder extends GroovyObjectSupport {
 
         if (registry instanceof GenericApplicationContext) {
             GenericApplicationContext ctx = (GenericApplicationContext) registry;
-            ctx.setClassLoader(classLoader);
-            ctx.getBeanFactory().setBeanClassLoader(classLoader);
+            ctx.setClassLoader(this.classLoader);
+            ctx.getBeanFactory().setBeanClassLoader(this.classLoader);
         }
 
-        springConfig.registerBeansWithRegistry(registry);
+        this.springConfig.registerBeansWithRegistry(registry);
     }
 
     /**
@@ -540,7 +541,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @param targetSpringConfig The RuntimeSpringConfiguration object
      */
     public void registerBeans(RuntimeSpringConfiguration targetSpringConfig) {
-        springConfig.registerBeansWithConfig(targetSpringConfig);
+        this.springConfig.registerBeansWithConfig(targetSpringConfig);
     }
 
     /**
@@ -583,7 +584,7 @@ public class BeanBuilder extends GroovyObjectSupport {
             return new RuntimeBeanReference(refName, parentRef);
         }
 
-        if (namespaceHandlers.containsKey(name) && args.length > 0 && (args[0] instanceof Closure)) {
+        if (this.namespaceHandlers.containsKey(name) && args.length > 0 && (args[0] instanceof Closure)) {
             createDynamicElementReader(name, true).invokeMethod("doCall", args);
             return this;
         }
@@ -603,7 +604,7 @@ public class BeanBuilder extends GroovyObjectSupport {
             return invokeBeanDefiningMethod(name, args);
         }
 
-        ApplicationContext ctx = springConfig.getUnrefreshedApplicationContext();
+        ApplicationContext ctx = this.springConfig.getUnrefreshedApplicationContext();
         MetaClass mc = DefaultGroovyMethods.getMetaClass(ctx);
         if (!mc.respondsTo(ctx, name, args).isEmpty()) {
             return mc.invokeMethod(ctx, name, args);
@@ -628,11 +629,11 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     public ApplicationContext createApplicationContext() {
         finalizeDeferredProperties();
-        return springConfig.getApplicationContext();
+        return this.springConfig.getApplicationContext();
     }
 
     protected void finalizeDeferredProperties() {
-        for (DeferredProperty dp : deferredProperties.values()) {
+        for (DeferredProperty dp : this.deferredProperties.values()) {
             if (dp.value instanceof List) {
                 dp.value = manageListIfNecessary(dp.value);
             }
@@ -641,19 +642,19 @@ public class BeanBuilder extends GroovyObjectSupport {
             }
             dp.setInBeanConfig();
         }
-        deferredProperties.clear();
+        this.deferredProperties.clear();
     }
 
     protected boolean addToDeferred(BeanConfiguration beanConfig, String property, Object newValue) {
         if (newValue instanceof List) {
-            deferredProperties.put(currentBeanConfig.getName() + property,
-                    new DeferredProperty(currentBeanConfig, property, newValue));
+            this.deferredProperties.put(this.currentBeanConfig.getName() + property,
+                    new DeferredProperty(this.currentBeanConfig, property, newValue));
             return true;
         }
 
         if (newValue instanceof Map) {
-            deferredProperties.put(currentBeanConfig.getName() + property,
-                    new DeferredProperty(currentBeanConfig, property, newValue));
+            this.deferredProperties.put(this.currentBeanConfig.getName() + property,
+                    new DeferredProperty(this.currentBeanConfig, property, newValue));
             return true;
         }
 
@@ -676,27 +677,29 @@ public class BeanBuilder extends GroovyObjectSupport {
             if (args.length >= 1) {
                 if (hasClosureArgument) {
                     if (args.length - 1 != 1) {
-                        currentBeanConfig = springConfig.addSingletonBean(name, beanClass, resolveConstructorArguments(args, 1, args.length - 1));
+                        this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass,
+                                resolveConstructorArguments(args, 1, args.length - 1));
                     }
                     else {
-                        currentBeanConfig = springConfig.addSingletonBean(name, beanClass);
+                        this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass);
                     }
                 }
                 else {
-                    currentBeanConfig = springConfig.addSingletonBean(name, beanClass, resolveConstructorArguments(args, 1, args.length));
+                    this.currentBeanConfig =
+                            this.springConfig.addSingletonBean(name, beanClass, resolveConstructorArguments(args, 1, args.length));
                 }
             }
 
         }
         else if (args[0] instanceof RuntimeBeanReference) {
-            currentBeanConfig = springConfig.addSingletonBean(name);
-            currentBeanConfig.setFactoryBean(((RuntimeBeanReference) args[0]).getBeanName());
+            this.currentBeanConfig = this.springConfig.addSingletonBean(name);
+            this.currentBeanConfig.setFactoryBean(((RuntimeBeanReference) args[0]).getBeanName());
         }
         else if (args[0] instanceof Map) {
             // named constructor arguments
             if (args.length > 1 && args[1] instanceof Class) {
                 List<?> constructorArgs = resolveConstructorArguments(args, 2, hasClosureArgument ? args.length - 1 : args.length);
-                currentBeanConfig = springConfig.addSingletonBean(name, (Class<?>) args[1], constructorArgs);
+                this.currentBeanConfig = this.springConfig.addSingletonBean(name, (Class<?>) args[1], constructorArgs);
 
                 @SuppressWarnings("rawtypes")
                 Map namedArgs = (Map) args[0];
@@ -717,36 +720,36 @@ public class BeanBuilder extends GroovyObjectSupport {
                 if (args.length > constructorArgsTest) {
                     //factory-method requires args
                     int endOfConstructArgs = hasClosureArgument ? args.length - 1 : args.length;
-                    currentBeanConfig = springConfig.addSingletonBean(name, null, resolveConstructorArguments(args, 1, endOfConstructArgs));
+                    this.currentBeanConfig = this.springConfig.addSingletonBean(name, null, resolveConstructorArguments(args, 1, endOfConstructArgs));
                 }
                 else {
-                    currentBeanConfig = springConfig.addSingletonBean(name);
+                    this.currentBeanConfig = this.springConfig.addSingletonBean(name);
                 }
-                currentBeanConfig.setFactoryBean(factoryBeanEntry.getKey().toString());
-                currentBeanConfig.setFactoryMethod(factoryBeanEntry.getValue().toString());
+                this.currentBeanConfig.setFactoryBean(factoryBeanEntry.getKey().toString());
+                this.currentBeanConfig.setFactoryMethod(factoryBeanEntry.getValue().toString());
             }
         }
         else if (args[0] instanceof Closure) {
-            currentBeanConfig = springConfig.addAbstractBean(name);
+            this.currentBeanConfig = this.springConfig.addAbstractBean(name);
         }
         else {
             List<?> constructorArgs = resolveConstructorArguments(args, 0, hasClosureArgument ? args.length - 1 : args.length);
-            currentBeanConfig = new DefaultBeanConfiguration(name, null, constructorArgs);
-            springConfig.addBeanConfiguration(name, currentBeanConfig);
+            this.currentBeanConfig = new DefaultBeanConfiguration(name, null, constructorArgs);
+            this.springConfig.addBeanConfiguration(name, this.currentBeanConfig);
         }
 
         if (hasClosureArgument) {
             Closure<?> callable = (Closure<?>) args[args.length - 1];
             callable.setDelegate(this);
             callable.setResolveStrategy(Closure.DELEGATE_FIRST);
-            callable.call(new Object[] { currentBeanConfig });
+            callable.call(new Object[] { this.currentBeanConfig });
         }
-        if (this.beanBuildResource != null && currentBeanConfig.getResource() == null) {
-            currentBeanConfig.setResource(this.beanBuildResource);
+        if (this.beanBuildResource != null && this.currentBeanConfig.getResource() == null) {
+            this.currentBeanConfig.setResource(this.beanBuildResource);
         }
 
-        BeanConfiguration beanConfig = currentBeanConfig;
-        currentBeanConfig = null;
+        BeanConfiguration beanConfig = this.currentBeanConfig;
+        this.currentBeanConfig = null;
         return beanConfig;
     }
 
@@ -805,7 +808,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     @Override
     public void setProperty(String name, Object value) {
-        if (currentBeanConfig != null) {
+        if (this.currentBeanConfig != null) {
             setPropertyOnBeanConfig(name, value);
         }
     }
@@ -817,7 +820,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @return The bean definition
      */
     public AbstractBeanDefinition bean(Class<?> type) {
-        return springConfig.createSingletonBean(type).getBeanDefinition();
+        return this.springConfig.createSingletonBean(type).getBeanDefinition();
     }
 
     /**
@@ -829,7 +832,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     @SuppressWarnings("rawtypes")
     public AbstractBeanDefinition bean(Class type, Object... args) {
-        BeanConfiguration current = currentBeanConfig;
+        BeanConfiguration current = this.currentBeanConfig;
         try {
             Closure callable = null;
             Collection constructorArgs = null;
@@ -845,16 +848,18 @@ public class BeanBuilder extends GroovyObjectSupport {
                     constructorArgs = resolveConstructorArguments(args, 0, index);
                 }
             }
-            currentBeanConfig = constructorArgs == null ? springConfig.createSingletonBean(type) :
-                    springConfig.createSingletonBean(type, constructorArgs);
-            if (callable != null) {
-                callable.call(new Object[] { currentBeanConfig });
-            }
-            return currentBeanConfig.getBeanDefinition();
+            this.currentBeanConfig = constructorArgs == null
+                    ? this.springConfig.createSingletonBean(type)
+                    : this.springConfig.createSingletonBean(type, constructorArgs);
 
+            if (callable != null) {
+                callable.call(new Object[] { this.currentBeanConfig });
+            }
+
+            return this.currentBeanConfig.getBeanDefinition();
         }
         finally {
-            currentBeanConfig = current;
+            this.currentBeanConfig = current;
         }
     }
 
@@ -862,32 +867,32 @@ public class BeanBuilder extends GroovyObjectSupport {
         if (value instanceof GString) {
             value = value.toString();
         }
-        if (addToDeferred(currentBeanConfig, name, value)) {
+        if (addToDeferred(this.currentBeanConfig, name, value)) {
             return;
         }
 
         if (value instanceof Closure) {
-            BeanConfiguration current = currentBeanConfig;
+            BeanConfiguration current = this.currentBeanConfig;
             try {
                 Closure<?> callable = (Closure<?>) value;
 
                 Class<?> parameterType = callable.getParameterTypes()[0];
                 if (parameterType.equals(Object.class)) {
-                    currentBeanConfig = springConfig.createSingletonBean("");
-                    callable.call(new Object[] { currentBeanConfig });
+                    this.currentBeanConfig = this.springConfig.createSingletonBean("");
+                    callable.call(new Object[] { this.currentBeanConfig });
                 }
                 else {
-                    currentBeanConfig = springConfig.createSingletonBean(parameterType);
+                    this.currentBeanConfig = this.springConfig.createSingletonBean(parameterType);
                     callable.call();
                 }
 
-                value = currentBeanConfig.getBeanDefinition();
+                value = this.currentBeanConfig.getBeanDefinition();
             }
             finally {
-                currentBeanConfig = current;
+                this.currentBeanConfig = current;
             }
         }
-        currentBeanConfig.addProperty(name, value);
+        this.currentBeanConfig.addProperty(name, value);
     }
 
     /**
@@ -949,29 +954,29 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     @Override
     public Object getProperty(String name) {
-        if (binding.containsKey(name)) {
-            return binding.get(name);
+        if (this.binding.containsKey(name)) {
+            return this.binding.get(name);
         }
 
-        if (namespaceHandlers.containsKey(name)) {
-            return createDynamicElementReader(name, currentBeanConfig != null);
+        if (this.namespaceHandlers.containsKey(name)) {
+            return createDynamicElementReader(name, this.currentBeanConfig != null);
         }
 
-        if (springConfig.containsBean(name)) {
-            BeanConfiguration beanConfig = springConfig.getBeanConfig(name);
+        if (this.springConfig.containsBean(name)) {
+            BeanConfiguration beanConfig = this.springConfig.getBeanConfig(name);
             if (beanConfig != null) {
-                return new ConfigurableRuntimeBeanReference(name, springConfig.getBeanConfig(name), false);
+                return new ConfigurableRuntimeBeanReference(name, this.springConfig.getBeanConfig(name), false);
             }
             return new RuntimeBeanReference(name, false);
         }
 
         // this is to deal with the case where the property setter is the last
         // statement in a closure (hence the return value)
-        if (currentBeanConfig != null) {
-            if (currentBeanConfig.hasProperty(name)) {
-                return currentBeanConfig.getPropertyValue(name);
+        if (this.currentBeanConfig != null) {
+            if (this.currentBeanConfig.hasProperty(name)) {
+                return this.currentBeanConfig.getPropertyValue(name);
             }
-            DeferredProperty dp = deferredProperties.get(currentBeanConfig.getName() + name);
+            DeferredProperty dp = this.deferredProperties.get(this.currentBeanConfig.getName() + name);
             if (dp != null) {
                 return dp.value;
             }
@@ -982,23 +987,23 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     protected DynamicElementReader createDynamicElementReader(String namespace, final boolean decorator) {
-        NamespaceHandler handler = namespaceHandlers.get(namespace);
-        ParserContext parserContext = new ParserContext(readerContext, new BeanDefinitionParserDelegate(readerContext));
-        final DynamicElementReader dynamicElementReader = new DynamicElementReader(namespace, namespaces, handler, parserContext) {
+        NamespaceHandler handler = this.namespaceHandlers.get(namespace);
+        ParserContext parserContext = new ParserContext(this.readerContext, new BeanDefinitionParserDelegate(this.readerContext));
+        final DynamicElementReader dynamicElementReader = new DynamicElementReader(namespace, this.namespaces, handler, parserContext) {
             @Override
             protected void afterInvocation() {
                 if (!decorator) {
-                    currentBeanConfig = null;
+                    BeanBuilder.this.currentBeanConfig = null;
                 }
             }
         };
-        dynamicElementReader.setClassLoader(classLoader);
-        if (currentBeanConfig != null) {
-            dynamicElementReader.setBeanConfiguration(currentBeanConfig);
+        dynamicElementReader.setClassLoader(this.classLoader);
+        if (this.currentBeanConfig != null) {
+            dynamicElementReader.setBeanConfiguration(this.currentBeanConfig);
         }
         else if (!decorator) {
-            currentBeanConfig = new DefaultBeanConfiguration(namespace);
-            dynamicElementReader.setBeanConfiguration(currentBeanConfig);
+            this.currentBeanConfig = new DefaultBeanConfiguration(namespace);
+            dynamicElementReader.setBeanConfiguration(this.currentBeanConfig);
         }
         dynamicElementReader.setBeanDecorator(decorator);
         return dynamicElementReader;
@@ -1010,7 +1015,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     @SuppressWarnings("unchecked")
     public void setBinding(Binding b) {
-        binding = b.getVariables();
+        this.binding = b.getVariables();
     }
 
 }

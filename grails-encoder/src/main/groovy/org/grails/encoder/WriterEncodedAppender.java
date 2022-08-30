@@ -44,7 +44,7 @@ public class WriterEncodedAppender extends AbstractEncodedAppender {
      */
     @Override
     public void flush() throws IOException {
-        target.flush();
+        this.target.flush();
     }
 
     /* (non-Javadoc)
@@ -52,7 +52,7 @@ public class WriterEncodedAppender extends AbstractEncodedAppender {
      */
     @Override
     protected void write(EncodingState encodingState, char[] b, int off, int len) throws IOException {
-        target.write(b, off, len);
+        this.target.write(b, off, len);
     }
 
     /* (non-Javadoc)
@@ -60,7 +60,7 @@ public class WriterEncodedAppender extends AbstractEncodedAppender {
      */
     @Override
     protected void write(EncodingState encodingState, String str, int off, int len) throws IOException {
-        target.write(str, off, len);
+        this.target.write(str, off, len);
     }
 
     /* (non-Javadoc)
@@ -68,14 +68,14 @@ public class WriterEncodedAppender extends AbstractEncodedAppender {
      */
     @Override
     protected void appendCharSequence(EncodingState encodingState, CharSequence csq, int start, int end) throws IOException {
-        CharSequences.writeCharSequence(target, csq, start, end);
+        CharSequences.writeCharSequence(this.target, csq, start, end);
     }
 
     /* (non-Javadoc)
      * @see EncodedAppender#close()
      */
     public void close() throws IOException {
-        target.close();
+        this.target.close();
     }
 
     @Override

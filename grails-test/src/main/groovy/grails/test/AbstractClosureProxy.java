@@ -34,7 +34,7 @@ public abstract class AbstractClosureProxy extends Closure {
      */
     public AbstractClosureProxy(Closure<?> closure) {
         super(closure.getOwner(), closure.getThisObject());
-        target = closure;
+        this.target = closure;
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class AbstractClosureProxy extends Closure {
         doBeforeCall(objects);
 
         try {
-            return target.call(objects);
+            return this.target.call(objects);
         }
         finally {
             doAfterCall(objects);
@@ -89,77 +89,77 @@ public abstract class AbstractClosureProxy extends Closure {
      */
     @Override
     public boolean equals(Object obj) {
-        return this == obj || target == obj;
+        return this == obj || this.target == obj;
     }
 
     @Override
     public int hashCode() {
-        return target.hashCode();
+        return this.target.hashCode();
     }
 
     @Override
     public Closure<?> curry(Object... objects) {
-        return createWrapper(target.curry(objects));
+        return createWrapper(this.target.curry(objects));
     }
 
     @Override
     public boolean isCase(Object o) {
-        return target.isCase(o);
+        return this.target.isCase(o);
     }
 
     @Override
     public Closure<?> asWritable() {
-        return target.asWritable();
+        return this.target.asWritable();
     }
 
     @Override
     public Object getProperty(String property) {
-        return target.getProperty(property);
+        return this.target.getProperty(property);
     }
 
     @Override
     public void setProperty(String s, Object o) {
-        target.setProperty(s, o);
+        this.target.setProperty(s, o);
     }
 
     @Override
     public int getMaximumNumberOfParameters() {
-        return target.getMaximumNumberOfParameters();
+        return this.target.getMaximumNumberOfParameters();
     }
 
     @Override
     public Class<?>[] getParameterTypes() {
-        return target.getParameterTypes();
+        return this.target.getParameterTypes();
     }
 
     @Override
     public Object getDelegate() {
-        return target.getDelegate();
+        return this.target.getDelegate();
     }
 
     @Override
     public void setDelegate(Object o) {
-        target.setDelegate(o);
+        this.target.setDelegate(o);
     }
 
     @Override
     public int getDirective() {
-        return target.getDirective();
+        return this.target.getDirective();
     }
 
     @Override
     public void setDirective(int i) {
-        target.setDirective(i);
+        this.target.setDirective(i);
     }
 
     @Override
     public int getResolveStrategy() {
-        return target.getResolveStrategy();
+        return this.target.getResolveStrategy();
     }
 
     @Override
     public void setResolveStrategy(int i) {
-        target.setResolveStrategy(i);
+        this.target.setResolveStrategy(i);
     }
 
 }

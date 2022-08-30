@@ -82,7 +82,7 @@ public class DirectoryWatcher extends Thread {
      * @param active False if you want to stop watching
      */
     public void setActive(boolean active) {
-        directoryWatcherDelegate.setActive(active);
+        this.directoryWatcherDelegate.setActive(active);
     }
 
     /**
@@ -91,7 +91,7 @@ public class DirectoryWatcher extends Thread {
      * @param sleepTime The sleep time
      */
     public void setSleepTime(long sleepTime) {
-        directoryWatcherDelegate.setSleepTime(sleepTime);
+        this.directoryWatcherDelegate.setSleepTime(sleepTime);
     }
 
     /**
@@ -100,7 +100,7 @@ public class DirectoryWatcher extends Thread {
      * @param listener The file listener
      */
     public void addListener(FileChangeListener listener) {
-        directoryWatcherDelegate.addListener(listener);
+        this.directoryWatcherDelegate.addListener(listener);
     }
 
     /**
@@ -109,7 +109,7 @@ public class DirectoryWatcher extends Thread {
      * @param listener The file listener
      */
     public void removeListener(FileChangeListener listener) {
-        directoryWatcherDelegate.removeListener(listener);
+        this.directoryWatcherDelegate.removeListener(listener);
     }
 
     /**
@@ -118,7 +118,7 @@ public class DirectoryWatcher extends Thread {
      * @param fileToWatch The file to watch
      */
     public void addWatchFile(File fileToWatch) {
-        directoryWatcherDelegate.addWatchFile(fileToWatch);
+        this.directoryWatcherDelegate.addWatchFile(fileToWatch);
     }
 
     /**
@@ -132,7 +132,7 @@ public class DirectoryWatcher extends Thread {
         for (String fileExtension : fileExtensions) {
             fileExtensionsWithoutDot.add(removeStartingDotIfPresent(fileExtension));
         }
-        directoryWatcherDelegate.addWatchDirectory(dir, fileExtensions);
+        this.directoryWatcherDelegate.addWatchDirectory(dir, fileExtensions);
     }
 
     /**
@@ -189,7 +189,7 @@ public class DirectoryWatcher extends Thread {
 
     @Override
     public void run() {
-        directoryWatcherDelegate.run();
+        this.directoryWatcherDelegate.run();
     }
 
     private String removeStartingDotIfPresent(String extension) {

@@ -35,12 +35,12 @@ public class CombinedCodecIdentifier implements CodecIdentifier {
 
     CombinedCodecIdentifier(CodecIdentifierProvider[] encodersOrDecoders, boolean reverseOrder) {
         int size = encodersOrDecoders.length;
-        codecIdentifiers = new CodecIdentifier[size];
+        this.codecIdentifiers = new CodecIdentifier[size];
         String[] encoderNamesArr = new String[size];
         for (int i = 0; i < size; i++) {
             int targetIndex = reverseOrder ? (size - 1 - i) : i;
-            codecIdentifiers[targetIndex] = encodersOrDecoders[i].getCodecIdentifier();
-            encoderNamesArr[targetIndex] = codecIdentifiers[targetIndex].getCodecName();
+            this.codecIdentifiers[targetIndex] = encodersOrDecoders[i].getCodecIdentifier();
+            encoderNamesArr[targetIndex] = this.codecIdentifiers[targetIndex].getCodecName();
         }
         this.codecName = StringUtils.collectionToDelimitedString(Arrays.asList(encoderNamesArr), "And");
         this.codecAlias = StringUtils.collectionToCommaDelimitedString(Arrays.asList(encoderNamesArr));
@@ -48,17 +48,17 @@ public class CombinedCodecIdentifier implements CodecIdentifier {
 
     @Override
     public String getCodecName() {
-        return codecName;
+        return this.codecName;
     }
 
     @Override
     public Set<String> getCodecAliases() {
-        return Collections.singleton(codecAlias);
+        return Collections.singleton(this.codecAlias);
     }
 
     @Override
     public boolean isEquivalent(CodecIdentifier other) {
-        for (CodecIdentifier codecIdentifier : codecIdentifiers) {
+        for (CodecIdentifier codecIdentifier : this.codecIdentifiers) {
             if (codecIdentifier.isEquivalent(other)) {
                 return true;
             }

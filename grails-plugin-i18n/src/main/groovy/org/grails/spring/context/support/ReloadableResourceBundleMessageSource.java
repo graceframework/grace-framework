@@ -271,7 +271,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      */
     public void setCacheSeconds(int cacheSeconds) {
         this.cacheMillis = (cacheSeconds * 1000);
-        if (fileCacheMillis == Long.MIN_VALUE) {
+        if (this.fileCacheMillis == Long.MIN_VALUE) {
             this.fileCacheMillis = this.cacheMillis;
         }
     }
@@ -385,13 +385,16 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * cached forever.
      */
     protected PropertiesHolder getMergedProperties(final Locale locale) {
-        return CacheEntry.getValue(cachedMergedProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
+        return CacheEntry.getValue(this.cachedMergedProperties, locale, this.cacheMillis, new Callable<PropertiesHolder>() {
             @Override
             public PropertiesHolder call() throws Exception {
                 Properties mergedProps = new Properties();
                 PropertiesHolder mergedHolder = new PropertiesHolder(mergedProps);
-                for (int i = basenames.length - 1; i >= 0; i--) {
-                    List<Pair<String, Resource>> filenamesAndResources = calculateAllFilenames(basenames[i], locale);
+
+                for (int i = ReloadableResourceBundleMessageSource.this.basenames.length - 1; i >= 0; i--) {
+                    List<Pair<String, Resource>> filenamesAndResources =
+                            calculateAllFilenames(ReloadableResourceBundleMessageSource.this.basenames[i], locale);
+
                     for (int j = filenamesAndResources.size() - 1; j >= 0; j--) {
                         Pair<String, Resource> filenameAndResource = filenamesAndResources.get(j);
                         if (filenameAndResource.getbValue() != null) {
@@ -417,12 +420,12 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      */
     protected List<Pair<String, Resource>> calculateAllFilenames(final String basename, final Locale locale) {
         Pair<String, Locale> cacheKey = new Pair<String, Locale>(basename, locale);
-        return CacheEntry.getValue(cachedFilenames, cacheKey, cacheMillis, new Callable<List<Pair<String, Resource>>>() {
+        return CacheEntry.getValue(this.cachedFilenames, cacheKey, this.cacheMillis, new Callable<List<Pair<String, Resource>>>() {
             @Override
             public List<Pair<String, Resource>> call() throws Exception {
                 List<String> filenames = new ArrayList<String>(7);
                 filenames.addAll(calculateFilenamesForLocale(basename, locale));
-                if (fallbackToSystemLocale && !locale.equals(Locale.getDefault())) {
+                if (ReloadableResourceBundleMessageSource.this.fallbackToSystemLocale && !locale.equals(Locale.getDefault())) {
                     List<String> fallbackFilenames = calculateFilenamesForLocale(basename, Locale.getDefault());
                     for (String fallbackFilename : fallbackFilenames) {
                         if (!filenames.contains(fallbackFilename)) {
@@ -486,7 +489,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      */
     @SuppressWarnings("rawtypes")
     protected PropertiesHolder getProperties(final String filename, final Resource resource) {
-        return CacheEntry.getValue(cachedProperties, filename, fileCacheMillis, new Callable<PropertiesHolder>() {
+        return CacheEntry.getValue(this.cachedProperties, filename, this.fileCacheMillis, new Callable<PropertiesHolder>() {
             @Override
             public PropertiesHolder call() throws Exception {
                 return new PropertiesHolder(filename, resource);
@@ -595,7 +598,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
     }
 
     protected Resource locateResource(final String filename) {
-        return CacheEntry.getValue(cachedResources, filename, cacheMillis, new Callable<Resource>() {
+        return CacheEntry.getValue(this.cachedResources, filename, this.cacheMillis, new Callable<Resource>() {
             @Override
             public Resource call() throws Exception {
                 return locateResourceWithoutCache(filename);
@@ -604,12 +607,12 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
     }
 
     protected Resource locateResourceWithoutCache(String filename) {
-        Resource resource = resourceLoader.getResource(org.grails.io.support.ResourceLoader.CLASSPATH_URL_PREFIX + filename + PROPERTIES_SUFFIX);
+        Resource resource = this.resourceLoader.getResource(org.grails.io.support.ResourceLoader.CLASSPATH_URL_PREFIX + filename + PROPERTIES_SUFFIX);
         if (!resource.exists()) {
-            resource = resourceLoader.getResource(filename + PROPERTIES_SUFFIX);
+            resource = this.resourceLoader.getResource(filename + PROPERTIES_SUFFIX);
         }
         if (!resource.exists()) {
-            resource = resourceLoader.getResource(filename + XML_SUFFIX);
+            resource = this.resourceLoader.getResource(filename + XML_SUFFIX);
         }
         if (resource.exists()) {
             return resource;
@@ -654,35 +657,36 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
         }
 
         private boolean doUpdate(boolean initialization) {
-            if (filename == null) {
+            if (this.filename == null) {
                 return false;
             }
-            if (!initialization && cacheMillis >= 0) {
-                resource = locateResource(filename);
+            if (!initialization && ReloadableResourceBundleMessageSource.this.cacheMillis >= 0) {
+                this.resource = locateResource(this.filename);
             }
-            if (resource != null) {
+            if (this.resource != null) {
                 long newFileTimestamp;
                 try {
-                    newFileTimestamp = resource.lastModified();
+                    newFileTimestamp = this.resource.lastModified();
                 }
                 catch (IOException ex) {
                     if (logger.isDebugEnabled()) {
                         logger.debug(
-                                resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
+                                this.resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
                     }
                     newFileTimestamp = -1;
                 }
-                if (fileCacheMillis >= 0 && newFileTimestamp == fileTimestamp && this.properties != null) {
+                if (ReloadableResourceBundleMessageSource.this.fileCacheMillis >= 0 &&
+                        newFileTimestamp == this.fileTimestamp && this.properties != null) {
                     return false;
                 }
                 try {
-                    this.properties = loadProperties(resource, filename);
+                    this.properties = loadProperties(this.resource, this.filename);
                     this.fileTimestamp = newFileTimestamp;
                     this.cachedMessageFormats.clear();
                 }
                 catch (IOException ex) {
                     if (logger.isWarnEnabled()) {
-                        logger.warn("Could not parse properties file [" + resource.getFilename() + "]", ex);
+                        logger.warn("Could not parse properties file [" + this.resource.getFilename() + "]", ex);
                     }
                 }
                 return true;
@@ -690,7 +694,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
             else {
                 // Resource does not exist.
                 if (logger.isDebugEnabled()) {
-                    logger.debug("No properties file found for [" + filename + "] - neither plain properties nor XML");
+                    logger.debug("No properties file found for [" + this.filename + "] - neither plain properties nor XML");
                 }
                 this.properties = new Properties();
                 this.fileTimestamp = -1;
@@ -700,15 +704,15 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
         }
 
         public String getFilename() {
-            return filename;
+            return this.filename;
         }
 
         public Properties getProperties() {
-            return properties;
+            return this.properties;
         }
 
         public long getFileTimestamp() {
-            return fileTimestamp;
+            return this.fileTimestamp;
         }
 
         public String getProperty(String code) {
@@ -723,10 +727,10 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
                 return null;
             }
             Pair<String, Locale> cacheKey = new Pair<String, Locale>(code, locale);
-            return CacheEntry.getValue(cachedMessageFormats, cacheKey, -1, new Callable<MessageFormat>() {
+            return CacheEntry.getValue(this.cachedMessageFormats, cacheKey, -1, new Callable<MessageFormat>() {
                 @Override
                 public MessageFormat call() throws Exception {
-                    String msg = properties.getProperty(code);
+                    String msg = PropertiesHolder.this.properties.getProperty(code);
                     if (msg != null) {
                         return createMessageFormat(msg, locale);
                     }

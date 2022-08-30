@@ -61,11 +61,11 @@ public class MockClosureProxy extends AbstractClosureProxy {
      */
     @Override
     protected void doBeforeCall(Object[] args) {
-        if (expectation instanceof LooseExpectation) {
-            ((LooseExpectation) expectation).match(methodName);
+        if (this.expectation instanceof LooseExpectation) {
+            ((LooseExpectation) this.expectation).match(this.methodName);
         }
         else {
-            ((StrictExpectation) expectation).match(methodName);
+            ((StrictExpectation) this.expectation).match(this.methodName);
         }
     }
 
@@ -86,7 +86,7 @@ public class MockClosureProxy extends AbstractClosureProxy {
      */
     @Override
     protected Closure<?> createWrapper(Closure<?> c) {
-        return new MockClosureProxy(c, methodName, expectation);
+        return new MockClosureProxy(c, this.methodName, this.expectation);
     }
 
 }

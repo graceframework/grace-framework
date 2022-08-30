@@ -57,8 +57,8 @@ public class DefaultUrlCreator implements UrlCreator {
     private static final String ENTITY_AMPERSAND = "&";
 
     public DefaultUrlCreator(String controller, String action) {
-        controllerName = controller;
-        actionName = action;
+        this.controllerName = controller;
+        this.actionName = action;
     }
 
     public String createURL(Map parameterValues, String encoding) {
@@ -92,19 +92,19 @@ public class DefaultUrlCreator implements UrlCreator {
         if (includeContextPath) {
             actualUriBuf.append(requestStateLookupStrategy.getContextPath());
         }
-        if (actionName != null) {
-            if (actionName.indexOf(SLASH) > -1) {
-                actualUriBuf.append(actionName);
+        if (this.actionName != null) {
+            if (this.actionName.indexOf(SLASH) > -1) {
+                actualUriBuf.append(this.actionName);
             }
             else {
-                if (controllerName != null) {
-                    appendUrlToken(actualUriBuf, controllerName, encoding);
+                if (this.controllerName != null) {
+                    appendUrlToken(actualUriBuf, this.controllerName, encoding);
                 }
                 else {
                     appendUrlToken(actualUriBuf, requestStateLookupStrategy.getControllerName(), encoding);
                 }
             }
-            appendUrlToken(actualUriBuf, actionName, encoding);
+            appendUrlToken(actualUriBuf, this.actionName, encoding);
         }
         if (id != null) {
             appendUrlToken(actualUriBuf, id, encoding);

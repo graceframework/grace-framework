@@ -70,18 +70,18 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
     public boolean postProcessAfterInstantiation(Object bean, String name) throws BeansException {
         if (bean instanceof TransactionManagerAware) {
             initialize();
-            if (transactionManager != null) {
+            if (this.transactionManager != null) {
                 TransactionManagerAware tma = (TransactionManagerAware) bean;
-                tma.setTransactionManager(transactionManager);
+                tma.setTransactionManager(this.transactionManager);
             }
         }
         return true;
     }
 
     private void initialize() {
-        if (transactionManager == null && beanFactory != null && !initialized) {
-            if (beanFactory.containsBean(GrailsApplication.TRANSACTION_MANAGER_BEAN)) {
-                transactionManager = beanFactory.getBean(GrailsApplication.TRANSACTION_MANAGER_BEAN, PlatformTransactionManager.class);
+        if (this.transactionManager == null && this.beanFactory != null && !this.initialized) {
+            if (this.beanFactory.containsBean(GrailsApplication.TRANSACTION_MANAGER_BEAN)) {
+                this.transactionManager = this.beanFactory.getBean(GrailsApplication.TRANSACTION_MANAGER_BEAN, PlatformTransactionManager.class);
             }
             else {
                 // Fetch the names of all the beans that are of type
@@ -89,20 +89,20 @@ public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostP
                 // "false" for the last argument to avoid eager initialisation,
                 // otherwise we end up in an endless loop (it triggers the current method).
                 String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
-                        beanFactory, PlatformTransactionManager.class, false, false);
+                        this.beanFactory, PlatformTransactionManager.class, false, false);
 
                 // If at least one is found, use the first of them as the
                 // transaction manager for the application.
                 if (beanNames.length > 0) {
-                    transactionManager = (PlatformTransactionManager) beanFactory.getBean(beanNames[0]);
+                    this.transactionManager = (PlatformTransactionManager) this.beanFactory.getBean(beanNames[0]);
                 }
             }
-            initialized = true;
+            this.initialized = true;
         }
     }
 
     public int getOrder() {
-        return order;
+        return this.order;
     }
 
 }

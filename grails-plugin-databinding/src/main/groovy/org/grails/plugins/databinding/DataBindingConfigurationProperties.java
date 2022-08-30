@@ -40,7 +40,7 @@ public class DataBindingConfigurationProperties {
     private List<String> dateFormats = AbstractDataBindingGrailsPlugin.DEFAULT_DATE_FORMATS;
 
     public boolean isTrimStrings() {
-        return trimStrings;
+        return this.trimStrings;
     }
 
     public void setTrimStrings(boolean trimStrings) {
@@ -48,7 +48,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public boolean isConvertEmptyStringsToNull() {
-        return convertEmptyStringsToNull;
+        return this.convertEmptyStringsToNull;
     }
 
     public void setConvertEmptyStringsToNull(boolean convertEmptyStringsToNull) {
@@ -56,7 +56,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public int getAutoGrowCollectionLimit() {
-        return autoGrowCollectionLimit;
+        return this.autoGrowCollectionLimit;
     }
 
     public void setAutoGrowCollectionLimit(int autoGrowCollectionLimit) {
@@ -64,7 +64,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public boolean isDateParsingLenient() {
-        return dateParsingLenient;
+        return this.dateParsingLenient;
     }
 
     public void setDateParsingLenient(boolean dateParsingLenient) {
@@ -72,7 +72,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public List<String> getDateFormats() {
-        return dateFormats;
+        return this.dateFormats;
     }
 
     public void setDateFormats(List<String> dateFormats) {

@@ -45,14 +45,14 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
         EncodedAppender cachedChainedAppender;
 
         void putInCache(final EncodedAppender appender, EncodedAppender target) {
-            lastAppenderForCached = appender;
-            lastIgnoreEncodingStateForCached = appender.isIgnoreEncodingState();
-            cachedChainedAppender = target;
+            this.lastAppenderForCached = appender;
+            this.lastIgnoreEncodingStateForCached = appender.isIgnoreEncodingState();
+            this.cachedChainedAppender = target;
         }
 
         EncodedAppender getCached(final EncodedAppender appender) {
-            if (lastAppenderForCached == appender && lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
-                return cachedChainedAppender;
+            if (this.lastAppenderForCached == appender && this.lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
+                return this.cachedChainedAppender;
             }
             return null;
         }
@@ -106,14 +106,14 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public CodecIdentifier getCodecIdentifier() {
-        return combinedCodecIdentifier;
+        return this.combinedCodecIdentifier;
     }
 
     @Override
     public void encodeToStream(Encoder thisInstance, CharSequence source, int offset, int len,
             EncodedAppender appender, EncodingState encodingState) throws IOException {
         EncodedAppender target = chainEncodersAndCachePerThread(appender);
-        StreamingEncoder encoder = encoders[0];
+        StreamingEncoder encoder = this.encoders[0];
         if (appender.shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
             encoder.encodeToStream(encoder, source, offset, len, target, encodingState.getPreviousEncodingState());
         }
@@ -123,7 +123,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     }
 
     protected EncodedAppender chainEncodersAndCachePerThread(final EncodedAppender appender) {
-        ChainedEncoderCacheItem cacheItem = cacheItemThreadLocal.get();
+        ChainedEncoderCacheItem cacheItem = this.cacheItemThreadLocal.get();
 
         EncodedAppender target = cacheItem.getCached(appender);
         if (target == null) {
@@ -135,8 +135,8 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     protected EncodedAppender doChainEncoders(final EncodedAppender appender) {
         EncodedAppender target = appender;
-        for (int i = encoders.length - 1; i >= 1; i--) {
-            StreamingEncoder encoder = encoders[i];
+        for (int i = this.encoders.length - 1; i >= 1; i--) {
+            StreamingEncoder encoder = this.encoders[i];
             target = new StreamingEncoderEncodedAppender(encoder, target);
             target.setIgnoreEncodingState(appender.isIgnoreEncodingState());
         }
@@ -149,7 +149,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
             return o;
         }
         Object encoded = o;
-        for (StreamingEncoder encoder : encoders) {
+        for (StreamingEncoder encoder : this.encoders) {
             encoded = encoder.encode(encoded);
         }
         return encoded;
@@ -157,7 +157,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public boolean isSafe() {
-        return safe;
+        return this.safe;
     }
 
     @Override

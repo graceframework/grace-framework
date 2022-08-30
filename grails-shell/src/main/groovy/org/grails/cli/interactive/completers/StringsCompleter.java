@@ -48,7 +48,7 @@ public class StringsCompleter implements Completer {
     }
 
     public SortedSet<String> getStrings() {
-        return strings;
+        return this.strings;
     }
 
     public void setStrings(SortedSet<String> strings) {

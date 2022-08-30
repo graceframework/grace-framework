@@ -60,16 +60,16 @@ public class ResourceLocator {
 
     public void setSearchLocation(String searchLocation) {
         ResourceLoader resourceLoader = getDefaultResourceLoader();
-        patchMatchingResolver = new PathMatchingResourcePatternResolver(resourceLoader);
+        this.patchMatchingResolver = new PathMatchingResourcePatternResolver(resourceLoader);
         initializeForSearchLocation(searchLocation);
     }
 
     protected ResourceLoader getDefaultResourceLoader() {
-        return defaultResourceLoader;
+        return this.defaultResourceLoader;
     }
 
     public void setSearchLocations(Collection<String> searchLocations) {
-        patchMatchingResolver = new PathMatchingResourcePatternResolver(getDefaultResourceLoader());
+        this.patchMatchingResolver = new PathMatchingResourcePatternResolver(getDefaultResourceLoader());
         for (String searchLocation : searchLocations) {
             initializeForSearchLocation(searchLocation);
         }
@@ -85,7 +85,7 @@ public class ResourceLocator {
             });
             if (directories != null) {
                 for (File directory : directories) {
-                    classSearchDirectories.add(directory.getCanonicalPath());
+                    this.classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
         }
@@ -93,17 +93,17 @@ public class ResourceLocator {
             // ignore
         }
 
-        classSearchDirectories.add(searchLocationPlusSlash + "src/main/java");
-        classSearchDirectories.add(searchLocationPlusSlash + "src/main/groovy");
-        resourceSearchDirectories.add(searchLocationPlusSlash);
+        this.classSearchDirectories.add(searchLocationPlusSlash + "src/main/java");
+        this.classSearchDirectories.add(searchLocationPlusSlash + "src/main/groovy");
+        this.resourceSearchDirectories.add(searchLocationPlusSlash);
     }
 
     public Resource findResourceForURI(String uri) {
-        Resource resource = uriToResourceCache.get(uri);
+        Resource resource = this.uriToResourceCache.get(uri);
         if (resource == null) {
             PluginResourceInfo info = inferPluginNameFromURI(uri);
-            if (warDeployed) {
-                Resource defaultResource = defaultResourceLoader.getResource(uri);
+            if (this.warDeployed) {
+                Resource defaultResource = this.defaultResourceLoader.getResource(uri);
                 if (defaultResource != null && defaultResource.exists()) {
                     resource = defaultResource;
                 }
@@ -111,12 +111,12 @@ public class ResourceLocator {
             else {
                 String uriWebAppRelative = WEB_APP_DIR + uri;
 
-                for (String resourceSearchDirectory : resourceSearchDirectories) {
+                for (String resourceSearchDirectory : this.resourceSearchDirectories) {
                     Resource res = resolveExceptionSafe(resourceSearchDirectory + uriWebAppRelative);
                     if (res.exists()) {
                         resource = res;
                     }
-                    else if (!warDeployed) {
+                    else if (!this.warDeployed) {
                         Resource dir = resolveExceptionSafe(resourceSearchDirectory);
                         if (dir.exists() && info != null) {
                             String filename = dir.getFilename();
@@ -132,17 +132,17 @@ public class ResourceLocator {
             }
 
             if (resource == null || !resource.exists()) {
-                Resource tmp = defaultResourceLoader != null ? defaultResourceLoader.getResource(uri) : null;
+                Resource tmp = this.defaultResourceLoader != null ? this.defaultResourceLoader.getResource(uri) : null;
                 if (tmp != null && tmp.exists()) {
                     resource = tmp;
                 }
             }
 
             if (resource != null) {
-                uriToResourceCache.put(uri, resource);
+                this.uriToResourceCache.put(uri, resource);
             }
-            else if (warDeployed) {
-                uriToResourceCache.put(uri, NULL_RESOURCE);
+            else if (this.warDeployed) {
+                this.uriToResourceCache.put(uri, NULL_RESOURCE);
             }
         }
         return resource == NULL_RESOURCE ? null : resource;
@@ -167,13 +167,13 @@ public class ResourceLocator {
             className = className.substring(0, className.indexOf(CLOSURE_MARKER));
         }
 
-        Resource resource = classNameToResourceCache.get(className);
+        Resource resource = this.classNameToResourceCache.get(className);
         if (resource == null) {
             String classNameWithPathSeparator = className.replace(".", FILE_SEPARATOR);
             for (String pathPattern : getSearchPatternForExtension(classNameWithPathSeparator, ".groovy", ".java")) {
                 resource = resolveExceptionSafe(pathPattern);
                 if (resource != null && resource.exists()) {
-                    classNameToResourceCache.put(className, resource);
+                    this.classNameToResourceCache.put(className, resource);
                     break;
                 }
             }
@@ -181,7 +181,7 @@ public class ResourceLocator {
                 for (String ext : new String[] {".groovy", ".java"}) {
                     resource = resolveExceptionSafe(GrailsResourceUtils.DOMAIN_DIR_PATH + "**/" + className + ext);
                     if (resource != null && resource.exists()) {
-                        classNameToResourceCache.put(className, resource);
+                        this.classNameToResourceCache.put(className, resource);
                         break;
                     }
                 }
@@ -195,7 +195,7 @@ public class ResourceLocator {
         List<String> searchPatterns = new ArrayList<>();
         for (String extension : extensions) {
             String filename = classNameWithPathSeparator + extension;
-            for (String classSearchDirectory : classSearchDirectories) {
+            for (String classSearchDirectory : this.classSearchDirectories) {
                 searchPatterns.add(classSearchDirectory + FILE_SEPARATOR + filename);
             }
         }
@@ -205,7 +205,7 @@ public class ResourceLocator {
 
     private Resource resolveExceptionSafe(String pathPattern) {
         try {
-            Resource[] resources = patchMatchingResolver.getResources("file:" + pathPattern);
+            Resource[] resources = this.patchMatchingResolver.getResources("file:" + pathPattern);
             if (resources != null && resources.length > 0) {
                 return resources[0];
             }
@@ -218,7 +218,7 @@ public class ResourceLocator {
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        defaultResourceLoader = resourceLoader;
+        this.defaultResourceLoader = resourceLoader;
     }
 
     class PluginResourceInfo {

@@ -104,14 +104,14 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      * Return the path for this resource (as resource path within the class path).
      */
     public final String getPath() {
-        return path;
+        return this.path;
     }
 
     /**
      * Return the ClassLoader that this resource will be obtained from.
      */
     public final ClassLoader getClassLoader() {
-        return classLoader == null ? clazz.getClassLoader() : classLoader;
+        return this.classLoader == null ? this.clazz.getClassLoader() : this.classLoader;
     }
 
     /**
@@ -122,11 +122,11 @@ public class ClassPathResource extends AbstractFileResolvingResource {
     @Override
     public boolean exists() {
         URL url;
-        if (clazz == null) {
-            url = classLoader.getResource(path);
+        if (this.clazz == null) {
+            url = this.classLoader.getResource(this.path);
         }
         else {
-            url = clazz.getResource(path);
+            url = this.clazz.getResource(this.path);
         }
         return url != null;
     }
@@ -138,11 +138,11 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      */
     public InputStream getInputStream() throws IOException {
         InputStream is;
-        if (clazz == null) {
-            is = classLoader.getResourceAsStream(path);
+        if (this.clazz == null) {
+            is = this.classLoader.getResourceAsStream(this.path);
         }
         else {
-            is = clazz.getResourceAsStream(path);
+            is = this.clazz.getResourceAsStream(this.path);
         }
         if (is == null) {
             throw new FileNotFoundException(
@@ -158,11 +158,11 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      */
     public URL getURL() throws IOException {
         URL url;
-        if (clazz == null) {
-            url = classLoader.getResource(path);
+        if (this.clazz == null) {
+            url = this.classLoader.getResource(this.path);
         }
         else {
-            url = clazz.getResource(path);
+            url = this.clazz.getResource(this.path);
         }
         if (url == null) {
             throw new FileNotFoundException(
@@ -180,8 +180,8 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      * relative to the path of the underlying resource of this descriptor.
      */
     public Resource createRelative(String relativePath) {
-        String pathToUse = GrailsResourceUtils.applyRelativePath(path, relativePath);
-        return new ClassPathResource(pathToUse, classLoader, clazz);
+        String pathToUse = GrailsResourceUtils.applyRelativePath(this.path, relativePath);
+        return new ClassPathResource(pathToUse, this.classLoader, this.clazz);
     }
 
     /**
@@ -189,7 +189,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      * resource refers to.
      */
     public String getFilename() {
-        return GrailsResourceUtils.getFilename(path);
+        return GrailsResourceUtils.getFilename(this.path);
     }
 
     /**
@@ -198,12 +198,12 @@ public class ClassPathResource extends AbstractFileResolvingResource {
     public String getDescription() {
         StringBuilder builder = new StringBuilder("class path resource [");
 
-        if (clazz != null) {
-            builder.append(GrailsResourceUtils.classPackageAsResourcePath(clazz));
+        if (this.clazz != null) {
+            builder.append(GrailsResourceUtils.classPackageAsResourcePath(this.clazz));
             builder.append('/');
         }
 
-        builder.append(path);
+        builder.append(this.path);
         builder.append(']');
         return builder.toString();
     }
@@ -218,9 +218,9 @@ public class ClassPathResource extends AbstractFileResolvingResource {
         }
         if (obj instanceof ClassPathResource) {
             ClassPathResource otherRes = (ClassPathResource) obj;
-            return (path.equals(otherRes.path) &&
-                    nullSafeEquals(classLoader, otherRes.classLoader) &&
-                    nullSafeEquals(clazz, otherRes.clazz));
+            return (this.path.equals(otherRes.path) &&
+                    nullSafeEquals(this.classLoader, otherRes.classLoader) &&
+                    nullSafeEquals(this.clazz, otherRes.clazz));
         }
         return false;
     }
@@ -273,7 +273,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      */
     @Override
     public int hashCode() {
-        return path.hashCode();
+        return this.path.hashCode();
     }
 
 }

@@ -71,7 +71,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
     public Class<?>[] getPluginClasses() {
 
         // just in case we try to use this twice
-        foundPluginClasses.clear();
+        this.foundPluginClasses.clear();
 
         try {
             Resource[] resources = resolvePluginResources();
@@ -87,15 +87,15 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. " +
                     "This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
         }
-        return foundPluginClasses.toArray(new Class[foundPluginClasses.size()]);
+        return this.foundPluginClasses.toArray(new Class[this.foundPluginClasses.size()]);
     }
 
     public BinaryGrailsPluginDescriptor getBinaryDescriptor(Class<?> pluginClass) {
-        return binaryDescriptors.get(pluginClass);
+        return this.binaryDescriptors.get(pluginClass);
     }
 
     private Resource[] resolvePluginResources() throws IOException {
-        Enumeration<URL> resources = application.getClassLoader().getResources(CORE_PLUGIN_PATTERN);
+        Enumeration<URL> resources = this.application.getClassLoader().getResources(CORE_PLUGIN_PATTERN);
         List<Resource> resourceList = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL url = resources.nextElement();
@@ -120,7 +120,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                         Class<?> pluginClass = attemptCorePluginClassLoad(pluginType);
                         if (pluginClass != null) {
                             addPlugin(pluginClass);
-                            binaryDescriptors.put(pluginClass, new BinaryGrailsPluginDescriptor(resource, ph.pluginClasses));
+                            this.binaryDescriptors.put(pluginClass, new BinaryGrailsPluginDescriptor(resource, ph.pluginClasses));
                         }
                     }
 
@@ -156,7 +156,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
     }
 
     private void addPlugin(Class<?> plugin) {
-        foundPluginClasses.add(plugin);
+        this.foundPluginClasses.add(plugin);
     }
 
     public void setParentApplicationContext(ApplicationContext parent) {
@@ -179,38 +179,38 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (localName.equals("type")) {
-                state = PluginParseState.TYPE;
-                buff = new StringBuilder();
+                this.state = PluginParseState.TYPE;
+                this.buff = new StringBuilder();
             }
             else if (localName.equals("resource")) {
-                state = PluginParseState.RESOURCE;
-                buff = new StringBuilder();
+                this.state = PluginParseState.RESOURCE;
+                this.buff = new StringBuilder();
             }
         }
 
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
-            switch (state) {
+            switch (this.state) {
                 case TYPE:
-                    buff.append(String.valueOf(ch, start, length));
+                    this.buff.append(String.valueOf(ch, start, length));
                     break;
                 case RESOURCE:
-                    buff.append(String.valueOf(ch, start, length));
+                    this.buff.append(String.valueOf(ch, start, length));
                     break;
             }
         }
 
         @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {
-            switch (state) {
+            switch (this.state) {
                 case TYPE:
-                    pluginTypes.add(buff.toString());
+                    this.pluginTypes.add(this.buff.toString());
                     break;
                 case RESOURCE:
-                    pluginClasses.add(buff.toString());
+                    this.pluginClasses.add(this.buff.toString());
                     break;
             }
-            state = PluginParseState.PARSING;
+            this.state = PluginParseState.PARSING;
         }
 
     }

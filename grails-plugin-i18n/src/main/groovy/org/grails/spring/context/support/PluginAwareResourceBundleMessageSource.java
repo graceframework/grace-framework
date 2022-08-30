@@ -92,7 +92,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {
-        application = grailsApplication;
+        this.application = grailsApplication;
     }
 
     public void setPluginManager(GrailsPluginManager pluginManager) {
@@ -108,11 +108,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         Assert.notNull(this.pluginManager, "GrailsPluginManager is required");
         Assert.notNull(this.resourceResolver, "PathMatchingResourcePatternResolver is required");
 
-        if (pluginCacheMillis == Long.MIN_VALUE) {
-            pluginCacheMillis = cacheMillis;
+        if (this.pluginCacheMillis == Long.MIN_VALUE) {
+            this.pluginCacheMillis = cacheMillis;
         }
 
-        if (localResourceLoader == null) {
+        if (this.localResourceLoader == null) {
             return;
         }
     }
@@ -140,23 +140,23 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         }
         else {
             try {
-                if (searchClasspath) {
-                    resources = resourceResolver.getResources(messageBundleLocationPattern);
+                if (this.searchClasspath) {
+                    resources = this.resourceResolver.getResources(this.messageBundleLocationPattern);
                 }
                 else {
-                    DefaultGrailsApplication defaultGrailsApplication = (DefaultGrailsApplication) application;
+                    DefaultGrailsApplication defaultGrailsApplication = (DefaultGrailsApplication) this.application;
                     if (defaultGrailsApplication != null) {
                         GrailsApplicationClass applicationClass = defaultGrailsApplication.getApplicationClass();
                         if (applicationClass != null) {
                             ResourcePatternResolver resourcePatternResolver = new ClassRelativeResourcePatternResolver(applicationClass.getClass());
-                            resources = resourcePatternResolver.getResources(messageBundleLocationPattern);
+                            resources = resourcePatternResolver.getResources(this.messageBundleLocationPattern);
                         }
                         else {
-                            resources = resourceResolver.getResources(messageBundleLocationPattern);
+                            resources = this.resourceResolver.getResources(this.messageBundleLocationPattern);
                         }
                     }
                     else {
-                        resources = resourceResolver.getResources(messageBundleLocationPattern);
+                        resources = this.resourceResolver.getResources(this.messageBundleLocationPattern);
                     }
                 }
             }
@@ -203,7 +203,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
      * cached forever.
      */
     protected PropertiesHolder getMergedPluginProperties(final Locale locale) {
-        return CacheEntry.getValue(cachedMergedPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
+        return CacheEntry.getValue(this.cachedMergedPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
             @Override
             public PropertiesHolder call() throws Exception {
                 Properties mergedProps = new Properties();
@@ -222,7 +222,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
      * @return a MessageFormat
      */
     protected String resolveCodeWithoutArgumentsFromPlugins(String code, Locale locale) {
-        if (pluginCacheMillis < 0) {
+        if (this.pluginCacheMillis < 0) {
             PropertiesHolder propHolder = getMergedPluginProperties(locale);
             String result = propHolder.getProperty(code);
             if (result != null) {
@@ -240,7 +240,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     }
 
     protected PropertiesHolder getMergedBinaryPluginProperties(final Locale locale) {
-        return CacheEntry.getValue(cachedMergedBinaryPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
+        return CacheEntry.getValue(this.cachedMergedBinaryPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
             @Override
             public PropertiesHolder call() throws Exception {
                 Properties mergedProps = new Properties();
@@ -253,7 +253,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     }
 
     protected void mergeBinaryPluginProperties(final Locale locale, Properties mergedProps) {
-        final GrailsPlugin[] allPlugins = pluginManager.getAllPlugins();
+        final GrailsPlugin[] allPlugins = this.pluginManager.getAllPlugins();
         for (GrailsPlugin plugin : allPlugins) {
             if (plugin instanceof BinaryGrailsPlugin) {
                 BinaryGrailsPlugin binaryPlugin = (BinaryGrailsPlugin) plugin;
@@ -281,7 +281,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
      * @return a MessageFormat
      */
     protected MessageFormat resolveCodeFromPlugins(String code, Locale locale) {
-        if (pluginCacheMillis < 0) {
+        if (this.pluginCacheMillis < 0) {
             PropertiesHolder propHolder = getMergedPluginProperties(locale);
             MessageFormat result = propHolder.getMessageFormat(code, locale);
             if (result != null) {
@@ -302,8 +302,8 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         super.setResourceLoader(resourceLoader);
 
         this.localResourceLoader = resourceLoader;
-        if (resourceResolver == null) {
-            resourceResolver = new CachingPathMatchingResourcePatternResolver(localResourceLoader);
+        if (this.resourceResolver == null) {
+            this.resourceResolver = new CachingPathMatchingResourcePatternResolver(this.localResourceLoader);
         }
     }
 

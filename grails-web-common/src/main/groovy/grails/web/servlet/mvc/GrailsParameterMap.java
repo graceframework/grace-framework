@@ -130,7 +130,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     @Override
     public Object clone() {
         if (wrappedMap.isEmpty()) {
-            return new GrailsParameterMap(new LinkedHashMap(), request);
+            return new GrailsParameterMap(new LinkedHashMap(), this.request);
         }
         else {
             Map clonedMap = new LinkedHashMap(wrappedMap);
@@ -141,7 +141,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                     entry.setValue(((GrailsParameterMap) entry.getValue()).clone());
                 }
             }
-            return new GrailsParameterMap(clonedMap, request);
+            return new GrailsParameterMap(clonedMap, this.request);
         }
     }
 
@@ -153,7 +153,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
      * @return Returns the request.
      */
     public HttpServletRequest getRequest() {
-        return request;
+        return this.request;
     }
 
     @Override
@@ -161,8 +161,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         // removed test for String key because there
         // should be no limitations on what you shove in or take out
         Object returnValue = null;
-        if (nestedDateMap.containsKey(key)) {
-            returnValue = nestedDateMap.get(key);
+        if (this.nestedDateMap.containsKey(key)) {
+            returnValue = this.nestedDateMap.get(key);
         }
         else {
             returnValue = wrappedMap.get(key);
@@ -190,8 +190,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         if (key instanceof CharSequence) {
             key = key.toString();
         }
-        if (nestedDateMap.containsKey(key)) {
-            nestedDateMap.remove(key);
+        if (this.nestedDateMap.containsKey(key)) {
+            this.nestedDateMap.remove(key);
         }
         Object returnValue = wrappedMap.put(key, value);
         if (key instanceof String) {
@@ -205,7 +205,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
     @Override
     public Object remove(Object key) {
-        nestedDateMap.remove(key);
+        this.nestedDateMap.remove(key);
         return wrappedMap.remove(key);
     }
 
@@ -228,7 +228,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         Object returnValue = wrappedMap.get(name);
         if ("date.struct".equals(returnValue)) {
             returnValue = lazyEvaluateDateParam(name);
-            nestedDateMap.put(name, returnValue);
+            this.nestedDateMap.put(name, returnValue);
             return (Date) returnValue;
         }
         Date date = super.getDate(name);
@@ -249,7 +249,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
      * @return A query String starting with the ? character
      */
     public String toQueryString() {
-        String encoding = request.getCharacterEncoding();
+        String encoding = this.request.getCharacterEncoding();
         try {
             return WebUtils.toQueryString(this, encoding);
         }
@@ -269,7 +269,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     private String lookupFormat(String name) {
         String format = CACHED_DATE_FORMATS.get(name);
         if (format == null) {
-            GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
+            GrailsWebRequest webRequest = GrailsWebRequest.lookup(this.request);
             if (webRequest != null) {
                 MessageSource messageSource = webRequest.getApplicationContext();
                 if (messageSource != null) {
@@ -357,7 +357,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
             // No value. So, since there is at least one sub-key,
             // we create a sub-map for this prefix.
 
-            prefixValue = new GrailsParameterMap(new LinkedHashMap(), request);
+            prefixValue = new GrailsParameterMap(new LinkedHashMap(), this.request);
             nestedLevel.put(nestedPrefix, prefixValue);
         }
 

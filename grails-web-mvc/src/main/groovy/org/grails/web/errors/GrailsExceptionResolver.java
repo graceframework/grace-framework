@@ -141,21 +141,21 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected void filterStackTrace(Exception e) {
-        stackFilterer.filter(e, true);
+        this.stackFilterer.filter(e, true);
     }
 
     protected void setStatus(HttpServletRequest request, HttpServletResponse response, ModelAndView mv, Exception e) {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         // expose the servlet 2.3 specs status code request attribute as 500
         request.setAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        final GrailsWrappedRuntimeException gwre = new GrailsWrappedRuntimeException(servletContext, e);
+        final GrailsWrappedRuntimeException gwre = new GrailsWrappedRuntimeException(this.servletContext, e);
         mv.addObject(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, gwre);
         mv.addObject(WebUtils.EXCEPTION_ATTRIBUTE, gwre);
     }
 
     protected UrlMappingsHolder lookupUrlMappings() {
         try {
-            return UrlMappingUtils.lookupUrlMappings(servletContext);
+            return UrlMappingUtils.lookupUrlMappings(this.servletContext);
         }
         catch (Exception ignored) {
             // ignore, no app ctx in this case.
@@ -189,7 +189,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
                 if (infoParams != null) {
                     params.putAll(info.getParameters());
                 }
-                info = new DefaultUrlMappingInfo(info, params, grailsApplication);
+                info = new DefaultUrlMappingInfo(info, params, this.grailsApplication);
             }
         }
 
@@ -238,7 +238,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected void resolveView(HttpServletRequest request, UrlMappingInfo info, ModelAndView mv) throws Exception {
-        ViewResolver viewResolver = WebUtils.lookupViewResolver(servletContext);
+        ViewResolver viewResolver = WebUtils.lookupViewResolver(this.servletContext);
         View v = UrlMappingUtils.resolveView(request, info, info.getViewName(), viewResolver);
         if (v != null) {
             mv.setView(v);
@@ -285,7 +285,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             sb.append(request.getRequestURI());
         }
 
-        Config config = grailsApplication != null ? grailsApplication.getConfig() : null;
+        Config config = this.grailsApplication != null ? this.grailsApplication.getConfig() : null;
         final boolean shouldLogRequestParameters = config != null ? config.getProperty(Settings.SETTING_LOG_REQUEST_PARAMETERS,
                 Boolean.class, Environment.getCurrent() == Environment.DEVELOPMENT) : false;
 
@@ -336,13 +336,13 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     protected void createStackFilterer() {
         try {
-            Class filtererClass = grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
+            Class filtererClass = this.grailsApplication.getConfig().getProperty(Settings.SETTING_LOGGING_STACKTRACE_FILTER_CLASS,
                     Class.class, DefaultStackTraceFilterer.class);
-            stackFilterer = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
+            this.stackFilterer = BeanUtils.instantiateClass(filtererClass, StackTraceFilterer.class);
         }
         catch (Throwable t) {
             logger.error("Problem instantiating StackTracePrinter class, using default: " + t.getMessage());
-            stackFilterer = new DefaultStackTraceFilterer();
+            this.stackFilterer = new DefaultStackTraceFilterer();
         }
     }
 

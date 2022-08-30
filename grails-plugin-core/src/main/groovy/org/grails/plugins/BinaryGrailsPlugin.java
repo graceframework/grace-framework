@@ -96,17 +96,17 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         }
         this.baseResource = new UrlResource(rootResource);
         try {
-            this.isJar = ResourceUtils.isJarURL(baseResource.getURL());
+            this.isJar = ResourceUtils.isJarURL(this.baseResource.getURL());
         }
         catch (IOException e) {
             throw new PluginException("Cannot evaluate plugin location for plugin " + pluginClass, e);
         }
-        this.projectDirectory = isJar ? null : IOUtils.findApplicationDirectoryFile(pluginClass);
+        this.projectDirectory = this.isJar ? null : IOUtils.findApplicationDirectoryFile(pluginClass);
 
-        if (BuildSettings.BASE_DIR != null && projectDirectory != null) {
+        if (BuildSettings.BASE_DIR != null && this.projectDirectory != null) {
             try {
-                if (projectDirectory.getCanonicalPath().startsWith(BuildSettings.BASE_DIR.getCanonicalPath())) {
-                    isBase = true;
+                if (this.projectDirectory.getCanonicalPath().startsWith(BuildSettings.BASE_DIR.getCanonicalPath())) {
+                    this.isBase = true;
                 }
             }
             catch (IOException e) {
@@ -127,7 +127,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     }
 
     public File getProjectDirectory() {
-        return projectDirectory;
+        return this.projectDirectory;
     }
 
     protected void initializeViewMap(BinaryGrailsPluginDescriptor descriptor) {
@@ -168,8 +168,8 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 String viewName = view.toString();
                 final String viewClassName = viewsProperties.getProperty(viewName);
                 try {
-                    final Class<?> viewClass = grailsApplication.getClassLoader().loadClass(viewClassName);
-                    precompiledViewMap.put(viewName, viewClass);
+                    final Class<?> viewClass = this.grailsApplication.getClassLoader().loadClass(viewClassName);
+                    this.precompiledViewMap.put(viewName, viewClass);
                 }
                 catch (Throwable e) {
                     throw new PluginException("Failed to initialize view [" + viewName + "] from plugin [" + getName() + "] : " + e.getMessage(), e);
@@ -194,7 +194,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     protected void initializeProvidedArtefacts(List<String> classNames) {
         List<Class> artefacts = new ArrayList<Class>();
         if (!classNames.isEmpty()) {
-            final ClassLoader classLoader = grailsApplication.getClassLoader();
+            final ClassLoader classLoader = this.grailsApplication.getClassLoader();
             for (String className : classNames) {
                 try {
                     artefacts.add(classLoader.loadClass(className));
@@ -207,19 +207,19 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             }
         }
         artefacts.addAll(Arrays.asList(super.getProvidedArtefacts()));
-        providedArtefacts = artefacts.toArray(new Class[artefacts.size()]);
+        this.providedArtefacts = artefacts.toArray(new Class[artefacts.size()]);
     }
 
     @Override
     public Class<?>[] getProvidedArtefacts() {
-        return providedArtefacts;
+        return this.providedArtefacts;
     }
 
     /**
      * @return The META-INF/grails-plugin.xml descriptor
      */
     public BinaryGrailsPluginDescriptor getBinaryDescriptor() {
-        return descriptor;
+        return this.descriptor;
     }
 
     /**
@@ -229,7 +229,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
      * @return The resource or null if it doesn't exist
      */
     public Resource getResource(String path) {
-        final Resource descriptorResource = descriptor.getResource();
+        final Resource descriptorResource = this.descriptor.getResource();
 
         try {
             Resource resource = descriptorResource.createRelative("static" + path);
@@ -350,7 +350,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         String extraPath = "/plugins/" + getName() + '-' + getVersion() + '/';
         viewName = viewName.replace(extraPath, "/");
 
-        return precompiledViewMap.get(viewName);
+        return this.precompiledViewMap.get(viewName);
     }
 
 }

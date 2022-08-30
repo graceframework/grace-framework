@@ -62,7 +62,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
 
     @Override
     public Metadata getMetadata() {
-        return applicationMeta;
+        return this.applicationMeta;
     }
 
     @Override
@@ -71,7 +71,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
     }
 
     public Config getConfig() {
-        return config;
+        return this.config;
     }
 
     public void setConfig(Config config) {
@@ -90,7 +90,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
         if (handlers != null) {
             for (ArtefactHandler handler : handlers) {
                 if (handler instanceof GrailsConfigurationAware) {
-                    ((GrailsConfigurationAware) handler).setConfiguration(config);
+                    ((GrailsConfigurationAware) handler).setConfiguration(this.config);
                 }
             }
         }
@@ -103,7 +103,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
 
     @Override
     public ClassLoader getClassLoader() {
-        return classLoader;
+        return this.classLoader;
     }
 
     @SuppressWarnings("rawtypes")
@@ -113,7 +113,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
     }
 
     public ApplicationContext getMainContext() {
-        return parentContext;
+        return this.parentContext;
     }
 
     public void setMainContext(ApplicationContext context) {
@@ -121,7 +121,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
     }
 
     public ApplicationContext getParentContext() {
-        return parentContext;
+        return this.parentContext;
     }
 
     @Override

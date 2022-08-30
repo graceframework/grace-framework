@@ -45,13 +45,13 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     @Override
     public void run() {
         int count = 0;
-        while (active) {
-            Set<File> files = lastModifiedMap.keySet();
+        while (this.active) {
+            Set<File> files = this.lastModifiedMap.keySet();
             for (File file : files) {
                 long currentLastModified = file.lastModified();
-                Long cachedTime = lastModifiedMap.get(file);
+                Long cachedTime = this.lastModifiedMap.get(file);
                 if (currentLastModified > cachedTime) {
-                    lastModifiedMap.put(file, currentLastModified);
+                    this.lastModifiedMap.put(file, currentLastModified);
                     fireOnChange(file);
                 }
             }
@@ -61,7 +61,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
                     count = 0;
                     checkForNewFiles();
                 }
-                Thread.sleep(sleepTime);
+                Thread.sleep(this.sleepTime);
             }
             catch (InterruptedException e) {
                 // ignore
@@ -71,7 +71,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
 
     @Override
     public void addWatchFile(File fileToWatch) {
-        lastModifiedMap.put(fileToWatch, fileToWatch.lastModified());
+        this.lastModifiedMap.put(fileToWatch, fileToWatch.lastModified());
     }
 
     @Override
@@ -84,9 +84,9 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     }
 
     private void trackDirectoryExtensions(File dir, List<String> fileExtensions) {
-        Collection<String> existingExtensions = directoryToExtensionsMap.get(dir);
+        Collection<String> existingExtensions = this.directoryToExtensionsMap.get(dir);
         if (existingExtensions == null) {
-            directoryToExtensionsMap.put(dir, new ArrayList<String>(fileExtensions));
+            this.directoryToExtensionsMap.put(dir, new ArrayList<String>(fileExtensions));
         }
         else {
             existingExtensions.addAll(fileExtensions);
@@ -94,11 +94,11 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     }
 
     private void checkForNewFiles() {
-        for (File directory : directoryWatch.keySet()) {
-            final Long currentTimestamp = directoryWatch.get(directory);
+        for (File directory : this.directoryWatch.keySet()) {
+            final Long currentTimestamp = this.directoryWatch.get(directory);
 
             if (currentTimestamp < directory.lastModified()) {
-                Collection<String> extensions = directoryToExtensionsMap.get(directory);
+                Collection<String> extensions = this.directoryToExtensionsMap.get(directory);
                 if (extensions == null) {
                     extensions = this.extensions;
                 }
@@ -110,7 +110,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     private void cacheFilesForDirectory(File directory, Collection<String> fileExtensions, boolean fireEvent) {
         addExtensions(fileExtensions);
 
-        directoryWatch.put(directory, directory.lastModified());
+        this.directoryWatch.put(directory, directory.lastModified());
         File[] files = directory.listFiles();
         if (files == null) {
             return;
@@ -121,10 +121,10 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
                 cacheFilesForDirectory(file, fileExtensions, fireEvent);
             }
             else if (isValidFileToMonitor(file, fileExtensions)) {
-                if (!lastModifiedMap.containsKey(file) && fireEvent) {
+                if (!this.lastModifiedMap.containsKey(file) && fireEvent) {
                     fireOnNew(file);
                 }
-                lastModifiedMap.put(file, file.lastModified());
+                this.lastModifiedMap.put(file, file.lastModified());
             }
         }
     }
@@ -132,8 +132,8 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     private void addExtensions(Collection<String> toAdd) {
         for (String extension : toAdd) {
             extension = removeStartingDotIfPresent(extension);
-            if (!extensions.contains(extension)) {
-                extensions.add(extension);
+            if (!this.extensions.contains(extension)) {
+                this.extensions.add(extension);
             }
         }
     }

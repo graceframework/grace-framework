@@ -67,7 +67,7 @@ public class SortedAggregateCompleter implements Completer {
      * @return the aggregated completers
      */
     public Collection<Completer> getCompleters() {
-        return completers;
+        return this.completers;
     }
 
     /**
@@ -80,11 +80,11 @@ public class SortedAggregateCompleter implements Completer {
         // buffer could be null
         Preconditions.checkNotNull(candidates);
 
-        List<Completion> completions = new ArrayList<Completion>(completers.size());
+        List<Completion> completions = new ArrayList<Completion>(this.completers.size());
 
         // Run each completer, saving its completion results
         int max = -1;
-        for (Completer completer : completers) {
+        for (Completer completer : this.completers) {
             Completion completion = new Completion(candidates);
             completion.complete(completer, buffer, cursor);
 
@@ -114,7 +114,7 @@ public class SortedAggregateCompleter implements Completer {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-                "completers=" + completers +
+                "completers=" + this.completers +
                 '}';
     }
 
@@ -131,7 +131,7 @@ public class SortedAggregateCompleter implements Completer {
 
         public void complete(final Completer completer, final String buffer, final int cursor) {
             Preconditions.checkNotNull(completer);
-            this.cursor = completer.complete(buffer, cursor, candidates);
+            this.cursor = completer.complete(buffer, cursor, this.candidates);
         }
 
     }

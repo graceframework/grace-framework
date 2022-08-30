@@ -100,13 +100,13 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     }
 
     public ChainedTransactionManagerPostProcessor(Config config, String whitelistPattern, String blacklistPattern) {
-        transactionManagerBeanNames = null;
+        this.transactionManagerBeanNames = null;
         this.config = config;
         if (whitelistPattern != null) {
-            beanNameWhitelistPattern = whitelistPattern;
+            this.beanNameWhitelistPattern = whitelistPattern;
         }
         if (blacklistPattern != null) {
-            beanNameBlacklistPattern = blacklistPattern;
+            this.beanNameBlacklistPattern = blacklistPattern;
         }
     }
 
@@ -210,17 +210,18 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     }
 
     protected boolean isValidTransactionManagerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
-        return beanName.matches(beanNameWhitelistPattern) && (beanNameBlacklistPattern == null || !beanName.matches(beanNameBlacklistPattern)) &&
-                !beanName.matches(beanNameInternalBlacklistPattern);
+        return beanName.matches(this.beanNameWhitelistPattern) &&
+                (this.beanNameBlacklistPattern == null || !beanName.matches(this.beanNameBlacklistPattern)) &&
+                !beanName.matches(this.beanNameInternalBlacklistPattern);
     }
 
     protected boolean isNotTransactional(String suffix) {
-        if (suffix == null || config == null) {
+        if (suffix == null || this.config == null) {
             return false;
         }
-        Boolean transactional = config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + TRANSACTIONAL, Boolean.class, null);
+        Boolean transactional = this.config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + TRANSACTIONAL, Boolean.class, null);
         if (transactional == null) {
-            Boolean isReadOnly = config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + READONLY, Boolean.class, null);
+            Boolean isReadOnly = this.config.getProperty(DATA_SOURCES_PREFIX + suffix + "." + READONLY, Boolean.class, null);
             if (isReadOnly != null && isReadOnly == true) {
                 transactional = false;
             }
@@ -283,7 +284,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     }
 
     public String getBeanNameWhitelistPattern() {
-        return beanNameWhitelistPattern;
+        return this.beanNameWhitelistPattern;
     }
 
     public void setBeanNameWhitelistPattern(String beanNameWhitelistPattern) {
@@ -291,7 +292,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     }
 
     public String getBeanNameBlacklistPattern() {
-        return beanNameBlacklistPattern;
+        return this.beanNameBlacklistPattern;
     }
 
     public void setBeanNameBlacklistPattern(String beanNameBlacklistPattern) {
@@ -299,7 +300,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
     }
 
     public String getBeanNameInternalBlacklistPattern() {
-        return beanNameInternalBlacklistPattern;
+        return this.beanNameInternalBlacklistPattern;
     }
 
     public void setBeanNameInternalBlacklistPattern(String beanNameInternalBlacklistPattern) {

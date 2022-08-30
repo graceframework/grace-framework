@@ -67,9 +67,9 @@ class PluginAstReader {
             visitContents(className, classNode);
         }
 
-        pluginInfo.setName(GrailsNameUtils.getPluginName(className + ".groovy"));
+        this.pluginInfo.setName(GrailsNameUtils.getPluginName(className + ".groovy"));
 
-        Map<String, Object> pluginProperties = pluginInfo.getProperties();
+        Map<String, Object> pluginProperties = this.pluginInfo.getProperties();
         for (Map.Entry<String, Object> entry : pluginProperties.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
@@ -78,10 +78,10 @@ class PluginAstReader {
                 if (val != null && val.length() > 2 && val.startsWith("@") && val.endsWith("@")) {
                     String token = val.substring(1, val.length() - 1);
                     val = String.valueOf(pluginProperties.get(token));
-                    pluginInfo.setProperty(key, val);
+                    this.pluginInfo.setProperty(key, val);
                 }
                 if (key.equals("version")) {
-                    pluginInfo.setVersion(val);
+                    this.pluginInfo.setVersion(val);
                 }
             }
             else if (value instanceof Map) {
@@ -103,7 +103,7 @@ class PluginAstReader {
             }
         }
 
-        return pluginInfo;
+        return this.pluginInfo;
     }
 
     protected void visitContents(String className, final ClassNode classNode) {
@@ -118,14 +118,14 @@ class PluginAstReader {
                 if (expr != null) {
                     Object value = null;
                     if (expr instanceof ListExpression) {
-                        final List<String> list = new ArrayList<String>();
+                        final List<String> list = new ArrayList<>();
                         for (Expression i : ((ListExpression) expr).getExpressions()) {
                             list.add(i.getText());
                         }
                         value = list;
                     }
                     else if (expr instanceof MapExpression) {
-                        final Map<String, String> map = new LinkedHashMap<String, String>();
+                        final Map<String, String> map = new LinkedHashMap<>();
                         MapExpression mapExpr = (MapExpression) expr;
                         for (MapEntryExpression mee : mapExpr.getMapEntryExpressions()) {
                             Expression keyExpr = mee.getKeyExpression();
@@ -164,7 +164,7 @@ class PluginAstReader {
                         value = expr.getText();
                     }
                     if (value != null) {
-                        pluginInfo.setProperty(name, value);
+                        PluginAstReader.this.pluginInfo.setProperty(name, value);
                         super.visitProperty(node);
                     }
                 }
@@ -192,13 +192,13 @@ class PluginAstReader {
 
         private String version;
 
-        private Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();
+        private final Map<String, Object> attributes = new ConcurrentHashMap<>();
 
         public BasicGrailsPluginInfo() {
         }
 
         public String getName() {
-            return name;
+            return this.name;
         }
 
         public void setName(String name) {
@@ -206,7 +206,7 @@ class PluginAstReader {
         }
 
         public String getVersion() {
-            return version;
+            return this.version;
         }
 
         public void setVersion(String version) {
@@ -214,15 +214,15 @@ class PluginAstReader {
         }
 
         public void setProperty(String property, Object newValue) {
-            attributes.put(property, newValue);
+            this.attributes.put(property, newValue);
         }
 
         public Object getProperty(String property) {
-            return attributes.get(property);
+            return this.attributes.get(property);
         }
 
         public String getFullName() {
-            return name + '-' + version;
+            return this.name + '-' + this.version;
         }
 
         public Resource getDescriptor() {
@@ -235,12 +235,12 @@ class PluginAstReader {
 
         public Map<String, Object> getProperties() {
             Map<String, Object> props = new HashMap<>();
-            props.putAll(attributes);
-            if (name != null) {
-                props.put(NAME, name);
+            props.putAll(this.attributes);
+            if (this.name != null) {
+                props.put(NAME, this.name);
             }
-            if (version != null) {
-                props.put(VERSION, version);
+            if (this.version != null) {
+                props.put(VERSION, this.version);
             }
             return props;
         }

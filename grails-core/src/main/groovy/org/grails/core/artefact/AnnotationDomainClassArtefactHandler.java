@@ -33,14 +33,14 @@ public class AnnotationDomainClassArtefactHandler extends DomainClassArtefactHan
     private Set<String> jpaClassNames = new HashSet<String>();
 
     public Set<String> getJpaClassNames() {
-        return jpaClassNames;
+        return this.jpaClassNames;
     }
 
     @Override
     public boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
         final boolean isJpaDomainClass = isJPADomainClass(clazz);
         if (isJpaDomainClass) {
-            jpaClassNames.add(clazz.getName());
+            this.jpaClassNames.add(clazz.getName());
         }
         return super.isArtefactClass(clazz);
     }

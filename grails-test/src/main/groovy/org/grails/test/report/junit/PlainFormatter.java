@@ -60,13 +60,13 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
 
     @Override
     public void setSystemError(String out) {
-        systemError = out;
+        this.systemError = out;
         super.setSystemError(out);
     }
 
     @Override
     public void setSystemOutput(String out) {
-        systemOutput = out;
+        this.systemOutput = out;
         super.setSystemOutput(out);
     }
 
@@ -85,9 +85,9 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
     @Override
     public void endTestSuite(JUnitTest suite) {
         super.endTestSuite(suite);
-        File parentFile = file.getParentFile();
-        writeToFile(new File(parentFile, name + "-out.txt"), systemOutput);
-        writeToFile(new File(parentFile, name + "-err.txt"), systemError);
+        File parentFile = this.file.getParentFile();
+        writeToFile(new File(parentFile, this.name + "-out.txt"), this.systemOutput);
+        writeToFile(new File(parentFile, this.name + "-err.txt"), this.systemError);
     }
 
     protected void writeToFile(File f, String text) {

@@ -59,8 +59,8 @@ public class LazyMetaPropertyMap implements Map {
     public LazyMetaPropertyMap(Object o) {
         Assert.notNull(o, "Object cannot be null");
 
-        instance = o;
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(o.getClass());
+        this.instance = o;
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(o.getClass());
     }
 
     /**
@@ -90,7 +90,7 @@ public class LazyMetaPropertyMap implements Map {
         Assert.isInstanceOf(String.class, propertyName, "This map implementation only supports String based keys!");
 
         String pn = propertyName.toString();
-        return !NameUtils.isConfigurational(pn) && metaClass.getMetaProperty(pn) != null;
+        return !NameUtils.isConfigurational(pn) && this.metaClass.getMetaProperty(pn) != null;
     }
 
     /**
@@ -134,9 +134,9 @@ public class LazyMetaPropertyMap implements Map {
         }
 
         Object val = null;
-        MetaProperty mp = metaClass.getMetaProperty(propertyName.toString());
+        MetaProperty mp = this.metaClass.getMetaProperty(propertyName.toString());
         if (mp != null) {
-            val = mp.getProperty(instance);
+            val = mp.getProperty(this.instance);
         }
         return val;
     }
@@ -147,13 +147,13 @@ public class LazyMetaPropertyMap implements Map {
         }
 
         Object old = null;
-        MetaProperty mp = metaClass.getMetaProperty((String) propertyName);
+        MetaProperty mp = this.metaClass.getMetaProperty((String) propertyName);
         if (mp != null && !isExcluded(mp)) {
-            old = mp.getProperty(instance);
+            old = mp.getProperty(this.instance);
             if (propertyValue instanceof Map) {
                 propertyValue = ((Map) propertyValue).get(propertyName);
             }
-            mp.setProperty(instance, propertyValue);
+            mp.setProperty(this.instance, propertyValue);
         }
         return old;
     }
@@ -180,7 +180,7 @@ public class LazyMetaPropertyMap implements Map {
 
     public Set<String> keySet() {
         Set<String> names = new HashSet<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
+        for (MetaProperty mp : this.metaClass.getProperties()) {
             if (isExcluded(mp)) {
                 continue;
             }
@@ -191,25 +191,25 @@ public class LazyMetaPropertyMap implements Map {
 
     public Collection<Object> values() {
         Collection<Object> values = new ArrayList<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
+        for (MetaProperty mp : this.metaClass.getProperties()) {
             if (isExcluded(mp)) {
                 continue;
             }
-            values.add(mp.getProperty(instance));
+            values.add(mp.getProperty(this.instance));
         }
         return values;
     }
 
     @Override
     public int hashCode() {
-        return instance.hashCode();
+        return this.instance.hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof LazyMetaPropertyMap) {
             LazyMetaPropertyMap other = (LazyMetaPropertyMap) o;
-            return instance.equals(other.getInstance());
+            return this.instance.equals(other.getInstance());
         }
         return false;
     }
@@ -220,17 +220,17 @@ public class LazyMetaPropertyMap implements Map {
      * @return The wrapped instance
      */
     public Object getInstance() {
-        return instance;
+        return this.instance;
     }
 
     public Set<MapEntry> entrySet() {
         Set<MapEntry> entries = new HashSet<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
+        for (MetaProperty mp : this.metaClass.getProperties()) {
             if (isExcluded(mp)) {
                 continue;
             }
 
-            entries.add(new MapEntry(mp.getName(), mp.getProperty(instance)));
+            entries.add(new MapEntry(mp.getName(), mp.getProperty(this.instance)));
         }
         return entries;
     }

@@ -40,26 +40,26 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
 
     @Override
     public Writer getOut() {
-        if (!destinationActivated) {
+        if (!this.destinationActivated) {
             try {
-                super.setOut(factory.activateDestination());
+                super.setOut(this.factory.activateDestination());
             }
             catch (IOException e) {
                 setError();
             }
-            destinationActivated = true;
+            this.destinationActivated = true;
         }
         return super.getOut();
     }
 
     @Override
     public boolean isAllowUnwrappingOut() {
-        return destinationActivated ? super.isAllowUnwrappingOut() : false;
+        return this.destinationActivated ? super.isAllowUnwrappingOut() : false;
     }
 
     @Override
     public Writer unwrap() {
-        return destinationActivated ? super.unwrap() : this;
+        return this.destinationActivated ? super.unwrap() : this;
     }
 
     public void updateDestination(DestinationFactory f) {
@@ -69,7 +69,7 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
 
     @Override
     public boolean isDestinationActivated() {
-        return destinationActivated;
+        return this.destinationActivated;
     }
 
     public void setDestinationActivated(boolean destinationActivated) {

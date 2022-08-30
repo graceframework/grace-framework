@@ -34,12 +34,12 @@ public class ExtendedProxy extends Proxy {
     private Map propertyMap;
 
     public ExtendedProxy() {
-        propertyMap = DefaultGroovyMethods.getProperties(this);
+        this.propertyMap = DefaultGroovyMethods.getProperties(this);
     }
 
     @Override
     public Object getProperty(String property) {
-        Object propertyValue = propertyMap.get(property);
+        Object propertyValue = this.propertyMap.get(property);
         if (propertyValue == null) {
             propertyValue = InvokerHelper.getMetaClass(getAdaptee()).getProperty(getAdaptee(), property);
         }
@@ -48,7 +48,7 @@ public class ExtendedProxy extends Proxy {
 
     @Override
     public void setProperty(String property, Object newValue) {
-        if (propertyMap.containsKey(property)) {
+        if (this.propertyMap.containsKey(property)) {
             super.setProperty(property, newValue);
         }
         else {
@@ -59,7 +59,7 @@ public class ExtendedProxy extends Proxy {
     @Override
     public void setMetaClass(MetaClass metaClass) {
         super.setMetaClass(metaClass);
-        propertyMap = DefaultGroovyMethods.getProperties(this);
+        this.propertyMap = DefaultGroovyMethods.getProperties(this);
     }
 
 }

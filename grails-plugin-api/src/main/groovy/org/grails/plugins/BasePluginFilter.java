@@ -59,7 +59,7 @@ public abstract class BasePluginFilter implements PluginFilter {
      * Temporary field holding list of plugin names added to the filtered List
      * to return (String).
      */
-    private Set<String> addedNames = new HashSet<>();
+    private final Set<String> addedNames = new HashSet<>();
 
     private List<GrailsPlugin> originalPlugins;
 
@@ -69,7 +69,7 @@ public abstract class BasePluginFilter implements PluginFilter {
 
     public BasePluginFilter(String[] included) {
         for (int i = 0; i < included.length; i++) {
-            suppliedNames.add(included[i].trim());
+            this.suppliedNames.add(included[i].trim());
         }
     }
 
@@ -90,17 +90,17 @@ public abstract class BasePluginFilter implements PluginFilter {
      * Template method shared by subclasses of <code>BasePluginFilter</code>.
      */
     public List<GrailsPlugin> filterPluginList(List<GrailsPlugin> original) {
-        originalPlugins = Collections.unmodifiableList(original);
+        this.originalPlugins = Collections.unmodifiableList(original);
 
         buildNameMap();
         buildExplicitlyNamedList();
         buildDerivedPluginList();
 
         List<GrailsPlugin> pluginList = new ArrayList<GrailsPlugin>();
-        pluginList.addAll(explicitlyNamedPlugins);
-        pluginList.addAll(derivedPlugins);
+        pluginList.addAll(this.explicitlyNamedPlugins);
+        pluginList.addAll(this.derivedPlugins);
 
-        return getPluginList(originalPlugins, pluginList);
+        return getPluginList(this.originalPlugins, pluginList);
     }
 
     /**
@@ -109,11 +109,11 @@ public abstract class BasePluginFilter implements PluginFilter {
      */
     private void buildDerivedPluginList() {
         // find their dependencies
-        for (int i = 0; i < explicitlyNamedPlugins.size(); i++) {
-            GrailsPlugin plugin = explicitlyNamedPlugins.get(i);
+        for (int i = 0; i < this.explicitlyNamedPlugins.size(); i++) {
+            GrailsPlugin plugin = this.explicitlyNamedPlugins.get(i);
 
             // recursively add in plugin dependencies
-            addPluginDependencies(derivedPlugins, plugin);
+            addPluginDependencies(this.derivedPlugins, plugin);
         }
     }
 
@@ -155,12 +155,12 @@ public abstract class BasePluginFilter implements PluginFilter {
     private void buildExplicitlyNamedList() {
         // each plugin must either be in included set or must be a dependent of
         // included set
-        for (GrailsPlugin plugin : originalPlugins) {
+        for (GrailsPlugin plugin : this.originalPlugins) {
             // find explicitly included plugins
             String name = plugin.getName();
-            if (suppliedNames.contains(name)) {
-                explicitlyNamedPlugins.add(plugin);
-                addedNames.add(name);
+            if (this.suppliedNames.contains(name)) {
+                this.explicitlyNamedPlugins.add(plugin);
+                this.addedNames.add(name);
             }
         }
     }
@@ -170,8 +170,8 @@ public abstract class BasePluginFilter implements PluginFilter {
      *
      */
     private void buildNameMap() {
-        for (GrailsPlugin plugin : originalPlugins) {
-            nameMap.put(plugin.getName(), plugin);
+        for (GrailsPlugin plugin : this.originalPlugins) {
+            this.nameMap.put(plugin.getName(), plugin);
         }
     }
 
@@ -180,8 +180,8 @@ public abstract class BasePluginFilter implements PluginFilter {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void registerDependency(List additionalList, GrailsPlugin plugin) {
-        if (!addedNames.contains(plugin.getName())) {
-            addedNames.add(plugin.getName());
+        if (!this.addedNames.contains(plugin.getName())) {
+            this.addedNames.add(plugin.getName());
             additionalList.add(plugin);
             addPluginDependencies(additionalList, plugin);
         }
@@ -189,15 +189,15 @@ public abstract class BasePluginFilter implements PluginFilter {
 
     @SuppressWarnings("rawtypes")
     protected Collection getAllPlugins() {
-        return Collections.unmodifiableCollection(nameMap.values());
+        return Collections.unmodifiableCollection(this.nameMap.values());
     }
 
     protected GrailsPlugin getNamedPlugin(String name) {
-        return nameMap.get(name);
+        return this.nameMap.get(name);
     }
 
     protected Set<String> getSuppliedNames() {
-        return suppliedNames;
+        return this.suppliedNames;
     }
 
 }

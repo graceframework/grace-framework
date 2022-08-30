@@ -61,8 +61,8 @@ public class PrettyPrintJSONWriter extends JSONWriter {
 
     private void indent() {
         try {
-            for (int i = 0; i < indentLevel; i++) {
-                writer.write(indentStr);
+            for (int i = 0; i < this.indentLevel; i++) {
+                writer.write(this.indentStr);
             }
         }
         catch (IOException e) {
@@ -107,13 +107,13 @@ public class PrettyPrintJSONWriter extends JSONWriter {
     @Override
     public JSONWriter array() {
         super.array();
-        indentLevel++;
+        this.indentLevel++;
         return this;
     }
 
     @Override
     public JSONWriter endArray() {
-        indentLevel--;
+        this.indentLevel--;
         super.endArray();
         return this;
     }
@@ -121,13 +121,13 @@ public class PrettyPrintJSONWriter extends JSONWriter {
     @Override
     public JSONWriter object() {
         super.object();
-        indentLevel++;
+        this.indentLevel++;
         return this;
     }
 
     @Override
     public JSONWriter endObject() {
-        indentLevel--;
+        this.indentLevel--;
         super.endObject();
         return this;
     }

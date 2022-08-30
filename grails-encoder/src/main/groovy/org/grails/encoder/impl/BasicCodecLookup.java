@@ -54,11 +54,11 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
     }
 
     public Encoder lookupEncoder(String codecName) {
-        return lookupCodec(codecName, encoders, Encoder.class);
+        return lookupCodec(codecName, this.encoders, Encoder.class);
     }
 
     public Decoder lookupDecoder(String codecName) {
-        return lookupCodec(codecName, decoders, Decoder.class);
+        return lookupCodec(codecName, this.decoders, Decoder.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -167,16 +167,16 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
     }
 
     public void registerDecoder(Decoder decoder) {
-        registerWithNameVaritions(decoders, decoder);
+        registerWithNameVaritions(this.decoders, decoder);
     }
 
     public void registerEncoder(Encoder encoder) {
-        registerWithNameVaritions(encoders, encoder);
+        registerWithNameVaritions(this.encoders, encoder);
     }
 
     public void reInitialize() {
-        encoders.clear(); ;
-        decoders.clear();
+        this.encoders.clear();
+        this.decoders.clear();
         registerCodecs();
     }
 

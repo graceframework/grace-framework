@@ -39,7 +39,7 @@ class SingleCharCharSequence implements CharSequence, CharArrayAccessible {
         if ((index < 0) || (index > 0)) {
             throw new StringIndexOutOfBoundsException(index);
         }
-        return ch;
+        return this.ch;
     }
 
     public int length() {
@@ -61,7 +61,7 @@ class SingleCharCharSequence implements CharSequence, CharArrayAccessible {
 
     @Override
     public String toString() {
-        return new String(new char[] { ch });
+        return new String(new char[] { this.ch });
     }
 
     public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) {
@@ -74,7 +74,7 @@ class SingleCharCharSequence implements CharSequence, CharArrayAccessible {
         if (srcBegin > srcEnd) {
             throw new StringIndexOutOfBoundsException("srcBegin > srcEnd");
         }
-        dst[dstBegin] = ch;
+        dst[dstBegin] = this.ch;
     }
 
 }

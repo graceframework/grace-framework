@@ -39,6 +39,6 @@ public class JSONException extends RuntimeException {
 
     @Override
     public Throwable getCause() {
-        return cause;
+        return this.cause;
     }
 }

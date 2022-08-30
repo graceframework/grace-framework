@@ -56,27 +56,27 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     }
 
     public UrlMappingData getUrlData() {
-        return urlData;
+        return this.urlData;
     }
 
     @Override
     public ConstrainedProperty[] getConstraints() {
-        return constraints;
+        return this.constraints;
     }
 
     @Override
     public Object getControllerName() {
-        return controllerName;
+        return this.controllerName;
     }
 
     @Override
     public Object getActionName() {
-        return actionName;
+        return this.actionName;
     }
 
     @Override
     public Object getViewName() {
-        return viewName;
+        return this.viewName;
     }
 
     @Override
@@ -139,9 +139,9 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     }
 
     public UrlMappingInfo match(int responseCode) {
-        if (responseCode == urlData.getResponseCode()) {
+        if (responseCode == this.urlData.getResponseCode()) {
             return new DefaultUrlMappingInfo(null, controllerName, actionName, namespace, pluginName, viewName,
-                    parameterValues, urlData, grailsApplication);
+                    this.parameterValues, this.urlData, grailsApplication);
         }
         return null;
     }
@@ -151,7 +151,7 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     }
 
     public Class<?> getExceptionType() {
-        return exceptionType;
+        return this.exceptionType;
     }
 
 }

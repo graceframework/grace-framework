@@ -57,7 +57,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
         if (map == null) {
             map = new LinkedHashMap();
         }
-        wrappedMap = map;
+        this.wrappedMap = map;
     }
 
     public boolean equals(Map that) {
@@ -80,22 +80,22 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
 
         AbstractTypeConvertingMap thatMap = (AbstractTypeConvertingMap) that;
 
-        if (wrappedMap == thatMap.wrappedMap) {
+        if (this.wrappedMap == thatMap.wrappedMap) {
             return true;
         }
 
-        if (wrappedMap.size() != thatMap.wrappedMap.size()) {
+        if (this.wrappedMap.size() != thatMap.wrappedMap.size()) {
             return false;
         }
 
-        if (!wrappedMap.keySet().equals(thatMap.wrappedMap.keySet())) {
+        if (!this.wrappedMap.keySet().equals(thatMap.wrappedMap.keySet())) {
             return false;
         }
 
-        final Iterator it = wrappedMap.keySet().iterator();
+        final Iterator it = this.wrappedMap.keySet().iterator();
         while (it.hasNext()) {
             final Object key = it.next();
-            Object thisValue = wrappedMap.get(key);
+            Object thisValue = this.wrappedMap.get(key);
             Object thatValue = thatMap.wrappedMap.get(key);
             if (thisValue == null && thatValue != null ||
                     thisValue != null && thatValue == null ||
@@ -109,7 +109,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     @Override
     public int hashCode() {
         int hashCode = HashCodeHelper.initHash();
-        for (Object entry : wrappedMap.entrySet()) {
+        for (Object entry : this.wrappedMap.entrySet()) {
             hashCode = HashCodeHelper.updateHash(hashCode, entry);
         }
         return hashCode;
@@ -471,51 +471,51 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
     }
 
     public Object put(Object k, Object v) {
-        return wrappedMap.put(k, v);
+        return this.wrappedMap.put(k, v);
     }
 
     public Object remove(Object o) {
-        return wrappedMap.remove(o);
+        return this.wrappedMap.remove(o);
     }
 
     public int size() {
-        return wrappedMap.size();
+        return this.wrappedMap.size();
     }
 
     public boolean isEmpty() {
-        return wrappedMap.isEmpty();
+        return this.wrappedMap.isEmpty();
     }
 
     public boolean containsKey(Object k) {
-        return wrappedMap.containsKey(k);
+        return this.wrappedMap.containsKey(k);
     }
 
     public boolean containsValue(Object v) {
-        return wrappedMap.containsValue(v);
+        return this.wrappedMap.containsValue(v);
     }
 
     public Object get(Object k) {
-        return wrappedMap.get(k);
+        return this.wrappedMap.get(k);
     }
 
     public void putAll(Map m) {
-        wrappedMap.putAll(m);
+        this.wrappedMap.putAll(m);
     }
 
     public void clear() {
-        wrappedMap.clear();
+        this.wrappedMap.clear();
     }
 
     public Set keySet() {
-        return wrappedMap.keySet();
+        return this.wrappedMap.keySet();
     }
 
     public Collection values() {
-        return wrappedMap.values();
+        return this.wrappedMap.values();
     }
 
     public Set entrySet() {
-        return wrappedMap.entrySet();
+        return this.wrappedMap.entrySet();
     }
 
     @Override

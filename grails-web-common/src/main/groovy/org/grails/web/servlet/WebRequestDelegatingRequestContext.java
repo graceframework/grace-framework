@@ -41,7 +41,7 @@ public class WebRequestDelegatingRequestContext implements GrailsRequestContext 
     private GrailsWebRequest webRequest;
 
     public WebRequestDelegatingRequestContext() {
-        webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
+        this.webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
     }
 
     /**
@@ -49,28 +49,28 @@ public class WebRequestDelegatingRequestContext implements GrailsRequestContext 
      * @return The webrequest object
      */
     public GrailsWebRequest getWebRequest() {
-        return webRequest;
+        return this.webRequest;
     }
 
     public HttpServletRequest getRequest() {
-        return webRequest.getCurrentRequest();
+        return this.webRequest.getCurrentRequest();
     }
 
     public HttpServletResponse getResponse() {
-        return webRequest.getCurrentResponse();
+        return this.webRequest.getCurrentResponse();
     }
 
     public HttpSession getSession() {
-        return webRequest.getSession();
+        return this.webRequest.getSession();
     }
 
     public ServletContext getServletContext() {
-        return webRequest.getServletContext();
+        return this.webRequest.getServletContext();
     }
 
     @SuppressWarnings("rawtypes")
     public Map getParams() {
-        return webRequest.getParams();
+        return this.webRequest.getParams();
     }
 
     public ApplicationContext getApplicationContext() {
@@ -79,15 +79,15 @@ public class WebRequestDelegatingRequestContext implements GrailsRequestContext 
     }
 
     public Writer getOut() {
-        return webRequest.getOut();
+        return this.webRequest.getOut();
     }
 
     public String getActionName() {
-        return webRequest.getActionName();
+        return this.webRequest.getActionName();
     }
 
     public String getControllerName() {
-        return webRequest.getControllerName();
+        return this.webRequest.getControllerName();
     }
 
     public String getRequestURI() {

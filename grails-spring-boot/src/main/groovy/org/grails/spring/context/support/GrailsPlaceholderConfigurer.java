@@ -58,17 +58,17 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
 
     @Override
     protected void loadProperties(Properties props) throws IOException {
-        if (config != null) {
-            props.putAll(config.toProperties());
+        if (this.config != null) {
+            props.putAll(this.config.toProperties());
         }
         else if (this.properties != null) {
-            props.putAll(properties);
+            props.putAll(this.properties);
         }
         this.properties = props;
     }
 
     public Properties getProperties() {
-        return properties;
+        return this.properties;
     }
 
     @Override

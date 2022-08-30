@@ -41,7 +41,7 @@ public class MockFileResource extends ByteArrayResource {
 
     @Override
     public String getFilename() {
-        return fileName;
+        return this.fileName;
     }
 
 }

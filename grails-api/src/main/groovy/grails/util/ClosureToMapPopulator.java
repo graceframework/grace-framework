@@ -35,7 +35,7 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
     private Map map;
 
     public ClosureToMapPopulator(Map theMap) {
-        map = theMap;
+        this.map = theMap;
     }
 
     public ClosureToMapPopulator() {
@@ -46,13 +46,13 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
         callable.setDelegate(this);
         callable.setResolveStrategy(Closure.DELEGATE_FIRST);
         callable.call();
-        return map;
+        return this.map;
     }
 
     @Override
     public void setProperty(String name, Object o) {
         if (o != null) {
-            map.put(name, o);
+            this.map.put(name, o);
         }
     }
 
@@ -62,14 +62,14 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
             if (o.getClass().isArray()) {
                 Object[] args = (Object[]) o;
                 if (args.length == 1) {
-                    map.put(name, args[0]);
+                    this.map.put(name, args[0]);
                 }
                 else {
-                    map.put(name, Arrays.asList(args));
+                    this.map.put(name, Arrays.asList(args));
                 }
             }
             else {
-                map.put(name, o);
+                this.map.put(name, o);
             }
         }
         return null;

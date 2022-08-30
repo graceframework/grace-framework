@@ -30,14 +30,14 @@ public class CompositeEditor extends PropertyEditorSupport {
     List<PropertyEditor> propertyEditors = new ArrayList<PropertyEditor>();
 
     public CompositeEditor(PropertyEditor... editors) {
-        propertyEditors.addAll(Arrays.asList(editors));
+        this.propertyEditors.addAll(Arrays.asList(editors));
     }
 
     @Override
     public void setAsText(String s) throws IllegalArgumentException {
         IllegalArgumentException first = null;
         boolean converted = false;
-        for (PropertyEditor propertyEditor : propertyEditors) {
+        for (PropertyEditor propertyEditor : this.propertyEditors) {
             try {
                 propertyEditor.setAsText(s);
                 converted = true;
@@ -56,7 +56,7 @@ public class CompositeEditor extends PropertyEditorSupport {
     }
 
     public List<PropertyEditor> getPropertyEditors() {
-        return propertyEditors;
+        return this.propertyEditors;
     }
 
 }

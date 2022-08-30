@@ -73,10 +73,10 @@ public class GrailsEclipseConsole extends GrailsConsole {
     }
 
     private boolean eclipseSupportsAnsi() {
-        if (eclipseSupportsAnsi == null) {
-            eclipseSupportsAnsi = boolProp(ECLIPSE_SUPPORTS_ANSI_PROP);
+        if (this.eclipseSupportsAnsi == null) {
+            this.eclipseSupportsAnsi = boolProp(ECLIPSE_SUPPORTS_ANSI_PROP);
         }
-        return eclipseSupportsAnsi;
+        return this.eclipseSupportsAnsi;
     }
 
     private static Boolean boolProp(String propName) {

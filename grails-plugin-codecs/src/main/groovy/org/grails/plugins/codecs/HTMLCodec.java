@@ -66,11 +66,11 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     public Decoder getDecoder() {
-        return decoder;
+        return this.decoder;
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {
@@ -78,11 +78,11 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public void afterPropertiesSet() {
-        if (grailsApplication == null || grailsApplication.getConfig() == null) {
+        if (this.grailsApplication == null || this.grailsApplication.getConfig() == null) {
             return;
         }
 
-        String htmlCodecSetting = grailsApplication.getConfig().getProperty(CONFIG_PROPERTY_GSP_HTMLCODEC);
+        String htmlCodecSetting = this.grailsApplication.getConfig().getProperty(CONFIG_PROPERTY_GSP_HTMLCODEC);
         if (htmlCodecSetting == null) {
             return;
         }
@@ -94,7 +94,7 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public void setUseLegacyEncoder(boolean useLegacyEncoder) {
-        encoder = useLegacyEncoder ? html4_encoder : xml_encoder;
+        this.encoder = useLegacyEncoder ? html4_encoder : xml_encoder;
     }
 
 }

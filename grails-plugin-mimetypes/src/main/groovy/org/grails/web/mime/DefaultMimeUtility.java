@@ -41,8 +41,8 @@ public class DefaultMimeUtility implements MimeUtility {
         this.mimeTypes = mimeTypes;
         for (MimeType mimeType : mimeTypes) {
             final String ext = mimeType.getExtension();
-            if (!extensionToMimeMap.containsKey(ext)) {
-                extensionToMimeMap.put(ext, mimeType);
+            if (!this.extensionToMimeMap.containsKey(ext)) {
+                this.extensionToMimeMap.put(ext, mimeType);
             }
         }
     }
@@ -51,7 +51,7 @@ public class DefaultMimeUtility implements MimeUtility {
      * {@inheritDoc}
      */
     public List<MimeType> getKnownMimeTypes() {
-        return mimeTypes;
+        return this.mimeTypes;
     }
 
     /**
@@ -61,7 +61,7 @@ public class DefaultMimeUtility implements MimeUtility {
         if (extension == null) {
             return null;
         }
-        return extensionToMimeMap.get(extension);
+        return this.extensionToMimeMap.get(extension);
     }
 
     public MimeType getMimeTypeForURI(String uri) {

@@ -56,10 +56,13 @@ import org.grails.io.support.Resource;
 public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassNodeOperation {
 
     private static final String INJECTOR_SCAN_PACKAGE = "org.grails.compiler";
+
     private static final String INJECTOR_CODEHAUS_SCAN_PACKAGE = "org.codehaus.groovy.grails.compiler";
 
     private static ClassInjector[] classInjectors;
+
     private static ClassInjector[] globalClassInjectors;
+
     private ClassInjector[] localClassInjectors;
 
     public GrailsAwareInjectionOperation() {
@@ -68,7 +71,7 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
 
     public GrailsAwareInjectionOperation(ClassInjector[] classInjectors) {
         this();
-        localClassInjectors = classInjectors;
+        this.localClassInjectors = classInjectors;
     }
 
     public static ClassInjector[] getClassInjectors() {
@@ -86,10 +89,10 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
     }
 
     public ClassInjector[] getLocalClassInjectors() {
-        if (localClassInjectors == null) {
+        if (this.localClassInjectors == null) {
             return getClassInjectors();
         }
-        return localClassInjectors;
+        return this.localClassInjectors;
     }
 
     private static void initializeState() {
@@ -172,7 +175,7 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                 }
             }
             Collections.sort(injectors, new Comparator<ClassInjector>() {
-                @SuppressWarnings({"unchecked", "rawtypes"})
+                @SuppressWarnings({ "unchecked", "rawtypes" })
                 public int compare(ClassInjector classInjectorA, ClassInjector classInjectorB) {
                     if (classInjectorA instanceof Comparable) {
                         return ((Comparable) classInjectorA).compareTo(classInjectorB);
@@ -221,4 +224,5 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
             }
         }
     }
+
 }

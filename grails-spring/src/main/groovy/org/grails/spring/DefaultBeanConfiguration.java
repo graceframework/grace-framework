@@ -88,14 +88,68 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
             BY_TYPE,
             BY_CONSTRUCTOR);
 
+    private Class<?> clazz;
+
+    private String name;
+
+    private boolean singleton = true;
+
+    private AbstractBeanDefinition definition;
+
+    private Resource resource;
+
+    private boolean condition = true;
+
+    private Collection<?> constructorArgs = Collections.emptyList();
+
+    private BeanWrapper wrapper;
+
     private String parentName;
+
+    public DefaultBeanConfiguration(String name, Class<?> clazz) {
+        this.name = name;
+        this.clazz = clazz;
+    }
+
+    public DefaultBeanConfiguration(String name, Class<?> clazz, boolean prototype) {
+        this(name, clazz, Collections.emptyList());
+        this.singleton = !prototype;
+    }
+
+    public DefaultBeanConfiguration(String name) {
+        this(name, null, Collections.emptyList());
+    }
+
+    public DefaultBeanConfiguration(Class<?> clazz2) {
+        this.clazz = clazz2;
+    }
+
+    public DefaultBeanConfiguration(String name2, Class<?> clazz2, Collection<?> args) {
+        this.name = name2;
+        this.clazz = clazz2;
+        this.constructorArgs = args;
+    }
+
+    public DefaultBeanConfiguration(String name2, boolean prototype) {
+        this(name2, null, Collections.emptyList());
+        this.singleton = !prototype;
+    }
+
+    public DefaultBeanConfiguration(Class<?> clazz2, Collection<?> constructorArguments) {
+        this.clazz = clazz2;
+        this.constructorArgs = constructorArguments;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     @Override
     public Object getProperty(String property) {
         @SuppressWarnings("unused")
         AbstractBeanDefinition bd = getBeanDefinition();
-        if (wrapper.isReadableProperty(property)) {
-            return wrapper.getPropertyValue(property);
+        if (this.wrapper.isReadableProperty(property)) {
+            return this.wrapper.getPropertyValue(property);
         }
         if (DYNAMIC_PROPS.contains(property)) {
             return null;
@@ -173,8 +227,8 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         else if (SINGLETON.equals(property)) {
             bd.setScope(Boolean.TRUE.equals(newValue) ? BeanDefinition.SCOPE_SINGLETON : BeanDefinition.SCOPE_PROTOTYPE);
         }
-        else if (wrapper.isWritableProperty(property)) {
-            wrapper.setPropertyValue(property, newValue);
+        else if (this.wrapper.isWritableProperty(property)) {
+            this.wrapper.setPropertyValue(property, newValue);
         }
         // autowire
         else {
@@ -182,72 +236,18 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         }
     }
 
-    private Class<?> clazz;
-
-    private String name;
-
-    private boolean singleton = true;
-
-    private AbstractBeanDefinition definition;
-
-    private Resource resource;
-
-    private boolean condition = true;
-
-    private Collection<?> constructorArgs = Collections.emptyList();
-
-    private BeanWrapper wrapper;
-
-    public DefaultBeanConfiguration(String name, Class<?> clazz) {
-        this.name = name;
-        this.clazz = clazz;
-    }
-
-    public DefaultBeanConfiguration(String name, Class<?> clazz, boolean prototype) {
-        this(name, clazz, Collections.emptyList());
-        singleton = !prototype;
-    }
-
-    public DefaultBeanConfiguration(String name) {
-        this(name, null, Collections.emptyList());
-    }
-
-    public DefaultBeanConfiguration(Class<?> clazz2) {
-        clazz = clazz2;
-    }
-
-    public DefaultBeanConfiguration(String name2, Class<?> clazz2, Collection<?> args) {
-        name = name2;
-        clazz = clazz2;
-        constructorArgs = args;
-    }
-
-    public DefaultBeanConfiguration(String name2, boolean prototype) {
-        this(name2, null, Collections.emptyList());
-        singleton = !prototype;
-    }
-
-    public DefaultBeanConfiguration(Class<?> clazz2, Collection<?> constructorArguments) {
-        clazz = clazz2;
-        constructorArgs = constructorArguments;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public boolean isSingleton() {
-        return singleton;
+        return this.singleton;
     }
 
     public AbstractBeanDefinition getBeanDefinition() {
-        if (definition == null) {
-            definition = createBeanDefinition();
+        if (this.definition == null) {
+            this.definition = createBeanDefinition();
         }
-        else if (definition.getResource() == null) {
-            definition.setResource(this.resource);
+        else if (this.definition.getResource() == null) {
+            this.definition.setResource(this.resource);
         }
-        return definition;
+        return this.definition;
     }
 
     public void setBeanDefinition(BeanDefinition definition) {
@@ -256,32 +256,32 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
 
     protected AbstractBeanDefinition createBeanDefinition() {
         AbstractBeanDefinition bd = new GenericBeanDefinition();
-        if (!constructorArgs.isEmpty()) {
+        if (!this.constructorArgs.isEmpty()) {
             ConstructorArgumentValues cav = new ConstructorArgumentValues();
-            for (Object constructorArg : constructorArgs) {
+            for (Object constructorArg : this.constructorArgs) {
                 cav.addGenericArgumentValue(constructorArg);
             }
             bd.setConstructorArgumentValues(cav);
         }
-        if (clazz != null) {
-            Lazy lazy = clazz.getAnnotation(Lazy.class);
+        if (this.clazz != null) {
+            Lazy lazy = this.clazz.getAnnotation(Lazy.class);
             if (lazy != null) {
                 bd.setLazyInit(lazy.value());
             }
-            Role role = clazz.getAnnotation(Role.class);
+            Role role = this.clazz.getAnnotation(Role.class);
             if (role != null) {
                 bd.setRole(role.value());
             }
-            bd.setBeanClass(clazz);
+            bd.setBeanClass(this.clazz);
         }
-        bd.setScope(singleton ? AbstractBeanDefinition.SCOPE_SINGLETON : AbstractBeanDefinition.SCOPE_PROTOTYPE);
-        if (parentName != null) {
-            bd.setParentName(parentName);
+        bd.setScope(this.singleton ? AbstractBeanDefinition.SCOPE_SINGLETON : AbstractBeanDefinition.SCOPE_PROTOTYPE);
+        if (this.parentName != null) {
+            bd.setParentName(this.parentName);
         }
-        if (resource != null) {
-            bd.setResource(resource);
+        if (this.resource != null) {
+            bd.setResource(this.resource);
         }
-        wrapper = new BeanWrapperImpl(bd);
+        this.wrapper = new BeanWrapperImpl(bd);
         return bd;
     }
 
@@ -327,7 +327,7 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
     }
 
     public void setName(String beanName) {
-        name = beanName;
+        this.name = beanName;
     }
 
     public void setResource(Resource resource) {
@@ -366,20 +366,20 @@ public class DefaultBeanConfiguration extends GroovyObjectSupport implements Bea
         Assert.notNull(obj, "Parent bean cannot be set to a null runtime bean reference!");
 
         if (obj instanceof String) {
-            parentName = (String) obj;
+            this.parentName = (String) obj;
         }
         else if (obj instanceof RuntimeBeanReference) {
-            parentName = ((RuntimeBeanReference) obj).getBeanName();
+            this.parentName = ((RuntimeBeanReference) obj).getBeanName();
         }
         else if (obj instanceof BeanConfiguration) {
-            parentName = ((BeanConfiguration) obj).getName();
+            this.parentName = ((BeanConfiguration) obj).getName();
         }
-        getBeanDefinition().setParentName(parentName);
+        getBeanDefinition().setParentName(this.parentName);
         setAbstract(false);
     }
 
     public boolean isConditionOn() {
-        return condition;
+        return this.condition;
     }
 
 }

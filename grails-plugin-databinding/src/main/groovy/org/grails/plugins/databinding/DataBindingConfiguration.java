@@ -72,9 +72,9 @@ public class DataBindingConfiguration {
             ObjectProvider<MessageSource> messageSource) {
 
         GrailsWebDataBinder dataBinder = new GrailsWebDataBinder(grailsApplication.getIfAvailable());
-        dataBinder.setConvertEmptyStringsToNull(configurationProperties.isConvertEmptyStringsToNull());
-        dataBinder.setTrimStrings(configurationProperties.isTrimStrings());
-        dataBinder.setAutoGrowCollectionLimit(configurationProperties.getAutoGrowCollectionLimit());
+        dataBinder.setConvertEmptyStringsToNull(this.configurationProperties.isConvertEmptyStringsToNull());
+        dataBinder.setTrimStrings(this.configurationProperties.isTrimStrings());
+        dataBinder.setAutoGrowCollectionLimit(this.configurationProperties.getAutoGrowCollectionLimit());
 
         ValueConverter[] defaultValueConverters = valueConverters.orderedStream().toArray(ValueConverter[]::new);
         AnnotationAwareOrderComparator.sort(defaultValueConverters);

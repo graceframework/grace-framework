@@ -59,10 +59,10 @@ public class PrefixedConfig implements Config {
 
         PrefixedConfig entries = (PrefixedConfig) o;
 
-        if (delegate != null ? !delegate.equals(entries.delegate) : entries.delegate != null) {
+        if (this.delegate != null ? !this.delegate.equals(entries.delegate) : entries.delegate != null) {
             return false;
         }
-        if (prefix != null ? !prefix.equals(entries.prefix) : entries.prefix != null) {
+        if (this.prefix != null ? !this.prefix.equals(entries.prefix) : entries.prefix != null) {
             return false;
         }
 
@@ -71,15 +71,15 @@ public class PrefixedConfig implements Config {
 
     @Override
     public int hashCode() {
-        int result = prefix != null ? prefix.hashCode() : 0;
-        result = 31 * result + (delegate != null ? delegate.hashCode() : 0);
+        int result = this.prefix != null ? this.prefix.hashCode() : 0;
+        result = 31 * result + (this.delegate != null ? this.delegate.hashCode() : 0);
         return result;
     }
 
     @Override
     @Deprecated
     public Map<String, Object> flatten() {
-        Map<String, Object> flattened = delegate.flatten();
+        Map<String, Object> flattened = this.delegate.flatten();
         Map<String, Object> map = new LinkedHashMap<String, Object>(flattened.size());
         for (String key : flattened.keySet()) {
             map.put(formulateKey(key), flattened.get(key));
@@ -103,9 +103,9 @@ public class PrefixedConfig implements Config {
     @Override
     public Object navigate(String... path) {
         List<String> tokens = new ArrayList<String>();
-        tokens.addAll(Arrays.asList(prefixTokens));
+        tokens.addAll(Arrays.asList(this.prefixTokens));
         tokens.addAll(Arrays.asList(path));
-        return delegate.navigate(tokens.toArray(new String[tokens.size()]));
+        return this.delegate.navigate(tokens.toArray(new String[tokens.size()]));
     }
 
     @Override
@@ -115,12 +115,12 @@ public class PrefixedConfig implements Config {
 
     @Override
     public int size() {
-        return delegate.size();
+        return this.delegate.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return delegate.isEmpty();
+        return this.delegate.isEmpty();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class PrefixedConfig implements Config {
 
     @Override
     public Set<String> keySet() {
-        Set<String> keys = delegate.keySet();
+        Set<String> keys = this.delegate.keySet();
         Set<String> newKeys = new HashSet<String>();
         for (String key : keys) {
             newKeys.add(formulateKey(key));
@@ -150,12 +150,12 @@ public class PrefixedConfig implements Config {
 
     @Override
     public Collection<Object> values() {
-        return delegate.values();
+        return this.delegate.values();
     }
 
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        final Set<Entry<String, Object>> entries = delegate.entrySet();
+        final Set<Entry<String, Object>> entries = this.delegate.entrySet();
         Set<Entry<String, Object>> newEntries = new HashSet<Entry<String, Object>>();
         for (final Entry<String, Object> entry : entries) {
             newEntries.add(new Entry<String, Object>() {
@@ -181,41 +181,41 @@ public class PrefixedConfig implements Config {
 
     @Override
     public boolean containsProperty(String key) {
-        return delegate.containsProperty(formulateKey(key));
+        return this.delegate.containsProperty(formulateKey(key));
     }
 
     @Override
     public String getProperty(String key) {
-        return delegate.getProperty(formulateKey(key));
+        return this.delegate.getProperty(formulateKey(key));
     }
 
     @Override
     public String getProperty(String key, String defaultValue) {
-        return delegate.getProperty(formulateKey(key), defaultValue);
+        return this.delegate.getProperty(formulateKey(key), defaultValue);
     }
 
     @Override
     public <T> T getProperty(String key, Class<T> targetType) {
-        return delegate.getProperty(formulateKey(key), targetType);
+        return this.delegate.getProperty(formulateKey(key), targetType);
     }
 
     @Override
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
-        return delegate.getProperty(formulateKey(key), targetType, defaultValue);
+        return this.delegate.getProperty(formulateKey(key), targetType, defaultValue);
     }
 
     @Override
     public String getRequiredProperty(String key) throws IllegalStateException {
-        return delegate.getRequiredProperty(formulateKey(key));
+        return this.delegate.getRequiredProperty(formulateKey(key));
     }
 
     @Override
     public <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
-        return delegate.getRequiredProperty(formulateKey(key), targetType);
+        return this.delegate.getRequiredProperty(formulateKey(key), targetType);
     }
 
     protected String formulateKey(String key) {
-        return prefix + '.' + key;
+        return this.prefix + '.' + key;
     }
 
     @Override
@@ -255,7 +255,7 @@ public class PrefixedConfig implements Config {
 
     @Override
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue, List<T> allowedValues) {
-        return delegate.getProperty(key, targetType, defaultValue, allowedValues);
+        return this.delegate.getProperty(key, targetType, defaultValue, allowedValues);
     }
 
     @Override

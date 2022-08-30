@@ -117,48 +117,48 @@ public abstract class AbstractUrlMapping implements UrlMapping {
 
     @Override
     public String getHttpMethod() {
-        return httpMethod;
+        return this.httpMethod;
     }
 
     @Override
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     /**
      * @see UrlMapping#getConstraints()
      */
     public Constrained[] getConstraints() {
-        return constraints;
+        return this.constraints;
     }
 
     /**
      * @see UrlMapping#getControllerName()
      */
     public Object getControllerName() {
-        return controllerName;
+        return this.controllerName;
     }
 
     /**
      * @see grails.web.mapping.UrlMapping#getActionName()
      */
     public Object getActionName() {
-        return actionName;
+        return this.actionName;
     }
 
     public Object getPluginName() {
-        return pluginName;
+        return this.pluginName;
     }
 
     public Object getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     /**
      * @see grails.web.mapping.UrlMapping#getViewName()
      */
     public Object getViewName() {
-        return viewName;
+        return this.viewName;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -171,17 +171,17 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     }
 
     public String getMappingName() {
-        return mappingName;
+        return this.mappingName;
     }
 
     public void setMappingName(String name) {
-        mappingName = name;
+        this.mappingName = name;
     }
 
     public boolean hasRuntimeVariable(String name) {
-        if (constraints != null) {
-            for (int i = 0; i < constraints.length; i++) {
-                ConstrainedProperty cp = constraints[i];
+        if (this.constraints != null) {
+            for (int i = 0; i < this.constraints.length; i++) {
+                ConstrainedProperty cp = this.constraints[i];
                 if (cp.getPropertyName().equals(name)) {
                     return true;
                 }
@@ -191,7 +191,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     }
 
     public Object getRedirectInfo() {
-        return redirectInfo;
+        return this.redirectInfo;
     }
 
     public void setPluginIndex(int pluginIndex) {
@@ -203,7 +203,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     }
 
     public boolean isDefinedInPlugin() {
-        return pluginIndex != null;
+        return this.pluginIndex != null;
     }
 
 }

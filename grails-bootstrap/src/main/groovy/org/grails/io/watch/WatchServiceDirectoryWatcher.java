@@ -65,7 +65,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     public WatchServiceDirectoryWatcher() {
         try {
-            watchService = FileSystems.getDefault().newWatchService();
+            this.watchService = FileSystems.getDefault().newWatchService();
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -74,9 +74,9 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     @Override
     public void run() {
-        while (active) {
+        while (this.active) {
             try {
-                WatchKey watchKey = watchService.poll(sleepTime, TimeUnit.MILLISECONDS);
+                WatchKey watchKey = this.watchService.poll(this.sleepTime, TimeUnit.MILLISECONDS);
                 if (watchKey != null) {
                     List<WatchEvent<?>> watchEvents = watchKey.pollEvents();
                     for (WatchEvent<?> watchEvent : watchEvents) {
@@ -91,7 +91,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         Path dir = (Path) watchKey.watchable();
                         Path child = dir.resolve(name).toAbsolutePath();
                         File childFile = child.toFile();
-                        if (individualWatchedFiles.contains(child) || individualWatchedFiles.contains(child.normalize())) {
+                        if (this.individualWatchedFiles.contains(child) || this.individualWatchedFiles.contains(child.normalize())) {
                             if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                                 fireOnNew(childFile);
                             }
@@ -103,7 +103,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                             }
                         }
                         else {
-                            List<String> fileExtensions = watchKeyToExtensionsMap.get(watchKey);
+                            List<String> fileExtensions = this.watchKeyToExtensionsMap.get(watchKey);
                             if (fileExtensions == null) {
                                 LOG.debug("WatchService received an event for a file/directory that it's not interested in.");
                             }
@@ -144,7 +144,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
             }
         }
         try {
-            watchService.close();
+            this.watchService.close();
         }
         catch (IOException e) {
             LOG.debug("Exception while closing watchService", e);
@@ -161,8 +161,8 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                 return;
             }
             Path pathToWatch = fileToWatch.toPath().toAbsolutePath();
-            individualWatchedFiles.add(pathToWatch);
-            pathToWatch.getParent().register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
+            this.individualWatchedFiles.add(pathToWatch);
+            pathToWatch.getParent().register(this.watchService, StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
         }
         catch (IOException e) {
@@ -188,16 +188,17 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     if (!isValidDirectoryToMonitor(dir.toFile())) {
                         return FileVisitResult.SKIP_SUBTREE;
                     }
-                    WatchKey watchKey = dir.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
+                    WatchKey watchKey = dir.register(WatchServiceDirectoryWatcher.this.watchService, StandardWatchEventKinds.ENTRY_CREATE,
                             StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-                    final List<String> originalFileExtensions = watchKeyToExtensionsMap.get(watchKey);
+                    final List<String> originalFileExtensions = WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
                     if (originalFileExtensions == null) {
-                        watchKeyToExtensionsMap.put(watchKey, fileExtensions);
+                        WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
                         final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
-                        watchKeyToExtensionsMap.put(watchKey, Collections.unmodifiableList(new ArrayList(newFileExtensions)));
+                        WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
+                                Collections.unmodifiableList(new ArrayList(newFileExtensions)));
                     }
                     return FileVisitResult.CONTINUE;
                 }

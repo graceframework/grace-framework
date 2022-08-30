@@ -45,11 +45,11 @@ public class StaticResourceLocator implements ResourceLocator {
     }
 
     public Resource findResourceForClassName(String className) {
-        return classToResourceMap.get(className);
+        return this.classToResourceMap.get(className);
     }
 
     public void addClassResource(String className, Resource res) {
-        classToResourceMap.put(className, res);
+        this.classToResourceMap.put(className, res);
     }
 
 }

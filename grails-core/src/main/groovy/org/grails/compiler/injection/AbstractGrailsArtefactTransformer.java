@@ -107,7 +107,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     public void clearCachedState() {
-        classesTransformedByThis.clear();
+        this.classesTransformedByThis.clear();
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
 
         final String className = classNode.getName();
         KNOWN_TRANSFORMED_CLASSES.add(className);
-        classesTransformedByThis.add(className);
+        this.classesTransformedByThis.add(className);
 
         Map<String, ClassNode> genericsPlaceholders = resolveGenericsPlaceHolders(classNode);
 
@@ -249,7 +249,8 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
 
     protected boolean shouldSkipInjection(ClassNode classNode) {
         return !isValidTargetClassNode(classNode)
-                || (!isValidArtefactType() && !isValidArtefactTypeByConvention(classNode)) || classesTransformedByThis.contains(classNode.getName());
+                || (!isValidArtefactType() && !isValidArtefactTypeByConvention(classNode))
+                || this.classesTransformedByThis.contains(classNode.getName());
     }
 
     protected boolean hasArtefactAnnotation(ClassNode classNode) {

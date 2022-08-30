@@ -36,18 +36,18 @@ public abstract class AbstractTokenResponseHandler implements TokenResponseHandl
     }
 
     public final Object invalidToken(@SuppressWarnings("rawtypes") Closure callable) {
-        invoked = true;
+        this.invoked = true;
         return invalidTokenInternal(callable);
     }
 
     protected abstract Object invalidTokenInternal(@SuppressWarnings("rawtypes") Closure callable);
 
     public boolean wasInvoked() {
-        return invoked;
+        return this.invoked;
     }
 
     public boolean wasInvalidToken() {
-        return !valid;
+        return !this.valid;
     }
 
 }

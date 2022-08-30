@@ -47,12 +47,12 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
 
     public FastStringPrintWriter() {
         super(new StreamCharBuffer().getWriter());
-        streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
+        this.streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
     }
 
     public FastStringPrintWriter(int initialChunkSize) {
         super(new StreamCharBuffer(initialChunkSize).getWriter());
-        streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
+        this.streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
     }
 
     public static FastStringPrintWriter newInstance() {
@@ -84,7 +84,7 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public StreamCharBuffer getBuffer() {
-        return streamBuffer;
+        return this.streamBuffer;
     }
 
     @Override
@@ -93,11 +93,11 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public String getValue() {
-        return streamBuffer.toString();
+        return this.streamBuffer.toString();
     }
 
     public Reader getReader() {
-        return streamBuffer.getReader();
+        return this.streamBuffer.getReader();
     }
 
 }

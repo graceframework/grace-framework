@@ -51,21 +51,21 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
 
     public GrailsApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory) {
         super(defaultListableBeanFactory);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory, ApplicationContext applicationContext) {
         super(defaultListableBeanFactory, applicationContext);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext(org.springframework.context.ApplicationContext parent) throws org.springframework.beans.BeansException {
         super(parent);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext() throws org.springframework.beans.BeansException {
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     @Override
@@ -82,21 +82,21 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     }
 
     public MetaClass getMetaClass() {
-        return metaClass;
+        return this.metaClass;
     }
 
     public Object getProperty(String property) {
         if (containsBean(property)) {
             return getBean(property);
         }
-        if (ctxBean.isReadableProperty(property)) {
-            return ctxBean.getPropertyValue(property);
+        if (this.ctxBean.isReadableProperty(property)) {
+            return this.ctxBean.getPropertyValue(property);
         }
         return null;
     }
 
     public Object invokeMethod(String name, Object args) {
-        return metaClass.invokeMethod(this, name, args);
+        return this.metaClass.invokeMethod(this, name, args);
     }
 
     public void setMetaClass(MetaClass metaClass) {
@@ -108,11 +108,11 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
      */
     @Override
     protected void onRefresh() {
-        themeSource = UiApplicationContextUtils.initThemeSource(this);
+        this.themeSource = UiApplicationContextUtils.initThemeSource(this);
     }
 
     public Theme getTheme(String themeName) {
-        return themeSource.getTheme(themeName);
+        return this.themeSource.getTheme(themeName);
     }
 
     public void setProperty(String property, Object newValue) {
@@ -124,7 +124,7 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
             registerBeanDefinition(property, (BeanDefinition) newValue);
         }
         else {
-            metaClass.setProperty(this, property, newValue);
+            this.metaClass.setProperty(this, property, newValue);
         }
     }
 

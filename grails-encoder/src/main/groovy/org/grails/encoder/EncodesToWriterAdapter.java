@@ -39,8 +39,9 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
 
     @Override
     public void encodeToWriter(CharSequence str, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
-        if (shouldEncodeWith(encoder, encodingState)) {
-            encoder.encodeToStream(encoder, str, off, len, new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
+        if (shouldEncodeWith(this.encoder, encodingState)) {
+            this.encoder.encodeToStream(this.encoder, str, off, len,
+                    new WriterEncodedAppender(writer), createNewEncodingState(this.encoder, encodingState));
         }
         else {
             CharSequences.writeCharSequence(writer, str, off, len);
@@ -49,9 +50,9 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
 
     @Override
     public void encodeToWriter(char[] buf, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
-        if (shouldEncodeWith(encoder, encodingState)) {
-            encoder.encodeToStream(encoder, CharSequences.createCharSequence(buf, off, len), 0, len,
-                    new WriterEncodedAppender(writer), createNewEncodingState(encoder, encodingState));
+        if (shouldEncodeWith(this.encoder, encodingState)) {
+            this.encoder.encodeToStream(this.encoder, CharSequences.createCharSequence(buf, off, len), 0, len,
+                    new WriterEncodedAppender(writer), createNewEncodingState(this.encoder, encodingState));
         }
         else {
             writer.write(buf, off, len);
@@ -66,16 +67,16 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
     }
 
     protected boolean shouldEncodeWith(Encoder encoderToApply, EncodingState encodingState) {
-        return ignoreEncodingState || encodingState == null || DefaultEncodingStateRegistry.shouldEncodeWith(encoderToApply,
+        return this.ignoreEncodingState || encodingState == null || DefaultEncodingStateRegistry.shouldEncodeWith(encoderToApply,
                 encodingState);
     }
 
     public StreamingEncoder getStreamingEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     public boolean isIgnoreEncodingState() {
-        return ignoreEncodingState;
+        return this.ignoreEncodingState;
     }
 
     public void setIgnoreEncodingState(boolean ignoreEncodingState) {

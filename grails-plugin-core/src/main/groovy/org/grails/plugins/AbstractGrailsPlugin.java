@@ -134,7 +134,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     @Override
     public PropertySource<?> getPropertySource() {
-        return propertySource;
+        return this.propertySource;
     }
 
     /* (non-Javadoc)
@@ -181,11 +181,11 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     public Class<?> getPluginClass() {
-        return pluginClass;
+        return this.pluginClass;
     }
 
     public boolean isBasePlugin() {
-        return isBase;
+        return this.isBase;
     }
 
     public void setBasePlugin(boolean isBase) {
@@ -205,7 +205,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     public String[] getDependencyNames() {
-        return dependencyNames;
+        return this.dependencyNames;
     }
 
     public String getDependentVersion(String name) {
@@ -213,11 +213,11 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     public String getName() {
-        return pluginClass.getName();
+        return this.pluginClass.getName();
     }
 
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     public String getPluginPath() {
@@ -231,7 +231,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     public GrailsPluginManager getManager() {
-        return manager;
+        return this.manager;
     }
 
     public String[] getLoadAfterNames() {
@@ -261,7 +261,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
     }
 
     public String[] getEvictionNames() {
-        return evictionList;
+        return this.evictionList;
     }
 
     @Override
@@ -275,10 +275,10 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
         AbstractGrailsPlugin that = (AbstractGrailsPlugin) o;
 
-        if (!pluginClass.equals(that.pluginClass)) {
+        if (!this.pluginClass.equals(that.pluginClass)) {
             return false;
         }
-        if (!version.equals(that.version)) {
+        if (!this.version.equals(that.version)) {
             return false;
         }
 
@@ -287,8 +287,8 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     @Override
     public int hashCode() {
-        int result = version.hashCode();
-        result = 31 * result + pluginClass.hashCode();
+        int result = this.version.hashCode();
+        result = 31 * result + this.pluginClass.hashCode();
         return result;
     }
 

@@ -60,7 +60,7 @@ public class CandidateListCompletionHandler implements CompletionHandler {
             jline.console.completer.CandidateListCompletionHandler.setBuffer(reader, value, pos);
         }
 
-        if (eagerNewlines) {
+        if (this.eagerNewlines) {
             reader.println();
         }
         jline.console.completer.CandidateListCompletionHandler.printCandidates(reader, candidates);

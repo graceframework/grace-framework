@@ -92,14 +92,14 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
             }
         }
 
-        if (compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, compilationUnit);
+        if (this.compilationUnit != null) {
+            TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, this.compilationUnit);
         }
     }
 
     @Override
     public void setCompilationUnit(CompilationUnit unit) {
-        compilationUnit = unit;
+        this.compilationUnit = unit;
     }
 
 }

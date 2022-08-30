@@ -72,7 +72,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         boolean matches = AstUtils.hasAtLeastOneAnnotation(classNode, "grails.persistence.Entity", "grails.rest.Resource", "Resource",
                 "grails.artefact.Artefact", "grails.web.Controller");
         if (matches) {
-            lastMatch = classNode;
+            this.lastMatch = classNode;
         }
         return matches;
     }
@@ -80,10 +80,10 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     @Override
     public void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
         addManagedDependencies(dependencies);
-        if (lastMatch != null) {
-            lastMatch.addAnnotation(createGrabAnnotation("org.grails", "grails-dependencies",
+        if (this.lastMatch != null) {
+            this.lastMatch.addAnnotation(createGrabAnnotation("org.grails", "grails-dependencies",
                     Environment.class.getPackage().getImplementationVersion(), null, "pom", true));
-            lastMatch.addAnnotation(createGrabAnnotation("org.grails", "grails-web-boot",
+            this.lastMatch.addAnnotation(createGrabAnnotation("org.grails", "grails-web-boot",
                     Environment.class.getPackage().getImplementationVersion(), null, null, true));
         }
         new SpringMvcCompilerAutoConfiguration().applyDependencies(dependencies);
@@ -151,11 +151,11 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
 
     class GrailsDependencies implements DependencyManagement {
 
-        private Map<String, Dependency> groupAndArtifactToDependency = new HashMap<String, Dependency>();
+        private final Map<String, Dependency> groupAndArtifactToDependency = new HashMap<>();
 
-        private Map<String, String> artifactToGroupAndArtifact = new HashMap<String, String>();
+        private final Map<String, String> artifactToGroupAndArtifact = new HashMap<>();
 
-        private List<Dependency> dependencies = new ArrayList<Dependency>();
+        private final List<Dependency> dependencies = new ArrayList<>();
 
         public GrailsDependencies(List<org.eclipse.aether.graph.Dependency> dependencies) {
             for (org.eclipse.aether.graph.Dependency dependency : dependencies) {
@@ -166,8 +166,8 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
                 List<Dependency.Exclusion> exclusions = new ArrayList<Dependency.Exclusion>();
                 Dependency value = new Dependency(groupId, artifactId, version, exclusions);
                 this.dependencies.add(value);
-                groupAndArtifactToDependency.put(groupId + ":" + artifactId, value);
-                artifactToGroupAndArtifact.put(artifactId, groupId + ":" + artifactId);
+                this.groupAndArtifactToDependency.put(groupId + ":" + artifactId, value);
+                this.artifactToGroupAndArtifact.put(artifactId, groupId + ":" + artifactId);
             }
         }
 
@@ -178,7 +178,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
 
         @Override
         public List<Dependency> getDependencies() {
-            return dependencies;
+            return this.dependencies;
         }
 
         @Override
@@ -188,11 +188,11 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
 
         @Override
         public Dependency find(String artifactId) {
-            String groupAndArtifact = artifactToGroupAndArtifact.get(artifactId);
+            String groupAndArtifact = this.artifactToGroupAndArtifact.get(artifactId);
             if (groupAndArtifact == null) {
                 return null;
             }
-            return groupAndArtifactToDependency.get(groupAndArtifact);
+            return this.groupAndArtifactToDependency.get(groupAndArtifact);
         }
 
 //        @Override

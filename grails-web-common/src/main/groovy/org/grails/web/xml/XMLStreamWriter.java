@@ -42,79 +42,79 @@ public class XMLStreamWriter {
     }
 
     public XMLStreamWriter startDocument(String encoding, String version) throws IOException {
-        if (mode != Mode.INIT) {
+        if (this.mode != Mode.INIT) {
             throw new IllegalStateException();
         }
-        writer.unescaped().write(String.format("<?xml version=\"%s\" encoding=\"%s\"?>", version, encoding));
+        this.writer.unescaped().write(String.format("<?xml version=\"%s\" encoding=\"%s\"?>", version, encoding));
         return this;
     }
 
     protected void startTag() throws IOException {
-        writer.unescaped().write('<');
+        this.writer.unescaped().write('<');
     }
 
     public XMLStreamWriter startNode(String tag) throws IOException {
-        if (mode == Mode.TAG) {
+        if (this.mode == Mode.TAG) {
             endStartTag();
         }
 
         startTag();
-        writer.unescaped().write(tag);
+        this.writer.unescaped().write(tag);
 
-        tagStack.push(tag);
-        mode = Mode.TAG;
+        this.tagStack.push(tag);
+        this.mode = Mode.TAG;
         return this;
     }
 
     public XMLStreamWriter end() throws IOException {
-        Writer ue = writer.unescaped();
-        if (mode == Mode.TAG) {
+        Writer ue = this.writer.unescaped();
+        if (this.mode == Mode.TAG) {
             ue.write(" />");
-            if (tagStack.pop() == null) {
+            if (this.tagStack.pop() == null) {
                 throw new IllegalStateException();
             }
         }
-        else if (mode == Mode.CONTENT) {
+        else if (this.mode == Mode.CONTENT) {
             ue.write('<');
             ue.write('/');
-            String t = tagStack.pop();
+            String t = this.tagStack.pop();
             if (t == null) {
                 throw new IllegalStateException();
             }
             ue.write(t);
             ue.write('>');
         }
-        mode = Mode.CONTENT;
+        this.mode = Mode.CONTENT;
         return this;
     }
 
     public XMLStreamWriter attribute(String name, String value) throws IOException {
-        if (mode != Mode.TAG) {
+        if (this.mode != Mode.TAG) {
             throw new IllegalStateException();
         }
-        Writer ue = writer.unescaped();
+        Writer ue = this.writer.unescaped();
         ue.write(" ");
         ue.write(name);
         ue.write('=');
-        ue.write(quoteChar);
-        writer.setWritingAttribute(true);
-        writer.escaped().write(value);
-        writer.setWritingAttribute(false);
-        ue.write(quoteChar);
+        ue.write(this.quoteChar);
+        this.writer.setWritingAttribute(true);
+        this.writer.escaped().write(value);
+        this.writer.setWritingAttribute(false);
+        ue.write(this.quoteChar);
 
         return this;
     }
 
     protected void endStartTag() throws IOException {
-        writer.unescaped().write('>');
+        this.writer.unescaped().write('>');
     }
 
     public XMLStreamWriter characters(String data) throws IOException {
-        if (mode == Mode.TAG) {
+        if (this.mode == Mode.TAG) {
             endStartTag();
         }
-        mode = Mode.CONTENT;
-        writer.escaped().write(data);
+        this.mode = Mode.CONTENT;
+        this.writer.escaped().write(data);
 
         return this;
     }

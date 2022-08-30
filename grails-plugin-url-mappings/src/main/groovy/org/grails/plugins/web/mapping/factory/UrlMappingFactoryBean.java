@@ -48,19 +48,19 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
      */
     @Override
     protected Map createInstance() {
-        if (applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
-            Object o = applicationContext.getBean(UrlMappingFactoryBean.URL_MAP_BEAN);
+        if (this.applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
+            Object o = this.applicationContext.getBean(UrlMappingFactoryBean.URL_MAP_BEAN);
             if (o instanceof Map) {
-                mappings.putAll((Map) o);
+                this.mappings.putAll((Map) o);
             }
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("[UrlMappingFactoryBean] Creating URL mappings as...");
-            for (Object key : mappings.keySet()) {
-                LOG.debug("[UrlMappingFactoryBean] " + key + "=" + mappings.get(key));
+            for (Object key : this.mappings.keySet()) {
+                LOG.debug("[UrlMappingFactoryBean] " + key + "=" + this.mappings.get(key));
             }
         }
-        return mappings;
+        return this.mappings;
     }
 
     /* (non-Javadoc)

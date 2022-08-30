@@ -40,16 +40,16 @@ public class SupplierUtil {
             boolean initialized;
 
             public T get() {
-                return delegate.get();
+                return this.delegate.get();
             }
 
             private synchronized T initialize() {
-                if (!initialized) {
+                if (!this.initialized) {
                     T value = actual.get();
-                    delegate = () -> value;
-                    initialized = true;
+                    this.delegate = () -> value;
+                    this.initialized = true;
                 }
-                return delegate.get();
+                return this.delegate.get();
             }
         };
     }
@@ -69,11 +69,11 @@ public class SupplierUtil {
             boolean initialized;
 
             public T get() {
-                return delegate.get();
+                return this.delegate.get();
             }
 
             private synchronized T initialize() {
-                if (!initialized) {
+                if (!this.initialized) {
                     T value = actual.get();
                     if (value == null) {
                         return null;
@@ -83,10 +83,10 @@ public class SupplierUtil {
                             return value;
                         }
                     }
-                    delegate = () -> value;
-                    initialized = true;
+                    this.delegate = () -> value;
+                    this.initialized = true;
                 }
-                return delegate.get();
+                return this.delegate.get();
             }
         };
     }

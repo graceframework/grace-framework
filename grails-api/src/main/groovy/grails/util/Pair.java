@@ -27,19 +27,19 @@ public class Pair<A, B> {
     }
 
     public A getaValue() {
-        return aValue;
+        return this.aValue;
     }
 
     public B getbValue() {
-        return bValue;
+        return this.bValue;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((aValue == null) ? 0 : aValue.hashCode());
-        result = prime * result + ((bValue == null) ? 0 : bValue.hashCode());
+        result = prime * result + ((this.aValue == null) ? 0 : this.aValue.hashCode());
+        result = prime * result + ((this.bValue == null) ? 0 : this.bValue.hashCode());
         return result;
     }
 
@@ -55,20 +55,20 @@ public class Pair<A, B> {
             return false;
         }
         Pair other = (Pair) obj;
-        if (aValue == null) {
+        if (this.aValue == null) {
             if (other.aValue != null) {
                 return false;
             }
         }
-        else if (!aValue.equals(other.aValue)) {
+        else if (!this.aValue.equals(other.aValue)) {
             return false;
         }
-        if (bValue == null) {
+        if (this.bValue == null) {
             if (other.bValue != null) {
                 return false;
             }
         }
-        else if (!bValue.equals(other.bValue)) {
+        else if (!this.bValue.equals(other.bValue)) {
             return false;
         }
         return true;
@@ -76,7 +76,7 @@ public class Pair<A, B> {
 
     @Override
     public String toString() {
-        return "TupleKey [aValue=" + aValue + ", bValue=" + bValue + "]";
+        return "TupleKey [aValue=" + this.aValue + ", bValue=" + this.bValue + "]";
     }
 
 }

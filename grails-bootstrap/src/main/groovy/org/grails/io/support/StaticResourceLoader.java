@@ -30,7 +30,7 @@ public class StaticResourceLoader implements ResourceLoader {
     }
 
     public Resource getResource(String location) {
-        return baseResource.createRelative(location);
+        return this.baseResource.createRelative(location);
     }
 
     public ClassLoader getClassLoader() {

@@ -60,7 +60,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
      * @param listener The file listener
      */
     public void addListener(DirectoryWatcher.FileChangeListener listener) {
-        listeners.add(listener);
+        this.listeners.add(listener);
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
      * @param listener The file listener
      */
     public void removeListener(DirectoryWatcher.FileChangeListener listener) {
-        listeners.remove(listener);
+        this.listeners.remove(listener);
     }
 
     /**
@@ -89,13 +89,13 @@ abstract class AbstractDirectoryWatcher implements Runnable {
     public abstract void addWatchDirectory(File dir, List<String> fileExtensions);
 
     protected void fireOnChange(File file) {
-        for (DirectoryWatcher.FileChangeListener listener : listeners) {
+        for (DirectoryWatcher.FileChangeListener listener : this.listeners) {
             listener.onChange(file);
         }
     }
 
     protected void fireOnNew(File file) {
-        for (DirectoryWatcher.FileChangeListener listener : listeners) {
+        for (DirectoryWatcher.FileChangeListener listener : this.listeners) {
             listener.onNew(file);
         }
     }

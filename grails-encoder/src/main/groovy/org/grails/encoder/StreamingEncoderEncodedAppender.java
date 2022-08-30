@@ -36,42 +36,43 @@ public class StreamingEncoderEncodedAppender extends AbstractEncodedAppender {
 
     @Override
     public void close() throws IOException {
-        target.close();
+        this.target.close();
     }
 
     @Override
     public void flush() throws IOException {
-        target.flush();
+        this.target.flush();
     }
 
     @Override
     protected void write(EncodingState encodingState, char[] b, int off, int len) throws IOException {
-        if (shouldEncode(encoder, encodingState)) {
-            encoder.encodeToStream(encoder, CharSequences.createCharSequence(b), off, len, target, createNewEncodingState(encoder, encodingState));
+        if (shouldEncode(this.encoder, encodingState)) {
+            this.encoder.encodeToStream(this.encoder, CharSequences.createCharSequence(b), off, len, this.target,
+                    createNewEncodingState(this.encoder, encodingState));
         }
         else {
-            target.appendEncoded(null, encodingState, b, off, len);
+            this.target.appendEncoded(null, encodingState, b, off, len);
         }
     }
 
     @Override
     protected void write(EncodingState encodingState, String str, int off, int len) throws IOException {
-        if (shouldEncode(encoder, encodingState)) {
-            encoder.encodeToStream(encoder, str, off, len, target, createNewEncodingState(encoder, encodingState));
+        if (shouldEncode(this.encoder, encodingState)) {
+            this.encoder.encodeToStream(this.encoder, str, off, len, this.target, createNewEncodingState(this.encoder, encodingState));
         }
         else {
-            target.appendEncoded(null, encodingState, str, off, len);
+            this.target.appendEncoded(null, encodingState, str, off, len);
         }
     }
 
     @Override
     protected void appendCharSequence(EncodingState encodingState, CharSequence str, int start, int end)
             throws IOException {
-        if (shouldEncode(encoder, encodingState.getPreviousEncodingState())) {
-            encoder.encodeToStream(encoder, str, start, end - start, target, encodingState);
+        if (shouldEncode(this.encoder, encodingState.getPreviousEncodingState())) {
+            this.encoder.encodeToStream(this.encoder, str, start, end - start, this.target, encodingState);
         }
         else {
-            target.appendEncoded(null, encodingState, str, start, end - start);
+            this.target.appendEncoded(null, encodingState, str, start, end - start);
         }
     }
 

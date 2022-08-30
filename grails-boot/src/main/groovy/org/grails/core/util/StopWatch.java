@@ -90,7 +90,7 @@ public class StopWatch {
      */
     public void start(String taskName) throws IllegalStateException {
         this.lastTaskInfo = new TaskInfo(taskName, System.currentTimeMillis());
-        this.runningTasks.push(lastTaskInfo);
+        this.runningTasks.push(this.lastTaskInfo);
         ++this.taskCount;
         this.running = true;
         this.currentTaskName = taskName;
@@ -107,11 +107,11 @@ public class StopWatch {
             throw new IllegalStateException("Can't stop StopWatch: it's not running");
         }
 
-        if (!runningTasks.isEmpty()) {
+        if (!this.runningTasks.isEmpty()) {
 
-            TaskInfo lastTask = runningTasks.pop();
+            TaskInfo lastTask = this.runningTasks.pop();
             lastTask.stop();
-            taskList.add(lastTask);
+            this.taskList.add(lastTask);
             this.currentTaskName = null;
             this.totalTimeMillis += lastTask.getTimeMillis();
         }

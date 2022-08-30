@@ -84,19 +84,19 @@ public abstract class AbstractGrailsClass implements GrailsClass {
         Assert.notNull(clazz, "Clazz parameter should not be null");
 
         this.clazz = clazz;
-        fullName = clazz.getName();
-        packageName = ClassUtils.getPackageName(clazz);
-        naturalName = GrailsNameUtils.getNaturalName(clazz.getName());
-        shortName = ClassUtils.getShortName(clazz);
-        name = GrailsNameUtils.getLogicalName(clazz, trailingName);
-        propertyName = GrailsNameUtils.getPropertyNameRepresentation(shortName);
-        if (!StringUtils.hasText(name)) {
-            logicalPropertyName = propertyName;
+        this.fullName = clazz.getName();
+        this.packageName = ClassUtils.getPackageName(clazz);
+        this.naturalName = GrailsNameUtils.getNaturalName(clazz.getName());
+        this.shortName = ClassUtils.getShortName(clazz);
+        this.name = GrailsNameUtils.getLogicalName(clazz, trailingName);
+        this.propertyName = GrailsNameUtils.getPropertyNameRepresentation(this.shortName);
+        if (!StringUtils.hasText(this.name)) {
+            this.logicalPropertyName = this.propertyName;
         }
         else {
-            logicalPropertyName = GrailsNameUtils.getPropertyNameRepresentation(name);
+            this.logicalPropertyName = GrailsNameUtils.getPropertyNameRepresentation(this.name);
         }
-        isAbstract = Modifier.isAbstract(clazz.getModifiers());
+        this.isAbstract = Modifier.isAbstract(clazz.getModifiers());
     }
 
     @Override
@@ -114,11 +114,11 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     public String getShortName() {
-        return shortName;
+        return this.shortName;
     }
 
     public Class<?> getClazz() {
-        return clazz;
+        return this.clazz;
     }
 
     public Object newInstance() {
@@ -143,31 +143,31 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getNaturalName() {
-        return naturalName;
+        return this.naturalName;
     }
 
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public String getPropertyName() {
-        return propertyName;
+        return this.propertyName;
     }
 
     public String getLogicalPropertyName() {
-        return logicalPropertyName;
+        return this.logicalPropertyName;
     }
 
     public String getPackageName() {
-        return packageName;
+        return this.packageName;
     }
 
     public Object getReferenceInstance() {
-        Object obj = BeanUtils.instantiateClass(clazz);
+        Object obj = BeanUtils.instantiateClass(this.clazz);
         if (obj instanceof GroovyObject) {
             ((GroovyObject) obj).setMetaClass(getMetaClass());
         }
@@ -183,10 +183,10 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     private ClassPropertyFetcher resolvePropertyFetcher() {
-        if (classPropertyFetcher == null) {
-            classPropertyFetcher = ClassPropertyFetcher.forClass(clazz);
+        if (this.classPropertyFetcher == null) {
+            this.classPropertyFetcher = ClassPropertyFetcher.forClass(this.clazz);
         }
-        return classPropertyFetcher;
+        return this.classPropertyFetcher;
     }
 
     public List<MetaProperty> getMetaProperties() {
@@ -273,7 +273,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
 
     public boolean isAbstract() {
 
-        return isAbstract;
+        return this.isAbstract;
     }
 
     /* (non-Javadoc)

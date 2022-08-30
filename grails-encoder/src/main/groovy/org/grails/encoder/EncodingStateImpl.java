@@ -54,7 +54,7 @@ public class EncodingStateImpl implements EncodingState {
      * EncodingState#getEncoders()
      */
     public Set<Encoder> getEncoders() {
-        return encoders;
+        return this.encoders;
     }
 
     /*
@@ -65,7 +65,7 @@ public class EncodingStateImpl implements EncodingState {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((encoders == null) ? 0 : encoders.hashCode());
+        result = prime * result + ((this.encoders == null) ? 0 : this.encoders.hashCode());
         return result;
     }
 
@@ -85,12 +85,12 @@ public class EncodingStateImpl implements EncodingState {
             return false;
         }
         EncodingStateImpl other = (EncodingStateImpl) obj;
-        if (encoders == null) {
+        if (this.encoders == null) {
             if (other.encoders != null && other.encoders.size() > 0) {
                 return false;
             }
         }
-        else if (!encoders.equals(other.encoders)) {
+        else if (!this.encoders.equals(other.encoders)) {
             return false;
         }
         return true;
@@ -101,15 +101,15 @@ public class EncodingStateImpl implements EncodingState {
             return this;
         }
         Set<Encoder> newEncoders;
-        if (encoders == null || encoders.size() == 0) {
+        if (this.encoders == null || this.encoders.size() == 0) {
             newEncoders = Collections.singleton(encoder);
         }
-        else if (encoders.size() == 1 && encoders.contains(encoder)) {
+        else if (this.encoders.size() == 1 && this.encoders.contains(encoder)) {
             return this;
         }
         else {
             newEncoders = new LinkedHashSet<Encoder>();
-            newEncoders.addAll(encoders);
+            newEncoders.addAll(this.encoders);
             newEncoders.add(encoder);
         }
         return new EncodingStateImpl(newEncoders, this);
@@ -119,10 +119,10 @@ public class EncodingStateImpl implements EncodingState {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("EncodingStateImpl");
-        if (encoders != null && encoders.size() > 0) {
+        if (this.encoders != null && this.encoders.size() > 0) {
             sb.append(" [encoders=");
             boolean first = true;
-            for (Encoder encoder : encoders) {
+            for (Encoder encoder : this.encoders) {
                 if (!first) {
                     sb.append(", ");
                 }
@@ -146,7 +146,7 @@ public class EncodingStateImpl implements EncodingState {
 
     @Override
     public EncodingState getPreviousEncodingState() {
-        return previousEncodingState;
+        return this.previousEncodingState;
     }
 
 }

@@ -57,7 +57,7 @@ public class GrailsMockMultipartFile extends MockMultipartFile {
      * @return The location where the MultipartFile was transfered to
      */
     public File getTargetFileLocation() {
-        return targetFileLocation;
+        return this.targetFileLocation;
     }
 
 }
