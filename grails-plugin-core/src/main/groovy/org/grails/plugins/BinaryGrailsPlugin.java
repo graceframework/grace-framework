@@ -207,7 +207,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             }
         }
         artefacts.addAll(Arrays.asList(super.getProvidedArtefacts()));
-        this.providedArtefacts = artefacts.toArray(new Class[artefacts.size()]);
+        this.providedArtefacts = artefacts.toArray(new Class[0]);
     }
 
     @Override
@@ -313,7 +313,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 finalResources.add(resource);
             }
         }
-        return finalResources.toArray(new Resource[finalResources.size()]);
+        return finalResources.toArray(new Resource[0]);
     }
 
     private void loadFromResources(Properties properties, Resource[] resources) throws IOException {

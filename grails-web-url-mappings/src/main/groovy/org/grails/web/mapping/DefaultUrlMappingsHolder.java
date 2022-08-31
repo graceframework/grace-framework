@@ -159,7 +159,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             this.urlCreatorCache = new UrlCreatorCache(this.urlCreatorMaxWeightedCacheCapacity);
         }
 
-        this.mappings = this.urlMappings.toArray(new UrlMapping[this.urlMappings.size()]);
+        this.mappings = this.urlMappings.toArray(new UrlMapping[0]);
 
         for (UrlMapping mapping : this.mappings) {
             String mappingName = mapping.getMappingName();
@@ -526,7 +526,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             lookupParams.addAll(DEFAULT_ACTION_PARAMS);
         }
 
-        UrlMappingKey[] mappingKeys = (UrlMappingKey[]) mappingKeysSet.toArray(new UrlMappingKey[mappingKeysSet.size()]);
+        UrlMappingKey[] mappingKeys = (UrlMappingKey[]) mappingKeysSet.toArray(new UrlMappingKey[0]);
         for (int i = mappingKeys.length; i > 0; i--) {
             UrlMappingKey mappingKey = mappingKeys[i - 1];
             if (lookupParams.containsAll(mappingKey.paramNames)) {
@@ -655,7 +655,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             }
             this.cachedListMatches.put(cacheKey, matchingUrls);
         }
-        return matchingUrls.toArray(new UrlMappingInfo[matchingUrls.size()]);
+        return matchingUrls.toArray(new UrlMappingInfo[0]);
     }
 
     @Override

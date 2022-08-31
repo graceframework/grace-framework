@@ -120,11 +120,11 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public GrailsPlugin[] getAllPlugins() {
-        return this.pluginList.toArray(new GrailsPlugin[this.pluginList.size()]);
+        return this.pluginList.toArray(new GrailsPlugin[0]);
     }
 
     public GrailsPlugin[] getFailedLoadPlugins() {
-        return this.failedPlugins.values().toArray(new GrailsPlugin[this.failedPlugins.size()]);
+        return this.failedPlugins.values().toArray(new GrailsPlugin[0]);
     }
 
     /**

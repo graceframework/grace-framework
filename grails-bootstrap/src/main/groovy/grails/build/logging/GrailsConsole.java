@@ -965,7 +965,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public String userInput(String message, List<String> validResponses) {
-        return userInput(message, validResponses.toArray(new String[validResponses.size()]));
+        return userInput(message, validResponses.toArray(new String[0]));
     }
 
     /**

@@ -156,7 +156,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     }
 
     public String[] getBeanDefinitionNames() {
-        return this.beans.keySet().toArray(new String[this.beans.keySet().size()]);
+        return this.beans.keySet().toArray(new String[0]);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
                 beanNames.add(beanName);
             }
         }
-        return beanNames.toArray(new String[beanNames.size()]);
+        return beanNames.toArray(new String[0]);
     }
 
     @SuppressWarnings("rawtypes")
@@ -250,7 +250,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
                 beanNamesList.add(beanName.toString());
             }
         }
-        return beanNamesList.toArray(new String[beanNamesList.size()]);
+        return beanNamesList.toArray(new String[0]);
     }
 
     public Object getBean(String name) throws BeansException {

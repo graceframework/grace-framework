@@ -325,7 +325,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, this.plugin, PROVIDED_ARTEFACTS);
         if (result instanceof Collection) {
             final Collection artefactList = (Collection) result;
-            this.providedArtefacts = (Class<?>[]) artefactList.toArray(new Class[artefactList.size()]);
+            this.providedArtefacts = (Class<?>[]) artefactList.toArray(new Class[0]);
         }
     }
 
@@ -491,14 +491,14 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             List loadAfterNamesList = (List) GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(
                     this.pluginBean, this.plugin, PLUGIN_LOAD_AFTER_NAMES);
             if (loadAfterNamesList != null) {
-                this.loadAfterNames = (String[]) loadAfterNamesList.toArray(new String[loadAfterNamesList.size()]);
+                this.loadAfterNames = (String[]) loadAfterNamesList.toArray(new String[0]);
             }
         }
         if (this.pluginBean.isReadableProperty(PLUGIN_LOAD_BEFORE_NAMES)) {
             List loadBeforeNamesList = (List) GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(
                     this.pluginBean, this.plugin, PLUGIN_LOAD_BEFORE_NAMES);
             if (loadBeforeNamesList != null) {
-                this.loadBeforeNames = (String[]) loadBeforeNamesList.toArray(new String[loadBeforeNamesList.size()]);
+                this.loadBeforeNames = (String[]) loadBeforeNamesList.toArray(new String[0]);
             }
         }
     }
@@ -510,7 +510,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
 
         this.dependencies = (Map) GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, this.plugin, DEPENDS_ON);
-        this.dependencyNames = this.dependencies.keySet().toArray(new String[this.dependencies.size()]);
+        this.dependencyNames = this.dependencies.keySet().toArray(new String[0]);
     }
 
     @Override

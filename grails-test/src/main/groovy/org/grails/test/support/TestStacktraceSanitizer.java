@@ -39,7 +39,7 @@ public class TestStacktraceSanitizer {
             newTrace.add(stackTraceElement);
         }
 
-        t.setStackTrace(newTrace.toArray(new StackTraceElement[newTrace.size()]));
+        t.setStackTrace(newTrace.toArray(new StackTraceElement[0]));
         return t;
     }
 

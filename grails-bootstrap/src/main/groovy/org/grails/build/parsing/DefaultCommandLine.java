@@ -133,7 +133,7 @@ public class DefaultCommandLine implements CommandLine {
     }
 
     public String[] getRemainingArgsArray() {
-        return this.remainingArgs.toArray(new String[this.remainingArgs.size()]);
+        return this.remainingArgs.toArray(new String[0]);
     }
 
     public Properties getSystemProperties() {

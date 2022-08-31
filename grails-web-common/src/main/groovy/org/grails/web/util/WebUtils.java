@@ -121,7 +121,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         final Collection<HandlerInterceptor> handlerInterceptors = wac.getBeansOfType(HandlerInterceptor.class).values();
 
         allHandlerInterceptors.addAll(handlerInterceptors);
-        return allHandlerInterceptors.toArray(new HandlerInterceptor[allHandlerInterceptors.size()]);
+        return allHandlerInterceptors.toArray(new HandlerInterceptor[0]);
     }
 
     /**
@@ -134,7 +134,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
         final Collection<WebRequestInterceptor> webRequestInterceptors = wac.getBeansOfType(WebRequestInterceptor.class).values();
-        return webRequestInterceptors.toArray(new WebRequestInterceptor[webRequestInterceptors.size()]);
+        return webRequestInterceptors.toArray(new WebRequestInterceptor[0]);
     }
 
     /**

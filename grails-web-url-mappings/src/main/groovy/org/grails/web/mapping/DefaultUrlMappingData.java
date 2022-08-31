@@ -60,7 +60,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
         List<String> urls = new ArrayList<>();
         parseUrls(urls, this.tokens, this.optionalTokens);
 
-        this.logicalUrls = urls.toArray(new String[urls.size()]);
+        this.logicalUrls = urls.toArray(new String[0]);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
         List<String> urls = new ArrayList<>();
         List<Boolean> optionalTokens = new ArrayList<>();
         parseUrls(urls, tokens, optionalTokens);
-        String[] logicalUrls = urls.toArray(new String[urls.size()]);
+        String[] logicalUrls = urls.toArray(new String[0]);
 
         return new DefaultUrlMappingData(newPattern, logicalUrls, tokens, optionalTokens);
     }

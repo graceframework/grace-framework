@@ -60,7 +60,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     }
 
     public ChainedEncoder(List<StreamingEncoder> encoders, boolean safe) {
-        this(encoders.toArray(new StreamingEncoder[encoders.size()]), safe);
+        this(encoders.toArray(new StreamingEncoder[0]), safe);
     }
 
     public ChainedEncoder(StreamingEncoder[] encoders, boolean safe) {

@@ -132,7 +132,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
                 for (File propertiesFile : propertiesFiles) {
                     resourceList.add(new FileSystemResource(propertiesFile));
                 }
-                resources = resourceList.toArray(new Resource[resourceList.size()]);
+                resources = resourceList.toArray(new Resource[0]);
             }
             else {
                 resources = new Resource[0];
@@ -178,7 +178,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
             }
         }
 
-        setBasenames(basenames.toArray(new String[basenames.size()]));
+        setBasenames(basenames.toArray(new String[0]));
 
     }
 

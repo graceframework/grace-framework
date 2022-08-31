@@ -34,7 +34,7 @@ public enum Event {
         for (Event e : values()) {
             events.add(e.toString());
         }
-        allEvents = events.toArray(new String[events.size()]);
+        allEvents = events.toArray(new String[0]);
     }
 
     /**

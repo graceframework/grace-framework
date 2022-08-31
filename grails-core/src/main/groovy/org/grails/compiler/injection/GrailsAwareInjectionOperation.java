@@ -183,8 +183,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                     return 0;
                 }
             });
-            classInjectors = injectors.toArray(new ClassInjector[injectors.size()]);
-            globalClassInjectors = globalInjectors.toArray(new ClassInjector[globalInjectors.size()]);
+            classInjectors = injectors.toArray(new ClassInjector[0]);
+            globalClassInjectors = globalInjectors.toArray(new ClassInjector[0]);
         }
         catch (IOException e) {
             // ignore
@@ -196,7 +196,7 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         for (String pattern : patterns) {
             results.addAll(Arrays.asList(resolver.getResources(pattern)));
         }
-        return results.toArray(new Resource[results.size()]);
+        return results.toArray(new Resource[0]);
     }
 
     @Override

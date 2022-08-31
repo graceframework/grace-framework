@@ -41,7 +41,7 @@ public class EnvironmentAwarePropertySource extends EnumerablePropertySource<Pro
     @Override
     public String[] getPropertyNames() {
         initialize();
-        return this.propertyNames.toArray(new String[this.propertyNames.size()]);
+        return this.propertyNames.toArray(new String[0]);
     }
 
     @Override

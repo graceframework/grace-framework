@@ -2557,7 +2557,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
             }
             else {
                 Set<Writer> writerList = resolveLazyInitializers(new HashSet<>(), this.lazyInitializingWriter);
-                return writerList.toArray(new Writer[writerList.size()]);
+                return writerList.toArray(new Writer[0]);
             }
         }
 

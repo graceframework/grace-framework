@@ -119,7 +119,7 @@ public class GrailsClassUtils {
      */
     public static Class<?>[] getAllInterfacesForClass(Class<?> clazz, ClassLoader classLoader) {
         Set<Class> ifcs = getAllInterfacesForClassAsSet(clazz, classLoader);
-        return ifcs.toArray(new Class[ifcs.size()]);
+        return ifcs.toArray(new Class[0]);
     }
 
     /**
@@ -346,7 +346,7 @@ public class GrailsClassUtils {
             // if there are any errors in instantiating just return null for the moment
             return new PropertyDescriptor[0];
         }
-        return properties.toArray(new PropertyDescriptor[properties.size()]);
+        return properties.toArray(new PropertyDescriptor[0]);
     }
 
     private static boolean isTypeInstanceOfPropertyType(Class<?> type, Class<?> propertyType) {
@@ -387,7 +387,7 @@ public class GrailsClassUtils {
             }
             return new PropertyDescriptor[0];
         }
-        return properties.toArray(new PropertyDescriptor[properties.size()]);
+        return properties.toArray(new PropertyDescriptor[0]);
     }
 
     /**
@@ -447,7 +447,7 @@ public class GrailsClassUtils {
         if (c == null) {
             return new Object[0];
         }
-        return c.toArray(new Object[c.size()]);
+        return c.toArray(new Object[0]);
     }
 
     /**

@@ -124,7 +124,7 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
         }
         else {
             Collections.reverse(codecInstances);
-            return (T) new ChainedDecoder(codecInstances.toArray(new Decoder[codecInstances.size()]));
+            return (T) new ChainedDecoder(codecInstances.toArray(new Decoder[0]));
         }
     }
 

@@ -252,7 +252,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     private void updateArtefactHandlers() {
         // Cache the list as an array
         this.artefactHandlers = this.artefactHandlersByName.values().toArray(
-                new ArtefactHandler[this.artefactHandlersByName.size()]);
+                new ArtefactHandler[0]);
     }
 
     /**
@@ -265,7 +265,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
     }
 
     protected Class<?>[] populateAllClasses() {
-        this.allClasses = this.loadedClasses.toArray(new Class[this.loadedClasses.size()]);
+        this.allClasses = this.loadedClasses.toArray(new Class[0]);
         return this.allClasses;
     }
 
@@ -314,7 +314,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
 
         refreshArtefactGrailsClassCaches();
 
-        this.allArtefactClassesArray = this.allArtefactClasses.toArray(new Class[this.allArtefactClasses.size()]);
+        this.allArtefactClassesArray = this.allArtefactClasses.toArray(new Class[0]);
 
         // Tell all artefact handlers to init now we've worked out which classes are which artefacts
         for (ArtefactHandler artefactHandler : this.artefactHandlers) {

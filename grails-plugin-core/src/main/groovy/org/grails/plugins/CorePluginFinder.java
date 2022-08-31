@@ -87,7 +87,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. " +
                     "This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
         }
-        return this.foundPluginClasses.toArray(new Class[this.foundPluginClasses.size()]);
+        return this.foundPluginClasses.toArray(new Class[0]);
     }
 
     public BinaryGrailsPluginDescriptor getBinaryDescriptor(Class<?> pluginClass) {
@@ -101,7 +101,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             URL url = resources.nextElement();
             resourceList.add(new UrlResource(url));
         }
-        return resourceList.toArray(new Resource[resourceList.size()]);
+        return resourceList.toArray(new Resource[0]);
     }
 
     @SuppressWarnings("rawtypes")

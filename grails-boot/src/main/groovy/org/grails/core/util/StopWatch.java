@@ -183,7 +183,7 @@ public class StopWatch {
      * Return an array of the data for tasks performed.
      */
     public TaskInfo[] getTaskInfo() {
-        return this.taskList.toArray(new TaskInfo[this.taskList.size()]);
+        return this.taskList.toArray(new TaskInfo[0]);
     }
 
     /**

@@ -210,7 +210,7 @@ public class AntPathMatcher {
 
     private String[] tokenize(String pattern) {
         List<String> list = StringGroovyMethods.tokenize((CharSequence) pattern, (CharSequence) this.pathSeparator);
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new String[0]);
     }
 
     /**

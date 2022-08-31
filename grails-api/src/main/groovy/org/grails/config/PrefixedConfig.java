@@ -105,7 +105,7 @@ public class PrefixedConfig implements Config {
         List<String> tokens = new ArrayList<>();
         tokens.addAll(Arrays.asList(this.prefixTokens));
         tokens.addAll(Arrays.asList(path));
-        return this.delegate.navigate(tokens.toArray(new String[tokens.size()]));
+        return this.delegate.navigate(tokens.toArray(new String[0]));
     }
 
     @Override

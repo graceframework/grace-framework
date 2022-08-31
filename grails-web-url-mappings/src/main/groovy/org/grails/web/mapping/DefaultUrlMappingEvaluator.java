@@ -704,7 +704,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                                 }
                             }
 
-                            ConstrainedProperty[] constraints = currentConstraints.toArray(new ConstrainedProperty[currentConstraints.size()]);
+                            ConstrainedProperty[] constraints = currentConstraints.toArray(new ConstrainedProperty[0]);
                             UrlMapping urlMapping;
                             if (mappingInfo.getUri() != null) {
                                 try {
@@ -925,7 +925,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         protected void createResourceRestfulMappings(String controllerName, Object pluginName, Object namespace,
                 String version, UrlMappingData urlData, List<ConstrainedProperty> constrainedList,
                 List<String> includes) {
-            ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[constrainedList.size()]);
+            ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[0]);
 
             if (includes.contains(ACTION_INDEX)) {
                 // GET /$controller -> action:'index'
@@ -992,7 +992,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(deleteUrlMappingData, controllerName, ACTION_DELETE, namespace,
                     pluginName, null, HttpMethod.DELETE.toString(), version,
-                    deleteUrlMappingConstraints.toArray(new ConstrainedProperty[deleteUrlMappingConstraints.size()]),
+                    deleteUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1004,7 +1004,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(updateUrlMappingData, controllerName, ACTION_UPDATE, namespace,
                     pluginName, null, HttpMethod.PUT.toString(), version,
-                    updateUrlMappingConstraints.toArray(new ConstrainedProperty[updateUrlMappingConstraints.size()]),
+                    updateUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1016,7 +1016,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(patchUrlMappingData, controllerName, ACTION_PATCH, namespace,
                     pluginName, null, HttpMethod.PATCH.toString(), version,
-                    patchUrlMappingConstraints.toArray(new ConstrainedProperty[patchUrlMappingConstraints.size()]),
+                    patchUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1030,7 +1030,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(editUrlMappingData, controllerName, ACTION_EDIT, namespace,
                     pluginName, null, HttpMethod.GET.toString(), version,
-                    editUrlMappingConstraints.toArray(new ConstrainedProperty[editUrlMappingConstraints.size()]),
+                    editUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1042,7 +1042,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(showUrlMappingData, controllerName, ACTION_SHOW, namespace,
                     pluginName, null, HttpMethod.GET.toString(), version,
-                    showUrlMappingConstraints.toArray(new ConstrainedProperty[showUrlMappingConstraints.size()]),
+                    showUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1073,7 +1073,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(saveActionUrlMappingData, controllerName, ACTION_SAVE, namespace,
                     pluginName, null, HttpMethod.POST.toString(), version,
-                    saveUrlMappingConstraints.toArray(new ConstrainedProperty[saveUrlMappingConstraints.size()]),
+                    saveUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1094,7 +1094,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(indexActionUrlMappingData, controllerName, ACTION_INDEX,
                     namespace, pluginName, null, HttpMethod.GET.toString(), version,
-                    indexUrlMappingConstraints.toArray(new ConstrainedProperty[indexUrlMappingConstraints.size()]),
+                    indexUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1121,7 +1121,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 Object namespace, String version, UrlMappingData urlData,
                 List<ConstrainedProperty> constrainedList, List<String> includes) {
 
-            ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[constrainedList.size()]);
+            ConstrainedProperty[] constraintArray = constrainedList.toArray(new ConstrainedProperty[0]);
 
             if (includes.contains(ACTION_CREATE)) {
                 // GET /$controller/create -> action: 'create'
@@ -1181,7 +1181,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(deleteUrlMappingData, controllerName, ACTION_DELETE, namespace,
                     pluginName, null, HttpMethod.DELETE.toString(), version,
-                    deleteUrlMappingConstraints.toArray(new ConstrainedProperty[deleteUrlMappingConstraints.size()]),
+                    deleteUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1193,7 +1193,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(updateUrlMappingData, controllerName, ACTION_UPDATE, namespace,
                     pluginName, null, HttpMethod.PUT.toString(), version,
-                    updateUrlMappingConstraints.toArray(new ConstrainedProperty[updateUrlMappingConstraints.size()]),
+                    updateUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1205,7 +1205,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(patchUrlMappingData, controllerName, ACTION_PATCH, namespace,
                     pluginName, null, HttpMethod.PATCH.toString(), version,
-                    patchUrlMappingConstraints.toArray(new ConstrainedProperty[patchUrlMappingConstraints.size()]),
+                    patchUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1226,7 +1226,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
             return new RegexUrlMapping(showUrlMappingData, controllerName, ACTION_SHOW, namespace,
                     pluginName, null, HttpMethod.GET.toString(), version,
-                    showUrlMappingConstraints.toArray(new ConstrainedProperty[showUrlMappingConstraints.size()]),
+                    showUrlMappingConstraints.toArray(new ConstrainedProperty[0]),
                     DefaultUrlMappingEvaluator.this.grailsApplication);
         }
 
@@ -1301,7 +1301,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             }
 
             Object uri = getURI(namedArguments, bindingVariables);
-            ConstrainedProperty[] constraints = constrainedList.toArray(new ConstrainedProperty[constrainedList.size()]);
+            ConstrainedProperty[] constraints = constrainedList.toArray(new ConstrainedProperty[0]);
 
             UrlMapping urlMapping;
             if (uri != null) {

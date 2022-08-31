@@ -86,9 +86,9 @@ public class DefaultArtefactInfo implements ArtefactInfo {
         this.grailsClassesByName = Collections.unmodifiableMap(this.grailsClassesByName);
         this.classesByName = Collections.unmodifiableMap(this.classesByName);
 
-        this.grailsClassesArray = this.grailsClasses.toArray(new GrailsClass[this.grailsClasses.size()]);
+        this.grailsClassesArray = this.grailsClasses.toArray(new GrailsClass[0]);
         // Make classes array
-        this.classes = this.classesByName.values().toArray(new Class[this.classesByName.size()]);
+        this.classes = this.classesByName.values().toArray(new Class[0]);
     }
 
     public Class<?>[] getClasses() {

@@ -158,7 +158,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             }
         }
 
-        this.pluginResources = resourceList.toArray(new Resource[resourceList.size()]);
+        this.pluginResources = resourceList.toArray(new Resource[0]);
         this.application = application;
         setPluginFilter();
     }
@@ -186,7 +186,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public GrailsPlugin[] getUserPlugins() {
-        return this.userPlugins.toArray(new GrailsPlugin[this.userPlugins.size()]);
+        return this.userPlugins.toArray(new GrailsPlugin[0]);
     }
 
     private void setPluginFilter() {
