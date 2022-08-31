@@ -213,12 +213,8 @@ public class StopWatch {
         pf.setGroupingUsed(false);
 
         final TaskInfo[] taskInfos = getTaskInfo();
-        Arrays.sort(taskInfos, new Comparator<TaskInfo>() {
-            @Override
-            public int compare(TaskInfo o1, TaskInfo o2) {
-                return Long.compare(o1.getTimeMillis(), o2.getTimeMillis());
-            }
-        });
+        Arrays.sort(taskInfos, Comparator.comparingLong(TaskInfo::getTimeMillis));
+
         for (TaskInfo task : taskInfos) {
             sb.append(nf.format(task.getTimeMillis())).append("  ");
             sb.append(pf.format(task.getTimeSeconds() / getTotalTimeSeconds())).append("  ");

@@ -142,15 +142,14 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
                 defaultUrlMappingsHolder, this.grailsUrlConverter);
 
-        ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(new ApplicationListener<ArtefactAdditionEvent>() {
-            @Override
-            public void onApplicationEvent(ArtefactAdditionEvent event) {
-                GrailsClass artefact = event.getArtefact();
-                if (artefact instanceof GrailsControllerClass) {
-                    grailsControllerUrlMappings.registerController((GrailsControllerClass) artefact);
-                }
-            }
-        });
+        ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(
+                (ApplicationListener<ArtefactAdditionEvent>) event -> {
+                    GrailsClass artefact = event.getArtefact();
+                    if (artefact instanceof GrailsControllerClass) {
+                        grailsControllerUrlMappings.registerController((GrailsControllerClass) artefact);
+                    }
+                });
+
         this.urlMappingsHolder = grailsControllerUrlMappings;
     }
 

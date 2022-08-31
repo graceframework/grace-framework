@@ -28,13 +28,7 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     private final boolean safe;
 
     // this ThreadLocal lives as long as the instance of this ChainedEncoder class, this isn't a static ThreadLocal
-    private final ThreadLocal<ChainedEncoderCacheItem> cacheItemThreadLocal = new ThreadLocal<ChainedEncoder.ChainedEncoderCacheItem>() {
-
-        protected ChainedEncoderCacheItem initialValue() {
-            return new ChainedEncoderCacheItem();
-        }
-
-    };
+    private final ThreadLocal<ChainedEncoderCacheItem> cacheItemThreadLocal = ThreadLocal.withInitial(() -> new ChainedEncoderCacheItem());
 
     private static class ChainedEncoderCacheItem {
 

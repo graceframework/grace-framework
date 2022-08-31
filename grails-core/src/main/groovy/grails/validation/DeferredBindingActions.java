@@ -36,11 +36,7 @@ public class DeferredBindingActions {
     private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<>();
 
     static {
-        ShutdownOperations.addOperation(new Runnable() {
-            public void run() {
-                deferredBindingActions = new ThreadLocal<List<Runnable>>();
-            }
-        }, true);
+        ShutdownOperations.addOperation(() -> deferredBindingActions = new ThreadLocal<>(), true);
     }
 
     private DeferredBindingActions() {

@@ -81,6 +81,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
             // continues to use the old class. We deal with this here by disabling the caching
             // for development time only
             setInstantiationStrategy(new CglibSubclassingInstantiationStrategy() {
+
                 @Override
                 public Object instantiate(RootBeanDefinition beanDefinition, String beanName, BeanFactory owner) {
                     // Don't override the class with CGLIB if no overrides.
@@ -102,6 +103,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                     // Must generate CGLIB subclass.
                     return instantiateWithMethodInjection(beanDefinition, beanName, owner);
                 }
+
             });
         }
 
@@ -150,12 +152,9 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
     @Override
     protected void autowireByName(String beanName, AbstractBeanDefinition mbd, final BeanWrapper bw, MutablePropertyValues pvs) {
         if (!DISABLE_AUTOWIRE_BY_NAME_OPTIMIZATIONS && mbd.isPrototype()) {
-            Map<String, PropertyDescriptor> autowireableBeanProps = resolveAutowireablePropertyDescriptorsForClass(bw.getWrappedClass(),
-                    new Callable<BeanWrapper>() {
-                        public BeanWrapper call() throws Exception {
-                            return bw;
-                        }
-                    });
+            Map<String, PropertyDescriptor> autowireableBeanProps = resolveAutowireablePropertyDescriptorsForClass(
+                    bw.getWrappedClass(), () -> bw);
+
             for (Map.Entry<String, PropertyDescriptor> entry : autowireableBeanProps.entrySet()) {
                 final PropertyDescriptor pd = entry.getValue();
                 final String propertyName = pd.getName();
@@ -189,14 +188,13 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
             final Method writeMethod = pd.getWriteMethod();
             final String beanName = entry.getKey();
             final Object value = getBean(beanName);
+
             try {
                 if (System.getSecurityManager() != null) {
                     try {
-                        AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-                            public Object run() throws Exception {
-                                writeMethod.invoke(existingBean, value);
-                                return null;
-                            }
+                        AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
+                            writeMethod.invoke(existingBean, value);
+                            return null;
                         }, getAccessControlContext());
                     }
                     catch (PrivilegedActionException ex) {
@@ -225,26 +223,26 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
     }
 
     protected Map<String, PropertyDescriptor> resolveAutowireablePropertyDescriptors(final Object existingBean) {
-        return resolveAutowireablePropertyDescriptorsForClass(existingBean.getClass(), new Callable<BeanWrapper>() {
-            public BeanWrapper call() throws Exception {
-                BeanWrapperImpl bw = new BeanWrapperImpl(false);
-                Class userClass = ClassUtils.getUserClass(existingBean.getClass());
-                if (userClass != existingBean.getClass()) {
-                    bw.setWrappedInstance(BeanUtils.instantiate(userClass));
-                }
-                else {
-                    bw.setWrappedInstance(existingBean);
-                }
-                bw.setConversionService(getConversionService());
-                return bw;
+        return resolveAutowireablePropertyDescriptorsForClass(existingBean.getClass(), () -> {
+            BeanWrapperImpl bw = new BeanWrapperImpl(false);
+            Class userClass = ClassUtils.getUserClass(existingBean.getClass());
+            if (userClass != existingBean.getClass()) {
+                bw.setWrappedInstance(BeanUtils.instantiate(userClass));
             }
+            else {
+                bw.setWrappedInstance(existingBean);
+            }
+            bw.setConversionService(getConversionService());
+            return bw;
         });
     }
 
     protected Map<String, PropertyDescriptor> resolveAutowireablePropertyDescriptorsForClass(Class<?> beanClass,
             final Callable<BeanWrapper> beanWrapperCallback) {
+
         beanClass = ClassUtils.getUserClass(beanClass);
         Map<String, PropertyDescriptor> autowireableBeanProps = this.autowireableBeanPropsCacheForClass.get(beanClass);
+
         if (autowireableBeanProps == null) {
             autowireableBeanProps = new HashMap<>();
             BeanWrapper bw = null;
@@ -254,6 +252,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
             PropertyDescriptor[] pds = bw.getPropertyDescriptors();
             for (PropertyDescriptor pd : pds) {
                 if (containsBean(pd.getName()) && pd.getWriteMethod() != null && !isExcludedFromDependencyCheck(pd)
@@ -261,11 +260,9 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
                     final Method writeMethod = pd.getWriteMethod();
                     if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers()) && !writeMethod.isAccessible()) {
                         if (System.getSecurityManager() != null) {
-                            AccessController.doPrivileged(new PrivilegedAction<Object>() {
-                                public Object run() {
-                                    writeMethod.setAccessible(true);
-                                    return null;
-                                }
+                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                writeMethod.setAccessible(true);
+                                return null;
                             });
                         }
                         else {

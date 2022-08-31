@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -203,14 +202,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
      * cached forever.
      */
     protected PropertiesHolder getMergedPluginProperties(final Locale locale) {
-        return CacheEntry.getValue(this.cachedMergedPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
-            @Override
-            public PropertiesHolder call() throws Exception {
-                Properties mergedProps = new Properties();
-                PropertiesHolder mergedHolder = new PropertiesHolder(mergedProps);
-                mergeBinaryPluginProperties(locale, mergedProps);
-                return mergedHolder;
-            }
+        return CacheEntry.getValue(this.cachedMergedPluginProperties, locale, cacheMillis, () -> {
+            Properties mergedProps = new Properties();
+            PropertiesHolder mergedHolder = new PropertiesHolder(mergedProps);
+            mergeBinaryPluginProperties(locale, mergedProps);
+            return mergedHolder;
         });
     }
 
@@ -240,15 +236,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     }
 
     protected PropertiesHolder getMergedBinaryPluginProperties(final Locale locale) {
-        return CacheEntry.getValue(this.cachedMergedBinaryPluginProperties, locale, cacheMillis, new Callable<PropertiesHolder>() {
-            @Override
-            public PropertiesHolder call() throws Exception {
-                Properties mergedProps = new Properties();
-                PropertiesHolder mergedHolder = new PropertiesHolder(mergedProps);
-                mergeBinaryPluginProperties(locale, mergedProps);
-                return mergedHolder;
-            }
-
+        return CacheEntry.getValue(this.cachedMergedBinaryPluginProperties, locale, cacheMillis, () -> {
+            Properties mergedProps = new Properties();
+            PropertiesHolder mergedHolder = new PropertiesHolder(mergedProps);
+            mergeBinaryPluginProperties(locale, mergedProps);
+            return mergedHolder;
         });
     }
 
