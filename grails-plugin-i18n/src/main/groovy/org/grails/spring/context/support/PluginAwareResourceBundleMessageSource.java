@@ -67,7 +67,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
 
     protected GrailsPluginManager pluginManager;
 
-    protected List<String> pluginBaseNames = new ArrayList<String>();
+    protected List<String> pluginBaseNames = new ArrayList<>();
 
     private ResourceLoader localResourceLoader;
 
@@ -128,7 +128,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
                 }
             });
             if (propertiesFiles != null && propertiesFiles.length > 0) {
-                List<Resource> resourceList = new ArrayList<Resource>(propertiesFiles.length);
+                List<Resource> resourceList = new ArrayList<>(propertiesFiles.length);
                 for (File propertiesFile : propertiesFiles) {
                     resourceList.add(new FileSystemResource(propertiesFile));
                 }
@@ -165,7 +165,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
             }
         }
 
-        List<String> basenames = new ArrayList<String>();
+        List<String> basenames = new ArrayList<>();
         for (Resource resource : resources) {
             String filename = resource.getFilename();
             String baseName = GrailsStringUtils.getFileBasename(filename);

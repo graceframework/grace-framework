@@ -31,9 +31,9 @@ import org.grails.core.lifecycle.ShutdownOperations;
  */
 public class DeferredBindingActions {
 
-    private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<List<Runnable>>();
-
     private static Log LOG = LogFactory.getLog(DeferredBindingActions.class);
+
+    private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<>();
 
     static {
         ShutdownOperations.addOperation(new Runnable() {
@@ -54,7 +54,7 @@ public class DeferredBindingActions {
     private static List<Runnable> getDeferredBindingActions() {
         List<Runnable> runnables = deferredBindingActions.get();
         if (runnables == null) {
-            runnables = new ArrayList<Runnable>();
+            runnables = new ArrayList<>();
             deferredBindingActions.set(runnables);
         }
         return runnables;

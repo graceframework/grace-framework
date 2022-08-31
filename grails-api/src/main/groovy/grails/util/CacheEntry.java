@@ -40,7 +40,7 @@ public class CacheEntry<V> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CacheEntry.class);
 
-    private final AtomicReference<V> valueRef = new AtomicReference<V>(null);
+    private final AtomicReference<V> valueRef = new AtomicReference<>(null);
 
     private long createdMillis;
 

@@ -93,7 +93,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
 
     public static final String ID_PARAMETER = "id";
 
-    private final List<ParameterCreationListener> parameterCreationListeners = new ArrayList<ParameterCreationListener>();
+    private final List<ParameterCreationListener> parameterCreationListeners = new ArrayList<>();
 
     private final UrlPathHelper urlHelper = new UrlPathHelper();
 

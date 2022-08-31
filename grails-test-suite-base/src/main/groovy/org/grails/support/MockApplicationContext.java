@@ -59,11 +59,11 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
 
     Date startupDate = new Date();
 
-    Map<String, Object> beans = new HashMap<String, Object>();
+    Map<String, Object> beans = new HashMap<>();
 
-    List<Resource> resources = new ArrayList<Resource>();
+    List<Resource> resources = new ArrayList<>();
 
-    List<String> ignoredClassLocations = new ArrayList<String>();
+    List<String> ignoredClassLocations = new ArrayList<>();
 
     PathMatcher pathMatcher = new AntPathMatcher();
 
@@ -181,7 +181,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public String[] getBeanNamesForType(Class type) {
-        List<String> beanNames = new ArrayList<String>();
+        List<String> beanNames = new ArrayList<>();
         for (String beanName : this.beans.keySet()) {
             if (type.isAssignableFrom(this.beans.get(beanName).getClass())) {
                 beanNames.add(beanName);
@@ -198,7 +198,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     @SuppressWarnings("unchecked")
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
         String[] beanNames = getBeanNamesForType(type);
-        Map<String, T> newMap = new HashMap<String, T>();
+        Map<String, T> newMap = new HashMap<>();
         for (int i = 0; i < beanNames.length; i++) {
             String beanName = beanNames[i];
             newMap.put(beanName, (T) getBean(beanName));
@@ -225,7 +225,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     }
 
     public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) throws BeansException {
-        Map<String, Object> submap = new HashMap<String, Object>();
+        Map<String, Object> submap = new HashMap<>();
         for (Object beanName : this.beans.keySet()) {
             Object bean = this.beans.get(beanName);
             if (bean != null && bean.getClass().getAnnotation(annotation) != null) {
@@ -243,7 +243,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
      * @since 2.4
      */
     public String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType) {
-        List<String> beanNamesList = new ArrayList<String>();
+        List<String> beanNamesList = new ArrayList<>();
         for (Object beanName : this.beans.keySet()) {
             Object bean = this.beans.get(beanName);
             if (bean != null && bean.getClass().getAnnotation(annotationType) != null) {
@@ -368,7 +368,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         }
 
         locationPattern = GrailsStringUtils.trimStart(locationPattern, "/"); // starting with "**/" is OK
-        List<Resource> result = new ArrayList<Resource>();
+        List<Resource> result = new ArrayList<>();
         for (Resource res : this.resources) {
             String path = res instanceof ClassPathResource ? ((ClassPathResource) res).getPath() : res.getDescription();
             if (this.pathMatcher.match(locationPattern, path)) {

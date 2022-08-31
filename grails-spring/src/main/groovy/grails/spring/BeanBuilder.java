@@ -119,7 +119,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
     private BeanConfiguration currentBeanConfig;
 
-    private Map<String, DeferredProperty> deferredProperties = new HashMap<String, DeferredProperty>();
+    private Map<String, DeferredProperty> deferredProperties = new HashMap<>();
 
     private ApplicationContext parentCtx;
 
@@ -129,11 +129,11 @@ public class BeanBuilder extends GroovyObjectSupport {
 
     private NamespaceHandlerResolver namespaceHandlerResolver;
 
-    private Map<String, NamespaceHandler> namespaceHandlers = new HashMap<String, NamespaceHandler>();
+    private Map<String, NamespaceHandler> namespaceHandlers = new HashMap<>();
 
     private XmlBeanDefinitionReader xmlBeanDefinitionReader;
 
-    private Map<String, String> namespaces = new HashMap<String, String>();
+    private Map<String, String> namespaces = new HashMap<>();
 
     private Resource beanBuildResource;
 
@@ -296,7 +296,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      * @return A map of BeanDefinition instances with the bean id as the key
      */
     public Map<String, BeanDefinition> getBeanDefinitions() {
-        Map<String, BeanDefinition> beanDefinitions = new HashMap<String, BeanDefinition>();
+        Map<String, BeanDefinition> beanDefinitions = new HashMap<>();
         for (String beanName : getSpringConfig().getBeanNames()) {
             beanDefinitions.put(beanName, getSpringConfig().getBeanConfig(beanName).getBeanDefinition());
         }

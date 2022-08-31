@@ -38,9 +38,9 @@ public class StopWatch {
      */
     private final String id;
 
-    private final Deque<TaskInfo> runningTasks = new LinkedList<TaskInfo>();
+    private final Deque<TaskInfo> runningTasks = new LinkedList<>();
 
-    private final Deque<TaskInfo> taskList = new LinkedList<TaskInfo>();
+    private final Deque<TaskInfo> taskList = new LinkedList<>();
 
     /** Is the stop watch currently running? */
     private boolean running;
@@ -203,12 +203,15 @@ public class StopWatch {
         sb.append("-----------------------------------------\n");
         sb.append("ms     %     Task name\n");
         sb.append("-----------------------------------------\n");
+
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMinimumIntegerDigits(5);
         nf.setGroupingUsed(false);
+
         NumberFormat pf = NumberFormat.getPercentInstance();
         pf.setMinimumIntegerDigits(3);
         pf.setGroupingUsed(false);
+
         final TaskInfo[] taskInfos = getTaskInfo();
         Arrays.sort(taskInfos, new Comparator<TaskInfo>() {
             @Override

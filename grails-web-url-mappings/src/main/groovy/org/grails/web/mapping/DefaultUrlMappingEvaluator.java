@@ -675,7 +675,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 final boolean isResponseCode = isResponseCode(mappedURI);
                 if (mappedURI.startsWith(SLASH) || isResponseCode) {
                     // Create a new parameter map for this mapping.
-                    this.parameterValues = new HashMap<String, Object>();
+                    this.parameterValues = new HashMap<>();
                     Map variables = this.binding != null ? this.binding.getVariables() : null;
                     boolean hasParent = !this.parentResources.isEmpty();
                     try {
@@ -844,7 +844,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         private List<String> calculateIncludes(Map namedArguments, List<String> defaultResourcesIncludes) {
-            List<String> includes = new ArrayList<String>(defaultResourcesIncludes);
+            List<String> includes = new ArrayList<>(defaultResourcesIncludes);
 
             Object excludesObject = namedArguments.get("excludes");
             if (excludesObject != null) {
@@ -1024,7 +1024,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 Object namespace, String version, UrlMappingData urlData,
                 List<ConstrainedProperty> constrainedList) {
             UrlMappingData editUrlMappingData = urlData.createRelative('/' + CAPTURING_WILD_CARD + "/edit");
-            List<ConstrainedProperty> editUrlMappingConstraints = new ArrayList<ConstrainedProperty>(constrainedList);
+            List<ConstrainedProperty> editUrlMappingConstraints = new ArrayList<>(constrainedList);
             editUrlMappingConstraints.add(new DefaultConstrainedProperty(UrlMapping.class, "id", String.class,
                     DefaultUrlMappingEvaluator.this.constraintRegistry));
 
@@ -1047,7 +1047,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         private List<ConstrainedProperty> createConstraintsWithIdAndFormat(List<ConstrainedProperty> constrainedList) {
-            List<ConstrainedProperty> showUrlMappingConstraints = new ArrayList<ConstrainedProperty>(constrainedList);
+            List<ConstrainedProperty> showUrlMappingConstraints = new ArrayList<>(constrainedList);
             showUrlMappingConstraints.add(new DefaultConstrainedProperty(UrlMapping.class, "id", String.class,
                     DefaultUrlMappingEvaluator.this.constraintRegistry));
             ConstrainedProperty cp = new DefaultConstrainedProperty(UrlMapping.class, "format", String.class,
@@ -1099,7 +1099,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         private List<ConstrainedProperty> createFormatOnlyConstraints(List<ConstrainedProperty> constrainedList) {
-            List<ConstrainedProperty> indexUrlMappingConstraints = new ArrayList<ConstrainedProperty>(constrainedList);
+            List<ConstrainedProperty> indexUrlMappingConstraints = new ArrayList<>(constrainedList);
             ConstrainedProperty cp = new DefaultConstrainedProperty(UrlMapping.class, "format", String.class,
                     DefaultUrlMappingEvaluator.this.constraintRegistry);
             cp.applyConstraint(ConstrainedProperty.NULLABLE_CONSTRAINT, true);

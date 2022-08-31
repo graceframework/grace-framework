@@ -94,7 +94,7 @@ public class EncodesToWriterAdapter implements EncodesToWriter {
             List<StreamingEncoder> additionalEncoders,
             boolean applyAdditionalFirst) {
         boolean baseEncoderShouldBeApplied = ChainedEncoders.shouldApplyEncoder(baseEncoder);
-        List<StreamingEncoder> allEncoders = new ArrayList<StreamingEncoder>(additionalEncoders.size() + 1);
+        List<StreamingEncoder> allEncoders = new ArrayList<>(additionalEncoders.size() + 1);
         if (!applyAdditionalFirst && baseEncoderShouldBeApplied) {
             allEncoders.add(baseEncoder);
         }

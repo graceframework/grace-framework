@@ -108,7 +108,7 @@ public class EncodingStateImpl implements EncodingState {
             return this;
         }
         else {
-            newEncoders = new LinkedHashSet<Encoder>();
+            newEncoders = new LinkedHashSet<>();
             newEncoders.addAll(this.encoders);
             newEncoders.add(encoder);
         }

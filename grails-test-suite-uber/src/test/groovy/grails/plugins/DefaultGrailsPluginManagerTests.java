@@ -139,7 +139,7 @@ public class DefaultGrailsPluginManagerTests {
         assertNotNull(manager.getGrailsPlugin("third"));
         assertNotNull(manager.getGrailsPlugin("fourth"));
 
-        List<GrailsPlugin> expectedOrder = new ArrayList<GrailsPlugin>();
+        List<GrailsPlugin> expectedOrder = new ArrayList<>();
         expectedOrder.add(manager.getGrailsPlugin("fourth"));
         expectedOrder.add(manager.getGrailsPlugin("first"));
         expectedOrder.add(manager.getGrailsPlugin("second"));
@@ -188,7 +188,7 @@ public class DefaultGrailsPluginManagerTests {
 
         List<GrailsPlugin> pluginList = manager.getPluginList();
 
-        List<GrailsPlugin> expectedOrder = new ArrayList<GrailsPlugin>();
+        List<GrailsPlugin> expectedOrder = new ArrayList<>();
         expectedOrder.add(manager.getGrailsPlugin("third"));
         expectedOrder.add(manager.getGrailsPlugin("fourth"));
         expectedOrder.add(manager.getGrailsPlugin("second"));

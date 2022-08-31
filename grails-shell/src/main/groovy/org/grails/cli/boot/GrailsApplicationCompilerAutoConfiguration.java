@@ -163,7 +163,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
                 String artifactId = dependency.getArtifact().getArtifactId();
                 String version = dependency.getArtifact().getVersion();
 
-                List<Dependency.Exclusion> exclusions = new ArrayList<Dependency.Exclusion>();
+                List<Dependency.Exclusion> exclusions = new ArrayList<>();
                 Dependency value = new Dependency(groupId, artifactId, version, exclusions);
                 this.dependencies.add(value);
                 this.groupAndArtifactToDependency.put(groupId + ":" + artifactId, value);

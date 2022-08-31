@@ -72,7 +72,7 @@ import org.grails.core.artefact.DomainClassArtefactHandler;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector, Comparable {
 
-    private static final Set<String> KNOWN_TRANSFORMED_CLASSES = new HashSet<String>();
+    private static final Set<String> KNOWN_TRANSFORMED_CLASSES = new HashSet<>();
 
     private static final String INSTANCE_PREFIX = "instance";
 
@@ -92,7 +92,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
 
     private static final String[] DEFAULT_GENERICS_PLACEHOLDERS = new String[] { "D", "T" };
 
-    private final Set<String> classesTransformedByThis = new HashSet<String>();
+    private final Set<String> classesTransformedByThis = new HashSet<>();
 
     public String[] getArtefactTypes() {
         return new String[] { getArtefactType() };
@@ -275,7 +275,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
     }
 
     protected Map<String, ClassNode> resolveGenericsPlaceHolders(ClassNode classNode) {
-        Map<String, ClassNode> genericsPlaceHolders = new HashMap<String, ClassNode>();
+        Map<String, ClassNode> genericsPlaceHolders = new HashMap<>();
         for (String placeHolder : DEFAULT_GENERICS_PLACEHOLDERS) {
             genericsPlaceHolders.put(placeHolder, classNode);
         }

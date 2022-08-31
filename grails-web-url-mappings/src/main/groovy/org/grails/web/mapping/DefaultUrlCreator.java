@@ -130,7 +130,7 @@ public class DefaultUrlCreator implements UrlCreator {
         GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.getRequestAttributes();
 
         if (parameterValues == null) {
-            parameterValues = new HashMap<String, String>();
+            parameterValues = new HashMap<>();
         }
         boolean blankController = GrailsStringUtils.isBlank(controller);
         boolean blankAction = GrailsStringUtils.isBlank(action);

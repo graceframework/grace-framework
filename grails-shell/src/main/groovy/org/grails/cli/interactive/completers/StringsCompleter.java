@@ -32,7 +32,7 @@ import jline.internal.Preconditions;
  */
 public class StringsCompleter implements Completer {
 
-    private SortedSet<String> strings = new TreeSet<String>();
+    private SortedSet<String> strings = new TreeSet<>();
 
     public StringsCompleter() {
         // empty

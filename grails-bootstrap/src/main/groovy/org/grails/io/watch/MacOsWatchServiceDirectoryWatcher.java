@@ -53,9 +53,9 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
 
-    private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<WatchKey, List<String>>();
+    private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<>();
 
-    private Set<Path> individualWatchedFiles = new HashSet<Path>();
+    private Set<Path> individualWatchedFiles = new HashSet<>();
 
     private final WatchService watchService;
 
@@ -211,7 +211,7 @@ class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
-                        final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
+                        final HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
                         MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
                                 Collections.unmodifiableList(new ArrayList(newFileExtensions)));

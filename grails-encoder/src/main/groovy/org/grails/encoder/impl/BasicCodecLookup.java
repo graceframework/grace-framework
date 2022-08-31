@@ -45,9 +45,9 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
 
     public static final StreamingEncoder NONE_ENCODER = new NoneEncoder();
 
-    protected final ConcurrentMap<String, Encoder> encoders = new ConcurrentHashMap<String, Encoder>();
+    protected final ConcurrentMap<String, Encoder> encoders = new ConcurrentHashMap<>();
 
-    protected final ConcurrentMap<String, Decoder> decoders = new ConcurrentHashMap<String, Decoder>();
+    protected final ConcurrentMap<String, Decoder> decoders = new ConcurrentHashMap<>();
 
     public BasicCodecLookup() {
         super();
@@ -105,7 +105,7 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
 
     protected <T extends CodecIdentifierProvider> T createChainedCodecInstance(String codecName, ConcurrentMap<String, T> map, Class<T> returnType) {
         String[] codecs = codecName.split(",");
-        List<T> codecInstances = new ArrayList<T>(codecs.length);
+        List<T> codecInstances = new ArrayList<>(codecs.length);
         for (int i = 0; i < codecs.length; i++) {
             T codecInstance = map.get(codecs[i]);
             if (codecInstance != null) {
@@ -147,7 +147,7 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
     }
 
     protected Collection<String> createNameVariations(String name, CodecIdentifierProvider target) {
-        Set<String> nameVariations = new LinkedHashSet<String>();
+        Set<String> nameVariations = new LinkedHashSet<>();
         nameVariations.add(name);
         nameVariations.add(name.toLowerCase());
         nameVariations.add(name.toUpperCase());

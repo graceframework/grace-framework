@@ -30,7 +30,7 @@ import org.springframework.core.io.Resource;
  */
 public class StaticResourceLocator implements ResourceLocator {
 
-    private Map<String, Resource> classToResourceMap = new HashMap<String, Resource>();
+    private Map<String, Resource> classToResourceMap = new HashMap<>();
 
     public void setSearchLocation(String searchLocation) {
         // do nothing

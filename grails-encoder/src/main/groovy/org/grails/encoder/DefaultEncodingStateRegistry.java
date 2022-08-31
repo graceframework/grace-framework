@@ -72,7 +72,7 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
                 }
                 else {
                     if (result.size() == 1) {
-                        result = new HashSet<Encoder>(result);
+                        result = new HashSet<>(result);
                     }
                     result.add(entry.getKey());
                 }

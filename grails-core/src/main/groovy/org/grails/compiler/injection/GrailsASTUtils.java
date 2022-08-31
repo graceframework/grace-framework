@@ -1168,8 +1168,8 @@ public class GrailsASTUtils {
      * @return the Map as described above
      */
     public static Map<String, Map<String, Expression>> getConstraintMetadata(final ClosureExpression closureExpression) {
-        final List<MethodCallExpression> methodExpressions = new ArrayList<MethodCallExpression>();
-        final Map<String, Map<String, Expression>> results = new LinkedHashMap<String, Map<String, Expression>>();
+        final List<MethodCallExpression> methodExpressions = new ArrayList<>();
+        final Map<String, Map<String, Expression>> results = new LinkedHashMap<>();
 
         final Statement closureCode = closureExpression.getCode();
         if (closureCode instanceof BlockStatement) {
@@ -1197,7 +1197,7 @@ public class GrailsASTUtils {
                             final List<Expression> methodCallArgumentExpressions = ((TupleExpression) methodCallArguments).getExpressions();
                             if (methodCallArgumentExpressions != null && methodCallArgumentExpressions.size() == 1 &&
                                     methodCallArgumentExpressions.get(0) instanceof NamedArgumentListExpression) {
-                                final Map<String, Expression> constraintNameToExpression = new LinkedHashMap<String, Expression>();
+                                final Map<String, Expression> constraintNameToExpression = new LinkedHashMap<>();
                                 final List<MapEntryExpression> mapEntryExpressions = ((NamedArgumentListExpression) methodCallArgumentExpressions
                                         .get(0)).getMapEntryExpressions();
 
@@ -1228,7 +1228,7 @@ public class GrailsASTUtils {
      * @return A map
      */
     public static Map<String, ClassNode> getAssocationMap(ClassNode classNode, String associationType) {
-        Map<String, ClassNode> associationMap = new HashMap<String, ClassNode>();
+        Map<String, ClassNode> associationMap = new HashMap<>();
 
         PropertyNode property = classNode.getProperty(associationType);
         if (property != null && property.isStatic()) {
@@ -1248,7 +1248,7 @@ public class GrailsASTUtils {
     }
 
     public static Map<String, ClassNode> getAllAssociationMap(ClassNode classNode) {
-        Map<String, ClassNode> associationMap = new HashMap<String, ClassNode>();
+        Map<String, ClassNode> associationMap = new HashMap<>();
         associationMap.putAll(getAssocationMap(classNode, GormProperties.HAS_MANY));
         associationMap.putAll(getAssocationMap(classNode, GormProperties.HAS_ONE));
         associationMap.putAll(getAssocationMap(classNode, GormProperties.BELONGS_TO));
@@ -1604,7 +1604,7 @@ public class GrailsASTUtils {
     }
 
     public static void removeCompileStaticAnnotations(final AnnotatedNode annotatedNode) {
-        filterAnnotations(annotatedNode, null, new HashSet<String>(
+        filterAnnotations(annotatedNode, null, new HashSet<>(
                 Arrays.asList(new String[] { CompileStatic.class.getName(), TypeChecked.class.getName() })));
     }
 

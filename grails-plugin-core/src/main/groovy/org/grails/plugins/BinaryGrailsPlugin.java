@@ -70,7 +70,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
 
     private Class[] providedArtefacts = {};
 
-    private final Map<String, Class> precompiledViewMap = new HashMap<String, Class>();
+    private final Map<String, Class> precompiledViewMap = new HashMap<>();
 
     private final Resource baseResource;
 
@@ -192,7 +192,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     }
 
     protected void initializeProvidedArtefacts(List<String> classNames) {
-        List<Class> artefacts = new ArrayList<Class>();
+        List<Class> artefacts = new ArrayList<>();
         if (!classNames.isEmpty()) {
             final ClassLoader classLoader = this.grailsApplication.getClassLoader();
             for (String className : classNames) {
@@ -293,7 +293,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     }
 
     private Resource[] filterResources(Resource[] resources, Locale locale) {
-        List<Resource> finalResources = new ArrayList<Resource>(resources.length);
+        List<Resource> finalResources = new ArrayList<>(resources.length);
 
         for (Resource resource : resources) {
             String fn = resource.getFilename();

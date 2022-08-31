@@ -76,7 +76,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
     private Pattern[] patterns;
 
-    private Map<Integer, List<Pattern>> patternByTokenCount = new HashMap<Integer, List<Pattern>>();
+    private Map<Integer, List<Pattern>> patternByTokenCount = new HashMap<>();
 
     private UrlMappingData urlData;
 

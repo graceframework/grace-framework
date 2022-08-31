@@ -96,7 +96,7 @@ public abstract class BasePluginFilter implements PluginFilter {
         buildExplicitlyNamedList();
         buildDerivedPluginList();
 
-        List<GrailsPlugin> pluginList = new ArrayList<GrailsPlugin>();
+        List<GrailsPlugin> pluginList = new ArrayList<>();
         pluginList.addAll(this.explicitlyNamedPlugins);
         pluginList.addAll(this.derivedPlugins);
 

@@ -47,9 +47,9 @@ public abstract class BaseApiProvider {
     @SuppressWarnings("rawtypes")
     protected List instanceMethods = new ArrayList();
 
-    protected List<Method> staticMethods = new ArrayList<Method>();
+    protected List<Method> staticMethods = new ArrayList<>();
 
-    protected List<Method> constructors = new ArrayList<Method>();
+    protected List<Method> constructors = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
     public void addApi(final Object apiInstance) {

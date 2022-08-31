@@ -27,16 +27,15 @@ import org.grails.core.lifecycle.ShutdownOperations;
  */
 public class WrappedResponseHolder {
 
+    private static ThreadLocal<HttpServletResponse> wrappedResponseHolder = new ThreadLocal<>();
+
     static {
         ShutdownOperations.addOperation(new Runnable() {
             public void run() {
-                wrappedResponseHolder = new ThreadLocal<HttpServletResponse>();
+                wrappedResponseHolder = new ThreadLocal<>();
             }
         }, true);
     }
-
-    private static ThreadLocal<HttpServletResponse> wrappedResponseHolder =
-            new ThreadLocal<HttpServletResponse>();
 
     /**
      * Bind the given HttpServletResponse to the current thread.

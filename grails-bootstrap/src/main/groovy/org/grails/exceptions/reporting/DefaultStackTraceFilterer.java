@@ -54,7 +54,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             "javax.servlet."
     };
 
-    private List<String> packagesToFilter = new ArrayList<String>();
+    private List<String> packagesToFilter = new ArrayList<>();
 
     private boolean shouldFilter;
 
@@ -115,7 +115,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     }
 
     private List<StackTraceElement> filterTraceWithCutOff(StackTraceElement[] trace, String endPackage) {
-        List<StackTraceElement> newTrace = new ArrayList<StackTraceElement>();
+        List<StackTraceElement> newTrace = new ArrayList<>();
         boolean foundGroovy = false;
         for (StackTraceElement stackTraceElement : trace) {
             String className = stackTraceElement.getClassName();

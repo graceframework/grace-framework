@@ -31,7 +31,7 @@ public class DefaultMimeUtility implements MimeUtility {
 
     private List<MimeType> mimeTypes;
 
-    private Map<String, MimeType> extensionToMimeMap = new HashMap<String, MimeType>();
+    private Map<String, MimeType> extensionToMimeMap = new HashMap<>();
 
     public DefaultMimeUtility(MimeType[] mimeTypes) {
         this(Arrays.asList(mimeTypes));

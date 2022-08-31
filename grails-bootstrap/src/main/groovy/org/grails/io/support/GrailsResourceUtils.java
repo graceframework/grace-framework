@@ -484,7 +484,7 @@ public class GrailsResourceUtils {
         }
 
         String[] pathArray = delimitedListToStringArray(pathToUse, FOLDER_SEPARATOR);
-        List<String> pathElements = new LinkedList<String>();
+        List<String> pathElements = new LinkedList<>();
         int tops = 0;
 
         for (int i = pathArray.length - 1; i >= 0; i--) {
@@ -568,7 +568,7 @@ public class GrailsResourceUtils {
         if (delimiter == null) {
             return new String[] {str};
         }
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if ("".equals(delimiter)) {
             for (int i = 0; i < str.length(); i++) {
                 result.add(deleteAny(str.substring(i, i + 1), charsToDelete));

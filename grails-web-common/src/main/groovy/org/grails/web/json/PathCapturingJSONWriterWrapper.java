@@ -34,7 +34,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
     private JSONWriter delegate;
 
-    private Stack<PathElement> pathStack = new Stack<PathElement>();
+    private Stack<PathElement> pathStack = new Stack<>();
 
     public PathCapturingJSONWriterWrapper(JSONWriter delegate) {
         super(null);

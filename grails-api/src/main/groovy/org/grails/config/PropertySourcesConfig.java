@@ -109,7 +109,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
             this.configMap.merge(((NavigableMapPropertySource) enumerablePropertySource).getSource(), false);
         }
         else {
-            Map<String, Object> map = new LinkedHashMap<String, Object>();
+            Map<String, Object> map = new LinkedHashMap<>();
 
             final String[] propertyNames = enumerablePropertySource.getPropertyNames();
             for (String propertyName : propertyNames) {

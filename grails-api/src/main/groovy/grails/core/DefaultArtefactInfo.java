@@ -29,15 +29,15 @@ import java.util.Map;
  */
 public class DefaultArtefactInfo implements ArtefactInfo {
 
-    private LinkedList<GrailsClass> grailsClasses = new LinkedList<GrailsClass>();
+    private LinkedList<GrailsClass> grailsClasses = new LinkedList<>();
 
     private Class<?>[] classes;
 
-    private Map<String, GrailsClass> grailsClassesByName = new LinkedHashMap<String, GrailsClass>();
+    private Map<String, GrailsClass> grailsClassesByName = new LinkedHashMap<>();
 
-    private Map<String, Class<?>> classesByName = new LinkedHashMap<String, Class<?>>();
+    private Map<String, Class<?>> classesByName = new LinkedHashMap<>();
 
-    private Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<String, GrailsClass>();
+    private Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<>();
 
     @SuppressWarnings("rawtypes")
     public Map handlerData = new HashMap();
@@ -54,8 +54,8 @@ public class DefaultArtefactInfo implements ArtefactInfo {
     }
 
     private void addGrailsClassInternal(GrailsClass artefactClass, boolean atStart) {
-        this.grailsClassesByName = new LinkedHashMap<String, GrailsClass>(this.grailsClassesByName);
-        this.classesByName = new LinkedHashMap<String, Class<?>>(this.classesByName);
+        this.grailsClassesByName = new LinkedHashMap<>(this.grailsClassesByName);
+        this.classesByName = new LinkedHashMap<>(this.classesByName);
 
         Class<?> actualClass = artefactClass.getClazz();
         boolean addToGrailsClasses = true;

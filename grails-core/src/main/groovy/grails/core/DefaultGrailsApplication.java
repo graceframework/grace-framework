@@ -101,15 +101,15 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
 
     protected static Log log = LogFactory.getLog(DefaultGrailsApplication.class);
 
-    protected Set<Class<?>> loadedClasses = new LinkedHashSet<Class<?>>();
+    protected Set<Class<?>> loadedClasses = new LinkedHashSet<>();
 
     protected ArtefactHandler[] artefactHandlers;
 
-    protected Map<String, ArtefactHandler> artefactHandlersByName = new HashMap<String, ArtefactHandler>();
+    protected Map<String, ArtefactHandler> artefactHandlersByName = new HashMap<>();
 
-    protected List<Class<?>> allArtefactClasses = new ArrayList<Class<?>>();
+    protected List<Class<?>> allArtefactClasses = new ArrayList<>();
 
-    protected Map<String, ArtefactInfo> artefactInfo = new HashMap<String, ArtefactInfo>();
+    protected Map<String, ArtefactInfo> artefactInfo = new HashMap<>();
 
     protected Class<?>[] allArtefactClassesArray;
 
@@ -754,7 +754,7 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
         }
 
         extensionMethodsInitialized = true;
-        Map<CachedClass, List<MetaMethod>> map = new HashMap<CachedClass, List<MetaMethod>>();
+        Map<CachedClass, List<MetaMethod>> map = new HashMap<>();
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 

@@ -34,13 +34,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
 
-    private Collection<String> extensions = new ConcurrentLinkedQueue<String>();
+    private Collection<String> extensions = new ConcurrentLinkedQueue<>();
 
-    private Map<File, Long> lastModifiedMap = new ConcurrentHashMap<File, Long>();
+    private Map<File, Long> lastModifiedMap = new ConcurrentHashMap<>();
 
-    private Map<File, Collection<String>> directoryToExtensionsMap = new ConcurrentHashMap<File, Collection<String>>();
+    private Map<File, Collection<String>> directoryToExtensionsMap = new ConcurrentHashMap<>();
 
-    private Map<File, Long> directoryWatch = new ConcurrentHashMap<File, Long>();
+    private Map<File, Long> directoryWatch = new ConcurrentHashMap<>();
 
     @Override
     public void run() {
@@ -86,7 +86,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     private void trackDirectoryExtensions(File dir, List<String> fileExtensions) {
         Collection<String> existingExtensions = this.directoryToExtensionsMap.get(dir);
         if (existingExtensions == null) {
-            this.directoryToExtensionsMap.put(dir, new ArrayList<String>(fileExtensions));
+            this.directoryToExtensionsMap.put(dir, new ArrayList<>(fileExtensions));
         }
         else {
             existingExtensions.addAll(fileExtensions);

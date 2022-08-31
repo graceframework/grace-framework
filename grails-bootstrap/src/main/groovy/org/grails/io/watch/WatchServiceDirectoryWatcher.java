@@ -52,9 +52,9 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(WatchServiceDirectoryWatcher.class);
 
-    private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<WatchKey, List<String>>();
+    private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<>();
 
-    private Set<Path> individualWatchedFiles = new HashSet<Path>();
+    private Set<Path> individualWatchedFiles = new HashSet<>();
 
     private final WatchService watchService;
 
@@ -195,7 +195,7 @@ class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
-                        final HashSet<String> newFileExtensions = new HashSet<String>(originalFileExtensions);
+                        final HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
                         WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
                                 Collections.unmodifiableList(new ArrayList(newFileExtensions)));

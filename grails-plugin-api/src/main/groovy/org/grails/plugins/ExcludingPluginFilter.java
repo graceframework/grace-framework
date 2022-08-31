@@ -44,7 +44,7 @@ public class ExcludingPluginFilter extends BasePluginFilter {
     @Override
     protected List getPluginList(List original, List pluginList) {
         // go through and remove ones that don't apply
-        List<GrailsPlugin> newList = new ArrayList<GrailsPlugin>(original);
+        List<GrailsPlugin> newList = new ArrayList<>(original);
         for (Iterator<GrailsPlugin> iter = newList.iterator(); iter.hasNext(); ) {
             GrailsPlugin element = iter.next();
             // remove the excluded dependencies

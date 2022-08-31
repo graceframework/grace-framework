@@ -160,7 +160,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
 
     protected ManagedList<RuntimeBeanReference> createTransactionManagerBeanReferences(
             BeanDefinition chainedTransactionManagerBeanDefinition) {
-        ManagedList<RuntimeBeanReference> transactionManagerRefs = new ManagedList<RuntimeBeanReference>();
+        ManagedList<RuntimeBeanReference> transactionManagerRefs = new ManagedList<>();
         ConstructorArgumentValues constructorValues = chainedTransactionManagerBeanDefinition.getConstructorArgumentValues();
         constructorValues.addIndexedArgumentValue(0, transactionManagerRefs);
         transactionManagerRefs.add(new RuntimeBeanReference(PRIMARY_TRANSACTION_MANAGER));
@@ -252,7 +252,7 @@ public class ChainedTransactionManagerPostProcessor implements BeanDefinitionReg
             return false;
         }
         // remove link to child beans
-        Set<String> previousChildBeans = new LinkedHashSet<String>();
+        Set<String> previousChildBeans = new LinkedHashSet<>();
         for (String bdName : getTransactionManagerBeanNames(registry)) {
             if (!oldName.equals(bdName)) {
                 BeanDefinition bd = registry.getBeanDefinition(bdName);

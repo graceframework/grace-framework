@@ -419,7 +419,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * @see #calculateFilenamesForLocale
      */
     protected List<Pair<String, Resource>> calculateAllFilenames(final String basename, final Locale locale) {
-        Pair<String, Locale> cacheKey = new Pair<String, Locale>(basename, locale);
+        Pair<String, Locale> cacheKey = new Pair<>(basename, locale);
         return CacheEntry.getValue(this.cachedFilenames, cacheKey, this.cacheMillis, new Callable<List<Pair<String, Resource>>>() {
             @Override
             public List<Pair<String, Resource>> call() throws Exception {
@@ -435,9 +435,9 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
                     }
                 }
                 filenames.add(basename);
-                List<Pair<String, Resource>> filenamesAndResources = new ArrayList<Pair<String, Resource>>(filenames.size());
+                List<Pair<String, Resource>> filenamesAndResources = new ArrayList<>(filenames.size());
                 for (String filename : filenames) {
-                    filenamesAndResources.add(new Pair<String, Resource>(filename, locateResource(filename)));
+                    filenamesAndResources.add(new Pair<>(filename, locateResource(filename)));
                 }
                 return filenamesAndResources;
             }
@@ -455,7 +455,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * @return the List of filenames to check
      */
     protected List<String> calculateFilenamesForLocale(String basename, Locale locale) {
-        List<String> result = new ArrayList<String>(3);
+        List<String> result = new ArrayList<>(3);
         String language = locale.getLanguage();
         String country = locale.getCountry();
         String variant = locale.getVariant();
@@ -607,7 +607,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
     }
 
     protected Resource locateResourceWithoutCache(String filename) {
-        Resource resource = this.resourceLoader.getResource(org.grails.io.support.ResourceLoader.CLASSPATH_URL_PREFIX + filename + PROPERTIES_SUFFIX);
+        Resource resource = this.resourceLoader.getResource(ResourceLoader.CLASSPATH_URL_PREFIX + filename + PROPERTIES_SUFFIX);
         if (!resource.exists()) {
             resource = this.resourceLoader.getResource(filename + PROPERTIES_SUFFIX);
         }
@@ -639,8 +639,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
         private long fileTimestamp = -1;
 
         /** Cache to hold already generated MessageFormats per message code */
-        private final ConcurrentMap<Pair<String, Locale>, CacheEntry<MessageFormat>> cachedMessageFormats =
-                new ConcurrentHashMap<Pair<String, Locale>, CacheEntry<MessageFormat>>();
+        private final ConcurrentMap<Pair<String, Locale>, CacheEntry<MessageFormat>> cachedMessageFormats = new ConcurrentHashMap<>();
 
         public PropertiesHolder(String filename, Resource resource) {
             this.filename = filename;
@@ -670,8 +669,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
                 }
                 catch (IOException ex) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug(
-                                this.resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
+                        logger.debug(this.resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
                     }
                     newFileTimestamp = -1;
                 }
@@ -726,7 +724,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
             if (this.properties == null) {
                 return null;
             }
-            Pair<String, Locale> cacheKey = new Pair<String, Locale>(code, locale);
+            Pair<String, Locale> cacheKey = new Pair<>(code, locale);
             return CacheEntry.getValue(this.cachedMessageFormats, cacheKey, -1, new Callable<MessageFormat>() {
                 @Override
                 public MessageFormat call() throws Exception {

@@ -173,7 +173,7 @@ class MultiTransactionStatus implements TransactionStatus {
 
     private static class SavePoints {
 
-        private final Map<TransactionStatus, Object> savepoints = new HashMap<TransactionStatus, Object>();
+        private final Map<TransactionStatus, Object> savepoints = new HashMap<>();
 
         private void addSavePoint(TransactionStatus status, Object savepoint) {
             Assert.notNull(status, "TransactionStatus must not be null!");

@@ -45,7 +45,7 @@ public class HTML4Encoder extends AbstractCharReplacementEncoder {
 
     static final CodecIdentifier HTML4_CODEC_IDENTIFIER = new DefaultCodecIdentifier(HTML4_CODEC_NAME);
 
-    Map<Character, String> replacements = new ConcurrentHashMap<Character, String>();
+    Map<Character, String> replacements = new ConcurrentHashMap<>();
 
     private static final String NULL_MARKER = "NULL_MARKER";
 

@@ -46,13 +46,13 @@ public class ResourceLocator {
 
     protected PathMatchingResourcePatternResolver patchMatchingResolver;
 
-    protected List<String> classSearchDirectories = new ArrayList<String>();
+    protected List<String> classSearchDirectories = new ArrayList<>();
 
-    protected List<String> resourceSearchDirectories = new ArrayList<String>();
+    protected List<String> resourceSearchDirectories = new ArrayList<>();
 
-    protected Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<String, Resource>();
+    protected Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<>();
 
-    protected Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<String, Resource>();
+    protected Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<>();
 
     protected ResourceLoader defaultResourceLoader = new FileSystemResourceLoader();
 

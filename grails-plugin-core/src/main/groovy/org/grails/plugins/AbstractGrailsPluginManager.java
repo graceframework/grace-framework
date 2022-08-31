@@ -76,15 +76,15 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public static final String CONFIG_FILE = "application.groovy";
 
-    protected List<GrailsPlugin> pluginList = new ArrayList<GrailsPlugin>();
+    protected List<GrailsPlugin> pluginList = new ArrayList<>();
 
     protected GrailsApplication application;
 
     protected Resource[] pluginResources = new Resource[0];
 
-    protected Map<String, GrailsPlugin> plugins = new HashMap<String, GrailsPlugin>();
+    protected Map<String, GrailsPlugin> plugins = new HashMap<>();
 
-    protected Map<String, GrailsPlugin> classNameToPluginMap = new HashMap<String, GrailsPlugin>();
+    protected Map<String, GrailsPlugin> classNameToPluginMap = new HashMap<>();
 
     protected Class<?>[] pluginClasses = new Class[0];
 
@@ -94,7 +94,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected ApplicationContext applicationContext;
 
-    protected Map<String, GrailsPlugin> failedPlugins = new HashMap<String, GrailsPlugin>();
+    protected Map<String, GrailsPlugin> failedPlugins = new HashMap<>();
 
     protected boolean loadCorePlugins = true;
 
@@ -112,7 +112,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public List<TypeFilter> getTypeFilters() {
-        List<TypeFilter> list = new ArrayList<TypeFilter>();
+        List<TypeFilter> list = new ArrayList<>();
         for (GrailsPlugin grailsPlugin : this.pluginList) {
             list.addAll(grailsPlugin.getTypeFilters());
         }
@@ -329,7 +329,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         // since plugin classes are added as overridable artefacts, which are added as the first
         // item in the list of artefacts, we have to iterate in reverse order to ensure plugin
         // load sequence is maintained
-        ArrayList<GrailsPlugin> plugins = new ArrayList<GrailsPlugin>(this.pluginList);
+        ArrayList<GrailsPlugin> plugins = new ArrayList<>(this.pluginList);
         Collections.reverse(plugins);
 
         for (GrailsPlugin plugin : plugins) {

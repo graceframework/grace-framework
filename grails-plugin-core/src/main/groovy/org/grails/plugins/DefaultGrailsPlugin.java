@@ -129,9 +129,9 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     private Map pluginEnvs;
 
-    private List<String> pluginExcludes = new ArrayList<String>();
+    private List<String> pluginExcludes = new ArrayList<>();
 
-    private Collection<? extends TypeFilter> typeFilters = new ArrayList<TypeFilter>();
+    private Collection<? extends TypeFilter> typeFilters = new ArrayList<>();
 
     private Resource pluginDescriptor;
 
@@ -406,7 +406,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
                 return;
             }
 
-            List<String> resourceListTmp = new ArrayList<String>();
+            List<String> resourceListTmp = new ArrayList<>();
             final String baseLocation = env.getReloadLocation();
 
             for (Object ref : resourceList) {
