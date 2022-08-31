@@ -223,7 +223,7 @@ public class PathMatchingResourcePatternResolver {
         }
         // Only look for a pattern after a prefix here
         // (to not get fooled by a pattern symbol in a strange prefix).
-        int prefixEnd = locationPattern.indexOf(":") + 1;
+        int prefixEnd = locationPattern.indexOf(':') + 1;
         if (getPathMatcher().isPattern(locationPattern.substring(prefixEnd))) {
             // a file pattern
             return findPathMatchingResources(locationPattern);
@@ -305,7 +305,7 @@ public class PathMatchingResourcePatternResolver {
      * @see #retrieveMatchingFiles
      */
     protected String determineRootDir(String location) {
-        int prefixEnd = location.indexOf(":") + 1;
+        int prefixEnd = location.indexOf(':') + 1;
         int rootDirEnd = location.length();
         while (rootDirEnd > prefixEnd && getPathMatcher().isPattern(location.substring(prefixEnd, rootDirEnd))) {
             rootDirEnd = location.lastIndexOf('/', rootDirEnd - 2) + 1;

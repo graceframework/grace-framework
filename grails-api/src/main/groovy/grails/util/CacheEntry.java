@@ -107,7 +107,7 @@ public class CacheEntry<V> {
     }
 
     @SuppressWarnings("rawtypes")
-    private static final Callable<CacheEntry> DEFAULT_CACHE_ENTRY_FACTORY = () -> new CacheEntry();
+    private static final Callable<CacheEntry> DEFAULT_CACHE_ENTRY_FACTORY = CacheEntry::new;
 
     public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, true, null);

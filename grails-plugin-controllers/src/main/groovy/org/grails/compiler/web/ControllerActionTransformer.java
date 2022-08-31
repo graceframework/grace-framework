@@ -187,7 +187,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     private boolean isExceptionHandlingMethod(MethodNode methodNode) {
         boolean isExceptionHandler = false;
-        if (!methodNode.isPrivate() && methodNode.getName().indexOf("$") == -1) {
+        if (!methodNode.isPrivate() && !methodNode.getName().contains("$")) {
             Parameter[] parameters = methodNode.getParameters();
             if (parameters.length == 1) {
                 ClassNode parameterTypeClassNode = parameters[0].getType();

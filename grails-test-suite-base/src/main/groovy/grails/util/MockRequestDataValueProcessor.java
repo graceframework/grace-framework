@@ -31,7 +31,7 @@ public class MockRequestDataValueProcessor implements RequestDataValueProcessor 
     }
 
     public String processAction(HttpServletRequest request, String action, String httpMethod) {
-        if (action.indexOf("requestDataValueProcessorParamName=paramValue") > -1) {
+        if (action.contains("requestDataValueProcessorParamName=paramValue")) {
             action = action.replace("?requestDataValueProcessorParamName=paramValue&", "?");
             action = action.replace("?requestDataValueProcessorParamName=paramValue", "");
             action = action.replace("&requestDataValueProcessorParamName=paramValue", "");
@@ -45,13 +45,13 @@ public class MockRequestDataValueProcessor implements RequestDataValueProcessor 
 
     public String processUrl(HttpServletRequest request, String url) {
         String toAppend;
-        if (url.indexOf("?") > -1) {
+        if (url.contains("?")) {
             toAppend = "&requestDataValueProcessorParamName=paramValue";
         }
         else {
             toAppend = "?requestDataValueProcessorParamName=paramValue";
         }
-        if (url.indexOf("#") > -1) {
+        if (url.contains("#")) {
             url = url.replace("#", toAppend + "#");
         }
         else {

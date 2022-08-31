@@ -192,7 +192,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
             if (i > -1) {
                 PluginResourceInfo info = new PluginResourceInfo();
                 info.pluginName = withoutPluginsPath.substring(0, i);
-                info.uri = withoutPluginsPath.substring(i, withoutPluginsPath.length());
+                info.uri = withoutPluginsPath.substring(i);
                 return info;
             }
         }

@@ -62,7 +62,7 @@ public class AntPathMatcher {
     }
 
     public boolean isPattern(String path) {
-        return (path.indexOf('*') != -1 || path.indexOf('?') != -1);
+        return (path.contains("*") || path.contains("?"));
     }
 
     public boolean match(String pattern, String path) {
@@ -248,7 +248,7 @@ public class AntPathMatcher {
         int puts = 0;
         for (int i = 0; i < patternParts.length; i++) {
             String patternPart = patternParts[i];
-            if ((patternPart.indexOf('*') > -1 || patternPart.indexOf('?') > -1) && pathParts.length >= i + 1) {
+            if ((patternPart.contains("*") || patternPart.contains("?")) && pathParts.length >= i + 1) {
                 if (puts > 0 || (i == 0 && !pattern.startsWith(this.pathSeparator))) {
                     builder.append(this.pathSeparator);
                 }

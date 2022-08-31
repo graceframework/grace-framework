@@ -83,7 +83,7 @@ public class DataBindingUtils {
 
         for (Object key : source.keySet()) {
             String propertyName = key.toString();
-            if (propertyName.indexOf('.') > -1) {
+            if (propertyName.contains(".")) {
                 propertyName = propertyName.substring(0, propertyName.indexOf('.'));
             }
             PersistentProperty prop = persistentEntity.getPropertyByName(propertyName);

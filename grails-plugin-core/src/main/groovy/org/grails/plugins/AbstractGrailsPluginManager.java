@@ -139,7 +139,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public GrailsPlugin getFailedPlugin(String name) {
-        if (name.indexOf('-') > -1) {
+        if (name.contains("-")) {
             name = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(name);
         }
         return this.failedPlugins.get(name);
@@ -254,7 +254,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public GrailsPlugin getGrailsPlugin(String name) {
-        if (name.indexOf('-') > -1) {
+        if (name.contains("-")) {
             name = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(name);
         }
         return this.plugins.get(name);
@@ -265,7 +265,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public GrailsPlugin getGrailsPlugin(String name, Object version) {
-        if (name.indexOf('-') > -1) {
+        if (name.contains("-")) {
             name = GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(name);
         }
 

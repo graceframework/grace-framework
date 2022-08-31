@@ -310,7 +310,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             if (i > -1) {
                 try {
                     String name = URLDecoder.decode(pair.substring(0, i), "UTF-8");
-                    String value = URLDecoder.decode(pair.substring(i + 1, pair.length()), "UTF-8");
+                    String value = URLDecoder.decode(pair.substring(i + 1), "UTF-8");
 
                     Object current = result.get(name);
                     if (current instanceof List) {
@@ -376,7 +376,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         String name = entry.getKey().toString();
         Object value = entry.getValue();
 
-        if (name.indexOf(".") > -1 && (value instanceof GrailsParameterMap)) {
+        if (name.contains(".") && (value instanceof GrailsParameterMap)) {
             return false; // multi-d params handled by recursion
         }
         else if (value == null) {

@@ -157,17 +157,17 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
      */
     public String getAbsoluteTemplateURI(String templateName, boolean includeExtension) {
         FastStringWriter buf = new FastStringWriter();
-        String tmp = templateName.substring(1, templateName.length());
+        String tmp = templateName.substring(1);
         if (tmp.indexOf(SLASH) > -1) {
             buf.append(SLASH);
             int i = tmp.lastIndexOf(SLASH);
             buf.append(tmp.substring(0, i));
             buf.append(SLASH_UNDR);
-            buf.append(tmp.substring(i + 1, tmp.length()));
+            buf.append(tmp.substring(i + 1));
         }
         else {
             buf.append(SLASH_UNDR);
-            buf.append(templateName.substring(1, templateName.length()));
+            buf.append(templateName.substring(1));
         }
         if (includeExtension) {
             buf.append(EXTENSION);

@@ -119,7 +119,7 @@ public class GrailsWebUtil {
     }
 
     public static String getContentType(String name, String encoding) {
-        if (name.indexOf(';') > -1 && CHARSET_IN_CONTENT_TYPE_REGEXP.matcher(name).find()) {
+        if (name.contains(";") && CHARSET_IN_CONTENT_TYPE_REGEXP.matcher(name).find()) {
             return name;
         }
         if (GrailsStringUtils.isBlank(encoding)) {

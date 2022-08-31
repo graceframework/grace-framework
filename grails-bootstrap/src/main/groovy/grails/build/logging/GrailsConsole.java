@@ -349,7 +349,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
+        return System.getProperty("os.name").toLowerCase().contains("windows");
     }
 
     public static synchronized GrailsConsole getInstance() {

@@ -196,7 +196,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         Object returnValue = wrappedMap.put(key, value);
         if (key instanceof String) {
             String keyString = (String) key;
-            if (keyString.indexOf(".") > -1) {
+            if (keyString.contains(".")) {
                 processNestedKeys(this, keyString, keyString, wrappedMap);
             }
         }
@@ -374,7 +374,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                 remainderOfKey = '_' + remainderOfKey;
             }
             nestedMap.put(remainderOfKey, getParameterValue(requestMap, key));
-            if (!(nestedMap instanceof GrailsParameterMap) && remainderOfKey.indexOf('.') > -1) {
+            if (!(nestedMap instanceof GrailsParameterMap) && remainderOfKey.contains(".")) {
                 processNestedKeys(requestMap, remainderOfKey, remainderOfKey, nestedMap);
             }
         }

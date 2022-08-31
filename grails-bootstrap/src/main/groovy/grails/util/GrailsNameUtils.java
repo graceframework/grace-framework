@@ -105,9 +105,9 @@ public class GrailsNameUtils {
      * @param className The class name
      */
     public static String getFullClassName(String className) {
-        final int i = className.indexOf('$');
+        int i = className.indexOf('$');
         if (i > -1) {
-            className = className.substring(0, i);
+            return className.substring(0, i);
         }
         return className;
     }
@@ -161,7 +161,7 @@ public class GrailsNameUtils {
             return name;
         }
 
-        if (name.indexOf('-') == -1) {
+        if (!name.contains("-")) {
             return name.substring(0, 1).toUpperCase() + name.substring(1);
         }
 
@@ -201,7 +201,7 @@ public class GrailsNameUtils {
         }
 
         String shortName = getShortName(name);
-        if (shortName.indexOf(trailingName) == -1) {
+        if (!shortName.contains(trailingName)) {
             return name;
         }
 
@@ -269,7 +269,7 @@ public class GrailsNameUtils {
         }
 
         String propertyName = name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
-        if (propertyName.indexOf(' ') > -1) {
+        if (propertyName.contains(" ")) {
             propertyName = propertyName.replaceAll("\\s", "");
         }
         return propertyName;

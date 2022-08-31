@@ -82,7 +82,7 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
 
     @SuppressWarnings("unchecked")
     protected <T extends CodecIdentifierProvider> T createCodec(String codecName, ConcurrentMap<String, T> map, Class<T> returnType) {
-        if (codecName.indexOf(',') > -1) {
+        if (codecName.contains(",")) {
             T createdInstance = createChainedCodecInstance(codecName, map, returnType);
             if (createdInstance != null) {
                 createdInstance = putChainedCodecInstance(codecName, map, createdInstance);
