@@ -145,7 +145,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         builder.append("->");
         Object idValue = GrailsMetaClassUtils.invokeMethodIfExists(o, "ident", new Object[0]);
         if (idValue != null) {
-            builder.append(idValue.toString());
+            builder.append(idValue);
         }
         else {
             builder.append(o);

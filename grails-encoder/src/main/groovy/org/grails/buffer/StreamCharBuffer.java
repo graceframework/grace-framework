@@ -809,7 +809,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
     }
 
     public String plus(String value) {
-        return toString() + value;
+        return this + value;
     }
 
     public String plus(Object value) {
@@ -2410,7 +2410,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
 
     private final class FixedCharArrayEncodedAppender extends AbstractEncodedAppender {
 
-        char buf[];
+        char[] buf;
 
         int count = 0;
 

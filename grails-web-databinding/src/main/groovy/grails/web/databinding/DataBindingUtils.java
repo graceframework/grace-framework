@@ -119,7 +119,7 @@ public class DataBindingUtils {
     protected static List getBindingIncludeList(final Object object) {
         List includeList = Collections.emptyList();
         try {
-            final Class<? extends Object> objectClass = object.getClass();
+            final Class<?> objectClass = object.getClass();
             if (CLASS_TO_BINDING_INCLUDE_LIST.containsKey(objectClass)) {
                 includeList = CLASS_TO_BINDING_INCLUDE_LIST.get(objectClass);
             }
@@ -176,7 +176,7 @@ public class DataBindingUtils {
         PersistentEntity entity = null;
         if (application != null) {
             try {
-                entity = application.getMappingContext().getPersistentEntity(targetType.getClass().getName());
+                entity = application.getMappingContext().getPersistentEntity(targetType.getName());
             }
             catch (GrailsConfigurationException e) {
                 //no-op
@@ -305,8 +305,7 @@ public class DataBindingUtils {
         return bindingResult;
     }
 
-    protected static String[] getMessageCodes(String messageCode,
-            Class objectType) {
+    protected static String[] getMessageCodes(String messageCode, Class objectType) {
         String[] codes = { objectType.getName() + "." + messageCode, messageCode };
         return codes;
     }

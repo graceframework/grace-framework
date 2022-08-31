@@ -138,8 +138,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         catch (IOException ioe) {
             LOG.debug("Unable to load plugins for resource path " + resourcePath, ioe);
         }
-        //corePlugins = new PathMatchingResourcePatternResolver()
-        // .getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
         this.application = application;
         setPluginFilter();
     }
@@ -167,8 +165,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         super(application);
         this.pluginClasses = plugins;
         this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
-        //this.corePlugins = new PathMatchingResourcePatternResolver()
-        // .getResources("classpath:org/codehaus/groovy/grails/**/plugins/**GrailsPlugin.groovy");
         this.application = application;
         setPluginFilter();
     }

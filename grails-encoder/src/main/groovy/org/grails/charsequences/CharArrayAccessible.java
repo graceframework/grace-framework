@@ -55,6 +55,6 @@ public interface CharArrayAccessible {
      *             <code>dst.length</code>
      *             </ul>
      */
-    void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin);
+    void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin);
 
 }

@@ -136,7 +136,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
             ClassHelper.Byte_TYPE, "byte",
             ClassHelper.Character_TYPE, "char");
 
-    private static List<ClassNode> PRIMITIVE_CLASS_NODES = CollectionUtils.<ClassNode>newList(
+    private static List<ClassNode> PRIMITIVE_CLASS_NODES = CollectionUtils.newList(
             ClassHelper.boolean_TYPE,
             ClassHelper.char_TYPE,
             ClassHelper.int_TYPE,

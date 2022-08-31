@@ -619,8 +619,6 @@ public class DefaultGrailsApplication extends AbstractGrailsApplication implemen
         ArtefactInfo info = getArtefactInfo(handler.getType());
         // Only init those that have data
         if (info != null) {
-            // System.out.println("Initialising artefacts of kind " + handler.getType() + " with registered artefacts" +
-            // info.getGrailsClassesByName());
             handler.initialize(info);
         }
     }

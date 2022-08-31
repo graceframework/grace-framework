@@ -151,7 +151,7 @@ public class CharSequences {
      *             <code>dst.length</code>
      *             </ul>
      */
-    public static void getChars(CharSequence csq, int srcBegin, int srcEnd, char dst[], int dstBegin) {
+    public static void getChars(CharSequence csq, int srcBegin, int srcEnd, char[] dst, int dstBegin) {
         final Class<?> csqClass = csq.getClass();
         if (csqClass == String.class) {
             ((String) csq).getChars(srcBegin, srcEnd, dst, dstBegin);

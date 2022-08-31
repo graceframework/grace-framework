@@ -110,7 +110,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
             boolean isOptional = false;
             if (token.endsWith(QUESTION_MARK)) {
                 if (optionalExtension != null) {
-                    urls.add(buf.toString() + optionalExtension);
+                    urls.add(buf + optionalExtension);
                 }
                 else {
                     urls.add(buf.toString());
@@ -134,7 +134,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
             }
         }
         if (optionalExtension != null) {
-            urls.add(buf.toString() + optionalExtension);
+            urls.add(buf + optionalExtension);
         }
         else {
             urls.add(buf.toString());

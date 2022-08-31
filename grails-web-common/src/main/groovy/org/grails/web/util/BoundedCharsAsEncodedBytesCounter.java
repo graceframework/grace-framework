@@ -159,7 +159,7 @@ public class BoundedCharsAsEncodedBytesCounter {
 
             if (csq instanceof StringBuilder || csq instanceof StringBuffer) {
                 int len = end - start;
-                char cbuf[];
+                char[] cbuf;
                 if (len <= this.writeBuffer.length) {
                     cbuf = this.writeBuffer;
                 }

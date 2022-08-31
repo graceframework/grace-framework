@@ -291,7 +291,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param theClass The class
      * @return The pluginContextPath
      */
-    String getPluginPathForClass(Class<? extends Object> theClass);
+    String getPluginPathForClass(Class<?> theClass);
 
     /**
      * Returns the plugin views directory for the given instance
@@ -305,7 +305,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param theClass The class
      * @return The pluginContextPath
      */
-    String getPluginViewsPathForClass(Class<? extends Object> theClass);
+    String getPluginViewsPathForClass(Class<?> theClass);
 
     /**
      * Obtains the GrailsPlugin for the given class
@@ -341,6 +341,6 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      *
      * @param pluginFilter The plugin filter
      */
-    public void setPluginFilter(PluginFilter pluginFilter);
+    void setPluginFilter(PluginFilter pluginFilter);
 
 }

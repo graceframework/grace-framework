@@ -171,11 +171,6 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
             }
         }
 
-//        @Override
-//        public Dependency find(String groupId, String artifactId) {
-//            return groupAndArtifactToDependency.get(groupId + ":" + artifactId);
-//        }
-
         @Override
         public List<Dependency> getDependencies() {
             return this.dependencies;
@@ -195,10 +190,6 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
             return this.groupAndArtifactToDependency.get(groupAndArtifact);
         }
 
-//        @Override
-//        public Iterator<Dependency> iterator() {
-//            return groupAndArtifactToDependency.values().iterator();
-//        }
     }
 
 }

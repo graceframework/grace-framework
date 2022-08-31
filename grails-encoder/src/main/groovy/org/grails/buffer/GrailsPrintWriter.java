@@ -48,7 +48,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
 
     protected static final Log LOG = LogFactory.getLog(GrailsPrintWriter.class);
 
-    protected static final char CRLF[] = { '\r', '\n' };
+    protected static final char[] CRLF = { '\r', '\n' };
 
     protected boolean trouble = false;
 
@@ -309,7 +309,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      * @param len Number of characters to write
      */
     @Override
-    public void write(final char buf[], final int off, final int len) {
+    public void write(final char[] buf, final int off, final int len) {
         this.usageFlag = true;
         if (this.trouble || buf == null || len == 0) {
             return;
@@ -345,7 +345,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     @Override
-    public void write(final char buf[]) {
+    public void write(final char[] buf) {
         write(buf, 0, buf.length);
     }
 
@@ -380,7 +380,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         write(String.valueOf(d));
     }
 
-    public void print(final char s[]) {
+    public void print(final char[] s) {
         write(s);
     }
 
@@ -419,7 +419,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
         println();
     }
 
-    public void println(final char c[]) {
+    public void println(final char[] c) {
         print(c);
         println();
     }

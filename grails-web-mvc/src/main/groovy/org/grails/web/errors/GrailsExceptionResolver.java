@@ -294,7 +294,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
             if (params.hasMoreElements()) {
                 String param;
-                String values[];
+                String[] values;
                 int i;
 
                 sb.append(" - parameters:");

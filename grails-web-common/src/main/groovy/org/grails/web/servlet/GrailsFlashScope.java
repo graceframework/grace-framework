@@ -130,8 +130,8 @@ public class GrailsFlashScope implements FlashScope {
         return c;
     }
 
-    public void putAll(Map<? extends String, ? extends Object> t) {
-        for (Entry<? extends String, ? extends Object> entry : t.entrySet()) {
+    public void putAll(Map<? extends String, ?> t) {
+        for (Entry<? extends String, ?> entry : t.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
     }

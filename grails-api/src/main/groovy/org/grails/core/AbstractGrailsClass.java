@@ -272,7 +272,6 @@ public abstract class AbstractGrailsClass implements GrailsClass {
     }
 
     public boolean isAbstract() {
-
         return this.isAbstract;
     }
 

@@ -53,7 +53,7 @@ public class JUnitReportsFactory {
     }
 
     public JUnitReports createReports(String name) {
-        JUnitResultFormatter formatters[] = new JUnitResultFormatter[this.formats.size()];
+        JUnitResultFormatter[] formatters = new JUnitResultFormatter[this.formats.size()];
         for (int i = 0; i < this.formats.size(); ++i) {
             formatters[i] = createReport(this.formats.get(i), name);
         }
