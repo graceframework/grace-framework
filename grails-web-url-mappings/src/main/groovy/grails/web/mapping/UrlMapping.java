@@ -15,6 +15,7 @@
  */
 package grails.web.mapping;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -114,21 +115,8 @@ public interface UrlMapping extends Comparable, UrlCreator {
 
     String EXCEPTION = "exception";
 
-    Set<String> KEYWORDS = new HashSet<String>() {{
-        add(CONTROLLER);
-        add(ACTION);
-        add(HTTP_METHOD);
-        add(REDIRECT_INFO);
-        add(VERSION);
-        add(URI);
-        add(PLUGIN);
-        add(NAMESPACE);
-        add(VIEW);
-        add(RESOURCES);
-        add(INCLUDES);
-        add(PERMANENT);
-        add(EXCEPTION);
-    }};
+    Set<String> KEYWORDS = new HashSet<>(Arrays.asList(CONTROLLER, ACTION, HTTP_METHOD, REDIRECT_INFO, VERSION,
+            URI, PLUGIN, NAMESPACE, VIEW, RESOURCES, INCLUDES, PERMANENT, EXCEPTION));
 
     /**
      * Matches the given URI and returns an instance of the UrlMappingInfo interface or null
