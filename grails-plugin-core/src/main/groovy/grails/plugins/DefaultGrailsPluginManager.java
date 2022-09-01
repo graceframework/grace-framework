@@ -433,7 +433,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             return true;
         }
 
-        if (pluginMinGrailsVersion == "*") {
+        if (pluginMinGrailsVersion.equals("*")) {
             LOG.error("grailsVersion not formatted as expected, unable to determine compatibility.");
             return false;
         }
