@@ -4,6 +4,7 @@
 
 	<!-- global -->
 	<suppress files="package-info\.java" checks=".*"/>
+	<suppress files="ControllersDomainBindingApi" checks="HideUtilityClassConstructor"/>
 	<!-- Ignore third-party code -->
 	<suppress files="org[\\/]grails[\\/]asm[\\/]" checks=".*"/>
 	<suppress files="org[\\/]grails[\\/]web[\\/]json[\\/]JSON(Array|Object|Tokener|Writer)\.java" checks=".*"/>

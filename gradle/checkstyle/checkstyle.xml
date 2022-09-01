@@ -21,6 +21,10 @@
 
 	<!-- TreeWalker Checks -->
 	<module name="TreeWalker">
+		<!-- Class Design -->
+		<module name="FinalClass"/>
+		<module name="InterfaceIsType"/>
+		<module name="HideUtilityClassConstructor"/>
 
 		<!-- Coding -->
 		<module name="AvoidDoubleBraceInitialization"/>
