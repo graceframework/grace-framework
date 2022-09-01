@@ -72,6 +72,10 @@
 		<module name="NeedBraces"/>
 		<module name="AvoidNestedBlocks"/>
 
+		<!-- Modifiers -->
+		<module name="RedundantModifier"/>
+		<module name="ModifierOrder"/>
+
 		<!-- Whitespace -->
 		<module name="GenericWhitespace"/>
 		<module name="MethodParamPad"/>
