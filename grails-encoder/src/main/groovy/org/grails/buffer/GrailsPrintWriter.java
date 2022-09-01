@@ -46,7 +46,7 @@ import org.grails.encoder.StreamingEncoderWriter;
  */
 public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, EncodedAppenderWriterFactory, GroovyObject {
 
-    protected static final Log LOG = LogFactory.getLog(GrailsPrintWriter.class);
+    protected static final Log logger = LogFactory.getLog(GrailsPrintWriter.class);
 
     protected static final char[] CRLF = { '\r', '\n' };
 
@@ -193,8 +193,8 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
             return;
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("I/O exception in GrailsPrintWriter: " + e.getMessage(), e);
+        if (logger.isDebugEnabled()) {
+            logger.debug("I/O exception in GrailsPrintWriter: " + e.getMessage(), e);
         }
         this.trouble = true;
         setError();

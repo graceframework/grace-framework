@@ -44,7 +44,7 @@ import org.grails.validation.discovery.ConstrainedDiscovery;
 @Deprecated
 public class DefaultGrailsDomainClass extends AbstractGrailsClass implements GrailsDomainClass {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultGrailsDomainClass.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultGrailsDomainClass.class);
 
     private PersistentEntity persistentEntity;
 
@@ -73,8 +73,8 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
             throw new GrailsConfigurationException("That API cannot be accessed before the spring context is initialized");
         }
         else {
-            if (log.isWarnEnabled()) {
-                log.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. " +
+            if (logger.isWarnEnabled()) {
+                logger.warn("The GrailsDomainClass API should no longer be used to retrieve data about domain classes. " +
                         "Use the mapping context API instead");
             }
             if (this.persistentEntity == null) {

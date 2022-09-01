@@ -34,7 +34,7 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
  */
 public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
 
-    private static final Logger log = LoggerFactory.getLogger(GrailsTransactionAttribute.class);
+    private static final Logger logger = LoggerFactory.getLogger(GrailsTransactionAttribute.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -79,8 +79,8 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
 
     @Override
     public boolean rollbackOn(Throwable ex) {
-        if (log.isTraceEnabled()) {
-            log.trace("Applying rules to determine whether transaction should rollback on $ex");
+        if (logger.isTraceEnabled()) {
+            logger.trace("Applying rules to determine whether transaction should rollback on $ex");
         }
 
         RollbackRuleAttribute winner = null;
@@ -97,13 +97,13 @@ public class GrailsTransactionAttribute extends RuleBasedTransactionAttribute {
             }
         }
 
-        if (log.isTraceEnabled()) {
-            log.trace("Winning rollback rule is: $winner");
+        if (logger.isTraceEnabled()) {
+            logger.trace("Winning rollback rule is: $winner");
         }
 
         // User superclass behavior (rollback on unchecked) if no rule matches.
         if (winner == null) {
-            log.trace("No relevant rollback rule found: applying default rules");
+            logger.trace("No relevant rollback rule found: applying default rules");
 
             // always rollback regardless if it is a checked or unchecked exception since Groovy doesn't differentiate those
             return true;

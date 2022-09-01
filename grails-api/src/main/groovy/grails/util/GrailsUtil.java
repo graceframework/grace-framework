@@ -31,7 +31,7 @@ import org.grails.exceptions.reporting.StackTraceFilterer;
  */
 public final class GrailsUtil {
 
-    private static final Log LOG = LogFactory.getLog(GrailsUtil.class);
+    private static final Log logger = LogFactory.getLog(GrailsUtil.class);
 
     private static final boolean LOG_DEPRECATED = Boolean.parseBoolean(
             System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
@@ -89,8 +89,8 @@ public final class GrailsUtil {
      * @param message Message to display
      */
     public static void deprecated(String message) {
-        if (LOG_DEPRECATED && LOG.isWarnEnabled()) {
-            LOG.warn("[DEPRECATED] " + message);
+        if (LOG_DEPRECATED && logger.isWarnEnabled()) {
+            logger.warn("[DEPRECATED] " + message);
         }
     }
 
@@ -100,8 +100,8 @@ public final class GrailsUtil {
      * @param message Message to display
      */
     public static void warn(String message) {
-        if (LOG.isWarnEnabled()) {
-            LOG.warn("[WARNING] " + message);
+        if (logger.isWarnEnabled()) {
+            logger.warn("[WARNING] " + message);
         }
     }
 

@@ -61,7 +61,7 @@ import org.grails.web.util.WebUtils;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrailsParameterMap.class);
+    private static final Logger logger = LoggerFactory.getLogger(GrailsParameterMap.class);
 
     private static final Map<String, String> CACHED_DATE_FORMATS = new ConcurrentHashMap<>();
 
@@ -106,7 +106,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                     }
                 }
                 catch (Exception e) {
-                    LOG.error("Error processing form encoded " + request.getMethod() + " request", e);
+                    logger.error("Error processing form encoded " + request.getMethod() + " request", e);
                 }
             }
         }

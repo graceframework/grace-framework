@@ -105,7 +105,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  */
 public class BeanBuilder extends GroovyObjectSupport {
 
-    private static final Log LOG = LogFactory.getLog(BeanBuilder.class);
+    private static final Log logger = LogFactory.getLog(BeanBuilder.class);
 
     private static final String CREATE_APPCTX = "createApplicationContext";
 
@@ -199,7 +199,7 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     public Log getLog() {
-        return LOG;
+        return logger;
     }
 
     /**
@@ -215,7 +215,7 @@ public class BeanBuilder extends GroovyObjectSupport {
             }
         }
         catch (IOException e) {
-            LOG.error("Error loading beans for resource pattern: " + resourcePattern, e);
+            logger.error("Error loading beans for resource pattern: " + resourcePattern, e);
         }
     }
 

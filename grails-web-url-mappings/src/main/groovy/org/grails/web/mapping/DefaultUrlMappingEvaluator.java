@@ -94,6 +94,8 @@ import org.grails.io.support.SpringIOUtils;
  */
 public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoaderAware, PluginManagerAware {
 
+    private static final Logger logger = LoggerFactory.getLogger(UrlMappingBuilder.class);
+
     public static final String ACTION_CREATE = "create";
 
     public static final String ACTION_INDEX = "index";
@@ -115,8 +117,6 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
     public static final List<String> DEFAULT_RESOURCE_INCLUDES = Arrays.asList(ACTION_CREATE, ACTION_SAVE, ACTION_SHOW,
             ACTION_EDIT, ACTION_UPDATE, ACTION_PATCH, ACTION_DELETE);
-
-    private static final Logger LOG = LoggerFactory.getLogger(UrlMappingBuilder.class);
 
     private GroovyClassLoader classLoader = new GroovyClassLoader();
 
@@ -834,7 +834,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                     return Collections.emptyMap();
                 }
                 else {
-                    LOG.error("Mapping: '" + mappedURI + "' does not start with " + SLASH + " or is response code.");
+                    logger.error("Mapping: '" + mappedURI + "' does not start with " + SLASH + " or is response code.");
                     return super.invokeMethod(mappedURI, arg);
                 }
             }
@@ -1297,7 +1297,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             Object viewName = getViewName(namedArguments, bindingVariables);
             if (actionName != null && viewName != null) {
                 viewName = null;
-                LOG.warn("Both [action] and [view] specified in URL mapping [" + mapping + "]. The action takes precendence!");
+                logger.warn("Both [action] and [view] specified in URL mapping [" + mapping + "]. The action takes precendence!");
             }
 
             Object uri = getURI(namedArguments, bindingVariables);
@@ -1328,11 +1328,11 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                         ((ResponseCodeUrlMapping) urlMapping).setExceptionType(exClass);
                     }
                     else {
-                        LOG.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a subclass of java.lang.Throwable");
+                        logger.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a subclass of java.lang.Throwable");
                     }
                 }
                 else {
-                    LOG.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a valid class");
+                    logger.error("URL mapping argument [exception] with value [" + exceptionArg + "] must be a valid class");
                 }
             }
 

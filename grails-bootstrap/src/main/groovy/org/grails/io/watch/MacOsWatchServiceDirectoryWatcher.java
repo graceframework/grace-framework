@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
 
     private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<>();
 
@@ -88,7 +88,7 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                     WatchEvent.Kind<?> kind = watchEvent.kind();
                     if (kind == StandardWatchEventKinds.OVERFLOW) {
                         // TODO how is this supposed to be handled? I think the best thing to do is ignore it, but I'm not positive
-                        LOG.warn("WatchService Overflow occurred");
+                        logger.warn("WatchService Overflow occurred");
                         continue;
                     }
                     WatchEvent<Path> pathWatchEvent = cast(watchEvent);
@@ -117,7 +117,7 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                             // by using the addWatchFile method, /images/a.png is watched.
                             // Now, /images/b.png is changed. Because java.nio.file.WatchService watches directories, it gets a WatchEvent
                             // for /images/b.png. But we aren't interested in that.
-                            LOG.debug("WatchService received an event for a file/directory that it's not interested in.");
+                            logger.debug("WatchService received an event for a file/directory that it's not interested in.");
                         }
                         else {
                             if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
@@ -151,14 +151,14 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                 watchKey.reset();
             }
             catch (Exception e) {
-                LOG.error(e.toString());
+                logger.error(e.toString());
             }
         }
         try {
             this.watchService.close();
         }
         catch (IOException e) {
-            LOG.debug("Exception while closing watchService", e);
+            logger.debug("Exception while closing watchService", e);
         }
     }
 

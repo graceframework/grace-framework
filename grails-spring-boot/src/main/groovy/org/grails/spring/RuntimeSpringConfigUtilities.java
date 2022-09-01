@@ -39,7 +39,7 @@ import grails.util.CollectionUtils;
  */
 public final class RuntimeSpringConfigUtilities {
 
-    private static final Log LOG = LogFactory.getLog(RuntimeSpringConfigUtilities.class);
+    private static final Log logger = LogFactory.getLog(RuntimeSpringConfigUtilities.class);
 
     public static final String GRAILS_URL_MAPPINGS = "grailsUrlMappings";
 
@@ -89,7 +89,7 @@ public final class RuntimeSpringConfigUtilities {
                 }
             }
             catch (Exception ex) {
-                LOG.error("[RuntimeConfiguration] Unable to load beans from resources.groovy", ex);
+                logger.error("[RuntimeConfiguration] Unable to load beans from resources.groovy", ex);
             }
         }
         else {

@@ -31,7 +31,7 @@ import org.springframework.util.Assert;
  */
 public class StaticResourceLoader implements ResourceLoader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StaticResourceLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(StaticResourceLoader.class);
 
     private Resource baseResource;
 
@@ -42,19 +42,19 @@ public class StaticResourceLoader implements ResourceLoader {
     public Resource getResource(String location) {
         Assert.state(this.baseResource != null, "Property [baseResource] not set!");
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Loading resource for path {} from base resource {}", location, this.baseResource);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loading resource for path {} from base resource {}", location, this.baseResource);
         }
         try {
             Resource resource = this.baseResource.createRelative(location);
-            if (LOG.isDebugEnabled() && resource.exists()) {
-                LOG.debug("Found resource for path {} from base resource {}", location, this.baseResource);
+            if (logger.isDebugEnabled() && resource.exists()) {
+                logger.debug("Found resource for path {} from base resource {}", location, this.baseResource);
             }
             return resource;
         }
         catch (IOException e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Error loading resource for path: " + location, e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Error loading resource for path: " + location, e);
             }
             return null;
         }

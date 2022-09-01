@@ -33,9 +33,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
  */
 public class BeanCreationProfilingPostProcessor implements InstantiationAwareBeanPostProcessor, ApplicationListener<ContextRefreshedEvent> {
 
-    private final StopWatch stopWatch = new StopWatch("Bean Creation StopWatch");
+    private static final Logger logger = LoggerFactory.getLogger("org.grails.startup");
 
-    private static final Logger LOG = LoggerFactory.getLogger("org.grails.startup");
+    private final StopWatch stopWatch = new StopWatch("Bean Creation StopWatch");
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
@@ -68,8 +68,8 @@ public class BeanCreationProfilingPostProcessor implements InstantiationAwareBea
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         this.stopWatch.complete();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(this.stopWatch.prettyPrint());
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.stopWatch.prettyPrint());
         }
     }
 

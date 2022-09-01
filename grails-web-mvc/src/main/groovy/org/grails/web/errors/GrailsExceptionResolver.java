@@ -67,7 +67,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     public static final String EXCEPTION_ATTRIBUTE = WebUtils.EXCEPTION_ATTRIBUTE;
 
-    protected static final Log LOG = LogFactory.getLog(GrailsExceptionResolver.class);
+    protected static final Log log = LogFactory.getLog(GrailsExceptionResolver.class);
 
     protected static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -212,7 +212,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             return mv;
         }
         catch (Exception e) {
-            LOG.error("Unable to render errors view: " + e.getMessage(), e);
+            log.error("Unable to render errors view: " + e.getMessage(), e);
             throw new GrailsRuntimeException(e);
         }
     }
@@ -223,8 +223,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         info.configure(WebUtils.retrieveGrailsWebRequest());
         String forwardUrl = UrlMappingUtils.forwardRequestForUrlMappingInfo(
                 request, response, info, mv.getModel(), true);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Matched URI [" + uri + "] to URL mapping [" + info +
+        if (log.isDebugEnabled()) {
+            log.debug("Matched URI [" + uri + "] to URL mapping [" + info +
                     "], forwarding to [" + forwardUrl + "] with response [" + response.getClass() + "]");
         }
     }
@@ -258,7 +258,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected void logStackTrace(Exception e, HttpServletRequest request) {
-        LOG.error(getRequestLogMessage(e, request), e);
+        log.error(getRequestLogMessage(e, request), e);
     }
 
     protected Exception findWrappedException(Exception e) {

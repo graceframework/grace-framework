@@ -50,7 +50,7 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 @Deprecated
 public abstract class NavigableMapConfig implements Config {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(NavigableMapConfig.class);
+    protected static final Logger logger = LoggerFactory.getLogger(NavigableMapConfig.class);
 
     protected ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -157,8 +157,8 @@ public abstract class NavigableMapConfig implements Config {
     @Override
     @Deprecated
     public Map<String, Object> flatten() {
-        if (LOG.isWarnEnabled()) {
-            LOG.warn("A plugin or your application called the flatten() method which can degrade startup performance");
+        if (logger.isWarnEnabled()) {
+            logger.warn("A plugin or your application called the flatten() method which can degrade startup performance");
         }
         return this.configMap;
     }

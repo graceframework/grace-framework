@@ -81,6 +81,8 @@ import org.grails.spring.RuntimeSpringConfiguration;
 @SuppressWarnings("rawtypes")
 public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentApplicationContextAware {
 
+    protected static final Log logger = LogFactory.getLog(DefaultGrailsPlugin.class);
+
     private static final String PLUGIN_CHANGE_EVENT_CTX = "ctx";
 
     private static final String PLUGIN_CHANGE_EVENT_APPLICATION = "application";
@@ -90,8 +92,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     private static final String PLUGIN_CHANGE_EVENT_SOURCE = "source";
 
     private static final String PLUGIN_CHANGE_EVENT_MANAGER = "manager";
-
-    protected static final Log LOG = LogFactory.getLog(DefaultGrailsPlugin.class);
 
     private static final String INCLUDES = "includes";
 
@@ -393,8 +393,8 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         try {
             List resourceList = null;
             if (referencedResources instanceof String) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
                 }
                 resourceList = Collections.singletonList(referencedResources.toString());
             }
@@ -429,7 +429,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
         catch (IllegalArgumentException e) {
             if (GrailsUtil.isDevelopmentEnv()) {
-                LOG.debug("Cannot load plug-in resource watch list from [" + GrailsArrayUtils.toString(this.watchedResourcePatternReferences) +
+                logger.debug("Cannot load plug-in resource watch list from [" + GrailsArrayUtils.toString(this.watchedResourcePatternReferences) +
                         "]. This means that the plugin " + this +
                         ", will not be able to auto-reload changes effectively. Try running grails upgrade.: " + e.getMessage());
             }
@@ -591,8 +591,8 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
                 return;
             }
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Plugin " + this + " is participating in Spring configuration...");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Plugin " + this + " is participating in Spring configuration...");
             }
 
             Closure c = (Closure) this.plugin.getProperty(DO_WITH_SPRING);
@@ -706,7 +706,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
      * These two properties help the closures to resolve a log and plugin variable during executing
      */
     public Log getLog() {
-        return LOG;
+        return logger;
     }
 
     public GrailsPlugin getPlugin() {
@@ -734,7 +734,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             initialisePlugin(gcl.parseClass(descriptor.getFile()));
         }
         catch (Exception e) {
-            LOG.error("Error refreshing plugin: " + e.getMessage(), e);
+            logger.error("Error refreshing plugin: " + e.getMessage(), e);
         }
     }
 
@@ -878,21 +878,21 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
                         this.grailsApplication.registerArtefactHandler((ArtefactHandler) artefactClass.newInstance());
                     }
                     catch (InstantiationException e) {
-                        LOG.error("Cannot instantiate an Artefact Handler:" + e.getMessage(), e);
+                        logger.error("Cannot instantiate an Artefact Handler:" + e.getMessage(), e);
                     }
                     catch (IllegalAccessException e) {
-                        LOG.error("The constructor of the Artefact Handler is not accessible:" + e.getMessage(), e);
+                        logger.error("The constructor of the Artefact Handler is not accessible:" + e.getMessage(), e);
                     }
                 }
                 else {
-                    LOG.error("This class is not an ArtefactHandler:" + artefactClass.getName());
+                    logger.error("This class is not an ArtefactHandler:" + artefactClass.getName());
                 }
             }
             else if (artefact instanceof ArtefactHandler) {
                 this.grailsApplication.registerArtefactHandler((ArtefactHandler) artefact);
             }
             else {
-                LOG.error("This object is not an ArtefactHandler:" + artefact + "[" + artefact.getClass().getName() + "]");
+                logger.error("This object is not an ArtefactHandler:" + artefact + "[" + artefact.getClass().getName() + "]");
             }
         }
     }

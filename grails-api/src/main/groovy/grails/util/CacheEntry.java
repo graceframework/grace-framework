@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CacheEntry<V> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CacheEntry.class);
+    private static final Logger logger = LoggerFactory.getLogger(CacheEntry.class);
 
     private final AtomicReference<V> valueRef = new AtomicReference<>(null);
 
@@ -143,15 +143,15 @@ public class CacheEntry<V> {
                             return getValueWhileUpdating(cacheRequestObject);
                         }
                         else {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Locking cache for update");
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Locking cache for update");
                             }
                             this.writeLock.lock();
                         }
                     }
                 }
                 else {
-                    LOG.debug("Locking cache for update");
+                    logger.debug("Locking cache for update");
                     this.writeLock.lock();
                 }
 
@@ -160,8 +160,8 @@ public class CacheEntry<V> {
                 if (!isInitialized() || shouldUpdate(beforeLockingCreatedMillis, cacheRequestObject)) {
                     try {
                         value = updateValue(getValue(), updater, cacheRequestObject);
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Updating cache for value [{}]", value);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Updating cache for value [{}]", value);
                         }
                         setValue(value);
                     }
@@ -177,8 +177,8 @@ public class CacheEntry<V> {
             }
             finally {
                 if (lockAcquired) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Unlocking cache for update");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Unlocking cache for update");
                     }
                     this.writeLock.unlock();
                 }

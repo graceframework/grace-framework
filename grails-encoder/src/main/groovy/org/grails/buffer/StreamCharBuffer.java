@@ -253,11 +253,11 @@ import org.grails.encoder.WriterEncodedAppender;
 public class StreamCharBuffer extends GroovyObjectSupport implements Writable, CharSequence,
         Externalizable, Encodeable, StreamEncodeable, StreamingEncoderWritable, EncodedAppenderWriterFactory, Cloneable {
 
+    private static final Log logger = LogFactory.getLog(StreamCharBuffer.class);
+
     private static final int EXTERNALIZABLE_VERSION = 2;
 
     static final long serialVersionUID = EXTERNALIZABLE_VERSION;
-
-    private static final Log log = LogFactory.getLog(StreamCharBuffer.class);
 
     private static final int DEFAULT_CHUNK_SIZE = Integer.getInteger("streamcharbuffer.chunksize", 512);
 
@@ -1265,7 +1265,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         }
         catch (IOException e) {
             // Should not ever happen
-            log.error("IOException in StreamCharBuffer.encodeToBuffer", e);
+            logger.error("IOException in StreamCharBuffer.encodeToBuffer", e);
         }
         return coded;
     }

@@ -31,7 +31,7 @@ import grails.util.Holders;
  */
 public final class ShutdownOperations {
 
-    private static final Log LOG = LogFactory.getLog(ShutdownOperations.class);
+    private static final Log logger = LogFactory.getLog(ShutdownOperations.class);
 
     private static final Collection<Runnable> shutdownOperations = new LinkedHashSet<>();
 
@@ -56,7 +56,7 @@ public final class ShutdownOperations {
                     shutdownOperation.run();
                 }
                 catch (Exception e) {
-                    LOG.warn("Error occurred running shutdown operation: " + e.getMessage(), e);
+                    logger.warn("Error occurred running shutdown operation: " + e.getMessage(), e);
                 }
             }
         }

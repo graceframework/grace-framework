@@ -70,7 +70,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  */
 public abstract class AbstractGrailsPluginManager implements GrailsPluginManager {
 
-    private static final Log LOG = LogFactory.getLog(AbstractGrailsPluginManager.class);
+    private static final Log logger = LogFactory.getLog(AbstractGrailsPluginManager.class);
 
     private static final String BLANK = "";
 
@@ -340,10 +340,10 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 for (Class<?> artefact : plugin.getProvidedArtefacts()) {
                     String shortName = GrailsNameUtils.getShortName(artefact);
                     if (artefact.getName().equals(shortName)) {
-                        LOG.warn("Plugin " + plugin.getName() + " has an artefact " + shortName + " without a package name " +
+                        logger.warn("Plugin " + plugin.getName() + " has an artefact " + shortName + " without a package name " +
                                 "This could lead to artefacts being excluded from the application");
                         if (app.getClassForName(shortName) != null) {
-                            LOG.error("Plugin " + plugin.getName() + " has an artefact " + shortName + " that is being excluded from " +
+                            logger.error("Plugin " + plugin.getName() + " has an artefact " + shortName + " that is being excluded from " +
                                     "the application because another artefact exists with the same name without a package defined.");
                         }
                     }
@@ -559,7 +559,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 informPluginsOfConfigChange();
             }
             catch (Exception e) {
-                LOG.debug("Error in changing Config", e);
+                logger.debug("Error in changing Config", e);
             }
         }
         else {
@@ -591,7 +591,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                         Environment.setCurrentReloadError(null);
                     }
                     catch (Exception e) {
-                        LOG.error("Plugin " + grailsPlugin + " could not reload changes to file [" +
+                        logger.error("Plugin " + grailsPlugin + " could not reload changes to file [" +
                                 file + "]: " + e.getMessage(), e);
                         Environment.setCurrentReloadError(e);
                     }

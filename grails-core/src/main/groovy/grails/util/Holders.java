@@ -43,7 +43,7 @@ import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
  */
 public final class Holders {
 
-    private static final Log LOG = LogFactory.getLog(Holders.class);
+    private static final Log logger = LogFactory.getLog(Holders.class);
 
     private static Holder<GrailsPluginManager> pluginManagers = new Holder<>("PluginManager");
 
@@ -227,15 +227,15 @@ public final class Holders {
         }
         catch (ClassNotFoundException e) {
             // shouldn't happen
-            LOG.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
+            logger.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
         }
         catch (InstantiationException e) {
             // shouldn't happen
-            LOG.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
+            logger.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
         }
         catch (IllegalAccessException e) {
             // shouldn't happen
-            LOG.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
+            logger.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
         }
     }
 

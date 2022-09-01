@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DirectoryWatcher extends Thread {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DirectoryWatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(DirectoryWatcher.class);
 
     private final AbstractDirectoryWatcher directoryWatcherDelegate;
 
@@ -50,8 +50,8 @@ public class DirectoryWatcher extends Thread {
                     jnaAvailable = true;
                 }
                 catch (ClassNotFoundException e) {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");
+                    if (logger.isWarnEnabled()) {
+                        logger.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");
                     }
                 }
                 if (jnaAvailable) {
@@ -69,7 +69,7 @@ public class DirectoryWatcher extends Thread {
             }
         }
         catch (Throwable e) {
-            LOG.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). " +
+            logger.info("Exception while trying to load WatchServiceDirectoryWatcher (this is probably Java 6 and WatchService isn't available). " +
                     "Falling back to PollingDirectoryWatcher.", e);
             directoryWatcherDelegate = new PollingDirectoryWatcher();
         }

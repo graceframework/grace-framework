@@ -35,7 +35,7 @@ import org.springframework.context.ApplicationContextAware;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements ApplicationContextAware {
 
-    private static final Log LOG = LogFactory.getLog(UrlMappingFactoryBean.class);
+    private static final Log log = LogFactory.getLog(UrlMappingFactoryBean.class);
 
     private static final String URL_MAP_BEAN = "urlMappings";
 
@@ -54,10 +54,10 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
                 this.mappings.putAll((Map) o);
             }
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("[UrlMappingFactoryBean] Creating URL mappings as...");
+        if (log.isDebugEnabled()) {
+            log.debug("[UrlMappingFactoryBean] Creating URL mappings as...");
             for (Object key : this.mappings.keySet()) {
-                LOG.debug("[UrlMappingFactoryBean] " + key + "=" + this.mappings.get(key));
+                log.debug("[UrlMappingFactoryBean] " + key + "=" + this.mappings.get(key));
             }
         }
         return this.mappings;

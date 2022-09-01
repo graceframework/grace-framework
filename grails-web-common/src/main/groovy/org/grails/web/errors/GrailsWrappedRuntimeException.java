@@ -75,7 +75,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
 
     public static final String URL_PREFIX = "/WEB-INF/grails-app/";
 
-    private static final Log LOG = LogFactory.getLog(GrailsWrappedRuntimeException.class);
+    private static final Log logger = LogFactory.getLog(GrailsWrappedRuntimeException.class);
 
     private String className = UNKNOWN;
 
@@ -209,7 +209,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                 InputStream in = null;
                 if (!GrailsStringUtils.isBlank(url)) {
                     in = servletContext.getResourceAsStream(url);
-                    LOG.debug("Attempting to display code snippet found in url " + url);
+                    logger.debug("Attempting to display code snippet found in url " + url);
                 }
                 if (in == null) {
                     Resource r = null;
@@ -255,7 +255,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
             }
         }
         catch (IOException e) {
-            LOG.warn("[GrailsWrappedRuntimeException] I/O error reading line diagnostics: " + e.getMessage(), e);
+            logger.warn("[GrailsWrappedRuntimeException] I/O error reading line diagnostics: " + e.getMessage(), e);
         }
         finally {
             if (reader != null) {

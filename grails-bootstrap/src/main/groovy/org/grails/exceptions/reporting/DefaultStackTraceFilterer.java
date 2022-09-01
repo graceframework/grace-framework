@@ -32,7 +32,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
 
     public static final String STACK_LOG_NAME = "StackTrace";
 
-    public static final Log STACK_LOG = LogFactory.getLog(STACK_LOG_NAME);
+    private static final Log logger = LogFactory.getLog(STACK_LOG_NAME);
 
     private static final String[] DEFAULT_INTERNAL_PACKAGES = new String[] {
             "org.codehaus.groovy.runtime.",
@@ -105,7 +105,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             // if not we will just skip sanitizing and leave it as is
             if (!newTrace.isEmpty()) {
                 // We don't want to lose anything, so log it
-                STACK_LOG.error(FULL_STACK_TRACE_MESSAGE, source);
+                logger.error(FULL_STACK_TRACE_MESSAGE, source);
                 StackTraceElement[] clean = new StackTraceElement[newTrace.size()];
                 newTrace.toArray(clean);
                 source.setStackTrace(clean);

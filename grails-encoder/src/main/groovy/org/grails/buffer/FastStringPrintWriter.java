@@ -30,7 +30,7 @@ import org.springframework.objenesis.instantiator.ObjectInstantiator;
  */
 public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FastStringPrintWriter.class);
+    private static final Logger logger = LoggerFactory.getLogger(FastStringPrintWriter.class);
 
     private static ObjectInstantiator instantiator;
 
@@ -39,7 +39,7 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(FastStringPrintWriter.class);
         }
         catch (Exception e) {
-            LOG.debug("Couldn't get direct performance optimized instantiator for FastStringPrintWriter. Using default instantiation.", e);
+            logger.debug("Couldn't get direct performance optimized instantiator for FastStringPrintWriter. Using default instantiation.", e);
         }
     }
 

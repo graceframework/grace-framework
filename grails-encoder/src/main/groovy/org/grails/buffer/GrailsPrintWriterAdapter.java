@@ -31,7 +31,7 @@ import org.springframework.objenesis.instantiator.ObjectInstantiator;
  */
 public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrappedWriter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrailsPrintWriterAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(GrailsPrintWriterAdapter.class);
 
     protected GrailsPrintWriter target;
 
@@ -42,7 +42,7 @@ public class GrailsPrintWriterAdapter extends PrintWriter implements GrailsWrapp
             instantiator = new ObjenesisStd(false).getInstantiatorOf(GrailsPrintWriterAdapter.class);
         }
         catch (Exception e) {
-            LOG.debug("Couldn't get direct performance optimized instantiator for GrailsPrintWriterAdapter. Using default instantiation.", e);
+            logger.debug("Couldn't get direct performance optimized instantiator for GrailsPrintWriterAdapter. Using default instantiation.", e);
         }
     }
 

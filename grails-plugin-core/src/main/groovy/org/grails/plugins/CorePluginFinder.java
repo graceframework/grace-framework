@@ -52,7 +52,7 @@ import org.grails.io.support.SpringIOUtils;
  */
 public class CorePluginFinder implements ParentApplicationContextAware {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CorePluginFinder.class);
+    private static final Logger logger = LoggerFactory.getLogger(CorePluginFinder.class);
 
     public static final String CORE_PLUGIN_PATTERN = "META-INF/grails-plugin.xml";
 
@@ -143,10 +143,10 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             return classLoader.loadClass(pluginClassName);
         }
         catch (ClassNotFoundException e) {
-            LOG.warn("[GrailsPluginManager] Core plugin [" + pluginClassName +
+            logger.warn("[GrailsPluginManager] Core plugin [" + pluginClassName +
                     "] not found, resuming load without..");
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(e.getMessage(), e);
+            if (logger.isDebugEnabled()) {
+                logger.debug(e.getMessage(), e);
             }
         }
         return null;

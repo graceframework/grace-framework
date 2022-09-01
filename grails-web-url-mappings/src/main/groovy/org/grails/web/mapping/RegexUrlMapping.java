@@ -72,6 +72,8 @@ import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
 @SuppressWarnings("rawtypes")
 public class RegexUrlMapping extends AbstractUrlMapping {
 
+    private static final Logger logger = LoggerFactory.getLogger(RegexUrlMapping.class);
+
     public static final String FORMAT_PARAMETER = "format";
 
     private Pattern[] patterns;
@@ -81,8 +83,6 @@ public class RegexUrlMapping extends AbstractUrlMapping {
     private UrlMappingData urlData;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
-
-    private static final Logger LOG = LoggerFactory.getLogger(RegexUrlMapping.class);
 
     public static final Pattern DOUBLE_WILDCARD_PATTERN = Pattern.compile("\\(\\*\\*?\\)\\??");
 
@@ -429,8 +429,8 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         }
         populateParameterList(paramValues, encoding, uri, usedParams);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Created reverse URL mapping [" + uri + "] for parameters [" + paramValues + "]");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Created reverse URL mapping [" + uri + "] for parameters [" + paramValues + "]");
         }
         return uri.toString();
     }
@@ -799,28 +799,28 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             return evaluatePluginOrder(other);
         }
         else if (isThisRoot) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] because it is the root", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] because it is the root", this, other);
             }
             return 1;
         }
         else if (isThatRoot) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a lower precedence than [{}] because the latter is the root", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a lower precedence than [{}] because the latter is the root", this, other);
             }
             return -1;
         }
 
         if (otherStaticTokenCount == 0 && thisStaticTokenCount > 0) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] because it has more path tokens", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] because it has more path tokens", this, other);
             }
             return 1;
         }
 
         if (thisStaticTokenCount == 0 && otherStaticTokenCount > 0) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a lower precedence than [{}] because it has fewer path tokens", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a lower precedence than [{}] because it has fewer path tokens", this, other);
             }
             return -1;
         }
@@ -829,15 +829,15 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         final int otherStaticAndWildcardTokenCount = getStaticAndWildcardTokenCount(other);
 
         if (otherStaticAndWildcardTokenCount == 0 && thisStaticAndWildcardTokenCount > 0) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] because it has more path tokens [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] because it has more path tokens [{} vs {}]",
                         this, other, thisStaticAndWildcardTokenCount, otherStaticAndWildcardTokenCount);
             }
             return 1;
         }
         if (thisStaticAndWildcardTokenCount == 0 && otherStaticAndWildcardTokenCount > 0) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] because the latter has more path tokens [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] because the latter has more path tokens [{} vs {}]",
                         this, other, thisStaticAndWildcardTokenCount, otherStaticAndWildcardTokenCount);
             }
             return -1;
@@ -845,15 +845,15 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
         final int staticDiff = thisStaticTokenCount - otherStaticTokenCount;
         if (staticDiff < 0 && !otherHasWildCards) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a lower precedence than [{}] because the latter has more concrete path tokens [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a lower precedence than [{}] because the latter has more concrete path tokens [{} vs {}]",
                         this, other, thisStaticTokenCount, otherStaticTokenCount);
             }
             return -1;
         }
         else if (staticDiff > 0 && !hasWildCards) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] because it has more concrete path tokens [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] because it has more concrete path tokens [{} vs {}]",
                         this, other, thisStaticTokenCount, otherStaticTokenCount);
             }
             return 1;
@@ -872,14 +872,14 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             boolean thisTokenIsWildcard = !thisHasMoreTokens || isSingleWildcard(thisTokens[i]);
             boolean otherTokenIsWildcard = !otherHasMoreTokens || isSingleWildcard(otherTokens[i]);
             if (thisTokenIsWildcard && !otherTokenIsWildcard) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] because the latter contains more concrete tokens", this, other);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] because the latter contains more concrete tokens", this, other);
                 }
                 return -1;
             }
             if (!thisTokenIsWildcard && otherTokenIsWildcard) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] because it contains more concrete tokens", this, other);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] because it contains more concrete tokens", this, other);
                 }
                 return 1;
             }
@@ -887,13 +887,13 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
         final int doubleWildcardDiff = otherDoubleWildcardCount - thisDoubleWildcardCount;
         if (doubleWildcardDiff != 0) {
-            if (LOG.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 if (doubleWildcardDiff > 0) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] due containing more double wild cards [{} vs. {}]",
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] due containing more double wild cards [{} vs. {}]",
                             this, other, thisDoubleWildcardCount, otherDoubleWildcardCount);
                 }
                 else if (doubleWildcardDiff < 0) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] due to the latter containing more double wild cards [{} vs. {}]",
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] due to the latter containing more double wild cards [{} vs. {}]",
                             this, other, thisDoubleWildcardCount, otherDoubleWildcardCount);
                 }
             }
@@ -902,13 +902,13 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
         final int singleWildcardDiff = otherSingleWildcardCount - thisSingleWildcardCount;
         if (singleWildcardDiff != 0) {
-            if (LOG.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 if (singleWildcardDiff > 0) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] because it contains more single wild card matches [{} vs. {}]",
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] because it contains more single wild card matches [{} vs. {}]",
                             this, other, thisSingleWildcardCount, otherSingleWildcardCount);
                 }
                 else if (singleWildcardDiff < 0) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] due to the latter containing more single wild card matches[{} vs. {}]",
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] due to the latter containing more single wild card matches[{} vs. {}]",
                             this, other, thisSingleWildcardCount, otherSingleWildcardCount);
                 }
             }
@@ -919,13 +919,13 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         int thatConstraintCount = getAppliedConstraintsCount(other);
         int constraintDiff = thisConstraintCount - thatConstraintCount;
         if (constraintDiff != 0) {
-            if (LOG.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 if (constraintDiff > 0) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] since it defines more constraints [{} vs. {}]",
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] since it defines more constraints [{} vs. {}]",
                             this, other, thisConstraintCount, thatConstraintCount);
                 }
                 else if (constraintDiff < 0) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] since the latter defines more constraints [{} vs. {}]",
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] since the latter defines more constraints [{} vs. {}]",
                             this, other, thisConstraintCount, thatConstraintCount);
                 }
             }
@@ -935,12 +935,12 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         int allDiff = (thisStaticTokenCount - otherStaticTokenCount) + (thisSingleWildcardCount - otherSingleWildcardCount) +
                 (thisDoubleWildcardCount - otherDoubleWildcardCount);
         if (allDiff != 0) {
-            if (LOG.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 if (allDiff > 0) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] due to the overall diff", this, other);
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] due to the overall diff", this, other);
                 }
                 else if (allDiff < 0) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] due to the overall diff", this, other);
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] due to the overall diff", this, other);
                 }
             }
             return allDiff;
@@ -952,15 +952,15 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             return evaluatePluginOrder(other);
         }
         else if (thisVersion.equals(ANY_VERSION) && !thatVersion.equals(ANY_VERSION)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a lower precedence than [{}] due to version precedence [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a lower precedence than [{}] due to version precedence [{} vs {}]",
                         this, other, thisVersion, thatVersion);
             }
             return -1;
         }
         else if (!thisVersion.equals(ANY_VERSION) && thatVersion.equals(ANY_VERSION)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has a higher precedence than [{}] due to version precedence [{} vs {}]",
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has a higher precedence than [{}] due to version precedence [{} vs {}]",
                         this, other, thisVersion, thatVersion);
             }
             return 1;
@@ -969,15 +969,15 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             int i = new VersionComparator().compare(thisVersion, thatVersion);
 
             if (i > 0) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Mapping [{}] has a higher precedence than [{}] due to version precedence [{} vs. {}]",
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapping [{}] has a higher precedence than [{}] due to version precedence [{} vs. {}]",
                             this, other, thisVersion, thatVersion);
                 }
                 return 1;
             }
             else if (i < 0) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Mapping [{}] has a lower precedence than [{}] due to version precedence [{} vs. {}]",
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapping [{}] has a lower precedence than [{}] due to version precedence [{} vs. {}]",
                             this, other, thisVersion, thatVersion);
                 }
                 return -1;
@@ -990,41 +990,41 @@ public class RegexUrlMapping extends AbstractUrlMapping {
 
     private int evaluatePluginOrder(UrlMapping other) {
         if (isDefinedInPlugin() && !other.isDefinedInPlugin()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has lower precedence than [{}] because the latter has priority over plugins", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has lower precedence than [{}] because the latter has priority over plugins", this, other);
             }
             return -1;
         }
         else if (!isDefinedInPlugin() && other.isDefinedInPlugin()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Mapping [{}] has higher precedence than [{}] because it has priority over plugins", this, other);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Mapping [{}] has higher precedence than [{}] because it has priority over plugins", this, other);
             }
             return 1;
         }
         else {
             if (isDefinedInPlugin()) {
                 if (pluginIndex > other.getPluginIndex()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Mapping [{}] has higher precedence than [{}] because it was loaded after", this, other);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Mapping [{}] has higher precedence than [{}] because it was loaded after", this, other);
                     }
                     return 1;
                 }
                 else if (pluginIndex < other.getPluginIndex()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Mapping [{}] has lower precedence than [{}] because it was loaded before", this, other);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Mapping [{}] has lower precedence than [{}] because it was loaded before", this, other);
                     }
                     return -1;
                 }
                 else {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Mapping [{}] has equal precedence with mapping [{}]", this, other);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Mapping [{}] has equal precedence with mapping [{}]", this, other);
                     }
                     return 0;
                 }
             }
             else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Mapping [{}] has equal precedence with mapping [{}]", this, other.toString());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Mapping [{}] has equal precedence with mapping [{}]", this, other.toString());
                 }
                 return 0;
             }

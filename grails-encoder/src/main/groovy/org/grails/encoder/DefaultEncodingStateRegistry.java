@@ -36,7 +36,7 @@ import org.grails.encoder.impl.NoneEncoder;
  */
 public final class DefaultEncodingStateRegistry implements EncodingStateRegistry {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
 
     private Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
 
@@ -95,7 +95,7 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         WeakReference<CharSequence> previousValue = getEncodedCharSequencesForEncoder(encoder).put(calculateKey(escaped),
                 new WeakReference<>(escaped));
         if (previousValue != null && previousValue.get() != escaped) {
-            LOG.warn("Hash collision for encoded value between '{}' and '{}', encoder is {}", escaped, previousValue.get(), encoder);
+            logger.warn("Hash collision for encoded value between '{}' and '{}', encoder is {}", escaped, previousValue.get(), encoder);
         }
     }
 

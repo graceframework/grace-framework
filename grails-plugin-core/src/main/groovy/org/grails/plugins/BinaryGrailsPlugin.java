@@ -174,7 +174,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             }
         }
         catch (IOException e) {
-            LOG.error("Error loading views for binary plugin [" + this + "]: " + e.getMessage(), e);
+            logger.error("Error loading views for binary plugin [" + this + "]: " + e.getMessage(), e);
         }
         finally {
             try {

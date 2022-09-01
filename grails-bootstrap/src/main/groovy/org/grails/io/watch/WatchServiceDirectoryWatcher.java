@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WatchServiceDirectoryWatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(WatchServiceDirectoryWatcher.class);
 
     private Map<WatchKey, List<String>> watchKeyToExtensionsMap = new ConcurrentHashMap<>();
 
@@ -83,7 +83,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         WatchEvent.Kind<?> kind = watchEvent.kind();
                         if (kind == StandardWatchEventKinds.OVERFLOW) {
                             // TODO how is this supposed to be handled? I think the best thing to do is ignore it, but I'm not positive
-                            LOG.warn("WatchService Overflow occurred");
+                            logger.warn("WatchService Overflow occurred");
                             continue;
                         }
                         WatchEvent<Path> pathWatchEvent = cast(watchEvent);
@@ -105,7 +105,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         else {
                             List<String> fileExtensions = this.watchKeyToExtensionsMap.get(watchKey);
                             if (fileExtensions == null) {
-                                LOG.debug("WatchService received an event for a file/directory that it's not interested in.");
+                                logger.debug("WatchService received an event for a file/directory that it's not interested in.");
                             }
                             else {
                                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
@@ -146,7 +146,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
             this.watchService.close();
         }
         catch (IOException e) {
-            LOG.debug("Exception while closing watchService", e);
+            logger.debug("Exception while closing watchService", e);
         }
     }
 

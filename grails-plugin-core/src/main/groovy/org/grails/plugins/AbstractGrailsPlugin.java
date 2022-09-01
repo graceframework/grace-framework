@@ -52,7 +52,7 @@ import org.grails.plugins.support.WatchPattern;
  */
 public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implements GrailsPlugin {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractGrailsPlugin.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractGrailsPlugin.class);
 
     public static final String PLUGIN_YML = "plugin.yml";
 
@@ -114,7 +114,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
                 }
             }
             catch (IOException e) {
-                LOG.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
+                logger.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
             }
         }
     }

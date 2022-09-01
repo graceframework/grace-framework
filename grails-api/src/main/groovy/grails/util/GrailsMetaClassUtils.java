@@ -44,7 +44,7 @@ public final class GrailsMetaClassUtils {
 
     private static final int MAX_DELEGATE_LEVELS = 10;
 
-    private static final Log LOG = LogFactory.getLog(GrailsMetaClassUtils.class);
+    private static final Log logger = LogFactory.getLog(GrailsMetaClassUtils.class);
 
     private static final Object[] NO_ARGS = new Object[0];
 
@@ -78,8 +78,8 @@ public final class GrailsMetaClassUtils {
         if (oldMetaClass instanceof AdaptingMetaClass) {
             adapter = ((AdaptingMetaClass) oldMetaClass);
             emc = (ExpandoMetaClass) adapter.getAdaptee();
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Obtained adapted MetaClass [" + emc + "] from AdapterMetaClass instance [" + adapter + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Obtained adapted MetaClass [" + emc + "] from AdapterMetaClass instance [" + adapter + "]");
             }
 
             if (removeSource) {
@@ -88,8 +88,8 @@ public final class GrailsMetaClassUtils {
         }
         else {
             emc = (ExpandoMetaClass) oldMetaClass;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No adapter MetaClass found, using original [" + emc + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("No adapter MetaClass found, using original [" + emc + "]");
             }
         }
 
@@ -117,14 +117,14 @@ public final class GrailsMetaClassUtils {
         replacement.initialize();
 
         if (adapter == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement + "]");
             }
             registry.setMetaClass(toClass, replacement);
         }
         else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement +
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement +
                         "] with adapter [" + adapter + "]");
             }
             try {
@@ -133,8 +133,8 @@ public final class GrailsMetaClassUtils {
                 registry.setMetaClass(toClass, newAdapter);
             }
             catch (NoSuchMethodException e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Exception thrown constructing new MetaClass adapter when reloading: " + e.getMessage(), e);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception thrown constructing new MetaClass adapter when reloading: " + e.getMessage(), e);
                 }
             }
         }
