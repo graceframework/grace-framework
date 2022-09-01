@@ -23,6 +23,14 @@
 	<module name="TreeWalker">
 
 		<!-- Coding -->
+		<module name="AvoidDoubleBraceInitialization"/>
+		<module name="CovariantEquals"/>
+		<module name="EmptyStatement"/>
+		<module name="EqualsHashCode"/>
+		<module name="SimplifyBooleanExpression"/>
+		<module name="SimplifyBooleanReturn"/>
+		<module name="StringLiteralEquality"/>
+		<module name="MultipleVariableDeclarations"/>
 		<module name="RequireThis">
 			<property name="validateOnlyOverlapping" value="false"/>
 			<property name="checkMethods" value="false"/>
