@@ -30,9 +30,9 @@ public class ValidationException extends GrailsException {
 
     private static final long serialVersionUID = 1L;
 
-    private Errors errors;
+    private final Errors errors;
 
-    private String fullMessage;
+    private final String fullMessage;
 
     public ValidationException(String msg, Errors e) {
         super(msg);

@@ -392,18 +392,6 @@ public abstract class NavigableMapConfig implements Config {
         return value;
     }
 
-    public static class ClassConversionException extends ConversionException {
-
-        public ClassConversionException(Class<?> actual, Class<?> expected) {
-            super(String.format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
-        }
-
-        public ClassConversionException(String actual, Class<?> expected, Exception ex) {
-            super(String.format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()), ex);
-        }
-
-    }
-
     /**
      * Resolves dot notated getProperty calls on a config object so that injected environmental variables
      * are properly resolved the same as Groovy's dot notation.
@@ -440,6 +428,18 @@ public abstract class NavigableMapConfig implements Config {
             elements.add(st.nextToken());
         }
         return elements;
+    }
+
+    public static class ClassConversionException extends ConversionException {
+
+        public ClassConversionException(Class<?> actual, Class<?> expected) {
+            super(String.format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
+        }
+
+        public ClassConversionException(String actual, Class<?> expected, Exception ex) {
+            super(String.format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()), ex);
+        }
+
     }
 
 }

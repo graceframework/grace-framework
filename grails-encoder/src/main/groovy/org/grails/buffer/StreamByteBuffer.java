@@ -242,6 +242,15 @@ public class StreamByteBuffer {
         setReadMode(ReadMode.RETAIN_AFTER_READING);
     }
 
+    public void clear() {
+        this.chunks.clear();
+        this.currentReadChunk = null;
+        this.totalBytesUnreadInList = 0;
+        this.totalBytesUnreadInIterator = 0;
+        this.currentWriteChunk = new StreamByteBufferChunk(this.chunkSize);
+        this.readIterator = null;
+    }
+
     class StreamByteBufferChunk {
 
         private int pointer = 0;
@@ -442,15 +451,6 @@ public class StreamByteBuffer {
             return StreamByteBuffer.this;
         }
 
-    }
-
-    public void clear() {
-        this.chunks.clear();
-        this.currentReadChunk = null;
-        this.totalBytesUnreadInList = 0;
-        this.totalBytesUnreadInIterator = 0;
-        this.currentWriteChunk = new StreamByteBufferChunk(this.chunkSize);
-        this.readIterator = null;
     }
 
 }

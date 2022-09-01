@@ -133,18 +133,6 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         }
     }
 
-    @Override
-    public Collection<UrlMapping> addMappings(Closure mappings) {
-        WebApplicationContext applicationContext = (WebApplicationContext) Holders.findApplicationContext();
-
-        UrlMappingEvaluator evaluator = new DefaultUrlMappingEvaluator(applicationContext);
-
-        List<UrlMapping> newMappings = evaluator.evaluateMappings(mappings);
-        this.urlMappings.addAll(newMappings);
-        initialize();
-        return newMappings;
-    }
-
     public void initialize() {
         sortMappings();
 
@@ -223,6 +211,26 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
                 }
             }
         }
+    }
+
+    public void setMaxWeightedCacheCapacity(int maxWeightedCacheCapacity) {
+        this.maxWeightedCacheCapacity = maxWeightedCacheCapacity;
+    }
+
+    public void setUrlCreatorMaxWeightedCacheCapacity(int urlCreatorMaxWeightedCacheCapacity) {
+        this.urlCreatorMaxWeightedCacheCapacity = urlCreatorMaxWeightedCacheCapacity;
+    }
+
+    @Override
+    public Collection<UrlMapping> addMappings(Closure mappings) {
+        WebApplicationContext applicationContext = (WebApplicationContext) Holders.findApplicationContext();
+
+        UrlMappingEvaluator evaluator = new DefaultUrlMappingEvaluator(applicationContext);
+
+        List<UrlMapping> newMappings = evaluator.evaluateMappings(mappings);
+        this.urlMappings.addAll(newMappings);
+        initialize();
+        return newMappings;
     }
 
     @SuppressWarnings("unchecked")
@@ -1035,14 +1043,6 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             return this.lookup.get(key);
         }
 
-    }
-
-    public void setMaxWeightedCacheCapacity(int maxWeightedCacheCapacity) {
-        this.maxWeightedCacheCapacity = maxWeightedCacheCapacity;
-    }
-
-    public void setUrlCreatorMaxWeightedCacheCapacity(int urlCreatorMaxWeightedCacheCapacity) {
-        this.urlCreatorMaxWeightedCacheCapacity = urlCreatorMaxWeightedCacheCapacity;
     }
 
 }

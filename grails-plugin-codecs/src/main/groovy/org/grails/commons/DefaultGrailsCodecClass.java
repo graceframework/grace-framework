@@ -129,6 +129,26 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
         return existingBean;
     }
 
+    public Encoder getEncoder() {
+        return this.encoder;
+    }
+
+    public Decoder getDecoder() {
+        return this.decoder;
+    }
+
+    public void configureCodecMethods() {
+        // for compatibility. Not everything (especially unit tests written by existing Grails applications) call afterPropertiesSet(),
+        // but everything calls configureCodecMethods() at least once
+        initializeCodec();
+
+        new CodecMetaClassSupport().configureCodecMethods(this);
+    }
+
+    public int getOrder() {
+        return this.order;
+    }
+
     private class ClosureCodecFactory implements CodecFactory {
 
         private Encoder encoder;
@@ -339,26 +359,6 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
             return callMethod(target);
         }
 
-    }
-
-    public Encoder getEncoder() {
-        return this.encoder;
-    }
-
-    public Decoder getDecoder() {
-        return this.decoder;
-    }
-
-    public void configureCodecMethods() {
-        // for compatibility. Not everything (especially unit tests written by existing Grails applications) call afterPropertiesSet(),
-        // but everything calls configureCodecMethods() at least once
-        initializeCodec();
-
-        new CodecMetaClassSupport().configureCodecMethods(this);
-    }
-
-    public int getOrder() {
-        return this.order;
     }
 
 }

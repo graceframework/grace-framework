@@ -316,146 +316,6 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     /**
-     * Defers the adding of a property to a bean definition until later.
-     * This is for a case where you assign a property to a list that may not contain bean references at
-     * that point of asignment, but may later hence it would need to be managed
-     *
-     * @author Graeme Rocher
-     */
-    private class DeferredProperty {
-
-        private BeanConfiguration config;
-
-        private String name;
-
-        private Object value;
-
-        DeferredProperty(BeanConfiguration config, String name, Object value) {
-            this.config = config;
-            this.name = name;
-            this.value = value;
-        }
-
-        public void setInBeanConfig() {
-            this.config.addProperty(this.name, this.value);
-        }
-
-    }
-
-    /**
-     * Adds new properties to runtime references.
-     *
-     * @author Graeme Rocher
-     * @since 0.4
-     */
-    private class ConfigurableRuntimeBeanReference extends RuntimeBeanReference implements GroovyObject {
-
-        private MetaClass metaClass;
-
-        private BeanConfiguration beanConfig;
-
-        public ConfigurableRuntimeBeanReference(String beanName, BeanConfiguration beanConfig, boolean toParent) {
-            super(beanName, toParent);
-            Assert.notNull(beanConfig, "Argument [beanConfig] cannot be null");
-            this.beanConfig = beanConfig;
-            this.metaClass = InvokerHelper.getMetaClass(this);
-        }
-
-        public MetaClass getMetaClass() {
-            return this.metaClass;
-        }
-
-        public Object getProperty(String property) {
-            if (property.equals("beanName")) {
-                return getBeanName();
-            }
-            if (property.equals("source")) {
-                return getSource();
-            }
-            if (this.beanConfig != null) {
-                return new WrappedPropertyValue(property, this.beanConfig.getPropertyValue(property));
-            }
-            return this.metaClass.getProperty(this, property);
-        }
-
-        /**
-         * Wraps a BeanConfiguration property an ensures that any RuntimeReference additions to it are
-         * deferred for resolution later.
-         */
-        private class WrappedPropertyValue extends GroovyObjectSupport {
-
-            private Object propertyValue;
-
-            private String propertyName;
-
-            public WrappedPropertyValue(String propertyName, Object propertyValue) {
-                this.propertyValue = propertyValue;
-                this.propertyName = propertyName;
-            }
-
-            @SuppressWarnings("unused")
-            public void leftShift(Object value) {
-                InvokerHelper.invokeMethod(this.propertyValue, "leftShift", value);
-                updateDeferredProperties(value);
-            }
-
-            @SuppressWarnings("unused")
-            public boolean add(Object value) {
-                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "add", value);
-                updateDeferredProperties(value);
-                return retval;
-            }
-
-            @SuppressWarnings("unused")
-            public boolean addAll(@SuppressWarnings("rawtypes") Collection values) {
-                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "addAll", values);
-                for (Object value : values) {
-                    updateDeferredProperties(value);
-                }
-                return retval;
-            }
-
-            @Override
-            public Object invokeMethod(String name, Object args) {
-                return InvokerHelper.invokeMethod(this.propertyValue, name, args);
-            }
-
-            @Override
-            public Object getProperty(String name) {
-                return InvokerHelper.getProperty(this.propertyValue, name);
-            }
-
-            @Override
-            public void setProperty(String name, Object value) {
-                InvokerHelper.setProperty(this.propertyValue, name, value);
-            }
-
-            private void updateDeferredProperties(Object value) {
-                if (value instanceof RuntimeBeanReference) {
-                    BeanBuilder.this.deferredProperties.put(ConfigurableRuntimeBeanReference.this.beanConfig.getName(),
-                            new DeferredProperty(ConfigurableRuntimeBeanReference.this.beanConfig, this.propertyName, this.propertyValue));
-                }
-            }
-
-        }
-
-        public Object invokeMethod(String name, Object args) {
-            return this.metaClass.invokeMethod(this, name, args);
-        }
-
-        public void setMetaClass(MetaClass metaClass) {
-            this.metaClass = metaClass;
-        }
-
-        public void setProperty(String property, Object newValue) {
-            if (!addToDeferred(this.beanConfig, property, newValue)) {
-                this.beanConfig.setPropertyValue(property, newValue);
-            }
-        }
-
-    }
-
-    /**
      * Takes a resource pattern as (@see org.springframework.core.io.support.PathMatchingResourcePatternResolver)
      * This allows you load multiple bean resources in this single builder
      *
@@ -1016,6 +876,147 @@ public class BeanBuilder extends GroovyObjectSupport {
     @SuppressWarnings("unchecked")
     public void setBinding(Binding b) {
         this.binding = b.getVariables();
+    }
+
+
+    /**
+     * Defers the adding of a property to a bean definition until later.
+     * This is for a case where you assign a property to a list that may not contain bean references at
+     * that point of asignment, but may later hence it would need to be managed
+     *
+     * @author Graeme Rocher
+     */
+    private class DeferredProperty {
+
+        private BeanConfiguration config;
+
+        private String name;
+
+        private Object value;
+
+        DeferredProperty(BeanConfiguration config, String name, Object value) {
+            this.config = config;
+            this.name = name;
+            this.value = value;
+        }
+
+        public void setInBeanConfig() {
+            this.config.addProperty(this.name, this.value);
+        }
+
+    }
+
+    /**
+     * Adds new properties to runtime references.
+     *
+     * @author Graeme Rocher
+     * @since 0.4
+     */
+    private class ConfigurableRuntimeBeanReference extends RuntimeBeanReference implements GroovyObject {
+
+        private MetaClass metaClass;
+
+        private BeanConfiguration beanConfig;
+
+        public ConfigurableRuntimeBeanReference(String beanName, BeanConfiguration beanConfig, boolean toParent) {
+            super(beanName, toParent);
+            Assert.notNull(beanConfig, "Argument [beanConfig] cannot be null");
+            this.beanConfig = beanConfig;
+            this.metaClass = InvokerHelper.getMetaClass(this);
+        }
+
+        public MetaClass getMetaClass() {
+            return this.metaClass;
+        }
+
+        public void setMetaClass(MetaClass metaClass) {
+            this.metaClass = metaClass;
+        }
+
+        public Object getProperty(String property) {
+            if (property.equals("beanName")) {
+                return getBeanName();
+            }
+            if (property.equals("source")) {
+                return getSource();
+            }
+            if (this.beanConfig != null) {
+                return new WrappedPropertyValue(property, this.beanConfig.getPropertyValue(property));
+            }
+            return this.metaClass.getProperty(this, property);
+        }
+
+        public void setProperty(String property, Object newValue) {
+            if (!addToDeferred(this.beanConfig, property, newValue)) {
+                this.beanConfig.setPropertyValue(property, newValue);
+            }
+        }
+
+        public Object invokeMethod(String name, Object args) {
+            return this.metaClass.invokeMethod(this, name, args);
+        }
+
+        /**
+         * Wraps a BeanConfiguration property an ensures that any RuntimeReference additions to it are
+         * deferred for resolution later.
+         */
+        private class WrappedPropertyValue extends GroovyObjectSupport {
+
+            private Object propertyValue;
+
+            private String propertyName;
+
+            public WrappedPropertyValue(String propertyName, Object propertyValue) {
+                this.propertyValue = propertyValue;
+                this.propertyName = propertyName;
+            }
+
+            @SuppressWarnings("unused")
+            public void leftShift(Object value) {
+                InvokerHelper.invokeMethod(this.propertyValue, "leftShift", value);
+                updateDeferredProperties(value);
+            }
+
+            @SuppressWarnings("unused")
+            public boolean add(Object value) {
+                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "add", value);
+                updateDeferredProperties(value);
+                return retval;
+            }
+
+            @SuppressWarnings("unused")
+            public boolean addAll(@SuppressWarnings("rawtypes") Collection values) {
+                boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "addAll", values);
+                for (Object value : values) {
+                    updateDeferredProperties(value);
+                }
+                return retval;
+            }
+
+            @Override
+            public Object invokeMethod(String name, Object args) {
+                return InvokerHelper.invokeMethod(this.propertyValue, name, args);
+            }
+
+            @Override
+            public Object getProperty(String name) {
+                return InvokerHelper.getProperty(this.propertyValue, name);
+            }
+
+            @Override
+            public void setProperty(String name, Object value) {
+                InvokerHelper.setProperty(this.propertyValue, name, value);
+            }
+
+            private void updateDeferredProperties(Object value) {
+                if (value instanceof RuntimeBeanReference) {
+                    BeanBuilder.this.deferredProperties.put(ConfigurableRuntimeBeanReference.this.beanConfig.getName(),
+                            new DeferredProperty(ConfigurableRuntimeBeanReference.this.beanConfig, this.propertyName, this.propertyValue));
+                }
+            }
+
+        }
+
     }
 
 }

@@ -166,6 +166,18 @@ public class DirectoryWatcher extends Thread {
         addWatchDirectory(dir, fileExtensions);
     }
 
+    @Override
+    public void run() {
+        this.directoryWatcherDelegate.run();
+    }
+
+    private String removeStartingDotIfPresent(String extension) {
+        if (extension.startsWith(".")) {
+            extension = extension.substring(1);
+        }
+        return extension;
+    }
+
     /**
      * Interface for FileChangeListeners
      */
@@ -185,18 +197,6 @@ public class DirectoryWatcher extends Thread {
          */
         void onNew(File file);
 
-    }
-
-    @Override
-    public void run() {
-        this.directoryWatcherDelegate.run();
-    }
-
-    private String removeStartingDotIfPresent(String extension) {
-        if (extension.startsWith(".")) {
-            extension = extension.substring(1);
-        }
-        return extension;
     }
 
 }

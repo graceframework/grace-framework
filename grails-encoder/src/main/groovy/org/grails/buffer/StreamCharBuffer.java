@@ -351,14 +351,6 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         reset(true);
     }
 
-    private class StreamCharBufferKey {
-
-        StreamCharBuffer getBuffer() {
-            return StreamCharBuffer.this;
-        }
-
-    }
-
     public boolean isPreferSubChunkWhenWritingToOtherBuffer() {
         return this.preferSubChunkWhenWritingToOtherBuffer;
     }
@@ -847,32 +839,6 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         }
     }
 
-    public static final class EncodedPart {
-
-        private final EncodingState encodingState;
-
-        private final String part;
-
-        public EncodedPart(EncodingState encodingState, String part) {
-            this.encodingState = encodingState;
-            this.part = part;
-        }
-
-        public EncodingState getEncodingState() {
-            return this.encodingState;
-        }
-
-        public String getPart() {
-            return this.part;
-        }
-
-        @Override
-        public String toString() {
-            return "EncodedPart [encodingState='" + this.encodingState + "', part='" + this.part + "']";
-        }
-
-    }
-
     public List<EncodedPart> dumpEncodedParts() {
         List<EncodedPart> encodedParts = new ArrayList<>();
         MultipartStringChunk mpStringChunk = readToSingleChunk().asStringChunk();
@@ -1059,6 +1025,10 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         return this.connectToWriters != null && !this.connectToWriters.isEmpty();
     }
 
+    private boolean isNotConnectedToEncoderAwareWriters() {
+        return this.notConnectedToEncodeAwareWriters != null && this.notConnectedToEncodeAwareWriters;
+    }
+
     private void flushToConnected(boolean forceFlush) throws IOException {
         startUsingConnectedWritersWriter();
         if (this.notConnectedToEncodeAwareWriters == null) {
@@ -1097,6 +1067,335 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         else {
             System.arraycopy(src, srcPos, dest, destPos, length);
         }
+    }
+
+    /* Compatibility methods so that StreamCharBuffer will behave more like java.lang.String in groovy code */
+
+    public char charAt(int index) {
+        return toString().charAt(index);
+    }
+
+    public int length() {
+        return size();
+    }
+
+    public CharSequence subSequence(int start, int end) {
+        return toString().subSequence(start, end);
+    }
+
+    public boolean asBoolean() {
+        return isNotEmpty();
+    }
+
+    /* methods for notifying child (sub) StreamCharBuffer changes to the parent StreamCharBuffer */
+
+    void addParentBuffer(StreamCharBuffer parent) {
+        if (!this.notifyParentBuffersEnabled) {
+            return;
+        }
+
+        if (this.parentBuffers == null) {
+            this.parentBuffers = new HashSet<>();
+        }
+        this.parentBuffers.add(new SoftReference<>(parent.bufferKey));
+    }
+
+    protected boolean bufferChanged(StreamCharBuffer buffer) {
+        markBufferChanged();
+
+        StreamCharBufferSubChunk subChunk = this.dynamicChunkMap.get(buffer.bufferKey);
+        if (subChunk == null) {
+            // buffer isn't a subchunk in this buffer any more
+            return false;
+        }
+        // reset cached size;
+        if (subChunk.resetSubBuffer()) {
+            this.totalCharsInDynamicChunks = -1;
+            this.sizeAtLeast = -1;
+            // notify parents too
+            notifyBufferChange();
+        }
+        return true;
+    }
+
+    protected List<StreamCharBuffer> getCurrentParentBuffers() {
+        List<StreamCharBuffer> currentParentBuffers = new ArrayList<>();
+        if (this.parentBuffers != null) {
+            for (Iterator<SoftReference<StreamCharBufferKey>> i = this.parentBuffers.iterator(); i.hasNext(); ) {
+                SoftReference<StreamCharBufferKey> ref = i.next();
+                final StreamCharBuffer.StreamCharBufferKey parentKey = ref.get();
+                if (parentKey != null) {
+                    currentParentBuffers.add(parentKey.getBuffer());
+                }
+            }
+        }
+        return currentParentBuffers;
+    }
+
+
+    protected void notifyBufferChange() {
+        markBufferChanged();
+
+        if (!this.notifyParentBuffersEnabled) {
+            return;
+        }
+
+        if (this.parentBuffers == null || this.parentBuffers.isEmpty()) {
+            return;
+        }
+
+        List<SoftReference<StreamCharBufferKey>> parentBuffersList = new ArrayList<>(this.parentBuffers);
+        for (SoftReference<StreamCharBufferKey> ref : parentBuffersList) {
+            final StreamCharBuffer.StreamCharBufferKey parentKey = ref.get();
+            boolean removeIt = true;
+            if (parentKey != null) {
+                StreamCharBuffer parent = parentKey.getBuffer();
+                removeIt = !parent.bufferChanged(this);
+            }
+            if (removeIt) {
+                this.parentBuffers.remove(ref);
+            }
+        }
+    }
+
+    public int getBufferChangesCounter() {
+        return this.bufferChangesCounter;
+    }
+
+    protected int markBufferChanged() {
+        return this.bufferChangesCounter++;
+    }
+
+    @Override
+    public StreamCharBuffer clone() {
+        StreamCharBuffer cloned = new StreamCharBuffer();
+        cloned.setNotifyParentBuffersEnabled(false);
+        cloned.setAllowSubBuffers(false);
+        if (this.size() > 0) {
+            cloned.addChunk(readToSingleChunk());
+        }
+        cloned.setAllowSubBuffers(true);
+        return cloned;
+    }
+
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        int version = in.readInt();
+        if (version != EXTERNALIZABLE_VERSION) {
+            throw new IOException("Uncompatible version in serialization stream.");
+        }
+        reset();
+        int len = in.readInt();
+        if (len > 0) {
+            char[] buf = new char[len];
+            Reader reader = new InputStreamReader((InputStream) in, "UTF-8");
+            reader.read(buf);
+            String str = StringCharArrayAccessor.createString(buf);
+            MultipartStringChunk mpStringChunk = new MultipartStringChunk(str);
+            int partCount = in.readInt();
+            for (int i = 0; i < partCount; i++) {
+                EncodingStatePart current = new EncodingStatePart();
+                mpStringChunk.appendEncodingStatePart(current);
+                current.len = in.readInt();
+                int encodersSize = in.readInt();
+                Set<Encoder> encoders = null;
+                if (encodersSize > 0) {
+                    encoders = new LinkedHashSet<>();
+                    for (int j = 0; j < encodersSize; j++) {
+                        String codecName = in.readUTF();
+                        boolean safe = in.readBoolean();
+                        encoders.add(new SavedEncoder(codecName, safe));
+                    }
+                }
+                current.encodingState = new EncodingStateImpl(encoders, null);
+            }
+            addChunk(mpStringChunk);
+        }
+    }
+
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(EXTERNALIZABLE_VERSION);
+        StringChunk stringChunk = readToSingleStringChunk(false);
+        if (stringChunk != null && stringChunk.str.length() > 0) {
+            char[] buf = StringCharArrayAccessor.getValue(stringChunk.str);
+            out.writeInt(buf.length);
+            Writer writer = new OutputStreamWriter((OutputStream) out, "UTF-8");
+            writer.write(buf);
+            writer.flush();
+            if (stringChunk instanceof MultipartStringChunk) {
+                MultipartStringChunk mpStringChunk = (MultipartStringChunk) stringChunk;
+                out.writeInt(mpStringChunk.partCount());
+                EncodingStatePart current = mpStringChunk.firstPart;
+                while (current != null) {
+                    out.writeInt(current.len);
+                    if (current.encodingState != null && current.encodingState.getEncoders() != null &&
+                            current.encodingState.getEncoders().size() > 0) {
+                        out.writeInt(current.encodingState.getEncoders().size());
+                        for (Encoder encoder : current.encodingState.getEncoders()) {
+                            out.writeUTF(encoder.getCodecIdentifier().getCodecName());
+                            out.writeBoolean(encoder.isSafe());
+                        }
+                    }
+                    else {
+                        out.writeInt(0);
+                    }
+                    current = current.next;
+                }
+            }
+            else {
+                out.writeInt(0);
+            }
+        }
+        else {
+            out.writeInt(0);
+        }
+    }
+
+    public StreamCharBuffer encodeToBuffer(Encoder encoder) {
+        return encodeToBuffer(encoder, isAllowSubBuffers(), isNotifyParentBuffersEnabled());
+    }
+
+    public StreamCharBuffer encodeToBuffer(Encoder encoder, boolean allowSubBuffers, boolean notifyParentBuffersEnabled) {
+        StreamCharBuffer coded = new StreamCharBuffer(Math.min(Math.max(this.totalChunkSize, this.chunkSize) * 12 / 10, this.maxChunkSize));
+        coded.setAllowSubBuffers(allowSubBuffers);
+        coded.setNotifyParentBuffersEnabled(notifyParentBuffersEnabled);
+        EncodedAppender codedWriter = coded.writer.getEncodedAppender();
+        try {
+            encodeTo(codedWriter, encoder);
+        }
+        catch (IOException e) {
+            // Should not ever happen
+            log.error("IOException in StreamCharBuffer.encodeToBuffer", e);
+        }
+        return coded;
+    }
+
+    public StreamCharBuffer encodeToBuffer(List<Encoder> encoders) {
+        return encodeToBuffer(encoders, isAllowSubBuffers(), isNotifyParentBuffersEnabled());
+    }
+
+    public StreamCharBuffer encodeToBuffer(List<Encoder> encoders, boolean allowSubBuffers, boolean notifyParentBuffersEnabled) {
+        StreamCharBuffer currentBuffer = this;
+        for (Encoder encoder : encoders) {
+            currentBuffer = currentBuffer.encodeToBuffer(encoder, allowSubBuffers, notifyParentBuffersEnabled);
+        }
+        return currentBuffer;
+    }
+
+    public void encodeTo(EncodedAppender appender, Encoder encoder) throws IOException {
+        if (isPreferSubChunkWhenWritingToOtherBuffer() && appender instanceof StreamCharBufferEncodedAppender) {
+            StreamCharBufferWriter writer = ((StreamCharBufferEncodedAppender) appender).getWriter();
+            if (writer.appendSubBuffer(this, encoder != null ? Collections.singletonList(encoder) : null)) {
+                // subbuffer was appended, so return
+                return;
+            }
+        }
+        AbstractChunk current = this.firstChunk;
+        while (current != null) {
+            current.encodeTo(appender, encoder);
+            current = current.next;
+        }
+        this.allocBuffer.encodeTo(appender, encoder);
+    }
+
+    public boolean isAllowSubBuffers() {
+        return this.subBuffersEnabled && !isConnectedMode();
+    }
+
+    public void setAllowSubBuffers(boolean allowSubBuffers) {
+        this.subBuffersEnabled = allowSubBuffers;
+    }
+
+    public CharSequence encode(Encoder encoder) {
+        return encodeToBuffer(encoder);
+    }
+
+    public Writer getWriterForEncoder() {
+        return getWriterForEncoder(null);
+    }
+
+    public Writer getWriterForEncoder(Encoder encoder) {
+        return getWriterForEncoder(encoder, lookupDefaultEncodingStateRegistry());
+    }
+
+    protected EncodingStateRegistry lookupDefaultEncodingStateRegistry() {
+        EncodingStateRegistryLookup encodingStateRegistryLookup = EncodingStateRegistryLookupHolder.getEncodingStateRegistryLookup();
+        return encodingStateRegistryLookup != null ? encodingStateRegistryLookup.lookup() : null;
+    }
+
+    public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
+        return getWriterForEncoder(encoder, encodingStateRegistry, false);
+    }
+
+    public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry, boolean ignoreEncodingState) {
+        EncodedAppender encodedAppender = this.writer.getEncodedAppender();
+        encodedAppender.setIgnoreEncodingState(ignoreEncodingState);
+        return new EncodedAppenderWriter(encodedAppender, encoder, encodingStateRegistry);
+    }
+
+    public boolean isNotifyParentBuffersEnabled() {
+        return this.notifyParentBuffersEnabled;
+    }
+
+    /**
+     * By default the parent buffers (a buffer where this buffer has been appended to) get notified of changed to this buffer.
+     *
+     * You can control the notification behavior with this property.
+     * Setting this property to false will also clear the references to parent buffers if there are any.
+     *
+     * @param notifyParentBuffersEnabled
+     */
+    public void setNotifyParentBuffersEnabled(boolean notifyParentBuffersEnabled) {
+        this.notifyParentBuffersEnabled = notifyParentBuffersEnabled;
+        if (!notifyParentBuffersEnabled && this.parentBuffers != null) {
+            this.parentBuffers.clear();
+        }
+    }
+
+    @Override
+    public void encodeTo(Writer writer, EncodesToWriter encoder) throws IOException {
+        AbstractChunk current = this.firstChunk;
+        while (current != null) {
+            current.encodeTo(writer, encoder);
+            current = current.next;
+        }
+        this.allocBuffer.encodeTo(writer, encoder);
+    }
+
+    /**
+     * Delegates methodMissing to String object
+     *
+     * @param name The name of the method
+     * @param args The arguments
+     * @return The return value
+     */
+    public Object methodMissing(String name, Object args) {
+        String str = this.toString();
+        return InvokerHelper.invokeMethod(str, name, args);
+    }
+
+    public Object asType(Class clazz) {
+        if (clazz == String.class) {
+            return toString();
+        }
+        else if (clazz == char[].class) {
+            return toCharArray();
+        }
+        else if (clazz == Boolean.class || clazz == boolean.class) {
+            return asBoolean();
+        }
+        else {
+            return StringGroovyMethods.asType(toString(), clazz);
+        }
+    }
+
+
+    private class StreamCharBufferKey {
+
+        StreamCharBuffer getBuffer() {
+            return StreamCharBuffer.this;
+        }
+
     }
 
     /**
@@ -1386,10 +1685,6 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
             flushWriter(false);
         }
 
-    }
-
-    private boolean isNotConnectedToEncoderAwareWriters() {
-        return this.notConnectedToEncodeAwareWriters != null && this.notConnectedToEncodeAwareWriters;
     }
 
     private final static class StreamCharBufferEncodedAppender extends AbstractEncodedAppender {
@@ -1981,6 +2276,32 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         EncodingState encodingState;
 
         int len = -1;
+
+    }
+
+    public static final class EncodedPart {
+
+        private final EncodingState encodingState;
+
+        private final String part;
+
+        public EncodedPart(EncodingState encodingState, String part) {
+            this.encodingState = encodingState;
+            this.part = part;
+        }
+
+        public EncodingState getEncodingState() {
+            return this.encodingState;
+        }
+
+        public String getPart() {
+            return this.part;
+        }
+
+        @Override
+        public String toString() {
+            return "EncodedPart [encodingState='" + this.encodingState + "', part='" + this.part + "']";
+        }
 
     }
 
@@ -2787,150 +3108,6 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
 
     }
 
-    /* Compatibility methods so that StreamCharBuffer will behave more like java.lang.String in groovy code */
-
-    public char charAt(int index) {
-        return toString().charAt(index);
-    }
-
-    public int length() {
-        return size();
-    }
-
-    public CharSequence subSequence(int start, int end) {
-        return toString().subSequence(start, end);
-    }
-
-    public boolean asBoolean() {
-        return isNotEmpty();
-    }
-
-    /* methods for notifying child (sub) StreamCharBuffer changes to the parent StreamCharBuffer */
-
-    void addParentBuffer(StreamCharBuffer parent) {
-        if (!this.notifyParentBuffersEnabled) {
-            return;
-        }
-
-        if (this.parentBuffers == null) {
-            this.parentBuffers = new HashSet<>();
-        }
-        this.parentBuffers.add(new SoftReference<>(parent.bufferKey));
-    }
-
-    protected boolean bufferChanged(StreamCharBuffer buffer) {
-        markBufferChanged();
-
-        StreamCharBufferSubChunk subChunk = this.dynamicChunkMap.get(buffer.bufferKey);
-        if (subChunk == null) {
-            // buffer isn't a subchunk in this buffer any more
-            return false;
-        }
-        // reset cached size;
-        if (subChunk.resetSubBuffer()) {
-            this.totalCharsInDynamicChunks = -1;
-            this.sizeAtLeast = -1;
-            // notify parents too
-            notifyBufferChange();
-        }
-        return true;
-    }
-
-    protected List<StreamCharBuffer> getCurrentParentBuffers() {
-        List<StreamCharBuffer> currentParentBuffers = new ArrayList<>();
-        if (this.parentBuffers != null) {
-            for (Iterator<SoftReference<StreamCharBufferKey>> i = this.parentBuffers.iterator(); i.hasNext(); ) {
-                SoftReference<StreamCharBufferKey> ref = i.next();
-                final StreamCharBuffer.StreamCharBufferKey parentKey = ref.get();
-                if (parentKey != null) {
-                    currentParentBuffers.add(parentKey.getBuffer());
-                }
-            }
-        }
-        return currentParentBuffers;
-    }
-
-
-    protected void notifyBufferChange() {
-        markBufferChanged();
-
-        if (!this.notifyParentBuffersEnabled) {
-            return;
-        }
-
-        if (this.parentBuffers == null || this.parentBuffers.isEmpty()) {
-            return;
-        }
-
-        List<SoftReference<StreamCharBufferKey>> parentBuffersList = new ArrayList<>(this.parentBuffers);
-        for (SoftReference<StreamCharBufferKey> ref : parentBuffersList) {
-            final StreamCharBuffer.StreamCharBufferKey parentKey = ref.get();
-            boolean removeIt = true;
-            if (parentKey != null) {
-                StreamCharBuffer parent = parentKey.getBuffer();
-                removeIt = !parent.bufferChanged(this);
-            }
-            if (removeIt) {
-                this.parentBuffers.remove(ref);
-            }
-        }
-    }
-
-    public int getBufferChangesCounter() {
-        return this.bufferChangesCounter;
-    }
-
-    protected int markBufferChanged() {
-        return this.bufferChangesCounter++;
-    }
-
-    @Override
-    public StreamCharBuffer clone() {
-        StreamCharBuffer cloned = new StreamCharBuffer();
-        cloned.setNotifyParentBuffersEnabled(false);
-        cloned.setAllowSubBuffers(false);
-        if (this.size() > 0) {
-            cloned.addChunk(readToSingleChunk());
-        }
-        cloned.setAllowSubBuffers(true);
-        return cloned;
-    }
-
-    public void readExternal(ObjectInput in) throws IOException,
-            ClassNotFoundException {
-        int version = in.readInt();
-        if (version != EXTERNALIZABLE_VERSION) {
-            throw new IOException("Uncompatible version in serialization stream.");
-        }
-        reset();
-        int len = in.readInt();
-        if (len > 0) {
-            char[] buf = new char[len];
-            Reader reader = new InputStreamReader((InputStream) in, "UTF-8");
-            reader.read(buf);
-            String str = StringCharArrayAccessor.createString(buf);
-            MultipartStringChunk mpStringChunk = new MultipartStringChunk(str);
-            int partCount = in.readInt();
-            for (int i = 0; i < partCount; i++) {
-                EncodingStatePart current = new EncodingStatePart();
-                mpStringChunk.appendEncodingStatePart(current);
-                current.len = in.readInt();
-                int encodersSize = in.readInt();
-                Set<Encoder> encoders = null;
-                if (encodersSize > 0) {
-                    encoders = new LinkedHashSet<>();
-                    for (int j = 0; j < encodersSize; j++) {
-                        String codecName = in.readUTF();
-                        boolean safe = in.readBoolean();
-                        encoders.add(new SavedEncoder(codecName, safe));
-                    }
-                }
-                current.encodingState = new EncodingStateImpl(encoders, null);
-            }
-            addChunk(mpStringChunk);
-        }
-    }
-
     private static final class SavedEncoder implements Encoder {
 
         private CodecIdentifier codecIdentifier;
@@ -2962,182 +3139,6 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
             return false;
         }
 
-    }
-
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeInt(EXTERNALIZABLE_VERSION);
-        StringChunk stringChunk = readToSingleStringChunk(false);
-        if (stringChunk != null && stringChunk.str.length() > 0) {
-            char[] buf = StringCharArrayAccessor.getValue(stringChunk.str);
-            out.writeInt(buf.length);
-            Writer writer = new OutputStreamWriter((OutputStream) out, "UTF-8");
-            writer.write(buf);
-            writer.flush();
-            if (stringChunk instanceof MultipartStringChunk) {
-                MultipartStringChunk mpStringChunk = (MultipartStringChunk) stringChunk;
-                out.writeInt(mpStringChunk.partCount());
-                EncodingStatePart current = mpStringChunk.firstPart;
-                while (current != null) {
-                    out.writeInt(current.len);
-                    if (current.encodingState != null && current.encodingState.getEncoders() != null &&
-                            current.encodingState.getEncoders().size() > 0) {
-                        out.writeInt(current.encodingState.getEncoders().size());
-                        for (Encoder encoder : current.encodingState.getEncoders()) {
-                            out.writeUTF(encoder.getCodecIdentifier().getCodecName());
-                            out.writeBoolean(encoder.isSafe());
-                        }
-                    }
-                    else {
-                        out.writeInt(0);
-                    }
-                    current = current.next;
-                }
-            }
-            else {
-                out.writeInt(0);
-            }
-        }
-        else {
-            out.writeInt(0);
-        }
-    }
-
-    public StreamCharBuffer encodeToBuffer(Encoder encoder) {
-        return encodeToBuffer(encoder, isAllowSubBuffers(), isNotifyParentBuffersEnabled());
-    }
-
-    public StreamCharBuffer encodeToBuffer(Encoder encoder, boolean allowSubBuffers, boolean notifyParentBuffersEnabled) {
-        StreamCharBuffer coded = new StreamCharBuffer(Math.min(Math.max(this.totalChunkSize, this.chunkSize) * 12 / 10, this.maxChunkSize));
-        coded.setAllowSubBuffers(allowSubBuffers);
-        coded.setNotifyParentBuffersEnabled(notifyParentBuffersEnabled);
-        EncodedAppender codedWriter = coded.writer.getEncodedAppender();
-        try {
-            encodeTo(codedWriter, encoder);
-        }
-        catch (IOException e) {
-            // Should not ever happen
-            log.error("IOException in StreamCharBuffer.encodeToBuffer", e);
-        }
-        return coded;
-    }
-
-    public StreamCharBuffer encodeToBuffer(List<Encoder> encoders) {
-        return encodeToBuffer(encoders, isAllowSubBuffers(), isNotifyParentBuffersEnabled());
-    }
-
-    public StreamCharBuffer encodeToBuffer(List<Encoder> encoders, boolean allowSubBuffers, boolean notifyParentBuffersEnabled) {
-        StreamCharBuffer currentBuffer = this;
-        for (Encoder encoder : encoders) {
-            currentBuffer = currentBuffer.encodeToBuffer(encoder, allowSubBuffers, notifyParentBuffersEnabled);
-        }
-        return currentBuffer;
-    }
-
-    public void encodeTo(EncodedAppender appender, Encoder encoder) throws IOException {
-        if (isPreferSubChunkWhenWritingToOtherBuffer() && appender instanceof StreamCharBufferEncodedAppender) {
-            StreamCharBufferWriter writer = ((StreamCharBufferEncodedAppender) appender).getWriter();
-            if (writer.appendSubBuffer(this, encoder != null ? Collections.singletonList(encoder) : null)) {
-                // subbuffer was appended, so return
-                return;
-            }
-        }
-        AbstractChunk current = this.firstChunk;
-        while (current != null) {
-            current.encodeTo(appender, encoder);
-            current = current.next;
-        }
-        this.allocBuffer.encodeTo(appender, encoder);
-    }
-
-    public boolean isAllowSubBuffers() {
-        return this.subBuffersEnabled && !isConnectedMode();
-    }
-
-    public void setAllowSubBuffers(boolean allowSubBuffers) {
-        this.subBuffersEnabled = allowSubBuffers;
-    }
-
-    public CharSequence encode(Encoder encoder) {
-        return encodeToBuffer(encoder);
-    }
-
-    public Writer getWriterForEncoder() {
-        return getWriterForEncoder(null);
-    }
-
-    public Writer getWriterForEncoder(Encoder encoder) {
-        return getWriterForEncoder(encoder, lookupDefaultEncodingStateRegistry());
-    }
-
-    protected EncodingStateRegistry lookupDefaultEncodingStateRegistry() {
-        EncodingStateRegistryLookup encodingStateRegistryLookup = EncodingStateRegistryLookupHolder.getEncodingStateRegistryLookup();
-        return encodingStateRegistryLookup != null ? encodingStateRegistryLookup.lookup() : null;
-    }
-
-    public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
-        return getWriterForEncoder(encoder, encodingStateRegistry, false);
-    }
-
-    public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry, boolean ignoreEncodingState) {
-        EncodedAppender encodedAppender = this.writer.getEncodedAppender();
-        encodedAppender.setIgnoreEncodingState(ignoreEncodingState);
-        return new EncodedAppenderWriter(encodedAppender, encoder, encodingStateRegistry);
-    }
-
-    public boolean isNotifyParentBuffersEnabled() {
-        return this.notifyParentBuffersEnabled;
-    }
-
-    /**
-     * By default the parent buffers (a buffer where this buffer has been appended to) get notified of changed to this buffer.
-     *
-     * You can control the notification behavior with this property.
-     * Setting this property to false will also clear the references to parent buffers if there are any.
-     *
-     * @param notifyParentBuffersEnabled
-     */
-    public void setNotifyParentBuffersEnabled(boolean notifyParentBuffersEnabled) {
-        this.notifyParentBuffersEnabled = notifyParentBuffersEnabled;
-        if (!notifyParentBuffersEnabled && this.parentBuffers != null) {
-            this.parentBuffers.clear();
-        }
-    }
-
-    @Override
-    public void encodeTo(Writer writer, EncodesToWriter encoder) throws IOException {
-        AbstractChunk current = this.firstChunk;
-        while (current != null) {
-            current.encodeTo(writer, encoder);
-            current = current.next;
-        }
-        this.allocBuffer.encodeTo(writer, encoder);
-    }
-
-    /**
-     * Delegates methodMissing to String object
-     *
-     * @param name The name of the method
-     * @param args The arguments
-     * @return The return value
-     */
-    public Object methodMissing(String name, Object args) {
-        String str = this.toString();
-        return InvokerHelper.invokeMethod(str, name, args);
-    }
-
-    public Object asType(Class clazz) {
-        if (clazz == String.class) {
-            return toString();
-        }
-        else if (clazz == char[].class) {
-            return toCharArray();
-        }
-        else if (clazz == Boolean.class || clazz == boolean.class) {
-            return asBoolean();
-        }
-        else {
-            return StringGroovyMethods.asType(toString(), clazz);
-        }
     }
 
 }

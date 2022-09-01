@@ -488,25 +488,6 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
                 () -> new PropertiesHolderCacheEntry(), true, null);
     }
 
-    protected static class PropertiesHolderCacheEntry extends CacheEntry<PropertiesHolder> {
-
-        public PropertiesHolderCacheEntry() {
-            super();
-        }
-
-        @Override
-        protected PropertiesHolder updateValue(PropertiesHolder oldValue, Callable<PropertiesHolder> updater, Object cacheRequestObject)
-                throws Exception {
-            if (oldValue != null) {
-                oldValue.update();
-                return oldValue;
-            }
-            return updater.call();
-        }
-
-    }
-
-
     /**
      * Load the properties from the given resource.
      * @param resource the resource to load from
@@ -602,6 +583,26 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
             return null;
         }
     }
+
+
+    protected static class PropertiesHolderCacheEntry extends CacheEntry<PropertiesHolder> {
+
+        public PropertiesHolderCacheEntry() {
+            super();
+        }
+
+        @Override
+        protected PropertiesHolder updateValue(PropertiesHolder oldValue, Callable<PropertiesHolder> updater, Object cacheRequestObject)
+                throws Exception {
+            if (oldValue != null) {
+                oldValue.update();
+                return oldValue;
+            }
+            return updater.call();
+        }
+
+    }
+
 
     /**
      * PropertiesHolder for caching.

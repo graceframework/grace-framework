@@ -420,36 +420,6 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         return new StandardServletEnvironment();
     }
 
-    public class MockResource extends AbstractResource {
-
-        private String contents = "";
-
-        private String location;
-
-        public MockResource(String location) {
-            this.location = location;
-        }
-
-        public MockResource(String location, String contents) {
-            this(location);
-            this.contents = contents;
-        }
-
-        @Override
-        public boolean exists() {
-            return true;
-        }
-
-        public String getDescription() {
-            return this.location;
-        }
-
-        public InputStream getInputStream() throws IOException {
-            return new ByteArrayInputStream(this.contents.getBytes("UTF-8"));
-        }
-
-    }
-
     @Override
     public <T> T getBean(Class<T> requiredType, Object... args)
             throws BeansException {
@@ -504,6 +474,36 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
                 return (T) getBean(requiredType.toClass());
             }
         };
+    }
+
+    public class MockResource extends AbstractResource {
+
+        private String contents = "";
+
+        private String location;
+
+        public MockResource(String location) {
+            this.location = location;
+        }
+
+        public MockResource(String location, String contents) {
+            this(location);
+            this.contents = contents;
+        }
+
+        @Override
+        public boolean exists() {
+            return true;
+        }
+
+        public String getDescription() {
+            return this.location;
+        }
+
+        public InputStream getInputStream() throws IOException {
+            return new ByteArrayInputStream(this.contents.getBytes("UTF-8"));
+        }
+
     }
 
 }

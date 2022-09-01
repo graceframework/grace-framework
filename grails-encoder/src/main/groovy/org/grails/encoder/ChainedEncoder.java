@@ -30,29 +30,6 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
     // this ThreadLocal lives as long as the instance of this ChainedEncoder class, this isn't a static ThreadLocal
     private final ThreadLocal<ChainedEncoderCacheItem> cacheItemThreadLocal = ThreadLocal.withInitial(() -> new ChainedEncoderCacheItem());
 
-    private static class ChainedEncoderCacheItem {
-
-        EncodedAppender lastAppenderForCached;
-
-        boolean lastIgnoreEncodingStateForCached;
-
-        EncodedAppender cachedChainedAppender;
-
-        void putInCache(final EncodedAppender appender, EncodedAppender target) {
-            this.lastAppenderForCached = appender;
-            this.lastIgnoreEncodingStateForCached = appender.isIgnoreEncodingState();
-            this.cachedChainedAppender = target;
-        }
-
-        EncodedAppender getCached(final EncodedAppender appender) {
-            if (this.lastAppenderForCached == appender && this.lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
-                return this.cachedChainedAppender;
-            }
-            return null;
-        }
-
-    }
-
     public ChainedEncoder(List<StreamingEncoder> encoders, boolean safe) {
         this(encoders.toArray(new StreamingEncoder[0]), safe);
     }
@@ -161,6 +138,29 @@ public class ChainedEncoder implements Encoder, StreamingEncoder {
 
     @Override
     public void markEncoded(CharSequence string) {
+
+    }
+
+    private static class ChainedEncoderCacheItem {
+
+        EncodedAppender lastAppenderForCached;
+
+        boolean lastIgnoreEncodingStateForCached;
+
+        EncodedAppender cachedChainedAppender;
+
+        void putInCache(final EncodedAppender appender, EncodedAppender target) {
+            this.lastAppenderForCached = appender;
+            this.lastIgnoreEncodingStateForCached = appender.isIgnoreEncodingState();
+            this.cachedChainedAppender = target;
+        }
+
+        EncodedAppender getCached(final EncodedAppender appender) {
+            if (this.lastAppenderForCached == appender && this.lastIgnoreEncodingStateForCached == appender.isIgnoreEncodingState()) {
+                return this.cachedChainedAppender;
+            }
+            return null;
+        }
 
     }
 

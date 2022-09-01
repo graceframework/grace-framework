@@ -371,6 +371,25 @@ public class AntPathMatcher {
         return new AntPatternComparator(path);
     }
 
+    /**
+     * Count the occurrences of the substring in string s.
+     * @param str string to search in. Return 0 if this is null.
+     * @param sub string to search for. Return 0 if this is null.
+     */
+    public static int countOccurrencesOf(String str, String sub) {
+        if (str == null || sub == null || str.length() == 0 || sub.length() == 0) {
+            return 0;
+        }
+        int count = 0;
+        int pos = 0;
+        int idx;
+        while ((idx = str.indexOf(sub, pos)) != -1) {
+            ++count;
+            pos = idx + sub.length();
+        }
+        return count;
+    }
+
     protected static class AntPatternComparator implements Comparator<String> {
 
         private final String path;
@@ -547,25 +566,6 @@ public class AntPathMatcher {
             return true;
         }
 
-    }
-
-    /**
-     * Count the occurrences of the substring in string s.
-     * @param str string to search in. Return 0 if this is null.
-     * @param sub string to search for. Return 0 if this is null.
-     */
-    public static int countOccurrencesOf(String str, String sub) {
-        if (str == null || sub == null || str.length() == 0 || sub.length() == 0) {
-            return 0;
-        }
-        int count = 0;
-        int pos = 0;
-        int idx;
-        while ((idx = str.indexOf(sub, pos)) != -1) {
-            ++count;
-            pos = idx + sub.length();
-        }
-        return count;
     }
 
 }

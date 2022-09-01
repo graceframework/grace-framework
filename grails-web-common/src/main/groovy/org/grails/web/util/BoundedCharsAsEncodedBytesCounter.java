@@ -128,6 +128,22 @@ public class BoundedCharsAsEncodedBytesCounter {
         return this.writer;
     }
 
+    public String getEncoding() {
+        return this.encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     class BoundedCharsAsEncodedBytesCounterWriter extends Writer {
 
         char[] writeBuffer = new char[8192];
@@ -216,22 +232,6 @@ public class BoundedCharsAsEncodedBytesCounter {
             // do nothing
         }
 
-    }
-
-    public String getEncoding() {
-        return this.encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public int getCapacity() {
-        return this.capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
     }
 
 }

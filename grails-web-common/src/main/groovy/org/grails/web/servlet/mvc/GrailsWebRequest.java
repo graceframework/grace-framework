@@ -77,6 +77,10 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     private static final Constructor<? extends GrailsApplicationAttributes> grailsApplicationAttributesConstructor =
             ClassUtils.getConstructorIfAvailable(grailsApplicationAttributesClass, ServletContext.class);
 
+    static {
+        EncodingStateRegistryLookupHolder.setEncodingStateRegistryLookup(new DefaultEncodingStateRegistryLookup());
+    }
+
     private GrailsApplicationAttributes attributes;
 
     private GrailsParameterMap params;
@@ -516,19 +520,6 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
         return this.encodingStateRegistry;
     }
 
-    private static final class DefaultEncodingStateRegistryLookup implements EncodingStateRegistryLookup {
-
-        public EncodingStateRegistry lookup() {
-            GrailsWebRequest webRequest = GrailsWebRequest.lookup();
-            return webRequest == null ? null : webRequest.getEncodingStateRegistry();
-        }
-
-    }
-
-    static {
-        EncodingStateRegistryLookupHolder.setEncodingStateRegistryLookup(new DefaultEncodingStateRegistryLookup());
-    }
-
     /**
      * @return true if grails.views.filteringCodecForMimeType settings should be ignored for this request
      */
@@ -564,6 +555,15 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
 
     public void setFilteringEncoder(Encoder filteringEncoder) {
         this.filteringEncoder = filteringEncoder;
+    }
+
+    private static final class DefaultEncodingStateRegistryLookup implements EncodingStateRegistryLookup {
+
+        public EncodingStateRegistry lookup() {
+            GrailsWebRequest webRequest = GrailsWebRequest.lookup();
+            return webRequest == null ? null : webRequest.getEncodingStateRegistry();
+        }
+
     }
 
 }

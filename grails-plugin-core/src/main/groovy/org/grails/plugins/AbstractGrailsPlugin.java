@@ -88,19 +88,6 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     protected Config config;
 
-    /**
-     * Wrapper Grails class for plugins.
-     *
-     * @author Graeme Rocher
-     */
-    class GrailsPluginClass extends AbstractGrailsClass {
-
-        public GrailsPluginClass(Class<?> clazz) {
-            super(clazz, TRAILING_NAME);
-        }
-
-    }
-
     public AbstractGrailsPlugin(Class<?> pluginClass, GrailsApplication application) {
         Assert.notNull(pluginClass, "Argument [pluginClass] cannot be null");
         Assert.isTrue(pluginClass.getName().endsWith(TRAILING_NAME),
@@ -321,6 +308,19 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         }
 
         return 0;
+    }
+
+    /**
+     * Wrapper Grails class for plugins.
+     *
+     * @author Graeme Rocher
+     */
+    class GrailsPluginClass extends AbstractGrailsClass {
+
+        public GrailsPluginClass(Class<?> clazz) {
+            super(clazz, TRAILING_NAME);
+        }
+
     }
 
 }

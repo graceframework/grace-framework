@@ -260,6 +260,23 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
         return this;
     }
 
+    public String getStackReference(int depth) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            PathElement el = this.pathStack.get(i);
+            out.append(el.toString());
+        }
+        return out.toString();
+    }
+
+    public String getCurrentStrackReference() {
+        StringBuilder out = new StringBuilder();
+        for (PathElement el : this.pathStack) {
+            out.append(el.toString());
+        }
+        return out.toString();
+    }
+
     private class PathElement {
         // ??
     }
@@ -292,23 +309,6 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
             return "[" + this.index + "]";
         }
 
-    }
-
-    public String getStackReference(int depth) {
-        StringBuilder out = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            PathElement el = this.pathStack.get(i);
-            out.append(el.toString());
-        }
-        return out.toString();
-    }
-
-    public String getCurrentStrackReference() {
-        StringBuilder out = new StringBuilder();
-        for (PathElement el : this.pathStack) {
-            out.append(el.toString());
-        }
-        return out.toString();
     }
 
 }
