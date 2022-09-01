@@ -37,11 +37,11 @@ import org.springframework.util.StringUtils;
 
 import grails.core.GrailsApplication;
 import grails.io.IOUtils;
-import grails.io.ResourceUtils;
 import grails.plugins.exceptions.PluginException;
 import grails.util.BuildSettings;
 
 import org.grails.core.io.StaticResourceLoader;
+import org.grails.io.support.GrailsResourceUtils;
 
 /**
  * Models a pre-compiled binary plugin.
@@ -96,7 +96,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         }
         this.baseResource = new UrlResource(rootResource);
         try {
-            this.isJar = ResourceUtils.isJarURL(this.baseResource.getURL());
+            this.isJar = GrailsResourceUtils.isJarURL(this.baseResource.getURL());
         }
         catch (IOException e) {
             throw new PluginException("Cannot evaluate plugin location for plugin " + pluginClass, e);

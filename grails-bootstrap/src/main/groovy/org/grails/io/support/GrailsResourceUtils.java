@@ -46,7 +46,7 @@ import grails.util.BuildSettings;
  * @author Juergen Hoeller
  * @since 2.0
  */
-public class GrailsResourceUtils {
+public final class GrailsResourceUtils {
 
     public static final String CLASS_EXTENSION = ".class";
 
@@ -225,6 +225,9 @@ public class GrailsResourceUtils {
             return DOMAIN_PATH_PATTERN.matcher(path).find();
         }
     });
+
+    private GrailsResourceUtils() {
+    }
 
     private static String createGrailsResourcePattern(String separator, String base) {
         return ".+" + separator + base + separator + "(.+)\\.(groovy|java)$";

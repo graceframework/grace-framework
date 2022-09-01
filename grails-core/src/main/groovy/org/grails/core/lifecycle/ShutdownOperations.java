@@ -29,7 +29,7 @@ import grails.util.Holders;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class ShutdownOperations {
+public final class ShutdownOperations {
 
     private static final Log LOG = LogFactory.getLog(ShutdownOperations.class);
 
@@ -41,6 +41,9 @@ public class ShutdownOperations {
 
     static {
         resetOperations();
+    }
+
+    private ShutdownOperations() {
     }
 
     /**

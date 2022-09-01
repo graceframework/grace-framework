@@ -21,9 +21,10 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import grails.io.ResourceUtils;
 import grails.util.BuildSettings;
 import grails.util.GrailsStringUtils;
+
+import org.grails.io.support.GrailsResourceUtils;
 
 /**
  * Parses a Grails plugin's watchedResources property value into a list of
@@ -42,11 +43,11 @@ public class WatchPatternParser {
             WatchPattern watchPattern = new WatchPattern();
             watchPattern.setPattern(pattern);
             boolean isClasspath = false;
-            if (pattern.startsWith(ResourceUtils.FILE_URL_PREFIX)) {
-                pattern = pattern.substring(ResourceUtils.FILE_URL_PREFIX.length());
+            if (pattern.startsWith(GrailsResourceUtils.FILE_URL_PREFIX)) {
+                pattern = pattern.substring(GrailsResourceUtils.FILE_URL_PREFIX.length());
             }
-            else if (pattern.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX)) {
-                pattern = pattern.substring(ResourceUtils.CLASSPATH_URL_PREFIX.length());
+            else if (pattern.startsWith(GrailsResourceUtils.CLASSPATH_URL_PREFIX)) {
+                pattern = pattern.substring(GrailsResourceUtils.CLASSPATH_URL_PREFIX.length());
                 isClasspath = true;
             }
 

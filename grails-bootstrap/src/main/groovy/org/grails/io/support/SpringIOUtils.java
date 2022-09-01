@@ -59,7 +59,7 @@ import org.xml.sax.SAXException;
  * @since 06.10.2003
  */
 @SuppressWarnings("unchecked")
-public class SpringIOUtils {
+public final class SpringIOUtils {
 
     @SuppressWarnings("rawtypes")
     private static Map algorithms = new HashMap();
@@ -74,6 +74,9 @@ public class SpringIOUtils {
             'a', 'b', 'c', 'd', 'e', 'f'};
 
     public static final int BUFFER_SIZE = 4096;
+
+    private SpringIOUtils() {
+    }
 
     /**
      * Convert a byte[] array to readable string format. This makes the "hex" readable!

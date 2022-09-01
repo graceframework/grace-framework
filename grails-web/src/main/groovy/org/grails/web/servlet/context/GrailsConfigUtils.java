@@ -34,7 +34,10 @@ import org.grails.web.servlet.boostrap.BootstrapArtefactHandler;
  *
  * @author Graeme Rocher
  */
-public class GrailsConfigUtils {
+public final class GrailsConfigUtils {
+
+    private GrailsConfigUtils() {
+    }
 
     /**
      * Executes Grails bootstrap classes

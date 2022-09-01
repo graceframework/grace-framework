@@ -54,7 +54,6 @@ import grails.core.GrailsControllerClass;
 import grails.core.support.ClassLoaderAware;
 import grails.gorm.validation.ConstrainedProperty;
 import grails.gorm.validation.DefaultConstrainedProperty;
-import grails.io.IOUtils;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
 import grails.util.GrailsUtil;
@@ -70,6 +69,7 @@ import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEv
 import org.grails.datastore.gorm.validation.constraints.registry.ConstraintRegistry;
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry;
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext;
+import org.grails.io.support.SpringIOUtils;
 
 /**
  * <p>A UrlMapping evaluator that evaluates Groovy scripts that are in the form:</p>
@@ -184,7 +184,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             throw new UrlMappingException("Unable to read mapping file [" + resource.getFilename() + "]: " + e.getMessage(), e);
         }
         finally {
-            IOUtils.closeQuietly(inputStream);
+            SpringIOUtils.closeQuietly(inputStream);
         }
     }
 

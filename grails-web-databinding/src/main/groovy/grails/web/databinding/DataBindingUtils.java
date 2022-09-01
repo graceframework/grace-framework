@@ -61,13 +61,16 @@ import org.grails.web.databinding.bindingsource.InvalidRequestBodyException;
  * @since 1.0
  */
 @SuppressWarnings("rawtypes")
-public class DataBindingUtils {
+public final class DataBindingUtils {
 
     public static final String DATA_BINDER_BEAN_NAME = "grailsWebDataBinder";
 
     private static final String BLANK = "";
 
     private static final Map<Class, List> CLASS_TO_BINDING_INCLUDE_LIST = new ConcurrentHashMap<>();
+
+    private DataBindingUtils() {
+    }
 
     /**
      * Associations both sides of any bidirectional relationships found in the object and source map to bind

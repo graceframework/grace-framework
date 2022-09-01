@@ -104,7 +104,7 @@ import org.grails.io.support.Resource;
  * @author Graeme Rocher
  * @since 0.3
  */
-public class GrailsASTUtils {
+public final class GrailsASTUtils {
 
     public static final String DOMAIN_DIR = "domain";
 
@@ -143,6 +143,9 @@ public class GrailsASTUtils {
     public static final Parameter[] ZERO_PARAMETERS = new Parameter[0];
 
     public static final ArgumentListExpression ZERO_ARGUMENTS = new ArgumentListExpression();
+
+    private GrailsASTUtils() {
+    }
 
     public static void warning(final SourceUnit sourceUnit, final ASTNode node, final String warningMessage) {
         final String sample = sourceUnit.getSample(node.getLineNumber(), node.getColumnNumber(), new Janitor());

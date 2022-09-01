@@ -27,7 +27,10 @@ import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrate
  * @author Graeme Rocher
  * @since 1.0
  */
-public class ServletContextHolder {
+public final class ServletContextHolder {
+
+    private ServletContextHolder() {
+    }
 
     public static void setServletContext(final ServletContext servletContext) {
         Holders.setServletContext(servletContext);

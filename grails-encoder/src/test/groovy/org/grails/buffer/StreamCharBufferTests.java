@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import java.util.Arrays;
 import grails.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.grails.io.support.SpringIOUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -353,12 +355,12 @@ public class StreamCharBufferTests {
         reader.read(b);
         assertEquals("12345", new String(b));
         StringWriter sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("", sw.toString());
         writer.write("12345");
         writer.write("12345");
         sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("1234512345", sw.toString());
     }
 
@@ -372,12 +374,12 @@ public class StreamCharBufferTests {
         reader.read(b);
         assertEquals("12345", new String(b));
         StringWriter sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("", sw.toString());
         writer.write("12345");
         writer.write("12345");
         sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("1234512345", sw.toString());
     }
 
@@ -391,12 +393,12 @@ public class StreamCharBufferTests {
         reader.read(b);
         assertEquals("12345", new String(b));
         StringWriter sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("", sw.toString());
         writer.write("12345");
         writer.write("12345");
         sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("1234512345", sw.toString());
     }
 
@@ -410,7 +412,7 @@ public class StreamCharBufferTests {
         reader.read(b);
         assertEquals("12345", new String(b));
         StringWriter sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("", sw.toString());
         writer.write("12345");
         writer.write("12345");
@@ -452,7 +454,7 @@ public class StreamCharBufferTests {
         reader.read(b);
         assertEquals("12345", new String(b));
         StringWriter sw=new StringWriter();
-        IOUtils.copy(reader, sw);
+        SpringIOUtils.copy(reader, sw);
         assertEquals("", sw.toString());
         writer.write("12345");
         writer.write("12345");

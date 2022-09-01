@@ -59,7 +59,7 @@ import grails.artefact.Enhanced;
  *
  * @author Graeme Rocher
  */
-public class GrailsClassUtils {
+public final class GrailsClassUtils {
 
     private static final Log LOG = LogFactory.getLog(GrailsClassUtils.class);
 
@@ -70,7 +70,7 @@ public class GrailsClassUtils {
      * @param left
      * @param right
      */
-    private static final void registerPrimitiveClassPair(Class<?> left, Class<?> right) {
+    private static void registerPrimitiveClassPair(Class<?> left, Class<?> right) {
         PRIMITIVE_TYPE_COMPATIBLE_CLASSES.put(left, right);
         PRIMITIVE_TYPE_COMPATIBLE_CLASSES.put(right, left);
     }
@@ -84,6 +84,9 @@ public class GrailsClassUtils {
         registerPrimitiveClassPair(Long.class, long.class);
         registerPrimitiveClassPair(Float.class, float.class);
         registerPrimitiveClassPair(Double.class, double.class);
+    }
+
+    private GrailsClassUtils() {
     }
 
     /**

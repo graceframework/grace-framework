@@ -21,7 +21,7 @@ package grails.web.http;
  * @author Graeme Rocher
  * @since 1.0
  */
-public class HttpHeaders {
+public final class HttpHeaders {
 
     public static final String CONNECTION = "Connection";
 
@@ -142,5 +142,8 @@ public class HttpHeaders {
     public static final String IDENTITY = "identity";
 
     public static final String ACCEPT_VERSION = "Accept-Version";
+
+    private HttpHeaders() {
+    }
 
 }

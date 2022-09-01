@@ -24,7 +24,10 @@ import java.util.function.Supplier;
  * @author James Kleeh
  * @since 1.0
  */
-public class SupplierUtil {
+public final class SupplierUtil {
+
+    private SupplierUtil() {
+    }
 
     /**
      * Caches the result of supplier in a thread safe manner.

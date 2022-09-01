@@ -22,7 +22,7 @@ package org.grails.plugins.web.controllers.metaclass;
  * @since 0.2
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class RenderDynamicMethod {
+public final class RenderDynamicMethod {
 
     public static final String METHOD_SIGNATURE = "render";
 
@@ -69,5 +69,8 @@ public class RenderDynamicMethod {
     public static final String ARGUMENT_FILE = "file";
 
     public static final String ARGUMENT_FILE_NAME = "fileName";
+
+    private RenderDynamicMethod() {
+    }
 
 }

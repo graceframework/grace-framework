@@ -25,7 +25,7 @@ import org.grails.core.lifecycle.ShutdownOperations;
  * @author Graeme Rocher
  * @since 0.5
  */
-public class WrappedResponseHolder {
+public final class WrappedResponseHolder {
 
     private static ThreadLocal<HttpServletResponse> wrappedResponseHolder = new ThreadLocal<>();
 
@@ -35,6 +35,9 @@ public class WrappedResponseHolder {
                 wrappedResponseHolder = new ThreadLocal<>();
             }
         }, true);
+    }
+
+    private WrappedResponseHolder() {
     }
 
     /**

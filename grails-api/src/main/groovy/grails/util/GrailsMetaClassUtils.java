@@ -40,13 +40,16 @@ import org.springframework.beans.BeanUtils;
  * @author Graeme Rocher
  * @since 0.5
  */
-public class GrailsMetaClassUtils {
+public final class GrailsMetaClassUtils {
 
     private static final int MAX_DELEGATE_LEVELS = 10;
 
     private static final Log LOG = LogFactory.getLog(GrailsMetaClassUtils.class);
 
     private static final Object[] NO_ARGS = new Object[0];
+
+    private GrailsMetaClassUtils() {
+    }
 
     /**
      * Retrieves the MetaClassRegistry instance.
