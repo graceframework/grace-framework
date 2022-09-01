@@ -17,7 +17,7 @@ package org.grails.encoder;
 
 import grails.util.Holder;
 
-public class EncodingStateRegistryLookupHolder {
+public final class EncodingStateRegistryLookupHolder {
 
     private static Holder<EncodingStateRegistryLookup> holder = new Holder<>("encodingStateRegistryLookup");
 

@@ -37,7 +37,7 @@ import grails.util.CollectionUtils;
  * @since 2.4
  * @author Graeme Rocher
  */
-public class RuntimeSpringConfigUtilities {
+public final class RuntimeSpringConfigUtilities {
 
     private static final Log LOG = LogFactory.getLog(RuntimeSpringConfigUtilities.class);
 

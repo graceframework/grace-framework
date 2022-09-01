@@ -41,7 +41,7 @@ import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
  *
  * @since 2.0
  */
-public class Holders {
+public final class Holders {
 
     private static final Log LOG = LogFactory.getLog(Holders.class);
 

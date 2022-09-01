@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 
 import grails.core.GrailsApplication;
 
-public class CodecLookupHelper {
+public final class CodecLookupHelper {
 
     private static final Logger log = LoggerFactory.getLogger(CodecLookupHelper.class);
 

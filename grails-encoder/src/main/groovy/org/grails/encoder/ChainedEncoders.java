@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.grails.buffer.StreamCharBuffer;
 
-public class ChainedEncoders {
+public final class ChainedEncoders {
 
     private ChainedEncoders() {
     }

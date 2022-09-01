@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-public class StringEscapeCategory {
+public final class StringEscapeCategory {
     private StringEscapeCategory() {
     }
 

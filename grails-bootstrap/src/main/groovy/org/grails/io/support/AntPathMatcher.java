@@ -371,11 +371,11 @@ public class AntPathMatcher {
         return new AntPatternComparator(path);
     }
 
-    private static class AntPatternComparator implements Comparator<String> {
+    protected static class AntPatternComparator implements Comparator<String> {
 
         private final String path;
 
-        private AntPatternComparator(String path) {
+        public AntPatternComparator(String path) {
             this.path = path;
         }
 

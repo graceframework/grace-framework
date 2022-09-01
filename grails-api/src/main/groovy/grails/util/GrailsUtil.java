@@ -29,7 +29,7 @@ import org.grails.exceptions.reporting.StackTraceFilterer;
  * @author Graeme Rocher
  * @since 0.2
  */
-public class GrailsUtil {
+public final class GrailsUtil {
 
     private static final Log LOG = LogFactory.getLog(GrailsUtil.class);
 

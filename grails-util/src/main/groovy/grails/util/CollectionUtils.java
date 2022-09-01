@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * @author Burt Beckwith
  */
-public class CollectionUtils {
+public final class CollectionUtils {
 
     private CollectionUtils() {
         // static only

@@ -41,7 +41,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * @since 0.4
  */
 @SuppressWarnings("rawtypes")
-public class GrailsWebUtil {
+public final class GrailsWebUtil {
 
     public static final String DEFAULT_ENCODING = "UTF-8";
 

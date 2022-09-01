@@ -28,7 +28,7 @@ import java.util.Set;
  * for example from class names -> property names and vice-versa. The
  * key aspect of this class is that it has no dependencies outside the JDK!
  */
-public class GrailsNameUtils {
+public final class GrailsNameUtils {
 
     private static final String PROPERTY_SET_PREFIX = "set";
     private static final String PROPERTY_GET_PREFIX = "get";

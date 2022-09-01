@@ -264,7 +264,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
         // ??
     }
 
-    private class PropertyElement extends PathElement {
+    private final class PropertyElement extends PathElement {
 
         private String property;
 
@@ -279,7 +279,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
 
     }
 
-    private class IndexElement extends PathElement {
+    private final class IndexElement extends PathElement {
 
         private int index;
 

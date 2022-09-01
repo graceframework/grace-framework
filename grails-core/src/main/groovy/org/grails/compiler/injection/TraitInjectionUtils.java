@@ -41,7 +41,7 @@ import org.grails.core.io.support.GrailsFactoriesLoader;
  * @since 3.0
  *
  */
-public class TraitInjectionUtils {
+public final class TraitInjectionUtils {
 
     private static List<TraitInjector> traitInjectors;
 

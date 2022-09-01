@@ -59,7 +59,7 @@ import org.grails.web.util.WebUtils;
  * @author Graeme Rocher
  * @since 2.4
  */
-public class UrlMappingUtils {
+public final class UrlMappingUtils {
 
     private UrlMappingUtils() {
     }

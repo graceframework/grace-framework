@@ -26,7 +26,7 @@ import java.io.Writer;
  * @since 2.3.10
  *
  */
-public class CharSequences {
+public final class CharSequences {
 
     private CharSequences() {
     }

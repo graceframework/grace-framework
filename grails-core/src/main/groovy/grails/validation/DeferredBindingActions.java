@@ -29,7 +29,7 @@ import org.grails.core.lifecycle.ShutdownOperations;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class DeferredBindingActions {
+public final class DeferredBindingActions {
 
     private static Log LOG = LogFactory.getLog(DeferredBindingActions.class);
 

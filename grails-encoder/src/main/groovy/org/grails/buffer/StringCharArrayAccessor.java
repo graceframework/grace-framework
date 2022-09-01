@@ -36,7 +36,7 @@ import java.lang.reflect.Field;
  * @author Lari Hotari, Sagire Software Oy
  *
  */
-public class StringCharArrayAccessor {
+public final class StringCharArrayAccessor {
 
     static volatile boolean enabled = Boolean.getBoolean("stringchararrayaccessor.disabled");
 

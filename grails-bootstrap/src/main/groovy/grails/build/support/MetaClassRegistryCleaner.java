@@ -38,7 +38,7 @@ import org.codehaus.groovy.runtime.metaclass.MetaClassRegistryImpl;
  * @since 2.0
  */
 @SuppressWarnings("rawtypes")
-public class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventListener {
+public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventListener {
 
     private Map<Class, Object> alteredClasses = new ConcurrentHashMap<>();
 
