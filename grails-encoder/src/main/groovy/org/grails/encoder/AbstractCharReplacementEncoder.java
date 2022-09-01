@@ -88,10 +88,11 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         }
 
         StringBuilder sb = null;
-        int n = str.length(), i;
+        int n = str.length();
+        int i = 0;
         int startPos = -1;
         char prevChar = (char) 0;
-        for (i = 0; i < n; i++) {
+        for (; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
                 startPos = i;
