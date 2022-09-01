@@ -168,7 +168,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
             constructorCallExpression = GrailsASTUtils.hasZeroArgsConstructor(implementationNode) ?
                     new ConstructorCallExpression(implementationNode, ZERO_ARGS) : null;
         }
-        catch (Throwable e) {
+        catch (Throwable ignored) {
             // if we get here it means we have reached a point where there were errors loading the class to perform injection with,
             // probably due to missing dependencies
             // this may well be ok, as we want to be able to compile against, for example, non servlet environments. In this case just bail out.

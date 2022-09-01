@@ -678,7 +678,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
                     }
                 }
                 catch (Exception ignored) {
-                    // ignore
                 }
             }
         }
@@ -852,7 +851,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             try {
                 postProcessor.postProcessBeanFactory(beanFactory);
             }
-            catch (IllegalStateException e) {
+            catch (IllegalStateException ignored) {
                 // post processor doesn't allow running again, just continue
             }
         }
@@ -926,7 +925,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         try {
             return new SpringResource(this.pluginDescriptor.createRelative("."));
         }
-        catch (IOException e) {
+        catch (IOException ignored) {
             return null;
         }
     }

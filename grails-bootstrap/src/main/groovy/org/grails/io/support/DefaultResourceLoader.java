@@ -47,7 +47,7 @@ public class DefaultResourceLoader implements ResourceLoader {
         try {
             cl = Thread.currentThread().getContextClassLoader();
         }
-        catch (Throwable ex) {
+        catch (Throwable ignored) {
             // Cannot access thread context ClassLoader - falling back to system class loader...
         }
         if (cl == null) {

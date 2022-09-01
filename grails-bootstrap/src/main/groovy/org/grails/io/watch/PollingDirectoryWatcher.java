@@ -63,8 +63,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
                 }
                 Thread.sleep(this.sleepTime);
             }
-            catch (InterruptedException e) {
-                // ignore
+            catch (InterruptedException ignored) {
             }
         }
     }

@@ -138,7 +138,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
                         Field field = ce.getType().getTypeClass().getDeclaredField(pe.getPropertyAsString());
                         return (String) field.get(null);
                     }
-                    catch (Exception e) {
+                    catch (Exception ignored) {
                     }
                 }
             }
@@ -186,12 +186,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
             }
         }
         catch (RuntimeException e) {
-            try {
-                GrailsConsole.getInstance().error("Error occurred calling AST injector: " + e.getMessage(), e);
-            }
-            catch (Throwable t) {
-                // ignore it
-            }
+            GrailsConsole.getInstance().error("Error occurred calling AST injector: " + e.getMessage(), e);
             throw e;
         }
     }

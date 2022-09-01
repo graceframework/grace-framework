@@ -545,7 +545,6 @@ public final class GrailsClassUtils {
             }
         }
         catch (NoSuchFieldException ignored) {
-            // ignored
         }
 
         return false;
@@ -617,7 +616,6 @@ public final class GrailsClassUtils {
             return getStaticFieldValue(clazz, name);
         }
         catch (Exception ignored) {
-            // ignored
         }
         return null;
     }

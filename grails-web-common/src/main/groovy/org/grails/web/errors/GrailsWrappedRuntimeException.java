@@ -156,8 +156,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                     }
                 }
             }
-            catch (NumberFormatException nfex) {
-                // ignore
+            catch (NumberFormatException ignored) {
             }
         }
 
@@ -224,8 +223,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                             try {
                                 in = r.getInputStream();
                             }
-                            catch (IOException e1) {
-                                // ignore
+                            catch (IOException ignored) {
                             }
                         }
                     }
@@ -264,8 +262,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
                 try {
                     reader.close();
                 }
-                catch (IOException e) {
-                    // ignore
+                catch (IOException ignored) {
                 }
             }
         }

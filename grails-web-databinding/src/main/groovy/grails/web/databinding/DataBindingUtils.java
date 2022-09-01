@@ -99,7 +99,7 @@ public final class DataBindingUtils {
                     try {
                         mc.setProperty(val, otherSide.getName(), object);
                     }
-                    catch (Exception e) {
+                    catch (Exception ignored) {
                         // ignore
                     }
                 }
@@ -141,7 +141,7 @@ public final class DataBindingUtils {
                 }
             }
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
         }
         return includeList;
     }
@@ -181,7 +181,7 @@ public final class DataBindingUtils {
             try {
                 entity = application.getMappingContext().getPersistentEntity(targetType.getName());
             }
-            catch (GrailsConfigurationException e) {
+            catch (GrailsConfigurationException ignored) {
                 //no-op
             }
         }
@@ -223,7 +223,7 @@ public final class DataBindingUtils {
             try {
                 entity = application.getMappingContext().getPersistentEntity(object.getClass().getName());
             }
-            catch (GrailsConfigurationException e) {
+            catch (GrailsConfigurationException ignored) {
                 //no-op
             }
         }

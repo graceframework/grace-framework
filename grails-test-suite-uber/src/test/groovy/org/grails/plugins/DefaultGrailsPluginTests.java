@@ -83,7 +83,7 @@ public class DefaultGrailsPluginTests extends AbstractGrailsMockTests {
             GrailsPlugin notVersionPlugin = new DefaultGrailsPlugin(notVersion, ga);
             fail("Should have thrown IllegalArgumentException for unversioned plugin");
         }
-        catch (PluginException e) {
+        catch (PluginException ignored) {
             // expected
         }
 

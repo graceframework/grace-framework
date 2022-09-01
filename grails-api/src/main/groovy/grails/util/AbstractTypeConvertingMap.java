@@ -133,8 +133,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return Byte.parseByte(string);
                 }
             }
-            catch (NumberFormatException e) {
-
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -194,8 +193,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return Integer.parseInt(string);
                 }
             }
-            catch (NumberFormatException e) {
-
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -224,7 +222,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
             try {
                 return Long.parseLong(o.toString());
             }
-            catch (NumberFormatException e) {
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -256,8 +254,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return Short.parseShort(string);
                 }
             }
-            catch (NumberFormatException e) {
-
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -289,8 +286,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return Double.parseDouble(string);
                 }
             }
-            catch (NumberFormatException e) {
-
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -322,8 +318,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return Float.parseFloat(string);
                 }
             }
-            catch (NumberFormatException e) {
-
+            catch (NumberFormatException ignored) {
             }
         }
         return null;
@@ -355,8 +350,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
                     return GrailsStringUtils.toBoolean(string);
                 }
             }
-            catch (Exception e) {
-
+            catch (Exception ignored) {
             }
         }
         return null;
@@ -398,8 +392,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
             try {
                 return new SimpleDateFormat(format).parse(value.toString());
             }
-            catch (ParseException e) {
-                // ignore
+            catch (ParseException ignored) {
             }
         }
         return null;

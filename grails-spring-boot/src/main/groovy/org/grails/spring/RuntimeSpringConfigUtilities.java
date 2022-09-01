@@ -80,11 +80,9 @@ public final class RuntimeSpringConfigUtilities {
             try {
                 Class<?> groovySpringResourcesClass = null;
                 try {
-                    groovySpringResourcesClass = ClassUtils.forName(SPRING_RESOURCES_CLASS,
-                            application.getClassLoader());
+                    groovySpringResourcesClass = ClassUtils.forName(SPRING_RESOURCES_CLASS, application.getClassLoader());
                 }
-                catch (ClassNotFoundException e) {
-                    // ignore
+                catch (ClassNotFoundException ignored) {
                 }
                 if (groovySpringResourcesClass != null) {
                     reloadSpringResourcesConfig(config, application, groovySpringResourcesClass);

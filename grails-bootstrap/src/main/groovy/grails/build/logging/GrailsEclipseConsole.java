@@ -61,7 +61,7 @@ public class GrailsEclipseConsole extends GrailsConsole {
             try {
                 out.write(("<<<" + ECLIPSE_SUPPORTS_ANSI_PROP + ":" + eclipseSupportsAnsi() + ">>>\n").getBytes("UTF-8"));
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
             }
         }
         //This method is called from the super constructor so eclipseSupportsAnsi field

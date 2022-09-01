@@ -109,8 +109,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                     this.isBase = true;
                 }
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
 
@@ -137,8 +136,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
         try {
             viewsPropertiesResource = descriptorResource.createRelative(VIEWS_PROPERTIES);
         }
-        catch (IOException e) {
-            // ignore
+        catch (IOException ignored) {
         }
 
         if (viewsPropertiesResource == null || !viewsPropertiesResource.exists()) {
@@ -150,8 +148,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                     viewsPropertiesResource = new UrlResource(newUrl);
                 }
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
 
@@ -185,8 +182,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                     input.close();
                 }
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
     }
@@ -237,8 +233,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 return resource;
             }
         }
-        catch (IOException e) {
-            return null;
+        catch (IOException ignored) {
         }
         return null;
     }
@@ -327,8 +322,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
                 try {
                     inputStream.close();
                 }
-                catch (IOException e) {
-                    // ignore
+                catch (IOException ignored) {
                 }
             }
         }

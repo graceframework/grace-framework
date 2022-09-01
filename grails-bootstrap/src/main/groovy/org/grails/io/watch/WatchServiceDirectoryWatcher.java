@@ -139,8 +139,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     watchKey.reset();
                 }
             }
-            catch (InterruptedException e) {
-                // ignore
+            catch (InterruptedException ignored) {
             }
         }
         try {

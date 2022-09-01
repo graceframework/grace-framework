@@ -142,14 +142,9 @@ public final class TraitInjectionUtils {
             }
         }
         catch (RuntimeException e) {
-            try {
-                System.err.println("Error occurred calling Trait injector [" + TraitInjectionUtils.class.getName() + "]: "
+            System.err.println("Error occurred calling Trait injector [" + TraitInjectionUtils.class.getName() + "]: "
                         + e.getMessage());
-                e.printStackTrace();
-            }
-            catch (Throwable t) {
-                // ignore it
-            }
+            e.printStackTrace();
             throw e;
         }
     }

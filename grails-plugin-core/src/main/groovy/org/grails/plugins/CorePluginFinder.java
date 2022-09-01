@@ -132,10 +132,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                 }
             }
         }
-        catch (ParserConfigurationException e) {
-            throw new GrailsConfigurationException("XML parsing error loading core plugins: " + e.getMessage(), e);
-        }
-        catch (SAXException e) {
+        catch (ParserConfigurationException | SAXException e) {
             throw new GrailsConfigurationException("XML parsing error loading core plugins: " + e.getMessage(), e);
         }
     }

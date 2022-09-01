@@ -139,7 +139,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
         try {
             artefactAnn = clazz.getAnnotation(Artefact.class);
         }
-        catch (ArrayStoreException e) {
+        catch (ArrayStoreException ignored) {
             // happens if a reference to a class that no longer exists is there
         }
 
@@ -151,7 +151,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
         try {
             annotations = clazz.getAnnotations();
         }
-        catch (ArrayStoreException e) {
+        catch (ArrayStoreException ignored) {
             // happens if a reference to a class that no longer exists is there
         }
 

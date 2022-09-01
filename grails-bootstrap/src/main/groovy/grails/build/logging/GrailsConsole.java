@@ -386,16 +386,14 @@ public class GrailsConsole implements ConsoleLogger {
         try {
             this.terminal.restore();
         }
-        catch (Exception e) {
-            // ignore
+        catch (Exception ignored) {
         }
         if (this.terminal instanceof UnixTerminal) {
             // workaround for GRAILS-11494
             try {
                 new TerminalLineSettings().set("sane");
             }
-            catch (Exception e) {
-                // ignore
+            catch (Exception ignored) {
             }
         }
     }
@@ -405,8 +403,7 @@ public class GrailsConsole implements ConsoleLogger {
             try {
                 ((Flushable) this.history).flush();
             }
-            catch (Throwable e) {
-                // ignore exception
+            catch (Throwable ignored) {
             }
         }
     }

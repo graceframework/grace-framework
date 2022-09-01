@@ -104,8 +104,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
                 }
             }
         }
-        catch (IOException e) {
-            // ignore
+        catch (IOException ignored) {
         }
 
         this.classSearchDirectories.add(searchLocationPlusSlash + "src/main/java");
@@ -144,8 +143,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
                                     }
                                 }
                             }
-                            catch (IOException e) {
-                                // ignore
+                            catch (IOException ignored) {
                             }
                         }
                     }
@@ -236,8 +234,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
                 return resources[0];
             }
         }
-        catch (IOException e) {
-            return null;
+        catch (IOException ignored) {
         }
         return null;
     }

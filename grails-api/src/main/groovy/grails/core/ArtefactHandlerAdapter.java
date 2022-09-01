@@ -100,8 +100,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
             try {
                 url = resource.getURL();
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
 

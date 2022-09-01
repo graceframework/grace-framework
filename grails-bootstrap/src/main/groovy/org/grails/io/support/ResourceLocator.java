@@ -89,8 +89,7 @@ public class ResourceLocator {
                 }
             }
         }
-        catch (IOException e) {
-            // ignore
+        catch (IOException ignored) {
         }
 
         this.classSearchDirectories.add(searchLocationPlusSlash + "src/main/java");
@@ -210,8 +209,7 @@ public class ResourceLocator {
                 return resources[0];
             }
         }
-        catch (IOException e) {
-            return null;
+        catch (IOException ignored) {
         }
 
         return null;

@@ -779,7 +779,7 @@ public final class GrailsResourceUtils {
                 return new FileSystemResource(file.getAbsolutePath() + '/');
             }
         }
-        catch (IOException e) {
+        catch (IOException ignored) {
         }
 
         try {
@@ -832,8 +832,7 @@ public final class GrailsResourceUtils {
                 return WEB_INF + "/" + url.substring(i);
             }
         }
-        catch (IOException e) {
-            return null;
+        catch (IOException ignored) {
         }
         return null;
     }
@@ -917,8 +916,7 @@ public final class GrailsResourceUtils {
                     return canonicalPath.contains(basePath) ? canonicalPath.substring(basePath.length() + 1) : canonicalPath;
                 }
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
         return null;

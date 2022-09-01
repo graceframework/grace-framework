@@ -1686,8 +1686,7 @@ public final class GrailsASTUtils {
             try {
                 url = resource.getURL();
             }
-            catch (IOException e) {
-                // ignore
+            catch (IOException ignored) {
             }
         }
         return url;

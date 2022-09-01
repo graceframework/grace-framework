@@ -62,7 +62,6 @@ public class DomainBuilder extends ObjectGraphBuilder {
                 return Collection.class.isAssignableFrom(field.getType());
             }
             catch (NoSuchFieldException ignored) {
-                // ignored
             }
 
             return false;

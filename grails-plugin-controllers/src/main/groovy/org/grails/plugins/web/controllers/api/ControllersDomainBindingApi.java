@@ -74,8 +74,7 @@ public class ControllersDomainBindingApi {
                 try {
                     domainClass = grailsApplication.getMappingContext().getPersistentEntity(instance.getClass().getName());
                 }
-                catch (GrailsConfigurationException e) {
-                    //no-op
+                catch (GrailsConfigurationException ignored) {
                 }
             }
         }
@@ -103,7 +102,7 @@ public class ControllersDomainBindingApi {
                         }
                     }
                 }
-                catch (GrailsConfigurationException e) {
+                catch (GrailsConfigurationException ignored) {
                     // ignore, Mapping Context not initialized yet
                 }
 

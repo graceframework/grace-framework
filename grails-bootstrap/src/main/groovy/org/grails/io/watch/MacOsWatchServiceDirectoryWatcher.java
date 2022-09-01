@@ -81,7 +81,7 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                 try {
                     watchKey = this.watchService.take();
                 }
-                catch (InterruptedException x) {
+                catch (InterruptedException ignored) {
                     return;
                 }
                 for (WatchEvent<?> watchEvent : watchKey.pollEvents()) {
@@ -152,7 +152,6 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
             }
             catch (Exception e) {
                 LOG.error(e.toString());
-                // ignore
             }
         }
         try {

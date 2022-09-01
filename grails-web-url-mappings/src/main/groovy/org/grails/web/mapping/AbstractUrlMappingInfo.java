@@ -116,7 +116,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
             try {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, UriUtils.decode(id, encoding));
             }
-            catch (IllegalArgumentException e) {
+            catch (IllegalArgumentException ignored) {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, id);
             }
         }

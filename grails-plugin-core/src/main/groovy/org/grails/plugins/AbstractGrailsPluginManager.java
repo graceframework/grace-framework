@@ -559,7 +559,6 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 informPluginsOfConfigChange();
             }
             catch (Exception e) {
-                // ignore
                 LOG.debug("Error in changing Config", e);
             }
         }
@@ -606,8 +605,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         try {
             cls = this.application.getClassLoader().loadClass(className);
         }
-        catch (ClassNotFoundException e) {
-            // ignore
+        catch (ClassNotFoundException ignored) {
         }
         return cls;
     }

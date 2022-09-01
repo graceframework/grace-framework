@@ -81,8 +81,7 @@ public class BinaryGrailsPluginDescriptor {
                 try {
                     inputStream.close();
                 }
-                catch (IOException e) {
-                    // ignore
+                catch (IOException ignored) {
                 }
             }
         }
