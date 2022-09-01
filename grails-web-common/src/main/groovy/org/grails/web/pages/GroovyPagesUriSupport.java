@@ -33,13 +33,21 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
 public class GroovyPagesUriSupport implements GroovyPagesUriService {
 
     public static final String PATH_TO_VIEWS = "/WEB-INF/grails-app/views";
+
     private static final char SLASH = '/';
+
     private static final String SLASH_STR = "/";
+
     private static final String SLASH_UNDR = "/_";
+
     private static final String BLANK = "";
+
     private static final String UNDERSCORE = "_";
-    protected static final String EXTENSION = ".gsp";    
+
+    protected static final String EXTENSION = ".gsp";
+
     protected static final String SUFFIX = ".gsp";
+
     public static final String RELATIVE_STRING = "../";
 
     /**
@@ -107,6 +115,7 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     public String getTemplateURI(String controllerName, String templateName) {
         return getTemplateURI(controllerName, templateName, true);
     }
+
     /**
      * Obtains the URI to a template using the controller name and template name
      * @param controllerName The controller name
@@ -288,4 +297,5 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         }
         return buf.toString();
     }
+
 }

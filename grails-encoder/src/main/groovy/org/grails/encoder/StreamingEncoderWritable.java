@@ -28,8 +28,7 @@ import java.io.Writer;
 public interface StreamingEncoderWritable {
 
     /**
-     * Asks the instance to use given writer and EncodesToWriter instance to encode 
-     * it's content
+     * Asks the instance to use given writer and EncodesToWriter instance to encode it's content
      *
      * @param writer
      *            the target writer instance

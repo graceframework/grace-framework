@@ -136,7 +136,7 @@ public class DirectoryWatcher extends Thread {
     }
 
     /**
-     * Adds a directory to watch for the given file. All files and subdirectories in the directory will be watched. 
+     * Adds a directory to watch for the given file. All files and subdirectories in the directory will be watched.
      *
      * @param dir The directory
      */

@@ -42,19 +42,15 @@ import org.grails.config.PropertySourcesConfig;
 
 /**
  *  A {@link BeanDefinitionRegistryPostProcessor} for using the "Best Effort 1 Phase Commit" (BE1PC) in Grails
- *  applications when there are multiple data sources.  
- *
+ *  applications when there are multiple data sources.
  *  When the context contains multiple transactionManager beans, the bean with the name "transactionManager"
  *  will be renamed to "$primaryTransactionManager" and a new ChainedTransactionManager bean will be added with the name
  *  "transactionManager". All transactionManager beans will be registered in the ChainedTransactionManager bean.
- *
- *  The post processor checks if the previous transactionManager bean is an instance of {@link JtaTransactionManager}. 
+ *  The post processor checks if the previous transactionManager bean is an instance of {@link JtaTransactionManager}.
  *  In that case it will not do anything since it's assumed that JTA/XA is handling transactions spanning multiple datasources.
- *
  *  For performance reasons an additional dataSource can be marked as non-transactional by adding a property 'transactional = false' in
  *  it's dataSource configuration. This will leave the dataSource out of the transactions initiated by Grails transactions.
- *  This is the default behaviour in Grails versions before Grails 2.3.6 .  
- *
+ *  This is the default behaviour in Grails versions before Grails 2.3.6 .
  *
  * @author Lari Hotari
  * @since 2.3.6

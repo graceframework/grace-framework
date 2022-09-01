@@ -32,7 +32,7 @@ import static org.springframework.transaction.HeuristicCompletionException.getSt
 
 /**
  * Integration tests for {@link ChainedTransactionManager}.
- * 
+ *
  * @author Michael Hunger
  * @author Oliver Gierke
  * @since 1.6

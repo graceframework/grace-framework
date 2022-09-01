@@ -62,8 +62,7 @@ public class CacheEntry<V> {
 
     /**
      * Gets a value from cache. If the key doesn't exist, it will create the value using the updater callback
-     * Prevents cache storms with a lock 
-     *
+     * Prevents cache storms with a lock
      * The key is always added to the cache. Null return values will also be cached.
      * You can use this together with ConcurrentLinkedHashMap to create a bounded LRU cache
      *

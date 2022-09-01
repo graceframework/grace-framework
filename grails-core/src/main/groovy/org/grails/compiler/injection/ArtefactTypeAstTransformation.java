@@ -112,7 +112,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
         if (!getAnnotationType().equals(annotationNode.getClassNode())) {
-            // add @Artefact annotation to resulting class so that "short cut" annotations like @TagLib 
+            // add @Artefact annotation to resulting class so that "short cut" annotations like @TagLib
             // also produce an @Artefact annotation in the resulting class file
             AnnotationNode annotation = new AnnotationNode(getAnnotationType());
             annotation.addMember("value", new ConstantExpression(artefactType));
