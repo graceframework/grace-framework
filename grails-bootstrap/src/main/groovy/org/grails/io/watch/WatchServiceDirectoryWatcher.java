@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  * @see WatchServiceDirectoryWatcher
  * @see DirectoryWatcher
  */
-class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
+public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(WatchServiceDirectoryWatcher.class);
 

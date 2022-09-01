@@ -163,7 +163,7 @@ public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEv
 
         private int hash;
 
-        public IdentityWeakReference(Object referent) {
+        IdentityWeakReference(Object referent) {
             super(referent);
             this.hash = System.identityHashCode(referent);
         }

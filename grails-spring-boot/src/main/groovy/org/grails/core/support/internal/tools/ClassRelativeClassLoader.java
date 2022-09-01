@@ -33,7 +33,7 @@ import grails.util.BuildSettings;
  * @author Graeme Rocher
  * @since 3.1.13
  */
-class ClassRelativeClassLoader extends URLClassLoader {
+public class ClassRelativeClassLoader extends URLClassLoader {
 
     public ClassRelativeClassLoader(Class targetClass) {
         super(createClassLoaderUrls(targetClass), ClassLoader.getSystemClassLoader());

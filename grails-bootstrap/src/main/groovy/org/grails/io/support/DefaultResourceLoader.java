@@ -118,7 +118,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      */
     private static class ClassPathContextResource extends ClassPathResource {
 
-        public ClassPathContextResource(String path, ClassLoader classLoader) {
+        ClassPathContextResource(String path, ClassLoader classLoader) {
             super(path, classLoader);
         }
 

@@ -1317,7 +1317,7 @@ public final class GrailsASTUtils {
 
     @Target(ElementType.CONSTRUCTOR)
     @Retention(RetentionPolicy.SOURCE)
-    private static @interface GrailsDelegatingConstructor {
+    private @interface GrailsDelegatingConstructor {
 
     }
 

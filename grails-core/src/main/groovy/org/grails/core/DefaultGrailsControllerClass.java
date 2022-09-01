@@ -218,7 +218,7 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
 
         private final Method method;
 
-        public ReflectionInvoker(Method method) {
+        ReflectionInvoker(Method method) {
             this.method = method;
             ReflectionUtils.makeAccessible(method);
         }
@@ -234,7 +234,7 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
 
         private final MethodHandle handle;
 
-        public MethodHandleInvoker(MethodHandle handle) {
+        MethodHandleInvoker(MethodHandle handle) {
             this.handle = handle;
         }
 

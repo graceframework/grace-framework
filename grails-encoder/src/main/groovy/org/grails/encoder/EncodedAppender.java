@@ -116,7 +116,7 @@ public interface EncodedAppender {
      */
     void flush() throws IOException;
 
-    public void close() throws IOException;
+    void close() throws IOException;
 
 
     /**
@@ -130,7 +130,7 @@ public interface EncodedAppender {
     /**
      * @return current state of ignoreEncodingState setting
      */
-    public boolean isIgnoreEncodingState();
+    boolean isIgnoreEncodingState();
 
     /**
      * Check if the encoder should be used to a input with certain encodingState
@@ -141,6 +141,6 @@ public interface EncodedAppender {
      *            the current encoding state
      * @return true, if should encode
      */
-    public boolean shouldEncode(Encoder encoderToApply, EncodingState encodingState);
+    boolean shouldEncode(Encoder encoderToApply, EncodingState encodingState);
 
 }

@@ -48,7 +48,7 @@ import org.grails.io.support.Resource;
  * @author Michael Yan
  * @since 3.0
  */
-class PluginAstReader {
+public class PluginAstReader {
 
     private BasicGrailsPluginInfo pluginInfo;
 
@@ -56,7 +56,7 @@ class PluginAstReader {
         this.pluginInfo = new BasicGrailsPluginInfo();
     }
 
-    GrailsPluginInfo getPluginInfo() {
+    public GrailsPluginInfo getPluginInfo() {
         return this.pluginInfo;
     }
 
@@ -186,7 +186,7 @@ class PluginAstReader {
      * @author Graeme Rocher
      * @since 1.3
      */
-    public class BasicGrailsPluginInfo implements GrailsPluginInfo {
+    protected class BasicGrailsPluginInfo implements GrailsPluginInfo {
 
         private String name;
 

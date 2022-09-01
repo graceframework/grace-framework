@@ -89,7 +89,7 @@ public class UrlCreatorCache {
 
         private final int weight;
 
-        public CachingUrlCreator(UrlCreator delegate, int weight) {
+        CachingUrlCreator(UrlCreator delegate, int weight) {
             this.delegate = delegate;
             this.weight = weight;
         }
@@ -351,7 +351,7 @@ public class UrlCreatorCache {
 
         protected final int urlType;
 
-        public UrlCreatorKey(String controller, String action, String namespace,
+        UrlCreatorKey(String controller, String action, String namespace,
                 String pluginName, String httpMethod, Map<Object, Object> params, String encoding,
                 String fragment, int urlType) {
             super(controller, action, namespace, pluginName, httpMethod, params);

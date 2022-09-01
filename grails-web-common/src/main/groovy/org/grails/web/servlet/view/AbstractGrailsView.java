@@ -91,7 +91,7 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      *
      * @throws java.io.IOException Thrown when an error occurs writing the response
      */
-    abstract protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest,
+    protected abstract void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest,
             HttpServletRequest request, HttpServletResponse response) throws Exception;
 
     protected GrailsWebRequest createGrailsWebRequest(HttpServletRequest request, HttpServletResponse response,
@@ -109,6 +109,6 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
         throw new UndeclaredThrowableException(ex, message);
     }
 
-    abstract public Template getTemplate();
+    public abstract Template getTemplate();
 
 }

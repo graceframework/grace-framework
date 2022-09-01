@@ -251,7 +251,7 @@ public class StreamByteBuffer {
         this.readIterator = null;
     }
 
-    class StreamByteBufferChunk {
+    protected static class StreamByteBufferChunk {
 
         private int pointer = 0;
 

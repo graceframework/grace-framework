@@ -250,7 +250,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
      * A Closure that captures a call to a method that accepts a single closure
      */
     @SuppressWarnings("rawtypes")
-    class MappingCapturingClosure extends Closure {
+    protected class MappingCapturingClosure extends Closure {
 
         private static final long serialVersionUID = 2108155626252742722L;
 
@@ -281,7 +281,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
      * <p>invokeMethod(methodName, args) is also overriden for the creation of each UrlMapping instance
      */
     @SuppressWarnings("rawtypes")
-    class UrlMappingBuilder extends GroovyObjectSupport {
+    protected class UrlMappingBuilder extends GroovyObjectSupport {
 
         private static final String CAPTURING_WILD_CARD = UrlMapping.CAPTURED_WILDCARD;
 
@@ -1486,7 +1486,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
     }
 
-    class UrlGroupMappingRecursionBuilder extends UrlMappingBuilder {
+    protected class UrlGroupMappingRecursionBuilder extends UrlMappingBuilder {
 
         private ParentResource parentResource;
 

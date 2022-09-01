@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * @since 3.2
  * @see DirectoryWatcher
  */
-class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
+public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
 

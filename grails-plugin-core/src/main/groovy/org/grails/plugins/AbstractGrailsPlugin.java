@@ -315,7 +315,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
      *
      * @author Graeme Rocher
      */
-    class GrailsPluginClass extends AbstractGrailsClass {
+    protected class GrailsPluginClass extends AbstractGrailsClass {
 
         public GrailsPluginClass(Class<?> clazz) {
             super(clazz, TRAILING_NAME);

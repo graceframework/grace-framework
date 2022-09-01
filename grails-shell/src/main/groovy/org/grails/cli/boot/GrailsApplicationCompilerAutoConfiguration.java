@@ -149,7 +149,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         classNode.addAnnotation(new AnnotationNode(ClassHelper.make("org.grails.boot.internal.EnableAutoConfiguration")));
     }
 
-    class GrailsDependencies implements DependencyManagement {
+    protected class GrailsDependencies implements DependencyManagement {
 
         private final Map<String, Dependency> groupAndArtifactToDependency = new HashMap<>();
 

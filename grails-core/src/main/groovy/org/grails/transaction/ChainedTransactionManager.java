@@ -55,7 +55,7 @@ import org.springframework.util.Assert;
  */
 public class ChainedTransactionManager implements PlatformTransactionManager {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ChainedTransactionManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChainedTransactionManager.class);
 
     private final List<PlatformTransactionManager> transactionManagers;
 

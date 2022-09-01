@@ -124,7 +124,7 @@ public class SortedAggregateCompleter implements Completer {
 
         public int cursor;
 
-        public Completion(final List<CharSequence> candidates) {
+        Completion(final List<CharSequence> candidates) {
             Preconditions.checkNotNull(candidates);
             this.candidates = new LinkedList<>(candidates);
         }

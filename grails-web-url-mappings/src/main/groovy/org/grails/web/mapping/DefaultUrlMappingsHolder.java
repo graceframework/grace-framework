@@ -809,7 +809,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
         Set<String> paramNames;
 
-        public UrlMappingKey(String controller, String action, String namespace, String pluginName,
+        UrlMappingKey(String controller, String action, String namespace, String pluginName,
                 String httpMethod, String version, Set<String> paramNames) {
             this.controller = controller;
             this.action = action;
@@ -950,7 +950,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
         String version;
 
-        public UrlMappingsListKey(String controller, String action, String namespace, String pluginName, String httpMethod, String version) {
+        UrlMappingsListKey(String controller, String action, String namespace, String pluginName, String httpMethod, String version) {
             this.controller = controller;
             this.action = action;
             this.namespace = namespace;
@@ -1024,7 +1024,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     class UrlMappingsList {
 
         // A map from a UrlMappingsListKey to a list of UrlMappingKeys
-        private Map<UrlMappingsListKey, List<UrlMappingKey>> lookup = new HashMap<>();
+        private final Map<UrlMappingsListKey, List<UrlMappingKey>> lookup = new HashMap<>();
 
         public void put(UrlMappingsListKey key, UrlMappingKey mapping) {
             List<UrlMappingKey> mappingsList = this.lookup.get(key);

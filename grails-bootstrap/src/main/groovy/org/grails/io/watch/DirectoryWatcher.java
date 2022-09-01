@@ -181,7 +181,7 @@ public class DirectoryWatcher extends Thread {
     /**
      * Interface for FileChangeListeners
      */
-    public static interface FileChangeListener {
+    public interface FileChangeListener {
 
         /**
          * Fired when a file changes

@@ -62,7 +62,7 @@ public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceL
      */
     private static class FileSystemContextResource extends FileSystemResource implements ContextResource {
 
-        public FileSystemContextResource(String path) {
+        FileSystemContextResource(String path) {
             super(path);
         }
 

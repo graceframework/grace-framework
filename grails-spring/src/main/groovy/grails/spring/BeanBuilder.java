@@ -918,7 +918,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
         private BeanConfiguration beanConfig;
 
-        public ConfigurableRuntimeBeanReference(String beanName, BeanConfiguration beanConfig, boolean toParent) {
+        ConfigurableRuntimeBeanReference(String beanName, BeanConfiguration beanConfig, boolean toParent) {
             super(beanName, toParent);
             Assert.notNull(beanConfig, "Argument [beanConfig] cannot be null");
             this.beanConfig = beanConfig;
@@ -966,7 +966,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
             private String propertyName;
 
-            public WrappedPropertyValue(String propertyName, Object propertyValue) {
+            WrappedPropertyValue(String propertyName, Object propertyValue) {
                 this.propertyValue = propertyValue;
                 this.propertyName = propertyName;
             }

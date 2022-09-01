@@ -207,7 +207,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private Closure<Object> closure;
 
-        public ClosureDecoder(String codecName, Closure<Object> closure) {
+        ClosureDecoder(String codecName, Closure<Object> closure) {
             this.codecIdentifier = new DefaultCodecIdentifier(codecName);
             this.closure = closure;
         }
@@ -226,7 +226,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private Encoder delegate;
 
-        public StateAwareEncoderWrapper(Encoder delegate) {
+        StateAwareEncoderWrapper(Encoder delegate) {
             this.delegate = delegate;
         }
 
@@ -278,7 +278,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private StreamingEncoder delegate;
 
-        public StreamingStateAwareEncoderWrapper(StreamingEncoder delegate) {
+        StreamingStateAwareEncoderWrapper(StreamingEncoder delegate) {
             super(delegate);
             this.delegate = delegate;
         }
@@ -296,7 +296,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private Closure<Object> closure;
 
-        public ClosureEncoder(String codecName, Closure<Object> closure) {
+        ClosureEncoder(String codecName, Closure<Object> closure) {
             this.codecIdentifier = new DefaultCodecIdentifier(codecName);
             this.closure = closure;
         }
@@ -332,7 +332,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private Method method;
 
-        public MethodCallingClosure(Object owner, Method method) {
+        MethodCallingClosure(Object owner, Method method) {
             super(owner);
             maximumNumberOfParameters = 1;
             parameterTypes = new Class[] { Object.class };

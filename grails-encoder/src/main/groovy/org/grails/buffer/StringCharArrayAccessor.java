@@ -92,7 +92,7 @@ public final class StringCharArrayAccessor {
      * @throws IOException
      *          If an I/O error occurs
      */
-    static public void writeStringAsCharArray(Writer writer, String str) throws IOException {
+    public static void writeStringAsCharArray(Writer writer, String str) throws IOException {
         writeStringAsCharArray(writer, str, 0, str.length());
     }
 
@@ -114,7 +114,7 @@ public final class StringCharArrayAccessor {
      * @throws IOException
      *          If an I/O error occurs
      */
-    static public void writeStringAsCharArray(Writer writer, String str, int off, int len) throws IOException {
+    public static void writeStringAsCharArray(Writer writer, String str, int off, int len) throws IOException {
         if (!enabled) {
             writeStringFallback(writer, str, off, len);
             return;
@@ -215,7 +215,7 @@ public final class StringCharArrayAccessor {
         offsetField = null;
     }
 
-    static public boolean isEnabled() {
+    public static boolean isEnabled() {
         return enabled;
     }
 

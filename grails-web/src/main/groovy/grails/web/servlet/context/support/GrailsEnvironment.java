@@ -48,7 +48,7 @@ public class GrailsEnvironment extends StandardServletEnvironment {
         return activeProfiles;
     }
 
-    private class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
+    protected class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
 
         public GrailsConfigPropertySource() {
             super(StringUtils.hasText(GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName())
