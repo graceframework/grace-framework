@@ -79,6 +79,14 @@
 			<property name="sortStaticImportsAlphabetically" value="true"/>
 		</module>
 
+		<!-- Miscellaneous -->
+		<module name="CommentsIndentation">
+			<property name="tokens" value="BLOCK_COMMENT_BEGIN"/>
+		</module>
+		<module name="UpperEll"/>
+		<module name="ArrayTypeStyle"/>
+		<module name="OuterTypeFilename"/>
+
 		<!-- Modifiers -->
 		<module name="ModifierOrder"/>
 		<module name="RedundantModifier"/>
