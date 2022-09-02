@@ -21,6 +21,23 @@
 
 	<!-- TreeWalker Checks -->
 	<module name="TreeWalker">
+		<!-- Annotations -->
+		<module name="AnnotationUseStyle">
+			<property name="elementStyle" value="compact"/>
+		</module>
+		<module name="MissingOverride"/>
+
+		<!-- Block Checks -->
+		<module name="EmptyBlock">
+			<property name="option" value="text"/>
+		</module>
+		<module name="LeftCurly"/>
+		<module name="RightCurly">
+			<property name="option" value="alone"/>
+		</module>
+		<module name="NeedBraces"/>
+		<module name="AvoidNestedBlocks"/>
+
 		<!-- Class Design -->
 		<module name="FinalClass"/>
 		<module name="InterfaceIsType"/>
@@ -42,6 +59,7 @@
 			<property name="checkMethods" value="false"/>
 		</module>
 		<module name="OneStatementPerLine"/>
+
 		<!-- Imports -->
 		<module name="AvoidStarImport"/>
 		<module name="AvoidStaticImport">
@@ -60,17 +78,6 @@
 			<property name="option" value="top"/>
 			<property name="sortStaticImportsAlphabetically" value="true"/>
 		</module>
-
-		<!-- Block Checks -->
-		<module name="EmptyBlock">
-			<property name="option" value="text"/>
-		</module>
-		<module name="LeftCurly"/>
-		<module name="RightCurly">
-			<property name="option" value="alone"/>
-		</module>
-		<module name="NeedBraces"/>
-		<module name="AvoidNestedBlocks"/>
 
 		<!-- Modifiers -->
 		<module name="ModifierOrder"/>
