@@ -262,7 +262,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         this.pluginList = sortPlugins(this.pluginList);
         initializePlugins();
         this.initialised = true;
-        logger.info(String.format("Total %d plugins loaded successfully, take in %dms.", this.pluginList.size(), (System.currentTimeMillis() - time)));
+        logger.info(String.format("Total %d plugins loaded successfully, take in %dms.", this.pluginList.size(),
+                (System.currentTimeMillis() - time)));
     }
 
     protected List<GrailsPlugin> sortPlugins(List<GrailsPlugin> toSort) {

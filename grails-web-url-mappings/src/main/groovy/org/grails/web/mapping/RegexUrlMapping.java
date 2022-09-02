@@ -908,7 +908,8 @@ public class RegexUrlMapping extends AbstractUrlMapping {
                             this, other, thisSingleWildcardCount, otherSingleWildcardCount);
                 }
                 else if (singleWildcardDiff < 0) {
-                    logger.debug("Mapping [{}] has a lower precedence than [{}] due to the latter containing more single wild card matches[{} vs. {}]",
+                    logger.debug(
+                            "Mapping [{}] has a lower precedence than [{}] due to the latter containing more single wild card matches[{} vs. {}]",
                             this, other, thisSingleWildcardCount, otherSingleWildcardCount);
                 }
             }
