@@ -50,6 +50,7 @@ public class DefaultMimeUtility implements MimeUtility {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<MimeType> getKnownMimeTypes() {
         return this.mimeTypes;
     }
@@ -57,6 +58,7 @@ public class DefaultMimeUtility implements MimeUtility {
     /**
      * {@inheritDoc}
      */
+    @Override
     public MimeType getMimeTypeForExtension(String extension) {
         if (extension == null) {
             return null;

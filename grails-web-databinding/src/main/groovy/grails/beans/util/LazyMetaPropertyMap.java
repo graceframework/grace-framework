@@ -67,6 +67,7 @@ public class LazyMetaPropertyMap implements Map {
      * {@inheritDoc}
      * @see java.util.Map#size()
      */
+    @Override
     public int size() {
         return keySet().size();
     }
@@ -75,6 +76,7 @@ public class LazyMetaPropertyMap implements Map {
      * {@inheritDoc}
      * @see java.util.Map#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return false; // will never be empty
     }
@@ -83,6 +85,7 @@ public class LazyMetaPropertyMap implements Map {
      * {@inheritDoc}
      * @see java.util.Map#containsKey(java.lang.Object)
      */
+    @Override
     public boolean containsKey(Object propertyName) {
         if (propertyName instanceof CharSequence) {
             propertyName = propertyName.toString();
