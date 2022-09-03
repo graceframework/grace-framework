@@ -32,9 +32,9 @@ import org.grails.encoder.Decoder
 @CompileStatic
 class JavaScriptCodec implements CodecFactory {
 
-    static Encoder ENCODER = new JavaScriptEncoder()
+    static final Encoder ENCODER = new JavaScriptEncoder()
 
-    static Decoder DECODER = new Decoder() {
+    static final Decoder DECODER = new Decoder() {
 
         def decode(Object obj) {
             obj != null ? StringEscapeUtils.unescapeJavaScript(obj.toString()) : null

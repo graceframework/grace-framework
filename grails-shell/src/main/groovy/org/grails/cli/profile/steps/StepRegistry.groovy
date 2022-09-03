@@ -30,14 +30,14 @@ import org.grails.cli.profile.Step
 @CompileStatic
 class StepRegistry {
 
-    private static Collection<StepFactory> registeredStepFactories = []
+    private static final Collection<StepFactory> REGISTERED_STEP_FACTORIES = []
 
     static {
         def stepFactories = ServiceLoader.load(StepFactory).iterator()
 
         while (stepFactories.hasNext()) {
             StepFactory stepFactory = stepFactories.next()
-            registeredStepFactories << stepFactory
+            REGISTERED_STEP_FACTORIES << stepFactory
         }
     }
 
@@ -51,7 +51,7 @@ class StepRegistry {
         if (!name) {
             return null
         }
-        for (StepFactory sf in registeredStepFactories) {
+        for (StepFactory sf in REGISTERED_STEP_FACTORIES) {
             def step = sf.createStep(name, command, parameters)
             if (step) {
                 return step

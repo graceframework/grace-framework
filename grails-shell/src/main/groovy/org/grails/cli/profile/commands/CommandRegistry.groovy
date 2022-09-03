@@ -36,22 +36,22 @@ import org.grails.config.CodeGenConfig
 @CompileStatic
 class CommandRegistry {
 
-    private static Map<String, Command> registeredCommands = [:]
-    private static List<CommandFactory> registeredCommandFactories = []
+    private static final Map<String, Command> REGISTERED_COMMANDS = [:]
+    private static final List<CommandFactory> REGISTERED_COMMAND_FACTORIES = []
 
     static {
         def commands = ServiceLoader.load(Command).iterator()
 
         while (commands.hasNext()) {
             Command command = commands.next()
-            registeredCommands[command.name] = command
+            REGISTERED_COMMANDS[command.name] = command
         }
 
         def commandFactories = ServiceLoader.load(CommandFactory).iterator()
         while (commandFactories.hasNext()) {
             CommandFactory commandFactory = commandFactories.next()
 
-            registeredCommandFactories << commandFactory
+            REGISTERED_COMMAND_FACTORIES << commandFactory
         }
     }
 
@@ -63,7 +63,7 @@ class CommandRegistry {
      * @return A command or null of non exists
      */
     static Command getCommand(String name, ProfileRepository repository) {
-        def command = registeredCommands[name]
+        def command = REGISTERED_COMMANDS[name]
         if (command instanceof ProfileRepositoryAware) {
             command.profileRepository = repository
         }
@@ -71,7 +71,7 @@ class CommandRegistry {
     }
 
     static Collection<Command> findCommands(ProfileRepository repository) {
-        registeredCommands.values().collect { Command cmd ->
+        REGISTERED_COMMANDS.values().collect { Command cmd ->
             if (cmd instanceof ProfileRepositoryAware) {
                 ((ProfileRepositoryAware) cmd).profileRepository = repository
             }
@@ -82,7 +82,7 @@ class CommandRegistry {
     static Collection<Command> findCommands(Profile profile, boolean inherited = false) {
         Collection<Command> commands = []
 
-        for (CommandFactory cf in registeredCommandFactories) {
+        for (CommandFactory cf in REGISTERED_COMMAND_FACTORIES) {
             def factoryCommands = cf.findCommands(profile, inherited)
             def condition = { Command c -> c.name == 'events' }
             def eventCommands = factoryCommands.findAll(condition)
@@ -93,7 +93,7 @@ class CommandRegistry {
             commands.addAll factoryCommands
         }
 
-        commands.addAll(registeredCommands.values()
+        commands.addAll(REGISTERED_COMMANDS.values()
                 .findAll { Command c ->
                     (c instanceof ProjectCommand) ||
                             (c instanceof ProfileCommand) &&

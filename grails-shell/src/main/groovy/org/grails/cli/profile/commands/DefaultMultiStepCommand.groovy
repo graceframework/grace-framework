@@ -36,7 +36,7 @@ import org.grails.cli.profile.steps.StepRegistry
  */
 class DefaultMultiStepCommand extends MultiStepCommand {
 
-    private Map<String, Object> data
+    private final Map<String, Object> data
     private List<AbstractStep> steps
 
     final CommandDescription description

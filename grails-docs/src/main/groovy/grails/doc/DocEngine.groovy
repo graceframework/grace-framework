@@ -46,10 +46,10 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
     static final API_CONTEXT_PATH = 'apiContextPath'
     static final RESOURCES_CONTEXT_PATH = 'resourcesContextPath'
 
-    static EXTERNAL_DOCS = [:]
-    static ALIAS = [:]
+    static final EXTERNAL_DOCS = [:]
+    static final ALIAS = [:]
 
-    private basedir
+    private final basedir
     private macroFilter
     private macroLoader
 
@@ -236,11 +236,11 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
      * @param name The property name to convert
      * @return The converted property name
      */
-    static final nameCache = [:]
+    static final NAME_CACHE = [:]
 
     String getNaturalName(String name) {
-        if (nameCache[name]) {
-            return nameCache[name]
+        if (NAME_CACHE[name]) {
+            return NAME_CACHE[name]
         }
 
         List words = []
@@ -278,8 +278,8 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
             }
         }
 
-        nameCache[name] = words.join(' ')
-        nameCache[name]
+        NAME_CACHE[name] = words.join(' ')
+        NAME_CACHE[name]
     }
 
 }

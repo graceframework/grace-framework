@@ -25,7 +25,7 @@ import jline.console.completer.Completer
 @CompileStatic
 class ClosureCompleter implements Completer {
 
-    private Closure<Collection<String>> closure
+    private final Closure<Collection<String>> closure
     private Completer completer
 
     ClosureCompleter(Closure<Collection<String>> closure) {

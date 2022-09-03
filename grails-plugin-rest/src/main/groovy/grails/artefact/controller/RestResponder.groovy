@@ -48,7 +48,7 @@ import org.grails.web.util.GrailsApplicationAttributes
 @CompileStatic
 trait RestResponder {
 
-    private String PROPERTY_RESPONSE_FORMATS = 'responseFormats'
+    private static final String PROPERTY_RESPONSE_FORMATS = 'responseFormats'
 
     private RendererRegistry rendererRegistry
     private ProxyHandler proxyHandler

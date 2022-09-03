@@ -55,7 +55,7 @@ import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 @CompileStatic
 abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer<T> {
 
-    protected static List<String> DEFAULT_EXCLUDES = ['metaClass', 'class']
+    protected static final List<String> DEFAULT_EXCLUDES = ['metaClass', 'class']
 
     public static final String RELATIONSHIP_SELF = 'self'
     public static final String HREF_ATTRIBUTE = 'href'
@@ -234,6 +234,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     }
 
     protected abstract void writeLink(Link link, Locale locale, writerObject)
-    protected abstract  void writeDomainProperty(value, String propertyName, writer)
+
+    protected abstract void writeDomainProperty(value, String propertyName, writer)
 
 }

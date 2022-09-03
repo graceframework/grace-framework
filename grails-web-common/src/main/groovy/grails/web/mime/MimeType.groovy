@@ -47,7 +47,7 @@ class MimeType {
     public static final MimeType ATOM_XML = new MimeType('application/atom+xml', 'xml')
     public static final MimeType JSON_API = new MimeType('application/vnd.api+json', 'json')
 
-    private static DEFAULTS = createDefaults()
+    private static final DEFAULTS = createDefaults()
     public static final String QUALITY_RATING = '1.0'
     public static final BigDecimal QUALITY_RATING_NUMBER = 1.0
 

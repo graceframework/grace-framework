@@ -21,17 +21,19 @@ import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.validation.FieldError
 
+import grails.gorm.validation.ConstrainedProperty
 import grails.util.Holders
 import grails.validation.Constrained
 import grails.validation.ConstrainedDelegate
 import grails.validation.ValidationErrors
 
 import org.grails.datastore.gorm.support.BeforeValidateHelper
+import org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
 
 class ValidationSupport {
 
-    static final BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
+    static BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
 
     static boolean validateInstance(object, List fieldsToValidate = null) {
         beforeValidateHelper.invokeBeforeValidate(object, fieldsToValidate)
@@ -77,10 +79,10 @@ class ValidationSupport {
     static Map<String, Constrained> getConstrainedPropertiesForClass(Class<?> clazz, boolean defaultNullable = false) {
         BeanFactory ctx = Holders.findApplicationContext()
 
-        org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator evaluator
+        ConstraintsEvaluator evaluator
         if (ctx != null) {
             try {
-                evaluator = ctx.getBean(org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator)
+                evaluator = ctx.getBean(ConstraintsEvaluator)
             }
             catch (NoSuchBeanDefinitionException e) {
                 evaluator = new DefaultConstraintEvaluator()
@@ -90,7 +92,7 @@ class ValidationSupport {
             evaluator = new DefaultConstraintEvaluator()
         }
 
-        Map<String, grails.gorm.validation.ConstrainedProperty> evaluatedConstraints = evaluator.evaluate(clazz, defaultNullable)
+        Map<String, ConstrainedProperty> evaluatedConstraints = evaluator.evaluate(clazz, defaultNullable)
         Map<String, Constrained> finalConstraints = [:]
         for (entry in evaluatedConstraints) {
             finalConstraints.put(entry.key, new ConstrainedDelegate(entry.value))

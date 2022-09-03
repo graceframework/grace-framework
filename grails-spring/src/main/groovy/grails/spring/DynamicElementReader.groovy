@@ -47,8 +47,8 @@ class DynamicElementReader extends GroovyObjectSupport {
 
     private static final LOG = LogFactory.getLog(BeanBuilder)
 
-    private Map xmlNamespaces
-    private String rootNamespace
+    private final Map xmlNamespaces
+    private final String rootNamespace
     ErrorHandler errorHandler = new SimpleSaxErrorHandler(LOG)
     int validationMode = XmlValidationModeDetector.VALIDATION_NONE
     EntityResolver entityResolver = new DelegatingEntityResolver(DynamicElementReader.getClassLoader())

@@ -25,7 +25,7 @@ import groovy.transform.PackageScope
 @CompileStatic
 class EnvironmentBlockEvaluator {
 
-    private Environment current
+    private final Environment current
     private Closure<?> callable
 
     Closure<?> getCallable() {

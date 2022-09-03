@@ -22,7 +22,7 @@ import groovy.transform.ToString
 @CompileStatic
 class SystemStreamsRedirector {
 
-    private static final SystemStreamsRedirector original = current()
+    private static final SystemStreamsRedirector ORIGINAL = current()
     final InputStream input
     final PrintStream out
     final PrintStream err
@@ -42,7 +42,7 @@ class SystemStreamsRedirector {
     }
 
     static SystemStreamsRedirector original() {
-        original
+        ORIGINAL
     }
 
     static <T> T withOriginalIO(Closure<T> closure) {

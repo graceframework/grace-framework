@@ -26,16 +26,16 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class EventStorage {
 
-    private static Map<String, Collection<Closure>> eventListeners = [:].withDefault { [] }
+    private static final Map<String, Collection<Closure>> EVENT_LISTENERS = [:].withDefault { [] }
 
     static void registerEvent(String eventName, Closure callable) {
-        if (!eventListeners[eventName].contains(callable)) {
-            eventListeners[eventName] << callable
+        if (!EVENT_LISTENERS[eventName].contains(callable)) {
+            EVENT_LISTENERS[eventName] << callable
         }
     }
 
     static void fireEvent(Object caller, String eventName, Object...args) {
-        def listeners = eventListeners[eventName]
+        def listeners = EVENT_LISTENERS[eventName]
         for (listener in listeners) {
             listener.delegate = caller
             listener.call args

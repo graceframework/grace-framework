@@ -43,7 +43,7 @@ import org.grails.validation.ConstraintEvalUtils
 @CompileStatic
 trait Validateable {
 
-    private BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
+    private final BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
     private static Map<String, Constrained> constraintsMapInternal
 
     private Errors errors

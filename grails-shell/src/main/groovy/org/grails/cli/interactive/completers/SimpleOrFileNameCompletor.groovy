@@ -27,8 +27,8 @@ import jline.console.completer.StringsCompleter
  */
 class SimpleOrFileNameCompletor implements Completer {
 
-    private simpleCompletor
-    private fileNameCompletor
+    private final StringsCompleter simpleCompletor
+    private final EscapingFileNameCompletor fileNameCompletor
 
     SimpleOrFileNameCompletor(List fixedOptions) {
         this(fixedOptions as String[])

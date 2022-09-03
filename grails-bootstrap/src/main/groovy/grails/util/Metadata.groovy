@@ -51,14 +51,13 @@ class Metadata extends PropertySourcePropertyResolver {
     public static final String WAR_DEPLOYED = 'info.app.warDeployed'
     public static final String DEFAULT_SERVLET_VERSION = '3.0'
 
-    private static Holder<Reference<Metadata>> holder = new Holder<Reference<Metadata>>('Metadata')
-    public static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'
+    private static final Holder<Reference<Metadata>> HOLDER = new Holder<Reference<Metadata>>('Metadata')
+    private static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'
 
     private Resource metadataFile
     private boolean warDeployed
     private String servletVersion = DEFAULT_SERVLET_VERSION
     private Map<String, Object> props = null
-    private Map<String, Object> finalMap = null
 
     private Metadata() {
         loadFromDefault()
@@ -119,7 +118,7 @@ class Metadata extends PropertySourcePropertyResolver {
         Metadata m = getFromMap()
         if (m == null) {
             m = new Metadata()
-            holder.set(new SoftReference<Metadata>(m))
+            HOLDER.set(new SoftReference<Metadata>(m))
         }
         m
     }
@@ -199,7 +198,7 @@ class Metadata extends PropertySourcePropertyResolver {
      */
     static Metadata getInstance(InputStream inputStream) {
         Metadata m = new Metadata(inputStream)
-        holder.set(new FinalReference<Metadata>(m))
+        HOLDER.set(new FinalReference<Metadata>(m))
         m
     }
 
@@ -218,7 +217,7 @@ class Metadata extends PropertySourcePropertyResolver {
      * @return A Metadata object
      */
     static Metadata getInstance(Resource file) {
-        Reference<Metadata> ref = holder.get()
+        Reference<Metadata> ref = HOLDER.get()
         if (ref != null) {
             Metadata metadata = ref.get()
             if (metadata != null && metadata.getMetadataFile() != null && metadata.getMetadataFile().equals(file)) {
@@ -231,7 +230,7 @@ class Metadata extends PropertySourcePropertyResolver {
 
     private static Metadata createAndBindNew(Resource file) {
         Metadata m = new Metadata(file)
-        holder.set(new FinalReference<Metadata>(m))
+        HOLDER.set(new FinalReference<Metadata>(m))
         m
     }
 
@@ -317,7 +316,7 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     private static Metadata getFromMap() {
-        Reference<Metadata> metadata = holder.get()
+        Reference<Metadata> metadata = HOLDER.get()
         metadata == null ? null : metadata.get()
     }
 

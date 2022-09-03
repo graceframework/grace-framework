@@ -110,8 +110,8 @@ class DocPublisherTask extends Task {
 
 class AntLogAdapter {
 
-    private antProject
-    private task
+    private final antProject
+    private final task
 
     AntLogAdapter(antProject, task) {
         this.antProject = antProject

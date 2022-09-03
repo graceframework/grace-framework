@@ -19,7 +19,7 @@ import org.codehaus.groovy.runtime.NullObject
 
 class HexCodecExtensionMethods {
 
-    static HEXDIGITS = '0123456789abcdef'
+    static final HEXDIGITS = '0123456789abcdef'
 
     // Expects an array/list of numbers
     static encodeAsHex(theTarget) {

@@ -32,7 +32,7 @@ class FactoriesLoaderSupport {
     /** The location to look for the factories. Can be present in multiple JAR files. */
     static final String FACTORIES_RESOURCE_LOCATION = 'META-INF/grails.factories'
 
-    private static ConcurrentMap<Integer, Map<String,String[]>> loadedPropertiesForClassLoader =
+    private static final ConcurrentMap<Integer, Map<String,String[]>> LOADED_PROPERTIES_FOR_CLASSLOADER =
             new ConcurrentHashMap<Integer, Map<String,String[]>>()
 
     /**
@@ -58,7 +58,7 @@ class FactoriesLoaderSupport {
      */
     static String[] loadFactoryNames(String factoryClassName, ClassLoader classLoader = FactoriesLoaderSupport.classLoader) {
         try {
-            Map<String, String[]> loadedProperties = loadedPropertiesForClassLoader.get(System.identityHashCode(classLoader))
+            Map<String, String[]> loadedProperties = LOADED_PROPERTIES_FOR_CLASSLOADER.get(System.identityHashCode(classLoader))
             if (loadedProperties == null) {
                 Set<String> allKeys = [] as Set
                 def urls = classLoader.getResources(FACTORIES_RESOURCE_LOCATION)
@@ -69,8 +69,9 @@ class FactoriesLoaderSupport {
                         properties.load(input)
                     }
                     allProperties.add properties
-                    allKeys.addAll((Set<String>) properties.keySet())
+                    allKeys.addAll(properties.keySet() as Set<String>)
                 }
+
                 Map<String, String[]> mergedFactoryNames = [:]
                 for (String propertyName : allKeys) {
                     Set<String> result = [] as Set
@@ -82,7 +83,7 @@ class FactoriesLoaderSupport {
                     }
                     mergedFactoryNames.put propertyName, result as String[]
                 }
-                loadedProperties = loadedPropertiesForClassLoader.putIfAbsent(System.identityHashCode(classLoader), mergedFactoryNames)
+                loadedProperties = LOADED_PROPERTIES_FOR_CLASSLOADER.putIfAbsent(System.identityHashCode(classLoader), mergedFactoryNames)
                 if (loadedProperties == null) {
                     loadedProperties = mergedFactoryNames
                 }

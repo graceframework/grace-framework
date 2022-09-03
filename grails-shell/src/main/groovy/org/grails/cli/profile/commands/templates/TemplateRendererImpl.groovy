@@ -46,7 +46,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
     Profile profile
     ProfileRepository profileRepository
     @Delegate FileSystemInteraction fileSystemInteraction
-    private Map<String, Template> templateCache = [:]
+    private final Map<String, Template> templateCache = [:]
 
     TemplateRendererImpl(ExecutionContext executionContext,
                          ProfileRepository profileRepository,

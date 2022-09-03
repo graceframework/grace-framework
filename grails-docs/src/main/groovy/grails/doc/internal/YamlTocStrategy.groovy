@@ -23,8 +23,8 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 class YamlTocStrategy {
 
     private final parser = new Yaml(new SafeConstructor())
-    private resourceChecker
-    private String ext = '.gdoc'
+    private final resourceChecker
+    private final String ext
 
     YamlTocStrategy(resourceChecker, String ext = '.gdoc') {
         this.resourceChecker = resourceChecker

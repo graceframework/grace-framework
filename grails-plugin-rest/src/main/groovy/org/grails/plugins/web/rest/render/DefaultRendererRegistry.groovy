@@ -49,11 +49,11 @@ import org.grails.web.util.ClassAndMimeTypeRegistry
 @CompileStatic
 class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, RendererCacheKey> implements RendererRegistry {
 
-    private Map<ContainerRendererCacheKey, Renderer> containerRenderers = new ConcurrentHashMap<>()
-    private Cache<ContainerRendererCacheKey, Renderer<?>> containerRendererCache = Caffeine.newBuilder()
-        .initialCapacity(500)
-        .maximumSize(1000)
-        .build()
+    private final Map<ContainerRendererCacheKey, Renderer> containerRenderers = new ConcurrentHashMap<>()
+    private final Cache<ContainerRendererCacheKey, Renderer<?>> containerRendererCache = Caffeine.newBuilder()
+            .initialCapacity(500)
+            .maximumSize(1000)
+            .build()
 
     @Autowired(required = false)
     GrailsConventionGroovyPageLocator groovyPageLocator
@@ -63,7 +63,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
     String modelSuffix = ''
 
-    DefaultRendererRegistry() { }
+    DefaultRendererRegistry() {}
 
     @PostConstruct
     void initialize() {

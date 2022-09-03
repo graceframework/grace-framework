@@ -53,9 +53,9 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     boolean invalidToken
     MultiValueMap multipartFiles = new LinkedMultiValueMap<String, MultipartFile>()
 
-    private Map<String, String> multipartContentTypes = Collections.emptyMap()
-    private Map<String, HttpHeaders> multipartHeaders = Collections.emptyMap()
-    private HttpHeaders httpHeaders = new HttpHeaders()
+    private final Map<String, String> multipartContentTypes = Collections.emptyMap()
+    private final Map<String, HttpHeaders> multipartHeaders = Collections.emptyMap()
+    private final HttpHeaders httpHeaders = new HttpHeaders()
 
     HttpHeaders requestHeaders
     HttpMethod requestMethod = HttpMethod.GET

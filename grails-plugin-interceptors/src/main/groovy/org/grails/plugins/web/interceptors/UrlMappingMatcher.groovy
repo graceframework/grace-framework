@@ -34,7 +34,7 @@ import grails.web.mapping.UrlMappingInfo
 @CompileStatic
 class UrlMappingMatcher implements Matcher {
 
-    public static Pattern WILD_CARD_PATTERN = ~/.*/
+    public static final Pattern WILD_CARD_PATTERN = ~/.*/
 
     protected Pattern controllerRegex = WILD_CARD_PATTERN
     protected Pattern actionRegex = WILD_CARD_PATTERN

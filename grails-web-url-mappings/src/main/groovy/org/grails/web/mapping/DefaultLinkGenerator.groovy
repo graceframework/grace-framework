@@ -59,7 +59,7 @@ import org.grails.web.util.WebUtils
 @Slf4j
 class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
-    private static final Pattern absoluteUrlPattern = Pattern.compile('^[A-Za-z][A-Za-z0-9+\\-.]*:.*$')
+    private static final Pattern ABSOLUTE_URL_PATTERN = Pattern.compile('^[A-Za-z][A-Za-z0-9+\\-.]*:.*$')
 
     String configuredServerBaseURL
     String contextPath
@@ -405,7 +405,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
     private boolean isUriAbsolute(String uri) {
         // not using new URI(uri).absolute in order to avoid create the URI object, which is slow
-        absoluteUrlPattern.matcher(uri).matches()
+        ABSOLUTE_URL_PATTERN.matcher(uri).matches()
     }
 
     /**

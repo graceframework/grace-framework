@@ -26,6 +26,7 @@ import grails.web.mapping.UrlMappingData
  * @since 1.1
  */
 @CompileStatic
+@SuppressWarnings('PropertyName')
 class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
 
     String controllerName

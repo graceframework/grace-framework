@@ -42,9 +42,9 @@ class LegacyDocMigrator {
 
     private static final String EOL = System.getProperty('line.separator')
 
-    private guideSrcDir
-    private aliasMap
-    private outDir
+    private final guideSrcDir
+    private final aliasMap
+    private final outDir
 
     LegacyDocMigrator(File guideSrcDir, aliasMap) {
         this(guideSrcDir, new File(guideSrcDir.parentFile, 'migratedGuide'), aliasMap)

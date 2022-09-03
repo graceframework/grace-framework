@@ -400,7 +400,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         true
     }
 
-    private Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
+    private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
 
     @CompileDynamic
     protected File unzipProfile(AntBuilder ant, Resource location) {

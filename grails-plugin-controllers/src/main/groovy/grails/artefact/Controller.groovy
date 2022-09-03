@@ -72,7 +72,7 @@ import org.grails.web.util.GrailsApplicationAttributes
 @CompileStatic
 trait Controller implements ResponseRenderer, ResponseRedirector, RequestForwarder, DataBinder, WebAttributes, ServletAttributes {
 
-    private MimeTypesApiSupport mimeTypesSupport = new MimeTypesApiSupport()
+    private final MimeTypesApiSupport mimeTypesSupport = new MimeTypesApiSupport()
 
     /**
      * <p>The withFormat method is used to allow controllers to handle different types of

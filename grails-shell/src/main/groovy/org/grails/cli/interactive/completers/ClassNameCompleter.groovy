@@ -32,8 +32,8 @@ import org.grails.io.support.Resource
 @CompileStatic
 class ClassNameCompleter extends StringsCompleter {
 
-    private static Map<String, SortedSet<String>> RESOURCE_SCAN_CACHE = [:]
-    private static Collection<ClassNameCompleter> allCompeters = new ConcurrentLinkedQueue<>()
+    private static final Map<String, SortedSet<String>> RESOURCE_SCAN_CACHE = [:]
+    private static final Collection<ClassNameCompleter> ALL_COMPLETERS = new ConcurrentLinkedQueue<>()
     PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver()
 
     private File[] baseDirs
@@ -49,7 +49,7 @@ class ClassNameCompleter extends StringsCompleter {
     static void refreshAll() {
         Thread.start {
             RESOURCE_SCAN_CACHE.clear()
-            Collection<ClassNameCompleter> competers = new ArrayList<>(allCompeters)
+            Collection<ClassNameCompleter> competers = new ArrayList<>(ALL_COMPLETERS)
             for (ClassNameCompleter completer : competers) {
                 completer.refresh()
             }
@@ -69,8 +69,8 @@ class ClassNameCompleter extends StringsCompleter {
                 return
             }
             this.baseDirs = baseDirs
-            if (!allCompeters.contains(this)) {
-                allCompeters << this
+            if (!ALL_COMPLETERS.contains(this)) {
+                ALL_COMPLETERS << this
             }
             SortedSet<String> allStrings = new ConcurrentSkipListSet<>()
             for (File baseDir in baseDirs) {

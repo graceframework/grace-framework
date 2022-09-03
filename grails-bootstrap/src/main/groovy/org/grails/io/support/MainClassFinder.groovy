@@ -40,7 +40,7 @@ class MainClassFinder {
 
     private static final String MAIN_METHOD_NAME = 'main'
 
-    static final Map<String, String> mainClasses = new ConcurrentHashMap<>()
+    static final Map<String, String> MAIN_CLASSES = new ConcurrentHashMap<>()
 
     /**
      * Searches for the main class relative to the give path that is within the project tree
@@ -54,8 +54,8 @@ class MainClassFinder {
         }
 
         def pathStr = path.toString()
-        if (mainClasses.containsKey(pathStr)) {
-            return mainClasses.get(pathStr)
+        if (MAIN_CLASSES.containsKey(pathStr)) {
+            return MAIN_CLASSES.get(pathStr)
         }
 
         try {
@@ -92,7 +92,7 @@ class MainClassFinder {
                 }
             }
             if (mainClass != null) {
-                mainClasses.put(pathStr, mainClass)
+                MAIN_CLASSES.put(pathStr, mainClass)
             }
             return mainClass
         }
@@ -122,8 +122,8 @@ class MainClassFinder {
         }
 
         def rootFolderPath = rootFolder.canonicalPath
-        if (mainClasses.containsKey(rootFolderPath)) {
-            return mainClasses.get(rootFolderPath)
+        if (MAIN_CLASSES.containsKey(rootFolderPath)) {
+            return MAIN_CLASSES.get(rootFolderPath)
         }
 
         if (!rootFolder.exists()) {
@@ -145,7 +145,7 @@ class MainClassFinder {
 
                     if (isMainClass(classReader)) {
                         def mainClassName = classReader.getClassName().replace('/', '.').replace('\\', '.')
-                        mainClasses.put(rootFolderPath, mainClassName)
+                        MAIN_CLASSES.put(rootFolderPath, mainClassName)
                         return mainClassName
                     }
                 }

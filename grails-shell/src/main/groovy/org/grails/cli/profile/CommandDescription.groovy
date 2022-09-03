@@ -55,8 +55,8 @@ class CommandDescription {
      */
     Completer completer = null
 
-    private Map<String, CommandArgument> arguments = new LinkedHashMap<>()
-    private Map<String, CommandArgument> flags = new LinkedHashMap<>()
+    private final Map<String, CommandArgument> arguments = new LinkedHashMap<>()
+    private final Map<String, CommandArgument> flags = new LinkedHashMap<>()
 
     /**
      * Returns an argument for the given name or null if it doesn't exist

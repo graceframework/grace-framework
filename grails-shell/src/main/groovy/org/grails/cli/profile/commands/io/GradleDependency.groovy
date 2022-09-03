@@ -27,8 +27,8 @@ class GradleDependency {
 //        provided: 'developmentOnly'
     ]
 
-    private String scope
-    private String dependency
+    private final String scope
+    private final String dependency
 
     GradleDependency(String scope, String dependency) {
         this.scope = scope

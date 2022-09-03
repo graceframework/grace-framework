@@ -28,7 +28,7 @@ import org.grails.core.io.support.GrailsFactoriesLoader
 @CompileStatic
 class ApplicationContextCommandRegistry {
 
-    private static final Map<String, ApplicationCommand> commands = [:]
+    private static final Map<String, ApplicationCommand> COMMANDS = [:]
 
     static {
         def registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand)
@@ -36,16 +36,16 @@ class ApplicationContextCommandRegistry {
         def iterator = registeredCommands.iterator()
         while (iterator.hasNext()) {
             def cmd = iterator.next()
-            commands[cmd.name] = cmd
+            COMMANDS[cmd.name] = cmd
         }
     }
 
     static Collection<ApplicationCommand> findCommands() {
-        commands.values()
+        COMMANDS.values()
     }
 
     static ApplicationCommand findCommand(String name) {
-        commands[name]
+        COMMANDS[name]
     }
 
 }

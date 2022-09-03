@@ -696,7 +696,7 @@ class GrailsCli {
             }
         }
 
-        private List<CommandCancellationListener> cancelListeners = []
+        private final List<CommandCancellationListener> cancelListeners = []
 
         @Override //Fully qualified name to work around Groovy bug
         void addCancelledListener(CommandCancellationListener listener) {

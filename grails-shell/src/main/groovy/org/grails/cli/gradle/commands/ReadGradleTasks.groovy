@@ -30,7 +30,7 @@ import org.grails.cli.profile.ProjectContext
 @CompileStatic
 class ReadGradleTasks extends ListReadingCachedGradleOperation<String> {
 
-    private static final Closure<String> taskNameFormatter = { String projectPath, String taskName ->
+    private static final Closure<String> TASK_NAME_FORMATTER = { String projectPath, String taskName ->
         if (projectPath == ':') {
             ":$taskName".toString()
         }
@@ -59,7 +59,7 @@ class ReadGradleTasks extends ListReadingCachedGradleOperation<String> {
 
             allTasksModel.projectPaths.each { String projectName, String projectPath ->
                 allTasksModel.allTasks.get(projectName).each { String taskName ->
-                    allTaskSelectors.add(taskNameFormatter(projectPath, taskName))
+                    allTaskSelectors.add(TASK_NAME_FORMATTER(projectPath, taskName))
                 }
             }
 

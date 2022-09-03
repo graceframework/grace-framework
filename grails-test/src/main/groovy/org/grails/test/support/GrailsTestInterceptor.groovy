@@ -21,10 +21,10 @@ import org.springframework.context.ApplicationContext
 @CompileStatic
 class GrailsTestInterceptor {
 
-    private test
-    private GrailsTestMode mode
-    private ApplicationContext appCtx
-    private String[] testClassSuffixes
+    private final test
+    private final GrailsTestMode mode
+    private final ApplicationContext appCtx
+    private final String[] testClassSuffixes
 
     private GrailsTestTransactionInterceptor transactionInterceptor
     private GrailsTestRequestEnvironmentInterceptor requestEnvironmentInterceptor

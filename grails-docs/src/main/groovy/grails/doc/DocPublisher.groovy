@@ -171,7 +171,7 @@ class DocPublisher {
     def output
     private BaseRenderContext context
     private WikiRenderEngine engine
-    private customMacros = []
+    private final customMacros = []
 
     DocPublisher() {
         this(null, null)

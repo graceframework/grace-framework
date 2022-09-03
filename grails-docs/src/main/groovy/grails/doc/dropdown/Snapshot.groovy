@@ -1,4 +1,5 @@
-/* Copyright 2020-2022 the original author or authors.
+/*
+ * Copyright 2020-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +17,11 @@ package grails.doc.dropdown
 
 class Snapshot implements Comparable<Snapshot> {
 
-    private String text
+    private final String text
+
+    Snapshot(String text) {
+        this.text = text
+    }
 
     int getMilestoneVersion() {
         text.replace('M', '').toInteger()
@@ -36,10 +41,6 @@ class Snapshot implements Comparable<Snapshot> {
 
     boolean isMilestone() {
         text.startsWith('M')
-    }
-
-    Snapshot(String text) {
-        this.text = text
     }
 
     @Override

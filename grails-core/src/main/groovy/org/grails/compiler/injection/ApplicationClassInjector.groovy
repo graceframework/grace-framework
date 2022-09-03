@@ -72,7 +72,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
-    private static final List<Integer> transformedInstances = []
+    private static final List<Integer> TRANSFORMED_INSTANCES = []
 
     @Override
     String[] getArtefactTypes() {
@@ -94,8 +94,8 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
     void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         if (applicationArtefactHandler.isArtefact(classNode)) {
             def objectId = Integer.valueOf(System.identityHashCode(classNode))
-            if (!transformedInstances.contains(objectId)) {
-                transformedInstances << objectId
+            if (!TRANSFORMED_INSTANCES.contains(objectId)) {
+                TRANSFORMED_INSTANCES << objectId
 
                 def arguments = new ArgumentListExpression(new ClassExpression(classNode))
                 def enableAgentMethodCall = new MethodCallExpression(new ClassExpression(ClassHelper.make(Support)),

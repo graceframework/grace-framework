@@ -55,13 +55,13 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
 
     private static class UTCDateConverter implements Converter<Date, String> {
 
-        private final static TimeZone UtcTZ = TimeZone.getTimeZone('UTC')
+        private final static TimeZone UTC = TimeZone.getTimeZone('UTC')
 
         @Override
         String convert(Date source) {
             final GregorianCalendar cal = new GregorianCalendar()
             cal.setTime(source)
-            cal.setTimeZone(UtcTZ)
+            cal.setTimeZone(UTC)
             DatatypeConverter.printDateTime(cal)
         }
 

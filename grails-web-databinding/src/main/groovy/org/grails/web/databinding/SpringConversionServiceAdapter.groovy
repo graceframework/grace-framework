@@ -29,7 +29,7 @@ import org.grails.databinding.converters.ConversionService
  */
 class SpringConversionServiceAdapter implements ConversionService {
 
-    private SpringConversionService springConversionService = new DefaultConversionService()
+    private final SpringConversionService springConversionService = new DefaultConversionService()
 
     boolean canConvert(Class<?> source, Class<?> target) {
         springConversionService.canConvert source, target

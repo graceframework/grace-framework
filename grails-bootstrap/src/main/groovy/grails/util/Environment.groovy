@@ -39,6 +39,7 @@ import org.grails.io.support.UrlResource
  * @since 1.1
  */
 @CompileStatic
+@SuppressWarnings('FieldName')
 enum Environment {
 
     /** The development environment */
@@ -121,11 +122,11 @@ enum Environment {
     private static final String DEVELOPMENT_ENVIRONMENT_SHORT_NAME = 'dev'
     private static final String TEST_ENVIRONMENT_SHORT_NAME = 'test'
 
-    private static Map<String, String> envNameMappings = CollectionUtils.<String, String> newMap(
+    private static final Map<String, String> ENV_NAME_MAPPINGS = CollectionUtils.<String, String> newMap(
             DEVELOPMENT_ENVIRONMENT_SHORT_NAME, DEVELOPMENT.getName(),
             PRODUCTION_ENV_SHORT_NAME, PRODUCTION.getName(),
             TEST_ENVIRONMENT_SHORT_NAME, TEST.getName())
-    private static Holder<Environment> cachedCurrentEnvironment = new Holder<>('Environment')
+    private static final Holder<Environment> cachedCurrentEnvironment = new Holder<>('Environment')
     private static final boolean DEVELOPMENT_MODE = getCurrent() == DEVELOPMENT && BuildSettings.GRAILS_APP_DIR_PRESENT
     private static Boolean RELOADING_AGENT_ENABLED = null
     private static boolean initializingState = false
@@ -485,7 +486,7 @@ enum Environment {
      * @return The Environment or null if not known
      */
     static Environment getEnvironment(String shortName) {
-        final String envName = envNameMappings.get(shortName)
+        final String envName = ENV_NAME_MAPPINGS.get(shortName)
         if (envName != null) {
             return valueOf(envName.toUpperCase())
         }
