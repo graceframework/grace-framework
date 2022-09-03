@@ -30,14 +30,14 @@ public class AnnotationDomainClassArtefactHandler extends DomainClassArtefactHan
 
     private static final String JPA_MAPPING_STRATEGY = "JPA";
 
-    private Set<String> jpaClassNames = new HashSet<>();
+    private final Set<String> jpaClassNames = new HashSet<>();
 
     public Set<String> getJpaClassNames() {
         return this.jpaClassNames;
     }
 
     @Override
-    public boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
+    public boolean isArtefactClass(Class<?> clazz) {
         final boolean isJpaDomainClass = isJPADomainClass(clazz);
         if (isJpaDomainClass) {
             this.jpaClassNames.add(clazz.getName());

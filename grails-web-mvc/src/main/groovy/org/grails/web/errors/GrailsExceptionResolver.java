@@ -27,8 +27,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerInvocationException;
 import org.springframework.beans.BeanUtils;
@@ -63,11 +61,10 @@ import org.grails.web.util.WebUtils;
  *
  * @author Graeme Rocher
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class GrailsExceptionResolver extends SimpleMappingExceptionResolver implements ServletContextAware, GrailsApplicationAware {
 
     public static final String EXCEPTION_ATTRIBUTE = WebUtils.EXCEPTION_ATTRIBUTE;
-
-    protected static final Log log = LogFactory.getLog(GrailsExceptionResolver.class);
 
     protected static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
@@ -77,10 +74,6 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
 
     protected StackTraceFilterer stackFilterer;
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.servlet.handler.SimpleMappingExceptionResolver#resolveException(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
-     */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         // don't reuse cached controller attribute
@@ -212,7 +205,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
             return mv;
         }
         catch (Exception e) {
-            log.error("Unable to render errors view: " + e.getMessage(), e);
+            logger.error("Unable to render errors view: " + e.getMessage(), e);
             throw new GrailsRuntimeException(e);
         }
     }
@@ -223,8 +216,8 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         info.configure(WebUtils.retrieveGrailsWebRequest());
         String forwardUrl = UrlMappingUtils.forwardRequestForUrlMappingInfo(
                 request, response, info, mv.getModel(), true);
-        if (log.isDebugEnabled()) {
-            log.debug("Matched URI [" + uri + "] to URL mapping [" + info +
+        if (logger.isDebugEnabled()) {
+            logger.debug("Matched URI [" + uri + "] to URL mapping [" + info +
                     "], forwarding to [" + forwardUrl + "] with response [" + response.getClass() + "]");
         }
     }
@@ -258,7 +251,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
     }
 
     protected void logStackTrace(Exception e, HttpServletRequest request) {
-        log.error(getRequestLogMessage(e, request), e);
+        logger.error(getRequestLogMessage(e, request), e);
     }
 
     protected Exception findWrappedException(Exception e) {
@@ -298,7 +291,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
                 int i;
 
                 sb.append(" - parameters:");
-                @SuppressWarnings("unchecked")
+
                 List<String> blackList = (config.getProperty(Settings.SETTING_EXCEPTION_RESOLVER_PARAM_EXCLUDES,
                         List.class, Collections.emptyList()));
 

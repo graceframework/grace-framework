@@ -30,14 +30,14 @@ import java.util.Set;
  *
  * @author Burt Beckwith
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public final class CollectionUtils {
 
     private CollectionUtils() {
         // static only
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <K, V> Map newMap(Object... keysAndValues) {
+    public static <K, V> Map<K, V> newMap(Object... keysAndValues) {
         if (keysAndValues == null) {
             return Collections.emptyMap();
         }

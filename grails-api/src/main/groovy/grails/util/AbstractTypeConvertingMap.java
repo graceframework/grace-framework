@@ -47,7 +47,7 @@ public abstract class AbstractTypeConvertingMap extends GroovyObjectSupport impl
 
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
 
-    protected Map wrappedMap;
+    protected final Map wrappedMap;
 
     public AbstractTypeConvertingMap() {
         this(new LinkedHashMap());

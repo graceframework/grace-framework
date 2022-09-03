@@ -30,7 +30,7 @@ public class GrailsContextEvent extends ApplicationEvent {
 
     public static final int DYNAMIC_METHODS_REGISTERED = 0;
 
-    private int eventType;
+    private final int eventType;
 
     public GrailsContextEvent(WebApplicationContext ctx, int eventType) {
         super(ctx);

@@ -44,7 +44,7 @@ public class DirectoryWatcher extends Thread {
         AbstractDirectoryWatcher directoryWatcherDelegate;
         try {
             if (System.getProperty("os.name").equals("Mac OS X")) {
-                Boolean jnaAvailable = false;
+                boolean jnaAvailable = false;
                 try {
                     Class.forName("com.sun.jna.Pointer");
                     jnaAvailable = true;

@@ -30,11 +30,7 @@ public final class WrappedResponseHolder {
     private static ThreadLocal<HttpServletResponse> wrappedResponseHolder = new ThreadLocal<>();
 
     static {
-        ShutdownOperations.addOperation(new Runnable() {
-            public void run() {
-                wrappedResponseHolder = new ThreadLocal<>();
-            }
-        }, true);
+        ShutdownOperations.addOperation(() -> wrappedResponseHolder = new ThreadLocal<>(), true);
     }
 
     private WrappedResponseHolder() {

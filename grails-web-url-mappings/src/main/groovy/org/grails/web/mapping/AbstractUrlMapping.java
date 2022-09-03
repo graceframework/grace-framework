@@ -161,7 +161,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         return this.viewName;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public void setParameterValues(Map parameterValues) {
         this.parameterValues = Collections.unmodifiableMap(parameterValues);
     }
@@ -180,8 +180,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
 
     public boolean hasRuntimeVariable(String name) {
         if (this.constraints != null) {
-            for (int i = 0; i < this.constraints.length; i++) {
-                ConstrainedProperty cp = this.constraints[i];
+            for (ConstrainedProperty cp : this.constraints) {
                 if (cp.getPropertyName().equals(name)) {
                     return true;
                 }

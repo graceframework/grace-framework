@@ -691,7 +691,6 @@ public final class GrailsASTUtils {
         return replaceGenericsPlaceholders(type, emptyGenericsPlaceHoldersMap);
     }
 
-    @SuppressWarnings("unchecked")
     public static ClassNode nonGeneric(ClassNode type, final ClassNode wildcardReplacement) {
         return replaceGenericsPlaceholders(type, emptyGenericsPlaceHoldersMap, wildcardReplacement);
     }
@@ -712,13 +711,7 @@ public final class GrailsASTUtils {
         }
 
         if (type.isGenericsPlaceHolder() && genericsPlaceholders != null) {
-            final ClassNode placeHolderType;
-            if (genericsPlaceholders.containsKey(type.getUnresolvedName())) {
-                placeHolderType = genericsPlaceholders.get(type.getUnresolvedName());
-            }
-            else {
-                placeHolderType = defaultPlaceholder;
-            }
+            final ClassNode placeHolderType = genericsPlaceholders.getOrDefault(type.getUnresolvedName(), defaultPlaceholder);
             if (placeHolderType != null) {
                 return placeHolderType.getPlainNodeReference();
             }

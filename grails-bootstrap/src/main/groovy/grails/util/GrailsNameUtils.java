@@ -31,6 +31,7 @@ import java.util.Set;
 public final class GrailsNameUtils {
 
     private static final String PROPERTY_SET_PREFIX = "set";
+
     private static final String PROPERTY_GET_PREFIX = "get";
 
     private GrailsNameUtils() {
@@ -93,7 +94,7 @@ public final class GrailsNameUtils {
      *
      * @param cls The class name
      */
-    public static String getFullClassName(Class cls) {
+    public static String getFullClassName(Class<?> cls) {
         String className = cls.getName();
 
         return getFullClassName(className);
@@ -172,7 +173,7 @@ public final class GrailsNameUtils {
                 continue;
             }
             buf.append(token.substring(0, 1).toUpperCase())
-               .append(token.substring(1));
+                    .append(token.substring(1));
         }
         return buf.toString();
     }
@@ -302,9 +303,12 @@ public final class GrailsNameUtils {
      * @return The short name of the class
      */
     public static String getShortName(String className) {
+        if (className == null) {
+            return null;
+        }
         int i = className.lastIndexOf(".");
         if (i > -1) {
-            className = className.substring(i + 1, className.length());
+            return className.substring(i + 1);
         }
         return className;
     }
@@ -429,7 +433,7 @@ public final class GrailsNameUtils {
         }
 
         StringBuilder buf = new StringBuilder();
-        for (Iterator<String> j = words.iterator(); j.hasNext();) {
+        for (Iterator<String> j = words.iterator(); j.hasNext(); ) {
             String word = j.next();
             buf.append(word);
             if (j.hasNext()) {
@@ -485,6 +489,7 @@ public final class GrailsNameUtils {
         }
         return true;
     }
+
     /**
      * Test whether the given name is a valid Java identifier
      *
@@ -509,6 +514,7 @@ public final class GrailsNameUtils {
 
         return true;
     }
+
     /**
      * Returns an appropriate property name for the given object.
      * If the object is a collection will append List, Set, Collection or Map to the property name
@@ -516,6 +522,7 @@ public final class GrailsNameUtils {
      * @param suffix The suffix to append to the name.
      * @return The property name convention
      */
+    @SuppressWarnings("rawtypes")
     public static String getPropertyNameConvention(Object object, String suffix) {
         if (object != null) {
             Class<?> type = object.getClass();
@@ -577,7 +584,7 @@ public final class GrailsNameUtils {
      * @param returnType The type the method returns
      * @return The property name equivalent
      */
-    public static String getPropertyForGetter(String getterName, Class returnType) {
+    public static String getPropertyForGetter(String getterName, Class<?> returnType) {
         return getPropertyForGetter(getterName, returnType.getName());
     }
 
@@ -661,7 +668,7 @@ public final class GrailsNameUtils {
      * @param args The arguments
      * @return true if it is a javabean property getter
      */
-    public static boolean isGetter(String name, Class returnType, Class<?>[] args) {
+    public static boolean isGetter(String name, Class<?> returnType, Class<?>[] args) {
         if (name == null || name.length() == 0 || args == null) {
             return false;
         }
@@ -671,15 +678,11 @@ public final class GrailsNameUtils {
 
         if (name.startsWith("get")) {
             name = name.substring(3);
-            if (isPropertyMethodSuffix(name)) {
-                return true;
-            }
+            return isPropertyMethodSuffix(name);
         }
         else if (name.startsWith("is") && returnType == boolean.class) {
             name = name.substring(2);
-            if (isPropertyMethodSuffix(name)) {
-                return true;
-            }
+            return isPropertyMethodSuffix(name);
         }
         return false;
     }
@@ -724,7 +727,7 @@ public final class GrailsNameUtils {
      * @param suffix The suffix to inspect
      * @return true if suffix indicates a property name
      */
-    protected static boolean isPropertyMethodSuffix(String suffix) {
+    static boolean isPropertyMethodSuffix(String suffix) {
         if (suffix.length() == 0) {
             return false;
         }
@@ -755,4 +758,5 @@ public final class GrailsNameUtils {
         }
         return null;
     }
+
 }

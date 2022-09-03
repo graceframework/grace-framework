@@ -42,7 +42,6 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -113,15 +112,15 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private static final String GRAILS_PLUGIN_SUFFIX = "GrailsPlugin";
 
-    private List<GrailsPlugin> delayedLoadPlugins = new LinkedList<>();
+    private final List<GrailsPlugin> delayedLoadPlugins = new LinkedList<>();
 
     private ApplicationContext parentCtx;
 
     private PathMatchingResourcePatternResolver resolver;
 
-    private Map<GrailsPlugin, String[]> delayedEvictions = new HashMap<>();
+    private final Map<GrailsPlugin, String[]> delayedEvictions = new HashMap<>();
 
-    private Map<String, Set<GrailsPlugin>> pluginToObserverMap = new HashMap<>();
+    private final Map<String, Set<GrailsPlugin>> pluginToObserverMap = new HashMap<>();
 
     private PluginFilter pluginFilter;
 
@@ -220,8 +219,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         return Collections.emptySet();
     }
 
-    @SuppressWarnings("rawtypes")
-    public void informObservers(String pluginName, Map event) {
+    public void informObservers(String pluginName, Map<String, Object> event) {
         GrailsPlugin plugin = getGrailsPlugin(pluginName);
         if (plugin == null) {
             return;
@@ -299,11 +297,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
         for (GrailsPlugin plugin : plugins) {
             if (plugin.getLoadAfterNames() != null) {
-                List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.get(plugin);
-                if (loadDepsForPlugin == null) {
-                    loadDepsForPlugin = new ArrayList<>();
-                    loadOrderDependencies.put(plugin, loadDepsForPlugin);
-                }
+                List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.computeIfAbsent(plugin, k -> new ArrayList<>());
                 for (String pluginName : plugin.getLoadAfterNames()) {
                     GrailsPlugin loadAfterPlugin = getGrailsPlugin(pluginName);
                     if (loadAfterPlugin != null) {
@@ -314,11 +308,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             for (String loadBefore : plugin.getLoadBeforeNames()) {
                 GrailsPlugin loadBeforePlugin = getGrailsPlugin(loadBefore);
                 if (loadBeforePlugin != null) {
-                    List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.get(loadBeforePlugin);
-                    if (loadDepsForPlugin == null) {
-                        loadDepsForPlugin = new ArrayList<>();
-                        loadOrderDependencies.put(loadBeforePlugin, loadDepsForPlugin);
-                    }
+                    List<GrailsPlugin> loadDepsForPlugin = loadOrderDependencies.computeIfAbsent(loadBeforePlugin, k -> new ArrayList<>());
                     loadDepsForPlugin.add(plugin);
                 }
             }
@@ -358,13 +348,11 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         List<GrailsPlugin> orderedUserPlugins = new ArrayList<>();
 
         for (GrailsPlugin plugin : filteredPlugins) {
-            if (grailsCorePlugins != null) {
-                if (grailsCorePlugins.contains(plugin)) {
-                    orderedCorePlugins.add(plugin);
-                }
-                else {
-                    orderedUserPlugins.add(plugin);
-                }
+            if (grailsCorePlugins.contains(plugin)) {
+                orderedCorePlugins.add(plugin);
+            }
+            else {
+                orderedUserPlugins.add(plugin);
             }
         }
 
@@ -546,9 +534,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private void initializePlugins() {
-        for (Object plugin : this.plugins.values()) {
-            if (plugin instanceof ApplicationContextAware) {
-                ((ApplicationContextAware) plugin).setApplicationContext(this.applicationContext);
+        for (GrailsPlugin plugin : this.plugins.values()) {
+            if (plugin != null) {
+                plugin.setApplicationContext(this.applicationContext);
             }
         }
     }
@@ -592,11 +580,10 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private boolean hasValidPluginsToLoadBefore(GrailsPlugin plugin) {
         String[] loadAfterNames = plugin.getLoadAfterNames();
-        for (Object delayedLoadPlugin : this.delayedLoadPlugins) {
-            GrailsPlugin other = (GrailsPlugin) delayedLoadPlugin;
+        for (GrailsPlugin delayedLoadPlugin : this.delayedLoadPlugins) {
             for (String name : loadAfterNames) {
-                if (other.getName().equals(name)) {
-                    return hasDelayedDependencies(other) || areDependenciesResolved(other);
+                if (delayedLoadPlugin.getName().equals(name)) {
+                    return hasDelayedDependencies(delayedLoadPlugin) || areDependenciesResolved(delayedLoadPlugin);
                 }
             }
         }
@@ -675,12 +662,12 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             }
         }
         else {
-            String className = null;
+            String className;
             try {
                 className = GrailsResourceUtils.getClassName(r.getFile().getAbsolutePath());
             }
             catch (IOException e) {
-                throw new PluginException("Cannot find plugin class [" + className + "] resource: [" + r.getFilename() + "]", e);
+                throw new PluginException("Cannot find plugin class from resource: [" + r.getFilename() + "]", e);
             }
             try {
                 pluginClass = Class.forName(className, true, cl);
@@ -730,11 +717,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
         String[] observedPlugins = plugin.getObservedPluginNames();
         for (String observedPlugin : observedPlugins) {
-            Set<GrailsPlugin> observers = this.pluginToObserverMap.get(observedPlugin);
-            if (observers == null) {
-                observers = new HashSet<>();
-                this.pluginToObserverMap.put(observedPlugin, observers);
-            }
+            Set<GrailsPlugin> observers = this.pluginToObserverMap.computeIfAbsent(observedPlugin, k -> new HashSet<>());
             observers.add(plugin);
         }
         this.pluginList.add(plugin);

@@ -38,7 +38,6 @@ public class GroovyAwareNamedTransactionAttributeSource extends NameMatchTransac
             "getProperty",
             "setProperty");
 
-    @SuppressWarnings("rawtypes")
     @Override
     public TransactionAttribute getTransactionAttribute(Method method, Class targetClass) {
         if (method.isSynthetic()) {

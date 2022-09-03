@@ -27,10 +27,9 @@ import grails.plugins.GrailsPlugin;
  *
  * @author Phil Zoio
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class IncludingPluginFilter extends BasePluginFilter {
 
-    public IncludingPluginFilter(Set included) {
+    public IncludingPluginFilter(Set<String> included) {
         super(included);
     }
 
@@ -39,12 +38,12 @@ public class IncludingPluginFilter extends BasePluginFilter {
     }
 
     @Override
-    protected List<GrailsPlugin> getPluginList(List original, List pluginList) {
-        return new ArrayList(pluginList);
+    protected List<GrailsPlugin> getPluginList(List<GrailsPlugin> original, List<GrailsPlugin> pluginList) {
+        return new ArrayList<>(pluginList);
     }
 
     @Override
-    protected void addPluginDependencies(List additionalList, GrailsPlugin plugin) {
+    protected void addPluginDependencies(List<GrailsPlugin> additionalList, GrailsPlugin plugin) {
         String[] dependencyNames = plugin.getDependencyNames();
         for (String name : dependencyNames) {
             GrailsPlugin dependOnPlugin = getNamedPlugin(name);

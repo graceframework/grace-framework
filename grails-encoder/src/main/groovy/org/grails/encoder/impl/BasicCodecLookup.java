@@ -80,7 +80,6 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     protected <T extends CodecIdentifierProvider> T createCodec(String codecName, ConcurrentMap<String, T> map, Class<T> returnType) {
         if (codecName.contains(",")) {
             T createdInstance = createChainedCodecInstance(codecName, map, returnType);
@@ -106,8 +105,8 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
     protected <T extends CodecIdentifierProvider> T createChainedCodecInstance(String codecName, ConcurrentMap<String, T> map, Class<T> returnType) {
         String[] codecs = codecName.split(",");
         List<T> codecInstances = new ArrayList<>(codecs.length);
-        for (int i = 0; i < codecs.length; i++) {
-            T codecInstance = map.get(codecs[i]);
+        for (String codec : codecs) {
+            T codecInstance = map.get(codec);
             if (codecInstance != null) {
                 codecInstances.add(codecInstance);
             }

@@ -19,6 +19,8 @@ import java.util.Map;
 
 import org.springframework.validation.Validator;
 
+import grails.validation.Constrained;
+
 /**
  * Represents a persistable Grails domain class.
  *
@@ -46,8 +48,7 @@ public interface GrailsDomainClass extends GrailsClass {
      * @param domainClass
      * @return true if the specifying domain class is on the owning side of a relationship
      */
-    @SuppressWarnings("rawtypes")
-    boolean isOwningClass(Class domainClass);
+    boolean isOwningClass(Class<?> domainClass);
 
     /**
      * <p>Returns the default property name of the GrailsClass. For example the property name for
@@ -63,8 +64,7 @@ public interface GrailsDomainClass extends GrailsClass {
      *
      * @return A map of constraints
      */
-    @SuppressWarnings("rawtypes")
-    Map getConstrainedProperties();
+    Map<String, Constrained> getConstrainedProperties();
 
     /**
      * Retreives the validator for this domain class

@@ -851,7 +851,7 @@ public final class GrailsClassUtils {
             if (o instanceof Boolean) {
                 return (Boolean) o;
             }
-            return Boolean.valueOf(o.toString());
+            return Boolean.parseBoolean(o.toString());
         }
         return defaultValue;
     }

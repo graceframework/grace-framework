@@ -71,7 +71,6 @@ public interface GrailsPluginInfo {
      * Gets the properties of the plugin as a map
      * @return A map of the properties
      */
-    @SuppressWarnings("rawtypes")
-    Map getProperties();
+    Map<String, Object> getProperties();
 
 }

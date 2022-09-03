@@ -23,7 +23,6 @@ import org.apache.tools.ant.MagicNames;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.types.LogLevel;
-import org.apache.tools.ant.util.StringUtils;
 
 import grails.build.logging.GrailsConsole;
 
@@ -46,7 +45,6 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
     /**
      * @return Factory method to create new Project instances
      */
-    @SuppressWarnings("unchecked")
     protected static Project createAntProject() {
         final Project project = new Project();
 
@@ -135,7 +133,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
             }
 
             if (this.targetName != null) {
-                this.console.verbose(StringUtils.LINE_SEP + this.targetName + ":");
+                this.console.verbose(System.lineSeparator() + this.targetName + ":");
                 this.targetName = null;
             }
         }

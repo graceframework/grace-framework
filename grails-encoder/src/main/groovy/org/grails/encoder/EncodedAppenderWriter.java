@@ -29,13 +29,13 @@ import java.io.Writer;
  */
 public class EncodedAppenderWriter extends Writer implements EncodedAppenderWriterFactory, EncodedAppenderFactory, EncoderAware {
 
-    protected EncodedAppender encodedAppender;
+    protected final EncodedAppender encodedAppender;
 
-    protected Encoder encoder;
+    protected final Encoder encoder;
 
-    protected EncodingStateRegistry encodingStateRegistry;
+    protected final EncodingStateRegistry encodingStateRegistry;
 
-    private char[] singleCharBuffer = new char[1];
+    private final char[] singleCharBuffer = new char[1];
 
     /**
      * Default constructor
@@ -132,7 +132,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public Writer append(char c) throws IOException {
-        this.singleCharBuffer[0] = (char) c;
+        this.singleCharBuffer[0] = c;
         this.encodedAppender.append(this.encoder, null, this.singleCharBuffer, 0, 1);
         return this;
     }

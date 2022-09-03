@@ -201,8 +201,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param plugin The plugin to retrieve observers for
      * @return A collection of observers
      */
-    @SuppressWarnings("rawtypes")
-    Collection getPluginObservers(GrailsPlugin plugin);
+    Collection<GrailsPlugin> getPluginObservers(GrailsPlugin plugin);
 
     /**
      * inform the specified plugins observers of the event specified by the passed Map instance
@@ -210,8 +209,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param pluginName The name of the plugin
      * @param event The event
      */
-    @SuppressWarnings("rawtypes")
-    void informObservers(String pluginName, Map event);
+    void informObservers(String pluginName, Map<String, Object> event);
 
     /**
      * Called prior to the initialisation of the GrailsApplication object to allow registration of additional ArtefactHandler objects
@@ -328,7 +326,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      */
     void informOfFileChange(File file);
 
-    void informOfClassChange(File file, @SuppressWarnings("rawtypes") Class cls);
+    void informOfClassChange(File file, Class<?> cls);
 
     /**
      * Indicates whether the manager has been shutdown or not

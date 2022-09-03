@@ -38,7 +38,6 @@ public interface UrlMappingEvaluator {
      *
      * @return A list of UrlMapping instances
      */
-    @SuppressWarnings("rawtypes")
     List<UrlMapping> evaluateMappings(Resource resource);
 
     /**

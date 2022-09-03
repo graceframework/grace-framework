@@ -152,7 +152,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     @Override
     public void addWatchFile(File fileToWatch) {
-        if (!isValidFileToMonitor(fileToWatch, Arrays.asList("*"))) {
+        if (!isValidFileToMonitor(fileToWatch, Collections.singletonList("*"))) {
             return;
         }
         try {

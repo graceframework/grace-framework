@@ -21,8 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,6 +29,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -58,20 +57,18 @@ import org.xml.sax.SAXException;
  *
  * @since 06.10.2003
  */
-@SuppressWarnings("unchecked")
 public final class SpringIOUtils {
 
-    @SuppressWarnings("rawtypes")
-    private static Map algorithms = new HashMap();
+    private static final Map<String, String> ALGORITHMS = new HashMap<>();
 
     static {
-        algorithms.put("md5", "MD5");
-        algorithms.put("sha1", "SHA-1");
+        ALGORITHMS.put("md5", "MD5");
+        ALGORITHMS.put("sha1", "SHA-1");
     }
 
     // byte to hex string converter
-    private static final char[] CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f' };
 
     public static final int BUFFER_SIZE = 4096;
 
@@ -88,7 +85,7 @@ public final class SpringIOUtils {
     public static String byteArrayToHexString(byte[] in) {
         byte ch = 0x00;
 
-        if (in == null || in.length <= 0) {
+        if (in == null || in.length == 0) {
             return null;
         }
 
@@ -114,26 +111,22 @@ public final class SpringIOUtils {
     }
 
     private static byte[] compute(File f, String algorithm) throws IOException {
-        InputStream is = new FileInputStream(f);
 
-        try {
+        try (InputStream is = Files.newInputStream(f.toPath())) {
             MessageDigest md = getMessageDigest(algorithm);
             md.reset();
 
             byte[] buf = new byte[BUFFER_SIZE];
-            int len = 0;
+            int len;
             while ((len = is.read(buf)) != -1) {
                 md.update(buf, 0, len);
             }
             return md.digest();
         }
-        finally {
-            is.close();
-        }
     }
 
     private static MessageDigest getMessageDigest(String algorithm) {
-        String mdAlgorithm = (String) algorithms.get(algorithm);
+        String mdAlgorithm = ALGORITHMS.get(algorithm);
         if (mdAlgorithm == null) {
             throw new IllegalArgumentException("unknown algorithm " + algorithm);
         }
@@ -186,7 +179,7 @@ public final class SpringIOUtils {
         for (Resource resource : resources) {
             final InputStream input = resource.getInputStream();
             final File target = new File(targetDir, resource.getURL().toString().substring(baseUrl.toString().length()));
-            copy(new BufferedInputStream(input), new BufferedOutputStream(new FileOutputStream(target)));
+            copy(new BufferedInputStream(input), new BufferedOutputStream(Files.newOutputStream(target.toPath())));
         }
     }
 
@@ -200,8 +193,8 @@ public final class SpringIOUtils {
     public static int copy(File in, File out) throws IOException {
         assert in != null : "No input File specified";
         assert out != null : "No output File specified";
-        return copy(new BufferedInputStream(new FileInputStream(in)),
-                new BufferedOutputStream(new FileOutputStream(out)));
+        return copy(new BufferedInputStream(Files.newInputStream(in.toPath())),
+                new BufferedOutputStream(Files.newOutputStream(out.toPath())));
     }
 
     /**
@@ -215,7 +208,7 @@ public final class SpringIOUtils {
         assert in != null : "No input File specified";
         assert out != null : "No output File specified";
         return copy(new BufferedInputStream(in.getInputStream()),
-                new BufferedOutputStream(new FileOutputStream(out)));
+                new BufferedOutputStream(Files.newOutputStream(out.toPath())));
     }
 
     /**
@@ -228,7 +221,7 @@ public final class SpringIOUtils {
         assert in != null : "No input byte array specified";
         assert out != null : "No output File specified";
         ByteArrayInputStream inStream = new ByteArrayInputStream(in);
-        OutputStream outStream = new BufferedOutputStream(new FileOutputStream(out));
+        OutputStream outStream = new BufferedOutputStream(Files.newOutputStream(out.toPath()));
         copy(inStream, outStream);
     }
 
@@ -241,7 +234,7 @@ public final class SpringIOUtils {
     public static byte[] copyToByteArray(File in) throws IOException {
         assert in != null : "No input File specified";
 
-        return copyToByteArray(new BufferedInputStream(new FileInputStream(in)));
+        return copyToByteArray(new BufferedInputStream(Files.newInputStream(in.toPath())));
     }
 
     //---------------------------------------------------------------------
@@ -262,7 +255,7 @@ public final class SpringIOUtils {
         try {
             int byteCount = 0;
             byte[] buffer = new byte[BUFFER_SIZE];
-            int bytesRead = -1;
+            int bytesRead;
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
                 byteCount += bytesRead;
@@ -338,7 +331,7 @@ public final class SpringIOUtils {
         try {
             int byteCount = 0;
             char[] buffer = new char[BUFFER_SIZE];
-            int bytesRead = -1;
+            int bytesRead;
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
                 byteCount += bytesRead;

@@ -41,18 +41,17 @@ import org.grails.io.support.UrlResource;
  * @author Graeme Rocher
  * @since 1.0
  */
-@SuppressWarnings("deprecation")
 public class ArtefactHandlerAdapter implements ArtefactHandler {
 
-    protected String type;
+    protected final String type;
 
-    protected Class<?> grailsClassType;
+    protected final Class<?> grailsClassType;
 
-    protected Class<?> grailsClassImpl;
+    protected final Class<?> grailsClassImpl;
 
     protected boolean allowAbstract;
 
-    protected String artefactSuffix;
+    protected final String artefactSuffix;
 
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl, String artefactSuffix) {
         this.artefactSuffix = artefactSuffix;
@@ -141,7 +140,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
         return GrailsResourceUtils.isGrailsResource(resource);
     }
 
-    public final boolean isArtefact(@SuppressWarnings("rawtypes") Class aClass) {
+    public final boolean isArtefact(Class<?> aClass) {
         if (aClass == null) {
             return false;
         }
@@ -164,14 +163,14 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      * @param clazz The class to check
      * @return true if it is an artefact of this type
      */
-    public boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
+    public boolean isArtefactClass(Class<?> clazz) {
         if (clazz == null) {
             return false;
         }
 
         boolean ok = clazz.getName().endsWith(this.artefactSuffix) && !Closure.class.isAssignableFrom(clazz);
         if (ok && !this.allowAbstract) {
-            ok &= !Modifier.isAbstract(clazz.getModifiers());
+            ok = !Modifier.isAbstract(clazz.getModifiers());
         }
         return ok;
     }
@@ -182,23 +181,16 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      * @param artefactClass Creates a new artefact for the given class
      * @return An instance of the GrailsClass interface representing the artefact
      */
-    public GrailsClass newArtefactClass(@SuppressWarnings("rawtypes") Class artefactClass) {
+    public GrailsClass newArtefactClass(Class<?> artefactClass) {
         try {
-            Constructor<?> c = this.grailsClassImpl.getDeclaredConstructor(new Class[] {Class.class});
+            Constructor<?> c = this.grailsClassImpl.getDeclaredConstructor(Class.class);
             // TODO GRAILS-720 plugin class instance created here first
             return (GrailsClass) c.newInstance(new Object[] {artefactClass});
         }
-        catch (NoSuchMethodException e) {
+        catch (NoSuchMethodException | IllegalAccessException e) {
             throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for " + artefactClass, e);
         }
-        catch (IllegalAccessException e) {
-            throw new GrailsRuntimeException("Unable to locate constructor with Class parameter for " + artefactClass, e);
-        }
-        catch (InvocationTargetException e) {
-            throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type [" + this.grailsClassImpl + "]: " +
-                    (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
-        }
-        catch (InstantiationException e) {
+        catch (InvocationTargetException | InstantiationException e) {
             throw new GrailsRuntimeException("Error instantiated artefact class [" + artefactClass + "] of type [" + this.grailsClassImpl + "]: " +
                     (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()), e);
         }

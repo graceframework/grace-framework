@@ -32,7 +32,7 @@ import grails.core.support.GrailsConfigurationAware;
  */
 public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcessor {
 
-    private GrailsApplication grailsApplication;
+    private final GrailsApplication grailsApplication;
 
     public GrailsApplicationAwareBeanPostProcessor(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;

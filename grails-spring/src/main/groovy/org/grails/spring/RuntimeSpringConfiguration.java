@@ -31,7 +31,7 @@ import org.springframework.context.support.GenericApplicationContext;
  * to be constructed at runtime.
  *
  * Credit must go to Solomon Duskis and the
- * article: http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring
+ * article: <a href="http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring">Programmatic Configuration in Spring</a>
  *
  * @author Graeme
  * @since 0.3

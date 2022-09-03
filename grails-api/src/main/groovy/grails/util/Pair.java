@@ -64,14 +64,11 @@ public class Pair<A, B> {
             return false;
         }
         if (this.bValue == null) {
-            if (other.bValue != null) {
-                return false;
-            }
+            return other.bValue == null;
         }
-        else if (!this.bValue.equals(other.bValue)) {
-            return false;
+        else {
+            return this.bValue.equals(other.bValue);
         }
-        return true;
     }
 
     @Override

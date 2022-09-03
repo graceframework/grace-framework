@@ -134,7 +134,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
     private GrailsPluginManager pluginManager;
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     private GrailsApplication grailsApplication;
 
@@ -162,7 +162,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             }
             catch (BeansException e) {
                 constraintEvaluator = new DefaultConstraintEvaluator(constraintRegistry, new KeyValueMappingContext("test"),
-                        Collections.<String, Object>emptyMap());
+                        Collections.emptyMap());
             }
             this.constraintsEvaluator = constraintEvaluator;
         }
@@ -326,6 +326,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             this.parseRequest = parent.parseRequest;
             this.parentResources = parent.parentResources;
             this.mappingInfoDeque = parent.mappingInfoDeque;
+            this.isInCollection = parent.isInCollection;
         }
 
         public List<UrlMapping> getUrlMappings() {
@@ -722,8 +723,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                             }
 
                             if (this.binding != null) {
-                                Map bindingVariables = variables;
-                                Object parse = getParseRequest(Collections.emptyMap(), bindingVariables);
+                                Object parse = getParseRequest(Collections.emptyMap(), variables);
                                 if (parse instanceof Boolean) {
                                     urlMapping.setParseRequest((Boolean) parse);
                                 }
@@ -1488,7 +1488,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
 
     protected class UrlGroupMappingRecursionBuilder extends UrlMappingBuilder {
 
-        private ParentResource parentResource;
+        private final ParentResource parentResource;
 
         public UrlGroupMappingRecursionBuilder(UrlMappingBuilder parent, ParentResource parentResource) {
             super(parent);

@@ -26,7 +26,6 @@ import grails.util.Environment;
  * Command line parser that parses arguments to the command line. Written as a
  * replacement for Commons CLI because it doesn't support unknown arguments and
  * requires all arguments to be declared up front.
- *
  * It also doesn't support command options with hyphens. This class gets around those problems.
  *
  * @author Graeme Rocher
@@ -34,9 +33,9 @@ import grails.util.Environment;
  */
 public class CommandLineParser {
 
-    static Map<String, String> ENV_ARGS = new HashMap<>();
+    static final Map<String, String> ENV_ARGS = new HashMap<>();
 
-    static Map<String, String> DEFAULT_ENVS = new HashMap<>();
+    static final Map<String, String> DEFAULT_ENVS = new HashMap<>();
 
     private static CommandLine CURRENT = null;
 
@@ -50,11 +49,9 @@ public class CommandLineParser {
         DEFAULT_ENVS.put("test-app", Environment.TEST.getName());
     }
 
-    private Map<String, Option> declaredOptions = new HashMap<>();
+    private final Map<String, Option> declaredOptions = new HashMap<>();
 
     private int longestOptionNameLength = 0;
-
-    private String usageMessage;
 
     public static CommandLine getCurrentCommandLine() {
         return CURRENT;
@@ -201,7 +198,7 @@ public class CommandLineParser {
                 continue;
             }
             String trimmed = arg.trim();
-            if (trimmed != null && trimmed.length() > 0) {
+            if (trimmed.length() > 0) {
                 if (trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"') {
                     trimmed = trimmed.substring(1, trimmed.length() - 1);
                 }
@@ -233,8 +230,8 @@ public class CommandLineParser {
 
     public String getOptionsHelpMessage() {
         String ls = System.getProperty("line.separator");
-        this.usageMessage = "Available options:";
-        StringBuilder sb = new StringBuilder(this.usageMessage);
+        String usageMessage = "Available options:";
+        StringBuilder sb = new StringBuilder(usageMessage);
         sb.append(ls);
         for (Option option : this.declaredOptions.values()) {
             String name = option.getName();
@@ -265,7 +262,7 @@ public class CommandLineParser {
             return null;
         }
 
-        arg = (arg.charAt(1) == '-' ? arg.substring(2, arg.length()) : arg.substring(1, arg.length())).trim();
+        arg = (arg.charAt(1) == '-' ? arg.substring(2) : arg.substring(1)).trim();
 
         if (arg.contains("=")) {
             String[] split = arg.split("=");
@@ -300,7 +297,7 @@ public class CommandLineParser {
     protected void processSystemArg(DefaultCommandLine cl, String arg) {
         int i = arg.indexOf('=');
         String name = arg.substring(2, i);
-        String value = arg.substring(i + 1, arg.length());
+        String value = arg.substring(i + 1);
         cl.addSystemProperty(name, value);
     }
 

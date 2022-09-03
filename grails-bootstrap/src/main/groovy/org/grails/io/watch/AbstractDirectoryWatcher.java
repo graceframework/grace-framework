@@ -30,7 +30,7 @@ import java.util.List;
  */
 abstract class AbstractDirectoryWatcher implements Runnable {
 
-    private List<DirectoryWatcher.FileChangeListener> listeners = new ArrayList<>();
+    private final List<DirectoryWatcher.FileChangeListener> listeners = new ArrayList<>();
 
     protected volatile boolean active = true; //must be volatile as it's read by multiple threads and the value should be reflected in all of them
 

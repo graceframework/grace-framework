@@ -15,7 +15,6 @@
  */
 package org.grails.web.pages;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -52,8 +51,8 @@ public class FilteringCodecsByContentTypeSettings {
             this.contentTypeToEncoderMapping = new LinkedHashMap<>();
             this.contentTypePatternToEncoderMapping = new LinkedHashMap<>();
             Map codecForContentTypeMapping = codecForContentTypeConfig;
-            for (Iterator i = codecForContentTypeMapping.entrySet().iterator(); i.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) i.next();
+            for (Object obj : codecForContentTypeMapping.entrySet()) {
+                Map.Entry entry = (Map.Entry) obj;
                 Encoder encoder = CodecLookupHelper.lookupEncoder(grailsApplication, String.valueOf(entry.getValue()));
                 if (entry.getKey() instanceof Pattern) {
                     this.contentTypePatternToEncoderMapping.put((Pattern) entry.getKey(), encoder);
@@ -78,7 +77,7 @@ public class FilteringCodecsByContentTypeSettings {
         }
         for (Map.Entry<Pattern, Encoder> entry : this.contentTypePatternToEncoderMapping.entrySet()) {
             if (entry.getKey().matcher(contentType).matches()) {
-                return encoder;
+                return null;
             }
         }
         return this.contentTypeToEncoderMapping.get(WILDCARD_CONTENT_TYPE);

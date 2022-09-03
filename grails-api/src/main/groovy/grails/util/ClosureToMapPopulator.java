@@ -32,7 +32,7 @@ import groovy.lang.GroovyObjectSupport;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ClosureToMapPopulator extends GroovyObjectSupport {
 
-    private Map map;
+    private final Map map;
 
     public ClosureToMapPopulator(Map theMap) {
         this.map = theMap;

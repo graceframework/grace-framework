@@ -19,21 +19,21 @@ import grails.util.Holder;
 
 public final class EncodingStateRegistryLookupHolder {
 
-    private static Holder<EncodingStateRegistryLookup> holder = new Holder<>("encodingStateRegistryLookup");
+    private static final Holder<EncodingStateRegistryLookup> HOLDER = new Holder<>("encodingStateRegistryLookup");
 
     private EncodingStateRegistryLookupHolder() {
     }
 
     public static void setEncodingStateRegistryLookup(EncodingStateRegistryLookup lookup) {
-        holder.set(lookup);
+        HOLDER.set(lookup);
     }
 
     public static EncodingStateRegistryLookup getEncodingStateRegistryLookup() {
-        return holder.get();
+        return HOLDER.get();
     }
 
     public static void clear() {
-        holder.set(null);
+        HOLDER.set(null);
     }
 
 }

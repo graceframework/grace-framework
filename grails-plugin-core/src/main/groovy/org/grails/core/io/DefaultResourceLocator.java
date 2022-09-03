@@ -16,7 +16,6 @@
 package org.grails.core.io;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,19 +58,19 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
 
     protected PathMatchingResourcePatternResolver patchMatchingResolver;
 
-    protected List<String> classSearchDirectories = new ArrayList<>();
+    protected final List<String> classSearchDirectories = new ArrayList<>();
 
-    protected List<String> resourceSearchDirectories = new ArrayList<>();
+    protected final List<String> resourceSearchDirectories = new ArrayList<>();
 
-    protected Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<>();
+    protected final Map<String, Resource> classNameToResourceCache = new ConcurrentHashMap<>();
 
-    protected Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<>();
+    protected final Map<String, Resource> uriToResourceCache = new ConcurrentHashMap<>();
 
     protected ResourceLoader defaultResourceLoader = new FileSystemResourceLoader();
 
     protected GrailsPluginManager pluginManager;
 
-    protected boolean warDeployed = Environment.isWarDeployed();
+    protected final boolean warDeployed = Environment.isWarDeployed();
 
     public void setSearchLocation(String searchLocation) {
         ResourceLoader resourceLoader = getDefaultResourceLoader();
@@ -93,11 +92,9 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
     private void initializeForSearchLocation(String searchLocation) {
         String searchLocationPlusSlash = searchLocation.endsWith("/") ? searchLocation : searchLocation + FILE_SEPARATOR;
         try {
-            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR).listFiles(new FileFilter() {
-                public boolean accept(File file) {
-                    return file.isDirectory() && !file.isHidden();
-                }
-            });
+            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR)
+                    .listFiles(file -> file.isDirectory() && !file.isHidden());
+
             if (directories != null) {
                 for (File directory : directories) {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
@@ -128,12 +125,12 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
 
                 for (String resourceSearchDirectory : this.resourceSearchDirectories) {
                     Resource res = resolveExceptionSafe(resourceSearchDirectory + uriWebAppRelative);
-                    if (res.exists()) {
+                    if (res != null && res.exists()) {
                         resource = res;
                     }
-                    else if (!this.warDeployed) {
+                    else {
                         Resource dir = resolveExceptionSafe(resourceSearchDirectory);
-                        if (dir.exists() && info != null) {
+                        if (dir != null && dir.exists() && info != null) {
                             try {
                                 String filename = dir.getFilename();
                                 if (filename != null && filename.equals(info.pluginName)) {
@@ -185,7 +182,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
 
     private PluginResourceInfo inferPluginNameFromURI(String uri) {
         if (uri.startsWith("/plugins/")) {
-            String withoutPluginsPath = uri.substring("/plugins/".length(), uri.length());
+            String withoutPluginsPath = uri.substring("/plugins/".length());
             int i = withoutPluginsPath.indexOf('/');
             if (i > -1) {
                 PluginResourceInfo info = new PluginResourceInfo();
@@ -247,7 +244,7 @@ public class DefaultResourceLocator implements ResourceLocator, ResourceLoaderAw
         this.pluginManager = pluginManager;
     }
 
-    class PluginResourceInfo {
+    static class PluginResourceInfo {
 
         String pluginName;
 

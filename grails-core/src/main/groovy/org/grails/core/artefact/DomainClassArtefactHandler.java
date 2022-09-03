@@ -69,13 +69,11 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public GrailsClass newArtefactClass(Class artefactClass) {
+    public GrailsClass newArtefactClass(Class<?> artefactClass) {
         return new DefaultGrailsDomainClass(artefactClass);
     }
 
-    @SuppressWarnings("rawtypes")
-    public GrailsClass newArtefactClass(Class artefactClass, MappingContext mappingContext) {
+    public GrailsClass newArtefactClass(Class<?> artefactClass, MappingContext mappingContext) {
         return new DefaultGrailsDomainClass(artefactClass, mappingContext);
     }
 
@@ -108,8 +106,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public boolean isArtefactClass(Class clazz) {
+    public boolean isArtefactClass(Class<?> clazz) {
         return isDomainClass(clazz);
     }
 
@@ -123,7 +120,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     public static boolean isDomainClass(Class<?> clazz) {
         return clazz != null && doIsDomainClassCheck(clazz);
-
     }
 
     private static boolean doIsDomainClassCheck(Class<?> clazz) {

@@ -86,13 +86,9 @@ public class BoundedCharsAsEncodedBytesCounter {
                 cr = this.ce.flush(this.bb);
                 if (!cr.isUnderflow()) {
                     terminateCalculation();
-                    return;
                 }
             }
-            catch (BufferOverflowException e) {
-                terminateCalculation();
-            }
-            catch (Exception x) {
+            catch (Exception e) {
                 terminateCalculation();
             }
         }

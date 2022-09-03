@@ -61,7 +61,7 @@ public class BasicXMLEncoder extends AbstractCharReplacementEncoder {
 
     private static final String ESCAPED_PARAGRAPH_SEPARATOR = xmlEscapeCharacter(PARAGRAPH_SEPARATOR);
 
-    protected static final String xmlEscapeCharacter(char ch) {
+    protected static String xmlEscapeCharacter(char ch) {
         return "&#" + ((int) ch) + ";";
     }
 

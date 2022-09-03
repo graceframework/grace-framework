@@ -108,15 +108,13 @@ public interface GrailsApplication extends ApplicationContextAware {
      * Retrieves all java.lang.Class instances loaded by the Grails class loader
      * @return An array of classes
      */
-    @SuppressWarnings("rawtypes")
-    Class[] getAllClasses();
+    Class<?>[] getAllClasses();
 
     /**
      * Retrieves all java.lang.Class instances considered Artefacts loaded by the Grails class loader
      * @return An array of classes
      */
-    @SuppressWarnings("rawtypes")
-    Class[] getAllArtefacts();
+    Class<?>[] getAllArtefacts();
 
     /**
      * Returns the Spring context for this application. Note that this
@@ -156,8 +154,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @param className The name of the class
      * @return The class or null
      */
-    @SuppressWarnings("rawtypes")
-    Class getClassForName(String className);
+    Class<?> getClassForName(String className);
 
     /**
      * This method will refresh the entire application
@@ -177,8 +174,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @param theClazz The Grails class
      * @return A Resource or null
      */
-    @SuppressWarnings("rawtypes")
-    Resource getResourceForClass(Class theClazz);
+    Resource getResourceForClass(Class<?> theClazz);
 
     /**
      * <p>Call this to find out if the class you have is an artefact loaded by grails.</p>
@@ -186,8 +182,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @return true if and only if the class was loaded from grails-app/
      * @since 0.5
      */
-    @SuppressWarnings("rawtypes")
-    boolean isArtefact(Class theClazz);
+    boolean isArtefact(Class<?> theClazz);
 
     /**
      * <p>Check if the specified artefact Class has been loaded by Grails already AND is
@@ -197,8 +192,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @return true if Grails considers the class to be managed as an artefact of the type specified.
      * @since 0.5
      */
-    @SuppressWarnings("rawtypes")
-    boolean isArtefactOfType(String artefactType, Class theClazz);
+    boolean isArtefactOfType(String artefactType, Class<?> theClazz);
 
     /**
      * <p>Check if the artefact Class with the name specified is of the type expected</p>
@@ -224,8 +218,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @param theClass The class
      * @return The ArtefactHandler
      */
-    @SuppressWarnings("rawtypes")
-    ArtefactHandler getArtefactType(Class theClass);
+    ArtefactHandler getArtefactType(Class<?> theClass);
 
     /**
      * <p>Obtain all the class information about the artefactType specified</p>
@@ -261,8 +254,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * @return The new grails class for the artefact class
      * @since 0.5
      */
-    @SuppressWarnings("rawtypes")
-    GrailsClass addArtefact(String artefactType, Class artefactClass);
+    GrailsClass addArtefact(String artefactType, Class<?> artefactClass);
 
     /**
      * <p>Registers a new artefact</p>
@@ -324,8 +316,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * Adds the given artefact, attempting to determine type from
      * @param artefact The artefact to add
      */
-    @SuppressWarnings("rawtypes")
-    void addArtefact(Class artefact);
+    void addArtefact(Class<?> artefact);
 
     /**
      * Returns true if this application has been deployed as a WAR file
@@ -338,8 +329,7 @@ public interface GrailsApplication extends ApplicationContextAware {
      * Adds an artefact that can be overriden by user defined classes
      * @param artefact An overridable artefact
      */
-    @SuppressWarnings("rawtypes")
-    void addOverridableArtefact(Class artefact);
+    void addOverridableArtefact(Class<?> artefact);
 
     /**
      * Fired to inform the application when the Config.groovy file changes.

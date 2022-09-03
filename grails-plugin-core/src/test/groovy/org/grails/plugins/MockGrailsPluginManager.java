@@ -87,13 +87,12 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
         }
     }
 
-    public Collection<?> getPluginObservers(GrailsPlugin plugin) {
+    public Collection<GrailsPlugin> getPluginObservers(GrailsPlugin plugin) {
         throw new UnsupportedOperationException(
                 "The class [MockGrailsPluginManager] doesn't support the method getPluginObservers");
     }
 
-    @SuppressWarnings("rawtypes")
-    public void informObservers(String pluginName, Map event) {
+    public void informObservers(String pluginName, Map<String, Object> event) {
         // do nothing
     }
 

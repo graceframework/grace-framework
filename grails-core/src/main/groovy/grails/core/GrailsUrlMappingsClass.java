@@ -29,14 +29,12 @@ public interface GrailsUrlMappingsClass extends GrailsClass {
      *
      * @return A Closure instance
      */
-    @SuppressWarnings("rawtypes")
-    Closure getMappingsClosure();
+    Closure<?> getMappingsClosure();
 
     /**
      * Returns a List of URI patterns to exclude.
      * @return the patterns (Strings)
      */
-    @SuppressWarnings("rawtypes")
-    List getExcludePatterns();
+    List<?> getExcludePatterns();
 
 }

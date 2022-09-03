@@ -219,7 +219,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         for (String dn : dependencyNames) {
             GrailsPlugin current = getGrailsPlugin(dn);
             if (current == null) {
-                throw new PluginException("Cannot load Plugin. Dependency [" + current + "] not found");
+                throw new PluginException("Cannot load Plugin. Dependency [" + dn + "] not found");
             }
 
             String[] pluginDependencies = current.getDependencyNames();
@@ -303,10 +303,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        if (applicationContext != null) {
-            for (GrailsPlugin plugin : this.pluginList) {
-                plugin.setApplicationContext(applicationContext);
-            }
+        for (GrailsPlugin plugin : this.pluginList) {
+            plugin.setApplicationContext(applicationContext);
         }
     }
 
@@ -546,7 +544,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         return configSlurper;
     }
 
-    public void informOfClassChange(File file, @SuppressWarnings("rawtypes") Class cls) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void informOfClassChange(File file, Class<?> cls) {
         if (file.getName().equals(CONFIG_FILE)) {
             ConfigSlurper configSlurper = getConfigSlurper(this.application);
             ConfigObject c;
@@ -591,8 +590,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                         Environment.setCurrentReloadError(null);
                     }
                     catch (Exception e) {
-                        logger.error("Plugin " + grailsPlugin + " could not reload changes to file [" +
-                                file + "]: " + e.getMessage(), e);
+                        logger.error("Plugin " + grailsPlugin + " could not reload changes to file [" + file + "]: " + e.getMessage(), e);
                         Environment.setCurrentReloadError(e);
                     }
                 }

@@ -37,7 +37,7 @@ public class CandidateListCompletionHandler implements CompletionHandler {
         this.eagerNewlines = eagerNewlines;
     }
 
-    public boolean complete(ConsoleReader reader, @SuppressWarnings("rawtypes") List<CharSequence> candidates, int pos) throws IOException {
+    public boolean complete(ConsoleReader reader, List<CharSequence> candidates, int pos) throws IOException {
         CursorBuffer buf = reader.getCursorBuffer();
 
         // if there is only one completion, then fill in the buffer
@@ -106,8 +106,8 @@ public class CandidateListCompletionHandler implements CompletionHandler {
      *         start with <i>starts</i>
      */
     private boolean startsWith(final String starts, final String[] candidates) {
-        for (int i = 0; i < candidates.length; i++) {
-            if (!candidates[i].startsWith(starts)) {
+        for (String candidate : candidates) {
+            if (!candidate.startsWith(starts)) {
                 return false;
             }
         }

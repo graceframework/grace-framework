@@ -40,9 +40,9 @@ import org.codehaus.groovy.runtime.metaclass.MetaClassRegistryImpl;
 @SuppressWarnings("rawtypes")
 public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEventListener {
 
-    private Map<Class, Object> alteredClasses = new ConcurrentHashMap<>();
+    private final Map<Class, Object> alteredClasses = new ConcurrentHashMap<>();
 
-    private Map<IdentityWeakReference, Object> alteredInstances = new ConcurrentHashMap<>();
+    private final Map<IdentityWeakReference, Object> alteredInstances = new ConcurrentHashMap<>();
 
     private static final Object NO_CUSTOM_METACLASS = new Object();
 
@@ -108,10 +108,7 @@ public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEv
 
     private void updateMetaClassOfClass(MetaClass oldMetaClass, Class classToUpdate) {
         if (oldMetaClass != null && !(oldMetaClass.getClass().getName().equals("groovy.mock.interceptor.MockProxyMetaClass"))) {
-            Object current = this.alteredClasses.get(classToUpdate);
-            if (current == null) {
-                this.alteredClasses.put(classToUpdate, oldMetaClass);
-            }
+            this.alteredClasses.putIfAbsent(classToUpdate, oldMetaClass);
         }
         else {
             this.alteredClasses.put(classToUpdate, NO_CUSTOM_METACLASS);
@@ -161,7 +158,7 @@ public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEv
 
     private static final class IdentityWeakReference extends WeakReference<Object> {
 
-        private int hash;
+        private final int hash;
 
         IdentityWeakReference(Object referent) {
             super(referent);
@@ -175,6 +172,9 @@ public final class MetaClassRegistryCleaner implements MetaClassRegistryChangeEv
 
         @Override
         public boolean equals(Object obj) {
+            if (!(obj instanceof IdentityWeakReference)) {
+                return false;
+            }
             if (this == obj) {
                 return true;
             }

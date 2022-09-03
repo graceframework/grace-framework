@@ -29,7 +29,7 @@ public class Holder<T> {
     // TODO remove mappedOnly and singleton
     private T singleton;
 
-    private String name;
+    private final String name;
 
     public Holder(String name) {
         this.name = name;

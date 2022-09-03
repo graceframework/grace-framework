@@ -17,6 +17,7 @@ package org.grails.plugins;
 
 import java.util.List;
 
+import grails.plugins.GrailsPlugin;
 import grails.plugins.PluginFilter;
 
 /**
@@ -29,8 +30,7 @@ public class IdentityPluginFilter implements PluginFilter {
     /**
      * Simply returns original list reference.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List filterPluginList(List original) {
+    public List<GrailsPlugin> filterPluginList(List<GrailsPlugin> original) {
         return original;
     }
 

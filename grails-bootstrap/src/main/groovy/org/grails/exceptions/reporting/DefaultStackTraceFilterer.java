@@ -54,7 +54,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             "javax.servlet."
     };
 
-    private List<String> packagesToFilter = new ArrayList<>();
+    private final List<String> packagesToFilter = new ArrayList<>();
 
     private boolean shouldFilter;
 

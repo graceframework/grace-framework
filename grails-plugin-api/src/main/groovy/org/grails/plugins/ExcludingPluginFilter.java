@@ -17,7 +17,6 @@ package org.grails.plugins;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,10 +29,9 @@ import grails.plugins.GrailsPlugin;
  *
  * @author Phil Zoio
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ExcludingPluginFilter extends BasePluginFilter {
 
-    public ExcludingPluginFilter(Set excluded) {
+    public ExcludingPluginFilter(Set<String> excluded) {
         super(excluded);
     }
 
@@ -42,22 +40,17 @@ public class ExcludingPluginFilter extends BasePluginFilter {
     }
 
     @Override
-    protected List getPluginList(List original, List pluginList) {
+    protected List<GrailsPlugin> getPluginList(List<GrailsPlugin> original, List<GrailsPlugin> pluginList) {
         // go through and remove ones that don't apply
         List<GrailsPlugin> newList = new ArrayList<>(original);
-        for (Iterator<GrailsPlugin> iter = newList.iterator(); iter.hasNext(); ) {
-            GrailsPlugin element = iter.next();
-            // remove the excluded dependencies
-            if (pluginList.contains(element)) {
-                iter.remove();
-            }
-        }
+        // remove the excluded dependencies
+        newList.removeIf(pluginList::contains);
 
         return newList;
     }
 
     @Override
-    protected void addPluginDependencies(List additionalList, GrailsPlugin plugin) {
+    protected void addPluginDependencies(List<GrailsPlugin> additionalList, GrailsPlugin plugin) {
         // find the plugins which depend on the one we've excluded
         String pluginName = plugin.getName();
 

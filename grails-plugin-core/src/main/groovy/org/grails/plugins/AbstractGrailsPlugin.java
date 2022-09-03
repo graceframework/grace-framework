@@ -64,8 +64,6 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
 
     private static final List<String> DEFAULT_CONFIG_IGNORE_LIST = Arrays.asList("dataSource", "hibernate");
 
-    private static Resource basePluginResource = null;
-
     protected PropertySource<?> propertySource;
 
     protected GrailsApplication grailsApplication;
@@ -100,13 +98,13 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         if (resource != null && resource.exists()) {
             final String filename = resource.getFilename();
             try {
-                if (filename.equals(PLUGIN_YML)) {
+                if (filename != null && filename.equals(PLUGIN_YML)) {
                     YamlPropertySourceLoader propertySourceLoader = new YamlPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
                                     "GrailsPlugin") + "-" + PLUGIN_YML, resource, DEFAULT_CONFIG_IGNORE_LIST)
                             .stream().findFirst().orElse(null);
                 }
-                else if (filename.equals(PLUGIN_GROOVY)) {
+                else if (filename != null && filename.equals(PLUGIN_GROOVY)) {
                     GroovyConfigPropertySourceLoader propertySourceLoader = new GroovyConfigPropertySourceLoader();
                     this.propertySource = propertySourceLoader.load(GrailsNameUtils.getLogicalPropertyName(pluginClass.getSimpleName(),
                                     "GrailsPlugin") + "-" + PLUGIN_GROOVY, resource, DEFAULT_CONFIG_IGNORE_LIST)
@@ -114,7 +112,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
                 }
             }
             catch (IOException e) {
-                logger.warn("Error loading " + filename + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
+                logger.warn("Error loading " + resource + " for plugin: " + pluginClass.getName() + ": " + e.getMessage(), e);
             }
         }
     }
@@ -140,7 +138,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         Resource ymlResource = getConfigurationResource(pluginClass, PLUGIN_YML_PATH);
         Resource groovyResource = getConfigurationResource(pluginClass, PLUGIN_GROOVY_PATH);
 
-        Boolean groovyResourceExists = groovyResource != null && groovyResource.exists();
+        boolean groovyResourceExists = groovyResource != null && groovyResource.exists();
 
         if (ymlResource != null && ymlResource.exists()) {
             if (groovyResourceExists) {
@@ -265,11 +263,7 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         if (!this.pluginClass.equals(that.pluginClass)) {
             return false;
         }
-        if (!this.version.equals(that.version)) {
-            return false;
-        }
-
-        return true;
+        return this.version.equals(that.version);
     }
 
     @Override

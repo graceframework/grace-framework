@@ -124,12 +124,12 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                 if (!resource.isReadable() || resource.getFilename().contains("$_")) {
                     continue;
                 }
-                InputStream inputStream = resource.getInputStream();
-                try {
 
+                try(InputStream inputStream = resource.getInputStream()) {
                     final ClassReader classReader = new ClassReader(inputStream);
                     final String astTransformerClassName = AstTransformer.class.getSimpleName();
                     final ClassLoader finalClassLoader = classLoader;
+
                     classReader.accept(new ClassVisitor(Opcodes.ASM4) {
                         @Override
                         public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -155,22 +155,14 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                             return super.visitAnnotation(desc, visible);
                         }
                     }, ClassReader.SKIP_CODE);
-
-                }
-                catch (IOException | NoClassDefFoundError ignored) {
-                }
-                finally {
-                    inputStream.close();
                 }
             }
-            Collections.sort(injectors, new Comparator<ClassInjector>() {
-                @SuppressWarnings({ "unchecked", "rawtypes" })
-                public int compare(ClassInjector classInjectorA, ClassInjector classInjectorB) {
-                    if (classInjectorA instanceof Comparable) {
-                        return ((Comparable) classInjectorA).compareTo(classInjectorB);
-                    }
-                    return 0;
+
+            Collections.sort(injectors, (classInjectorA, classInjectorB) -> {
+                if (classInjectorA instanceof Comparable) {
+                    return ((Comparable) classInjectorA).compareTo(classInjectorB);
                 }
+                return 0;
             });
             classInjectors = injectors.toArray(new ClassInjector[0]);
             globalClassInjectors = globalInjectors.toArray(new ClassInjector[0]);

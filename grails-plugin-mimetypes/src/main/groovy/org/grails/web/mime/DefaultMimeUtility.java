@@ -29,9 +29,9 @@ import grails.web.mime.MimeUtility;
  */
 public class DefaultMimeUtility implements MimeUtility {
 
-    private List<MimeType> mimeTypes;
+    private final List<MimeType> mimeTypes;
 
-    private Map<String, MimeType> extensionToMimeMap = new HashMap<>();
+    private final Map<String, MimeType> extensionToMimeMap = new HashMap<>();
 
     public DefaultMimeUtility(MimeType[] mimeTypes) {
         this(Arrays.asList(mimeTypes));
@@ -73,7 +73,7 @@ public class DefaultMimeUtility implements MimeUtility {
 
         final int i = uri.lastIndexOf('.');
         final int length = uri.length();
-        if (i > -1 && i < length) {
+        if (i > -1) {
             final String extension = uri.substring(i + 1, length);
             return getMimeTypeForExtension(extension);
         }

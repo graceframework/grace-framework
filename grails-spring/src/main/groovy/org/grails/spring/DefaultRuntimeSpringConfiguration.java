@@ -56,17 +56,17 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
 
     protected GenericApplicationContext context;
 
-    private Map<String, BeanConfiguration> beanConfigs = new HashMap<>();
+    private final Map<String, BeanConfiguration> beanConfigs = new HashMap<>();
 
-    private Map<String, BeanDefinition> beanDefinitions = new HashMap<>();
+    private final Map<String, BeanDefinition> beanDefinitions = new HashMap<>();
 
-    private Set<String> beanNames = new LinkedHashSet<>();
+    private final Set<String> beanNames = new LinkedHashSet<>();
 
     protected ApplicationContext parent;
 
     protected ClassLoader classLoader;
 
-    protected Map<String, List<String>> aliases = new HashMap<>();
+    protected final Map<String, List<String>> aliases = new HashMap<>();
 
     protected ListableBeanFactory beanFactory;
 
@@ -378,11 +378,7 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
     }
 
     public void addAlias(String alias, String beanName) {
-        List<String> beanAliases = this.aliases.get(beanName);
-        if (beanAliases == null) {
-            beanAliases = new ArrayList<>();
-            this.aliases.put(beanName, beanAliases);
-        }
+        List<String> beanAliases = this.aliases.computeIfAbsent(beanName, k -> new ArrayList<>());
         beanAliases.add(alias);
     }
 

@@ -31,7 +31,7 @@ import org.grails.core.lifecycle.ShutdownOperations;
  */
 public final class DeferredBindingActions {
 
-    private static Log LOG = LogFactory.getLog(DeferredBindingActions.class);
+    private static final Log logger = LogFactory.getLog(DeferredBindingActions.class);
 
     private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<>();
 
@@ -66,7 +66,7 @@ public final class DeferredBindingActions {
                             runnable.run();
                         }
                         catch (Exception e) {
-                            LOG.error("Error running deferred data binding: " + e.getMessage(), e);
+                            logger.error("Error running deferred data binding: " + e.getMessage(), e);
                         }
                     }
                 }

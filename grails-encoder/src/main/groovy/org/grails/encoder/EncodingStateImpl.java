@@ -108,8 +108,7 @@ public class EncodingStateImpl implements EncodingState {
             return this;
         }
         else {
-            newEncoders = new LinkedHashSet<>();
-            newEncoders.addAll(this.encoders);
+            newEncoders = new LinkedHashSet<>(this.encoders);
             newEncoders.add(encoder);
         }
         return new EncodingStateImpl(newEncoders, this);
@@ -129,12 +128,16 @@ public class EncodingStateImpl implements EncodingState {
                 else {
                     first = false;
                 }
-                sb.append("[@");
-                sb.append(System.identityHashCode(encoder));
-                sb.append(" ");
-                sb.append(encoder.getCodecIdentifier().getCodecName() + " safe:" + encoder.isSafe() +
-                        " apply to safe:" + encoder.isApplyToSafelyEncoded());
-                sb.append("]");
+                sb.append("[@")
+                        .append(System.identityHashCode(encoder))
+                        .append(" ")
+                        .append(encoder.getCodecIdentifier()
+                        .getCodecName())
+                        .append(" safe:")
+                        .append(encoder.isSafe())
+                        .append(" apply to safe:")
+                        .append(encoder.isApplyToSafelyEncoded())
+                        .append("]");
             }
             sb.append("]");
         }

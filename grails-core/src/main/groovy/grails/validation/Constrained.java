@@ -41,13 +41,13 @@ public interface Constrained {
     /**
      * @return Returns the maximum possible value.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     Comparable getMax();
 
     /**
      * @return Returns the minimum possible value.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     Comparable getMin();
 
     /**
@@ -99,6 +99,6 @@ public interface Constrained {
 
     void applyConstraint(String constraintName, Object constrainingValue);
 
-    Class getOwner();
+    Class<?> getOwner();
 
 }

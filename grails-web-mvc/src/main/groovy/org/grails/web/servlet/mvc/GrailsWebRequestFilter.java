@@ -43,10 +43,6 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
 
     Collection<ParameterCreationListener> paramListenerBeans;
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(
-     *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
-     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

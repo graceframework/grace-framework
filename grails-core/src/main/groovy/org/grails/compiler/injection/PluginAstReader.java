@@ -50,7 +50,7 @@ import org.grails.io.support.Resource;
  */
 public class PluginAstReader {
 
-    private BasicGrailsPluginInfo pluginInfo;
+    private final BasicGrailsPluginInfo pluginInfo;
 
     public PluginAstReader() {
         this.pluginInfo = new BasicGrailsPluginInfo();
@@ -234,8 +234,7 @@ public class PluginAstReader {
         }
 
         public Map<String, Object> getProperties() {
-            Map<String, Object> props = new HashMap<>();
-            props.putAll(this.attributes);
+            Map<String, Object> props = new HashMap<>(this.attributes);
             if (this.name != null) {
                 props.put(NAME, this.name);
             }

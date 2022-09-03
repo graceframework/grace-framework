@@ -17,9 +17,9 @@ package org.grails.encoder;
 
 public class ChainedDecoder implements Decoder {
 
-    protected Decoder[] decoders;
+    protected final Decoder[] decoders;
 
-    protected CodecIdentifier codecIdentifier;
+    protected final CodecIdentifier codecIdentifier;
 
     public ChainedDecoder(Decoder[] decoders) {
         this.decoders = decoders;
@@ -38,7 +38,7 @@ public class ChainedDecoder implements Decoder {
     @Override
     public Object decode(Object o) {
         if (o == null) {
-            return o;
+            return null;
         }
         Object decoded = o;
         for (Decoder decoder : this.decoders) {

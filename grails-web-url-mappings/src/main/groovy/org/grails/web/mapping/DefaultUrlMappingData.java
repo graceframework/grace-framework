@@ -101,8 +101,8 @@ public class DefaultUrlMappingData implements UrlMappingData {
 
         }
 
-        for (int i = 0; i < tokens.length; i++) {
-            String token = tokens[i].trim();
+        for (String s : tokens) {
+            String token = s.trim();
             if (token.equals(SLASH)) {
                 continue;
             }

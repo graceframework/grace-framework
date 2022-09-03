@@ -323,9 +323,8 @@ public class PathMatchingResourcePatternResolver {
      * can be traversed using Spring's standard jar file traversal algorithm.
      * @param original the resource to resolve
      * @return the resolved resource (may be identical to the passed-in resource)
-     * @throws IOException in case of resolution failure
      */
-    protected Resource resolveRootDirResource(Resource original) throws IOException {
+    protected Resource resolveRootDirResource(Resource original) {
         return original;
     }
 
@@ -512,9 +511,8 @@ public class PathMatchingResourcePatternResolver {
      * with prepended root directory path
      * @param dir the current directory
      * @param result the Set of matching File instances to add to
-     * @throws IOException if directory contents could not be retrieved
      */
-    protected void doRetrieveMatchingFiles(String fullPattern, File dir, Set<File> result) throws IOException {
+    protected void doRetrieveMatchingFiles(String fullPattern, File dir, Set<File> result) {
         File[] dirContents = dir.listFiles();
         if (dirContents == null) {
             return;

@@ -63,7 +63,7 @@ import org.grails.io.support.GrailsResourceUtils;
 @AstTransformer
 public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInjector, GrailsArtefactClassInjector {
 
-    private List<ClassNode> classesWithInjectedToString = new ArrayList<>();
+    private final List<ClassNode> classesWithInjectedToString = new ArrayList<>();
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         if (GrailsASTUtils.isDomainClass(classNode, source) && shouldInjectClass(classNode)) {

@@ -424,9 +424,6 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
         if (actionName == null) {
             actionName = controllerClass.getDefaultAction();
         }
-        if (actionName == null) {
-            return false;
-        }
 
         return false;
     }

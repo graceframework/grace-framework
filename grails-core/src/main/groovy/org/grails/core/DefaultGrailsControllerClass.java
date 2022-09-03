@@ -59,13 +59,13 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
 
     private String scope;
 
-    private Map<String, ActionInvoker> actions = new HashMap<>();
+    private final Map<String, ActionInvoker> actions = new HashMap<>();
 
     private String defaultActionName;
 
-    private String namespace;
+    private final String namespace;
 
-    protected Map<String, String> actionUriToViewName = new HashMap<>();
+    protected final Map<String, String> actionUriToViewName = new HashMap<>();
 
     public DefaultGrailsControllerClass(Class<?> clazz) {
         super(clazz, CONTROLLER);
@@ -115,7 +115,6 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
     }
 
     private void methodStrategy(Map<String, ActionInvoker> methodNames) {
-
         Class superClass = getClazz();
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         while (superClass != Object.class && superClass != GroovyObject.class) {

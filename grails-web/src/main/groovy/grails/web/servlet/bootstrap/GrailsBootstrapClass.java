@@ -43,15 +43,13 @@ public interface GrailsBootstrapClass extends GrailsClass {
      *
      * @return A Closure instance
      */
-    @SuppressWarnings("rawtypes")
-    Closure getInitClosure();
+    Closure<?> getInitClosure();
 
     /**
      * Returns the destroy closure which is called on application exit.
      *
      * @return A Closure instance
      */
-    @SuppressWarnings("rawtypes")
-    Closure getDestroyClosure();
+    Closure<?> getDestroyClosure();
 
 }

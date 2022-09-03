@@ -112,8 +112,7 @@ public class AntPathMatcher {
         if (pathIdxStart > pathIdxEnd) {
             // Path is exhausted, only match if rest of pattern is * or **'s
             if (pattIdxStart > pattIdxEnd) {
-                return (pattern.endsWith(this.pathSeparator) ? path.endsWith(this.pathSeparator) :
-                        !path.endsWith(this.pathSeparator));
+                return (pattern.endsWith(this.pathSeparator) == path.endsWith(this.pathSeparator));
             }
             if (!fullMatch) {
                 return true;
@@ -209,7 +208,7 @@ public class AntPathMatcher {
     }
 
     private String[] tokenize(String pattern) {
-        List<String> list = StringGroovyMethods.tokenize((CharSequence) pattern, (CharSequence) this.pathSeparator);
+        List<String> list = StringGroovyMethods.tokenize(pattern, this.pathSeparator);
         return list.toArray(new String[0]);
     }
 
@@ -492,7 +491,7 @@ public class AntPathMatcher {
 
         private final Pattern pattern;
 
-        private String str;
+        private final String str;
 
         private final List<String> variableNames = new LinkedList<>();
 

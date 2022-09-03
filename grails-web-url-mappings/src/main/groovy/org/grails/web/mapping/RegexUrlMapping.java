@@ -146,11 +146,7 @@ public class RegexUrlMapping extends AbstractUrlMapping {
         for (int i = 0; i < urls.length; i++) {
             String url = urls[i];
             Integer slashCount = org.springframework.util.StringUtils.countOccurrencesOf(url, "/");
-            List<Pattern> tokenCountPatterns = this.patternByTokenCount.get(slashCount);
-            if (tokenCountPatterns == null) {
-                tokenCountPatterns = new ArrayList<>();
-                this.patternByTokenCount.put(slashCount, tokenCountPatterns);
-            }
+            List<Pattern> tokenCountPatterns = this.patternByTokenCount.computeIfAbsent(slashCount, k -> new ArrayList<>());
 
             Pattern pattern = convertToRegex(url);
             if (pattern == null) {

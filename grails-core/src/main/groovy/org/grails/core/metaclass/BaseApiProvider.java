@@ -38,20 +38,18 @@ import grails.util.GrailsNameUtils;
 @Deprecated
 public abstract class BaseApiProvider {
 
-    private static List<String> EXCLUDED_METHODS = Arrays.asList("setMetaClass", "getMetaClass", "setProperties", "getProperties");
+    private static final List<String> EXCLUDED_METHODS = Arrays.asList("setMetaClass", "getMetaClass", "setProperties", "getProperties");
 
     public static final String CONSTRUCTOR_METHOD = "initialize";
 
     public static final String CTOR_GROOVY_METHOD = "<ctor>";
 
-    @SuppressWarnings("rawtypes")
-    protected List instanceMethods = new ArrayList();
+    protected final List<ReflectionMetaMethod> instanceMethods = new ArrayList<>();
 
-    protected List<Method> staticMethods = new ArrayList<>();
+    protected final List<Method> staticMethods = new ArrayList<>();
 
-    protected List<Method> constructors = new ArrayList<>();
+    protected final List<Method> constructors = new ArrayList<>();
 
-    @SuppressWarnings("unchecked")
     public void addApi(final Object apiInstance) {
         if (apiInstance == null) {
             return;

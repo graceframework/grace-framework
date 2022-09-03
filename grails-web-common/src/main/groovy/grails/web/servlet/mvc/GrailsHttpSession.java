@@ -31,15 +31,12 @@ public class GrailsHttpSession implements HttpSession {
 
     private HttpSession adaptee;
 
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
     public GrailsHttpSession(HttpServletRequest request) {
         this.request = request;
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getAttribute(java.lang.String)
-     */
     public Object getAttribute(String name) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -53,9 +50,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getAttributeNames()
-     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Enumeration getAttributeNames() {
         createSessionIfNecessary();
@@ -64,9 +58,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getCreationTime()
-     */
     public long getCreationTime() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -74,9 +65,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getId()
-     */
     public String getId() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -84,9 +72,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getLastAccessedTime()
-     */
     public long getLastAccessedTime() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -94,9 +79,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getMaxInactiveInterval()
-     */
     public int getMaxInactiveInterval() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -104,9 +86,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#getServletContext()
-     */
     public ServletContext getServletContext() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -174,9 +153,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#invalidate()
-     */
     public void invalidate() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -184,9 +160,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#isNew()
-     */
     public boolean isNew() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -194,9 +167,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#removeAttribute(java.lang.String)
-     */
     public void removeAttribute(String name) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -204,9 +174,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#setAttribute(java.lang.String, java.lang.Object)
-     */
     public void setAttribute(String name, Object value) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -214,9 +181,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.http.HttpSession#setMaxInactiveInterval(int)
-     */
     public void setMaxInactiveInterval(int arg0) {
         createSessionIfNecessary();
         synchronized (this) {

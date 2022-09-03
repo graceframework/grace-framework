@@ -22,7 +22,7 @@ import grails.core.support.ClassLoaderAware;
 
 public class ClassLoaderAwareBeanPostProcessor implements BeanPostProcessor {
 
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     public ClassLoaderAwareBeanPostProcessor(ClassLoader classLoader) {
         this.classLoader = classLoader;

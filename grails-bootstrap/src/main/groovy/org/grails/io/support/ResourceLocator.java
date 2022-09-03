@@ -16,7 +16,6 @@
 package org.grails.io.support;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,11 +77,9 @@ public class ResourceLocator {
     private void initializeForSearchLocation(String searchLocation) {
         String searchLocationPlusSlash = searchLocation.endsWith("/") ? searchLocation : searchLocation + FILE_SEPARATOR;
         try {
-            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR).listFiles(new FileFilter() {
-                public boolean accept(File file) {
-                    return file.isDirectory() && !file.isHidden();
-                }
-            });
+            File[] directories = new File(searchLocationPlusSlash + GrailsResourceUtils.GRAILS_APP_DIR)
+                    .listFiles(file -> file.isDirectory() && !file.isHidden());
+
             if (directories != null) {
                 for (File directory : directories) {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
@@ -112,12 +109,12 @@ public class ResourceLocator {
 
                 for (String resourceSearchDirectory : this.resourceSearchDirectories) {
                     Resource res = resolveExceptionSafe(resourceSearchDirectory + uriWebAppRelative);
-                    if (res.exists()) {
+                    if (res != null && res.exists()) {
                         resource = res;
                     }
                     else if (!this.warDeployed) {
                         Resource dir = resolveExceptionSafe(resourceSearchDirectory);
-                        if (dir.exists() && info != null) {
+                        if (dir != null && dir.exists() && info != null) {
                             String filename = dir.getFilename();
                             if (filename != null && filename.equals(info.pluginName)) {
                                 Resource pluginFile = dir.createRelative(WEB_APP_DIR + info.uri);

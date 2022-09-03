@@ -179,7 +179,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         return new String[0];
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked" })
     public String[] getBeanNamesForType(Class type) {
         List<String> beanNames = new ArrayList<>();
         for (String beanName : this.beans.keySet()) {
@@ -190,7 +190,6 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         return beanNames.toArray(new String[0]);
     }
 
-    @SuppressWarnings("rawtypes")
     public String[] getBeanNamesForType(Class type, boolean includePrototypes, boolean includeFactoryBeans) {
         return getBeanNamesForType(type);
     }
@@ -311,12 +310,11 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         return isTypeMatch(name, typeToMatch.getRawClass());
     }
 
-    @SuppressWarnings("rawtypes")
     public boolean isTypeMatch(String name, Class aClass) {
         return aClass.isInstance(getBean(name));
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public Class getType(String name) throws NoSuchBeanDefinitionException {
         if (!this.beans.containsKey(name)) {
             throw new NoSuchBeanDefinitionException(name);

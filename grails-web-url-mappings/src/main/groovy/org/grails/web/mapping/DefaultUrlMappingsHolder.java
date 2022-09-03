@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -66,7 +67,7 @@ import grails.web.mapping.UrlMappingsHolder;
 @SuppressWarnings("rawtypes")
 public class DefaultUrlMappingsHolder implements UrlMappings {
 
-    private static final transient Log LOG = LogFactory.getLog(DefaultUrlMappingsHolder.class);
+    private static final Log logger = LogFactory.getLog(DefaultUrlMappingsHolder.class);
 
     private static final int DEFAULT_MAX_WEIGHTED_CAPACITY = 5000;
 
@@ -184,8 +185,8 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             UrlMappingsListKey listKey = new UrlMappingsListKey(controllerName, actionName, namespace, pluginName, httpMethod, version);
             this.mappingsListLookup.put(listKey, key);
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Reverse mapping: " + key + " -> " + mapping);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Reverse mapping: " + key + " -> " + mapping);
             }
 
             Set<String> requiredParamsAndOptionals = new HashSet<>(requiredParams);
@@ -204,8 +205,8 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
                         listKey = new UrlMappingsListKey(controllerName, actionName, namespace, pluginName, httpMethod, version);
                         this.mappingsListLookup.put(listKey, key);
 
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Reverse mapping: " + key + " -> " + mapping);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Reverse mapping: " + key + " -> " + mapping);
                         }
                     }
                 }
@@ -257,7 +258,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         return this.mappings;
     }
 
-    public List getExcludePatterns() {
+    public List<?> getExcludePatterns() {
         return this.excludePatterns;
     }
 
@@ -564,8 +565,8 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         }
 
         for (UrlMapping mapping : this.mappings) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
             }
 
             info = mapping.match(uri);
@@ -594,14 +595,14 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         if (matchingUrls == null) {
             matchingUrls = new ArrayList<>();
             for (UrlMapping mapping : this.mappings) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
                 }
 
                 UrlMappingInfo current = mapping.match(uri);
                 if (current != null) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Matched URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "], adding to posibilities");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Matched URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "], adding to posibilities");
                     }
 
                     String mappingHttpMethod = current.getHttpMethod();
@@ -640,14 +641,14 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
             boolean anyHttpMethod = httpMethod != null && httpMethod.equals(UrlMapping.ANY_HTTP_METHOD);
             boolean anyVersion = version != null && version.equals(UrlMapping.ANY_VERSION);
             for (UrlMapping mapping : this.mappings) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Attempting to match URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "]");
                 }
 
                 UrlMappingInfo current = mapping.match(uri);
                 if (current != null) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Matched URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "], adding to posibilities");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Matched URI [" + uri + "] with pattern [" + mapping.getUrlData().getUrlPattern() + "], adding to posibilities");
                     }
 
                     String mappingHttpMethod = current.getHttpMethod();
@@ -766,13 +767,13 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
 
             UriToUrlMappingKey that = (UriToUrlMappingKey) o;
 
-            if (this.httpMethod != null ? !this.httpMethod.equals(that.httpMethod) : that.httpMethod != null) {
+            if (!Objects.equals(this.httpMethod, that.httpMethod)) {
                 return false;
             }
-            if (this.version != null ? !this.version.equals(that.version) : that.version != null) {
+            if (!Objects.equals(this.version, that.version)) {
                 return false;
             }
-            if (this.uri != null ? !this.uri.equals(that.uri) : that.uri != null) {
+            if (!Objects.equals(this.uri, that.uri)) {
                 return false;
             }
 
@@ -792,7 +793,6 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     /**
      * A class used as a key to lookup a UrlMapping based on controller, action and parameter names
      */
-    @SuppressWarnings("unchecked")
     class UrlMappingKey implements Comparable {
 
         String controller;
@@ -1027,13 +1027,9 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         private final Map<UrlMappingsListKey, List<UrlMappingKey>> lookup = new HashMap<>();
 
         public void put(UrlMappingsListKey key, UrlMappingKey mapping) {
-            List<UrlMappingKey> mappingsList = this.lookup.get(key);
-            if (null == mappingsList) {
-                mappingsList = new ArrayList<>();
-                this.lookup.put(key, mappingsList);
-            }
-            if (!mappingsList.contains(mapping)) {
+            List<UrlMappingKey> mappingsList = this.lookup.computeIfAbsent(key, k -> new ArrayList<>());
 
+            if (!mappingsList.contains(mapping)) {
                 mappingsList.add(mapping);
                 Collections.sort(mappingsList);
             }

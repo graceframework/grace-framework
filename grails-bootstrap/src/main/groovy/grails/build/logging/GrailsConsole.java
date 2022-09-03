@@ -84,7 +84,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     public static final String STACKTRACE_MESSAGE = " (Use --stacktrace to see the full trace)";
 
-    public static final Character SECURE_MASK_CHAR = new Character('*');
+    public static final Character SECURE_MASK_CHAR = '*';
 
     private PrintStream originalSystemOut;
 
@@ -138,7 +138,6 @@ public class GrailsConsole implements ConsoleLogger {
     /**
      * The category of the current output
      */
-    @SuppressWarnings("serial")
     Stack<String> category = new Stack<String>() {
 
         @Override
@@ -163,12 +162,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     public void addShutdownHook() {
         if (!Environment.isFork()) {
-            this.shutdownHookThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    beforeShutdown();
-                }
-            });
+            this.shutdownHookThread = new Thread(this::beforeShutdown);
             Runtime.getRuntime().addShutdownHook(this.shutdownHookThread);
         }
     }
@@ -195,7 +189,7 @@ public class GrailsConsole implements ConsoleLogger {
      */
     public void reinitialize(InputStream systemIn, PrintStream systemOut, PrintStream systemErr) throws IOException {
         if (this.reader != null) {
-            this.reader.shutdown();
+            this.reader.close();
         }
         initialize(systemIn, systemOut, systemErr);
     }
@@ -274,7 +268,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     private boolean readPropOrTrue(String prop) {
         String property = System.getProperty(prop);
-        return property == null ? true : Boolean.valueOf(property);
+        return property == null || Boolean.parseBoolean(property);
     }
 
     protected ConsoleReader createConsoleReader(InputStream systemIn) throws IOException {
@@ -371,7 +365,7 @@ public class GrailsConsole implements ConsoleLogger {
             instance.removeShutdownHook();
             instance.restoreOriginalSystemOutAndErr();
             if (instance.getReader() != null) {
-                instance.getReader().shutdown();
+                instance.getReader().close();
             }
             instance = null;
         }

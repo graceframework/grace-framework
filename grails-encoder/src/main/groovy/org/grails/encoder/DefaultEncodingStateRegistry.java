@@ -38,7 +38,7 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
 
-    private Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
+    private final Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
 
     public static final StreamingEncoder NONE_ENCODER = BasicCodecLookup.NONE_ENCODER;
 
@@ -50,17 +50,11 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
     }
 
     private Map<Long, WeakReference<CharSequence>> getEncodedCharSequencesForEncoder(Encoder encoder) {
-        Map<Long, WeakReference<CharSequence>> encodedCharSequences = this.encodedCharSequencesForEncoder.get(encoder);
-        if (encodedCharSequences == null) {
-            encodedCharSequences = new HashMap<>();
-            this.encodedCharSequencesForEncoder.put(encoder, encodedCharSequences);
-        }
+        Map<Long, WeakReference<CharSequence>> encodedCharSequences =
+                this.encodedCharSequencesForEncoder.computeIfAbsent(encoder, k -> new HashMap<>());
         return encodedCharSequences;
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#getEncodingStateFor(java.lang.CharSequence)
-     */
     public EncodingState getEncodingStateFor(CharSequence string) {
         Long key = calculateKey(string);
         Set<Encoder> result = null;
@@ -81,9 +75,6 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         return result != null ? new EncodingStateImpl(result, null) : EncodingStateImpl.UNDEFINED_ENCODING_STATE;
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#isEncodedWith(Encoder, java.lang.CharSequence)
-     */
     public boolean isEncodedWith(Encoder encoder, CharSequence string) {
         return getEncodedCharSequencesForEncoder(encoder).containsKey(calculateKey(string));
     }
@@ -99,9 +90,6 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         }
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#shouldEncodeWith(Encoder, java.lang.CharSequence)
-     */
     public boolean shouldEncodeWith(Encoder encoderToApply, CharSequence string) {
         if (isNoneEncoder(encoderToApply)) {
             return false;

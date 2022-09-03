@@ -56,11 +56,11 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
 
     protected static final String DEFAULT_NAMESPACE = "g";
 
-    private static Log LOG = LogFactory.getLog(DefaultGrailsApplicationAttributes.class);
+    private static final Log logger = LogFactory.getLog(DefaultGrailsApplicationAttributes.class);
 
-    private UrlPathHelper urlHelper = new UrlPathHelper();
+    private final UrlPathHelper urlHelper = new UrlPathHelper();
 
-    private ServletContext context;
+    private final ServletContext context;
 
     private ApplicationContext appContext;
 
@@ -110,7 +110,7 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
             }
         }
         catch (BeansException e) {
-            LOG.warn("Bean named '" + name + "' is missing.");
+            logger.warn("Bean named '" + name + "' is missing.");
             return null;
         }
     }
@@ -219,8 +219,8 @@ public class DefaultGrailsApplicationAttributes implements GrailsApplicationAttr
         if (this.pagesTemplateEngine == null) {
             this.pagesTemplateEngine = fetchBeanFromAppCtx(ResourceAwareTemplateEngine.BEAN_ID);
         }
-        if (this.pagesTemplateEngine == null && LOG.isWarnEnabled()) {
-            LOG.warn("No bean named [" + ResourceAwareTemplateEngine.BEAN_ID + "] defined in Spring application context!");
+        if (this.pagesTemplateEngine == null && logger.isWarnEnabled()) {
+            logger.warn("No bean named [" + ResourceAwareTemplateEngine.BEAN_ID + "] defined in Spring application context!");
         }
         return this.pagesTemplateEngine;
     }

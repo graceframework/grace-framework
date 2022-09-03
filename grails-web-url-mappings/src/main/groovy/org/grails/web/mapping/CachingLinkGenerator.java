@@ -36,7 +36,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
  * @since 2.0
  * @author Graeme Rocher
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private static final int MAX_SIZE = 5000;
@@ -59,7 +59,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private static final String THIS_MAP = "(this Map)";
 
-    private Cache<String, Object> linkCache;
+    private final Cache<String, Object> linkCache;
 
     public CachingLinkGenerator(String serverBaseURL, String contextPath) {
         super(serverBaseURL, contextPath);

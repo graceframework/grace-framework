@@ -43,9 +43,7 @@ public class PluginFilterRetriever {
      */
     private static final String PLUGIN_EXCLUDES = "grails.plugin.excludes";
 
-    @SuppressWarnings("rawtypes")
     public PluginFilter getPluginFilter(Config config) {
-
         Assert.notNull(config, "Config should not be null");
         Object includes = config.getProperty(PLUGIN_INCLUDES, Object.class, null);
         Object excludes = config.getProperty(PLUGIN_EXCLUDES, Object.class, null);
@@ -55,7 +53,7 @@ public class PluginFilterRetriever {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     PluginFilter getPluginFilter(Object includes, Object excludes) {
-        PluginFilter pluginFilter = null;
+        PluginFilter pluginFilter;
 
         if (includes != null) {
             if (includes instanceof Collection) {

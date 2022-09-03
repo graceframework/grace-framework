@@ -119,21 +119,21 @@ public class BeanBuilder extends GroovyObjectSupport {
 
     private BeanConfiguration currentBeanConfig;
 
-    private Map<String, DeferredProperty> deferredProperties = new HashMap<>();
+    private final Map<String, DeferredProperty> deferredProperties = new HashMap<>();
 
-    private ApplicationContext parentCtx;
+    private final ApplicationContext parentCtx;
 
     private Map<String, Object> binding = Collections.emptyMap();
 
-    private ClassLoader classLoader = null;
+    private ClassLoader classLoader;
 
     private NamespaceHandlerResolver namespaceHandlerResolver;
 
-    private Map<String, NamespaceHandler> namespaceHandlers = new HashMap<>();
+    private final Map<String, NamespaceHandler> namespaceHandlers = new HashMap<>();
 
     private XmlBeanDefinitionReader xmlBeanDefinitionReader;
 
-    private Map<String, String> namespaces = new HashMap<>();
+    private final Map<String, String> namespaces = new HashMap<>();
 
     private Resource beanBuildResource;
 
@@ -220,10 +220,11 @@ public class BeanBuilder extends GroovyObjectSupport {
     }
 
     public void importBeans(Resource resource) {
-        if (resource.getFilename().endsWith(".groovy")) {
+        String filename = resource.getFilename();
+        if (filename != null && filename.endsWith(".groovy")) {
             loadBeans(resource);
         }
-        else if (resource.getFilename().endsWith(".xml")) {
+        else if (filename != null && filename.endsWith(".xml")) {
             SimpleBeanDefinitionRegistry beanRegistry = new SimpleBeanDefinitionRegistry();
             XmlBeanDefinitionReader beanReader = new XmlBeanDefinitionReader(beanRegistry);
             beanReader.loadBeanDefinitions(resource);
@@ -532,22 +533,19 @@ public class BeanBuilder extends GroovyObjectSupport {
     protected BeanConfiguration invokeBeanDefiningMethod(String name, Object[] args) {
         boolean hasClosureArgument = args[args.length - 1] instanceof Closure;
         if (args[0] instanceof Class) {
-            Class<?> beanClass = args[0] instanceof Class ? (Class<?>) args[0] : args[0].getClass();
+            Class<?> beanClass = (Class<?>) args[0];
 
-            if (args.length >= 1) {
-                if (hasClosureArgument) {
-                    if (args.length - 1 != 1) {
-                        this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass,
-                                resolveConstructorArguments(args, 1, args.length - 1));
-                    }
-                    else {
-                        this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass);
-                    }
+            if (hasClosureArgument) {
+                if (args.length - 1 != 1) {
+                    this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass,
+                            resolveConstructorArguments(args, 1, args.length - 1));
                 }
                 else {
-                    this.currentBeanConfig =
-                            this.springConfig.addSingletonBean(name, beanClass, resolveConstructorArguments(args, 1, args.length));
+                    this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass);
                 }
+            }
+            else {
+                this.currentBeanConfig = this.springConfig.addSingletonBean(name, beanClass, resolveConstructorArguments(args, 1, args.length));
             }
 
         }
@@ -704,9 +702,7 @@ public class BeanBuilder extends GroovyObjectSupport {
                     callable = (Closure) lastArg;
                     index--;
                 }
-                if (index > -1) {
-                    constructorArgs = resolveConstructorArguments(args, 0, index);
-                }
+                constructorArgs = resolveConstructorArguments(args, 0, index);
             }
             this.currentBeanConfig = constructorArgs == null
                     ? this.springConfig.createSingletonBean(type)
@@ -888,9 +884,9 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     private class DeferredProperty {
 
-        private BeanConfiguration config;
+        private final BeanConfiguration config;
 
-        private String name;
+        private final String name;
 
         private Object value;
 
@@ -916,7 +912,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
         private MetaClass metaClass;
 
-        private BeanConfiguration beanConfig;
+        private final BeanConfiguration beanConfig;
 
         ConfigurableRuntimeBeanReference(String beanName, BeanConfiguration beanConfig, boolean toParent) {
             super(beanName, toParent);
@@ -962,29 +958,26 @@ public class BeanBuilder extends GroovyObjectSupport {
          */
         private class WrappedPropertyValue extends GroovyObjectSupport {
 
-            private Object propertyValue;
+            private final Object propertyValue;
 
-            private String propertyName;
+            private final String propertyName;
 
             WrappedPropertyValue(String propertyName, Object propertyValue) {
                 this.propertyValue = propertyValue;
                 this.propertyName = propertyName;
             }
 
-            @SuppressWarnings("unused")
             public void leftShift(Object value) {
                 InvokerHelper.invokeMethod(this.propertyValue, "leftShift", value);
                 updateDeferredProperties(value);
             }
 
-            @SuppressWarnings("unused")
             public boolean add(Object value) {
                 boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "add", value);
                 updateDeferredProperties(value);
                 return retval;
             }
 
-            @SuppressWarnings("unused")
             public boolean addAll(@SuppressWarnings("rawtypes") Collection values) {
                 boolean retval = (Boolean) InvokerHelper.invokeMethod(this.propertyValue, "addAll", values);
                 for (Object value : values) {

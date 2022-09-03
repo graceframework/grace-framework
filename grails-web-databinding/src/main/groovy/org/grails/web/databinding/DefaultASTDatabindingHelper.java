@@ -53,7 +53,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
 
     public static final String NO_BINDABLE_PROPERTIES = "$_NO_BINDABLE_PROPERTIES_$";
 
-    private static Map<ClassNode, Set<String>> CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES = new HashMap<>();
+    private static final Map<ClassNode, Set<String>> CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES = new HashMap<>();
 
     private static final Set<String> DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT = CollectionUtils.newSet("id",
             "version", "dateCreated", "lastUpdated");
@@ -142,7 +142,6 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
     }
 
     private Set<String> getPropertyNamesToIncludeInWhiteList(final SourceUnit sourceUnit, final ClassNode classNode) {
-        final Set<String> propertyNamesToIncludeInWhiteList = new HashSet<>();
         final Set<String> unbindablePropertyNames = new HashSet<>();
         final Set<String> bindablePropertyNames = new HashSet<>();
         if (!classNode.getSuperClass().equals(new ClassNode(Object.class))) {
@@ -196,7 +195,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         final Set<String> fieldsInTransientsList = getPropertyNamesExpressedInTransientsList(classNode);
         final boolean isDomainClass = GrailsASTUtils.isDomainClass(classNode, sourceUnit);
 
-        propertyNamesToIncludeInWhiteList.addAll(bindablePropertyNames);
+        final Set<String> propertyNamesToIncludeInWhiteList = new HashSet<>(bindablePropertyNames);
         final List<FieldNode> fields = classNode.getFields();
         for (FieldNode fieldNode : fields) {
             final String fieldName = fieldNode.getName();

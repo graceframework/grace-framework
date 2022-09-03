@@ -18,6 +18,7 @@ package org.grails.web.binding;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -46,7 +47,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
     }
 
     public List<String> getRequiredFields() {
-        return Arrays.asList("year");
+        return Collections.singletonList("year");
     }
 
     public List<String> getOptionalFields() {

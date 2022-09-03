@@ -29,7 +29,7 @@ public abstract class AbstractTokenResponseHandler implements TokenResponseHandl
 
     private boolean invoked = false;
 
-    private boolean valid;
+    private final boolean valid;
 
     public AbstractTokenResponseHandler(boolean valid) {
         this.valid = valid;

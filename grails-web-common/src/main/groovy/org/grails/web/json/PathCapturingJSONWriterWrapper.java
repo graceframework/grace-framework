@@ -70,7 +70,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
             if (this.debugCurrentStack) {
                 log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(this.delegate.mode.name() + " > " + String.format("array()"));
+            log.debug(this.delegate.mode.name() + " > array()");
         }
         this.pathStack.push(new IndexElement(-1));
         this.delegate.array();
@@ -95,7 +95,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
             if (this.debugCurrentStack) {
                 log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(this.delegate.mode.name() + " > " + String.format("endArray()"));
+            log.debug(this.delegate.mode.name() + " > endArray()");
         }
         this.pathStack.pop();
         this.delegate.endArray();
@@ -111,7 +111,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
             if (this.debugCurrentStack) {
                 log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(this.delegate.mode.name() + " > " + String.format("endObject()"));
+            log.debug(this.delegate.mode.name() + " > endObject()");
         }
         this.delegate.endObject();
         if (this.delegate.mode != Mode.ARRAY && this.pathStack.size() > 0) {
@@ -139,7 +139,7 @@ public class PathCapturingJSONWriterWrapper extends JSONWriter {
             if (this.debugCurrentStack) {
                 log.debug(this.delegate.mode.name() + " > " + String.format(">> " + getCurrentStrackReference()));
             }
-            log.debug(this.delegate.mode.name() + " > " + String.format("object()"));
+            log.debug(this.delegate.mode.name() + " > object()");
         }
         if (this.delegate.mode == Mode.ARRAY) {
             pushNextIndex();

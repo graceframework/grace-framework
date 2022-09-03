@@ -205,14 +205,14 @@ public final class GrailsResourceUtils {
             GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH
     };
 
-    private static Map<String, Boolean> KNOWN_PATHS = new LinkedHashMap<String, Boolean>() {
+    private static final Map<String, Boolean> KNOWN_PATHS = new LinkedHashMap<String, Boolean>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry eldest) {
             return this.size() > 100;
         }
     };
 
-    private static Map<String, Boolean> KNOWN_DOMAIN_CLASSES = DefaultGroovyMethods.withDefault(new LinkedHashMap<String, Boolean>() {
+    private static final Map<String, Boolean> KNOWN_DOMAIN_CLASSES = DefaultGroovyMethods.withDefault(new LinkedHashMap<String, Boolean>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
             return this.size() > 100;
@@ -642,7 +642,7 @@ public final class GrailsResourceUtils {
     }
 
     private static boolean hasLength(CharSequence str) {
-        return (str != null && str.length() > 0);
+        return str != null && str.length() > 0;
     }
 
     /**
@@ -790,15 +790,10 @@ public final class GrailsResourceUtils {
                 url = url.substring(0, i + 10);
                 return new UrlResource(url + '/');
             }
-
-            return null;
         }
-        catch (MalformedURLException e) {
-            return null;
+        catch (IOException ignored) {
         }
-        catch (IOException e) {
-            return null;
-        }
+        return null;
     }
 
     private static final Pattern PLUGIN_PATTERN = Pattern.compile(".+?(/plugins/.+?/" + GRAILS_APP_DIR + "/.+)");

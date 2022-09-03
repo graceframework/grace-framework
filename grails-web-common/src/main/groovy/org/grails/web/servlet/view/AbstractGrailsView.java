@@ -87,7 +87,6 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
      * @param model The model to use
      * @param request The HttpServletRequest
      * @param response The HttpServletResponse instance
-     * @param engine The TemplateEngine to use
      *
      * @throws java.io.IOException Thrown when an error occurs writing the response
      */

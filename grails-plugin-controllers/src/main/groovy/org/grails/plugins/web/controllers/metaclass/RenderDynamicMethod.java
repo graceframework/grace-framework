@@ -21,7 +21,6 @@ package org.grails.plugins.web.controllers.metaclass;
  * @author Graeme Rocher
  * @since 0.2
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public final class RenderDynamicMethod {
 
     public static final String METHOD_SIGNATURE = "render";

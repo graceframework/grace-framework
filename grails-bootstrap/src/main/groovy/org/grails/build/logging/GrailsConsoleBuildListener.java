@@ -25,7 +25,7 @@ import grails.build.logging.GrailsConsole;
  */
 public class GrailsConsoleBuildListener implements BuildListener {
 
-    private GrailsConsole ui;
+    private final GrailsConsole ui;
 
     public GrailsConsoleBuildListener() {
         this(GrailsConsole.getInstance());

@@ -45,10 +45,9 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
 
     protected Config config;
 
-    @SuppressWarnings("rawtypes")
     protected ApplicationContext parentContext;
 
-    protected Metadata applicationMeta = Metadata.getCurrent();
+    protected final Metadata applicationMeta = Metadata.getCurrent();
 
     protected boolean contextInitialized;
 
@@ -106,9 +105,8 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
         return this.classLoader;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Class getClassForName(String className) {
+    public Class<?> getClassForName(String className) {
         return ClassUtils.resolveClassName(className, getClassLoader());
     }
 

@@ -44,8 +44,7 @@ public interface UrlMappingsHolder {
      *
      * @return An list of String
      */
-    @SuppressWarnings("rawtypes")
-    List getExcludePatterns();
+    List<?> getExcludePatterns();
 
     /**
      * Retrieves the best guess of a URI for the given controller, action and parameters

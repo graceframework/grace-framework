@@ -104,15 +104,11 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         return resourceList.toArray(new Resource[0]);
     }
 
-    @SuppressWarnings("rawtypes")
     private void loadCorePluginsFromResources(Resource[] resources) throws IOException {
         try {
             SAXParser saxParser = SpringIOUtils.newSAXParser();
             for (Resource resource : resources) {
-                InputStream input = null;
-
-                try {
-                    input = resource.getInputStream();
+                try(InputStream input = resource.getInputStream()) {
                     PluginHandler ph = new PluginHandler();
                     saxParser.parse(input, ph);
 
@@ -122,12 +118,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                             addPlugin(pluginClass);
                             this.binaryDescriptors.put(pluginClass, new BinaryGrailsPluginDescriptor(resource, ph.pluginClasses));
                         }
-                    }
-
-                }
-                finally {
-                    if (input != null) {
-                        input.close();
                     }
                 }
             }
@@ -165,16 +155,16 @@ public class CorePluginFinder implements ParentApplicationContextAware {
 
     class PluginHandler extends DefaultHandler {
 
-        PluginParseState state = PluginParseState.PARSING;
+        private PluginParseState state = PluginParseState.PARSING;
 
-        List<String> pluginTypes = new ArrayList<>();
+        private final List<String> pluginTypes = new ArrayList<>();
 
-        List<String> pluginClasses = new ArrayList<>();
+        private final List<String> pluginClasses = new ArrayList<>();
 
         private StringBuilder buff = new StringBuilder();
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes) {
             if (localName.equals("type")) {
                 this.state = PluginParseState.TYPE;
                 this.buff = new StringBuilder();
@@ -186,11 +176,9 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         }
 
         @Override
-        public void characters(char[] ch, int start, int length) throws SAXException {
+        public void characters(char[] ch, int start, int length) {
             switch (this.state) {
                 case TYPE:
-                    this.buff.append(String.valueOf(ch, start, length));
-                    break;
                 case RESOURCE:
                     this.buff.append(String.valueOf(ch, start, length));
                     break;
@@ -198,7 +186,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         }
 
         @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException {
+        public void endElement(String uri, String localName, String qName) {
             switch (this.state) {
                 case TYPE:
                     this.pluginTypes.add(this.buff.toString());

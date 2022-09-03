@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
@@ -109,7 +110,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     public static final AnnotationNode DELEGATING_METHOD_ANNOATION = new AnnotationNode(ClassHelper.make(DelegatingMethod.class));
 
-    public static Pattern CONTROLLER_PATTERN = Pattern.compile(".+/" +
+    public static final Pattern CONTROLLER_PATTERN = Pattern.compile(".+/" +
             GrailsResourceUtils.GRAILS_APP_DIR + "/controllers/(.+)Controller\\.groovy");
 
     private static final String ALLOWED_METHODS_HANDLED_ATTRIBUTE_NAME = "ALLOWED_METHODS_HANDLED";
@@ -125,8 +126,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     private static final TupleExpression EMPTY_TUPLE = new TupleExpression();
 
-    @SuppressWarnings({ "unchecked" })
-    private static final Map<ClassNode, String> TYPE_WRAPPER_CLASS_TO_CONVERSION_METHOD_NAME = CollectionUtils.<ClassNode, String>newMap(
+    private static final Map<ClassNode, String> TYPE_WRAPPER_CLASS_TO_CONVERSION_METHOD_NAME = CollectionUtils.newMap(
             ClassHelper.Integer_TYPE, "int",
             ClassHelper.Float_TYPE, "float",
             ClassHelper.Long_TYPE, "long",
@@ -136,7 +136,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
             ClassHelper.Byte_TYPE, "byte",
             ClassHelper.Character_TYPE, "char");
 
-    private static List<ClassNode> PRIMITIVE_CLASS_NODES = CollectionUtils.newList(
+    private static final List<ClassNode> PRIMITIVE_CLASS_NODES = CollectionUtils.newList(
             ClassHelper.boolean_TYPE,
             ClassHelper.char_TYPE,
             ClassHelper.int_TYPE,
@@ -150,7 +150,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     public static final String CONVERT_CLOSURES_KEY = "grails.compile.artefacts.closures.convert";
 
-    private Boolean converterEnabled;
+    private final Boolean converterEnabled;
 
     private CompilationUnit compilationUnit;
 
@@ -205,13 +205,14 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
             if (methodShouldBeConfiguredAsControllerAction(method)) {
                 final List<MethodNode> declaredMethodsWithThisName = classNode.getDeclaredMethods(method.getName());
                 if (declaredMethodsWithThisName != null) {
-                    final int numberOfNonExceptionHandlerMethodsWithThisName = DefaultGroovyMethods.count((Iterable) declaredMethodsWithThisName,
+                    final int numberOfNonExceptionHandlerMethodsWithThisName = DefaultGroovyMethods.count(declaredMethodsWithThisName.iterator(),
                             new Closure(this) {
                                 @Override
                                 public Object call(Object object) {
                                     return !isExceptionHandlingMethod((MethodNode) object);
                                 }
                             }).intValue();
+
                     if (numberOfNonExceptionHandlerMethodsWithThisName > 1) {
                         String message = "Controller actions may not be overloaded.  The [" +
                                 method.getName() +
@@ -399,12 +400,11 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     private boolean isCommandObjectAction(Parameter[] params) {
         return params != null && params.length > 0
-                && params[0].getType() != new ClassNode(Object[].class)
-                && params[0].getType() != new ClassNode(Object.class);
+                && !Objects.equals(params[0].getType(), new ClassNode(Object[].class))
+                && !Objects.equals(params[0].getType(), new ClassNode(Object.class));
     }
 
     private void processClosures(ClassNode classNode, SourceUnit source, GeneratorContext context) {
-
         List<PropertyNode> propertyNodes = new ArrayList<>(classNode.getProperties());
 
         Expression initialExpression;
@@ -704,7 +704,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                         Parameter[] parameters = methods.get(0).getParameters();
                         //Look for a parameter of index (argX) in the method.
                         //The $self is the first parameter, so arg1 == index of 1
-                        int argNum = Integer.valueOf(paramName.replaceFirst("arg", ""));
+                        int argNum = Integer.parseInt(paramName.replaceFirst("arg", ""));
                         if (parameters.length >= argNum + 1) {
                             Parameter helperParam = parameters[argNum];
                             //Set the request parameter name based off of the parameter in the trait helper method

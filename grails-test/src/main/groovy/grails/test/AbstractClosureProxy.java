@@ -22,10 +22,10 @@ import groovy.lang.Closure;
  * you to intercept invocations of the closure. The wrapper can be used
  * anywhere that the target closure can be used.
  */
-@SuppressWarnings({ "serial", "rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractClosureProxy extends Closure {
 
-    private Closure<?> target;
+    private final Closure<?> target;
 
     /**
      * Creates a new instance that wraps the target closure and sends
@@ -89,6 +89,12 @@ public abstract class AbstractClosureProxy extends Closure {
      */
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof AbstractClosureProxy)) {
+            return false;
+        }
         return this == obj || this.target == obj;
     }
 

@@ -43,9 +43,6 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
 
     private Map mappings = new HashMap();
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.config.AbstractFactoryBean#createInstance()
-     */
     @Override
     protected Map createInstance() {
         if (this.applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
@@ -63,9 +60,6 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
         return this.mappings;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.FactoryBean#getObjectType()
-     */
     @Override
     public Class<?> getObjectType() {
         return Map.class;

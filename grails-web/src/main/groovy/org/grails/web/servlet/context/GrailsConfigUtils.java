@@ -126,9 +126,4 @@ public final class GrailsConfigUtils {
         return application.getConfig().getProperty(propertyName, Boolean.class, false);
     }
 
-    // support GrailsApplication mocking, see ControllersGrailsPluginTests
-    public static boolean isConfigTrue(Object application, String propertyName) {
-        return false;
-    }
-
 }

@@ -17,7 +17,6 @@ package org.grails.compiler.web;
 
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
@@ -32,7 +31,7 @@ import org.grails.core.artefact.ControllerArtefactHandler;
  * @author Graeme Rocher
  * @since 3.0
  */
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation
 public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransformation {
 
     @Override

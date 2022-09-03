@@ -72,7 +72,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
 
     protected GrailsApplication grailsApplication;
 
-    private boolean isAbstract;
+    private final boolean isAbstract;
 
     /**
      * Used by all child classes to create a new instance and get the name right.
@@ -123,11 +123,11 @@ public abstract class AbstractGrailsClass implements GrailsClass {
 
     public Object newInstance() {
         try {
-            Constructor<?> defaultConstructor = getClazz().getDeclaredConstructor(new Class[] {});
+            Constructor<?> defaultConstructor = getClazz().getDeclaredConstructor();
             if (!defaultConstructor.isAccessible()) {
                 defaultConstructor.setAccessible(true);
             }
-            return defaultConstructor.newInstance(new Object[] {});
+            return defaultConstructor.newInstance();
         }
         catch (Exception e) {
             Throwable targetException;

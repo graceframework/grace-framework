@@ -21,7 +21,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,8 +134,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         else {
             Map clonedMap = new LinkedHashMap(wrappedMap);
             // deep clone nested entries
-            for (Iterator it = clonedMap.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) it.next();
+            for (Object obj : clonedMap.entrySet()) {
+                Entry entry = (Entry) obj;
                 if (entry.getValue() instanceof GrailsParameterMap) {
                     entry.setValue(((GrailsParameterMap) entry.getValue()).clone());
                 }
@@ -160,7 +159,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     public Object get(Object key) {
         // removed test for String key because there
         // should be no limitations on what you shove in or take out
-        Object returnValue = null;
+        Object returnValue;
         if (this.nestedDateMap.containsKey(key)) {
             returnValue = this.nestedDateMap.get(key);
         }
@@ -190,9 +189,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         if (key instanceof CharSequence) {
             key = key.toString();
         }
-        if (this.nestedDateMap.containsKey(key)) {
-            this.nestedDateMap.remove(key);
-        }
+        this.nestedDateMap.remove(key);
         Object returnValue = wrappedMap.put(key, value);
         if (key instanceof String) {
             String keyString = (String) key;
@@ -274,9 +271,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                 MessageSource messageSource = webRequest.getApplicationContext();
                 if (messageSource != null) {
                     format = messageSource.getMessage("date." + name + ".format", EMPTY_ARGS, webRequest.getLocale());
-                    if (format != null) {
-                        CACHED_DATE_FORMATS.put(name, format);
-                    }
+                    CACHED_DATE_FORMATS.put(name, format);
                 }
             }
         }
@@ -302,7 +297,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                 String paramName = (String) entryKey;
                 final String prefix = key + "_";
                 if (paramName.startsWith(prefix)) {
-                    dateParams.put(paramName.substring(prefix.length(), paramName.length()), entry.getValue());
+                    dateParams.put(paramName.substring(prefix.length()), entry.getValue());
                 }
             }
         }
@@ -368,7 +363,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
         Map nestedMap = (Map) prefixValue;
         if (nestedIndex < nestedKey.length() - 1) {
-            String remainderOfKey = nestedKey.substring(nestedIndex + 1, nestedKey.length());
+            String remainderOfKey = nestedKey.substring(nestedIndex + 1);
             // GRAILS-2486 Cascade the '_' prefix in order to bind checkboxes properly
             if (prefixedByUnderscore) {
                 remainderOfKey = '_' + remainderOfKey;

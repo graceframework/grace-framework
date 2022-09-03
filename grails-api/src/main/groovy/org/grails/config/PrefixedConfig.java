@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
@@ -59,14 +60,10 @@ public class PrefixedConfig implements Config {
 
         PrefixedConfig entries = (PrefixedConfig) o;
 
-        if (this.delegate != null ? !this.delegate.equals(entries.delegate) : entries.delegate != null) {
+        if (!Objects.equals(this.delegate, entries.delegate)) {
             return false;
         }
-        if (this.prefix != null ? !this.prefix.equals(entries.prefix) : entries.prefix != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(this.prefix, entries.prefix);
     }
 
     @Override

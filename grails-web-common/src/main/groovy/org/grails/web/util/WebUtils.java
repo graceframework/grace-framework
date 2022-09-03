@@ -95,12 +95,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static ViewResolver lookupViewResolver(ApplicationContext wac) {
         final CompositeViewResolver viewResolver = wac.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver.class);
 
-        return new ViewResolver() {
-            @Override
-            public View resolveViewName(String viewName, Locale locale) throws Exception {
-                return viewResolver.resolveView(viewName, locale);
-            }
-        };
+        return viewResolver::resolveView;
     }
 
     /**
@@ -148,7 +143,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         if (request.getRequestURI().endsWith(GRAILS_DISPATCH_EXTENSION)) {
             String path = pathHelper.getPathWithinApplication(request);
             if (path.startsWith(GRAILS_SERVLET_PATH)) {
-                path = path.substring(GRAILS_SERVLET_PATH.length(), path.length());
+                path = path.substring(GRAILS_SERVLET_PATH.length());
             }
             return path.substring(0, path.length() - GRAILS_DISPATCH_EXTENSION.length());
         }
@@ -427,10 +422,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
         int idx = uri.lastIndexOf('/');
         if (idx > -1) {
-            String lastToken = uri.substring(idx + 1, uri.length());
+            String lastToken = uri.substring(idx + 1);
             idx = lastToken.lastIndexOf('.');
             if (idx > -1 && idx != lastToken.length() - 1) {
-                String extension = lastToken.substring(idx + 1, lastToken.length());
+                String extension = lastToken.substring(idx + 1);
                 if (mimeTypes != null) {
                     for (MimeType mimeType : mimeTypes) {
                         if (mimeType.getExtension().equals(extension)) {
@@ -448,7 +443,6 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      *
      * @return true if file extensions are enabled
      */
-    @SuppressWarnings("rawtypes")
     public static boolean areFileExtensionsEnabled() {
         Config config = GrailsWebUtil.currentApplication().getConfig();
         return config.getProperty(ENABLE_FILE_EXTENSIONS, Boolean.class, true);

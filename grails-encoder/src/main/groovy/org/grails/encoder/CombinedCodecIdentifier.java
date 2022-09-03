@@ -23,11 +23,11 @@ import org.springframework.util.StringUtils;
 
 public class CombinedCodecIdentifier implements CodecIdentifier {
 
-    private CodecIdentifier[] codecIdentifiers;
+    private final CodecIdentifier[] codecIdentifiers;
 
-    private String codecName;
+    private final String codecName;
 
-    private String codecAlias;
+    private final String codecAlias;
 
     CombinedCodecIdentifier(CodecIdentifierProvider[] encodersOrDecoders) {
         this(encodersOrDecoders, false);

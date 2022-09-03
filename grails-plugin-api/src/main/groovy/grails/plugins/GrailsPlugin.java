@@ -328,7 +328,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      *
      * @param event The event to listen for
      */
-    void notifyOfEvent(Map event);
+    void notifyOfEvent(Map<String, Object> event);
 
     /**
      * Notifies the plugin of a specific event for the given event id, which is one of ON_CHANGE, ON_CONFIG_CHANGE
@@ -337,7 +337,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @param source The source of the event
      * @return a Map that represents the event
      */
-    Map notifyOfEvent(int eventKind, Object source);
+    Map<String, Object> notifyOfEvent(int eventKind, Object source);
 
     /**
      * Called prior to the initialisation of the GrailsApplication instance to allow the registration

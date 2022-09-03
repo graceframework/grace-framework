@@ -23,7 +23,7 @@ package org.grails.io.support;
  */
 public class StaticResourceLoader implements ResourceLoader {
 
-    private Resource baseResource;
+    private final Resource baseResource;
 
     public StaticResourceLoader(Resource baseResource) {
         this.baseResource = baseResource;

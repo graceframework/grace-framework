@@ -106,7 +106,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     }
 
     @Override
-    public void sendError(int i, String s) throws IOException {
+    public void sendError(int i, String s) {
         if (isCommitted()) {
             throw new IllegalStateException("Response already committed");
         }
@@ -115,7 +115,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     }
 
     @Override
-    public void sendError(int i) throws IOException {
+    public void sendError(int i) {
         if (isCommitted()) {
             throw new IllegalStateException("Response already committed");
         }
@@ -124,7 +124,7 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     }
 
     @Override
-    public ServletOutputStream getOutputStream() throws IOException {
+    public ServletOutputStream getOutputStream() {
         if (this.usingWriter) {
             throw new IllegalStateException("Method getWriter() already called");
         }

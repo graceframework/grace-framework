@@ -18,6 +18,7 @@ package org.grails.web.mapping;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -78,11 +79,11 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     private Object redirectInfo;
 
-    private Object id;
+    private final Object id;
 
     private static final String ID_PARAM = "id";
 
-    private UrlMappingData urlData;
+    private final UrlMappingData urlData;
 
     private Object viewName;
 
@@ -90,7 +91,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
     private Object uri;
 
-    private UrlConverter urlConverter;
+    private final UrlConverter urlConverter;
 
     private String httpMethod;
 
@@ -145,6 +146,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         return this.version;
     }
 
+    @SuppressWarnings("rawtypes")
     public DefaultUrlMappingInfo(Object viewName, Map params, UrlMappingData urlData, GrailsApplication grailsApplication) {
         this(params, urlData, grailsApplication);
         this.viewName = viewName;
@@ -164,6 +166,7 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
         Assert.notNull(uri, "Argument [uri] cannot be null or blank");
     }
 
+    @SuppressWarnings("rawtypes")
     public DefaultUrlMappingInfo(UrlMappingInfo info, Map params, GrailsApplication grailsApplication) {
         this(params, info.getUrlData(), grailsApplication);
         this.redirectInfo = info.getRedirectInfo();
@@ -324,38 +327,34 @@ public class DefaultUrlMappingInfo extends AbstractUrlMappingInfo {
 
         DefaultUrlMappingInfo that = (DefaultUrlMappingInfo) o;
 
-        if (this.actionName != null ? !this.actionName.equals(that.actionName) : that.actionName != null) {
+        if (!Objects.equals(this.actionName, that.actionName)) {
             return false;
         }
-        if (this.controllerName != null ? !this.controllerName.equals(that.controllerName) : that.controllerName != null) {
+        if (!Objects.equals(this.controllerName, that.controllerName)) {
             return false;
         }
-        if (this.httpMethod != null ? !this.httpMethod.equals(that.httpMethod) : that.httpMethod != null) {
+        if (!Objects.equals(this.httpMethod, that.httpMethod)) {
             return false;
         }
-        if (this.id != null ? !this.id.equals(that.id) : that.id != null) {
+        if (!Objects.equals(this.id, that.id)) {
             return false;
         }
-        if (this.namespace != null ? !this.namespace.equals(that.namespace) : that.namespace != null) {
+        if (!Objects.equals(this.namespace, that.namespace)) {
             return false;
         }
-        if (this.pluginName != null ? !this.pluginName.equals(that.pluginName) : that.pluginName != null) {
+        if (!Objects.equals(this.pluginName, that.pluginName)) {
             return false;
         }
-        if (this.redirectInfo != null ? !this.redirectInfo.equals(that.redirectInfo) : that.redirectInfo != null) {
+        if (!Objects.equals(this.redirectInfo, that.redirectInfo)) {
             return false;
         }
-        if (this.uri != null ? !this.uri.equals(that.uri) : that.uri != null) {
+        if (!Objects.equals(this.uri, that.uri)) {
             return false;
         }
-        if (this.version != null ? !this.version.equals(that.version) : that.version != null) {
+        if (!Objects.equals(this.version, that.version)) {
             return false;
         }
-        if (this.viewName != null ? !this.viewName.equals(that.viewName) : that.viewName != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(this.viewName, that.viewName);
     }
 
     @Override

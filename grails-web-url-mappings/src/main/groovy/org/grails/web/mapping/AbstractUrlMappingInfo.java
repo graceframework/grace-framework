@@ -50,23 +50,21 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     public void setParams(final Map newParams) {
         Collection keys = newParams.keySet();
         keys = new ArrayList(keys);
-        Collections.sort((List) keys, new Comparator() {
-            public int compare(Object leftKey, Object rightKey) {
-                Object leftValue = newParams.get(leftKey);
-                Object rightValue = newParams.get(rightKey);
-                boolean leftIsClosure = leftValue instanceof Closure;
-                boolean rightIsClosure = rightValue instanceof Closure;
-                if (leftIsClosure && rightIsClosure) {
-                    return 0;
-                }
-                if (leftIsClosure && !rightIsClosure) {
-                    return 1;
-                }
-                if (rightIsClosure && !leftIsClosure) {
-                    return -1;
-                }
+        Collections.sort((List) keys, (Comparator) (leftKey, rightKey) -> {
+            Object leftValue = newParams.get(leftKey);
+            Object rightValue = newParams.get(rightKey);
+            boolean leftIsClosure = leftValue instanceof Closure;
+            boolean rightIsClosure = rightValue instanceof Closure;
+            if (leftIsClosure && rightIsClosure) {
                 return 0;
             }
+            if (leftIsClosure) {
+                return 1;
+            }
+            if (rightIsClosure) {
+                return -1;
+            }
+            return 0;
         });
         Map<String, Object> sortedParams = new LinkedHashMap<>();
         for (Object key : keys) {

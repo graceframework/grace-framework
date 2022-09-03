@@ -16,7 +16,6 @@
 package org.grails.spring.context.support;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +65,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
 
     protected GrailsPluginManager pluginManager;
 
-    protected List<String> pluginBaseNames = new ArrayList<>();
-
-    private ResourceLoader localResourceLoader;
-
     private PathMatchingResourcePatternResolver resourceResolver;
 
-    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedPluginProperties = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedPluginProperties = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedBinaryPluginProperties = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Locale, CacheEntry<PropertiesHolder>> cachedMergedBinaryPluginProperties = new ConcurrentHashMap<>();
 
     private long pluginCacheMillis = Long.MIN_VALUE;
 
@@ -103,16 +98,12 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Assert.notNull(this.pluginManager, "GrailsPluginManager is required");
         Assert.notNull(this.resourceResolver, "PathMatchingResourcePatternResolver is required");
 
         if (this.pluginCacheMillis == Long.MIN_VALUE) {
             this.pluginCacheMillis = cacheMillis;
-        }
-
-        if (this.localResourceLoader == null) {
-            return;
         }
     }
 
@@ -120,12 +111,9 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     public void afterSingletonsInstantiated() {
         Resource[] resources;
         if (Environment.isDevelopmentEnvironmentAvailable()) {
-            File[] propertiesFiles = new File(BuildSettings.BASE_DIR, GRAILS_APP_I18N_PATH_COMPONENT).listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".properties");
-                }
-            });
+            File[] propertiesFiles = new File(BuildSettings.BASE_DIR, GRAILS_APP_I18N_PATH_COMPONENT)
+                    .listFiles((dir, name) -> name.endsWith(".properties"));
+
             if (propertiesFiles != null && propertiesFiles.length > 0) {
                 List<Resource> resourceList = new ArrayList<>(propertiesFiles.length);
                 for (File propertiesFile : propertiesFiles) {
@@ -220,19 +208,11 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     protected String resolveCodeWithoutArgumentsFromPlugins(String code, Locale locale) {
         if (this.pluginCacheMillis < 0) {
             PropertiesHolder propHolder = getMergedPluginProperties(locale);
-            String result = propHolder.getProperty(code);
-            if (result != null) {
-                return result;
-            }
+            return propHolder.getProperty(code);
         }
         else {
-            String result = findCodeInBinaryPlugins(code, locale);
-            if (result != null) {
-                return result;
-            }
-
+            return findCodeInBinaryPlugins(code, locale);
         }
-        return null;
     }
 
     protected PropertiesHolder getMergedBinaryPluginProperties(final Locale locale) {
@@ -275,27 +255,19 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     protected MessageFormat resolveCodeFromPlugins(String code, Locale locale) {
         if (this.pluginCacheMillis < 0) {
             PropertiesHolder propHolder = getMergedPluginProperties(locale);
-            MessageFormat result = propHolder.getMessageFormat(code, locale);
-            if (result != null) {
-                return result;
-            }
+            return propHolder.getMessageFormat(code, locale);
         }
         else {
-            MessageFormat result = findMessageFormatInBinaryPlugins(code, locale);
-            if (result != null) {
-                return result;
-            }
+            return findMessageFormatInBinaryPlugins(code, locale);
         }
-        return null;
     }
 
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         super.setResourceLoader(resourceLoader);
 
-        this.localResourceLoader = resourceLoader;
         if (this.resourceResolver == null) {
-            this.resourceResolver = new CachingPathMatchingResourcePatternResolver(this.localResourceLoader);
+            this.resourceResolver = new CachingPathMatchingResourcePatternResolver(resourceLoader);
         }
     }
 
@@ -307,7 +279,7 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
      * </ul>
      */
     public void setPluginCacheSeconds(int pluginCacheSeconds) {
-        this.pluginCacheMillis = (pluginCacheSeconds * 1000);
+        this.pluginCacheMillis = pluginCacheSeconds * 1000L;
     }
 
     /**

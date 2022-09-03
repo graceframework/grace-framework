@@ -17,6 +17,7 @@ package org.grails.compiler.injection;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import groovy.lang.GroovyObjectSupport;
@@ -99,7 +100,7 @@ public class MixinTransformation implements ASTTransformation {
                         ConstructorCallExpression initialValue;
                         if (isTargetAware) {
                             initialValue = new ConstructorCallExpression(mixinClassNode, new MapExpression(
-                                    Arrays.asList(new MapEntryExpression(new ConstantExpression("target"), new VariableExpression("this")))
+                                    Collections.singletonList(new MapEntryExpression(new ConstantExpression("target"), new VariableExpression("this")))
                             ));
                         }
                         else {

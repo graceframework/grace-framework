@@ -40,7 +40,6 @@ import org.grails.validation.discovery.ConstrainedDiscovery;
  * @author Graeme Rocher
  * @since 0.1
  */
-@SuppressWarnings("rawtypes")
 @Deprecated
 public class DefaultGrailsDomainClass extends AbstractGrailsClass implements GrailsDomainClass {
 
@@ -104,7 +103,7 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     }
 
     @Override
-    public boolean isOwningClass(Class domainClass) {
+    public boolean isOwningClass(Class<?> domainClass) {
         verifyContextIsInitialized();
         return this.persistentEntity.isOwningEntity(this.mappingContext.getPersistentEntity(domainClass.getName()));
     }
@@ -128,9 +127,8 @@ public class DefaultGrailsDomainClass extends AbstractGrailsClass implements Gra
     /* (non-Javadoc)
      * @see grails.core.GrailsDomainClass#getConstraints()
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public Map getConstrainedProperties() {
+    public Map<String, Constrained> getConstrainedProperties() {
         verifyContextIsInitialized();
         if (this.constrainedProperties == null) {
             ConstrainedDiscovery constrainedDiscovery = GrailsFactoriesLoader.loadFactory(ConstrainedDiscovery.class);

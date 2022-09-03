@@ -230,7 +230,6 @@ public final class UrlMappingUtils {
      * @throws javax.servlet.ServletException Thrown when an error occurs executing the forward
      * @throws java.io.IOException Thrown when an error occurs executing the forward
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request, HttpServletResponse response,
             UrlMappingInfo info, Map<String, Object> model, boolean includeParams)
             throws ServletException, IOException {
@@ -267,7 +266,7 @@ public final class UrlMappingUtils {
      *
      * @return The included content
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model) {
 
@@ -287,7 +286,7 @@ public final class UrlMappingUtils {
      *
      * @return The included content
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
 
@@ -327,8 +326,7 @@ public final class UrlMappingUtils {
             currentController = webRequest.getControllerName();
             currentAction = webRequest.getActionName();
             currentId = webRequest.getId();
-            currentParams = new HashMap();
-            currentParams.putAll(webRequest.getParameterMap());
+            currentParams = new HashMap(webRequest.getParameterMap());
             currentMv = (ModelAndView) webRequest.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0);
         }
         try {

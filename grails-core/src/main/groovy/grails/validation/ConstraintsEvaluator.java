@@ -47,7 +47,7 @@ public interface ConstraintsEvaluator {
      * @param cls The class to evaluate constraints for
      * @return A map of constrained properties
      */
-    Map<String, Constrained> evaluate(@SuppressWarnings("rawtypes") Class cls);
+    Map<String, Constrained> evaluate(Class<?> cls);
 
     /**
      * Evaluate constraints for the given class
@@ -56,7 +56,7 @@ public interface ConstraintsEvaluator {
      * @param defaultNullable indicates if properties are nullable by default
      * @return A map of constrained properties
      */
-    Map<String, Constrained> evaluate(@SuppressWarnings("rawtypes") Class cls, boolean defaultNullable);
+    Map<String, Constrained> evaluate(Class<?> cls, boolean defaultNullable);
 
     /**
      * Evaluate constraints for the given class

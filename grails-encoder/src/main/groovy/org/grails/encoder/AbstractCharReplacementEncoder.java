@@ -31,7 +31,7 @@ import org.grails.charsequences.CharSequences;
  */
 public abstract class AbstractCharReplacementEncoder implements Encoder, StreamingEncoder, EncodesToWriter {
 
-    protected CodecIdentifier codecIdentifier;
+    protected final CodecIdentifier codecIdentifier;
 
     public AbstractCharReplacementEncoder(CodecIdentifier codecIdentifier) {
         this.codecIdentifier = codecIdentifier;
@@ -58,7 +58,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             return null;
         }
 
-        CharSequence str = null;
+        CharSequence str;
         if (o instanceof CharSequence) {
             str = (CharSequence) o;
         }
@@ -113,7 +113,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             prevChar = ch;
         }
         if (sb != null) {
-            if (startPos > -1 && i - startPos > 0) {
+            if (startPos > -1) {
                 sb.append(str, startPos, i);
             }
             return sb.toString();
@@ -149,7 +149,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             CharSequences.writeCharSequence(writer, str, startPos, i);
         }
     }
@@ -180,7 +180,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             writer.write(buf, startPos, i - startPos);
         }
     }
@@ -219,7 +219,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             appender.appendEncoded(thisInstance, encodingState, str, startPos, i - startPos);
         }
     }

@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class DefaultArtefactInfo implements ArtefactInfo {
 
-    private LinkedList<GrailsClass> grailsClasses = new LinkedList<>();
+    private final LinkedList<GrailsClass> grailsClasses = new LinkedList<>();
 
     private Class<?>[] classes;
 
@@ -37,10 +37,7 @@ public class DefaultArtefactInfo implements ArtefactInfo {
 
     private Map<String, Class<?>> classesByName = new LinkedHashMap<>();
 
-    private Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<>();
-
-    @SuppressWarnings("rawtypes")
-    public Map handlerData = new HashMap();
+    private final Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<>();
 
     private GrailsClass[] grailsClassesArray;
 

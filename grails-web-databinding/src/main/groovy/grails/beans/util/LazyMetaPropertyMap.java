@@ -45,11 +45,11 @@ import org.grails.datastore.mapping.reflect.NameUtils;
 @CompileStatic
 public class LazyMetaPropertyMap implements Map {
 
-    private MetaClass metaClass;
+    private final MetaClass metaClass;
 
-    private Object instance;
+    private final Object instance;
 
-    private static List<String> EXCLUDES = Arrays.asList("class", "constraints", "hasMany", "mapping", "properties",
+    private static final List<String> EXCLUDES = Arrays.asList("class", "constraints", "hasMany", "mapping", "properties",
             GormProperties.IDENTITY, GormProperties.VERSION, "domainClass", "dirty", GormProperties.ERRORS, "dirtyPropertyNames");
 
     /**
@@ -78,7 +78,7 @@ public class LazyMetaPropertyMap implements Map {
      */
     @Override
     public boolean isEmpty() {
-        return false; // will never be empty
+        return false;
     }
 
     /**

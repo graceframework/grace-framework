@@ -59,14 +59,14 @@ public interface ArtefactHandler {
      * @param aClass A class to test
      * @return true if the class looks like one of your artefacts
      */
-    boolean isArtefact(@SuppressWarnings("rawtypes") Class aClass);
+    boolean isArtefact(Class<?> aClass);
 
     /**
      * <p>Called by GrailsApplication when a new class is found and a GrailsClass wrapping it is required</p>
      * @param artefactClass The new class that has been loaded
      * @return A new custom GrailsClass wrapper containing any extra information your artefact type requires
      */
-    GrailsClass newArtefactClass(@SuppressWarnings("rawtypes") Class artefactClass);
+    GrailsClass newArtefactClass(Class<?> artefactClass);
 
     /**
      * <p>Called whenever the list of artefacts has changed or been reloaded.</p>

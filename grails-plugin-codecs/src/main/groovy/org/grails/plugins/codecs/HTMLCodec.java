@@ -70,7 +70,7 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public Decoder getDecoder() {
-        return this.decoder;
+        return decoder;
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {

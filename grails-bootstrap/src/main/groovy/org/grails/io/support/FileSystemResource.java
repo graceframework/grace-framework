@@ -16,13 +16,12 @@
 package org.grails.io.support;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
 
 /**
  * Based on Spring FileSystemResource implementation.
@@ -91,7 +90,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.FileInputStream
      */
     public InputStream getInputStream() throws IOException {
-        return new FileInputStream(this.file);
+        return Files.newInputStream(this.file.toPath());
     }
 
     /**
@@ -171,7 +170,7 @@ public class FileSystemResource implements Resource {
      * @see java.io.FileOutputStream
      */
     public OutputStream getOutputStream() throws IOException {
-        return new FileOutputStream(this.file);
+        return Files.newOutputStream(this.file.toPath());
     }
 
     /**

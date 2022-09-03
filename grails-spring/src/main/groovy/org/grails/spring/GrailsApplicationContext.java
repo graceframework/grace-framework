@@ -43,7 +43,7 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
 
     protected MetaClass metaClass;
 
-    private BeanWrapper ctxBean = new BeanWrapperImpl(this);
+    private final BeanWrapper ctxBean = new BeanWrapperImpl(this);
 
     private ThemeSource themeSource;
 

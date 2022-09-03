@@ -203,9 +203,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
     private static class ClosureDecoder implements Decoder {
 
-        private CodecIdentifier codecIdentifier;
+        private final CodecIdentifier codecIdentifier;
 
-        private Closure<Object> closure;
+        private final Closure<Object> closure;
 
         ClosureDecoder(String codecName, Closure<Object> closure) {
             this.codecIdentifier = new DefaultCodecIdentifier(codecName);
@@ -224,7 +224,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
     private static class StateAwareEncoderWrapper implements Encoder {
 
-        private Encoder delegate;
+        private final Encoder delegate;
 
         StateAwareEncoderWrapper(Encoder delegate) {
             this.delegate = delegate;
@@ -276,7 +276,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
     private static class StreamingStateAwareEncoderWrapper extends StateAwareEncoderWrapper implements StreamingEncoder {
 
-        private StreamingEncoder delegate;
+        private final StreamingEncoder delegate;
 
         StreamingStateAwareEncoderWrapper(StreamingEncoder delegate) {
             super(delegate);
@@ -292,9 +292,9 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
     private static class ClosureEncoder implements Encoder {
 
-        private CodecIdentifier codecIdentifier;
+        private final CodecIdentifier codecIdentifier;
 
-        private Closure<Object> closure;
+        private final Closure<Object> closure;
 
         ClosureEncoder(String codecName, Closure<Object> closure) {
             this.codecIdentifier = new DefaultCodecIdentifier(codecName);
@@ -330,7 +330,7 @@ public class DefaultGrailsCodecClass extends AbstractInjectableGrailsClass imple
 
         private static final long serialVersionUID = 1L;
 
-        private Method method;
+        private final Method method;
 
         MethodCallingClosure(Object owner, Method method) {
             super(owner);

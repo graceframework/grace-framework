@@ -91,24 +91,11 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
     }
 
     protected void writeToFile(File f, String text) {
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(f);
+        try(FileWriter writer = new FileWriter(f)) {
             writer.write(text);
-            writer.close();
         }
         catch (IOException ex) {
             throw new RuntimeException(ex);
-        }
-        finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                }
-                catch (IOException ex) {
-                    /*ignored*/
-                }
-            }
         }
     }
 

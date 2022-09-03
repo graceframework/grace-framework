@@ -38,7 +38,7 @@ import org.grails.web.util.WebUtils;
  */
 public class WebRequestDelegatingRequestContext implements GrailsRequestContext {
 
-    private GrailsWebRequest webRequest;
+    private final GrailsWebRequest webRequest;
 
     public WebRequestDelegatingRequestContext() {
         this.webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();

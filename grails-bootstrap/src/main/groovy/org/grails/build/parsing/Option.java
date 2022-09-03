@@ -23,9 +23,9 @@ package org.grails.build.parsing;
  */
 public class Option {
 
-    private String name;
+    private final String name;
 
-    private String description;
+    private final String description;
 
     public Option(String name, String description) {
         if (name == null || name.length() == 0) {

@@ -43,7 +43,7 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 @CompileStatic
 public class CompositeConfig implements Config {
 
-    protected Deque<Config> configs = new ArrayDeque<>();
+    protected final Deque<Config> configs = new ArrayDeque<>();
 
     /**
      * Adds a config at the highest level of precedence

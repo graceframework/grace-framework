@@ -61,7 +61,7 @@ public class HTML4Encoder extends AbstractCharReplacementEncoder {
      */
     @Override
     protected String escapeCharacter(char ch, char previousChar) {
-        Character key = Character.valueOf(ch);
+        Character key = ch;
         String replacement = this.replacements.get(key);
         if (replacement == null) {
             replacement = StreamingHTMLEncoderHelper.convertToReference(ch);

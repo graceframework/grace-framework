@@ -82,7 +82,7 @@ public final class SupplierUtil {
                         return null;
                     }
                     if (value instanceof Optional) {
-                        if (!((Optional) value).isPresent()) {
+                        if (!((Optional<?>) value).isPresent()) {
                             return value;
                         }
                     }
