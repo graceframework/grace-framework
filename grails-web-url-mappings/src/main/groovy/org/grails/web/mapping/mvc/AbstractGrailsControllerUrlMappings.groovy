@@ -72,7 +72,7 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     }
 
     @Override
-    List getExcludePatterns() {
+    List<?> getExcludePatterns() {
         urlMappingsHolderDelegate.getExcludePatterns()
     }
 

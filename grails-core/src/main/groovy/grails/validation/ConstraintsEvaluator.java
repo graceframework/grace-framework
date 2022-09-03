@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,9 @@
  */
 package grails.validation;
 
-import groovy.lang.Closure;
-
 import java.util.Map;
+
+import groovy.lang.Closure;
 
 /**
  * Evaluates and returns constraints.
@@ -30,7 +30,9 @@ import java.util.Map;
 public interface ConstraintsEvaluator {
 
     String PROPERTY_NAME = "constraints";
+
     String CONSTRAINTS_GROOVY_SCRIPT = "Constraints.groovy";
+
     String BEAN_NAME = "org.grails.beans.ConstraintsEvaluator";
 
     /**
@@ -45,7 +47,7 @@ public interface ConstraintsEvaluator {
      * @param cls The class to evaluate constraints for
      * @return A map of constrained properties
      */
-    Map<String, Constrained> evaluate(@SuppressWarnings("rawtypes") Class cls);
+    Map<String, Constrained> evaluate(Class<?> cls);
 
     /**
      * Evaluate constraints for the given class
@@ -54,7 +56,7 @@ public interface ConstraintsEvaluator {
      * @param defaultNullable indicates if properties are nullable by default
      * @return A map of constrained properties
      */
-    Map<String, Constrained> evaluate(@SuppressWarnings("rawtypes") Class cls, boolean defaultNullable);
+    Map<String, Constrained> evaluate(Class<?> cls, boolean defaultNullable);
 
     /**
      * Evaluate constraints for the given class

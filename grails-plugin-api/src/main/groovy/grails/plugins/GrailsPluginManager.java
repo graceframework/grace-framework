@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,12 +19,15 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import grails.core.GrailsApplication;
-import org.grails.spring.RuntimeSpringConfiguration;
-import grails.plugins.exceptions.PluginException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.type.filter.TypeFilter;
+
+import grails.core.GrailsApplication;
+import grails.plugins.exceptions.PluginException;
+
+import org.grails.spring.RuntimeSpringConfiguration;
 
 /**
  * <p>Handles the loading and management of plug-ins in the Grails system.
@@ -198,8 +201,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param plugin The plugin to retrieve observers for
      * @return A collection of observers
      */
-    @SuppressWarnings("rawtypes")
-    Collection getPluginObservers(GrailsPlugin plugin);
+    Collection<GrailsPlugin> getPluginObservers(GrailsPlugin plugin);
 
     /**
      * inform the specified plugins observers of the event specified by the passed Map instance
@@ -207,8 +209,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param pluginName The name of the plugin
      * @param event The event
      */
-    @SuppressWarnings("rawtypes")
-    void informObservers(String pluginName, Map event);
+    void informObservers(String pluginName, Map<String, Object> event);
 
     /**
      * Called prior to the initialisation of the GrailsApplication object to allow registration of additional ArtefactHandler objects
@@ -288,7 +289,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param theClass The class
      * @return The pluginContextPath
      */
-    String getPluginPathForClass(Class<? extends Object> theClass);
+    String getPluginPathForClass(Class<?> theClass);
 
     /**
      * Returns the plugin views directory for the given instance
@@ -302,7 +303,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param theClass The class
      * @return The pluginContextPath
      */
-    String getPluginViewsPathForClass(Class<? extends Object> theClass);
+    String getPluginViewsPathForClass(Class<?> theClass);
 
     /**
      * Obtains the GrailsPlugin for the given class
@@ -325,7 +326,7 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      */
     void informOfFileChange(File file);
 
-    void informOfClassChange(File file, @SuppressWarnings("rawtypes") Class cls);
+    void informOfClassChange(File file, Class<?> cls);
 
     /**
      * Indicates whether the manager has been shutdown or not
@@ -338,5 +339,6 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      *
      * @param pluginFilter The plugin filter
      */
-    public void setPluginFilter(PluginFilter pluginFilter);
+    void setPluginFilter(PluginFilter pluginFilter);
+
 }

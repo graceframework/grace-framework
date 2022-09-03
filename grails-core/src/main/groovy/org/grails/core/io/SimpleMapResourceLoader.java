@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,11 @@
  */
 package org.grails.core.io;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 /**
  * Simple implementation of the ResourceLoader interface that uses a Map to load resources.
@@ -29,14 +29,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleMapResourceLoader implements ResourceLoader {
 
-    private Map<String, Resource> resources = new ConcurrentHashMap<String, Resource>();
+    private Map<String, Resource> resources = new ConcurrentHashMap<>();
 
     public Map<String, Resource> getResources() {
-        return resources;
+        return this.resources;
     }
 
     public Resource getResource(String location) {
-        return resources.get(location);
+        return this.resources.get(location);
     }
 
     public ClassLoader getClassLoader() {

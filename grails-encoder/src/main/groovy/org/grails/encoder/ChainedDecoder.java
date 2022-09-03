@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,11 @@
 package org.grails.encoder;
 
 public class ChainedDecoder implements Decoder {
-    protected Decoder[] decoders;
-    protected CodecIdentifier codecIdentifier;
-    
+
+    protected final Decoder[] decoders;
+
+    protected final CodecIdentifier codecIdentifier;
+
     public ChainedDecoder(Decoder[] decoders) {
         this.decoders = decoders;
         this.codecIdentifier = createCodecIdentifier(decoders);
@@ -30,16 +32,19 @@ public class ChainedDecoder implements Decoder {
 
     @Override
     public CodecIdentifier getCodecIdentifier() {
-        return codecIdentifier;
+        return this.codecIdentifier;
     }
 
     @Override
     public Object decode(Object o) {
-        if(o==null) return o;
+        if (o == null) {
+            return null;
+        }
         Object decoded = o;
-        for (Decoder decoder : decoders) {
+        for (Decoder decoder : this.decoders) {
             decoded = decoder.decode(decoded);
         }
         return decoded;
     }
+
 }

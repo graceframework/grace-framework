@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,6 @@
  */
 package org.grails.web.mapping;
 
-import grails.util.GrailsStringUtils;
-import grails.web.mapping.UrlMappingInfo;
-import groovy.lang.Closure;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.util.UriUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,38 +23,51 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import groovy.lang.Closure;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.util.UriUtils;
+
+import grails.util.GrailsStringUtils;
+import grails.web.mapping.UrlMappingInfo;
+
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+
 /**
  * Abstract super class providing pass functionality for configuring a UrlMappingInfo.
  *
  * @author Graeme Rocher
  * @since 1.2
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
 
     private Map<String, Object> params = Collections.emptyMap();
 
     public Map<String, Object> getParams() {
-        return params;
+        return this.params;
     }
 
     public void setParams(final Map newParams) {
         Collection keys = newParams.keySet();
         keys = new ArrayList(keys);
-        Collections.sort((List) keys, new Comparator() {
-            public int compare(Object leftKey, Object rightKey) {
-                Object leftValue = newParams.get(leftKey);
-                Object rightValue = newParams.get(rightKey);
-                boolean leftIsClosure = leftValue instanceof Closure;
-                boolean rightIsClosure = rightValue instanceof Closure;
-                if (leftIsClosure && rightIsClosure) return 0;
-                if (leftIsClosure && !rightIsClosure) return 1;
-                if (rightIsClosure && !leftIsClosure) return -1;
+        Collections.sort((List) keys, (Comparator) (leftKey, rightKey) -> {
+            Object leftValue = newParams.get(leftKey);
+            Object rightValue = newParams.get(rightKey);
+            boolean leftIsClosure = leftValue instanceof Closure;
+            boolean rightIsClosure = rightValue instanceof Closure;
+            if (leftIsClosure && rightIsClosure) {
                 return 0;
             }
+            if (leftIsClosure) {
+                return 1;
+            }
+            if (rightIsClosure) {
+                return -1;
+            }
+            return 0;
         });
-        Map<String,Object> sortedParams = new LinkedHashMap<String,Object>();
-        for(Object key : keys) {
+        Map<String, Object> sortedParams = new LinkedHashMap<>();
+        for (Object key : keys) {
             sortedParams.put(String.valueOf(key), newParams.get(key));
         }
         this.params = Collections.unmodifiableMap(sortedParams);
@@ -80,9 +86,11 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     protected void populateParamsForMapping(GrailsWebRequest webRequest) {
         Map dispatchParams = webRequest.getParams();
         String encoding = webRequest.getRequest().getCharacterEncoding();
-        if (encoding == null) encoding = "UTF-8";
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
+        for (Map.Entry<String, Object> entry : this.params.entrySet()) {
             String name = entry.getKey();
             Object param = entry.getValue();
             if (param instanceof Closure) {
@@ -105,14 +113,15 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
         if (!GrailsStringUtils.isBlank(id)) {
             try {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, UriUtils.decode(id, encoding));
-            } catch (IllegalArgumentException e) {
+            }
+            catch (IllegalArgumentException ignored) {
                 dispatchParams.put(GrailsWebRequest.ID_PARAMETER, id);
             }
         }
     }
 
     protected String evaluateNameForValue(Object value) {
-        if(value instanceof CharSequence) {
+        if (value instanceof CharSequence) {
             return value.toString().trim();
         }
         else {
@@ -156,4 +165,5 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
     public Object getRedirectInfo() {
         return null;
     }
+
 }

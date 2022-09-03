@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,29 @@
  */
 package grails.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Collection utility methods.
  *
  * @author Burt Beckwith
  */
-public class CollectionUtils {
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public final class CollectionUtils {
 
     private CollectionUtils() {
         // static only
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <K, V> Map newMap(Object... keysAndValues) {
+    public static <K, V> Map<K, V> newMap(Object... keysAndValues) {
         if (keysAndValues == null) {
             return Collections.emptyMap();
         }
@@ -37,9 +45,9 @@ public class CollectionUtils {
             throw new IllegalArgumentException("Must have an even number of keys and values");
         }
 
-        Map<K, V> map = new HashMap<K, V>();
+        Map<K, V> map = new HashMap<>();
         for (int i = 0; i < keysAndValues.length; i += 2) {
-            map.put((K)keysAndValues[i], (V)keysAndValues[i + 1]);
+            map.put((K) keysAndValues[i], (V) keysAndValues[i + 1]);
         }
         return map;
     }
@@ -49,7 +57,7 @@ public class CollectionUtils {
             return Collections.emptySet();
         }
 
-        return new HashSet<T>(Arrays.asList(values));
+        return new HashSet<>(Arrays.asList(values));
     }
 
     public static <T> List<T> newList(T... values) {
@@ -57,7 +65,7 @@ public class CollectionUtils {
             return Collections.emptyList();
         }
 
-        return new ArrayList<T>(Arrays.asList(values));
+        return new ArrayList<>(Arrays.asList(values));
     }
 
     /**
@@ -69,9 +77,10 @@ public class CollectionUtils {
      */
     public static Map getOrCreateChildMap(Map parent, String key) {
         Object o = parent.get(key);
-        if(o instanceof Map) {
-            return (Map)o;
+        if (o instanceof Map) {
+            return (Map) o;
         }
         return new LinkedHashMap();
     }
+
 }

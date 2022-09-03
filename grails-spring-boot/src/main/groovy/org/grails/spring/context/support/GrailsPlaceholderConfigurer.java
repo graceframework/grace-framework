@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,10 @@
  */
 package org.grails.spring.context.support;
 
-import grails.config.Config;
-import grails.core.support.GrailsConfigurationAware;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -25,9 +27,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.util.StringValueResolver;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
+import grails.config.Config;
+import grails.core.support.GrailsConfigurationAware;
 
 /**
  * Uses Grails' ConfigObject for place holder values.
@@ -37,10 +38,12 @@ import java.util.Properties;
  */
 public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfigurer implements GrailsConfigurationAware {
 
-
     private Properties properties;
+
     private String beanName;
+
     private BeanFactory beanFactory;
+
     private Config config;
 
     public GrailsPlaceholderConfigurer(String placeHolderPrefix, Properties properties) {
@@ -55,17 +58,17 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
 
     @Override
     protected void loadProperties(Properties props) throws IOException {
-        if (config != null) {
-            props.putAll(config.toProperties());
+        if (this.config != null) {
+            props.putAll(this.config.toProperties());
         }
-        else if(this.properties != null) {
-            props.putAll(properties);
+        else if (this.properties != null) {
+            props.putAll(this.properties);
         }
         this.properties = props;
     }
 
     public Properties getProperties() {
-        return properties;
+        return this.properties;
     }
 
     @Override
@@ -85,7 +88,9 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
         BeanDefinitionVisitor visitor = new BeanDefinitionVisitor(valueResolver) {
             @Override
             protected void visitMap(Map<?, ?> mapVal) {
-                if(mapVal instanceof Config) return;
+                if (mapVal instanceof Config) {
+                    return;
+                }
                 super.visitMap(mapVal);
             }
         };
@@ -116,4 +121,5 @@ public class GrailsPlaceholderConfigurer extends PropertySourcesPlaceholderConfi
     public void setConfiguration(Config co) {
         this.config = co;
     }
+
 }

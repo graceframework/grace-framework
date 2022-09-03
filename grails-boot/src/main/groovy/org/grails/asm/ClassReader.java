@@ -49,7 +49,6 @@ class ClassReader {
      */
     static final int ACC_SYNTHETIC_ATTRIBUTE = 0x40000;
 
-
     /**
      * The type of CONSTANT_Class constant pool items.
      */
@@ -129,7 +128,6 @@ class ClassReader {
      * True to enable annotations support.
      */
     static final boolean ANNOTATIONS = true;
-
 
     /**
      * Flag to skip the debug information in the class. If this flag is set the
@@ -315,10 +313,6 @@ class ClassReader {
         }
         return interfaces;
     }
-
-
-
-
 
     /**
      * Constructs a new {@link ClassReader} object.
@@ -748,7 +742,6 @@ class ClassReader {
         return v;
     }
 
-
     /**
      * Returns the label corresponding to the given offset. The default
      * implementation of this method creates a label for the given offset if it
@@ -843,7 +836,6 @@ class ClassReader {
         }
         return new Attribute(type).read(this, off, len, null, -1, null);
     }
-
 
     /**
      * Reads a byte value in {@link #b b}. <i>This method is intended for

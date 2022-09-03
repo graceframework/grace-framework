@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 package org.grails.plugins.web.mime;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import grails.config.Config;
 import grails.config.Settings;
@@ -25,16 +36,6 @@ import grails.web.mime.MimeUtility;
 
 import org.grails.web.mime.DefaultMimeTypeResolver;
 import org.grails.web.mime.DefaultMimeUtility;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Configuration for Codecs
@@ -48,10 +49,11 @@ import java.util.stream.Collectors;
 public class MimeTypesConfiguration {
 
     private final GrailsApplication grailsApplication;
+
     private final List<MimeTypeProvider> mimeTypeProviders;
 
     public MimeTypesConfiguration(ObjectProvider<GrailsApplication> grailsApplication,
-                                  ObjectProvider<MimeTypeProvider> mimeTypeProviders) {
+            ObjectProvider<MimeTypeProvider> mimeTypeProviders) {
         this.grailsApplication = grailsApplication.getIfAvailable();
         this.mimeTypeProviders = mimeTypeProviders.orderedStream().collect(Collectors.toList());
     }
@@ -63,12 +65,13 @@ public class MimeTypesConfiguration {
 
     @Bean
     public MimeType[] mimeTypes() {
-        final Config config = grailsApplication.getConfig();
+        final Config config = this.grailsApplication.getConfig();
         final Map<CharSequence, Object> mimeConfig = getMimeConfig(config);
         MimeType[] mimeTypes;
         if (mimeConfig == null || mimeConfig.isEmpty()) {
             mimeTypes = MimeType.createDefaults();
-        } else {
+        }
+        else {
             List<MimeType> mimes = new ArrayList<>();
             for (Map.Entry<CharSequence, Object> entry : mimeConfig.entrySet()) {
                 final String key = entry.getKey().toString();
@@ -116,4 +119,5 @@ public class MimeTypesConfiguration {
             }
         }
     }
+
 }

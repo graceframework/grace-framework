@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,9 @@
  */
 package grails.core;
 
-import grails.web.UrlConverter;
-
 import java.util.Set;
+
+import grails.web.UrlConverter;
 
 /**
  * Represents a controller class in Grails.
@@ -64,7 +64,6 @@ public interface GrailsControllerClass extends InjectableGrailsClass {
      */
     String NAMESPACE_PROPERTY = "namespace";
 
-
     /**
      * @return The action names
      */
@@ -85,7 +84,6 @@ public interface GrailsControllerClass extends InjectableGrailsClass {
      */
     boolean isSingleton();
 
-
     /**
      * Returns the default action for this Controller.
      *
@@ -97,12 +95,14 @@ public interface GrailsControllerClass extends InjectableGrailsClass {
      * Initialize the controller class
      */
     void initialize();
+
     /**
      * Tests if a controller maps to a given URI.
      *
      * @return true if controller maps to URI
      */
     boolean mapsToURI(String uri);
+
     /**
      * Invokes a controller action on the given controller instance
      *
@@ -113,7 +113,6 @@ public interface GrailsControllerClass extends InjectableGrailsClass {
      */
     Object invoke(Object controller, String action) throws Throwable;
 
-
     /**
      * Register a new {@link grails.web.UrlConverter} with the controller
      *
@@ -122,4 +121,5 @@ public interface GrailsControllerClass extends InjectableGrailsClass {
     void registerUrlConverter(UrlConverter urlConverter);
 
     String actionUriToViewName(String actionUri);
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,25 +15,19 @@
  */
 package grails.web.servlet.mvc;
 
-import grails.databinding.DataBinder;
-
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import grails.io.IOUtils;
-import grails.web.mime.MimeType;
-import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.binding.StructuredDateEditor;
-import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
-import grails.util.TypeConvertingMap;
-import org.grails.web.util.WebUtils;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +36,17 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import grails.databinding.DataBinder;
+import grails.io.IOUtils;
+import grails.util.TypeConvertingMap;
+import grails.web.mime.MimeType;
+
+import org.grails.datastore.mapping.model.config.GormProperties;
+import org.grails.web.binding.StructuredDateEditor;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
+import org.grails.web.util.WebUtils;
 
 /**
  * A parameter map class that allows mixing of request parameters and controller parameters. If a controller
@@ -55,11 +60,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrailsParameterMap.class);
-    private static final Map<String, String> CACHED_DATE_FORMATS  = new ConcurrentHashMap<String, String>();
+    private static final Logger logger = LoggerFactory.getLogger(GrailsParameterMap.class);
+
+    private static final Map<String, String> CACHED_DATE_FORMATS = new ConcurrentHashMap<>();
 
     private final Map nestedDateMap = new LinkedHashMap();
+
     private final HttpServletRequest request;
+
     public static final String REQUEST_BODY_PARSED = "org.codehaus.groovy.grails.web.REQUEST_BODY_PARSED";
 
     public static final Object[] EMPTY_ARGS = new Object[0];
@@ -82,28 +90,31 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     public GrailsParameterMap(HttpServletRequest request) {
         this.request = request;
         final Map requestMap = new LinkedHashMap(request.getParameterMap());
-        if (requestMap.isEmpty() && ("PUT".equals(request.getMethod()) || "PATCH".equals(request.getMethod())) && request.getAttribute(REQUEST_BODY_PARSED) == null) {
+        if (requestMap.isEmpty() && ("PUT".equals(request.getMethod()) || "PATCH".equals(request.getMethod())) &&
+                request.getAttribute(REQUEST_BODY_PARSED) == null) {
+
             // attempt manual parse of request body. This is here because some containers don't parse the request body automatically for PUT request
             String contentType = request.getContentType();
             if (MimeType.FORM.equals(new MimeType(contentType))) {
                 try {
                     Reader reader = request.getReader();
-                    if(reader != null) {
+                    if (reader != null) {
                         String contents = IOUtils.toString(reader);
                         request.setAttribute(REQUEST_BODY_PARSED, true);
                         requestMap.putAll(WebUtils.fromQueryString(contents));
                     }
-                } catch (Exception e) {
-                    LOG.error("Error processing form encoded " + request.getMethod() + " request", e);
+                }
+                catch (Exception e) {
+                    logger.error("Error processing form encoded " + request.getMethod() + " request", e);
                 }
             }
         }
 
         if (request instanceof MultipartHttpServletRequest) {
-            MultiValueMap<String, MultipartFile> fileMap = ((MultipartHttpServletRequest)request).getMultiFileMap();
+            MultiValueMap<String, MultipartFile> fileMap = ((MultipartHttpServletRequest) request).getMultiFileMap();
             for (Entry<String, List<MultipartFile>> entry : fileMap.entrySet()) {
                 List<MultipartFile> value = entry.getValue();
-                if(value.size() == 1) {
+                if (value.size() == 1) {
                     requestMap.put(entry.getKey(), value.get(0));
                 }
                 else {
@@ -115,54 +126,56 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         updateNestedKeys(requestMap);
     }
 
-
     @Override
     public Object clone() {
         if (wrappedMap.isEmpty()) {
-            return new GrailsParameterMap(new LinkedHashMap(), request);
-        } else {
+            return new GrailsParameterMap(new LinkedHashMap(), this.request);
+        }
+        else {
             Map clonedMap = new LinkedHashMap(wrappedMap);
             // deep clone nested entries
-            for(Iterator it=clonedMap.entrySet().iterator();it.hasNext();) {
-                Map.Entry entry = (Map.Entry)it.next();
+            for (Object obj : clonedMap.entrySet()) {
+                Entry entry = (Entry) obj;
                 if (entry.getValue() instanceof GrailsParameterMap) {
-                    entry.setValue(((GrailsParameterMap)entry.getValue()).clone());
+                    entry.setValue(((GrailsParameterMap) entry.getValue()).clone());
                 }
             }
-            return new GrailsParameterMap(clonedMap, request);
+            return new GrailsParameterMap(clonedMap, this.request);
         }
     }
 
     public void addParametersFrom(GrailsParameterMap otherMap) {
-        wrappedMap.putAll((GrailsParameterMap)otherMap.clone());
+        wrappedMap.putAll((GrailsParameterMap) otherMap.clone());
     }
 
     /**
      * @return Returns the request.
      */
     public HttpServletRequest getRequest() {
-        return request;
+        return this.request;
     }
 
     @Override
     public Object get(Object key) {
         // removed test for String key because there
         // should be no limitations on what you shove in or take out
-        Object returnValue = null;
-        if (nestedDateMap.containsKey(key)) {
-            returnValue = nestedDateMap.get(key);
-        } else {
+        Object returnValue;
+        if (this.nestedDateMap.containsKey(key)) {
+            returnValue = this.nestedDateMap.get(key);
+        }
+        else {
             returnValue = wrappedMap.get(key);
             if (returnValue instanceof String[]) {
-                String[] valueArray = (String[])returnValue;
+                String[] valueArray = (String[]) returnValue;
                 if (valueArray.length == 1) {
                     returnValue = valueArray[0];
-                } else {
+                }
+                else {
                     returnValue = valueArray;
                 }
             }
-            else if(returnValue == null && (key instanceof Collection)) {
-                return DefaultGroovyMethods.subMap(wrappedMap, (Collection)key);
+            else if (returnValue == null && (key instanceof Collection)) {
+                return DefaultGroovyMethods.subMap(wrappedMap, (Collection) key);
             }
         }
         return returnValue;
@@ -170,13 +183,17 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
     @Override
     public Object put(Object key, Object value) {
-        if (value instanceof CharSequence) value = value.toString();
-        if (key instanceof CharSequence) key = key.toString();
-        if (nestedDateMap.containsKey(key)) nestedDateMap.remove(key);
-        Object returnValue =  wrappedMap.put(key, value);
+        if (value instanceof CharSequence) {
+            value = value.toString();
+        }
+        if (key instanceof CharSequence) {
+            key = key.toString();
+        }
+        this.nestedDateMap.remove(key);
+        Object returnValue = wrappedMap.put(key, value);
         if (key instanceof String) {
-            String keyString = (String)key;
-            if (keyString.indexOf(".") > -1) {
+            String keyString = (String) key;
+            if (keyString.contains(".")) {
                 processNestedKeys(this, keyString, keyString, wrappedMap);
             }
         }
@@ -185,14 +202,14 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
     @Override
     public Object remove(Object key) {
-        nestedDateMap.remove(key);
+        this.nestedDateMap.remove(key);
         return wrappedMap.remove(key);
     }
 
     @Override
     public void putAll(Map map) {
         for (Object entryObj : map.entrySet()) {
-            Map.Entry entry = (Map.Entry)entryObj;
+            Map.Entry entry = (Map.Entry) entryObj;
             put(entry.getKey(), entry.getValue());
         }
     }
@@ -208,8 +225,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         Object returnValue = wrappedMap.get(name);
         if ("date.struct".equals(returnValue)) {
             returnValue = lazyEvaluateDateParam(name);
-            nestedDateMap.put(name, returnValue);
-            return (Date)returnValue;
+            this.nestedDateMap.put(name, returnValue);
+            return (Date) returnValue;
         }
         Date date = super.getDate(name);
         if (date == null) {
@@ -229,13 +246,13 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
      * @return A query String starting with the ? character
      */
     public String toQueryString() {
-        String encoding = request.getCharacterEncoding();
+        String encoding = this.request.getCharacterEncoding();
         try {
             return WebUtils.toQueryString(this, encoding);
         }
         catch (UnsupportedEncodingException e) {
             throw new ControllerExecutionException("Unable to convert parameter map [" + this +
-                 "] to a query string: " + e.getMessage(), e);
+                    "] to a query string: " + e.getMessage(), e);
         }
     }
 
@@ -249,14 +266,12 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     private String lookupFormat(String name) {
         String format = CACHED_DATE_FORMATS.get(name);
         if (format == null) {
-            GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
+            GrailsWebRequest webRequest = GrailsWebRequest.lookup(this.request);
             if (webRequest != null) {
                 MessageSource messageSource = webRequest.getApplicationContext();
                 if (messageSource != null) {
                     format = messageSource.getMessage("date." + name + ".format", EMPTY_ARGS, webRequest.getLocale());
-                    if (format != null) {
-                        CACHED_DATE_FORMATS.put(name, format);
-                    }
+                    CACHED_DATE_FORMATS.put(name, format);
                 }
             }
         }
@@ -265,7 +280,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
 
     protected void updateNestedKeys(Map keys) {
         for (Object keyObject : keys.keySet()) {
-            String key = (String)keyObject;
+            String key = (String) keyObject;
             Object paramValue = getParameterValue(keys, key);
             wrappedMap.put(key, paramValue);
             processNestedKeys(keys, key, key, wrappedMap);
@@ -276,13 +291,13 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
         // parse date structs automatically
         Map dateParams = new LinkedHashMap();
         for (Object entryObj : entrySet()) {
-            Map.Entry entry = (Map.Entry)entryObj;
+            Map.Entry entry = (Map.Entry) entryObj;
             Object entryKey = entry.getKey();
             if (entryKey instanceof String) {
-                String paramName = (String)entryKey;
+                String paramName = (String) entryKey;
                 final String prefix = key + "_";
                 if (paramName.startsWith(prefix)) {
-                    dateParams.put(paramName.substring(prefix.length(), paramName.length()), entry.getValue());
+                    dateParams.put(paramName.substring(prefix.length()), entry.getValue());
                 }
             }
         }
@@ -291,7 +306,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
                 LocaleContextHolder.getLocale());
         StructuredDateEditor editor = new StructuredDateEditor(dateFormat, true);
         try {
-            return (Date)editor.assemble(Date.class, dateParams);
+            return (Date) editor.assemble(Date.class, dateParams);
         }
         catch (IllegalArgumentException e) {
             return null;
@@ -301,8 +316,8 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
     private Object getParameterValue(Map requestMap, String key) {
         Object paramValue = requestMap.get(key);
         if (paramValue instanceof String[]) {
-            if (((String[])paramValue).length == 1) {
-                paramValue = ((String[])paramValue)[0];
+            if (((String[]) paramValue).length == 1) {
+                paramValue = ((String[]) paramValue)[0];
             }
         }
         return paramValue;
@@ -337,7 +352,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
             // No value. So, since there is at least one sub-key,
             // we create a sub-map for this prefix.
 
-            prefixValue = new GrailsParameterMap(new LinkedHashMap(), request);
+            prefixValue = new GrailsParameterMap(new LinkedHashMap(), this.request);
             nestedLevel.put(nestedPrefix, prefixValue);
         }
 
@@ -346,17 +361,18 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
             return;
         }
 
-        Map nestedMap = (Map)prefixValue;
+        Map nestedMap = (Map) prefixValue;
         if (nestedIndex < nestedKey.length() - 1) {
-            String remainderOfKey = nestedKey.substring(nestedIndex + 1, nestedKey.length());
+            String remainderOfKey = nestedKey.substring(nestedIndex + 1);
             // GRAILS-2486 Cascade the '_' prefix in order to bind checkboxes properly
             if (prefixedByUnderscore) {
                 remainderOfKey = '_' + remainderOfKey;
             }
-            nestedMap.put(remainderOfKey,getParameterValue(requestMap, key));
-            if (!(nestedMap instanceof GrailsParameterMap) && remainderOfKey.indexOf('.') >-1) {
+            nestedMap.put(remainderOfKey, getParameterValue(requestMap, key));
+            if (!(nestedMap instanceof GrailsParameterMap) && remainderOfKey.contains(".")) {
                 processNestedKeys(requestMap, remainderOfKey, remainderOfKey, nestedMap);
             }
         }
     }
+
 }

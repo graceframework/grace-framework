@@ -73,7 +73,7 @@ info:
 
     def buildPluginsManager(GrailsApplication app) {
         def pluginsManager = new DefaultGrailsPluginManager(app)
-        pluginsManager.LOG >> Mock(Log)
+        pluginsManager.logger >> Mock(Log)
         return pluginsManager
     }
 }

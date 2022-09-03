@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,12 @@
  */
 package org.grails.spring.beans;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+
 import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 import grails.core.support.GrailsConfigurationAware;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * Implementation of {@link org.springframework.beans.factory.config.BeanPostProcessor}
@@ -31,7 +32,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  */
 public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcessor {
 
-    private GrailsApplication grailsApplication;
+    private final GrailsApplication grailsApplication;
 
     public GrailsApplicationAwareBeanPostProcessor(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
@@ -39,16 +40,17 @@ public class GrailsApplicationAwareBeanPostProcessor implements BeanPostProcesso
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        processAwareInterfaces(grailsApplication, bean);
+        processAwareInterfaces(this.grailsApplication, bean);
         return bean;
     }
 
     public static void processAwareInterfaces(GrailsApplication grailsApplication, Object bean) {
         if (bean instanceof GrailsApplicationAware) {
-            ((GrailsApplicationAware)bean).setGrailsApplication(grailsApplication);
+            ((GrailsApplicationAware) bean).setGrailsApplication(grailsApplication);
         }
         if (bean instanceof GrailsConfigurationAware) {
-            ((GrailsConfigurationAware)bean).setConfiguration(grailsApplication.getConfig());
+            ((GrailsConfigurationAware) bean).setConfiguration(grailsApplication.getConfig());
         }
     }
+
 }

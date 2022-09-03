@@ -1,7 +1,25 @@
+/*
+ * Copyright 2016-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.core.util;
 
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  * Based on the Spring StopWatch class, but supporting nested tasks
@@ -20,8 +38,9 @@ public class StopWatch {
      */
     private final String id;
 
-    private final Deque<TaskInfo> runningTasks = new LinkedList<TaskInfo>();
-    private final Deque<TaskInfo> taskList = new LinkedList<TaskInfo>();
+    private final Deque<TaskInfo> runningTasks = new LinkedList<>();
+
+    private final Deque<TaskInfo> taskList = new LinkedList<>();
 
     /** Is the stop watch currently running? */
     private boolean running;
@@ -35,7 +54,6 @@ public class StopWatch {
 
     /** Total running time */
     private long totalTimeMillis;
-
 
     /**
      * Construct a new stop watch. Does not start any task.
@@ -55,8 +73,6 @@ public class StopWatch {
         this.id = id;
     }
 
-
-
     /**
      * Start an unnamed task. The results are undefined if {@link #stop()}
      * or timing methods are called without invoking this method.
@@ -74,7 +90,7 @@ public class StopWatch {
      */
     public void start(String taskName) throws IllegalStateException {
         this.lastTaskInfo = new TaskInfo(taskName, System.currentTimeMillis());
-        this.runningTasks.push(lastTaskInfo);
+        this.runningTasks.push(this.lastTaskInfo);
         ++this.taskCount;
         this.running = true;
         this.currentTaskName = taskName;
@@ -91,11 +107,11 @@ public class StopWatch {
             throw new IllegalStateException("Can't stop StopWatch: it's not running");
         }
 
-        if(!runningTasks.isEmpty()) {
+        if (!this.runningTasks.isEmpty()) {
 
-            TaskInfo lastTask = runningTasks.pop();
+            TaskInfo lastTask = this.runningTasks.pop();
             lastTask.stop();
-            taskList.add(lastTask);
+            this.taskList.add(lastTask);
             this.currentTaskName = null;
             this.totalTimeMillis += lastTask.getTimeMillis();
         }
@@ -111,7 +127,6 @@ public class StopWatch {
     public boolean isRunning() {
         return this.running;
     }
-
 
     /**
      * Return the time taken by the last task.
@@ -143,7 +158,6 @@ public class StopWatch {
         return this.lastTaskInfo;
     }
 
-
     /**
      * Return the total time in milliseconds for all tasks.
      */
@@ -169,9 +183,8 @@ public class StopWatch {
      * Return an array of the data for tasks performed.
      */
     public TaskInfo[] getTaskInfo() {
-        return this.taskList.toArray(new TaskInfo[this.taskList.size()]);
+        return this.taskList.toArray(new TaskInfo[0]);
     }
-
 
     /**
      * Return a short description of the total running time.
@@ -190,19 +203,18 @@ public class StopWatch {
         sb.append("-----------------------------------------\n");
         sb.append("ms     %     Task name\n");
         sb.append("-----------------------------------------\n");
+
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMinimumIntegerDigits(5);
         nf.setGroupingUsed(false);
+
         NumberFormat pf = NumberFormat.getPercentInstance();
         pf.setMinimumIntegerDigits(3);
         pf.setGroupingUsed(false);
+
         final TaskInfo[] taskInfos = getTaskInfo();
-        Arrays.sort(taskInfos, new Comparator<TaskInfo>() {
-            @Override
-            public int compare(TaskInfo o1, TaskInfo o2) {
-                return Long.compare(o1.getTimeMillis(), o2.getTimeMillis());
-            }
-        });
+        Arrays.sort(taskInfos, Comparator.comparingLong(TaskInfo::getTimeMillis));
+
         for (TaskInfo task : taskInfos) {
             sb.append(nf.format(task.getTimeMillis())).append("  ");
             sb.append(pf.format(task.getTimeSeconds() / getTotalTimeSeconds())).append("  ");
@@ -226,7 +238,6 @@ public class StopWatch {
         return sb.toString();
     }
 
-
     /**
      * Inner class to hold data about one task executed within the stop watch.
      */
@@ -235,8 +246,8 @@ public class StopWatch {
         private final String taskName;
 
         private final long startTime;
-        private long endTime;
 
+        private long endTime;
 
         TaskInfo(String taskName, long startTime) {
             this.taskName = taskName;
@@ -267,6 +278,7 @@ public class StopWatch {
         public double getTimeSeconds() {
             return this.getTimeMillis() / 1000.0;
         }
+
     }
 
 }

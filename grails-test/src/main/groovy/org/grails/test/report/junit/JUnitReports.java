@@ -1,11 +1,11 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ import java.io.OutputStream;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
-
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitResultFormatter;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 
@@ -39,50 +38,51 @@ public class JUnitReports implements JUnitResultFormatter {
     }
 
     public void startTestSuite(JUnitTest suite) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.startTestSuite(suite);
         }
     }
 
     public void startTest(Test test) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.startTest(test);
         }
     }
 
     public void addError(Test test, Throwable t) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.addError(test, t);
         }
     }
 
     public void addFailure(Test test, AssertionFailedError t) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.addFailure(test, t);
         }
     }
 
     public void endTest(Test test) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.endTest(test);
         }
     }
 
     public void setSystemError(String err) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.setSystemError(err);
         }
     }
 
     public void setSystemOutput(String out) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.setSystemOutput(out);
         }
     }
 
     public void endTestSuite(JUnitTest suite) {
-        for (JUnitResultFormatter report : reports) {
+        for (JUnitResultFormatter report : this.reports) {
             report.endTestSuite(suite);
         }
     }
+
 }

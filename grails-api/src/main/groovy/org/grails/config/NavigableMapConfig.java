@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,17 +14,6 @@
  * limitations under the License.
  */
 package org.grails.config;
-
-import grails.config.Config;
-import grails.util.GrailsStringUtils;
-import groovy.util.ConfigObject;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.ConversionException;
-import org.springframework.core.convert.support.ConfigurableConversionService;
-import org.springframework.core.convert.support.DefaultConversionService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,22 +26,40 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import groovy.util.ConfigObject;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.ConversionException;
+import org.springframework.core.convert.support.ConfigurableConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
+
+import grails.config.Config;
+import grails.util.GrailsStringUtils;
+
+import org.grails.core.exceptions.GrailsConfigurationException;
+
 /**
  * A {@link Config} implementation that operates against a {@link org.grails.config.NavigableMap}
  *
- * @deprecated This class behavior is related to {@link org.grails.config.NavigableMap} which will be removed in future. Use {@link grails.config.Config} instead.
+ * @deprecated This class behavior is related to {@link org.grails.config.NavigableMap} which will be removed in future.
+ * Use {@link grails.config.Config} instead.
  * @author Graeme Rocher
  * @since 3.0
  */
 @Deprecated
 public abstract class NavigableMapConfig implements Config {
-    protected static final Logger LOG = LoggerFactory.getLogger(NavigableMapConfig.class);
+
+    protected static final Logger logger = LoggerFactory.getLogger(NavigableMapConfig.class);
+
     protected ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
     protected ConfigurableConversionService conversionService = new DefaultConversionService();
+
     protected NavigableMap configMap = new NavigableMap() {
         @Override
         protected Object mergeMapEntry(NavigableMap targetMap, String sourceKey, Object newValue) {
-            if(newValue instanceof CharSequence) {
+            if (newValue instanceof CharSequence) {
                 newValue = resolvePlaceholders(newValue.toString());
             }
             return super.mergeMapEntry(targetMap, sourceKey, newValue);
@@ -61,20 +68,20 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public int hashCode() {
-        return configMap.hashCode();
+        return this.configMap.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof NavigableMapConfig) {
-            return this.configMap.equals(((NavigableMapConfig)obj).configMap);
+        if (obj instanceof NavigableMapConfig) {
+            return this.configMap.equals(((NavigableMapConfig) obj).configMap);
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return configMap.toString();
+        return this.configMap.toString();
     }
 
     @Override
@@ -84,17 +91,17 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public void setAt(Object key, Object value) {
-        configMap.put(key.toString(), value);
+        this.configMap.put(key.toString(), value);
     }
 
     @Override
     public int size() {
-        return configMap.size();
+        return this.configMap.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return configMap.isEmpty();
+        return this.configMap.isEmpty();
     }
 
     @Override
@@ -104,82 +111,84 @@ public abstract class NavigableMapConfig implements Config {
 
     @Override
     public boolean containsValue(Object value) {
-        return configMap.containsValue(value);
+        return this.configMap.containsValue(value);
     }
 
     @Override
     public Object get(Object key) {
-        return configMap.getProperty(key.toString());
+        return this.configMap.getProperty(key.toString());
     }
 
     @Override
     public Object put(String key, Object value) {
-        return configMap.put(key, value);
+        return this.configMap.put(key, value);
     }
 
     @Override
     public Object remove(Object key) {
-        return configMap.remove(key);
+        return this.configMap.remove(key);
     }
 
     @Override
     public void putAll(Map<? extends String, ?> m) {
-        configMap.putAll(m);
+        this.configMap.putAll(m);
     }
 
     @Override
     public void clear() {
-        configMap.clear();
+        this.configMap.clear();
     }
 
     @Override
     public Set<String> keySet() {
-        return configMap.keySet();
+        return this.configMap.keySet();
     }
 
     @Override
     public Collection<Object> values() {
-        return configMap.values();
+        return this.configMap.values();
     }
 
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        return configMap.entrySet();
+        return this.configMap.entrySet();
     }
 
     @Override
     @Deprecated
     public Map<String, Object> flatten() {
-        if(LOG.isWarnEnabled()) {
-            LOG.warn("A plugin or your application called the flatten() method which can degrade startup performance");
+        if (logger.isWarnEnabled()) {
+            logger.warn("A plugin or your application called the flatten() method which can degrade startup performance");
         }
-        return configMap;
+        return this.configMap;
     }
 
     @Override
     public Properties toProperties() {
-        return configMap.toProperties();
+        return this.configMap.toProperties();
     }
 
     @Override
     public Object navigate(String... path) {
-        return configMap.navigate(path);
+        return this.configMap.navigate(path);
     }
 
     @Override
     public Config merge(Map<String, Object> toMerge) {
-        configMap.merge(toMerge, true);
+        this.configMap.merge(toMerge, true);
         return this;
     }
 
     public Object asType(Class c) {
-        if(c==Boolean.class || c==boolean.class) return false;
+        if (c == Boolean.class || c == boolean.class) {
+            return false;
+        }
         return null;
     }
 
     @Override
     public Iterator<Entry<String, Object>> iterator() {
-        return DefaultGroovyMethods.iterator(configMap);
+        return DefaultGroovyMethods.iterator(this.configMap);
     }
 
     @Override
@@ -205,7 +214,7 @@ public abstract class NavigableMapConfig implements Config {
     @Override
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue, List<T> allowedValues) {
         T value = getProperty(key, targetType, defaultValue);
-        if(!allowedValues.contains(value)) {
+        if (!allowedValues.contains(value)) {
             throw new GrailsConfigurationException("Invalid configuration value [$value] for key [${key}]. Possible values $allowedValues");
         }
         return value;
@@ -215,10 +224,10 @@ public abstract class NavigableMapConfig implements Config {
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
         Object value = findInSystemEnvironment(key);
         if (value == null) {
-            value = getValueWithDotNotatedKeySupport(configMap, key);
+            value = getValueWithDotNotatedKeySupport(this.configMap, key);
         }
         if (value == null) {
-            value = configMap.get(key);
+            value = this.configMap.get(key);
         }
 
         return convertValueIfNecessary(value, targetType, defaultValue);
@@ -277,20 +286,23 @@ public abstract class NavigableMapConfig implements Config {
             return cache.get(from);
         }
         final Map<Object, Object> to = new LinkedHashMap<>();
-        for (Map.Entry<String, Object> entry: from.entrySet()) {
+        for (Map.Entry<String, Object> entry : from.entrySet()) {
             if (entry.getValue() instanceof NavigableMap) {
                 to.put(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
-            } else if (entry.getValue() instanceof List) {
+            }
+            else if (entry.getValue() instanceof List) {
                 List<Object> newList = new ArrayList<>();
-                for (Object o: (List<?>) entry.getValue()) {
+                for (Object o : (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
-                    } else {
+                    }
+                    else {
                         newList.add(o);
                     }
                 }
                 to.put(entry.getKey(), newList);
-            } else {
+            }
+            else {
                 to.put(entry.getKey(), entry.getValue());
             }
         }
@@ -299,16 +311,18 @@ public abstract class NavigableMapConfig implements Config {
     }
 
     private ConfigObject convertPropsToMap(ConfigObject config) {
-        for(Map.Entry<String, Object> entry: (Set<Map.Entry<String, Object>>) config.entrySet()) {
+        for (Map.Entry<String, Object> entry : (Set<Map.Entry<String, Object>>) config.entrySet()) {
             final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
             if (entry.getValue() instanceof NavigableMap) {
                 config.setProperty(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
-            } else if (entry.getValue() instanceof List) {
+            }
+            else if (entry.getValue() instanceof List) {
                 final List<Object> newList = new ArrayList<>();
-                for (Object o: (List<?>) entry.getValue()) {
+                for (Object o : (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
-                    } else {
+                    }
+                    else {
                         newList.add(o);
                     }
                 }
@@ -324,25 +338,28 @@ public abstract class NavigableMapConfig implements Config {
                 if (originalValue instanceof NavigableMap && targetType.equals(Map.class)) {
                     final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
                     return (T) convertToMap((NavigableMap) originalValue, cache);
-                } else {
+                }
+                else {
                     return (T) originalValue;
                 }
-            } else {
+            }
+            else {
                 if (!(originalValue instanceof NavigableMap) || Map.class.isAssignableFrom(targetType)) {
                     try {
-                        T value = conversionService.convert(originalValue, targetType);
+                        T value = this.conversionService.convert(originalValue, targetType);
                         if (value instanceof ConfigObject) {
                             convertPropsToMap((ConfigObject) value);
                         }
                         return DefaultGroovyMethods.asBoolean(value) ? value : defaultValue;
-                    } catch (ConversionException e) {
+                    }
+                    catch (ConversionException e) {
                         if (targetType.isEnum()) {
                             String stringValue = originalValue.toString();
                             try {
                                 T value = (T) toEnumValue(targetType, stringValue);
                                 return value;
-                            } catch (Throwable e2) {
-                                // ignore e2 and throw original
+                            }
+                            catch (Throwable ignored) {
                             }
                         }
                     }
@@ -359,8 +376,8 @@ public abstract class NavigableMapConfig implements Config {
     @Override
     public String getRequiredProperty(String key) throws IllegalStateException {
         String value = getProperty(key);
-        if(GrailsStringUtils.isBlank(value)) {
-            throw new IllegalStateException("Value for key ["+key+"] cannot be resolved");
+        if (GrailsStringUtils.isBlank(value)) {
+            throw new IllegalStateException("Value for key [" + key + "] cannot be resolved");
         }
         return value;
     }
@@ -368,21 +385,10 @@ public abstract class NavigableMapConfig implements Config {
     @Override
     public <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
         T value = getProperty(key, targetType);
-        if(value == null) {
-            throw new IllegalStateException("Value for key ["+key+"] cannot be resolved");
+        if (value == null) {
+            throw new IllegalStateException("Value for key [" + key + "] cannot be resolved");
         }
         return value;
-    }
-
-    public static class ClassConversionException extends ConversionException {
-
-        public ClassConversionException(Class<?> actual, Class<?> expected) {
-            super(String.format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
-        }
-
-        public ClassConversionException(String actual, Class<?> expected, Exception ex) {
-            super(String.format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()), ex);
-        }
     }
 
     /**
@@ -407,7 +413,8 @@ public abstract class NavigableMapConfig implements Config {
         for (int i = 0; i < keys.size(); i++) {
             if (i == 0) {
                 value = configMap.get(keys.get(i));
-            } else if (value instanceof Map) {
+            }
+            else if (value instanceof Map) {
                 value = ((Map) value).get(keys.get(i));
             }
         }
@@ -415,10 +422,23 @@ public abstract class NavigableMapConfig implements Config {
     }
 
     private List<String> convertTokensIntoArrayList(StringTokenizer st) {
-        List<String> elements = new ArrayList<String>();
+        List<String> elements = new ArrayList<>();
         while (st.hasMoreTokens()) {
             elements.add(st.nextToken());
         }
         return elements;
     }
+
+    public static class ClassConversionException extends ConversionException {
+
+        public ClassConversionException(Class<?> actual, Class<?> expected) {
+            super(String.format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
+        }
+
+        public ClassConversionException(String actual, Class<?> expected, Exception ex) {
+            super(String.format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()), ex);
+        }
+
+    }
+
 }

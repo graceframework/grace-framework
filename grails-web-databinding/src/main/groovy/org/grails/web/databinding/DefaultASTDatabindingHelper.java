@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 SpringSource
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,18 @@
  */
 package org.grails.web.databinding;
 
-import grails.util.CollectionUtils;
-import grails.util.GrailsNameUtils;
+import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.ast.MethodNode;
@@ -27,55 +37,49 @@ import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.ListExpression;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
+
+import grails.util.CollectionUtils;
+import grails.util.GrailsNameUtils;
+
 import org.grails.compiler.injection.GrailsASTUtils;
 
-import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
+
     public static final String CONSTRAINTS_FIELD_NAME = "constraints";
+
     public static final String BINDABLE_CONSTRAINT_NAME = "bindable";
 
     public static final String DEFAULT_DATABINDING_WHITELIST = "$defaultDatabindingWhiteList";
+
     public static final String NO_BINDABLE_PROPERTIES = "$_NO_BINDABLE_PROPERTIES_$";
 
-    private static Map<ClassNode, Set<String>> CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES = new HashMap<ClassNode, Set<String>>();
+    private static final Map<ClassNode, Set<String>> CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES = new HashMap<>();
 
-    @SuppressWarnings("serial")
-    private static final List<ClassNode> SIMPLE_TYPES = new ArrayList<ClassNode>() {{
-       add(new ClassNode(Boolean.class));
-       add(new ClassNode(Boolean.TYPE));
-       add(new ClassNode(Byte.class));
-       add(new ClassNode(Byte.TYPE));
-       add(new ClassNode(Character.class));
-       add(new ClassNode(Character.TYPE));
-       add(new ClassNode(Short.class));
-       add(new ClassNode(Short.TYPE));
-       add(new ClassNode(Integer.class));
-       add(new ClassNode(Integer.TYPE));
-       add(new ClassNode(Long.class));
-       add(new ClassNode(Long.TYPE));
-       add(new ClassNode(Float.class));
-       add(new ClassNode(Float.TYPE));
-       add(new ClassNode(Double.class));
-       add(new ClassNode(Double.TYPE));
-       add(new ClassNode(BigInteger.class));
-       add(new ClassNode(BigDecimal.class));
-       add(new ClassNode(String.class));
-       add(new ClassNode(URL.class));
-    }};
-    
-    private static final Set<String> DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT = CollectionUtils.newSet("id", "version", "dateCreated", "lastUpdated");
-    
+    private static final Set<String> DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT = CollectionUtils.newSet("id",
+            "version", "dateCreated", "lastUpdated");
+
+    private static final List<ClassNode> SIMPLE_TYPES = Arrays.asList(
+            new ClassNode(Boolean.class),
+            new ClassNode(Boolean.TYPE),
+            new ClassNode(Byte.class),
+            new ClassNode(Byte.TYPE),
+            new ClassNode(Character.class),
+            new ClassNode(Character.TYPE),
+            new ClassNode(Short.class),
+            new ClassNode(Short.TYPE),
+            new ClassNode(Integer.class),
+            new ClassNode(Integer.TYPE),
+            new ClassNode(Long.class),
+            new ClassNode(Long.TYPE),
+            new ClassNode(Float.class),
+            new ClassNode(Float.TYPE),
+            new ClassNode(Double.class),
+            new ClassNode(Double.TYPE),
+            new ClassNode(BigInteger.class),
+            new ClassNode(BigDecimal.class),
+            new ClassNode(String.class),
+            new ClassNode(URL.class));
+
     public void injectDatabindingCode(final SourceUnit source, final GeneratorContext context, final ClassNode classNode) {
         addDefaultDatabindingWhitelistField(source, classNode);
     }
@@ -106,7 +110,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                     listExpression.addExpression(new ConstantExpression(propertyName + ".*"));
                 }
             }
-        } else {
+        }
+        else {
             listExpression.addExpression(new ConstantExpression(NO_BINDABLE_PROPERTIES));
         }
 
@@ -129,16 +134,16 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         final Set<String> propertyNames;
         if (CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.containsKey(parentClassNode)) {
             propertyNames = CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.get(parentClassNode);
-        } else {
+        }
+        else {
             propertyNames = getPropertyNamesToIncludeInWhiteList(sourceUnit, parentClassNode);
         }
         return propertyNames;
     }
 
     private Set<String> getPropertyNamesToIncludeInWhiteList(final SourceUnit sourceUnit, final ClassNode classNode) {
-        final Set<String> propertyNamesToIncludeInWhiteList = new HashSet<String>();
-        final Set<String> unbindablePropertyNames = new HashSet<String>();
-        final Set<String> bindablePropertyNames = new HashSet<String>();
+        final Set<String> unbindablePropertyNames = new HashSet<>();
+        final Set<String> bindablePropertyNames = new HashSet<>();
         if (!classNode.getSuperClass().equals(new ClassNode(Object.class))) {
             final Set<String> parentClassPropertyNames = getPropertyNamesToIncludeInWhiteListForParentClass(sourceUnit, classNode.getSuperClass());
             bindablePropertyNames.addAll(parentClassPropertyNames);
@@ -149,7 +154,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
             final Expression constraintsInitialExpression = constraintsFieldNode.getInitialExpression();
             if (constraintsInitialExpression instanceof ClosureExpression) {
 
-                final Map<String, Map<String, Expression>> constraintsInfo = GrailsASTUtils.getConstraintMetadata((ClosureExpression)constraintsInitialExpression);
+                final Map<String, Map<String, Expression>> constraintsInfo =
+                        GrailsASTUtils.getConstraintMetadata((ClosureExpression) constraintsInitialExpression);
 
                 for (Entry<String, Map<String, Expression>> constraintConfig : constraintsInfo.entrySet()) {
                     final String propertyName = constraintConfig.getKey();
@@ -169,11 +175,13 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                                 if (Boolean.TRUE.equals(bindableValue)) {
                                     unbindablePropertyNames.remove(propertyName);
                                     bindablePropertyNames.add(propertyName);
-                                } else {
+                                }
+                                else {
                                     bindablePropertyNames.remove(propertyName);
                                     unbindablePropertyNames.add(propertyName);
                                 }
-                            } else {
+                            }
+                            else {
                                 GrailsASTUtils.warning(sourceUnit, valueExpression, "The bindable constraint for property [" +
                                         propertyName + "] in class [" + classNode.getName() +
                                         "] has a value which is not a boolean literal and will be ignored.");
@@ -187,7 +195,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         final Set<String> fieldsInTransientsList = getPropertyNamesExpressedInTransientsList(classNode);
         final boolean isDomainClass = GrailsASTUtils.isDomainClass(classNode, sourceUnit);
 
-        propertyNamesToIncludeInWhiteList.addAll(bindablePropertyNames);
+        final Set<String> propertyNamesToIncludeInWhiteList = new HashSet<>(bindablePropertyNames);
         final List<FieldNode> fields = classNode.getFields();
         for (FieldNode fieldNode : fields) {
             final String fieldName = fieldNode.getName();
@@ -211,7 +219,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                             final String restOfMethodName = methodName.substring(3);
                             final String propertyName = GrailsNameUtils.getPropertyName(restOfMethodName);
                             if (!unbindablePropertyNames.contains(propertyName) &&
-                                (!isDomainClass || !DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT.contains(propertyName))) {
+                                    (!isDomainClass || !DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT.contains(propertyName))) {
                                 propertyNamesToIncludeInWhiteList.add(propertyName);
                             }
                         }
@@ -238,7 +246,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                 fieldsInTransientsList.contains(fieldName) ||
                 (fieldNode.getType().equals(new ClassNode(Object.class)) && !fieldNode.getType().isUsingGenerics())) {
             shouldInclude = false;
-        } else if (isDomainClass) {
+        }
+        else if (isDomainClass) {
             if (DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT.contains(fieldName)) {
                 shouldInclude = false;
             }
@@ -247,7 +256,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
     }
 
     private Set<String> getPropertyNamesExpressedInTransientsList(final ClassNode classNode) {
-        final Set<String> transientFields = new HashSet<String>();
+        final Set<String> transientFields = new HashSet<>();
         final FieldNode transientsField = classNode.getField("transients");
         if (transientsField != null && transientsField.isStatic()) {
             final Expression initialValueExpression = transientsField.getInitialValueExpression();
@@ -267,4 +276,5 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         }
         return transientFields;
     }
+
 }

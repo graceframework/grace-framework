@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,24 @@
  */
 package org.grails.config;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import groovy.transform.CompileStatic;
+
 import grails.config.Config;
 import grails.util.GrailsStringUtils;
-import groovy.transform.CompileStatic;
+
 import org.grails.core.exceptions.GrailsConfigurationException;
-import org.springframework.util.ClassUtils;
-
-import java.util.*;
-
 
 /**
  * A {@link Config} composed of other Configs
@@ -33,7 +43,7 @@ import java.util.*;
 @CompileStatic
 public class CompositeConfig implements Config {
 
-    protected Deque<Config> configs = new ArrayDeque<Config>();
+    protected final Deque<Config> configs = new ArrayDeque<>();
 
     /**
      * Adds a config at the highest level of precedence
@@ -41,7 +51,7 @@ public class CompositeConfig implements Config {
      * @param config
      */
     public void addFirst(Config config) {
-        configs.addFirst(config);
+        this.configs.addFirst(config);
     }
 
     /**
@@ -50,14 +60,14 @@ public class CompositeConfig implements Config {
      * @param config
      */
     public void addLast(Config config) {
-        configs.addLast(config);
+        this.configs.addLast(config);
     }
 
     @Override
     @Deprecated
     public Map<String, Object> flatten() {
-        Map<String, Object> flattened = new LinkedHashMap<String, Object>();
-        for(Config c : configs) {
+        Map<String, Object> flattened = new LinkedHashMap<>();
+        for (Config c : this.configs) {
             flattened.putAll(c.flatten());
         }
         return flattened;
@@ -66,7 +76,7 @@ public class CompositeConfig implements Config {
     @Override
     public Properties toProperties() {
         Properties properties = new Properties();
-        for(Config c : configs) {
+        for (Config c : this.configs) {
             properties.putAll(c.toProperties());
         }
         return properties;
@@ -80,7 +90,7 @@ public class CompositeConfig implements Config {
     @Override
     public <T> T getProperty(String key, Class<T> targetType, T defaultValue, List<T> allowedValues) {
         T v = getProperty(key, targetType, defaultValue);
-        if(!allowedValues.contains(v)) {
+        if (!allowedValues.contains(v)) {
             throw new GrailsConfigurationException("Invalid configuration value [$value] for key [${key}]. Possible values $allowedValues");
         }
         return v;
@@ -88,9 +98,11 @@ public class CompositeConfig implements Config {
 
     @Override
     public Object getAt(Object key) {
-        for(Config c : configs) {
+        for (Config c : this.configs) {
             Object v = c.getAt(key);
-            if(v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -102,18 +114,19 @@ public class CompositeConfig implements Config {
 
     @Override
     public Object navigate(String... path) {
-        for(Config c : configs) {
+        for (Config c : this.configs) {
             Object v = c.navigate(path);
-            if(v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
 
-
     @Override
     public int size() {
         int size = 0;
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             size += config.size();
         }
         return size;
@@ -121,8 +134,8 @@ public class CompositeConfig implements Config {
 
     @Override
     public boolean isEmpty() {
-        for (Config config : configs) {
-            if(!config.isEmpty()) {
+        for (Config config : this.configs) {
+            if (!config.isEmpty()) {
                 return false;
             }
         }
@@ -131,25 +144,31 @@ public class CompositeConfig implements Config {
 
     @Override
     public boolean containsKey(Object key) {
-        for (Config config : configs) {
-            if(config.containsKey(key)) return true;
+        for (Config config : this.configs) {
+            if (config.containsKey(key)) {
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        for (Config config : configs) {
-            if(config.containsValue(value)) return true;
+        for (Config config : this.configs) {
+            if (config.containsValue(value)) {
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public Object get(Object key) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             Object v = config.get(key);
-            if(v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -181,8 +200,8 @@ public class CompositeConfig implements Config {
 
     @Override
     public Set<String> keySet() {
-        Set<String> entries = new HashSet<String>();
-        for (Config config : configs) {
+        Set<String> entries = new HashSet<>();
+        for (Config config : this.configs) {
             entries.addAll(config.keySet());
         }
         return entries;
@@ -190,8 +209,8 @@ public class CompositeConfig implements Config {
 
     @Override
     public Collection<Object> values() {
-        Collection<Object> values = new ArrayList<Object>();
-        for (Config config : configs) {
+        Collection<Object> values = new ArrayList<>();
+        for (Config config : this.configs) {
             values.addAll(config.values());
         }
         return values;
@@ -199,8 +218,8 @@ public class CompositeConfig implements Config {
 
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
-        Set<Map.Entry<String,Object>> entries = new HashSet<Map.Entry<String,Object>>();
-        for (Config config : configs) {
+        Set<Map.Entry<String, Object>> entries = new HashSet<>();
+        for (Config config : this.configs) {
             entries.addAll(config.entrySet());
         }
         return entries;
@@ -219,9 +238,11 @@ public class CompositeConfig implements Config {
 
     @Override
     public <T> T getProperty(String key, Class<T> targetType) {
-        for (Config config : configs) {
+        for (Config config : this.configs) {
             T v = config.getProperty(key, targetType);
-            if(v != null) return v;
+            if (v != null) {
+                return v;
+            }
         }
         return null;
     }
@@ -235,7 +256,7 @@ public class CompositeConfig implements Config {
     @Override
     public String getRequiredProperty(String key) throws IllegalStateException {
         String value = getProperty(key);
-        if(GrailsStringUtils.isBlank(value)) {
+        if (GrailsStringUtils.isBlank(value)) {
             throw new IllegalStateException("Value for key [$key] cannot be resolved");
         }
         return value;
@@ -244,7 +265,7 @@ public class CompositeConfig implements Config {
     @Override
     public <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
         T value = getProperty(key, targetType);
-        if(value == null) {
+        if (value == null) {
             throw new IllegalStateException("Value for key [$key] cannot be resolved");
         }
         return value;
@@ -265,4 +286,5 @@ public class CompositeConfig implements Config {
     getProperty(String key) {
         return getProperty(key, String.class);
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,10 @@
  */
 package org.grails.encoder.impl;
 
+import org.springframework.web.util.HtmlUtils;
+
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.Decoder;
-import org.springframework.web.util.HtmlUtils;
 
 /**
  * HTML4 decoder that uses Spring's HtmlUtils.htmlUnescape to do the unescaping.
@@ -43,4 +44,5 @@ public class HTML4Decoder implements Decoder {
     public CodecIdentifier getCodecIdentifier() {
         return HTML4Encoder.HTML4_CODEC_IDENTIFIER;
     }
+
 }

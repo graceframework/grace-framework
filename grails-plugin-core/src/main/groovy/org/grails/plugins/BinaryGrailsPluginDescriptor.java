@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,15 @@
  */
 package org.grails.plugins;
 
-import groovy.xml.slurpersupport.GPathResult;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.io.support.SpringIOUtils;
-import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import groovy.xml.slurpersupport.GPathResult;
+import org.springframework.core.io.Resource;
+
+import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.io.support.SpringIOUtils;
 
 /**
  * Holds a reference to the parsed grails-plugin.xml descriptor and the
@@ -31,7 +33,9 @@ import java.util.List;
 public class BinaryGrailsPluginDescriptor {
 
     private final Resource resource;
+
     private final List<String> providedlassNames;
+
     private GPathResult parsedXml;
 
     public BinaryGrailsPluginDescriptor(Resource resource, List<String> providedlassNames) {
@@ -45,39 +49,43 @@ public class BinaryGrailsPluginDescriptor {
      * @return The resource instance
      */
     public Resource getResource() {
-        return resource;
+        return this.resource;
     }
 
     /**
      * @return The class names provided by the plugin
      */
     public List<String> getProvidedlassNames() {
-        return providedlassNames;
+        return this.providedlassNames;
     }
 
     /**
      * @return The parsed descriptor
      */
     public GPathResult getParsedXml() {
-        if(parsedXml == null) {
+        if (this.parsedXml == null) {
             InputStream inputStream;
             try {
-                inputStream = resource.getInputStream();
-            } catch (IOException e) {
-                throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
+                inputStream = this.resource.getInputStream();
+            }
+            catch (IOException e) {
+                throw new GrailsConfigurationException("Error parsing plugin descript: " + this.resource.getFilename(), e);
             }
             try {
-                parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
-            } catch (Throwable e) {
-                throw new GrailsConfigurationException("Error parsing plugin descript: " + resource.getFilename(), e);
-            } finally {
+                this.parsedXml = SpringIOUtils.createXmlSlurper().parse(inputStream);
+            }
+            catch (Throwable e) {
+                throw new GrailsConfigurationException("Error parsing plugin descript: " + this.resource.getFilename(), e);
+            }
+            finally {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
-                    // ignore
+                }
+                catch (IOException ignored) {
                 }
             }
         }
-        return parsedXml;
+        return this.parsedXml;
     }
+
 }

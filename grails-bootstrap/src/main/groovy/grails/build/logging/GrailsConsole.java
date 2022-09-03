@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,15 @@
  */
 package grails.build.logging;
 
-import static org.fusesource.jansi.Ansi.ansi;
-import static org.fusesource.jansi.Ansi.Color.DEFAULT;
-import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.Color.YELLOW;
-import static org.fusesource.jansi.Ansi.Erase.FORWARD;
-import grails.util.Environment;
-
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
@@ -37,17 +38,19 @@ import jline.console.history.History;
 import jline.internal.Log;
 import jline.internal.ShutdownHooks;
 import jline.internal.TerminalLineSettings;
-
 import org.apache.tools.ant.BuildException;
-import org.grails.build.interactive.CandidateListCompletionHandler;
-import org.grails.build.logging.GrailsConsoleErrorPrintStream;
-import org.grails.build.logging.GrailsConsolePrintStream;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 import org.fusesource.jansi.AnsiConsole;
+
+import grails.util.Environment;
+
+import org.grails.build.interactive.CandidateListCompletionHandler;
+import org.grails.build.logging.GrailsConsoleErrorPrintStream;
+import org.grails.build.logging.GrailsConsolePrintStream;
 
 /**
  * Utility class for delivering console output in a nicely formatted way.
@@ -60,24 +63,41 @@ public class GrailsConsole implements ConsoleLogger {
     private static GrailsConsole instance;
 
     public static final String ENABLE_TERMINAL = "grails.console.enable.terminal";
+
     public static final String ENABLE_INTERACTIVE = "grails.console.enable.interactive";
+
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     public static final String CATEGORY_SEPARATOR = "|";
+
     public static final String PROMPT = "grails> ";
+
     public static final String SPACE = " ";
+
     public static final String ERROR = "Error";
+
     public static final String WARNING = "Warning";
+
     public static final String HISTORYFILE = ".grails_history";
+
     public static final String STACKTRACE_FILTERED_MESSAGE = " (NOTE: Stack trace has been filtered. Use --verbose to see entire trace.)";
+
     public static final String STACKTRACE_MESSAGE = " (Use --stacktrace to see the full trace)";
-    public static final Character SECURE_MASK_CHAR = new Character('*');
+
+    public static final Character SECURE_MASK_CHAR = '*';
+
     private PrintStream originalSystemOut;
+
     private PrintStream originalSystemErr;
+
     private StringBuilder maxIndicatorString;
+
     private int cursorMove;
+
     private Thread shutdownHookThread;
+
     private Character defaultInputMask = null;
-    
+
     /**
      * Whether to enable verbose mode
      */
@@ -94,12 +114,14 @@ public class GrailsConsole implements ConsoleLogger {
      * The progress indicator to use
      */
     String indicator = ".";
+
     /**
      * The last message that was printed
      */
     String lastMessage = "";
 
     Ansi lastStatus = null;
+
     /**
      * The reader to read info from the console
      */
@@ -108,6 +130,7 @@ public class GrailsConsole implements ConsoleLogger {
     Terminal terminal;
 
     PrintStream out;
+
     PrintStream err;
 
     History history;
@@ -115,13 +138,16 @@ public class GrailsConsole implements ConsoleLogger {
     /**
      * The category of the current output
      */
-    @SuppressWarnings("serial")
     Stack<String> category = new Stack<String>() {
+
         @Override
         public String toString() {
-            if (size() == 1) return peek() + CATEGORY_SEPARATOR;
-            return DefaultGroovyMethods.join((Iterable)this, CATEGORY_SEPARATOR) + CATEGORY_SEPARATOR;
+            if (size() == 1) {
+                return peek() + CATEGORY_SEPARATOR;
+            }
+            return DefaultGroovyMethods.join((Iterable) this, CATEGORY_SEPARATOR) + CATEGORY_SEPARATOR;
         }
+
     };
 
     /**
@@ -135,41 +161,35 @@ public class GrailsConsole implements ConsoleLogger {
     private boolean userInputActive;
 
     public void addShutdownHook() {
-        if( !Environment.isFork() ) {
-            shutdownHookThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    beforeShutdown();
-                }
-            });
-            Runtime.getRuntime().addShutdownHook(shutdownHookThread);
+        if (!Environment.isFork()) {
+            this.shutdownHookThread = new Thread(this::beforeShutdown);
+            Runtime.getRuntime().addShutdownHook(this.shutdownHookThread);
         }
     }
-    
+
     public void removeShutdownHook() {
-        if(shutdownHookThread != null) {
-            Runtime.getRuntime().removeShutdownHook(shutdownHookThread);
+        if (this.shutdownHookThread != null) {
+            Runtime.getRuntime().removeShutdownHook(this.shutdownHookThread);
         }
     }
-    
-    
+
     protected GrailsConsole() throws IOException {
-        cursorMove = 1;
+        this.cursorMove = 1;
 
         initialize(System.in, System.out, System.err);
 
         // bit of a WTF this, but see no other way to allow a customization indicator
-        maxIndicatorString = new StringBuilder(indicator).append(indicator).append(indicator).append(indicator).append(indicator);
-
+        this.maxIndicatorString = new StringBuilder(this.indicator)
+                .append(this.indicator).append(this.indicator).append(this.indicator).append(this.indicator);
     }
-    
+
     /**
      * Use in testing when System.out, System.err or System.in change
      * @throws IOException
      */
     public void reinitialize(InputStream systemIn, PrintStream systemOut, PrintStream systemErr) throws IOException {
-        if(reader != null) {
-            reader.shutdown();
+        if (this.reader != null) {
+            this.reader.close();
         }
         initialize(systemIn, systemOut, systemErr);
     }
@@ -180,53 +200,54 @@ public class GrailsConsole implements ConsoleLogger {
         redirectSystemOutAndErr(true);
 
         System.setProperty(ShutdownHooks.JLINE_SHUTDOWNHOOK, "false");
-        
+
         if (isInteractiveEnabled()) {
-            reader = createConsoleReader(systemIn);
-            reader.setBellEnabled(false);
-            reader.setCompletionHandler(new CandidateListCompletionHandler());
+            this.reader = createConsoleReader(systemIn);
+            this.reader.setBellEnabled(false);
+            this.reader.setCompletionHandler(new CandidateListCompletionHandler());
             if (isActivateTerminal()) {
-                terminal = createTerminal();
+                this.terminal = createTerminal();
             }
 
-            history = prepareHistory();
-            if (history != null) {
-                reader.setHistory(history);
+            this.history = prepareHistory();
+            if (this.history != null) {
+                this.reader.setHistory(this.history);
             }
         }
         else if (isActivateTerminal()) {
-            terminal = createTerminal();
+            this.terminal = createTerminal();
         }
     }
 
     protected void bindSystemOutAndErr(PrintStream systemOut, PrintStream systemErr) {
-        originalSystemOut = unwrapPrintStream(systemOut);
-        out = wrapInPrintStream(originalSystemOut);
-        originalSystemErr = unwrapPrintStream(systemErr);
-        err = wrapInPrintStream(originalSystemErr);
+        this.originalSystemOut = unwrapPrintStream(systemOut);
+        this.out = wrapInPrintStream(this.originalSystemOut);
+        this.originalSystemErr = unwrapPrintStream(systemErr);
+        this.err = wrapInPrintStream(this.originalSystemErr);
     }
-    
+
     private PrintStream unwrapPrintStream(PrintStream printStream) {
-        if(printStream instanceof GrailsConsolePrintStream) {
-            return ((GrailsConsolePrintStream)printStream).getTargetOut();
+        if (printStream instanceof GrailsConsolePrintStream) {
+            return ((GrailsConsolePrintStream) printStream).getTargetOut();
         }
-        if(printStream instanceof GrailsConsoleErrorPrintStream) {
-            return ((GrailsConsoleErrorPrintStream)printStream).getTargetOut();
+        if (printStream instanceof GrailsConsoleErrorPrintStream) {
+            return ((GrailsConsoleErrorPrintStream) printStream).getTargetOut();
         }
         return printStream;
     }
 
     private PrintStream wrapInPrintStream(PrintStream printStream) {
         OutputStream ansiWrapped = ansiWrap(printStream);
-        if(ansiWrapped instanceof PrintStream) {
-            return (PrintStream)ansiWrapped;
-        } else {
+        if (ansiWrapped instanceof PrintStream) {
+            return (PrintStream) ansiWrapped;
+        }
+        else {
             return new PrintStream(ansiWrapped, true);
         }
     }
 
     public PrintStream getErr() {
-        return err;
+        return this.err;
     }
 
     public void setErr(PrintStream err) {
@@ -247,7 +268,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     private boolean readPropOrTrue(String prop) {
         String property = System.getProperty(prop);
-        return property == null ? true : Boolean.valueOf(property);
+        return property == null || Boolean.parseBoolean(property);
     }
 
     protected ConsoleReader createConsoleReader(InputStream systemIn) throws IOException {
@@ -256,10 +277,11 @@ public class GrailsConsole implements ConsoleLogger {
         final PrintStream originalOut = Log.getOutput();
         try {
             Log.setOutput(nullOutput);
-            ConsoleReader consoleReader = new ConsoleReader(systemIn, out);
+            ConsoleReader consoleReader = new ConsoleReader(systemIn, this.out);
             consoleReader.setExpandEvents(false);
             return consoleReader;
-        } finally {
+        }
+        finally {
             Log.setOutput(originalOut);
         }
     }
@@ -270,16 +292,16 @@ public class GrailsConsole implements ConsoleLogger {
      * is controlled by the jline.terminal system property.
      */
     protected Terminal createTerminal() {
-        terminal = TerminalFactory.create();
-        if(isWindows()) {
-            terminal.setEchoEnabled(true);
+        this.terminal = TerminalFactory.create();
+        if (isWindows()) {
+            this.terminal.setEchoEnabled(true);
         }
-        return terminal;
+        return this.terminal;
     }
 
     public void resetCompleters() {
         final ConsoleReader reader = getReader();
-        if(reader != null) {
+        if (reader != null) {
             Collection<Completer> completers = reader.getCompleters();
             for (Completer completer : completers) {
                 reader.removeCompleter(completer);
@@ -292,6 +314,7 @@ public class GrailsConsole implements ConsoleLogger {
             }
         }
     }
+
     /**
      * Prepares a history file to be used by the ConsoleReader. This file
      * will live in the home directory of the user.
@@ -320,7 +343,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
+        return System.getProperty("os.name").toLowerCase().contains("windows");
     }
 
     public static synchronized GrailsConsole getInstance() {
@@ -329,19 +352,20 @@ public class GrailsConsole implements ConsoleLogger {
                 final GrailsConsole console = createInstance();
                 console.addShutdownHook();
                 setInstance(console);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new RuntimeException("Cannot create grails console: " + e.getMessage(), e);
             }
         }
         return instance;
     }
-    
+
     public static synchronized void removeInstance() {
         if (instance != null) {
             instance.removeShutdownHook();
             instance.restoreOriginalSystemOutAndErr();
-            if(instance.getReader() != null) {
-                instance.getReader().shutdown();
+            if (instance.getReader() != null) {
+                instance.getReader().close();
             }
             instance = null;
         }
@@ -354,27 +378,26 @@ public class GrailsConsole implements ConsoleLogger {
 
     protected void restoreTerminal() {
         try {
-            terminal.restore();
-        } catch (Exception e) {
-            // ignore
+            this.terminal.restore();
         }
-        if(terminal instanceof UnixTerminal) {
+        catch (Exception ignored) {
+        }
+        if (this.terminal instanceof UnixTerminal) {
             // workaround for GRAILS-11494
             try {
                 new TerminalLineSettings().set("sane");
-            } catch (Exception e) {
-                // ignore
+            }
+            catch (Exception ignored) {
             }
         }
     }
 
     protected void persistHistory() {
-        if(history instanceof Flushable) {
+        if (this.history instanceof Flushable) {
             try {
-                ((Flushable)history).flush();
+                ((Flushable) this.history).flush();
             }
-            catch (Throwable e) {
-                // ignore exception
+            catch (Throwable ignored) {
             }
         }
     }
@@ -386,10 +409,10 @@ public class GrailsConsole implements ConsoleLogger {
 
     protected void redirectSystemOutAndErr(boolean force) {
         if (force || !(System.out instanceof GrailsConsolePrintStream)) {
-            System.setOut(new GrailsConsolePrintStream(out));
+            System.setOut(new GrailsConsolePrintStream(this.out));
         }
-        if (force || !(System.err instanceof GrailsConsoleErrorPrintStream )) {
-            System.setErr(new GrailsConsoleErrorPrintStream(err));
+        if (force || !(System.err instanceof GrailsConsoleErrorPrintStream)) {
+            System.setErr(new GrailsConsoleErrorPrintStream(this.err));
         }
     }
 
@@ -400,7 +423,8 @@ public class GrailsConsole implements ConsoleLogger {
                 @SuppressWarnings("unchecked")
                 Class<? extends GrailsConsole> klass = (Class<? extends GrailsConsole>) Class.forName(className);
                 return klass.newInstance();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -434,7 +458,7 @@ public class GrailsConsole implements ConsoleLogger {
      * @return Whether verbose output is being used
      */
     public boolean isVerbose() {
-        return verbose;
+        return this.verbose;
     }
 
     /**
@@ -442,7 +466,7 @@ public class GrailsConsole implements ConsoleLogger {
      * @return Whether to show stack traces
      */
     public boolean isStacktrace() {
-        return stacktrace;
+        return this.stacktrace;
     }
 
     /**
@@ -450,7 +474,7 @@ public class GrailsConsole implements ConsoleLogger {
      */
     public InputStream getInput() {
         assertAllowInput();
-        return reader.getInput();
+        return this.reader.getInput();
     }
 
     private void assertAllowInput() {
@@ -458,7 +482,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     private void assertAllowInput(String prompt) {
-        if (reader == null) {
+        if (this.reader == null) {
             String msg = "User input is not enabled, cannot obtain input stream";
             if (prompt != null) {
                 msg = msg + " - while trying: " + prompt;
@@ -472,7 +496,7 @@ public class GrailsConsole implements ConsoleLogger {
      * @return The last message logged
      */
     public String getLastMessage() {
-        return lastMessage;
+        return this.lastMessage;
     }
 
     public void setLastMessage(String lastMessage) {
@@ -480,19 +504,19 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public ConsoleReader getReader() {
-        return reader;
+        return this.reader;
     }
 
     public Terminal getTerminal() {
-        return terminal;
+        return this.terminal;
     }
 
     public PrintStream getOut() {
-        return out;
+        return this.out;
     }
 
     public Stack<String> getCategory() {
-        return category;
+        return this.category;
     }
 
     /**
@@ -501,16 +525,16 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void indicateProgress() {
         verifySystemOut();
-        progressIndicatorActive = true;
+        this.progressIndicatorActive = true;
         if (isAnsiEnabled()) {
-            if (lastMessage != null && lastMessage.length() > 0) {
-                if (!lastMessage.contains(maxIndicatorString)) {
-                    updateStatus(lastMessage + indicator);
+            if (this.lastMessage != null && this.lastMessage.length() > 0) {
+                if (!this.lastMessage.contains(this.maxIndicatorString)) {
+                    updateStatus(this.lastMessage + this.indicator);
                 }
             }
         }
         else {
-            out.print(indicator);
+            this.out.print(this.indicator);
         }
     }
 
@@ -522,12 +546,13 @@ public class GrailsConsole implements ConsoleLogger {
      */
     @Override
     public void indicateProgress(int number, int total) {
-        progressIndicatorActive = true;
-        String currMsg = lastMessage;
+        this.progressIndicatorActive = true;
+        String currMsg = this.lastMessage;
         try {
-            updateStatus(currMsg + ' '+ number + " of " + total);
-        } finally {
-            lastMessage = currMsg;
+            updateStatus(currMsg + ' ' + number + " of " + total);
+        }
+        finally {
+            this.lastMessage = currMsg;
         }
     }
 
@@ -540,20 +565,21 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void indicateProgressPercentage(long number, long total) {
         verifySystemOut();
-        progressIndicatorActive = true;
-        String currMsg = lastMessage;
+        this.progressIndicatorActive = true;
+        String currMsg = this.lastMessage;
         try {
             int percentage = Math.round(NumberMath.multiply(NumberMath.divide(number, total), 100).floatValue());
 
             if (!isAnsiEnabled()) {
-                out.print("..");
-                out.print(percentage + '%');
+                this.out.print("..");
+                this.out.print(percentage + '%');
             }
             else {
                 updateStatus(currMsg + ' ' + percentage + '%');
             }
-        } finally {
-            lastMessage = currMsg;
+        }
+        finally {
+            this.lastMessage = currMsg;
         }
     }
 
@@ -565,18 +591,19 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void indicateProgress(int number) {
         verifySystemOut();
-        progressIndicatorActive = true;
-        String currMsg = lastMessage;
+        this.progressIndicatorActive = true;
+        String currMsg = this.lastMessage;
         try {
             if (isAnsiEnabled()) {
                 updateStatus(currMsg + ' ' + number);
             }
             else {
-                out.print("..");
-                out.print(number);
+                this.out.print("..");
+                this.out.print(number);
             }
-        } finally {
-            lastMessage = currMsg;
+        }
+        finally {
+            this.lastMessage = currMsg;
         }
     }
 
@@ -592,44 +619,50 @@ public class GrailsConsole implements ConsoleLogger {
 
     private void outputMessage(String msg, int replaceCount) {
         verifySystemOut();
-        if (msg == null || msg.trim().length() == 0) return;
+        if (msg == null || msg.trim().length() == 0) {
+            return;
+        }
         try {
             if (isAnsiEnabled()) {
                 if (replaceCount > 0) {
-                    out.print(erasePreviousLine(CATEGORY_SEPARATOR));
+                    this.out.print(erasePreviousLine(CATEGORY_SEPARATOR));
                 }
-                lastStatus = outputCategory(ansi(), CATEGORY_SEPARATOR)
+                this.lastStatus = outputCategory(Ansi.ansi(), CATEGORY_SEPARATOR)
                         .fg(Color.DEFAULT).a(msg).reset();
-                out.println(lastStatus);
-                if (!userInputActive) {
-                    cursorMove = replaceCount;
+                this.out.println(this.lastStatus);
+                if (!this.userInputActive) {
+                    this.cursorMove = replaceCount;
                 }
-            } else {
-                if (lastMessage != null && lastMessage.equals(msg)) return;
-
-                if (progressIndicatorActive) {
-                    out.println();
-                }
-
-                out.print(CATEGORY_SEPARATOR);
-                out.println(msg);
             }
-            lastMessage = msg;
-        } finally {
+            else {
+                if (this.lastMessage != null && this.lastMessage.equals(msg)) {
+                    return;
+                }
+
+                if (this.progressIndicatorActive) {
+                    this.out.println();
+                }
+
+                this.out.print(CATEGORY_SEPARATOR);
+                this.out.println(msg);
+            }
+            this.lastMessage = msg;
+        }
+        finally {
             postPrintMessage();
         }
     }
 
     private Ansi moveDownToSkipPrompt() {
-           return ansi()
-                   .cursorDown(1)
-                   .cursorLeft(PROMPT.length());
+        return Ansi.ansi()
+                .cursorDown(1)
+                .cursorLeft(PROMPT.length());
     }
 
     private void postPrintMessage() {
-        progressIndicatorActive = false;
-        appendCalled = false;
-        if (userInputActive) {
+        this.progressIndicatorActive = false;
+        this.appendCalled = false;
+        if (this.userInputActive) {
             showPrompt();
         }
     }
@@ -642,7 +675,7 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void addStatus(String msg) {
         outputMessage(msg, 0);
-        lastMessage = "";
+        this.lastMessage = "";
     }
 
     /**
@@ -677,15 +710,15 @@ public class GrailsConsole implements ConsoleLogger {
 
     private void logSimpleError(String msg) {
         verifySystemOut();
-        if (progressIndicatorActive) {
-            out.println();
+        if (this.progressIndicatorActive) {
+            this.out.println();
         }
-        out.println(CATEGORY_SEPARATOR);
-        out.println(msg);
+        this.out.println(CATEGORY_SEPARATOR);
+        this.out.println(msg);
     }
 
     public boolean isAnsiEnabled() {
-        return Ansi.isEnabled() && (terminal != null && terminal.isAnsiSupported()) && ansiEnabled;
+        return Ansi.isEnabled() && (this.terminal != null && this.terminal.isAnsiSupported()) && this.ansiEnabled;
     }
 
     /**
@@ -697,14 +730,15 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void error(String msg, Throwable error) {
         try {
-            if ((verbose||stacktrace) && error != null) {
+            if ((this.verbose || this.stacktrace) && error != null) {
                 printStackTrace(msg, error);
                 error(ERROR, msg);
             }
             else {
                 error(ERROR, msg + STACKTRACE_MESSAGE);
             }
-        } finally {
+        }
+        finally {
             postPrintMessage();
         }
     }
@@ -726,6 +760,7 @@ public class GrailsConsole implements ConsoleLogger {
         if (!isVerbose() && !Boolean.getBoolean("grails.full.stacktrace")) {
             StackTraceUtils.deepSanitize(error);
         }
+
         StringWriter sw = new StringWriter();
         PrintWriter ps = new PrintWriter(sw);
         message = message == null ? error.getMessage() : message;
@@ -745,9 +780,9 @@ public class GrailsConsole implements ConsoleLogger {
     @Override
     public void log(String msg) {
         verifySystemOut();
-        PrintStream printStream = out;
+        PrintStream printStream = this.out;
         try {
-            if (userInputActive) {
+            if (this.userInputActive) {
                 erasePrompt(printStream);
             }
             if (msg.endsWith(LINE_SEPARATOR)) {
@@ -756,15 +791,16 @@ public class GrailsConsole implements ConsoleLogger {
             else {
                 printStream.println(msg);
             }
-            cursorMove = 0;
-        } finally {
+            this.cursorMove = 0;
+        }
+        finally {
             printStream.flush();
             postPrintMessage();
         }
     }
 
     private void erasePrompt(PrintStream printStream) {
-        printStream.print(ansi()
+        printStream.print(Ansi.ansi()
                 .eraseLine(Ansi.Erase.BACKWARD).cursorLeft(PROMPT.length()));
     }
 
@@ -777,11 +813,11 @@ public class GrailsConsole implements ConsoleLogger {
 
     public void append(String msg) {
         verifySystemOut();
-        PrintStream printStream = out;
+        PrintStream printStream = this.out;
         try {
-            if (userInputActive && !appendCalled) {
+            if (this.userInputActive && !this.appendCalled) {
                 printStream.print(moveDownToSkipPrompt());
-                appendCalled = true;
+                this.appendCalled = true;
             }
             if (msg.endsWith(LINE_SEPARATOR)) {
                 printStream.print(msg);
@@ -789,9 +825,10 @@ public class GrailsConsole implements ConsoleLogger {
             else {
                 printStream.println(msg);
             }
-            cursorMove = 0;
-        } finally {
-            progressIndicatorActive = false;
+            this.cursorMove = 0;
+        }
+        finally {
+            this.progressIndicatorActive = false;
         }
     }
 
@@ -809,11 +846,12 @@ public class GrailsConsole implements ConsoleLogger {
     public void verbose(String msg) {
         verifySystemOut();
         try {
-            if (verbose) {
-                out.println(msg);
-                cursorMove = 0;
+            if (this.verbose) {
+                this.out.println(msg);
+                this.cursorMove = 0;
             }
-        } finally {
+        }
+        finally {
             postPrintMessage();
         }
     }
@@ -822,8 +860,8 @@ public class GrailsConsole implements ConsoleLogger {
      * Replays the last status message
      */
     public void echoStatus() {
-        if (lastStatus != null) {
-            updateStatus(lastStatus.toString());
+        if (this.lastStatus != null) {
+            updateStatus(this.lastStatus.toString());
         }
     }
 
@@ -857,12 +895,13 @@ public class GrailsConsole implements ConsoleLogger {
             msg += ' ';
         }
 
-        lastMessage = "";
-        msg = isAnsiEnabled() ? outputCategory(ansi(), ">").fg(DEFAULT).a(msg).reset().toString() : msg;
+        this.lastMessage = "";
+        msg = isAnsiEnabled() ? outputCategory(Ansi.ansi(), ">").fg(Color.DEFAULT).a(msg).reset().toString() : msg;
         try {
             return readLine(msg, secure);
-        } finally {
-            cursorMove = 0;
+        }
+        finally {
+            this.cursorMove = 0;
         }
     }
 
@@ -873,26 +912,28 @@ public class GrailsConsole implements ConsoleLogger {
      */
     private String showPrompt(String prompt) {
         verifySystemOut();
-        cursorMove = 0;
-        if (!userInputActive) {
+        this.cursorMove = 0;
+        if (!this.userInputActive) {
             return readLine(prompt, false);
         }
 
-        out.print(prompt);
-        out.flush();
+        this.out.print(prompt);
+        this.out.flush();
         return null;
     }
 
     private String readLine(String prompt, boolean secure) {
         assertAllowInput(prompt);
-        userInputActive = true;
+        this.userInputActive = true;
         try {
-            Character inputMask = secure ? SECURE_MASK_CHAR : defaultInputMask;
-            return reader.readLine(prompt, inputMask);
-        } catch (IOException e) {
+            Character inputMask = secure ? SECURE_MASK_CHAR : this.defaultInputMask;
+            return this.reader.readLine(prompt, inputMask);
+        }
+        catch (IOException e) {
             throw new RuntimeException("Error reading input: " + e.getMessage());
-        } finally {
-            userInputActive = false;
+        }
+        finally {
+            this.userInputActive = false;
         }
     }
 
@@ -906,16 +947,16 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     private Ansi ansiPrompt(String prompt) {
-        return ansi()
+        return Ansi.ansi()
                 .a(Ansi.Attribute.INTENSITY_BOLD)
-                .fg(YELLOW)
+                .fg(Color.YELLOW)
                 .a(prompt)
                 .a(Ansi.Attribute.INTENSITY_BOLD_OFF)
-                .fg(DEFAULT);
+                .fg(Color.DEFAULT);
     }
 
     public String userInput(String message, List<String> validResponses) {
-        return userInput(message, validResponses.toArray(new String[validResponses.size()]));
+        return userInput(message, validResponses.toArray(new String[0]));
     }
 
     /**
@@ -945,7 +986,7 @@ public class GrailsConsole implements ConsoleLogger {
                 return response;
             }
         }
-        cursorMove = 0;
+        this.cursorMove = 0;
         return userInput("Invalid input. Must be one of ", validResponses);
     }
 
@@ -956,7 +997,7 @@ public class GrailsConsole implements ConsoleLogger {
     private Ansi outputCategory(Ansi ansi, String categoryName) {
         return ansi
                 .a(Ansi.Attribute.INTENSITY_BOLD)
-                .fg(YELLOW)
+                .fg(Color.YELLOW)
                 .a(categoryName)
                 .a(SPACE)
                 .a(Ansi.Attribute.INTENSITY_BOLD_OFF);
@@ -965,7 +1006,7 @@ public class GrailsConsole implements ConsoleLogger {
     private Ansi outputErrorLabel(Ansi ansi, String label) {
         return ansi
                 .a(Ansi.Attribute.INTENSITY_BOLD)
-                .fg(RED)
+                .fg(Color.RED)
                 .a(CATEGORY_SEPARATOR)
                 .a(SPACE)
                 .a(label)
@@ -976,19 +1017,21 @@ public class GrailsConsole implements ConsoleLogger {
 
     private Ansi erasePreviousLine(String categoryName) {
         int cursorMove = this.cursorMove;
-        if (userInputActive) cursorMove++;
+        if (this.userInputActive) {
+            cursorMove++;
+        }
         if (cursorMove > 0) {
-            int moveLeftLength = categoryName.length() + lastMessage.length();
-            if (userInputActive) {
+            int moveLeftLength = categoryName.length() + this.lastMessage.length();
+            if (this.userInputActive) {
                 moveLeftLength += PROMPT.length();
             }
-            return ansi()
+            return Ansi.ansi()
                     .cursorUp(cursorMove)
                     .cursorLeft(moveLeftLength)
-                    .eraseLine(FORWARD);
+                    .eraseLine(Ansi.Erase.FORWARD);
 
         }
-        return ansi();
+        return Ansi.ansi();
     }
 
     @Override
@@ -998,24 +1041,25 @@ public class GrailsConsole implements ConsoleLogger {
             return;
         }
 
-        cursorMove = 0;
+        this.cursorMove = 0;
         try {
             if (isAnsiEnabled()) {
-                Ansi ansi = outputErrorLabel(userInputActive ? moveDownToSkipPrompt()  : ansi(), label).a(message).reset();
+                Ansi ansi = outputErrorLabel(this.userInputActive ? moveDownToSkipPrompt() : Ansi.ansi(), label).a(message).reset();
 
                 if (message.endsWith(LINE_SEPARATOR)) {
-                    out.print(ansi);
+                    this.out.print(ansi);
                 }
                 else {
-                    out.println(ansi);
+                    this.out.println(ansi);
                 }
             }
             else {
-                out.print(label);
-                out.print(" ");
+                this.out.print(label);
+                this.out.print(" ");
                 logSimpleError(message);
             }
-        } finally {
+        }
+        finally {
             postPrintMessage();
         }
     }
@@ -1024,10 +1068,10 @@ public class GrailsConsole implements ConsoleLogger {
         // something bad may have overridden the system out
         redirectSystemOutAndErr(false);
     }
-    
+
     public void restoreOriginalSystemOutAndErr() {
-        System.setOut(originalSystemOut);
-        System.setErr(originalSystemErr);
+        System.setOut(this.originalSystemOut);
+        System.setErr(this.originalSystemErr);
     }
 
     public void cleanlyExit(int status) {
@@ -1041,16 +1085,17 @@ public class GrailsConsole implements ConsoleLogger {
      */
     public void flush() {
         if (isAnsiEnabled()) {
-            out.print(ansi().reset().toString());
+            this.out.print(Ansi.ansi().reset().toString());
         }
-        out.flush();
+        this.out.flush();
     }
 
     public Character getDefaultInputMask() {
-        return defaultInputMask;
+        return this.defaultInputMask;
     }
 
     public void setDefaultInputMask(Character defaultInputMask) {
         this.defaultInputMask = defaultInputMask;
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,18 @@
  */
 package org.grails.plugins.web.controllers.api;
 
-import grails.core.GrailsApplication;
-import grails.core.GrailsDomainClass;
-import grails.util.Environment;
-import grails.util.Holders;
-import grails.web.databinding.DataBindingUtils;
-import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.datastore.mapping.model.PersistentEntity;
+import java.util.Map;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Map;
+import grails.core.GrailsApplication;
+import grails.util.Environment;
+import grails.util.Holders;
+import grails.web.databinding.DataBindingUtils;
+
+import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.datastore.mapping.model.PersistentEntity;
 
 /**
  * Enhancements made to domain classes for data binding.
@@ -38,7 +38,6 @@ import java.util.Map;
 public class ControllersDomainBindingApi {
 
     public static final String AUTOWIRE_DOMAIN_METHOD = "autowireDomain";
-
 
     /**
      * Autowires the instance
@@ -69,13 +68,13 @@ public class ControllersDomainBindingApi {
 
     private static PersistentEntity getDomainClass(Object instance) {
         PersistentEntity domainClass = null;
-        if(!Environment.isInitializing()) {
+        if (!Environment.isInitializing()) {
             final GrailsApplication grailsApplication = Holders.findApplication();
             if (grailsApplication != null) {
                 try {
                     domainClass = grailsApplication.getMappingContext().getPersistentEntity(instance.getClass().getName());
-                } catch (GrailsConfigurationException e) {
-                    //no-op
+                }
+                catch (GrailsConfigurationException ignored) {
                 }
             }
         }
@@ -84,14 +83,14 @@ public class ControllersDomainBindingApi {
     }
 
     private static void autowire(Object instance) {
-        if(!Environment.isInitializing()) {
+        if (!Environment.isInitializing()) {
 
             GrailsApplication application = Holders.findApplication();
-            if(application != null) {
+            if (application != null) {
 
                 try {
                     PersistentEntity domainClass = application.getMappingContext().getPersistentEntity(instance.getClass().getName());
-                    if(domainClass != null) {
+                    if (domainClass != null) {
 
                         if (domainClass.getMapping().getMappedForm().isAutowire()) {
                             final ApplicationContext applicationContext = Holders.findApplicationContext();
@@ -102,11 +101,13 @@ public class ControllersDomainBindingApi {
                             }
                         }
                     }
-                } catch (GrailsConfigurationException e) {
+                }
+                catch (GrailsConfigurationException ignored) {
                     // ignore, Mapping Context not initialized yet
                 }
 
             }
         }
     }
+
 }

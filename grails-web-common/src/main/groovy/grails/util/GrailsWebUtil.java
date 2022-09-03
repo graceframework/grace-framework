@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,6 @@
  */
 package grails.util;
 
-import grails.core.ApplicationAttributes;
-import grails.core.GrailsApplication;
-import org.grails.web.util.GrailsApplicationAttributes;
-import groovy.lang.GroovyObject;
-import groovy.util.ConfigObject;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -28,11 +22,17 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.grails.web.servlet.mvc.GrailsWebRequest;
+import groovy.lang.GroovyObject;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import grails.core.ApplicationAttributes;
+import grails.core.GrailsApplication;
+
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
  * Utility methods for clients using the web framework.
@@ -41,10 +41,12 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @since 0.4
  */
 @SuppressWarnings("rawtypes")
-public class GrailsWebUtil {
+public final class GrailsWebUtil {
 
     public static final String DEFAULT_ENCODING = "UTF-8";
+
     private static final String CHARSET_ATTRIBUTE = ";charset=";
+
     private static final Pattern CHARSET_IN_CONTENT_TYPE_REGEXP = Pattern.compile(";\\s*charset\\s*=", Pattern.CASE_INSENSITIVE);
 
     private GrailsWebUtil() {
@@ -61,8 +63,8 @@ public class GrailsWebUtil {
             return null;
         }
 
-        GrailsApplication grailsApplication = (GrailsApplication)servletContext.getAttribute(ApplicationAttributes.APPLICATION);
-        if(grailsApplication != null) {
+        GrailsApplication grailsApplication = (GrailsApplication) servletContext.getAttribute(ApplicationAttributes.APPLICATION);
+        if (grailsApplication != null) {
             return grailsApplication;
         }
 
@@ -84,7 +86,7 @@ public class GrailsWebUtil {
             return null;
         }
 
-        return ((GrailsWebRequest)requestAttributes).getAttributes().getGrailsApplication();
+        return ((GrailsWebRequest) requestAttributes).getAttributes().getGrailsApplication();
     }
 
     /**
@@ -104,7 +106,7 @@ public class GrailsWebUtil {
      */
     public static String getUriFromRequest(HttpServletRequest request) {
         Object includeUri = request.getAttribute("javax.servlet.include.request_uri");
-        return includeUri == null ? request.getRequestURI() : (String)includeUri;
+        return includeUri == null ? request.getRequestURI() : (String) includeUri;
     }
 
     /**
@@ -113,14 +115,17 @@ public class GrailsWebUtil {
      * @return The controller or null
      */
     public static GroovyObject getControllerFromRequest(HttpServletRequest request) {
-        return (GroovyObject)request.getAttribute(GrailsApplicationAttributes.CONTROLLER);
+        return (GroovyObject) request.getAttribute(GrailsApplicationAttributes.CONTROLLER);
     }
 
     public static String getContentType(String name, String encoding) {
-        if (name.indexOf(';') > -1 && CHARSET_IN_CONTENT_TYPE_REGEXP.matcher(name).find()) {
+        if (name.contains(";") && CHARSET_IN_CONTENT_TYPE_REGEXP.matcher(name).find()) {
             return name;
         }
-        if (GrailsStringUtils.isBlank(encoding)) encoding = DEFAULT_ENCODING;
+        if (GrailsStringUtils.isBlank(encoding)) {
+            encoding = DEFAULT_ENCODING;
+        }
         return name + CHARSET_ATTRIBUTE + encoding;
     }
+
 }

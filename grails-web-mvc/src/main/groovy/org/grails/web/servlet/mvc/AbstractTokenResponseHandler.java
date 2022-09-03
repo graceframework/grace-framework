@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,27 +25,29 @@ import groovy.lang.Closure;
  * @author Graeme Rocher
  * @since 1.1
  */
-public abstract class AbstractTokenResponseHandler implements TokenResponseHandler{
+public abstract class AbstractTokenResponseHandler implements TokenResponseHandler {
 
     private boolean invoked = false;
-    private boolean valid;
+
+    private final boolean valid;
 
     public AbstractTokenResponseHandler(boolean valid) {
         this.valid = valid;
     }
 
     public final Object invalidToken(@SuppressWarnings("rawtypes") Closure callable) {
-        invoked = true;
+        this.invoked = true;
         return invalidTokenInternal(callable);
     }
 
     protected abstract Object invalidTokenInternal(@SuppressWarnings("rawtypes") Closure callable);
 
     public boolean wasInvoked() {
-        return invoked;
+        return this.invoked;
     }
 
     public boolean wasInvalidToken() {
-        return !valid;
+        return !this.valid;
     }
+
 }

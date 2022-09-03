@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,9 +21,11 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
-import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
+
 import grails.compiler.ast.AstTransformer;
+
+import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
+import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
@@ -68,7 +70,8 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
 
     @Override
     public void performInjection(final SourceUnit source, final GeneratorContext context, final ClassNode classNode) {
-        super.performInjection(source,  context, classNode);
+        super.performInjection(source, context, classNode);
         new DefaultASTDatabindingHelper().injectDatabindingCode(source, context, classNode);
     }
+
 }

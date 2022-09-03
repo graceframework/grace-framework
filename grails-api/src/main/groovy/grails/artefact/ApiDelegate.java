@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,12 @@
  */
 package grails.artefact;
 
-import org.codehaus.groovy.transform.GroovyASTTransformationClass;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.codehaus.groovy.transform.GroovyASTTransformationClass;
 
 /**
  * Similar to Groovy's @Delegate AST transform but instead assumes the first
@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  */
 @java.lang.annotation.Documented
 @Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.FIELD})
+@Target({ ElementType.FIELD })
 @GroovyASTTransformationClass("org.grails.compiler.injection.ApiDelegateTransformation")
 public @interface ApiDelegate {
 
@@ -39,4 +39,5 @@ public @interface ApiDelegate {
      * @return The super class to check for in the first argument of api methods
      */
     Class<?> value();
+
 }

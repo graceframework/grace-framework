@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,37 +32,34 @@ import org.springframework.context.ApplicationContextAware;
  * @author Graeme Rocher
  * @since 0.3
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements ApplicationContextAware {
 
-    private static final Log LOG = LogFactory.getLog(UrlMappingFactoryBean.class);
+    private static final Log log = LogFactory.getLog(UrlMappingFactoryBean.class);
+
     private static final String URL_MAP_BEAN = "urlMappings";
+
     private ApplicationContext applicationContext;
+
     private Map mappings = new HashMap();
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.config.AbstractFactoryBean#createInstance()
-     */
     @Override
     protected Map createInstance() {
-        if (applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
-            Object o = applicationContext.getBean(UrlMappingFactoryBean.URL_MAP_BEAN);
+        if (this.applicationContext.containsBean(UrlMappingFactoryBean.URL_MAP_BEAN)) {
+            Object o = this.applicationContext.getBean(UrlMappingFactoryBean.URL_MAP_BEAN);
             if (o instanceof Map) {
-                mappings.putAll((Map)o);
+                this.mappings.putAll((Map) o);
             }
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("[UrlMappingFactoryBean] Creating URL mappings as...");
-            for (Object key : mappings.keySet()) {
-                LOG.debug("[UrlMappingFactoryBean] " + key + "=" + mappings.get(key));
+        if (log.isDebugEnabled()) {
+            log.debug("[UrlMappingFactoryBean] Creating URL mappings as...");
+            for (Object key : this.mappings.keySet()) {
+                log.debug("[UrlMappingFactoryBean] " + key + "=" + this.mappings.get(key));
             }
         }
-        return mappings;
+        return this.mappings;
     }
 
-    /* (non-Javadoc)
-     * @see org.springframework.beans.factory.FactoryBean#getObjectType()
-     */
     @Override
     public Class<?> getObjectType() {
         return Map.class;
@@ -75,4 +72,5 @@ public class UrlMappingFactoryBean extends AbstractFactoryBean<Map> implements A
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
+
 }

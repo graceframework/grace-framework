@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ import org.springframework.web.util.UrlPathHelper;
 public class GrailsUrlPathHelper extends UrlPathHelper {
 
     public static final String GRAILS_DISPATCH_EXTENSION = ".dispatch";
+
     public static final String GRAILS_SERVLET_PATH = "/grails";
 
     @Override
@@ -37,8 +38,9 @@ public class GrailsUrlPathHelper extends UrlPathHelper {
             uri = uri.substring(GRAILS_SERVLET_PATH.length());
         }
         if (uri.endsWith(GRAILS_DISPATCH_EXTENSION)) {
-            return uri.substring(0,uri.length()- GRAILS_DISPATCH_EXTENSION.length());
+            return uri.substring(0, uri.length() - GRAILS_DISPATCH_EXTENSION.length());
         }
         return uri;
     }
+
 }

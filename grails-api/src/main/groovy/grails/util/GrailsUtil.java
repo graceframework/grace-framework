@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package grails.util;
 
+import java.io.PrintWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
 import org.grails.exceptions.reporting.StackTraceFilterer;
-
-import java.io.PrintWriter;
 
 /**
  * Grails utility methods for command line and GUI applications.
@@ -28,10 +29,13 @@ import java.io.PrintWriter;
  * @author Graeme Rocher
  * @since 0.2
  */
-public class GrailsUtil {
+public final class GrailsUtil {
 
-    private static final Log LOG = LogFactory.getLog(GrailsUtil.class);
-    private static final boolean LOG_DEPRECATED = Boolean.valueOf(System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
+    private static final Log logger = LogFactory.getLog(GrailsUtil.class);
+
+    private static final boolean LOG_DEPRECATED = Boolean.parseBoolean(
+            System.getProperty("grails.log.deprecated", String.valueOf(Environment.isDevelopmentMode())));
+
     private static final StackTraceFilterer stackFilterer = new DefaultStackTraceFilterer();
 
     private GrailsUtil() {
@@ -85,8 +89,8 @@ public class GrailsUtil {
      * @param message Message to display
      */
     public static void deprecated(String message) {
-        if (LOG_DEPRECATED && LOG.isWarnEnabled()) {
-            LOG.warn("[DEPRECATED] " + message);
+        if (LOG_DEPRECATED && logger.isWarnEnabled()) {
+            logger.warn("[DEPRECATED] " + message);
         }
     }
 
@@ -96,8 +100,8 @@ public class GrailsUtil {
      * @param message Message to display
      */
     public static void warn(String message) {
-        if (LOG.isWarnEnabled()) {
-            LOG.warn("[WARNING] " + message);
+        if (logger.isWarnEnabled()) {
+            logger.warn("[WARNING] " + message);
         }
     }
 
@@ -111,8 +115,8 @@ public class GrailsUtil {
         StackTraceElement[] trace = t.getStackTrace();
         for (StackTraceElement stackTraceElement : trace) {
             p.println("at " + stackTraceElement.getClassName() +
-                      "(" + stackTraceElement.getMethodName() +
-                      ":" + stackTraceElement.getLineNumber() + ")");
+                    "(" + stackTraceElement.getMethodName() +
+                    ":" + stackTraceElement.getLineNumber() + ")");
         }
     }
 

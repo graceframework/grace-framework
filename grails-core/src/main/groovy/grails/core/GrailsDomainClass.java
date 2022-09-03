@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,10 @@
 package grails.core;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.validation.Validator;
+
+import grails.validation.Constrained;
 
 /**
  * Represents a persistable Grails domain class.
@@ -42,12 +43,12 @@ public interface GrailsDomainClass extends GrailsClass {
      * @return Whether to autowire
      */
     boolean isAutowire();
+
     /**
      * @param domainClass
      * @return true if the specifying domain class is on the owning side of a relationship
      */
-    @SuppressWarnings("rawtypes")
-    boolean isOwningClass(Class domainClass);
+    boolean isOwningClass(Class<?> domainClass);
 
     /**
      * <p>Returns the default property name of the GrailsClass. For example the property name for
@@ -63,8 +64,7 @@ public interface GrailsDomainClass extends GrailsClass {
      *
      * @return A map of constraints
      */
-    @SuppressWarnings("rawtypes")
-    Map getConstrainedProperties();
+    Map<String, Constrained> getConstrainedProperties();
 
     /**
      * Retreives the validator for this domain class

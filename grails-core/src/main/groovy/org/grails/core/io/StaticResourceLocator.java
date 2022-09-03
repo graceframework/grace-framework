@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,11 @@
  */
 package org.grails.core.io;
 
-import org.springframework.core.io.Resource;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.core.io.Resource;
 
 /**
  *
@@ -28,8 +28,9 @@ import java.util.Map;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class StaticResourceLocator implements ResourceLocator{
-    private Map<String,Resource> classToResourceMap = new HashMap<String,Resource>();
+public class StaticResourceLocator implements ResourceLocator {
+
+    private Map<String, Resource> classToResourceMap = new HashMap<>();
 
     public void setSearchLocation(String searchLocation) {
         // do nothing
@@ -44,10 +45,11 @@ public class StaticResourceLocator implements ResourceLocator{
     }
 
     public Resource findResourceForClassName(String className) {
-        return classToResourceMap.get(className);
+        return this.classToResourceMap.get(className);
     }
 
     public void addClassResource(String className, Resource res) {
-        classToResourceMap.put(className, res);
+        this.classToResourceMap.put(className, res);
     }
+
 }

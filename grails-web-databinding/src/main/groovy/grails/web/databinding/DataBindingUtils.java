@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 Graeme Rocher
+ * Copyright 2006-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,32 @@
  */
 package grails.web.databinding;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.ServletRequest;
+
+import groovy.lang.GroovySystem;
+import groovy.lang.MetaClass;
+import org.springframework.context.ApplicationContext;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+
+import grails.core.GrailsApplication;
 import grails.databinding.CollectionDataBindingSource;
 import grails.databinding.DataBinder;
 import grails.databinding.DataBindingSource;
 import grails.util.Environment;
 import grails.util.Holders;
 import grails.validation.ValidationErrors;
-import groovy.lang.GroovySystem;
-import groovy.lang.MetaClass;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.ServletRequest;
-
-import grails.core.GrailsApplication;
-import grails.core.GrailsDomainClass;
 import grails.web.mime.MimeType;
 import grails.web.mime.MimeTypeResolver;
 import grails.web.mime.MimeTypeUtils;
@@ -45,11 +53,6 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
 import org.grails.web.databinding.bindingsource.DataBindingSourceRegistry;
 import org.grails.web.databinding.bindingsource.DefaultDataBindingSourceRegistry;
 import org.grails.web.databinding.bindingsource.InvalidRequestBodyException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
 /**
  * Utility methods to perform data binding from Grails objects.
@@ -58,11 +61,16 @@ import org.springframework.validation.ObjectError;
  * @since 1.0
  */
 @SuppressWarnings("rawtypes")
-public class DataBindingUtils {
+public final class DataBindingUtils {
 
     public static final String DATA_BINDER_BEAN_NAME = "grailsWebDataBinder";
+
     private static final String BLANK = "";
-    private static final Map<Class, List> CLASS_TO_BINDING_INCLUDE_LIST = new ConcurrentHashMap<Class, List>();
+
+    private static final Map<Class, List> CLASS_TO_BINDING_INCLUDE_LIST = new ConcurrentHashMap<>();
+
+    private DataBindingUtils() {
+    }
 
     /**
      * Associations both sides of any bidirectional relationships found in the object and source map to bind
@@ -78,7 +86,7 @@ public class DataBindingUtils {
 
         for (Object key : source.keySet()) {
             String propertyName = key.toString();
-            if (propertyName.indexOf('.') > -1) {
+            if (propertyName.contains(".")) {
                 propertyName = propertyName.substring(0, propertyName.indexOf('.'));
             }
             PersistentProperty prop = persistentEntity.getPropertyByName(propertyName);
@@ -91,7 +99,7 @@ public class DataBindingUtils {
                     try {
                         mc.setProperty(val, otherSide.getName(), object);
                     }
-                    catch (Exception e) {
+                    catch (Exception ignored) {
                         // ignore
                     }
                 }
@@ -114,24 +122,26 @@ public class DataBindingUtils {
     protected static List getBindingIncludeList(final Object object) {
         List includeList = Collections.emptyList();
         try {
-            final Class<? extends Object> objectClass = object.getClass();
+            final Class<?> objectClass = object.getClass();
             if (CLASS_TO_BINDING_INCLUDE_LIST.containsKey(objectClass)) {
                 includeList = CLASS_TO_BINDING_INCLUDE_LIST.get(objectClass);
-            } else {
+            }
+            else {
                 final Field whiteListField = objectClass.getDeclaredField(DefaultASTDatabindingHelper.DEFAULT_DATABINDING_WHITELIST);
                 if (whiteListField != null) {
                     if ((whiteListField.getModifiers() & Modifier.STATIC) != 0) {
-                         final Object whiteListValue = whiteListField.get(objectClass);
-                         if (whiteListValue instanceof List) {
-                             includeList = (List)whiteListValue;
-                         }
+                        final Object whiteListValue = whiteListField.get(objectClass);
+                        if (whiteListValue instanceof List) {
+                            includeList = (List) whiteListValue;
+                        }
                     }
                 }
                 if (!Environment.getCurrent().isReloadEnabled()) {
                     CLASS_TO_BINDING_INCLUDE_LIST.put(objectClass, includeList);
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception ignored) {
         }
         return includeList;
     }
@@ -161,25 +171,32 @@ public class DataBindingUtils {
      * @param collectionBindingSource A CollectionDataBindingSource
      * @since 2.3
      */
-    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate, final CollectionDataBindingSource collectionBindingSource) throws InstantiationException, IllegalAccessException {
+    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate,
+            final CollectionDataBindingSource collectionBindingSource)
+            throws InstantiationException, IllegalAccessException {
+
         final GrailsApplication application = Holders.findApplication();
         PersistentEntity entity = null;
         if (application != null) {
             try {
-                entity = application.getMappingContext().getPersistentEntity(targetType.getClass().getName());
-            } catch (GrailsConfigurationException e) {
+                entity = application.getMappingContext().getPersistentEntity(targetType.getName());
+            }
+            catch (GrailsConfigurationException ignored) {
                 //no-op
             }
         }
         final List<DataBindingSource> dataBindingSources = collectionBindingSource.getDataBindingSources();
-        for(final DataBindingSource dataBindingSource : dataBindingSources) {
+        for (final DataBindingSource dataBindingSource : dataBindingSources) {
             final T newObject = targetType.newInstance();
             bindObjectToDomainInstance(entity, newObject, dataBindingSource, getBindingIncludeList(newObject), Collections.emptyList(), null);
             collectionToPopulate.add(newObject);
         }
     }
 
-    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate, final ServletRequest request) throws InstantiationException, IllegalAccessException {
+    public static <T> void bindToCollection(final Class<T> targetType,
+            final Collection<T> collectionToPopulate, final ServletRequest request)
+            throws InstantiationException, IllegalAccessException {
+
         final GrailsApplication grailsApplication = Holders.findApplication();
         final CollectionDataBindingSource collectionDataBindingSource = createCollectionDataBindingSource(grailsApplication, targetType, request);
         bindToCollection(targetType, collectionToPopulate, collectionDataBindingSource);
@@ -205,7 +222,8 @@ public class DataBindingUtils {
         if (application != null) {
             try {
                 entity = application.getMappingContext().getPersistentEntity(object.getClass().getName());
-            } catch (GrailsConfigurationException e) {
+            }
+            catch (GrailsConfigurationException ignored) {
                 //no-op
             }
         }
@@ -228,7 +246,8 @@ public class DataBindingUtils {
      */
     @SuppressWarnings("unchecked")
     public static BindingResult bindObjectToDomainInstance(PersistentEntity entity, Object object,
-                                                           Object source, List include, List exclude, String filter) {
+            Object source, List include, List exclude, String filter) {
+
         BindingResult bindingResult = null;
         GrailsApplication grailsApplication = Holders.findApplication();
 
@@ -236,14 +255,16 @@ public class DataBindingUtils {
             final DataBindingSource bindingSource = createDataBindingSource(grailsApplication, object.getClass(), source);
             final DataBinder grailsWebDataBinder = getGrailsWebDataBinder(grailsApplication);
             grailsWebDataBinder.bind(object, bindingSource, filter, include, exclude);
-        } catch (InvalidRequestBodyException e) {
+        }
+        catch (InvalidRequestBodyException e) {
             String messageCode = "invalidRequestBody";
             Class objectType = object.getClass();
             String defaultMessage = "An error occurred parsing the body of the request";
             String[] codes = getMessageCodes(messageCode, objectType);
             bindingResult = new BeanPropertyBindingResult(object, objectType.getName());
             bindingResult.addError(new ObjectError(bindingResult.getObjectName(), codes, null, defaultMessage));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             bindingResult = new BeanPropertyBindingResult(object, object.getClass().getName());
             bindingResult.addError(new ObjectError(bindingResult.getObjectName(), e.getMessage()));
         }
@@ -252,7 +273,7 @@ public class DataBindingUtils {
             BindingResult newResult = new ValidationErrors(object);
             for (Object error : bindingResult.getAllErrors()) {
                 if (error instanceof FieldError) {
-                    FieldError fieldError = (FieldError)error;
+                    FieldError fieldError = (FieldError) error;
                     final boolean isBlank = BLANK.equals(fieldError.getRejectedValue());
                     if (!isBlank) {
                         newResult.addError(fieldError);
@@ -271,37 +292,38 @@ public class DataBindingUtils {
                     }
                 }
                 else {
-                    newResult.addError((ObjectError)error);
+                    newResult.addError((ObjectError) error);
                 }
             }
             bindingResult = newResult;
         }
+
         MetaClass mc = GroovySystem.getMetaClassRegistry().getMetaClass(object.getClass());
-        if (mc.hasProperty(object, "errors")!=null && bindingResult!=null) {
+        if (mc.hasProperty(object, "errors") != null && bindingResult != null) {
             ValidationErrors errors = new ValidationErrors(object);
             errors.addAllErrors(bindingResult);
-            mc.setProperty(object,"errors", errors);
+            mc.setProperty(object, "errors", errors);
         }
+
         return bindingResult;
     }
 
-    protected static String[] getMessageCodes(String messageCode,
-            Class objectType) {
-        String[] codes = {objectType.getName() + "." + messageCode, messageCode};
+    protected static String[] getMessageCodes(String messageCode, Class objectType) {
+        String[] codes = { objectType.getName() + "." + messageCode, messageCode };
         return codes;
     }
 
     public static DataBindingSourceRegistry getDataBindingSourceRegistry(GrailsApplication grailsApplication) {
         DataBindingSourceRegistry registry = null;
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
             ApplicationContext context = grailsApplication.getMainContext();
-            if(context != null) {
-                if(context.containsBean(DataBindingSourceRegistry.BEAN_NAME)) {
+            if (context != null) {
+                if (context.containsBean(DataBindingSourceRegistry.BEAN_NAME)) {
                     registry = context.getBean(DataBindingSourceRegistry.BEAN_NAME, DataBindingSourceRegistry.class);
                 }
             }
         }
-        if(registry == null) {
+        if (registry == null) {
             registry = new DefaultDataBindingSourceRegistry();
         }
 
@@ -314,25 +336,25 @@ public class DataBindingUtils {
         return registry.createDataBindingSource(mimeType, bindingTargetType, bindingSource);
     }
 
-    public static CollectionDataBindingSource createCollectionDataBindingSource(GrailsApplication grailsApplication, Class bindingTargetType, Object bindingSource) {
+    public static CollectionDataBindingSource createCollectionDataBindingSource(GrailsApplication grailsApplication,
+            Class bindingTargetType, Object bindingSource) {
+
         final DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
         final MimeType mimeType = getMimeType(grailsApplication, bindingSource);
         return registry.createCollectionDataBindingSource(mimeType, bindingTargetType, bindingSource);
     }
 
-    public static MimeType getMimeType(GrailsApplication grailsApplication,
-            Object bindingSource) {
+    public static MimeType getMimeType(GrailsApplication grailsApplication, Object bindingSource) {
         final MimeTypeResolver mimeTypeResolver = getMimeTypeResolver(grailsApplication);
         return resolveMimeType(bindingSource, mimeTypeResolver);
     }
 
-    public static MimeTypeResolver getMimeTypeResolver(
-            GrailsApplication grailsApplication) {
+    public static MimeTypeResolver getMimeTypeResolver(GrailsApplication grailsApplication) {
         MimeTypeResolver mimeTypeResolver = null;
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
             ApplicationContext context = grailsApplication.getMainContext();
-            if(context != null) {
-                if(context.containsBean(MimeTypeResolver.BEAN_NAME)) {
+            if (context != null) {
+                if (context.containsBean(MimeTypeResolver.BEAN_NAME)) {
                     mimeTypeResolver = context.getBean(MimeTypeResolver.BEAN_NAME, MimeTypeResolver.class);
                 }
             }
@@ -375,4 +397,5 @@ public class DataBindingUtils {
         }
         return value;
     }
+
 }

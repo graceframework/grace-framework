@@ -1,11 +1,11 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import junit.framework.Test;
-
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter;
+
 import org.grails.test.support.TestStacktraceSanitizer;
 
 /**
@@ -35,9 +35,11 @@ import org.grails.test.support.TestStacktraceSanitizer;
 public class PlainFormatter extends PlainJUnitResultFormatter {
 
     protected String name;
+
     protected File file;
 
     protected String systemOutput;
+
     protected String systemError;
 
     public PlainFormatter(String name, File file) {
@@ -58,13 +60,13 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
 
     @Override
     public void setSystemError(String out) {
-        systemError = out;
+        this.systemError = out;
         super.setSystemError(out);
     }
 
     @Override
     public void setSystemOutput(String out) {
-        systemOutput = out;
+        this.systemOutput = out;
         super.setSystemOutput(out);
     }
 
@@ -83,25 +85,18 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
     @Override
     public void endTestSuite(JUnitTest suite) {
         super.endTestSuite(suite);
-        File parentFile = file.getParentFile();
-        writeToFile(new File(parentFile, name + "-out.txt"), systemOutput);
-        writeToFile(new File(parentFile, name + "-err.txt"), systemError);
+        File parentFile = this.file.getParentFile();
+        writeToFile(new File(parentFile, this.name + "-out.txt"), this.systemOutput);
+        writeToFile(new File(parentFile, this.name + "-err.txt"), this.systemError);
     }
 
     protected void writeToFile(File f, String text) {
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(f);
+        try(FileWriter writer = new FileWriter(f)) {
             writer.write(text);
-            writer.close();
         }
         catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        finally {
-            if (writer != null) {
-                try { writer.close(); } catch (IOException ex) { /*ignored*/ }
-            }
-        }
     }
+
 }

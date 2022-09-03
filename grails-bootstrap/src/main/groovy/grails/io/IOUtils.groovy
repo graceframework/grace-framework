@@ -33,10 +33,9 @@ import org.grails.io.support.UrlResource
  * @since 2.4
  */
 @CompileStatic
-class IOUtils extends SpringIOUtils {
-
-    public static final String RESOURCE_JAR_PREFIX = '.jar!'
-    public static final String RESOURCE_WAR_PREFIX = '.war!'
+class IOUtils {
+    public static final String RESOURCE_JAR_PREFIX = ".jar!"
+    public static final String RESOURCE_WAR_PREFIX = ".war!"
 
     private static String applicationDirectory
 
@@ -70,7 +69,7 @@ class IOUtils extends SpringIOUtils {
      */
     static String toString(Reader reader) {
         def writer = new StringWriter()
-        copy reader, writer
+        SpringIOUtils.copy reader, writer
         writer.toString()
     }
 
@@ -93,7 +92,7 @@ class IOUtils extends SpringIOUtils {
      */
     static void copy(InputStream input, Writer output, String encoding = null) {
         def reader = encoding ? new InputStreamReader(input, encoding) : new InputStreamReader(input)
-        copy(reader, output)
+        SpringIOUtils.copy(reader, output)
     }
 
     /**

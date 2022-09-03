@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,9 @@ import org.springframework.util.Assert;
  * @since 0.5
  */
 public class StaticResourceLoader implements ResourceLoader {
-    private static final Logger LOG = LoggerFactory.getLogger(StaticResourceLoader.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(StaticResourceLoader.class);
+
     private Resource baseResource;
 
     public void setBaseResource(Resource baseResource) {
@@ -38,21 +40,21 @@ public class StaticResourceLoader implements ResourceLoader {
     }
 
     public Resource getResource(String location) {
-        Assert.state(baseResource != null, "Property [baseResource] not set!");
+        Assert.state(this.baseResource != null, "Property [baseResource] not set!");
 
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("Loading resource for path {} from base resource {}", location, baseResource);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Loading resource for path {} from base resource {}", location, this.baseResource);
         }
         try {
-            Resource resource = baseResource.createRelative(location);
-            if(LOG.isDebugEnabled() && resource.exists()) {
-                LOG.debug("Found resource for path {} from base resource {}", location, baseResource);
+            Resource resource = this.baseResource.createRelative(location);
+            if (logger.isDebugEnabled() && resource.exists()) {
+                logger.debug("Found resource for path {} from base resource {}", location, this.baseResource);
             }
             return resource;
         }
         catch (IOException e) {
-            if(LOG.isDebugEnabled()) {
-                LOG.debug("Error loading resource for path: " + location, e);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Error loading resource for path: " + location, e);
             }
             return null;
         }
@@ -61,4 +63,5 @@ public class StaticResourceLoader implements ResourceLoader {
     public ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
+
 }

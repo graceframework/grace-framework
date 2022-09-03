@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,10 @@
  */
 package grails.util;
 
-import groovy.lang.MetaClass;
-import groovy.util.Proxy;
-
 import java.util.Map;
 
+import groovy.lang.MetaClass;
+import groovy.util.Proxy;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
@@ -35,31 +34,32 @@ public class ExtendedProxy extends Proxy {
     private Map propertyMap;
 
     public ExtendedProxy() {
-        propertyMap = DefaultGroovyMethods.getProperties(this);
+        this.propertyMap = DefaultGroovyMethods.getProperties(this);
     }
 
     @Override
     public Object getProperty(String property) {
-        Object propertyValue = propertyMap.get(property);
+        Object propertyValue = this.propertyMap.get(property);
         if (propertyValue == null) {
-            propertyValue = InvokerHelper.getMetaClass(getAdaptee()).getProperty(getAdaptee(),property);
+            propertyValue = InvokerHelper.getMetaClass(getAdaptee()).getProperty(getAdaptee(), property);
         }
         return propertyValue;
     }
 
     @Override
     public void setProperty(String property, Object newValue) {
-        if (propertyMap.containsKey(property)) {
-            super.setProperty(property,newValue);
+        if (this.propertyMap.containsKey(property)) {
+            super.setProperty(property, newValue);
         }
         else {
-            InvokerHelper.getMetaClass(getAdaptee()).setProperty(getAdaptee(),property,newValue);
+            InvokerHelper.getMetaClass(getAdaptee()).setProperty(getAdaptee(), property, newValue);
         }
     }
 
     @Override
     public void setMetaClass(MetaClass metaClass) {
         super.setMetaClass(metaClass);
-        propertyMap = DefaultGroovyMethods.getProperties(this);
+        this.propertyMap = DefaultGroovyMethods.getProperties(this);
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,21 @@
  */
 package org.grails.web.util;
 
-import grails.core.ApplicationAttributes;
-import grails.web.mvc.FlashScope;
-import grails.web.pages.GroovyPagesUriService;
-import groovy.lang.GroovyObject;
-import org.grails.gsp.ResourceAwareTemplateEngine;
-import org.springframework.context.MessageSource;
-import org.springframework.validation.Errors;
+import java.io.Writer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Writer;
+
+import groovy.lang.GroovyObject;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.Errors;
+
+import grails.core.ApplicationAttributes;
+import grails.web.mvc.FlashScope;
+import grails.web.pages.GroovyPagesUriService;
+
+import org.grails.gsp.ResourceAwareTemplateEngine;
 
 /**
  * Defines the names of and methods to retrieve Grails specific request and servlet attributes.
@@ -36,39 +39,73 @@ import java.io.Writer;
 public interface GrailsApplicationAttributes extends ApplicationAttributes {
 
     String PATH_TO_VIEWS = "/WEB-INF/grails-app/views";
+
     String GSP_TEMPLATE_ENGINE = "org.grails.GSP_TEMPLATE_ENGINE";
+
     String ASYNC_STARTED = "org.grails.ASYNC_STARTED";
+
     String CONTENT_FORMAT = "org.grails.CONTENT_FORMAT";
+
     String RESPONSE_FORMAT = "org.grails.RESPONSE_FORMAT";
+
     String RESPONSE_MIME_TYPE = "org.grails.RESPONSE_MIME_TYPE";
+
     String RESPONSE_MIME_TYPES = "org.grails.RESPONSE_MIME_TYPES";
+
     String REQUEST_FORMATS = "org.grails.REQUEST_FORMATS";
+
     String RESPONSE_FORMATS = "org.grails.RESPONSE_FORMATS";
+
     String FLASH_SCOPE = "org.grails.FLASH_SCOPE";
+
     String PARAMS_OBJECT = "org.grails.PARAMS_OBJECT";
+
     String CONTROLLER = "org.grails.CONTROLLER";
+
     String PROPERTY_REGISTRY = "org.grails.PROPERTY_REGISTRY";
-    String ERRORS =  "org.grails.ERRORS";
+
+    String ERRORS = "org.grails.ERRORS";
+
     String MODEL_AND_VIEW = "org.grails.MODEL_AND_VIEW";
+
     String TEMPLATE_MODEL = "org.grails.TEMPLATE_MODEL";
+
     String OUT = "org.grails.RESPONSE_OUT";
+
     String TAG_CACHE = "org.grails.TAG_CACHE";
+
     String ID_PARAM = "id";
+
     String GSP_TO_RENDER = "org.grails.GSP_TO_RENDER";
+
     String GSP_CODEC = "org.grails.GSP_CODEC";
+
     String WEB_REQUEST = "org.grails.WEB_REQUEST";
+
     String PAGE_SCOPE = "org.grails.PAGE_SCOPE";
+
     String GSP_TMP_WRITER = "org.grails.GSP_TMP_WRITER";
+
     String REQUEST_REDIRECTED_ATTRIBUTE = "org.grails.request_redirected";
+
     String ACTION_NAME_ATTRIBUTE = "org.grails.ACTION_NAME_ATTRIBUTE";
+
     String CONTROLLER_NAME_ATTRIBUTE = "org.grails.CONTROLLER_NAME_ATTRIBUTE";
+
     String CONTROLLER_NAMESPACE_ATTRIBUTE = "org.grails.CONTROLLER_NAMESPACE_ATTRIBUTE";
+
     String GRAILS_CONTROLLER_CLASS = "org.grails.GRAILS_CONTROLLER_CLASS";
+
     String APP_URI_ATTRIBUTE = "org.grails.APP_URI_ATTRIBUTE";
+
     String RENDERING_ERROR_ATTRIBUTE = "org.grails.RENDERING_ERROR_ATTRIBUTE";
+
     String REDIRECT_ISSUED = "org.grails.REDIRECT_ISSUED";
+
     String FORWARD_ISSUED = "org.grails.FORWARD_CALLED";
+
     String FORWARD_IN_PROGRESS = "org.grails.FORWARD_CALLED";
+
     String GRAILS_CONTROLLER_CLASS_AVAILABLE = "org.grails.GRAILS_CONTROLLER_CLASS_AVAILABLE";
 
     /**
@@ -168,7 +205,6 @@ public interface GrailsApplicationAttributes extends ApplicationAttributes {
      */
     ResourceAwareTemplateEngine getPagesTemplateEngine();
 
-
     /**
      * Holds the current response write for the request
      * @return The held response writer
@@ -191,4 +227,5 @@ public interface GrailsApplicationAttributes extends ApplicationAttributes {
      * @return The MessageSource instance
      */
     MessageSource getMessageSource();
+
 }

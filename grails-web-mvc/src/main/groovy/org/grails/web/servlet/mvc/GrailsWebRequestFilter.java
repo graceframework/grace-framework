@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,14 +23,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import grails.web.mvc.FlashScope;
-import org.grails.web.util.WebUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import grails.web.mvc.FlashScope;
+
+import org.grails.web.util.WebUtils;
 
 /**
  * Binds a {@link GrailsWebRequestFilter} to the currently executing thread.
@@ -39,12 +40,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @since 0.4
  */
 public class GrailsWebRequestFilter extends OncePerRequestFilter implements ApplicationContextAware {
+
     Collection<ParameterCreationListener> paramListenerBeans;
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(
-     *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
-     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -64,7 +62,7 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
         try {
             WebUtils.storeGrailsWebRequest(webRequest);
 
-            if(!isIncludeOrForward) {
+            if (!isIncludeOrForward) {
                 // Set the flash scope instance to its next state. We do
                 // this here so that the flash is available from Grails
                 // filters in a valid state.
@@ -79,8 +77,8 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
         finally {
             webRequest.requestCompleted();
 
-            if(isIncludeOrForward) {
-                if(previous != null) {
+            if (isIncludeOrForward) {
+                if (previous != null) {
                     WebUtils.storeGrailsWebRequest(previous);
                 }
             }
@@ -106,17 +104,19 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
     }
 
     private void configureParameterCreationListeners(GrailsWebRequest webRequest) {
-        if (paramListenerBeans != null) {
-            for (ParameterCreationListener creationListenerBean : paramListenerBeans) {
+        if (this.paramListenerBeans != null) {
+            for (ParameterCreationListener creationListenerBean : this.paramListenerBeans) {
                 webRequest.addParameterListener(creationListenerBean);
             }
-        } else {
+        }
+        else {
             logger.warn("paramListenerBeans isn't initialized.");
         }
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        paramListenerBeans=applicationContext.getBeansOfType(ParameterCreationListener.class).values();
+        this.paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,14 +18,16 @@ package org.grails.web.binding;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import grails.util.GrailsStringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.util.Assert;
+
+import grails.util.GrailsStringUtils;
 
 /**
  * Structured editor for editing dates that takes 5 fields that represent the year, month, day, hour
@@ -45,7 +47,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
     }
 
     public List<String> getRequiredFields() {
-        return Arrays.asList("year");
+        return Collections.singletonList("year");
     }
 
     public List<String> getOptionalFields() {
@@ -61,6 +63,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
         String dayString = (String) fieldValues.get("day");
         String hourString = (String) fieldValues.get("hour");
         String minuteString = (String) fieldValues.get("minute");
+
         if (GrailsStringUtils.isBlank(yearString)
                 && GrailsStringUtils.isBlank(monthString)
                 && GrailsStringUtils.isBlank(dayString)
@@ -68,7 +71,9 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
                 && GrailsStringUtils.isBlank(minuteString)) {
             return null;
         }
+
         int year;
+
         try {
             Assert.isTrue(!GrailsStringUtils.isBlank(yearString), "Can't populate a date without a year");
 
@@ -79,7 +84,7 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
             int hour = getIntegerValue(fieldValues, "hour", 0);
             int minute = getIntegerValue(fieldValues, "minute", 0);
 
-            Calendar c = new GregorianCalendar(year,month - 1,day,hour,minute);
+            Calendar c = new GregorianCalendar(year, month - 1, day, hour, minute);
             if (type == Date.class) {
                 return c.getTime();
             }
@@ -100,4 +105,5 @@ public class StructuredDateEditor extends CustomDateEditor implements Structured
         }
         return defaultValue;
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,12 @@
  */
 package org.grails.core.io;
 
+import java.util.Collection;
+
 import org.springframework.core.io.ContextResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
-
-import java.util.Collection;
 
 /**
  * FileSystemResourceLoader capable of understanding paths to plugins via the ResourceLocator interface
@@ -28,13 +28,14 @@ import java.util.Collection;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceLoader{
+public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceLoader {
 
     public static final String WEB_APP_DIRECTORY = "web-app";
+
     ResourceLocator resourceLocator = new DefaultResourceLocator();
 
     public void setSearchLocations(Collection<String> searchLocations) {
-        resourceLocator.setSearchLocations(searchLocations);
+        this.resourceLocator.setSearchLocations(searchLocations);
     }
 
     @Override
@@ -46,9 +47,9 @@ public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceL
 
         String resourcePath = path;
         if (resourcePath.startsWith(WEB_APP_DIRECTORY)) {
-             resourcePath = resourcePath.substring("web-app".length(),resourcePath.length());
+            resourcePath = resourcePath.substring("web-app".length(), resourcePath.length());
         }
-        Resource res = resourceLocator.findResourceForURI(resourcePath);
+        Resource res = this.resourceLocator.findResourceForURI(resourcePath);
         if (res != null) {
             return res;
         }
@@ -61,12 +62,14 @@ public class PluginPathAwareFileSystemResourceLoader extends FileSystemResourceL
      */
     private static class FileSystemContextResource extends FileSystemResource implements ContextResource {
 
-        public FileSystemContextResource(String path) {
+        FileSystemContextResource(String path) {
             super(path);
         }
 
         public String getPathWithinContext() {
             return getPath();
         }
+
     }
+
 }

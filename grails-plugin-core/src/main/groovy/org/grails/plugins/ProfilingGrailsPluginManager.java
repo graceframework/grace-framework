@@ -1,11 +1,11 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2010-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,18 @@
  */
 package org.grails.plugins;
 
-import grails.plugins.DefaultGrailsPluginManager;
-import grails.plugins.GrailsPlugin;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClassRegistry;
-import grails.core.GrailsApplication;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.grails.spring.RuntimeSpringConfiguration;
-import grails.plugins.exceptions.PluginException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+
+import grails.core.GrailsApplication;
+import grails.plugins.DefaultGrailsPluginManager;
+import grails.plugins.GrailsPlugin;
+import grails.plugins.exceptions.PluginException;
+
+import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.spring.RuntimeSpringConfiguration;
 
 /**
  * A GrailsPluginManager implementation that outputs profile data to a logger.
@@ -80,7 +82,8 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
 
                     plugin.doWithDynamicMethods(applicationContext);
 
-                    System.out.println("doWithDynamicMethods for plugin [" + plugin.getName() + "] took " + (System.currentTimeMillis() - pluginTime));
+                    System.out.println("doWithDynamicMethods for plugin [" + plugin.getName() + "] took " +
+                            (System.currentTimeMillis() - pluginTime));
                 }
                 catch (Throwable t) {
                     throw new GrailsConfigurationException("Error configuring dynamic methods for plugin " + plugin + ": " + t.getMessage(), t);
@@ -117,7 +120,8 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
                 long pluginTime = System.currentTimeMillis();
                 System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] started");
                 plugin.doWithApplicationContext(ctx);
-                System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] took " + (System.currentTimeMillis() - pluginTime));
+                System.out.println("doWithApplicationContext for plugin [" + plugin.getName() + "] took " +
+                        (System.currentTimeMillis() - pluginTime));
             }
         }
         System.out.println("doWithApplicationContext took " + (System.currentTimeMillis() - time));
@@ -130,4 +134,5 @@ public class ProfilingGrailsPluginManager extends DefaultGrailsPluginManager {
         super.doArtefactConfiguration();
         System.out.println("doArtefactConfiguration took " + (System.currentTimeMillis() - time));
     }
+
 }

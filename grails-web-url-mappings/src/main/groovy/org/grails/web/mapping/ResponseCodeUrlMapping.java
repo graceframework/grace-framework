@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,15 @@
  */
 package org.grails.web.mapping;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.springframework.util.Assert;
+
 import grails.core.GrailsApplication;
 import grails.gorm.validation.ConstrainedProperty;
 import grails.web.mapping.UrlMappingData;
 import grails.web.mapping.UrlMappingInfo;
-import org.springframework.util.Assert;
-
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * A Url mapping for http response codes.
@@ -34,11 +35,15 @@ import java.util.Map;
 public class ResponseCodeUrlMapping extends AbstractUrlMapping {
 
     private final ResponseCodeMappingData urlData;
+
     private final ConstrainedProperty[] constraints = new ConstrainedProperty[0];
+
     private Map parameterValues = Collections.emptyMap();
+
     private Class<?> exceptionType;
 
-    public ResponseCodeUrlMapping(UrlMappingData urlData, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+    public ResponseCodeUrlMapping(UrlMappingData urlData, Object controllerName, Object actionName, Object namespace,
+            Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         super(null, controllerName, actionName, namespace, pluginName, viewName, constraints, grailsApplication);
         this.urlData = (ResponseCodeMappingData) urlData;
 
@@ -51,27 +56,27 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     }
 
     public UrlMappingData getUrlData() {
-        return urlData;
+        return this.urlData;
     }
 
     @Override
     public ConstrainedProperty[] getConstraints() {
-        return constraints;
+        return this.constraints;
     }
 
     @Override
     public Object getControllerName() {
-        return controllerName;
+        return this.controllerName;
     }
 
     @Override
     public Object getActionName() {
-        return actionName;
+        return this.actionName;
     }
 
     @Override
     public Object getViewName() {
-        return viewName;
+        return this.viewName;
     }
 
     @Override
@@ -119,7 +124,8 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
         throw new UnsupportedOperationException("Method createRelativeURL not implemented in " + getClass());
     }
 
-    public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map values, String encoding, String fragment) {
+    public String createRelativeURL(String controller, String action, String namespace,
+            String pluginName, Map values, String encoding, String fragment) {
         throw new UnsupportedOperationException("Method createRelativeURL not implemented in " + getClass());
     }
 
@@ -127,14 +133,15 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
         throw new UnsupportedOperationException("Method createURL not implemented in " + getClass());
     }
 
-    public String createURL(String controller, String action, String namespace, String pluginName, Map values, String encoding, String fragment) {
+    public String createURL(String controller, String action, String namespace,
+            String pluginName, Map values, String encoding, String fragment) {
         throw new UnsupportedOperationException("Method createURL not implemented in " + getClass());
     }
 
     public UrlMappingInfo match(int responseCode) {
-        if (responseCode == urlData.getResponseCode()) {
+        if (responseCode == this.urlData.getResponseCode()) {
             return new DefaultUrlMappingInfo(null, controllerName, actionName, namespace, pluginName, viewName,
-                    parameterValues, urlData, grailsApplication);
+                    this.parameterValues, this.urlData, grailsApplication);
         }
         return null;
     }
@@ -144,6 +151,7 @@ public class ResponseCodeUrlMapping extends AbstractUrlMapping {
     }
 
     public Class<?> getExceptionType() {
-        return exceptionType;
+        return this.exceptionType;
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2008 the original author or authors.
+ * Copyright 2008-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,10 +22,10 @@ import groovy.lang.Closure;
  * you to intercept invocations of the closure. The wrapper can be used
  * anywhere that the target closure can be used.
  */
-@SuppressWarnings({ "serial", "rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractClosureProxy extends Closure {
 
-    private Closure<?> target;
+    private final Closure<?> target;
 
     /**
      * Creates a new instance that wraps the target closure and sends
@@ -34,7 +34,7 @@ public abstract class AbstractClosureProxy extends Closure {
      */
     public AbstractClosureProxy(Closure<?> closure) {
         super(closure.getOwner(), closure.getThisObject());
-        target = closure;
+        this.target = closure;
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class AbstractClosureProxy extends Closure {
         doBeforeCall(objects);
 
         try {
-            return target.call(objects);
+            return this.target.call(objects);
         }
         finally {
             doAfterCall(objects);
@@ -89,76 +89,83 @@ public abstract class AbstractClosureProxy extends Closure {
      */
     @Override
     public boolean equals(Object obj) {
-        return this == obj || target == obj;
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof AbstractClosureProxy)) {
+            return false;
+        }
+        return this == obj || this.target == obj;
     }
 
     @Override
     public int hashCode() {
-        return target.hashCode();
+        return this.target.hashCode();
     }
 
     @Override
     public Closure<?> curry(Object... objects) {
-        return createWrapper(target.curry(objects));
+        return createWrapper(this.target.curry(objects));
     }
 
     @Override
     public boolean isCase(Object o) {
-        return target.isCase(o);
+        return this.target.isCase(o);
     }
 
     @Override
     public Closure<?> asWritable() {
-        return target.asWritable();
+        return this.target.asWritable();
     }
 
     @Override
     public Object getProperty(String property) {
-        return target.getProperty(property);
+        return this.target.getProperty(property);
     }
 
     @Override
     public void setProperty(String s, Object o) {
-        target.setProperty(s, o);
+        this.target.setProperty(s, o);
     }
 
     @Override
     public int getMaximumNumberOfParameters() {
-        return target.getMaximumNumberOfParameters();
+        return this.target.getMaximumNumberOfParameters();
     }
 
     @Override
     public Class<?>[] getParameterTypes() {
-        return target.getParameterTypes();
+        return this.target.getParameterTypes();
     }
 
     @Override
     public Object getDelegate() {
-        return target.getDelegate();
+        return this.target.getDelegate();
     }
 
     @Override
     public void setDelegate(Object o) {
-        target.setDelegate(o);
+        this.target.setDelegate(o);
     }
 
     @Override
     public int getDirective() {
-        return target.getDirective();
+        return this.target.getDirective();
     }
 
     @Override
     public void setDirective(int i) {
-        target.setDirective(i);
+        this.target.setDirective(i);
     }
 
     @Override
     public int getResolveStrategy() {
-        return target.getResolveStrategy();
+        return this.target.getResolveStrategy();
     }
 
     @Override
     public void setResolveStrategy(int i) {
-        target.setResolveStrategy(i);
+        this.target.setResolveStrategy(i);
     }
+
 }

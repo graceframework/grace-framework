@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package org.grails.spring.context.annotation;
 
-import grails.plugins.GrailsPluginManager;
-import grails.util.GrailsStringUtils;
+import java.util.List;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -29,7 +29,8 @@ import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.AntPathMatcher;
 import org.w3c.dom.Element;
 
-import java.util.List;
+import grails.plugins.GrailsPluginManager;
+import grails.util.GrailsStringUtils;
 
 /**
  * Extends Spring's default &lt;context:component-scan/&gt; element to ignore
@@ -75,7 +76,9 @@ public class ClosureClassIgnoringComponentScanBeanDefinitionParser extends Compo
             public boolean match(String pattern, String path) {
                 if (path.endsWith(".class")) {
                     String filename = GrailsStringUtils.getFileBasename(path);
-                    if (filename.contains("$")) return false;
+                    if (filename.contains("$")) {
+                        return false;
+                    }
                 }
                 return super.match(pattern, path);
             }
@@ -83,4 +86,5 @@ public class ClosureClassIgnoringComponentScanBeanDefinitionParser extends Compo
         scanner.setResourceLoader(resourceResolver);
         return scanner;
     }
+
 }

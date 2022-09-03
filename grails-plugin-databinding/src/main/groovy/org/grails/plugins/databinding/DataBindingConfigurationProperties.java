@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2019 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,9 @@
 
 package org.grails.plugins.databinding;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.List;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Data binding configuration.
@@ -30,13 +30,17 @@ import java.util.List;
 public class DataBindingConfigurationProperties {
 
     private boolean trimStrings = true;
+
     private boolean convertEmptyStringsToNull = true;
+
     private int autoGrowCollectionLimit = 256;
+
     private boolean dateParsingLenient = false;
+
     private List<String> dateFormats = AbstractDataBindingGrailsPlugin.DEFAULT_DATE_FORMATS;
 
     public boolean isTrimStrings() {
-        return trimStrings;
+        return this.trimStrings;
     }
 
     public void setTrimStrings(boolean trimStrings) {
@@ -44,7 +48,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public boolean isConvertEmptyStringsToNull() {
-        return convertEmptyStringsToNull;
+        return this.convertEmptyStringsToNull;
     }
 
     public void setConvertEmptyStringsToNull(boolean convertEmptyStringsToNull) {
@@ -52,7 +56,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public int getAutoGrowCollectionLimit() {
-        return autoGrowCollectionLimit;
+        return this.autoGrowCollectionLimit;
     }
 
     public void setAutoGrowCollectionLimit(int autoGrowCollectionLimit) {
@@ -60,7 +64,7 @@ public class DataBindingConfigurationProperties {
     }
 
     public boolean isDateParsingLenient() {
-        return dateParsingLenient;
+        return this.dateParsingLenient;
     }
 
     public void setDateParsingLenient(boolean dateParsingLenient) {
@@ -68,10 +72,11 @@ public class DataBindingConfigurationProperties {
     }
 
     public List<String> getDateFormats() {
-        return dateFormats;
+        return this.dateFormats;
     }
 
     public void setDateFormats(List<String> dateFormats) {
         this.dateFormats = dateFormats;
     }
+
 }

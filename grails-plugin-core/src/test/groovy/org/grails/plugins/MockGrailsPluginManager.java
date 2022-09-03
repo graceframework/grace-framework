@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2006 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,6 @@ import org.springframework.util.Assert;
  */
 public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     private boolean checkForChangesExpected = false;
-
 
     public MockGrailsPluginManager(GrailsApplication application) {
         super(application);
@@ -88,13 +87,12 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
         }
     }
 
-    public Collection<?> getPluginObservers(GrailsPlugin plugin) {
+    public Collection<GrailsPlugin> getPluginObservers(GrailsPlugin plugin) {
         throw new UnsupportedOperationException(
                 "The class [MockGrailsPluginManager] doesn't support the method getPluginObservers");
     }
 
-    @SuppressWarnings("rawtypes")
-    public void informObservers(String pluginName, Map event) {
+    public void informObservers(String pluginName, Map<String, Object> event) {
         // do nothing
     }
 

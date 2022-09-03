@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,9 @@
  */
 package org.grails.core.artefact;
 
-import org.grails.core.AbstractGrailsClass;
 import grails.core.ArtefactHandlerAdapter;
-import grails.core.GrailsClass;
 import grails.core.GrailsControllerClass;
+
 import org.grails.core.DefaultGrailsControllerClass;
 
 /**
@@ -29,10 +28,11 @@ import org.grails.core.DefaultGrailsControllerClass;
  * <p>Lookups are cached in non-development mode, and the cache size can be controlled using the grails.urlmapping.cache.maxsize config property.</p>
  *
  * @author Marc Palmer (marc@anyware.co.uk)
-*/
+ */
 public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Controller";
+
     public static final String PLUGIN_NAME = "controllers";
 
     public ControllerArtefactHandler() {
@@ -44,6 +44,5 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
     public String getPluginName() {
         return PLUGIN_NAME;
     }
-
 
 }

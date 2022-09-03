@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -144,7 +144,8 @@ public interface UrlCreator {
      * @param fragment The fragment to append to the end
      * @return The created URL for the given arguments
      */
-    String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment);
+    String createRelativeURL(String controller, String action, String namespace,
+            String pluginName, Map parameterValues, String encoding, String fragment);
 
     /**
      * Creates a URL for the given parameters values, controller and action names
@@ -171,4 +172,5 @@ public interface UrlCreator {
      * @return The created URL for the given arguments
      */
     String createURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment);
+
 }

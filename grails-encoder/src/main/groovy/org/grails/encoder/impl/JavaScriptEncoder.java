@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,7 +34,7 @@ public class JavaScriptEncoder extends AbstractCharReplacementEncoder {
 
         public boolean isEquivalent(CodecIdentifier other) {
             return super.isEquivalent(other) || BasicJSONEncoder.JSON_CODEC_IDENTIFIER.getCodecName().equals(other.getCodecName());
-        };
+        }
 
     };
 
@@ -53,7 +53,7 @@ public class JavaScriptEncoder extends AbstractCharReplacementEncoder {
             case '\'':
                 return "\\u0027";
             case '`': // backtick
-                return "\\u0060";                
+                return "\\u0060";
             case '\\':
                 return "\\u005c";
             case '/':
@@ -63,7 +63,8 @@ public class JavaScriptEncoder extends AbstractCharReplacementEncoder {
             case '\n':
                 if (previousChar == '\r') {
                     return "";
-                } else {
+                }
+                else {
                     return "\\n";
                 }
             case '\r':

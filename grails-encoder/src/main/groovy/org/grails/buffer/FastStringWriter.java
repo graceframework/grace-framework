@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,13 +31,13 @@ public class FastStringWriter extends GrailsPrintWriter {
 
     public FastStringWriter() {
         super(null);
-        streamBuffer = new StreamCharBuffer();
+        this.streamBuffer = new StreamCharBuffer();
         initOut();
     }
 
     public FastStringWriter(int initialChunkSize) {
         super(null);
-        streamBuffer = new StreamCharBuffer(initialChunkSize);
+        this.streamBuffer = new StreamCharBuffer(initialChunkSize);
         initOut();
     }
 
@@ -47,11 +47,11 @@ public class FastStringWriter extends GrailsPrintWriter {
     }
 
     protected void initOut() {
-        setOut(streamBuffer.getWriter());
+        setOut(this.streamBuffer.getWriter());
     }
 
     public StreamCharBuffer getBuffer() {
-        return streamBuffer;
+        return this.streamBuffer;
     }
 
     @Override
@@ -60,10 +60,11 @@ public class FastStringWriter extends GrailsPrintWriter {
     }
 
     public String getValue() {
-        return streamBuffer.toString();
+        return this.streamBuffer.toString();
     }
 
     public Reader getReader() {
-        return streamBuffer.getReader();
+        return this.streamBuffer.getReader();
     }
+
 }

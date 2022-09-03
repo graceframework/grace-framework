@@ -1,11 +1,11 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2010-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,20 +15,20 @@
  */
 package org.grails.core.metaclass;
 
-import grails.util.GrailsNameUtils;
-import groovy.lang.GString;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import grails.util.GrailsArrayUtils;
-import grails.util.GrailsClassUtils;
+import groovy.lang.GString;
 import org.codehaus.groovy.reflection.CachedClass;
 import org.codehaus.groovy.reflection.CachedMethod;
 import org.codehaus.groovy.runtime.metaclass.ReflectionMetaMethod;
+
+import grails.util.GrailsArrayUtils;
+import grails.util.GrailsClassUtils;
+import grails.util.GrailsNameUtils;
 
 /**
  * @author Graeme Rocher
@@ -38,17 +38,18 @@ import org.codehaus.groovy.runtime.metaclass.ReflectionMetaMethod;
 @Deprecated
 public abstract class BaseApiProvider {
 
-    private static List<String> EXCLUDED_METHODS = Arrays.asList("setMetaClass", "getMetaClass", "setProperties", "getProperties");
+    private static final List<String> EXCLUDED_METHODS = Arrays.asList("setMetaClass", "getMetaClass", "setProperties", "getProperties");
 
     public static final String CONSTRUCTOR_METHOD = "initialize";
+
     public static final String CTOR_GROOVY_METHOD = "<ctor>";
 
-    @SuppressWarnings("rawtypes")
-    protected List instanceMethods = new ArrayList();
-    protected List<Method> staticMethods = new ArrayList<Method>();
-    protected List<Method> constructors = new ArrayList<Method>();
+    protected final List<ReflectionMetaMethod> instanceMethods = new ArrayList<>();
 
-    @SuppressWarnings("unchecked")
+    protected final List<Method> staticMethods = new ArrayList<>();
+
+    protected final List<Method> constructors = new ArrayList<>();
+
     public void addApi(final Object apiInstance) {
         if (apiInstance == null) {
             return;
@@ -66,21 +67,21 @@ public abstract class BaseApiProvider {
 
                 if (Modifier.isStatic(modifiers)) {
                     if (isConstructorCallMethod(javaMethod)) {
-                        constructors.add(javaMethod);
+                        this.constructors.add(javaMethod);
                     }
                     else {
-                        staticMethods.add(javaMethod);
+                        this.staticMethods.add(javaMethod);
                     }
                 }
                 else {
-                    instanceMethods.add(new ReflectionMetaMethod(new CachedMethod(javaMethod)) {
+                    this.instanceMethods.add(new ReflectionMetaMethod(new CachedMethod(javaMethod)) {
                         {
                             CachedClass[] paramTypes = super.getParameterTypes();
-                            if(paramTypes.length > 0) {
+                            if (paramTypes.length > 0) {
                                 setParametersTypes((CachedClass[]) GrailsArrayUtils.subarray(paramTypes, 1, paramTypes.length));
                             }
                         }
-                        
+
                         @Override
                         public String getName() {
                             String methodName = super.getName();
@@ -89,13 +90,13 @@ public abstract class BaseApiProvider {
                             }
                             return methodName;
                         }
-                        
+
                         @Override
                         public Object invoke(Object object, Object[] arguments) {
                             if (arguments.length == 0) {
-                                return super.invoke(apiInstance, new Object[]{object});
+                                return super.invoke(apiInstance, new Object[] { object });
                             }
-                            return super.invoke(apiInstance, (Object[])GrailsArrayUtils.add(checkForGStrings(arguments), 0, object));
+                            return super.invoke(apiInstance, (Object[]) GrailsArrayUtils.add(checkForGStrings(arguments), 0, object));
                         }
 
                         private Object[] checkForGStrings(Object[] arguments) {
@@ -123,18 +124,22 @@ public abstract class BaseApiProvider {
     }
 
     private boolean isConstructorCallMethod(Method method) {
-        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) && method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length>0;
+        return method != null && Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()) &&
+                method.getName().equals(CONSTRUCTOR_METHOD) && method.getParameterTypes().length > 0;
     }
 
     private boolean isNotExcluded(Method method, final int modifiers) {
         final String name = method.getName();
 
-        if (EXCLUDED_METHODS.contains(name)) return false;
+        if (EXCLUDED_METHODS.contains(name)) {
+            return false;
+        }
 
         boolean isStatic = Modifier.isStatic(modifiers);
 
         // skip plain setters/getters by default for instance methods (non-static)
-        if (!isStatic && (GrailsClassUtils.isSetter(name, method.getParameterTypes()) || GrailsNameUtils.isGetter(name, method.getReturnType(), method.getParameterTypes()))) {
+        if (!isStatic && (GrailsClassUtils.isSetter(name, method.getParameterTypes()) || GrailsNameUtils.isGetter(name, method.getReturnType(),
+                method.getParameterTypes()))) {
             return false;
         }
 
@@ -143,7 +148,8 @@ public abstract class BaseApiProvider {
         return Modifier.isPublic(modifiers) &&
                 !(method.isSynthetic() || method.isBridge()) &&
                 !Modifier.isAbstract(modifiers) &&
-                    !name.contains("$") &&
-                      (method.getParameterTypes().length >= minParameters);
+                !name.contains("$") &&
+                (method.getParameterTypes().length >= minParameters);
     }
+
 }

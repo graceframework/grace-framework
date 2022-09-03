@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 import grails.web.mapping.UrlMapping;
 import grails.web.mapping.UrlMappingData;
-import org.springframework.util.Assert;
 
 /**
  * Default implementating of the UrlMappingData interface.
@@ -32,15 +33,21 @@ import org.springframework.util.Assert;
 public class DefaultUrlMappingData implements UrlMappingData {
 
     private static final String CAPTURED_WILDCARD = "(*)";
+
     private static final String CAPTURED_DOUBLE_WILDCARD = "(**)";
+
     private static final String QUESTION_MARK = "?";
+
     private static final String SLASH = "/";
 
     private final String urlPattern;
+
     private final String[] logicalUrls;
+
     private final String[] tokens;
 
-    private List<Boolean> optionalTokens = new ArrayList<Boolean>();
+    private List<Boolean> optionalTokens = new ArrayList<>();
+
     private boolean hasOptionalExtension;
 
     public DefaultUrlMappingData(String urlPattern) {
@@ -49,16 +56,16 @@ public class DefaultUrlMappingData implements UrlMappingData {
 
         String configuredPattern = configureUrlPattern(urlPattern);
         this.urlPattern = configuredPattern;
-        tokens = tokenizeUrlPattern(configuredPattern);
-        List<String> urls = new ArrayList<String>();
-        parseUrls(urls, tokens, optionalTokens);
+        this.tokens = tokenizeUrlPattern(configuredPattern);
+        List<String> urls = new ArrayList<>();
+        parseUrls(urls, this.tokens, this.optionalTokens);
 
-        logicalUrls = urls.toArray(new String[urls.size()]);
+        this.logicalUrls = urls.toArray(new String[0]);
     }
 
     @Override
     public boolean hasOptionalExtension() {
-        return hasOptionalExtension;
+        return this.hasOptionalExtension;
     }
 
     private String[] tokenizeUrlPattern(String urlPattern) {
@@ -67,7 +74,7 @@ public class DefaultUrlMappingData implements UrlMappingData {
     }
 
     private String configureUrlPattern(String urlPattern) {
-        return urlPattern.replace( "(*)**", CAPTURED_DOUBLE_WILDCARD);
+        return urlPattern.replace("(*)**", CAPTURED_DOUBLE_WILDCARD);
     }
 
     private DefaultUrlMappingData(String urlPattern, String[] logicalUrls, String[] tokens, List<Boolean> optionalTokens) {
@@ -80,45 +87,45 @@ public class DefaultUrlMappingData implements UrlMappingData {
     private void parseUrls(List<String> urls, String[] tokens, List<Boolean> optionalTokens) {
         StringBuilder buf = new StringBuilder();
 
-
         String optionalExtensionPattern = UrlMapping.OPTIONAL_EXTENSION_WILDCARD + '?';
         String optionalExtension = null;
 
-        if(tokens.length>0) {
-            String lastToken = tokens[tokens.length-1];
-            hasOptionalExtension = lastToken.endsWith(optionalExtensionPattern);
-            if(hasOptionalExtension) {
+        if (tokens.length > 0) {
+            String lastToken = tokens[tokens.length - 1];
+            this.hasOptionalExtension = lastToken.endsWith(optionalExtensionPattern);
+            if (this.hasOptionalExtension) {
                 int i = lastToken.indexOf(optionalExtensionPattern);
                 optionalExtension = lastToken.substring(i, lastToken.length());
-                tokens[tokens.length-1] = lastToken.substring(0, i);
+                tokens[tokens.length - 1] = lastToken.substring(0, i);
             }
 
         }
 
-        for (int i = 0; i < tokens.length; i++) {
-            String token = tokens[i].trim();
+        for (String s : tokens) {
+            String token = s.trim();
             if (token.equals(SLASH)) {
                 continue;
             }
 
-
             boolean isOptional = false;
             if (token.endsWith(QUESTION_MARK)) {
-                if(optionalExtension != null) {
-                    urls.add(buf.toString() + optionalExtension);
+                if (optionalExtension != null) {
+                    urls.add(buf + optionalExtension);
                 }
                 else {
                     urls.add(buf.toString());
                 }
                 buf.append(SLASH).append(token);
                 isOptional = true;
-            } else {
+            }
+            else {
                 buf.append(SLASH).append(token);
             }
             if (CAPTURED_WILDCARD.equals(token)) {
                 if (isOptional) {
                     optionalTokens.add(Boolean.TRUE);
-                } else {
+                }
+                else {
                     optionalTokens.add(Boolean.FALSE);
                 }
             }
@@ -126,8 +133,8 @@ public class DefaultUrlMappingData implements UrlMappingData {
                 optionalTokens.add(Boolean.TRUE);
             }
         }
-        if(optionalExtension != null) {
-            urls.add(buf.toString() + optionalExtension);
+        if (optionalExtension != null) {
+            urls.add(buf + optionalExtension);
         }
         else {
             urls.add(buf.toString());
@@ -137,20 +144,22 @@ public class DefaultUrlMappingData implements UrlMappingData {
     }
 
     public String[] getTokens() {
-        return tokens;
+        return this.tokens;
     }
 
     public String[] getLogicalUrls() {
-        return logicalUrls;
+        return this.logicalUrls;
     }
 
     public String getUrlPattern() {
-        return urlPattern;
+        return this.urlPattern;
     }
 
     public boolean isOptional(int index) {
-        if (index >= optionalTokens.size()) return true;
-        return optionalTokens.get(index).equals(Boolean.TRUE);
+        if (index >= this.optionalTokens.size()) {
+            return true;
+        }
+        return this.optionalTokens.get(index).equals(Boolean.TRUE);
     }
 
     @Override
@@ -160,12 +169,12 @@ public class DefaultUrlMappingData implements UrlMappingData {
         String newPattern = this.urlPattern + configureUrlPattern(path);
 
         String[] tokens = tokenizeUrlPattern(newPattern);
-        List<String> urls = new ArrayList<String>();
-        List<Boolean> optionalTokens = new ArrayList<Boolean>();
+        List<String> urls = new ArrayList<>();
+        List<Boolean> optionalTokens = new ArrayList<>();
         parseUrls(urls, tokens, optionalTokens);
-        String[] logicalUrls = urls.toArray(new String[urls.size()]);
+        String[] logicalUrls = urls.toArray(new String[0]);
 
-
-        return new DefaultUrlMappingData(newPattern,logicalUrls, tokens,optionalTokens);
+        return new DefaultUrlMappingData(newPattern, logicalUrls, tokens, optionalTokens);
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,6 @@
  */
 package org.grails.web.mapping;
 
-import grails.util.GrailsWebUtil;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -25,15 +23,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import grails.web.mapping.UrlCreator;
+import org.springframework.web.context.request.RequestContextHolder;
+
 import grails.core.GrailsControllerClass;
 import grails.util.GrailsStringUtils;
+import grails.util.GrailsWebUtil;
+import grails.web.mapping.UrlCreator;
+
 import org.grails.buffer.FastStringWriter;
 import org.grails.web.servlet.mvc.DefaultRequestStateLookupStrategy;
 import org.grails.web.servlet.mvc.GrailsRequestStateLookupStrategy;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
-import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * The default implementation of the UrlCreator interface that constructs URLs in Grails
@@ -46,18 +47,24 @@ import org.springframework.web.context.request.RequestContextHolder;
 public class DefaultUrlCreator implements UrlCreator {
 
     private static final char SLASH = '/';
+
     private final String controllerName;
+
     private final String actionName;
+
     public static final String ARGUMENT_ID = "id";
+
     private static final String ENTITY_AMPERSAND = "&";
 
     public DefaultUrlCreator(String controller, String action) {
-        controllerName = controller;
-        actionName = action;
+        this.controllerName = controller;
+        this.actionName = action;
     }
 
     public String createURL(Map parameterValues, String encoding) {
-        if (parameterValues == null) parameterValues = Collections.emptyMap();
+        if (parameterValues == null) {
+            parameterValues = Collections.emptyMap();
+        }
         GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.getRequestAttributes();
         return createURLWithWebRequest(parameterValues, webRequest, true);
     }
@@ -69,7 +76,6 @@ public class DefaultUrlCreator implements UrlCreator {
 
     @SuppressWarnings("unchecked")
     private String createURLWithWebRequest(Map parameterValues, GrailsWebRequest webRequest, boolean includeContextPath) {
-
         GrailsRequestStateLookupStrategy requestStateLookupStrategy = new DefaultRequestStateLookupStrategy(webRequest);
 
         final String encoding = requestStateLookupStrategy.getCharacterEncoding();
@@ -86,19 +92,19 @@ public class DefaultUrlCreator implements UrlCreator {
         if (includeContextPath) {
             actualUriBuf.append(requestStateLookupStrategy.getContextPath());
         }
-        if (actionName != null) {
-            if (actionName.indexOf(SLASH) > -1) {
-                actualUriBuf.append(actionName);
+        if (this.actionName != null) {
+            if (this.actionName.indexOf(SLASH) > -1) {
+                actualUriBuf.append(this.actionName);
             }
             else {
-                if (controllerName != null) {
-                    appendUrlToken(actualUriBuf, controllerName, encoding);
+                if (this.controllerName != null) {
+                    appendUrlToken(actualUriBuf, this.controllerName, encoding);
                 }
                 else {
                     appendUrlToken(actualUriBuf, requestStateLookupStrategy.getControllerName(), encoding);
                 }
             }
-            appendUrlToken(actualUriBuf, actionName, encoding);
+            appendUrlToken(actualUriBuf, this.actionName, encoding);
         }
         if (id != null) {
             appendUrlToken(actualUriBuf, id, encoding);
@@ -123,7 +129,9 @@ public class DefaultUrlCreator implements UrlCreator {
     private String createURLInternal(String controller, String action, Map<String, String> parameterValues, boolean includeContextPath) {
         GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.getRequestAttributes();
 
-        if (parameterValues == null) parameterValues = new HashMap<String, String>();
+        if (parameterValues == null) {
+            parameterValues = new HashMap<>();
+        }
         boolean blankController = GrailsStringUtils.isBlank(controller);
         boolean blankAction = GrailsStringUtils.isBlank(action);
 
@@ -151,12 +159,14 @@ public class DefaultUrlCreator implements UrlCreator {
         return createRelativeURL(controller, action, null, null, parameterValues, encoding);
     }
 
-    public String createRelativeURL(String controller, String action, String pluginName, Map parameterValues, String encoding) {
+    public String createRelativeURL(String controller, String action,
+            String pluginName, Map parameterValues, String encoding) {
         return createRelativeURL(controller, action, null, null, parameterValues, encoding);
     }
 
     @SuppressWarnings("unchecked")
-    public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding) {
+    public String createRelativeURL(String controller, String action, String namespace,
+            String pluginName, Map parameterValues, String encoding) {
         return createURLInternal(controller, action, parameterValues, false);
     }
 
@@ -165,16 +175,20 @@ public class DefaultUrlCreator implements UrlCreator {
     }
 
     @SuppressWarnings("unchecked")
-    public String createRelativeURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment) {
+    public String createRelativeURL(String controller, String action, String namespace,
+            String pluginName, Map parameterValues, String encoding, String fragment) {
+
         final String url = createURLInternal(controller, action, parameterValues, false);
-        return  createUrlWithFragment(encoding, fragment, url);
+        return createUrlWithFragment(encoding, fragment, url);
     }
 
     public String createURL(String controller, String action, Map parameterValues, String encoding, String fragment) {
         return createURL(controller, action, null, null, parameterValues, encoding, fragment);
     }
 
-    public String createURL(String controller, String action, String namespace, String pluginName, Map parameterValues, String encoding, String fragment) {
+    public String createURL(String controller, String action, String namespace,
+            String pluginName, Map parameterValues, String encoding, String fragment) {
+
         String url = createURL(controller, action, namespace, pluginName, parameterValues, encoding);
         return createUrlWithFragment(encoding, fragment, url);
     }
@@ -186,7 +200,7 @@ public class DefaultUrlCreator implements UrlCreator {
             }
             catch (UnsupportedEncodingException ex) {
                 throw new ControllerExecutionException("Error creating URL  [" + url +
-                     "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(),ex);
+                        "], problem encoding URL fragment [" + fragment + "]: " + ex.getMessage(), ex);
             }
         }
 
@@ -197,7 +211,6 @@ public class DefaultUrlCreator implements UrlCreator {
      * Appends all the request parameters to the URI buffer
      */
     private void appendRequestParams(FastStringWriter actualUriBuf, Map<Object, Object> params, String encoding) {
-
         boolean querySeparator = false;
 
         for (Map.Entry<Object, Object> entry : params.entrySet()) {
@@ -230,7 +243,7 @@ public class DefaultUrlCreator implements UrlCreator {
                 for (int j = 0; j < array.length; j++) {
                     Object currentValue = array[j];
                     appendRequestParam(actualUriBuf, name, currentValue, encoding);
-                    if (j < (array.length-1)) {
+                    if (j < (array.length - 1)) {
                         actualUriBuf.append(ENTITY_AMPERSAND);
                     }
                 }
@@ -252,8 +265,8 @@ public class DefaultUrlCreator implements UrlCreator {
         }
 
         actualUriBuf.append(urlEncode(name, encoding))
-                    .append('=')
-                    .append(urlEncode(value, encoding));
+                .append('=')
+                .append(urlEncode(value, encoding));
     }
 
     private String urlEncode(Object obj, String charset) {
@@ -272,4 +285,5 @@ public class DefaultUrlCreator implements UrlCreator {
     private void appendUrlToken(FastStringWriter actualUriBuf, Object token, String charset) {
         actualUriBuf.append(SLASH).append(urlEncode(token, charset));
     }
+
 }

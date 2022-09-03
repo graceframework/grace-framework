@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,12 @@
  */
 package grails.util;
 
-import groovy.lang.Closure;
-import groovy.lang.GroovyObjectSupport;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import groovy.lang.Closure;
+import groovy.lang.GroovyObjectSupport;
 
 /**
  * A simple class that takes method invocations and property setters and populates
@@ -29,13 +29,13 @@ import java.util.Map;
  * @author Graeme Rocher
  * @since 1.2
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ClosureToMapPopulator extends GroovyObjectSupport {
 
-    private Map map;
+    private final Map map;
 
     public ClosureToMapPopulator(Map theMap) {
-        map = theMap;
+        this.map = theMap;
     }
 
     public ClosureToMapPopulator() {
@@ -46,13 +46,13 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
         callable.setDelegate(this);
         callable.setResolveStrategy(Closure.DELEGATE_FIRST);
         callable.call();
-        return map;
+        return this.map;
     }
 
     @Override
     public void setProperty(String name, Object o) {
         if (o != null) {
-            map.put(name, o);
+            this.map.put(name, o);
         }
     }
 
@@ -60,18 +60,19 @@ public class ClosureToMapPopulator extends GroovyObjectSupport {
     public Object invokeMethod(String name, Object o) {
         if (o != null) {
             if (o.getClass().isArray()) {
-                Object[] args = (Object[])o;
+                Object[] args = (Object[]) o;
                 if (args.length == 1) {
-                    map.put(name, args[0]);
+                    this.map.put(name, args[0]);
                 }
                 else {
-                    map.put(name, Arrays.asList(args));
+                    this.map.put(name, Arrays.asList(args));
                 }
             }
             else {
-                map.put(name,o);
+                this.map.put(name, o);
             }
         }
         return null;
     }
+
 }

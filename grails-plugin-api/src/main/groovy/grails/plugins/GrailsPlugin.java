@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,22 @@
  */
 package grails.plugins;
 
-import grails.util.Environment;
-import groovy.lang.GroovyObject;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import grails.core.GrailsApplication;
-import org.grails.spring.RuntimeSpringConfiguration;
-import org.grails.plugins.support.WatchPattern;
+import groovy.lang.GroovyObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.filter.TypeFilter;
+
+import grails.core.GrailsApplication;
+import grails.util.Environment;
+
+import org.grails.plugins.support.WatchPattern;
+import org.grails.spring.RuntimeSpringConfiguration;
 
 /**
  * <p>Plugin interface that adds Spring {@link org.springframework.beans.factory.config.BeanDefinition}s
@@ -51,7 +52,9 @@ import org.springframework.core.type.filter.TypeFilter;
 public interface GrailsPlugin extends ApplicationContextAware, Comparable, GrailsPluginInfo {
 
     int EVENT_ON_CHANGE = 0;
+
     int EVENT_ON_CONFIG_CHANGE = 1;
+
     int EVENT_ON_SHUTDOWN = 2;
 
     String DO_WITH_DYNAMIC_METHODS = "doWithDynamicMethods";
@@ -192,7 +195,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      */
     void doWithRuntimeConfiguration(RuntimeSpringConfiguration springConfig);
 
-
     /**
      * Makes the plugin excluded for a particular Environment
      * @param env The Environment
@@ -268,7 +270,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      */
     String getDependentVersion(String name);
 
-
     PropertySource<?> getPropertySource();
 
     /**
@@ -327,7 +328,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      *
      * @param event The event to listen for
      */
-    void notifyOfEvent(Map event);
+    void notifyOfEvent(Map<String, Object> event);
 
     /**
      * Notifies the plugin of a specific event for the given event id, which is one of ON_CHANGE, ON_CONFIG_CHANGE
@@ -336,7 +337,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @param source The source of the event
      * @return a Map that represents the event
      */
-    Map notifyOfEvent(int eventKind, Object source);
+    Map<String, Object> notifyOfEvent(int eventKind, Object source);
 
     /**
      * Called prior to the initialisation of the GrailsApplication instance to allow the registration
@@ -356,13 +357,17 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     Class<?>[] getProvidedArtefacts();
 
     /**
-     * Returns the name of the plugin as represented in the file system including the version. For example TagLibGrailsPlugin would result in "tag-lib-0.1"
+     * Returns the name of the plugin as represented in the file system including the version.
+     * For example TagLibGrailsPlugin would result in "tag-lib-0.1"
+     *
      * @return The file system representation of the plugin name
      */
     String getFileSystemName();
 
     /**
-     * Returns the name of the plugin as represented on the file system without the version. For example TagLibGrailsPlugin would result in "tag-lib"
+     * Returns the name of the plugin as represented on the file system without the version.
+     * For example TagLibGrailsPlugin would result in "tag-lib"
+     *
      * @return The file system name
      */
     String getFileSystemShortName();
@@ -380,7 +385,8 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     List<String> getPluginExcludes();
 
     /**
-     * Returns whether this plugin is loaded from the current plugin. In other words when you execute grails run-app from a plugin project
+     * Returns whether this plugin is loaded from the current plugin.
+     * In other words when you execute grails run-app from a plugin project
      * the plugin project's *GrailsPlugin.groovy file represents the base plugin and this method will return true for this plugin
      *
      * @return true if it is the base plugin
@@ -423,4 +429,5 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @param descriptor The descriptor
      */
     void setDescriptor(Resource descriptor);
+
 }

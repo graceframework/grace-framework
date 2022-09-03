@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,14 +29,17 @@ import org.springframework.objenesis.instantiator.ObjectInstantiator;
  * @since 2.0
  */
 public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
-    private static final Logger LOG = LoggerFactory.getLogger(FastStringPrintWriter.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(FastStringPrintWriter.class);
 
     private static ObjectInstantiator instantiator;
+
     static {
         try {
             instantiator = new ObjenesisStd(false).getInstantiatorOf(FastStringPrintWriter.class);
-        } catch (Exception e) {
-            LOG.debug("Couldn't get direct performance optimized instantiator for FastStringPrintWriter. Using default instantiation.", e);
+        }
+        catch (Exception e) {
+            logger.debug("Couldn't get direct performance optimized instantiator for FastStringPrintWriter. Using default instantiation.", e);
         }
     }
 
@@ -44,12 +47,12 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
 
     public FastStringPrintWriter() {
         super(new StreamCharBuffer().getWriter());
-        streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
+        this.streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
     }
 
     public FastStringPrintWriter(int initialChunkSize) {
         super(new StreamCharBuffer(initialChunkSize).getWriter());
-        streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
+        this.streamBuffer = ((StreamCharBuffer.StreamCharBufferWriter) getOut()).getBuffer();
     }
 
     public static FastStringPrintWriter newInstance() {
@@ -64,10 +67,11 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
             return new FastStringPrintWriter();
         }
 
-        FastStringPrintWriter instance = (FastStringPrintWriter)instantiator.newInstance();
+        FastStringPrintWriter instance = (FastStringPrintWriter) instantiator.newInstance();
         if (initialChunkSize > 0) {
             instance.streamBuffer = new StreamCharBuffer(initialChunkSize);
-        } else {
+        }
+        else {
             instance.streamBuffer = new StreamCharBuffer();
         }
         instance.setTarget(instance.streamBuffer.getWriter());
@@ -80,7 +84,7 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public StreamCharBuffer getBuffer() {
-        return streamBuffer;
+        return this.streamBuffer;
     }
 
     @Override
@@ -89,10 +93,11 @@ public class FastStringPrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public String getValue() {
-        return streamBuffer.toString();
+        return this.streamBuffer.toString();
     }
 
     public Reader getReader() {
-        return streamBuffer.getReader();
+        return this.streamBuffer.getReader();
     }
+
 }

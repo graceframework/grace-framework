@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package org.grails.spring.beans;
 
-import grails.plugins.GrailsPluginManager;
-import grails.plugins.PluginManagerAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+
+import grails.plugins.GrailsPluginManager;
+import grails.plugins.PluginManagerAware;
 
 /**
  * Auto-injects beans that implement PluginManagerAware.
@@ -31,10 +32,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
     private GrailsPluginManager pluginManager;
+
     private BeanFactory beanFactory;
-    
+
     public PluginManagerAwareBeanPostProcessor() {
-        
+
     }
 
     public PluginManagerAwareBeanPostProcessor(GrailsPluginManager pluginManager) {
@@ -43,15 +45,15 @@ public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, B
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if(pluginManager == null) {
-            if(beanFactory.containsBean(GrailsPluginManager.BEAN_NAME)) {
-                pluginManager = beanFactory.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
+        if (this.pluginManager == null) {
+            if (this.beanFactory.containsBean(GrailsPluginManager.BEAN_NAME)) {
+                this.pluginManager = this.beanFactory.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
             }
         }
 
-        if(pluginManager != null) {
+        if (this.pluginManager != null) {
             if (bean instanceof PluginManagerAware) {
-                ((PluginManagerAware)bean).setPluginManager(pluginManager);
+                ((PluginManagerAware) bean).setPluginManager(this.pluginManager);
             }
         }
 
@@ -62,4 +64,5 @@ public class PluginManagerAwareBeanPostProcessor implements BeanPostProcessor, B
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
     }
+
 }

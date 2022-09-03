@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,14 @@
  */
 package org.grails.web.util;
 
-import grails.util.GrailsWebUtil;
-import groovy.lang.Writable;
-import org.grails.buffer.StreamCharBuffer;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import groovy.lang.Writable;
+
+import grails.util.GrailsWebUtil;
+
+import org.grails.buffer.StreamCharBuffer;
 
 /**
  * Represents some content that has been used in an include request.
@@ -30,8 +32,10 @@ import java.io.Writer;
  */
 public class IncludedContent implements Writable {
 
-    private String contentType = GrailsWebUtil.getContentType("text/html","UTF-8");
+    private String contentType = GrailsWebUtil.getContentType("text/html", "UTF-8");
+
     private Object content;
+
     private String redirectURL;
 
     public IncludedContent(String contentType, Object content) {
@@ -52,7 +56,7 @@ public class IncludedContent implements Writable {
      * @return The redirect URL
      */
     public String getRedirectURL() {
-        return redirectURL;
+        return this.redirectURL;
     }
 
     /**
@@ -60,7 +64,7 @@ public class IncludedContent implements Writable {
      * @return The content type
      */
     public String getContentType() {
-        return contentType;
+        return this.contentType;
     }
 
     /**
@@ -68,39 +72,40 @@ public class IncludedContent implements Writable {
      * @return The content
      */
     public Object getContent() {
-        return content;
+        return this.content;
     }
 
     public Writer writeTo(Writer target) throws IOException {
-        if (content == null) {
+        if (this.content == null) {
             return target;
         }
 
-        if (content instanceof StreamCharBuffer) {
-            ((StreamCharBuffer)content).writeTo(target);
+        if (this.content instanceof StreamCharBuffer) {
+            ((StreamCharBuffer) this.content).writeTo(target);
         }
-        else if (content instanceof String) {
-            target.write((String)content);
+        else if (this.content instanceof String) {
+            target.write((String) this.content);
         }
         else {
-            target.write(String.valueOf(content));
+            target.write(String.valueOf(this.content));
         }
         return target;
     }
 
     public char[] getContentAsCharArray() {
-        if (content == null) {
+        if (this.content == null) {
             return new char[0];
         }
 
-        if (content instanceof StreamCharBuffer) {
-            return ((StreamCharBuffer)content).toCharArray();
+        if (this.content instanceof StreamCharBuffer) {
+            return ((StreamCharBuffer) this.content).toCharArray();
         }
 
-        if (content instanceof String) {
-            return ((String)content).toCharArray();
+        if (this.content instanceof String) {
+            return ((String) this.content).toCharArray();
         }
 
-        return String.valueOf(content).toCharArray();
+        return String.valueOf(this.content).toCharArray();
     }
+
 }

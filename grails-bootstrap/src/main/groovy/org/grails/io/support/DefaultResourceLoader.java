@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * @see java.lang.Thread#getContextClassLoader()
      */
     public DefaultResourceLoader() {
-        classLoader = getDefaultClassLoader();
+        this.classLoader = getDefaultClassLoader();
     }
 
     public static ClassLoader getDefaultClassLoader() {
@@ -47,7 +47,7 @@ public class DefaultResourceLoader implements ResourceLoader {
         try {
             cl = Thread.currentThread().getContextClassLoader();
         }
-        catch (Throwable ex) {
+        catch (Throwable ignored) {
             // Cannot access thread context ClassLoader - falling back to system class loader...
         }
         if (cl == null) {
@@ -80,7 +80,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * Return the ClassLoader to load class path resources with.
      */
     public ClassLoader getClassLoader() {
-        return classLoader == null ? getDefaultClassLoader() : classLoader;
+        return this.classLoader == null ? getDefaultClassLoader() : this.classLoader;
     }
 
     public Resource getResource(String location) {
@@ -118,7 +118,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      */
     private static class ClassPathContextResource extends ClassPathResource {
 
-        public ClassPathContextResource(String path, ClassLoader classLoader) {
+        ClassPathContextResource(String path, ClassLoader classLoader) {
             super(path, classLoader);
         }
 
@@ -132,5 +132,7 @@ public class DefaultResourceLoader implements ResourceLoader {
             String pathToUse = GrailsResourceUtils.applyRelativePath(getPath(), relativePath);
             return new ClassPathContextResource(pathToUse, getClassLoader());
         }
+
     }
+
 }

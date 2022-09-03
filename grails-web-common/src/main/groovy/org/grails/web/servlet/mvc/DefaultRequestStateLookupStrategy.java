@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package org.grails.web.servlet.mvc;
 
-import org.grails.core.artefact.ControllerArtefactHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import grails.core.GrailsApplication;
 import grails.core.GrailsControllerClass;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.grails.core.artefact.ControllerArtefactHandler;
 
 /**
  * Default implementation that uses the web request to obtain information about the currently
@@ -30,7 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLookupStrategy {
 
     public static final String DEFAULT_REQUEST_ENCODING = "UTF-8";
+
     private GrailsApplication grailsApplication;
+
     private GrailsWebRequest webRequest;
 
     public DefaultRequestStateLookupStrategy() {
@@ -96,12 +100,12 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
         if (req != null) {
             String actionName = req.getActionName();
             if (actionName == null) {
-                if (grailsApplication == null) {
-                    grailsApplication = req.getAttributes().getGrailsApplication();
+                if (this.grailsApplication == null) {
+                    this.grailsApplication = req.getAttributes().getGrailsApplication();
                 }
-                if (grailsApplication != null) {
+                if (this.grailsApplication != null) {
                     final String controllerName = getControllerNameInternal(req);
-                    return getActionName(grailsApplication,controllerName);
+                    return getActionName(this.grailsApplication, controllerName);
                 }
             }
         }
@@ -110,7 +114,8 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
 
     private String getActionName(GrailsApplication application, String controllerName) {
         if (application != null) {
-            final GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(ControllerArtefactHandler.TYPE, controllerName);
+            final GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(
+                    ControllerArtefactHandler.TYPE, controllerName);
             if (controllerClass != null) {
                 return controllerClass.getDefaultAction();
             }
@@ -120,18 +125,19 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
 
     public String getActionName(String controllerName) {
         if (controllerName != null) {
-            if (grailsApplication == null) {
+            if (this.grailsApplication == null) {
                 final GrailsWebRequest grailsWebRequest = getWebRequest();
-                if (grailsWebRequest!= null)
-                    grailsApplication = grailsWebRequest.getAttributes().getGrailsApplication();
-
+                if (grailsWebRequest != null) {
+                    this.grailsApplication = grailsWebRequest.getAttributes().getGrailsApplication();
+                }
             }
-            return getActionName(grailsApplication, controllerName);
+            return getActionName(this.grailsApplication, controllerName);
         }
         return null;
     }
 
     public GrailsWebRequest getWebRequest() {
-        return webRequest != null ? webRequest : GrailsWebRequest.lookup();
+        return this.webRequest != null ? this.webRequest : GrailsWebRequest.lookup();
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,7 @@
  */
 package org.grails.build.logging;
 
-import grails.build.logging.GrailsConsole;
 import groovy.ant.AntBuilder;
-
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.DefaultLogger;
@@ -25,7 +23,8 @@ import org.apache.tools.ant.MagicNames;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.types.LogLevel;
-import org.apache.tools.ant.util.StringUtils;
+
+import grails.build.logging.GrailsConsole;
 
 /**
  * Silences ant builder output.
@@ -46,7 +45,6 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
     /**
      * @return Factory method to create new Project instances
      */
-    @SuppressWarnings("unchecked")
     protected static Project createAntProject() {
         final Project project = new Project();
 
@@ -76,13 +74,14 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
         if (!instance.isVerbose()) {
             for (Object buildListener : project.getBuildListeners()) {
                 if (buildListener instanceof BuildLogger) {
-                    ((BuildLogger)buildListener).setMessageOutputLevel(LogLevel.ERR.getLevel());
+                    ((BuildLogger) buildListener).setMessageOutputLevel(LogLevel.ERR.getLevel());
                 }
             }
         }
     }
 
     private static class GrailsConsoleLogger extends DefaultLogger {
+
         /**
          * Name of the current target, if it should
          * be displayed on the next message. This is
@@ -91,6 +90,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          * the target is logged.
          */
         protected String targetName;
+
         protected GrailsConsole console = GrailsConsole.getInstance();
 
         /**
@@ -102,7 +102,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void targetStarted(BuildEvent event) {
-            targetName = event.getTarget().getName();
+            this.targetName = event.getTarget().getName();
         }
 
         /**
@@ -112,7 +112,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void targetFinished(BuildEvent event) {
-            targetName = null;
+            this.targetName = null;
         }
 
         /**
@@ -126,16 +126,18 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
          */
         @Override
         public void messageLogged(BuildEvent event) {
-            if (event.getPriority() > msgOutputLevel ||
+            if (event.getPriority() > this.msgOutputLevel ||
                     null == event.getMessage() ||
                     "".equals(event.getMessage().trim())) {
                 return;
             }
 
-            if (null != targetName) {
-                console.verbose(StringUtils.LINE_SEP + targetName + ":");
-                targetName = null;
+            if (this.targetName != null) {
+                this.console.verbose(System.lineSeparator() + this.targetName + ":");
+                this.targetName = null;
             }
         }
+
     }
+
 }

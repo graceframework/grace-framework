@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,8 +26,11 @@ import java.util.Set;
  * @since 2.3
  */
 public class EncodingStateImpl implements EncodingState {
-    public static final EncodingState UNDEFINED_ENCODING_STATE = new EncodingStateImpl((Set<Encoder>)null, null);
+
+    public static final EncodingState UNDEFINED_ENCODING_STATE = new EncodingStateImpl((Set<Encoder>) null, null);
+
     private final Set<Encoder> encoders;
+
     private final EncodingState previousEncodingState;
 
     /**
@@ -51,7 +54,7 @@ public class EncodingStateImpl implements EncodingState {
      * EncodingState#getEncoders()
      */
     public Set<Encoder> getEncoders() {
-        return encoders;
+        return this.encoders;
     }
 
     /*
@@ -62,7 +65,7 @@ public class EncodingStateImpl implements EncodingState {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((encoders == null) ? 0 : encoders.hashCode());
+        result = prime * result + ((this.encoders == null) ? 0 : this.encoders.hashCode());
         return result;
     }
 
@@ -72,32 +75,40 @@ public class EncodingStateImpl implements EncodingState {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        EncodingStateImpl other = (EncodingStateImpl)obj;
-        if (encoders == null) {
-            if (other.encoders != null && other.encoders.size() > 0)
-                return false;
         }
-        else if (!encoders.equals(other.encoders))
+        if (obj == null) {
             return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        EncodingStateImpl other = (EncodingStateImpl) obj;
+        if (this.encoders == null) {
+            if (other.encoders != null && other.encoders.size() > 0) {
+                return false;
+            }
+        }
+        else if (!this.encoders.equals(other.encoders)) {
+            return false;
+        }
         return true;
     }
 
     public EncodingState appendEncoder(Encoder encoder) {
-        if(encoder==null) return this;
-        Set<Encoder> newEncoders;
-        if (encoders == null || encoders.size()==0) {
-            newEncoders = Collections.singleton(encoder);
-        } else if (encoders.size()==1 && encoders.contains(encoder)) {
+        if (encoder == null) {
             return this;
-        } else {
-            newEncoders = new LinkedHashSet<Encoder>();
-            newEncoders.addAll(encoders);
+        }
+        Set<Encoder> newEncoders;
+        if (this.encoders == null || this.encoders.size() == 0) {
+            newEncoders = Collections.singleton(encoder);
+        }
+        else if (this.encoders.size() == 1 && this.encoders.contains(encoder)) {
+            return this;
+        }
+        else {
+            newEncoders = new LinkedHashSet<>(this.encoders);
             newEncoders.add(encoder);
         }
         return new EncodingStateImpl(newEncoders, this);
@@ -105,25 +116,32 @@ public class EncodingStateImpl implements EncodingState {
 
     @Override
     public String toString() {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("EncodingStateImpl");
-        if(encoders != null && encoders.size() > 0) {
+        if (this.encoders != null && this.encoders.size() > 0) {
             sb.append(" [encoders=");
-            boolean first=true;
-            for(Encoder encoder : encoders) {
-                if(!first) {
+            boolean first = true;
+            for (Encoder encoder : this.encoders) {
+                if (!first) {
                     sb.append(", ");
-                } else {
-                    first=false;
                 }
-                sb.append("[@");
-                sb.append(System.identityHashCode(encoder));
-                sb.append(" ");
-                sb.append(encoder.getCodecIdentifier().getCodecName() + " safe:" + encoder.isSafe() + " apply to safe:" + encoder.isApplyToSafelyEncoded());
-                sb.append("]");
+                else {
+                    first = false;
+                }
+                sb.append("[@")
+                        .append(System.identityHashCode(encoder))
+                        .append(" ")
+                        .append(encoder.getCodecIdentifier()
+                        .getCodecName())
+                        .append(" safe:")
+                        .append(encoder.isSafe())
+                        .append(" apply to safe:")
+                        .append(encoder.isApplyToSafelyEncoded())
+                        .append("]");
             }
             sb.append("]");
-        } else {
+        }
+        else {
             sb.append("[no encoders]");
         }
         return sb.toString();
@@ -131,6 +149,7 @@ public class EncodingStateImpl implements EncodingState {
 
     @Override
     public EncodingState getPreviousEncodingState() {
-        return previousEncodingState;
+        return this.previousEncodingState;
     }
+
 }

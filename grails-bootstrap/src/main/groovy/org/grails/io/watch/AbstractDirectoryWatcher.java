@@ -1,10 +1,24 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.io.watch;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 
 /**
  * Backend for {@link DirectoryWatcher}
@@ -15,8 +29,11 @@ import java.util.List;
  * @see DirectoryWatcher
  */
 abstract class AbstractDirectoryWatcher implements Runnable {
-    private List<DirectoryWatcher.FileChangeListener> listeners = new ArrayList<DirectoryWatcher.FileChangeListener>();
-    volatile protected boolean active = true; //must be volatile as it's read by multiple threads and the value should be reflected in all of them
+
+    private final List<DirectoryWatcher.FileChangeListener> listeners = new ArrayList<>();
+
+    protected volatile boolean active = true; //must be volatile as it's read by multiple threads and the value should be reflected in all of them
+
     protected long sleepTime = 1000;
 
     /**
@@ -25,7 +42,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
      * @param active False if you want to stop watching
      */
     public void setActive(boolean active) {
-    	this.active = active;
+        this.active = active;
     }
 
     /**
@@ -43,7 +60,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
      * @param listener The file listener
      */
     public void addListener(DirectoryWatcher.FileChangeListener listener) {
-        listeners.add(listener);
+        this.listeners.add(listener);
     }
 
     /**
@@ -52,7 +69,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
      * @param listener The file listener
      */
     public void removeListener(DirectoryWatcher.FileChangeListener listener) {
-        listeners.remove(listener);
+        this.listeners.remove(listener);
     }
 
     /**
@@ -72,19 +89,19 @@ abstract class AbstractDirectoryWatcher implements Runnable {
     public abstract void addWatchDirectory(File dir, List<String> fileExtensions);
 
     protected void fireOnChange(File file) {
-        for (DirectoryWatcher.FileChangeListener listener : listeners) {
+        for (DirectoryWatcher.FileChangeListener listener : this.listeners) {
             listener.onChange(file);
         }
     }
 
     protected void fireOnNew(File file) {
-        for (DirectoryWatcher.FileChangeListener listener : listeners) {
+        for (DirectoryWatcher.FileChangeListener listener : this.listeners) {
             listener.onNew(file);
         }
     }
 
-    protected boolean isValidDirectoryToMonitor(File file){
-    	return file.isDirectory() && ! file.isHidden() && !file.getName().startsWith(".");
+    protected boolean isValidDirectoryToMonitor(File file) {
+        return file.isDirectory() && !file.isHidden() && !file.getName().startsWith(".");
     }
 
     protected boolean isValidFileToMonitor(File file, Collection<String> fileExtensions) {
@@ -92,7 +109,7 @@ abstract class AbstractDirectoryWatcher implements Runnable {
         String path = file.getAbsolutePath();
         boolean isSvnFile = path.indexOf(File.separator + DirectoryWatcher.SVN_DIR_NAME + File.separator) > 0;
         return !isSvnFile &&
-        		!file.isDirectory() &&
+                !file.isDirectory() &&
                 !file.isHidden() &&
                 !file.getName().startsWith(".") &&
                 (fileExtensions.contains("*") || fileExtensions.contains(getFilenameExtension(name)));
@@ -114,4 +131,5 @@ abstract class AbstractDirectoryWatcher implements Runnable {
         }
         return path.substring(extIndex + 1);
     }
+
 }

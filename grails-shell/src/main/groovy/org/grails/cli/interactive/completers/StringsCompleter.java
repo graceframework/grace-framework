@@ -1,10 +1,11 @@
-/* Copyright 2012 the original author or authors.
+/*
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,11 +15,14 @@
  */
 package org.grails.cli.interactive.completers;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import jline.console.completer.Completer;
-
-import java.util.*;
-
-import static jline.internal.Preconditions.checkNotNull;
+import jline.internal.Preconditions;
 
 /**
  * A completer that completes based on a collection of Strings
@@ -26,17 +30,16 @@ import static jline.internal.Preconditions.checkNotNull;
  * @author Graeme Rocher
  * @since 3.0
  */
-public class StringsCompleter
-    implements Completer
-{
-    private SortedSet<String> strings = new TreeSet<String>();
+public class StringsCompleter implements Completer {
+
+    private SortedSet<String> strings = new TreeSet<>();
 
     public StringsCompleter() {
         // empty
     }
 
     public StringsCompleter(final Collection<String> strings) {
-        checkNotNull(strings);
+        Preconditions.checkNotNull(strings);
         getStrings().addAll(strings);
     }
 
@@ -45,9 +48,8 @@ public class StringsCompleter
     }
 
     public SortedSet<String> getStrings() {
-        return strings;
+        return this.strings;
     }
-
 
     public void setStrings(SortedSet<String> strings) {
         this.strings = strings;
@@ -55,7 +57,7 @@ public class StringsCompleter
 
     public int complete(final String buffer, final int cursor, final List<CharSequence> candidates) {
         // buffer could be null
-        checkNotNull(candidates);
+        Preconditions.checkNotNull(candidates);
 
         if (buffer == null) {
             candidates.addAll(getStrings());
@@ -72,4 +74,5 @@ public class StringsCompleter
 
         return candidates.isEmpty() ? -1 : 0;
     }
+
 }

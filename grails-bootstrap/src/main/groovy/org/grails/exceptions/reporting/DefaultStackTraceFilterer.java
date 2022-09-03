@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,12 @@
  */
 package org.grails.exceptions.reporting;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Default implementation of StackTraceFilterer.
@@ -29,31 +29,35 @@ import java.util.List;
  * @author Graeme Rocher
  */
 public class DefaultStackTraceFilterer implements StackTraceFilterer {
+
     public static final String STACK_LOG_NAME = "StackTrace";
-    public static final Log STACK_LOG = LogFactory.getLog(STACK_LOG_NAME);
+
+    private static final Log logger = LogFactory.getLog(STACK_LOG_NAME);
 
     private static final String[] DEFAULT_INTERNAL_PACKAGES = new String[] {
-        "org.codehaus.groovy.runtime.",
-        "org.codehaus.groovy.reflection.",
-        "org.codehaus.groovy.ast.",
-        "org.springframework.web.filter",
-        "org.springframework.boot.actuate",
-        "org.mortbay.",
-        "groovy.lang.",
-        "org.apache.catalina.",
-        "org.apache.coyote.",
-        "org.apache.tomcat.",
-        "net.sf.cglib.proxy.",
-        "sun.",
-        "java.lang.reflect.",
-        "org.springframework.boot.devtools.",
-        "org.springsource.loaded.",
-        "com.opensymphony.",
-        "javax.servlet."
+            "org.codehaus.groovy.runtime.",
+            "org.codehaus.groovy.reflection.",
+            "org.codehaus.groovy.ast.",
+            "org.springframework.web.filter",
+            "org.springframework.boot.actuate",
+            "org.mortbay.",
+            "groovy.lang.",
+            "org.apache.catalina.",
+            "org.apache.coyote.",
+            "org.apache.tomcat.",
+            "net.sf.cglib.proxy.",
+            "sun.",
+            "java.lang.reflect.",
+            "org.springframework.boot.devtools.",
+            "org.springsource.loaded.",
+            "com.opensymphony.",
+            "javax.servlet."
     };
 
-    private List<String> packagesToFilter = new ArrayList<String>();
+    private final List<String> packagesToFilter = new ArrayList<>();
+
     private boolean shouldFilter;
+
     private String cutOffPackage = null;
 
     public DefaultStackTraceFilterer() {
@@ -62,12 +66,14 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
 
     public DefaultStackTraceFilterer(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
-        packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
+        this.packagesToFilter.addAll(Arrays.asList(DEFAULT_INTERNAL_PACKAGES));
     }
 
     public void addInternalPackage(String name) {
-        if (name == null) throw new IllegalArgumentException("Package name cannot be null");
-        packagesToFilter.add(name);
+        if (name == null) {
+            throw new IllegalArgumentException("Package name cannot be null");
+        }
+        this.packagesToFilter.add(name);
     }
 
     public void setCutOffPackage(String cutOffPackage) {
@@ -86,9 +92,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     }
 
     public Throwable filter(Throwable source) {
-        if (shouldFilter) {
+        if (this.shouldFilter) {
             StackTraceElement[] trace = source.getStackTrace();
-            List<StackTraceElement> newTrace = filterTraceWithCutOff(trace, cutOffPackage);
+            List<StackTraceElement> newTrace = filterTraceWithCutOff(trace, this.cutOffPackage);
 
             if (newTrace.isEmpty()) {
                 // filter with no cut-off so at least there is some trace
@@ -99,7 +105,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             // if not we will just skip sanitizing and leave it as is
             if (!newTrace.isEmpty()) {
                 // We don't want to lose anything, so log it
-                STACK_LOG.error(FULL_STACK_TRACE_MESSAGE, source);
+                logger.error(FULL_STACK_TRACE_MESSAGE, source);
                 StackTraceElement[] clean = new StackTraceElement[newTrace.size()];
                 newTrace.toArray(clean);
                 source.setStackTrace(clean);
@@ -109,7 +115,7 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     }
 
     private List<StackTraceElement> filterTraceWithCutOff(StackTraceElement[] trace, String endPackage) {
-        List<StackTraceElement> newTrace = new ArrayList<StackTraceElement>();
+        List<StackTraceElement> newTrace = new ArrayList<>();
         boolean foundGroovy = false;
         for (StackTraceElement stackTraceElement : trace) {
             String className = stackTraceElement.getClassName();
@@ -117,7 +123,9 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
             if (!foundGroovy && fileName != null && fileName.endsWith(".groovy")) {
                 foundGroovy = true;
             }
-            if (endPackage != null && className.startsWith(endPackage) && foundGroovy) break;
+            if (endPackage != null && className.startsWith(endPackage) && foundGroovy) {
+                break;
+            }
             if (isApplicationClass(className)) {
                 if (stackTraceElement.getLineNumber() > -1) {
                     newTrace.add(stackTraceElement);
@@ -133,8 +141,10 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
      * @return true if is internal
      */
     protected boolean isApplicationClass(String className) {
-        for (String packageName : packagesToFilter) {
-            if (className.startsWith(packageName)) return false;
+        for (String packageName : this.packagesToFilter) {
+            if (className.startsWith(packageName)) {
+                return false;
+            }
         }
         return true;
     }
@@ -142,4 +152,5 @@ public class DefaultStackTraceFilterer implements StackTraceFilterer {
     public void setShouldFilter(boolean shouldFilter) {
         this.shouldFilter = shouldFilter;
     }
+
 }

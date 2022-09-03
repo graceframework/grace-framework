@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package org.grails.web.mapping.mvc;
 
+import org.springframework.http.HttpMethod;
+
 import grails.core.GrailsApplication;
 import grails.web.UrlConverter;
 import grails.web.mapping.UrlMapping;
 import grails.web.mapping.UrlMappingInfo;
 import grails.web.mapping.UrlMappings;
-import org.springframework.http.HttpMethod;
 
 /**
  * A {@link grails.web.mapping.UrlMappings} implementation that matches URLs directly onto controller instances
@@ -29,9 +30,11 @@ import org.springframework.http.HttpMethod;
  * @since 3.0
  */
 public class GrailsControllerUrlMappings extends AbstractGrailsControllerUrlMappings {
+
     public GrailsControllerUrlMappings(GrailsApplication grailsApplication, UrlMappings urlMappingsHolderDelegate, UrlConverter urlConverter) {
         super(grailsApplication, urlMappingsHolderDelegate, urlConverter);
     }
+
     public GrailsControllerUrlMappings(GrailsApplication grailsApplication, UrlMappings urlMappingsHolderDelegate) {
         super(grailsApplication, urlMappingsHolderDelegate);
     }
@@ -43,26 +46,27 @@ public class GrailsControllerUrlMappings extends AbstractGrailsControllerUrlMapp
 
     @Override
     public UrlMappingInfo[] matchAll(String uri) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, String httpMethod) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri, httpMethod) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, String httpMethod, String version) {
-        return collectControllerMappings( getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, HttpMethod httpMethod) {
-        return collectControllerMappings(  getUrlMappingsHolderDelegate().matchAll(uri, httpMethod) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod));
     }
 
     @Override
     public UrlMappingInfo[] matchAll(String uri, HttpMethod httpMethod, String version) {
-        return collectControllerMappings(  getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version) );
+        return collectControllerMappings(getUrlMappingsHolderDelegate().matchAll(uri, httpMethod, version));
     }
+
 }

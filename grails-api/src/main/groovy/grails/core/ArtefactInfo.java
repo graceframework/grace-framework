@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,8 +32,7 @@ public interface ArtefactInfo {
      * that represent the artefacts.
      * @return The array, which may be empty but never null.
      */
-    @SuppressWarnings("rawtypes")
-    Class[] getClasses();
+    Class<?>[] getClasses();
 
     /**
      * Gets you the array of all artefact GrailsClass(es), the classes used to track
@@ -47,8 +46,7 @@ public interface ArtefactInfo {
      * <p>The Map is keyed by class name, i.e. "BookController"</p>
      * @return The Map, which may be empty but never null.
      */
-    @SuppressWarnings("rawtypes")
-    Map getClassesByName();
+    Map<String, Class<?>> getClassesByName();
 
     /**
      * <p>Gets you the unmodifiable Map of all artefact GrailsClass(es), the classes that store extra
@@ -56,8 +54,7 @@ public interface ArtefactInfo {
      * <p>The Map is keyed by class name, i.e. "BookController"</p>
      * @return The Map, which may be empty but never null.
      */
-    @SuppressWarnings("rawtypes")
-    Map getGrailsClassesByName();
+    Map<String, GrailsClass> getGrailsClassesByName();
 
     /**
      * <p>Retrieves the GrailsClass representing a named artefact.</p>
@@ -73,4 +70,5 @@ public interface ArtefactInfo {
      * @return A GrailsClass or null
      */
     GrailsClass getGrailsClassByLogicalPropertyName(String logicalName);
+
 }

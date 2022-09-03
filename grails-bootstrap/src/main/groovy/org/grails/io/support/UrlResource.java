@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,8 +56,8 @@ public class UrlResource extends AbstractFileResolvingResource {
      */
     public UrlResource(URL url) {
         this.url = url;
-        cleanedUrl = getCleanedUrl(url, url.toString());
-        uri = null;
+        this.cleanedUrl = getCleanedUrl(url, url.toString());
+        this.uri = null;
     }
 
     /**
@@ -66,8 +66,8 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @throws java.net.MalformedURLException if the given URL path is not valid
      */
     public UrlResource(URI uri) throws MalformedURLException {
-        url = uri.toURL();
-        cleanedUrl = getCleanedUrl(url, uri.toString());
+        this.url = uri.toURL();
+        this.cleanedUrl = getCleanedUrl(this.url, uri.toString());
         this.uri = uri;
     }
 
@@ -77,9 +77,9 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @throws MalformedURLException if the given URL path is not valid
      */
     public UrlResource(String path) throws MalformedURLException {
-        url = new URL(path);
-        cleanedUrl = getCleanedUrl(url, path);
-        uri = null;
+        this.url = new URL(path);
+        this.cleanedUrl = getCleanedUrl(this.url, path);
+        this.uri = null;
     }
 
     /**
@@ -108,7 +108,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @see java.net.URLConnection#getInputStream()
      */
     public InputStream getInputStream() throws IOException {
-        URLConnection con = url.openConnection();
+        URLConnection con = this.url.openConnection();
         useCachesIfNecessary(con);
         try {
             return con.getInputStream();
@@ -130,7 +130,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * This implementation returns the underlying URL reference.
      */
     public URL getURL() throws IOException {
-        return url;
+        return this.url;
     }
 
     /**
@@ -138,8 +138,8 @@ public class UrlResource extends AbstractFileResolvingResource {
      * if possible.
      */
     public URI getURI() throws IOException {
-        if (uri != null) {
-            return uri;
+        if (this.uri != null) {
+            return this.uri;
         }
         return getFile().toURI();
     }
@@ -150,7 +150,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      */
     @Override
     public File getFile() throws IOException {
-        return uri == null ? super.getFile() : super.getFile(uri);
+        return this.uri == null ? super.getFile() : super.getFile(this.uri);
     }
 
     /**
@@ -158,13 +158,14 @@ public class UrlResource extends AbstractFileResolvingResource {
      * relative to the path of the underlying URL of this resource descriptor.
      * @see java.net.URL#URL(java.net.URL, String)
      */
-    public Resource createRelative(String relativePath)  {
+    public Resource createRelative(String relativePath) {
         if (relativePath.startsWith("/")) {
             relativePath = relativePath.substring(1);
         }
         try {
-            return new UrlResource(new URL(url, relativePath));
-        } catch (MalformedURLException e) {
+            return new UrlResource(new URL(this.url, relativePath));
+        }
+        catch (MalformedURLException e) {
             return null;
         }
     }
@@ -175,14 +176,14 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @see java.io.File#getName()
      */
     public String getFilename() {
-        return new File(url.getFile()).getName();
+        return new File(this.url.getFile()).getName();
     }
 
     /**
      * This implementation returns a description that includes the URL.
      */
     public String getDescription() {
-        return "URL [" + url + "]";
+        return "URL [" + this.url + "]";
     }
 
     /**
@@ -191,7 +192,7 @@ public class UrlResource extends AbstractFileResolvingResource {
     @Override
     public boolean equals(Object obj) {
         return (obj == this ||
-                (obj instanceof UrlResource && cleanedUrl.equals(((UrlResource) obj).cleanedUrl)));
+                (obj instanceof UrlResource && this.cleanedUrl.equals(((UrlResource) obj).cleanedUrl)));
     }
 
     /**
@@ -199,11 +200,12 @@ public class UrlResource extends AbstractFileResolvingResource {
      */
     @Override
     public int hashCode() {
-        return cleanedUrl.hashCode();
+        return this.cleanedUrl.hashCode();
     }
 
     @Override
     public String toString() {
         return getDescription();
     }
+
 }

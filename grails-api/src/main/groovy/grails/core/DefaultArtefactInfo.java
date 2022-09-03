@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 package grails.core;
-
-import grails.core.ArtefactInfo;
-import grails.core.GrailsClass;
-import grails.core.InjectableGrailsClass;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,13 +29,16 @@ import java.util.Map;
  */
 public class DefaultArtefactInfo implements ArtefactInfo {
 
-    private LinkedList<GrailsClass> grailsClasses = new LinkedList<GrailsClass>();
+    private final LinkedList<GrailsClass> grailsClasses = new LinkedList<>();
+
     private Class<?>[] classes;
-    private Map<String, GrailsClass> grailsClassesByName = new LinkedHashMap<String, GrailsClass>();
-    private Map<String, Class<?>> classesByName = new LinkedHashMap<String, Class<?>>();
-    private Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<String, GrailsClass>();
-    @SuppressWarnings("rawtypes")
-    public Map handlerData = new HashMap();
+
+    private Map<String, GrailsClass> grailsClassesByName = new LinkedHashMap<>();
+
+    private Map<String, Class<?>> classesByName = new LinkedHashMap<>();
+
+    private final Map<String, GrailsClass> logicalPropertyNameToClassMap = new HashMap<>();
+
     private GrailsClass[] grailsClassesArray;
 
     /**
@@ -52,27 +51,27 @@ public class DefaultArtefactInfo implements ArtefactInfo {
     }
 
     private void addGrailsClassInternal(GrailsClass artefactClass, boolean atStart) {
-        grailsClassesByName = new LinkedHashMap<String, GrailsClass>(grailsClassesByName);
-        classesByName = new LinkedHashMap<String, Class<?>>(classesByName);
+        this.grailsClassesByName = new LinkedHashMap<>(this.grailsClassesByName);
+        this.classesByName = new LinkedHashMap<>(this.classesByName);
 
         Class<?> actualClass = artefactClass.getClazz();
         boolean addToGrailsClasses = true;
         if (artefactClass instanceof InjectableGrailsClass) {
-            addToGrailsClasses = ((InjectableGrailsClass)artefactClass).getAvailable();
+            addToGrailsClasses = ((InjectableGrailsClass) artefactClass).getAvailable();
         }
         if (addToGrailsClasses) {
-            GrailsClass oldVersion = grailsClassesByName.put(actualClass.getName(), artefactClass);
-            grailsClasses.remove(oldVersion);
+            GrailsClass oldVersion = this.grailsClassesByName.put(actualClass.getName(), artefactClass);
+            this.grailsClasses.remove(oldVersion);
         }
-        classesByName.put(actualClass.getName(), actualClass);
-        logicalPropertyNameToClassMap.put(artefactClass.getLogicalPropertyName(), artefactClass);
+        this.classesByName.put(actualClass.getName(), actualClass);
+        this.logicalPropertyNameToClassMap.put(artefactClass.getLogicalPropertyName(), artefactClass);
 
-        if (!grailsClasses.contains(artefactClass)) {
+        if (!this.grailsClasses.contains(artefactClass)) {
             if (atStart) {
-                grailsClasses.addFirst(artefactClass);
+                this.grailsClasses.addFirst(artefactClass);
             }
             else {
-                grailsClasses.addLast(artefactClass);
+                this.grailsClasses.addLast(artefactClass);
             }
         }
     }
@@ -81,39 +80,40 @@ public class DefaultArtefactInfo implements ArtefactInfo {
      * Refresh the arrays generated from the maps.
      */
     public synchronized void updateComplete() {
-        grailsClassesByName = Collections.unmodifiableMap(grailsClassesByName);
-        classesByName = Collections.unmodifiableMap(classesByName);
+        this.grailsClassesByName = Collections.unmodifiableMap(this.grailsClassesByName);
+        this.classesByName = Collections.unmodifiableMap(this.classesByName);
 
-        grailsClassesArray = grailsClasses.toArray(new GrailsClass[grailsClasses.size()]);
+        this.grailsClassesArray = this.grailsClasses.toArray(new GrailsClass[0]);
         // Make classes array
-        classes = classesByName.values().toArray(new Class[classesByName.size()]);
+        this.classes = this.classesByName.values().toArray(new Class[0]);
     }
 
     public Class<?>[] getClasses() {
-        return classes;
+        return this.classes;
     }
 
     public GrailsClass[] getGrailsClasses() {
-        return grailsClassesArray;
+        return this.grailsClassesArray;
     }
 
     public Map<String, Class<?>> getClassesByName() {
-        return classesByName;
+        return this.classesByName;
     }
 
     public Map<String, GrailsClass> getGrailsClassesByName() {
-        return grailsClassesByName;
+        return this.grailsClassesByName;
     }
 
     public GrailsClass getGrailsClass(String name) {
-        return grailsClassesByName.get(name);
+        return this.grailsClassesByName.get(name);
     }
 
     public GrailsClass getGrailsClassByLogicalPropertyName(String logicalName) {
-        return logicalPropertyNameToClassMap.get(logicalName);
+        return this.logicalPropertyNameToClassMap.get(logicalName);
     }
 
     public void addOverridableGrailsClass(GrailsClass artefactGrailsClass) {
         addGrailsClassInternal(artefactGrailsClass, true);
     }
+
 }

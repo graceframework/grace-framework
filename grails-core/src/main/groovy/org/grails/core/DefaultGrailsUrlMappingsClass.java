@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +15,19 @@
  */
 package org.grails.core;
 
-import grails.core.GrailsUrlMappingsClass;
-import groovy.lang.Closure;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import groovy.lang.Closure;
+
+import grails.core.GrailsUrlMappingsClass;
 
 public class DefaultGrailsUrlMappingsClass extends AbstractGrailsClass implements GrailsUrlMappingsClass {
 
     public static final String URL_MAPPINGS = "UrlMappings";
 
     private static final String MAPPINGS_CLOSURE = "mappings";
+
     private static final String EXCLUDE_PATTERNS = "excludes";
 
     public DefaultGrailsUrlMappingsClass(Class<?> clazz) {
@@ -35,13 +37,13 @@ public class DefaultGrailsUrlMappingsClass extends AbstractGrailsClass implement
     public Closure<?> getMappingsClosure() {
         Closure<?> result = getStaticPropertyValue(MAPPINGS_CLOSURE, Closure.class);
         if (result == null) {
-            throw new RuntimeException(MAPPINGS_CLOSURE + " closure does not exists for class " +  getClazz().getName());
+            throw new RuntimeException(MAPPINGS_CLOSURE + " closure does not exists for class " + getClazz().getName());
         }
         return result;
     }
 
-    @SuppressWarnings("rawtypes")
-    public List getExcludePatterns() {
+    public List<?> getExcludePatterns() {
         return getStaticPropertyValue(EXCLUDE_PATTERNS, ArrayList.class);
     }
+
 }

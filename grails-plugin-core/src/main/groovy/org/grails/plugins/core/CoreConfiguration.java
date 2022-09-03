@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.plugins.core;
 
-import grails.config.ConfigProperties;
-import grails.core.GrailsApplication;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
+import grails.config.ConfigProperties;
+import grails.core.GrailsApplication;
 
 /**
  * Core Auto-Configuration.
@@ -35,6 +35,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureOrder
 public class CoreConfiguration {
+
     private final GrailsApplication grailsApplication;
 
     public CoreConfiguration(ObjectProvider<GrailsApplication> grailsApplication) {
@@ -45,13 +46,14 @@ public class CoreConfiguration {
     @Primary
     @ConditionalOnMissingBean
     public ClassLoader classLoader() {
-        return grailsApplication.getClassLoader();
+        return this.grailsApplication.getClassLoader();
     }
 
     @Bean
     @Primary
     @ConditionalOnMissingBean
     public ConfigProperties grailsConfigProperties() {
-        return new ConfigProperties(grailsApplication.getConfig());
+        return new ConfigProperties(this.grailsApplication.getConfig());
     }
+
 }

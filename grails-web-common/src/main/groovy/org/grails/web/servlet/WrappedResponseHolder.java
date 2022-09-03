@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,9 @@
  */
 package org.grails.web.servlet;
 
-import org.grails.core.lifecycle.ShutdownOperations;
-
 import javax.servlet.http.HttpServletResponse;
+
+import org.grails.core.lifecycle.ShutdownOperations;
 
 /**
  * A holder for the original Wrapped response for use when using includes.
@@ -25,17 +25,16 @@ import javax.servlet.http.HttpServletResponse;
  * @author Graeme Rocher
  * @since 0.5
  */
-public class WrappedResponseHolder {
+public final class WrappedResponseHolder {
+
+    private static ThreadLocal<HttpServletResponse> wrappedResponseHolder = new ThreadLocal<>();
 
     static {
-        ShutdownOperations.addOperation(new Runnable() {
-            public void run() {
-                wrappedResponseHolder = new ThreadLocal<HttpServletResponse>();
-            }
-        }, true);
+        ShutdownOperations.addOperation(() -> wrappedResponseHolder = new ThreadLocal<>(), true);
     }
-    private static ThreadLocal<HttpServletResponse> wrappedResponseHolder =
-        new ThreadLocal<HttpServletResponse>();
+
+    private WrappedResponseHolder() {
+    }
 
     /**
      * Bind the given HttpServletResponse to the current thread.
@@ -52,4 +51,5 @@ public class WrappedResponseHolder {
     public static HttpServletResponse getWrappedResponse() {
         return wrappedResponseHolder.get();
     }
+
 }

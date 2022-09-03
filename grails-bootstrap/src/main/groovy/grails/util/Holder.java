@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +24,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Holder<T> {
 
-    private Map<Integer, T> instances = new ConcurrentHashMap<Integer, T>();
+    private final Map<Integer, T> instances = new ConcurrentHashMap<>();
+
     // TODO remove mappedOnly and singleton
     private T singleton;
-    private String name;
+
+    private final String name;
 
     public Holder(String name) {
         this.name = name;
@@ -38,7 +40,7 @@ public class Holder<T> {
     }
 
     public T get(boolean mappedOnly) {
-        T t = instances.get(getClassLoaderId());
+        T t = this.instances.get(getClassLoaderId());
         if (t != null) {
             return t;
         }
@@ -50,7 +52,7 @@ public class Holder<T> {
 
 //        t = instances.get(System.identityHashCode(getClass().getClassLoader()));
         if (!mappedOnly) {
-            t = singleton;
+            t = this.singleton;
         }
         return t;
     }
@@ -64,17 +66,18 @@ public class Holder<T> {
         int id = getClassLoaderId();
         int thisClassLoaderId = System.identityHashCode(getClass().getClassLoader());
         if (t == null) {
-            instances.remove(id);
-            instances.remove(thisClassLoaderId);
+            this.instances.remove(id);
+            this.instances.remove(thisClassLoaderId);
         }
         else {
-            instances.put(id, t);
-            instances.put(thisClassLoaderId, t);
+            this.instances.put(id, t);
+            this.instances.put(thisClassLoaderId, t);
         }
-        singleton = t;
+        this.singleton = t;
     }
 
     private int getClassLoaderId() {
-        return Environment.isWarDeployed() ? System.identityHashCode(Thread.currentThread().getContextClassLoader()) : System.identityHashCode(getClass().getClassLoader());
+        return Environment.isWarDeployed() ? System.identityHashCode(Thread.currentThread().getContextClassLoader()) :
+                System.identityHashCode(getClass().getClassLoader());
     }
 }

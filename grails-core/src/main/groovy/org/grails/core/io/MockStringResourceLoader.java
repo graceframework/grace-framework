@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,12 +29,12 @@ import org.springframework.core.io.Resource;
  */
 public class MockStringResourceLoader extends MockResourceLoader {
 
-    private Map<String, Resource> mockResources = new HashMap<String, Resource>();
+    private Map<String, Resource> mockResources = new HashMap<>();
 
     @Override
     public Resource getResource(String location) {
-        if (mockResources.containsKey(location)) {
-            return mockResources.get(location);
+        if (this.mockResources.containsKey(location)) {
+            return this.mockResources.get(location);
         }
 
         return super.getResource(location);
@@ -48,8 +48,9 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param res The resource itself
      */
     public void registerMockResource(String location, Resource res) {
-        mockResources.put(location, res);
+        this.mockResources.put(location, res);
     }
+
     /**
      * Registers a mock resource with the first argument as the location and the second as the contents
      * of the resource.
@@ -59,7 +60,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      */
     public void registerMockResource(String location, String contents) {
         try {
-            mockResources.put(location, new GrailsByteArrayResource(contents.getBytes("UTF-8"), location));
+            this.mockResources.put(location, new GrailsByteArrayResource(contents.getBytes("UTF-8"), location));
         }
         catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
@@ -74,6 +75,7 @@ public class MockStringResourceLoader extends MockResourceLoader {
      * @param contents The contents of the resource
      */
     public void registerMockResource(String location, byte[] contents) {
-        mockResources.put(location, new GrailsByteArrayResource(contents, location));
+        this.mockResources.put(location, new GrailsByteArrayResource(contents, location));
     }
+
 }

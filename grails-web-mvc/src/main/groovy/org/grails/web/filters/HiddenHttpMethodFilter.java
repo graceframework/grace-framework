@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,6 +41,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
     public static final String DEFAULT_METHOD_PARAM = "_method";
 
     private String methodParam = DEFAULT_METHOD_PARAM;
+
     public static final String HEADER_X_HTTP_METHOD_OVERRIDE = "X-HTTP-Method-Override";
 
     /**
@@ -68,7 +69,7 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
     }
 
     protected String getHttpMethodOverride(HttpServletRequest request) {
-        String httpMethod = request.getParameter(methodParam);
+        String httpMethod = request.getParameter(this.methodParam);
 
         if (httpMethod == null) {
             httpMethod = request.getHeader(HEADER_X_HTTP_METHOD_OVERRIDE);
@@ -91,7 +92,9 @@ public class HiddenHttpMethodFilter extends OncePerRequestFilter {
 
         @Override
         public String getMethod() {
-            return method;
+            return this.method;
         }
+
     }
+
 }

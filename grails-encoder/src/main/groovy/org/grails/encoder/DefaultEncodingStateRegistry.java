@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +15,18 @@
  */
 package org.grails.encoder;
 
-import org.grails.encoder.impl.BasicCodecLookup;
-import org.grails.encoder.impl.NoneEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.grails.encoder.impl.BasicCodecLookup;
+import org.grails.encoder.impl.NoneEncoder;
 
 /**
  * default implementation of {@link EncodingStateRegistry}
@@ -34,8 +35,11 @@ import java.util.Set;
  * @since 2.3
  */
 public final class DefaultEncodingStateRegistry implements EncodingStateRegistry {
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
-    private Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
+
+    private static final Logger logger = LoggerFactory.getLogger(DefaultEncodingStateRegistry.class);
+
+    private final Map<Encoder, Map<Long, WeakReference<CharSequence>>> encodedCharSequencesForEncoder = new HashMap<>();
+
     public static final StreamingEncoder NONE_ENCODER = BasicCodecLookup.NONE_ENCODER;
 
     private long calculateKey(CharSequence charSequence) {
@@ -46,28 +50,23 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
     }
 
     private Map<Long, WeakReference<CharSequence>> getEncodedCharSequencesForEncoder(Encoder encoder) {
-        Map<Long, WeakReference<CharSequence>> encodedCharSequences = encodedCharSequencesForEncoder.get(encoder);
-        if (encodedCharSequences == null) {
-            encodedCharSequences = new HashMap<>();
-            encodedCharSequencesForEncoder.put(encoder, encodedCharSequences);
-        }
+        Map<Long, WeakReference<CharSequence>> encodedCharSequences =
+                this.encodedCharSequencesForEncoder.computeIfAbsent(encoder, k -> new HashMap<>());
         return encodedCharSequences;
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#getEncodingStateFor(java.lang.CharSequence)
-     */
     public EncodingState getEncodingStateFor(CharSequence string) {
         Long key = calculateKey(string);
         Set<Encoder> result = null;
-        for (Map.Entry<Encoder, Map<Long, WeakReference<CharSequence>>> entry : encodedCharSequencesForEncoder.entrySet()) {
+        for (Map.Entry<Encoder, Map<Long, WeakReference<CharSequence>>> entry : this.encodedCharSequencesForEncoder.entrySet()) {
             WeakReference<CharSequence> charSequenceReference = entry.getValue().get(key);
             if (charSequenceReference != null && string == charSequenceReference.get()) {
                 if (result == null) {
                     result = Collections.singleton(entry.getKey());
-                } else {
+                }
+                else {
                     if (result.size() == 1) {
-                        result = new HashSet<Encoder>(result);
+                        result = new HashSet<>(result);
                     }
                     result.add(entry.getKey());
                 }
@@ -76,9 +75,6 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         return result != null ? new EncodingStateImpl(result, null) : EncodingStateImpl.UNDEFINED_ENCODING_STATE;
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#isEncodedWith(Encoder, java.lang.CharSequence)
-     */
     public boolean isEncodedWith(Encoder encoder, CharSequence string) {
         return getEncodedCharSequencesForEncoder(encoder).containsKey(calculateKey(string));
     }
@@ -87,17 +83,17 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
      * @see EncodingStateRegistry#registerEncodedWith(Encoder, java.lang.CharSequence)
      */
     public void registerEncodedWith(Encoder encoder, CharSequence escaped) {
-        WeakReference<CharSequence> previousValue = getEncodedCharSequencesForEncoder(encoder).put(calculateKey(escaped), new WeakReference<>(escaped));
+        WeakReference<CharSequence> previousValue = getEncodedCharSequencesForEncoder(encoder).put(calculateKey(escaped),
+                new WeakReference<>(escaped));
         if (previousValue != null && previousValue.get() != escaped) {
-            LOG.warn("Hash collision for encoded value between '{}' and '{}', encoder is {}", escaped, previousValue.get(), encoder);
+            logger.warn("Hash collision for encoded value between '{}' and '{}', encoder is {}", escaped, previousValue.get(), encoder);
         }
     }
 
-    /* (non-Javadoc)
-     * @see EncodingStateRegistry#shouldEncodeWith(Encoder, java.lang.CharSequence)
-     */
     public boolean shouldEncodeWith(Encoder encoderToApply, CharSequence string) {
-        if (isNoneEncoder(encoderToApply)) return false;
+        if (isNoneEncoder(encoderToApply)) {
+            return false;
+        }
         EncodingState encodingState = getEncodingStateFor(string);
         return shouldEncodeWith(encoderToApply, encodingState);
     }
@@ -110,7 +106,9 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
      * @return true, if should encode
      */
     public static boolean shouldEncodeWith(Encoder encoderToApply, EncodingState currentEncodingState) {
-        if (isNoneEncoder(encoderToApply)) return false;
+        if (isNoneEncoder(encoderToApply)) {
+            return false;
+        }
         if (currentEncodingState != null && currentEncodingState.getEncoders() != null) {
             for (Encoder encoder : currentEncodingState.getEncoders()) {
                 if (isPreviousEncoderSafeOrEqual(encoderToApply, encoder)) {
@@ -136,4 +134,5 @@ public final class DefaultEncodingStateRegistry implements EncodingStateRegistry
         return previousEncoder == encoderToApply || !encoderToApply.isApplyToSafelyEncoded() && previousEncoder.isSafe() && encoderToApply.isSafe()
                 || previousEncoder.getCodecIdentifier().isEquivalent(encoderToApply.getCodecIdentifier());
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,12 @@
  */
 package org.grails.build.interactive;
 
+import java.io.IOException;
+import java.util.List;
 
 import jline.console.ConsoleReader;
 import jline.console.CursorBuffer;
 import jline.console.completer.CompletionHandler;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Fixes issues with the default CandidateListCompletionHandler such as clearing out the whole buffer when
@@ -38,7 +37,7 @@ public class CandidateListCompletionHandler implements CompletionHandler {
         this.eagerNewlines = eagerNewlines;
     }
 
-    public boolean complete(ConsoleReader reader, @SuppressWarnings("rawtypes") List<CharSequence> candidates, int pos) throws IOException {
+    public boolean complete(ConsoleReader reader, List<CharSequence> candidates, int pos) throws IOException {
         CursorBuffer buf = reader.getCursorBuffer();
 
         // if there is only one completion, then fill in the buffer
@@ -61,7 +60,7 @@ public class CandidateListCompletionHandler implements CompletionHandler {
             jline.console.completer.CandidateListCompletionHandler.setBuffer(reader, value, pos);
         }
 
-        if (eagerNewlines) {
+        if (this.eagerNewlines) {
             reader.println();
         }
         jline.console.completer.CandidateListCompletionHandler.printCandidates(reader, candidates);
@@ -79,13 +78,13 @@ public class CandidateListCompletionHandler implements CompletionHandler {
      * <i>foobar</i>, <i>foobaz</i>, <i>foobuz</i>, the
      * method will return <i>foob</i>.
      */
-    private final String getUnambiguousCompletions(final List<?> candidates) {
+    private String getUnambiguousCompletions(final List<?> candidates) {
         if (candidates == null || candidates.isEmpty()) {
             return null;
         }
 
         // convert to an array for speed
-        String[] strings = candidates.toArray(new String[candidates.size()]);
+        String[] strings = candidates.toArray(new String[0]);
 
         String first = strings[0];
         StringBuilder candidate = new StringBuilder();
@@ -93,7 +92,8 @@ public class CandidateListCompletionHandler implements CompletionHandler {
         for (int i = 0, count = first.length(); i < count; i++) {
             if (startsWith(first.substring(0, i + 1), strings)) {
                 candidate.append(first.charAt(i));
-            } else {
+            }
+            else {
                 break;
             }
         }
@@ -105,9 +105,9 @@ public class CandidateListCompletionHandler implements CompletionHandler {
      * @return true is all the elements of <i>candidates</i>
      *         start with <i>starts</i>
      */
-    private final boolean startsWith(final String starts, final String[] candidates) {
-        for (int i = 0; i < candidates.length; i++) {
-            if (!candidates[i].startsWith(starts)) {
+    private boolean startsWith(final String starts, final String[] candidates) {
+        for (String candidate : candidates) {
+            if (!candidate.startsWith(starts)) {
                 return false;
             }
         }

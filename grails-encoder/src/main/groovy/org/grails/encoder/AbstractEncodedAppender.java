@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,9 @@
  */
 package org.grails.encoder;
 
-import org.grails.charsequences.CharSequences;
-
 import java.io.IOException;
+
+import org.grails.charsequences.CharSequences;
 
 /**
  * Abstract base class for implementations of {@link EncodedAppender} interface
@@ -26,8 +26,9 @@ import java.io.IOException;
  * @since 2.3
  */
 public abstract class AbstractEncodedAppender implements EncodedAppender {
+
     private boolean ignoreEncodingState;
-    
+
     /**
      * Append a portion of a char array to the buffer and attach the
      * encodingState information to it
@@ -95,7 +96,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
         if (shouldEncode(encoder, encodingState)) {
             EncodingState newEncoders = createNewEncodingState(encoder, encodingState);
             if (encoder instanceof StreamingEncoder) {
-                ((StreamingEncoder)encoder).encodeToStream(encoder, CharSequences.createCharSequence(b, off, len), 0, len, this,
+                ((StreamingEncoder) encoder).encodeToStream(encoder, CharSequences.createCharSequence(b, off, len), 0, len, this,
                         newEncoders);
             }
             else {
@@ -130,7 +131,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
         if (shouldEncode(encoder, encodingState)) {
             EncodingState newEncoders = createNewEncodingState(encoder, encodingState);
             if (encoder instanceof StreamingEncoder) {
-                ((StreamingEncoder)encoder).encodeToStream(encoder, str, off, len, this, newEncoders);
+                ((StreamingEncoder) encoder).encodeToStream(encoder, str, off, len, this, newEncoders);
             }
             else {
                 CharSequence source;
@@ -168,7 +169,7 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
      * @return true, if should encode
      */
     public boolean shouldEncode(Encoder encoderToApply, EncodingState encodingState) {
-        return ignoreEncodingState || (encoderToApply != null
+        return this.ignoreEncodingState || (encoderToApply != null
                 && (encodingState == null || shouldEncodeWith(encoderToApply, encodingState)));
     }
 
@@ -218,10 +219,11 @@ public abstract class AbstractEncodedAppender implements EncodedAppender {
     }
 
     public boolean isIgnoreEncodingState() {
-        return ignoreEncodingState;
+        return this.ignoreEncodingState;
     }
 
     public void setIgnoreEncodingState(boolean ignoreEncodingState) {
         this.ignoreEncodingState = ignoreEncodingState;
     }
+
 }

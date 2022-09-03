@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,17 @@ package org.grails.web.servlet.context.support;
 
 import javax.servlet.ServletContext;
 
-import grails.web.servlet.context.GrailsWebApplicationContext;
-import grails.core.GrailsApplication;
-import org.grails.spring.DefaultRuntimeSpringConfiguration;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ServletContextAware;
+
+import grails.core.GrailsApplication;
+import grails.web.servlet.context.GrailsWebApplicationContext;
+
+import org.grails.spring.DefaultRuntimeSpringConfiguration;
 
 /**
  * Subclasses DefaultRuntimeSpringConfiguration to provide construction of WebApplicationContext instances.
@@ -34,7 +36,6 @@ import org.springframework.web.context.ServletContextAware;
  * @since 1.0
  */
 public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfiguration implements ServletContextAware {
-
 
     private GrailsApplication grailsApplication;
 
@@ -60,22 +61,22 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
     protected GenericApplicationContext createApplicationContext(ApplicationContext parentCtx) {
         if (parentCtx != null && beanFactory != null) {
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
-                "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
+                    "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
-            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
+            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, this.grailsApplication);
             ctx.setParent(parentCtx);
             return ctx;
         }
 
         if (beanFactory != null) {
             Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory,
-                "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
+                    "ListableBeanFactory set must be a subclass of DefaultListableBeanFactory");
 
-            return new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, grailsApplication);
+            return new GrailsWebApplicationContext((DefaultListableBeanFactory) beanFactory, this.grailsApplication);
         }
 
         if (parentCtx != null) {
-            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext(grailsApplication);
+            GrailsWebApplicationContext ctx = new GrailsWebApplicationContext(this.grailsApplication);
             ctx.setParent(parentCtx);
             return ctx;
         }
@@ -87,7 +88,8 @@ public class WebRuntimeSpringConfiguration extends DefaultRuntimeSpringConfigura
         initialiseApplicationContext();
 
         if (context instanceof ConfigurableWebApplicationContext) {
-            ((ConfigurableWebApplicationContext)context).setServletContext(servletContext);
+            ((ConfigurableWebApplicationContext) context).setServletContext(servletContext);
         }
     }
+
 }

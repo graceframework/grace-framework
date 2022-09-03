@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import org.grails.encoder.StreamingEncoder;
  * @since 2.3
  */
 public class NoneEncoder implements StreamingEncoder {
+
     static final CodecIdentifier CODEC_IDENTIFIER = new DefaultCodecIdentifier("None");
 
     public Object encode(Object o) {
@@ -44,7 +45,6 @@ public class NoneEncoder implements StreamingEncoder {
     }
 
     public void markEncoded(CharSequence string) {
-
     }
 
     public CodecIdentifier getCodecIdentifier() {
@@ -55,4 +55,5 @@ public class NoneEncoder implements StreamingEncoder {
             EncodingState encodingState) throws IOException {
         appender.append(null, encodingState, source, offset, len);
     }
+
 }

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.io.watch;
 
 import java.io.File;
@@ -11,7 +26,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Implementation of a {@link AbstractDirectoryWatcher} that uses polling.
- * This implementation is used where {@link java.nio.WatchService} isn't available (pre Java 7).
+ * This implementation is used where {@link java.nio.file.WatchService} isn't available (pre Java 7).
  * @author Craig Andrews
  * @since 2.4
  * @see WatchServiceDirectoryWatcher
@@ -19,22 +34,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
 
-    private Collection<String> extensions = new ConcurrentLinkedQueue<String>();
+    private Collection<String> extensions = new ConcurrentLinkedQueue<>();
 
-    private Map<File, Long> lastModifiedMap = new ConcurrentHashMap<File, Long>();
-    private Map<File, Collection<String>> directoryToExtensionsMap = new ConcurrentHashMap<File, Collection<String>>();
-    private Map<File, Long> directoryWatch = new ConcurrentHashMap<File, Long>();
+    private Map<File, Long> lastModifiedMap = new ConcurrentHashMap<>();
 
-	@Override
-	public void run() {
+    private Map<File, Collection<String>> directoryToExtensionsMap = new ConcurrentHashMap<>();
+
+    private Map<File, Long> directoryWatch = new ConcurrentHashMap<>();
+
+    @Override
+    public void run() {
         int count = 0;
-        while (active) {
-            Set<File> files = lastModifiedMap.keySet();
+        while (this.active) {
+            Set<File> files = this.lastModifiedMap.keySet();
             for (File file : files) {
                 long currentLastModified = file.lastModified();
-                Long cachedTime = lastModifiedMap.get(file);
+                Long cachedTime = this.lastModifiedMap.get(file);
                 if (currentLastModified > cachedTime) {
-                    lastModifiedMap.put(file, currentLastModified);
+                    this.lastModifiedMap.put(file, currentLastModified);
                     fireOnChange(file);
                 }
             }
@@ -44,31 +61,31 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
                     count = 0;
                     checkForNewFiles();
                 }
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                // ignore
+                Thread.sleep(this.sleepTime);
+            }
+            catch (InterruptedException ignored) {
             }
         }
-	}
+    }
 
-	@Override
-	public void addWatchFile(File fileToWatch) {
-        lastModifiedMap.put(fileToWatch, fileToWatch.lastModified());
-	}
+    @Override
+    public void addWatchFile(File fileToWatch) {
+        this.lastModifiedMap.put(fileToWatch, fileToWatch.lastModified());
+    }
 
-	@Override
-	public void addWatchDirectory(File dir, List<String> fileExtensions) {
-		if(!isValidDirectoryToMonitor(dir)){
-			return;
-		}
+    @Override
+    public void addWatchDirectory(File dir, List<String> fileExtensions) {
+        if (!isValidDirectoryToMonitor(dir)) {
+            return;
+        }
         trackDirectoryExtensions(dir, fileExtensions);
         cacheFilesForDirectory(dir, fileExtensions, false);
-	}
+    }
 
     private void trackDirectoryExtensions(File dir, List<String> fileExtensions) {
-        Collection<String> existingExtensions = directoryToExtensionsMap.get(dir);
-        if(existingExtensions == null) {
-            directoryToExtensionsMap.put(dir, new ArrayList<String>(fileExtensions));
+        Collection<String> existingExtensions = this.directoryToExtensionsMap.get(dir);
+        if (existingExtensions == null) {
+            this.directoryToExtensionsMap.put(dir, new ArrayList<>(fileExtensions));
         }
         else {
             existingExtensions.addAll(fileExtensions);
@@ -76,12 +93,12 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     }
 
     private void checkForNewFiles() {
-        for (File directory : directoryWatch.keySet()) {
-            final Long currentTimestamp = directoryWatch.get(directory);
+        for (File directory : this.directoryWatch.keySet()) {
+            final Long currentTimestamp = this.directoryWatch.get(directory);
 
             if (currentTimestamp < directory.lastModified()) {
-                Collection<String> extensions = directoryToExtensionsMap.get(directory);
-                if(extensions == null) {
+                Collection<String> extensions = this.directoryToExtensionsMap.get(directory);
+                if (extensions == null) {
                     extensions = this.extensions;
                 }
                 cacheFilesForDirectory(directory, extensions, true);
@@ -92,21 +109,21 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     private void cacheFilesForDirectory(File directory, Collection<String> fileExtensions, boolean fireEvent) {
         addExtensions(fileExtensions);
 
-        directoryWatch.put(directory, directory.lastModified());
+        this.directoryWatch.put(directory, directory.lastModified());
         File[] files = directory.listFiles();
         if (files == null) {
             return;
         }
 
         for (File file : files) {
-        	if(isValidDirectoryToMonitor(file)) {
+            if (isValidDirectoryToMonitor(file)) {
                 cacheFilesForDirectory(file, fileExtensions, fireEvent);
-        	}
+            }
             else if (isValidFileToMonitor(file, fileExtensions)) {
-                if (!lastModifiedMap.containsKey(file) && fireEvent) {
+                if (!this.lastModifiedMap.containsKey(file) && fireEvent) {
                     fireOnNew(file);
                 }
-                lastModifiedMap.put(file, file.lastModified());
+                this.lastModifiedMap.put(file, file.lastModified());
             }
         }
     }
@@ -114,8 +131,8 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
     private void addExtensions(Collection<String> toAdd) {
         for (String extension : toAdd) {
             extension = removeStartingDotIfPresent(extension);
-            if (!extensions.contains(extension)) {
-                extensions.add(extension);
+            if (!this.extensions.contains(extension)) {
+                this.extensions.add(extension);
             }
         }
     }

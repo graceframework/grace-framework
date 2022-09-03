@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,27 +28,27 @@ public interface GrailsRequestStateLookupStrategy {
      *
      * @return The context path
      */
-    public String getContextPath();
+    String getContextPath();
 
     /**
      * The character encoding of the request
      *
      * @return The character encoding
      */
-    public String getCharacterEncoding();
+    String getCharacterEncoding();
     /**
      * The controller name
      *
      * @return The controller name or null if not known
      */
-    public String getControllerName();
+    String getControllerName();
 
     /**
      * The controller namespace
      *
      * @return The controller namespace or null if not known
      */
-    public String getControllerNamespace();
+    String getControllerNamespace();
 
     /**
      * The action name for the given controller name
@@ -56,18 +56,18 @@ public interface GrailsRequestStateLookupStrategy {
      * @param controllerName The controller name
      * @return The action name or null if not known
      */
-    public String getActionName(String controllerName);
+    String getActionName(String controllerName);
     /**
      * The action name
      *
      * @return The action name or null if not known
      */
-    public String getActionName();
+    String getActionName();
 
     /**
      * @return The HTTP method
      */
-    public String getHttpMethod();
+    String getHttpMethod();
 
     /**
      * @return the current request

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,15 +19,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
-    private DestinationFactory factory;
-    private boolean destinationActivated = false;
 
-    /**
-     * Factory to lazily instantiate the destination.
-     */
-    public static interface DestinationFactory {
-        Writer activateDestination() throws IOException;
-    }
+    private DestinationFactory factory;
+
+    private boolean destinationActivated = false;
 
     public GrailsLazyProxyPrintWriter(DestinationFactory factory) {
         super(null);
@@ -36,26 +31,26 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
 
     @Override
     public Writer getOut() {
-        if (!destinationActivated) {
+        if (!this.destinationActivated) {
             try {
-                super.setOut(factory.activateDestination());
+                super.setOut(this.factory.activateDestination());
             }
             catch (IOException e) {
                 setError();
             }
-            destinationActivated = true;
+            this.destinationActivated = true;
         }
         return super.getOut();
     }
 
     @Override
     public boolean isAllowUnwrappingOut() {
-        return destinationActivated ? super.isAllowUnwrappingOut() : false;
+        return this.destinationActivated ? super.isAllowUnwrappingOut() : false;
     }
 
     @Override
     public Writer unwrap() {
-        return destinationActivated ? super.unwrap() : this;
+        return this.destinationActivated ? super.unwrap() : this;
     }
 
     public void updateDestination(DestinationFactory f) {
@@ -65,7 +60,7 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
 
     @Override
     public boolean isDestinationActivated() {
-        return destinationActivated;
+        return this.destinationActivated;
     }
 
     public void setDestinationActivated(boolean destinationActivated) {
@@ -74,4 +69,14 @@ public class GrailsLazyProxyPrintWriter extends GrailsPrintWriter {
             super.setOut(null);
         }
     }
+
+    /**
+     * Factory to lazily instantiate the destination.
+     */
+    public interface DestinationFactory {
+
+        Writer activateDestination() throws IOException;
+
+    }
+
 }

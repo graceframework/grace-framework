@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,21 @@ import java.io.Writer;
 /**
  * A java.io.Writer implementation that writes to a {@link EncodedAppender} with
  * a certain encoder
- * 
+ *
  * This class isn't thread-safe.
  *
  * @author Lari Hotari
  * @since 2.3
  */
 public class EncodedAppenderWriter extends Writer implements EncodedAppenderWriterFactory, EncodedAppenderFactory, EncoderAware {
-    protected EncodedAppender encodedAppender;
-    protected Encoder encoder;
-    protected EncodingStateRegistry encodingStateRegistry;
-    private char[] singleCharBuffer=new char[1];
+
+    protected final EncodedAppender encodedAppender;
+
+    protected final Encoder encoder;
+
+    protected final EncodingStateRegistry encodingStateRegistry;
+
+    private final char[] singleCharBuffer = new char[1];
 
     /**
      * Default constructor
@@ -57,7 +61,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        encodedAppender.append(encoder, null, cbuf, off, len);
+        this.encodedAppender.append(this.encoder, null, cbuf, off, len);
     }
 
     /*
@@ -66,7 +70,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void flush() throws IOException {
-        encodedAppender.flush();
+        this.encodedAppender.flush();
     }
 
     /*
@@ -75,7 +79,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void close() throws IOException {
-        encodedAppender.close();
+        this.encodedAppender.close();
     }
 
     /*
@@ -84,7 +88,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void write(int c) throws IOException {
-        append((char)c);
+        append((char) c);
     }
 
     /*
@@ -93,10 +97,11 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public void write(String str, int off, int len) throws IOException {
-        encodedAppender.append(
-                encoder,
-                (encodingStateRegistry != null && off == 0 && len == str.length()) ? encodingStateRegistry
-                        .getEncodingStateFor(str) : null, str, off, len);
+        this.encodedAppender.append(this.encoder,
+                (this.encodingStateRegistry != null && off == 0 && len == str.length())
+                        ? this.encodingStateRegistry.getEncodingStateFor(str)
+                        : null,
+                str, off, len);
     }
 
     /*
@@ -105,9 +110,9 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public Writer append(CharSequence csq) throws IOException {
-        encodedAppender.append(encoder,
-                (encodingStateRegistry != null) ? encodingStateRegistry.getEncodingStateFor(csq) : null, csq, 0,
-                csq.length());
+        this.encodedAppender.append(this.encoder,
+                (this.encodingStateRegistry != null) ? this.encodingStateRegistry.getEncodingStateFor(csq) : null,
+                csq, 0, csq.length());
         return this;
     }
 
@@ -117,7 +122,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public Writer append(CharSequence csq, int start, int end) throws IOException {
-        encodedAppender.append(encoder, null, csq, 0, end - start);
+        this.encodedAppender.append(this.encoder, null, csq, 0, end - start);
         return this;
     }
 
@@ -127,8 +132,8 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      */
     @Override
     public Writer append(char c) throws IOException {
-        singleCharBuffer[0]=(char)c;
-        encodedAppender.append(encoder, null, singleCharBuffer, 0, 1);
+        this.singleCharBuffer[0] = c;
+        this.encodedAppender.append(this.encoder, null, this.singleCharBuffer, 0, 1);
         return this;
     }
 
@@ -138,7 +143,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      * getEncodedAppender()
      */
     public EncodedAppender getEncodedAppender() {
-        return encodedAppender;
+        return this.encodedAppender;
     }
 
     /*
@@ -147,7 +152,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      * EncoderAware#getEncoder()
      */
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     /*
@@ -158,6 +163,7 @@ public class EncodedAppenderWriter extends Writer implements EncodedAppenderWrit
      * EncodingStateRegistry)
      */
     public Writer getWriterForEncoder(Encoder encoder, EncodingStateRegistry encodingStateRegistry) {
-        return new EncodedAppenderWriter(encodedAppender, encoder, encodingStateRegistry);
+        return new EncodedAppenderWriter(this.encodedAppender, encoder, encodingStateRegistry);
     }
+
 }

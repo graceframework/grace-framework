@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,15 @@
  */
 package grails.web.servlet.context.support;
 
-import grails.util.Environment;
-
 import java.util.Set;
 
-import grails.core.GrailsApplication;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.StandardServletEnvironment;
+
+import grails.core.GrailsApplication;
+import grails.util.Environment;
 
 /**
  * Bridges Grails' existing environment API with the new Spring 3.1 environment profiles API.
@@ -48,15 +48,19 @@ public class GrailsEnvironment extends StandardServletEnvironment {
         return activeProfiles;
     }
 
-    private class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
+    protected class GrailsConfigPropertySource extends PropertySource<GrailsApplication> {
 
         public GrailsConfigPropertySource() {
-            super(StringUtils.hasText(grailsApplication.getMetadata().getApplicationName()) ? grailsApplication.getMetadata().getApplicationName() : "grailsApplication", grailsApplication);
+            super(StringUtils.hasText(GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName())
+                    ? GrailsEnvironment.this.grailsApplication.getMetadata().getApplicationName()
+                    : "grailsApplication", GrailsEnvironment.this.grailsApplication);
         }
 
         @Override
         public Object getProperty(String key) {
-            return grailsApplication.getConfig().getProperty(key, Object.class);
+            return GrailsEnvironment.this.grailsApplication.getConfig().getProperty(key, Object.class);
         }
+
     }
+
 }

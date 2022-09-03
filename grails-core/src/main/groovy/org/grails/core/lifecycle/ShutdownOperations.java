@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,13 @@
  */
 package org.grails.core.lifecycle;
 
-import grails.util.Holders;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import grails.util.Holders;
 
 /**
  * Operations that should be executed on shutdown.
@@ -27,16 +29,21 @@ import java.util.LinkedHashSet;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class ShutdownOperations {
-    private static final Log LOG = LogFactory.getLog(ShutdownOperations.class);
+public final class ShutdownOperations {
+
+    private static final Log logger = LogFactory.getLog(ShutdownOperations.class);
 
     private static final Collection<Runnable> shutdownOperations = new LinkedHashSet<>();
+
     private static final Collection<Runnable> preservedShutdownOperations = new LinkedHashSet<>();
 
     public static final Runnable DEFAULT_SHUTDOWN_OPERATION = Holders::reset;
 
     static {
         resetOperations();
+    }
+
+    private ShutdownOperations() {
     }
 
     /**
@@ -47,11 +54,13 @@ public class ShutdownOperations {
             for (Runnable shutdownOperation : shutdownOperations) {
                 try {
                     shutdownOperation.run();
-                } catch (Exception e) {
-                    LOG.warn("Error occurred running shutdown operation: " + e.getMessage(), e);
+                }
+                catch (Exception e) {
+                    logger.warn("Error occurred running shutdown operation: " + e.getMessage(), e);
                 }
             }
-        } finally {
+        }
+        finally {
             shutdownOperations.clear();
             shutdownOperations.addAll(preservedShutdownOperations);
         }
@@ -72,7 +81,7 @@ public class ShutdownOperations {
      */
     public static synchronized void addOperation(Runnable runnable, boolean preserveForNextShutdown) {
         shutdownOperations.add(runnable);
-        if(preserveForNextShutdown) {
+        if (preserveForNextShutdown) {
             preservedShutdownOperations.add(runnable);
         }
     }
@@ -86,4 +95,5 @@ public class ShutdownOperations {
         // default operations
         addOperation(DEFAULT_SHUTDOWN_OPERATION, true);
     }
+
 }

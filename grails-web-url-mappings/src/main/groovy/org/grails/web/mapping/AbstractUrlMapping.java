@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,19 +15,19 @@
  */
 package org.grails.web.mapping;
 
-import grails.core.GrailsApplication;
-import grails.gorm.validation.Constrained;
-import grails.gorm.validation.ConstrainedProperty;
-import grails.web.mapping.UrlMapping;
-import org.grails.web.util.WebUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+
+import grails.core.GrailsApplication;
+import grails.gorm.validation.Constrained;
+import grails.gorm.validation.ConstrainedProperty;
+import grails.web.mapping.UrlMapping;
 
 /**
  * Abstract UrlMapping implementation that provides common basic functionality.
@@ -38,21 +38,36 @@ import javax.servlet.ServletContext;
 public abstract class AbstractUrlMapping implements UrlMapping {
 
     protected final ConstrainedProperty[] constraints;
+
     protected Object controllerName;
+
     protected Object actionName;
+
     protected Object namespace;
+
     protected Object pluginName;
+
     protected Object viewName;
+
     protected Object forwardURI;
+
     protected Object redirectInfo;
+
     protected ServletContext servletContext;
+
     protected GrailsApplication grailsApplication;
+
     @SuppressWarnings("rawtypes")
     protected Map parameterValues = Collections.emptyMap();
+
     protected boolean parseRequest;
+
     protected String mappingName;
+
     protected String httpMethod = ANY_HTTP_METHOD;
+
     protected String version = ANY_VERSION;
+
     protected Integer pluginIndex;
 
     /**
@@ -63,7 +78,8 @@ public abstract class AbstractUrlMapping implements UrlMapping {
      * @param constraints Any constraints that apply to the mapping
      * @param grailsApplication The GrailsApplication instance
      */
-    public AbstractUrlMapping(Object redirectInfo, Object controllerName, Object actionName, Object namespace, Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
+    public AbstractUrlMapping(Object redirectInfo, Object controllerName, Object actionName, Object namespace,
+            Object pluginName, Object viewName, ConstrainedProperty[] constraints, GrailsApplication grailsApplication) {
         this.controllerName = controllerName;
         this.actionName = actionName;
         this.namespace = namespace;
@@ -76,11 +92,11 @@ public abstract class AbstractUrlMapping implements UrlMapping {
 
     private void setGrailsApplication(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication;
-        if(grailsApplication != null) {
+        if (grailsApplication != null) {
 
             final ApplicationContext applicationContext = grailsApplication.getMainContext();
-            if(applicationContext instanceof WebApplicationContext) {
-                this.servletContext = ((WebApplicationContext)applicationContext).getServletContext();
+            if (applicationContext instanceof WebApplicationContext) {
+                this.servletContext = ((WebApplicationContext) applicationContext).getServletContext();
             }
         }
     }
@@ -101,51 +117,51 @@ public abstract class AbstractUrlMapping implements UrlMapping {
 
     @Override
     public String getHttpMethod() {
-        return httpMethod;
+        return this.httpMethod;
     }
 
     @Override
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     /**
      * @see UrlMapping#getConstraints()
      */
     public Constrained[] getConstraints() {
-        return constraints;
+        return this.constraints;
     }
 
     /**
      * @see UrlMapping#getControllerName()
      */
     public Object getControllerName() {
-        return controllerName;
+        return this.controllerName;
     }
 
     /**
      * @see grails.web.mapping.UrlMapping#getActionName()
      */
     public Object getActionName() {
-        return actionName;
+        return this.actionName;
     }
 
     public Object getPluginName() {
-        return pluginName;
+        return this.pluginName;
     }
 
     public Object getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     /**
      * @see grails.web.mapping.UrlMapping#getViewName()
      */
     public Object getViewName() {
-        return viewName;
+        return this.viewName;
     }
 
-    @SuppressWarnings({"unchecked","rawtypes"})
+    @SuppressWarnings({ "rawtypes" })
     public void setParameterValues(Map parameterValues) {
         this.parameterValues = Collections.unmodifiableMap(parameterValues);
     }
@@ -155,27 +171,27 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     }
 
     public String getMappingName() {
-        return mappingName;
+        return this.mappingName;
     }
 
     public void setMappingName(String name) {
-        mappingName = name;
+        this.mappingName = name;
     }
 
     public boolean hasRuntimeVariable(String name) {
-        if (constraints != null) {
-            for (int i = 0; i < constraints.length; i++) {
-                ConstrainedProperty cp = constraints[i];
-                if (cp.getPropertyName().equals(name)) return true;
+        if (this.constraints != null) {
+            for (ConstrainedProperty cp : this.constraints) {
+                if (cp.getPropertyName().equals(name)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     public Object getRedirectInfo() {
-        return redirectInfo;
+        return this.redirectInfo;
     }
-
 
     public void setPluginIndex(int pluginIndex) {
         this.pluginIndex = pluginIndex;
@@ -186,6 +202,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
     }
 
     public boolean isDefinedInPlugin() {
-        return pluginIndex != null;
+        return this.pluginIndex != null;
     }
+
 }

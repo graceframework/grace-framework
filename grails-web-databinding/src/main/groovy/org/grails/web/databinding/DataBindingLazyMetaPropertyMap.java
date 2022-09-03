@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,13 @@
  */
 package org.grails.web.databinding;
 
-import grails.web.databinding.DataBindingUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import grails.beans.util.LazyMetaPropertyMap;
+import grails.web.databinding.DataBindingUtils;
 
 /**
  * Extends the default implementation and does data binding.
@@ -44,19 +44,22 @@ public class DataBindingLazyMetaPropertyMap extends LazyMetaPropertyMap {
     @Override
     public Object put(Object propertyName, Object propertyValue) {
         if (propertyName instanceof List) {
-            DataBindingUtils.bindObjectToInstance(getInstance(),propertyValue, (List)propertyName,null,null);
-        } else {
+            DataBindingUtils.bindObjectToInstance(getInstance(), propertyValue, (List) propertyName, null, null);
+        }
+        else {
             final Map bindingSource;
-            if(propertyValue instanceof Map) {
+            if (propertyValue instanceof Map) {
                 bindingSource = (Map) propertyValue;
-            } else {
+            }
+            else {
                 bindingSource = new HashMap();
                 bindingSource.put(propertyName, propertyValue);
             }
             List propertyNames = new ArrayList();
             propertyNames.add(propertyName);
-            DataBindingUtils.bindObjectToInstance(getInstance(),bindingSource, propertyNames,null,null);
+            DataBindingUtils.bindObjectToInstance(getInstance(), bindingSource, propertyNames, null, null);
         }
         return null;
     }
+
 }

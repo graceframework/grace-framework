@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ public interface DataBindingListener {
 
     /**
      * Called when data binding is about to start.
-     * 
+     *
      * @param target The object data binding is being imposed upon
      * @param errors the Spring Errors instance (a org.springframework.validation.BindingResult)
      * @return true if data binding should continue
@@ -62,7 +62,7 @@ public interface DataBindingListener {
 
     /**
      * Called after data binding has finished.
-     *  
+     *
      * @param target The object data binding is being imposed upon
      * @param errors the Spring Errors instance (a org.springframework.validation.BindingResult)
      */
@@ -75,4 +75,5 @@ public interface DataBindingListener {
      * @see BindingError
      */
     void bindingError(BindingError error, Object errors);
+
 }

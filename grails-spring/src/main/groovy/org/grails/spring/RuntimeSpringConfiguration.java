@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,7 @@ import org.springframework.context.support.GenericApplicationContext;
  * to be constructed at runtime.
  *
  * Credit must go to Solomon Duskis and the
- * article: http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring
+ * article: <a href="http://jroller.com/page/Solomon?entry=programmatic_configuration_in_spring">Programmatic Configuration in Spring</a>
  *
  * @author Graeme
  * @since 0.3
@@ -232,4 +232,5 @@ public interface RuntimeSpringConfiguration {
      * @param beanFactory The BeanFactory implementation
      */
     void setBeanFactory(ListableBeanFactory beanFactory);
+
 }

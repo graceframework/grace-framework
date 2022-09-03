@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,6 +30,7 @@ public class MockClosureProxy extends AbstractClosureProxy {
     private static final long serialVersionUID = -1373536726646006925L;
 
     String methodName;
+
     Object expectation;
 
     /**
@@ -46,8 +47,8 @@ public class MockClosureProxy extends AbstractClosureProxy {
         if (!(expectation instanceof LooseExpectation) && !(expectation instanceof StrictExpectation)) {
             throw new IllegalArgumentException(
                     "Expectation must be either groovy.mock.interceptor.LooseExpectation or " +
-                    " groovy.mock.interceptor.StrictExpectation (actual class: " +
-                    expectation.getClass() + ")");
+                            " groovy.mock.interceptor.StrictExpectation (actual class: " +
+                            expectation.getClass() + ")");
         }
     }
 
@@ -60,11 +61,11 @@ public class MockClosureProxy extends AbstractClosureProxy {
      */
     @Override
     protected void doBeforeCall(Object[] args) {
-        if (expectation instanceof LooseExpectation) {
-            ((LooseExpectation) expectation).match(methodName);
+        if (this.expectation instanceof LooseExpectation) {
+            ((LooseExpectation) this.expectation).match(this.methodName);
         }
         else {
-            ((StrictExpectation) expectation).match(methodName);
+            ((StrictExpectation) this.expectation).match(this.methodName);
         }
     }
 
@@ -85,6 +86,7 @@ public class MockClosureProxy extends AbstractClosureProxy {
      */
     @Override
     protected Closure<?> createWrapper(Closure<?> c) {
-        return new MockClosureProxy(c, methodName, expectation);
+        return new MockClosureProxy(c, this.methodName, this.expectation);
     }
+
 }

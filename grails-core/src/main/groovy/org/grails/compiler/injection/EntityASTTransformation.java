@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,9 @@
  */
 package org.grails.compiler.injection;
 
-import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GrailsDomainClassInjector;
-import grails.persistence.Entity;
-import groovy.transform.CompilationUnitAware;
-
 import java.util.List;
 
+import groovy.transform.CompilationUnitAware;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -31,14 +27,20 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
-import org.grails.core.artefact.DomainClassArtefactHandler;
 
+import grails.compiler.ast.ClassInjector;
+import grails.compiler.ast.GrailsDomainClassInjector;
+import grails.persistence.Entity;
+
+import org.grails.core.artefact.DomainClassArtefactHandler;
 
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class EntityASTTransformation implements ASTTransformation, CompilationUnitAware {
 
     private static final ClassNode MY_TYPE = new ClassNode(Entity.class);
+
     private static final String MY_TYPE_NAME = "@" + MY_TYPE.getNameWithoutPackage();
+
     protected CompilationUnit compilationUnit;
 
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
@@ -60,15 +62,14 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
         }
 
         applyTransformation(sourceUnit, cNode);
-
     }
 
     public void applyTransformation(SourceUnit sourceUnit, ClassNode classNode) {
-        if(GrailsASTUtils.isApplied(classNode, EntityASTTransformation.class)) {
+        if (GrailsASTUtils.isApplied(classNode, EntityASTTransformation.class)) {
             return;
         }
         GrailsASTUtils.markApplied(classNode, EntityASTTransformation.class);
-        
+
         GrailsDomainClassInjector domainInjector = new DefaultGrailsDomainClassInjector();
         domainInjector.performInjectionOnAnnotatedEntity(classNode);
 
@@ -79,23 +80,21 @@ public class EntityASTTransformation implements ASTTransformation, CompilationUn
         for (ClassInjector injector : domainInjectors) {
             try {
                 injector.performInjection(sourceUnit, classNode);
-            } catch (RuntimeException e) {
-                try {
-                    System.err.println("Error occurred calling AST injector ["+injector.getClass().getName()+"]: " + e.getMessage());
-                } catch (Throwable t) {
-                    // ignore
-                }
+            }
+            catch (RuntimeException e) {
+                System.err.println("Error occurred calling AST injector [" + injector.getClass().getName() + "]: " + e.getMessage());
                 throw e;
             }
         }
-        
-        if(compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, compilationUnit);
+
+        if (this.compilationUnit != null) {
+            TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, this.compilationUnit);
         }
     }
 
     @Override
     public void setCompilationUnit(CompilationUnit unit) {
-        compilationUnit = unit;
+        this.compilationUnit = unit;
     }
+
 }

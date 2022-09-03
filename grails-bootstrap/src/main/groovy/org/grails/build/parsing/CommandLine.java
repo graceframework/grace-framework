@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,14 +28,23 @@ import java.util.Properties;
 public interface CommandLine {
 
     String DEBUG_FORK = "debug-fork";
+
     String OFFLINE_ARGUMENT = "offline";
+
     String VERBOSE_ARGUMENT = "verbose";
+
     String STACKTRACE_ARGUMENT = "stacktrace";
+
     String AGENT_ARGUMENT = "reloading";
+
     String VERSION_ARGUMENT = "version";
+
     String REFRESH_DEPENDENCIES_ARGUMENT = "refresh-dependencies";
+
     String HELP_ARGUMENT = "help";
+
     String NOANSI_ARGUMENT = "plain-output";
+
     String NON_INTERACTIVE_ARGUMENT = "non-interactive";
 
     /**
@@ -57,7 +66,6 @@ public interface CommandLine {
      * @return The remaining arguments after the command name
      */
     List<String> getRemainingArgs();
-
 
     /**
      * @return The remaining arguments as an array
@@ -97,7 +105,6 @@ public interface CommandLine {
      */
     String getRemainingArgsWithOptionsString();
 
-
     /**
      * @return The remaining args separated by the line separator char
      */
@@ -117,4 +124,5 @@ public interface CommandLine {
     CommandLine parseNew(String[] args);
 
     String[] getRawArguments();
+
 }

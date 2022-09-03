@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
 
 /**
  * A ResourcePatternResolver implementation that is able to resolve a
@@ -146,7 +145,6 @@ public class PathMatchingResourcePatternResolver {
 
     private static final String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 
-
     private final ResourceLoader resourceLoader;
 
     private AntPathMatcher pathMatcher = new AntPathMatcher();
@@ -156,7 +154,7 @@ public class PathMatchingResourcePatternResolver {
      * <p>ClassLoader access will happen via the thread context class loader.
      */
     public PathMatchingResourcePatternResolver() {
-        resourceLoader = new DefaultResourceLoader();
+        this.resourceLoader = new DefaultResourceLoader();
     }
 
     /**
@@ -166,7 +164,7 @@ public class PathMatchingResourcePatternResolver {
      * at the time of actual resource access
      */
     public PathMatchingResourcePatternResolver(ClassLoader classLoader) {
-        resourceLoader = new DefaultResourceLoader(classLoader);
+        this.resourceLoader = new DefaultResourceLoader(classLoader);
     }
 
     /**
@@ -183,7 +181,7 @@ public class PathMatchingResourcePatternResolver {
      * Return the ResourceLoader that this pattern resolver works with.
      */
     public ResourceLoader getResourceLoader() {
-        return resourceLoader;
+        return this.resourceLoader;
     }
 
     /**
@@ -206,7 +204,7 @@ public class PathMatchingResourcePatternResolver {
      * Return the PathMatcher that this resource pattern resolver uses.
      */
     public AntPathMatcher getPathMatcher() {
-        return pathMatcher;
+        return this.pathMatcher;
     }
 
     public Resource getResource(String location) {
@@ -225,7 +223,7 @@ public class PathMatchingResourcePatternResolver {
         }
         // Only look for a pattern after a prefix here
         // (to not get fooled by a pattern symbol in a strange prefix).
-        int prefixEnd = locationPattern.indexOf(":") + 1;
+        int prefixEnd = locationPattern.indexOf(':') + 1;
         if (getPathMatcher().isPattern(locationPattern.substring(prefixEnd))) {
             // a file pattern
             return findPathMatchingResources(locationPattern);
@@ -248,12 +246,12 @@ public class PathMatchingResourcePatternResolver {
             path = path.substring(1);
         }
         Enumeration<URL> resourceUrls = getClassLoader().getResources(path);
-        Set<Resource> result = new LinkedHashSet<Resource>(16);
+        Set<Resource> result = new LinkedHashSet<>(16);
         while (resourceUrls.hasMoreElements()) {
             URL url = resourceUrls.nextElement();
             result.add(convertClassLoaderURL(url));
         }
-        return result.toArray(new Resource[result.size()]);
+        return result.toArray(new Resource[0]);
     }
 
     /**
@@ -281,7 +279,7 @@ public class PathMatchingResourcePatternResolver {
         String rootDirPath = determineRootDir(locationPattern);
         String subPattern = locationPattern.substring(rootDirPath.length());
         Resource[] rootDirResources = getResources(rootDirPath);
-        Set<Resource> result = new LinkedHashSet<Resource>(16);
+        Set<Resource> result = new LinkedHashSet<>(16);
         for (Resource rootDirResource : rootDirResources) {
             rootDirResource = resolveRootDirResource(rootDirResource);
             if (isJarResource(rootDirResource)) {
@@ -291,7 +289,7 @@ public class PathMatchingResourcePatternResolver {
                 result.addAll(doFindPathMatchingFileResources(rootDirResource, subPattern));
             }
         }
-        return result.toArray(new Resource[result.size()]);
+        return result.toArray(new Resource[0]);
     }
 
     /**
@@ -307,7 +305,7 @@ public class PathMatchingResourcePatternResolver {
      * @see #retrieveMatchingFiles
      */
     protected String determineRootDir(String location) {
-        int prefixEnd = location.indexOf(":") + 1;
+        int prefixEnd = location.indexOf(':') + 1;
         int rootDirEnd = location.length();
         while (rootDirEnd > prefixEnd && getPathMatcher().isPattern(location.substring(prefixEnd, rootDirEnd))) {
             rootDirEnd = location.lastIndexOf('/', rootDirEnd - 2) + 1;
@@ -325,9 +323,8 @@ public class PathMatchingResourcePatternResolver {
      * can be traversed using Spring's standard jar file traversal algorithm.
      * @param original the resource to resolve
      * @return the resolved resource (may be identical to the passed-in resource)
-     * @throws IOException in case of resolution failure
      */
-    protected Resource resolveRootDirResource(Resource original) throws IOException {
+    protected Resource resolveRootDirResource(Resource original) {
         return original;
     }
 
@@ -398,7 +395,7 @@ public class PathMatchingResourcePatternResolver {
                 // The Sun JRE does not return a slash here, but BEA JRockit does.
                 rootEntryPath = rootEntryPath + "/";
             }
-            Set<Resource> result = new LinkedHashSet<Resource>(8);
+            Set<Resource> result = new LinkedHashSet<>(8);
             for (Enumeration<JarEntry> entries = jarFile.entries(); entries.hasMoreElements();) {
                 JarEntry entry = entries.nextElement();
                 String entryPath = entry.getName();
@@ -469,7 +466,7 @@ public class PathMatchingResourcePatternResolver {
      */
     protected Set<Resource> doFindMatchingFileSystemResources(File rootDir, String subPattern) throws IOException {
         Set<File> matchingFiles = retrieveMatchingFiles(rootDir, subPattern);
-        Set<Resource> result = new LinkedHashSet<Resource>(matchingFiles.size());
+        Set<Resource> result = new LinkedHashSet<>(matchingFiles.size());
         for (File file : matchingFiles) {
             result.add(new FileSystemResource(file));
         }
@@ -497,12 +494,12 @@ public class PathMatchingResourcePatternResolver {
         if (!rootDir.canRead()) {
             return Collections.emptySet();
         }
-        String fullPattern = rootDir.getAbsolutePath().replace( File.separator, "/");
+        String fullPattern = rootDir.getAbsolutePath().replace(File.separator, "/");
         if (!pattern.startsWith("/")) {
             fullPattern += "/";
         }
         fullPattern = fullPattern + pattern.replace(File.separator, "/");
-        Set<File> result = new LinkedHashSet<File>(8);
+        Set<File> result = new LinkedHashSet<>(8);
         doRetrieveMatchingFiles(fullPattern, rootDir, result);
         return result;
     }
@@ -514,15 +511,14 @@ public class PathMatchingResourcePatternResolver {
      * with prepended root directory path
      * @param dir the current directory
      * @param result the Set of matching File instances to add to
-     * @throws IOException if directory contents could not be retrieved
      */
-    protected void doRetrieveMatchingFiles(String fullPattern, File dir, Set<File> result) throws IOException {
+    protected void doRetrieveMatchingFiles(String fullPattern, File dir, Set<File> result) {
         File[] dirContents = dir.listFiles();
         if (dirContents == null) {
             return;
         }
         for (File content : dirContents) {
-            String currPath = content.getAbsolutePath().replace( File.separator, "/");
+            String currPath = content.getAbsolutePath().replace(File.separator, "/");
             if (content.isDirectory() && getPathMatcher().matchStart(fullPattern, currPath + "/")) {
                 if (content.canRead()) {
                     doRetrieveMatchingFiles(fullPattern, content, result);
@@ -533,4 +529,5 @@ public class PathMatchingResourcePatternResolver {
             }
         }
     }
+
 }

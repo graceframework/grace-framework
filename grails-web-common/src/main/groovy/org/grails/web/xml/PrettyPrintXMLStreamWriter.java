@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2008 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,10 @@
  */
 package org.grails.web.xml;
 
-import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
-
 import java.io.IOException;
 import java.io.Writer;
+
+import groovy.xml.streamingmarkupsupport.StreamingMarkupWriter;
 
 /**
  * A XMLStreamWriter dedicated to create indented/pretty printed output.
@@ -26,11 +26,12 @@ import java.io.Writer;
  * @author Siegfried Puchbauer
  * @since 1.1
  */
-public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
+public class PrettyPrintXMLStreamWriter extends XMLStreamWriter {
 
     public static final String DEFAULT_INDENT_STR = "  ";
 
     public static final String NEWLINE;
+
     static {
         String nl = System.getProperty("line.separator");
         NEWLINE = nl != null ? nl : "\n";
@@ -57,8 +58,8 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
 
     private void indent() throws IOException {
         Writer ue = writer.unescaped();
-        for (int i=0; i<level; i++) {
-            ue.write(indent);
+        for (int i = 0; i < this.level; i++) {
+            ue.write(this.indent);
         }
     }
 
@@ -66,8 +67,9 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
     protected void endStartTag() throws IOException {
         super.endStartTag();
         newline();
-        if (doIndent)
+        if (this.doIndent) {
             indent();
+        }
     }
 
     @Override
@@ -78,15 +80,15 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
 
     @Override
     public XMLStreamWriter startNode(String tag) throws IOException {
-        doIndent = false;
+        this.doIndent = false;
         super.startNode(tag);
-        level++;
+        this.level++;
         return this;
     }
 
     @Override
     public XMLStreamWriter end() throws IOException {
-        level--;
+        this.level--;
         if (mode != Mode.TAG) {
             indent();
         }
@@ -98,7 +100,7 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
 
     @Override
     public XMLStreamWriter characters(String data) throws IOException {
-        doIndent = true;
+        this.doIndent = true;
         super.characters(data);
         newline();
         return this;
@@ -110,4 +112,5 @@ public class PrettyPrintXMLStreamWriter extends XMLStreamWriter{
         newline();
         return this;
     }
+
 }

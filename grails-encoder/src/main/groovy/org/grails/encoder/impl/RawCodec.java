@@ -1,10 +1,11 @@
-/* Copyright 2013 the original author or authors.
+/*
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,9 +35,14 @@ import org.grails.encoder.StreamingEncoder;
  * @since 2.3
  */
 public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactory {
+
     static final CodecIdentifier RAW_CODEC_IDENTIFIER = new DefaultCodecIdentifier("Raw") {
+
         // using RawCodec will prevent all other codecs from encoding a part encoded with this codec
-        public boolean isEquivalent(CodecIdentifier other) { return true; };
+        public boolean isEquivalent(CodecIdentifier other) {
+            return true;
+        }
+
     };
 
     /* (non-Javadoc)
@@ -57,13 +63,15 @@ public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactor
      * @see Encoder#encode(java.lang.Object)
      */
     public Object encode(Object o) {
-        if(o instanceof String) {
-            // create a new copy of the String instance            
-            return new String((String)o);
-        } else if(o instanceof CharSequence) {
+        if (o instanceof String) {
+            // create a new copy of the String instance
+            return new String((String) o);
+        }
+        else if (o instanceof CharSequence) {
             // convert CharSequence to String so that we have a new instance
             return String.valueOf(o);
-        } else {
+        }
+        else {
             return o;
         }
     }
@@ -106,4 +114,5 @@ public class RawCodec implements Encoder, Decoder, StreamingEncoder, CodecFactor
     public Decoder getDecoder() {
         return this;
     }
+
 }

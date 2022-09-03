@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,11 @@
  */
 package org.grails.plugins.codecs;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
+
 import org.grails.encoder.CodecFactory;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.Decoder;
@@ -24,8 +27,6 @@ import org.grails.encoder.Encoder;
 import org.grails.encoder.impl.HTML4Decoder;
 import org.grails.encoder.impl.HTML4Encoder;
 import org.grails.encoder.impl.HTMLEncoder;
-
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Encodes and decodes strings to and from HTML.
@@ -35,17 +36,24 @@ import org.springframework.beans.factory.InitializingBean;
  * @since 1.1
  */
 public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, InitializingBean {
+
     public static final String CONFIG_PROPERTY_GSP_HTMLCODEC = "grails.views.gsp.htmlcodec";
+
     static final String CODEC_NAME = "HTML";
+
     private GrailsApplication grailsApplication;
+
     private Encoder encoder;
+
     static final Encoder xml_encoder = new HTMLEncoder();
+
     static final Encoder html4_encoder = new HTML4Encoder() {
         @Override
         public CodecIdentifier getCodecIdentifier() {
             return HTMLEncoder.HTML_CODEC_IDENTIFIER;
         }
     };
+
     static final Decoder decoder = new HTML4Decoder() {
         @Override
         public CodecIdentifier getCodecIdentifier() {
@@ -58,7 +66,7 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
     public Decoder getDecoder() {
@@ -70,11 +78,11 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public void afterPropertiesSet() {
-        if (grailsApplication == null || grailsApplication.getConfig() == null) {
+        if (this.grailsApplication == null || this.grailsApplication.getConfig() == null) {
             return;
         }
 
-        String htmlCodecSetting = grailsApplication.getConfig().getProperty(CONFIG_PROPERTY_GSP_HTMLCODEC);
+        String htmlCodecSetting = this.grailsApplication.getConfig().getProperty(CONFIG_PROPERTY_GSP_HTMLCODEC);
         if (htmlCodecSetting == null) {
             return;
         }
@@ -86,6 +94,7 @@ public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, In
     }
 
     public void setUseLegacyEncoder(boolean useLegacyEncoder) {
-        encoder = useLegacyEncoder ? html4_encoder : xml_encoder;
+        this.encoder = useLegacyEncoder ? html4_encoder : xml_encoder;
     }
+
 }

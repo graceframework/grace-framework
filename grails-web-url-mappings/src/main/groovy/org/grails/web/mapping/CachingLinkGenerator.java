@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,15 @@ import java.util.Map;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+
+import grails.util.GrailsMetaClassUtils;
 import grails.util.GrailsStringUtils;
 import grails.web.mapping.LinkGenerator;
 import grails.web.mapping.UrlMapping;
-import grails.util.GrailsMetaClassUtils;
 import grails.web.servlet.mvc.GrailsParameterMap;
+
 import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 
 /**
  * A link generator that uses a LRU cache to cache generated links.
@@ -34,21 +36,30 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
  * @since 2.0
  * @author Graeme Rocher
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private static final int MAX_SIZE = 5000;
+
     public static final String LINK_PREFIX = "link";
+
     public static final String RESOURCE_PREFIX = "resource";
+
     public static final String USED_ATTRIBUTES_SUFFIX = "-used-attributes";
+
     public static final String EMPTY_MAP_STRING = "[:]";
+
     private static final String OPENING_BRACKET = "[";
+
     private static final String CLOSING_BRACKET = "]";
+
     private static final String COMMA_SEPARATOR = ", ";
+
     private static final String KEY_VALUE_SEPARATOR = ":";
+
     private static final String THIS_MAP = "(this Map)";
 
-    private Cache<String, Object> linkCache;
+    private final Cache<String, Object> linkCache;
 
     public CachingLinkGenerator(String serverBaseURL, String contextPath) {
         super(serverBaseURL, contextPath);
@@ -67,16 +78,16 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         }
 
         final String key = makeKey(LINK_PREFIX, attrs);
-        Object resourceLink = linkCache.getIfPresent(key);
+        Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.link(attrs, encoding);
-            linkCache.put(key, resourceLink);
+            this.linkCache.put(key, resourceLink);
         }
         return resourceLink.toString();
     }
 
     protected boolean isCacheable(Map attrs) {
-        if(attrs.get(LinkGenerator.ATTRIBUTE_PARAMS) instanceof GrailsParameterMap) {
+        if (attrs.get(LinkGenerator.ATTRIBUTE_PARAMS) instanceof GrailsParameterMap) {
             return false;
         }
         Object urlAttr = attrs.get(ATTRIBUTE_URL);
@@ -92,10 +103,11 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     // Based on DGM toMapString, but with StringBuilder instead of StringBuffer
     protected void appendMapKey(StringBuilder buffer, Map<String, Object> params) {
-        if (params==null || params.isEmpty()) {
+        if (params == null || params.isEmpty()) {
             buffer.append(EMPTY_MAP_STRING);
             buffer.append(OPENING_BRACKET);
-        } else {
+        }
+        else {
             buffer.append(OPENING_BRACKET);
             Map map = new LinkedHashMap<>(params);
             final String requestControllerName = getRequestStateLookupStrategy().getControllerName();
@@ -114,7 +126,9 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
             for (Object o : map.entrySet()) {
                 Map.Entry entry = (Map.Entry) o;
                 Object value = entry.getValue();
-                if (value == null) continue;
+                if (value == null) {
+                    continue;
+                }
                 first = appendCommaIfNotFirst(buffer, first);
                 Object key = entry.getKey();
                 if (RESOURCE_PREFIX.equals(key)) {
@@ -125,14 +139,15 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         }
         buffer.append(CLOSING_BRACKET);
     }
-    
+
     protected String getCacheKeyValueForResource(Object o) {
         StringBuilder builder = new StringBuilder(o.getClass().getName());
         builder.append("->");
         Object idValue = GrailsMetaClassUtils.invokeMethodIfExists(o, "ident", new Object[0]);
-        if(idValue != null) {
-            builder.append(idValue.toString());
-        } else {
+        if (idValue != null) {
+            builder.append(idValue);
+        }
+        else {
             builder.append(o);
         }
         return builder.toString();
@@ -141,7 +156,8 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
     private boolean appendCommaIfNotFirst(StringBuilder buffer, boolean first) {
         if (first) {
             first = false;
-        } else {
+        }
+        else {
             buffer.append(COMMA_SEPARATOR);
         }
         return first;
@@ -149,10 +165,11 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     protected void appendKeyValue(StringBuilder buffer, Map map, Object key, Object value) {
         buffer.append(key)
-              .append(KEY_VALUE_SEPARATOR);
+                .append(KEY_VALUE_SEPARATOR);
         if (value == map) {
             buffer.append(THIS_MAP);
-        } else {
+        }
+        else {
             buffer.append(DefaultGroovyMethods.toString(value));
         }
     }
@@ -160,23 +177,24 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
     @Override
     public String resource(Map attrs) {
         final String key = makeKey(RESOURCE_PREFIX, attrs);
-        Object resourceLink = linkCache.getIfPresent(key);
+        Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.resource(attrs);
-            linkCache.put(key, resourceLink);
+            this.linkCache.put(key, resourceLink);
         }
         return resourceLink.toString();
     }
 
     protected String makeKey(String prefix, Map attrs) {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append(prefix);
-        if (getConfiguredServerBaseURL()==null && isAbsolute(attrs)) {
+        if (getConfiguredServerBaseURL() == null && isAbsolute(attrs)) {
             if (attrs.get(ATTRIBUTE_BASE) != null) {
                 sb.append(attrs.get(ATTRIBUTE_BASE));
-            } else {
+            }
+            else {
                 GrailsWebRequest webRequest = GrailsWebRequest.lookup();
-            if(webRequest != null) {
+                if (webRequest != null) {
                     sb.append(webRequest.getBaseUrl());
                 }
             }
@@ -187,11 +205,12 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     private Cache<String, Object> createDefaultCache() {
         return Caffeine.newBuilder()
-                                .maximumSize(MAX_SIZE)
-                                .build();
+                .maximumSize(MAX_SIZE)
+                .build();
     }
 
     public void clearCache() {
-        linkCache.invalidateAll();
+        this.linkCache.invalidateAll();
     }
+
 }

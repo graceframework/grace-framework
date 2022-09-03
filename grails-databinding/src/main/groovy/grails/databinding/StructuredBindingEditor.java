@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package grails.databinding;
-
 
 /**
  * StructuredBindingEditors convert structured data in a Map
@@ -65,6 +64,7 @@ assert resident.workAddress.city == null
  * @see SimpleDataBinder#registerStructuredEditor(Class, StructuredBindingEditor)
  */
 public interface StructuredBindingEditor<T> extends BindingHelper<T> {
+
     /**
      * The value returned from this method will be bound to
      * the property specified by propertyName.
@@ -75,4 +75,5 @@ public interface StructuredBindingEditor<T> extends BindingHelper<T> {
      * @return The value which should be bound to propertyName
      */
     T getPropertyValue(Object obj, String propertyName, DataBindingSource source);
+
 }

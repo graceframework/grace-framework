@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,21 +20,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import org.grails.commons.CodecArtefactHandler;
-import grails.core.GrailsApplication;
-import grails.core.GrailsClass;
-import org.grails.commons.GrailsCodecClass;
-import grails.core.support.GrailsApplicationAware;
-import org.grails.encoder.impl.BasicCodecLookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.OrderComparator;
+
+import grails.core.GrailsApplication;
+import grails.core.GrailsClass;
+import grails.core.support.GrailsApplicationAware;
+
+import org.grails.commons.CodecArtefactHandler;
+import org.grails.commons.GrailsCodecClass;
+import org.grails.encoder.impl.BasicCodecLookup;
 
 /**
  * @author Lari Hotari
  * @since 2.3
  */
 public class DefaultCodecLookup extends BasicCodecLookup implements GrailsApplicationAware {
+
     protected ApplicationContext applicationContext;
+
     protected GrailsApplication grailsApplication;
 
     public DefaultCodecLookup(GrailsApplication grailsApplication) {
@@ -47,11 +51,11 @@ public class DefaultCodecLookup extends BasicCodecLookup implements GrailsApplic
     }
 
     protected void registerCodecs() {
-        List<GrailsClass> codecs = Arrays.asList(grailsApplication.getArtefacts(CodecArtefactHandler.TYPE));
+        List<GrailsClass> codecs = Arrays.asList(this.grailsApplication.getArtefacts(CodecArtefactHandler.TYPE));
         Collections.sort(codecs, OrderComparator.INSTANCE);
         Collections.reverse(codecs);
         for (GrailsClass grailsClass : codecs) {
-            registerCodec((GrailsCodecClass)grailsClass);
+            registerCodec((GrailsCodecClass) grailsClass);
         }
     }
 
@@ -65,4 +69,5 @@ public class DefaultCodecLookup extends BasicCodecLookup implements GrailsApplic
         this.grailsApplication = grailsApplication;
         this.applicationContext = grailsApplication.getMainContext();
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,10 @@
  */
 package org.grails.cli.profile;
 
+import java.io.File;
+
 import grails.build.logging.GrailsConsole;
 import grails.config.ConfigMap;
-
-import java.io.File;
 
 /**
  * The project context used by a {@link org.grails.cli.profile.Profile}
@@ -27,6 +27,7 @@ import java.io.File;
  * @author Graeme Rocher
  */
 public interface ProjectContext {
+
     /**
      * @return The {@link grails.build.logging.GrailsConsole} instance
      */
@@ -59,4 +60,5 @@ public interface ProjectContext {
      * @return The value or null if not set
      */
     <T> T navigateConfigForType(Class<T> requiredType, String... path);
+
 }

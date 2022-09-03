@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 package grails.web.mapping;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import grails.gorm.validation.Constrained;
-
-import java.util.*;
 
 /**
  * <p>Defines a URL mapping. A URL mapping is a mapping between a URI such as /book/list and
@@ -36,22 +38,31 @@ import java.util.*;
 public interface UrlMapping extends Comparable, UrlCreator {
 
     String WILDCARD = "*";
+
     String CAPTURED_WILDCARD = "(*)";
+
     String OPTIONAL_EXTENSION_WILDCARD = "(.(*))";
+
     String SLASH = "/";
+
     char QUESTION_MARK = '?';
+
     char AMPERSAND = '&';
+
     String DOUBLE_WILDCARD = "**";
+
     String CAPTURED_DOUBLE_WILDCARD = "(**)";
 
     /**
      * The controller this mapping matches
      */
     String CONTROLLER = "controller";
+
     /**
      * The action this mapping matches
      */
     String ACTION = "action";
+
     /**
      * The HTTP method this mapping matches
      */
@@ -81,15 +92,16 @@ public interface UrlMapping extends Comparable, UrlCreator {
      * The URI of the URL mapping
      */
     String URI = "uri";
+
     /**
      * The plugin of the URL Mapping
      */
     String PLUGIN = "plugin";
+
     /**
      * The namespace of the URL mapping
      */
     String NAMESPACE = "namespace";
-
 
     String VIEW = "view";
 
@@ -103,21 +115,8 @@ public interface UrlMapping extends Comparable, UrlCreator {
 
     String EXCEPTION = "exception";
 
-    Set<String> KEYWORDS = new HashSet<String>() {{
-        add(CONTROLLER);
-        add(ACTION);
-        add(HTTP_METHOD);
-        add(REDIRECT_INFO);
-        add(VERSION);
-        add(URI);
-        add(PLUGIN);
-        add(NAMESPACE);
-        add(VIEW);
-        add(RESOURCES);
-        add(INCLUDES);
-        add(PERMANENT);
-        add(EXCEPTION);
-    }};
+    Set<String> KEYWORDS = new HashSet<>(Arrays.asList(CONTROLLER, ACTION, HTTP_METHOD, REDIRECT_INFO, VERSION,
+            URI, PLUGIN, NAMESPACE, VIEW, RESOURCES, INCLUDES, PERMANENT, EXCEPTION));
 
     /**
      * Matches the given URI and returns an instance of the UrlMappingInfo interface or null
@@ -254,4 +253,5 @@ public interface UrlMapping extends Comparable, UrlCreator {
      * @return True if the URL mapping comes from a plugin
      */
     boolean isDefinedInPlugin();
+
 }

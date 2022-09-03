@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,8 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
  * @since 2.0
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class ApiDelegateTransformation implements ASTTransformation{
+public class ApiDelegateTransformation implements ASTTransformation {
+
     public void visit(ASTNode[] nodes, SourceUnit source) {
         if (nodes.length != 2 || !(nodes[0] instanceof AnnotationNode) || !(nodes[1] instanceof AnnotatedNode)) {
             throw new GroovyBugError("Internal error: expecting [AnnotationNode, AnnotatedNode] but got: " + Arrays.asList(nodes));
@@ -58,14 +59,15 @@ public class ApiDelegateTransformation implements ASTTransformation{
                 supportedType = value.getType();
             }
 
-            GrailsASTUtils.addDelegateInstanceMethods(supportedType, owner, type, new VariableExpression(fieldNode.getName()), resolveGenericsPlaceHolders(supportedType), isNoNullCheck(), isUseCompileStatic());
+            GrailsASTUtils.addDelegateInstanceMethods(supportedType, owner, type, new VariableExpression(fieldNode.getName()),
+                    resolveGenericsPlaceHolders(supportedType), isNoNullCheck(), isUseCompileStatic());
         }
     }
-    
+
     protected boolean isNoNullCheck() {
         return true;
     }
-    
+
     protected boolean isUseCompileStatic() {
         return true;
     }
@@ -73,4 +75,5 @@ public class ApiDelegateTransformation implements ASTTransformation{
     protected Map<String, ClassNode> resolveGenericsPlaceHolders(ClassNode classNode) {
         return null;
     }
+
 }

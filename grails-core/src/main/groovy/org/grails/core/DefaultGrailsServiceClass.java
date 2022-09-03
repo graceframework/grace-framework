@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,20 +23,22 @@ import grails.core.GrailsServiceClass;
 public class DefaultGrailsServiceClass extends AbstractInjectableGrailsClass implements GrailsServiceClass {
 
     public static final String SERVICE = "Service";
+
     private static final String TRANSACTIONAL = "transactional";
 
     private boolean transactional = true;
+
     private String datasourceName;
 
     public DefaultGrailsServiceClass(Class<?> clazz) {
         super(clazz, SERVICE);
 
         Object tmpTransactional = getStaticPropertyValue(TRANSACTIONAL, Boolean.class);
-        transactional = Boolean.TRUE.equals(tmpTransactional);
+        this.transactional = Boolean.TRUE.equals(tmpTransactional);
     }
 
     public boolean isTransactional() {
-        return transactional;
+        return this.transactional;
     }
 
     /**
@@ -45,18 +47,19 @@ public class DefaultGrailsServiceClass extends AbstractInjectableGrailsClass imp
      * @return name of data source
      */
     public String getDatasource() {
-        if (datasourceName == null) {
+        if (this.datasourceName == null) {
             CharSequence name = getStaticPropertyValue(DATA_SOURCE, CharSequence.class);
-            datasourceName = name == null ? null : name.toString();
-            if (datasourceName == null) {
-                datasourceName = DEFAULT_DATA_SOURCE;
+            this.datasourceName = name == null ? null : name.toString();
+            if (this.datasourceName == null) {
+                this.datasourceName = DEFAULT_DATA_SOURCE;
             }
         }
 
-        return datasourceName;
+        return this.datasourceName;
     }
 
     public boolean usesDatasource(final String name) {
         return getDatasource().equals(name);
     }
+
 }

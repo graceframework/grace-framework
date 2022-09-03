@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,15 @@
  */
 package grails.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for a value inside a cache that adds timestamp information
@@ -37,26 +37,32 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @since 2.3.4
  */
 public class CacheEntry<V> {
-    private static final Logger LOG = LoggerFactory.getLogger(CacheEntry.class);
-    private final AtomicReference<V> valueRef=new AtomicReference<V>(null);
+
+    private static final Logger logger = LoggerFactory.getLogger(CacheEntry.class);
+
+    private final AtomicReference<V> valueRef = new AtomicReference<>(null);
+
     private long createdMillis;
-    private final ReadWriteLock lock=new ReentrantReadWriteLock();
-    private final Lock readLock=lock.readLock();
-    private final Lock writeLock=lock.writeLock();
-    private volatile boolean initialized=false;
+
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+    private final Lock readLock = this.lock.readLock();
+
+    private final Lock writeLock = this.lock.writeLock();
+
+    private volatile boolean initialized = false;
 
     public CacheEntry() {
         expire();
     }
-    
+
     public CacheEntry(V value) {
         setValue(value);
     }
-    
+
     /**
      * Gets a value from cache. If the key doesn't exist, it will create the value using the updater callback
-     * Prevents cache storms with a lock 
-     * 
+     * Prevents cache storms with a lock
      * The key is always added to the cache. Null return values will also be cached.
      * You can use this together with ConcurrentLinkedHashMap to create a bounded LRU cache
      *
@@ -66,13 +72,17 @@ public class CacheEntry<V> {
      * @param updater callback to create/update value
      * @param cacheEntryClass CacheEntry implementation class to use
      * @param returnExpiredWhileUpdating when true, return expired value while updating new value
-     * @param cacheRequestObject context object that gets passed to hasExpired, shouldUpdate and updateValue methods, not used in default implementation
+     * @param cacheRequestObject context object that gets passed to hasExpired,
+     *                           shouldUpdate and updateValue methods, not used in default implementation
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory, boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
+            Callable<V> updater, Callable<? extends CacheEntry> cacheEntryFactory,
+            boolean returnExpiredWhileUpdating, Object cacheRequestObject) {
+
         CacheEntry<V> cacheEntry = map.get(key);
-        if(cacheEntry==null) {
+        if (cacheEntry == null) {
             try {
                 cacheEntry = cacheEntryFactory.call();
             }
@@ -80,10 +90,11 @@ public class CacheEntry<V> {
                 throw new UpdateException(e);
             }
             CacheEntry<V> previousEntry = map.putIfAbsent(key, cacheEntry);
-            if(previousEntry != null) {
+            if (previousEntry != null) {
                 cacheEntry = previousEntry;
             }
         }
+
         try {
             return cacheEntry.getValue(timeoutMillis, updater, returnExpiredWhileUpdating, cacheRequestObject);
         }
@@ -93,27 +104,23 @@ public class CacheEntry<V> {
             return null;
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
-    private static final Callable<CacheEntry> DEFAULT_CACHE_ENTRY_FACTORY = new Callable<CacheEntry>() {
-        @Override
-        public CacheEntry call() throws Exception {
-            return new CacheEntry();
-        }
-    };
-    
+    private static final Callable<CacheEntry> DEFAULT_CACHE_ENTRY_FACTORY = CacheEntry::new;
+
     public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, true, null);
     }
 
-    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis, Callable<V> updater, boolean returnExpiredWhileUpdating) {
+    public static <K, V> V getValue(ConcurrentMap<K, CacheEntry<V>> map, K key, long timeoutMillis,
+            Callable<V> updater, boolean returnExpiredWhileUpdating) {
         return getValue(map, key, timeoutMillis, updater, DEFAULT_CACHE_ENTRY_FACTORY, returnExpiredWhileUpdating, null);
     }
-    
+
     public V getValue(long timeout, Callable<V> updater) {
         return getValue(timeout, updater, true, null);
     }
-    
+
     /**
      * gets the current value from the entry and updates it if it's older than timeout
      *
@@ -129,55 +136,61 @@ public class CacheEntry<V> {
         if (!isInitialized() || hasExpired(timeout, cacheRequestObject)) {
             boolean lockAcquired = false;
             try {
-                long beforeLockingCreatedMillis = createdMillis;
-                if(returnExpiredWhileUpdating) {
-                    if(!writeLock.tryLock()) {
-                        if(isInitialized()) {
+                long beforeLockingCreatedMillis = this.createdMillis;
+                if (returnExpiredWhileUpdating) {
+                    if (!this.writeLock.tryLock()) {
+                        if (isInitialized()) {
                             return getValueWhileUpdating(cacheRequestObject);
-                        } else {
-                            if(LOG.isDebugEnabled()) {
-                                LOG.debug("Locking cache for update");
+                        }
+                        else {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Locking cache for update");
                             }
-                            writeLock.lock();
+                            this.writeLock.lock();
                         }
                     }
-                } else {
-                    LOG.debug("Locking cache for update");
-                    writeLock.lock();
                 }
+                else {
+                    logger.debug("Locking cache for update");
+                    this.writeLock.lock();
+                }
+
                 lockAcquired = true;
                 V value;
                 if (!isInitialized() || shouldUpdate(beforeLockingCreatedMillis, cacheRequestObject)) {
                     try {
                         value = updateValue(getValue(), updater, cacheRequestObject);
-                        if(LOG.isDebugEnabled()) {
-                            LOG.debug("Updating cache for value [{}]", value);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Updating cache for value [{}]", value);
                         }
                         setValue(value);
                     }
                     catch (Exception e) {
                         throw new UpdateException(e);
                     }
-                } else {
+                }
+                else {
                     value = getValue();
                     resetTimestamp(false);
                 }
                 return value;
-            } finally {
-                if(lockAcquired) {
-                    if(LOG.isDebugEnabled()) {
-                        LOG.debug("Unlocking cache for update");
+            }
+            finally {
+                if (lockAcquired) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Unlocking cache for update");
                     }
-                    writeLock.unlock();
+                    this.writeLock.unlock();
                 }
             }
-        } else {
+        }
+        else {
             return getValue();
         }
     }
-    
+
     protected V getValueWhileUpdating(Object cacheRequestObject) {
-        return valueRef.get();
+        return this.valueRef.get();
     }
 
     protected V updateValue(V oldValue, Callable<V> updater, Object cacheRequestObject) throws Exception {
@@ -186,48 +199,50 @@ public class CacheEntry<V> {
 
     public V getValue() {
         try {
-            readLock.lock();
-            return valueRef.get();
-        } finally {
-            readLock.unlock();
+            this.readLock.lock();
+            return this.valueRef.get();
+        }
+        finally {
+            this.readLock.unlock();
         }
     }
-    
+
     public void setValue(V val) {
-        try{
-            writeLock.lock();
-            valueRef.set(val);
+        try {
+            this.writeLock.lock();
+            this.valueRef.set(val);
             setInitialized(true);
             resetTimestamp(true);
-        } finally {
-            writeLock.unlock();
+        }
+        finally {
+            this.writeLock.unlock();
         }
     }
 
     protected boolean hasExpired(long timeout, Object cacheRequestObject) {
-        return timeout >= 0 && System.currentTimeMillis() - timeout > createdMillis;
+        return timeout >= 0 && System.currentTimeMillis() - timeout > this.createdMillis;
     }
 
     protected boolean shouldUpdate(long beforeLockingCreatedMillis, Object cacheRequestObject) {
-        return beforeLockingCreatedMillis == createdMillis || createdMillis == 0L;
+        return beforeLockingCreatedMillis == this.createdMillis || this.createdMillis == 0L;
     }
 
     protected void resetTimestamp(boolean updated) {
-        if(updated) {
-            createdMillis = System.currentTimeMillis();
+        if (updated) {
+            this.createdMillis = System.currentTimeMillis();
         }
     }
 
     public long getCreatedMillis() {
-        return createdMillis;
+        return this.createdMillis;
     }
 
     public void expire() {
-        createdMillis = 0L;
+        this.createdMillis = 0L;
     }
-    
+
     public boolean isInitialized() {
-        return initialized;
+        return this.initialized;
     }
 
     public void setInitialized(boolean initialized) {
@@ -235,6 +250,7 @@ public class CacheEntry<V> {
     }
 
     public static final class UpdateException extends RuntimeException {
+
         private static final long serialVersionUID = 1L;
 
         public UpdateException(String message, Throwable cause) {
@@ -247,18 +263,19 @@ public class CacheEntry<V> {
 
         public void rethrowCause() throws Exception {
             if (getCause() instanceof Exception) {
-                throw (Exception)getCause();
+                throw (Exception) getCause();
             }
 
             throw this;
         }
-        
+
         public void rethrowRuntimeException() {
             if (getCause() instanceof RuntimeException) {
-                throw (RuntimeException)getCause();
+                throw (RuntimeException) getCause();
             }
             throw this;
         }
-        
+
     }
+
 }

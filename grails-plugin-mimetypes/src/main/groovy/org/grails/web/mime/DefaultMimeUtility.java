@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,13 @@
  */
 package org.grails.web.mime;
 
-import grails.web.mime.MimeUtility;
-import grails.web.mime.MimeType;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import grails.web.mime.MimeType;
+import grails.web.mime.MimeUtility;
 
 /**
  * @author Graeme Rocher
@@ -29,8 +29,9 @@ import java.util.Map;
  */
 public class DefaultMimeUtility implements MimeUtility {
 
-    private List<MimeType> mimeTypes;
-    private Map<String, MimeType> extensionToMimeMap = new HashMap<String, MimeType>();
+    private final List<MimeType> mimeTypes;
+
+    private final Map<String, MimeType> extensionToMimeMap = new HashMap<>();
 
     public DefaultMimeUtility(MimeType[] mimeTypes) {
         this(Arrays.asList(mimeTypes));
@@ -40,8 +41,8 @@ public class DefaultMimeUtility implements MimeUtility {
         this.mimeTypes = mimeTypes;
         for (MimeType mimeType : mimeTypes) {
             final String ext = mimeType.getExtension();
-            if (!extensionToMimeMap.containsKey(ext)) {
-                extensionToMimeMap.put(ext,mimeType);
+            if (!this.extensionToMimeMap.containsKey(ext)) {
+                this.extensionToMimeMap.put(ext, mimeType);
             }
         }
     }
@@ -49,18 +50,20 @@ public class DefaultMimeUtility implements MimeUtility {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<MimeType> getKnownMimeTypes() {
-        return mimeTypes;
+        return this.mimeTypes;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public MimeType getMimeTypeForExtension(String extension) {
         if (extension == null) {
             return null;
         }
-        return extensionToMimeMap.get(extension);
+        return this.extensionToMimeMap.get(extension);
     }
 
     public MimeType getMimeTypeForURI(String uri) {
@@ -70,11 +73,12 @@ public class DefaultMimeUtility implements MimeUtility {
 
         final int i = uri.lastIndexOf('.');
         final int length = uri.length();
-        if (i > -1 && i < length) {
+        if (i > -1) {
             final String extension = uri.substring(i + 1, length);
             return getMimeTypeForExtension(extension);
         }
 
         return null;
     }
+
 }

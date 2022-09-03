@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,11 @@
  */
 package grails.web.context;
 
-import grails.util.Holders;
-import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy;
-
 import javax.servlet.ServletContext;
+
+import grails.util.Holders;
+
+import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy;
 
 /**
  * Holds a reference to the ServletContext.
@@ -26,7 +27,10 @@ import javax.servlet.ServletContext;
  * @author Graeme Rocher
  * @since 1.0
  */
-public class ServletContextHolder {
+public final class ServletContextHolder {
+
+    private ServletContextHolder() {
+    }
 
     public static void setServletContext(final ServletContext servletContext) {
         Holders.setServletContext(servletContext);
@@ -36,4 +40,5 @@ public class ServletContextHolder {
     public static ServletContext getServletContext() {
         return (ServletContext) Holders.getServletContext();
     }
+
 }

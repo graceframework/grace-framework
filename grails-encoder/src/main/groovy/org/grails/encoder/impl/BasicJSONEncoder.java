@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,12 @@
  */
 package org.grails.encoder.impl;
 
+import org.codehaus.groovy.runtime.StringGroovyMethods;
+import org.springframework.util.ClassUtils;
+
 import org.grails.encoder.AbstractCharReplacementEncoder;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.DefaultCodecIdentifier;
-import org.codehaus.groovy.runtime.StringGroovyMethods;
-import org.springframework.util.ClassUtils;
 
 /**
  * Escapes characters in JSON output
@@ -28,19 +29,20 @@ import org.springframework.util.ClassUtils;
  * @since 2.3.4
  */
 public class BasicJSONEncoder extends AbstractCharReplacementEncoder {
+
     public static final CodecIdentifier JSON_CODEC_IDENTIFIER = new DefaultCodecIdentifier(
             "JSON", "Json") {
+
         public boolean isEquivalent(CodecIdentifier other) {
             return super.isEquivalent(other) || JavaScriptEncoder.JAVASCRIPT_CODEC_IDENTIFIER.getCodecName().equals(other.getCodecName());
-        };
+        }
+
     };
 
     public BasicJSONEncoder() {
         super(JSON_CODEC_IDENTIFIER);
     }
 
-    
-    
     /* (non-Javadoc)
      * @see AbstractCharReplacementEncoder#escapeCharacter(char, char)
      */
@@ -71,11 +73,11 @@ public class BasicJSONEncoder extends AbstractCharReplacementEncoder {
                 // preserve special handling that exists in JSONObject.quote to improve security if JSON is embedded in HTML document
                 // prevents outputting "</" gets outputted with unicode escaping for the slash
                 if (previousChar == '<') {
-                    return "\\u002f"; 
+                    return "\\u002f";
                 }
                 break;
         }
-        if(ch < ' ') {
+        if (ch < ' ') {
             // escape all other control characters
             return "\\u" + StringGroovyMethods.padLeft(Integer.toHexString(ch), 4, "0");
         }
@@ -93,17 +95,19 @@ public class BasicJSONEncoder extends AbstractCharReplacementEncoder {
     }
 
     protected Object doEncode(Object o) {
-        if(o == null) {
+        if (o == null) {
             return null;
-        }        
-        if(o instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(o.getClass()) ) {
+        }
+        if (o instanceof CharSequence || ClassUtils.isPrimitiveOrWrapper(o.getClass())) {
             return super.encode(o);
-        } else {
-            return encodeAsJsonObject(o);            
+        }
+        else {
+            return encodeAsJsonObject(o);
         }
     }
 
     protected Object encodeAsJsonObject(Object o) {
         return o;
     }
+
 }

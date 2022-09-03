@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2007 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,12 @@
  */
 package org.grails.plugins;
 
-import grails.plugins.GrailsPlugin;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import grails.plugins.GrailsPlugin;
 
 /**
  * Implementation of <code>PluginFilter</code> which removes that all of the supplied
@@ -30,10 +29,9 @@ import java.util.Set;
  *
  * @author Phil Zoio
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ExcludingPluginFilter extends BasePluginFilter {
 
-    public ExcludingPluginFilter(Set excluded) {
+    public ExcludingPluginFilter(Set<String> excluded) {
         super(excluded);
     }
 
@@ -42,25 +40,18 @@ public class ExcludingPluginFilter extends BasePluginFilter {
     }
 
     @Override
-    protected List getPluginList(List original, List pluginList) {
-
+    protected List<GrailsPlugin> getPluginList(List<GrailsPlugin> original, List<GrailsPlugin> pluginList) {
         // go through and remove ones that don't apply
-        List<GrailsPlugin> newList = new ArrayList<GrailsPlugin>(original);
-        for (Iterator<GrailsPlugin> iter = newList.iterator(); iter.hasNext();) {
-            GrailsPlugin element = iter.next();
-            // remove the excluded dependencies
-            if (pluginList.contains(element)) {
-                iter.remove();
-            }
-        }
+        List<GrailsPlugin> newList = new ArrayList<>(original);
+        // remove the excluded dependencies
+        newList.removeIf(pluginList::contains);
 
         return newList;
     }
 
     @Override
-    protected void addPluginDependencies(List additionalList, GrailsPlugin plugin) {
+    protected void addPluginDependencies(List<GrailsPlugin> additionalList, GrailsPlugin plugin) {
         // find the plugins which depend on the one we've excluded
-
         String pluginName = plugin.getName();
 
         Collection<GrailsPlugin> values = getAllPlugins();
@@ -77,4 +68,5 @@ public class ExcludingPluginFilter extends BasePluginFilter {
             }
         }
     }
+
 }

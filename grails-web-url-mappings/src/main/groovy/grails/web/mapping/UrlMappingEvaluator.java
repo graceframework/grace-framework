@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,10 @@
  */
 package grails.web.mapping;
 
+import java.util.List;
+
 import groovy.lang.Closure;
 import org.springframework.core.io.Resource;
-
-import java.util.List;
 
 /**
  * Evaluates URL mapping from the given Spring Resource or class.
@@ -38,7 +38,6 @@ public interface UrlMappingEvaluator {
      *
      * @return A list of UrlMapping instances
      */
-    @SuppressWarnings("rawtypes")
     List<UrlMapping> evaluateMappings(Resource resource);
 
     /**
@@ -58,4 +57,5 @@ public interface UrlMappingEvaluator {
      */
     @SuppressWarnings("rawtypes")
     List<UrlMapping> evaluateMappings(Closure closure);
+
 }

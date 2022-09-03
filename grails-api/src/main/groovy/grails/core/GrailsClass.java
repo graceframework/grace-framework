@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ import grails.core.support.GrailsApplicationAware;
  * @author Graeme Rocher
  * @since 0.1
  */
-public interface GrailsClass extends GrailsApplicationAware{
+public interface GrailsClass extends GrailsApplicationAware {
 
     /**
      * Whether the class is abstract or not
@@ -58,7 +58,6 @@ public interface GrailsClass extends GrailsApplicationAware{
 
     /**
      * Creates a new instance of this class.
-     *
      * This method can be used as factory method in the Spring application context.
      * @return A new instance of this class
      */
@@ -119,8 +118,7 @@ public interface GrailsClass extends GrailsApplicationAware{
      *
      * @return The class
      */
-    @SuppressWarnings("rawtypes")
-    Class getClazz();
+    Class<?> getClazz();
 
     /**
      * @return The MetaClass for this Grails class
@@ -145,4 +143,5 @@ public interface GrailsClass extends GrailsApplicationAware{
      * @return The plugin where the artefact originates from
      */
     String getPluginName();
+
 }

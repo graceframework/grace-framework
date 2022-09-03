@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,20 +15,20 @@
  */
 package org.grails.web.mapping;
 
-import grails.util.GrailsStringUtils;
-import grails.web.mapping.LinkGenerator;
-import grails.web.mapping.UrlMapping;
-import grails.web.mapping.UrlMappingInfo;
-import grails.web.mapping.UrlMappingsHolder;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import groovy.lang.Binding;
-import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping;
-import org.grails.web.servlet.WrappedResponseHolder;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
-import org.grails.web.util.GrailsApplicationAttributes;
-import org.grails.web.util.IncludeResponseWrapper;
-import org.grails.web.util.IncludedContent;
-import org.grails.web.util.WebUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.WebRequest;
@@ -38,17 +38,20 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import grails.util.GrailsStringUtils;
+import grails.web.mapping.LinkGenerator;
+import grails.web.mapping.UrlMapping;
+import grails.web.mapping.UrlMappingInfo;
+import grails.web.mapping.UrlMappingsHolder;
+
+import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping;
+import org.grails.web.servlet.WrappedResponseHolder;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException;
+import org.grails.web.util.GrailsApplicationAttributes;
+import org.grails.web.util.IncludeResponseWrapper;
+import org.grails.web.util.IncludedContent;
+import org.grails.web.util.WebUtils;
 
 /**
  * Utility methods for working with UrlMappings
@@ -56,7 +59,8 @@ import java.util.Set;
  * @author Graeme Rocher
  * @since 2.4
  */
-public class UrlMappingUtils {
+public final class UrlMappingUtils {
+
     private UrlMappingUtils() {
     }
 
@@ -64,13 +68,13 @@ public class UrlMappingUtils {
      *
      * @return a Map without entries whose key belongs to UrlMapping#KEYWORDS
      */
-    public static  Map findAllParamsNotInUrlMappingKeywords(Map params) {
+    public static Map findAllParamsNotInUrlMappingKeywords(Map params) {
         return findAllParamsNotInKeys(params, UrlMapping.KEYWORDS);
     }
 
-    public static  Map findAllParamsNotInKeys(Map params, Set keys) {
+    public static Map findAllParamsNotInKeys(Map params, Set keys) {
         Map urlParams = new HashMap<>();
-        if ( params != null && keys != null ) {
+        if (params != null && keys != null) {
             for (Object key : params.keySet()) {
                 if (!keys.contains(key)) {
                     urlParams.put(key, params.get(key));
@@ -88,7 +92,7 @@ public class UrlMappingUtils {
      */
     public static UrlMappingsHolder lookupUrlMappings(ServletContext servletContext) {
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
-        return (UrlMappingsHolder)wac.getBean(UrlMappingsHolder.BEAN_ID);
+        return (UrlMappingsHolder) wac.getBean(UrlMappingsHolder.BEAN_ID);
     }
 
     /**
@@ -128,10 +132,12 @@ public class UrlMappingUtils {
             String viewName = info.getViewName();
             if (viewName.startsWith("/")) {
                 forwardUrl.append(viewName);
-            } else {
+            }
+            else {
                 forwardUrl.append(WebUtils.SLASH).append(viewName);
             }
-        } else {
+        }
+        else {
             forwardUrl.append(WebUtils.SLASH).append(info.getControllerName());
 
             if (!GrailsStringUtils.isBlank(info.getActionName())) {
@@ -143,7 +149,8 @@ public class UrlMappingUtils {
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e) {
                 throw new ControllerExecutionException("Unable to include ");
             }
         }
@@ -163,10 +170,12 @@ public class UrlMappingUtils {
             String viewName = info.getViewName();
             if (viewName.startsWith("/")) {
                 forwardUrl.append(viewName);
-            } else {
+            }
+            else {
                 forwardUrl.append(WebUtils.SLASH).append(viewName);
             }
-        } else {
+        }
+        else {
             Map<String, Object> urlAttrs = new HashMap<>();
             urlAttrs.put("controller", info.getControllerName());
             urlAttrs.put("action", info.getActionName());
@@ -181,7 +190,8 @@ public class UrlMappingUtils {
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
-            } catch (UnsupportedEncodingException e) {
+            }
+            catch (UnsupportedEncodingException e) {
                 throw new ControllerExecutionException("Unable to include ");
             }
         }
@@ -189,7 +199,8 @@ public class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, grails.web.mapping.UrlMappingInfo, java.util.Map)
+     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * grails.web.mapping.UrlMappingInfo, java.util.Map)
      */
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info) throws ServletException, IOException {
@@ -197,7 +208,8 @@ public class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, grails.web.mapping.UrlMappingInfo, java.util.Map, boolean)
+     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * grails.web.mapping.UrlMappingInfo, java.util.Map, boolean)
      */
     @SuppressWarnings("rawtypes")
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
@@ -218,9 +230,9 @@ public class UrlMappingUtils {
      * @throws javax.servlet.ServletException Thrown when an error occurs executing the forward
      * @throws java.io.IOException Thrown when an error occurs executing the forward
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
-            HttpServletResponse response, UrlMappingInfo info, Map<String, Object> model, boolean includeParams) throws ServletException, IOException {
+    public static String forwardRequestForUrlMappingInfo(HttpServletRequest request, HttpServletResponse response,
+            UrlMappingInfo info, Map<String, Object> model, boolean includeParams)
+            throws ServletException, IOException {
 
         String forwardUrl = buildDispatchUrlForMapping(info, includeParams);
 
@@ -254,7 +266,7 @@ public class UrlMappingUtils {
      *
      * @return The included content
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model) {
 
@@ -274,9 +286,9 @@ public class UrlMappingUtils {
      *
      * @return The included content
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
-           HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
+            HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
 
         final String includeUrl = buildDispatchUrlForMapping(info, true, linkGenerator);
 
@@ -284,7 +296,8 @@ public class UrlMappingUtils {
     }
 
     private static IncludedContent includeForUrlMappingInfoHelper(String includeUrl, HttpServletRequest request,
-                                           HttpServletResponse response, UrlMappingInfo info, Map model) {
+            HttpServletResponse response, UrlMappingInfo info, Map model) {
+
         final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
 
         String currentController = null;
@@ -295,23 +308,26 @@ public class UrlMappingUtils {
         Map currentParams = null;
         Object currentLayoutAttribute = null;
         Object currentRenderingView = null;
+
         if (webRequest != null) {
             currentPageBinding = (Binding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, 0);
             webRequest.removeAttribute(GrailsApplicationAttributes.PAGE_SCOPE, 0);
+
             currentLayoutAttribute = webRequest.getAttribute(WebUtils.LAYOUT_ATTRIBUTE, 0);
             if (currentLayoutAttribute != null) {
                 webRequest.removeAttribute(WebUtils.LAYOUT_ATTRIBUTE, 0);
             }
+
             currentRenderingView = webRequest.getAttribute(WebUtils.RENDERING_VIEW, 0);
             if (currentRenderingView != null) {
                 webRequest.removeAttribute(WebUtils.RENDERING_VIEW, 0);
             }
+
             currentController = webRequest.getControllerName();
             currentAction = webRequest.getActionName();
             currentId = webRequest.getId();
-            currentParams = new HashMap();
-            currentParams.putAll(webRequest.getParameterMap());
-            currentMv = (ModelAndView)webRequest.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0);
+            currentParams = new HashMap(webRequest.getParameterMap());
+            currentMv = (ModelAndView) webRequest.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0);
         }
         try {
             if (webRequest != null) {
@@ -323,10 +339,9 @@ public class UrlMappingUtils {
             return includeForUrl(includeUrl, request, response, model);
         }
         finally {
-            if (webRequest!=null) {
+            if (webRequest != null) {
                 if (webRequest.isActive()) {
-
-                    webRequest.setAttribute(GrailsApplicationAttributes.PAGE_SCOPE,currentPageBinding, 0);
+                    webRequest.setAttribute(GrailsApplicationAttributes.PAGE_SCOPE, currentPageBinding, 0);
                     if (currentLayoutAttribute != null) {
                         webRequest.setAttribute(WebUtils.LAYOUT_ATTRIBUTE, currentLayoutAttribute, 0);
                     }
@@ -341,7 +356,8 @@ public class UrlMappingUtils {
                     if (currentMv != null) {
                         webRequest.setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, currentMv, 0);
                     }
-                } else {
+                }
+                else {
                     RequestContextHolder.setRequestAttributes(null);
                 }
             }
@@ -370,8 +386,10 @@ public class UrlMappingUtils {
 
         final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
         final boolean hasPreviousWebRequest = webRequest != null;
-        final Object previousControllerClass = hasPreviousWebRequest ? webRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST) : null;
-        final Object previousMatchedRequest = hasPreviousWebRequest ? webRequest.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST) : null;
+        final Object previousControllerClass = hasPreviousWebRequest ?
+                webRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST) : null;
+        final Object previousMatchedRequest = hasPreviousWebRequest ?
+                webRequest.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST) : null;
 
         try {
             if (hasPreviousWebRequest) {
@@ -379,12 +397,13 @@ public class UrlMappingUtils {
                 webRequest.removeAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST);
                 webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, WebRequest.SCOPE_REQUEST);
             }
+
             final IncludeResponseWrapper responseWrapper = new IncludeResponseWrapper(response);
             try {
                 WrappedResponseHolder.setWrappedResponse(responseWrapper);
                 WebUtils.clearGrailsWebRequest();
                 dispatcher.include(request, responseWrapper);
-                if (responseWrapper.getRedirectURL()!=null) {
+                if (responseWrapper.getRedirectURL() != null) {
                     return new IncludedContent(responseWrapper.getRedirectURL());
                 }
                 return new IncludedContent(responseWrapper.getContentType(), responseWrapper.getContent());
@@ -393,8 +412,9 @@ public class UrlMappingUtils {
                 if (hasPreviousWebRequest) {
                     WebUtils.storeGrailsWebRequest(webRequest);
                     if (webRequest.isActive()) {
-                        webRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, previousControllerClass,WebRequest.SCOPE_REQUEST);
-                        webRequest.setAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST,previousMatchedRequest, WebRequest.SCOPE_REQUEST);
+                        webRequest.setAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, previousControllerClass,
+                                WebRequest.SCOPE_REQUEST);
+                        webRequest.setAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, previousMatchedRequest, WebRequest.SCOPE_REQUEST);
                     }
                 }
 
@@ -408,4 +428,5 @@ public class UrlMappingUtils {
             WebUtils.cleanupIncludeRequestAttributes(request, toRestore);
         }
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,9 @@
  */
 package grails.web.servlet.context;
 
-import grails.spring.BeanBuilder;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import grails.core.GrailsApplication;
-import grails.web.servlet.context.support.GrailsEnvironment;
-import org.grails.spring.GrailsApplicationContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -41,6 +36,12 @@ import org.springframework.web.context.support.ServletContextResourcePatternReso
 import org.springframework.web.context.support.StandardServletEnvironment;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import grails.core.GrailsApplication;
+import grails.spring.BeanBuilder;
+import grails.web.servlet.context.support.GrailsEnvironment;
+
+import org.grails.spring.GrailsApplicationContext;
+
 /**
  * A WebApplicationContext that extends StaticApplicationContext to allow for programmatic
  * configuration at runtime. The code is adapted from StaticWebApplicationContext.
@@ -52,9 +53,13 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
         implements ConfigurableWebApplicationContext, ThemeSource {
 
     private ServletContext servletContext;
+
     private String namespace;
+
     private ServletConfig servletConfig;
+
     private String[] configLocations = new String[0];
+
     private GrailsApplication grailsApplication;
 
     public GrailsWebApplicationContext() throws BeansException {
@@ -88,7 +93,8 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
         super(defaultListableBeanFactory, parent);
     }
 
-    public GrailsWebApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory, ApplicationContext parent, GrailsApplication grailsApplication) {
+    public GrailsWebApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory,
+            ApplicationContext parent, GrailsApplication grailsApplication) {
         super(defaultListableBeanFactory, parent);
         this.grailsApplication = grailsApplication;
     }
@@ -100,20 +106,21 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     private GrailsApplication getGrailsApplication() {
-        if(grailsApplication==null) {
+        if (this.grailsApplication == null) {
             ApplicationContext parent = getParent();
             if (parent != null) {
-                if(parent instanceof GrailsWebApplicationContext) {
-                    grailsApplication = ((GrailsWebApplicationContext)parent).getGrailsApplication();
-                } else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
-                    grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+                if (parent instanceof GrailsWebApplicationContext) {
+                    this.grailsApplication = ((GrailsWebApplicationContext) parent).getGrailsApplication();
+                }
+                else if (parent.containsBean(GrailsApplication.APPLICATION_ID)) {
+                    this.grailsApplication = parent.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
                 }
             }
-            if (grailsApplication == null && containsBean(GrailsApplication.APPLICATION_ID)) {
-                grailsApplication = getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+            if (this.grailsApplication == null && containsBean(GrailsApplication.APPLICATION_ID)) {
+                this.grailsApplication = getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
             }
         }
-        return grailsApplication;
+        return this.grailsApplication;
     }
 
     /**
@@ -124,7 +131,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public ServletContext getServletContext() {
-        return servletContext;
+        return this.servletContext;
     }
 
     public void setNamespace(String namespace) {
@@ -135,12 +142,12 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public String getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     public void setConfigLocation(String configLocation) {
         Assert.notNull(configLocation, "Argument [configLocation] cannot be null");
-        configLocations = new String[] { configLocation };
+        this.configLocations = new String[] { configLocation };
     }
 
     public void setConfigLocations(String[] configLocations) {
@@ -149,7 +156,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public String[] getConfigLocations() {
-        return configLocations;
+        return this.configLocations;
     }
 
     /**
@@ -158,9 +165,9 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
      */
     @Override
     protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-        beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(servletContext));
+        beanFactory.addBeanPostProcessor(new ServletContextAwareProcessor(this.servletContext));
         beanFactory.ignoreDependencyInterface(ServletContextAware.class);
-        beanFactory.registerResolvableDependency(ServletContext.class, servletContext);
+        beanFactory.registerResolvableDependency(ServletContext.class, this.servletContext);
 
         WebApplicationContextUtils.registerWebApplicationScopes(beanFactory);
     }
@@ -171,7 +178,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
      */
     @Override
     protected Resource getResourceByPath(String path) {
-        return new ServletContextResource(servletContext, path);
+        return new ServletContextResource(this.servletContext, path);
     }
 
     /**
@@ -185,9 +192,9 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
 
     @Override
     protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-        if (configLocations.length > 0) {
-            for (String configLocation : configLocations) {
-                BeanBuilder beanBuilder = new BeanBuilder(getParent(),getClassLoader());
+        if (this.configLocations.length > 0) {
+            for (String configLocation : this.configLocations) {
+                BeanBuilder beanBuilder = new BeanBuilder(getParent(), getClassLoader());
                 final ServletContextResource resource = new ServletContextResource(getServletContext(), configLocation);
                 beanBuilder.loadBeans(resource);
                 beanBuilder.registerBeans(this);
@@ -201,7 +208,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
     }
 
     public ServletConfig getServletConfig() {
-        return servletConfig;
+        return this.servletConfig;
     }
 
     @Override
@@ -217,4 +224,5 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
                 "ConfigurableWebApplication environment must be of type ConfigurableWebEnvironment");
         return (ConfigurableWebEnvironment) env;
     }
+
 }

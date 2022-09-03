@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,17 @@
  */
 package org.grails.build.logging;
 
-import grails.build.logging.GrailsConsole;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildListener;
+
+import grails.build.logging.GrailsConsole;
 
 /**
  * Mainly silences a lot of redundant Ant output.
  */
 public class GrailsConsoleBuildListener implements BuildListener {
 
-    private GrailsConsole ui;
+    private final GrailsConsole ui;
 
     public GrailsConsoleBuildListener() {
         this(GrailsConsole.getInstance());
@@ -105,7 +106,7 @@ public class GrailsConsoleBuildListener implements BuildListener {
      * @see BuildEvent#getException()
      */
     public final void taskFinished(final BuildEvent finish) {
-        ui.indicateProgress();
+        this.ui.indicateProgress();
     }
 
     /** <p>When a message is sent to this logger, Ant calls this method.</p>
@@ -118,4 +119,5 @@ public class GrailsConsoleBuildListener implements BuildListener {
     public void messageLogged(final BuildEvent event) {
         // empty
     }
+
 }

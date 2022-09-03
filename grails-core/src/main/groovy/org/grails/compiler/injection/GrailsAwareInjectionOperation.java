@@ -1,11 +1,11 @@
 /*
- * Copyright 2006-2007 Graeme Rocher
+ * Copyright 2006-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,22 @@
  */
 package org.grails.compiler.injection;
 
-import grails.compiler.ast.AstTransformer;
-import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GlobalClassInjector;
-import groovy.lang.GroovyResourceLoader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
-import org.grails.io.support.FileSystemResource;
-import org.grails.io.support.PathMatchingResourcePatternResolver;
-import org.grails.io.support.Resource;
 import org.springframework.asm.AnnotationVisitor;
 import org.springframework.asm.ClassReader;
 import org.springframework.asm.ClassVisitor;
@@ -34,10 +38,13 @@ import org.springframework.asm.Opcodes;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.ClassUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
+import grails.compiler.ast.AstTransformer;
+import grails.compiler.ast.ClassInjector;
+import grails.compiler.ast.GlobalClassInjector;
+
+import org.grails.io.support.FileSystemResource;
+import org.grails.io.support.PathMatchingResourcePatternResolver;
+import org.grails.io.support.Resource;
 
 /**
  * A Groovy compiler injection operation that uses a specified array of
@@ -49,10 +56,13 @@ import java.util.*;
 public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassNodeOperation {
 
     private static final String INJECTOR_SCAN_PACKAGE = "org.grails.compiler";
+
     private static final String INJECTOR_CODEHAUS_SCAN_PACKAGE = "org.codehaus.groovy.grails.compiler";
 
     private static ClassInjector[] classInjectors;
+
     private static ClassInjector[] globalClassInjectors;
+
     private ClassInjector[] localClassInjectors;
 
     public GrailsAwareInjectionOperation() {
@@ -61,9 +71,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
 
     public GrailsAwareInjectionOperation(ClassInjector[] classInjectors) {
         this();
-        localClassInjectors = classInjectors;
+        this.localClassInjectors = classInjectors;
     }
-
 
     public static ClassInjector[] getClassInjectors() {
         if (classInjectors == null) {
@@ -80,17 +89,16 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
     }
 
     public ClassInjector[] getLocalClassInjectors() {
-        if (localClassInjectors == null) {
+        if (this.localClassInjectors == null) {
             return getClassInjectors();
         }
-        return localClassInjectors;
+        return this.localClassInjectors;
     }
 
     private static void initializeState() {
         if (classInjectors != null) {
             return;
         }
-
 
         String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
                 ClassUtils.convertClassNameToResourcePath(INJECTOR_CODEHAUS_SCAN_PACKAGE) + "/**/*.class";
@@ -103,86 +111,72 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         Resource[] resources;
         try {
             resources = scanForPatterns(resolver, pattern2, pattern);
-            if(resources.length == 0) {
+            if (resources.length == 0) {
                 classLoader = Thread.currentThread().getContextClassLoader();
                 resolver = new PathMatchingResourcePatternResolver(classLoader);
                 resources = scanForPatterns(resolver, pattern2, pattern);
             }
-            final List<ClassInjector> injectors = new ArrayList<ClassInjector>();
-            final List<ClassInjector> globalInjectors = new ArrayList<ClassInjector>();
-            final Set<Class> injectorClasses = new HashSet<Class>();
+            final List<ClassInjector> injectors = new ArrayList<>();
+            final List<ClassInjector> globalInjectors = new ArrayList<>();
+            final Set<Class> injectorClasses = new HashSet<>();
             for (Resource resource : resources) {
                 // ignore not readable classes and closures
-                if(!resource.isReadable() || resource.getFilename().contains("$_")) continue;
-                InputStream inputStream = resource.getInputStream();
-                try {
+                if (!resource.isReadable() || resource.getFilename().contains("$_")) {
+                    continue;
+                }
 
+                try(InputStream inputStream = resource.getInputStream()) {
                     final ClassReader classReader = new ClassReader(inputStream);
                     final String astTransformerClassName = AstTransformer.class.getSimpleName();
                     final ClassLoader finalClassLoader = classLoader;
+
                     classReader.accept(new ClassVisitor(Opcodes.ASM4) {
                         @Override
                         public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
                             try {
-                                if(visible && desc.contains(astTransformerClassName)) {
+                                if (visible && desc.contains(astTransformerClassName)) {
                                     Class<?> injectorClass = finalClassLoader.loadClass(classReader.getClassName().replace('/', '.'));
-                                    if(injectorClasses.contains(injectorClass)) return super.visitAnnotation(desc, true);
+                                    if (injectorClasses.contains(injectorClass)) {
+                                        return super.visitAnnotation(desc, true);
+                                    }
                                     if (ClassInjector.class.isAssignableFrom(injectorClass)) {
 
                                         injectorClasses.add(injectorClass);
                                         ClassInjector classInjector = (ClassInjector) injectorClass.newInstance();
                                         injectors.add(classInjector);
-                                        if(GlobalClassInjector.class.isAssignableFrom(injectorClass)) {
+                                        if (GlobalClassInjector.class.isAssignableFrom(injectorClass)) {
                                             globalInjectors.add(classInjector);
                                         }
                                     }
                                 }
-                            } catch (ClassNotFoundException e) {
-                                // ignore
-                            } catch (InstantiationException e) {
-                                // ignore
-                            } catch (IllegalAccessException e) {
-                                // ignore
+                            }
+                            catch (ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {
                             }
                             return super.visitAnnotation(desc, visible);
                         }
                     }, ClassReader.SKIP_CODE);
-
-                } catch (IOException e) {
-                    // ignore
-                } catch(NoClassDefFoundError e) {
-                    // ignore
                 }
-                finally {
-                    inputStream.close();
-                }
-
-
             }
-            Collections.sort(injectors, new Comparator<ClassInjector>() {
-                @SuppressWarnings({ "unchecked", "rawtypes" })
-                public int compare(ClassInjector classInjectorA, ClassInjector classInjectorB) {
-                    if (classInjectorA instanceof Comparable) {
-                        return ((Comparable)classInjectorA).compareTo(classInjectorB);
-                    }
-                    return 0;
+
+            Collections.sort(injectors, (classInjectorA, classInjectorB) -> {
+                if (classInjectorA instanceof Comparable) {
+                    return ((Comparable) classInjectorA).compareTo(classInjectorB);
                 }
+                return 0;
             });
-            classInjectors = injectors.toArray(new ClassInjector[injectors.size()]);
-            globalClassInjectors = globalInjectors.toArray(new ClassInjector[globalInjectors.size()]);
-        } catch (IOException e) {
-            // ignore
+            classInjectors = injectors.toArray(new ClassInjector[0]);
+            globalClassInjectors = globalInjectors.toArray(new ClassInjector[0]);
         }
-
-
+        catch (IOException ignored) {
+        }
     }
 
-    private static Resource[] scanForPatterns(PathMatchingResourcePatternResolver resolver, String...patterns) throws IOException {
-        List<Resource> results = new ArrayList<Resource>();
-        for(String pattern : patterns) {
-            results.addAll( Arrays.asList(resolver.getResources(pattern)) );
+    private static Resource[] scanForPatterns(PathMatchingResourcePatternResolver resolver, String... patterns) throws IOException {
+        List<Resource> results = new ArrayList<>();
+        for (String pattern : patterns) {
+            results.addAll(Arrays.asList(resolver.getResources(pattern)));
         }
-        return results.toArray(new Resource[results.size()]);
+        return results.toArray(new Resource[0]);
     }
 
     @Override
@@ -194,8 +188,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         if (resource.exists()) {
             try {
                 url = resource.getURL();
-            } catch (IOException e) {
-                // ignore
+            }
+            catch (IOException ignored) {
             }
         }
 
@@ -209,4 +203,5 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
             }
         }
     }
+
 }

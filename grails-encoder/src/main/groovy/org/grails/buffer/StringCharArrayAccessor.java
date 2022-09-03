@@ -1,11 +1,11 @@
 /*
- * Copyright 2009 the original author or authors.
+ * Copyright 2009-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,12 +36,16 @@ import java.lang.reflect.Field;
  * @author Lari Hotari, Sagire Software Oy
  *
  */
-public class StringCharArrayAccessor {
+public final class StringCharArrayAccessor {
+
     static volatile boolean enabled = Boolean.getBoolean("stringchararrayaccessor.disabled");
+
     static volatile boolean jdk7_string = false;
 
     static Field valueField;
+
     static Field countField;
+
     static Field offsetField;
 
     static {
@@ -85,10 +89,10 @@ public class StringCharArrayAccessor {
      * @param  str
      *         A String
      *
-     * @throws  IOException
+     * @throws IOException
      *          If an I/O error occurs
      */
-    static public void writeStringAsCharArray(Writer writer, String str) throws IOException {
+    public static void writeStringAsCharArray(Writer writer, String str) throws IOException {
         writeStringAsCharArray(writer, str, 0, str.length());
     }
 
@@ -107,20 +111,20 @@ public class StringCharArrayAccessor {
      * @param  len
      *         Number of characters to write
      *
-     * @throws  IOException
+     * @throws IOException
      *          If an I/O error occurs
      */
-    static public void writeStringAsCharArray(Writer writer, String str, int off, int len) throws IOException {
+    public static void writeStringAsCharArray(Writer writer, String str, int off, int len) throws IOException {
         if (!enabled) {
             writeStringFallback(writer, str, off, len);
             return;
         }
 
         char[] value;
-        int internalOffset=0;
+        int internalOffset = 0;
         try {
-            value = (char[])valueField.get(str);
-            if(!jdk7_string) {
+            value = (char[]) valueField.get(str);
+            if (!jdk7_string) {
                 internalOffset = offsetField.getInt(str);
             }
         }
@@ -144,15 +148,15 @@ public class StringCharArrayAccessor {
         char[] value = null;
         int internalOffset = 0;
         try {
-            value = (char[])valueField.get(str);
-            if(!jdk7_string) {
+            value = (char[]) valueField.get(str);
+            if (!jdk7_string) {
                 internalOffset = offsetField.getInt(str);
             }
         }
         catch (Exception e) {
             handleError(e);
         }
-        if (value != null && internalOffset==0) {
+        if (value != null && internalOffset == 0) {
             return value;
         }
 
@@ -177,15 +181,16 @@ public class StringCharArrayAccessor {
 
         String str = new String();
         try {
-            // try to prevent possible final field setting execution reordering in JIT (JSR-133/JMM, "9.1.1 Post-Construction Modification of Final Fields")
+            // try to prevent possible final field setting execution reordering
+            // in JIT (JSR-133/JMM, "9.1.1 Post-Construction Modification of Final Fields")
             // it was a bit unclear for me if this could ever happen in a single thread
-            synchronized(str) {
+            synchronized (str) {
                 valueField.set(str, charBuf);
-                if(!jdk7_string) {
+                if (!jdk7_string) {
                     countField.set(str, charBuf.length);
                 }
             }
-            synchronized(str) {
+            synchronized (str) {
                 // safety check, just to be sure that setting the final fields went ok
                 if (str.length() != charBuf.length) {
                     throw new IllegalStateException("Fast java.lang.String construction failed.");
@@ -210,7 +215,8 @@ public class StringCharArrayAccessor {
         offsetField = null;
     }
 
-    static public boolean isEnabled() {
+    public static boolean isEnabled() {
         return enabled;
     }
+
 }

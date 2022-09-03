@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +40,7 @@ import jline.UnsupportedTerminal;
 public class GrailsEclipseConsole extends GrailsConsole {
 
     private static final boolean DEBUG = boolProp("grails.console.eclipse.debug");
+
     private static final String ECLIPSE_SUPPORTS_ANSI_PROP = "grails.console.eclipse.ansi";
 
     private Boolean eclipseSupportsAnsi = null; //lazy initialized because implicitly used from super constructor.
@@ -58,8 +59,9 @@ public class GrailsEclipseConsole extends GrailsConsole {
     protected OutputStream ansiWrap(OutputStream out) {
         if (DEBUG) {
             try {
-                out.write(("<<<"+ECLIPSE_SUPPORTS_ANSI_PROP+":"+eclipseSupportsAnsi()+">>>\n").getBytes("UTF-8"));
-            } catch (IOException e) {
+                out.write(("<<<" + ECLIPSE_SUPPORTS_ANSI_PROP + ":" + eclipseSupportsAnsi() + ">>>\n").getBytes("UTF-8"));
+            }
+            catch (IOException ignored) {
             }
         }
         //This method is called from the super constructor so eclipseSupportsAnsi field
@@ -71,17 +73,18 @@ public class GrailsEclipseConsole extends GrailsConsole {
     }
 
     private boolean eclipseSupportsAnsi() {
-        if (eclipseSupportsAnsi == null) {
-            eclipseSupportsAnsi = boolProp(ECLIPSE_SUPPORTS_ANSI_PROP);
+        if (this.eclipseSupportsAnsi == null) {
+            this.eclipseSupportsAnsi = boolProp(ECLIPSE_SUPPORTS_ANSI_PROP);
         }
-        return eclipseSupportsAnsi;
+        return this.eclipseSupportsAnsi;
     }
 
     private static Boolean boolProp(String propName) {
         try {
-            String prop =  System.getProperty(propName);
-            return prop != null && Boolean.valueOf(prop);
-        } catch (Exception e) {
+            String prop = System.getProperty(propName);
+            return Boolean.parseBoolean(prop);
+        }
+        catch (Exception e) {
             return false;
         }
     }

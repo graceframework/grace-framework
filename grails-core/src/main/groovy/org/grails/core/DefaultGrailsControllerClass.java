@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,25 +15,25 @@
  */
 package org.grails.core;
 
-import grails.config.Settings;
-import grails.core.GrailsApplication;
-import grails.core.GrailsControllerClass;
-import grails.util.Environment;
-import grails.util.GrailsClassUtils;
-import grails.web.Action;
-import grails.web.UrlConverter;
-import groovy.lang.GroovyObject;
-import org.grails.core.exceptions.GrailsConfigurationException;
-import org.springframework.cglib.reflect.FastClass;
-import org.springframework.cglib.reflect.FastMethod;
-import org.springframework.util.ReflectionUtils;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import groovy.lang.GroovyObject;
+import org.springframework.util.ReflectionUtils;
+
+import grails.config.Settings;
+import grails.core.GrailsApplication;
+import grails.core.GrailsControllerClass;
+import grails.util.Environment;
+import grails.web.Action;
+import grails.web.UrlConverter;
 
 /**
  * Evaluates the conventions contained within controllers to perform auto-configuration.
@@ -48,24 +48,33 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
     public static final String CONTROLLER = "Controller";
 
     private static final String DEFAULT_CLOSURE_PROPERTY = "defaultAction";
+
     public static final String ALLOWED_HTTP_METHODS_PROPERTY = "allowedMethods";
+
     public static final Object[] EMPTY_ARGS = new Object[0];
+
     public static final String SCOPE = "scope";
+
     public static final String SCOPE_SINGLETON = "singleton";
+
     private String scope;
-    private Map<String, ActionInvoker> actions = new HashMap<String, ActionInvoker>();
+
+    private final Map<String, ActionInvoker> actions = new HashMap<>();
+
     private String defaultActionName;
-    private String namespace;
-    protected Map<String, String> actionUriToViewName = new HashMap<String, String>();
-    
+
+    private final String namespace;
+
+    protected final Map<String, String> actionUriToViewName = new HashMap<>();
+
     public DefaultGrailsControllerClass(Class<?> clazz) {
         super(clazz, CONTROLLER);
-        namespace = getStaticPropertyValue(NAMESPACE_PROPERTY, String.class);
-        defaultActionName = getStaticPropertyValue(DEFAULT_CLOSURE_PROPERTY, String.class);
-        if (defaultActionName == null) {
-            defaultActionName = INDEX_ACTION;
+        this.namespace = getStaticPropertyValue(NAMESPACE_PROPERTY, String.class);
+        this.defaultActionName = getStaticPropertyValue(DEFAULT_CLOSURE_PROPERTY, String.class);
+        if (this.defaultActionName == null) {
+            this.defaultActionName = INDEX_ACTION;
         }
-        methodStrategy(actions);
+        methodStrategy(this.actions);
         this.scope = getStaticPropertyValue(SCOPE, String.class);
     }
 
@@ -83,16 +92,16 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
 
     @Override
     public Set<String> getActions() {
-        return actions.keySet();
+        return this.actions.keySet();
     }
 
     public String getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     @Override
     public String getScope() {
-        return scope;
+        return this.scope;
     }
 
     @Override
@@ -106,14 +115,13 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
     }
 
     private void methodStrategy(Map<String, ActionInvoker> methodNames) {
-
         Class superClass = getClazz();
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         while (superClass != Object.class && superClass != GroovyObject.class) {
             for (Method method : superClass.getMethods()) {
                 if (Modifier.isPublic(method.getModifiers()) && method.getAnnotation(Action.class) != null) {
                     String methodName = method.getName();
-                    if(Environment.isDevelopmentMode()) {
+                    if (Environment.isDevelopmentMode()) {
                         methodNames.put(methodName, new ReflectionInvoker(method));
                     }
                     else {
@@ -121,7 +129,8 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
                         try {
                             mh = lookup.findVirtual(superClass, methodName, MethodType.methodType(method.getReturnType()));
                             methodNames.put(methodName, new MethodHandleInvoker(mh));
-                        } catch (NoSuchMethodException | IllegalAccessException e) {
+                        }
+                        catch (NoSuchMethodException | IllegalAccessException e) {
                             methodNames.put(methodName, new ReflectionInvoker(method));
                         }
                     }
@@ -131,21 +140,21 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
             superClass = superClass.getSuperclass();
         }
 
-        if (!isActionMethod(defaultActionName) && methodNames.size() == 1 && !isReadableProperty("scaffold")) {
-            defaultActionName = methodNames.keySet().iterator().next();
+        if (!isActionMethod(this.defaultActionName) && methodNames.size() == 1 && !isReadableProperty("scaffold")) {
+            this.defaultActionName = methodNames.keySet().iterator().next();
         }
     }
 
     @Override
     public boolean mapsToURI(String uri) {
-        if(uri.startsWith("/")) {
+        if (uri.startsWith("/")) {
             String[] tokens = uri.substring(1).split("\\/");
-            if(tokens.length>0) {
+            if (tokens.length > 0) {
                 String controllerName = tokens[0];
-                if(getLogicalPropertyName().equals(controllerName)) {
-                    if(tokens.length>1) {
+                if (getLogicalPropertyName().equals(controllerName)) {
+                    if (tokens.length > 1) {
                         String actionName = tokens[1];
-                        if(actions.containsKey(actionName) || defaultActionName.equals(actionName)) {
+                        if (this.actions.containsKey(actionName) || this.defaultActionName.equals(actionName)) {
                             return true;
                         }
                     }
@@ -165,11 +174,11 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
      */
     @Override
     public void registerUrlConverter(UrlConverter urlConverter) {
-        for (String actionName : new ArrayList<String>(actions.keySet())) {
-            actionUriToViewName.put(urlConverter.toUrlElement(actionName), actionName);
-            actions.put( urlConverter.toUrlElement(actionName), actions.remove(actionName));
+        for (String actionName : new ArrayList<>(this.actions.keySet())) {
+            this.actionUriToViewName.put(urlConverter.toUrlElement(actionName), actionName);
+            this.actions.put(urlConverter.toUrlElement(actionName), this.actions.remove(actionName));
         }
-        defaultActionName = urlConverter.toUrlElement(defaultActionName);
+        this.defaultActionName = urlConverter.toUrlElement(this.defaultActionName);
     }
 
     /**
@@ -182,45 +191,57 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
      */
     @Override
     public Object invoke(Object controller, String action) throws Throwable {
-        if(action == null) action = this.defaultActionName;
-        ActionInvoker handle = actions.get(action);
-        if(handle == null) throw new IllegalArgumentException("Invalid action name: " + action);
+        if (action == null) {
+            action = this.defaultActionName;
+        }
+        ActionInvoker handle = this.actions.get(action);
+        if (handle == null) {
+            throw new IllegalArgumentException("Invalid action name: " + action);
+        }
         return handle.invoke(controller);
     }
 
     public String actionUriToViewName(String actionUri) {
-        String actionName = actionUriToViewName.get(actionUri);
+        String actionName = this.actionUriToViewName.get(actionUri);
 
         return actionName != null ? actionName : actionUri;
     }
 
     private interface ActionInvoker {
+
         Object invoke(Object controller) throws Throwable;
+
     }
 
     private class ReflectionInvoker implements ActionInvoker {
+
         private final Method method;
 
-        public ReflectionInvoker(Method method) {
+        ReflectionInvoker(Method method) {
             this.method = method;
             ReflectionUtils.makeAccessible(method);
         }
 
         @Override
         public Object invoke(Object controller) throws Throwable {
-            return method.invoke(controller);
+            return this.method.invoke(controller);
         }
+
     }
+
     private class MethodHandleInvoker implements ActionInvoker {
+
         private final MethodHandle handle;
 
-        public MethodHandleInvoker(MethodHandle handle) {
+        MethodHandleInvoker(MethodHandle handle) {
             this.handle = handle;
         }
 
         @Override
-        public Object invoke(Object controller) throws Throwable{
-            return handle.invoke(controller);
+        public Object invoke(Object controller) throws Throwable {
+            return this.handle.invoke(controller);
         }
+
     }
+
 }

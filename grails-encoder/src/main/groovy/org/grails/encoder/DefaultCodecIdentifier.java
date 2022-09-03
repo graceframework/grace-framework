@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,15 +27,17 @@ import java.util.Set;
  * @since 2.3
  */
 public class DefaultCodecIdentifier implements CodecIdentifier {
-    final private String codecName;
-    final private Set<String> codecAliases;
+
+    private final String codecName;
+
+    private final Set<String> codecAliases;
 
     public DefaultCodecIdentifier(String codecName) {
-        this(codecName, (Set<String>)null);
+        this(codecName, (Set<String>) null);
     }
 
     public DefaultCodecIdentifier(String codecName, String... codecAliases) {
-        this(codecName, codecAliases != null ? new HashSet<String>(Arrays.asList(codecAliases)) : null);
+        this(codecName, codecAliases != null ? new HashSet<>(Arrays.asList(codecAliases)) : null);
     }
 
     public DefaultCodecIdentifier(String codecName, Set<String> codecAliases) {
@@ -47,14 +49,14 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
      * @see CodecIdentifier#getCodecName()
      */
     public String getCodecName() {
-        return codecName;
+        return this.codecName;
     }
 
     /* (non-Javadoc)
      * @see CodecIdentifier#getCodecAliases()
      */
     public Set<String> getCodecAliases() {
-        return codecAliases;
+        return this.codecAliases;
     }
 
     /* (non-Javadoc)
@@ -64,8 +66,8 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((codecAliases == null) ? 0 : codecAliases.hashCode());
-        result = prime * result + ((codecName == null) ? 0 : codecName.hashCode());
+        result = prime * result + ((this.codecAliases == null) ? 0 : this.codecAliases.hashCode());
+        result = prime * result + ((this.codecName == null) ? 0 : this.codecName.hashCode());
         return result;
     }
 
@@ -74,25 +76,32 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        DefaultCodecIdentifier other = (DefaultCodecIdentifier)obj;
-        if (codecAliases == null) {
-            if (other.codecAliases != null)
-                return false;
         }
-        else if (!codecAliases.equals(other.codecAliases))
+        if (obj == null) {
             return false;
-        if (codecName == null) {
-            if (other.codecName != null)
-                return false;
         }
-        else if (!codecName.equals(other.codecName))
+        if (getClass() != obj.getClass()) {
             return false;
+        }
+        DefaultCodecIdentifier other = (DefaultCodecIdentifier) obj;
+        if (this.codecAliases == null) {
+            if (other.codecAliases != null) {
+                return false;
+            }
+        }
+        else if (!this.codecAliases.equals(other.codecAliases)) {
+            return false;
+        }
+        if (this.codecName == null) {
+            if (other.codecName != null) {
+                return false;
+            }
+        }
+        else if (!this.codecName.equals(other.codecName)) {
+            return false;
+        }
         return true;
     }
 
@@ -102,7 +111,7 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
      */
     @Override
     public String toString() {
-        return "DefaultCodecIdentifier [codecName=" + codecName + ", codecAliases=" + codecAliases + "]";
+        return "DefaultCodecIdentifier [codecName=" + this.codecName + ", codecAliases=" + this.codecAliases + "]";
     }
 
     /* (non-Javadoc)
@@ -120,4 +129,5 @@ public class DefaultCodecIdentifier implements CodecIdentifier {
         }
         return false;
     }
+
 }

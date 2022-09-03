@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,23 @@
  */
 package org.grails.compiler.logging;
 
-import grails.compiler.ast.AllArtefactClassInjector;
-import grails.compiler.ast.AstTransformer;
+import java.lang.reflect.Modifier;
+import java.net.URL;
+
 import groovy.lang.GroovyClassLoader;
 import groovy.util.logging.Slf4j;
-import org.codehaus.groovy.ast.*;
+import org.codehaus.groovy.ast.ASTNode;
+import org.codehaus.groovy.ast.AnnotationNode;
+import org.codehaus.groovy.ast.ClassHelper;
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.LogASTTransformation;
 
-import java.lang.reflect.Modifier;
-import java.net.URL;
+import grails.compiler.ast.AllArtefactClassInjector;
+import grails.compiler.ast.AstTransformer;
 
 /**
  * Adds a log field to all artifacts.
@@ -35,7 +40,7 @@ import java.net.URL;
  * @since 2.0
  */
 @AstTransformer
-public class LoggingTransformer implements AllArtefactClassInjector{
+public class LoggingTransformer implements AllArtefactClassInjector {
 
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
@@ -49,19 +54,21 @@ public class LoggingTransformer implements AllArtefactClassInjector{
 
     @Override
     public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        if( classNode.getNodeMetaData(Slf4j.class) != null) return;
+        if (classNode.getNodeMetaData(Slf4j.class) != null) {
+            return;
+        }
         String packageName = Slf4j.class.getPackage().getName();
 
         // if already annotated skip
         for (AnnotationNode annotationNode : classNode.getAnnotations()) {
-            if(annotationNode.getClassNode().getPackageName().equals(packageName)) {
+            if (annotationNode.getClassNode().getPackageName().equals(packageName)) {
                 return;
             }
         }
 
         FieldNode logField = classNode.getField("log");
-        if(logField != null) {
-            if(!Modifier.isPrivate(logField.getModifiers())) {
+        if (logField != null) {
+            if (!Modifier.isPrivate(logField.getModifiers())) {
                 return;
             }
         }
@@ -72,12 +79,13 @@ public class LoggingTransformer implements AllArtefactClassInjector{
 
         AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Slf4j.class));
         LogASTTransformation logASTTransformation = new LogASTTransformation();
-        logASTTransformation.setCompilationUnit( new CompilationUnit(new GroovyClassLoader(getClass().getClassLoader())) );
-        logASTTransformation.visit(new ASTNode[]{ annotationNode, classNode}, source);
+        logASTTransformation.setCompilationUnit(new CompilationUnit(new GroovyClassLoader(getClass().getClassLoader())));
+        logASTTransformation.visit(new ASTNode[] { annotationNode, classNode }, source);
         classNode.putNodeMetaData(Slf4j.class, annotationNode);
     }
 
     public boolean shouldInject(URL url) {
         return true; // Add log property to all artifact types
     }
+
 }

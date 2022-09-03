@@ -29,7 +29,8 @@ import org.grails.io.support.GrailsResourceUtils
  * @since 3.0
  */
 @CompileStatic
-class ResourceUtils extends GrailsResourceUtils {
+@Deprecated
+class ResourceUtils {
 
     /**
      * Obtains the package names for the project. Works at development time only, do not use at runtime.

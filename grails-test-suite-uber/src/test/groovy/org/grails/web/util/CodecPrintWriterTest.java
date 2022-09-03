@@ -149,7 +149,7 @@ public class CodecPrintWriterTest {
 @SuppressWarnings({ "rawtypes", "unchecked" })
 class MockGrailsApplication implements GrailsApplication {
 
-    private Map<String, DefaultGrailsCodecClass> mockCodecArtefacts = new HashMap<String, DefaultGrailsCodecClass>();
+    private Map<String, DefaultGrailsCodecClass> mockCodecArtefacts = new HashMap<>();
 
     MockGrailsApplication() {
         DefaultGrailsCodecClass htmlCodec = new DefaultGrailsCodecClass(HTMLCodec.class);

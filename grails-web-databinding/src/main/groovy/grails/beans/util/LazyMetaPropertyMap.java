@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,31 +15,42 @@
  */
 package grails.beans.util;
 
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaBeanProperty;
 import groovy.lang.MetaClass;
 import groovy.lang.MetaProperty;
 import groovy.transform.CompileStatic;
 import groovy.util.MapEntry;
-import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.datastore.mapping.reflect.NameUtils;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.Modifier;
-import java.util.*;
+import org.grails.datastore.mapping.model.config.GormProperties;
+import org.grails.datastore.mapping.reflect.NameUtils;
 
 /**
  * A map implementation that reads an objects properties lazily using Groovy's MetaClass.
  *
  * @author Graeme Rocher
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @CompileStatic
 public class LazyMetaPropertyMap implements Map {
 
-    private MetaClass metaClass;
-    private Object instance;
-    private static List<String> EXCLUDES = Arrays.asList("class", "constraints", "hasMany", "mapping", "properties", GormProperties.IDENTITY, GormProperties.VERSION, "domainClass", "dirty", GormProperties.ERRORS, "dirtyPropertyNames");
+    private final MetaClass metaClass;
+
+    private final Object instance;
+
+    private static final List<String> EXCLUDES = Arrays.asList("class", "constraints", "hasMany", "mapping", "properties",
+            GormProperties.IDENTITY, GormProperties.VERSION, "domainClass", "dirty", GormProperties.ERRORS, "dirtyPropertyNames");
 
     /**
      * Constructs the map
@@ -48,14 +59,15 @@ public class LazyMetaPropertyMap implements Map {
     public LazyMetaPropertyMap(Object o) {
         Assert.notNull(o, "Object cannot be null");
 
-        instance = o;
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(o.getClass());
+        this.instance = o;
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(o.getClass());
     }
 
     /**
      * {@inheritDoc}
      * @see java.util.Map#size()
      */
+    @Override
     public int size() {
         return keySet().size();
     }
@@ -64,20 +76,24 @@ public class LazyMetaPropertyMap implements Map {
      * {@inheritDoc}
      * @see java.util.Map#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
-        return false; // will never be empty
+        return false;
     }
 
     /**
      * {@inheritDoc}
      * @see java.util.Map#containsKey(java.lang.Object)
      */
+    @Override
     public boolean containsKey(Object propertyName) {
-        if (propertyName instanceof CharSequence) propertyName = propertyName.toString();
+        if (propertyName instanceof CharSequence) {
+            propertyName = propertyName.toString();
+        }
         Assert.isInstanceOf(String.class, propertyName, "This map implementation only supports String based keys!");
 
         String pn = propertyName.toString();
-        return !NameUtils.isConfigurational(pn) && metaClass.getMetaProperty(pn) != null;
+        return !NameUtils.isConfigurational(pn) && this.metaClass.getMetaProperty(pn) != null;
     }
 
     /**
@@ -104,7 +120,7 @@ public class LazyMetaPropertyMap implements Map {
 
         if (propertyName instanceof List) {
             Map submap = new HashMap();
-            List propertyNames = (List)propertyName;
+            List propertyNames = (List) propertyName;
             for (Object currentName : propertyNames) {
                 if (currentName != null) {
                     currentName = currentName.toString();
@@ -121,9 +137,9 @@ public class LazyMetaPropertyMap implements Map {
         }
 
         Object val = null;
-        MetaProperty mp = metaClass.getMetaProperty(propertyName.toString());
+        MetaProperty mp = this.metaClass.getMetaProperty(propertyName.toString());
         if (mp != null) {
-            val = mp.getProperty(instance);
+            val = mp.getProperty(this.instance);
         }
         return val;
     }
@@ -134,13 +150,13 @@ public class LazyMetaPropertyMap implements Map {
         }
 
         Object old = null;
-        MetaProperty mp = metaClass.getMetaProperty((String)propertyName);
+        MetaProperty mp = this.metaClass.getMetaProperty((String) propertyName);
         if (mp != null && !isExcluded(mp)) {
-            old = mp.getProperty(instance);
+            old = mp.getProperty(this.instance);
             if (propertyValue instanceof Map) {
-                propertyValue = ((Map)propertyValue).get(propertyName);
+                propertyValue = ((Map) propertyValue).get(propertyName);
             }
-            mp.setProperty(instance, propertyValue);
+            mp.setProperty(this.instance, propertyValue);
         }
         return old;
     }
@@ -167,8 +183,10 @@ public class LazyMetaPropertyMap implements Map {
 
     public Set<String> keySet() {
         Set<String> names = new HashSet<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
+        for (MetaProperty mp : this.metaClass.getProperties()) {
+            if (isExcluded(mp)) {
+                continue;
+            }
             names.add(mp.getName());
         }
         return names;
@@ -176,23 +194,25 @@ public class LazyMetaPropertyMap implements Map {
 
     public Collection<Object> values() {
         Collection<Object> values = new ArrayList<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
-            values.add(mp.getProperty(instance));
+        for (MetaProperty mp : this.metaClass.getProperties()) {
+            if (isExcluded(mp)) {
+                continue;
+            }
+            values.add(mp.getProperty(this.instance));
         }
         return values;
     }
 
     @Override
     public int hashCode() {
-        return instance.hashCode();
+        return this.instance.hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof LazyMetaPropertyMap) {
-            LazyMetaPropertyMap other = (LazyMetaPropertyMap)o;
-            return instance.equals(other.getInstance());
+            LazyMetaPropertyMap other = (LazyMetaPropertyMap) o;
+            return this.instance.equals(other.getInstance());
         }
         return false;
     }
@@ -203,15 +223,17 @@ public class LazyMetaPropertyMap implements Map {
      * @return The wrapped instance
      */
     public Object getInstance() {
-        return instance;
+        return this.instance;
     }
 
     public Set<MapEntry> entrySet() {
         Set<MapEntry> entries = new HashSet<>();
-        for (MetaProperty mp : metaClass.getProperties()) {
-            if (isExcluded(mp)) continue;
+        for (MetaProperty mp : this.metaClass.getProperties()) {
+            if (isExcluded(mp)) {
+                continue;
+            }
 
-            entries.add(new MapEntry(mp.getName(), mp.getProperty(instance)));
+            entries.add(new MapEntry(mp.getName(), mp.getProperty(this.instance)));
         }
         return entries;
     }
@@ -223,4 +245,5 @@ public class LazyMetaPropertyMap implements Map {
                         NameUtils.isConfigurational(mp.getName()) ||
                         (mp instanceof MetaBeanProperty) && (((MetaBeanProperty) mp).getGetter()) == null;
     }
+
 }

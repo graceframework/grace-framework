@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 SpringSource
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,13 @@
  */
 package org.grails.core.io;
 
-import org.grails.io.support.Resource;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+
+import org.grails.io.support.Resource;
 
 /**
  * Bridges Grails and Spring Resource APIs
@@ -29,7 +29,8 @@ import java.net.URL;
  * @author Graeme Rocher
  * @since 2.2
  */
-public class SpringResource implements Resource{
+public class SpringResource implements Resource {
+
     org.springframework.core.io.Resource springResource;
 
     public SpringResource(org.springframework.core.io.Resource springResource) {
@@ -37,49 +38,50 @@ public class SpringResource implements Resource{
     }
 
     public InputStream getInputStream() throws IOException {
-        return springResource.getInputStream();
+        return this.springResource.getInputStream();
     }
 
     public boolean exists() {
-        return springResource.exists();
+        return this.springResource.exists();
     }
 
     public boolean isReadable() {
-        return springResource.isReadable();
+        return this.springResource.isReadable();
     }
 
     public URL getURL() throws IOException {
-        return springResource.getURL();
+        return this.springResource.getURL();
     }
 
     public URI getURI() throws IOException {
-        return springResource.getURI();
+        return this.springResource.getURI();
     }
 
     public File getFile() throws IOException {
-        return springResource.getFile();
+        return this.springResource.getFile();
     }
 
     public long contentLength() throws IOException {
-        return springResource.contentLength();
+        return this.springResource.contentLength();
     }
 
     public long lastModified() throws IOException {
-        return springResource.lastModified();
+        return this.springResource.lastModified();
     }
 
     public String getFilename() {
-        return springResource.getFilename();
+        return this.springResource.getFilename();
     }
 
     public String getDescription() {
-        return springResource.getDescription();
+        return this.springResource.getDescription();
     }
 
     public Resource createRelative(String relativePath) {
         try {
-            return new SpringResource(springResource.createRelative(relativePath));
-        } catch (IOException e) {
+            return new SpringResource(this.springResource.createRelative(relativePath));
+        }
+        catch (IOException e) {
             return null;
         }
     }

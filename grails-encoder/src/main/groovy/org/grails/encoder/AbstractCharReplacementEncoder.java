@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,6 @@ import java.io.Writer;
 import java.util.List;
 
 import org.grails.charsequences.CharSequences;
-import org.grails.encoder.CodecIdentifier;
-import org.grails.encoder.EncodedAppender;
-import org.grails.encoder.Encoder;
-import org.grails.encoder.EncodesToWriter;
-import org.grails.encoder.EncodesToWriterAdapter;
-import org.grails.encoder.EncodingState;
-import org.grails.encoder.StreamingEncoder;
 
 /**
  * Abstract base class for implementing encoders that do character replacements
@@ -37,7 +30,8 @@ import org.grails.encoder.StreamingEncoder;
  * @since 2.3
  */
 public abstract class AbstractCharReplacementEncoder implements Encoder, StreamingEncoder, EncodesToWriter {
-    protected CodecIdentifier codecIdentifier;
+
+    protected final CodecIdentifier codecIdentifier;
 
     public AbstractCharReplacementEncoder(CodecIdentifier codecIdentifier) {
         this.codecIdentifier = codecIdentifier;
@@ -64,12 +58,12 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             return null;
         }
 
-        CharSequence str = null;
+        CharSequence str;
         if (o instanceof CharSequence) {
-            str = (CharSequence)o;
+            str = (CharSequence) o;
         }
         else if (o instanceof Character) {
-            String escaped = escapeCharacter((Character)o, (char)0);
+            String escaped = escapeCharacter((Character) o, (char) 0);
             if (escaped != null) {
                 return escaped;
             }
@@ -94,10 +88,11 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         }
 
         StringBuilder sb = null;
-        int n = str.length(), i;
+        int n = str.length();
+        int i = 0;
         int startPos = -1;
-        char prevChar = (char)0;
-        for (i = 0; i < n; i++) {
+        char prevChar = (char) 0;
+        for (; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
                 startPos = i;
@@ -118,7 +113,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             prevChar = ch;
         }
         if (sb != null) {
-            if (startPos > -1 && i - startPos > 0) {
+            if (startPos > -1) {
                 sb.append(str, startPos, i);
             }
             return sb.toString();
@@ -127,7 +122,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             return str;
         }
     }
-    
+
     @Override
     public void encodeToWriter(CharSequence str, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (str == null || len <= 0) {
@@ -136,7 +131,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(str.length(), off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
@@ -154,11 +149,11 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             CharSequences.writeCharSequence(writer, str, startPos, i);
         }
     }
-    
+
     @Override
     public void encodeToWriter(char[] buf, int off, int len, Writer writer, EncodingState encodingState) throws IOException {
         if (buf == null || len <= 0) {
@@ -167,7 +162,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(buf.length, off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = buf[i];
             if (startPos == -1) {
@@ -185,11 +180,11 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             writer.write(buf, startPos, i - startPos);
         }
     }
-    
+
     @Override
     public EncodesToWriter createChainingEncodesToWriter(List<StreamingEncoder> encoders, boolean applyAdditionalFirst) {
         return EncodesToWriterAdapter.createChainingEncodesToWriter(this, encoders, applyAdditionalFirst);
@@ -206,7 +201,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
         int n = Math.min(str.length(), off + len);
         int i;
         int startPos = -1;
-        char prevChar = (char)0;
+        char prevChar = (char) 0;
         for (i = off; i < n; i++) {
             char ch = str.charAt(i);
             if (startPos == -1) {
@@ -224,7 +219,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
             }
             prevChar = ch;
         }
-        if (startPos > -1 && i - startPos > 0) {
+        if (startPos > -1) {
             appender.appendEncoded(thisInstance, encodingState, str, startPos, i - startPos);
         }
     }
@@ -254,6 +249,7 @@ public abstract class AbstractCharReplacementEncoder implements Encoder, Streami
      * @see CodecIdentifierProvider#getCodecIdentifier()
      */
     public CodecIdentifier getCodecIdentifier() {
-        return codecIdentifier;
+        return this.codecIdentifier;
     }
+
 }

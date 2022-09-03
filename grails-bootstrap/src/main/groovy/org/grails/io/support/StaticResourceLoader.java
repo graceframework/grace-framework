@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,6 @@
  */
 package org.grails.io.support;
 
-
 /**
  * Loads relative to a static base resource
  *
@@ -24,18 +23,19 @@ package org.grails.io.support;
  */
 public class StaticResourceLoader implements ResourceLoader {
 
-    private Resource baseResource;
+    private final Resource baseResource;
 
     public StaticResourceLoader(Resource baseResource) {
         this.baseResource = baseResource;
     }
 
     public Resource getResource(String location) {
-        return baseResource.createRelative(location);
+        return this.baseResource.createRelative(location);
     }
 
     public ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
+
 }
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package grails.util;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
 
 import groovy.lang.AdaptingMetaClass;
 import groovy.lang.Closure;
@@ -26,10 +29,6 @@ import groovy.lang.MetaClass;
 import groovy.lang.MetaClassRegistry;
 import groovy.lang.MetaMethod;
 import groovy.lang.MetaProperty;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.runtime.metaclass.ThreadManagedMetaBeanProperty;
@@ -41,11 +40,16 @@ import org.springframework.beans.BeanUtils;
  * @author Graeme Rocher
  * @since 0.5
  */
-public class GrailsMetaClassUtils {
+public final class GrailsMetaClassUtils {
 
     private static final int MAX_DELEGATE_LEVELS = 10;
-    private static final Log LOG = LogFactory.getLog(GrailsMetaClassUtils.class);
+
+    private static final Log logger = LogFactory.getLog(GrailsMetaClassUtils.class);
+
     private static final Object[] NO_ARGS = new Object[0];
+
+    private GrailsMetaClassUtils() {
+    }
 
     /**
      * Retrieves the MetaClassRegistry instance.
@@ -63,21 +67,19 @@ public class GrailsMetaClassUtils {
      * @param toClass  The destination class
      * @param removeSource Whether to remove the source class after completion. True if yes
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void copyExpandoMetaClass(Class<?> fromClass, Class<?> toClass, boolean removeSource) {
-
         MetaClassRegistry registry = getRegistry();
-
         MetaClass oldMetaClass = registry.getMetaClass(fromClass);
 
         AdaptingMetaClass adapter = null;
         ExpandoMetaClass emc;
 
         if (oldMetaClass instanceof AdaptingMetaClass) {
-            adapter = ((AdaptingMetaClass)oldMetaClass);
-            emc = (ExpandoMetaClass)adapter.getAdaptee();
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Obtained adapted MetaClass ["+emc+"] from AdapterMetaClass instance ["+adapter+"]");
+            adapter = ((AdaptingMetaClass) oldMetaClass);
+            emc = (ExpandoMetaClass) adapter.getAdaptee();
+            if (logger.isDebugEnabled()) {
+                logger.debug("Obtained adapted MetaClass [" + emc + "] from AdapterMetaClass instance [" + adapter + "]");
             }
 
             if (removeSource) {
@@ -85,9 +87,9 @@ public class GrailsMetaClassUtils {
             }
         }
         else {
-            emc = (ExpandoMetaClass)oldMetaClass;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No adapter MetaClass found, using original ["+emc+"]");
+            emc = (ExpandoMetaClass) oldMetaClass;
+            if (logger.isDebugEnabled()) {
+                logger.debug("No adapter MetaClass found, using original [" + emc + "]");
             }
         }
 
@@ -101,38 +103,38 @@ public class GrailsMetaClassUtils {
                     replacement.setProperty(cim.getName(), callable);
                 }
                 else {
-                    ((GroovyObject)replacement.getProperty(ExpandoMetaClass.STATIC_QUALIFIER)).setProperty(cim.getName(),callable);
+                    ((GroovyObject) replacement.getProperty(ExpandoMetaClass.STATIC_QUALIFIER)).setProperty(cim.getName(), callable);
                 }
             }
         }
 
         for (Object o : emc.getExpandoProperties()) {
             if (o instanceof ThreadManagedMetaBeanProperty) {
-                ThreadManagedMetaBeanProperty mbp = (ThreadManagedMetaBeanProperty)o;
+                ThreadManagedMetaBeanProperty mbp = (ThreadManagedMetaBeanProperty) o;
                 replacement.setProperty(mbp.getName(), mbp.getInitialValue());
             }
         }
         replacement.initialize();
 
         if (adapter == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Adding MetaClass for class ["+toClass+"] MetaClass ["+replacement+"]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement + "]");
             }
             registry.setMetaClass(toClass, replacement);
         }
         else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement +
+            if (logger.isDebugEnabled()) {
+                logger.debug("Adding MetaClass for class [" + toClass + "] MetaClass [" + replacement +
                         "] with adapter [" + adapter + "]");
             }
             try {
-                Constructor c = adapter.getClass().getConstructor(new Class[]{MetaClass.class});
-                MetaClass newAdapter = (MetaClass) BeanUtils.instantiateClass(c,new Object[]{replacement});
-                registry.setMetaClass(toClass,newAdapter);
+                Constructor c = adapter.getClass().getConstructor(new Class[] { MetaClass.class });
+                MetaClass newAdapter = (MetaClass) BeanUtils.instantiateClass(c, new Object[] {replacement});
+                registry.setMetaClass(toClass, newAdapter);
             }
             catch (NoSuchMethodException e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Exception thrown constructing new MetaClass adapter when reloading: " + e.getMessage(),e);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Exception thrown constructing new MetaClass adapter when reloading: " + e.getMessage(), e);
                 }
             }
         }
@@ -140,8 +142,8 @@ public class GrailsMetaClassUtils {
 
     public static ExpandoMetaClass getExpandoMetaClass(Class<?> aClass) {
         MetaClassRegistry registry = getRegistry();
-
         MetaClass mc = registry.getMetaClass(aClass);
+
         if (mc instanceof ExpandoMetaClass) {
             ExpandoMetaClass emc = (ExpandoMetaClass) mc;
             registry.setMetaClass(aClass, emc); // make permanent
@@ -149,9 +151,10 @@ public class GrailsMetaClassUtils {
         }
 
         registry.removeMetaClass(aClass);
+
         mc = registry.getMetaClass(aClass);
         if (mc instanceof ExpandoMetaClass) {
-            return (ExpandoMetaClass)mc;
+            return (ExpandoMetaClass) mc;
         }
 
         ExpandoMetaClass emc = new ExpandoMetaClass(aClass, true, true);
@@ -164,9 +167,8 @@ public class GrailsMetaClassUtils {
         if (instance instanceof GroovyObject) {
             GroovyObject groovyObject = (GroovyObject) instance;
             MetaClass metaClass = groovyObject.getMetaClass();
-            
             metaClass = unwrapDelegatingMetaClass(metaClass);
-            
+
             if (!(metaClass instanceof ExpandoMetaClass)) {
                 metaClass = getExpandoMetaClass(instance.getClass());
                 groovyObject.setMetaClass(metaClass);
@@ -178,9 +180,9 @@ public class GrailsMetaClassUtils {
     }
 
     private static MetaClass unwrapDelegatingMetaClass(MetaClass metaClass) {
-        int counter=0;
-        while(metaClass instanceof DelegatingMetaClass && counter++ < MAX_DELEGATE_LEVELS) {
-            metaClass = ((DelegatingMetaClass)metaClass).getAdaptee();
+        int counter = 0;
+        while (metaClass instanceof DelegatingMetaClass && counter++ < MAX_DELEGATE_LEVELS) {
+            metaClass = ((DelegatingMetaClass) metaClass).getAdaptee();
         }
         return metaClass;
     }
@@ -207,8 +209,8 @@ public class GrailsMetaClassUtils {
     @SuppressWarnings("unchecked")
     public static <T> T getPropertyIfExists(Object instance, String property, Class<T> requiredType) {
         MetaClass metaClass = getMetaClass(instance);
-
         MetaProperty metaProperty = metaClass.getMetaProperty(property);
+
         if (metaProperty != null) {
             Object value = metaProperty.getProperty(instance);
             if (value != null && requiredType.isInstance(value)) {
@@ -246,4 +248,5 @@ public class GrailsMetaClassUtils {
         }
         return null;
     }
+
 }

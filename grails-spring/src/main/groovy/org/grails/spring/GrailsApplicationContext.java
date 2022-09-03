@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@ package org.grails.spring;
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
@@ -43,56 +42,61 @@ import org.springframework.ui.context.support.UiApplicationContextUtils;
 public class GrailsApplicationContext extends GenericApplicationContext implements GroovyObject {
 
     protected MetaClass metaClass;
-    private BeanWrapper ctxBean = new BeanWrapperImpl(this);
+
+    private final BeanWrapper ctxBean = new BeanWrapperImpl(this);
+
     private ThemeSource themeSource;
+
     private static final String GRAILS_ENVIRONMENT_BEAN_NAME = "springEnvironment";
 
     public GrailsApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory) {
         super(defaultListableBeanFactory);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext(DefaultListableBeanFactory defaultListableBeanFactory, ApplicationContext applicationContext) {
         super(defaultListableBeanFactory, applicationContext);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext(org.springframework.context.ApplicationContext parent) throws org.springframework.beans.BeansException {
         super(parent);
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     public GrailsApplicationContext() throws org.springframework.beans.BeansException {
-        metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
+        this.metaClass = GroovySystem.getMetaClassRegistry().getMetaClass(getClass());
     }
 
     @Override
     public boolean containsBeanDefinition(String beanName) {
-        if(super.containsBeanDefinition(beanName)) {
+        if (super.containsBeanDefinition(beanName)) {
             return true;
-        } else if (getParent() != null && "grailsApplication".equals(beanName)) {
+        }
+        else if (getParent() != null && "grailsApplication".equals(beanName)) {
             return getParent().containsBeanDefinition(beanName);
-        } else {
+        }
+        else {
             return false;
         }
     }
 
     public MetaClass getMetaClass() {
-        return metaClass;
+        return this.metaClass;
     }
 
     public Object getProperty(String property) {
         if (containsBean(property)) {
             return getBean(property);
         }
-        if (ctxBean.isReadableProperty(property)) {
-            return ctxBean.getPropertyValue(property);
+        if (this.ctxBean.isReadableProperty(property)) {
+            return this.ctxBean.getPropertyValue(property);
         }
         return null;
     }
 
     public Object invokeMethod(String name, Object args) {
-        return metaClass.invokeMethod(this, name, args);
+        return this.metaClass.invokeMethod(this, name, args);
     }
 
     public void setMetaClass(MetaClass metaClass) {
@@ -104,11 +108,11 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
      */
     @Override
     protected void onRefresh() {
-        themeSource = UiApplicationContextUtils.initThemeSource(this);
+        this.themeSource = UiApplicationContextUtils.initThemeSource(this);
     }
 
     public Theme getTheme(String themeName) {
-        return themeSource.getTheme(themeName);
+        return this.themeSource.getTheme(themeName);
     }
 
     public void setProperty(String property, Object newValue) {
@@ -117,10 +121,10 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
                 removeBeanDefinition(property);
             }
 
-            registerBeanDefinition(property, (BeanDefinition)newValue);
+            registerBeanDefinition(property, (BeanDefinition) newValue);
         }
         else {
-            metaClass.setProperty(this, property, newValue);
+            this.metaClass.setProperty(this, property, newValue);
         }
     }
 
@@ -177,12 +181,13 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
         super.prepareBeanFactory(beanFactory);
 
         // workaround for GRAILS-7851, until Spring allows the environment bean name to be configurable
-        ((DefaultListableBeanFactory)beanFactory).destroySingleton(ENVIRONMENT_BEAN_NAME);
-        beanFactory.registerSingleton(GRAILS_ENVIRONMENT_BEAN_NAME,getEnvironment());
+        ((DefaultListableBeanFactory) beanFactory).destroySingleton(ENVIRONMENT_BEAN_NAME);
+        beanFactory.registerSingleton(GRAILS_ENVIRONMENT_BEAN_NAME, getEnvironment());
     }
 
     @Override
     protected void assertBeanFactoryActive() {
         // no-op to prevent excessive synchronization caused by SPR-10307 change
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,10 @@
  */
 package org.grails.web.pages;
 
+import groovy.lang.GroovyObject;
+
 import grails.util.GrailsNameUtils;
 import grails.web.pages.GroovyPagesUriService;
-import groovy.lang.GroovyObject;
 
 import org.grails.buffer.FastStringWriter;
 import org.grails.core.artefact.ControllerArtefactHandler;
@@ -32,13 +33,21 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
 public class GroovyPagesUriSupport implements GroovyPagesUriService {
 
     public static final String PATH_TO_VIEWS = "/WEB-INF/grails-app/views";
+
     private static final char SLASH = '/';
+
     private static final String SLASH_STR = "/";
+
     private static final String SLASH_UNDR = "/_";
+
     private static final String BLANK = "";
+
     private static final String UNDERSCORE = "_";
-    protected static final String EXTENSION = ".gsp";    
+
+    protected static final String EXTENSION = ".gsp";
+
     protected static final String SUFFIX = ".gsp";
+
     public static final String RELATIVE_STRING = "../";
 
     /**
@@ -48,12 +57,12 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
      * @return The template URI
      */
     public String getTemplateURI(GroovyObject controller, String templateName) {
-        return getTemplateURI(getLogicalControllerName(controller),templateName);
+        return getTemplateURI(getLogicalControllerName(controller), templateName);
     }
 
     @Override
     public String getTemplateURI(GroovyObject controller, String templateName, boolean includeExtension) {
-        return getTemplateURI(getLogicalControllerName(controller),templateName, includeExtension);
+        return getTemplateURI(getLogicalControllerName(controller), templateName, includeExtension);
     }
 
     public void clear() {
@@ -81,13 +90,13 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     public String getLogicalControllerName(GroovyObject controller) {
-        if(controller == null) {
+        if (controller == null) {
             GrailsWebRequest webRequest = GrailsWebRequest.lookup();
             return webRequest != null ? webRequest.getControllerName() : null;
         }
         else {
             String simpleName = controller.getClass().getSimpleName();
-            if(!simpleName.endsWith(ControllerArtefactHandler.TYPE)) {
+            if (!simpleName.endsWith(ControllerArtefactHandler.TYPE)) {
                 GrailsWebRequest webRequest = GrailsWebRequest.lookup();
                 return webRequest != null ? webRequest.getControllerName() : null;
             }
@@ -106,6 +115,7 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     public String getTemplateURI(String controllerName, String templateName) {
         return getTemplateURI(controllerName, templateName, true);
     }
+
     /**
      * Obtains the URI to a template using the controller name and template name
      * @param controllerName The controller name
@@ -118,32 +128,33 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         if (templateName.startsWith(SLASH_STR)) {
             return getAbsoluteTemplateURI(templateName, includeExtension);
         }
-        else if(templateName.startsWith(RELATIVE_STRING)) {
+        else if (templateName.startsWith(RELATIVE_STRING)) {
             return getRelativeTemplateURIInternal(templateName, includeExtension);
         }
 
-        FastStringWriter buf = new FastStringWriter();
-        String pathToTemplate = BLANK;
+        try (FastStringWriter buf = new FastStringWriter()) {
+            String pathToTemplate = BLANK;
 
-        int lastSlash = templateName.lastIndexOf(SLASH);
-        if (lastSlash > -1) {
-            pathToTemplate = templateName.substring(0, lastSlash + 1);
-            templateName = templateName.substring(lastSlash + 1);
-        }
-        if(controllerName != null) {
+            int lastSlash = templateName.lastIndexOf(SLASH);
+            if (lastSlash > -1) {
+                pathToTemplate = templateName.substring(0, lastSlash + 1);
+                templateName = templateName.substring(lastSlash + 1);
+            }
+            if (controllerName != null) {
+                buf.append(SLASH)
+                        .append(controllerName);
+            }
             buf.append(SLASH)
-                    .append(controllerName);
-        }
-        buf.append(SLASH)
-                .append(pathToTemplate)
-                .append(UNDERSCORE)
-                .append(templateName);
+                    .append(pathToTemplate)
+                    .append(UNDERSCORE)
+                    .append(templateName);
 
-        if(includeExtension) {
-            return buf.append(EXTENSION).toString();
-        }
-        else {
-            return buf.toString();
+            if (includeExtension) {
+                return buf.append(EXTENSION).toString();
+            }
+            else {
+                return buf.toString();
+            }
         }
     }
 
@@ -156,17 +167,17 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
      */
     public String getAbsoluteTemplateURI(String templateName, boolean includeExtension) {
         FastStringWriter buf = new FastStringWriter();
-        String tmp = templateName.substring(1,templateName.length());
+        String tmp = templateName.substring(1);
         if (tmp.indexOf(SLASH) > -1) {
             buf.append(SLASH);
             int i = tmp.lastIndexOf(SLASH);
             buf.append(tmp.substring(0, i));
             buf.append(SLASH_UNDR);
-            buf.append(tmp.substring(i + 1,tmp.length()));
+            buf.append(tmp.substring(i + 1));
         }
         else {
             buf.append(SLASH_UNDR);
-            buf.append(templateName.substring(1,templateName.length()));
+            buf.append(templateName.substring(1));
         }
         if (includeExtension) {
             buf.append(EXTENSION);
@@ -175,7 +186,6 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
         buf.close();
         return uri;
     }
-
 
     /**
      * Obtains a view URI of the given controller name and view name
@@ -234,10 +244,10 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     private String getViewURIInternal(String viewPathPrefix, String viewName, FastStringWriter buf, boolean includeSuffix) {
-        if (viewName != null && (viewName.startsWith(SLASH_STR) )) {
+        if (viewName != null && viewName.startsWith(SLASH_STR)) {
             return getAbsoluteViewURIInternal(viewName, buf, includeSuffix);
         }
-        else if(viewName.startsWith(RELATIVE_STRING)) {
+        else if (viewName != null && viewName.startsWith(RELATIVE_STRING)) {
             return getRelativeViewURIInternal(viewName, buf, includeSuffix);
         }
 
@@ -252,25 +262,25 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     private String getRelativeViewURIInternal(String viewName, FastStringWriter buf, boolean includeSuffix) {
-        String tmp = viewName.substring(RELATIVE_STRING.length() - 1, viewName.length());
+        String tmp = viewName.substring(RELATIVE_STRING.length() - 1);
         buf.append(tmp);
-        if(includeSuffix) {
+        if (includeSuffix) {
             buf.append(SUFFIX);
         }
         return buf.toString();
     }
 
     private String getAbsoluteViewURIInternal(String viewName, FastStringWriter buf, boolean includeSuffix) {
-        String tmp = viewName.substring(1,viewName.length());
+        String tmp = viewName.substring(1);
         if (tmp.indexOf(SLASH) > -1) {
             buf.append(SLASH);
-            buf.append(tmp.substring(0,tmp.lastIndexOf(SLASH)));
+            buf.append(tmp.substring(0, tmp.lastIndexOf(SLASH)));
             buf.append(SLASH);
-            buf.append(tmp.substring(tmp.lastIndexOf(SLASH) + 1,tmp.length()));
+            buf.append(tmp.substring(tmp.lastIndexOf(SLASH) + 1));
         }
         else {
             buf.append(SLASH);
-            buf.append(viewName.substring(1,viewName.length()));
+            buf.append(viewName.substring(1));
         }
         if (includeSuffix) {
             buf.append(SUFFIX);
@@ -279,13 +289,15 @@ public class GroovyPagesUriSupport implements GroovyPagesUriService {
     }
 
     private String getRelativeTemplateURIInternal(String templateName, boolean includeSuffix) {
-        String tmp = templateName.substring(RELATIVE_STRING.length() , templateName.length());
-        FastStringWriter buf = new FastStringWriter();
-        buf.append("/_");
-        buf.append(tmp);
-        if(includeSuffix) {
-            buf.append(SUFFIX);
+        String tmp = templateName.substring(RELATIVE_STRING.length());
+        try (FastStringWriter buf = new FastStringWriter()) {
+            buf.append("/_");
+            buf.append(tmp);
+            if (includeSuffix) {
+                buf.append(SUFFIX);
+            }
+            return buf.toString();
         }
-        return buf.toString();
     }
+
 }

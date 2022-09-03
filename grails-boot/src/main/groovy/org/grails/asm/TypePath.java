@@ -30,7 +30,6 @@
 
 package org.grails.asm;
 
-
 /**
  * The path to a type argument, wildcard bound, array element type, or static
  * inner type within an enclosing type.

@@ -44,7 +44,7 @@ class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
     }
 
     @Override
-    boolean isArtefactClass(@SuppressWarnings('rawtypes') Class clazz) {
+    boolean isArtefactClass(Class<?> clazz) {
         clazz.simpleName.endsWith('Application') &&
                 (clazz.superclass.name == 'grails.boot.config.GrailsAutoConfiguration')
     }

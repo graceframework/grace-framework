@@ -1,11 +1,11 @@
 /*
- * Copyright 2018 original authors
+ * Copyright 2018-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.config.yaml;
 
-import grails.util.Environment;
-import org.grails.config.NavigableMap;
-import org.grails.config.NavigableMapPropertySource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.config.YamlProcessor;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.Ordered;
@@ -26,9 +30,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import grails.util.Environment;
+
+import org.grails.config.NavigableMap;
+import org.grails.config.NavigableMapPropertySource;
 
 /**
  * Replacement for Spring Boot's YAML loader that uses Grails' NavigableMap.
@@ -38,6 +43,7 @@ import java.util.stream.Collectors;
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class YamlPropertySourceLoader extends YamlProcessor implements PropertySourceLoader {
+
     private static final String ENVIRONMENTS = "environments";
 
     @Override
@@ -52,9 +58,10 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
 
     public List<PropertySource<?>> load(String name, Resource resource, List<String> filteredKeys) throws IOException {
         setResources(resource);
-        setDocumentMatchers((DocumentMatcher) properties -> {
+        setDocumentMatchers(properties -> {
             final String profile = properties.getProperty("spring.profiles");
-            return profile == null || profile.equalsIgnoreCase(System.getProperty("spring.profiles.active")) ? MatchStatus.FOUND : MatchStatus.NOT_FOUND;
+            return profile == null || profile.equalsIgnoreCase(System.getProperty("spring.profiles.active")) ?
+                    MatchStatus.FOUND : MatchStatus.NOT_FOUND;
         });
         List<Map<String, Object>> loaded = load();
         if (loaded.isEmpty()) {
@@ -83,15 +90,15 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
             propertySource.merge(map, true);
         });
         propertySources.add(
-                new NavigableMapPropertySource(name ,propertySource));
+                new NavigableMapPropertySource(name, propertySource));
 
         return propertySources;
     }
-
 
     public List<Map<String, Object>> load() {
         final List<Map<String, Object>> result = new ArrayList<>();
         process((properties, map) -> result.add(getFlattenedMap(map)));
         return result;
     }
+
 }

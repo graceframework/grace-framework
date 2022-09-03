@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.databinding.compiler;
 
 import java.util.Map;
@@ -16,29 +31,30 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 public class BindingFormatASTTransformation implements ASTTransformation {
 
-	@Override
-	public void visit(final ASTNode[] astNodes, final SourceUnit source) {
-		if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof FieldNode)) {
-			throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
-		}
+    @Override
+    public void visit(final ASTNode[] astNodes, final SourceUnit source) {
+        if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof FieldNode)) {
+            throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
+        }
 
-		final AnnotationNode annotationNode = (AnnotationNode) astNodes[0];
-		final FieldNode fieldNode = (FieldNode) astNodes[1];
-		final Map<String, Expression> members = annotationNode.getMembers();
-		if(members == null || (!members.containsKey("code") && !members.containsKey("value"))) {
-			final String message = "The @BindingFormat annotation on the field ["
-					+ fieldNode.getName() +
-					"] in class [" +
-					fieldNode.getDeclaringClass().getName() +
-					"] must provide a value for either the value() or code() attribute.";
-			
-			error(source, fieldNode, message);
-		}
-	}
-	
-	protected void error(final SourceUnit sourceUnit, final ASTNode astNode, final String message) {
-		final SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber());
-		final SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit);
-		sourceUnit.getErrorCollector().addError(syntaxErrorMessage, false);
-	}
+        final AnnotationNode annotationNode = (AnnotationNode) astNodes[0];
+        final FieldNode fieldNode = (FieldNode) astNodes[1];
+        final Map<String, Expression> members = annotationNode.getMembers();
+        if (members == null || (!members.containsKey("code") && !members.containsKey("value"))) {
+            final String message = "The @BindingFormat annotation on the field ["
+                    + fieldNode.getName() +
+                    "] in class [" +
+                    fieldNode.getDeclaringClass().getName() +
+                    "] must provide a value for either the value() or code() attribute.";
+
+            error(source, fieldNode, message);
+        }
+    }
+
+    protected void error(final SourceUnit sourceUnit, final ASTNode astNode, final String message) {
+        final SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber());
+        final SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit);
+        sourceUnit.getErrorCollector().addError(syntaxErrorMessage, false);
+    }
+
 }

@@ -1,10 +1,11 @@
-/* Copyright 2014 the original author or authors.
+/*
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +15,8 @@
  */
 package org.grails.core;
 
-import grails.config.Config;
-import grails.core.ArtefactHandler;
-import grails.core.GrailsApplication;
-import grails.core.support.GrailsConfigurationAware;
-import grails.util.Environment;
-import grails.util.Holders;
-import grails.util.Metadata;
 import groovy.lang.GroovyObjectSupport;
 import groovy.util.ConfigObject;
-import org.grails.config.PropertySourcesConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.context.ApplicationContext;
@@ -35,12 +28,27 @@ import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 
-public abstract class AbstractGrailsApplication extends GroovyObjectSupport implements GrailsApplication, ApplicationContextAware, BeanClassLoaderAware, SmartApplicationListener {
+import grails.config.Config;
+import grails.core.ArtefactHandler;
+import grails.core.GrailsApplication;
+import grails.core.support.GrailsConfigurationAware;
+import grails.util.Environment;
+import grails.util.Holders;
+import grails.util.Metadata;
+
+import org.grails.config.PropertySourcesConfig;
+
+public abstract class AbstractGrailsApplication extends GroovyObjectSupport
+        implements GrailsApplication, ApplicationContextAware, BeanClassLoaderAware, SmartApplicationListener {
+
     protected ClassLoader classLoader;
+
     protected Config config;
-    @SuppressWarnings("rawtypes")
+
     protected ApplicationContext parentContext;
-    protected Metadata applicationMeta = Metadata.getCurrent();
+
+    protected final Metadata applicationMeta = Metadata.getCurrent();
+
     protected boolean contextInitialized;
 
     @Override
@@ -53,7 +61,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
 
     @Override
     public Metadata getMetadata() {
-        return applicationMeta;
+        return this.applicationMeta;
     }
 
     @Override
@@ -62,7 +70,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
     }
 
     public Config getConfig() {
-        return config;
+        return this.config;
     }
 
     public void setConfig(Config config) {
@@ -81,7 +89,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
         if (handlers != null) {
             for (ArtefactHandler handler : handlers) {
                 if (handler instanceof GrailsConfigurationAware) {
-                    ((GrailsConfigurationAware) handler).setConfiguration(config);
+                    ((GrailsConfigurationAware) handler).setConfiguration(this.config);
                 }
             }
         }
@@ -94,17 +102,16 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
 
     @Override
     public ClassLoader getClassLoader() {
-        return classLoader;
+        return this.classLoader;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Class getClassForName(String className) {
+    public Class<?> getClassForName(String className) {
         return ClassUtils.resolveClassName(className, getClassLoader());
     }
 
     public ApplicationContext getMainContext() {
-        return parentContext;
+        return this.parentContext;
     }
 
     public void setMainContext(ApplicationContext context) {
@@ -112,7 +119,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
     }
 
     public ApplicationContext getParentContext() {
-        return parentContext;
+        return this.parentContext;
     }
 
     @Override
@@ -136,4 +143,5 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport impl
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
     }
+
 }

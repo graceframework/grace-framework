@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,19 +15,17 @@
  */
 package org.grails.build.parsing;
 
-import grails.util.Environment;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import grails.util.Environment;
 
 /**
  * Command line parser that parses arguments to the command line. Written as a
  * replacement for Commons CLI because it doesn't support unknown arguments and
  * requires all arguments to be declared up front.
- *
  * It also doesn't support command options with hyphens. This class gets around those problems.
  *
  * @author Graeme Rocher
@@ -35,9 +33,12 @@ import java.util.StringTokenizer;
  */
 public class CommandLineParser {
 
-    static Map<String, String> ENV_ARGS = new HashMap<String, String>();
-    static Map<String, String> DEFAULT_ENVS = new HashMap<String, String>();
+    static final Map<String, String> ENV_ARGS = new HashMap<>();
+
+    static final Map<String, String> DEFAULT_ENVS = new HashMap<>();
+
     private static CommandLine CURRENT = null;
+
     private static final String DEFAULT_PADDING = "        ";
 
     static {
@@ -48,9 +49,9 @@ public class CommandLineParser {
         DEFAULT_ENVS.put("test-app", Environment.TEST.getName());
     }
 
-    private Map<String, Option> declaredOptions = new HashMap<String, Option> ();
+    private final Map<String, Option> declaredOptions = new HashMap<>();
+
     private int longestOptionNameLength = 0;
-    private String usageMessage;
 
     public static CommandLine getCurrentCommandLine() {
         return CURRENT;
@@ -64,10 +65,10 @@ public class CommandLineParser {
      */
     public void addOption(String name, String description) {
         int length = name.length();
-        if (length >longestOptionNameLength) {
-            longestOptionNameLength = length;
+        if (length > this.longestOptionNameLength) {
+            this.longestOptionNameLength = length;
         }
-        declaredOptions.put(name, new Option(name, description));
+        this.declaredOptions.put(name, new Option(name, description));
     }
 
     /**
@@ -100,7 +101,7 @@ public class CommandLineParser {
         final int inDoubleQuote = 2;
         int state = normal;
         final StringTokenizer tok = new StringTokenizer(toProcess, "\"\' ", true);
-        final ArrayList<String> result = new ArrayList<String>();
+        final ArrayList<String> result = new ArrayList<>();
         final StringBuilder current = new StringBuilder();
         boolean lastTokenHasBeenQuoted = false;
 
@@ -111,7 +112,8 @@ public class CommandLineParser {
                     if ("\'".equals(nextTok)) {
                         lastTokenHasBeenQuoted = true;
                         state = normal;
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     break;
@@ -119,21 +121,25 @@ public class CommandLineParser {
                     if ("\"".equals(nextTok)) {
                         lastTokenHasBeenQuoted = true;
                         state = normal;
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     break;
                 default:
                     if ("\'".equals(nextTok)) {
                         state = inQuote;
-                    } else if ("\"".equals(nextTok)) {
+                    }
+                    else if ("\"".equals(nextTok)) {
                         state = inDoubleQuote;
-                    } else if (" ".equals(nextTok)) {
+                    }
+                    else if (" ".equals(nextTok)) {
                         if (lastTokenHasBeenQuoted || current.length() != 0) {
                             result.add(current.toString());
                             current.setLength(0);
                         }
-                    } else {
+                    }
+                    else {
                         current.append(nextTok);
                     }
                     lastTokenHasBeenQuoted = false;
@@ -146,13 +152,13 @@ public class CommandLineParser {
         if (state == inQuote || state == inDoubleQuote) {
             throw new ParseException("unbalanced quotes in " + toProcess);
         }
-        return result.toArray(new String[result.size()]);
+        return result.toArray(new String[0]);
     }
 
-   /**
+    /**
      * Parses a string of all the command line options converting them into an array of arguments to pass to #parse(String..args)
      *
-    *  @param commandName The command name
+     *  @param commandName The command name
      * @param args The string
      * @return The command line
      */
@@ -165,6 +171,7 @@ public class CommandLineParser {
         parseInternal(cl, argArray, false);
         return cl;
     }
+
     /**
      * Parses the given list of command line arguments. Arguments starting with -D become system properties,
      * arguments starting with -- or - become either declared or undeclared options. All other arguments are
@@ -187,9 +194,11 @@ public class CommandLineParser {
         cl.setRawArguments(args);
         String lastWasOption = null;
         for (String arg : args) {
-            if (arg == null) continue;
+            if (arg == null) {
+                continue;
+            }
             String trimmed = arg.trim();
-            if (trimmed != null && trimmed.length()>0) {
+            if (trimmed.length() > 0) {
                 if (trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"') {
                     trimmed = trimmed.substring(1, trimmed.length() - 1);
                 }
@@ -197,7 +206,7 @@ public class CommandLineParser {
                     lastWasOption = processOption(cl, trimmed);
                 }
                 else {
-                    if(lastWasOption != null) {
+                    if (lastWasOption != null) {
                         cl.addUndeclaredOption(lastWasOption, trimmed);
                         lastWasOption = null;
                         continue;
@@ -206,13 +215,13 @@ public class CommandLineParser {
                         cl.setEnvironment(ENV_ARGS.get(trimmed));
                     }
                     else {
-                       if (firstArgumentIsCommand) {
-                           cl.setCommandName(trimmed);
-                           firstArgumentIsCommand = false;
-                       }
-                       else {
-                           cl.addRemainingArg(trimmed);
-                       }
+                        if (firstArgumentIsCommand) {
+                            cl.setCommandName(trimmed);
+                            firstArgumentIsCommand = false;
+                        }
+                        else {
+                            cl.addRemainingArg(trimmed);
+                        }
                     }
                 }
             }
@@ -221,12 +230,12 @@ public class CommandLineParser {
 
     public String getOptionsHelpMessage() {
         String ls = System.getProperty("line.separator");
-        usageMessage = "Available options:";
+        String usageMessage = "Available options:";
         StringBuilder sb = new StringBuilder(usageMessage);
         sb.append(ls);
-        for (Option option : declaredOptions.values()) {
+        for (Option option : this.declaredOptions.values()) {
             String name = option.getName();
-            int extraPadding = longestOptionNameLength - name.length();
+            int extraPadding = this.longestOptionNameLength - name.length();
             sb.append(" -").append(name);
             for (int i = 0; i < extraPadding; i++) {
                 sb.append(' ');
@@ -253,15 +262,15 @@ public class CommandLineParser {
             return null;
         }
 
-        arg = (arg.charAt(1) == '-' ? arg.substring(2, arg.length()) : arg.substring(1, arg.length())).trim();
+        arg = (arg.charAt(1) == '-' ? arg.substring(2) : arg.substring(1)).trim();
 
         if (arg.contains("=")) {
             String[] split = arg.split("=");
             String name = split[0].trim();
             validateOptionName(name);
             String value = split[1].trim();
-            if (declaredOptions.containsKey(name)) {
-                cl.addDeclaredOption(name, declaredOptions.get(name), value);
+            if (this.declaredOptions.containsKey(name)) {
+                cl.addDeclaredOption(name, this.declaredOptions.get(name), value);
             }
             else {
                 cl.addUndeclaredOption(name, value);
@@ -270,8 +279,8 @@ public class CommandLineParser {
         }
 
         validateOptionName(arg);
-        if (declaredOptions.containsKey(arg)) {
-            cl.addDeclaredOption(arg, declaredOptions.get(arg));
+        if (this.declaredOptions.containsKey(arg)) {
+            cl.addDeclaredOption(arg, this.declaredOptions.get(arg));
         }
         else {
             cl.addUndeclaredOption(arg);
@@ -280,13 +289,16 @@ public class CommandLineParser {
     }
 
     private void validateOptionName(String name) {
-        if (name.contains(" ")) throw new ParseException("Invalid argument: " + name);
+        if (name.contains(" ")) {
+            throw new ParseException("Invalid argument: " + name);
+        }
     }
 
     protected void processSystemArg(DefaultCommandLine cl, String arg) {
-        int i = arg.indexOf("=");
+        int i = arg.indexOf('=');
         String name = arg.substring(2, i);
-        String value = arg.substring(i+1,arg.length());
+        String value = arg.substring(i + 1);
         cl.addSystemProperty(name, value);
     }
+
 }

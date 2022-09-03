@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,36 +19,36 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 /**
  * {@link SynchronizationManager} delegating calls to Spring's {@link TransactionSynchronizationManager}.
- * 
+ *
  * @author Michael Hunger
  * @author Oliver Gierke
  * @since 2.3.6
  */
 enum SpringTransactionSynchronizationManager implements SynchronizationManager {
 
-	INSTANCE;
+    INSTANCE;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.grails.transaction.SynchronizationManager#initSynchronization()
-	 */
-	public void initSynchronization() {
-		TransactionSynchronizationManager.initSynchronization();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.grails.transaction.SynchronizationManager#initSynchronization()
+     */
+    public void initSynchronization() {
+        TransactionSynchronizationManager.initSynchronization();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.grails.transaction.SynchronizationManager#isSynchronizationActive()
-	 */
-	public boolean isSynchronizationActive() {
-		return TransactionSynchronizationManager.isSynchronizationActive();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.grails.transaction.SynchronizationManager#isSynchronizationActive()
+     */
+    public boolean isSynchronizationActive() {
+        return TransactionSynchronizationManager.isSynchronizationActive();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.grails.transaction.SynchronizationManager#clearSynchronization()
-	 */
-	public void clearSynchronization() {
-		TransactionSynchronizationManager.clear();
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.grails.transaction.SynchronizationManager#clearSynchronization()
+     */
+    public void clearSynchronization() {
+        TransactionSynchronizationManager.clear();
+    }
 }

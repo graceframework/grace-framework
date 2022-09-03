@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.grails.exceptions.reporting.DefaultStackTraceFilterer;
 
-public class TestStacktraceSanitizer {
+public final class TestStacktraceSanitizer {
 
     private static final String TEST_RUNNING_CLASS = "_GrailsTest";
 
@@ -30,7 +30,7 @@ public class TestStacktraceSanitizer {
     public static Throwable sanitize(Throwable t) {
         new DefaultStackTraceFilterer().filter(t, true);
         StackTraceElement[] trace = t.getStackTrace();
-        List<StackTraceElement> newTrace = new ArrayList<StackTraceElement>();
+        List<StackTraceElement> newTrace = new ArrayList<>();
         for (StackTraceElement stackTraceElement : trace) {
             if (stackTraceElement.getClassName().startsWith(TEST_RUNNING_CLASS)) {
                 break;
@@ -39,7 +39,8 @@ public class TestStacktraceSanitizer {
             newTrace.add(stackTraceElement);
         }
 
-        t.setStackTrace(newTrace.toArray(new StackTraceElement[newTrace.size()]));
+        t.setStackTrace(newTrace.toArray(new StackTraceElement[0]));
         return t;
     }
+
 }

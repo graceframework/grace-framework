@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package grails.validation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.grails.core.lifecycle.ShutdownOperations;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.grails.core.lifecycle.ShutdownOperations;
 
 /**
  * Binding operations that are deferred until either validate() or save() are called.
@@ -28,17 +29,14 @@ import java.util.List;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class DeferredBindingActions {
+public final class DeferredBindingActions {
 
-    private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<List<Runnable>>();
-    private static Log LOG = LogFactory.getLog(DeferredBindingActions.class);
+    private static final Log logger = LogFactory.getLog(DeferredBindingActions.class);
+
+    private static ThreadLocal<List<Runnable>> deferredBindingActions = new ThreadLocal<>();
 
     static {
-        ShutdownOperations.addOperation(new Runnable() {
-            public void run() {
-                deferredBindingActions = new ThreadLocal<List<Runnable>>();
-            }
-        }, true);
+        ShutdownOperations.addOperation(() -> deferredBindingActions = new ThreadLocal<>(), true);
     }
 
     private DeferredBindingActions() {
@@ -52,7 +50,7 @@ public class DeferredBindingActions {
     private static List<Runnable> getDeferredBindingActions() {
         List<Runnable> runnables = deferredBindingActions.get();
         if (runnables == null) {
-            runnables = new ArrayList<Runnable>();
+            runnables = new ArrayList<>();
             deferredBindingActions.set(runnables);
         }
         return runnables;
@@ -66,12 +64,14 @@ public class DeferredBindingActions {
                     if (runnable != null) {
                         try {
                             runnable.run();
-                        } catch (Exception e) {
-                            LOG.error("Error running deferred data binding: " + e.getMessage(), e);
+                        }
+                        catch (Exception e) {
+                            logger.error("Error running deferred data binding: " + e.getMessage(), e);
                         }
                     }
                 }
-            } finally {
+            }
+            finally {
                 clear();
             }
         }
@@ -80,4 +80,5 @@ public class DeferredBindingActions {
     public static void clear() {
         deferredBindingActions.remove();
     }
+
 }

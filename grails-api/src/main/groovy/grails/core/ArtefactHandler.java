@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,11 +44,13 @@ public interface ArtefactHandler {
      * @return The aretfact type, as a String
      */
     String getType();
+
     /**
      * @param classNode The ClassNode instance
      * @return True if the given ClassNode instance is an instance of the Artefact type
      */
     boolean isArtefact(ClassNode classNode);
+
     /**
      * <p>Called by the GrailsApplication whenever it needs to know if a given class
      * is considered to be the kind of artefact represented by this handler.</p>
@@ -57,14 +59,14 @@ public interface ArtefactHandler {
      * @param aClass A class to test
      * @return true if the class looks like one of your artefacts
      */
-    boolean isArtefact(@SuppressWarnings("rawtypes") Class aClass);
+    boolean isArtefact(Class<?> aClass);
 
     /**
      * <p>Called by GrailsApplication when a new class is found and a GrailsClass wrapping it is required</p>
      * @param artefactClass The new class that has been loaded
      * @return A new custom GrailsClass wrapper containing any extra information your artefact type requires
      */
-    GrailsClass newArtefactClass(@SuppressWarnings("rawtypes") Class artefactClass);
+    GrailsClass newArtefactClass(Class<?> artefactClass);
 
     /**
      * <p>Called whenever the list of artefacts has changed or been reloaded.</p>
@@ -88,4 +90,5 @@ public interface ArtefactHandler {
      * @return true if this handler manages the specified GrailsClass
      */
     boolean isArtefactGrailsClass(GrailsClass artefactGrailsClass);
+
 }
