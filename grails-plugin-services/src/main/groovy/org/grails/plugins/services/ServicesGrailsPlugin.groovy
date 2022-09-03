@@ -36,7 +36,7 @@ import org.grails.core.exceptions.GrailsConfigurationException
  * @since 0.4
  */
 @Slf4j
-class ServicesGrailsPlugin extends Plugin  {
+class ServicesGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
     def loadAfter = ['hibernate']
@@ -85,7 +85,7 @@ class ServicesGrailsPlugin extends Plugin  {
         }
     }
 
-    void onChange(Map<String,Object> event) {
+    void onChange(Map<String, Object> event) {
         if (!event.source || !applicationContext) {
             return
         }

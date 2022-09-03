@@ -160,7 +160,7 @@ enum Environment {
                             }
                         }
                         String implTitle = mf.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_TITLE)
-                        if (!isBlank(implTitle) && implTitle.equals(GRAILS_IMPLEMENTATION_TITLE)) {
+                        if (!isBlank(implTitle) && implTitle == GRAILS_IMPLEMENTATION_TITLE) {
                             grailsManifest = mf
                         }
                     }
@@ -261,7 +261,7 @@ enum Environment {
     }
 
     /**
-     * Returns the current environment which is typcally either DEVELOPMENT, PRODUCTION or TEST.
+     * Returns the current environment which is typically either DEVELOPMENT, PRODUCTION or TEST.
      * For custom environments CUSTOM type is returned.
      *
      * @return The current environment.

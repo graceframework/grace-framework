@@ -86,11 +86,11 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
             def instanceClass = ClassUtils.forName(instanceClassName, classLoader)
             if (!factoryClass.isAssignableFrom(instanceClass)) {
                 throw new IllegalArgumentException(
-                    "Class [$instanceClassName] is not assignable to [$factoryClass.name]")
+                        "Class [$instanceClassName] is not assignable to [$factoryClass.name]")
             }
             return (Class<? extends T>) instanceClass
         }
-        catch (Throwable ex) {
+        catch (Throwable ignored) {
             // not creatable in current context, ignore
             return null
         }

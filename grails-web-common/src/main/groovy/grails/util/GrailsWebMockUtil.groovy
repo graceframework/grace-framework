@@ -74,7 +74,7 @@ class GrailsWebMockUtil {
                 ((WebApplicationContext) ctx).getServletContext() : request.getServletContext()
         GrailsWebRequest webRequest = new GrailsWebRequest(request, response, servletContext, ctx)
         request.setAttribute(GrailsApplicationAttributes.WEB_REQUEST, webRequest)
-        for (ParameterCreationListener listener: ctx.getBeansOfType(ParameterCreationListener).values()) {
+        for (ParameterCreationListener listener : ctx.getBeansOfType(ParameterCreationListener).values()) {
             webRequest.addParameterListener(listener)
         }
         RequestContextHolder.setRequestAttributes(webRequest)

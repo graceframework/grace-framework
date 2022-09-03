@@ -29,7 +29,9 @@ import org.springframework.core.env.EnumerablePropertySource
 class PrefixedMapPropertySource extends EnumerablePropertySource {
 
     final EnumerablePropertySource source
+
     final String prefix
+
     private final String[] propertyNames
 
     PrefixedMapPropertySource(String prefix, EnumerablePropertySource source) {

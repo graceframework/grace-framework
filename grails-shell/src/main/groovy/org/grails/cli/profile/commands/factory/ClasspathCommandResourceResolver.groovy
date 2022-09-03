@@ -54,7 +54,7 @@ class ClasspathCommandResourceResolver implements CommandResourceResolver {
             }
             return resources
         }
-        catch (Throwable e) {
+        catch (Throwable ignored) {
             return []
         }
     }

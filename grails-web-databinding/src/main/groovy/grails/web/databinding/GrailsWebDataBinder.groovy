@@ -211,7 +211,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             }
         }
         if (!isInitialized) {
-            super.initializeProperty obj, propName,  propertyType, source
+            super.initializeProperty obj, propName, propertyType, source
         }
     }
 
@@ -489,7 +489,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private findAlementWithId(Set set,  idValue) {
+    private findAlementWithId(Set set, idValue) {
         set.find {
             it.id == idValue
         }
@@ -526,6 +526,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         }
         constrainedProperties
     }
+
     private getMetaPropertyValue(MetaProperty metaProperty, delegate) {
         if (metaProperty instanceof ThreadManagedMetaBeanProperty) {
             return ((ThreadManagedMetaBeanProperty) metaProperty).getGetter().invoke(delegate, MetaClassHelper.EMPTY_ARRAY)

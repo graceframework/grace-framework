@@ -36,6 +36,7 @@ import grails.util.Environment
 class Support {
 
     public static final String PROPERTY_RELOAD_AGENT_PATH = 'reload.agent.path'
+
     public static final String ENV_RELOAD_AGENT_PATH = 'RELOAD_AGENT_PATH'
 
     /**

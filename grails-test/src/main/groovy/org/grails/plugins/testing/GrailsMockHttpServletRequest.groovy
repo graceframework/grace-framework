@@ -131,7 +131,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         else {
             XML xml
             if (sourceXml instanceof XML) {
-                xml = (XML)sourceXml
+                xml = (XML) sourceXml
             }
             else {
                 xml = new XML(sourceXml)
@@ -226,10 +226,10 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
     }
 
     /**
-    * Parses the request content as XML using XmlSlurper and returns
-    * the GPath result object. Throws an exception if there is no
-    * content or the content is not valid XML.
-    */
+     * Parses the request content as XML using XmlSlurper and returns
+     * the GPath result object. Throws an exception if there is no
+     * content or the content is not valid XML.
+     */
     def getXML() {
         cachedXml = cachedXml ?: GrailsMockHttpServletRequest.classLoader.loadClass('grails.converters.XML').parse(this)
     }
@@ -262,7 +262,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
                     break
 
                 default:
-                    match =  c.call(name, getAttribute(name))
+                    match = c.call(name, getAttribute(name))
             }
             if (match) {
                 result[name] = getAttribute(name)
@@ -292,9 +292,11 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
                     break
 
                 default:
-                    match =  c.call(name, getAttribute(name))
+                    match = c.call(name, getAttribute(name))
             }
-            if (match) { results[name] = getAttribute(name) }
+            if (match) {
+                results[name] = getAttribute(name)
+            }
         }
         results
     }

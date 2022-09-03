@@ -322,7 +322,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         try {
             return tokensHolderInSession.isValid(urlInRequest, tokenInRequest)
         }
-        catch (IllegalArgumentException) {
+        catch (IllegalArgumentException ignored) {
             return false
         }
     }
@@ -374,8 +374,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         try {
             final DataBindingSource dataBindingSource = DataBindingUtils
                     .createDataBindingSource(
-                    getGrailsApplication(), type,
-                    request)
+                            getGrailsApplication(), type,
+                            request)
             final DataBindingSource commandObjectBindingSource = getCommandObjectBindingSourceForPrefix(
                     commandObjectParameterName, dataBindingSource)
             def entityIdentifierValue = null
@@ -391,13 +391,13 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                 entityIdentifierValue = commandObjectBindingSource.getIdentifierValue()
                 if (entityIdentifierValue == null) {
                     final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
-                    entityIdentifierValue = webRequest?.getParams().getIdentifier()
+                    entityIdentifierValue = webRequest?.getParams()?.getIdentifier()
                 }
             }
             if (entityIdentifierValue instanceof String) {
                 entityIdentifierValue = ((String) entityIdentifierValue).trim()
-                if (''.equals(entityIdentifierValue)
-                        || 'null'.equals(entityIdentifierValue)) {
+                if (entityIdentifierValue == ''
+                        || entityIdentifierValue == 'null') {
                     entityIdentifierValue = null
                 }
             }
@@ -450,7 +450,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             commandObjectInstance = type.newInstance()
             final o = GrailsMetaClassUtils.invokeMethodIfExists(commandObjectInstance, 'getErrors')
             if (o instanceof BindingResult) {
-                final BindingResult errors = (BindingResult)o
+                final BindingResult errors = (BindingResult) o
                 String msg = "Error occurred initializing command object [${commandObjectParameterName}]. ${e.getMessage()}"
                 ObjectError error = new ObjectError(commandObjectParameterName, msg)
                 errors.addError(error)

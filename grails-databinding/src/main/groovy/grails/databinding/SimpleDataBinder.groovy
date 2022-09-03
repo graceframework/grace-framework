@@ -46,13 +46,13 @@ import org.grails.databinding.xml.GPathResultMap
  *
  <pre>
  class Person {
-     String firstName
-     Address homeAddress
+ String firstName
+ Address homeAddress
  }
 
  class Address {
-     String city
-     String state
+ String city
+ String state
  }
 
  def person = new Person()
@@ -77,15 +77,15 @@ class SimpleDataBinder implements DataBinder {
     protected Map<Class, List<ValueConverter>> conversionHelpers = [:].withDefault { c -> [] }
     protected Map<Class, FormattedValueConverter> formattedValueConversionHelpers = new HashMap<Class, FormattedValueConverter>()
     protected static final List<Class> BASIC_TYPES = [
-        String,
-        Boolean,
-        Byte,
-        Short,
-        Integer,
-        Long,
-        Float,
-        Double,
-        Character
+            String,
+            Boolean,
+            Byte,
+            Short,
+            Integer,
+            Long,
+            Float,
+            Double,
+            Character
     ]
 
     static final INDEXED_PROPERTY_REGEX = /(.*)\[\s*([^\s]*)\s*\]\s*$/
@@ -107,6 +107,7 @@ class SimpleDataBinder implements DataBinder {
     void registerConverter(ValueConverter converter) {
         conversionHelpers[converter.targetType] << converter
     }
+
     void registerFormattedValueConverter(FormattedValueConverter converter) {
         formattedValueConversionHelpers[converter.targetType] = converter
     }
@@ -293,7 +294,7 @@ class SimpleDataBinder implements DataBinder {
         def propName = indexedPropertyReferenceDescriptor.propertyName
         Map structValues = new HashMap()
         String prefix = indexedPropertyReferenceDescriptor
-        for (String propertyName: source.propertyNames) {
+        for (String propertyName : source.propertyNames) {
             if (propertyName.startsWith(prefix)) {
                 String deIndexedPropertyName = propName
                 String[] parts = propertyName.split('_')
@@ -307,7 +308,7 @@ class SimpleDataBinder implements DataBinder {
     }
 
     protected processIndexedProperty(obj, MetaProperty metaProperty, IndexedPropertyReferenceDescriptor indexedPropertyReferenceDescriptor,
-        val, DataBindingSource source, DataBindingListener listener, errors) {
+                                     val, DataBindingSource source, DataBindingListener listener, errors) {
 
         def propName = indexedPropertyReferenceDescriptor.propertyName
         def propertyType = metaProperty.type
@@ -641,7 +642,7 @@ class SimpleDataBinder implements DataBinder {
     }
 
     protected setPropertyValue(obj, DataBindingSource source, MetaProperty metaProperty,
-                                                   propertyValue, DataBindingListener listener, boolean convertCollectionElements) {
+                               propertyValue, DataBindingListener listener, boolean convertCollectionElements) {
         def propName = metaProperty.name
         def propertyType
         def propertyGetter
@@ -669,15 +670,15 @@ class SimpleDataBinder implements DataBinder {
             }
         }
         else if (propertyValue instanceof List &&
-                  Set.isAssignableFrom(propertyType) &&
-                  !SortedSet.isAssignableFrom(propertyType)) {
+                Set.isAssignableFrom(propertyType) &&
+                !SortedSet.isAssignableFrom(propertyType)) {
             addElementsToCollection(obj, propName, propertyValue, true)
         }
         else {
             if (propertyValue instanceof Map) {
                 if (Collection.isAssignableFrom(propertyType) &&
-                   propertyValue.size() == 1 &&
-                   ((Map) propertyValue)[propertyValue.keySet()[0]] instanceof List) {
+                        propertyValue.size() == 1 &&
+                        ((Map) propertyValue)[propertyValue.keySet()[0]] instanceof List) {
                     def key = propertyValue.keySet()[0]
                     List list = (List) ((Map) propertyValue)[key]
                     addElementsToCollection(obj, propName, list)
@@ -691,8 +692,8 @@ class SimpleDataBinder implements DataBinder {
             }
             else if (propertyValue instanceof DataBindingSource) {
                 if (Collection.isAssignableFrom(propertyType) &&
-                   propertyValue.size() == 1 &&
-                   ((Map) propertyValue)[propertyValue.getPropertyNames()[0]] instanceof List) {
+                        propertyValue.size() == 1 &&
+                        ((Map) propertyValue)[propertyValue.getPropertyNames()[0]] instanceof List) {
                     def key = propertyValue.getPropertyNames()[0]
                     List list = (List) ((Map) propertyValue)[key]
                     addElementsToCollection(obj, propName, list)

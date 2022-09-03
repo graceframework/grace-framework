@@ -30,7 +30,7 @@ import org.yaml.snakeyaml.representer.Representer
  */
 @InheritConstructors
 @CompileStatic
-abstract class MapReadingCachedGradleOperation <V> extends CachedGradleOperation<Map<String, V>> {
+abstract class MapReadingCachedGradleOperation<V> extends CachedGradleOperation<Map<String, V>> {
 
     @Override
     Map<String, V> readFromCached(File f) {

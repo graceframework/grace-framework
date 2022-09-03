@@ -62,9 +62,9 @@ class WhereQueryTypeCheckingExtension extends TypeCheckingDSL {
 
     protected boolean isWhereQueryCall(MethodCall call) {
         call instanceof MethodCallExpression &&
-            call.objectExpression instanceof ClassExpression &&
-            GrailsASTUtils.isDomainClass(call.objectExpression.type, null) &&
-            call.method.value == 'where'
+                call.objectExpression instanceof ClassExpression &&
+                GrailsASTUtils.isDomainClass(call.objectExpression.type, null) &&
+                call.method.value == 'where'
     }
 
 }

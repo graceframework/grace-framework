@@ -69,7 +69,7 @@ class DefaultDataBindingSourceCreator implements DataBindingSourceCreator {
         throw new UnsupportedOperationException()
     }
 
-    protected  DataBindingSource createDataBindingSource(Object bindingTarget, HttpServletRequest req) {
+    protected DataBindingSource createDataBindingSource(Object bindingTarget, HttpServletRequest req) {
         final GrailsWebRequest grailsWebRequest = GrailsWebRequest.lookup(req)
         final GrailsParameterMap parameterMap = grailsWebRequest.getParams()
         new SimpleMapDataBindingSource(parameterMap)

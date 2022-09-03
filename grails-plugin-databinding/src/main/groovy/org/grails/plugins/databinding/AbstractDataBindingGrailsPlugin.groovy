@@ -51,15 +51,15 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
     public static final String DEFAULT_JSR310_LOCAL_DATE_FORMAT = 'yyyy-MM-dd'
     public static final String DEFAULT_JSR310_LOCAL_TIME_FORMAT = 'HH:mm:ss'
     public static final List<String> DEFAULT_DATE_FORMATS = [
-        'yyyy-MM-dd HH:mm:ss.S',
-        "yyyy-MM-dd'T'HH:mm:ss'Z'",
-        'yyyy-MM-dd HH:mm:ss.S z',
-        "yyyy-MM-dd'T'HH:mm:ss.SSSX",
-        DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT,
-        DEFAULT_JSR310_OFFSET_TIME_FORMAT,
-        DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT,
-        DEFAULT_JSR310_LOCAL_DATE_FORMAT,
-        DEFAULT_JSR310_LOCAL_TIME_FORMAT]
+            'yyyy-MM-dd HH:mm:ss.S',
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",
+            'yyyy-MM-dd HH:mm:ss.S z',
+            "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+            DEFAULT_JSR310_OFFSET_ZONED_DATE_TIME_FORMAT,
+            DEFAULT_JSR310_OFFSET_TIME_FORMAT,
+            DEFAULT_JSR310_LOCAL_DATE_TIME_FORMAT,
+            DEFAULT_JSR310_LOCAL_DATE_FORMAT,
+            DEFAULT_JSR310_LOCAL_TIME_FORMAT]
 
     @Override
     Closure doWithSpring() {
@@ -90,11 +90,11 @@ abstract class AbstractDataBindingGrailsPlugin extends Plugin {
                 // dateParsingLenient defaults to false
                 dateParsingLenient = dateParsingLenientSetting
             }
-            [Short,   Short.TYPE,
+            [Short, Short.TYPE,
              Integer, Integer.TYPE,
-             Float,   Float.TYPE,
-             Long,    Long.TYPE,
-             Double,  Double.TYPE].each { numberType ->
+             Float, Float.TYPE,
+             Long, Long.TYPE,
+             Double, Double.TYPE].each { numberType ->
                 "defaultGrails${numberType.simpleName}Converter"(LocaleAwareNumberConverter) {
                     targetType = numberType
                 }

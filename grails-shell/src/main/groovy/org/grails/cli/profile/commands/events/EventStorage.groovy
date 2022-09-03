@@ -34,7 +34,7 @@ class EventStorage {
         }
     }
 
-    static void fireEvent(Object caller, String eventName, Object...args) {
+    static void fireEvent(Object caller, String eventName, Object... args) {
         def listeners = EVENT_LISTENERS[eventName]
         for (listener in listeners) {
             listener.delegate = caller

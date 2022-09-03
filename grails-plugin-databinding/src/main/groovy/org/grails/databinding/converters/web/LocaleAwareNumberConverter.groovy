@@ -42,7 +42,7 @@ class LocaleAwareNumberConverter implements ValueConverter {
 
     Class<?> targetType
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     LocaleResolver localeResolver
 
     @Override

@@ -43,7 +43,7 @@ import org.grails.web.converters.marshaller.json.GroovyBeanMarshaller
  * @since 2.3
  */
 @CompileStatic
-class JsonRenderer <T> extends DefaultJsonRenderer<T> {
+class JsonRenderer<T> extends DefaultJsonRenderer<T> {
 
     @Autowired
     GrailsApplication grailsApplication

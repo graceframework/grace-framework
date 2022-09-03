@@ -62,9 +62,9 @@ class CriteriaTypeCheckingExtension extends TypeCheckingDSL {
 
     protected boolean isCriteriaCall(MethodCall call) {
         call instanceof MethodCallExpression &&
-            call.objectExpression instanceof ClassExpression &&
-            GrailsASTUtils.isDomainClass(call.objectExpression.type, null) &&
-            (call.method.value == 'withCriteria' || call.method.value == 'createCriteria')
+                call.objectExpression instanceof ClassExpression &&
+                GrailsASTUtils.isDomainClass(call.objectExpression.type, null) &&
+                (call.method.value == 'withCriteria' || call.method.value == 'createCriteria')
     }
 
 }

@@ -16,7 +16,7 @@ package grails.doc.internal
 
 import groovy.transform.ToString
 
-@ToString(excludes=['parent', 'children'])
+@ToString(excludes = ['parent', 'children'])
 class UserGuideNode {
 
     UserGuideNode parent

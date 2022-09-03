@@ -95,6 +95,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         }
         this
     }
+
     /**
      * Copies a resource to the target destination
      *
@@ -254,7 +255,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         try {
             return resourcePatternResolver.getResources(pattern).toList()
         }
-        catch (e) {
+        catch (ignored) {
             return []
         }
     }

@@ -41,11 +41,11 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
         String classAsPropertyName = GrailsNameUtils.getPropertyNameRepresentation(className)
         String propertyName = error.getPropertyName()
         String[] codes = [
-            className + '.' + propertyName + '.typeMismatch.error',
-            className + '.' + propertyName + '.typeMismatch',
-            classAsPropertyName + '.' + propertyName + '.typeMismatch.error',
-            classAsPropertyName + '.' + propertyName + '.typeMismatch',
-            bindingResult.resolveMessageCodes('typeMismatch', propertyName),
+                className + '.' + propertyName + '.typeMismatch.error',
+                className + '.' + propertyName + '.typeMismatch',
+                classAsPropertyName + '.' + propertyName + '.typeMismatch.error',
+                classAsPropertyName + '.' + propertyName + '.typeMismatch',
+                bindingResult.resolveMessageCodes('typeMismatch', propertyName),
         ].flatten() as String[]
         Object[] args = [getPropertyName(className, classAsPropertyName, propertyName)] as Object[]
         def defaultMessage = error.cause?.message ?: 'Data Binding Failed'

@@ -43,7 +43,7 @@ class ProfilingGrailsApplicationPostProcessor extends GrailsApplicationPostProce
 
     ProfilingGrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
                                             ApplicationContext applicationContext,
-                                            GrailsPluginManager pluginManager, Class...classes) {
+                                            GrailsPluginManager pluginManager, Class... classes) {
         super(lifeCycle, applicationContext, pluginManager.getApplication(), pluginManager, classes)
         ((ConfigurableApplicationContext) applicationContext).beanFactory.addBeanPostProcessor(this)
     }
@@ -58,7 +58,7 @@ class ProfilingGrailsApplicationPostProcessor extends GrailsApplicationPostProce
     Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         def totalTime = System.currentTimeMillis() - startTime
         if (totalTime > 10) {
-            println "Creating bean $beanName of type ${bean.getClass()} took ${totalTime}ms"
+            println "Creating bean $beanName of type ${bean.getClass()} took ${totalTime} ms"
         }
         bean
     }

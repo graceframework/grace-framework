@@ -28,7 +28,7 @@ import org.grails.io.support.Resource
  * @since 3.0
  */
 @CompileStatic
-class TestsCompleter  extends ClassNameCompleter {
+class TestsCompleter extends ClassNameCompleter {
 
     TestsCompleter() {
         super(new File(BuildSettings.BASE_DIR, 'src/test/groovy'),

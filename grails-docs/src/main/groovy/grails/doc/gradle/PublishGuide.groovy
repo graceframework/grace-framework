@@ -29,16 +29,42 @@ import grails.doc.macros.HiddenMacro
  */
 class PublishGuide extends DefaultTask {
 
-    @InputDirectory File sourceDir = new File(project.projectDir, 'src')
-    @OutputDirectory File targetDir = new File(project.buildDir, 'docs')
-    @InputDirectory @Optional File resourcesDir = new File(project.projectDir, 'resources')
-    @Input @Optional List propertiesFiles = []
-    @Input @Optional String language = ''
-    @Input @Optional Boolean asciidoc = false
-    @Input @Optional String sourceRepo
-    @Input @Optional Properties properties = new Properties()
-    @Input @Optional Collection macros = []
-    @OutputDirectory File workDir = project.buildDir as File
+    @InputDirectory
+    File sourceDir = new File(project.projectDir, 'src')
+
+    @OutputDirectory
+    File targetDir = new File(project.buildDir, 'docs')
+
+    @InputDirectory
+    @Optional
+    File resourcesDir = new File(project.projectDir, 'resources')
+
+    @Input
+    @Optional
+    List propertiesFiles = []
+
+    @Input
+    @Optional
+    String language = ''
+
+    @Input
+    @Optional
+    Boolean asciidoc = false
+
+    @Input
+    @Optional
+    String sourceRepo
+
+    @Input
+    @Optional
+    Properties properties = new Properties()
+
+    @Input
+    @Optional
+    Collection macros = []
+
+    @OutputDirectory
+    File workDir = project.buildDir as File
 
     @TaskAction
     def publishGuide() {

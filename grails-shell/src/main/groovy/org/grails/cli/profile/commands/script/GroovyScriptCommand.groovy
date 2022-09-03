@@ -55,10 +55,18 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     ProfileRepository profileRepository
     String name = getClass().name.contains('-') ? getClass().name : GrailsNameUtils.getScriptName(getClass().name)
     CommandDescription description = new CommandDescription(name)
-    @Delegate ExecutionContext executionContext
-    @Delegate TemplateRenderer templateRenderer
-    @Delegate ConsoleLogger consoleLogger = GrailsConsole.getInstance()
-    @Delegate FileSystemInteraction fileSystemInteraction
+
+    @Delegate
+    ExecutionContext executionContext
+
+    @Delegate
+    TemplateRenderer templateRenderer
+
+    @Delegate
+    ConsoleLogger consoleLogger = GrailsConsole.getInstance()
+
+    @Delegate
+    FileSystemInteraction fileSystemInteraction
 
     /**
      * Allows invoking of Gradle commands
@@ -137,7 +145,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     /**
      * @return The name of the current Grails environment
      */
-    String getGrailsEnv() {  Environment.current.name }
+    String getGrailsEnv() { Environment.current.name }
 
     /**
      * @return The {@link GrailsConsole} instance

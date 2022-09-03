@@ -32,8 +32,8 @@ class FactoriesLoaderSupport {
     /** The location to look for the factories. Can be present in multiple JAR files. */
     static final String FACTORIES_RESOURCE_LOCATION = 'META-INF/grails.factories'
 
-    private static final ConcurrentMap<Integer, Map<String,String[]>> LOADED_PROPERTIES_FOR_CLASSLOADER =
-            new ConcurrentHashMap<Integer, Map<String,String[]>>()
+    private static final ConcurrentMap<Integer, Map<String, String[]>> LOADED_PROPERTIES_FOR_CLASSLOADER =
+            new ConcurrentHashMap<Integer, Map<String, String[]>>()
 
     /**
      * Loads the names of the classes from grails.factories without loading the classes themselves

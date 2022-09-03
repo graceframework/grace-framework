@@ -45,12 +45,12 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
 
     }
 
-    private final Map<Class, Collection<R >> registeredObjectsByType = new ConcurrentHashMap<>()
+    private final Map<Class, Collection<R>> registeredObjectsByType = new ConcurrentHashMap<>()
     private final Map<MimeType, R> defaultObjectsByMimeType = new ConcurrentHashMap<>()
-    private final Cache<K, R > resolvedObjectCache = Caffeine.newBuilder()
-        .initialCapacity(500)
-        .maximumSize(1000)
-        .build()
+    private final Cache<K, R> resolvedObjectCache = Caffeine.newBuilder()
+            .initialCapacity(500)
+            .maximumSize(1000)
+            .build()
 
     void registerDefault(MimeType mt, R object) {
         defaultObjectsByMimeType.put(mt, object)
@@ -128,7 +128,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             findObject = (R) objectList.find {
                 MimeTypeProvider r = (MimeTypeProvider) it
                 r.mimeTypes.any { MimeType mt ->
-                    mt  == mimeType
+                    mt == mimeType
                 }
             }
             if (findObject == null) {

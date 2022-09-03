@@ -55,7 +55,7 @@ class DefaultXmlRenderer<T> implements Renderer<T> {
         this.targetType = targetType
     }
 
-    DefaultXmlRenderer(Class<T> targetType, MimeType...mimeTypes) {
+    DefaultXmlRenderer(Class<T> targetType, MimeType... mimeTypes) {
         this.targetType = targetType
         this.mimeTypes = mimeTypes
     }

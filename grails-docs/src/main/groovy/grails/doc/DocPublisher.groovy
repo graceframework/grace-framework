@@ -362,26 +362,26 @@ class DocPublisher {
         def pathToRoot = '..'
         Map vars = new LinkedHashMap(engineProperties)
         vars.putAll(
-            encoding: encoding,
-            title: title,
-            docTitle: title,
-            subtitle: subtitle,
-            footer: footer, // TODO - add a way to specify footer
-            authors: authors,
-            translators: translators,
-            version: version,
-            refMenu: refCategories,
-            toc: guide,
-            copyright: copyright,
-            logo: injectPath(logo, pathToRoot),
-            sponsorLogo: injectPath(sponsorLogo, pathToRoot),
-            single: false,
-            path: pathToRoot,
-            resourcesPath: calculatePathToResources(pathToRoot),
-            prev: null,
-            next: null,
-            legacyLinks: legacyLinks,
-            sourceRepo: sourceRepo,
+                encoding: encoding,
+                title: title,
+                docTitle: title,
+                subtitle: subtitle,
+                footer: footer, // TODO - add a way to specify footer
+                authors: authors,
+                translators: translators,
+                version: version,
+                refMenu: refCategories,
+                toc: guide,
+                copyright: copyright,
+                logo: injectPath(logo, pathToRoot),
+                sponsorLogo: injectPath(sponsorLogo, pathToRoot),
+                single: false,
+                path: pathToRoot,
+                resourcesPath: calculatePathToResources(pathToRoot),
+                prev: null,
+                next: null,
+                legacyLinks: legacyLinks,
+                sourceRepo: sourceRepo,
         )
 
         if (engine instanceof AsciiDocEngine) {
@@ -402,7 +402,7 @@ class DocPublisher {
         def chapterVars
         def chapters = guide.children
         chapters.eachWithIndex { chapter, i ->
-            chapterVars = [*:vars, chapterNumber: i + 1]
+            chapterVars = [*: vars, chapterNumber: i + 1]
             if (i != 0) {
                 chapterVars['prev'] = chapters[i - 1]
             }
@@ -519,7 +519,7 @@ class DocPublisher {
         context.set(DocEngine.SOURCE_FILE, sourceFile)
         context.set(DocEngine.CONTEXT_PATH, path)
 
-        def varsCopy = [*:vars]
+        def varsCopy = [*: vars]
         varsCopy.putAll(engineProperties)
         varsCopy.name = section.name
         varsCopy.title = section.title
@@ -673,7 +673,7 @@ class DocPublisher {
                             flatConfig.put(fullKey, value)
                         }
                         int index = 0
-                        for (Object item: (Collection) value) {
+                        for (Object item : (Collection) value) {
                             String collectionKey = "${fullKey}[${index}]"
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++

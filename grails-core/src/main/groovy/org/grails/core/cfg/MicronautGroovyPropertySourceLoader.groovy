@@ -48,10 +48,10 @@ class MicronautGroovyPropertySourceLoader extends AbstractPropertySourceLoader {
         if (input.available()) {
             ConfigSlurper configSlurper = env ? new ConfigSlurper(env) : new ConfigSlurper()
             configSlurper.setBinding(
-                userHome: System.getProperty('user.home'),
-                grailsHome: BuildSettings.GRAILS_HOME?.absolutePath,
-                appName: Metadata.getCurrent().getApplicationName(),
-                appVersion: Metadata.getCurrent().getApplicationVersion())
+                    userHome: System.getProperty('user.home'),
+                    grailsHome: BuildSettings.GRAILS_HOME?.absolutePath,
+                    appName: Metadata.getCurrent().getApplicationName(),
+                    appVersion: Metadata.getCurrent().getApplicationVersion())
             try {
                 def configObject = configSlurper.parse(input.getText('UTF-8'))
                 def propertySource = new NavigableMap()

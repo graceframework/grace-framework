@@ -44,8 +44,9 @@ class CodecsGrailsPlugin extends Plugin {
             RawCodec
     ]
 
-    Closure doWithSpring() { { ->
-        // Keep this because it is used by testing-support
+    Closure doWithSpring() {
+        { ->
+            // Keep this because it is used by testing-support
         }
     }
 

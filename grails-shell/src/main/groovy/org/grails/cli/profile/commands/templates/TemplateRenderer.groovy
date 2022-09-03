@@ -107,7 +107,7 @@ interface TemplateRenderer {
      * @param destination The destination
      * @param model The model
      */
-    void render(File template, File destination, Map model , boolean overwrite)
+    void render(File template, File destination, Map model, boolean overwrite)
 
     /**
      * Render the given template to the give destination for the given model

@@ -249,7 +249,7 @@ class BuildSettings {
                 CLASSES_DIR = new File(fromSystem)
                 BUILD_CLASSES_PATH = fromSystem
             }
-            else  {
+            else {
                 File groovyDir = new File('build/classes/groovy/main')
                 if (groovyDir.exists()) {
                     BUILD_CLASSES_PATH = 'build/classes/groovy/main'

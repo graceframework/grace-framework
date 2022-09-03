@@ -36,21 +36,21 @@ class AsciiDocEngine extends DocEngine {
 
     Asciidoctor asciidoctor = create()
     Map attributes = [
-        'imagesdir': '../img',
-        'source-highlighter': 'coderay',
-        'icons': 'font'
+            'imagesdir': '../img',
+            'source-highlighter': 'coderay',
+            'icons': 'font'
     ]
 
     @Override
     String render(String content, RenderContext context) {
         def optionsBuilder = OptionsBuilder.options()
-                                        .headerFooter(false)
-                                        .attributes(attributes)
+                .headerFooter(false)
+                .attributes(attributes)
         if (attributes.containsKey('safe')) {
             optionsBuilder.safe(SafeMode.valueOf(attributes.get('safe').toString()))
         }
         asciidoctor.convert(content,
-            optionsBuilder.get()
+                optionsBuilder.get()
         )
     }
 

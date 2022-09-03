@@ -40,6 +40,7 @@ import org.grails.core.exceptions.GrailsConfigurationException
 class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
 
     final String[] fileExtensions = ['groovy'] as String[]
+
     final Set<String> loadedFiles = new HashSet<>(1)
 
     @Override

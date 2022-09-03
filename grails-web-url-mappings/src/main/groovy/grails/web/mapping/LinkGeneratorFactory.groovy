@@ -43,6 +43,7 @@ class LinkGeneratorFactory implements ApplicationContextAware {
         def urlMappings = urlMappingsFactory.create(mappings)
         create(urlMappings)
     }
+
     LinkGenerator create(Closure mappings) {
         def urlMappings = urlMappingsFactory.create(mappings)
         create(urlMappings)

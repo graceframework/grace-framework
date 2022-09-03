@@ -46,13 +46,13 @@ import org.grails.io.support.UrlResource
  * @author Michael Yan
  * @since 3.0
  */
-@GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
 
     static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make('grails.core.ArtefactHandler')
-    static final ClassNode ARTEFACT_CLASS_NODE    = ClassHelper.make(Artefact)
-    static final ClassNode TRAIT_INJECTOR_CLASS   = ClassHelper.make('grails.compiler.traits.TraitInjector')
+    static final ClassNode ARTEFACT_CLASS_NODE = ClassHelper.make(Artefact)
+    static final ClassNode TRAIT_INJECTOR_CLASS = ClassHelper.make('grails.compiler.traits.TraitInjector')
     static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make('grails.dev.commands.ApplicationCommand')
 
     CompilationUnit compilationUnit
@@ -107,7 +107,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                         classNode.addAnnotation(annotationNode)
 
                         List<ClassInjector> injectors = injectorsCache[handler.type]
-                        for (ClassInjector injector: injectors) {
+                        for (ClassInjector injector : injectors) {
                             if (injector instanceof CompilationUnitAware) {
                                 ((CompilationUnitAware) injector).compilationUnit = compilationUnit
                             }
@@ -163,7 +163,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
 
             addToProps(props, superTypeName, classNodeName)
 
-            factoriesFile.withWriter {  Writer writer ->
+            factoriesFile.withWriter { Writer writer ->
                 props.store(writer, 'Grails Factories File')
             }
             return true

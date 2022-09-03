@@ -146,7 +146,7 @@ class GrailsCli {
         try {
             return value.asType(targetType)
         }
-        catch (Throwable e) {
+        catch (Throwable ignored) {
             return null
         }
     }
@@ -167,7 +167,7 @@ class GrailsCli {
         try {
             exit(cli.execute(args))
         }
-        catch (BuildCancelledException e) {
+        catch (BuildCancelledException ignored) {
             GrailsConsole.instance.addStatus('Build stopped.')
             exit(0)
         }
@@ -256,7 +256,7 @@ class GrailsCli {
                     }
                     console.error("Command not found [$name]")
                     false
-                } ] as Profile
+                }] as Profile
 
                 startInteractiveMode(console)
                 return 0
@@ -354,7 +354,7 @@ class GrailsCli {
 
     Boolean handleCommand(ExecutionContext context) {
         def console = GrailsConsole.getInstance()
-        synchronized(GrailsCli) {
+        synchronized (GrailsCli) {
             try {
                 currentExecutionContext = context
                 if (handleBuiltInCommands(context)) {
@@ -461,10 +461,10 @@ class GrailsCli {
                     }
                 }
             }
-            catch (BuildCancelledException cancelledException) {
+            catch (BuildCancelledException ignored) {
                 console.updateStatus('Build stopped.')
             }
-            catch (UserInterruptException e) {
+            catch (UserInterruptException ignored) {
                 exitInteractiveMode()
             }
             catch (Throwable e) {
@@ -564,8 +564,8 @@ class GrailsCli {
                             exit 1
                         }
                         [
-                            dependencies: grailsClasspath.dependencies,
-                            profiles: grailsClasspath.profileDependencies
+                                dependencies: grailsClasspath.dependencies,
+                                profiles: grailsClasspath.profileDependencies
                         ]
                     }
 
@@ -681,7 +681,10 @@ class GrailsCli {
     static class ExecutionContextImpl implements ExecutionContext {
 
         CommandLine commandLine
-        @Delegate(excludes = ['getConsole', 'getBaseDir']) ProjectContext projectContext
+
+        @Delegate(excludes = ['getConsole', 'getBaseDir'])
+        ProjectContext projectContext
+
         GrailsConsole console = GrailsConsole.getInstance()
 
         ExecutionContextImpl(CodeGenConfig config) {
@@ -698,7 +701,7 @@ class GrailsCli {
 
         private final List<CommandCancellationListener> cancelListeners = []
 
-        @Override //Fully qualified name to work around Groovy bug
+        @Override
         void addCancelledListener(CommandCancellationListener listener) {
             cancelListeners << listener
         }

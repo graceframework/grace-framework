@@ -98,7 +98,7 @@ abstract class AbstractProfile implements Profile {
             path = p.substring(0, p.indexOf('.jar') + 4)
         }
         if (path) {
-            def matcher = pattern.matcher(path)
+            def matcher = pattern.matcher(path as CharSequence)
             if (matcher.matches()) {
                 this.version = matcher.group(1)
             }
@@ -130,7 +130,7 @@ abstract class AbstractProfile implements Profile {
         def commandsByName = profileConfig.get('commands')
         if (commandsByName instanceof Map) {
             def commandsMap = (Map) commandsByName
-            for (clsName in  commandsMap.keySet()) {
+            for (clsName in commandsMap.keySet()) {
                 def fileName = commandsMap[clsName].toString()
                 if (fileName.endsWith('.groovy')) {
                     GroovyScriptCommand cmd = (GroovyScriptCommand) classLoader.loadClass(clsName.toString()).newInstance()
@@ -372,23 +372,23 @@ abstract class AbstractProfile implements Profile {
             else {
                 if (description.completer) {
                     if (description.flags) {
-                        completers  << new ArgumentCompleter(
+                        completers << new ArgumentCompleter(
                                 commandNameCompleter,
                                 description.completer,
                                 new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
                     }
                     else {
-                        completers  << new ArgumentCompleter(commandNameCompleter, description.completer)
+                        completers << new ArgumentCompleter(commandNameCompleter, description.completer)
                     }
                 }
                 else {
                     if (description.flags) {
-                        completers  << new ArgumentCompleter(
+                        completers << new ArgumentCompleter(
                                 commandNameCompleter,
                                 new StringsCompleter(description.flags.collect { CommandArgument arg -> "-$arg.name".toString() }))
                     }
                     else {
-                        completers  << commandNameCompleter
+                        completers << commandNameCompleter
                     }
                 }
             }

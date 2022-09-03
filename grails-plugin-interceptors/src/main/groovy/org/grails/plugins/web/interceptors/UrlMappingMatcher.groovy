@@ -100,10 +100,10 @@ class UrlMappingMatcher implements Matcher {
 
     protected boolean doesMatchInternal(UrlMappingInfo info, String method) {
         (info != null &&
-            ((info.controllerName ?: '') ==~ controllerRegex) &&
-            ((info.actionName ?: '') ==~ actionRegex) &&
-            ((info.namespace ?: '') ==~ namespaceRegex) &&
-            ((method  ?: info.httpMethod ?: '') ==~ methodRegex))
+                ((info.controllerName ?: '') ==~ controllerRegex) &&
+                ((info.actionName ?: '') ==~ actionRegex) &&
+                ((info.namespace ?: '') ==~ namespaceRegex) &&
+                ((method ?: info.httpMethod ?: '') ==~ methodRegex))
     }
 
     @Override
@@ -208,10 +208,11 @@ class UrlMappingMatcher implements Matcher {
         Pattern actionExcludesRegex
         Pattern namespaceExcludesRegex
         Pattern methodExcludesRegex
+
         @Override
         boolean isExcluded(UrlMappingInfo info) {
             boolean controllerExclude = controllerExcludesRegex == null || ((info.controllerName ?: '') ==~ controllerExcludesRegex)
-            boolean actionExclude = actionExcludesRegex == null  || ((info.actionName ?: '') ==~ actionExcludesRegex)
+            boolean actionExclude = actionExcludesRegex == null || ((info.actionName ?: '') ==~ actionExcludesRegex)
             boolean namespaceExclude = namespaceExcludesRegex == null || ((info.namespace ?: '') ==~ namespaceExcludesRegex)
             boolean methodExclude = methodExcludesRegex == null || ((info.httpMethod ?: '') ==~ methodExcludesRegex)
 

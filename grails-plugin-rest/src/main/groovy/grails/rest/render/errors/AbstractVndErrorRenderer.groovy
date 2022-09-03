@@ -35,7 +35,7 @@ import grails.web.mapping.LinkGenerator
  * @since 2.3
  */
 @CompileStatic
-abstract class AbstractVndErrorRenderer  implements ContainerRenderer<Errors, Object> {
+abstract class AbstractVndErrorRenderer implements ContainerRenderer<Errors, Object> {
 
     public static final String LOGREF_ATTRIBUTE = 'logref'
     public static final String MESSAGE_ATTRIBUTE = 'message'

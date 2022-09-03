@@ -97,7 +97,7 @@ class LinkableTransform implements ASTTransformation {
 
         ClassNode parent = (ClassNode) astNodes[1]
         AnnotationNode annotationNode = (AnnotationNode) astNodes[0]
-        if (!MY_TYPE.equals(annotationNode.getClassNode())) {
+        if (annotationNode.getClassNode() != MY_TYPE) {
             return
         }
 

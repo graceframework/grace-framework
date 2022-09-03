@@ -46,7 +46,7 @@ class IOUtils extends SpringIOUtils {
      * @param file The file
      * @return The stream
      */
-    static BufferedInputStream openStream(File file)  {
+    static BufferedInputStream openStream(File file) {
         if (file.exists()) {
             if (file.directory) {
                 throw new IOException("File $file exists but is a directory")
@@ -268,16 +268,16 @@ class IOUtils extends SpringIOUtils {
             try {
                 def rootFile = new UrlResource(rootResource).file.canonicalFile
                 def rootPath = rootFile.path
-                def buildClassespath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
-                if (rootPath.contains(buildClassespath)) {
-                    return new File(rootPath - buildClassespath)
+                def buildClasspath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
+                if (rootPath.contains(buildClasspath)) {
+                    return new File(rootPath - buildClasspath)
                 }
                 File appDir = findGrailsApp(rootFile)
                 if (appDir != null) {
                     return appDir
                 }
             }
-            catch (FileNotFoundException fnfe) {
+            catch (FileNotFoundException ignored) {
                 return null
             }
         }
@@ -296,7 +296,7 @@ class IOUtils extends SpringIOUtils {
         File file = null
         if (applicationDir != null) {
             String fileName = className.replace('.' as char, File.separatorChar) + '.groovy'
-            List<File> allFiles = [ new File(applicationDir, 'src/main/groovy') ]
+            List<File> allFiles = [new File(applicationDir, 'src/main/groovy')]
             File[] files = new File(applicationDir, 'grails-app').listFiles(new FileFilter() {
 
                 @Override

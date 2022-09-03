@@ -268,7 +268,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                                 if (associatedEntity) {
                                     writtenObjects << value
                                     writeDomainWithEmbeddedAndLinks(context, associatedEntity.javaClass, value,
-                                            (StreamingJsonBuilder.StreamingJsonDelegate) delegate , locale, null, writtenObjects, referenceStack)
+                                            (StreamingJsonBuilder.StreamingJsonDelegate) delegate, locale, null, writtenObjects, referenceStack)
                                 }
                             }
                         }
@@ -306,7 +306,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
             link.hreflang = locale
             writeLink(link, locale, delegate)
             associationMap = (associationLinks ?
-                    writeAssociationLinks(context, object, locale, delegate, entity, metaClass) : [:]) as Map<Association,Object>
+                    writeAssociationLinks(context, object, locale, delegate, entity, metaClass) : [:]) as Map<Association, Object>
             associationMap
         }
         associationMap

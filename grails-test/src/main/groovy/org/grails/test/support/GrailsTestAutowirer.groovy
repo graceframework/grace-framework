@@ -32,7 +32,7 @@ class GrailsTestAutowirer {
     }
 
     /**
-     * Autowires the bean by name, processes any autowiring annotations,
+     * Autowired the bean by name, processes any autowiring annotations,
      * and set's the applicationContext if it implements ApplicationContextAware.
      */
     void autowire(bean) {

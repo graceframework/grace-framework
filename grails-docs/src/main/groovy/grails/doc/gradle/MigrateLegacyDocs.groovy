@@ -27,9 +27,14 @@ import grails.doc.LegacyDocMigrator
  */
 class MigrateLegacyDocs extends DefaultTask {
 
-    @InputDirectory File guideDir = new File(project.projectDir, 'src/guide')
-    @InputDirectory File resourcesDir = new File(project.projectDir, 'resources')
-    @OutputDirectory File outputDir = new File(project.projectDir, 'src/guide.migrated')
+    @InputDirectory
+    File guideDir = new File(project.projectDir, 'src/guide')
+
+    @InputDirectory
+    File resourcesDir = new File(project.projectDir, 'resources')
+
+    @OutputDirectory
+    File outputDir = new File(project.projectDir, 'src/guide.migrated')
 
     @TaskAction
     def migrate() {

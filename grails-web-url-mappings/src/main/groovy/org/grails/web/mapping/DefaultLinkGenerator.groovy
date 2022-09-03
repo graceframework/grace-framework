@@ -73,7 +73,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     @Qualifier('grailsUrlMappingsHolder')
     UrlMappingsHolder urlMappingsHolder
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     @Qualifier('grailsDomainClassMappingContext')
     MappingContext mappingContext
 
@@ -136,7 +136,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     "$encodedKey=$encodedValue"
                 }.join('&')
                 writer.append(uri.indexOf('?') >= 0 ? '&' : '?')
-                      .append paramString
+                        .append(paramString)
             }
         }
         else if (attrs.get(ATTRIBUTE_RELATIVE_URI) != null) {
@@ -419,7 +419,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
             u = webRequest?.baseUrl
             if (!u && !Environment.isWarDeployed()) {
-                u = "http://localhost:${System.getProperty('server.port') ?: '8080'}${contextPath ?: '' }"
+                u = "http://localhost:${System.getProperty('server.port') ?: '8080'}${contextPath ?: ''}"
             }
         }
         log.trace("Resolved base server URL: $u")

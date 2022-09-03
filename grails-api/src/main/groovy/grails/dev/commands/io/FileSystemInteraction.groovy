@@ -144,6 +144,7 @@ interface FileSystemInteraction {
     static class CopySpec {
 
         def from
+
         def into
 
         void from(path) {

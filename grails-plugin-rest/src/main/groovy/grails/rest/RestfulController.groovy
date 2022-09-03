@@ -62,7 +62,9 @@ class RestfulController<T> {
      * @return A list of resources
      */
     def index(Integer max) {
-        if (max < 0) { max = null }
+        if (max < 0) {
+            max = null
+        }
         params.max = Math.min(max ?: 10, 100)
         respond listAllResources(params), model: [("${resourceName}Count".toString()): countResources()]
     }
@@ -113,7 +115,7 @@ class RestfulController<T> {
             '*' {
                 response.addHeader(HttpHeaders.LOCATION,
                         grailsLinkGenerator.link(resource: this.controllerName, action: 'show', id: instance.id, absolute: true,
-                                            namespace: hasProperty('namespace') ? this.namespace : null))
+                                namespace: hasProperty('namespace') ? this.namespace : null))
                 respond instance, [status: CREATED, view: 'show']
             }
         }
@@ -170,7 +172,7 @@ class RestfulController<T> {
             '*' {
                 response.addHeader(HttpHeaders.LOCATION,
                         grailsLinkGenerator.link(resource: this.controllerName, action: 'show', id: instance.id, absolute: true,
-                                            namespace: hasProperty('namespace') ? this.namespace : null))
+                                namespace: hasProperty('namespace') ? this.namespace : null))
                 respond instance, [status: OK]
             }
         }

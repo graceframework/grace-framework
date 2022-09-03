@@ -38,8 +38,11 @@ import org.grails.io.support.SpringIOUtils
 class FileSystemInteractionImpl implements FileSystemInteraction {
 
     File baseDir
+
     ResourceLoader resourceLoader
+
     PathMatchingResourcePatternResolver resourcePatternResolver
+
     ResourceLocator resourceLocator
 
     FileSystemInteractionImpl(File baseDir, ResourceLoader resourceLoader = new DefaultResourceLoader()) {
@@ -250,7 +253,7 @@ class FileSystemInteractionImpl implements FileSystemInteraction {
         try {
             return resourcePatternResolver.getResources(pattern).toList()
         }
-        catch (e) {
+        catch (ignored) {
             return []
         }
     }

@@ -48,7 +48,7 @@ trait RequestForwarder implements WebAttributes {
     private LinkGenerator linkGenerator
 
     @Generated
-    @Autowired(required=false)
+    @Autowired(required = false)
     void setUrlConverter(UrlConverter urlConverter) {
         this.urlConverter = urlConverter
     }

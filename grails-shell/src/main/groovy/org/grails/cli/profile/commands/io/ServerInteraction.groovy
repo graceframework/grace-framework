@@ -54,7 +54,7 @@ trait ServerInteraction {
             new Socket(host, port)
             return true
         }
-        catch (e) {
+        catch (ignored) {
             return false
         }
     }

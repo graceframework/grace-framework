@@ -32,6 +32,7 @@ import org.springframework.util.StringUtils
 class NavigableMapPropertySource extends MapPropertySource {
 
     final String[] propertyNames
+
     final String[] navigablePropertyNames
 
     NavigableMapPropertySource(String name, NavigableMap source) {

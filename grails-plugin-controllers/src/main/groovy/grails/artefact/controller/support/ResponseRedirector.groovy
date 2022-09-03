@@ -53,7 +53,7 @@ trait ResponseRedirector implements WebAttributes {
     private Collection<RedirectEventListener> redirectListeners
 
     @Generated
-    @Autowired(required=false)
+    @Autowired(required = false)
     void setRedirectListeners(Collection<RedirectEventListener> redirectListeners) {
         this.redirectListeners = redirectListeners
     }

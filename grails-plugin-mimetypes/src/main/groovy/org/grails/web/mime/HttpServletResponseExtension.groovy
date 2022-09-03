@@ -84,7 +84,7 @@ class HttpServletResponseExtension {
                     mimeTypes = context.getBean(MimeUtility).getKnownMimeTypes() as MimeType[]
                     loadMimeTypeConfig(context.getBean(GrailsApplication).config)
                 }
-                catch (NoSuchBeanDefinitionException e) {
+                catch (NoSuchBeanDefinitionException ignored) {
                     mimeTypes = MimeType.createDefaults()
                 }
             }
@@ -188,7 +188,7 @@ class HttpServletResponseExtension {
             if (formatOverride) {
                 def allMimes = getMimeTypes()
                 MimeType mime = allMimes.find { MimeType it -> it.extension == formatOverride }
-                result = [ mime ?: getMimeTypes()[0] ] as MimeType[]
+                result = [mime ?: getMimeTypes()[0]] as MimeType[]
 
                 // Save the evaluated format as a request attribute.
                 // This is a blatant hack because we should to this

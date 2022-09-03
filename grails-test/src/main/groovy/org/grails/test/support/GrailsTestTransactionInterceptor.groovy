@@ -33,8 +33,8 @@ class GrailsTestTransactionInterceptor {
     static final String TRANSACTIONAL = 'transactional'
 
     ApplicationContext applicationContext
-    protected Map<String,TransactionStatus> transactionStatuses
-    protected Map<String,PlatformTransactionManager> transactionManagers
+    protected Map<String, TransactionStatus> transactionStatuses
+    protected Map<String, PlatformTransactionManager> transactionManagers
 
     GrailsTestTransactionInterceptor(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext

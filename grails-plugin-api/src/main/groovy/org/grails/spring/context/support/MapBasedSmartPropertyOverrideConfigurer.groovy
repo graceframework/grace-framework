@@ -87,7 +87,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
     }
 
     protected BeanDefinition getTargetBeanDefinition(ConfigurableListableBeanFactory factory,
-            String beanName, BeanDefinition beanDefinition) {
+                                                     String beanName, BeanDefinition beanDefinition) {
 
         if (beanDefinition.factoryBeanName) {
             beanDefinition
@@ -99,7 +99,7 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
     }
 
     protected BeanDefinition getTargetBeanDefinition(ConfigurableListableBeanFactory factory, String beanName,
-            BeanDefinition beanDefinition, Class beanClass) {
+                                                     BeanDefinition beanDefinition, Class beanClass) {
 
         if (FactoryBean.isAssignableFrom(beanClass)) {
             getTargetBeanDefinitionForFactoryBean(factory, beanName, beanDefinition, beanClass)
@@ -110,7 +110,8 @@ class MapBasedSmartPropertyOverrideConfigurer implements BeanFactoryPostProcesso
     }
 
     protected BeanDefinition getTargetBeanDefinitionForFactoryBean(ConfigurableListableBeanFactory factory,
-            String beanName, BeanDefinition beanDefinition, Class<? extends FactoryBean> beanClass) {
+                                                                   String beanName, BeanDefinition beanDefinition,
+                                                                   Class<? extends FactoryBean> beanClass) {
 
         if (TransactionProxyFactoryBean.isAssignableFrom(beanClass)) {
             getTargetBeanDefinition(factory, beanName,

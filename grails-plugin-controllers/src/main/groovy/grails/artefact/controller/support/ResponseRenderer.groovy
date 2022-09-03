@@ -145,7 +145,7 @@ trait ResponseRenderer extends WebAttributes {
         applyContentType response, argMap, closure
         handleStatusArgument argMap, webRequest, response
 
-        if (BUILDER_TYPE_JSON.equals(argMap.get(ARGUMENT_BUILDER)) || isJSONResponse(response)) {
+        if (BUILDER_TYPE_JSON == argMap.get(ARGUMENT_BUILDER) || isJSONResponse(response)) {
             renderJsonInternal(response, closure)
             webRequest.renderView = false
         }
@@ -303,7 +303,7 @@ trait ResponseRenderer extends WebAttributes {
             try {
                 View view = viewResolver.resolveView(templateUri, webRequest.locale)
                 if (view instanceof GroovyPageView) {
-                    ((GroovyPageTemplate)((GroovyPageView) view).template).allowSettingContentType = true
+                    ((GroovyPageTemplate) ((GroovyPageView) view).template).allowSettingContentType = true
                 }
                 if (view == null) {
                     throw new ControllerExecutionException("Unable to load template for uri [$templateUri]. Template not found.")
@@ -393,7 +393,7 @@ trait ResponseRenderer extends WebAttributes {
                         input = IOUtils.openStream(o)
                     }
                     else if (o instanceof InputStream) {
-                        input = (InputStream)o
+                        input = (InputStream) o
                     }
                     else if (o instanceof byte[]) {
                         input = new ByteArrayInputStream((byte[]) o)

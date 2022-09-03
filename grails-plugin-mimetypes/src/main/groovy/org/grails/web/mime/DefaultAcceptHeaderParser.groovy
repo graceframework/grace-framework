@@ -122,7 +122,7 @@ class DefaultAcceptHeaderParser implements AcceptHeaderParser {
         mimes as MimeType[]
     }
 
-    protected void createMimeTypeAndAddToList(String name, MimeType[] mimeConfig, List<MimeType> mimes, Map<String,String> params = null) {
+    protected void createMimeTypeAndAddToList(String name, MimeType[] mimeConfig, List<MimeType> mimes, Map<String, String> params = null) {
         def mime = params ? new MimeType(name, params) : new MimeType(name)
         //First try to find the exact match for the mime type using name and version. If version is not set,  consider
         // version match to be successful.

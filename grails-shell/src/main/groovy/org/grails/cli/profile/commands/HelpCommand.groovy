@@ -141,7 +141,7 @@ grails [environment]* [target] [arguments]*'
         }
         commands.collect { Command cmd -> cmd.description }
                 .unique { CommandDescription cmd -> cmd.name }
-                .sort(false) { CommandDescription itDesc ->  itDesc.name }
+                .sort(false) { CommandDescription itDesc -> itDesc.name }
     }
 
 }

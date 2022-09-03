@@ -143,7 +143,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         delegateMap.entrySet()
     }
 
-    void merge(Map sourceMap, boolean parseFlatKeys=false) {
+    void merge(Map sourceMap, boolean parseFlatKeys = false) {
         mergeMaps(this, '', this, sourceMap, parseFlatKeys)
     }
 
@@ -178,8 +178,8 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     private boolean shouldSkipBlock(Map sourceMap, String path) {
         Object springProfileDefined = System.properties.getProperty(SPRING_PROFILES)
         boolean hasSpringProfiles =
-            sourceMap.get(SPRING) instanceof Map && ((Map) sourceMap.get(SPRING)).get(PROFILES) ||
-            path == SPRING && sourceMap.get(PROFILES)
+                sourceMap.get(SPRING) instanceof Map && ((Map) sourceMap.get(SPRING)).get(PROFILES) ||
+                        path == SPRING && sourceMap.get(PROFILES)
 
         !springProfileDefined && hasSpringProfiles
     }
@@ -191,7 +191,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         if (subscriptEnd > subscriptStart) {
             if (subscriptStart > -1) {
                 String k = sourceKey[0..<subscriptStart]
-                String index = sourceKey[subscriptStart + 1..< subscriptEnd]
+                String index = sourceKey[subscriptStart + 1..<subscriptEnd]
                 String remainder = subscriptEnd != sourceKey.length() - 1 ? sourceKey[subscriptEnd + 2..-1] : null
                 if (remainder) {
                     boolean isNumber = index.isNumber()
@@ -271,7 +271,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     }
                 }
                 String newPath = path ? "${path}.${sourceKey}" : sourceKey
-                mergeMaps(rootMap, newPath , subMap, (Map) sourceValue, parseFlatKeys)
+                mergeMaps(rootMap, newPath, subMap, (Map) sourceValue, parseFlatKeys)
                 newValue = subMap
             }
             else {
@@ -400,7 +400,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     Map<String, Object> toFlatConfig() {
-        Map<String,Object> flatConfig = [:]
+        Map<String, Object> flatConfig = [:]
         flattenKeys(flatConfig, this, [], false)
         flatConfig
     }
@@ -438,7 +438,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                             flatConfig.put(fullKey, value)
                         }
                         int index = 0
-                        for (Object item: (Collection) value) {
+                        for (Object item : (Collection) value) {
                             String collectionKey = "${fullKey}[${index}]"
                             flatConfig.put(collectionKey, forceStrings ? String.valueOf(item) : item)
                             index++

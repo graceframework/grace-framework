@@ -65,7 +65,7 @@ class ErrorsViewStackTracePrinter extends DefaultErrorsPrinter {
                 path = abs[i..-1]
             }
         }
-        catch (e) {
+        catch (ignored) {
             path = resource.filename
         }
         """\

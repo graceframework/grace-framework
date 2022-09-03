@@ -42,7 +42,7 @@ class YamlTocStrategy {
     protected UserGuideNode load(File file) {
         file.withInputStream { input ->
             process(parser.load(input))
-        }
+        } as UserGuideNode
     }
 
     protected UserGuideNode load(InputStream input) {

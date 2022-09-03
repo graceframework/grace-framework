@@ -179,11 +179,11 @@ class ControllersGrailsPlugin extends Plugin {
     @CompileStatic
     static class GrailsWebMvcConfigurer implements WebMvcConfigurer {
 
-        private static final String[] SERVLET_RESOURCE_LOCATIONS = [ '/' ]
+        private static final String[] SERVLET_RESOURCE_LOCATIONS = ['/']
 
         private static final String[] CLASSPATH_RESOURCE_LOCATIONS = [
-            'classpath:/META-INF/resources/', 'classpath:/resources/',
-            'classpath:/static/', 'classpath:/public/' ]
+                'classpath:/META-INF/resources/', 'classpath:/resources/',
+                'classpath:/static/', 'classpath:/public/']
 
         private static final String[] RESOURCE_LOCATIONS
         static {
@@ -225,7 +225,7 @@ class ControllersGrailsPlugin extends Plugin {
     }
 
     @Override
-    void onChange( Map<String, Object> event) {
+    void onChange(Map<String, Object> event) {
         if (!(event.source instanceof Class)) {
             return
         }

@@ -73,7 +73,7 @@ class GroovyScriptCommandTransform implements ASTTransformation {
             if (call.methodAsString == 'description' && (call.arguments instanceof ArgumentListExpression)) {
                 def constructorBody = new BlockStatement()
                 def defaultConstructor = getDefaultConstructor(classNode)
-                if (defaultConstructor == null)  {
+                if (defaultConstructor == null) {
                     defaultConstructor = new ConstructorNode(Modifier.PUBLIC, constructorBody)
                     classNode.addConstructor(defaultConstructor)
                 }
@@ -98,7 +98,7 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                             BlockStatement bodyBlock = (BlockStatement) body
                             for (Statement s in bodyBlock.statements) {
                                 if (s instanceof ExpressionStatement) {
-                                    ExpressionStatement es = (ExpressionStatement)s
+                                    ExpressionStatement es = (ExpressionStatement) s
 
                                     def expr = es.expression
                                     if (expr instanceof MethodCallExpression) {

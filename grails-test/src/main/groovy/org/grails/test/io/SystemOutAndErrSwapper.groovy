@@ -134,7 +134,7 @@ class SystemOutAndErrSwapper {
             try {
                 textOut.write String.valueOf(o)
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
                 setError()
             }
         }
@@ -145,7 +145,7 @@ class SystemOutAndErrSwapper {
                 textOut.write s
                 textOut.flush()
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
                 setError()
             }
         }
@@ -157,7 +157,7 @@ class SystemOutAndErrSwapper {
                 textOut.newLine()
                 textOut.flush()
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
                 setError()
             }
         }
@@ -169,7 +169,7 @@ class SystemOutAndErrSwapper {
                 textOut.newLine()
                 textOut.flush()
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
                 setError()
             }
         }

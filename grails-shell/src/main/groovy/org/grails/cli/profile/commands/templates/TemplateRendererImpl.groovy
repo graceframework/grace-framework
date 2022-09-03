@@ -45,7 +45,10 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
     ExecutionContext executionContext
     Profile profile
     ProfileRepository profileRepository
-    @Delegate FileSystemInteraction fileSystemInteraction
+
+    @Delegate
+    FileSystemInteraction fileSystemInteraction
+
     private final Map<String, Template> templateCache = [:]
 
     TemplateRendererImpl(ExecutionContext executionContext,
@@ -105,7 +108,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
     void render(CharSequence template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                executionContext.console.warn("Destination file ${projectPath( destination )} already exists, skipping...")
+                executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }
             else {
                 def templateEngine = new GStringTemplateEngine()
@@ -115,7 +118,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                 }
                 catch (e) {
                     destination.delete()
-                    throw new TemplateException("Error rendering template to destination ${projectPath( destination )}: ${e.message}", e)
+                    throw new TemplateException("Error rendering template to destination ${projectPath(destination)}: ${e.message}", e)
                 }
             }
         }
@@ -142,7 +145,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
     void render(File template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                executionContext.console.warn("Destination file ${projectPath( destination )} already exists, skipping...")
+                executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }
             else {
                 Template t = templateCache[template.absolutePath]
@@ -153,17 +156,17 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
                     }
                     catch (e) {
                         throw new TemplateException(
-                                "Error rendering template [$template] to destination ${projectPath( destination )}: ${e.message}", e)
+                                "Error rendering template [$template] to destination ${projectPath(destination)}: ${e.message}", e)
                     }
                 }
                 try {
                     writeTemplateToDestination(t, model, destination)
-                    executionContext.console.addStatus("Rendered template ${template.name} to destination ${projectPath( destination )}")
+                    executionContext.console.addStatus("Rendered template ${template.name} to destination ${projectPath(destination)}")
                 }
                 catch (Throwable e) {
                     destination.delete()
                     throw new TemplateException(
-                            "Error rendering template [$template] to destination ${projectPath( destination )}: ${e.message}", e)
+                            "Error rendering template [$template] to destination ${projectPath(destination)}: ${e.message}", e)
                 }
             }
         }
@@ -190,7 +193,7 @@ class TemplateRendererImpl implements TemplateRenderer, ProfileRepositoryAware {
     void render(Resource template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                executionContext.console.warn("Destination file ${projectPath( destination )} already exists, skipping...")
+                executionContext.console.warn("Destination file ${projectPath(destination)} already exists, skipping...")
             }
             else if (!template?.exists()) {
                 throw new TemplateException("Template [$template.filename] not found.")

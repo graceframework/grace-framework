@@ -56,7 +56,7 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
         this.targetType = targetType
     }
 
-    DefaultJsonRenderer(Class<T> targetType, MimeType...mimeTypes) {
+    DefaultJsonRenderer(Class<T> targetType, MimeType... mimeTypes) {
         this.targetType = targetType
         this.mimeTypes = mimeTypes
     }

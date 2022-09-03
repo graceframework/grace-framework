@@ -31,7 +31,7 @@ class StaticJarProfileRepository extends AbstractJarProfileRepository {
 
     final URL[] urls
 
-    StaticJarProfileRepository(ClassLoader parent, URL...urls) {
+    StaticJarProfileRepository(ClassLoader parent, URL... urls) {
         this.urls = urls
         for (url in urls) {
             registerProfile(url, parent)

@@ -88,20 +88,20 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
     boolean reloadingEnabled = RELOADING_ENABLED
 
     GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
-                                   ApplicationContext applicationContext, Class...classes) {
+                                   ApplicationContext applicationContext, Class... classes) {
         this(lifeCycle, applicationContext, null, null, classes)
     }
 
     GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
                                    ApplicationContext applicationContext,
-                                   GrailsPluginManager pluginManager, Class...classes) {
+                                   GrailsPluginManager pluginManager, Class... classes) {
         this(lifeCycle, applicationContext, pluginManager.getApplication(), pluginManager, classes)
     }
 
     GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
                                    ApplicationContext applicationContext,
                                    GrailsApplication grailsApplication,
-                                   GrailsPluginManager pluginManager, Class...classes) {
+                                   GrailsPluginManager pluginManager, Class... classes) {
         this.lifeCycle = lifeCycle
         if (lifeCycle instanceof GrailsApplicationClass) {
             this.applicationClass = (GrailsApplicationClass) lifeCycle
@@ -151,7 +151,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
     protected void performGrailsInitializationSequence() {
         pluginManager.doArtefactConfiguration()
         grailsApplication.initialise()
-        // register plugin provided classes first, this gives the oppurtunity
+        // register plugin provided classes first, this gives the opportunity
         // for application classes to override those provided by a plugin
         pluginManager.registerProvidedArtefacts(grailsApplication)
         for (cls in classes) {
@@ -319,7 +319,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             if (event instanceof ContextRefreshedEvent) {
                 if (context.containsBean('grailsDomainClassMappingContext')) {
                     grailsApplication.setMappingContext(
-                        context.getBean('grailsDomainClassMappingContext', MappingContext)
+                            context.getBean('grailsDomainClassMappingContext', MappingContext)
                     )
                 }
                 Environment.setInitializing(false)

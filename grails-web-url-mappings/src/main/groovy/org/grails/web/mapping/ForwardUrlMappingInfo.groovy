@@ -41,12 +41,19 @@ class ForwardUrlMappingInfo extends AbstractUrlMappingInfo {
     Map parameters = new HashMap()
 
     void setController(String controller) { controllerName = controller }
+
     String getController() { controllerName }
+
     void setAction(String action) { actionName = action }
+
     String getAction() { actionName }
+
     void setNamespace(String namespace) { this.namespace = namespace }
+
     void setPluginName(String plugin) { pluginName = plugin }
+
     void setView(String view) { viewName = view }
+
     String getView() { viewName }
 
     void setParams(Map params) {

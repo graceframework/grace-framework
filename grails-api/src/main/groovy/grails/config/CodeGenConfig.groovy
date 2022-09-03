@@ -120,7 +120,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     @Override
-    def <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
+    <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
         def value = getProperty(key, targetType)
         if (value == null) {
             throw new IllegalStateException("Property [$key] not found")
@@ -152,7 +152,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         }
     }
 
-    @CompileDynamic // fails with CompileStatic!
+    @CompileDynamic
+    // fails with CompileStatic!
     void loadYml(InputStream input) {
         Yaml yaml = new Yaml(new SafeConstructor())
         for (Object yamlObject : yaml.loadAll(input)) {
@@ -162,11 +163,11 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         }
     }
 
-    void mergeMap(Map sourceMap, boolean parseFlatKeys =false) {
+    void mergeMap(Map sourceMap, boolean parseFlatKeys = false) {
         configMap.merge(sourceMap, parseFlatKeys)
     }
 
-    public <T> T navigate(Class<T> requiredType, String... path) {
+    <T> T navigate(Class<T> requiredType, String... path) {
         Object result = configMap.navigate(path)
         if (result == null) {
             return null

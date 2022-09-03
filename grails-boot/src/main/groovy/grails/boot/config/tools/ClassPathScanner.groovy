@@ -144,7 +144,7 @@ class ClassPathScanner {
             }
 
             if (pkg == '') {
-                // try the default package in case of a script without recursing into subpackages
+                // try the default package in case of a script without recurring into subpackages
                 log.warn('The application defines a Groovy source using the default package. Please move all Groovy sources into a package.')
                 String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + '*.class'
                 scanUsingPattern(resourcePatternResolver, pattern, classLoader, annotationFilter, classes)
@@ -263,7 +263,7 @@ class ClassPathScanner {
             try {
                 return super.loadClass(name, resolve)
             }
-            catch (ClassNotFoundException cnfe) {
+            catch (ClassNotFoundException ignored) {
                 return applicationClass.getClassLoader().loadClass(name)
             }
         }

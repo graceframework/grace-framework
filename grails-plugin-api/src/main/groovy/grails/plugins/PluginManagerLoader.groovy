@@ -21,7 +21,7 @@ package grails.plugins
  * @author Graeme Rocher
  * @since 2.4
  */
-public interface PluginManagerLoader {
+interface PluginManagerLoader {
 
     /**
      * Load the available plugins

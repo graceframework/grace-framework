@@ -45,7 +45,8 @@ class DomainClassGrailsPlugin extends Plugin {
     def dependsOn = [i18n: version]
     def loadAfter = ['controllers', 'dataSource']
 
-    Closure doWithSpring() { { ->
+    Closure doWithSpring() {
+        { ->
             GrailsApplication application = grailsApplication
             validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
                 bean.lazyInit = true

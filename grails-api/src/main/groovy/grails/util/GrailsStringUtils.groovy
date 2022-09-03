@@ -59,7 +59,7 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param str The string to apply the substring
      * @param token The token to match
      */
-    static String substringBefore(String str, String token)  {
+    static String substringBefore(String str, String token) {
         if (token == null) {
             return str
         }
@@ -86,7 +86,7 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param str The string to apply the substring
      * @param token The token to match
      */
-    static String substringBeforeLast(String str, String token)  {
+    static String substringBeforeLast(String str, String token) {
         if (token == null) {
             return str
         }
@@ -113,7 +113,7 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param str The string to apply the substring
      * @param token The token to match
      */
-    static String substringAfter(String str, String token)  {
+    static String substringAfter(String str, String token) {
         if (token == null) {
             return str
         }
@@ -140,7 +140,7 @@ abstract class GrailsStringUtils extends StringUtils {
      * @param str The string to apply the substring
      * @param token The token to match
      */
-    static String substringAfterLast(String str, String token)  {
+    static String substringAfterLast(String str, String token) {
         if (token == null) {
             return str
         }

@@ -179,7 +179,7 @@ class MainClassFinder {
     }
 
     @CompileStatic
-    static class MainMethodFinder extends ClassVisitor  {
+    static class MainMethodFinder extends ClassVisitor {
 
         boolean found = false
 

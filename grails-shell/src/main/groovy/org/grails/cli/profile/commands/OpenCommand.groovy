@@ -47,7 +47,7 @@ class OpenCommand implements ProjectCommand, Completer {
             if (filePath == 'test-report') {
                 filePath = 'build/reports/tests/index.html'
             }
-            if (Desktop.isDesktopSupported())  {
+            if (Desktop.isDesktopSupported()) {
                 try {
                     Desktop.desktop.open(new File(filePath))
                     return true

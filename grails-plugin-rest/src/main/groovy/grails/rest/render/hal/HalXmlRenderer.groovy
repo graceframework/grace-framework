@@ -159,8 +159,8 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
 
     protected void startResourceTag(XMLStreamWriter writer, String resourceHref, Locale locale, String title) {
         writer.startNode(RESOURCE_TAG)
-            .attribute(HREF_ATTRIBUTE, resourceHref)
-            .attribute(HREFLANG_ATTRIBUTE, locale.language)
+                .attribute(HREF_ATTRIBUTE, resourceHref)
+                .attribute(HREFLANG_ATTRIBUTE, locale.language)
 
         if (title) {
             writer.attribute(TITLE_ATTRIBUTE, title)
@@ -170,9 +170,9 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
     void writeLink(Link link, Locale locale, writerObject) {
         XMLStreamWriter writer = ((XML) writerObject).getWriter()
         writer.startNode(LINK_TAG)
-            .attribute(RELATIONSHIP_ATTRIBUTE, link.rel)
-            .attribute(HREF_ATTRIBUTE, link.href)
-            .attribute(HREFLANG_ATTRIBUTE, (link.hreflang ?: locale).language)
+                .attribute(RELATIONSHIP_ATTRIBUTE, link.rel)
+                .attribute(HREF_ATTRIBUTE, link.href)
+                .attribute(HREFLANG_ATTRIBUTE, (link.hreflang ?: locale).language)
 
         final title = link.title
         if (title) {

@@ -144,7 +144,8 @@ class GrailsApp extends SpringApplication {
         configuredEnvironment = environment
     }
 
-    @CompileDynamic // TODO: Report Groovy VerifierError
+    @CompileDynamic
+    // TODO: Report Groovy VerifierError
     protected void enableDevelopmentModeWatch(Environment environment, ConfigurableApplicationContext applicationContext, String... args) {
         def location = environment.getReloadLocation()
 
@@ -402,7 +403,7 @@ class GrailsApp extends SpringApplication {
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     static ConfigurableApplicationContext run(Class<?> source, String... args) {
-        run([ source ] as Class[], args)
+        run([source] as Class[], args)
     }
 
     /**

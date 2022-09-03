@@ -122,7 +122,7 @@ trait RestResponder {
         internalRespond value, args
     }
 
-    private internalRespond(Object value, Map args=[:]) {
+    private internalRespond(Object value, Map args = [:]) {
         Integer statusCode
         if (args.status) {
             final statusValue = args.status

@@ -213,7 +213,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     Set<File> findAllFilesByName(File projectDir, String fileName) {
-        Set<File> files = (Set)[]
+        Set<File> files = (Set) []
         if (projectDir.exists()) {
             Files.walkFileTree(projectDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
@@ -333,7 +333,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
             cmd.console.addStatus(
-                "${name == 'create-plugin' ? 'Plugin' : 'Application'} created at ${projectTargetDirectory.absolutePath}"
+                    "${name == 'create-plugin' ? 'Plugin' : 'Application'} created at ${projectTargetDirectory.absolutePath}"
             )
             if (profileInstance.instructions) {
                 cmd.console.addStatus(profileInstance.instructions)
@@ -380,13 +380,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<String> features = commandLine.optionValue('features')?.toString()?.split(',')?.toList()
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
-            appName: appName,
-            baseDir: executionContext.baseDir,
-            profileName: profileName,
-            grailsVersion: Environment.getPackage().getImplementationVersion() ?: GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS,
-            features: features,
-            inplace: inPlace,
-            console: executionContext.console
+                appName: appName,
+                baseDir: executionContext.baseDir,
+                profileName: profileName,
+                grailsVersion: Environment.getPackage().getImplementationVersion() ?: GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS,
+                features: features,
+                inplace: inPlace,
+                console: executionContext.console
         )
 
         this.handle(cmd)

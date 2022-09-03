@@ -81,8 +81,8 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             final title = getResourceTitle(context.resourcePath, locale)
             XMLStreamWriter writer = xml.getWriter()
             writer
-                .startNode(FEED_TAG)
-                .attribute(XMLNS_ATTRIBUTE, ATOM_NAMESPACE)
+                    .startNode(FEED_TAG)
+                    .attribute(XMLNS_ATTRIBUTE, ATOM_NAMESPACE)
                     .startNode(TITLE_ATTRIBUTE)
                     .characters(title)
                     .end()
@@ -130,7 +130,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             if (dateCreated) {
                 dateCreatedId = ",${ID_DATE_FORMAT.format(dateCreated)}"
             }
-            url = "${url.substring(0, i)}${dateCreatedId}:${ id ?: url.substring(i, url.length())}"
+            url = "${url.substring(0, i)}${dateCreatedId}:${id ?: url.substring(i, url.length())}"
         }
 
         "tag:$url"
@@ -152,24 +152,24 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
         }
         if (!entity.getPropertyByName(TITLE_ATTRIBUTE)) {
             writer.startNode(TITLE_ATTRIBUTE)
-                .characters(object.toString())
-                .end()
+                    .characters(object.toString())
+                    .end()
         }
         final dateCreated = formatDateCreated(object)
         if (dateCreated) {
             writer.startNode(PUBLISHED_TAG)
-                .characters(dateCreated)
-                .end()
+                    .characters(dateCreated)
+                    .end()
         }
         final lastUpdated = formatLastUpdated(object)
         if (lastUpdated) {
             writer.startNode(UPDATED_TAG)
-                .characters(lastUpdated)
-                .end()
+                    .characters(lastUpdated)
+                    .end()
         }
         writer.startNode(ID_TAG)
-            .characters(getObjectId(entity, object))
-            .end()
+                .characters(getObjectId(entity, object))
+                .end()
 
         def linkSelf = new Link(RELATIONSHIP_SELF, resourceHref)
         linkSelf.title = title

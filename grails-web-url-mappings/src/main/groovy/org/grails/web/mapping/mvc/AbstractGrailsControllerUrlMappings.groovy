@@ -58,7 +58,7 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
             registerController((GrailsControllerClass) gc)
         }
 
-        for (Map.Entry<ControllerKey, GrailsControllerClass> entry: deferredMappings.entrySet()) {
+        for (Map.Entry<ControllerKey, GrailsControllerClass> entry : deferredMappings.entrySet()) {
             mappingsToGrailsControllerMap.putIfAbsent(entry.key, entry.value)
         }
     }
@@ -214,7 +214,7 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
     }
 
     protected UrlMappingInfo collectControllerMapping(UrlMappingInfo info) {
-        GrailsControllerClass  controllerClass = info ? mappingsToGrailsControllerMap.get(
+        GrailsControllerClass controllerClass = info ? mappingsToGrailsControllerMap.get(
                 new ControllerKey(info.namespace, info.controllerName, info.actionName, info.pluginName)) : null
 
         if (controllerClass && info) {

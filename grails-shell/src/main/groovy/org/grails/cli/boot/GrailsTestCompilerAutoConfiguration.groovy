@@ -33,11 +33,11 @@ import grails.util.Environment
 class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     public static final String[] DEFAULT_IMPORTS = [
-        'spock.lang',
-        'grails.test.mixin',
-        'grails.test.mixin.integration',
-        'grails.test.mixin.support',
-        'grails.artefact'
+            'spock.lang',
+            'grails.test.mixin',
+            'grails.test.mixin.integration',
+            'grails.test.mixin.support',
+            'grails.artefact'
     ] as String[]
 
     ClassNode lastMatch = null

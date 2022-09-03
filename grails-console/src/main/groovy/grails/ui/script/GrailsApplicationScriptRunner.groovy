@@ -42,7 +42,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
     }
 
     @Override
-    ConfigurableApplicationContext run(String...args) {
+    ConfigurableApplicationContext run(String... args) {
         ConfigurableApplicationContext ctx
         try {
             ctx = super.run(args)
@@ -110,7 +110,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
             try {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
             }
-            catch (Throwable e) {
+            catch (Throwable ignored) {
                 System.err.println('Application class not found')
                 System.exit(1)
             }

@@ -34,7 +34,7 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
 
     GspTagSourceMacro(basedir) {
         if (!(basedir instanceof Collection || basedir.class.array)) {
-            basedir = [ basedir ]
+            basedir = [basedir]
         }
         baseDirs = basedir.collect { f -> f as File }
     }

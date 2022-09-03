@@ -30,6 +30,7 @@ class CommandArgument {
      * The name of the argument
      */
     String name
+
     /**
      * The description of the argument
      */

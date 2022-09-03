@@ -64,7 +64,7 @@ class GrailsVersionUtils {
                 return true
             }
         }
-        else if (pluginVersion.equals(trimTag(requiredVersion))) {
+        else if (pluginVersion == trimTag(requiredVersion)) {
             return true
         }
 

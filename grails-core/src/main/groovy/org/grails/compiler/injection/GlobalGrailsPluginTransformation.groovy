@@ -53,7 +53,7 @@ import org.grails.io.support.UrlResource
  * @author Michael Yan
  * @since 3.0
  */
-@GroovyASTTransformation(phase= CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 @CompileStatic
 class GlobalGrailsPluginTransformation implements ASTTransformation, CompilationUnitAware {
 

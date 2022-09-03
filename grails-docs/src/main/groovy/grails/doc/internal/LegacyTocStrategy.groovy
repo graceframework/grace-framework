@@ -34,7 +34,7 @@ class LegacyTocStrategy {
                         nums2 << 0
                     }
                     def result = 0
-                    for (i in 0..< nums1.size()) {
+                    for (i in 0..<nums1.size()) {
                         result = nums1[i].compareTo(nums2[i])
                         if (result != 0) {
                             break

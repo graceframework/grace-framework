@@ -21,6 +21,6 @@ package grails.compiler.ast
  * @author Graeme Rocher
  * @since 3.0
  */
-public interface GlobalClassInjector extends ClassInjector {
+interface GlobalClassInjector extends ClassInjector {
 
 }

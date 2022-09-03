@@ -33,10 +33,12 @@ class ArtefactVariableResolver {
      * The artifact name and package
      */
     String artifactPackage, artifactName
+
     /**
      * The suffix used as a convention for the file
      */
     String convention
+
     Map<String, String> variables = [:]
 
     ArtefactVariableResolver(String artifactName, String artifactPackage = null) {

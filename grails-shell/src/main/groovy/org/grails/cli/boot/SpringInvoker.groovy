@@ -75,6 +75,7 @@ class SpringInvoker {
                     return new Enumeration<URL>() {
 
                         URL current = oneRes
+
                         @Override
                         boolean hasMoreElements() {
                             current != null

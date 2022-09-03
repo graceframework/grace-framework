@@ -219,7 +219,7 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
         else {
             String dir = getNaturalName(name)
             def link = "$contextPath/ref/${dir}/${view}.html"
-            buffer <<  "<a href=\"$link\" class=\"$name\">$view</a>"
+            buffer << "<a href=\"$link\" class=\"$name\">$view</a>"
         }
     }
 

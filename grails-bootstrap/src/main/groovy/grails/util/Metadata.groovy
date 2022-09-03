@@ -220,7 +220,7 @@ class Metadata extends PropertySourcePropertyResolver {
         Reference<Metadata> ref = HOLDER.get()
         if (ref != null) {
             Metadata metadata = ref.get()
-            if (metadata != null && metadata.getMetadataFile() != null && metadata.getMetadataFile().equals(file)) {
+            if (metadata != null && metadata.getMetadataFile() != null && metadata.getMetadataFile() == file) {
                 return metadata
             }
             createAndBindNew(file)

@@ -70,7 +70,7 @@ class TomcatJDBCPoolMBeanExporter extends MBeanExporter {
 
     protected ObjectName createJmxObjectName(String beanName, org.apache.tomcat.jdbc.pool.DataSource dataSource)
             throws MalformedObjectNameException {
-        Hashtable<String,String> properties = new Hashtable<String, String>()
+        Hashtable<String, String> properties = new Hashtable<String, String>()
         properties.type = 'ConnectionPool'
         properties.application = ((grailsApplication?.getMetadata()?.getApplicationName()) ?: 'grailsApplication')
                 .replaceAll(/[,=;:]/, '_')

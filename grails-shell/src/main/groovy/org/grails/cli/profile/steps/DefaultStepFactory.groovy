@@ -35,12 +35,12 @@ class DefaultStepFactory implements StepFactory {
             gradle: GradleStep,
             execute: ExecuteStep,
             mkdir: MkdirStep
-    ]
+    ] as Map<String, Class<? extends Step>>
 
     @Override
     Step createStep(String name, Command command, Map parameters) {
         if (command instanceof ProfileCommand) {
-            return steps[name]?.newInstance(command, parameters)
+            return steps[name]?.newInstance(command, parameters) as Step
         }
     }
 
