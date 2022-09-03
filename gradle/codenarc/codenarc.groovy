@@ -146,11 +146,11 @@ ruleset {
     // Instanceof
     // LocaleSetDefault
     // NestedForLoop
-    // OptionalCollectionReturnType
-    // OptionalField
-    // OptionalMethodParameter
-    // PrivateFieldCouldBeFinal
-    // PublicInstanceField
+    OptionalCollectionReturnType
+    OptionalField
+    OptionalMethodParameter
+    PrivateFieldCouldBeFinal
+    PublicInstanceField
     // ReturnsNullInsteadOfEmptyArray
     // ReturnsNullInsteadOfEmptyCollection
     // SimpleDateFormatMissingLocale
@@ -231,15 +231,15 @@ ruleset {
     TrailingWhitespace
 
     // rulesets/generic.xml
-    // IllegalClassMember
-    // IllegalClassReference
-    // IllegalPackageReference
-    // IllegalRegex
-    // IllegalString
-    // IllegalSubclass
-    // RequiredRegex
-    // RequiredString
-    // StatelessClass
+    IllegalClassMember
+    IllegalClassReference
+    IllegalPackageReference
+    IllegalRegex
+    IllegalString
+    IllegalSubclass
+    RequiredRegex
+    RequiredString
+    StatelessClass
 
     // // rulesets/grails.xml
     // GrailsDomainGormMethods
@@ -342,22 +342,22 @@ ruleset {
     // SystemOutPrint
 
     // rulesets/naming.xml
-    // AbstractClassName
-    // ClassName
-    // ClassNameSameAsFilename
+    AbstractClassName
+    ClassName
+    ClassNameSameAsFilename
     // ClassNameSameAsSuperclass
     // ConfusingMethodName
     // FactoryMethodName
-    // FieldName
-    // InterfaceName
-    // InterfaceNameSameAsSuperInterface
-    // MethodName
-    // ObjectOverrideMisspelledMethodName
-    // PackageName
-    // PackageNameMatchesFilePath
-    // ParameterName
-    // PropertyName
-    // VariableName
+    FieldName(ignoreFieldNames: 'serialVersionUID,log,logger')
+    InterfaceName
+    InterfaceNameSameAsSuperInterface
+    MethodName
+    ObjectOverrideMisspelledMethodName
+    PackageName
+    PackageNameMatchesFilePath
+    ParameterName
+    PropertyName
+    VariableName
 
     // rulesets/security.xml
     // FileCreateTempFile
