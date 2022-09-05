@@ -15,8 +15,9 @@
  */
 package org.grails.plugin.hibernate.support;
 
-import grails.persistence.support.PersistenceContextInterceptor;
 import org.hibernate.SessionFactory;
+
+import grails.persistence.support.PersistenceContextInterceptor;
 
 /**
  * Interface for {@link grails.persistence.support.PersistenceContextInterceptor} instances that are aware of the {@link org.hibernate.SessionFactory}
@@ -27,4 +28,5 @@ import org.hibernate.SessionFactory;
 public interface SessionFactoryAwarePersistenceContextInterceptor extends PersistenceContextInterceptor {
 
     void setSessionFactory(SessionFactory sessionFactory);
+
 }

@@ -15,7 +15,6 @@
  */
 package org.grails.plugin.hibernate.support;
 
-import org.grails.orm.hibernate.AbstractHibernateDatastore;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.springframework.dao.DataAccessException;
@@ -26,6 +25,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.WebRequest;
 
+import org.grails.orm.hibernate.AbstractHibernateDatastore;
 
 /**
  * Extends the default spring OSIV and doesn't flush the session if it has been set
@@ -51,14 +51,14 @@ public class GrailsOpenSessionInViewInterceptor extends OpenSessionInViewInterce
 
     @Override
     public void postHandle(WebRequest request, ModelMap model) throws DataAccessException {
-        SessionHolder sessionHolder = (SessionHolder)TransactionSynchronizationManager.getResource(getSessionFactory());
+        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
         Session session = sessionHolder != null ? sessionHolder.getSession() : null;
         try {
             super.postHandle(request, model);
             FlushMode flushMode = session != null ? session.getHibernateFlushMode() : null;
             boolean isNotManual = flushMode != FlushMode.MANUAL && flushMode != FlushMode.COMMIT;
             if (session != null && isNotManual) {
-                if(logger.isDebugEnabled()) {
+                if (logger.isDebugEnabled()) {
                     logger.debug("Eagerly flushing Hibernate session");
                 }
                 session.flush();
@@ -73,7 +73,7 @@ public class GrailsOpenSessionInViewInterceptor extends OpenSessionInViewInterce
 
     public void setHibernateDatastore(AbstractHibernateDatastore hibernateDatastore) {
         String defaultFlushModeName = hibernateDatastore.getDefaultFlushModeName();
-        if(hibernateDatastore.isOsivReadOnly()) {
+        if (hibernateDatastore.isOsivReadOnly()) {
             this.hibernateFlushMode = FlushMode.MANUAL;
         }
         else {
@@ -81,4 +81,5 @@ public class GrailsOpenSessionInViewInterceptor extends OpenSessionInViewInterce
         }
         setSessionFactory(hibernateDatastore.getSessionFactory());
     }
+
 }
