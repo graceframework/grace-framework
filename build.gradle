@@ -365,6 +365,7 @@ subprojects { project ->
     apply plugin: 'idea'
     apply plugin: 'checkstyle'
     apply plugin: 'codenarc'
+    apply plugin: 'jacoco'
     apply plugin: 'project-report'
     apply plugin: 'nebula.optional-base'
     apply plugin: "org.gradle.test-retry"
@@ -475,6 +476,17 @@ subprojects { project ->
         setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))
     }
 
+    jacoco {
+        toolVersion = "0.8.8"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required = false
+            csv.required = false
+        }
+    }
+
     configure([compileGroovy, compileTestGroovy]) {
         groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
         groovyOptions.encoding = "UTF-8"
@@ -566,6 +578,11 @@ subprojects { project ->
         if(System.getProperty("debug.tests")) {
             jvmArgs debugArguments
         }
+        finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        dependsOn test
     }
 
     task singleTest(type: Test) {
