@@ -58,12 +58,12 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     protected CompilationUnit compilationUnit;
 
     public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        AnnotatedNode parent = (AnnotatedNode) astNodes[1];
-        AnnotationNode node = (AnnotationNode) astNodes[0];
-
-        if (!(node instanceof AnnotationNode) || !(parent instanceof AnnotatedNode)) {
+        if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof AnnotatedNode)) {
             throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
         }
+
+        AnnotatedNode parent = (AnnotatedNode) astNodes[1];
+        AnnotationNode node = (AnnotationNode) astNodes[0];
 
         if (!isArtefactAnnotationNode(node) || !(parent instanceof ClassNode)) {
             return;
