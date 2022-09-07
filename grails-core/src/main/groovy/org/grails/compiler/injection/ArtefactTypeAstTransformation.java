@@ -33,6 +33,7 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
+import org.springframework.util.ClassUtils;
 
 import grails.artefact.Artefact;
 import grails.build.logging.GrailsConsole;
@@ -186,7 +187,12 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
             }
         }
         catch (RuntimeException e) {
-            GrailsConsole.getInstance().error("Error occurred calling AST injector: " + e.getMessage(), e);
+            if (ClassUtils.isPresent("jline.console.completer.CompletionHandler", ArtefactTypeAstTransformation.class.getClassLoader())) {
+                GrailsConsole.getInstance().error("Error occurred calling AST injector: " + e.getMessage(), e);
+            }
+            else {
+                System.err.println("Error occurred calling AST injector: " + e.getMessage());
+            }
             throw e;
         }
     }
