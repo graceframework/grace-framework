@@ -20,8 +20,6 @@ import groovy.transform.Memoized
 
 import grails.util.BuildSettings
 
-import org.grails.io.support.GrailsResourceUtils
-
 /**
  * Utility methods for interacting with resources
  *
@@ -29,7 +27,6 @@ import org.grails.io.support.GrailsResourceUtils
  * @since 3.0
  */
 @CompileStatic
-@Deprecated
 class ResourceUtils {
 
     /**
