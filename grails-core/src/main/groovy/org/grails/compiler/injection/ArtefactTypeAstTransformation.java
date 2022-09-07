@@ -30,7 +30,6 @@ import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.PropertyExpression;
 import org.codehaus.groovy.control.CompilationUnit;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.springframework.util.ClassUtils;
@@ -50,7 +49,7 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
  * @author Graeme Rocher
  * @since 2.0
  */
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation
 public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransformation implements CompilationUnitAware {
 
     private static final ClassNode MY_TYPE = new ClassNode(Artefact.class);
