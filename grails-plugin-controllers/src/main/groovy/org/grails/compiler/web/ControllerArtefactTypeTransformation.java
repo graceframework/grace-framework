@@ -40,7 +40,7 @@ public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransfo
     }
 
     @Override
-    protected Class getAnnotationTypeClass() {
+    protected Class<?> getAnnotationTypeClass() {
         return Controller.class;
     }
 

@@ -157,7 +157,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         return new ClassNode(getAnnotationTypeClass());
     }
 
-    protected Class getAnnotationTypeClass() {
+    protected Class<?> getAnnotationTypeClass() {
         return MY_TYPE.getTypeClass();
     }
 
