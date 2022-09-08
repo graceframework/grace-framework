@@ -38,11 +38,9 @@ import org.springframework.util.ClassUtils
 import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.dev.Support
-import grails.io.ResourceUtils
 import grails.util.BuildSettings
 
 import org.grails.core.artefact.ApplicationArtefactHandler
-import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.UrlResource
 
 import static org.codehaus.groovy.ast.tools.GeneralUtils.args
