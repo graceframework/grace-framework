@@ -123,18 +123,29 @@ public final class GrailsResourceUtils {
     public static Pattern DOMAIN_PATH_PATTERN = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
             REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
 
+    public static Pattern DOMAIN_PATH_PATTERN_NEW = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + "app" +
+            REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
+
     /*
      This pattern will match any resource within a given directory inside grails-app
      */
     public static Pattern RESOURCE_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
             REGEX_FILE_SEPARATOR + "(.+?)" + REGEX_FILE_SEPARATOR + "(.+?\\.(groovy|java))");
 
+    public static Pattern RESOURCE_PATH_PATTERN_NEW = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + "app" +
+            REGEX_FILE_SEPARATOR + "(.+?)" + REGEX_FILE_SEPARATOR + "(.+?\\.(groovy|java))");
+
     public static Pattern SPRING_SCRIPTS_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
+            REGEX_FILE_SEPARATOR + "conf" + REGEX_FILE_SEPARATOR + "spring" + REGEX_FILE_SEPARATOR + "(.+?\\.groovy)");
+
+    public static Pattern SPRING_SCRIPTS_PATH_PATTERN_NEW = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + "app" +
             REGEX_FILE_SEPARATOR + "conf" + REGEX_FILE_SEPARATOR + "spring" + REGEX_FILE_SEPARATOR + "(.+?\\.groovy)");
 
     public static Pattern[] COMPILER_ROOT_PATTERNS = {
             SPRING_SCRIPTS_PATH_PATTERN,
-            RESOURCE_PATH_PATTERN
+            RESOURCE_PATH_PATTERN,
+            RESOURCE_PATH_PATTERN_NEW,
+            SPRING_SCRIPTS_PATH_PATTERN_NEW
     };
 
     /*
@@ -163,6 +174,14 @@ public final class GrailsResourceUtils {
 
     public static final Pattern GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH;
 
+    public static final Pattern GRAILS_RESOURCE_PATTERN_TWELFTH_MATCH;
+
+    public static final Pattern GRAILS_RESOURCE_PATTERN_THIRTEENTH_MATCH;
+
+    public static final Pattern GRAILS_RESOURCE_PATTERN_FOURTEENTH_MATCH;
+
+    public static final Pattern GRAILS_RESOURCE_PATTERN_FIFTEENTH_MATCH;
+
     static {
         String fs = REGEX_FILE_SEPARATOR;
 
@@ -170,6 +189,9 @@ public final class GrailsResourceUtils {
         GRAILS_RESOURCE_PATTERN_THIRD_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "[\\w-]+"));
         GRAILS_RESOURCE_PATTERN_SEVENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "src" + fs + "main" + fs + "java"));
         GRAILS_RESOURCE_PATTERN_EIGHTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "src" + fs + "main" + fs + "groovy"));
+
+        GRAILS_RESOURCE_PATTERN_THIRTEENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "app" + fs + "conf" + fs + "spring"));
+        GRAILS_RESOURCE_PATTERN_FIFTEENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "app" + fs + "[\\w-]+"));
 
         GRAILS_RESOURCE_PATTERN_NINTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "src" + fs + "test" + fs + "groovy"));
         GRAILS_RESOURCE_PATTERN_TENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "src" + fs + "test" + fs + "java"));
@@ -181,6 +203,9 @@ public final class GrailsResourceUtils {
         GRAILS_RESOURCE_PATTERN_SECOND_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "conf" + fs + "spring"));
         GRAILS_RESOURCE_PATTERN_FOURTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "[\\w-]+"));
         GRAILS_RESOURCE_PATTERN_SIXTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
+
+        GRAILS_RESOURCE_PATTERN_TWELFTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "app" + fs + "conf" + fs + "spring"));
+        GRAILS_RESOURCE_PATTERN_FOURTEENTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "app" + fs + "[\\w-]+"));
     }
 
     public static final Pattern[] patterns = new Pattern[] {
@@ -193,7 +218,11 @@ public final class GrailsResourceUtils {
             GRAILS_RESOURCE_PATTERN_SIXTH_MATCH,
             GRAILS_RESOURCE_PATTERN_NINTH_MATCH,
             GRAILS_RESOURCE_PATTERN_TENTH_MATCH,
-            GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH
+            GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_TWELFTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_THIRTEENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FOURTEENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FIFTEENTH_MATCH
     };
 
     public static final Pattern[] grailsAppResourcePatterns = new Pattern[] {
@@ -202,7 +231,10 @@ public final class GrailsResourceUtils {
             GRAILS_RESOURCE_PATTERN_FOURTH_MATCH,
             GRAILS_RESOURCE_PATTERN_FIFTH_MATCH,
             GRAILS_RESOURCE_PATTERN_SIXTH_MATCH,
-            GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH
+            GRAILS_RESOURCE_PATTERN_ELEVENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_THIRTEENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FOURTEENTH_MATCH,
+            GRAILS_RESOURCE_PATTERN_FIFTEENTH_MATCH
     };
 
     private static final Map<String, Boolean> KNOWN_PATHS = new LinkedHashMap<String, Boolean>() {
@@ -222,7 +254,7 @@ public final class GrailsResourceUtils {
         @Override
         public Object call(Object... args) {
             String path = args[0].toString();
-            return DOMAIN_PATH_PATTERN.matcher(path).find();
+            return DOMAIN_PATH_PATTERN.matcher(path).find() || DOMAIN_PATH_PATTERN_NEW.matcher(path).find();
         }
     });
 
@@ -569,7 +601,7 @@ public final class GrailsResourceUtils {
             return new String[0];
         }
         if (delimiter == null) {
-            return new String[] {str};
+            return new String[] { str };
         }
         List<String> result = new ArrayList<>();
         if ("".equals(delimiter)) {
@@ -901,6 +933,11 @@ public final class GrailsResourceUtils {
         int i = path.indexOf("grails-app/");
         if (i > -1) {
             return path.substring(i + 11);
+        }
+
+        i = path.indexOf("app/");
+        if (i > -1) {
+            return path.substring(i + 4);
         }
         else {
             try {
