@@ -115,20 +115,18 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                     def collectionClassNode = GrailsASTUtils.replaceGenericsPlaceholders(
                             ClassHelper.make(Collection), [E: ClassHelper.make(String)])
 
-                    def packageNamesBody = new BlockStatement()
-                    def grailsAppDir = GrailsResourceUtils.getAppDir(new UrlResource(GrailsASTUtils.getSourceUrl(source)))
-                    if (grailsAppDir.exists()) {
-                        def packageNames = ResourceUtils.getProjectPackageNames(grailsAppDir.file.parentFile)
-                                .collect { String str -> new ConstantExpression(str) }
-                        if (packageNames.any { ConstantExpression packageName -> ['org', 'com', 'io', 'net'].contains(packageName.text) }) {
-                            GrailsASTUtils.error(source, classNode,
-                                    "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' " +
-                                            'as this can result in performance degradation of classpath scanning')
-                        }
-                        packageNamesBody.addStatement(new ReturnStatement(new ExpressionStatement(new ListExpression(packageNames.toList()))))
-                        AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod('packageNames', Modifier.PUBLIC,
-                                collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
+                    def packageName = classNode.getPackageName()
+                    if (packageName in ['org', 'com', 'io', 'net']) {
+                        GrailsASTUtils.error(source, classNode,
+                                "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' " +
+                                        'as this can result in performance degradation of classpath scanning')
                     }
+
+                    def packageNamesBody = new BlockStatement()
+                    packageNamesBody.addStatement(new ReturnStatement(new ExpressionStatement(
+                            new ListExpression(Collections.singletonList(new ConstantExpression(packageName))))))
+                    AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod('packageNames', Modifier.PUBLIC,
+                            collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
                 }
 
                 def classLoader = getClass().classLoader
@@ -153,7 +151,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
             return false
         }
         def res = new UrlResource(url)
-        GrailsResourceUtils.isGrailsResource(res) && res.filename == 'Application.groovy'
+        res.filename.endsWith('Application.groovy')
     }
 
 }
