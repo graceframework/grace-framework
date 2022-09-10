@@ -56,9 +56,10 @@ import org.grails.web.servlet.view.CompositeViewResolver
 @Slf4j
 class ControllersGrailsPlugin extends Plugin {
 
-    def watchedResources = [
-            'file:./grails-app/controllers/**/*Controller.groovy',
-            'file:./plugins/*/grails-app/controllers/**/*Controller.groovy']
+    def watchedResources = ['file:./grails-app/controllers/**/*Controller.groovy',
+                            'file:./app/controllers/**/*Controller.groovy',
+                            'file:./plugins/*/grails-app/controllers/**/*Controller.groovy',
+                            'file:./plugins/*/app/controllers/**/*Controller.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def observe = ['domainClass']

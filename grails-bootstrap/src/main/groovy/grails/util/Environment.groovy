@@ -705,16 +705,13 @@ enum Environment {
             location = System.getProperty(BuildSettings.APP_BASE_DIR)
         }
         if (!hasLocation(location)) {
-            File current = new File('.', 'grails-app')
-            if (current.exists()) {
-                location = current.getParentFile().getAbsolutePath()
+            String file = ['grails-app', 'app', 'settings.gradle'].find { new File('.', it).exists() }
+            if (file == 'settings.gradle') {
+                location = IOUtils.findApplicationDirectory()
             }
-            else {
-                current = new File('.', 'settings.gradle')
-                if (current.exists()) {
-                    // multi-project build
-                    location = IOUtils.findApplicationDirectory()
-                }
+            else if (file) {
+                File current = new File('.', file)
+                location = current.getParentFile().getAbsolutePath()
             }
         }
         location

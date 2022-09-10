@@ -17,6 +17,7 @@ package grails.io
 
 import java.nio.file.Paths
 
+import groovy.io.FileType
 import groovy.transform.CompileStatic
 import groovy.transform.Memoized
 
@@ -295,19 +296,20 @@ class IOUtils {
         File file = null
         if (applicationDir != null) {
             String fileName = className.replace('.' as char, File.separatorChar) + '.groovy'
-            List<File> allFiles = [new File(applicationDir, 'src/main/groovy')]
-            File[] files = new File(applicationDir, 'grails-app').listFiles(new FileFilter() {
+            List<File> allDirs = [new File(applicationDir, 'src/main/groovy')]
 
-                @Override
-                boolean accept(File f) {
-                    f.isDirectory() && !f.isHidden() && !f.name.startsWith('.')
+            for (String dir : ['grails-app', 'app']) {
+                def grailsAppDir = new File(applicationDir, dir)
+                if (grailsAppDir.exists()) {
+                    grailsAppDir.eachFile(FileType.DIRECTORIES) { File d ->
+                        if (!d.isHidden() && !d.name.startsWith('.')) {
+                            allDirs.add(d)
+                        }
+                    }
+                    break
                 }
-
-            })
-            if (files != null) {
-                allFiles.addAll(Arrays.asList(files))
             }
-            for (File dir in allFiles) {
+            for (File dir in allDirs) {
                 File possibleFile = new File(dir, fileName)
                 if (possibleFile.exists()) {
                     file = possibleFile
@@ -372,9 +374,10 @@ class IOUtils {
     private static File findGrailsApp(File file) {
         File parent = file.parentFile
         while (parent != null) {
-            File grailsApp = new File(parent, 'grails-app')
-            if (grailsApp.isDirectory()) {
-                return parent
+            for (String dir : ['grails-app', 'app']) {
+                if (new File(parent, dir).isDirectory()) {
+                    return parent
+                }
             }
             parent = parent.parentFile
         }

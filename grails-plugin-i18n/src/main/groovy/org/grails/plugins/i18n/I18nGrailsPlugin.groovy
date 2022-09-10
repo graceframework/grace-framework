@@ -41,9 +41,9 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 @Slf4j
 class I18nGrailsPlugin extends Plugin {
 
-    String baseDir = 'grails-app/i18n'
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = "file:./${baseDir}/**/*.properties"
+    String watchedResources = ["file:./grails-app/i18n/**/*.properties",
+                               "file:./app/i18n/**/*.properties"]
 
     @Override
     Closure doWithSpring() {
@@ -81,7 +81,7 @@ class I18nGrailsPlugin extends Plugin {
             File eventFile = event.source.file.canonicalFile
             File i18nDir = eventFile.parentFile
             if (isChildOfFile(eventFile, i18nDir)) {
-                if (i18nDir.name == 'i18n' && i18nDir.parentFile.name == 'grails-app') {
+                if (i18nDir.name == 'i18n' && i18nDir.parentFile.name in ['grails-app', 'app']) {
                     def appDir = i18nDir.parentFile.parentFile
                     resourcesDir = new File(appDir, BuildSettings.BUILD_RESOURCES_PATH)
                     classesDir = new File(appDir, BuildSettings.BUILD_CLASSES_PATH)

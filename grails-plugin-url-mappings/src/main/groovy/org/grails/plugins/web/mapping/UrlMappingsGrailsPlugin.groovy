@@ -51,7 +51,8 @@ import org.grails.web.mapping.servlet.UrlMappingsErrorPageCustomizer
  */
 class UrlMappingsGrailsPlugin extends Plugin {
 
-    def watchedResources = ['file:./grails-app/controllers/*UrlMappings.groovy']
+    def watchedResources = ['file:./grails-app/controllers/*UrlMappings.groovy',
+                            'file:./app/controllers/*UrlMappings.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [core: version]

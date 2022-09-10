@@ -54,7 +54,11 @@ class CoreGrailsPlugin extends Plugin {
     def watchedResources = ['file:./grails-app/conf/spring/resources.xml',
                             'file:./grails-app/conf/spring/resources.groovy',
                             'file:./grails-app/conf/application.groovy',
-                            'file:./grails-app/conf/application.yml']
+                            'file:./grails-app/conf/application.yml',
+                            'file:./app/conf/spring/resources.xml',
+                            'file:./app/conf/spring/resources.groovy',
+                            'file:./app/conf/application.groovy',
+                            'file:./app/conf/application.yml']
 
     private static final SPRING_PROXY_TARGET_CLASS_CONFIG = 'spring.aop.proxy-target-class'
 

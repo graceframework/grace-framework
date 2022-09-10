@@ -43,6 +43,31 @@ class GrailsASTUtilsSpec extends Specification {
         and: 'SomethingElse should NOT be recognized as a domain because grails-app/domain/org/grails/compiler/injection/SomethingElse.groovy does NOT exist'
         !GrailsASTUtils.isDomainClass(new ClassNode(SomethingElse), controllerSourceUnit)
     }
+
+    void 'test domain class in app/domain'() {
+        setup:
+        File tmpDir = new File(System.getProperty('java.io.tmpdir'))
+
+        File projectDir = new File(tmpDir, "projectDir")
+
+        // create /projectDir/app/domain/ under java.io.tmpdir
+        File grailsAppDir = new File(projectDir, 'app')
+        File domainDir = new File(grailsAppDir, 'domain')
+
+        String packagePath = Something.package.name.replace('.' as char, File.separatorChar)
+
+        // create the source file that would contain the source for the
+        // relevant domain class...
+        File domainPackageDir = new File(domainDir, packagePath)
+        domainPackageDir.mkdirs()
+        File domainSomethingFile = new File(domainPackageDir, 'Something.groovy')
+        domainSomethingFile.createNewFile()
+        SourceUnit domainSomethingSourceUnit = Mock()
+        domainSomethingSourceUnit.getName() >> domainSomethingFile.absolutePath
+
+        expect: 'Something should be recognized as a domain because app/domain/org/grails/compiler/injection/Something.groovy exists'
+        GrailsASTUtils.isDomainClass(new ClassNode(Something), domainSomethingSourceUnit)
+    }
 }
 
 class Something {}

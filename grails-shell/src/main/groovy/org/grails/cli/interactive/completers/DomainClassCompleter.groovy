@@ -32,7 +32,9 @@ import org.grails.io.support.Resource
 class DomainClassCompleter extends ClassNameCompleter {
 
     DomainClassCompleter() {
-        super(new File(BuildSettings.BASE_DIR, 'grails-app/domain'))
+        super(new File(BuildSettings.BASE_DIR, 'grails-app').exists()
+                ? new File(BuildSettings.BASE_DIR, 'grails-app/domain')
+                : new File(BuildSettings.BASE_DIR, 'app/domain'))
     }
 
     @Override

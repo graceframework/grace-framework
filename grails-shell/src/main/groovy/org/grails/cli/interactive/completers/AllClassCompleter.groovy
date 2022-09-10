@@ -15,6 +15,8 @@
  */
 package org.grails.cli.interactive.completers
 
+import groovy.io.FileType
+
 import grails.util.BuildSettings
 
 /**
@@ -26,9 +28,16 @@ import grails.util.BuildSettings
 class AllClassCompleter extends ClassNameCompleter {
 
     AllClassCompleter() {
-        super(new File(BuildSettings.BASE_DIR, 'grails-app').listFiles()?.findAll { File f ->
-            f.isDirectory() && !f.isHidden() && !f.name.startsWith('.')
-        } as File[])
+        super(new File(BuildSettings.BASE_DIR, 'grails-app').exists()
+                ? new File(BuildSettings.BASE_DIR, 'grails-app')
+                        .listFiles(FileType.DIRECTORIES)?.findAll { File f ->
+                            !f.isHidden() && !f.name.startsWith('.')
+                        } as File[]
+                : new File(BuildSettings.BASE_DIR, 'app')
+                        .listFiles(FileType.DIRECTORIES)?.findAll { File f ->
+                            !f.isHidden() && !f.name.startsWith('.')
+                        } as File[]
+        )
     }
 
 }

@@ -36,7 +36,8 @@ class InterceptorsGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [controllers: version, urlMappings: version]
-    def watchedResources = 'file:./grails-app/controllers/**/*Interceptor.groovy'
+    def watchedResources = ['file:./grails-app/controllers/**/*Interceptor.groovy',
+                            'file:./app/controllers/**/*Interceptor.groovy']
     def loadAfter = ['domainClass', 'hibernate']
 
     GrailsInterceptorHandlerInterceptorAdapter interceptorAdapter
