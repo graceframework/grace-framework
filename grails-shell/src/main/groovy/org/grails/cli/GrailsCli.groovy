@@ -234,10 +234,10 @@ class GrailsCli {
             Environment.reset()
         }
 
-        File grailsAppDir = new File('grails-app')
+        boolean grailsAppDirPresent = new File('grails-app').exists() || new File('app').exists()
         File applicationGroovy = new File('Application.groovy')
         File profileYml = new File('profile.yml')
-        if (!grailsAppDir.isDirectory() && !applicationGroovy.exists() && !profileYml.exists()) {
+        if (!grailsAppDirPresent && !applicationGroovy.exists() && !profileYml.exists()) {
             profileRepository = createMavenProfileRepository()
             if (!mainCommandLine || !mainCommandLine.commandName) {
                 integrateGradle = false
@@ -593,13 +593,15 @@ class GrailsCli {
 
     private CodeGenConfig loadApplicationConfig() {
         CodeGenConfig config = new CodeGenConfig()
-        File applicationYml = new File('grails-app/conf/application.yml')
-        File applicationGroovy = new File('grails-app/conf/application.groovy')
-        if (applicationYml.exists()) {
-            config.loadYml(applicationYml)
-        }
-        if (applicationGroovy.exists()) {
-            config.loadGroovy(applicationGroovy)
+        ['grails-app', 'app'].each { String dir ->
+            File applicationYml = new File(dir + '/conf/application.yml')
+            File applicationGroovy = new File(dir + '/conf/application.groovy')
+            if (applicationYml.exists()) {
+                config.loadYml(applicationYml)
+            }
+            if (applicationGroovy.exists()) {
+                config.loadGroovy(applicationGroovy)
+            }
         }
         config
     }
