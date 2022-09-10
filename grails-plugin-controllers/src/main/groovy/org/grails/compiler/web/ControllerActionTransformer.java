@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -751,20 +752,30 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
         else {
             initializeCommandObjectParameter(wrapper, commandObjectNode, paramName, source);
 
-            @SuppressWarnings("unchecked")
             boolean argumentIsValidateable = GrailsASTUtils.hasAnyAnnotations(
-                    commandObjectNode,
-                    grails.persistence.Entity.class,
-                    javax.persistence.Entity.class) ||
+                    commandObjectNode, grails.persistence.Entity.class, javax.persistence.Entity.class) ||
                     commandObjectNode.implementsInterface(ClassHelper.make(Validateable.class));
 
             if (!argumentIsValidateable && commandObjectNode.isPrimaryClassNode()) {
-                final ModuleNode commandObjectModule = commandObjectNode.getModule();
+                ModuleNode commandObjectModule = commandObjectNode.getModule();
                 if (commandObjectModule != null && this.compilationUnit != null) {
-                    if (commandObjectModule == controllerNode.getModule() ||
-                            doesModulePathIncludeSubstring(commandObjectModule,
-                                    "grails-app" + File.separator + "controllers" + File.separator)) {
+                    boolean modulePathIncludeController = false;
+                    boolean modulePathIncludeDomain = false;
+                    for (String dir : Arrays.asList("grails-app", "app")) {
+                        String grailsControllerDir = dir + File.separator + "controllers" + File.separator;
+                        String grailsDomainDir = dir + File.separator + "domain" + File.separator;
+                        if (doesModulePathIncludeSubstring(commandObjectModule, grailsControllerDir)) {
+                            modulePathIncludeController = true;
+                        }
+                        if (doesModulePathIncludeSubstring(commandObjectModule, grailsDomainDir)) {
+                            modulePathIncludeDomain = true;
+                        }
+                        if (modulePathIncludeController || modulePathIncludeDomain) {
+                            break;
+                        }
+                    }
 
+                    if (commandObjectModule == controllerNode.getModule() || modulePathIncludeController) {
                         TraitInjectionUtils.injectTrait(this.compilationUnit, source, commandObjectNode, Validateable.class);
 
                         List<ConstructorNode> declaredConstructors = commandObjectNode.getDeclaredConstructors();
@@ -778,8 +789,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                         }
                         argumentIsValidateable = true;
                     }
-                    else if (doesModulePathIncludeSubstring(commandObjectModule,
-                            "grails-app" + File.separator + "domain" + File.separator)) {
+                    else if (modulePathIncludeDomain) {
                         argumentIsValidateable = true;
                     }
                 }
