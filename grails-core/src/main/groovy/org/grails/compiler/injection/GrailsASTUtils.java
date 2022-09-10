@@ -839,18 +839,22 @@ public final class GrailsASTUtils {
 
         if (!isDomainClass && sourceNode != null) {
             String sourcePath = sourceNode.getName();
-            String grailsAppDirToLookFor = File.separator + GRAILS_APP_DIR + File.separator;
+            String className = classNode.getName();
+            String relativePathToDomainSourceFile = className.replace('.', File.separatorChar) + ".groovy";
 
-            int indexOfGrailsAppDir = sourcePath.lastIndexOf(grailsAppDirToLookFor);
-            if (indexOfGrailsAppDir >= 0) {
-                String pathToGrailsAppDir = sourcePath.substring(0, indexOfGrailsAppDir + grailsAppDirToLookFor.length());
+            for (String dir : Arrays.asList(GRAILS_APP_DIR, "app")) {
+                String grailsAppDirToLookFor = File.separator + dir + File.separator;
+                int indexOfGrailsAppDir = sourcePath.lastIndexOf(grailsAppDirToLookFor);
 
-                String pathToDomainDir = pathToGrailsAppDir + DOMAIN_DIR + File.separator;
-                String className = classNode.getName();
-                String relativePathToDomainSourceFile = className.replace('.', File.separatorChar) + ".groovy";
-                String pathToDomainSourceFile = pathToDomainDir + relativePathToDomainSourceFile;
+                if (indexOfGrailsAppDir >= 0) {
+                    String pathToGrailsAppDir = sourcePath.substring(0, indexOfGrailsAppDir + grailsAppDirToLookFor.length());
+                    String pathToDomainDir = pathToGrailsAppDir + DOMAIN_DIR + File.separator;
+                    String pathToDomainSourceFile = pathToDomainDir + relativePathToDomainSourceFile;
 
-                isDomainClass = new File(pathToDomainSourceFile).exists();
+                    isDomainClass = new File(pathToDomainSourceFile).exists();
+
+                    break;
+                }
             }
         }
 
