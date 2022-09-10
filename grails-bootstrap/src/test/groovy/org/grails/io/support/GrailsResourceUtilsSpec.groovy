@@ -97,6 +97,26 @@ class GrailsResourceUtilsSpec extends Specification {
         GrailsResourceUtils.isGrailsPath("file:///test/grails/myapp/app/conf/spring/resources.groovy")
     }
 
+    void testIsGrailsResource() {
+        expect:
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/grails-app/domain/Test.groovy")))
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/grails-app/init/Application.groovy")))
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/grails-app/conf/spring/resources.groovy")))
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/app/domain/Test.groovy")))
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/app/init/Application.groovy")))
+        GrailsResourceUtils.isGrailsResource(new UrlResource(new URL("file:///test/grails/myapp/app/conf/spring/resources.groovy")))
+    }
+
+    void testIsProjectSource() {
+        expect:
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/grails-app/domain/Test.groovy")
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/grails-app/init/Application.groovy")
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/grails-app/conf/spring/resources.groovy")
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/app/domain/Test.groovy")
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/app/init/Application.groovy")
+        GrailsResourceUtils.isProjectSource("file:///test/grails/myapp/app/conf/spring/resources.groovy")
+    }
+
     void testIsTestPath() {
         expect:
         GrailsResourceUtils.isGrailsPath(UNIT_TESTS_URL)

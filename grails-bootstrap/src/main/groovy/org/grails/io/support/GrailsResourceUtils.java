@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -930,26 +931,21 @@ public final class GrailsResourceUtils {
      * @return The path relative to the base directory or null if it can't be established
      */
     public static String getPathFromBaseDir(String path) {
-        int i = path.indexOf("grails-app/");
-        if (i > -1) {
-            return path.substring(i + 11);
+        for (String dir : Arrays.asList("grails-app/", "app/")) {
+            if (path.contains(dir)) {
+                return path.substring(path.indexOf(dir) + dir.length());
+            }
         }
 
-        i = path.indexOf("app/");
-        if (i > -1) {
-            return path.substring(i + 4);
+        try {
+            File baseDir = BuildSettings.BASE_DIR;
+            String basePath = baseDir != null ? baseDir.getCanonicalPath() : null;
+            if (basePath != null) {
+                String canonicalPath = new File(path).getCanonicalPath();
+                return canonicalPath.contains(basePath) ? canonicalPath.substring(basePath.length() + 1) : canonicalPath;
+            }
         }
-        else {
-            try {
-                File baseDir = BuildSettings.BASE_DIR;
-                String basePath = baseDir != null ? baseDir.getCanonicalPath() : null;
-                if (basePath != null) {
-                    String canonicalPath = new File(path).getCanonicalPath();
-                    return canonicalPath.contains(basePath) ? canonicalPath.substring(basePath.length() + 1) : canonicalPath;
-                }
-            }
-            catch (IOException ignored) {
-            }
+        catch (IOException ignored) {
         }
         return null;
     }
