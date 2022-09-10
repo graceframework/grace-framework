@@ -242,7 +242,8 @@ class BuildSettings {
     }
 
     static {
-        boolean grailsAppDirPresent = new File('grails-app').exists() || new File('Application.groovy').exists()
+        boolean grailsAppDirPresent = ['grails-app', 'app', 'Application.groovy'].find { new File(it).exists() } != null
+
         if (grailsAppDirPresent) {
             String fromSystem = System.getProperty(PROJECT_CLASSES_DIR)
             if (fromSystem) {
@@ -267,7 +268,7 @@ class BuildSettings {
         }
         BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR))
                 : (IOUtils.findApplicationDirectoryFile() ?: new File('.'))
-        GRAILS_APP_DIR_PRESENT = new File(BASE_DIR, 'grails-app').exists() || new File(BASE_DIR, 'Application.groovy').exists()
+        GRAILS_APP_DIR_PRESENT = ['grails-app', 'app', 'Application.groovy'].find { new File(BASE_DIR, it).exists() } != null
         TARGET_DIR = new File(BASE_DIR, 'build')
         RESOURCES_DIR = !GRAILS_APP_DIR_PRESENT ? null :
                 (System.getProperty(PROJECT_RESOURCES_DIR) ? new File(System.getProperty(PROJECT_RESOURCES_DIR)) :

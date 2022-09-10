@@ -259,8 +259,14 @@ class GrailsApp extends SpringApplication {
                             def changedFile = uniqueChangedFiles[0]
                             changedFile = changedFile.canonicalFile
                             // Groovy files within the 'conf' directory are not compiled
-                            String confPath = "${File.separator}grails-app${File.separator}conf${File.separator}"
-                            if (changedFile.path.contains(confPath)) {
+                            boolean configFileChanged = false
+                            ['grails-app', 'app'].each { String dir ->
+                                String confPath = "${File.separator + dir + File.separator}conf${File.separator}"
+                                if (changedFile.path.contains(confPath)) {
+                                    configFileChanged = true
+                                }
+                            }
+                            if (configFileChanged) {
                                 pluginManager.informOfFileChange(changedFile)
                             }
                             else {
@@ -297,18 +303,19 @@ class GrailsApp extends SpringApplication {
     }
 
     protected void recompile(File changedFile, CompilerConfiguration compilerConfig, String location) {
-        File appDir = null
         def changedPath = changedFile.path
 
-        String grailsAppDir = "${File.separator}grails-app"
-        String sourceMainGroovy = "${File.separator}src${File.separator}main${File.separator}groovy"
+        String sourceMainGroovy = "src${File.separator}main${File.separator}groovy"
 
-        if (changedPath.contains(grailsAppDir)) {
-            appDir = new File(changedPath.substring(0, changedPath.indexOf(grailsAppDir)))
+        File appDir = null
+        for (String dir in ['grails-app', 'app', sourceMainGroovy]) {
+            String changedDir = File.separator + dir
+            if (changedPath.contains(changedDir)) {
+                appDir = new File(changedPath.substring(0, changedPath.indexOf(changedDir)))
+                break
+            }
         }
-        else if (changedPath.contains(sourceMainGroovy)) {
-            appDir = new File(changedPath.substring(0, changedPath.indexOf(sourceMainGroovy)))
-        }
+
         def baseFileLocation = appDir?.absolutePath ?: location
         compilerConfig.setTargetDirectory(new File(baseFileLocation, BuildSettings.BUILD_CLASSES_PATH))
         println "File $changedFile changed, recompiling..."
@@ -366,9 +373,9 @@ class GrailsApp extends SpringApplication {
     }
 
     protected void configureDirectoryWatcher(DirectoryWatcher directoryWatcher, String location) {
-        directoryWatcher.addWatchDirectory(new File(location, 'grails-app'), ['groovy', 'java'])
-        directoryWatcher.addWatchDirectory(new File(location, 'src/main/groovy'), ['groovy', 'java'])
-        directoryWatcher.addWatchDirectory(new File(location, 'src/main/java'), ['groovy', 'java'])
+        ['grails-app', 'app', 'src/main/groovy', 'src/main/java'].each { String dir ->
+            directoryWatcher.addWatchDirectory(new File(location, dir), ['groovy', 'java'])
+        }
     }
 
     protected printRunStatus(ConfigurableApplicationContext applicationContext) {
