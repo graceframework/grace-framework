@@ -39,7 +39,9 @@ import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
 class DomainClassGrailsPlugin extends Plugin {
 
     def watchedResources = ['file:./grails-app/domain/**/*.groovy',
-                            'file:./plugins/*/grails-app/domain/**/*.groovy']
+                            'file:./plugins/*/grails-app/domain/**/*.groovy',
+                            'file:./app/domain/**/*.groovy',
+                            'file:./plugins/*/app/domain/**/*.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [i18n: version]

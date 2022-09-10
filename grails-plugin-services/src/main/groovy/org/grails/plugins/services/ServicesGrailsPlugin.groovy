@@ -42,7 +42,9 @@ class ServicesGrailsPlugin extends Plugin {
     def loadAfter = ['hibernate']
 
     def watchedResources = ['file:./grails-app/services/**/*Service.groovy',
-                            'file:./plugins/*/grails-app/services/**/*Service.groovy']
+                            'file:./plugins/*/grails-app/services/**/*Service.groovy',
+                            'file:./app/services/**/*Service.groovy',
+                            'file:./plugins/*/app/services/**/*Service.groovy']
 
     Closure doWithSpring() {
         { ->

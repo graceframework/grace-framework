@@ -18,6 +18,7 @@ package org.grails.spring.context.support;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -111,8 +112,15 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
     public void afterSingletonsInstantiated() {
         Resource[] resources;
         if (Environment.isDevelopmentEnvironmentAvailable()) {
-            File[] propertiesFiles = new File(BuildSettings.BASE_DIR, GRAILS_APP_I18N_PATH_COMPONENT)
-                    .listFiles((dir, name) -> name.endsWith(".properties"));
+            File[] propertiesFiles = null;
+            for (String app : Arrays.asList("grails-app", "app")) {
+                if (new File(BuildSettings.BASE_DIR, app + File.separator + "i18n").exists()) {
+                    propertiesFiles = new File(BuildSettings.BASE_DIR, app + File.separator + "i18n")
+                            .listFiles((dir, name) -> name.endsWith(".properties"));
+
+                    break;
+                }
+            }
 
             if (propertiesFiles != null && propertiesFiles.length > 0) {
                 List<Resource> resourceList = new ArrayList<>(propertiesFiles.length);
