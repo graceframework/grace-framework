@@ -40,6 +40,7 @@ dependencies {
     testImplementation "taglibs:standard:${jstlVersion}"
     testImplementation "javax.servlet:jstl:${jstlVersion}"
 
+    testImplementation "org.grails:grails-plugin-codecs:$grailsVersion"
     testRuntimeOnly "org.grails:grails-plugin-url-mappings:$grailsVersion"
 }
 // disable main class
