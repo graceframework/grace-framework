@@ -66,7 +66,9 @@ class GroovyPagesGrailsPlugin extends Plugin {
     public static final String SITEMESH_ENABLE_NONGSP = 'grails.sitemesh.enable.nongsp'
 
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",
-                            "file:./grails-app/taglib/**/*TagLib.groovy"]
+                            "file:./grails-app/taglib/**/*TagLib.groovy",
+                            "file:./plugins/*/app/taglib/**/*TagLib.groovy",
+                            "file:./app/taglib/**/*TagLib.groovy"]
 
     def grailsVersion = "3.3.0 > *"
     def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]

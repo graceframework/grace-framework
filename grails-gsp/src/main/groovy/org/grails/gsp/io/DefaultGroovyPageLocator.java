@@ -256,10 +256,13 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     private GroovyPageScriptSource resolveViewInPluginProjectDirectory(BinaryGrailsPlugin binaryPlugin, String uri) {
         File projectDirectory = binaryPlugin.getProjectDirectory();
-        File f = new File(projectDirectory, "grails-app/views" + uri);
-        if(f.exists()) {
-            return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
+        for (String dir : Arrays.asList("grails-app", "app")) {
+            File f = new File(projectDirectory, dir + File.separator + "views" + uri);
+            if (f.exists()) {
+                return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
+            }
         }
+
         return null;
     }
 
