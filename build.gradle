@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://plugins.gradle.org/m2/" }
     }
@@ -11,6 +12,7 @@ buildscript {
 }
 
 repositories {
+    mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
 
@@ -18,7 +20,7 @@ version project.projectVersion
 
 ext {
     isCiBuild = System.getenv().get("TRAVIS") == 'true' || (System.getenv().get("CI") as Boolean)
-    commonBuild = 'https://raw.githubusercontent.com/grails/grails-common-build/master'
+    commonBuild = 'https://raw.githubusercontent.com/rainboyan/grails-common-build/master'
 }
 
 apply plugin:'idea'
@@ -39,12 +41,13 @@ subprojects {
         group "org.grails"
     }
     repositories {
+        mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
     }
     if (it.name.startsWith("examples")) {
         apply plugin: "org.grails.grails-web"
     } else if (isGrailsPlugin) {
-        apply plugin: "org.grails.grails-plugin"
+        apply from: "${commonBuild}/common-plugin.gradle"
     } else {
         apply from: "${commonBuild}/common-project.gradle"
 
