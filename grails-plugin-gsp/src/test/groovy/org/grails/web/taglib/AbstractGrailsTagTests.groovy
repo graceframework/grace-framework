@@ -22,6 +22,8 @@ import org.grails.gsp.GroovyPagesTemplateEngine
 import org.grails.gsp.compiler.SitemeshPreprocessor
 import org.grails.plugins.DefaultGrailsPlugin
 import org.grails.plugins.MockGrailsPluginManager
+import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
+import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
 import org.grails.taglib.GroovyPageAttributes
 import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
@@ -265,7 +267,7 @@ info.app.name: ${getClass().name}
 
         def dependantPluginClasses = []
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
-        dependantPluginClasses << gcl.loadClass("org.grails.plugins.CodecsGrailsPlugin")
+        dependantPluginClasses << gcl.loadClass("org.grails.plugins.codecs.CodecsGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.domain.DomainClassGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.i18n.I18nGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.web.mapping.UrlMappingsGrailsPlugin")
@@ -306,6 +308,8 @@ info.app.name: ${getClass().name}
         //GroovySystem.metaClassRegistry.removeMetaClass(Object)
 
         mockManager.doDynamicMethods()
+        ctx.beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
+        ctx.beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(mockManager))
         initRequestAndResponse()
 
         ga.domainClasses.each { dc ->
