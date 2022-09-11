@@ -17,7 +17,6 @@ package org.grails.gsp;
 
 import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
-import grails.io.IOUtils;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.util.CacheEntry;
@@ -27,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.grails.encoder.Encoder;
 import org.grails.gsp.compiler.GroovyPageParser;
 import org.grails.gsp.jsp.TagLibraryResolver;
+import org.grails.io.support.SpringIOUtils;
 import org.grails.taglib.TagLibraryLookup;
 import org.grails.taglib.encoder.WithCodecHelper;
 import org.springframework.context.ApplicationContext;
@@ -210,7 +210,7 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
             }
         }
         finally {
-            IOUtils.closeQuietly(input);
+            SpringIOUtils.closeQuietly(input);
         }
     }
 
@@ -232,7 +232,7 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
             }
         }
         finally {
-            IOUtils.closeQuietly(input);
+            SpringIOUtils.closeQuietly(input);
         }
     }
 

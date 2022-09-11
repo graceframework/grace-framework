@@ -15,12 +15,13 @@
  */
 package org.grails.gsp;
 
-import grails.io.IOUtils;
 import groovy.text.Template;
 import groovy.text.TemplateEngine;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport;
 import org.grails.buffer.StreamByteBuffer;
+import org.grails.io.support.SpringIOUtils;
+
 import org.springframework.core.io.Resource;
 
 import java.io.*;
@@ -62,7 +63,7 @@ public abstract class ResourceAwareTemplateEngine extends TemplateEngine {
     @Override
     public final Template createTemplate(Reader reader) throws IOException {
         StreamByteBuffer buf=new StreamByteBuffer();
-        IOUtils.copy(reader, new OutputStreamWriter(buf.getOutputStream(), GROOVY_SOURCE_CHAR_ENCODING));
+        SpringIOUtils.copy(reader, new OutputStreamWriter(buf.getOutputStream(), GROOVY_SOURCE_CHAR_ENCODING));
         return createTemplate(buf.getInputStream());
     }
 
