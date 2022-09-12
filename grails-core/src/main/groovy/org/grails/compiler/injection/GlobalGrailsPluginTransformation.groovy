@@ -37,13 +37,13 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import grails.core.ArtefactHandler
-import grails.io.IOUtils
 import grails.plugins.metadata.GrailsPlugin
 import grails.util.GrailsNameUtils
 
 import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.io.support.AntPathMatcher
 import org.grails.io.support.GrailsResourceUtils
+import org.grails.io.support.SpringIOUtils
 import org.grails.io.support.UrlResource
 
 /**
@@ -209,7 +209,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
     static void updatePluginXml(ClassNode pluginClassNode, String projectVersion,
                                 File pluginXmlFile, Set<String> artefactClasses) {
         try {
-            XmlSlurper xmlSlurper = IOUtils.createXmlSlurper()
+            XmlSlurper xmlSlurper = SpringIOUtils.createXmlSlurper()
 
             def pluginXml = xmlSlurper.parse(pluginXmlFile)
             if (pluginClassNode) {
