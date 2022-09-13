@@ -39,14 +39,12 @@ class ApplicationArtefactHandler extends ArtefactHandlerAdapter {
 
     @Override
     boolean isArtefact(ClassNode classNode) {
-        classNode.nameWithoutPackage.endsWith('Application') &&
-                (classNode.superClass.name == 'grails.boot.config.GrailsAutoConfiguration')
+        classNode.nameWithoutPackage.endsWith('Application')
     }
 
     @Override
     boolean isArtefactClass(Class<?> clazz) {
-        clazz.simpleName.endsWith('Application') &&
-                (clazz.superclass.name == 'grails.boot.config.GrailsAutoConfiguration')
+        clazz.simpleName.endsWith('Application')
     }
 
 }

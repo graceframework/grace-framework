@@ -37,11 +37,13 @@ import org.grails.asm.AnnotationMetadataReader
  *
  * WARNING: Classpath scanning can be expensive! Use with care.
  *
+ * @deprecated in favor of {link @GrailsComponentScanner}
  * @author Graeme Rocher
  * @since 3.1.12
  */
 @Slf4j
 @CompileStatic
+@Deprecated
 class ClassPathScanner {
 
     private static final List DEFAULT_IGNORED_ROOT_PACKAGES = ['com', 'org', 'net', 'co', 'java', 'javax', 'groovy']

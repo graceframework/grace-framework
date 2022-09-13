@@ -15,7 +15,10 @@
  */
 package org.grails.plugins
 
+import java.lang.reflect.Field
+
 import groovy.transform.CompileStatic
+import org.springframework.aop.config.AopConfigUtils
 import org.springframework.beans.factory.config.CustomEditorConfigurer
 import org.springframework.beans.factory.support.DefaultListableBeanFactory
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
@@ -76,6 +79,22 @@ class CoreGrailsPlugin extends Plugin {
             }
             propertySourcesPlaceholderConfigurer(GrailsPlaceholderConfigurer) {
                 placeholderPrefix = placeHolderPrefix
+            }
+
+            String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
+
+            try {
+                // patch AopConfigUtils if possible
+                Field field = AopConfigUtils.getDeclaredField(APC_PRIORITY_LIST_FIELD)
+                if (field != null) {
+                    field.setAccessible(true)
+                    Object obj = field.get(null)
+                    List<Class<?>> list = (List<Class<?>>) obj
+                    list.add(GroovyAwareInfrastructureAdvisorAutoProxyCreator)
+                    list.add(GroovyAwareAspectJAwareAdvisorAutoProxyCreator)
+                }
+            }
+            catch (Throwable ignored) {
             }
 
             Class proxyCreatorClazz = null
