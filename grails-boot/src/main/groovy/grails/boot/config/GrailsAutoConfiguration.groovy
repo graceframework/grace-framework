@@ -15,13 +15,7 @@
  */
 package grails.boot.config
 
-import java.lang.reflect.Field
-
 import groovy.transform.CompileStatic
-import org.springframework.aop.config.AopConfigUtils
-
-import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
-import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
 
 /**
  * A base class for configurations that bootstrap a Grails application
@@ -32,23 +26,5 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  */
 @CompileStatic
 class GrailsAutoConfiguration {
-
-    private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
-
-    static {
-        try {
-            // patch AopConfigUtils if possible
-            Field field = AopConfigUtils.getDeclaredField(APC_PRIORITY_LIST_FIELD)
-            if (field != null) {
-                field.setAccessible(true)
-                Object obj = field.get(null)
-                List<Class<?>> list = (List<Class<?>>) obj
-                list.add(GroovyAwareInfrastructureAdvisorAutoProxyCreator)
-                list.add(GroovyAwareAspectJAwareAdvisorAutoProxyCreator)
-            }
-        }
-        catch (Throwable ignored) {
-        }
-    }
 
 }
