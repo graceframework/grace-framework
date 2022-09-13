@@ -40,11 +40,11 @@ import org.springframework.core.env.EnumerablePropertySource
 import org.springframework.core.io.DescriptiveResource
 import org.springframework.core.io.Resource
 
+import grails.artefact.Artefact
 import grails.boot.GrailsApp
 import grails.config.Settings
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
-import grails.core.GrailsApplicationClass
 import grails.core.GrailsApplicationLifeCycle
 import grails.plugins.DefaultGrailsPluginManager
 import grails.plugins.GrailsPlugin
@@ -76,55 +76,25 @@ import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
 class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware,
         ApplicationListener<ApplicationContextEvent>, Ordered {
 
+    public static final String BEAN_NAME = "grailsApplicationPostProcessor"
+
     static final boolean RELOADING_ENABLED = Environment.isReloadingAgentEnabled()
 
-    final GrailsApplication grailsApplication
-    final GrailsApplicationLifeCycle lifeCycle
-    final GrailsApplicationClass applicationClass
-    final Class[] classes
+    protected final GrailsApplication grailsApplication
     protected final GrailsPluginManager pluginManager
     protected ApplicationContext applicationContext
+    protected GrailsApplicationLifeCycle lifeCycle
+
     boolean loadExternalBeans = true
     boolean reloadingEnabled = RELOADING_ENABLED
 
-    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
-                                   ApplicationContext applicationContext, Class... classes) {
-        this(lifeCycle, applicationContext, null, null, classes)
+    GrailsApplicationPostProcessor() {
+        this.grailsApplication = new DefaultGrailsApplication()
+        this.pluginManager = new DefaultGrailsPluginManager(this.grailsApplication)
     }
 
-    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
-                                   ApplicationContext applicationContext,
-                                   GrailsPluginManager pluginManager, Class... classes) {
-        this(lifeCycle, applicationContext, pluginManager.getApplication(), pluginManager, classes)
-    }
-
-    GrailsApplicationPostProcessor(GrailsApplicationLifeCycle lifeCycle,
-                                   ApplicationContext applicationContext,
-                                   GrailsApplication grailsApplication,
-                                   GrailsPluginManager pluginManager, Class... classes) {
+    void setGrailsApplicationLifeCycle(GrailsApplicationLifeCycle lifeCycle) {
         this.lifeCycle = lifeCycle
-        if (lifeCycle instanceof GrailsApplicationClass) {
-            this.applicationClass = (GrailsApplicationClass) lifeCycle
-        }
-        else {
-            this.applicationClass = null
-        }
-        this.classes = classes != null ? classes : [] as Class[]
-        if (grailsApplication != null) {
-            this.grailsApplication = grailsApplication
-        }
-        else {
-            this.grailsApplication = new DefaultGrailsApplication(applicationClass)
-        }
-        if (pluginManager != null) {
-            this.pluginManager = pluginManager
-        }
-        else {
-            this.pluginManager = new DefaultGrailsPluginManager(this.grailsApplication)
-        }
-        if (applicationContext != null) {
-            setApplicationContext(applicationContext)
-        }
     }
 
     protected final void initializeGrailsApplication(ApplicationContext applicationContext) {
@@ -154,6 +124,16 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         // register plugin provided classes first, this gives the opportunity
         // for application classes to override those provided by a plugin
         pluginManager.registerProvidedArtefacts(grailsApplication)
+
+        GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext)
+        Set<Class<?>> classes;
+        try {
+            classes = scanner.scan(Artefact.class)
+        }
+        catch (ClassNotFoundException ignored) {
+            classes = Collections.emptySet()
+        }
+
         for (cls in classes) {
             grailsApplication.addArtefact(cls)
         }
@@ -264,12 +244,12 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             }
         }
 
-        List<GrailsApplicationLifeCycle> lifeCycleBeans = this.applicationContext.getBeansOfType(
+        List<GrailsApplicationLifeCycle> lifeCycles = this.applicationContext.getBeansOfType(
                 GrailsApplicationLifeCycle).values().asList()
-        Collections.sort(lifeCycleBeans, OrderComparator.INSTANCE)
-        for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
-            def withSpring = lifeCycle.doWithSpring()
-            if (lifeCycle != this.lifeCycle && withSpring) {
+        Collections.sort(lifeCycles, OrderComparator.INSTANCE)
+        for (GrailsApplicationLifeCycle lifeCycle : lifeCycles) {
+            Closure withSpring = lifeCycle.doWithSpring()
+            if (withSpring) {
                 def bb = new BeanBuilder(null, springConfig, application.classLoader)
                 bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()))
                 bb.setBinding(b)

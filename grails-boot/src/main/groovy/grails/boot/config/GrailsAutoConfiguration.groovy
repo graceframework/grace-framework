@@ -19,17 +19,7 @@ import java.lang.reflect.Field
 
 import groovy.transform.CompileStatic
 import org.springframework.aop.config.AopConfigUtils
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
-import org.springframework.context.annotation.Bean
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
-import grails.boot.config.tools.ClassPathScanner
-import grails.config.Config
-import grails.core.GrailsApplication
-import grails.core.GrailsApplicationClass
-
-import org.grails.compiler.injection.AbstractGrailsArtefactTransformer
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
 import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
 
@@ -41,8 +31,7 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  *
  */
 @CompileStatic
-// WARNING: Never add logging to the source of this class, early initialization causes problems
-class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationContextAware {
+class GrailsAutoConfiguration {
 
     private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
 
@@ -60,76 +49,6 @@ class GrailsAutoConfiguration implements GrailsApplicationClass, ApplicationCont
         }
         catch (Throwable ignored) {
         }
-    }
-
-    ApplicationContext applicationContext
-
-    /**
-     * @return A post processor that uses the {@link grails.plugins.GrailsPluginManager}
-     * to configure the {@link org.springframework.context.ApplicationContext}
-     */
-    @Bean
-    GrailsApplicationPostProcessor grailsApplicationPostProcessor() {
-        new GrailsApplicationPostProcessor(this, applicationContext, classes() as Class[])
-    }
-
-    /**
-     * @return The classes that constitute the Grails application
-     */
-    Collection<Class> classes() {
-        Collection<Class> classes = new HashSet()
-
-        ClassPathScanner scanner = new ClassPathScanner()
-        if (limitScanningToApplication()) {
-            classes.addAll scanner.scan(getClass(), packageNames())
-        }
-        else {
-            classes.addAll scanner.scan(new PathMatchingResourcePatternResolver(applicationContext), packageNames())
-        }
-
-        ClassLoader classLoader = getClass().getClassLoader()
-        for (cls in AbstractGrailsArtefactTransformer.transformedClassNames) {
-            try {
-                classes << classLoader.loadClass(cls)
-            }
-            catch (ClassNotFoundException ignored) {
-            }
-        }
-
-        classes
-    }
-
-    /**
-     * Whether classpath scanning should be limited to the application and not dependent JAR files.
-     * Users can override this method to enable more broad scanning at the cost of startup time.
-     *
-     * @return True if scanning should be limited to the application and should not include dependant JAR files
-     */
-    protected boolean limitScanningToApplication() {
-        true
-    }
-
-    /**
-     * @return The packages to scan
-     */
-    Collection<Package> packages() {
-        def thisPackage = getClass().package
-        thisPackage ? [thisPackage] : new ArrayList<Package>()
-    }
-
-    /**
-     * @return The package names to scan. Delegates to {@link #packages()} by default
-     */
-    Collection<String> packageNames() {
-        packages()*.name
-    }
-
-    GrailsApplication getGrailsApplication() {
-        applicationContext.getBean(GrailsApplication)
-    }
-
-    Config getConfig() {
-        grailsApplication.config
     }
 
 }
