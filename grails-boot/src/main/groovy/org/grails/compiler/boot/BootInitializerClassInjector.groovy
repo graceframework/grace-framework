@@ -34,7 +34,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.web.WebApplicationInitializer
 
 import grails.boot.GrailsPluginApplication
-import grails.boot.config.GrailsAutoConfiguration
 import grails.compiler.ast.AstTransformer
 import grails.compiler.ast.GlobalClassInjectorAdapter
 import grails.plugins.metadata.PluginSource
@@ -42,10 +41,11 @@ import grails.util.Environment
 
 import org.grails.boot.context.web.GrailsAppServletInitializer
 import org.grails.compiler.injection.GrailsASTUtils
+import org.grails.core.artefact.ApplicationArtefactHandler
 
 /**
  * A transformation that automatically produces a Spring servlet initializer for a class that extends GrailsConfiguration.
- * Given a class "Application" that extends {@link GrailsAutoConfiguration}, it produces:
+ * Given a class "Application", it produces:
  *
  * <pre>
  * <code>
@@ -66,8 +66,9 @@ import org.grails.compiler.injection.GrailsASTUtils
 @AstTransformer
 class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
 
-    public static final ClassNode GRAILS_CONFIGURATION_CLASS_NODE = ClassHelper.make(GrailsAutoConfiguration)
     public static final ClassNode PLUGIN_SOURCE_ANNOTATION = ClassHelper.make(PluginSource)
+
+    ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
     @Override
     void performInjectionInternal(SourceUnit source, ClassNode classNode) {
@@ -80,8 +81,9 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
             return
         }
 
-        if (GrailsASTUtils.isAssignableFrom(GRAILS_CONFIGURATION_CLASS_NODE, classNode) &&
-                !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {
+        if (applicationArtefactHandler.isArtefact(classNode)
+                && !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {
+
             def methods = classNode.getMethods('main')
             for (MethodNode mn in methods) {
                 if (Modifier.isStatic(mn.modifiers) && Modifier.isPublic(mn.modifiers)) {

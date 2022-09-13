@@ -5,7 +5,6 @@ import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebSe
 import spock.lang.Specification
 
 import grails.artefact.Artefact
-import grails.boot.config.GrailsAutoConfiguration
 import grails.web.Controller
 
 /**
@@ -30,7 +29,7 @@ class EmbeddedContainerWithGrailsSpec extends Specification {
     }
 
     @SpringBootApplication
-    static class Application extends GrailsAutoConfiguration {
+    static class Application {
     }
 
 }
