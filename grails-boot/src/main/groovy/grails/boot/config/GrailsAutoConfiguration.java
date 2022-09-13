@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 the original author or authors.
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ import org.springframework.lang.Nullable;
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureOrder(10000)
-@Import(GrailsConfiguration.GrailsRegistrar.class)
-public class GrailsConfiguration {
+@Import(GrailsAutoConfiguration.GrailsRegistrar.class)
+public class GrailsAutoConfiguration {
 
     static class GrailsRegistrar implements ImportBeanDefinitionRegistrar {
 
