@@ -25,11 +25,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.context.event.ApplicationContextEvent
-import org.springframework.context.event.ContextClosedEvent
-import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.core.OrderComparator
 import org.springframework.core.Ordered
 import org.springframework.core.convert.converter.Converter
@@ -41,7 +37,6 @@ import org.springframework.core.io.DescriptiveResource
 import org.springframework.core.io.Resource
 
 import grails.artefact.Artefact
-import grails.boot.GrailsApp
 import grails.config.Settings
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
@@ -57,8 +52,6 @@ import org.grails.config.NavigableMap
 import org.grails.config.PrefixedMapPropertySource
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.exceptions.GrailsConfigurationException
-import org.grails.core.lifecycle.ShutdownOperations
-import org.grails.datastore.mapping.model.MappingContext
 import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.spring.RuntimeSpringConfigUtilities
 import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
@@ -70,11 +63,11 @@ import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
  * @author Graeme Rocher
  * @author Michael Yan
  * @since 3.0
+ * @see GrailsApplicationEventListener
  */
 @CompileStatic
 @Slf4j
-class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware,
-        ApplicationListener<ApplicationContextEvent>, Ordered {
+class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, Ordered {
 
     public static final String BEAN_NAME = "grailsApplicationPostProcessor"
 
@@ -274,6 +267,10 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
         }
         beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
         beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(pluginManager))
+        if (this.applicationContext instanceof ConfigurableApplicationContext) {
+            ConfigurableApplicationContext configurable = (ConfigurableApplicationContext) this.applicationContext
+            configurable.addApplicationListener(new GrailsApplicationEventListener());
+        }
     }
 
     @Override
@@ -283,54 +280,7 @@ class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPostProces
             initializeGrailsApplication(applicationContext)
             if (applicationContext instanceof ConfigurableApplicationContext) {
                 def configurable = (ConfigurableApplicationContext) applicationContext
-                configurable.addApplicationListener(this)
                 configurable.environment.addActiveProfile(grailsApplication.getConfig().getProperty(Settings.PROFILE, String, 'web'))
-            }
-        }
-    }
-
-    @Override
-    void onApplicationEvent(ApplicationContextEvent event) {
-        ApplicationContext context = event.applicationContext
-
-        if (!applicationContext || applicationContext == context) {
-            // Only act if the event is for our context
-            Collection<GrailsApplicationLifeCycle> lifeCycleBeans = context.getBeansOfType(GrailsApplicationLifeCycle).values()
-            if (event instanceof ContextRefreshedEvent) {
-                if (context.containsBean('grailsDomainClassMappingContext')) {
-                    grailsApplication.setMappingContext(
-                            context.getBean('grailsDomainClassMappingContext', MappingContext)
-                    )
-                }
-                Environment.setInitializing(false)
-                pluginManager.setApplicationContext(context)
-                pluginManager.doDynamicMethods()
-                for (GrailsApplicationLifeCycle lifeCycle in lifeCycleBeans) {
-                    lifeCycle.doWithDynamicMethods()
-                }
-                pluginManager.doPostProcessing(context)
-                for (GrailsApplicationLifeCycle lifeCycle in lifeCycleBeans) {
-                    lifeCycle.doWithApplicationContext()
-                }
-                Holders.pluginManager = pluginManager
-                Map<String, Object> eventMap = [:]
-                eventMap.put('source', pluginManager)
-
-                pluginManager.onStartup(eventMap)
-                for (GrailsApplicationLifeCycle lifeCycle in lifeCycleBeans) {
-                    lifeCycle.onStartup(eventMap)
-                }
-            }
-            else if (event instanceof ContextClosedEvent) {
-                Map<String, Object> eventMap = [:]
-                eventMap.put('source', pluginManager)
-                for (GrailsApplicationLifeCycle lifeCycle in lifeCycleBeans.asList().reverse()) {
-                    lifeCycle.onShutdown(eventMap)
-                }
-                pluginManager.shutdown()
-                ShutdownOperations.runOperations()
-                Holders.clear()
-                GrailsApp.setDevelopmentModeActive(false)
             }
         }
     }
