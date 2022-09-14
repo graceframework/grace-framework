@@ -732,7 +732,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
 
         ClassLoader parent = this.grailsApplication.getClassLoader();
-        try(GroovyClassLoader gcl = new GroovyClassLoader(parent)) {
+        try (GroovyClassLoader gcl = new GroovyClassLoader(parent)) {
             initialisePlugin(gcl.parseClass(descriptor.getFile()));
         }
         catch (Exception e) {
