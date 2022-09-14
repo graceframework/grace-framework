@@ -114,18 +114,6 @@ class CoreGrailsPlugin extends Plugin {
                 }
             }
 
-            def packagesToScan = []
-
-            def beanPackages = config.getProperty(Settings.SPRING_BEAN_PACKAGES, List)
-            if (beanPackages) {
-                packagesToScan += beanPackages
-            }
-
-            if (packagesToScan) {
-                xmlns grailsContext: 'http://grails.org/schema/context'
-                grailsContext.'component-scan'('base-package': packagesToScan.join(','))
-            }
-
             // add shutdown hook if not running in war deployed mode
             final warDeployed = Environment.isWarDeployed()
             final devMode = !warDeployed && environment == Environment.DEVELOPMENT
