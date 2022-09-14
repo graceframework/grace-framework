@@ -83,7 +83,6 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
 
         if (applicationArtefactHandler.isArtefact(classNode)
                 && !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {
-
             def methods = classNode.getMethods('main')
             for (MethodNode mn in methods) {
                 if (Modifier.isStatic(mn.modifiers) && Modifier.isPublic(mn.modifiers)) {

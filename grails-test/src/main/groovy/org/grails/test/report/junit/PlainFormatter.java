@@ -91,7 +91,7 @@ public class PlainFormatter extends PlainJUnitResultFormatter {
     }
 
     protected void writeToFile(File f, String text) {
-        try(FileWriter writer = new FileWriter(f)) {
+        try (FileWriter writer = new FileWriter(f)) {
             writer.write(text);
         }
         catch (IOException ex) {

@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,7 +124,7 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                     continue;
                 }
 
-                try(InputStream inputStream = resource.getInputStream()) {
+                try (InputStream inputStream = resource.getInputStream()) {
                     final ClassReader classReader = new ClassReader(inputStream);
                     final String astTransformerClassName = AstTransformer.class.getSimpleName();
                     final ClassLoader finalClassLoader = classLoader;

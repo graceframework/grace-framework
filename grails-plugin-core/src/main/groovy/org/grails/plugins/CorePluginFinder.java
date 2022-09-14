@@ -108,7 +108,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
         try {
             SAXParser saxParser = SpringIOUtils.newSAXParser();
             for (Resource resource : resources) {
-                try(InputStream input = resource.getInputStream()) {
+                try (InputStream input = resource.getInputStream()) {
                     PluginHandler ph = new PluginHandler();
                     saxParser.parse(input, ph);
 

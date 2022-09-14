@@ -28,7 +28,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -197,7 +196,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                         final HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
                         WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
-                                Collections.unmodifiableList(new ArrayList(newFileExtensions)));
+                                Collections.unmodifiableList(new ArrayList<>(newFileExtensions)));
                     }
                     return FileVisitResult.CONTINUE;
                 }
