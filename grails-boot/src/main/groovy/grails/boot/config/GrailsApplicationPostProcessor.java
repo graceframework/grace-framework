@@ -81,16 +81,20 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
 
     public static final String BEAN_NAME = "grailsApplicationPostProcessor";
 
+    private static final boolean RELOADING_ENABLED = Environment.isReloadingAgentEnabled();
+
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    static final boolean RELOADING_ENABLED = Environment.isReloadingAgentEnabled();
-
     protected final GrailsApplication grailsApplication;
+
     protected final GrailsPluginManager pluginManager;
+
     protected ApplicationContext applicationContext;
+
     protected GrailsApplicationLifeCycle lifeCycle;
 
     protected boolean loadExternalBeans = true;
+
     protected boolean reloadingEnabled = RELOADING_ENABLED;
 
     public GrailsApplicationPostProcessor() {
@@ -106,18 +110,32 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
         this.loadExternalBeans = loadExternalBeans;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        if (this.applicationContext != applicationContext) {
+            this.applicationContext = applicationContext;
+            initializeGrailsApplication(applicationContext);
+            if (applicationContext instanceof ConfigurableApplicationContext) {
+                ConfigurableApplicationContext configurable = (ConfigurableApplicationContext) applicationContext;
+                configurable.addApplicationListener(new GrailsApplicationEventListener());
+                configurable.getEnvironment().addActiveProfile(
+                        this.grailsApplication.getConfig().getProperty(Settings.PROFILE, String.class, "web"));
+            }
+        }
+    }
+
     protected final void initializeGrailsApplication(ApplicationContext applicationContext) {
         if (applicationContext == null) {
             throw new IllegalStateException("ApplicationContext should not be null");
         }
         Environment.setInitializing(true);
-        grailsApplication.setApplicationContext(applicationContext);
-        grailsApplication.setMainContext(applicationContext);
-        customizePluginManager(pluginManager);
-        pluginManager.loadPlugins();
-        pluginManager.setApplicationContext(applicationContext);
+        this.grailsApplication.setApplicationContext(applicationContext);
+        this.grailsApplication.setMainContext(applicationContext);
+        customizePluginManager(this.pluginManager);
+        this.pluginManager.loadPlugins();
+        this.pluginManager.setApplicationContext(applicationContext);
         loadApplicationConfig();
-        customizeGrailsApplication(grailsApplication);
+        customizeGrailsApplication(this.grailsApplication);
         performGrailsInitializationSequence();
     }
 
@@ -128,12 +146,16 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
     }
 
     protected void performGrailsInitializationSequence() {
-        pluginManager.doArtefactConfiguration();
-        grailsApplication.initialise();
+        this.pluginManager.doArtefactConfiguration();
+        this.grailsApplication.initialise();
         // register plugin provided classes first, this gives the opportunity
         // for application classes to override those provided by a plugin
-        pluginManager.registerProvidedArtefacts(grailsApplication);
+        this.pluginManager.registerProvidedArtefacts(this.grailsApplication);
 
+        loadArtefactClasses();
+    }
+
+    protected void loadArtefactClasses() {
         GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext);
         Set<Class<?>> classes;
         try {
@@ -144,12 +166,12 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
         }
 
         for (Class<?> cls : classes) {
-            grailsApplication.addArtefact(cls);
+            this.grailsApplication.addArtefact(cls);
         }
     }
 
     protected void loadApplicationConfig() {
-        org.springframework.core.env.Environment environment = applicationContext.getEnvironment();
+        org.springframework.core.env.Environment environment = this.applicationContext.getEnvironment();
         ConfigurableConversionService conversionService = null;
         if (environment instanceof ConfigurableEnvironment) {
             if (environment instanceof AbstractEnvironment) {
@@ -158,7 +180,7 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
 
                     @Override
                     public Resource convert(String source) {
-                        return applicationContext.getResource(source);
+                        return GrailsApplicationPostProcessor.this.applicationContext.getResource(source);
                     }
 
                 });
@@ -181,7 +203,7 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
             }
 
             MutablePropertySources propertySources = ((ConfigurableEnvironment) environment).getPropertySources();
-            GrailsPlugin[] plugins = pluginManager.getAllPlugins();
+            GrailsPlugin[] plugins = this.pluginManager.getAllPlugins();
             List<GrailsPlugin> pluginList = Arrays.asList(plugins);
             Collections.reverse(pluginList);
 
@@ -202,7 +224,7 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
             if (conversionService != null) {
                 config.setConversionService(conversionService);
             }
-            ((DefaultGrailsApplication) grailsApplication).setConfig(config);
+            ((DefaultGrailsApplication) this.grailsApplication).setConfig(config);
         }
     }
 
@@ -214,9 +236,9 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
         Holders.setGrailsApplication(application);
 
         // first register plugin beans
-        pluginManager.doRuntimeConfiguration(springConfig);
+        this.pluginManager.doRuntimeConfiguration(springConfig);
 
-        if (loadExternalBeans) {
+        if (this.loadExternalBeans) {
             // now allow overriding via application
             ApplicationContext context = application.getMainContext();
             Resource beanResources = context.getResource(RuntimeSpringConfigUtilities.SPRING_RESOURCES_GROOVY);
@@ -225,7 +247,7 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
                     RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, application, beanResources);
                 }
                 catch (Throwable e) {
-                    log.error("Error loading spring/resources.groovy file: ${e.message}", e);
+                    this.log.error("Error loading spring/resources.groovy file: ${e.message}", e);
                     throw new GrailsConfigurationException("Error loading spring/resources.groovy file: ${e.message}", e);
                 }
             }
@@ -237,21 +259,21 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
                             .importBeans(beanResources);
                 }
                 catch (Throwable e) {
-                    log.error("Error loading spring/resources.xml file: ${e.message}", e);
+                    this.log.error("Error loading spring/resources.xml file: ${e.message}", e);
                     throw new GrailsConfigurationException("Error loading spring/resources.xml file: ${e.message}", e);
                 }
             }
         }
 
         Binding b = new Binding();
-        b.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication);
-        b.setVariable("application", grailsApplication);
-        b.setVariable("manager", pluginManager);
-        if (lifeCycle != null) {
-            Closure<?> withSpring = lifeCycle.doWithSpring();
+        b.setVariable(GrailsApplication.APPLICATION_ID, this.grailsApplication);
+        b.setVariable("application", this.grailsApplication);
+        b.setVariable("manager", this.pluginManager);
+        if (this.lifeCycle != null) {
+            Closure<?> withSpring = this.lifeCycle.doWithSpring();
             if (withSpring != null) {
                 BeanBuilder bb = new BeanBuilder(null, springConfig, application.getClassLoader());
-                bb.setBeanBuildResource(new DescriptiveResource(lifeCycle.getClass().getName()));
+                bb.setBeanBuildResource(new DescriptiveResource(this.lifeCycle.getClass().getName()));
                 bb.setBinding(b);
                 bb.beans(withSpring);
             }
@@ -290,24 +312,6 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
 
         beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(this.grailsApplication));
         beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(this.pluginManager));
-
-        if (this.applicationContext instanceof ConfigurableApplicationContext) {
-            ConfigurableApplicationContext configurable = (ConfigurableApplicationContext) this.applicationContext;
-            configurable.addApplicationListener(new GrailsApplicationEventListener());
-        }
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (this.applicationContext != applicationContext && applicationContext != null) {
-            this.applicationContext = applicationContext;
-            initializeGrailsApplication(applicationContext);
-            if (applicationContext instanceof ConfigurableApplicationContext) {
-                ConfigurableApplicationContext configurable = (ConfigurableApplicationContext) applicationContext;
-                configurable.getEnvironment().addActiveProfile(
-                        grailsApplication.getConfig().getProperty(Settings.PROFILE, String.class, "web"));
-            }
-        }
     }
 
     @Override
