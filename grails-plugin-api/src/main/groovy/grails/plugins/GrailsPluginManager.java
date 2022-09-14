@@ -17,12 +17,10 @@ package grails.plugins;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.type.filter.TypeFilter;
 
 import grails.core.GrailsApplication;
 import grails.plugins.exceptions.PluginException;
@@ -242,12 +240,6 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * @param aClass The class
      */
     void informOfClassChange(Class<?> aClass);
-
-    /**
-     * Get all of the TypeFilter definitions defined by the plugins
-     * @return A list of TypeFilter definitions
-     */
-    List<TypeFilter> getTypeFilters();
 
     /**
      * Returns the pluginContextPath for the given plugin

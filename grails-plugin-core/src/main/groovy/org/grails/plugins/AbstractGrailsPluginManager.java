@@ -41,7 +41,6 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -109,14 +108,6 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public AbstractGrailsPluginManager(GrailsApplication application) {
         Assert.notNull(application, "Argument [application] cannot be null!");
         this.application = application;
-    }
-
-    public List<TypeFilter> getTypeFilters() {
-        List<TypeFilter> list = new ArrayList<>();
-        for (GrailsPlugin grailsPlugin : this.pluginList) {
-            list.addAll(grailsPlugin.getTypeFilters());
-        }
-        return Collections.unmodifiableList(list);
     }
 
     public GrailsPlugin[] getAllPlugins() {

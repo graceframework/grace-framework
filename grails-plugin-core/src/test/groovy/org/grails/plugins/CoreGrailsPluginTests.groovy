@@ -2,7 +2,6 @@ package org.grails.plugins
 
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
-import grails.plugins.GrailsPluginManager
 import org.grails.config.PropertySourcesConfig
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
 import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
@@ -43,25 +42,6 @@ class CoreGrailsPluginTests {
     @AfterEach
     protected void tearDown() throws Exception {
         ExpandoMetaClass.disableGlobally();
-    }
-
-    @Test
-    void testComponentScan() {
-        def pluginClass = gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
-
-        def plugin = new DefaultGrailsPlugin(pluginClass, ga)
-        def pluginManager = new MockGrailsPluginManager()
-        ctx.registerMockBean(GrailsPluginManager.BEAN_NAME, pluginManager)
-        ga.config['grails.spring.bean.packages'] = ['org.grails.plugins.test']
-
-        def springConfig = new WebRuntimeSpringConfiguration(ctx)
-        springConfig.servletContext = createMockServletContext()
-
-        plugin.doWithRuntimeConfiguration(springConfig)
-
-        def appCtx = springConfig.getApplicationContext()
-        assert appCtx.containsBean("testService")
-        assert appCtx.containsBean("testBean")
     }
 
     @Test

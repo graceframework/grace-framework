@@ -29,11 +29,6 @@ interface Settings {
     String PROFILE = 'grails.profile'
 
     /**
-     *  Packages to scan for Spring beans
-     */
-    String SPRING_BEAN_PACKAGES = 'grails.spring.bean.packages'
-
-    /**
      * Whether to disable AspectJ explicitly
      */
     String SPRING_DISABLE_ASPECTJ = 'grails.spring.disable.aspectj.autoweaving'
