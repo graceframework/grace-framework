@@ -20,15 +20,10 @@ import java.nio.file.Files
 import groovy.util.logging.Slf4j
 import org.springframework.core.io.Resource
 
-import grails.config.Config
-import grails.config.Settings
-import grails.core.GrailsApplication
 import grails.plugins.Plugin
 import grails.util.BuildSettings
-import grails.util.Environment
 import grails.util.GrailsUtil
 
-import org.grails.spring.context.support.PluginAwareResourceBundleMessageSource
 import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 
 /**
@@ -48,19 +43,6 @@ class I18nGrailsPlugin extends Plugin {
     @Override
     Closure doWithSpring() {
         { ->
-            GrailsApplication application = grailsApplication
-            Config config = application.config
-            boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean, false)
-            String encoding = config.getProperty(Settings.GSP_VIEW_ENCODING, 'UTF-8')
-
-            messageSource(PluginAwareResourceBundleMessageSource, application, pluginManager) { bean ->
-                fallbackToSystemLocale = false
-                if (Environment.current.isReloadEnabled() || gspEnableReload) {
-                    cacheSeconds = config.getProperty(Settings.I18N_CACHE_SECONDS, Integer, 5)
-                    fileCacheSeconds = config.getProperty(Settings.I18N_FILE_CACHE_SECONDS, Integer, 5)
-                }
-                defaultEncoding = encoding
-            }
         }
     }
 
