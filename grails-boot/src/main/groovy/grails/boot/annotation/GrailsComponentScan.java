@@ -30,7 +30,7 @@ import grails.boot.config.GrailsComponentScanPackages;
  * Configures the base packages used by auto-configuration when scanning for Grails
  * classes.
  * <p>
- * Using {@code @EntityScan} will cause auto-configuration to:
+ * Using {@code @GrailsComponentScan} will cause auto-configuration to:
  * <ul>
  * <li>Set the
  * {@link grails.boot.config.GrailsApplicationPostProcessor @GrailsApplicationPostProcessor}

@@ -15,21 +15,14 @@
  */
 package org.grails.compiler.injection
 
-import java.lang.reflect.Modifier
-
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.apache.groovy.ast.tools.AnnotatedNodeUtils
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.expr.ArgumentListExpression
 import org.codehaus.groovy.ast.expr.ClassExpression
-import org.codehaus.groovy.ast.expr.ConstantExpression
-import org.codehaus.groovy.ast.expr.ListExpression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
-import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
-import org.codehaus.groovy.ast.stmt.ReturnStatement
 import org.codehaus.groovy.ast.stmt.Statement
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.SourceUnit
@@ -105,26 +98,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                         methodCallStatement
                 ]
                 classNode.addStaticInitializerStatements(statements, true)
-
-                def packageNamesMethod = classNode.getMethod('packageNames', GrailsASTUtils.ZERO_PARAMETERS)
-
-                if (packageNamesMethod == null || packageNamesMethod.declaringClass != classNode) {
-                    def collectionClassNode = GrailsASTUtils.replaceGenericsPlaceholders(
-                            ClassHelper.make(Collection), [E: ClassHelper.make(String)])
-
-                    def packageName = classNode.getPackageName()
-                    if (packageName in ['org', 'com', 'io', 'net']) {
-                        GrailsASTUtils.error(source, classNode,
-                                "Do not place Groovy sources in common package names such as 'org', 'com', 'io' or 'net' " +
-                                        'as this can result in performance degradation of classpath scanning')
-                    }
-
-                    def packageNamesBody = new BlockStatement()
-                    packageNamesBody.addStatement(new ReturnStatement(new ExpressionStatement(
-                            new ListExpression(Collections.singletonList(new ConstantExpression(packageName))))))
-                    AnnotatedNodeUtils.markAsGenerated(classNode, classNode.addMethod('packageNames', Modifier.PUBLIC,
-                            collectionClassNode, ZERO_PARAMETERS, null, packageNamesBody))
-                }
 
                 def classLoader = getClass().classLoader
                 if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {

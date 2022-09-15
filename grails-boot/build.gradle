@@ -23,6 +23,8 @@ dependencies {
     testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-test")
 
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.springframework.boot:spring-boot-test:$springBootVersion")
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
     testRuntimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatLog4jVersion"
     testRuntimeOnly project(":grails-plugin-i18n")
