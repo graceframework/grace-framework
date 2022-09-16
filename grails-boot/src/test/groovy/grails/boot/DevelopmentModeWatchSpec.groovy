@@ -25,7 +25,7 @@ class DevelopmentModeWatchSpec extends Specification {
         GrailsApp app = new GrailsApp(GrailsTestConfigurationClass.class)
         app.webApplicationType = WebApplicationType.NONE
         ConfigurableApplicationContext context = app.run()
-        WatchedResourcesGrailsPlugin plugin = context.getBean('grailsPluginManager').pluginList[0].plugin.instance
+        WatchedResourcesGrailsPlugin plugin = context.getBean('pluginManager').pluginList[0].plugin.instance
         PollingConditions pollingCondition = new PollingConditions(timeout: 10, initialDelay: 5, factor: 1)
 
         when:
@@ -50,7 +50,7 @@ class DevelopmentModeWatchSpec extends Specification {
 @Configuration
 class GrailsTestConfigurationClass {
 
-    @Bean(name = "grailsPluginManager")
+    @Bean(name = "pluginManager")
     GrailsPluginManager getGrailsPluginManager() {
         MockGrailsPluginManager mockGrailsPluginManager = new MockGrailsPluginManager()
         GrailsPlugin watchedPlugin = new DefaultGrailsPlugin(WatchedResourcesGrailsPlugin.class, mockGrailsPluginManager.application)

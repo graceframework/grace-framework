@@ -35,7 +35,6 @@ import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
 /**
  * Allows looking up key classes in a static context
  *
- *
  * @author Burt Beckwith
  * @author Graeme Rocher
  *
@@ -85,7 +84,9 @@ public final class Holders {
     }
 
     public static void setServletContext(final Object servletContext) {
-        servletContexts.set(servletContext);
+        if (servletContexts != null) {
+            servletContexts.set(servletContext);
+        }
     }
 
     public static Object getServletContext() {
