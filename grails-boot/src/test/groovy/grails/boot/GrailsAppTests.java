@@ -1,0 +1,197 @@
+/*
+ * Copyright 2012-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package grails.boot;
+
+import java.util.Collections;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.CachedIntrospectionResults;
+import org.springframework.boot.ApplicationContextFactory;
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplicationShutdownHookInstance;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.SmartApplicationListener;
+import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.core.env.Environment;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
+/**
+ * Tests for {@link GrailsApp}.
+ */
+@ExtendWith(OutputCaptureExtension.class)
+public class GrailsAppTests {
+
+    private String headlessProperty;
+
+    private ConfigurableApplicationContext context;
+
+    private Environment getEnvironment() {
+        if (this.context != null) {
+            return this.context.getEnvironment();
+        }
+        throw new IllegalStateException("Could not obtain Environment");
+    }
+
+    @BeforeEach
+    void storeAndClearHeadlessProperty() {
+        this.headlessProperty = System.getProperty("java.awt.headless");
+        System.clearProperty("java.awt.headless");
+    }
+
+    @AfterEach
+    void reinstateHeadlessProperty() {
+        if (this.headlessProperty == null) {
+            System.clearProperty("java.awt.headless");
+        }
+        else {
+            System.setProperty("java.awt.headless", this.headlessProperty);
+        }
+    }
+
+    @AfterEach
+    void cleanUp() {
+        if (this.context != null) {
+            this.context.close();
+        }
+        System.clearProperty("spring.main.banner-mode");
+        System.clearProperty(CachedIntrospectionResults.IGNORE_BEANINFO_PROPERTY_NAME);
+        SpringApplicationShutdownHookInstance.reset();
+    }
+
+    @Test
+    void sourcesMustNotBeNull() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new GrailsApp((Class<?>[]) null).run())
+                .withMessageContaining("PrimarySources must not be null");
+    }
+
+    @Test
+    void sourcesMustNotBeEmpty() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new GrailsApp().run())
+                .withMessageContaining("Sources must not be empty");
+    }
+
+    @Test
+    void logsActiveProfilesWithSingleDevelopment(CapturedOutput output) {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        this.context = application.run();
+        assertThat(output).contains("Application starting in environment: development");
+    }
+
+    @Test
+    void bannerModeOffWithGrailsApp() {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        this.context = application.run();
+        assertThat(application).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.OFF);
+    }
+
+    @Test
+    void customId() {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        this.context = application.run("--spring.application.name=foo");
+        assertThat(this.context.getId()).startsWith("foo");
+    }
+
+    @Test
+    void specificApplicationContextFactory() {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setApplicationContextFactory(ApplicationContextFactory.ofContextClass(StaticApplicationContext.class));
+        this.context = application.run();
+        assertThat(this.context).isInstanceOf(StaticApplicationContext.class);
+    }
+
+
+    @Test
+    void specificApplicationContextInitializer() {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        final AtomicReference<ApplicationContext> reference = new AtomicReference<>();
+        application.setInitializers(Collections
+                .singletonList((ApplicationContextInitializer<ConfigurableApplicationContext>) reference::set));
+        this.context = application.run("--foo=bar");
+        assertThat(this.context).isSameAs(reference.get());
+        // Custom initializers do not switch off the defaults
+        assertThat(getEnvironment().getProperty("foo")).isEqualTo("bar");
+    }
+
+    @Test
+    void applicationRunningEventListener() {
+        GrailsApp application = new GrailsApp(ExampleConfig.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        AtomicReference<ApplicationReadyEvent> reference = addListener(application, ApplicationReadyEvent.class);
+        this.context = application.run("--foo=bar");
+        assertThat(application).isSameAs(reference.get().getSpringApplication());
+    }
+
+    private <E extends ApplicationEvent> AtomicReference<E> addListener(GrailsApp application,
+            Class<E> eventType) {
+        AtomicReference<E> reference = new AtomicReference<>();
+        application.addListeners(new TestEventListener<>(eventType, reference));
+        return reference;
+    }
+
+    static class TestEventListener<E extends ApplicationEvent> implements SmartApplicationListener {
+
+        private final Class<E> eventType;
+
+        private final AtomicReference<E> reference;
+
+        TestEventListener(Class<E> eventType, AtomicReference<E> reference) {
+            this.eventType = eventType;
+            this.reference = reference;
+        }
+
+        @Override
+        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+            return this.eventType.isAssignableFrom(eventType);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void onApplicationEvent(ApplicationEvent event) {
+            this.reference.set((E) event);
+        }
+
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    static class ExampleConfig {
+
+        @Bean
+        String someBean() {
+            return "test";
+        }
+
+    }
+
+}

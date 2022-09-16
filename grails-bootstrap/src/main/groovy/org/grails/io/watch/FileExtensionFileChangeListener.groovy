@@ -39,7 +39,7 @@ abstract class FileExtensionFileChangeListener implements DirectoryWatcher.FileC
         }
     }
 
-    abstract void onChange(File file, List<String> extensions)
+    abstract void onChange(File file, List<String> extensions) throws IOException
 
     @Override
     final void onNew(File file) {
@@ -48,6 +48,6 @@ abstract class FileExtensionFileChangeListener implements DirectoryWatcher.FileC
         }
     }
 
-    abstract void onNew(File file, List<String> extensions)
+    abstract void onNew(File file, List<String> extensions) throws IOException
 
 }

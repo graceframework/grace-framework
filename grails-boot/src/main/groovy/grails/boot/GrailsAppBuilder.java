@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.boot
+package grails.boot;
 
-import groovy.transform.CompileStatic
-import groovy.transform.InheritConstructors
-import org.springframework.boot.SpringApplication
-import org.springframework.boot.builder.SpringApplicationBuilder
-import org.springframework.core.io.ResourceLoader
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.core.io.ResourceLoader;
 
 /**
  * Fluent API for constructing GrailsApp instances. Simple extension of {@link SpringApplicationBuilder}.
@@ -27,13 +25,11 @@ import org.springframework.core.io.ResourceLoader
  * @author Graeme Rocher
  * @since 3.0.6
  */
-@CompileStatic
-@InheritConstructors
-class GrailsAppBuilder extends SpringApplicationBuilder {
+public class GrailsAppBuilder extends SpringApplicationBuilder {
 
     @Override
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class<?>... sources) {
-        new GrailsApp(resourceLoader, sources)
+        return new GrailsApp(resourceLoader, sources);
     }
 
 }
