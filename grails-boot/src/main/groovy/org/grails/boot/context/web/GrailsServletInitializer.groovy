@@ -19,20 +19,20 @@ import groovy.transform.CompileStatic
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
-import grails.boot.GrailsAppBuilder
+import grails.boot.GrailsBuilder
 
 /**
- * Ensure a {@link grails.boot.GrailsApp} in constructed during servlet initialization
+ * Ensure a {@link grails.boot.Grails} in constructed during servlet initialization
  *
  * @author Graeme Rocher
  * @since 3.0.6
  */
 @CompileStatic
-abstract class GrailsAppServletInitializer extends SpringBootServletInitializer {
+abstract class GrailsServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder createSpringApplicationBuilder() {
-        new GrailsAppBuilder()
+        new GrailsBuilder()
     }
 
 }

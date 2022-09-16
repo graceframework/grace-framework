@@ -29,7 +29,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.OrderComparator;
 
-import grails.boot.GrailsApp;
+import grails.boot.Grails;
 import grails.core.GrailsApplication;
 import grails.core.GrailsApplicationLifeCycle;
 import grails.plugins.GrailsPluginManager;
@@ -104,7 +104,7 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             pluginManager.shutdown();
             ShutdownOperations.runOperations();
             Holders.clear();
-            GrailsApp.setDevelopmentModeActive(false);
+            Grails.setDevelopmentModeActive(false);
         }
     }
 

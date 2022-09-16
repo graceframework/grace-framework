@@ -20,14 +20,14 @@ import org.springframework.boot.ApplicationContextFactory
 import org.springframework.util.ClassUtils
 import org.springframework.web.context.support.GenericWebApplicationContext
 
-import grails.boot.GrailsApp
+import grails.boot.Grails
 
 /**
  * @author Graeme Rocher
  * @since 3.0
  */
 @CompileStatic
-class DevelopmentGrailsApplication extends GrailsApp {
+class DevelopmentGrailsApplication extends Grails {
 
     protected DevelopmentGrailsApplication(Class<?>... sources) {
         super(sources)

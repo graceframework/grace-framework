@@ -22,7 +22,7 @@ class DevelopmentModeWatchSpec extends Specification {
         setup:
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
         System.setProperty("base.dir", ".")
-        GrailsApp app = new GrailsApp(GrailsTestConfigurationClass.class)
+        Grails app = new Grails(GrailsTestConfigurationClass.class)
         app.webApplicationType = WebApplicationType.NONE
         ConfigurableApplicationContext context = app.run()
         WatchedResourcesGrailsPlugin plugin = context.getBean('pluginManager').pluginList[0].plugin.instance

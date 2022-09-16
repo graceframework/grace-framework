@@ -65,13 +65,13 @@ import org.grails.plugins.support.WatchPattern;
  * @author Michael Yan
  * @since 3.0
  */
-public class GrailsApp extends SpringApplication {
+public class Grails extends SpringApplication {
 
     private static final String GRAILS_BANNER = "grails-banner.txt";
 
     private static final String SPRING_PROFILES = "spring.profiles.active";
 
-    private static final Logger log = LoggerFactory.getLogger(GrailsApp.class);
+    private static final Logger log = LoggerFactory.getLogger(Grails.class);
 
     private static boolean developmentModeActive = false;
 
@@ -82,26 +82,26 @@ public class GrailsApp extends SpringApplication {
     protected ConfigurableEnvironment configuredEnvironment;
 
     /**
-     * Create a new {@link GrailsApp} instance. The application context will load
+     * Create a new {@link Grails} instance. The application context will load
      * beans from the specified sources (see {@link SpringApplication class-level}
      * documentation for details. The instance can be customized before calling
      * {@link #run(String...)}.
      * @param sources the bean sources
      */
-    public GrailsApp(Class<?>... sources) {
+    public Grails(Class<?>... sources) {
         super(sources);
         setBannerMode(Banner.Mode.OFF);
     }
 
     /**
-     * Create a new {@link GrailsApp} instance. The application context will load
+     * Create a new {@link Grails} instance. The application context will load
      * beans from the specified sources (see {@link SpringApplication class-level}
      * documentation for details. The instance can be customized before calling
      * {@link #run(String...)}.
      * @param resourceLoader the resource loader to use
      * @param sources the bean sources
      */
-    public GrailsApp(ResourceLoader resourceLoader, Class<?>... sources) {
+    public Grails(ResourceLoader resourceLoader, Class<?>... sources) {
         super(resourceLoader, sources);
         setBannerMode(Banner.Mode.OFF);
     }
@@ -440,7 +440,7 @@ public class GrailsApp extends SpringApplication {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified source using default settings.
      * @param source the source to load
      * @param args the application arguments (usually passed from a Java main method)
@@ -451,20 +451,20 @@ public class GrailsApp extends SpringApplication {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified sources using default settings and user supplied arguments.
      * @param sources the sources to load
      * @param args the application arguments (usually passed from a Java main method)
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     public static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
-        GrailsApp grailsApp = new GrailsApp(sources);
-        grailsApp.setBanner(new ResourceBanner(new ClassPathResource(GRAILS_BANNER)));
-        return grailsApp.run(args);
+        Grails grails = new Grails(sources);
+        grails.setBanner(new ResourceBanner(new ClassPathResource(GRAILS_BANNER)));
+        return grails.run(args);
     }
 
     public static void main(String[] args) throws Exception {
-        GrailsApp.run(new Class<?>[0], args);
+        Grails.run(new Class<?>[0], args);
     }
 
 }

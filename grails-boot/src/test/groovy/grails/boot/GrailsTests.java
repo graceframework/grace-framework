@@ -44,10 +44,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Tests for {@link GrailsApp}.
+ * Tests for {@link Grails}.
  */
 @ExtendWith(OutputCaptureExtension.class)
-public class GrailsAppTests {
+public class GrailsTests {
 
     private String headlessProperty;
 
@@ -88,57 +88,57 @@ public class GrailsAppTests {
 
     @Test
     void sourcesMustNotBeNull() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new GrailsApp((Class<?>[]) null).run())
+        assertThatIllegalArgumentException().isThrownBy(() -> new Grails((Class<?>[]) null).run())
                 .withMessageContaining("PrimarySources must not be null");
     }
 
     @Test
     void sourcesMustNotBeEmpty() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new GrailsApp().run())
+        assertThatIllegalArgumentException().isThrownBy(() -> new Grails().run())
                 .withMessageContaining("Sources must not be empty");
     }
 
     @Test
     void logsActiveProfilesWithSingleDevelopment(CapturedOutput output) {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setWebApplicationType(WebApplicationType.NONE);
-        this.context = application.run();
+        Grails app = new Grails(ExampleConfig.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        this.context = app.run();
         assertThat(output).contains("Application starting in environment: development");
     }
 
     @Test
     void bannerModeOffWithGrailsApp() {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setWebApplicationType(WebApplicationType.NONE);
-        this.context = application.run();
-        assertThat(application).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.OFF);
+        Grails app = new Grails(ExampleConfig.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        this.context = app.run();
+        assertThat(app).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.OFF);
     }
 
     @Test
     void customId() {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setWebApplicationType(WebApplicationType.NONE);
-        this.context = application.run("--spring.application.name=foo");
+        Grails app = new Grails(ExampleConfig.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        this.context = app.run("--spring.application.name=foo");
         assertThat(this.context.getId()).startsWith("foo");
     }
 
     @Test
     void specificApplicationContextFactory() {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setApplicationContextFactory(ApplicationContextFactory.ofContextClass(StaticApplicationContext.class));
-        this.context = application.run();
+        Grails app = new Grails(ExampleConfig.class);
+        app.setApplicationContextFactory(ApplicationContextFactory.ofContextClass(StaticApplicationContext.class));
+        this.context = app.run();
         assertThat(this.context).isInstanceOf(StaticApplicationContext.class);
     }
 
 
     @Test
     void specificApplicationContextInitializer() {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setWebApplicationType(WebApplicationType.NONE);
+        Grails app = new Grails(ExampleConfig.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
         final AtomicReference<ApplicationContext> reference = new AtomicReference<>();
-        application.setInitializers(Collections
+        app.setInitializers(Collections
                 .singletonList((ApplicationContextInitializer<ConfigurableApplicationContext>) reference::set));
-        this.context = application.run("--foo=bar");
+        this.context = app.run("--foo=bar");
         assertThat(this.context).isSameAs(reference.get());
         // Custom initializers do not switch off the defaults
         assertThat(getEnvironment().getProperty("foo")).isEqualTo("bar");
@@ -146,17 +146,16 @@ public class GrailsAppTests {
 
     @Test
     void applicationRunningEventListener() {
-        GrailsApp application = new GrailsApp(ExampleConfig.class);
-        application.setWebApplicationType(WebApplicationType.NONE);
-        AtomicReference<ApplicationReadyEvent> reference = addListener(application, ApplicationReadyEvent.class);
-        this.context = application.run("--foo=bar");
-        assertThat(application).isSameAs(reference.get().getSpringApplication());
+        Grails app = new Grails(ExampleConfig.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        AtomicReference<ApplicationReadyEvent> reference = addListener(app, ApplicationReadyEvent.class);
+        this.context = app.run("--foo=bar");
+        assertThat(app).isSameAs(reference.get().getSpringApplication());
     }
 
-    private <E extends ApplicationEvent> AtomicReference<E> addListener(GrailsApp application,
-            Class<E> eventType) {
+    private <E extends ApplicationEvent> AtomicReference<E> addListener(Grails app, Class<E> eventType) {
         AtomicReference<E> reference = new AtomicReference<>();
-        application.addListeners(new TestEventListener<>(eventType, reference));
+        app.addListeners(new TestEventListener<>(eventType, reference));
         return reference;
     }
 

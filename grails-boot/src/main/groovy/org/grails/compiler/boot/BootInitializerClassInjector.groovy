@@ -39,7 +39,7 @@ import grails.compiler.ast.GlobalClassInjectorAdapter
 import grails.plugins.metadata.PluginSource
 import grails.util.Environment
 
-import org.grails.boot.context.web.GrailsAppServletInitializer
+import org.grails.boot.context.web.GrailsServletInitializer
 import org.grails.compiler.injection.GrailsASTUtils
 import org.grails.core.artefact.ApplicationArtefactHandler
 
@@ -104,7 +104,7 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
                     }
 
                     def loaderClassNode = new ClassNode("${classNode.name}Loader",
-                            Modifier.PUBLIC, ClassHelper.make(GrailsAppServletInitializer))
+                            Modifier.PUBLIC, ClassHelper.make(GrailsServletInitializer))
 
                     loaderClassNode.addInterface(ClassHelper.make(WebApplicationInitializer))
 

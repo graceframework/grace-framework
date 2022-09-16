@@ -13,8 +13,8 @@ class BootInitializerClassInjectorSpec extends Specification {
         when:"An application class is compiled"
         def gcl = new GrailsAwareClassLoader()
         Class applicationClass = gcl.parseClass('''
-import grails.boot.GrailsApp
-class Application extends grails.boot.config.GrailsAutoConfiguration {
+import grails.boot.Grails
+class Application {
     static void main(String[] args) {
         println "foo"
     }

@@ -22,7 +22,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
-import grails.boot.GrailsApp
+import grails.boot.Grails
 import grails.ui.shell.support.GroovyshApplicationContext
 import grails.ui.shell.support.GroovyshWebApplicationContext
 
@@ -34,7 +34,7 @@ import grails.ui.shell.support.GroovyshWebApplicationContext
  */
 @CompileStatic
 @InheritConstructors
-class GrailsShell extends GrailsApp {
+class GrailsShell extends Grails {
 
     GrailsShell(Class<?>... sources) {
         super(sources)
@@ -56,7 +56,7 @@ class GrailsShell extends GrailsApp {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified source using default settings.
      * @param source the source to load
      * @param args the application arguments (usually passed from a Java main method)
@@ -67,7 +67,7 @@ class GrailsShell extends GrailsApp {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified sources using default settings and user supplied arguments.
      * @param sources the sources to load
      * @param args the application arguments (usually passed from a Java main method)

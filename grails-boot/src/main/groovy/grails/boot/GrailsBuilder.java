@@ -25,11 +25,11 @@ import org.springframework.core.io.ResourceLoader;
  * @author Graeme Rocher
  * @since 3.0.6
  */
-public class GrailsAppBuilder extends SpringApplicationBuilder {
+public class GrailsBuilder extends SpringApplicationBuilder {
 
     @Override
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class<?>... sources) {
-        return new GrailsApp(resourceLoader, sources);
+        return new Grails(resourceLoader, sources);
     }
 
 }

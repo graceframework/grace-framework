@@ -18,7 +18,7 @@ package grails.boot.test
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.test.context.SpringBootContextLoader
 
-import grails.boot.GrailsApp
+import grails.boot.Grails
 
 /**
  * Extends Spring Boot's {@link SpringBootContextLoader} with a version for Grails
@@ -30,7 +30,7 @@ class GrailsApplicationContextLoader extends SpringBootContextLoader {
 
     @Override
     protected SpringApplication getSpringApplication() {
-        new GrailsApp()
+        new Grails()
     }
 
 }

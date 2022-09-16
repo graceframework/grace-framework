@@ -21,7 +21,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
-import grails.boot.GrailsApp
+import grails.boot.Grails
 import grails.ui.console.support.GroovyConsoleApplicationContext
 import grails.ui.console.support.GroovyConsoleWebApplicationContext
 
@@ -32,7 +32,7 @@ import grails.ui.console.support.GroovyConsoleWebApplicationContext
  * @since 3.0
  */
 @CompileStatic
-class GrailsSwingConsole extends GrailsApp {
+class GrailsSwingConsole extends Grails {
 
     static {
         System.setProperty('java.awt.headless', 'false')
@@ -58,7 +58,7 @@ class GrailsSwingConsole extends GrailsApp {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified source using default settings.
      * @param source the source to load
      * @param args the application arguments (usually passed from a Java main method)
@@ -69,7 +69,7 @@ class GrailsSwingConsole extends GrailsApp {
     }
 
     /**
-     * Static helper that can be used to run a {@link GrailsApp} from the
+     * Static helper that can be used to run a {@link Grails} from the
      * specified sources using default settings and user supplied arguments.
      * @param sources the sources to load
      * @param args the application arguments (usually passed from a Java main method)
