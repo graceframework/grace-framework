@@ -121,7 +121,7 @@ public class Grails extends SpringApplication {
             try {
                 enableDevelopmentModeWatch(environment, applicationContext);
             }
-            catch (IOException | InterruptedException e) {
+            catch (IOException e) {
                 log.error("Enable development mode watch fail", e);
             }
             Environment.isDevtoolsRestart();
@@ -165,7 +165,7 @@ public class Grails extends SpringApplication {
     }
 
     protected void enableDevelopmentModeWatch(Environment environment, ConfigurableApplicationContext applicationContext, String... args)
-            throws IOException, InterruptedException {
+            throws IOException {
         String location = environment.getReloadLocation();
 
         if (location != null && location.length() > 0) {
@@ -281,7 +281,11 @@ public class Grails extends SpringApplication {
                                     newFiles.remove(f);
                                 }
                                 pluginManager.informOfFileChange(f);
-                                Thread.sleep(1000);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException ignored) {
+                                    Thread.currentThread().interrupt();
+                                }
                             }
                         }
                         else if (i == 1) {
@@ -310,7 +314,7 @@ public class Grails extends SpringApplication {
 
                         newFiles.clear();
                     }
-                    catch (CompilationFailedException | IOException | InterruptedException cfe) {
+                    catch (CompilationFailedException | IOException cfe) {
                         log.error(String.format("Compilation Error: %s", cfe.getMessage()), cfe);
                     }
 
@@ -318,6 +322,7 @@ public class Grails extends SpringApplication {
                         Thread.sleep(1000);
                     }
                     catch (InterruptedException ignored) {
+                        Thread.currentThread().interrupt();
                     }
                 }
             }).start();
