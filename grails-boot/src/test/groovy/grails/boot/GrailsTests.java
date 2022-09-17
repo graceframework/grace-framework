@@ -103,7 +103,7 @@ public class GrailsTests {
         Grails app = new Grails(ExampleConfig.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         this.context = app.run();
-        assertThat(output).contains("Application starting in environment: development");
+        assertThat(output).contains("The following 1 profile is active: \"development\"");
     }
 
     @Test

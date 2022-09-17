@@ -26,11 +26,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.logging.Log;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
@@ -71,8 +70,6 @@ public class Grails extends SpringApplication {
 
     private static final String SPRING_PROFILES = "spring.profiles.active";
 
-    private static final Logger log = LoggerFactory.getLogger(Grails.class);
-
     private static boolean developmentModeActive = false;
 
     private static DirectoryWatcher directoryWatcher;
@@ -111,12 +108,16 @@ public class Grails extends SpringApplication {
         ConfigurableApplicationContext applicationContext = super.run(args);
         Environment environment = Environment.getCurrent();
 
-        log.info("Application starting in environment: {}", environment.getName());
-        log.debug("Application directory discovered as: {}", IOUtils.findApplicationDirectory());
-        log.debug("Current base directory is [{}]. Reloading base directory is [{}]", new File("."), BuildSettings.BASE_DIR);
-
+        Log log = getApplicationLog();
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Application directory discovered as: %s", IOUtils.findApplicationDirectory()));
+            log.debug(String.format("Current base directory is [%s]. Reloading base directory is [%s]",
+                    new File("."), BuildSettings.BASE_DIR));
+        }
         if (environment.isReloadEnabled()) {
-            log.debug("Reloading status: {}", environment.isReloadEnabled());
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Reloading status: %s", environment.isReloadEnabled()));
+            }
             try {
                 enableDevelopmentModeWatch(environment, applicationContext);
             }
@@ -262,6 +263,7 @@ public class Grails extends SpringApplication {
 
             developmentModeActive = true;
             new Thread(() -> {
+                Log log = getApplicationLog();
                 CompilerConfiguration compilerConfig = new CompilerConfiguration();
                 compilerConfig.setTargetDirectory(new File(location, BuildSettings.BUILD_CLASSES_PATH));
 
@@ -309,7 +311,7 @@ public class Grails extends SpringApplication {
                         newFiles.clear();
                     }
                     catch (CompilationFailedException | IOException | InterruptedException cfe) {
-                        log.error("Compilation Error: $cfe.message", cfe);
+                        log.error(String.format("Compilation Error: %s", cfe.getMessage()), cfe);
                     }
 
                     try {
@@ -358,9 +360,10 @@ public class Grails extends SpringApplication {
                 JavaCompiler.recompile(compilerConfig, changedFile);
             }
             else {
-                log.error("Cannot recompile [{}], " +
+                Log log = getApplicationLog();
+                log.error(String.format("Cannot recompile [%s], " +
                                 "the current JVM is not a JDK (recompilation will not work on a JRE missing the compiler APIs).",
-                        changedFile.getName());
+                        changedFile.getName()));
             }
         }
         else {
