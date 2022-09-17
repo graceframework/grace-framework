@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,7 @@ import grails.plugins.DefaultGrailsPluginManager;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.spring.BeanBuilder;
+import grails.util.CollectionUtils;
 import grails.util.Environment;
 import grails.util.Holders;
 
@@ -244,7 +246,10 @@ public class GrailsApplicationPostProcessor implements BeanDefinitionRegistryPos
             Resource beanResources = context.getResource(RuntimeSpringConfigUtilities.SPRING_RESOURCES_GROOVY);
             if (beanResources.exists()) {
                 try {
-                    RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, application, beanResources);
+                    Map<String, Object> variables = CollectionUtils.newMap(
+                            "application", application,
+                            "grailsApplication", application);
+                    RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, variables, beanResources);
                 }
                 catch (Throwable e) {
                     this.log.error("Error loading spring/resources.groovy file: ${e.message}", e);

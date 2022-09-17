@@ -153,8 +153,12 @@ class CoreGrailsPlugin extends Plugin {
         else if (event.source instanceof Class) {
             def clazz = (Class) event.source
             if (Script.isAssignableFrom(clazz)) {
+                Map<String, Object> variables = [
+                        application: grailsApplication,
+                        grailsApplication: grailsApplication] as Map<String, Object>
+
                 RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration(applicationContext)
-                RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, grailsApplication, clazz)
+                RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, variables, clazz)
                 springConfig.registerBeansWithContext(applicationContext)
             }
         }

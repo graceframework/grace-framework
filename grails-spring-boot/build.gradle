@@ -2,7 +2,6 @@ dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-plugin-api")
-    api project(":grails-spring")
     api project(":grails-util")
 
     api("org.springframework:spring-core:${springVersion}")
