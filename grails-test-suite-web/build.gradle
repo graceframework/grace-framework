@@ -31,7 +31,7 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation "org.grails.plugins:converters:$convertersVersion"
 
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$datastoreVersion", {
+    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
