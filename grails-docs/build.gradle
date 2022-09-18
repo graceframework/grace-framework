@@ -8,7 +8,7 @@ dependencies {
     api "commons-lang:commons-lang:$commonsLangVersion",
             "org.slf4j:jcl-over-slf4j:$slf4jVersion",
             "org.apache.ant:ant:$antVersion",
-            'org.grails:grails-gdoc-engine:1.0.1',
+            "org.grails:grails-gdoc-engine:$gdocEngineVersion",
             "org.yaml:snakeyaml:$snakeyamlVersion",
             "org.codehaus.groovy:groovy-ant:$groovyVersion"
 
