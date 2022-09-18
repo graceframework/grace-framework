@@ -17,8 +17,17 @@ package grails.doc
 import org.radeox.api.engine.WikiRenderEngine
 import org.radeox.api.engine.context.InitialRenderContext
 import org.radeox.engine.BaseRenderEngine
+import org.radeox.filter.EscapeFilter
 import org.radeox.filter.FilterPipe
+import org.radeox.filter.KeyFilter
+import org.radeox.filter.LineFilter
 import org.radeox.filter.MacroFilter
+import org.radeox.filter.MarkFilter
+import org.radeox.filter.NewlineFilter
+import org.radeox.filter.ParagraphFilter
+import org.radeox.filter.ParamFilter
+import org.radeox.filter.StrikeThroughFilter
+import org.radeox.filter.TypographyFilter
 import org.radeox.filter.context.FilterContext
 import org.radeox.filter.regex.RegexFilter
 import org.radeox.filter.regex.RegexTokenFilter
@@ -144,25 +153,26 @@ class DocEngine extends BaseRenderEngine implements WikiRenderEngine {
         if (fp == null) {
             fp = new FilterPipe(initialContext)
 
-            def filters = [ParamFilter,
-                           MacroFilter,
-                           TextileLinkFilter,
-                           HeaderFilter,
-                           BlockQuoteFilter,
-                           ListFilter,
-                           LineFilter,
-                           StrikeThroughFilter,
-                           NewlineFilter,
-                           ParagraphFilter,
-                           BoldFilter,
-                           CodeFilter,
-                           ItalicFilter,
-                           LinkTestFilter,
-                           ImageFilter,
-                           MarkFilter,
-                           KeyFilter,
-                           TypographyFilter,
-                           EscapeFilter]
+            def filters = [
+                    ParamFilter,
+                    MacroFilter,
+                    TextileLinkFilter,
+                    HeaderFilter,
+                    BlockQuoteFilter,
+                    ListFilter,
+                    LineFilter,
+                    StrikeThroughFilter,
+                    NewlineFilter,
+                    ParagraphFilter,
+                    BoldFilter,
+                    CodeFilter,
+                    ItalicFilter,
+                    LinkTestFilter,
+                    ImageFilter,
+                    MarkFilter,
+                    KeyFilter,
+                    TypographyFilter,
+                    EscapeFilter]
 
             for (f in filters) {
                 RegexFilter filter = f.newInstance()

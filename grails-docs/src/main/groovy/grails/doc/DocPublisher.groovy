@@ -27,6 +27,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 import grails.doc.asciidoc.AsciiDocEngine
 import grails.doc.internal.FileResourceChecker
 import grails.doc.internal.LegacyTocStrategy
+import grails.doc.internal.StringEscapeCategory
 import grails.doc.internal.YamlTocStrategy
 
 /**
