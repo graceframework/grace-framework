@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 dependencies {
     api "org.codehaus.groovy:groovy-templates:$groovyVersion"
     api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-    api "org.yaml:snakeyaml:1.30"
+    api "org.yaml:snakeyaml:$snakeyamlVersion"
     api "io.micronaut:micronaut-inject:$micronautVersion"
 
     api project(":grails-util")

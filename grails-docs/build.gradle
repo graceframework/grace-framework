@@ -8,20 +8,20 @@ dependencies {
     api "commons-lang:commons-lang:$commonsLangVersion",
             "org.slf4j:jcl-over-slf4j:$slf4jVersion",
             "org.apache.ant:ant:$antVersion",
-            'org.grails:grails-gdoc-engine:1.0.1',
-            'org.yaml:snakeyaml:1.30',
+            "org.grails:grails-gdoc-engine:$gdocEngineVersion",
+            "org.yaml:snakeyaml:$snakeyamlVersion",
             "org.codehaus.groovy:groovy-ant:$groovyVersion"
 
-    api 'org.asciidoctor:asciidoctorj:2.5.3'
+    api "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
     api('org.xhtmlrenderer:core-renderer:8.0') {
         exclude group: 'bouncycastle', module:'bcprov-jdk14'
     }
 
     runtimeOnly "org.slf4j:slf4j-api:$slf4jVersion"
 
-    runtimeOnly('com.lowagie:itext:2.0.8')
+    runtimeOnly("com.lowagie:itext:$itextVersion")
 
-    api 'org.jsoup:jsoup:1.14.3'
+    api "org.jsoup:jsoup:$jsoupVersion"
     testImplementation("org.spockframework:spock-core:${spockVersion}") { transitive = false }
 }
 
