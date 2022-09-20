@@ -20,7 +20,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.io.ResourceLoader;
 
 /**
- * Fluent API for constructing GrailsApp instances. Simple extension of {@link SpringApplicationBuilder}.
+ * Fluent API for constructing Grails instances.
+ * Simple extension of {@link SpringApplicationBuilder}.
  *
  * @author Graeme Rocher
  * @since 3.0.6
@@ -45,4 +46,5 @@ public class GrailsBuilder extends SpringApplicationBuilder {
     public Grails build(String... args) {
         return (Grails) super.build(args);
     }
+
 }
