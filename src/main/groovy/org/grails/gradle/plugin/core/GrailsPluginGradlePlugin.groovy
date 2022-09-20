@@ -248,8 +248,8 @@ withConfig(configuration) {
     }
 
     protected void checkForConfigurationClash(Project project) {
-        File yamlConfig = new File(project.projectDir,"grails-app/conf/plugin.yml")
-        File groovyConfig = new File(project.projectDir,"grails-app/conf/plugin.groovy")
+        File yamlConfig = new File(project.projectDir,"${grailsAppDir}/conf/plugin.yml")
+        File groovyConfig = new File(project.projectDir,"${grailsAppDir}/conf/plugin.groovy")
         if (yamlConfig.exists() && groovyConfig.exists()) {
             throw new RuntimeException("A plugin may define a plugin.yml or a plugin.groovy, but not both")
         }

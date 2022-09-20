@@ -84,6 +84,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     List<String> excludedGrailsAppSourceDirs = ['migrations', 'assets']
     List<String> grailsAppResourceDirs = ['views', 'i18n', 'conf']
     private final ToolingModelBuilderRegistry registry
+    String grailsAppDir
     String grailsVersion
 
     @Inject
@@ -100,6 +101,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
 
         grailsVersion = resolveGrailsVersion(project)
+        grailsAppDir = SourceSets.resolveGrailsAppDir(project)
 
         excludeDependencies(project)
 
@@ -352,7 +354,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected List<File> resolveGrailsResourceDirs(Project project) {
         List<File> grailsResourceDirs = [project.file("src/main/resources")]
         for(String f in grailsAppResourceDirs) {
-            grailsResourceDirs.add(project.file("grails-app/${f}"))
+            grailsResourceDirs.add(project.file("${grailsAppDir}/${f}"))
         }
         grailsResourceDirs
     }
@@ -360,7 +362,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileStatic
     protected List<File> resolveGrailsSourceDirs(Project project) {
         List<File> grailsSourceDirs = []
-        project.file("grails-app").eachDir { File subdir ->
+        project.file(grailsAppDir).eachDir { File subdir ->
             if (isGrailsSourceDirectory(subdir)) {
                 grailsSourceDirs.add(subdir)
             }
@@ -432,7 +434,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureAssetCompilation(Project project) {
         if (project.extensions.findByName('assets')) {
             project.assets {
-                assetsPath = 'grails-app/assets'
+                assetsPath = "${grailsAppDir}/assets"
                 compileDir = 'build/assetCompile/assets'
             }
         }
@@ -569,7 +571,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
                 if(native2ascii && grailsExt.native2asciiAnt && !taskContainer.findByName('native2ascii')) {
                     File destinationDir = ((ProcessResources) task).destinationDir
-                    Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file('grails-app/i18n'), destinationDir)
+                    Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file("${grailsAppDir}/i18n"), destinationDir)
                     task.dependsOn(native2asciiTask)
                 }
 

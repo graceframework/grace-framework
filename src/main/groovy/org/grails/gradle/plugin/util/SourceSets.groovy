@@ -1,6 +1,7 @@
 package org.grails.gradle.plugin.util
 
 import groovy.transform.CompileStatic
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
@@ -38,5 +39,14 @@ class SourceSets {
         JavaPluginConvention plugin = project.getConvention().getPlugin(JavaPluginConvention)
         SourceSetContainer sourceSets = plugin?.sourceSets
         return sourceSets
+    }
+
+    static String resolveGrailsAppDir(Project project) {
+        List<String> grailsAppDirs = ['grails-app', 'app']
+        String grailsAppDir = grailsAppDirs.find { String dir -> project.file(dir).exists() }
+        if (!grailsAppDir) {
+            throw new GradleException("Grails requires an application directory : 'grails-app' or 'app'.")
+        }
+        return grailsAppDir
     }
 }

@@ -24,6 +24,8 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.javadoc.Groovydoc
 import org.gradle.api.tasks.javadoc.Javadoc
 
+import org.grails.gradle.plugin.util.SourceSets
+
 /**
  * Adds Grails doc publishing support
  *
@@ -49,7 +51,8 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
 
             docsTask.classpath = docConfiguration
 
-            File applicationYml = project.file("${project.projectDir}/grails-app/conf/application.yml")
+            String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
+            File applicationYml = project.file("${project.projectDir}/${grailsAppDir}/conf/application.yml")
             if(applicationYml.exists()) {
                 docsTask.propertiesFile = applicationYml
             }

@@ -55,7 +55,8 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
                 acceptedSourceDirs.add srcDir
             }
 
-            File resources = new File(project.projectDir, "grails-app/conf")
+            String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
+            File resources = new File(project.projectDir, "${grailsAppDir}/conf")
             integrationTest.resources.srcDir(resources)
 
             DependencyHandler dependencies = project.dependencies
