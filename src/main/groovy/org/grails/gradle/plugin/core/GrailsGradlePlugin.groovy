@@ -201,7 +201,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String getDefaultMicronautVersion() {
-        '3.3.4'
+        '3.6.3'
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
