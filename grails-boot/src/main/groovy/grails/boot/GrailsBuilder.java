@@ -32,4 +32,17 @@ public class GrailsBuilder extends SpringApplicationBuilder {
         return new Grails(resourceLoader, sources);
     }
 
+    @Override
+    public Grails application() {
+        return (Grails) super.application();
+    }
+
+    @Override
+    public Grails build() {
+        return build(new String[0]);
+    }
+
+    public Grails build(String... args) {
+        return (Grails) super.build(args);
+    }
 }
