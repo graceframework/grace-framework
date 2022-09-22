@@ -201,7 +201,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String getDefaultMicronautVersion() {
-        '3.6.3'
+        '3.7.0'
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
@@ -252,7 +252,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     details.useVersion(micronautVersion)
                 }
                 if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
-                    details.useVersion('2.0.0')
+                    details.useVersion('2.1.1')
                 }
             } as Action<DependencyResolveDetails>)
         } as Action<Configuration>)
