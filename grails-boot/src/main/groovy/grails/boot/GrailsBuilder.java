@@ -15,9 +15,11 @@
  */
 package grails.boot;
 
+import io.micronaut.spring.context.MicronautApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.ClassUtils;
 
 /**
  * Fluent API for constructing Grails instances.
@@ -28,9 +30,26 @@ import org.springframework.core.io.ResourceLoader;
  */
 public class GrailsBuilder extends SpringApplicationBuilder {
 
+    private MicronautApplicationContext micronautContext;
+
+    public GrailsBuilder(Class<?>... sources) {
+        super(sources);
+    }
+
     @Override
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class<?>... sources) {
         return new Grails(resourceLoader, sources);
+    }
+
+    public GrailsBuilder enableMicronaut() {
+        if (ClassUtils.isPresent("io.micronaut.spring.context.MicronautApplicationContext", getClass().getClassLoader())) {
+            micronautContext = new MicronautApplicationContext();
+        }
+        else {
+            throw new IllegalStateException(
+                    "Class 'MicronautApplicationContext' not found (please add dependency 'micronaut-spring-context')");
+        }
+        return this;
     }
 
     @Override
@@ -44,7 +63,14 @@ public class GrailsBuilder extends SpringApplicationBuilder {
     }
 
     public Grails build(String... args) {
-        return (Grails) super.build(args);
+        if (micronautContext != null) {
+            micronautContext.start();
+            super.parent(micronautContext);
+            return (Grails) super.build(args);
+        }
+        else {
+            return (Grails) super.build(args);
+        }
     }
 
 }

@@ -11,6 +11,9 @@ dependencies {
     api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-web:${springVersion}")
 
+    compileOnly("io.micronaut.spring:micronaut-spring:$micronautSpringVersion")
+    compileOnly("io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion")
+
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-core")
