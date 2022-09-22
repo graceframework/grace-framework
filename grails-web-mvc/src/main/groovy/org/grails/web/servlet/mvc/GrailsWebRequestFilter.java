@@ -23,9 +23,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -39,9 +36,9 @@ import org.grails.web.util.WebUtils;
  * @author Graeme Rocher
  * @since 0.4
  */
-public class GrailsWebRequestFilter extends OncePerRequestFilter implements ApplicationContextAware {
+public class GrailsWebRequestFilter extends OncePerRequestFilter {
 
-    Collection<ParameterCreationListener> paramListenerBeans;
+    private Collection<ParameterCreationListener> parameterCreationListeners;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -104,19 +101,18 @@ public class GrailsWebRequestFilter extends OncePerRequestFilter implements Appl
     }
 
     private void configureParameterCreationListeners(GrailsWebRequest webRequest) {
-        if (this.paramListenerBeans != null) {
-            for (ParameterCreationListener creationListenerBean : this.paramListenerBeans) {
+        if (this.parameterCreationListeners != null) {
+            for (ParameterCreationListener creationListenerBean : this.parameterCreationListeners) {
                 webRequest.addParameterListener(creationListenerBean);
             }
         }
         else {
-            logger.warn("paramListenerBeans isn't initialized.");
+            logger.warn("parameterCreationListeners isn't initialized.");
         }
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.paramListenerBeans = applicationContext.getBeansOfType(ParameterCreationListener.class).values();
+    public void setParameterCreationListeners(Collection<ParameterCreationListener> parameterCreationListeners) {
+        this.parameterCreationListeners = parameterCreationListeners;
     }
 
 }

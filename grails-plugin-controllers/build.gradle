@@ -9,6 +9,7 @@ dependencies {
     api project(":grails-util")
     api project(":grails-web")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     testRuntimeOnly "jline:jline:$jlineVersion"
