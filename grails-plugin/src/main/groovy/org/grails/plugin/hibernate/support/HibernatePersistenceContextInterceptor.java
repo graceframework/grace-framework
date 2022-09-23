@@ -1,11 +1,11 @@
 package org.grails.plugin.hibernate.support;
 
-import grails.persistence.support.PersistenceContextInterceptor;
-import grails.validation.DeferredBindingActions;
-import org.grails.core.lifecycle.ShutdownOperations;
-import org.grails.datastore.mapping.core.connections.ConnectionSource;
-import org.grails.orm.hibernate.AbstractHibernateDatastore;
-import org.grails.orm.hibernate.support.HibernateRuntimeUtils;
+import java.sql.Connection;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,11 +15,13 @@ import org.springframework.orm.hibernate5.SessionFactoryUtils;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.sql.Connection;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import grails.persistence.support.PersistenceContextInterceptor;
+import grails.validation.DeferredBindingActions;
+
+import org.grails.core.lifecycle.ShutdownOperations;
+import org.grails.datastore.mapping.core.connections.ConnectionSource;
+import org.grails.orm.hibernate.AbstractHibernateDatastore;
+import org.grails.orm.hibernate.support.HibernateRuntimeUtils;
 
 /**
  * @author Graeme Rocher
@@ -28,13 +30,13 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class HibernatePersistenceContextInterceptor implements PersistenceContextInterceptor, SessionFactoryAwarePersistenceContextInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(HibernatePersistenceContextInterceptor.class);
+
     private AbstractHibernateDatastore hibernateDatastore;
 
 
     private static ThreadLocal<Map<String, Boolean>> participate = ThreadLocal.withInitial(HashMap::new);
 
     private static ThreadLocal<Map<String, Integer>> nestingCount = ThreadLocal.withInitial(HashMap::new);
-
 
     private String dataSourceName;
 
@@ -46,6 +48,7 @@ public class HibernatePersistenceContextInterceptor implements PersistenceContex
     }
 
     private Deque<Connection> disconnected = new ConcurrentLinkedDeque<>();
+
     private final boolean transactionRequired;
 
     public HibernatePersistenceContextInterceptor() {
@@ -65,7 +68,7 @@ public class HibernatePersistenceContextInterceptor implements PersistenceContex
      */
     public void destroy() {
         DeferredBindingActions.clear();
-        if(!disconnected.isEmpty()) {
+        if (!disconnected.isEmpty()) {
             disconnected.pop();
         }
         if (getSessionFactory() == null || decNestingCount() > 0 || getParticipate()) {
@@ -100,24 +103,25 @@ public class HibernatePersistenceContextInterceptor implements PersistenceContex
     public void reconnect() {
         if (getSessionFactory() == null) return;
         Session session = getSession();
-        if(!session.isConnected() && !disconnected.isEmpty()) {
+        if (!session.isConnected() && !disconnected.isEmpty()) {
             try {
                 Connection connection = disconnected.peekLast();
                 getSession().reconnect(connection);
-            } catch (IllegalStateException e) {
+            }
+            catch (IllegalStateException e) {
                 // cannot reconnect on different exception. ignore
-                LOG.debug(e.getMessage(),e);
+                LOG.debug(e.getMessage(), e);
             }
         }
     }
 
     public void flush() {
         if (getSessionFactory() == null) return;
-        if(!getParticipate()) {
-            if(!transactionRequired) {
+        if (!getParticipate()) {
+            if (!transactionRequired) {
                 getSession().flush();
             }
-            else if(TransactionSynchronizationManager.isSynchronizationActive()) {
+            else if (TransactionSynchronizationManager.isSynchronizationActive()) {
                 getSession().flush();
             }
         }
@@ -240,4 +244,5 @@ public class HibernatePersistenceContextInterceptor implements PersistenceContex
         Boolean ret = map.get(dataSourceName);
         return (ret != null) ? ret : false;
     }
+
 }

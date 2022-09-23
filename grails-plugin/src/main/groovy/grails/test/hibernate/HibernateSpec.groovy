@@ -1,10 +1,6 @@
 package grails.test.hibernate
 
-import grails.config.Config
 import groovy.transform.CompileStatic
-import org.grails.config.PropertySourcesConfig
-import org.grails.orm.hibernate.HibernateDatastore
-import org.grails.orm.hibernate.cfg.Settings
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.springframework.boot.env.PropertySourceLoader
@@ -23,6 +19,12 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.config.Config
+
+import org.grails.config.PropertySourcesConfig
+import org.grails.orm.hibernate.HibernateDatastore
+import org.grails.orm.hibernate.cfg.Settings
+
 /**
  * Specification for Hibernate tests
  *
@@ -32,8 +34,11 @@ import spock.lang.Specification
 @CompileStatic
 abstract class HibernateSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore
-    @Shared PlatformTransactionManager transactionManager
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore
+    @Shared
+    PlatformTransactionManager transactionManager
 
     void setupSpec() {
 
@@ -60,7 +65,8 @@ abstract class HibernateSpec extends Specification {
         if (!domainClasses) {
             Package packageToScan = Package.getPackage(packageName) ?: getClass().getPackage()
             hibernateDatastore = new HibernateDatastore((PropertyResolver) config, packageToScan)
-        } else {
+        }
+        else {
             hibernateDatastore = new HibernateDatastore((PropertyResolver) config, domainClasses as Class[])
         }
         transactionManager = hibernateDatastore.getTransactionManager()
@@ -78,7 +84,8 @@ abstract class HibernateSpec extends Specification {
     void cleanup() {
         if (isRollback()) {
             transactionManager.rollback(transactionStatus)
-        } else {
+        }
+        else {
             transactionManager.commit(transactionStatus)
         }
     }
@@ -130,15 +137,16 @@ abstract class HibernateSpec extends Specification {
         if (canLoadFileExtension(loader, filename)) {
             Resource appYml = resourceLoader.getResource(filename)
             return loader.load(appYml.getDescription(), appYml) as List<PropertySource>
-        } else {
+        }
+        else {
             return Collections.emptyList()
         }
     }
 
     private boolean canLoadFileExtension(PropertySourceLoader loader, String name) {
         return Arrays
-            .stream(loader.fileExtensions)
-            .map { String extension -> extension.toLowerCase() }
-            .anyMatch { String extension -> name.toLowerCase().endsWith(extension) }
+                .stream(loader.fileExtensions)
+                .map { String extension -> extension.toLowerCase() }
+                .anyMatch { String extension -> name.toLowerCase().endsWith(extension) }
     }
 }
