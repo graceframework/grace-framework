@@ -37,8 +37,8 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 class I18nGrailsPlugin extends Plugin {
 
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = ["file:./grails-app/i18n/**/*.properties",
-                               "file:./app/i18n/**/*.properties"]
+    String watchedResources = ['file:./grails-app/i18n/**/*.properties',
+                               'file:./app/i18n/**/*.properties']
 
     @Override
     Closure doWithSpring() {

@@ -269,8 +269,8 @@ class SimpleDataBinder implements DataBinder {
 
     protected boolean isOkToBind(MetaProperty property, List whitelist, List blacklist) {
         isOkToBind(property.name, whitelist, blacklist)
-                && (property.type != null && !(ClassLoader.class.isAssignableFrom(property.type)
-                || ProtectionDomain.class.isAssignableFrom(property.type)))
+                && (property.type != null && !(ClassLoader.isAssignableFrom(property.type)
+                || ProtectionDomain.isAssignableFrom(property.type)))
     }
 
     protected IndexedPropertyReferenceDescriptor getIndexedPropertyReferenceDescriptor(propName) {

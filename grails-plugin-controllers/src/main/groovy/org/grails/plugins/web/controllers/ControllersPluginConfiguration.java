@@ -157,19 +157,19 @@ public class ControllersPluginConfiguration {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            if (!addMappings) {
+            if (!this.addMappings) {
                 return;
             }
 
             if (!registry.hasMappingForPattern("/webjars/**")) {
                 registry.addResourceHandler("/webjars/**")
                         .addResourceLocations("classpath:/META-INF/resources/webjars/")
-                        .setCachePeriod(cachePeriod);
+                        .setCachePeriod(this.cachePeriod);
             }
-            if (!registry.hasMappingForPattern(resourcesPattern)) {
-                registry.addResourceHandler(resourcesPattern)
+            if (!registry.hasMappingForPattern(this.resourcesPattern)) {
+                registry.addResourceHandler(this.resourcesPattern)
                         .addResourceLocations(RESOURCE_LOCATIONS)
-                        .setCachePeriod(cachePeriod);
+                        .setCachePeriod(this.cachePeriod);
             }
         }
 

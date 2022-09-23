@@ -283,7 +283,8 @@ public class Grails extends SpringApplication {
                                 pluginManager.informOfFileChange(f);
                                 try {
                                     Thread.sleep(1000);
-                                } catch (InterruptedException ignored) {
+                                }
+                                catch (InterruptedException ignored) {
                                     Thread.currentThread().interrupt();
                                 }
                             }

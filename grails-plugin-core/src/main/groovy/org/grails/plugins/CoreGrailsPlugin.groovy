@@ -63,7 +63,8 @@ class CoreGrailsPlugin extends Plugin {
                             'file:./app/conf/application.groovy',
                             'file:./app/conf/application.yml']
 
-    private static final SPRING_PROXY_TARGET_CLASS_CONFIG = 'spring.aop.proxy-target-class'
+    private static final String SPRING_PROXY_TARGET_CLASS_CONFIG = 'spring.aop.proxy-target-class'
+    private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
 
     @Override
     Closure doWithSpring() {
@@ -80,8 +81,6 @@ class CoreGrailsPlugin extends Plugin {
             propertySourcesPlaceholderConfigurer(GrailsPlaceholderConfigurer) {
                 placeholderPrefix = placeHolderPrefix
             }
-
-            String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
 
             try {
                 // patch AopConfigUtils if possible

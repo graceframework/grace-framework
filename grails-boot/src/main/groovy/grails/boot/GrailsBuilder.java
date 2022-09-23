@@ -43,7 +43,7 @@ public class GrailsBuilder extends SpringApplicationBuilder {
 
     public GrailsBuilder enableMicronaut() {
         if (ClassUtils.isPresent("io.micronaut.spring.context.MicronautApplicationContext", getClass().getClassLoader())) {
-            micronautContext = new MicronautApplicationContext();
+            this.micronautContext = new MicronautApplicationContext();
         }
         else {
             throw new IllegalStateException(
@@ -63,9 +63,9 @@ public class GrailsBuilder extends SpringApplicationBuilder {
     }
 
     public Grails build(String... args) {
-        if (micronautContext != null) {
-            micronautContext.start();
-            super.parent(micronautContext);
+        if (this.micronautContext != null) {
+            this.micronautContext.start();
+            super.parent(this.micronautContext);
             return (Grails) super.build(args);
         }
         else {

@@ -35,8 +35,9 @@ import org.grails.io.support.UrlResource
  */
 @CompileStatic
 class IOUtils {
-    public static final String RESOURCE_JAR_PREFIX = ".jar!"
-    public static final String RESOURCE_WAR_PREFIX = ".war!"
+
+    public static final String RESOURCE_JAR_PREFIX = '.jar!'
+    public static final String RESOURCE_WAR_PREFIX = '.war!'
 
     private static String applicationDirectory
 
