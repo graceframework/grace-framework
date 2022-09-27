@@ -46,7 +46,7 @@ import org.springframework.util.ClassUtils;
  */
 public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
-    private static final Log LOG = LogFactory.getLog(GroovyPagesJspApplicationContext.class);
+    private static final Log logger = LogFactory.getLog(GroovyPagesJspApplicationContext.class);
 
     private static final ExpressionFactory expressionFactoryImpl = findExpressionFactoryImplementation();
 
@@ -72,7 +72,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
         if (ef == null) {
             ef = tryExpressionFactoryImplementation("org.apache");
             if (ef == null) {
-                LOG.warn("Could not find any implementation for " +
+                logger.warn("Could not find any implementation for " +
                         ExpressionFactory.class.getName());
             }
         }
@@ -84,18 +84,18 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
         try {
             Class<?> cl = ClassUtils.forName(className, null);
             if (ExpressionFactory.class.isAssignableFrom(cl)) {
-                LOG.info("Using " + className + " as implementation of " +
+                logger.info("Using " + className + " as implementation of " +
                         ExpressionFactory.class.getName());
                 return (ExpressionFactory) cl.newInstance();
             }
-            LOG.warn("Class " + className + " does not implement " +
+            logger.warn("Class " + className + " does not implement " +
                     ExpressionFactory.class.getName());
         }
         catch (ClassNotFoundException e) {
             // ignored
         }
         catch (Exception e) {
-            LOG.error("Failed to instantiate " + className, e);
+            logger.error("Failed to instantiate " + className, e);
         }
         return null;
     }

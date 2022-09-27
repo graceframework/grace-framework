@@ -45,7 +45,7 @@ import org.grails.taglib.encoder.OutputContextLookup;
  */
 public class GroovyPageWritable implements Writable {
 
-    private static final Log LOG = LogFactory.getLog(GroovyPageWritable.class);
+    private static final Log logger = LogFactory.getLog(GroovyPageWritable.class);
 
     private static final String GSP_NONE_CODEC_NAME = "none";
 
@@ -130,8 +130,8 @@ public class GroovyPageWritable implements Writable {
                 // only try to set content type when evaluating top level GSP
                 boolean contentTypeAlreadySet = outputContext.isContentTypeAlreadySet();
                 if (!contentTypeAlreadySet) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Writing output with content type: " + this.metaInfo.getContentType());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Writing output with content type: " + this.metaInfo.getContentType());
                     }
                     outputContext.setContentType(this.metaInfo.getContentType()); // must come before response.getWriter()
                 }

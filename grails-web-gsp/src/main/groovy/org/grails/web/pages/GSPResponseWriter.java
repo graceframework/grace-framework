@@ -58,7 +58,7 @@ import org.grails.web.util.BoundedCharsAsEncodedBytesCounter;
  */
 public final class GSPResponseWriter extends GrailsRoutablePrintWriter implements EncoderAware, EncodedAppenderFactory {
 
-    protected static final Log LOG = LogFactory.getLog(GSPResponseWriter.class);
+    protected static final Log logger = LogFactory.getLog(GSPResponseWriter.class);
 
     private ServletResponse response;
 
@@ -83,7 +83,7 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
             instantiator = new ObjenesisStd(false).getInstantiatorOf(GSPResponseWriter.class);
         }
         catch (Exception e) {
-            LOG.debug("Couldn't get direct performance optimized instantiator for GSPResponseWriter. Using default instantiation.", e);
+            logger.debug("Couldn't get direct performance optimized instantiator for GSPResponseWriter. Using default instantiation.", e);
         }
     }
 

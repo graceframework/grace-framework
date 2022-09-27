@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
 
-    private static final Log log = LogFactory.getLog(TemplateVariableBinding.class);
+    private static final Log logger = LogFactory.getLog(TemplateVariableBinding.class);
 
     private Binding parent;
 
@@ -151,8 +151,8 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
             }
         }
         else {
-            if (log.isDebugEnabled()) {
-                log.debug("Cannot override reserved variable '" + name + "'");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Cannot override reserved variable '" + name + "'");
             }
         }
     }

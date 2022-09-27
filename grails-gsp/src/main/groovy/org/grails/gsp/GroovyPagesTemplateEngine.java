@@ -92,6 +92,8 @@ import org.grails.taglib.TagLibraryLookup;
 public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         implements ResourceLoaderAware, ApplicationContextAware, InitializingBean, BeanClassLoaderAware {
 
+    private static final Log logger = LogFactory.getLog(GroovyPagesTemplateEngine.class);
+
     public static final String CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES = Settings.GSP_DISABLE_CACHING_RESOURCES;
 
     public static final String CONFIG_PROPERTY_GSP_ENABLE_RELOAD = Settings.GSP_ENABLE_RELOAD;
@@ -99,8 +101,6 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
     public static final String BEAN_ID = ResourceAwareTemplateEngine.BEAN_ID;
 
     private static final String GENERATED_GSP_NAME_PREFIX = "gsp_script_";
-
-    private static final Log LOG = LogFactory.getLog(GroovyPagesTemplateEngine.class);
 
     private static File dumpLineNumbersTo;
 
@@ -205,8 +205,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         }
         catch (Exception e) {
             // ignore, non critical method used for retrieving debug info
-            LOG.warn("Exception retrieving line numbers from GSP: " + url + ", message: " + e.getMessage());
-            LOG.debug("Full stack trace of error", e);
+            logger.warn("Exception retrieving line numbers from GSP: " + url + ", message: " + e.getMessage());
+            logger.debug("Full stack trace of error", e);
         }
         return new int[0];
     }
@@ -584,7 +584,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
             scriptClass = groovyClassLoader.parseClass(groovySource, name);
         }
         catch (CompilationFailedException e) {
-            LOG.error("Compilation error compiling GSP [" + name + "]:" + e.getMessage(), e);
+            logger.error("Compilation error compiling GSP [" + name + "]:" + e.getMessage(), e);
 
             int lineNumber = ExceptionUtils.extractLineNumber(e);
 

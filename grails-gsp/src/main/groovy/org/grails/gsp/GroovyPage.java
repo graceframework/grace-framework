@@ -65,13 +65,13 @@ import org.grails.taglib.encoder.WithCodecHelper;
  */
 public abstract class GroovyPage extends Script {
 
+    private static final Log logger = LogFactory.getLog(GroovyPage.class);
+
     private static final String APPLY_CODEC_TAG_NAME = "applyCodec";
 
     public static final String ENCODE_AS_ATTRIBUTE_NAME = "encodeAs";
 
     public static final Closure<?> EMPTY_BODY_CLOSURE = TagOutput.EMPTY_BODY_CLOSURE;
-
-    private static final Log LOG = LogFactory.getLog(GroovyPage.class);
 
     public static final String OUT = "out";
 
@@ -458,8 +458,8 @@ public abstract class GroovyPage extends Script {
             }
         }
         catch (Throwable e) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Full exception for problem at " + getGroovyPageFileName() + ":" + lineNumber, e);
+            if (logger.isTraceEnabled()) {
+                logger.trace("Full exception for problem at " + getGroovyPageFileName() + ":" + lineNumber, e);
             }
 
             // The capture* tags are internal tags and not to be displayed to the user

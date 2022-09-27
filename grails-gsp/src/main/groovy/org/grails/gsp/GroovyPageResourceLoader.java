@@ -38,7 +38,7 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
      */
     public static final String BEAN_ID = "groovyPageResourceLoader";
 
-    private static final Log LOG = LogFactory.getLog(GroovyPageResourceLoader.class);
+    private static final Log logger = LogFactory.getLog(GroovyPageResourceLoader.class);
 
     private static final String PLUGINS_PATH = "/plugins/";
 
@@ -56,8 +56,8 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
 
         Resource resource = super.getResource(location);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolved GSP location [" + location + "] to resource [" + resource +
+        if (logger.isDebugEnabled()) {
+            logger.debug("Resolved GSP location [" + location + "] to resource [" + resource +
                     "] (exists? [" + resource.exists() + "]) using base resource [" + this.localBaseResource + "]");
         }
         return resource;

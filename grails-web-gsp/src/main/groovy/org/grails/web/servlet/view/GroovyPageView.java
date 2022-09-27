@@ -56,7 +56,7 @@ import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper;
  */
 public class GroovyPageView extends AbstractGrailsView {
 
-    private static final Log LOG = LogFactory.getLog(GroovyPageView.class);
+    private static final Log logger = LogFactory.getLog(GroovyPageView.class);
 
     protected GroovyPagesTemplateEngine templateEngine;
 
@@ -105,8 +105,8 @@ public class GroovyPageView extends AbstractGrailsView {
             GroovyPagesTemplateEngine engine) {
 
         GrailsUtil.deepSanitize(exception);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Error processing GroovyPageView: " + exception.getMessage(), exception);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Error processing GroovyPageView: " + exception.getMessage(), exception);
         }
         if (exception instanceof GroovyPagesException) {
             throw (GroovyPagesException) exception;

@@ -32,7 +32,7 @@ import org.grails.taglib.TemplateVariableBinding;
  */
 public class GroovyPageBinding extends TemplateVariableBinding {
 
-    private static final Log log = LogFactory.getLog(GroovyPageBinding.class);
+    private static final Log logger = LogFactory.getLog(GroovyPageBinding.class);
 
     public GroovyPageBinding() {
         super();

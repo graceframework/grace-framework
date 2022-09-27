@@ -71,7 +71,7 @@ import org.grails.taglib.encoder.OutputEncodingSettings;
  */
 public class GroovyPageParser implements Tokens {
 
-    public static final Log LOG = LogFactory.getLog(GroovyPageParser.class);
+    public static final Log logger = LogFactory.getLog(GroovyPageParser.class);
 
     private static final Pattern PARA_BREAK = Pattern.compile(
             "/p>\\s*<p[^>]*>", Pattern.CASE_INSENSITIVE);
@@ -438,7 +438,7 @@ public class GroovyPageParser implements Tokens {
                         GROOVY_SOURCE_CHAR_ENCODING);
             }
             catch (IOException e) {
-                LOG.warn("Cannot open keepgenerated file for writing. File's absolute path is '" +
+                logger.warn("Cannot open keepgenerated file for writing. File's absolute path is '" +
                         keepGeneratedFile.getAbsolutePath() + "'");
                 keepGeneratedFile = null;
             }
@@ -457,7 +457,7 @@ public class GroovyPageParser implements Tokens {
 
     private void resolveKeepGeneratedDirectory() {
         if (this.keepGeneratedDirectory != null && !this.keepGeneratedDirectory.isDirectory()) {
-            LOG.warn("The directory specified with " + CONFIG_PROPERTY_GSP_KEEPGENERATED_DIR +
+            logger.warn("The directory specified with " + CONFIG_PROPERTY_GSP_KEEPGENERATED_DIR +
                     " config parameter doesn't exist or isn't a readable directory. Absolute path: '" +
                     this.keepGeneratedDirectory.getAbsolutePath() + "' Keepgenerated will be disabled.");
             this.keepGeneratedDirectory = null;
@@ -610,7 +610,7 @@ public class GroovyPageParser implements Tokens {
                 this.jspTags.put(namespace, uri.substring(1, uri.length() - 1));
             }
             else {
-                LOG.error("You cannot override the default 'g' namespace with the directive <%@ taglib prefix=\"g\" %>. "
+                logger.error("You cannot override the default 'g' namespace with the directive <%@ taglib prefix=\"g\" %>. "
                         + "Please select another namespace.");
             }
         }

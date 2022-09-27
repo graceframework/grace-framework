@@ -62,7 +62,7 @@ import org.grails.taglib.encoder.WithCodecHelper;
  */
 public class GroovyPageMetaInfo implements GrailsApplicationAware {
 
-    private static final Log LOG = LogFactory.getLog(GroovyPageMetaInfo.class);
+    private static final Log logger = LogFactory.getLog(GroovyPageMetaInfo.class);
 
     private TagLibraryLookup tagLibraryLookup;
 
@@ -354,7 +354,7 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
                 readLineNumbers();
             }
             catch (IOException e) {
-                LOG.warn("Problem reading precompiled linenumbers", e);
+                logger.warn("Problem reading precompiled linenumbers", e);
             }
         }
         return this.lineNumbers;
