@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://plugins.gradle.org/m2/" }
@@ -12,6 +13,7 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
@@ -40,10 +42,13 @@ subprojects {
     } else {
         group "org.grails"
     }
+
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
     }
+
     if (it.name.startsWith("examples")) {
         apply plugin: "org.grails.grails-web"
     } else if (isGrailsPlugin) {
@@ -56,8 +61,10 @@ subprojects {
         }
     }
 
-    apply plugin:'idea'
+    apply plugin: 'idea'
     apply plugin: 'java-library'
+    apply plugin: 'checkstyle'
+
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
 
@@ -107,6 +114,11 @@ subprojects {
         } else {
             maxParallelForks = 4
         }
+    }
+
+    checkstyle {
+        toolVersion = "10.3.2"
+        configDirectory.set(rootProject.file("gradle/checkstyle"))
     }
 }
 
