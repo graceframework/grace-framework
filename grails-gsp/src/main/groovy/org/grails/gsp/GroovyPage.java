@@ -131,7 +131,7 @@ public abstract class GroovyPage extends Script {
 
     private Encoder rawEncoder;
 
-    private final List<Closure<?>> bodyClosures = new ArrayList<Closure<?>>(15);
+    private final List<Closure<?>> bodyClosures = new ArrayList<>(15);
 
     public GroovyPage() {
         init();

@@ -53,9 +53,9 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
 
     protected Map<String, NamespacedTagDispatcher> namespaceDispatchers = new HashMap<>();
 
-    protected Map<String, Set<String>> tagsThatReturnObjectForNamespace = new HashMap<String, Set<String>>();
+    protected Map<String, Set<String>> tagsThatReturnObjectForNamespace = new HashMap<>();
 
-    protected Map<String, Map<String, Map<String, Object>>> encodeAsForTagNamespaces = new HashMap<String, Map<String, Map<String, Object>>>();
+    protected Map<String, Map<String, Map<String, Object>>> encodeAsForTagNamespaces = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -119,7 +119,7 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         }
         Set<String> tagsThatReturnObject = this.tagsThatReturnObjectForNamespace.get(namespace);
         if (tagsThatReturnObject == null) {
-            tagsThatReturnObject = new HashSet<String>();
+            tagsThatReturnObject = new HashSet<>();
             this.tagsThatReturnObjectForNamespace.put(namespace, tagsThatReturnObject);
         }
         Map<String, Object> tags = this.tagNamespaces.get(namespace);

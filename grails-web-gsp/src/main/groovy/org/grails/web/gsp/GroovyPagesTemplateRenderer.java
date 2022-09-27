@@ -76,7 +76,7 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
 
     private GroovyPagesTemplateEngine groovyPagesTemplateEngine;
 
-    private ConcurrentMap<String, CacheEntry<Template>> templateCache = new ConcurrentHashMap<String, CacheEntry<Template>>();
+    private ConcurrentMap<String, CacheEntry<Template>> templateCache = new ConcurrentHashMap<>();
 
     private Object scaffoldingTemplateGenerator;
 

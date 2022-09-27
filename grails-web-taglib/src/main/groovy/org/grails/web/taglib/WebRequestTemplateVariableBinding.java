@@ -42,9 +42,9 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
 
     private final boolean developmentMode = Environment.isDevelopmentMode();
 
-    private final Set<String> requestAttributeVariables = new HashSet<String>();
+    private final Set<String> requestAttributeVariables = new HashSet<>();
 
-    private static final Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<String, LazyRequestBasedValue>();
+    private static final Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<>();
 
     static {
         Map<String, LazyRequestBasedValue> m = lazyRequestBasedValuesMap;
@@ -170,7 +170,7 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
             return lazyRequestBasedValuesMap.keySet();
         }
 
-        Set<String> variableNames = new HashSet<String>(lazyRequestBasedValuesMap.keySet());
+        Set<String> variableNames = new HashSet<>(lazyRequestBasedValuesMap.keySet());
         variableNames.addAll(getVariablesMap().keySet());
         return variableNames;
     }

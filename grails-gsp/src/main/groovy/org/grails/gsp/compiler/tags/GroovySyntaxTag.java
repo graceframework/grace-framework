@@ -57,7 +57,7 @@ public abstract class GroovySyntaxTag implements GrailsTag {
 
     protected PrintWriter out;
 
-    protected Map<String, String> attributes = new HashMap<String, String>();
+    protected Map<String, String> attributes = new HashMap<>();
 
     protected GroovyPageParser parser;
 

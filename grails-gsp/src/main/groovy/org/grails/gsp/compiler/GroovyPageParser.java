@@ -143,19 +143,19 @@ public class GroovyPageParser implements Tokens {
 
     private Map<Object, Object> tagContext;
 
-    private Stack<TagMeta> tagMetaStack = new Stack<TagMeta>();
+    private Stack<TagMeta> tagMetaStack = new Stack<>();
 
     private GrailsTagRegistry tagRegistry = GrailsTagRegistry.getInstance();
 
     private Environment environment;
 
-    private List<String> htmlParts = new ArrayList<String>();
+    private List<String> htmlParts = new ArrayList<>();
 
     private static SitemeshPreprocessor sitemeshPreprocessor = new SitemeshPreprocessor();
 
-    Set<Integer> bodyVarsDefined = new HashSet<Integer>();
+    Set<Integer> bodyVarsDefined = new HashSet<>();
 
-    Map<Integer, String> attrsVarsMapDefinition = new HashMap<Integer, String>();
+    Map<Integer, String> attrsVarsMapDefinition = new HashMap<>();
 
     int closureLevel = 0;
 
@@ -183,7 +183,7 @@ public class GroovyPageParser implements Tokens {
 
     private int constantCount = 0;
 
-    private Map<String, Integer> constantsToNumbers = new HashMap<String, Integer>();
+    private Map<String, Integer> constantsToNumbers = new HashMap<>();
 
     private final String pageName;
 
@@ -233,7 +233,7 @@ public class GroovyPageParser implements Tokens {
 
     public static final String GROOVY_SOURCE_CHAR_ENCODING = "UTF-8";
 
-    private Map<String, String> jspTags = new HashMap<String, String>();
+    private Map<String, String> jspTags = new HashMap<>();
 
     private long lastModified;
 
@@ -370,7 +370,7 @@ public class GroovyPageParser implements Tokens {
     }
 
     private Map<String, String> parseDirectives(String gspSource) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         // strip gsp comments
         String input = PRESCAN_COMMENT_PATTERN.matcher(gspSource).replaceAll("");
         // find page directives
@@ -598,7 +598,7 @@ public class GroovyPageParser implements Tokens {
     private void directJspTagLib(String text) {
 
         text = text.substring(TAGLIB_DIRECTIVE.length() + 1, text.length());
-        Map<String, String> attrs = new LinkedHashMap<String, String>();
+        Map<String, String> attrs = new LinkedHashMap<>();
         populateMapWithAttributes(attrs, text);
 
         String prefix = attrs.get("\"prefix\"");

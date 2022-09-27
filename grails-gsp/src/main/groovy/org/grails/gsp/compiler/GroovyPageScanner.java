@@ -76,7 +76,7 @@ class GroovyPageScanner implements Tokens {
 
     // add line starting positions to array
     private void resolveLineNumberPositions() {
-        this.lineNumberPositions = new ArrayList<Integer>();
+        this.lineNumberPositions = new ArrayList<>();
         // first line starts at 0
         this.lineNumberPositions.add(0);
         for (int i = 0; i < this.len; i++) {

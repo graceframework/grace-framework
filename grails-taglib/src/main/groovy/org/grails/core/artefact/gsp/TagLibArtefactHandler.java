@@ -42,9 +42,9 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "TagLib";
 
-    private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<String, GrailsTagLibClass>();
+    private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<>();
 
-    private Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<String, GrailsTagLibClass>();
+    private Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<>();
 
     public TagLibArtefactHandler() {
         super(TYPE, GrailsTagLibClass.class, DefaultGrailsTagLibClass.class, TYPE);
@@ -60,7 +60,7 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
      */
     @Override
     public void initialize(ArtefactInfo artefacts) {
-        this.tag2libMap = new HashMap<String, GrailsTagLibClass>();
+        this.tag2libMap = new HashMap<>();
         for (GrailsClass aClass : artefacts.getGrailsClasses()) {
             GrailsTagLibClass taglibClass = (GrailsTagLibClass) aClass;
             String namespace = taglibClass.getNamespace();

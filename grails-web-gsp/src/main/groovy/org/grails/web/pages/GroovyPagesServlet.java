@@ -113,7 +113,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     private GrailsPluginManager pluginManager;
 
     @SuppressWarnings("rawtypes")
-    private Map<String, Class> binaryPluginViewsMap = new ConcurrentHashMap<String, Class>();
+    private Map<String, Class> binaryPluginViewsMap = new ConcurrentHashMap<>();
 
     @Override
     protected void initFrameworkServlet() throws BeansException {

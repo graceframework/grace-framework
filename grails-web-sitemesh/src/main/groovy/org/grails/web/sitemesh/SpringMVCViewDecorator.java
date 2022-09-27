@@ -52,7 +52,7 @@ public class SpringMVCViewDecorator extends DefaultDecorator implements com.open
 
     public void render(Content content, SiteMeshContext context) {
         SiteMeshWebAppContext ctx = (SiteMeshWebAppContext) context;
-        render(content, Collections.<String, Object>emptyMap(), ctx.getRequest(), ctx.getResponse(), ctx.getServletContext());
+        render(content, Collections.emptyMap(), ctx.getRequest(), ctx.getResponse(), ctx.getServletContext());
     }
 
     public void render(Content content, Map<String, ?> model, HttpServletRequest request,

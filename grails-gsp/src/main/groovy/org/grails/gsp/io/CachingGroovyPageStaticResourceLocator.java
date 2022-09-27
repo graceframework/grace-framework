@@ -32,7 +32,7 @@ import grails.util.CacheEntry;
  */
 public class CachingGroovyPageStaticResourceLocator extends GroovyPageStaticResourceLocator {
 
-    private ConcurrentMap<String, CacheEntry<Resource>> uriResolveCache = new ConcurrentHashMap<String, CacheEntry<Resource>>();
+    private ConcurrentMap<String, CacheEntry<Resource>> uriResolveCache = new ConcurrentHashMap<>();
 
     private long cacheTimeout = -1;
 

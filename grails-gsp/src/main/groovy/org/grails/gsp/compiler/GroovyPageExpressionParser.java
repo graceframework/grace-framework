@@ -38,7 +38,7 @@ class GroovyPageExpressionParser {
 
     char nextTerminationChar;
 
-    Stack<ParsingState> parsingStateStack = new Stack<ParsingState>();
+    Stack<ParsingState> parsingStateStack = new Stack<>();
 
     boolean containsGstrings = false;
 

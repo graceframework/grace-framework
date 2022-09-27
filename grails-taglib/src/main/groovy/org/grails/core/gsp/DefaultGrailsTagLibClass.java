@@ -41,15 +41,15 @@ public class DefaultGrailsTagLibClass extends org.grails.core.DefaultGrailsTagLi
 
     protected static final String TAG_LIB = TagLibArtefactHandler.TYPE;
 
-    private Set<String> tags = new HashSet<String>();
+    private Set<String> tags = new HashSet<>();
 
     private String namespace = GrailsTagLibClass.DEFAULT_NAMESPACE;
 
-    private Set<String> returnObjectForTagsSet = new HashSet<String>();
+    private Set<String> returnObjectForTagsSet = new HashSet<>();
 
     private Object defaultEncodeAs = null;
 
-    private Map<String, Object> encodeAsForTags = new HashMap<String, Object>();
+    private Map<String, Object> encodeAsForTags = new HashMap<>();
 
     /**
      * Default contructor.

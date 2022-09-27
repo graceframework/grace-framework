@@ -44,7 +44,7 @@ public class LayoutWriterStack {
 
     private static final String ATTRIBUTE_NAME_WRITER_STACK = "be.ixor.grails.gsptaglib.WRITER_STACK";
 
-    private Stack<Map<String, Object>> stack = new Stack<Map<String, Object>>();
+    private Stack<Map<String, Object>> stack = new Stack<>();
 
     /**
      * Returns a {@link Writer} where a layout part can write its contents to.
@@ -91,7 +91,7 @@ public class LayoutWriterStack {
     public static Map<String, Object> writeParts(Closure<?> body) {
         LayoutWriterStack stack = LayoutWriterStack.currentStack();
         stack.push();
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("body", body.call());
         result.putAll(stack.pop());
         return result;
@@ -111,7 +111,7 @@ public class LayoutWriterStack {
     }
 
     private void push() {
-        this.stack.push(new HashMap<String, Object>());
+        this.stack.push(new HashMap<>());
     }
 
     private Map<String, Object> pop() {

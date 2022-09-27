@@ -68,7 +68,7 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
     }
 
     public void setTagLibInstances(List<Object> tagLibInstances) {
-        this.tagLibInstancesSet = new LinkedHashSet<Object>();
+        this.tagLibInstancesSet = new LinkedHashSet<>();
         this.tagLibInstancesSet.addAll(tagLibInstances);
     }
 

@@ -157,7 +157,7 @@ public final class OutputEncodingStack {
     }
 
     private static OutputEncodingStack lookupStack(OutputContext outputContext) {
-        OutputEncodingStack outputStack = (OutputEncodingStack) outputContext.getCurrentOutputEncodingStack();
+        OutputEncodingStack outputStack = outputContext.getCurrentOutputEncodingStack();
         return outputStack;
     }
 

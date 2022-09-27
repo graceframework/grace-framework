@@ -69,7 +69,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     private static final String BLANK = "";
 
-    protected Collection<ResourceLoader> resourceLoaders = new ConcurrentLinkedQueue<ResourceLoader>();
+    protected Collection<ResourceLoader> resourceLoaders = new ConcurrentLinkedQueue<>();
 
     protected GrailsPluginManager pluginManager;
 
@@ -79,7 +79,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     protected boolean reloadEnabled = !this.warDeployed;
 
-    private Set<String> reloadedPrecompiledGspClassNames = new CopyOnWriteArraySet<String>();
+    private Set<String> reloadedPrecompiledGspClassNames = new CopyOnWriteArraySet<>();
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
         addResourceLoader(resourceLoader);
@@ -96,7 +96,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
             this.precompiledGspMap = null;
         }
         else {
-            this.precompiledGspMap = new ConcurrentHashMap<String, String>(precompiledGspMap);
+            this.precompiledGspMap = new ConcurrentHashMap<>(precompiledGspMap);
         }
     }
 

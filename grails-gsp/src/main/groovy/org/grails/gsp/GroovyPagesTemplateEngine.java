@@ -104,7 +104,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
     private static File dumpLineNumbersTo;
 
-    private ConcurrentMap<String, CacheEntry<GroovyPageMetaInfo>> pageCache = new ConcurrentHashMap<String, CacheEntry<GroovyPageMetaInfo>>();
+    private ConcurrentMap<String, CacheEntry<GroovyPageMetaInfo>> pageCache = new ConcurrentHashMap<>();
 
     private ClassLoader classLoader;
 
@@ -126,7 +126,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
     private Map<String, Class<?>> cachedDomainsWithoutPackage;
 
-    private List<GroovyPageSourceDecorator> groovyPageSourceDecorators = new ArrayList();
+    private List<GroovyPageSourceDecorator> groovyPageSourceDecorators = new ArrayList<>();
 
     static {
         String dirPath = System.getProperty("grails.dump.gsp.line.numbers.to.dir");
@@ -778,7 +778,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
      * to prevent using the static cache that was used previously.
      */
     private Map<String, Class<?>> createDomainClassMap() {
-        Map<String, Class<?>> domainsWithoutPackage = new HashMap<String, Class<?>>();
+        Map<String, Class<?>> domainsWithoutPackage = new HashMap<>();
         if (this.grailsApplication != null) {
             GrailsClass[] domainClasses = this.grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE);
             for (GrailsClass domainClass : domainClasses) {
