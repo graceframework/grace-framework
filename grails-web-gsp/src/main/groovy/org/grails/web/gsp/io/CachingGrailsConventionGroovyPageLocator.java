@@ -106,7 +106,7 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
     @SuppressWarnings("rawtypes")
     protected GroovyPageScriptSource lookupCache(final GroovyPageLocatorCacheKey cacheKey, Callable<GroovyPageScriptSource> updater) {
         GroovyPageScriptSource scriptSource = null;
-        if (cacheTimeout == 0) {
+        if (this.cacheTimeout == 0) {
             try {
                 scriptSource = updater.call();
             }
@@ -115,7 +115,7 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
             }
         }
         else {
-            scriptSource = CacheEntry.getValue(uriResolveCache, cacheKey, cacheTimeout, updater, new Callable<CacheEntry>() {
+            scriptSource = CacheEntry.getValue(this.uriResolveCache, cacheKey, this.cacheTimeout, updater, new Callable<CacheEntry>() {
                 @Override
                 public CacheEntry call() throws Exception {
                     return new CustomCacheEntry();
@@ -126,7 +126,7 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
     }
 
     public long getCacheTimeout() {
-        return cacheTimeout;
+        return this.cacheTimeout;
     }
 
     public void setCacheTimeout(long cacheTimeout) {
@@ -137,10 +137,10 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
     public void removePrecompiledPage(GroovyPageCompiledScriptSource scriptSource) {
         super.removePrecompiledPage(scriptSource);
         // remove the entry from uriResolveCache
-        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<>(uriResolveCache.entrySet())) {
+        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<>(this.uriResolveCache.entrySet())) {
             GroovyPageScriptSource ss = entry.getValue().getValue();
             if (ss == scriptSource || (ss instanceof GroovyPageCompiledScriptSource && scriptSource.getURI().equals(ss.getURI()))) {
-                uriResolveCache.remove(entry.getKey());
+                this.uriResolveCache.remove(entry.getKey());
             }
         }
     }
@@ -180,13 +180,13 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
             GroovyPageLocatorCacheKey that = (GroovyPageLocatorCacheKey) o;
 
-            if (contextPath != null ? !contextPath.equals(that.contextPath) : that.contextPath != null) {
+            if (this.contextPath != null ? !this.contextPath.equals(that.contextPath) : that.contextPath != null) {
                 return false;
             }
-            if (pluginName != null ? !pluginName.equals(that.pluginName) : that.pluginName != null) {
+            if (this.pluginName != null ? !this.pluginName.equals(that.pluginName) : that.pluginName != null) {
                 return false;
             }
-            if (uri != null ? !uri.equals(that.uri) : that.uri != null) {
+            if (this.uri != null ? !this.uri.equals(that.uri) : that.uri != null) {
                 return false;
             }
 
@@ -195,9 +195,9 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
         @Override
         public int hashCode() {
-            int result = uri != null ? uri.hashCode() : 0;
-            result = 31 * result + (pluginName != null ? pluginName.hashCode() : 0);
-            result = 31 * result + (contextPath != null ? contextPath.hashCode() : 0);
+            int result = this.uri != null ? this.uri.hashCode() : 0;
+            result = 31 * result + (this.pluginName != null ? this.pluginName.hashCode() : 0);
+            result = 31 * result + (this.contextPath != null ? this.contextPath.hashCode() : 0);
             return result;
         }
 

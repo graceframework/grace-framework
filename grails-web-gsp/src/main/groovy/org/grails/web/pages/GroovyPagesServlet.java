@@ -117,18 +117,18 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
 
     @Override
     protected void initFrameworkServlet() throws BeansException {
-        context = getServletContext();
-        context.log("GSP servlet initialized");
-        context.setAttribute(SERVLET_INSTANCE, this);
+        this.context = getServletContext();
+        this.context.log("GSP servlet initialized");
+        this.context.setAttribute(SERVLET_INSTANCE, this);
 
         final WebApplicationContext webApplicationContext = getWebApplicationContext();
-        grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class,
-                getClass().getClassLoader(), new Object[] { context }).get(0);
+        this.grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class,
+                getClass().getClassLoader(), new Object[] { this.context }).get(0);
         final AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         if (autowireCapableBeanFactory != null) {
             autowireCapableBeanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
         }
-        groovyPagesTemplateEngine =
+        this.groovyPagesTemplateEngine =
                 webApplicationContext.getBean(GroovyPagesTemplateEngine.BEAN_ID, GroovyPagesTemplateEngine.class);
 
     }
@@ -139,7 +139,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
 
     @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(GrailsApplicationAttributes.REQUEST_SCOPE_ID, grailsAttributes);
+        request.setAttribute(GrailsApplicationAttributes.REQUEST_SCOPE_ID, this.grailsAttributes);
         request.setAttribute(GroovyPagesServlet.SERVLET_INSTANCE, this);
 
         String pageName = (String) request.getAttribute(GrailsApplicationAttributes.GSP_TO_RENDER);
@@ -153,7 +153,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
         }
         else {
 
-            GroovyPageScriptSource scriptSource = groovyPagesTemplateEngine.findScriptSource(pageName);
+            GroovyPageScriptSource scriptSource = this.groovyPagesTemplateEngine.findScriptSource(pageName);
 
             if (scriptSource == null) {
                 scriptSource = findPageInBinaryPlugins(pageName);
@@ -164,7 +164,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
                 return;
             }
 
-            renderPageWithEngine(groovyPagesTemplateEngine, request, response, scriptSource);
+            renderPageWithEngine(this.groovyPagesTemplateEngine, request, response, scriptSource);
         }
     }
 
@@ -177,7 +177,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     }
 
     public GroovyPagesTemplateEngine getGroovyPagesTemplateEngine() {
-        return groovyPagesTemplateEngine;
+        return this.groovyPagesTemplateEngine;
     }
 
     protected boolean isSecurePath(String pageName) {
@@ -185,22 +185,22 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     }
 
     protected void sendNotFound(HttpServletResponse response, String pageName) throws IOException {
-        context.log("GroovyPagesServlet:  \"" + pageName + "\" not found");
+        this.context.log("GroovyPagesServlet:  \"" + pageName + "\" not found");
         response.sendError(404, "\"" + pageName + "\" not found.");
     }
 
     protected GroovyPageScriptSource findPageInBinaryPlugins(String pageName) {
         if (pageName != null) {
-            Class<?> pageClass = binaryPluginViewsMap.get(pageName);
-            if (pageClass == null && pluginManager != null) {
-                final GrailsPlugin[] allPlugins = pluginManager.getAllPlugins();
+            Class<?> pageClass = this.binaryPluginViewsMap.get(pageName);
+            if (pageClass == null && this.pluginManager != null) {
+                final GrailsPlugin[] allPlugins = this.pluginManager.getAllPlugins();
                 for (GrailsPlugin plugin : allPlugins) {
                     if (plugin instanceof BinaryGrailsPlugin) {
                         BinaryGrailsPlugin binaryPlugin = (BinaryGrailsPlugin) plugin;
 
                         pageClass = binaryPlugin.resolveView(pageName);
                         if (pageClass != null) {
-                            binaryPluginViewsMap.put(pageName, pageClass);
+                            this.binaryPluginViewsMap.put(pageName, pageClass);
                             break;
                         }
                     }

@@ -53,10 +53,10 @@ class GroovyPageExpressionParser {
         this.terminationChar = terminationChar;
         this.nextTerminationChar = nextTerminationChar;
         if (startInExpression) {
-            parsingStateStack.push(ParsingState.EXPRESSION);
+            this.parsingStateStack.push(ParsingState.EXPRESSION);
         }
         else {
-            parsingStateStack.push(ParsingState.NORMAL);
+            this.parsingStateStack.push(ParsingState.NORMAL);
         }
     }
 
@@ -66,17 +66,18 @@ class GroovyPageExpressionParser {
      * @return end position of expression
      */
     int parse() {
-        int currentPos = startPos;
+        int currentPos = this.startPos;
         char previousChar = 0;
         char previousPreviousChar = 0;
 
-        while (currentPos < scriptTokens.length() && terminationCharPos == -1) {
-            ParsingState parsingState = parsingStateStack.peek();
-            char ch = scriptTokens.charAt(currentPos++);
-            char nextChar = (currentPos < scriptTokens.length()) ? scriptTokens.charAt(currentPos) : 0;
+        while (currentPos < this.scriptTokens.length() && this.terminationCharPos == -1) {
+            ParsingState parsingState = this.parsingStateStack.peek();
+            char ch = this.scriptTokens.charAt(currentPos++);
+            char nextChar = (currentPos < this.scriptTokens.length()) ? this.scriptTokens.charAt(currentPos) : 0;
 
-            if (parsingStateStack.size() == 1 && ch == terminationChar && (nextTerminationChar == 0 || nextTerminationChar == nextChar)) {
-                terminationCharPos = currentPos - 1;
+            if (this.parsingStateStack.size() == 1 && ch == this.terminationChar
+                    && (this.nextTerminationChar == 0 || this.nextTerminationChar == nextChar)) {
+                this.terminationCharPos = currentPos - 1;
             }
             else if (parsingState == ParsingState.EXPRESSION || parsingState == ParsingState.NORMAL) {
                 switch (ch) {
@@ -90,14 +91,14 @@ class GroovyPageExpressionParser {
                         }
                         break;
                     case '[':
-                        if (relativeCharIndex == 0 || parsingState == ParsingState.EXPRESSION) {
+                        if (this.relativeCharIndex == 0 || parsingState == ParsingState.EXPRESSION) {
                             changeState(ParsingState.EXPRESSION);
                         }
                         break;
                     case '}':
                     case ']':
                         if (parsingState == ParsingState.EXPRESSION) {
-                            parsingStateStack.pop();
+                            this.parsingStateStack.pop();
                         }
                         break;
                     case '\'':
@@ -118,38 +119,38 @@ class GroovyPageExpressionParser {
                         && (previousChar != '\\' || (previousChar == '\\' && previousPreviousChar == '\\'))
                         && ((parsingState == ParsingState.QUOTEDVALUE_DOUBLE && ch == '"')
                         || (parsingState == ParsingState.QUOTEDVALUE_SINGLE && ch == '\''))) {
-                    parsingStateStack.pop();
+                    this.parsingStateStack.pop();
                 }
                 else if ((previousChar == ch && previousPreviousChar == ch)
                         && ((parsingState == ParsingState.TRIPLEQUOTED_DOUBLE && ch == '"')
                         || (parsingState == ParsingState.TRIPLEQUOTED_SINGLE && ch == '\''))) {
-                    parsingStateStack.pop();
+                    this.parsingStateStack.pop();
                 }
             }
             previousPreviousChar = previousChar;
             previousChar = ch;
-            relativeCharIndex++;
+            this.relativeCharIndex++;
         }
-        return terminationCharPos;
+        return this.terminationCharPos;
     }
 
     private void changeState(ParsingState newState) {
-        ParsingState currentState = parsingStateStack.peek();
+        ParsingState currentState = this.parsingStateStack.peek();
         // check if expression contains GStrings
-        if (relativeCharIndex > 1 && newState == ParsingState.EXPRESSION
+        if (this.relativeCharIndex > 1 && newState == ParsingState.EXPRESSION
                 && (currentState == ParsingState.QUOTEDVALUE_DOUBLE
                 || currentState == ParsingState.TRIPLEQUOTED_DOUBLE || currentState == ParsingState.NORMAL)) {
-            containsGstrings = true;
+            this.containsGstrings = true;
         }
-        parsingStateStack.push(newState);
+        this.parsingStateStack.push(newState);
     }
 
     public boolean isContainsGstrings() {
-        return containsGstrings;
+        return this.containsGstrings;
     }
 
     public int getTerminationCharPos() {
-        return terminationCharPos;
+        return this.terminationCharPos;
     }
 
 }

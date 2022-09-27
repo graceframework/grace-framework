@@ -67,56 +67,56 @@ public class DefaultGrailsTagLibClass extends org.grails.core.DefaultGrailsTagLi
             }
 
             if (Closure.class.isAssignableFrom(prop.getType())) {
-                tags.add(prop.getName());
+                this.tags.add(prop.getName());
             }
         }
 
         String ns = getStaticPropertyValue(NAMESPACE_FIELD_NAME, String.class);
         if (ns != null && !"".equals(ns.trim())) {
-            namespace = ns.trim();
+            this.namespace = ns.trim();
         }
 
         List returnObjectForTagsList = getStaticPropertyValue(RETURN_OBJECT_FOR_TAGS_FIELD_NAME, List.class);
         if (returnObjectForTagsList != null) {
             for (Object tagName : returnObjectForTagsList) {
-                returnObjectForTagsSet.add(String.valueOf(tagName));
+                this.returnObjectForTagsSet.add(String.valueOf(tagName));
             }
         }
 
-        defaultEncodeAs = getStaticPropertyValue(DEFAULT_ENCODE_AS_FIELD_NAME, Object.class);
+        this.defaultEncodeAs = getStaticPropertyValue(DEFAULT_ENCODE_AS_FIELD_NAME, Object.class);
 
         Map encodeAsForTagsMap = getStaticPropertyValue(ENCODE_AS_FOR_TAGS_FIELD_NAME, Map.class);
         if (encodeAsForTagsMap != null) {
             for (@SuppressWarnings("unchecked")
                  Iterator<Map.Entry> it = encodeAsForTagsMap.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry entry = it.next();
-                encodeAsForTags.put(entry.getKey().toString(), entry.getValue());
+                this.encodeAsForTags.put(entry.getKey().toString(), entry.getValue());
             }
         }
     }
 
     public boolean hasTag(String tagName) {
-        return tags.contains(tagName);
+        return this.tags.contains(tagName);
     }
 
     public Set<String> getTagNames() {
-        return tags;
+        return this.tags;
     }
 
     public String getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     public Set<String> getTagNamesThatReturnObject() {
-        return returnObjectForTagsSet;
+        return this.returnObjectForTagsSet;
     }
 
     public Object getEncodeAsForTag(String tagName) {
-        return encodeAsForTags.get(tagName);
+        return this.encodeAsForTags.get(tagName);
     }
 
     public Object getDefaultEncodeAs() {
-        return defaultEncodeAs;
+        return this.defaultEncodeAs;
     }
 
 }

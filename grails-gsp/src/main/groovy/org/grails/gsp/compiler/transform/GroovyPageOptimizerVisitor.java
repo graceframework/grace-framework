@@ -75,10 +75,10 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
                 MethodCallExpression.NO_ARGUMENTS);
         thisObjectMethodCall.setMethodTarget(new ClassNode(Closure.class).getMethods("getThisObject").get(0));
 
-        thisObjectVariable = new VariableExpression(THISOBJECT, targetGroovyPageNode);
+        this.thisObjectVariable = new VariableExpression(THISOBJECT, this.targetGroovyPageNode);
 
-        thisObjectDeclaration = new DeclarationExpression(
-                thisObjectVariable, Token.newSymbol(Types.EQUALS, 0, 0), thisObjectMethodCall);
+        this.thisObjectDeclaration = new DeclarationExpression(
+                this.thisObjectVariable, Token.newSymbol(Types.EQUALS, 0, 0), thisObjectMethodCall);
     }
 
 // TODO: Research why http://jira.grails.org/browse/GRAILS-8679 happens with this enabled. See ElvisAndClosureGroovyPageTests
@@ -96,7 +96,7 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
             List<Statement> oldBlock = ((BlockStatement) closureExpression.getCode()).getStatements();
             BlockStatement newBlock = new BlockStatement();
 
-            newBlock.addStatement(new ExpressionStatement(thisObjectDeclaration));
+            newBlock.addStatement(new ExpressionStatement(this.thisObjectDeclaration));
             newBlock.addStatements(oldBlock);
 
             closureExpression.setCode(newBlock);
@@ -150,8 +150,8 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
     }
 
     private void changeThisObjectExpressionIfInnerClosure(MethodCallExpression call) {
-        if (!innerClosures.isEmpty()) {
-            call.setObjectExpression(thisObjectVariable);
+        if (!this.innerClosures.isEmpty()) {
+            call.setObjectExpression(this.thisObjectVariable);
         }
     }
 

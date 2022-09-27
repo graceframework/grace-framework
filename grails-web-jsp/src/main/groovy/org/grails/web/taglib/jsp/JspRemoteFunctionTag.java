@@ -61,7 +61,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getParams() {
-        return params;
+        return this.params;
     }
 
     public void setParams(String params) {
@@ -69,7 +69,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnSuccess() {
-        return onSuccess;
+        return this.onSuccess;
     }
 
     public void setOnSuccess(String onSuccess) {
@@ -77,7 +77,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnFailure() {
-        return onFailure;
+        return this.onFailure;
     }
 
     public void setOnFailure(String onFailure) {
@@ -85,7 +85,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnComplete() {
-        return onComplete;
+        return this.onComplete;
     }
 
     public void setOnComplete(String onComplete) {
@@ -93,7 +93,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnLoading() {
-        return onLoading;
+        return this.onLoading;
     }
 
     public void setOnLoading(String onLoading) {
@@ -101,7 +101,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnLoaded() {
-        return onLoaded;
+        return this.onLoaded;
     }
 
     public void setOnLoaded(String onLoaded) {
@@ -109,7 +109,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOnInteractive() {
-        return onInteractive;
+        return this.onInteractive;
     }
 
     public void setOnInteractive(String onInteractive) {
@@ -117,7 +117,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {
@@ -125,7 +125,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getController() {
-        return controller;
+        return this.controller;
     }
 
     public void setController(String controller) {
@@ -133,7 +133,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -142,7 +142,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
 
     @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
     @Override
@@ -151,7 +151,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getUpdate() {
-        return update;
+        return this.update;
     }
 
     public void setUpdate(String update) {
@@ -159,7 +159,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getBefore() {
-        return before;
+        return this.before;
     }
 
     public void setBefore(String before) {
@@ -167,7 +167,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getAfter() {
-        return after;
+        return this.after;
     }
 
     public void setAfter(String after) {
@@ -175,7 +175,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getMethod() {
-        return method;
+        return this.method;
     }
 
     public void setMethod(String method) {
@@ -183,7 +183,7 @@ public class JspRemoteFunctionTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getAsynchronous() {
-        return asynchronous;
+        return this.asynchronous;
     }
 
     public void setAsynchronous(String asynchronous) {

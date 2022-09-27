@@ -71,21 +71,21 @@ public class Grails5535Factory extends BaseFactory {
     public Grails5535Factory(Config config) {
         super(config);
 
-        configFileName = config.getServletContext().getInitParameter("sitemesh.configfile");
-        if (configFileName == null) {
-            configFileName = DEFAULT_CONFIG_FILENAME;
+        this.configFileName = config.getServletContext().getInitParameter("sitemesh.configfile");
+        if (this.configFileName == null) {
+            this.configFileName = DEFAULT_CONFIG_FILENAME;
         }
 
         // configFilePath is null if loaded from war file
         String initParamConfigFile = config.getConfigFile();
         if (initParamConfigFile != null) {
-            configFileName = initParamConfigFile;
+            this.configFileName = initParamConfigFile;
         }
 
-        String configFilePath = config.getServletContext().getRealPath(configFileName);
+        String configFilePath = config.getServletContext().getRealPath(this.configFileName);
 
         if (configFilePath != null) { // disable config auto reloading for .war files
-            configFile = new File(configFilePath);
+            this.configFile = new File(configFilePath);
         }
 
         loadConfig();
@@ -122,7 +122,7 @@ public class Grails5535Factory extends BaseFactory {
                         String name = curr.getAttribute("name");
                         String value = curr.getAttribute("value");
                         if (!"".equals(name) && !"".equals(value)) {
-                            configProps.put("${" + name + "}", value);
+                            this.configProps.put("${" + name + "}", value);
                         }
                     }
                     else if ("page-parsers".equalsIgnoreCase(curr.getTagName())) {
@@ -137,7 +137,7 @@ public class Grails5535Factory extends BaseFactory {
                         // handle <excludes>
                         String fileName = replaceProperties(curr.getAttribute("file"));
                         if (!"".equals(fileName)) {
-                            excludesFileName = fileName;
+                            this.excludesFileName = fileName;
                             loadExcludes();
                         }
                     }
@@ -148,10 +148,10 @@ public class Grails5535Factory extends BaseFactory {
             throw new FactoryException("Could not get XML parser", e);
         }
         catch (IOException e) {
-            throw new FactoryException("Could not read config file : " + configFileName, e);
+            throw new FactoryException("Could not read config file : " + this.configFileName, e);
         }
         catch (SAXException e) {
-            throw new FactoryException("Could not parse config file : " + configFileName, e);
+            throw new FactoryException("Could not parse config file : " + this.configFileName, e);
         }
     }
 
@@ -161,11 +161,11 @@ public class Grails5535Factory extends BaseFactory {
 
         InputStream is = null;
 
-        if (configFile == null) {
-            is = config.getServletContext().getResourceAsStream(configFileName);
+        if (this.configFile == null) {
+            is = this.config.getServletContext().getResourceAsStream(this.configFileName);
         }
-        else if (configFile.exists() && configFile.canRead()) {
-            is = configFile.toURI().toURL().openStream();
+        else if (this.configFile.exists() && this.configFile.canRead()) {
+            is = this.configFile.toURI().toURL().openStream();
         }
 
         if (is == null) { // load the default sitemesh configuration
@@ -184,8 +184,8 @@ public class Grails5535Factory extends BaseFactory {
             throw new IllegalStateException("Cannot load default configuration from jar");
         }
 
-        if (configFile != null) {
-            configLastModified = configFile.lastModified();
+        if (this.configFile != null) {
+            this.configLastModified = this.configFile.lastModified();
         }
 
         Document doc = builder.parse(is);
@@ -203,16 +203,16 @@ public class Grails5535Factory extends BaseFactory {
 
         InputStream is = null;
 
-        if (excludesFile == null) {
-            is = config.getServletContext().getResourceAsStream(excludesFileName);
+        if (this.excludesFile == null) {
+            is = this.config.getServletContext().getResourceAsStream(this.excludesFileName);
         }
-        else if (excludesFile.exists() && excludesFile.canRead()) {
-            is = excludesFile.toURI().toURL().openStream();
+        else if (this.excludesFile.exists() && this.excludesFile.canRead()) {
+            is = this.excludesFile.toURI().toURL().openStream();
         }
 
         if (is == null) {
             log.warn("Cannot load excludes configuration file \""
-                    + excludesFileName + "\" as specified in \"sitemesh.xml\" or \"sitemesh-default.xml\"");
+                    + this.excludesFileName + "\" as specified in \"sitemesh.xml\" or \"sitemesh-default.xml\"");
             return;
         }
 
@@ -305,12 +305,12 @@ public class Grails5535Factory extends BaseFactory {
     @Override
     public void refresh() {
         long time = System.currentTimeMillis();
-        if (time - configLastCheck < configCheckMillis) {
+        if (time - this.configLastCheck < configCheckMillis) {
             return;
         }
-        configLastCheck = time;
+        this.configLastCheck = time;
 
-        if (configFile != null && configLastModified != configFile.lastModified()) {
+        if (this.configFile != null && this.configLastModified != this.configFile.lastModified()) {
             loadConfig();
         }
     }
@@ -324,7 +324,7 @@ public class Grails5535Factory extends BaseFactory {
      * actual values
      */
     private String replaceProperties(String str) {
-        Set props = configProps.entrySet();
+        Set props = this.configProps.entrySet();
         for (Iterator it = props.iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
             String key = (String) entry.getKey();

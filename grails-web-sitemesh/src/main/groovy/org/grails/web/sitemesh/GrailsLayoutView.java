@@ -75,7 +75,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("Finding layout for request and content");
                         }
-                        SpringMVCViewDecorator decorator = (SpringMVCViewDecorator) groovyPageLayoutFinder.findLayout(request, content);
+                        SpringMVCViewDecorator decorator = (SpringMVCViewDecorator) this.groovyPageLayoutFinder.findLayout(request, content);
                         if (decorator != null) {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("Found layout. Rendering content for layout and model {}", decorator.getPage(), model);
@@ -147,7 +147,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Rendering inner view for layout and model {}", model);
         }
-        innerView.render(model, request, contentBufferingResponse);
+        this.innerView.render(model, request, contentBufferingResponse);
     }
 
     protected GrailsContentBufferingResponse createContentBufferingResponse(Map<String, Object> model,
@@ -157,14 +157,14 @@ public class GrailsLayoutView extends AbstractGrailsView {
 
     @Override
     public Template getTemplate() {
-        if (innerView instanceof AbstractGrailsView) {
-            return ((AbstractGrailsView) innerView).getTemplate();
+        if (this.innerView instanceof AbstractGrailsView) {
+            return ((AbstractGrailsView) this.innerView).getTemplate();
         }
         return null;
     }
 
     public View getInnerView() {
-        return innerView;
+        return this.innerView;
     }
 
 }

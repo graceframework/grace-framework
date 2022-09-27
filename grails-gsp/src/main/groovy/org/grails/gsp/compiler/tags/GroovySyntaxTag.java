@@ -65,21 +65,21 @@ public abstract class GroovySyntaxTag implements GrailsTag {
 
     @SuppressWarnings("rawtypes")
     public void init(Map context) {
-        tagContext = context;
-        parser = (GroovyPageParser) context.get(GroovyPageParser.class);
+        this.tagContext = context;
+        this.parser = (GroovyPageParser) context.get(GroovyPageParser.class);
         Object outObj = context.get(GroovyPage.OUT);
         if (outObj instanceof PrintWriter) {
-            out = (PrintWriter) context.get(GroovyPage.OUT);
+            this.out = (PrintWriter) context.get(GroovyPage.OUT);
         }
     }
 
     protected boolean isCompileStaticMode() {
-        return parser != null && parser.isCompileStaticMode();
+        return this.parser != null && this.parser.isCompileStaticMode();
     }
 
     public void setWriter(Writer w) {
         Assert.isInstanceOf(PrintWriter.class, w, "A GroovySynax tag requires a java.io.PrintWriter instance");
-        out = (PrintWriter) w;
+        this.out = (PrintWriter) w;
     }
 
     @SuppressWarnings("rawtypes")
@@ -93,7 +93,7 @@ public abstract class GroovySyntaxTag implements GrailsTag {
     public void setAttribute(String name, Object value) {
         Assert.isInstanceOf(String.class, value, "A GroovySyntax tag requires only string valued attributes");
 
-        attributes.put(name.substring(1, name.length() - 1), (String) value);
+        this.attributes.put(name.substring(1, name.length() - 1), (String) value);
     }
 
     /**
@@ -133,33 +133,33 @@ public abstract class GroovySyntaxTag implements GrailsTag {
      * @param in
      */
     protected void doEachMethod(String in) {
-        String var = attributes.get(ATTRIBUTE_VAR);
-        String status = attributes.get(ATTRIBUTES_STATUS);
+        String var = this.attributes.get(ATTRIBUTE_VAR);
+        String status = this.attributes.get(ATTRIBUTES_STATUS);
         var = extractAttributeValue(var);
         status = extractAttributeValue(status);
 
         boolean hasStatus = !GrailsStringUtils.isBlank(status);
         boolean hasVar = !GrailsStringUtils.isBlank(var);
         if (hasStatus && !hasVar) {
-            throw new GrailsTagException(ERROR_NO_VAR_WITH_STATUS, parser.getPageName(), parser.getCurrentOutputLineNumber());
+            throw new GrailsTagException(ERROR_NO_VAR_WITH_STATUS, this.parser.getPageName(), this.parser.getCurrentOutputLineNumber());
         }
 
         if (var.equals(status) && (hasStatus)) {
             throw new GrailsTagException("Attribute [" + ATTRIBUTE_VAR +
                     "] cannot have the same value as attribute [" + ATTRIBUTES_STATUS + "]",
-                    parser.getPageName(), parser.getCurrentOutputLineNumber());
+                    this.parser.getPageName(), this.parser.getCurrentOutputLineNumber());
         }
 
         if (hasStatus) {
-            out.println("loop:{");
-            out.println("int " + status + " = 0");
+            this.out.println("loop:{");
+            this.out.println("int " + status + " = 0");
         }
         if (!hasVar) {
             if (isCompileStaticMode()) {
-                throw new GrailsTagException(ERROR_NO_VAR_WITH_COMPILE_STATIC, parser.getPageName(), parser.getCurrentOutputLineNumber());
+                throw new GrailsTagException(ERROR_NO_VAR_WITH_COMPILE_STATIC, this.parser.getPageName(), this.parser.getCurrentOutputLineNumber());
             }
             var = "_it" + Math.abs(System.identityHashCode(this));
-            foreachRenamedIt = var;
+            this.foreachRenamedIt = var;
         }
 
         String[] entryVars = null;
@@ -168,31 +168,31 @@ public abstract class GroovySyntaxTag implements GrailsTag {
             var = "_entry" + Math.abs(System.identityHashCode(this));
         }
 
-        out.print("for( " + var);
-        out.print(" in "); // dot de-reference
-        out.print(parser != null ? parser.getExpressionText(in, false) : extractAttributeValue(in));  // object
-        out.print(" )"); // dot de-reference
-        out.print(" {"); // start closure
-        out.println();
+        this.out.print("for( " + var);
+        this.out.print(" in "); // dot de-reference
+        this.out.print(this.parser != null ? this.parser.getExpressionText(in, false) : extractAttributeValue(in));  // object
+        this.out.print(" )"); // dot de-reference
+        this.out.print(" {"); // start closure
+        this.out.println();
         if (!hasVar) {
-            out.println("changeItVariable(" + foreachRenamedIt + ")");
+            this.out.println("changeItVariable(" + this.foreachRenamedIt + ")");
         }
         else if (entryVars != null) {
-            out.println("def " + entryVars[0].trim() + "=" + var + ".getKey()");
-            out.println("def " + entryVars[1].trim() + "=" + var + ".getValue()");
+            this.out.println("def " + entryVars[0].trim() + "=" + var + ".getKey()");
+            this.out.println("def " + entryVars[1].trim() + "=" + var + ".getValue()");
         }
     }
 
     protected void endEachMethod() {
-        String status = attributes.get(ATTRIBUTES_STATUS);
+        String status = this.attributes.get(ATTRIBUTES_STATUS);
         status = extractAttributeValue(status);
         boolean hasStatus = !GrailsStringUtils.isBlank(status);
 
         if (hasStatus) {
-            out.println(status + "++");
-            out.println("}");
+            this.out.println(status + "++");
+            this.out.println("}");
         }
-        out.println("}");
+        this.out.println("}");
     }
 
     protected String extractAttributeValue(String attr) {
@@ -209,7 +209,7 @@ public abstract class GroovySyntaxTag implements GrailsTag {
     }
 
     public String getForeachRenamedIt() {
-        return foreachRenamedIt;
+        return this.foreachRenamedIt;
     }
 
 }

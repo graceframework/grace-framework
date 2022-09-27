@@ -72,25 +72,25 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     protected void activateDestination() {
-        if (!destinationActivated && factory != null) {
+        if (!this.destinationActivated && this.factory != null) {
             try {
-                super.setTarget(factory.activateDestination());
+                super.setTarget(this.factory.activateDestination());
             }
             catch (IOException e) {
                 setError();
             }
-            destinationActivated = true;
+            this.destinationActivated = true;
         }
     }
 
     @Override
     public boolean isAllowUnwrappingOut() {
-        return destinationActivated ? super.isAllowUnwrappingOut() : false;
+        return this.destinationActivated ? super.isAllowUnwrappingOut() : false;
     }
 
     @Override
     public Writer unwrap() {
-        return destinationActivated ? super.unwrap() : this;
+        return this.destinationActivated ? super.unwrap() : this;
     }
 
     public void updateDestination(DestinationFactory f) {
@@ -281,7 +281,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public boolean isBlockFlush() {
-        return blockFlush;
+        return this.blockFlush;
     }
 
     public void setBlockFlush(boolean blockFlush) {
@@ -289,7 +289,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public boolean isBlockClose() {
-        return blockClose;
+        return this.blockClose;
     }
 
     public void setBlockClose(boolean blockClose) {
@@ -325,7 +325,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     public boolean isDestinationActivated() {
-        return destinationActivated;
+        return this.destinationActivated;
     }
 
     public void setDestinationActivated(boolean destinationActivated) {

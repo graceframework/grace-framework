@@ -36,15 +36,15 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
  */
 public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableBinding {
 
-    private static Log log = LogFactory.getLog(WebRequestTemplateVariableBinding.class);
+    private static final Log log = LogFactory.getLog(WebRequestTemplateVariableBinding.class);
 
-    private GrailsWebRequest webRequest;
+    private final GrailsWebRequest webRequest;
 
-    private boolean developmentMode = Environment.isDevelopmentMode();
+    private final boolean developmentMode = Environment.isDevelopmentMode();
 
-    private Set<String> requestAttributeVariables = new HashSet<String>();
+    private final Set<String> requestAttributeVariables = new HashSet<String>();
 
-    private static Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<String, LazyRequestBasedValue>();
+    private static final Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<String, LazyRequestBasedValue>();
 
     static {
         Map<String, LazyRequestBasedValue> m = lazyRequestBasedValuesMap;
@@ -112,8 +112,8 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
     public Binding findBindingForVariable(String name) {
         Binding binding = super.findBindingForVariable(name);
         if (binding == null) {
-            if (webRequest.getCurrentRequest().getAttribute(name) != null) {
-                requestAttributeVariables.add(name);
+            if (this.webRequest.getCurrentRequest().getAttribute(name) != null) {
+                this.requestAttributeVariables.add(name);
                 binding = this;
             }
         }
@@ -124,7 +124,7 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
     }
 
     public boolean isRequestAttributeVariable(String name) {
-        return requestAttributeVariables.contains(name);
+        return this.requestAttributeVariables.contains(name);
     }
 
     public boolean isVariableCachingAllowed(String name) {
@@ -134,22 +134,22 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
     @Override
     public Object getVariable(String name) {
         Object val = getVariablesMap().get(name);
-        if (val == null && !getVariablesMap().containsKey(name) && webRequest != null) {
-            val = webRequest.getCurrentRequest().getAttribute(name);
+        if (val == null && !getVariablesMap().containsKey(name) && this.webRequest != null) {
+            val = this.webRequest.getCurrentRequest().getAttribute(name);
             if (val != null) {
-                requestAttributeVariables.add(name);
+                this.requestAttributeVariables.add(name);
             }
             else {
                 LazyRequestBasedValue lazyValue = lazyRequestBasedValuesMap.get(name);
                 if (lazyValue != null) {
-                    val = lazyValue.evaluate(webRequest);
+                    val = lazyValue.evaluate(this.webRequest);
                 }
                 else {
                     val = resolveMissingVariable(name);
                 }
 
                 // warn about missing variables in development mode
-                if (val == null && developmentMode) {
+                if (val == null && this.developmentMode) {
                     if (log.isDebugEnabled()) {
                         log.debug("Variable '" + name + "' not found in binding or the value is null.");
                     }

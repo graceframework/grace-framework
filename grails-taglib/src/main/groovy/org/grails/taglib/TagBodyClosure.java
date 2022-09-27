@@ -68,7 +68,7 @@ public class TagBodyClosure extends Closure {
 
     private Object captureClosureOutput(Object args, boolean hasArgument) {
         final GroovyPageTagWriter capturedOut = new GroovyPageTagWriter();
-        Binding currentBinding = outputContext.getBinding();
+        Binding currentBinding = this.outputContext.getBinding();
         Map<String, Object> savedVariablesMap = null;
         Object originalIt = null;
         try {
@@ -184,8 +184,8 @@ public class TagBodyClosure extends Closure {
     }
 
     private void popCapturedOut() {
-        if (outputContext != null) {
-            OutputEncodingStack.currentStack(outputContext).pop();
+        if (this.outputContext != null) {
+            OutputEncodingStack.currentStack(this.outputContext).pop();
         }
         else {
             OutputEncodingStack.currentStack().pop();
@@ -193,8 +193,8 @@ public class TagBodyClosure extends Closure {
     }
 
     private void pushCapturedOut(GroovyPageTagWriter capturedOut) {
-        if (outputContext != null) {
-            OutputEncodingStack.currentStack(outputContext).push(capturedOut);
+        if (this.outputContext != null) {
+            OutputEncodingStack.currentStack(this.outputContext).push(capturedOut);
         }
         else {
             OutputEncodingStack.currentStack().push(capturedOut);
@@ -202,10 +202,10 @@ public class TagBodyClosure extends Closure {
     }
 
     private Object executeClosure(Object args) {
-        if (args != null && bodyClosure.getMaximumNumberOfParameters() > 0) {
-            return bodyClosure.call(args);
+        if (args != null && this.bodyClosure.getMaximumNumberOfParameters() > 0) {
+            return this.bodyClosure.call(args);
         }
-        return bodyClosure.call();
+        return this.bodyClosure.call();
     }
 
     public Object doCall() {
@@ -242,7 +242,7 @@ public class TagBodyClosure extends Closure {
     }
 
     public Closure<?> getBodyClosure() {
-        return bodyClosure;
+        return this.bodyClosure;
     }
 
 }

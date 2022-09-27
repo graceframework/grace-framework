@@ -48,12 +48,12 @@ public class CachingGroovyPageStaticResourceLocator extends GroovyPageStaticReso
             }
         };
 
-        Resource resource = CacheEntry.getValue(uriResolveCache, uri, cacheTimeout, updater);
+        Resource resource = CacheEntry.getValue(this.uriResolveCache, uri, this.cacheTimeout, updater);
         return resource == NULL_RESOURCE ? null : resource;
     }
 
     public long getCacheTimeout() {
-        return cacheTimeout;
+        return this.cacheTimeout;
     }
 
     public void setCacheTimeout(long cacheTimeout) {

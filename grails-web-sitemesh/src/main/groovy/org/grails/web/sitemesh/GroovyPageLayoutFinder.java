@@ -150,10 +150,10 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
                         LayoutCacheKey cacheKey = null;
                         boolean cachedIsNull = false;
 
-                        if (cacheEnabled) {
+                        if (this.cacheEnabled) {
                             cacheKey = new LayoutCacheKey(controllerName, actionUri);
-                            DecoratorCacheValue cacheValue = layoutDecoratorCache.get(cacheKey);
-                            if (cacheValue != null && (!gspReloadEnabled || !cacheValue.isExpired())) {
+                            DecoratorCacheValue cacheValue = this.layoutDecoratorCache.get(cacheKey);
+                            if (cacheValue != null && (!this.gspReloadEnabled || !cacheValue.isExpired())) {
                                 d = cacheValue.getDecorator();
                                 if (d == null) {
                                     cachedIsNull = true;
@@ -163,11 +163,11 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
                         if (d == null && !cachedIsNull) {
                             d = resolveDecorator(request, controller, controllerName, actionUri);
-                            if (cacheEnabled) {
+                            if (this.cacheEnabled) {
                                 if (LOG.isDebugEnabled() && d != null) {
                                     LOG.debug("Caching resolved layout {} for controller {} and action {}", d.getPage(), controllerName, actionUri);
                                 }
-                                layoutDecoratorCache.put(cacheKey, new DecoratorCacheValue(d));
+                                this.layoutDecoratorCache.put(cacheKey, new DecoratorCacheValue(d));
                             }
                         }
                     }
@@ -188,12 +188,12 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
     }
 
     protected Decorator getApplicationDefaultDecorator(HttpServletRequest request) {
-        return getNamedDecorator(request, defaultDecoratorName == null ? "application" : defaultDecoratorName,
-                !enableNonGspViews || defaultDecoratorName == null);
+        return getNamedDecorator(request, this.defaultDecoratorName == null ? "application" : this.defaultDecoratorName,
+                !this.enableNonGspViews || this.defaultDecoratorName == null);
     }
 
     public Decorator getNamedDecorator(HttpServletRequest request, String name) {
-        return getNamedDecorator(request, name, !enableNonGspViews);
+        return getNamedDecorator(request, name, !this.enableNonGspViews);
     }
 
     public Decorator getNamedDecorator(HttpServletRequest request, String name, boolean viewMustExist) {
@@ -201,16 +201,16 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
             return null;
         }
 
-        if (cacheEnabled) {
-            DecoratorCacheValue cacheValue = decoratorCache.get(name);
-            if (cacheValue != null && (!gspReloadEnabled || !cacheValue.isExpired())) {
+        if (this.cacheEnabled) {
+            DecoratorCacheValue cacheValue = this.decoratorCache.get(name);
+            if (cacheValue != null && (!this.gspReloadEnabled || !cacheValue.isExpired())) {
                 return cacheValue.getDecorator();
             }
         }
 
         View view;
         try {
-            view = viewResolver.resolveViewName(GrailsResourceUtils.cleanPath(GrailsResourceUtils.appendPiecesForUri(LAYOUTS_PATH, name)),
+            view = this.viewResolver.resolveViewName(GrailsResourceUtils.cleanPath(GrailsResourceUtils.appendPiecesForUri(LAYOUTS_PATH, name)),
                     request.getLocale());
             // it's only possible to check that GroovyPageView exists
             if (viewMustExist && !(view instanceof AbstractGrailsView)) {
@@ -226,8 +226,8 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
             d = createDecorator(name, view);
         }
 
-        if (cacheEnabled) {
-            decoratorCache.put(name, new DecoratorCacheValue(d));
+        if (this.cacheEnabled) {
+            this.decoratorCache.put(name, new DecoratorCacheValue(d));
         }
         return d;
     }
@@ -269,7 +269,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (!(viewResolver instanceof GrailsViewResolver)) {
+        if (!(this.viewResolver instanceof GrailsViewResolver)) {
             setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
         }
     }
@@ -296,10 +296,10 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
             LayoutCacheKey that = (LayoutCacheKey) o;
 
-            if (!actionUri.equals(that.actionUri)) {
+            if (!this.actionUri.equals(that.actionUri)) {
                 return false;
             }
-            if (!controllerName.equals(that.controllerName)) {
+            if (!this.controllerName.equals(that.controllerName)) {
                 return false;
             }
 
@@ -308,8 +308,8 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
         @Override
         public int hashCode() {
-            int result = controllerName.hashCode();
-            result = 31 * result + actionUri.hashCode();
+            int result = this.controllerName.hashCode();
+            result = 31 * result + this.actionUri.hashCode();
             return result;
         }
 
@@ -326,11 +326,11 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
         }
 
         public Decorator getDecorator() {
-            return decorator;
+            return this.decorator;
         }
 
         public boolean isExpired() {
-            return System.currentTimeMillis() - createTimestamp > LAYOUT_CACHE_EXPIRATION_MILLIS;
+            return System.currentTimeMillis() - this.createTimestamp > LAYOUT_CACHE_EXPIRATION_MILLIS;
         }
 
     }

@@ -52,7 +52,7 @@ public class SitemeshPreprocessor {
 
     StringBuffer addHeadCapturing(String gspSource) {
         StringBuffer sb = new StringBuffer((int) (gspSource.length() * 1.2));
-        Matcher m = headPattern.matcher(gspSource);
+        Matcher m = this.headPattern.matcher(gspSource);
         if (m.find()) {
             m.appendReplacement(sb, "");
             sb.append("<sitemesh:captureHead");
@@ -64,7 +64,7 @@ public class SitemeshPreprocessor {
             sb.append("</sitemesh:captureHead>");
             m.appendTail(sb);
         }
-        else if (!bodyPattern.matcher(gspSource).find()) {
+        else if (!this.bodyPattern.matcher(gspSource).find()) {
             // no body either, so replace meta & title in the entire gsp source
             // fix title in sub-template -problem
             sb.append(addMetaCapturing(addTitleCapturing(gspSource)));
@@ -76,25 +76,25 @@ public class SitemeshPreprocessor {
     }
 
     String addMetaCapturing(String headContent) {
-        Matcher m = metaPattern.matcher(headContent);
-        final String result = parameterPattern.matcher(
+        Matcher m = this.metaPattern.matcher(headContent);
+        final String result = this.parameterPattern.matcher(
                 m.replaceAll("<sitemesh:captureMeta " + XML_CLOSING_FOR_EMPTY_TAG_ATTRIBUTE_NAME + "=\"$2\"$1/>")
         ).replaceAll("<sitemesh:parameter$1/>");
         return result;
     }
 
     String addTitleCapturing(String headContent) {
-        Matcher m = titlePattern.matcher(headContent);
+        Matcher m = this.titlePattern.matcher(headContent);
         return m.replaceAll("<sitemesh:wrapTitleTag><sitemesh:captureTitle$1>$2</sitemesh:captureTitle></sitemesh:wrapTitleTag>");
     }
 
     StringBuffer addBodyCapturing(StringBuffer sb) {
-        Matcher m = bodyPattern.matcher(sb);
+        Matcher m = this.bodyPattern.matcher(sb);
         return new StringBuffer(m.replaceAll("<sitemesh:captureBody$1>$2</sitemesh:captureBody>"));
     }
 
     StringBuffer addContentCapturing(StringBuffer sb) {
-        Matcher m = contentPattern.matcher(sb);
+        Matcher m = this.contentPattern.matcher(sb);
         return new StringBuffer(m.replaceAll("<sitemesh:captureContent$1>$2</sitemesh:captureContent>"));
     }
 

@@ -36,7 +36,7 @@ public class JspMessageTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     public void setCode(String code) {
@@ -44,7 +44,7 @@ public class JspMessageTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getError() {
-        return error;
+        return this.error;
     }
 
     public void setError(String error) {

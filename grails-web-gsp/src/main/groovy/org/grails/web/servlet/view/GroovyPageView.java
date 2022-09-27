@@ -79,13 +79,13 @@ public class GroovyPageView extends AbstractGrailsView {
         GSPResponseWriter out = null;
         try {
             out = createResponseWriter(webRequest, response);
-            final GroovyPageWritable writable = template.make(model);
+            final GroovyPageWritable writable = this.template.make(model);
             writable.setShowSource(developmentMode && request.getParameter("showSource") != null);
             writable.writeTo(out);
         }
         catch (Exception e) {
             out.setError();
-            handleException(e, templateEngine);
+            handleException(e, this.templateEngine);
         }
         finally {
             if (out != null) {
@@ -162,7 +162,7 @@ public class GroovyPageView extends AbstractGrailsView {
     }
 
     public boolean isExpired() {
-        return System.currentTimeMillis() - createTimestamp > LASTMODIFIED_CHECK_INTERVAL;
+        return System.currentTimeMillis() - this.createTimestamp > LASTMODIFIED_CHECK_INTERVAL;
     }
 
     public void setScriptSource(ScriptSource scriptSource) {
@@ -176,21 +176,21 @@ public class GroovyPageView extends AbstractGrailsView {
             initTemplate();
         }
         catch (Exception e) {
-            handleException(e, templateEngine);
+            handleException(e, this.templateEngine);
         }
     }
 
     protected void initTemplate() throws IOException {
-        if (template == null) {
-            if (scriptSource == null) {
-                template = (GroovyPageTemplate) templateEngine.createTemplate(getUrl());
+        if (this.template == null) {
+            if (this.scriptSource == null) {
+                this.template = (GroovyPageTemplate) this.templateEngine.createTemplate(getUrl());
             }
             else {
-                template = (GroovyPageTemplate) templateEngine.createTemplate(scriptSource);
+                this.template = (GroovyPageTemplate) this.templateEngine.createTemplate(this.scriptSource);
             }
         }
-        if (template != null) {
-            template.setAllowSettingContentType(true);
+        if (this.template != null) {
+            this.template.setAllowSettingContentType(true);
         }
     }
 
@@ -199,7 +199,7 @@ public class GroovyPageView extends AbstractGrailsView {
     }
 
     public Template getTemplate() {
-        return template;
+        return this.template;
     }
 
     public void setTemplate(Template template) {
@@ -208,7 +208,7 @@ public class GroovyPageView extends AbstractGrailsView {
 
     @Override
     protected boolean isUrlRequired() {
-        return template == null;
+        return this.template == null;
     }
 
 }

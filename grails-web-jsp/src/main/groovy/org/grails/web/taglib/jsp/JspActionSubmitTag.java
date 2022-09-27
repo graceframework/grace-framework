@@ -34,7 +34,7 @@ public class JspActionSubmitTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(String value) {

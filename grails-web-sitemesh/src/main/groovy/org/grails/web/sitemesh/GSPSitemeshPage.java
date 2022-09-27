@@ -63,14 +63,14 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     }
 
     public void reset() {
-        headBuffer = null;
-        bodyBuffer = null;
-        pageBuffer = null;
-        titleBuffer = null;
-        used = false;
-        titleCaptured = false;
-        contentBuffers = null;
-        renderingLayout = false;
+        this.headBuffer = null;
+        this.bodyBuffer = null;
+        this.pageBuffer = null;
+        this.titleBuffer = null;
+        this.used = false;
+        this.titleCaptured = false;
+        this.contentBuffers = null;
+        this.renderingLayout = false;
     }
 
     public void addProperty(String name, Object value) {
@@ -80,76 +80,76 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     @Override
     public void addProperty(String name, String value) {
         super.addProperty(name, value);
-        used = true;
+        this.used = true;
     }
 
     @Override
     public void writeHead(Writer out) throws IOException {
-        if (headBuffer == null) {
+        if (this.headBuffer == null) {
             return;
         }
 
-        if (titleCaptured) {
-            if (titleBuffer != null) {
-                int headlen = headBuffer.length();
-                titleBuffer.clear();
-                if (headBuffer.length() < headlen) {
-                    headBuffer.writeTo(out);
+        if (this.titleCaptured) {
+            if (this.titleBuffer != null) {
+                int headlen = this.headBuffer.length();
+                this.titleBuffer.clear();
+                if (this.headBuffer.length() < headlen) {
+                    this.headBuffer.writeTo(out);
                     return;
                 }
             }
-            String headAsString = headBuffer.toString();
+            String headAsString = this.headBuffer.toString();
             // strip out title for sitemesh version of <head>
             out.write(headAsString.replaceFirst("(?is)<title(\\s[^>]*)?>(.*?)</title>", ""));
         }
         else {
-            headBuffer.writeTo(out);
+            this.headBuffer.writeTo(out);
         }
     }
 
     @Override
     public void writeBody(Writer out) throws IOException {
-        if (bodyBuffer != null) {
-            bodyBuffer.writeTo(out);
+        if (this.bodyBuffer != null) {
+            this.bodyBuffer.writeTo(out);
         }
-        else if (pageBuffer != null) {
+        else if (this.pageBuffer != null) {
             // no body was captured, so write the whole page content
-            pageBuffer.writeTo(out);
+            this.pageBuffer.writeTo(out);
         }
     }
 
     @Override
     public void writePage(Writer out) throws IOException {
-        if (pageBuffer != null) {
-            pageBuffer.writeTo(out);
+        if (this.pageBuffer != null) {
+            this.pageBuffer.writeTo(out);
         }
     }
 
     public String getHead() {
-        if (headBuffer != null) {
-            return headBuffer.toString();
+        if (this.headBuffer != null) {
+            return this.headBuffer.toString();
         }
         return null;
     }
 
     @Override
     public String getBody() {
-        if (bodyBuffer != null) {
-            return bodyBuffer.toString();
+        if (this.bodyBuffer != null) {
+            return this.bodyBuffer.toString();
         }
         return null;
     }
 
     @Override
     public String getPage() {
-        if (pageBuffer != null) {
-            return pageBuffer.toString();
+        if (this.pageBuffer != null) {
+            return this.pageBuffer.toString();
         }
         return null;
     }
 
     public int originalLength() {
-        return pageBuffer.size();
+        return this.pageBuffer.size();
     }
 
     public void writeOriginal(Writer writer) throws IOException {
@@ -159,11 +159,11 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     public void setHeadBuffer(StreamCharBuffer headBuffer) {
         this.headBuffer = headBuffer;
         applyStreamCharBufferSettings(headBuffer);
-        used = true;
+        this.used = true;
     }
 
     private void applyStreamCharBufferSettings(StreamCharBuffer buffer) {
-        if (!renderingLayout && buffer != null) {
+        if (!this.renderingLayout && buffer != null) {
             buffer.setPreferSubChunkWhenWritingToOtherBuffer(true);
         }
     }
@@ -171,7 +171,7 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     public void setBodyBuffer(StreamCharBuffer bodyBuffer) {
         this.bodyBuffer = bodyBuffer;
         applyStreamCharBufferSettings(bodyBuffer);
-        used = true;
+        this.used = true;
     }
 
     public void setPageBuffer(StreamCharBuffer pageBuffer) {
@@ -185,11 +185,11 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     }
 
     public StreamCharBuffer getTitleBuffer() {
-        return titleBuffer;
+        return this.titleBuffer;
     }
 
     public boolean isUsed() {
-        return used;
+        return this.used;
     }
 
     public void setUsed(boolean used) {
@@ -201,12 +201,12 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
      * @param buffer
      */
     public void setContentBuffer(String tagName, StreamCharBuffer buffer) {
-        used = true;
-        if (contentBuffers == null) {
-            contentBuffers = new HashMap<String, StreamCharBuffer>();
+        this.used = true;
+        if (this.contentBuffers == null) {
+            this.contentBuffers = new HashMap<String, StreamCharBuffer>();
         }
         String propertyName = "page." + tagName;
-        contentBuffers.put(propertyName, buffer);
+        this.contentBuffers.put(propertyName, buffer);
         // just mark that the property is set
         super.addProperty(propertyName, "");
     }
@@ -216,10 +216,10 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
      * @return the buffer for the specified name
      */
     public Object getContentBuffer(String name) {
-        if (contentBuffers == null) {
+        if (this.contentBuffers == null) {
             return null;
         }
-        return contentBuffers.get(name);
+        return this.contentBuffers.get(name);
     }
 
     public static HTMLPage content2htmlPage(Content content) {
@@ -237,7 +237,7 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
     }
 
     public boolean isTitleCaptured() {
-        return titleCaptured;
+        return this.titleCaptured;
     }
 
     public void setTitleCaptured(boolean titleCaptured) {

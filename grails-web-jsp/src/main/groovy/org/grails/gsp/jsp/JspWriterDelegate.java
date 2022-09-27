@@ -39,7 +39,7 @@ public class JspWriterDelegate extends JspWriter {
 
     @Override
     public String toString() {
-        return out.toString();
+        return this.out.toString();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class JspWriterDelegate extends JspWriter {
 
     @Override
     public void flush() throws IOException {
-        out.flush();
+        this.out.flush();
     }
 
     @Override
@@ -69,52 +69,52 @@ public class JspWriterDelegate extends JspWriter {
 
     @Override
     public void newLine() throws IOException {
-        out.write(LINE_BREAK);
+        this.out.write(LINE_BREAK);
     }
 
     @Override
     public void print(boolean b) throws IOException {
-        out.write(b ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
+        this.out.write(b ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
     }
 
     @Override
     public void print(char c) throws IOException {
-        out.write(c);
+        this.out.write(c);
     }
 
     @Override
     public void print(char[] cArray) throws IOException {
-        out.write(cArray);
+        this.out.write(cArray);
     }
 
     @Override
     public void print(double d) throws IOException {
-        out.write(Double.toString(d));
+        this.out.write(Double.toString(d));
     }
 
     @Override
     public void print(float f) throws IOException {
-        out.write(Float.toString(f));
+        this.out.write(Float.toString(f));
     }
 
     @Override
     public void print(int i) throws IOException {
-        out.write(Integer.toString(i));
+        this.out.write(Integer.toString(i));
     }
 
     @Override
     public void print(long l) throws IOException {
-        out.write(Long.toString(l));
+        this.out.write(Long.toString(l));
     }
 
     @Override
     public void print(Object o) throws IOException {
-        out.write(o == null ? "null" : o.toString());
+        this.out.write(o == null ? "null" : o.toString());
     }
 
     @Override
     public void print(String s) throws IOException {
-        out.write(s);
+        this.out.write(s);
     }
 
     @Override
@@ -178,12 +178,12 @@ public class JspWriterDelegate extends JspWriter {
 
     @Override
     public void write(int c) throws IOException {
-        out.write(c);
+        this.out.write(c);
     }
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        out.write(cbuf, off, len);
+        this.out.write(cbuf, off, len);
     }
 
 }

@@ -170,14 +170,14 @@ public class LineNumberTransform implements ASTTransformation {
         protected void visitStatement(Statement statement) {
             // LOG.debug "Transforming statement '${statement}':"
 
-            if (statement.getLineNumber() >= 0 && statement.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${statement.lineNumber} to ${lineNumbers[statement.lineNumber]}"
-                statement.setLineNumber(lineNumbers[statement.getLineNumber() - 1]);
+            if (statement.getLineNumber() >= 0 && statement.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${statement.lineNumber} to ${this.lineNumbers[statement.lineNumber]}"
+                statement.setLineNumber(this.lineNumbers[statement.getLineNumber() - 1]);
             }
 
-            if (statement.getLastLineNumber() > 0 && statement.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${statement.lastLineNumber} to ${lineNumbers[statement.lastLineNumber]}"
-                statement.setLastLineNumber(lineNumbers[statement.getLastLineNumber() - 1]);
+            if (statement.getLastLineNumber() > 0 && statement.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${statement.lastLineNumber} to ${this.lineNumbers[statement.lastLineNumber]}"
+                statement.setLastLineNumber(this.lineNumbers[statement.getLastLineNumber() - 1]);
             }
         }
 
@@ -185,14 +185,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitMethodCallExpression(MethodCallExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitMethodCallExpression(expression);
         }
@@ -201,14 +201,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitStaticMethodCallExpression(StaticMethodCallExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitStaticMethodCallExpression(expression);
         }
@@ -217,14 +217,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitConstructorCallExpression(ConstructorCallExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitConstructorCallExpression(expression);
         }
@@ -233,14 +233,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitBinaryExpression(BinaryExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitBinaryExpression(expression);
         }
@@ -249,14 +249,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitTernaryExpression(TernaryExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitTernaryExpression(expression);
         }
@@ -265,14 +265,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitShortTernaryExpression(ElvisOperatorExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitShortTernaryExpression(expression);
         }
@@ -281,14 +281,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitPostfixExpression(PostfixExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitPostfixExpression(expression);
         }
@@ -297,14 +297,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitPrefixExpression(PrefixExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitPrefixExpression(expression);
         }
@@ -313,14 +313,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitBooleanExpression(BooleanExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitBooleanExpression(expression);
         }
@@ -329,14 +329,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitNotExpression(NotExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitNotExpression(expression);
         }
@@ -345,14 +345,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitClosureExpression(ClosureExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitClosureExpression(expression);
         }
@@ -361,14 +361,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitTupleExpression(TupleExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitTupleExpression(expression);
         }
@@ -377,14 +377,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitListExpression(ListExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitListExpression(expression);
         }
@@ -393,14 +393,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitArrayExpression(ArrayExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitArrayExpression(expression);
         }
@@ -409,14 +409,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitMapExpression(MapExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitMapExpression(expression);
         }
@@ -425,14 +425,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitMapEntryExpression(MapEntryExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitMapEntryExpression(expression);
         }
@@ -441,14 +441,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitRangeExpression(RangeExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitRangeExpression(expression);
         }
@@ -457,14 +457,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitSpreadExpression(SpreadExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitSpreadExpression(expression);
         }
@@ -473,14 +473,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitSpreadMapExpression(SpreadMapExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitSpreadMapExpression(expression);
         }
@@ -490,14 +490,14 @@ public class LineNumberTransform implements ASTTransformation {
                 MethodPointerExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitMethodPointerExpression(expression);
         }
@@ -506,14 +506,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitUnaryMinusExpression(UnaryMinusExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitUnaryMinusExpression(expression);
         }
@@ -522,14 +522,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitUnaryPlusExpression(UnaryPlusExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitUnaryPlusExpression(expression);
         }
@@ -538,14 +538,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitBitwiseNegationExpression(BitwiseNegationExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitBitwiseNegationExpression(expression);
         }
@@ -554,14 +554,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitCastExpression(CastExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitCastExpression(expression);
         }
@@ -570,14 +570,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitConstantExpression(ConstantExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitConstantExpression(expression);
         }
@@ -586,14 +586,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitClassExpression(ClassExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitClassExpression(expression);
         }
@@ -602,14 +602,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitDeclarationExpression(DeclarationExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitDeclarationExpression(expression);
         }
@@ -618,14 +618,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitPropertyExpression(PropertyExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitPropertyExpression(expression);
         }
@@ -634,14 +634,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitAttributeExpression(AttributeExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitAttributeExpression(expression);
         }
@@ -650,14 +650,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitFieldExpression(FieldExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitFieldExpression(expression);
         }
@@ -666,14 +666,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitGStringExpression(GStringExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitGStringExpression(expression);
         }
@@ -682,14 +682,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitArgumentlistExpression(ArgumentListExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitArgumentlistExpression(expression);
         }
@@ -698,14 +698,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitClosureListExpression(ClosureListExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitClosureListExpression(expression);
         }
@@ -714,14 +714,14 @@ public class LineNumberTransform implements ASTTransformation {
         public void visitBytecodeExpression(BytecodeExpression expression) {
             // LOG.debug "Transforming expression '${expression}':"
 
-            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < lineNumbers.length) {
-                // LOG.debug "   start from ${expression.lineNumber} to ${lineNumbers[expression.lineNumber - 1]}"
-                expression.setLineNumber(lineNumbers[expression.getLineNumber() - 1]);
+            if (expression.getLineNumber() >= 0 && expression.getLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   start from ${expression.lineNumber} to ${this.lineNumbers[expression.lineNumber - 1]}"
+                expression.setLineNumber(this.lineNumbers[expression.getLineNumber() - 1]);
             }
 
-            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < lineNumbers.length) {
-                // LOG.debug "   end from ${expression.lastLineNumber} to ${lineNumbers[expression.lastLineNumber - 1]}"
-                expression.setLastLineNumber(lineNumbers[expression.getLastLineNumber() - 1]);
+            if (expression.getLastLineNumber() > 0 && expression.getLastLineNumber() < this.lineNumbers.length) {
+                // LOG.debug "   end from ${expression.lastLineNumber} to ${this.lineNumbers[expression.lastLineNumber - 1]}"
+                expression.setLastLineNumber(this.lineNumbers[expression.getLastLineNumber() - 1]);
             }
             super.visitBytecodeExpression(expression);
         }

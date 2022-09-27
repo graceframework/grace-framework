@@ -38,7 +38,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -46,7 +46,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getFrom() {
-        return from;
+        return this.from;
     }
 
     public void setFrom(String from) {
@@ -54,7 +54,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOptionKey() {
-        return optionKey;
+        return this.optionKey;
     }
 
     public void setOptionKey(String optionKey) {
@@ -62,7 +62,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOptionValue() {
-        return optionValue;
+        return this.optionValue;
     }
 
     public void setOptionValue(String optionValue) {

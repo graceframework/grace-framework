@@ -58,7 +58,7 @@ public class GSPWriter extends PrintWriter {
             return;
         }
 
-        parse.flushTagBuffering();
+        this.parse.flushTagBuffering();
         super.print(outVarName);
         super.print(".print(");
         super.print(s);
@@ -82,12 +82,12 @@ public class GSPWriter extends PrintWriter {
     }
 
     private void addLineNumber() {
-        if (lineNumber >= lineNumbers.length) {
-            lineNumbers = (int[]) resizeArray(lineNumbers, lineNumbers.length * 2);
+        if (this.lineNumber >= this.lineNumbers.length) {
+            this.lineNumbers = (int[]) resizeArray(this.lineNumbers, this.lineNumbers.length * 2);
         }
         else {
-            lineNumbers[lineNumber - 1] = parse.getCurrentOutputLineNumber();
-            lineNumber++;
+            this.lineNumbers[this.lineNumber - 1] = this.parse.getCurrentOutputLineNumber();
+            this.lineNumber++;
         }
     }
 
@@ -103,11 +103,11 @@ public class GSPWriter extends PrintWriter {
     }
 
     public int getCurrentLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     public int[] getLineNumbers() {
-        return lineNumbers;
+        return this.lineNumbers;
     }
 
 }

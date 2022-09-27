@@ -81,7 +81,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
                             || ((AbstractTemplateVariableBinding) variableBinding).isVariableCachingAllowed(name)) {
                         // cache variable in this context since parent context cannot change during usage of this context
                         getVariablesMap().put(name, val);
-                        cachedParentVariableNames.add(name);
+                        this.cachedParentVariableNames.add(name);
                     }
                 }
             }
@@ -101,23 +101,23 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
      * @return The binding
      */
     public Binding findBindingForVariable(String name) {
-        if (cachedParentVariableNames.contains(name)) {
-            if (parent instanceof AbstractTemplateVariableBinding) {
-                return ((AbstractTemplateVariableBinding) parent).findBindingForVariable(name);
+        if (this.cachedParentVariableNames.contains(name)) {
+            if (this.parent instanceof AbstractTemplateVariableBinding) {
+                return ((AbstractTemplateVariableBinding) this.parent).findBindingForVariable(name);
             }
-            return parent;
+            return this.parent;
         }
 
         if (getVariablesMap().containsKey(name)) {
             return this;
         }
 
-        if (parent instanceof AbstractTemplateVariableBinding) {
-            return ((AbstractTemplateVariableBinding) parent).findBindingForVariable(name);
+        if (this.parent instanceof AbstractTemplateVariableBinding) {
+            return ((AbstractTemplateVariableBinding) this.parent).findBindingForVariable(name);
         }
 
-        if (parent != null && parent.getVariables().containsKey(name)) {
-            return parent;
+        if (this.parent != null && this.parent.getVariables().containsKey(name)) {
+            return this.parent;
         }
 
         return null;
@@ -145,7 +145,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
                 bindingToUse.getVariables().put(name, value);
             }
 
-            if (bindingToUse != this && cachedParentVariableNames.contains(name)) {
+            if (bindingToUse != this && this.cachedParentVariableNames.contains(name)) {
                 // maintain cached value
                 getVariablesMap().put(name, value);
             }
@@ -166,7 +166,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     }
 
     public Binding getParent() {
-        return parent;
+        return this.parent;
     }
 
     public void setParent(Binding parent) {
@@ -178,7 +178,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     }
 
     public Object getOwner() {
-        return owner;
+        return this.owner;
     }
 
     public void setOwner(Object owner) {
@@ -186,7 +186,7 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     }
 
     public boolean isRoot() {
-        return root;
+        return this.root;
     }
 
     public void setRoot(boolean root) {
@@ -197,12 +197,12 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     @Override
     public Set<String> getVariableNames() {
         Set<String> variableNames = new HashSet<String>();
-        if (parent != null) {
-            if (parent instanceof AbstractTemplateVariableBinding) {
-                variableNames.addAll(((AbstractTemplateVariableBinding) parent).getVariableNames());
+        if (this.parent != null) {
+            if (this.parent instanceof AbstractTemplateVariableBinding) {
+                variableNames.addAll(((AbstractTemplateVariableBinding) this.parent).getVariableNames());
             }
             else {
-                variableNames.addAll(parent.getVariables().keySet());
+                variableNames.addAll(this.parent.getVariables().keySet());
             }
         }
         variableNames.addAll(getVariablesMap().keySet());
@@ -212,8 +212,8 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     @Override
     public boolean hasVariable(String name) {
         return super.hasVariable(name)
-                || cachedParentVariableNames.contains(name)
-                || (parent != null && parent.hasVariable(name));
+                || this.cachedParentVariableNames.contains(name)
+                || (this.parent != null && this.parent.hasVariable(name));
     }
 
 }

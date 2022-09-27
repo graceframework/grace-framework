@@ -200,9 +200,9 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
         DestinationFactory lazyTargetFactory = new DestinationFactory() {
             public Writer activateDestination() throws IOException {
                 final GrailsWebRequest webRequest = GrailsWebRequest.lookup();
-                encoder = webRequest != null ? webRequest.lookupFilteringEncoder() : null;
-                if (encoder != null) {
-                    return buffer.getWriterForEncoder(encoder, webRequest.getEncodingStateRegistry());
+                GSPResponseWriter.this.encoder = webRequest != null ? webRequest.lookupFilteringEncoder() : null;
+                if (GSPResponseWriter.this.encoder != null) {
+                    return buffer.getWriterForEncoder(GSPResponseWriter.this.encoder, webRequest.getEncodingStateRegistry());
                 }
                 return buffer.getWriter();
             }
@@ -233,9 +233,9 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
     public void close() {
         flush();
         if (canFlushContentLengthAwareResponse()) {
-            int size = bytesCounter.size();
+            int size = this.bytesCounter.size();
             if (size > 0) {
-                response.setContentLength(size);
+                this.response.setContentLength(size);
             }
             flushResponse();
         }
@@ -250,14 +250,14 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
 
     private boolean canFlushContentLengthAwareResponse() {
         return CONTENT_LENGTH_COUNTING_ENABLED && isDestinationActivated()
-                && bytesCounter != null && bytesCounter.isWriterReferenced()
-                && response != null && !response.isCommitted() && !isTrouble();
+                && this.bytesCounter != null && this.bytesCounter.isWriterReferenced()
+                && this.response != null && !this.response.isCommitted() && !isTrouble();
     }
 
     private void flushResponse() {
         try {
             if (isDestinationActivated()) {
-                response.getWriter().flush();
+                this.response.getWriter().flush();
             }
         }
         catch (IOException e) {
@@ -276,8 +276,8 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
     }
 
     public EncodedAppender getEncodedAppender() {
-        if (buffer != null) {
-            return ((EncodedAppenderFactory) buffer.getWriter()).getEncodedAppender();
+        if (this.buffer != null) {
+            return ((EncodedAppenderFactory) this.buffer.getWriter()).getEncodedAppender();
         }
 
         activateDestination();
@@ -290,7 +290,7 @@ public final class GSPResponseWriter extends GrailsRoutablePrintWriter implement
     }
 
     public Encoder getEncoder() {
-        return encoder;
+        return this.encoder;
     }
 
 }

@@ -46,51 +46,51 @@ public final class OutputEncodingStackAttributes {
     private final OutputContext outputContext;
 
     public boolean isInheritPreviousEncoders() {
-        return inheritPreviousEncoders;
+        return this.inheritPreviousEncoders;
     }
 
     public boolean isReplaceOnly() {
-        return replaceOnly;
+        return this.replaceOnly;
     }
 
     public Writer getTopWriter() {
-        return topWriter;
+        return this.topWriter;
     }
 
     public Encoder getStaticEncoder() {
-        return staticEncoder;
+        return this.staticEncoder;
     }
 
     public Encoder getOutEncoder() {
-        return outEncoder;
+        return this.outEncoder;
     }
 
     public Encoder getExpressionEncoder() {
-        return expressionEncoder;
+        return this.expressionEncoder;
     }
 
     public Encoder getTaglibEncoder() {
-        return taglibEncoder;
+        return this.taglibEncoder;
     }
 
     public Encoder getDefaultTaglibEncoder() {
-        return defaultTaglibEncoder;
+        return this.defaultTaglibEncoder;
     }
 
     public boolean isAllowCreate() {
-        return allowCreate;
+        return this.allowCreate;
     }
 
     public boolean isPushTop() {
-        return pushTop;
+        return this.pushTop;
     }
 
     public boolean isAutoSync() {
-        return autoSync;
+        return this.autoSync;
     }
 
     public OutputContext getOutputContext() {
-        return outputContext;
+        return this.outputContext;
     }
 
     private OutputEncodingStackAttributes(Builder builder) {

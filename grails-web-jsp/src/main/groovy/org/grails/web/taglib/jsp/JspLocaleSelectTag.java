@@ -34,7 +34,7 @@ public class JspLocaleSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -42,7 +42,7 @@ public class JspLocaleSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(String value) {

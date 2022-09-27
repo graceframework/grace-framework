@@ -37,7 +37,7 @@ public class NullView implements View {
     }
 
     public String getContentType() {
-        return contentType;
+        return this.contentType;
     }
 
     @SuppressWarnings("rawtypes")

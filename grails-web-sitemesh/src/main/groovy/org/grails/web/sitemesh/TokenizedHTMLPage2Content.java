@@ -30,27 +30,27 @@ final class TokenizedHTMLPage2Content implements Content {
 
     @Override
     public void writeOriginal(Writer out) throws IOException {
-        out.write(page.getData());
+        out.write(this.page.getData());
     }
 
     @Override
     public void writeHead(Writer out) throws IOException {
-        page.writeHead(out);
+        this.page.writeHead(out);
     }
 
     @Override
     public void writeBody(Writer out) throws IOException {
-        page.writeBody(out);
+        this.page.writeBody(out);
     }
 
     @Override
     public int originalLength() {
-        return page.getContentLength();
+        return this.page.getContentLength();
     }
 
     @Override
     public String getTitle() {
-        return page.getTitle();
+        return this.page.getTitle();
     }
 
     @Override
@@ -60,16 +60,16 @@ final class TokenizedHTMLPage2Content implements Content {
 
     @Override
     public String getProperty(String name) {
-        return page.getProperty(name);
+        return this.page.getProperty(name);
     }
 
     @Override
     public void addProperty(String name, String value) {
-        page.addProperty(name, value);
+        this.page.addProperty(name, value);
     }
 
     public GrailsTokenizedHTMLPage getPage() {
-        return page;
+        return this.page;
     }
 
 }

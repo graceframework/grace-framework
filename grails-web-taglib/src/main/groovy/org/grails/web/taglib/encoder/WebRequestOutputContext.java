@@ -29,7 +29,7 @@ public class WebRequestOutputContext extends WebOutputContextLookup.WebOutputCon
     }
 
     protected GrailsWebRequest lookupWebRequest() {
-        return webRequest;
+        return this.webRequest;
     }
 
 }

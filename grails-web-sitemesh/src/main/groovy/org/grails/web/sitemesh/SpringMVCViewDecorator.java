@@ -66,7 +66,7 @@ public class SpringMVCViewDecorator extends DefaultDecorator implements com.open
             try {
                 request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, new GSPSitemeshPage(true));
                 try {
-                    view.render(model, request, response);
+                    this.view.render(model, request, response);
                     dispatched = true;
                     if (!response.isCommitted()) {
                         response.getWriter().flush();
@@ -75,8 +75,8 @@ public class SpringMVCViewDecorator extends DefaultDecorator implements com.open
                 catch (Exception e) {
                     cleanRequestAttributes(request);
                     String message = "Error applying layout : " + getName();
-                    if (view instanceof AbstractGrailsView) {
-                        ((AbstractGrailsView) view).rethrowRenderException(e, message);
+                    if (this.view instanceof AbstractGrailsView) {
+                        ((AbstractGrailsView) this.view).rethrowRenderException(e, message);
                     }
                     else {
                         throw new RuntimeException(message, e);
@@ -100,12 +100,12 @@ public class SpringMVCViewDecorator extends DefaultDecorator implements com.open
     }
 
     public View getView() {
-        return view;
+        return this.view;
     }
 
     public Template getTemplate() {
-        if (view instanceof AbstractGrailsView) {
-            return ((AbstractGrailsView) view).getTemplate();
+        if (this.view instanceof AbstractGrailsView) {
+            return ((AbstractGrailsView) this.view).getTemplate();
         }
         return null;
     }

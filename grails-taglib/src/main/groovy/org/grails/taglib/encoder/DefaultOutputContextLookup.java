@@ -44,7 +44,7 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
             // TODO: improve EncodingStateRegistry solution so that global state doesn't have to be used
             EncodingStateRegistryLookupHolder.setEncodingStateRegistryLookup(this);
         }
-        return outputContextThreadLocal.get();
+        return this.outputContextThreadLocal.get();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
 
         @Override
         public EncodingStateRegistry getEncodingStateRegistry() {
-            return encodingStateRegistry;
+            return this.encodingStateRegistry;
         }
 
         @Override
@@ -87,12 +87,12 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
 
         @Override
         public OutputEncodingStack getCurrentOutputEncodingStack() {
-            return outputEncodingStack;
+            return this.outputEncodingStack;
         }
 
         @Override
         public Writer getCurrentWriter() {
-            return currentWriter;
+            return this.currentWriter;
         }
 
         @Override
@@ -102,13 +102,13 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
 
         @Override
         public AbstractTemplateVariableBinding createAndRegisterRootBinding() {
-            binding = new TemplateVariableBinding();
-            return binding;
+            this.binding = new TemplateVariableBinding();
+            return this.binding;
         }
 
         @Override
         public AbstractTemplateVariableBinding getBinding() {
-            return binding;
+            return this.binding;
         }
 
         @Override

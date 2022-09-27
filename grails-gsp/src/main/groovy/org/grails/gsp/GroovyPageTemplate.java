@@ -47,22 +47,22 @@ public class GroovyPageTemplate implements Template, Cloneable {
     }
 
     public Writable make() {
-        return new GroovyPageWritable(metaInfo, outputContextLookup, allowSettingContentType);
+        return new GroovyPageWritable(this.metaInfo, this.outputContextLookup, this.allowSettingContentType);
     }
 
     @SuppressWarnings("rawtypes")
     public GroovyPageWritable make(Map binding) {
-        GroovyPageWritable gptw = new GroovyPageWritable(metaInfo, outputContextLookup, allowSettingContentType);
+        GroovyPageWritable gptw = new GroovyPageWritable(this.metaInfo, this.outputContextLookup, this.allowSettingContentType);
         gptw.setBinding(binding);
         return gptw;
     }
 
     public GroovyPageMetaInfo getMetaInfo() {
-        return metaInfo;
+        return this.metaInfo;
     }
 
     public boolean isAllowSettingContentType() {
-        return allowSettingContentType;
+        return this.allowSettingContentType;
     }
 
     public void setAllowSettingContentType(boolean allowSettingContentType) {
@@ -71,8 +71,8 @@ public class GroovyPageTemplate implements Template, Cloneable {
 
     @Override
     public Object clone() {
-        GroovyPageTemplate cloned = new GroovyPageTemplate(metaInfo);
-        cloned.setAllowSettingContentType(allowSettingContentType);
+        GroovyPageTemplate cloned = new GroovyPageTemplate(this.metaInfo);
+        cloned.setAllowSettingContentType(this.allowSettingContentType);
         return cloned;
     }
 

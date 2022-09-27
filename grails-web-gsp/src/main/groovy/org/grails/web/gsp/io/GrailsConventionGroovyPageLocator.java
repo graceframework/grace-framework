@@ -66,7 +66,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
      * @return The script source
      */
     public GroovyPageScriptSource findViewByPath(String uri) {
-        return uri == null ? null : findPage(uriService.getAbsoluteViewURI(uri));
+        return uri == null ? null : findPage(this.uriService.getAbsoluteViewURI(uri));
     }
 
     /**
@@ -92,7 +92,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     public GroovyPageScriptSource findView(String controllerName, String viewName, String format) {
         GroovyPageScriptSource scriptSource = findViewForFormat(controllerName, viewName, format);
         if (scriptSource == null) {
-            scriptSource = findPage(uriService.getViewURI(controllerName, viewName));
+            scriptSource = findPage(this.uriService.getViewURI(controllerName, viewName));
         }
 
         return scriptSource;
@@ -107,7 +107,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
      */
     public GroovyPageScriptSource findViewForFormat(String controllerName, String viewName, String format) {
         String viewNameWithFormat = getViewNameWithFormat(viewName, format);
-        return findPage(uriService.getViewURI(controllerName, viewNameWithFormat));
+        return findPage(this.uriService.getViewURI(controllerName, viewNameWithFormat));
     }
 
     public String resolveViewFormat(String viewName) {
@@ -144,26 +144,26 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
 
         GroovyPageScriptSource scriptSource = null;
         final String controllerClassName = GrailsNameUtils.getFullClassName(controller.getClass());
-        Object controllerArtefact = grailsApplication != null
-                ? grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) : null;
+        Object controllerArtefact = this.grailsApplication != null
+                ? this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) : null;
         if (controllerArtefact instanceof GrailsControllerClass) {
             GrailsControllerClass gcc = (GrailsControllerClass) controllerArtefact;
             String namespace = gcc.getNamespace();
             if (namespace != null) {
-                scriptSource = findPage("/" + namespace + uriService.getViewURI(controllerName, viewNameWithFormat));
+                scriptSource = findPage("/" + namespace + this.uriService.getViewURI(controllerName, viewNameWithFormat));
                 if (scriptSource == null) {
-                    scriptSource = findPage("/" + namespace + uriService.getViewURI(controllerName, viewName));
+                    scriptSource = findPage("/" + namespace + this.uriService.getViewURI(controllerName, viewName));
                 }
             }
         }
         if (scriptSource == null) {
-            scriptSource = findPage(uriService.getViewURI(controllerName, viewNameWithFormat));
+            scriptSource = findPage(this.uriService.getViewURI(controllerName, viewNameWithFormat));
         }
         if (scriptSource == null) {
-            scriptSource = findPage(uriService.getViewURI(controllerName, viewName));
+            scriptSource = findPage(this.uriService.getViewURI(controllerName, viewName));
         }
-        if (scriptSource == null && pluginManager != null) {
-            String pathToView = pluginManager.getPluginViewsPathForInstance(controller);
+        if (scriptSource == null && this.pluginManager != null) {
+            String pathToView = this.pluginManager.getPluginViewsPathForInstance(controller);
             if (pathToView != null) {
                 scriptSource = findViewByPath(GrailsResourceUtils.appendPiecesForUri(pathToView, viewName));
             }
@@ -183,7 +183,7 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
      * @return The GroovyPageScriptSource
      */
     public GroovyPageScriptSource findTemplate(String controllerName, String templateName) {
-        return findPage(uriService.getTemplateURI(controllerName, templateName));
+        return findPage(this.uriService.getTemplateURI(controllerName, templateName));
     }
 
     /**
@@ -196,9 +196,10 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     public GroovyPageScriptSource findTemplate(Object controller, String templateName) {
         String controllerName = getNameForController(controller);
         GroovyPageScriptSource scriptSource = null;
-        final String templateURI = uriService.getTemplateURI(controllerName, templateName);
+        final String templateURI = this.uriService.getTemplateURI(controllerName, templateName);
         final String fullClassName = GrailsNameUtils.getFullClassName(controller.getClass());
-        Object controllerArtefact = grailsApplication != null ? grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, fullClassName) : null;
+        Object controllerArtefact = this.grailsApplication != null
+                ? this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, fullClassName) : null;
         if (controllerArtefact instanceof GrailsControllerClass) {
             GrailsControllerClass gcc = (GrailsControllerClass) controllerArtefact;
             String namespace = gcc.getNamespace();
@@ -262,11 +263,11 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
         if (controller == null) {
             GrailsWebRequest webRequest = GrailsWebRequest.lookup();
             if (webRequest == null) {
-                return findPageInBinding(pluginName, uriService.getAbsoluteTemplateURI(templateName, true), binding);
+                return findPageInBinding(pluginName, this.uriService.getAbsoluteTemplateURI(templateName, true), binding);
             }
-            return findPageInBinding(pluginName, uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
+            return findPageInBinding(pluginName, this.uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
         }
-        final GrailsControllerClass controllerClass = (GrailsControllerClass) grailsApplication.getArtefact(ControllerArtefactHandler.TYPE,
+        final GrailsControllerClass controllerClass = (GrailsControllerClass) this.grailsApplication.getArtefact(ControllerArtefactHandler.TYPE,
                         GrailsNameUtils.getFullClassName(controller.getClass()));
 
         String templateURI;
@@ -274,12 +275,12 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
         GroovyPageScriptSource scriptSource = null;
         final String controllerName = controllerClass.getLogicalPropertyName();
         if (ns != null) {
-            templateURI = '/' + ns + uriService.getTemplateURI(controllerName, templateName);
+            templateURI = '/' + ns + this.uriService.getTemplateURI(controllerName, templateName);
             scriptSource = findPageInBinding(pluginName, templateURI, binding);
         }
 
         if (scriptSource == null) {
-            templateURI = uriService.getTemplateURI(controllerName, templateName);
+            templateURI = this.uriService.getTemplateURI(controllerName, templateName);
             scriptSource = findPageInBinding(pluginName, templateURI, binding);
         }
         return scriptSource;
@@ -294,9 +295,9 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     public GroovyPageScriptSource findTemplateInBinding(String templateName, TemplateVariableBinding binding) {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup();
         if (webRequest == null) {
-            return findPageInBinding(uriService.getAbsoluteTemplateURI(templateName, true), binding);
+            return findPageInBinding(this.uriService.getAbsoluteTemplateURI(templateName, true), binding);
         }
-        return findPageInBinding(uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
+        return findPageInBinding(this.uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
     }
 
     /**
@@ -310,9 +311,9 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     public GroovyPageScriptSource findTemplateInBinding(String pluginName, String templateName, TemplateVariableBinding binding) {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup();
         if (webRequest == null) {
-            return findPageInBinding(pluginName, uriService.getAbsoluteTemplateURI(templateName, true), binding);
+            return findPageInBinding(pluginName, this.uriService.getAbsoluteTemplateURI(templateName, true), binding);
         }
-        return findPageInBinding(pluginName, uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
+        return findPageInBinding(pluginName, this.uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
     }
 
     /**
@@ -323,12 +324,12 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
      * @return The script source
      */
     public GroovyPageScriptSource findTemplateByPath(String uri) {
-        return findPage(uriService.getAbsoluteTemplateURI(uri, true));
+        return findPage(this.uriService.getAbsoluteTemplateURI(uri, true));
     }
 
     protected String lookupRequestFormat() {
-        if (mimeTypeResolver != null) {
-            MimeType mimeType = mimeTypeResolver.resolveResponseMimeType();
+        if (this.mimeTypeResolver != null) {
+            MimeType mimeType = this.mimeTypeResolver.resolveResponseMimeType();
 
             if (mimeType != null) {
                 return mimeType.getExtension();

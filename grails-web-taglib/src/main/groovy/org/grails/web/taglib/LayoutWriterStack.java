@@ -111,11 +111,11 @@ public class LayoutWriterStack {
     }
 
     private void push() {
-        stack.push(new HashMap<String, Object>());
+        this.stack.push(new HashMap<String, Object>());
     }
 
     private Map<String, Object> pop() {
-        return stack.pop();
+        return this.stack.pop();
     }
 
 }

@@ -95,15 +95,15 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
         }
 
         public int size() {
-            return binding.getVariableNames().size();
+            return this.binding.getVariableNames().size();
         }
 
         public boolean isEmpty() {
-            return binding.getVariableNames().isEmpty();
+            return this.binding.getVariableNames().isEmpty();
         }
 
         public boolean containsKey(Object key) {
-            return binding.getVariableNames().contains(key);
+            return this.binding.getVariableNames().contains(key);
         }
 
         public boolean containsValue(Object value) {
@@ -111,23 +111,23 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
         }
 
         public Object get(Object key) {
-            return binding.getVariable(String.valueOf(key));
+            return this.binding.getVariable(String.valueOf(key));
         }
 
         public Object put(Object key, Object value) {
-            binding.setVariable(String.valueOf(key), value);
+            this.binding.setVariable(String.valueOf(key), value);
             return null;
         }
 
         public Object remove(Object key) {
-            binding.setVariable(String.valueOf(key), null);
+            this.binding.setVariable(String.valueOf(key), null);
             return null;
         }
 
         public void putAll(Map m) {
             for (Object entryObj : m.entrySet()) {
                 Map.Entry entry = (Map.Entry) entryObj;
-                binding.setVariable(String.valueOf(entry.getKey()), entry.getValue());
+                this.binding.setVariable(String.valueOf(entry.getKey()), entry.getValue());
             }
         }
 
@@ -136,15 +136,15 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
         }
 
         public Set keySet() {
-            return binding.getVariableNames();
+            return this.binding.getVariableNames();
         }
 
         @SuppressWarnings("unchecked")
         public Collection values() {
-            Set<String> variableNames = binding.getVariableNames();
+            Set<String> variableNames = this.binding.getVariableNames();
             Collection values = new ArrayList(variableNames.size());
             for (String variable : variableNames) {
-                values.add(binding.getVariable(variable));
+                values.add(this.binding.getVariable(variable));
             }
             return values;
         }
@@ -158,7 +158,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
 
                 @Override
                 public int size() {
-                    return binding.getVariableNames().size();
+                    return TemplateVariableBindingMap.this.binding.getVariableNames().size();
                 }
             });
         }
@@ -173,7 +173,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
                 public Object next() {
                     Object key = iter.next();
                     Object value = get(key);
-                    return new BindingMapEntry(binding, key, value);
+                    return new BindingMapEntry(TemplateVariableBindingMap.this.binding, key, value);
                 }
 
                 public void remove() {
@@ -200,19 +200,19 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
 
         @Override
         public Object getKey() {
-            return key;
+            return this.key;
         }
 
         @Override
         public Object getValue() {
-            return value;
+            return this.value;
         }
 
         @Override
         public Object setValue(Object value) {
             String key = String.valueOf(getKey());
-            Object oldValue = binding.getVariable(key);
-            binding.setVariable(key, value);
+            Object oldValue = this.binding.getVariable(key);
+            this.binding.setVariable(key, value);
             this.value = value;
             return oldValue;
         }

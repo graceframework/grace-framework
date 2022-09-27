@@ -57,14 +57,14 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     private final CompositeELResolver additionalResolvers = new CompositeELResolver();
 
     public GroovyPagesJspApplicationContext() {
-        elResolver.add(new ImplicitObjectELResolver());
-        elResolver.add(additionalResolvers);
-        elResolver.add(new MapELResolver());
-        elResolver.add(new ResourceBundleELResolver());
-        elResolver.add(new ListELResolver());
-        elResolver.add(new ArrayELResolver());
-        elResolver.add(new BeanELResolver());
-        elResolver.add(new ScopedAttributeELResolver());
+        this.elResolver.add(new ImplicitObjectELResolver());
+        this.elResolver.add(this.additionalResolvers);
+        this.elResolver.add(new MapELResolver());
+        this.elResolver.add(new ResourceBundleELResolver());
+        this.elResolver.add(new ListELResolver());
+        this.elResolver.add(new ArrayELResolver());
+        this.elResolver.add(new BeanELResolver());
+        this.elResolver.add(new ScopedAttributeELResolver());
     }
 
     private static ExpressionFactory findExpressionFactoryImplementation() {
@@ -101,7 +101,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     public void addELResolver(ELResolver resolver) {
-        additionalResolvers.add(resolver);
+        this.additionalResolvers.add(resolver);
     }
 
     public ExpressionFactory getExpressionFactory() {
@@ -109,16 +109,16 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     public void addELContextListener(ELContextListener elContextListener) {
-        synchronized (listeners) {
-            listeners.addLast(elContextListener);
+        synchronized (this.listeners) {
+            this.listeners.addLast(elContextListener);
         }
     }
 
     ELContext createELContext(GroovyPagesPageContext pageCtx) {
         ELContext ctx = new GroovyPagesELContext(pageCtx);
         ELContextEvent event = new ELContextEvent(ctx);
-        synchronized (listeners) {
-            for (Iterator<ELContextListener> iter = listeners.iterator(); iter.hasNext(); ) {
+        synchronized (this.listeners) {
+            for (Iterator<ELContextListener> iter = this.listeners.iterator(); iter.hasNext(); ) {
                 iter.next().contextCreated(event);
             }
         }
@@ -135,7 +135,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
         @Override
         public ELResolver getELResolver() {
-            return elResolver;
+            return GroovyPagesJspApplicationContext.this.elResolver;
         }
 
         @Override
@@ -149,7 +149,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
                 @Override
                 public ValueExpression resolveVariable(String name) {
-                    Object o = pageCtx.findAttribute(name);
+                    Object o = GroovyPagesELContext.this.pageCtx.findAttribute(name);
                     if (o == null) {
                         return null;
                     }
@@ -159,7 +159,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
                 @Override
                 public ValueExpression setVariable(String name, ValueExpression valueExpression) {
                     ValueExpression previous = resolveVariable(name);
-                    pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
+                    GroovyPagesELContext.this.pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
                     return previous;
                 }
             };

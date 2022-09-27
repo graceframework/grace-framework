@@ -90,23 +90,23 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
 
     @Override
     protected View loadView(String viewName, Locale locale) throws Exception {
-        Assert.notNull(templateEngine, "Property [templateEngine] cannot be null");
+        Assert.notNull(this.templateEngine, "Property [templateEngine] cannot be null");
         if (viewName.endsWith(GSP_SUFFIX)) {
             viewName = viewName.substring(0, viewName.length() - GSP_SUFFIX.length());
         }
 
-        if (!allowGrailsViewCaching) {
+        if (!this.allowGrailsViewCaching) {
             return createGrailsView(viewName);
         }
 
-        String viewCacheKey = groovyPageLocator.resolveViewFormat(viewName);
+        String viewCacheKey = this.groovyPageLocator.resolveViewFormat(viewName);
 
         String currentControllerKeyPrefix = resolveCurrentControllerKeyPrefixes(viewName.startsWith("/"));
         if (currentControllerKeyPrefix != null) {
             viewCacheKey = currentControllerKeyPrefix + ':' + viewCacheKey;
         }
 
-        CacheEntry<View> entry = viewCache.get(viewCacheKey);
+        CacheEntry<View> entry = this.viewCache.get(viewCacheKey);
 
         final String lookupViewName = viewName;
         Callable<View> updater = new Callable<View>() {
@@ -123,7 +123,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
         View view = null;
         if (entry == null) {
             try {
-                return CacheEntry.getValue(viewCache, viewCacheKey, cacheTimeout, updater);
+                return CacheEntry.getValue(this.viewCache, viewCacheKey, this.cacheTimeout, updater);
             }
             catch (CacheEntry.UpdateException e) {
                 e.rethrowCause();
@@ -133,7 +133,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
         }
 
         try {
-            view = entry.getValue(cacheTimeout, updater, true, null);
+            view = entry.getValue(this.cacheTimeout, updater, true, null);
         }
         catch (WrappedInitializationException e) {
             e.rethrowCause();
@@ -187,13 +187,13 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Locating GSP view for path {}", viewName);
             }
-            scriptSource = groovyPageLocator.findViewByPath(viewName);
+            scriptSource = this.groovyPageLocator.findViewByPath(viewName);
         }
         else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Locating GSP view for controller {} and path {}", controller, viewName);
             }
-            scriptSource = groovyPageLocator.findView(controller, viewName);
+            scriptSource = this.groovyPageLocator.findView(controller, viewName);
         }
         if (scriptSource != null) {
             return createGroovyPageView(scriptSource.getURI(), scriptSource);
@@ -211,7 +211,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
         gspSpringView.setServletContext(getServletContext());
         gspSpringView.setUrl(gspView);
         gspSpringView.setApplicationContext(getApplicationContext());
-        gspSpringView.setTemplateEngine(templateEngine);
+        gspSpringView.setTemplateEngine(this.templateEngine);
         gspSpringView.setScriptSource(scriptSource);
         try {
             gspSpringView.afterPropertiesSet();
@@ -226,7 +226,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
     }
 
     protected View createFallbackView(String viewName) throws Exception {
-        if (resolveJspView) {
+        if (this.resolveJspView) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("No GSP view found, falling back to locating JSTL view for name [{}]", viewName);
             }
@@ -249,7 +249,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
     }
 
     public long getCacheTimeout() {
-        return cacheTimeout;
+        return this.cacheTimeout;
     }
 
     public void setCacheTimeout(long cacheTimeout) {
@@ -259,11 +259,11 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
     @Override
     public void clearCache() {
         super.clearCache();
-        viewCache.clear();
+        this.viewCache.clear();
     }
 
     public boolean isAllowGrailsViewCaching() {
-        return allowGrailsViewCaching;
+        return this.allowGrailsViewCaching;
     }
 
     public void setAllowGrailsViewCaching(boolean allowGrailsViewCaching) {

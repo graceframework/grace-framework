@@ -197,24 +197,24 @@ public final class TagOutput {
         }
 
         public Object doCall(Object obj) {
-            return retval;
+            return this.retval;
         }
 
         public Object doCall() {
-            return retval;
+            return this.retval;
         }
 
         public Object doCall(Object[] args) {
-            return retval;
+            return this.retval;
         }
 
         @Override
         public Object call(Object... args) {
-            return retval;
+            return this.retval;
         }
 
         public boolean asBoolean() {
-            return DefaultTypeTransformation.castToBoolean(retval);
+            return DefaultTypeTransformation.castToBoolean(this.retval);
         }
 
     }

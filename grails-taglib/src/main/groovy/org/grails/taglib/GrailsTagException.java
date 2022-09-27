@@ -54,11 +54,11 @@ public class GrailsTagException extends GrailsException implements SourceCodeAwa
     }
 
     public String getFileName() {
-        return fileName;
+        return this.fileName;
     }
 
     public int getLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     @Override

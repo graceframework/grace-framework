@@ -46,13 +46,13 @@ class BodyContentImpl extends BodyContent {
     }
 
     void initBuffer() {
-        streamBuffer = new StreamCharBuffer();
-        streamBufferWriter = streamBuffer.getWriter();
+        this.streamBuffer = new StreamCharBuffer();
+        this.streamBufferWriter = this.streamBuffer.getWriter();
     }
 
     @Override
     public void flush() throws IOException {
-        if (streamBuffer == null) {
+        if (this.streamBuffer == null) {
             getEnclosingWriter().flush();
         }
     }
@@ -64,7 +64,7 @@ class BodyContentImpl extends BodyContent {
 
     @Override
     public void clearBuffer() throws IOException {
-        if (streamBuffer != null) {
+        if (this.streamBuffer != null) {
             initBuffer();
         }
         else {
@@ -193,8 +193,8 @@ class BodyContentImpl extends BodyContent {
 
     @Override
     public void write(int c) throws IOException {
-        if (streamBufferWriter != null) {
-            streamBufferWriter.write(c);
+        if (this.streamBufferWriter != null) {
+            this.streamBufferWriter.write(c);
         }
         else {
             getEnclosingWriter().write(c);
@@ -203,8 +203,8 @@ class BodyContentImpl extends BodyContent {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        if (streamBufferWriter != null) {
-            streamBufferWriter.write(cbuf, off, len);
+        if (this.streamBufferWriter != null) {
+            this.streamBufferWriter.write(cbuf, off, len);
         }
         else {
             getEnclosingWriter().write(cbuf, off, len);
@@ -213,17 +213,17 @@ class BodyContentImpl extends BodyContent {
 
     @Override
     public String getString() {
-        return streamBuffer.toString();
+        return this.streamBuffer.toString();
     }
 
     @Override
     public Reader getReader() {
-        return streamBuffer.getReader();
+        return this.streamBuffer.getReader();
     }
 
     @Override
     public void writeOut(Writer out) throws IOException {
-        streamBuffer.writeTo(out);
+        this.streamBuffer.writeTo(out);
     }
 
 }

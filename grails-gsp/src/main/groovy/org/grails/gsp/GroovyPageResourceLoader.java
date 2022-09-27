@@ -46,7 +46,7 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
 
     @Override
     public void setBaseResource(Resource baseResource) {
-        localBaseResource = baseResource;
+        this.localBaseResource = baseResource;
         super.setBaseResource(baseResource);
     }
 
@@ -58,7 +58,7 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Resolved GSP location [" + location + "] to resource [" + resource +
-                    "] (exists? [" + resource.exists() + "]) using base resource [" + localBaseResource + "]");
+                    "] (exists? [" + resource.exists() + "]) using base resource [" + this.localBaseResource + "]");
         }
         return resource;
     }

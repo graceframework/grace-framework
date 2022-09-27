@@ -63,7 +63,7 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
 
     @Override
     protected View createLayoutView(View innerView) {
-        return new SitemeshLayoutView(groovyPageLayoutFinder, innerView, contentProcessor);
+        return new SitemeshLayoutView(groovyPageLayoutFinder, innerView, this.contentProcessor);
     }
 
     public void init() {
@@ -75,7 +75,7 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
         if (sitemeshFactory == null) {
             sitemeshFactory = loadSitemeshConfig();
         }
-        contentProcessor = new PageParser2ContentProcessor(sitemeshFactory);
+        this.contentProcessor = new PageParser2ContentProcessor(sitemeshFactory);
     }
 
     protected Factory loadSitemeshConfig() {
@@ -117,7 +117,7 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
         }
         sitemeshFactory.refresh();
         FactoryHolder.setFactory(sitemeshFactory);
-        sitemeshConfigLoaded = true;
+        this.sitemeshConfigLoaded = true;
         return sitemeshFactory;
     }
 
@@ -135,17 +135,17 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
         if (servletContext == null) {
             return;
         }
-        if (sitemeshConfigLoaded) {
+        if (this.sitemeshConfigLoaded) {
             FactoryHolder.setFactory(null);
             if (servletContext != null) {
                 servletContext.removeAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE);
             }
-            sitemeshConfigLoaded = false;
+            this.sitemeshConfigLoaded = false;
         }
     }
 
     public int getOrder() {
-        return order;
+        return this.order;
     }
 
     public void setOrder(int order) {

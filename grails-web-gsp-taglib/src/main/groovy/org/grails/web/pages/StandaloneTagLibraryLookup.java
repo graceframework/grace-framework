@@ -50,8 +50,8 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
     }
 
     protected void registerTagLibraries() {
-        if (tagLibInstancesSet != null) {
-            for (Object tagLibInstance : tagLibInstancesSet) {
+        if (this.tagLibInstancesSet != null) {
+            for (Object tagLibInstance : this.tagLibInstancesSet) {
                 registerTagLib(new DefaultGrailsTagLibClass(tagLibInstance.getClass()));
             }
         }
@@ -59,7 +59,7 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
 
     @Override
     protected void putTagLib(Map<String, Object> tags, String name, GrailsTagLibClass taglib) {
-        for (Object tagLibInstance : tagLibInstancesSet) {
+        for (Object tagLibInstance : this.tagLibInstancesSet) {
             if (tagLibInstance.getClass() == taglib.getClazz()) {
                 tags.put(name, tagLibInstance);
                 break;
@@ -69,7 +69,7 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
 
     public void setTagLibInstances(List<Object> tagLibInstances) {
         this.tagLibInstancesSet = new LinkedHashSet<Object>();
-        tagLibInstancesSet.addAll(tagLibInstances);
+        this.tagLibInstancesSet.addAll(tagLibInstances);
     }
 
     @Override
@@ -78,13 +78,13 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
     }
 
     public void detectAndRegisterTabLibBeans() {
-        if (tagLibInstancesSet == null) {
-            tagLibInstancesSet = new LinkedHashSet<Object>();
+        if (this.tagLibInstancesSet == null) {
+            this.tagLibInstancesSet = new LinkedHashSet<Object>();
         }
         Collection<Object> detectedInstances = applicationContext.getBeansWithAnnotation(TagLib.class).values();
         for (Object instance : detectedInstances) {
-            if (!tagLibInstancesSet.contains(instance)) {
-                tagLibInstancesSet.add(instance);
+            if (!this.tagLibInstancesSet.contains(instance)) {
+                this.tagLibInstancesSet.add(instance);
                 registerTagLib(new DefaultGrailsTagLibClass(instance.getClass()));
             }
         }

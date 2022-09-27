@@ -40,7 +40,7 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     @Override
     public void writeHead(Writer out) throws IOException {
         if (out instanceof PrintWriter) {
-            head.writeTo((PrintWriter) out);
+            this.head.writeTo((PrintWriter) out);
         }
         else {
             super.writeHead(out);
@@ -50,7 +50,7 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     @Override
     public void writeBody(Writer out) throws IOException {
         if (out instanceof PrintWriter) {
-            body.writeTo((PrintWriter) out);
+            this.body.writeTo((PrintWriter) out);
         }
         else {
             super.writeBody(out);
@@ -58,7 +58,7 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     }
 
     public char[] getData() {
-        return data;
+        return this.data;
     }
 
 }

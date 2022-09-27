@@ -41,14 +41,14 @@ public class GroovyPageResourceScriptSource extends ResourceScriptSource impleme
         try {
             URL u = getResource().getURL();
             if (u == null) {
-                isPublic = isPublicPath(uri);
+                this.isPublic = isPublicPath(uri);
             }
             else {
-                isPublic = isPublicPath(u.getPath());
+                this.isPublic = isPublicPath(u.getPath());
             }
         }
         catch (IOException e) {
-            isPublic = isPublicPath(uri);
+            this.isPublic = isPublicPath(uri);
         }
     }
 
@@ -57,7 +57,7 @@ public class GroovyPageResourceScriptSource extends ResourceScriptSource impleme
     }
 
     public String getURI() {
-        return uri;
+        return this.uri;
     }
 
     /**
@@ -66,7 +66,7 @@ public class GroovyPageResourceScriptSource extends ResourceScriptSource impleme
      * @return true if it can be rendered publicly
      */
     public boolean isPublic() {
-        return isPublic;
+        return this.isPublic;
     }
 
 }

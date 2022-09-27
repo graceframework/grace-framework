@@ -39,7 +39,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getTemplate() {
-        return template;
+        return this.template;
     }
 
     public void setTemplate(String template) {
@@ -47,7 +47,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getBean() {
-        return bean;
+        return this.bean;
     }
 
     public void setBean(String bean) {
@@ -55,7 +55,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getCollection() {
-        return collection;
+        return this.collection;
     }
 
     public void setCollection(String collection) {
@@ -63,7 +63,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getModel() {
-        return model;
+        return this.model;
     }
 
     public void setModel(String model) {

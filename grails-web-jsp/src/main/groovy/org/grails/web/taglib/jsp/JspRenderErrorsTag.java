@@ -40,7 +40,7 @@ public class JspRenderErrorsTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getAs() {
-        return as;
+        return this.as;
     }
 
     public void setAs(String as) {
@@ -48,7 +48,7 @@ public class JspRenderErrorsTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getBean() {
-        return bean;
+        return this.bean;
     }
 
     public void setBean(String bean) {
@@ -56,7 +56,7 @@ public class JspRenderErrorsTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getModel() {
-        return model;
+        return this.model;
     }
 
     public void setModel(String model) {
@@ -64,7 +64,7 @@ public class JspRenderErrorsTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getField() {
-        return field;
+        return this.field;
     }
 
     public void setField(String field) {

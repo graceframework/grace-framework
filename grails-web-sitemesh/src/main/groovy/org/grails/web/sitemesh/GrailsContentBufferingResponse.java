@@ -59,41 +59,41 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
         });
         this.contentProcessor = contentProcessor;
         this.webAppContext = webAppContext;
-        pageResponseWrapper = (GrailsPageResponseWrapper) getResponse();
+        this.pageResponseWrapper = (GrailsPageResponseWrapper) getResponse();
         if (response.getContentType() != null) {
             webAppContext.setContentType(response.getContentType());
         }
     }
 
     public HttpServletResponse getTargetResponse() {
-        return (HttpServletResponse) pageResponseWrapper.getResponse();
+        return (HttpServletResponse) this.pageResponseWrapper.getResponse();
     }
 
     public boolean isUsingStream() {
-        return pageResponseWrapper.isUsingStream();
+        return this.pageResponseWrapper.isUsingStream();
     }
 
     public boolean isActive() {
-        return pageResponseWrapper.isSitemeshActive() || pageResponseWrapper.isGspSitemeshActive();
+        return this.pageResponseWrapper.isSitemeshActive() || this.pageResponseWrapper.isGspSitemeshActive();
     }
 
     public void deactivateSitemesh() {
-        pageResponseWrapper.deactivateSiteMesh();
+        this.pageResponseWrapper.deactivateSiteMesh();
     }
 
     public Content getContent() throws IOException {
-        if (!pageResponseWrapper.isSitemeshActive()) {
+        if (!this.pageResponseWrapper.isSitemeshActive()) {
             return null;
         }
 
-        GSPSitemeshPage content = (GSPSitemeshPage) webAppContext.getRequest().getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
+        GSPSitemeshPage content = (GSPSitemeshPage) this.webAppContext.getRequest().getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
         if (content != null && content.isUsed()) {
             return content;
         }
 
-        char[] data = pageResponseWrapper.getContents();
-        if (data != null && webAppContext.getContentType() != null) {
-            return contentProcessor.build(data, webAppContext);
+        char[] data = this.pageResponseWrapper.getContents();
+        if (data != null && this.webAppContext.getContentType() != null) {
+            return this.contentProcessor.build(data, this.webAppContext);
         }
 
         return null;
@@ -104,7 +104,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup();
 
         try {
-            if (!redirectCalled && !isCommitted()) {
+            if (!this.redirectCalled && !isCommitted()) {
                 super.sendError(sc);
             }
         }
@@ -119,7 +119,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
     public void sendError(int sc, String msg) throws IOException {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup();
         try {
-            if (!redirectCalled && !isCommitted()) {
+            if (!this.redirectCalled && !isCommitted()) {
                 super.sendError(sc, msg);
             }
         }

@@ -39,7 +39,7 @@ public class JspLinkTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getController() {
-        return controller;
+        return this.controller;
     }
 
     public void setController(String controller) {
@@ -47,7 +47,7 @@ public class JspLinkTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -56,7 +56,7 @@ public class JspLinkTag extends JspInvokeGrailsTagLibTag {
 
     @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class JspLinkTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     public void setUrl(String url) {

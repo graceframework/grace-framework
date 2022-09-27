@@ -59,7 +59,7 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
         if (LOG.isDebugEnabled()) {
             LOG.debug("Resolving view for name {} and locale {}", viewName, locale);
         }
-        View innerView = innerViewResolver.resolveViewName(viewName, locale);
+        View innerView = this.innerViewResolver.resolveViewName(viewName, locale);
         if (innerView == null) {
             return null;
         }
@@ -75,16 +75,16 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     }
 
     protected View createLayoutView(View innerView) {
-        return new GrailsLayoutView(groovyPageLayoutFinder, innerView);
+        return new GrailsLayoutView(this.groovyPageLayoutFinder, innerView);
     }
 
     @Override
     public ViewResolver getInnerViewResolver() {
-        return innerViewResolver;
+        return this.innerViewResolver;
     }
 
     public int getOrder() {
-        return order;
+        return this.order;
     }
 
     public void setOrder(int order) {
@@ -94,15 +94,15 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     @Override
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
-        if (innerViewResolver instanceof ServletContextAware) {
-            ((ServletContextAware) innerViewResolver).setServletContext(servletContext);
+        if (this.innerViewResolver instanceof ServletContextAware) {
+            ((ServletContextAware) this.innerViewResolver).setServletContext(servletContext);
         }
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (innerViewResolver instanceof ApplicationContextAware) {
-            ((ApplicationContextAware) innerViewResolver).setApplicationContext(applicationContext);
+        if (this.innerViewResolver instanceof ApplicationContextAware) {
+            ((ApplicationContextAware) this.innerViewResolver).setApplicationContext(applicationContext);
         }
     }
 
