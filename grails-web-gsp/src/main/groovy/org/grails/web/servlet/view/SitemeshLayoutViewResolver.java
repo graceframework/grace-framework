@@ -40,7 +40,8 @@ import org.grails.web.sitemesh.Grails5535Factory;
 import org.grails.web.sitemesh.GroovyPageLayoutFinder;
 import org.grails.web.sitemesh.SitemeshLayoutView;
 
-public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver implements GrailsApplicationAware, DisposableBean, Ordered, ApplicationListener<ContextRefreshedEvent> {
+public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
+        implements GrailsApplicationAware, DisposableBean, Ordered, ApplicationListener<ContextRefreshedEvent> {
 
     private static final String FACTORY_SERVLET_CONTEXT_ATTRIBUTE = "sitemesh.factory";
 

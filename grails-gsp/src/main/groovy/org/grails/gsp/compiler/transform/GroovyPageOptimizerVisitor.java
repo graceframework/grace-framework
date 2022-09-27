@@ -71,7 +71,8 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
     public GroovyPageOptimizerVisitor(ClassNode targetGroovyPage) {
         this.targetGroovyPageNode = targetGroovyPage;
 
-        MethodCallExpression thisObjectMethodCall = new MethodCallExpression(new VariableExpression(THIS_RECEIVER), "getThisObject", MethodCallExpression.NO_ARGUMENTS);
+        MethodCallExpression thisObjectMethodCall = new MethodCallExpression(new VariableExpression(THIS_RECEIVER), "getThisObject",
+                MethodCallExpression.NO_ARGUMENTS);
         thisObjectMethodCall.setMethodTarget(new ClassNode(Closure.class).getMethods("getThisObject").get(0));
 
         thisObjectVariable = new VariableExpression(THISOBJECT, targetGroovyPageNode);

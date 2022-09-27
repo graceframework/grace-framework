@@ -39,9 +39,10 @@ import org.grails.taglib.TemplateVariableBinding;
  */
 public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGroovyPageLocator {
 
-    private static final GroovyPageResourceScriptSource NULL_SCRIPT = new GroovyPageResourceScriptSource("/null", new ByteArrayResource("".getBytes()));
+    private static final GroovyPageResourceScriptSource NULL_SCRIPT =
+            new GroovyPageResourceScriptSource("/null", new ByteArrayResource("".getBytes()));
 
-    private ConcurrentMap<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> uriResolveCache = new ConcurrentHashMap<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>>();
+    private ConcurrentMap<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> uriResolveCache = new ConcurrentHashMap<>();
 
     private long cacheTimeout = -1;
 
@@ -141,8 +142,12 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
         }
 
         public static final GroovyPageLocatorCacheKey build(final String uri, final String pluginName, final TemplateVariableBinding binding) {
-            String pluginNameInCacheKey = (pluginName == null) ? (binding instanceof GroovyPageBinding && ((GroovyPageBinding) binding).getPagePlugin() != null ? ((GroovyPageBinding) binding).getPagePlugin().getName() : null) : pluginName;
-            return new GroovyPageLocatorCacheKey(uri, pluginNameInCacheKey, binding instanceof GroovyPageBinding ? ((GroovyPageBinding) binding).getPluginContextPath() : null);
+            String pluginNameInCacheKey = (pluginName == null)
+                    ? (binding instanceof GroovyPageBinding && ((GroovyPageBinding) binding).getPagePlugin() != null
+                            ? ((GroovyPageBinding) binding).getPagePlugin().getName() : null)
+                    : pluginName;
+            return new GroovyPageLocatorCacheKey(uri, pluginNameInCacheKey,
+                    binding instanceof GroovyPageBinding ? ((GroovyPageBinding) binding).getPluginContextPath() : null);
         }
 
 
@@ -184,9 +189,9 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
     public void removePrecompiledPage(GroovyPageCompiledScriptSource scriptSource) {
         super.removePrecompiledPage(scriptSource);
         // remove the entry from uriResolveCache
-        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>>>(uriResolveCache.entrySet())) {
+        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<>(uriResolveCache.entrySet())) {
             GroovyPageScriptSource ss = entry.getValue().getValue();
-            if (ss == scriptSource || (ss instanceof GroovyPageCompiledScriptSource && scriptSource.getURI().equals(((GroovyPageCompiledScriptSource) ss).getURI()))) {
+            if (ss == scriptSource || (ss instanceof GroovyPageCompiledScriptSource && scriptSource.getURI().equals(ss.getURI()))) {
                 uriResolveCache.remove(entry.getKey());
             }
         }

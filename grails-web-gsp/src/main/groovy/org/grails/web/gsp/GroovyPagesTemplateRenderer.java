@@ -103,7 +103,8 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
         templateCache.clear();
     }
 
-    public void render(GrailsWebRequest webRequest, TemplateVariableBinding pageScope, Map<String, Object> attrs, Object body, Writer out) throws IOException {
+    public void render(GrailsWebRequest webRequest, TemplateVariableBinding pageScope,
+            Map<String, Object> attrs, Object body, Writer out) throws IOException {
         Assert.state(groovyPagesTemplateEngine != null, "Property [groovyPagesTemplateEngine] must be set!");
 
         String templateName = getStringValue(attrs, "template");
@@ -132,7 +133,8 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
     private Template findAndCacheTemplate(Object controller, TemplateVariableBinding pageScope, String templateName,
             String contextPath, String pluginName, final String uri) throws IOException {
 
-        String templatePath = GrailsStringUtils.isNotEmpty(contextPath) ? GrailsResourceUtils.appendPiecesForUri(contextPath, templateName) : templateName;
+        String templatePath = GrailsStringUtils.isNotEmpty(contextPath)
+                ? GrailsResourceUtils.appendPiecesForUri(contextPath, templateName) : templateName;
         final GroovyPageScriptSource scriptSource;
         if (pluginName == null) {
             scriptSource = groovyPageLocator.findTemplateInBinding(controller, templatePath, pageScope);

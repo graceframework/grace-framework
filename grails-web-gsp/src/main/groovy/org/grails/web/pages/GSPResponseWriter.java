@@ -249,7 +249,9 @@ public class GSPResponseWriter extends GrailsRoutablePrintWriter implements Enco
     }
 
     private boolean canFlushContentLengthAwareResponse() {
-        return CONTENT_LENGTH_COUNTING_ENABLED && isDestinationActivated() && bytesCounter != null && bytesCounter.isWriterReferenced() && response != null && !response.isCommitted() && !isTrouble();
+        return CONTENT_LENGTH_COUNTING_ENABLED && isDestinationActivated()
+                && bytesCounter != null && bytesCounter.isWriterReferenced()
+                && response != null && !response.isCommitted() && !isTrouble();
     }
 
     private void flushResponse() {

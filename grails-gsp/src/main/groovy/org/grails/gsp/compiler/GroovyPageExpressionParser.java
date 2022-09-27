@@ -114,12 +114,15 @@ class GroovyPageExpressionParser {
                 }
             }
             else if (ch == '"' || ch == '\'') {
-                if (nextChar != ch && (previousChar != ch || previousPreviousChar == '\\') && (previousChar != '\\' || (previousChar == '\\' && previousPreviousChar == '\\'))
-                        && ((parsingState == ParsingState.QUOTEDVALUE_DOUBLE && ch == '"') || (parsingState == ParsingState.QUOTEDVALUE_SINGLE && ch == '\''))) {
+                if (nextChar != ch && (previousChar != ch || previousPreviousChar == '\\')
+                        && (previousChar != '\\' || (previousChar == '\\' && previousPreviousChar == '\\'))
+                        && ((parsingState == ParsingState.QUOTEDVALUE_DOUBLE && ch == '"')
+                        || (parsingState == ParsingState.QUOTEDVALUE_SINGLE && ch == '\''))) {
                     parsingStateStack.pop();
                 }
                 else if ((previousChar == ch && previousPreviousChar == ch)
-                        && ((parsingState == ParsingState.TRIPLEQUOTED_DOUBLE && ch == '"') || (parsingState == ParsingState.TRIPLEQUOTED_SINGLE && ch == '\''))) {
+                        && ((parsingState == ParsingState.TRIPLEQUOTED_DOUBLE && ch == '"')
+                        || (parsingState == ParsingState.TRIPLEQUOTED_SINGLE && ch == '\''))) {
                     parsingStateStack.pop();
                 }
             }
@@ -133,7 +136,9 @@ class GroovyPageExpressionParser {
     private void changeState(ParsingState newState) {
         ParsingState currentState = parsingStateStack.peek();
         // check if expression contains GStrings
-        if (relativeCharIndex > 1 && newState == ParsingState.EXPRESSION && (currentState == ParsingState.QUOTEDVALUE_DOUBLE || currentState == ParsingState.TRIPLEQUOTED_DOUBLE || currentState == ParsingState.NORMAL)) {
+        if (relativeCharIndex > 1 && newState == ParsingState.EXPRESSION
+                && (currentState == ParsingState.QUOTEDVALUE_DOUBLE
+                || currentState == ParsingState.TRIPLEQUOTED_DOUBLE || currentState == ParsingState.NORMAL)) {
             containsGstrings = true;
         }
         parsingStateStack.push(newState);

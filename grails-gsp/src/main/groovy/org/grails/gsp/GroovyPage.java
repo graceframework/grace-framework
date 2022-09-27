@@ -407,11 +407,13 @@ public abstract class GroovyPage extends Script {
                         invokeTagLibClosure(tagName, tagNamespace, (Closure) tagLibClosure, attrs, body, returnsObject, encodeAsForTag);
                     }
                     else {
-                        throw new GrailsTagException("Tag [" + tagName + "] does not exist in tag library [" + tagLib.getClass().getName() + "]", getGroovyPageFileName(), lineNumber);
+                        throw new GrailsTagException("Tag [" + tagName + "] does not exist in tag library [" + tagLib.getClass().getName() + "]",
+                                getGroovyPageFileName(), lineNumber);
                     }
                 }
                 else {
-                    throw new GrailsTagException("Tag [" + tagName + "] does not exist. No tag library found for namespace: " + tagNamespace, getGroovyPageFileName(), lineNumber);
+                    throw new GrailsTagException("Tag [" + tagName + "] does not exist. No tag library found for namespace: " + tagNamespace,
+                            getGroovyPageFileName(), lineNumber);
                 }
             }
             else {

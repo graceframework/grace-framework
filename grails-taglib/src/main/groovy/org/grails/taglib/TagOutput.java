@@ -70,7 +70,8 @@ public class TagOutput {
             Map<String, Object> defaultEncodeAs = gspTagLibraryLookup.getEncodeAsForTag(namespace, tagName);
             Map<String, Object> codecSettings = createCodecSettings(namespace, tagName, attrs, defaultEncodeAs);
 
-            OutputEncodingStackAttributes.Builder builder = WithCodecHelper.createOutputStackAttributesBuilder(codecSettings, outputContext.getGrailsApplication());
+            OutputEncodingStackAttributes.Builder builder =
+                    WithCodecHelper.createOutputStackAttributesBuilder(codecSettings, outputContext.getGrailsApplication());
             builder.topWriter(tagOutput);
             outputStack.push(builder.build());
 

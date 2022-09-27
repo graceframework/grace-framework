@@ -89,7 +89,8 @@ import org.grails.taglib.TagLibraryLookup;
  *
  * @since 0.1
  */
-public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine implements ResourceLoaderAware, ApplicationContextAware, InitializingBean, BeanClassLoaderAware {
+public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
+        implements ResourceLoaderAware, ApplicationContextAware, InitializingBean, BeanClassLoaderAware {
 
     public static final String CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES = Settings.GSP_DISABLE_CACHING_RESOURCES;
 
@@ -283,10 +284,13 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         if (resource == null) {
             throw new GroovyPagesException("Resource is null. No Groovy page found.");
         }
-        //Yags: Because, "pageName" was sent as null originally, it is never go in pageCache, but will force to compile the String again and till the time this request
-        // is getting executed, it will occupy space in PermGen space. So if there are 1000 request for the same resource at a particular instance, there will be 1000 instance
+        // Yags: Because, "pageName" was sent as null originally, it is never go in pageCache,
+        // but will force to compile the String again and till the time this request
+        // is getting executed, it will occupy space in PermGen space.
+        // So if there are 1000 request for the same resource at a particular instance, there will be 1000 instance
         // class in PermGen instead of ideally being 1 as they as essentially same resource.
-        //we will cache metaInfo only is Developer wants-to. Developer will make sure that he creates unique key for every unique pages s/he wants to put in cache
+        // we will cache metaInfo only is Developer wants-to.
+        // Developer will make sure that he creates unique key for every unique pages s/he wants to put in cache
         final String pageName = establishPageName(resource, cacheable);
         try {
             return createTemplate(resource, pageName, cacheable);
@@ -739,7 +743,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         if (applicationContext.containsBean(GrailsApplication.APPLICATION_ID)) {
             this.grailsApplication = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
             Config config = grailsApplication.getConfig();
-            this.gspEncoding = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_ENCODING, System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING));
+            this.gspEncoding = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_ENCODING,
+                    System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING));
         }
     }
 

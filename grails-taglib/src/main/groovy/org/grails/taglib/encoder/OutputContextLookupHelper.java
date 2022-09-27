@@ -28,7 +28,8 @@ public class OutputContextLookupHelper {
     private static final OutputContextLookup outputContextLookup;
 
     static {
-        OutputContextLookup foundViaFactory = GrailsFactoriesLoader.loadFactory(OutputContextLookup.class, OutputContextLookupHelper.class.getClassLoader());
+        OutputContextLookup foundViaFactory = GrailsFactoriesLoader.loadFactory(OutputContextLookup.class,
+                OutputContextLookupHelper.class.getClassLoader());
         if (foundViaFactory != null) {
             outputContextLookup = foundViaFactory;
         }

@@ -98,7 +98,8 @@ public class WebOutputContextLookup implements OutputContextLookup, Ordered {
         @Override
         public AbstractTemplateVariableBinding createAndRegisterRootBinding() {
             GrailsWebRequest webRequest = lookupWebRequest();
-            AbstractTemplateVariableBinding binding = webRequest != null ? new WebRequestTemplateVariableBinding(webRequest) : new TemplateVariableBinding();
+            AbstractTemplateVariableBinding binding =
+                    webRequest != null ? new WebRequestTemplateVariableBinding(webRequest) : new TemplateVariableBinding();
             setBinding(binding);
             return binding;
         }
@@ -109,7 +110,8 @@ public class WebOutputContextLookup implements OutputContextLookup, Ordered {
             if (grailsWebRequest == null) {
                 return null;
             }
-            return (AbstractTemplateVariableBinding) grailsWebRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, RequestAttributes.SCOPE_REQUEST);
+            return (AbstractTemplateVariableBinding) grailsWebRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE,
+                    RequestAttributes.SCOPE_REQUEST);
         }
 
         @Override
@@ -140,7 +142,8 @@ public class WebOutputContextLookup implements OutputContextLookup, Ordered {
         public boolean isContentTypeAlreadySet() {
             GrailsWebRequest webRequest = lookupWebRequest();
             HttpServletResponse response = webRequest.getResponse();
-            return response.isCommitted() || (response.getContentType() != null && webRequest.getRequest().getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == null);
+            return response.isCommitted() || (response.getContentType() != null
+                    && webRequest.getRequest().getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == null);
         }
 
         protected GrailsWebRequest lookupWebRequest() {

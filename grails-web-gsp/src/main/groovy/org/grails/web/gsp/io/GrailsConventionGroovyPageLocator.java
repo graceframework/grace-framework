@@ -70,13 +70,16 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     }
 
     /**
-     * <p>Finds a view for the given controller name and view name. For example specifying a controller name of "home" and a view name of "index" will search for
+     * <p>Finds a view for the given controller name and view name.
+     * For example specifying a controller name of "home" and a view name of "index" will search for
      * /WEB-INF/grails-app/views/home/index.gsp in production and grails-app/views/home/index.gsp in development</p>
      *
-     * <p>This method will also detect the presence of the requested response format and try to resolve a more appropriate view. For example in the response format
+     * <p>This method will also detect the presence of the requested response format and try to resolve a more appropriate view.
+     * For example in the response format
      * is 'xml' then /WEB-INF/grails-app/views/home/index.xml.gsp will be tried first</p>
      *
-     * <p>If the view is not found in the application then a scan is executed that searches through binary and source plugins looking for the first matching view name</p>
+     * <p>If the view is not found in the application then a scan is executed that searches through binary
+     * and source plugins looking for the first matching view name</p>
      *
      * @param controllerName The controller name
      * @param viewName The view name
@@ -120,10 +123,12 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
     }
 
     /**
-     * <p>Finds a view for the given controller and view name. For example specifying a controller with a class name of HomeController and a view name of "index" will search for
+     * <p>Finds a view for the given controller and view name.
+     * For example specifying a controller with a class name of HomeController and a view name of "index" will search for
      * /WEB-INF/grails-app/views/home/index.gsp in production and grails-app/views/home/index.gsp in development</p>
      *
-     * <p>If the view is not found in the application then a scan is executed that searches through binary and source plugins looking for the first matching view name</p>
+     * <p>If the view is not found in the application then a scan is executed that searches through binary
+     * and source plugins looking for the first matching view name</p>
      *
      * @param controller The controller
      * @param viewName The view name
@@ -139,7 +144,8 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
 
         GroovyPageScriptSource scriptSource = null;
         final String controllerClassName = GrailsNameUtils.getFullClassName(controller.getClass());
-        Object controllerArtefact = grailsApplication != null ? grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) : null;
+        Object controllerArtefact = grailsApplication != null
+                ? grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName) : null;
         if (controllerArtefact instanceof GrailsControllerClass) {
             GrailsControllerClass gcc = (GrailsControllerClass) controllerArtefact;
             String namespace = gcc.getNamespace();
@@ -260,7 +266,8 @@ public class GrailsConventionGroovyPageLocator extends DefaultGroovyPageLocator 
             }
             return findPageInBinding(pluginName, uriService.getTemplateURI(webRequest.getControllerName(), templateName), binding);
         }
-        final GrailsControllerClass controllerClass = (GrailsControllerClass) grailsApplication.getArtefact(ControllerArtefactHandler.TYPE, GrailsNameUtils.getFullClassName(controller.getClass()));
+        final GrailsControllerClass controllerClass = (GrailsControllerClass) grailsApplication.getArtefact(ControllerArtefactHandler.TYPE,
+                        GrailsNameUtils.getFullClassName(controller.getClass()));
 
         String templateURI;
         final String ns = controllerClass.getNamespace();

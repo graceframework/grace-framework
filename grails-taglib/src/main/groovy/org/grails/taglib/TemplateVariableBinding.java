@@ -73,7 +73,8 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
             if (variableBinding != null) {
                 val = variableBinding.getVariable(name);
                 if (val != null) {
-                    if (!(variableBinding instanceof AbstractTemplateVariableBinding) || ((AbstractTemplateVariableBinding) variableBinding).isVariableCachingAllowed(name)) {
+                    if (!(variableBinding instanceof AbstractTemplateVariableBinding)
+                            || ((AbstractTemplateVariableBinding) variableBinding).isVariableCachingAllowed(name)) {
                         // cache variable in this context since parent context cannot change during usage of this context
                         getVariablesMap().put(name, val);
                         cachedParentVariableNames.add(name);
@@ -128,7 +129,8 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
         if (!isReservedName(name)) {
             if (bindingToUse == null) {
                 bindingToUse = findBindingForVariable(name);
-                if (bindingToUse == null || (bindingToUse instanceof TemplateVariableBinding && ((TemplateVariableBinding) bindingToUse).shouldUseChildBinding(this))) {
+                if (bindingToUse == null || (bindingToUse instanceof TemplateVariableBinding
+                        && ((TemplateVariableBinding) bindingToUse).shouldUseChildBinding(this))) {
                     bindingToUse = this;
                 }
             }

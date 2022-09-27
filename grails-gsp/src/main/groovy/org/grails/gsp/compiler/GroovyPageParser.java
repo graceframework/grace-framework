@@ -125,7 +125,7 @@ public class GroovyPageParser implements Tokens {
 
     public static final String TAGLIBS_DIRECTIVE = "taglibs";
 
-    public static final List<String> DEFAULT_TAGLIB_NAMESPACES = Collections.unmodifiableList(Arrays.asList(new String[] { "g", "tmpl", "f", "asset", "plugin" }));
+    public static final List<String> DEFAULT_TAGLIB_NAMESPACES = Collections.unmodifiableList(Arrays.asList("g", "tmpl", "f", "asset", "plugin"));
 
     private GroovyPageScanner scan;
 
@@ -310,7 +310,8 @@ public class GroovyPageParser implements Tokens {
 
     }
 
-    public GroovyPageParser(String name, String uri, String filename, InputStream in, String encoding, String expressionCodecName) throws IOException {
+    public GroovyPageParser(String name, String uri, String filename, InputStream in, String encoding, String expressionCodecName)
+            throws IOException {
         this(name, uri, filename, readStream(in, encoding), expressionCodecName);
     }
 
@@ -329,7 +330,8 @@ public class GroovyPageParser implements Tokens {
         Map<String, String> directives = parseDirectives(gspSource);
 
         if (isSitemeshPreprocessingEnabled(directives.get(SITEMESH_PREPROCESS_DIRECTIVE))) {
-            // GSP preprocessing for direct sitemesh integration: replace head -> g:captureHead, title -> g:captureTitle, meta -> g:captureMeta, body -> g:captureBody
+            // GSP preprocessing for direct sitemesh integration: replace head -> g:captureHead,
+            // title -> g:captureTitle, meta -> g:captureMeta, body -> g:captureBody
             gspSource = sitemeshPreprocessor.addGspSitemeshCapturing(gspSource);
             sitemeshPreprocessMode = true;
         }
@@ -368,20 +370,25 @@ public class GroovyPageParser implements Tokens {
         );
 
         setExpressionCodecDirectiveValue(
-                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.EXPRESSION_CODEC_NAME, String.class,
-                        config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_DEFAULT_CODEC, String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.EXPRESSION_CODEC_NAME)))
+                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.EXPRESSION_CODEC_NAME,
+                        String.class,
+                        config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_DEFAULT_CODEC, String.class,
+                                OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.EXPRESSION_CODEC_NAME)))
         );
 
         setStaticCodecDirectiveValue(
-                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.STATIC_CODEC_NAME, String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.STATIC_CODEC_NAME))
+                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.STATIC_CODEC_NAME,
+                        String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.STATIC_CODEC_NAME))
         );
 
         setTaglibCodecDirectiveValue(
-                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.TAGLIB_CODEC_NAME, String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.TAGLIB_CODEC_NAME))
+                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.TAGLIB_CODEC_NAME,
+                        String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.TAGLIB_CODEC_NAME))
         );
 
         setOutCodecDirectiveValue(
-                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.OUT_CODEC_NAME, String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.OUT_CODEC_NAME))
+                config.getProperty(OutputEncodingSettings.CONFIG_PROPERTY_GSP_CODECS + '.' + OutputEncodingSettings.OUT_CODEC_NAME,
+                        String.class, OutputEncodingSettings.getDefaultValue(OutputEncodingSettings.OUT_CODEC_NAME))
         );
 
         Object keepDirObj = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_KEEPGENERATED_DIR, Object.class);
@@ -637,7 +644,8 @@ public class GroovyPageParser implements Tokens {
                 jspTags.put(namespace, uri.substring(1, uri.length() - 1));
             }
             else {
-                LOG.error("You cannot override the default 'g' namespace with the directive <%@ taglib prefix=\"g\" %>. Please select another namespace.");
+                LOG.error("You cannot override the default 'g' namespace with the directive <%@ taglib prefix=\"g\" %>. "
+                        + "Please select another namespace.");
             }
         }
     }
@@ -702,7 +710,10 @@ public class GroovyPageParser implements Tokens {
     }
 
     private String escapeGroovy(String text) {
-        return text.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r");
+        return text.replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
     }
 
     /**
@@ -887,7 +898,8 @@ public class GroovyPageParser implements Tokens {
             if (isCompileStaticMode()) {
                 out.println("@groovy.transform.CompileStatic(extensions = ['" + GroovyPageTypeCheckingExtension.class.getName() + "'])");
                 if (allowedTaglibNamespaces != null && !allowedTaglibNamespaces.isEmpty()) {
-                    out.println("@" + GroovyPageTypeCheckingConfig.class.getName() + "(taglibs = ['" + DefaultGroovyMethods.join((Iterable) allowedTaglibNamespaces, "','") + "'])");
+                    out.println("@" + GroovyPageTypeCheckingConfig.class.getName() + "(taglibs = ['"
+                            + DefaultGroovyMethods.join((Iterable) allowedTaglibNamespaces, "','") + "'])");
                 }
             }
             out.print("class ");
@@ -1039,7 +1051,9 @@ public class GroovyPageParser implements Tokens {
     }
 
     private String resolveGspSuperClassName() {
-        Class<?> gspSuperClass = isCompileStaticMode() ? CompileStaticGroovyPage.class : (isModelRecordingModeEnabled() ? ModelRecordingGroovyPage.class : GroovyPage.class);
+        Class<?> gspSuperClass = isCompileStaticMode()
+                ? CompileStaticGroovyPage.class
+                : (isModelRecordingModeEnabled() ? ModelRecordingGroovyPage.class : GroovyPage.class);
         return gspSuperClass.getName();
     }
 
@@ -1366,7 +1380,8 @@ public class GroovyPageParser implements Tokens {
             }
             char quoteChar = ch;
 
-            GroovyPageExpressionParser expressionParser = new GroovyPageExpressionParser(attrTokens, startPos, quoteChar, (char) 0, false);
+            GroovyPageExpressionParser expressionParser =
+                    new GroovyPageExpressionParser(attrTokens, startPos, quoteChar, (char) 0, false);
             int endQuotepos = expressionParser.parse();
             if (endQuotepos == -1) {
                 throw new GrailsTagException("Attribute value quote wasn't closed (" + attrTokens + ").", pageName, getCurrentOutputLineNumber());

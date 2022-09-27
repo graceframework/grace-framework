@@ -127,13 +127,14 @@ public class TagBodyClosure extends Closure {
      * Sets "it" variable to binding and returns the previous value.
      *
      * changing "it" variable is required to support refering to body argument with "it"; that was supported pre Grails 2.0
-     * "it" is in binding because g:each loops are converted to ordinary for loops in Grails 2.0 with a generated variable name (if no variable name is specified)
+     * "it" is in binding because g:each loops are converted to ordinary for loops in Grails 2.0
+     * with a generated variable name (if no variable name is specified)
      */
     @SuppressWarnings("unchecked")
     private Object saveItVariable(Binding currentBinding, Object args) {
         Object originalIt;
-        Map<String, Object> variablesMap = (currentBinding instanceof AbstractTemplateVariableBinding) ? ((AbstractTemplateVariableBinding) currentBinding)
-                .getVariablesMap() : currentBinding.getVariables();
+        Map<String, Object> variablesMap = (currentBinding instanceof AbstractTemplateVariableBinding)
+                ? ((AbstractTemplateVariableBinding) currentBinding).getVariablesMap() : currentBinding.getVariables();
         originalIt = variablesMap.get("it");
         variablesMap.put("it", args);
         return originalIt;
@@ -144,8 +145,8 @@ public class TagBodyClosure extends Closure {
      */
     @SuppressWarnings("unchecked")
     private void restoreItVariable(Binding currentBinding, Object originalIt) {
-        Map<String, Object> variablesMap = (currentBinding instanceof AbstractTemplateVariableBinding) ? ((AbstractTemplateVariableBinding) currentBinding)
-                .getVariablesMap() : currentBinding.getVariables();
+        Map<String, Object> variablesMap = (currentBinding instanceof AbstractTemplateVariableBinding)
+                ? ((AbstractTemplateVariableBinding) currentBinding).getVariablesMap() : currentBinding.getVariables();
         variablesMap.put("it", originalIt);
     }
 

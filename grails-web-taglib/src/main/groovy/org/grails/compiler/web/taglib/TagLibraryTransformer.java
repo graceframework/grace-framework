@@ -144,7 +144,9 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
 
         addGetTagLibNamespaceMethod(classNode, namespace);
 
-        MethodCallExpression tagLibraryLookupMethodCall = new MethodCallExpression(new VariableExpression("this", ClassHelper.make(TagLibrary.class)), "getTagLibraryLookup", ZERO_ARGS);
+        MethodCallExpression tagLibraryLookupMethodCall = new MethodCallExpression(
+                new VariableExpression("this", ClassHelper.make(TagLibrary.class)), "getTagLibraryLookup", ZERO_ARGS);
+
         for (PropertyNode tag : tags) {
             String tagName = tag.getName();
             addAttributesAndBodyMethod(classNode, tagLibraryLookupMethodCall, tagName);
@@ -158,7 +160,8 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
     private void addGetTagLibNamespaceMethod(final ClassNode classNode, final String namespace) {
         final ConstantExpression namespaceConstantExpression = new ConstantExpression(namespace);
         Statement returnNamespaceStatement = new ReturnStatement(namespaceConstantExpression);
-        final MethodNode m = new MethodNode(GET_TAG_LIB_NAMESPACE_METHOD_NAME, Modifier.PROTECTED, new ClassNode(String.class), Parameter.EMPTY_ARRAY, null, returnNamespaceStatement);
+        final MethodNode m = new MethodNode(GET_TAG_LIB_NAMESPACE_METHOD_NAME, Modifier.PROTECTED,
+                new ClassNode(String.class), Parameter.EMPTY_ARRAY, null, returnNamespaceStatement);
         classNode.addMethod(m);
     }
 
@@ -170,47 +173,56 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
         arguments.addExpression(new CastExpression(ClassHelper.make(Map.class), ATTRS_EXPRESSION))
                 .addExpression(new ConstructorCallExpression(new ClassNode(TagOutput.ConstantClosure.class), constructorArgs));
         methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(new VariableExpression("this"), tagName, arguments)));
-        classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CHARSEQUENCE_PARAMETERS, null, methodBody));
+        classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
+                GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CHARSEQUENCE_PARAMETERS, null, methodBody));
     }
 
     private void addAttributesAndBodyMethod(ClassNode classNode, MethodCallExpression tagLibraryLookupMethodCall, String tagName) {
         addAttributesAndBodyMethod(classNode, tagLibraryLookupMethodCall, tagName, true);
     }
 
-    private void addAttributesAndBodyMethod(ClassNode classNode, MethodCallExpression tagLibraryLookupMethodCall, String tagName, boolean includeBody) {
+    private void addAttributesAndBodyMethod(ClassNode classNode, MethodCallExpression tagLibraryLookupMethodCall,
+            String tagName, boolean includeBody) {
         addAttributesAndBodyMethod(classNode, tagLibraryLookupMethodCall, tagName, includeBody, true);
     }
 
-    private void addAttributesAndBodyMethod(ClassNode classNode, MethodCallExpression tagLibraryLookupMethodCall, String tagName, boolean includeBody, boolean includeAttrs) {
+    private void addAttributesAndBodyMethod(ClassNode classNode, MethodCallExpression tagLibraryLookupMethodCall,
+            String tagName, boolean includeBody, boolean includeAttrs) {
         BlockStatement methodBody = new BlockStatement();
         ArgumentListExpression arguments = new ArgumentListExpression();
         arguments.addExpression(tagLibraryLookupMethodCall)
-                .addExpression(new MethodCallExpression(new VariableExpression("this"), GET_TAG_LIB_NAMESPACE_METHOD_NAME, new ArgumentListExpression()))
+                .addExpression(new MethodCallExpression(new VariableExpression("this"),
+                        GET_TAG_LIB_NAMESPACE_METHOD_NAME, new ArgumentListExpression()))
                 .addExpression(new ConstantExpression(tagName))
                 .addExpression(includeAttrs ? new CastExpression(ClassHelper.make(Map.class), ATTRS_EXPRESSION) : new MapExpression())
                 .addExpression(includeBody ? BODY_EXPRESSION : NULL_EXPRESSION)
                 .addExpression(CURRENT_OUTPUT_CONTEXT_METHOD_CALL);
 
-        methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(new ClassExpression(TAG_OUTPUT_CLASS_NODE), "captureTagOutput", arguments)));
+        methodBody.addStatement(new ExpressionStatement(
+                new MethodCallExpression(new ClassExpression(TAG_OUTPUT_CLASS_NODE), "captureTagOutput", arguments)));
 
         if (includeBody && includeAttrs) {
             if (!methodExists(classNode, tagName, MAP_CLOSURE_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CLOSURE_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
+                        GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else if (includeAttrs) {
             if (!methodExists(classNode, tagName, MAP_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
+                        GrailsASTUtils.OBJECT_CLASS_NODE, MAP_PARAMETERS, null, methodBody));
             }
         }
         else if (includeBody) {
             if (!methodExists(classNode, tagName, CLOSURE_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, CLOSURE_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
+                        GrailsASTUtils.OBJECT_CLASS_NODE, CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else {
             if (!methodExists(classNode, tagName, Parameter.EMPTY_ARRAY)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, Parameter.EMPTY_ARRAY, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
+                        GrailsASTUtils.OBJECT_CLASS_NODE, Parameter.EMPTY_ARRAY, null, methodBody));
             }
         }
     }

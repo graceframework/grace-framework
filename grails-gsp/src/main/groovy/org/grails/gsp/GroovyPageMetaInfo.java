@@ -143,7 +143,8 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
         contentType = (String) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_CONTENT_TYPE), null);
         jspTags = (Map) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_JSP_TAGS), null);
         lastModified = (Long) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_LAST_MODIFIED), null);
-        expressionCodecName = (String) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_EXPRESSION_CODEC), null);
+        expressionCodecName = (String) ReflectionUtils.getField(
+                ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_EXPRESSION_CODEC), null);
         staticCodecName = (String) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_STATIC_CODEC), null);
         outCodecName = (String) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_OUT_CODEC), null);
         taglibCodecName = (String) ReflectionUtils.getField(ReflectionUtils.findField(pageClass, GroovyPageParser.CONSTANT_NAME_TAGLIB_CODEC), null);
@@ -449,7 +450,8 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
      * Checks if this GSP has expired and should be reloaded (there is a newer source gsp available)
      * PrivilegedAction is used so that locating the Resource is lazily evaluated.
      *
-     * lastModified checking is done only when enough time has expired since the last check. This setting is controlled by the grails.gsp.reload.interval System property,
+     * lastModified checking is done only when enough time has expired since the last check.
+     * This setting is controlled by the grails.gsp.reload.interval System property,
      * by default it's value is 5000 (ms).
      *
      * @param resourceCallable call back that resolves the source gsp lazily

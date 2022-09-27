@@ -35,13 +35,15 @@ public class GroovyDefTag extends GroovySyntaxTag {
     public void doStartTag() {
         String expr = attributes.get(ATTRIBUTE_VALUE);
         if (GrailsStringUtils.isBlank(expr)) {
-            throw new GrailsTagException("Tag [" + TAG_NAME + "] missing required attribute [" + ATTRIBUTE_VALUE + "]", parser.getPageName(), parser.getCurrentOutputLineNumber());
+            throw new GrailsTagException("Tag [" + TAG_NAME + "] missing required attribute [" + ATTRIBUTE_VALUE + "]",
+                    parser.getPageName(), parser.getCurrentOutputLineNumber());
         }
         expr = calculateExpression(expr);
 
         String var = attributes.get(ATTRIBUTE_VAR);
         if (GrailsStringUtils.isBlank(var)) {
-            throw new GrailsTagException("Tag [" + TAG_NAME + "] missing required attribute [" + ATTRIBUTE_VAR + "]", parser.getPageName(), parser.getCurrentOutputLineNumber());
+            throw new GrailsTagException("Tag [" + TAG_NAME + "] missing required attribute [" + ATTRIBUTE_VAR + "]",
+                    parser.getPageName(), parser.getCurrentOutputLineNumber());
         }
         var = extractAttributeValue(var);
 

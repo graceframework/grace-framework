@@ -58,12 +58,12 @@ public class GrailsLayoutView extends AbstractGrailsView {
     protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        boolean isCommitted = response.isCommitted() && (response instanceof OutputAwareHttpServletResponse) && !((OutputAwareHttpServletResponse) response).isWriterAvailable();
-        if (!isCommitted) {
+        boolean isCommitted = response.isCommitted() && (response instanceof OutputAwareHttpServletResponse)
+                && !((OutputAwareHttpServletResponse) response).isWriterAvailable();
 
+        if (!isCommitted) {
             Content content = obtainContent(model, webRequest, request, response);
             if (content != null) {
-
                 beforeDecorating(content, model, webRequest, request, response);
                 switch (request.getDispatcherType()) {
                     case INCLUDE:
@@ -150,8 +150,8 @@ public class GrailsLayoutView extends AbstractGrailsView {
         innerView.render(model, request, contentBufferingResponse);
     }
 
-    protected GrailsContentBufferingResponse createContentBufferingResponse(Map<String, Object> model, GrailsWebRequest webRequest, HttpServletRequest request,
-            HttpServletResponse response) {
+    protected GrailsContentBufferingResponse createContentBufferingResponse(Map<String, Object> model,
+            GrailsWebRequest webRequest, HttpServletRequest request, HttpServletResponse response) {
         return new GrailsViewBufferingResponse(request, response);
     }
 

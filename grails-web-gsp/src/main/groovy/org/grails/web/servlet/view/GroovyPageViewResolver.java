@@ -154,7 +154,8 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
             StringBuilder stringBuilder = new StringBuilder();
             namespace = webRequest.getControllerNamespace();
             controller = webRequest.getControllerName();
-            pluginContextPath = (webRequest.getAttributes() != null && webRequest.getCurrentRequest() != null) ? webRequest.getAttributes().getPluginContextPath(webRequest.getCurrentRequest()) : null;
+            pluginContextPath = (webRequest.getAttributes() != null && webRequest.getCurrentRequest() != null)
+                    ? webRequest.getAttributes().getPluginContextPath(webRequest.getCurrentRequest()) : null;
 
             stringBuilder.append(GrailsStringUtils.isNotEmpty(pluginContextPath) ? pluginContextPath : "-");
             stringBuilder.append(',');

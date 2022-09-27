@@ -93,7 +93,8 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     }
 
     @Override
-    protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request, HttpServletResponse response, RequestAttributes previousAttributes) {
+    protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request,
+            HttpServletResponse response, RequestAttributes previousAttributes) {
         if (previousAttributes instanceof GrailsWebRequest) {
             return null;
         }
@@ -121,7 +122,8 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
         context.setAttribute(SERVLET_INSTANCE, this);
 
         final WebApplicationContext webApplicationContext = getWebApplicationContext();
-        grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class, getClass().getClassLoader(), new Object[] { context }).get(0);
+        grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class,
+                getClass().getClassLoader(), new Object[] { context }).get(0);
         final AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         if (autowireCapableBeanFactory != null) {
             autowireCapableBeanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);

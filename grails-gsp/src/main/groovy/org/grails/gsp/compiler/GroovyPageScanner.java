@@ -244,7 +244,8 @@ class GroovyPageScanner implements Tokens {
         char terminationChar = '}';
         char nextTerminationChar = 0;
         boolean startInExpression = true;
-        GroovyPageExpressionParser expressionParser = new GroovyPageExpressionParser(text, end1 - 1, terminationChar, nextTerminationChar, startInExpression);
+        GroovyPageExpressionParser expressionParser =
+                new GroovyPageExpressionParser(text, end1 - 1, terminationChar, nextTerminationChar, startInExpression);
         int endpos = expressionParser.parse();
         if (endpos != -1) {
             end1 = endpos + 1;

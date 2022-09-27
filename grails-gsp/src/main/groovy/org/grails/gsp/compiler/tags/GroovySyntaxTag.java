@@ -40,9 +40,11 @@ import org.grails.taglib.GrailsTagException;
  */
 public abstract class GroovySyntaxTag implements GrailsTag {
 
-    private static final String ERROR_NO_VAR_WITH_STATUS = "When using <g:each> with a [status] attribute, you must also define a [var]. eg. <g:each var=\"myVar\">";
+    private static final String ERROR_NO_VAR_WITH_STATUS =
+            "When using <g:each> with a [status] attribute, you must also define a [var]. eg. <g:each var=\"myVar\">";
 
-    private static final String ERROR_NO_VAR_WITH_COMPILE_STATIC = "When using <g:each> in CompileStatic mode, you must also define a [var]. eg. <g:each var=\"myVar\">";
+    private static final String ERROR_NO_VAR_WITH_COMPILE_STATIC =
+            "When using <g:each> in CompileStatic mode, you must also define a [var]. eg. <g:each var=\"myVar\">";
 
     protected static final String ATTRIBUTE_IN = "in";
 
@@ -144,7 +146,8 @@ public abstract class GroovySyntaxTag implements GrailsTag {
 
         if (var.equals(status) && (hasStatus)) {
             throw new GrailsTagException("Attribute [" + ATTRIBUTE_VAR +
-                    "] cannot have the same value as attribute [" + ATTRIBUTES_STATUS + "]", parser.getPageName(), parser.getCurrentOutputLineNumber());
+                    "] cannot have the same value as attribute [" + ATTRIBUTES_STATUS + "]",
+                    parser.getPageName(), parser.getCurrentOutputLineNumber());
         }
 
         if (hasStatus) {

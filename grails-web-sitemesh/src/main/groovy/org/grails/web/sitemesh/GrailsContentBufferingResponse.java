@@ -39,7 +39,8 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
 
     private boolean redirectCalled;
 
-    public GrailsContentBufferingResponse(HttpServletResponse response, final ContentProcessor contentProcessor, final SiteMeshWebAppContext webAppContext) {
+    public GrailsContentBufferingResponse(HttpServletResponse response,
+            final ContentProcessor contentProcessor, final SiteMeshWebAppContext webAppContext) {
         super(new GrailsPageResponseWrapper(webAppContext.getRequest(), response, new PageParserSelector() {
             public boolean shouldParsePage(String contentType) {
                 return contentProcessor.handles(contentType);

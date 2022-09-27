@@ -209,7 +209,8 @@ public class Grails5535Factory extends BaseFactory {
         }
 
         if (is == null) {
-            log.warn("Cannot load excludes configuration file \"" + excludesFileName + "\" as specified in \"sitemesh.xml\" or \"sitemesh-default.xml\"");
+            log.warn("Cannot load excludes configuration file \""
+                    + excludesFileName + "\" as specified in \"sitemesh.xml\" or \"sitemesh-default.xml\"");
             return;
         }
 

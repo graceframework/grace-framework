@@ -67,8 +67,10 @@ public final class OutputEncodingStack {
         return currentStack(OutputContextLookupHelper.lookupOutputContext(), allowCreate, topWriter, autoSync, pushTop);
     }
 
-    public static OutputEncodingStack currentStack(OutputContext outputContext, boolean allowCreate, Writer topWriter, boolean autoSync, boolean pushTop) {
-        return currentStack(new OutputEncodingStackAttributes.Builder().outputContext(outputContext).allowCreate(allowCreate).topWriter(topWriter).autoSync(autoSync).pushTop(pushTop).build());
+    public static OutputEncodingStack currentStack(OutputContext outputContext,
+            boolean allowCreate, Writer topWriter, boolean autoSync, boolean pushTop) {
+        return currentStack(new OutputEncodingStackAttributes.Builder()
+                .outputContext(outputContext).allowCreate(allowCreate).topWriter(topWriter).autoSync(autoSync).pushTop(pushTop).build());
     }
 
     public static OutputEncodingStack currentStack(OutputEncodingStackAttributes attributes) {
@@ -243,7 +245,8 @@ public final class OutputEncodingStack {
         outWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
             public Writer activateDestination() throws IOException {
                 StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.outEncoder, encodingStateRegistry, OutputEncodingSettings.OUT_CODEC_NAME);
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.outEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.OUT_CODEC_NAME);
             }
         });
         staticWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
@@ -252,19 +255,23 @@ public final class OutputEncodingStack {
                 if (stackEntry.staticEncoder == null) {
                     return stackEntry.unwrappedTarget;
                 }
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.staticEncoder, encodingStateRegistry, OutputEncodingSettings.STATIC_CODEC_NAME);
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.staticEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.STATIC_CODEC_NAME);
             }
         });
         expressionWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
             public Writer activateDestination() throws IOException {
                 StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.expressionEncoder, encodingStateRegistry, OutputEncodingSettings.EXPRESSION_CODEC_NAME);
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.expressionEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.EXPRESSION_CODEC_NAME);
             }
         });
         taglibWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
             public Writer activateDestination() throws IOException {
                 StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.taglibEncoder != null ? stackEntry.taglibEncoder : stackEntry.defaultTaglibEncoder, encodingStateRegistry, OutputEncodingSettings.TAGLIB_CODEC_NAME);
+                return createEncodingWriter(stackEntry.unwrappedTarget,
+                        stackEntry.taglibEncoder != null ? stackEntry.taglibEncoder : stackEntry.defaultTaglibEncoder,
+                        encodingStateRegistry, OutputEncodingSettings.TAGLIB_CODEC_NAME);
             }
         });
         this.autoSync = attributes.isAutoSync();
@@ -325,11 +332,21 @@ public final class OutputEncodingStack {
         }
 
         StackEntry stackEntry = new StackEntry(topWriter, unwrappedWriter);
-        stackEntry.outEncoder = applyEncoder(attributes.getOutEncoder(), previousStackEntry != null ? previousStackEntry.outEncoder : null, attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
-        stackEntry.staticEncoder = applyEncoder(attributes.getStaticEncoder(), previousStackEntry != null ? previousStackEntry.staticEncoder : null, attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
-        stackEntry.expressionEncoder = applyEncoder(attributes.getExpressionEncoder(), previousStackEntry != null ? previousStackEntry.expressionEncoder : null, attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
-        stackEntry.taglibEncoder = applyEncoder(attributes.getTaglibEncoder(), previousStackEntry != null ? previousStackEntry.taglibEncoder : null, attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
-        stackEntry.defaultTaglibEncoder = applyEncoder(attributes.getDefaultTaglibEncoder(), previousStackEntry != null ? previousStackEntry.defaultTaglibEncoder : null, attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
+        stackEntry.outEncoder = applyEncoder(attributes.getOutEncoder(),
+                previousStackEntry != null ? previousStackEntry.outEncoder : null,
+                attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
+        stackEntry.staticEncoder = applyEncoder(attributes.getStaticEncoder(),
+                previousStackEntry != null ? previousStackEntry.staticEncoder : null,
+                attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
+        stackEntry.expressionEncoder = applyEncoder(attributes.getExpressionEncoder(),
+                previousStackEntry != null ? previousStackEntry.expressionEncoder : null,
+                attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
+        stackEntry.taglibEncoder = applyEncoder(attributes.getTaglibEncoder(),
+                previousStackEntry != null ? previousStackEntry.taglibEncoder : null,
+                attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
+        stackEntry.defaultTaglibEncoder = applyEncoder(attributes.getDefaultTaglibEncoder(),
+                previousStackEntry != null ? previousStackEntry.defaultTaglibEncoder : null,
+                attributes.isInheritPreviousEncoders(), attributes.isReplaceOnly());
 
         stack.push(stackEntry);
 

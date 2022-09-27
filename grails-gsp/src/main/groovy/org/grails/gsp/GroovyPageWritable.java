@@ -211,7 +211,8 @@ public class GroovyPageWritable implements Writable {
         // set plugin context path for top level rendering, this means actual view + layout
         // view is top level when parent is GroovyPageRequestBinding
         // pluginContextPath is also resetted when a plugin template is overrided by an application view
-        if (parent == null || (parent instanceof TemplateVariableBinding && ((TemplateVariableBinding) parent).isRoot()) || "".equals(metaInfo.getPluginPath())) {
+        if (parent == null || (parent instanceof TemplateVariableBinding
+                && ((TemplateVariableBinding) parent).isRoot()) || "".equals(metaInfo.getPluginPath())) {
             binding.setPluginContextPath(metaInfo.getPluginPath());
         }
         binding.setPagePlugin(metaInfo.getPagePlugin());

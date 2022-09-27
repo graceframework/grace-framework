@@ -476,7 +476,8 @@ public class GroovyPagesPageContext extends PageContext {
                 elContext.putContext(JspContext.class, this);
             }
             else {
-                throw new IllegalStateException("Unable to create ELContext for a JspApplicationContext. It must be an instance of [GroovyPagesJspApplicationContext] do not override JspFactory.setDefaultFactory()!");
+                throw new IllegalStateException("Unable to create ELContext for a JspApplicationContext. "
+                        + "It must be an instance of [GroovyPagesJspApplicationContext] do not override JspFactory.setDefaultFactory()!");
             }
         }
         return elContext;
