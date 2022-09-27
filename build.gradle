@@ -64,6 +64,7 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'java-library'
     apply plugin: 'checkstyle'
+    apply plugin: 'codenarc'
 
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
@@ -119,6 +120,11 @@ subprojects {
     checkstyle {
         toolVersion = "10.3.2"
         configDirectory.set(rootProject.file("gradle/checkstyle"))
+    }
+ 
+    codenarc {
+        toolVersion = '3.1.0'
+        setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))
     }
 }
 
