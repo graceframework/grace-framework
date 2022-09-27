@@ -304,8 +304,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         GroovyPageMetaInfo meta;
         if (cacheable) {
             meta = CacheEntry.getValue(pageCache, pageName, -1, null,
-                    new GroovyPagesTemplateEngineCallable(new GroovyPagesTemplateEngineCacheEntry(pageName))
-                    , true, resource);
+                    new GroovyPagesTemplateEngineCallable(new GroovyPagesTemplateEngineCacheEntry(pageName)), true, resource);
         }
         else {
             meta = buildPageMetaInfo(resource, pageName);

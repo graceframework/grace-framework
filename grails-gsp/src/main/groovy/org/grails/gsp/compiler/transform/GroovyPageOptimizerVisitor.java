@@ -78,9 +78,7 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
         thisObjectVariable = new VariableExpression(THISOBJECT, targetGroovyPageNode);
 
         thisObjectDeclaration = new DeclarationExpression(
-                thisObjectVariable
-                , Token.newSymbol(Types.EQUALS, 0, 0)
-                , thisObjectMethodCall);
+                thisObjectVariable, Token.newSymbol(Types.EQUALS, 0, 0), thisObjectMethodCall);
     }
 
 // TODO: Research why http://jira.grails.org/browse/GRAILS-8679 happens with this enabled. See ElvisAndClosureGroovyPageTests

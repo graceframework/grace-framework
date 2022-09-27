@@ -127,7 +127,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     @Override
-    public void println(char x[]) {
+    public void println(char[] x) {
         activateDestination();
         super.println(x);
     }
@@ -187,7 +187,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     @Override
-    public void print(char s[]) {
+    public void print(char[] s) {
         activateDestination();
         super.print(s);
     }
@@ -241,13 +241,13 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     }
 
     @Override
-    public void write(char buf[]) {
+    public void write(char[] buf) {
         activateDestination();
         super.write(buf);
     }
 
     @Override
-    public void write(char buf[], int off, int len) {
+    public void write(char[] buf, int off, int len) {
         activateDestination();
         super.write(buf, off, len);
     }
@@ -300,7 +300,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
         }
 
         @Override
-        public void write(char cbuf[], int off, int len) throws IOException {
+        public void write(char[] cbuf, int off, int len) throws IOException {
             throw new UnsupportedOperationException();
         }
 
