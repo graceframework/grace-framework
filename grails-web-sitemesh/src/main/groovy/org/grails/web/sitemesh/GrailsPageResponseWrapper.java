@@ -89,8 +89,9 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
             super.sendError(sc);
         }
         finally {
-            if (webRequest != null)
+            if (webRequest != null) {
                 WebUtils.storeGrailsWebRequest(webRequest);
+            }
         }
     }
 
@@ -102,8 +103,9 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
             super.sendError(sc, msg);
         }
         finally {
-            if (webRequest != null)
+            if (webRequest != null) {
                 WebUtils.storeGrailsWebRequest(webRequest);
+            }
         }
     }
 
@@ -177,7 +179,9 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
      */
     @Override
     public void setContentLength(int contentLength) {
-        if (!parseablePage) super.setContentLength(contentLength);
+        if (!parseablePage) {
+            super.setContentLength(contentLength);
+        }
     }
 
     /**
@@ -185,7 +189,9 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
      */
     @Override
     public void flushBuffer() throws IOException {
-        if (!parseablePage) super.flushBuffer();
+        if (!parseablePage) {
+            super.flushBuffer();
+        }
     }
 
     /**

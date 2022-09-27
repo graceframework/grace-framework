@@ -151,8 +151,9 @@ class GroovyPageScanner implements Tokens {
                                 return found(JDECLAR, 3);
                             }
                             if (isStartComment(c1, c2, left)) {
-                                if (skipJComment())
+                                if (skipJComment()) {
                                     continue;
+                                }
                             }
                             return found(JSCRIPT, 2);
                         }
@@ -174,8 +175,9 @@ class GroovyPageScanner implements Tokens {
 
                     if (c == '%' && c1 == '{') {
                         if (c2 == '-' && left > 3 && text.charAt(end1 + 2) == '-') {
-                            if (skipGComment())
+                            if (skipGComment()) {
                                 continue;
+                            }
                         }
                         return found(GSCRIPT, 2);
                     }
@@ -291,7 +293,9 @@ class GroovyPageScanner implements Tokens {
     private boolean skipComment(char c3, char c4) {
         int ix = end1 + 3;
         for (int ixz = len - 4; ; ix++) {
-            if (ix > ixz) return false;
+            if (ix > ixz) {
+                return false;
+            }
             if (text.charAt(ix) == '-' && text.charAt(ix + 1) == '-' && text.charAt(ix + 2) == c3 &&
                     text.charAt(ix + 3) == c4) {
                 break;

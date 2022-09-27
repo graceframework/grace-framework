@@ -383,7 +383,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
         for (String uri : uris) {
             scriptSource = groovyPageLocator.findPage(uri);
-            if (scriptSource != null) break;
+            if (scriptSource != null) {
+                break;
+            }
         }
         return scriptSource;
     }
@@ -583,7 +585,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
     }
 
     private String getPathForResource(Resource res) {
-        if (res == null) return "";
+        if (res == null) {
+            return "";
+        }
 
         String path = null;
         try {
@@ -713,7 +717,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
             String name = pageName != null ? pageName : res.getURL().getPath();
             // As the name take the first / off and then replace all characters that aren't
             // a word character or a digit with an underscore
-            if (name.startsWith("/")) name = name.substring(1);
+            if (name.startsWith("/")) {
+                name = name.substring(1);
+            }
             return name.replaceAll("[^\\w\\d]", "_");
         }
         catch (IllegalStateException e) {

@@ -79,7 +79,9 @@ public class GroovyPageCompiledScriptSource implements GroovyPageScriptSource {
     }
 
     public GroovyPageResourceScriptSource getReloadableScriptSource() {
-        if (resourceCallable == null) return null;
+        if (resourceCallable == null) {
+            return null;
+        }
         Resource resource = groovyPageMetaInfo.checkIfReloadableResourceHasChanged(resourceCallable);
         return resource == null ? null : new GroovyPageResourceScriptSource(uri, resource);
     }

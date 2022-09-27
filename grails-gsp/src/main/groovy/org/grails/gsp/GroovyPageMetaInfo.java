@@ -220,7 +220,9 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
 
         GrailsPluginManager pluginManager = applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
         pluginPath = pluginManager.getPluginPathForClass(pageClass);
-        if (pluginPath == null) pluginPath = DEFAULT_PLUGIN_PATH;
+        if (pluginPath == null) {
+            pluginPath = DEFAULT_PLUGIN_PATH;
+        }
         pagePlugin = pluginManager.getPluginForClass(pageClass);
     }
 
@@ -237,7 +239,6 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
             InputStream resourceStream = pageClass.getResourceAsStream(dataResourceName);
 
             if (resourceStream != null) {
-
                 input = new DataInputStream(resourceStream);
                 int arrayLen = input.readInt();
                 htmlParts = new String[arrayLen];
@@ -401,7 +402,9 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
      * @return The last modified date or -1
      */
     private long establishLastModified(Resource resource) {
-        if (resource == null) return -1;
+        if (resource == null) {
+            return -1;
+        }
 
         if (resource instanceof FileSystemResource) {
             return ((FileSystemResource) resource).getFile().lastModified();
@@ -458,7 +461,9 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
      * @return true if the available gsp source file is newer than the loaded one.
      */
     public boolean shouldReload(final PrivilegedAction<Resource> resourceCallable) {
-        if (resourceCallable == null) return false;
+        if (resourceCallable == null) {
+            return false;
+        }
         Resource resource = checkIfReloadableResourceHasChanged(resourceCallable);
         return (resource != null);
     }

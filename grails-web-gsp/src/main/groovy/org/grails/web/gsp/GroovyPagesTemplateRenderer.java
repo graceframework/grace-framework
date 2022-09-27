@@ -295,7 +295,9 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
 
     private String getStringValue(Map<String, Object> attrs, String key) {
         Object val = attrs.get(key);
-        if (val == null) return "";
+        if (val == null) {
+            return "";
+        }
         return String.valueOf(val);
     }
 

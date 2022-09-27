@@ -130,7 +130,9 @@ public class TagOutput {
                     tagLib.getClass().getName() + "]");
         }
         finally {
-            if (outputStack != null) outputStack.pop();
+            if (outputStack != null) {
+                outputStack.pop();
+            }
         }
     }
 

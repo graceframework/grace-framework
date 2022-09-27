@@ -48,7 +48,9 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
     @Override
     public GroovyPageScriptSource findPageInBinding(final String uri, final TemplateVariableBinding binding) {
-        if (uri == null) return null;
+        if (uri == null) {
+            return null;
+        }
 
         Callable<GroovyPageScriptSource> updater = new Callable<GroovyPageScriptSource>() {
             public GroovyPageScriptSource call() {
@@ -65,7 +67,9 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
     @Override
     public GroovyPageScriptSource findPageInBinding(final String pluginName, final String uri, final TemplateVariableBinding binding) {
-        if (uri == null || pluginName == null) return null;
+        if (uri == null || pluginName == null) {
+            return null;
+        }
 
         Callable<GroovyPageScriptSource> updater = new Callable<GroovyPageScriptSource>() {
             public GroovyPageScriptSource call() {
@@ -82,7 +86,9 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
     @Override
     public GroovyPageScriptSource findPage(final String uri) {
-        if (uri == null) return null;
+        if (uri == null) {
+            return null;
+        }
 
         Callable<GroovyPageScriptSource> updater = new Callable<GroovyPageScriptSource>() {
             public GroovyPageScriptSource call() {

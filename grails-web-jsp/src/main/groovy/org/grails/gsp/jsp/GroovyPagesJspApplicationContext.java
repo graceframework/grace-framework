@@ -150,7 +150,9 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
                 @Override
                 public ValueExpression resolveVariable(String name) {
                     Object o = pageCtx.findAttribute(name);
-                    if (o == null) return null;
+                    if (o == null) {
+                        return null;
+                    }
                     return expressionFactoryImpl.createValueExpression(o, o.getClass());
                 }
 

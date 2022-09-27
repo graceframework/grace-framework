@@ -53,7 +53,9 @@ public class GroovyPageStaticResourceLocator extends DefaultResourceLocator {
                 // attempt brute force search of all plugins
                 for (GrailsPlugin plugin : pluginManager.getAllPlugins()) {
                     resource = findResourceForPlugin(plugin, uri);
-                    if (resource != null) break;
+                    if (resource != null) {
+                        break;
+                    }
                 }
             }
         }

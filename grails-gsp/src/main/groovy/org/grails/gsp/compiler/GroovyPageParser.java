@@ -664,7 +664,9 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void expr() {
-        if (!finalPass) return;
+        if (!finalPass) {
+            return;
+        }
 
         String text = scan.getToken().trim();
         text = getExpressionText(text);
@@ -767,7 +769,9 @@ public class GroovyPageParser implements Tokens {
 
 
     private void html() {
-        if (!finalPass) return;
+        if (!finalPass) {
+            return;
+        }
 
         String text = scan.getToken();
         if (text.length() == 0) {
@@ -889,7 +893,6 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void page() {
-
         if (finalPass) {
             out.println();
             if (pluginAnnotation != null) {
@@ -1120,15 +1123,18 @@ public class GroovyPageParser implements Tokens {
     }
 
     private void endTag() {
-        if (!finalPass) return;
+        if (!finalPass) {
+            return;
+        }
 
         String tagName = scan.getToken().trim();
         String ns = scan.getNamespace();
 
-        if (tagMetaStack.isEmpty())
+        if (tagMetaStack.isEmpty()) {
             throw new GrailsTagException(
                     "Found closing Grails tag with no opening [" + tagName + "]", pageName,
                     getCurrentOutputLineNumber());
+        }
 
         TagMeta tm = tagMetaStack.pop();
         String lastInStack = tm.name;
@@ -1207,7 +1213,9 @@ public class GroovyPageParser implements Tokens {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void startTag() {
-        if (!finalPass) return;
+        if (!finalPass) {
+            return;
+        }
 
         tagIndex++;
 
@@ -1438,7 +1446,9 @@ public class GroovyPageParser implements Tokens {
 
     private void script(boolean gsp) {
         flushTagBuffering();
-        if (!finalPass) return;
+        if (!finalPass) {
+            return;
+        }
 
         out.println();
         write(scan.getToken().trim(), gsp);
@@ -1491,8 +1501,9 @@ public class GroovyPageParser implements Tokens {
                 }
                 else {
                     int end = match(PARA_BREAK, text, ix);
-                    if (end <= 0)
+                    if (end <= 0) {
                         end = match(ROW_BREAK, text, ix);
+                    }
                     if (end > 0) {
                         rep = "\n";
                         //incrementLineNumber();

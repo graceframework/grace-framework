@@ -240,7 +240,9 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
             throw e;
         }
         finally {
-            if (out != null) out.close();
+            if (out != null) {
+                out.close();
+            }
         }
     }
 

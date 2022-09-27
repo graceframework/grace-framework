@@ -67,7 +67,9 @@ public class GSPWriter extends PrintWriter {
     }
 
     public void printlnToBuffer(String s, int index) {
-        if (s == null) s = "''";
+        if (s == null) {
+            s = "''";
+        }
         super.print("buf" + index + " << ");
         super.print(s);
         println();

@@ -40,7 +40,9 @@ class BodyContentImpl extends BodyContent {
 
     BodyContentImpl(JspWriter out, boolean buffer) {
         super(out);
-        if (buffer) initBuffer();
+        if (buffer) {
+            initBuffer();
+        }
     }
 
     void initBuffer() {

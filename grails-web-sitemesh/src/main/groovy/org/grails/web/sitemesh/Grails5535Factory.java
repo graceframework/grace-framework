@@ -184,7 +184,9 @@ public class Grails5535Factory extends BaseFactory {
             throw new IllegalStateException("Cannot load default configuration from jar");
         }
 
-        if (configFile != null) configLastModified = configFile.lastModified();
+        if (configFile != null) {
+            configLastModified = configFile.lastModified();
+        }
 
         Document doc = builder.parse(is);
         Element root = doc.getDocumentElement();
@@ -303,11 +305,14 @@ public class Grails5535Factory extends BaseFactory {
     @Override
     public void refresh() {
         long time = System.currentTimeMillis();
-        if (time - configLastCheck < configCheckMillis)
+        if (time - configLastCheck < configCheckMillis) {
             return;
+        }
         configLastCheck = time;
 
-        if (configFile != null && configLastModified != configFile.lastModified()) loadConfig();
+        if (configFile != null && configLastModified != configFile.lastModified()) {
+            loadConfig();
+        }
     }
 
     /**

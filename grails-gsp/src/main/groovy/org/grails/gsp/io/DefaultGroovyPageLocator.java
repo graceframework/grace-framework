@@ -426,7 +426,9 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                     break;
                 }
             }
-            if (foundResource != null) break;
+            if (foundResource != null) {
+                break;
+            }
         }
         return foundResource;
     }

@@ -51,10 +51,14 @@ class Strip {
             if (matchAfter.find(end)) {
                 int end2 = matchAfter.end();
                 Matcher matchAny = anyTag.matcher(text.subSequence(0, end2));
-                if (matchAny.find(end)) end2 = matchAny.start();
+                if (matchAny.find(end)) {
+                    end2 = matchAny.start();
+                }
                 Pattern nextTagPat = Pattern.compile("<" + tag + "(\\s|>)", Pattern.CASE_INSENSITIVE);
                 Matcher matchNext = nextTagPat.matcher(text.subSequence(0, end2));
-                if (matchNext.find(end)) end2 = matchNext.start();
+                if (matchNext.find(end)) {
+                    end2 = matchNext.start();
+                }
                 // System.out.println("Stripping " + text.subSequence(end, end2));
                 text.delete(end, end2);
             }
@@ -64,7 +68,9 @@ class Strip {
             if (matchBefore.find()) {
                 int start2 = start - matchBefore.end();
                 Matcher matchAny = anyTag.matcher(text.subSequence(0, start));
-                if (matchAny.find(start2)) start2 = matchAny.end();
+                if (matchAny.find(start2)) {
+                    start2 = matchAny.end();
+                }
                 // System.out.println("Stripping " + text.subSequence(start2, start));
                 text.delete(start2, start);
             }

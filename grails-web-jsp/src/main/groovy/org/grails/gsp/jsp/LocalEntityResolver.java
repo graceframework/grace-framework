@@ -59,7 +59,9 @@ public class LocalEntityResolver implements EntityResolver {
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         String name = ENTITIES.get(publicId);
 
-        if (name == null) name = ENTITIES.get(systemId);
+        if (name == null) {
+            name = ENTITIES.get(systemId);
+        }
 
         InputStream stream = name != null ? getClass().getResourceAsStream(name) :
                 new ByteArrayInputStream(new byte[0]);

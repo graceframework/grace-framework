@@ -67,8 +67,12 @@ public class TemplateVariableBinding extends AbstractTemplateVariableBinding {
     public Object getVariable(String name) {
         Object val = getVariablesMap().get(name);
         if (val == null && !getVariablesMap().containsKey(name)) {
-            if ("variables".equals(name)) return getVariables();
-            if ("metaClass".equals(name)) return getMetaClass();
+            if ("variables".equals(name)) {
+                return getVariables();
+            }
+            if ("metaClass".equals(name)) {
+                return getMetaClass();
+            }
             Binding variableBinding = findBindingForVariable(name);
             if (variableBinding != null) {
                 val = variableBinding.getVariable(name);

@@ -233,7 +233,9 @@ public class GroovyPageWritable implements Writable {
 
             for (; ; ) {
                 int read = reader.read(buf);
-                if (read <= 0) break;
+                if (read <= 0) {
+                    break;
+                }
                 out.write(buf, 0, read);
             }
         }
@@ -256,7 +258,9 @@ public class GroovyPageWritable implements Writable {
      */
     protected void writeGroovySourceToResponse(GroovyPageMetaInfo info, Writer out) throws IOException {
         InputStream in = info.getGroovySource();
-        if (in == null) return;
+        if (in == null) {
+            return;
+        }
         try {
             try {
                 in.reset();

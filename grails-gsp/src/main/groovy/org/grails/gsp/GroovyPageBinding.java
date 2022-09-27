@@ -60,7 +60,9 @@ public class GroovyPageBinding extends TemplateVariableBinding {
     public Object getVariable(String name) {
         Object val = getVariablesMap().get(name);
         if (val == null && !getVariablesMap().containsKey(name)) {
-            if (GroovyPage.PAGE_SCOPE.equals(name)) return this;
+            if (GroovyPage.PAGE_SCOPE.equals(name)) {
+                return this;
+            }
             return super.getVariable(name);
         }
         return val;

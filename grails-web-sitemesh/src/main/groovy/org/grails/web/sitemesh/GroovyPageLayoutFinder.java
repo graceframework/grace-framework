@@ -280,13 +280,21 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             LayoutCacheKey that = (LayoutCacheKey) o;
 
-            if (!actionUri.equals(that.actionUri)) return false;
-            if (!controllerName.equals(that.controllerName)) return false;
+            if (!actionUri.equals(that.actionUri)) {
+                return false;
+            }
+            if (!controllerName.equals(that.controllerName)) {
+                return false;
+            }
 
             return true;
         }
@@ -325,7 +333,6 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
         if (!(viewResolver instanceof GrailsViewResolver)) {
             setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
         }
-
     }
 
 }

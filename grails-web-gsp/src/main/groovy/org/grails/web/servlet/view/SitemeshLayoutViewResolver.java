@@ -67,7 +67,9 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
     }
 
     public void init() {
-        if (servletContext == null) return;
+        if (servletContext == null) {
+            return;
+        }
 
         Factory sitemeshFactory = (Factory) servletContext.getAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE);
         if (sitemeshFactory == null) {
@@ -130,7 +132,9 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
     }
 
     protected void clearSitemeshConfig() {
-        if (servletContext == null) return;
+        if (servletContext == null) {
+            return;
+        }
         if (sitemeshConfigLoaded) {
             FactoryHolder.setFactory(null);
             if (servletContext != null) {

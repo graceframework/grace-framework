@@ -303,12 +303,18 @@ public abstract class GroovyPage extends Script {
 
     @Override
     public Object getProperty(String property) {
-        if (OUT.equals(property)) return out;
-        if (EXPRESSION_OUT.equals(property)) return expressionOut;
+        if (OUT.equals(property)) {
+            return out;
+        }
+        if (EXPRESSION_OUT.equals(property)) {
+            return expressionOut;
+        }
         // in GSP we assume if a property doesn't exist that
         // it is null rather than throw an error this works nicely
         // with the Groovy Truth
-        if (BINDING.equals(property)) return getBinding();
+        if (BINDING.equals(property)) {
+            return getBinding();
+        }
 
         return resolveProperty(property);
     }
@@ -443,7 +449,9 @@ public abstract class GroovyPage extends Script {
                 else {
                     staticOut.append('>');
                     Object bodyOutput = body.call();
-                    if (bodyOutput != null) staticOut.print(bodyOutput);
+                    if (bodyOutput != null) {
+                        staticOut.print(bodyOutput);
+                    }
                     staticOut.append("</").append(tagNamespace).append(':').append(tagName).append('>');
                 }
 
@@ -503,7 +511,9 @@ public abstract class GroovyPage extends Script {
             }
         }
         finally {
-            if (encodeAsPushedToStack) outputStack.pop();
+            if (encodeAsPushedToStack) {
+                outputStack.pop();
+            }
         }
     }
 

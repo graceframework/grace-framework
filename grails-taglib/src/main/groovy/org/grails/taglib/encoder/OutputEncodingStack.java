@@ -308,7 +308,9 @@ public final class OutputEncodingStack {
     public void push(final OutputEncodingStackAttributes attributes, final boolean checkExisting) {
         writerGroup.reset();
 
-        if (checkExisting) checkExistingStack(attributes.getTopWriter());
+        if (checkExisting) {
+            checkExistingStack(attributes.getTopWriter());
+        }
 
         StackEntry previousStackEntry = null;
         if (stack.size() > 0) {

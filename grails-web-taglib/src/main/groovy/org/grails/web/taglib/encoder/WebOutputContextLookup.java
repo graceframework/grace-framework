@@ -61,16 +61,18 @@ public class WebOutputContextLookup implements OutputContextLookup, Ordered {
         @Override
         public EncodingStateRegistry getEncodingStateRegistry() {
             GrailsWebRequest grailsWebRequest = lookupWebRequest();
-            if (grailsWebRequest != null)
+            if (grailsWebRequest != null) {
                 return grailsWebRequest.getEncodingStateRegistry();
+            }
             return null;
         }
 
         @Override
         public void setCurrentOutputEncodingStack(OutputEncodingStack outputEncodingStack) {
             GrailsWebRequest grailsWebRequest = lookupWebRequest();
-            if (grailsWebRequest != null)
+            if (grailsWebRequest != null) {
                 grailsWebRequest.setAttribute(ATTRIBUTE_NAME_OUTPUT_STACK, outputEncodingStack, RequestAttributes.SCOPE_REQUEST);
+            }
         }
 
         @Override
@@ -125,8 +127,9 @@ public class WebOutputContextLookup implements OutputContextLookup, Ordered {
         @Override
         public GrailsApplication getGrailsApplication() {
             GrailsWebRequest grailsWebRequest = lookupWebRequest();
-            if (grailsWebRequest != null)
+            if (grailsWebRequest != null) {
                 return grailsWebRequest.getAttributes().getGrailsApplication();
+            }
             return null;
         }
 
