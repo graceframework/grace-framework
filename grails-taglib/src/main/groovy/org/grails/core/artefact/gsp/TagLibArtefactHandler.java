@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,14 @@ package org.grails.core.artefact.gsp;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.ArtefactInfo;
 import grails.core.GrailsClass;
 import grails.core.gsp.GrailsTagLibClass;
+
 import org.grails.core.gsp.DefaultGrailsTagLibClass;
-import org.slf4j.LoggerFactory;
 
 /**
  * Configures tag libraries within namespaces in Grails.
@@ -37,9 +39,11 @@ import org.slf4j.LoggerFactory;
 public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String PLUGIN_NAME = "groovyPages";
+
     public static final String TYPE = "TagLib";
 
     private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<String, GrailsTagLibClass>();
+
     private Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<String, GrailsTagLibClass>();
 
     public TagLibArtefactHandler() {
@@ -89,10 +93,11 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
     @Override
     public GrailsClass getArtefactForFeature(Object feature) {
         final Object tagLib = tag2libMap.get(feature);
-        if (tagLib!= null) {
+        if (tagLib != null) {
             return (GrailsClass) tagLib;
         }
 
         return namespace2tagLibMap.get(feature);
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,20 +20,23 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.util.WebUtils;
-
 import com.opensymphony.module.sitemesh.PageParser;
 import com.opensymphony.module.sitemesh.PageParserSelector;
 import com.opensymphony.sitemesh.Content;
 import com.opensymphony.sitemesh.ContentProcessor;
 import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext;
 
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.util.WebUtils;
+
 public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
 
     private final GrailsPageResponseWrapper pageResponseWrapper;
+
     private final ContentProcessor contentProcessor;
+
     private final SiteMeshWebAppContext webAppContext;
+
     private boolean redirectCalled;
 
     public GrailsContentBufferingResponse(HttpServletResponse response, final ContentProcessor contentProcessor, final SiteMeshWebAppContext webAppContext) {
@@ -82,7 +85,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
             return null;
         }
 
-        GSPSitemeshPage content = (GSPSitemeshPage)webAppContext.getRequest().getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
+        GSPSitemeshPage content = (GSPSitemeshPage) webAppContext.getRequest().getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
         if (content != null && content.isUsed()) {
             return content;
         }
@@ -105,7 +108,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
             }
         }
         finally {
-            if(webRequest != null) {
+            if (webRequest != null) {
                 WebUtils.storeGrailsWebRequest(webRequest);
             }
         }
@@ -120,7 +123,7 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
             }
         }
         finally {
-            if(webRequest != null) {
+            if (webRequest != null) {
                 WebUtils.storeGrailsWebRequest(webRequest);
             }
         }
@@ -131,4 +134,5 @@ public class GrailsContentBufferingResponse extends HttpServletResponseWrapper {
         this.redirectCalled = true;
         super.sendRedirect(location);
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,21 @@
  */
 package org.grails.core.gsp;
 
-import grails.core.gsp.GrailsTagLibClass;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import groovy.lang.Closure;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaProperty;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 
-import java.lang.reflect.Modifier;
-import java.util.*;
+import grails.core.gsp.GrailsTagLibClass;
+
+import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 
 /**
  * Default implementation of a tag lib class.
@@ -30,14 +37,18 @@ import java.util.*;
  * @author Graeme Rocher
  *
  */
-public class DefaultGrailsTagLibClass  extends org.grails.core.DefaultGrailsTagLibClass implements GrailsTagLibClass {
+public class DefaultGrailsTagLibClass extends org.grails.core.DefaultGrailsTagLibClass implements GrailsTagLibClass {
 
     protected static final String TAG_LIB = TagLibArtefactHandler.TYPE;
 
     private Set<String> tags = new HashSet<String>();
+
     private String namespace = GrailsTagLibClass.DEFAULT_NAMESPACE;
+
     private Set<String> returnObjectForTagsSet = new HashSet<String>();
+
     private Object defaultEncodeAs = null;
+
     private Map<String, Object> encodeAsForTags = new HashMap<String, Object>();
 
     /**
@@ -77,7 +88,7 @@ public class DefaultGrailsTagLibClass  extends org.grails.core.DefaultGrailsTagL
         Map encodeAsForTagsMap = getStaticPropertyValue(ENCODE_AS_FOR_TAGS_FIELD_NAME, Map.class);
         if (encodeAsForTagsMap != null) {
             for (@SuppressWarnings("unchecked")
-                 Iterator<Map.Entry> it = encodeAsForTagsMap.entrySet().iterator(); it.hasNext();) {
+                 Iterator<Map.Entry> it = encodeAsForTagsMap.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry entry = it.next();
                 encodeAsForTags.put(entry.getKey().toString(), entry.getValue());
             }
@@ -107,4 +118,5 @@ public class DefaultGrailsTagLibClass  extends org.grails.core.DefaultGrailsTagL
     public Object getDefaultEncodeAs() {
         return defaultEncodeAs;
     }
+
 }

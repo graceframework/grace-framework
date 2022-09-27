@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.taglib.encoder;
+
+import java.io.Writer;
+
+import org.springframework.core.Ordered;
 
 import grails.core.GrailsApplication;
 import grails.util.Holders;
+
 import org.grails.encoder.DefaultEncodingStateRegistry;
 import org.grails.encoder.EncodingStateRegistry;
 import org.grails.encoder.EncodingStateRegistryLookup;
 import org.grails.encoder.EncodingStateRegistryLookupHolder;
 import org.grails.taglib.AbstractTemplateVariableBinding;
 import org.grails.taglib.TemplateVariableBinding;
-import org.springframework.core.Ordered;
-
-import java.io.Writer;
 
 public class DefaultOutputContextLookup implements OutputContextLookup, EncodingStateRegistryLookup, Ordered {
-    private ThreadLocal<OutputContext> outputContextThreadLocal = new ThreadLocal<OutputContext>(){
+
+    private ThreadLocal<OutputContext> outputContextThreadLocal = new ThreadLocal<OutputContext>() {
         @Override
         protected OutputContext initialValue() {
             return new DefaultOutputContext();
@@ -38,7 +40,7 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
 
     @Override
     public OutputContext lookupOutputContext() {
-        if(EncodingStateRegistryLookupHolder.getEncodingStateRegistryLookup()==null) {
+        if (EncodingStateRegistryLookupHolder.getEncodingStateRegistryLookup() == null) {
             // TODO: improve EncodingStateRegistry solution so that global state doesn't have to be used
             EncodingStateRegistryLookupHolder.setEncodingStateRegistryLookup(this);
         }
@@ -60,9 +62,13 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
     }
 
     public static class DefaultOutputContext implements OutputContext {
+
         private OutputEncodingStack outputEncodingStack;
+
         private Writer currentWriter;
+
         private AbstractTemplateVariableBinding binding;
+
         private EncodingStateRegistry encodingStateRegistry = new DefaultEncodingStateRegistry();
 
         public DefaultOutputContext() {
@@ -124,5 +130,7 @@ public class DefaultOutputContextLookup implements OutputContextLookup, Encoding
         public boolean isContentTypeAlreadySet() {
             return true;
         }
+
     }
+
 }

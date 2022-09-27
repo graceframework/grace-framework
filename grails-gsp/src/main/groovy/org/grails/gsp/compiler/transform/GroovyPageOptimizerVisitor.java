@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,22 +15,27 @@
  */
 package org.grails.gsp.compiler.transform;
 
+import java.util.List;
+import java.util.Stack;
+
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.CodeVisitorSupport;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.ast.Parameter;
-import org.codehaus.groovy.ast.expr.*;
+import org.codehaus.groovy.ast.expr.ArgumentListExpression;
+import org.codehaus.groovy.ast.expr.ClosureExpression;
+import org.codehaus.groovy.ast.expr.DeclarationExpression;
+import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
+
 import org.grails.buffer.GrailsPrintWriter;
 import org.grails.gsp.GroovyPage;
-
-import java.util.List;
-import java.util.Stack;
 
 /**
  * Scan MethodCallExpression in GSP to convert callsite calls into static calls (printHtmlPart ...)
@@ -41,19 +46,26 @@ import java.util.Stack;
 class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
 
     private static final ClassNode groovyPageClassNode = new ClassNode(GroovyPage.class);
+
     private static final MethodNode writerMethodNode = new ClassNode(GrailsPrintWriter.class).getMethod("print",
-            new Parameter[]{new Parameter(new ClassNode(Object.class), "obj")});
+            new Parameter[] { new Parameter(new ClassNode(Object.class), "obj") });
 
     private static final String THIS_RECEIVER = "this";
+
     private static final String THISOBJECT = "thisObject";
+
     private static final String OUT_RECEIVER = "out";
+
     private static final String PRINT_METHOD = "print";
+
     private static final String EXPRESSIONOUT_RECEIVER = "expressionOut";
 
     private Stack<ClosureExpression> innerClosures = new Stack<ClosureExpression>();
+
     private ClassNode targetGroovyPageNode;
 
     private DeclarationExpression thisObjectDeclaration;
+
     private VariableExpression thisObjectVariable;
 
     public GroovyPageOptimizerVisitor(ClassNode targetGroovyPage) {
@@ -65,9 +77,9 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
         thisObjectVariable = new VariableExpression(THISOBJECT, targetGroovyPageNode);
 
         thisObjectDeclaration = new DeclarationExpression(
-                    thisObjectVariable
-                    ,Token.newSymbol(Types.EQUALS, 0, 0)
-                    ,thisObjectMethodCall);
+                thisObjectVariable
+                , Token.newSymbol(Types.EQUALS, 0, 0)
+                , thisObjectMethodCall);
     }
 
 // TODO: Research why http://jira.grails.org/browse/GRAILS-8679 happens with this enabled. See ElvisAndClosureGroovyPageTests
@@ -82,7 +94,7 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
     @SuppressWarnings("unused")
     private void introduceThisObjectVariable(ClosureExpression closureExpression) {
         if (closureExpression.getCode() instanceof BlockStatement) {
-            List<Statement> oldBlock = ((BlockStatement)closureExpression.getCode()).getStatements();
+            List<Statement> oldBlock = ((BlockStatement) closureExpression.getCode()).getStatements();
             BlockStatement newBlock = new BlockStatement();
 
             newBlock.addStatement(new ExpressionStatement(thisObjectDeclaration));
@@ -98,7 +110,8 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
         if (isCallFromGroovyPageClass(call)) {
             // TODO: Research why http://jira.grails.org/browse/GRAILS-8679 happens with this enabled. See ElvisAndClosureGroovyPageTests
             //proceedCallFromGroovyPageClass(call);
-        } else if (isCallFromOutOrCodecOut(call)) {
+        }
+        else if (isCallFromOutOrCodecOut(call)) {
             proceedCallFromOutOrCodecOut(call);
         }
 
@@ -122,7 +135,8 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
         if (methodNodeList.size() == 1) {
             call.setMethodTarget(methodNodeList.get(0));
             changeThisObjectExpressionIfInnerClosure(call);
-        } else if (methodNodeList.size() > 1 && call.getArguments() instanceof ArgumentListExpression) {
+        }
+        else if (methodNodeList.size() > 1 && call.getArguments() instanceof ArgumentListExpression) {
             //Special case for invokeTag
             ArgumentListExpression argsExpr = ((ArgumentListExpression) call.getArguments());
 
@@ -147,4 +161,5 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
         return expression.getObjectExpression().getText().equals(THIS_RECEIVER)
                 && !groovyPageClassNode.getMethods(expression.getMethodAsString()).isEmpty();
     }
+
 }

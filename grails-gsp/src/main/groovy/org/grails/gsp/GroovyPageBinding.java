@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,15 @@
  */
 package org.grails.gsp;
 
-import grails.plugins.GrailsPlugin;
+import java.util.Map;
+
 import groovy.lang.Binding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.grails.taglib.TemplateVariableBinding;
 
-import java.util.Map;
+import grails.plugins.GrailsPlugin;
+
+import org.grails.taglib.TemplateVariableBinding;
 
 /**
  * Script Binding that is used in GSP evaluation.
@@ -29,6 +31,7 @@ import java.util.Map;
  * @author Lari Hotari
  */
 public class GroovyPageBinding extends TemplateVariableBinding {
+
     private static final Log log = LogFactory.getLog(GroovyPageBinding.class);
 
     public GroovyPageBinding() {
@@ -69,11 +72,11 @@ public class GroovyPageBinding extends TemplateVariableBinding {
 
     private boolean hasSameOwnerClass(TemplateVariableBinding otherBinding) {
         // owner class can be same in recursive rendering; in that case, the child binding should be used for setting variable values
-        return (getOwner() != null && otherBinding.getOwner() != null && getOwner().getClass()==otherBinding.getOwner().getClass());
+        return (getOwner() != null && otherBinding.getOwner() != null && getOwner().getClass() == otherBinding.getOwner().getClass());
     }
 
     public String getPluginContextPath() {
-        return (String)getVariable(GroovyPage.PLUGIN_CONTEXT_PATH);
+        return (String) getVariable(GroovyPage.PLUGIN_CONTEXT_PATH);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,10 +90,11 @@ public class GroovyPageBinding extends TemplateVariableBinding {
     }
 
     public GrailsPlugin getPagePlugin() {
-        return (GrailsPlugin)getVariable("pagePlugin");
+        return (GrailsPlugin) getVariable("pagePlugin");
     }
 
     protected boolean isReservedName(String name) {
         return GroovyPage.isReservedName(name);
     }
+
 }

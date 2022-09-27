@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,18 @@
  */
 package org.grails.gsp.jsp;
 
-import groovy.lang.Binding;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import javax.el.ELContext;
 import javax.servlet.GenericServlet;
@@ -34,16 +39,22 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.*;
+import javax.servlet.jsp.JspApplicationContext;
+import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.JspFactory;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.tagext.BodyContent;
 
-import org.grails.gsp.GroovyPage;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
+import groovy.lang.Binding;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import org.grails.gsp.GroovyPage;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
 
 /**
  * A JSP PageContext implementation for use with GSP.
@@ -64,17 +75,28 @@ public class GroovyPagesPageContext extends PageContext {
             return new NoSuchElementException();
         }
     };
+
     private ServletContext servletContext;
+
     private Servlet servlet;
+
     private HttpServletRequest request;
+
     private HttpServletResponse response;
+
     private ServletConfig servletconfig;
+
     private Binding pageScope;
+
     private GrailsWebRequest webRequest;
+
     private JspWriter jspOut;
+
     private Deque outStack = new ArrayDeque();
+
     @SuppressWarnings("rawtypes")
     private List tags = new ArrayList();
+
     private HttpSession session;
 
     public GroovyPagesPageContext(Servlet pagesServlet, Binding pageScope) {
@@ -121,7 +143,7 @@ public class GroovyPagesPageContext extends PageContext {
     }
 
     Object peekTopTag(Class<?> tagClass) {
-        for (ListIterator<?> iter = tags.listIterator(tags.size()); iter.hasPrevious();) {
+        for (ListIterator<?> iter = tags.listIterator(tags.size()); iter.hasPrevious(); ) {
             Object tag = iter.previous();
             if (tagClass.isInstance(tag)) {
                 return tag;
@@ -159,6 +181,7 @@ public class GroovyPagesPageContext extends PageContext {
             public ServletConfig getServletConfig() {
                 return this;
             }
+
             @Override
             public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
                 // do nothing;
@@ -256,7 +279,7 @@ public class GroovyPagesPageContext extends PageContext {
                 setAttribute(name, value);
                 break;
             case REQUEST_SCOPE:
-                request.setAttribute(name,value);
+                request.setAttribute(name, value);
                 break;
             case SESSION_SCOPE:
                 request.getSession(true).setAttribute(name, value);
@@ -285,11 +308,16 @@ public class GroovyPagesPageContext extends PageContext {
         Assert.notNull(name, "Attribute name cannot be null");
 
         switch (scope) {
-            case PAGE_SCOPE:        return getAttribute(name);
-            case REQUEST_SCOPE:     return request.getAttribute(name);
-            case SESSION_SCOPE:     return request.getSession(true).getAttribute(name);
-            case APPLICATION_SCOPE: return servletContext.getAttribute(name);
-            default:                return getAttribute(name);
+            case PAGE_SCOPE:
+                return getAttribute(name);
+            case REQUEST_SCOPE:
+                return request.getAttribute(name);
+            case SESSION_SCOPE:
+                return request.getSession(true).getAttribute(name);
+            case APPLICATION_SCOPE:
+                return servletContext.getAttribute(name);
+            default:
+                return getAttribute(name);
         }
     }
 
@@ -353,7 +381,7 @@ public class GroovyPagesPageContext extends PageContext {
             return SESSION_SCOPE;
         }
 
-        if (servletContext.getAttribute(name) !=null) {
+        if (servletContext.getAttribute(name) != null) {
             return APPLICATION_SCOPE;
         }
 
@@ -397,12 +425,12 @@ public class GroovyPagesPageContext extends PageContext {
     public JspWriter getOut() {
         Writer out = webRequest.getOut();
         if (out instanceof JspWriter) {
-            return (JspWriter)out;
+            return (JspWriter) out;
         }
 
         out = new JspWriterDelegate(out);
         webRequest.setOut(out);
-        return (JspWriter)out;
+        return (JspWriter) out;
     }
 
     @Override
@@ -443,9 +471,9 @@ public class GroovyPagesPageContext extends PageContext {
     public ELContext getELContext() {
         if (elContext == null) {
             JspApplicationContext jspContext = JspFactory.getDefaultFactory().getJspApplicationContext(getServletContext());
-            if  (jspContext instanceof GroovyPagesJspApplicationContext) {
-                elContext = ((GroovyPagesJspApplicationContext)jspContext).createELContext(this);
-                elContext.putContext( JspContext.class, this );
+            if (jspContext instanceof GroovyPagesJspApplicationContext) {
+                elContext = ((GroovyPagesJspApplicationContext) jspContext).createELContext(this);
+                elContext.putContext(JspContext.class, this);
             }
             else {
                 throw new IllegalStateException("Unable to create ELContext for a JspApplicationContext. It must be an instance of [GroovyPagesJspApplicationContext] do not override JspFactory.setDefaultFactory()!");
@@ -453,4 +481,5 @@ public class GroovyPagesPageContext extends PageContext {
         }
         return elContext;
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,15 +20,15 @@ import java.util.Properties;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import grails.core.GrailsApplication;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import com.opensymphony.module.sitemesh.Config;
 import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.DecoratorMapper;
 import com.opensymphony.module.sitemesh.Page;
 import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import grails.core.GrailsApplication;
 
 /**
  * Implements the SiteMesh decorator mapper interface and allows grails views to map to grails layouts.
@@ -37,9 +37,13 @@ import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
  * @author Lari Hotari
  */
 public class GrailsLayoutDecoratorMapper extends AbstractDecoratorMapper {
+
     private GroovyPageLayoutFinder groovyPageLayoutFinder;
+
     public static final String LAYOUT_ATTRIBUTE = GroovyPageLayoutFinder.LAYOUT_ATTRIBUTE;
+
     public static final String NONE_LAYOUT = GroovyPageLayoutFinder.NONE_LAYOUT;
+
     public static final String RENDERING_VIEW = GroovyPageLayoutFinder.RENDERING_VIEW_ATTRIBUTE;
 
     @Override
@@ -47,7 +51,7 @@ public class GrailsLayoutDecoratorMapper extends AbstractDecoratorMapper {
         super.init(c, properties, parentMapper);
         ServletContext servletContext = c.getServletContext();
         WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-        if(applicationContext != null) {
+        if (applicationContext != null) {
             GrailsApplication grailsApplication = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
             groovyPageLayoutFinder = grailsApplication.getMainContext().getBean("groovyPageLayoutFinder", GroovyPageLayoutFinder.class);
         }
@@ -58,7 +62,7 @@ public class GrailsLayoutDecoratorMapper extends AbstractDecoratorMapper {
         if (groovyPageLayoutFinder == null) {
             return super.getDecorator(request, page);
         }
-        
+
         Decorator layout = groovyPageLayoutFinder.findLayout(request, page);
         if (layout != null) {
             return layout;
@@ -75,7 +79,7 @@ public class GrailsLayoutDecoratorMapper extends AbstractDecoratorMapper {
         if (groovyPageLayoutFinder == null) {
             return super.getNamedDecorator(request, name);
         }
-        
+
         Decorator layout = groovyPageLayoutFinder.getNamedDecorator(request, name);
         if (layout != null) {
             return layout;
@@ -86,4 +90,5 @@ public class GrailsLayoutDecoratorMapper extends AbstractDecoratorMapper {
         }
         return layout;
     }
+
 }

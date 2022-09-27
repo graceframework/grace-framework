@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,12 @@
  */
 package org.grails.gsp;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.grails.core.io.StaticResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+
+import org.grails.core.io.StaticResourceLoader;
 
 /**
  * A StaticResourceLoader that loads GSPs from a local grails-app folder instead of from WEB-INF in
@@ -39,6 +39,7 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
     public static final String BEAN_ID = "groovyPageResourceLoader";
 
     private static final Log LOG = LogFactory.getLog(GroovyPageResourceLoader.class);
+
     private static final String PLUGINS_PATH = "/plugins/";
 
     private Resource localBaseResource;
@@ -61,6 +62,5 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
         }
         return resource;
     }
-
 
 }

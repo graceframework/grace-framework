@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,16 @@
  */
 package org.grails.gsp.io;
 
+import org.springframework.core.io.Resource;
+
 import grails.plugins.GrailsPlugin;
+
 import org.grails.core.io.DefaultResourceLocator;
 import org.grails.gsp.GroovyPageBinding;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.taglib.AbstractTemplateVariableBinding;
 import org.grails.taglib.encoder.OutputContext;
 import org.grails.taglib.encoder.OutputContextLookupHelper;
-import org.springframework.core.io.Resource;
 
 /**
  * <p>
@@ -42,7 +44,7 @@ public class GroovyPageStaticResourceLocator extends DefaultResourceLocator {
         if (resource == null || !resource.exists()) {
             AbstractTemplateVariableBinding binding = findBindingInOutputContext();
             if (binding instanceof GroovyPageBinding) {
-                GrailsPlugin pagePlugin = ((GroovyPageBinding)binding).getPagePlugin();
+                GrailsPlugin pagePlugin = ((GroovyPageBinding) binding).getPagePlugin();
                 if (pagePlugin != null && pluginManager != null) {
                     resource = findResourceForPlugin(pagePlugin, uri);
                 }

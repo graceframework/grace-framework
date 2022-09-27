@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,11 @@
  */
 package org.grails.gsp.compiler;
 
-import org.grails.taglib.GrailsTagException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.grails.taglib.GrailsTagException;
 
 /**
  * NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
@@ -32,19 +32,33 @@ import java.util.regex.Pattern;
  * Date: Jan 10, 2004
  */
 class GroovyPageScanner implements Tokens {
+
     private static final int DEFAULT_MAX_HTML_LENGTH = 64000;
+
     private String text;
+
     private int end1;
+
     private int begin1;
+
     private int end2;
+
     private int begin2;
+
     private int state = HTML;
+
     private int len;
+
     private String lastNamespace;
+
     private List<Integer> lineNumberPositions;
+
     private int lastLineNumberIndex = -1;
+
     private String pageName = "Unknown";
+
     private int maxHtmlLength = DEFAULT_MAX_HTML_LENGTH;
+
     private Pattern isTagNameSpacePattern = Pattern.compile("^\\p{Alpha}\\w*$");
 
     GroovyPageScanner(String text) {
@@ -112,7 +126,7 @@ class GroovyPageScanner implements Tokens {
     }
 
     int nextToken() {
-        for (;;) {
+        for (; ; ) {
             int left = len - end1;
             if (left == 0) {
                 end1++; // in order to include the last letter
@@ -173,7 +187,7 @@ class GroovyPageScanner implements Tokens {
                     if (c == '@' && c1 == '{') {
                         return found(GDIRECT, 2);
                     }
-                    
+
                     if (tokenLength > maxHtmlLength) {
                         return found(HTML, 0);
                     }
@@ -230,15 +244,15 @@ class GroovyPageScanner implements Tokens {
         char terminationChar = '}';
         char nextTerminationChar = 0;
         boolean startInExpression = true;
-        GroovyPageExpressionParser expressionParser = new GroovyPageExpressionParser(text, end1-1, terminationChar, nextTerminationChar, startInExpression);
-        int endpos= expressionParser.parse();
+        GroovyPageExpressionParser expressionParser = new GroovyPageExpressionParser(text, end1 - 1, terminationChar, nextTerminationChar, startInExpression);
+        int endpos = expressionParser.parse();
         if (endpos != -1) {
             end1 = endpos + 1;
             int expressionEndState = HTML;
             if (state == GTAG_EXPR) {
                 expressionEndState = GSTART_TAG;
             }
-            return found(expressionEndState,nextTerminationChar==0?1:2);
+            return found(expressionEndState, nextTerminationChar == 0 ? 1 : 2);
         }
 
         throw new GrailsTagException("Unclosed GSP expression", pageName, getLineNumberForToken());
@@ -309,4 +323,5 @@ class GroovyPageScanner implements Tokens {
     public void setMaxHtmlLength(int maxHtmlLength) {
         this.maxHtmlLength = maxHtmlLength;
     }
+
 }

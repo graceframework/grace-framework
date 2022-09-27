@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,8 @@ package org.grails.web.pages
 import groovy.io.FileType
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
-import org.grails.gsp.compiler.GroovyPageCompiler
 
-import java.nio.file.Files
-import java.nio.file.Paths
+import org.grails.gsp.compiler.GroovyPageCompiler
 
 /**
  * A Forked Compiler Task for use (typically by Gradle)
@@ -31,7 +29,9 @@ import java.nio.file.Paths
 
 @CompileStatic
 public class GroovyPageCompilerForkTask {
-	@Delegate CompilerConfiguration configuration = new CompilerConfiguration()
+
+    @Delegate
+    CompilerConfiguration configuration = new CompilerConfiguration()
 
     String packageName = ""
     File sourceDir
@@ -46,15 +46,15 @@ public class GroovyPageCompilerForkTask {
         this.tmpdir = tmpdir
         this.destDir = destDir
         this.sourceDir = sourceDir
-        
+
     }
 
     GroovyPageCompiler createPageCompiler() {
-    	GroovyPageCompiler compiler = new GroovyPageCompiler()
-    	CompilerConfiguration config = new CompilerConfiguration()
+        GroovyPageCompiler compiler = new GroovyPageCompiler()
+        CompilerConfiguration config = new CompilerConfiguration()
 
 
-        if(configs) {
+        if (configs) {
             String[] configPaths = extractValidConfigPaths(configs)
             compiler.setConfigs(configPaths)
         }
@@ -63,8 +63,8 @@ public class GroovyPageCompilerForkTask {
             config.classpath = classpath.toString()
         }
 
-        if(targetCompatibility) {
-        	config.setTargetBytecode(targetCompatibility)
+        if (targetCompatibility) {
+            config.setTargetBytecode(targetCompatibility)
         }
 
         compiler.compilerConfig = config
@@ -80,7 +80,7 @@ public class GroovyPageCompilerForkTask {
             compiler.packagePrefix = packageName
         }
         if (serverpath) {
-            compiler.viewPrefix=serverpath
+            compiler.viewPrefix = serverpath
         }
         if (encoding) {
             compiler.encoding = encoding
@@ -110,7 +110,7 @@ public class GroovyPageCompilerForkTask {
     static final String fileExtension = '.gsp'
 
     static void run(String[] args) {
-        if(args.length != 8) {
+        if (args.length != 8) {
             System.err.println("Invalid arguments: [${args.join(',')}]")
             System.err.println("""
 Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir] [targetCompatibility] [packageName] [serverPath] [configFile] [encoding]
@@ -128,27 +128,26 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String encoding = args[7] ?: 'UTF-8'
 
 
-        
-        GroovyPageCompilerForkTask compiler = new GroovyPageCompilerForkTask(srcDir,destinationDir,tmpDir)
-        if(configFiles) {
+        GroovyPageCompilerForkTask compiler = new GroovyPageCompilerForkTask(srcDir, destinationDir, tmpDir)
+        if (configFiles) {
             compiler.configs = configFiles
         }
-        if(packageName) {
-        	compiler.packageName = packageName	
+        if (packageName) {
+            compiler.packageName = packageName
         }
-        if(encoding) {
-        	compiler.encoding = encoding
+        if (encoding) {
+            compiler.encoding = encoding
         }
-        if(serverpath) {
-        	compiler.serverpath = serverpath
+        if (serverpath) {
+            compiler.serverpath = serverpath
         }
-       	if(targetCompatibility) {
-       		compiler.targetCompatibility = targetCompatibility
-       	}
+        if (targetCompatibility) {
+            compiler.targetCompatibility = targetCompatibility
+        }
 
         List<File> allFiles = []
         srcDir.eachFileRecurse(FileType.FILES) { File f ->
-            if(f.name.endsWith(fileExtension)) {
+            if (f.name.endsWith(fileExtension)) {
                 allFiles.add(f)
             }
         }

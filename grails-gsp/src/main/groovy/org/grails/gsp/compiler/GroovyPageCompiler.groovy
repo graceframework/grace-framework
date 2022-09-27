@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,27 @@
  */
 package org.grails.gsp.compiler
 
-import grails.config.ConfigMap
-import org.apache.commons.logging.LogFactory
+import java.util.concurrent.Callable
+import java.util.concurrent.CompletionService
+import java.util.concurrent.ExecutorCompletionService
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
+
+import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.Phases
+
+import grails.config.ConfigMap
+
 import org.grails.config.CodeGenConfig
 import org.grails.gsp.GroovyPageMetaInfo
 import org.grails.gsp.compiler.transform.GroovyPageInjectionOperation
 import org.grails.taglib.encoder.OutputEncodingSettings
-import groovy.transform.CompileStatic
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.ExecutorCompletionService
-import java.util.concurrent.CompletionService
-import java.util.concurrent.Future
 
 /**
  * Used to compile GSP files into a specified target directory.
@@ -74,25 +77,25 @@ class GroovyPageCompiler {
     }
 
     /**
-    * Compiles the given GSP pages and returns a Map of URI to classname mappings
-    */
+     * Compiles the given GSP pages and returns a Map of URI to classname mappings
+     */
     Map compile() {
         if (srcFiles && targetDir && viewsDir) {
             if (!generatedGroovyPagesDirectory) {
-                generatedGroovyPagesDirectory = new File(System.getProperty("java.io.tmpdir"),"gspcompile")
+                generatedGroovyPagesDirectory = new File(System.getProperty("java.io.tmpdir"), "gspcompile")
                 generatedGroovyPagesDirectory.mkdirs()
             }
-            if(configs) {
+            if (configs) {
                 CodeGenConfig codeGenConfig = new CodeGenConfig()
                 codeGenConfig.classLoader = classLoader
                 configMap = codeGenConfig
-                for(path in configs) {
+                for (path in configs) {
                     def f = new File(path)
-                    if(f.exists()) {
-                        if(f.name.endsWith('.yml')) {
+                    if (f.exists()) {
+                        if (f.name.endsWith('.yml')) {
                             codeGenConfig.loadYml(f)
                         }
-                        else if(f.name.endsWith('.groovy')) {
+                        else if (f.name.endsWith('.groovy')) {
                             codeGenConfig.loadGroovy(f)
                         }
                     }
@@ -100,35 +103,36 @@ class GroovyPageCompiler {
             }
             compilerConfig.setTargetDirectory(targetDir)
             compilerConfig.setSourceEncoding(encoding)
-            ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2)
+            ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2)
             CompletionService completionService = new ExecutorCompletionService(threadPool);
             List<Future<Map>> futures = []
             try {
-                Integer collationLevel = Runtime.getRuntime().availableProcessors()*2
-                if(srcFiles.size() < collationLevel) {
+                Integer collationLevel = Runtime.getRuntime().availableProcessors() * 2
+                if (srcFiles.size() < collationLevel) {
                     collationLevel = 1
                 }
                 def collatedSrcFiles = srcFiles.collate(collationLevel)
-                for(int index = 0; index < collatedSrcFiles.size(); index++) {        
+                for (int index = 0; index < collatedSrcFiles.size(); index++) {
                     def gspFiles = collatedSrcFiles[index]
-                    
+
                     futures << completionService.submit({ ->
                         def results = [:]
-                        for(int gspIndex=0;gspIndex < gspFiles.size();gspIndex++) {
+                        for (int gspIndex = 0; gspIndex < gspFiles.size(); gspIndex++) {
                             File gsp = gspFiles[gspIndex]
                             try {
-                                compileGSP(viewsDir, gsp, viewPrefix, packagePrefix, results)    
-                            } catch(Exception ex) {
+                                compileGSP(viewsDir, gsp, viewPrefix, packagePrefix, results)
+                            }
+                            catch (Exception ex) {
                                 LOG.error("Error Compiling GSP File: ${gsp.name} - ${ex.message}")
                                 throw ex
                             }
                         }
-                        return results 
+                        return results
                     } as Callable)
                 }
 
                 int pending = futures.size()
-                
+
                 while (pending > 0) {
                     // Wait for up to 100ms to see if anything has completed.
                     // The completed future is returned if one is found; otherwise null.
@@ -155,7 +159,8 @@ class GroovyPageCompiler {
                 viewregistryFile.withOutputStream { viewsOut ->
                     views.store(viewsOut, "Precompiled views for ${packagePrefix}")
                 }
-            } finally {
+            }
+            finally {
                 // eventListener?.triggerEvent("StatusUpdate", "Shutting Down ThreadPool")
                 threadPool.shutdown()
             }
@@ -185,13 +190,13 @@ class GroovyPageCompiler {
             }
             packageDir += generateJavaName(relPackagePath)
         }
-        String className = generateJavaName(packageDir.replace('/','_'))
+        String className = generateJavaName(packageDir.replace('/', '_'))
         className += generateJavaName(gspfile.name)
         // using default package because of GRAILS-5022
         packageDir = ''
 
         File classFile = new File(new File(targetDir, packageDir), "${className}.class")
-        String packageName = packageDir.replace('/','.')
+        String packageName = packageDir.replace('/', '.')
         String fullClassName
         if (packageName) {
             fullClassName = packageName + '.' + className
@@ -210,18 +215,18 @@ class GroovyPageCompiler {
                 gpp.packageName = packageName
                 gpp.className = className
                 gpp.lastModified = gspfile.lastModified()
-                if(configMap) {
+                if (configMap) {
                     gpp.configure(configMap)
                 }
                 StringWriter gsptarget = new StringWriter()
                 gpp.generateGsp(gsptarget)
                 gsptarget.flush()
                 // write static html parts to data file (read from classpath at runtime)
-                File htmlDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.HTML_DATA_POSTFIX)
+                File htmlDataFile = new File(new File(targetDir, packageDir), className + GroovyPageMetaInfo.HTML_DATA_POSTFIX)
                 htmlDataFile.parentFile.mkdirs()
                 gpp.writeHtmlParts(htmlDataFile)
                 // write linenumber mapping info to data file
-                File lineNumbersDataFile = new File(new File(targetDir, packageDir),  className + GroovyPageMetaInfo.LINENUMBERS_DATA_POSTFIX)
+                File lineNumbersDataFile = new File(new File(targetDir, packageDir), className + GroovyPageMetaInfo.LINENUMBERS_DATA_POSTFIX)
                 gpp.writeLineNumbers(lineNumbersDataFile)
 
                 // register viewuri -> classname mapping
@@ -229,17 +234,17 @@ class GroovyPageCompiler {
 
                 CompilationUnit unit = new CompilationUnit(compilerConfig, null, classLoader)
                 unit.addPhaseOperation(operation, Phases.CANONICALIZATION)
-                unit.addSource(gspgroovyfile.name,gsptarget.toString())
+                unit.addSource(gspgroovyfile.name, gsptarget.toString())
                 // unit.addSource(gspgroovyfile)
                 unit.compile()
             }
         }
         else {
-           compileGSPResults[viewuri] = fullClassName
+            compileGSPResults[viewuri] = fullClassName
         }
 
         return compileGSPResults
-        
+
     }
 
     // find out the relative path from relbase to file
@@ -260,7 +265,7 @@ class GroovyPageCompiler {
         char ch
         while (i < str.length()) {
             ch = str.charAt(i++)
-            if (ch=='/') {
+            if (ch == '/') {
                 nextMustBeStartChar = true
                 sb.append(ch)
             }

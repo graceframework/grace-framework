@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,30 @@
  */
 package org.grails.gsp.jsp;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.ClassUtils;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import javax.el.*;
+import javax.el.ArrayELResolver;
+import javax.el.BeanELResolver;
+import javax.el.CompositeELResolver;
+import javax.el.ELContext;
+import javax.el.ELContextEvent;
+import javax.el.ELContextListener;
+import javax.el.ELResolver;
+import javax.el.ExpressionFactory;
+import javax.el.FunctionMapper;
+import javax.el.ListELResolver;
+import javax.el.MapELResolver;
+import javax.el.ResourceBundleELResolver;
+import javax.el.ValueExpression;
+import javax.el.VariableMapper;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.el.ImplicitObjectELResolver;
 import javax.servlet.jsp.el.ScopedAttributeELResolver;
-import java.util.Iterator;
-import java.util.LinkedList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author Graeme Rocher
@@ -37,7 +51,9 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     private static final ExpressionFactory expressionFactoryImpl = findExpressionFactoryImplementation();
 
     private final LinkedList<ELContextListener> listeners = new LinkedList<ELContextListener>();
+
     private final CompositeELResolver elResolver = new CompositeELResolver();
+
     private final CompositeELResolver additionalResolvers = new CompositeELResolver();
 
     public GroovyPagesJspApplicationContext() {
@@ -70,15 +86,15 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
             if (ExpressionFactory.class.isAssignableFrom(cl)) {
                 LOG.info("Using " + className + " as implementation of " +
                         ExpressionFactory.class.getName());
-                return (ExpressionFactory)cl.newInstance();
+                return (ExpressionFactory) cl.newInstance();
             }
             LOG.warn("Class " + className + " does not implement " +
                     ExpressionFactory.class.getName());
         }
-        catch(ClassNotFoundException e) {
+        catch (ClassNotFoundException e) {
             // ignored
         }
-        catch(Exception e) {
+        catch (Exception e) {
             LOG.error("Failed to instantiate " + className, e);
         }
         return null;
@@ -93,7 +109,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     public void addELContextListener(ELContextListener elContextListener) {
-        synchronized(listeners) {
+        synchronized (listeners) {
             listeners.addLast(elContextListener);
         }
     }
@@ -101,8 +117,8 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     ELContext createELContext(GroovyPagesPageContext pageCtx) {
         ELContext ctx = new GroovyPagesELContext(pageCtx);
         ELContextEvent event = new ELContextEvent(ctx);
-        synchronized(listeners) {
-            for (Iterator<ELContextListener> iter = listeners.iterator(); iter.hasNext();) {
+        synchronized (listeners) {
+            for (Iterator<ELContextListener> iter = listeners.iterator(); iter.hasNext(); ) {
                 iter.next().contextCreated(event);
             }
         }
@@ -110,6 +126,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     private class GroovyPagesELContext extends ELContext {
+
         private GroovyPagesPageContext pageCtx;
 
         public GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
@@ -145,5 +162,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
                 }
             };
         }
+
     }
+
 }

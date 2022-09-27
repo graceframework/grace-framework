@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,30 @@
  */
 package org.grails.web.gsp;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import groovy.text.Template;
+import org.codehaus.groovy.runtime.InvokerHelper;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
+
 import grails.core.GrailsDomainClass;
 import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsNameUtils;
 import grails.util.GrailsStringUtils;
-import groovy.lang.GroovyObject;
-import groovy.text.Template;
-import org.codehaus.groovy.runtime.InvokerHelper;
+
 import org.grails.buffer.CodecPrintWriter;
 import org.grails.buffer.FastStringWriter;
 import org.grails.encoder.EncodedAppenderWriterFactory;
@@ -42,21 +58,6 @@ import org.grails.taglib.encoder.WithCodecHelper;
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.web.util.GrailsApplicationAttributes;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Service that provides the actual implementation to RenderTagLib's render tag.
@@ -70,21 +71,30 @@ import java.util.concurrent.ConcurrentMap;
  * @since 2.0
  */
 public class GroovyPagesTemplateRenderer implements InitializingBean {
+
     private GrailsConventionGroovyPageLocator groovyPageLocator;
+
     private GroovyPagesTemplateEngine groovyPagesTemplateEngine;
-    private ConcurrentMap<String,CacheEntry<Template>> templateCache = new ConcurrentHashMap<String,CacheEntry<Template>>();
+
+    private ConcurrentMap<String, CacheEntry<Template>> templateCache = new ConcurrentHashMap<String, CacheEntry<Template>>();
+
     private Object scaffoldingTemplateGenerator;
+
     private Map<String, Collection<String>> scaffoldedActionMap;
+
     private Map<String, GrailsDomainClass> controllerToScaffoldedDomainClassMap;
+
     private Method generateViewMethod;
+
     private boolean reloadEnabled;
+
     private boolean cacheEnabled = !Environment.isDevelopmentMode();
 
     public void afterPropertiesSet() throws Exception {
         if (scaffoldingTemplateGenerator != null) {
             // use reflection to locate method (would cause cyclic dependency otherwise)
             generateViewMethod = ReflectionUtils.findMethod(scaffoldingTemplateGenerator.getClass(), "generateView", new Class<?>[] {
-                GrailsDomainClass.class, String.class, Writer.class});
+                    GrailsDomainClass.class, String.class, Writer.class });
         }
         reloadEnabled = groovyPagesTemplateEngine.isReloadEnabled();
     }
@@ -126,15 +136,17 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
         final GroovyPageScriptSource scriptSource;
         if (pluginName == null) {
             scriptSource = groovyPageLocator.findTemplateInBinding(controller, templatePath, pageScope);
-        }  else {
+        }
+        else {
             scriptSource = groovyPageLocator.findTemplateInBinding(controller, pluginName, templatePath, pageScope);
         }
 
         String cacheKey;
         if (scriptSource == null) {
             cacheKey = contextPath + pluginName + uri;
-        } else {
-            if(pluginName != null) {
+        }
+        else {
+            if (pluginName != null) {
                 cacheKey = contextPath + pluginName + scriptSource.getURI();
             }
             else {
@@ -147,21 +159,22 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
                     public CacheEntry<Template> call() {
                         return new CacheEntry<Template>() {
                             boolean allowCaching = cacheEnabled;
+
                             boolean neverExpire = false;
 
                             @Override
                             protected boolean hasExpired(long timeout, Object cacheRequestObject) {
                                 return neverExpire ? false : (allowCaching ? super.hasExpired(timeout, cacheRequestObject) : true);
                             }
-                            
+
                             @Override
                             public boolean isInitialized() {
                                 return allowCaching ? super.isInitialized() : false;
                             }
-                            
+
                             @Override
                             public void setValue(Template val) {
-                                if(allowCaching) {
+                                if (allowCaching) {
                                     super.setValue(val);
                                 }
                             }
@@ -199,7 +212,7 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
         Map b = new LinkedHashMap<String, Object>();
         b.put("body", body);
         if (attrs.get("model") instanceof Map) {
-            b.putAll((Map)attrs.get("model"));
+            b.putAll((Map) attrs.get("model"));
         }
         if (attrs.containsKey("bean")) {
             if (GrailsStringUtils.isNotBlank(var)) {
@@ -228,7 +241,8 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
                 }
                 t.make(itmap).writeTo(out);
             }
-        } else {
+        }
+        else {
             t.make(b).writeTo(out);
         }
 
@@ -240,15 +254,17 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
     private Writer wrapWriterWithEncoder(GrailsWebRequest webRequest, Map<String, Object> attrs, Writer out) {
         Object encodeAs = attrs.get(GroovyPage.ENCODE_AS_ATTRIBUTE_NAME);
         if (encodeAs != null) {
-            Map<String, Object> codecSettings= WithCodecHelper.makeSettingsCanonical(encodeAs);
-            String codecForTaglibs = (String)codecSettings.get(OutputEncodingSettings.TAGLIB_CODEC_NAME);
+            Map<String, Object> codecSettings = WithCodecHelper.makeSettingsCanonical(encodeAs);
+            String codecForTaglibs = (String) codecSettings.get(OutputEncodingSettings.TAGLIB_CODEC_NAME);
             if (codecForTaglibs != null) {
                 Encoder encoder = WithCodecHelper.lookupEncoder(webRequest.getAttributes().getGrailsApplication(), codecForTaglibs);
                 if (out instanceof EncodedAppenderWriterFactory) {
-                    out = ((EncodedAppenderWriterFactory)out).getWriterForEncoder(encoder, webRequest.getEncodingStateRegistry());
-                } else if (encoder instanceof StreamingEncoder) {
-                    out=new StreamingEncoderWriter(out, (StreamingEncoder)encoder, webRequest.getEncodingStateRegistry());
-                } else {
+                    out = ((EncodedAppenderWriterFactory) out).getWriterForEncoder(encoder, webRequest.getEncodingStateRegistry());
+                }
+                else if (encoder instanceof StreamingEncoder) {
+                    out = new StreamingEncoderWriter(out, (StreamingEncoder) encoder, webRequest.getEncodingStateRegistry());
+                }
+                else {
                     out = new CodecPrintWriter(out, encoder, webRequest.getEncodingStateRegistry());
                 }
             }
@@ -310,4 +326,5 @@ public class GroovyPagesTemplateRenderer implements InitializingBean {
     public void setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
     }
+
 }

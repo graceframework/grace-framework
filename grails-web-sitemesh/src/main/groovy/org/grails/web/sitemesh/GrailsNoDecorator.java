@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,17 +41,17 @@ import com.opensymphony.sitemesh.webapp.decorator.BaseWebAppDecorator;
  *
  * @author Lari Hotari, Sagire Software Oy
  */
-public class GrailsNoDecorator extends BaseWebAppDecorator implements Decorator{
+public class GrailsNoDecorator extends BaseWebAppDecorator implements Decorator {
 
     @Override
     protected void render(Content content, HttpServletRequest request, HttpServletResponse response,
-                          ServletContext servletContext, SiteMeshWebAppContext webAppContext)
+            ServletContext servletContext, SiteMeshWebAppContext webAppContext)
             throws IOException, ServletException {
 
         if (webAppContext.isUsingStream()) {
             // http://jira.opensymphony.com/browse/SIM-196 , skip setting setContentLength
             //response.setContentLength(content.originalLength());
-            OutputStream output=response.getOutputStream();
+            OutputStream output = response.getOutputStream();
             PrintWriter writer = new PrintWriter(output);
             content.writeOriginal(writer);
             writer.flush();
@@ -87,4 +87,5 @@ public class GrailsNoDecorator extends BaseWebAppDecorator implements Decorator{
     public Iterator getInitParameterNames() {
         return null;
     }
+
 }

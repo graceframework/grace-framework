@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,15 @@
  */
 package org.grails.taglib;
 
-import groovy.lang.Binding;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import groovy.lang.Binding;
 
 /**
  * Abstract super class for GroovyPage bindings
@@ -27,6 +33,7 @@ import java.util.*;
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractTemplateVariableBinding extends Binding {
+
     public AbstractTemplateVariableBinding() {
         super();
     }
@@ -80,10 +87,11 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
     }
 
     protected static final class TemplateVariableBindingMap implements Map {
+
         AbstractTemplateVariableBinding binding;
 
         public TemplateVariableBindingMap(AbstractTemplateVariableBinding binding) {
-            this.binding=binding;
+            this.binding = binding;
         }
 
         public int size() {
@@ -118,7 +126,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
 
         public void putAll(Map m) {
             for (Object entryObj : m.entrySet()) {
-                Map.Entry entry=(Map.Entry)entryObj;
+                Map.Entry entry = (Map.Entry) entryObj;
                 binding.setVariable(String.valueOf(entry.getKey()), entry.getValue());
             }
         }
@@ -161,23 +169,29 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
                 public boolean hasNext() {
                     return iter.hasNext();
                 }
+
                 public Object next() {
                     Object key = iter.next();
                     Object value = get(key);
                     return new BindingMapEntry(binding, key, value);
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException("remove() not supported");
                 }
             };
         }
+
     }
 
     protected static class BindingMapEntry implements Map.Entry {
+
         private AbstractTemplateVariableBinding binding;
 
         private Object key;
+
         private Object value;
+
         protected BindingMapEntry(AbstractTemplateVariableBinding binding, Object key, Object value) {
             this.binding = binding;
             this.key = key;
@@ -222,5 +236,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
             return (getKey() == null ? 0 : getKey().hashCode()) ^
                     (getValue() == null ? 0 : getValue().hashCode());
         }
+
     }
+
 }

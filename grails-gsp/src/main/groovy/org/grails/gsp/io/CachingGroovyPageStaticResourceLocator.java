@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package org.grails.gsp.io;
 
-import grails.util.CacheEntry;
-import org.springframework.core.io.Resource;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.springframework.core.io.Resource;
+
+import grails.util.CacheEntry;
 
 /**
  * Extends {@link GroovyPageStaticResourceLocator} adding caching of the result
@@ -29,8 +30,10 @@ import java.util.concurrent.ConcurrentMap;
  * @author Graeme Rocher
  * @since 2.0
  */
-public class CachingGroovyPageStaticResourceLocator extends GroovyPageStaticResourceLocator{
+public class CachingGroovyPageStaticResourceLocator extends GroovyPageStaticResourceLocator {
+
     private ConcurrentMap<String, CacheEntry<Resource>> uriResolveCache = new ConcurrentHashMap<String, CacheEntry<Resource>>();
+
     private long cacheTimeout = -1;
 
     @Override
@@ -56,4 +59,5 @@ public class CachingGroovyPageStaticResourceLocator extends GroovyPageStaticReso
     public void setCacheTimeout(long cacheTimeout) {
         this.cacheTimeout = cacheTimeout;
     }
+
 }

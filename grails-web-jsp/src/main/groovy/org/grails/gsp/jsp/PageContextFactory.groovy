@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,15 @@
  */
 package org.grails.gsp.jsp
 
+import javax.servlet.ServletContext
+import javax.servlet.jsp.PageContext as PC
+
+import org.springframework.web.context.request.RequestContextHolder
+
 import org.grails.gsp.GroovyPageBinding
 import org.grails.web.pages.GroovyPagesServlet
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes as GAA
-import org.springframework.web.context.request.RequestContextHolder
-
-import javax.servlet.ServletContext
-import javax.servlet.jsp.PageContext as PC
 
 /**
  * Obtains a reference to the GroovyPagesPageContext class.

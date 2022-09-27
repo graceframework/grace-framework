@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,15 @@
  */
 package org.grails.web.sitemesh;
 
-import grails.util.Environment;
-import grails.util.GrailsNameUtils;
-import groovy.lang.GroovyObject;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import grails.util.GrailsClassUtils;
-import grails.util.GrailsStringUtils;
-import org.grails.core.artefact.ControllerArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.util.GrailsApplicationAttributes;
-import org.grails.web.servlet.view.AbstractGrailsView;
-import org.grails.web.servlet.view.GrailsViewResolver;
-import org.grails.web.servlet.view.LayoutViewResolver;
+import com.opensymphony.module.sitemesh.Decorator;
+import com.opensymphony.module.sitemesh.Page;
+import com.opensymphony.sitemesh.Content;
+import groovy.lang.GroovyObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -41,9 +32,18 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import com.opensymphony.module.sitemesh.Decorator;
-import com.opensymphony.module.sitemesh.Page;
-import com.opensymphony.sitemesh.Content;
+import grails.util.Environment;
+import grails.util.GrailsClassUtils;
+import grails.util.GrailsNameUtils;
+import grails.util.GrailsStringUtils;
+
+import org.grails.core.artefact.ControllerArtefactHandler;
+import org.grails.io.support.GrailsResourceUtils;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.servlet.view.AbstractGrailsView;
+import org.grails.web.servlet.view.GrailsViewResolver;
+import org.grails.web.servlet.view.LayoutViewResolver;
+import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
  * Provides the logic for GrailsLayoutDecoratorMapper without so many ties to
@@ -53,22 +53,33 @@ import com.opensymphony.sitemesh.Content;
  * @since 2.0
  */
 public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
+
     public static final String LAYOUT_ATTRIBUTE = "org.grails.layout.name";
+
     public static final String NONE_LAYOUT = "_none_";
+
     public static final String RENDERING_VIEW_ATTRIBUTE = "org.grails.rendering.view";
+
     private static final Logger LOG = LoggerFactory.getLogger(GrailsLayoutDecoratorMapper.class);
+
     private static final long LAYOUT_CACHE_EXPIRATION_MILLIS = Long.getLong("grails.gsp.reload.interval", 5000);
+
     private static final String LAYOUTS_PATH = "/layouts";
 
     private static final int ORDER = Ordered.LOWEST_PRECEDENCE - 1;
 
     private Map<String, DecoratorCacheValue> decoratorCache = new ConcurrentHashMap<String, DecoratorCacheValue>();
+
     private Map<LayoutCacheKey, DecoratorCacheValue> layoutDecoratorCache = new ConcurrentHashMap<LayoutCacheKey, DecoratorCacheValue>();
 
     private String defaultDecoratorName;
+
     private boolean gspReloadEnabled;
+
     private boolean cacheEnabled = (Environment.getCurrent() != Environment.DEVELOPMENT);
+
     private ViewResolver viewResolver;
+
     private boolean enableNonGspViews = false;
 
     @Override
@@ -93,9 +104,10 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
     }
 
     public void setViewResolver(ViewResolver viewResolver) {
-        if(viewResolver instanceof LayoutViewResolver) {
-            this.viewResolver = ((LayoutViewResolver)viewResolver).getInnerViewResolver();
-        } else {
+        if (viewResolver instanceof LayoutViewResolver) {
+            this.viewResolver = ((LayoutViewResolver) viewResolver).getInnerViewResolver();
+        }
+        else {
             this.viewResolver = viewResolver;
         }
     }
@@ -119,16 +131,16 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
             Decorator d = null;
 
             if (GrailsStringUtils.isBlank(layoutName)) {
-                GroovyObject controller = (GroovyObject)request.getAttribute(GrailsApplicationAttributes.CONTROLLER);
-                if (controller != null ) {
+                GroovyObject controller = (GroovyObject) request.getAttribute(GrailsApplicationAttributes.CONTROLLER);
+                if (controller != null) {
                     GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
                     String controllerName = webRequest.getControllerName();
-                    if(controllerName == null) {
+                    if (controllerName == null) {
                         controllerName = GrailsNameUtils.getLogicalPropertyName(controller.getClass().getName(), ControllerArtefactHandler.TYPE);
                     }
                     String actionUri = webRequest.getAttributes().getControllerActionUri(request);
 
-                    if(controllerName != null && actionUri != null) {
+                    if (controllerName != null && actionUri != null) {
 
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("Found controller in request, locating layout for controller [" + controllerName
@@ -152,8 +164,8 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
                         if (d == null && !cachedIsNull) {
                             d = resolveDecorator(request, controller, controllerName, actionUri);
                             if (cacheEnabled) {
-                                if(LOG.isDebugEnabled() && d != null) {
-                                    LOG.debug("Caching resolved layout {} for controller {} and action {}",d.getPage(), controllerName, actionUri);
+                                if (LOG.isDebugEnabled() && d != null) {
+                                    LOG.debug("Caching resolved layout {} for controller {} and action {}", d.getPage(), controllerName, actionUri);
                                 }
                                 layoutDecoratorCache.put(cacheKey, new DecoratorCacheValue(d));
                             }
@@ -256,7 +268,9 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
     }
 
     private static class LayoutCacheKey {
+
         private String controllerName;
+
         private String actionUri;
 
         public LayoutCacheKey(String controllerName, String actionUri) {
@@ -283,10 +297,13 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
             result = 31 * result + actionUri.hashCode();
             return result;
         }
+
     }
 
     private static class DecoratorCacheValue {
+
         Decorator decorator;
+
         long createTimestamp = System.currentTimeMillis();
 
         public DecoratorCacheValue(Decorator decorator) {
@@ -300,6 +317,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
         public boolean isExpired() {
             return System.currentTimeMillis() - createTimestamp > LAYOUT_CACHE_EXPIRATION_MILLIS;
         }
+
     }
 
     @Override
@@ -307,6 +325,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
         if (!(viewResolver instanceof GrailsViewResolver)) {
             setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
         }
-        
+
     }
+
 }

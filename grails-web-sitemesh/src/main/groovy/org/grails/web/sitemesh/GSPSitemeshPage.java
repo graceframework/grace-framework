@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,17 @@
  */
 package org.grails.web.sitemesh;
 
-import com.opensymphony.module.sitemesh.HTMLPage;
-import com.opensymphony.module.sitemesh.parser.AbstractHTMLPage;
-import com.opensymphony.sitemesh.Content;
-import com.opensymphony.sitemesh.compatability.Content2HTMLPage;
-import org.grails.buffer.StreamCharBuffer;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.opensymphony.module.sitemesh.HTMLPage;
+import com.opensymphony.module.sitemesh.parser.AbstractHTMLPage;
+import com.opensymphony.sitemesh.Content;
+import com.opensymphony.sitemesh.compatability.Content2HTMLPage;
+
+import org.grails.buffer.StreamCharBuffer;
 
 /**
  * Grails/GSP specific implementation of Sitemesh's AbstractHTMLPage
@@ -34,14 +35,22 @@ import java.util.Map;
  *
  * @author Lari Hotari, Sagire Software Oy
  */
-public class GSPSitemeshPage extends AbstractHTMLPage implements Content{
+public class GSPSitemeshPage extends AbstractHTMLPage implements Content {
+
     StreamCharBuffer headBuffer;
+
     StreamCharBuffer bodyBuffer;
+
     StreamCharBuffer pageBuffer;
+
     StreamCharBuffer titleBuffer;
+
     boolean used;
+
     boolean titleCaptured;
+
     Map<String, StreamCharBuffer> contentBuffers;
+
     private boolean renderingLayout;
 
     public GSPSitemeshPage() {
@@ -50,14 +59,14 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content{
 
     public GSPSitemeshPage(boolean renderingLayout) {
         reset();
-        this.renderingLayout=renderingLayout;
+        this.renderingLayout = renderingLayout;
     }
 
     public void reset() {
-        headBuffer=null;
-        bodyBuffer=null;
-        pageBuffer=null;
-        titleBuffer=null;
+        headBuffer = null;
+        bodyBuffer = null;
+        pageBuffer = null;
+        titleBuffer = null;
         used = false;
         titleCaptured = false;
         contentBuffers = null;
@@ -91,7 +100,7 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content{
             }
             String headAsString = headBuffer.toString();
             // strip out title for sitemesh version of <head>
-            out.write(headAsString.replaceFirst("(?is)<title(\\s[^>]*)?>(.*?)</title>",""));
+            out.write(headAsString.replaceFirst("(?is)<title(\\s[^>]*)?>(.*?)</title>", ""));
         }
         else {
             headBuffer.writeTo(out);
@@ -217,9 +226,11 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content{
         HTMLPage htmlPage = null;
         if (content instanceof HTMLPage) {
             htmlPage = (HTMLPage) content;
-        } else if (content instanceof TokenizedHTMLPage2Content) {
-            htmlPage = ((TokenizedHTMLPage2Content)content).getPage();
-        } else {
+        }
+        else if (content instanceof TokenizedHTMLPage2Content) {
+            htmlPage = ((TokenizedHTMLPage2Content) content).getPage();
+        }
+        else {
             htmlPage = new Content2HTMLPage(content, null);
         }
         return htmlPage;
@@ -232,4 +243,5 @@ public class GSPSitemeshPage extends AbstractHTMLPage implements Content{
     public void setTitleCaptured(boolean titleCaptured) {
         this.titleCaptured = titleCaptured;
     }
+
 }

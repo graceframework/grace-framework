@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 package grails.gsp
-import org.grails.buffer.FastStringWriter
-import org.grails.gsp.GroovyPagesTemplateEngine
-import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
-import org.grails.gsp.io.GroovyPageScriptSource
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
-import org.springframework.web.context.ServletContextAware
-import org.springframework.web.context.request.RequestContextHolder
+
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.Proxy
+import java.util.concurrent.ConcurrentHashMap
 
 import javax.servlet.ServletContext
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.lang.reflect.InvocationHandler
-import java.lang.reflect.Method
-import java.lang.reflect.Proxy
-import java.util.concurrent.ConcurrentHashMap
+
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
+import org.springframework.web.context.ServletContextAware
+import org.springframework.web.context.request.RequestContextHolder
+
+import org.grails.buffer.FastStringWriter
+import org.grails.gsp.GroovyPagesTemplateEngine
+import org.grails.gsp.io.GroovyPageScriptSource
+import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
+import org.grails.web.servlet.mvc.GrailsWebRequest
+
 /**
  * Simplified API for rendering GSP pages from services, jobs and other non-request classes.
  *
@@ -103,7 +107,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
         def source
         if (args.view) {
             source = groovyPageLocator.findViewByPath(args.view.toString())
-        } else if (args.template) {
+        }
+        else if (args.template) {
             source = groovyPageLocator.findTemplateByPath(args.template.toString())
         }
         if (source == null) {
@@ -114,14 +119,15 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
         try {
             def localeToUse = locale ?: (oldRequestAttributes?.locale ?: Locale.default)
             def webRequest = new GrailsWebRequest(PageRenderRequestCreator.createInstance(source.URI, localeToUse),
-                PageRenderResponseCreator.createInstance(writer instanceof PrintWriter ? writer : new PrintWriter(writer), localeToUse),
-                servletContext, applicationContext)
+                    PageRenderResponseCreator.createInstance(writer instanceof PrintWriter ? writer : new PrintWriter(writer), localeToUse),
+                    servletContext, applicationContext)
             RequestContextHolder.setRequestAttributes(webRequest)
             def template = templateEngine.createTemplate(source)
             if (template != null) {
                 template.make(args.model ?: [:]).writeTo(writer)
             }
-        } finally {
+        }
+        finally {
             RequestContextHolder.setRequestAttributes(oldRequestAttributes)
         }
     }
@@ -134,6 +140,7 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
      * Creates the request object used during the GSP rendering pipeline for render operations outside a web request.
      * Created dynamically to avoid issues with different servlet API spec versions.
      */
+
     static class PageRenderRequestCreator {
 
         static HttpServletRequest createInstance(final String requestURI, Locale localeToUse = Locale.getDefault()) {
@@ -144,7 +151,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
             String contentType = null
             String characterEncoding = "UTF-8"
 
-            (HttpServletRequest)Proxy.newProxyInstance(HttpServletRequest.classLoader, [HttpServletRequest] as Class[], new InvocationHandler() {
+            (HttpServletRequest) Proxy.newProxyInstance(HttpServletRequest.classLoader, [HttpServletRequest] as Class[], new InvocationHandler() {
+
                 Object invoke(proxy, Method method, Object[] args) {
 
                     String methodName = method.name
@@ -204,8 +212,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
                         return true
                     }
                     if (methodName in [
-                        'isRequestedSessionIdFromCookie', 'isRequestedSessionIdFromURL', 'isRequestedSessionIdFromUrl',
-                        'authenticate', 'isUserInRole', 'isSecure', 'isAsyncStarted', 'isAsyncSupported']) {
+                            'isRequestedSessionIdFromCookie', 'isRequestedSessionIdFromURL', 'isRequestedSessionIdFromUrl',
+                            'authenticate', 'isUserInRole', 'isSecure', 'isAsyncStarted', 'isAsyncSupported']) {
                         return false
                     }
 
@@ -258,7 +266,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
                         Object o = args[1]
                         if (o == null) {
                             attributes.remove name
-                        } else {
+                        }
+                        else {
                             attributes[name] = o
                         }
                         return null
@@ -301,9 +310,10 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
                 }
             })
         }
-        
+
         private static Enumeration iteratorAsEnumeration(Iterator iterator) {
             new Enumeration() {
+
                 @Override
                 boolean hasMoreElements() {
                     iterator.hasNext()
@@ -325,7 +335,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
             String contentType = null
             int bufferSize = 0
 
-            (HttpServletResponse)Proxy.newProxyInstance(HttpServletResponse.classLoader, [HttpServletResponse] as Class[], new InvocationHandler() {
+            (HttpServletResponse) Proxy.newProxyInstance(HttpServletResponse.classLoader, [HttpServletResponse] as Class[], new InvocationHandler() {
+
                 Object invoke(proxy, Method method, Object[] args) {
 
                     String methodName = method.name
@@ -385,4 +396,5 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
             })
         }
     }
+
 }

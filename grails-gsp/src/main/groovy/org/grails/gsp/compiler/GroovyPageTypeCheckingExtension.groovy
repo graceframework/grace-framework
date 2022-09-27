@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.gsp.compiler
 
 import org.codehaus.groovy.ast.AnnotationNode
@@ -32,6 +31,7 @@ import org.codehaus.groovy.transform.stc.GroovyTypeCheckingExtensionSupport
  *
  */
 class GroovyPageTypeCheckingExtension extends GroovyTypeCheckingExtensionSupport.TypeCheckingDSL {
+
     @Override
     Object run() {
         ClassNode configAnnotationClassNode = ClassHelper.make(GroovyPageTypeCheckingConfig)
@@ -41,7 +41,7 @@ class GroovyPageTypeCheckingExtension extends GroovyTypeCheckingExtensionSupport
                 allowedTagLibs = [] as Set
                 dynamicProperties = [] as Set
             }
-            AnnotationNode configAnnotation = classNode.getAnnotations(configAnnotationClassNode)?.find{it}
+            AnnotationNode configAnnotation = classNode.getAnnotations(configAnnotationClassNode)?.find { it }
             if (configAnnotation) {
                 Expression taglibsExpression = configAnnotation.getMember('taglibs')
                 if (taglibsExpression instanceof ListExpression) {
@@ -74,4 +74,5 @@ class GroovyPageTypeCheckingExtension extends GroovyTypeCheckingExtensionSupport
     def isThisTheReceiver(expr) {
         expr.implicitThis || (expr.objectExpression instanceof VariableExpression && expr.objectExpression.thisExpression)
     }
+
 }

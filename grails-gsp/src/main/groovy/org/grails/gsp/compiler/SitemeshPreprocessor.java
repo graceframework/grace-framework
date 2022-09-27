@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,11 +30,17 @@ import java.util.regex.Pattern;
 public class SitemeshPreprocessor {
 
     Pattern parameterPattern = Pattern.compile("<parameter(\\s+name[^>]+?)(/*?)>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     Pattern metaPattern = Pattern.compile("<meta(\\s[^>]+?)(/*?)>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     Pattern titlePattern = Pattern.compile("<title(\\s[^>]*)?>(.*?)</title>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     Pattern headPattern = Pattern.compile("<head(\\s[^>]*)?>(.*?)</head>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     Pattern bodyPattern = Pattern.compile("<body(\\s[^>]*)?>(.*?)</body>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     Pattern contentPattern = Pattern.compile("<content(\\s+tag[^>]+)>(.*?)</content>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
     public static final String XML_CLOSING_FOR_EMPTY_TAG_ATTRIBUTE_NAME = "gsp_sm_xmlClosingForEmptyTag";
 
     public String addGspSitemeshCapturing(String gspSource) {
@@ -45,7 +51,7 @@ public class SitemeshPreprocessor {
     }
 
     StringBuffer addHeadCapturing(String gspSource) {
-        StringBuffer sb = new StringBuffer((int)(gspSource.length() * 1.2));
+        StringBuffer sb = new StringBuffer((int) (gspSource.length() * 1.2));
         Matcher m = headPattern.matcher(gspSource);
         if (m.find()) {
             m.appendReplacement(sb, "");
@@ -91,4 +97,5 @@ public class SitemeshPreprocessor {
         Matcher m = contentPattern.matcher(sb);
         return new StringBuffer(m.replaceAll("<sitemesh:captureContent$1>$2</sitemesh:captureContent>"));
     }
+
 }

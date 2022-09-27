@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.opensymphony.module.sitemesh.Config;
+import com.opensymphony.module.sitemesh.factory.BaseFactory;
+import com.opensymphony.module.sitemesh.factory.FactoryException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -36,29 +39,33 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
-import com.opensymphony.module.sitemesh.Config;
-import com.opensymphony.module.sitemesh.factory.BaseFactory;
-import com.opensymphony.module.sitemesh.factory.FactoryException;
-
 /**
  * TODO remove this once http://jira.opensymphony.com/browse/SIM-263 is fixed.
  *
  * Replaces <code>DefaultFactory</code> to fix http://jira.codehaus.org/browse/GRAILS-5535. There
  * are two changes, both replacing toURL() with toURI().toURL().
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Grails5535Factory extends BaseFactory {
-    private static final Log log=LogFactory.getLog(Grails5535Factory.class);
+
+    private static final Log log = LogFactory.getLog(Grails5535Factory.class);
+
     String configFileName;
+
     private static final String DEFAULT_CONFIG_FILENAME = "/WEB-INF/sitemesh.xml";
 
     File configFile;
+
     long configLastModified;
+
     private long configLastCheck = 0L;
+
     public static long configCheckMillis = 3000L;
+
     Map configProps = new HashMap();
 
     String excludesFileName;
+
     File excludesFile;
 
     public Grails5535Factory(Config config) {
@@ -83,13 +90,14 @@ public class Grails5535Factory extends BaseFactory {
 
         loadConfig();
     }
-    
+
     @Override
     protected void pushDecoratorMapper(String className, Properties properties) {
         try {
             super.pushDecoratorMapper(className, properties);
-        } catch (Exception e) {
-            log.warn("Error initializing decorator mapper",e);
+        }
+        catch (Exception e) {
+            log.warn("Error initializing decorator mapper", e);
         }
     }
 
@@ -103,13 +111,14 @@ public class Grails5535Factory extends BaseFactory {
             // Loop through child elements of root node
             for (int i = 0; i < sections.getLength(); i++) {
                 if (sections.item(i) instanceof Element) {
-                    Element curr = (Element)sections.item(i);
+                    Element curr = (Element) sections.item(i);
                     NodeList children = curr.getChildNodes();
 
                     if ("config-refresh".equalsIgnoreCase(curr.getTagName())) {
                         String seconds = curr.getAttribute("seconds");
                         configCheckMillis = Long.parseLong(seconds) * 1000L;
-                    } else if ("property".equalsIgnoreCase(curr.getTagName())) {
+                    }
+                    else if ("property".equalsIgnoreCase(curr.getTagName())) {
                         String name = curr.getAttribute("name");
                         String value = curr.getAttribute("value");
                         if (!"".equals(name) && !"".equals(value)) {
@@ -162,7 +171,7 @@ public class Grails5535Factory extends BaseFactory {
         if (is == null) { // load the default sitemesh configuration
             is = getClass().getResourceAsStream("sitemesh-default.xml");
         }
-        
+
         if (is == null) { // load the default sitemesh configuration
             is = getClass().getClassLoader().getResourceAsStream("com/opensymphony/module/sitemesh/factory/sitemesh-default.xml");
         }
@@ -211,7 +220,7 @@ public class Grails5535Factory extends BaseFactory {
         // Loop through child elements of root node looking for the <excludes> block
         for (int i = 0; i < sections.getLength(); i++) {
             if (sections.item(i) instanceof Element) {
-                Element curr = (Element)sections.item(i);
+                Element curr = (Element) sections.item(i);
                 if ("excludes".equalsIgnoreCase(curr.getTagName())) {
                     loadExcludeUrls(curr.getChildNodes());
                 }
@@ -224,7 +233,7 @@ public class Grails5535Factory extends BaseFactory {
         clearParserMappings();
         for (int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i) instanceof Element) {
-                Element curr = (Element)nodes.item(i);
+                Element curr = (Element) nodes.item(i);
 
                 if ("parser".equalsIgnoreCase(curr.getTagName())) {
                     String className = curr.getAttribute("class");
@@ -244,7 +253,7 @@ public class Grails5535Factory extends BaseFactory {
         // note, this works from the bottom node up.
         for (int i = nodes.getLength() - 1; i > 0; i--) {
             if (nodes.item(i) instanceof Element) {
-                Element curr = (Element)nodes.item(i);
+                Element curr = (Element) nodes.item(i);
                 if ("mapper".equalsIgnoreCase(curr.getTagName())) {
                     String className = curr.getAttribute("class");
                     Properties props = new Properties();
@@ -252,7 +261,7 @@ public class Grails5535Factory extends BaseFactory {
                     NodeList children = curr.getChildNodes();
                     for (int j = 0; j < children.getLength(); j++) {
                         if (children.item(j) instanceof Element) {
-                            Element currC = (Element)children.item(j);
+                            Element currC = (Element) children.item(j);
                             if ("param".equalsIgnoreCase(currC.getTagName())) {
                                 String value = currC.getAttribute("value");
                                 props.put(currC.getAttribute("name"), replaceProperties(value));
@@ -310,7 +319,7 @@ public class Grails5535Factory extends BaseFactory {
      */
     private String replaceProperties(String str) {
         Set props = configProps.entrySet();
-        for (Iterator it = props.iterator(); it.hasNext();) {
+        for (Iterator it = props.iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
             String key = (String) entry.getKey();
             int idx;
@@ -324,4 +333,5 @@ public class Grails5535Factory extends BaseFactory {
         }
         return str;
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.gsp
 
+import java.util.concurrent.ConcurrentHashMap
+
 import groovy.transform.CompileStatic
+
 import org.grails.core.lifecycle.ShutdownOperations
 import org.grails.gsp.compiler.GroovyPageParser
 import org.grails.gsp.jsp.JspTagLib
 import org.grails.taglib.encoder.OutputContext
-
-import java.util.concurrent.ConcurrentHashMap
-
 
 /**
  * Development time helper class to add model definitions to existing GSP pages
@@ -39,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 @CompileStatic
 abstract class ModelRecordingGroovyPage extends GroovyPage {
+
     public static final String CONFIG_SYSTEM_PROPERTY_NAME
     public static final boolean ENABLED
     static {
@@ -98,6 +98,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
 
 @CompileStatic
 class ModelRecordingCache {
+
     private Map<String, ModelEntry> models = new ConcurrentHashMap<>()
     private boolean initialized
 
@@ -115,9 +116,11 @@ class ModelRecordingCache {
             System.err.println("Writing model recordings to disk...")
             try {
                 close()
-            } catch (e) {
+            }
+            catch (e) {
                 e.printStackTrace(System.err)
-            } finally {
+            }
+            finally {
                 System.err.println("Done.")
             }
         }
@@ -131,7 +134,8 @@ class ModelRecordingCache {
                 if (file.exists()) {
                     System.err.println("Writing model recordings to ${file.name}...")
                     file.text = gspDeclaration + file.text
-                } else {
+                }
+                else {
                     System.err.println("GSP file '${fileName}' not found. Declaration: ${gspDeclaration}")
                 }
             }
@@ -142,17 +146,17 @@ class ModelRecordingCache {
 @CompileStatic
 class ModelEntry {
     // defaults are defined by org.grails.web.taglib.WebRequestTemplateVariableBinding
-    static Map<String, String> DEFAULT_TYPES = [webRequest        : 'org.grails.web.servlet.mvc.GrailsWebRequest',
-                                                request           : 'javax.servlet.http.HttpServletRequest',
-                                                response          : 'javax.servlet.http.HttpServletResponse',
-                                                flash             : 'grails.web.mvc.FlashScope',
-                                                application       : 'javax.servlet.ServletContext',
+    static Map<String, String> DEFAULT_TYPES = [webRequest: 'org.grails.web.servlet.mvc.GrailsWebRequest',
+                                                request: 'javax.servlet.http.HttpServletRequest',
+                                                response: 'javax.servlet.http.HttpServletResponse',
+                                                flash: 'grails.web.mvc.FlashScope',
+                                                application: 'javax.servlet.ServletContext',
                                                 applicationContext: 'org.springframework.context.ApplicationContext',
-                                                grailsApplication : 'grails.core.GrailsApplication',
-                                                session           : 'grails.web.servlet.mvc.GrailsHttpSession',
-                                                params            : 'grails.web.servlet.mvc.GrailsParameterMap',
-                                                actionName        : 'CharSequence',
-                                                controllerName    : 'CharSequence']
+                                                grailsApplication: 'grails.core.GrailsApplication',
+                                                session: 'grails.web.servlet.mvc.GrailsHttpSession',
+                                                params: 'grails.web.servlet.mvc.GrailsParameterMap',
+                                                actionName: 'CharSequence',
+                                                controllerName: 'CharSequence']
 
     Map<String, String> model = Collections.synchronizedMap([:])
     Set<String> taglibs = Collections.synchronizedSet([] as Set)
@@ -181,7 +185,7 @@ class ModelEntry {
                 model.each { String fieldName, String fieldType ->
                     String cleanedFieldType = fieldType - ~/^java\.(util|lang)\./
                     String defaultType = DEFAULT_TYPES.get(fieldName)
-                    if(defaultType) {
+                    if (defaultType) {
                         try {
                             // use default field type for if field type is instance of the class
                             // for example instance of 'org.apache.catalina.core.ApplicationHttpRequest', use 'javax.servlet.http.HttpServletRequest'
@@ -190,7 +194,8 @@ class ModelEntry {
                             if (defaultTypeClass.isAssignableFrom(fieldTypeClass)) {
                                 cleanedFieldType = defaultType
                             }
-                        } catch (e) {
+                        }
+                        catch (e) {
                             // ignore
                         }
                     }

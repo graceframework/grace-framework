@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,39 +15,40 @@
  */
 package org.grails.web.sitemesh;
 
-import groovy.text.Template;
-
 import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.grails.web.servlet.WrappedResponseHolder;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.servlet.mvc.OutputAwareHttpServletResponse;
-import org.grails.web.servlet.view.AbstractGrailsView;
+import com.opensymphony.module.sitemesh.RequestConstants;
+import com.opensymphony.sitemesh.Content;
+import groovy.text.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.View;
 
-import com.opensymphony.module.sitemesh.RequestConstants;
-import com.opensymphony.sitemesh.Content;
+import org.grails.web.servlet.WrappedResponseHolder;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.servlet.mvc.OutputAwareHttpServletResponse;
+import org.grails.web.servlet.view.AbstractGrailsView;
 
 public class GrailsLayoutView extends AbstractGrailsView {
+
     private static final Logger LOG = LoggerFactory.getLogger(GrailsLayoutView.class);
+
     GroovyPageLayoutFinder groovyPageLayoutFinder;
-    
+
     protected View innerView;
 
     public static final String GSP_SITEMESH_PAGE = GrailsLayoutView.class.getName() + ".GSP_SITEMESH_PAGE";
-    
+
     public GrailsLayoutView(GroovyPageLayoutFinder groovyPageLayoutFinder, View innerView) {
         this.groovyPageLayoutFinder = groovyPageLayoutFinder;
         this.innerView = innerView;
     }
-    
+
     @Override
     public String getContentType() {
         return MediaType.ALL_VALUE;
@@ -58,7 +59,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
             HttpServletResponse response) throws Exception {
 
         boolean isCommitted = response.isCommitted() && (response instanceof OutputAwareHttpServletResponse) && !((OutputAwareHttpServletResponse) response).isWriterAvailable();
-        if( !isCommitted ) {
+        if (!isCommitted) {
 
             Content content = obtainContent(model, webRequest, request, response);
             if (content != null) {
@@ -71,12 +72,12 @@ public class GrailsLayoutView extends AbstractGrailsView {
                     case ERROR:
                     case FORWARD:
                     case REQUEST:
-                        if(LOG.isDebugEnabled()) {
-                            LOG.debug("Finding layout for request and content" );
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Finding layout for request and content");
                         }
                         SpringMVCViewDecorator decorator = (SpringMVCViewDecorator) groovyPageLayoutFinder.findLayout(request, content);
                         if (decorator != null) {
-                            if(LOG.isDebugEnabled()) {
+                            if (LOG.isDebugEnabled()) {
                                 LOG.debug("Found layout. Rendering content for layout and model {}", decorator.getPage(), model);
                             }
 
@@ -86,7 +87,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
                         break;
                 }
                 PrintWriter writer = response.getWriter();
-                if(LOG.isDebugEnabled()) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Layout not applicable to response, writing original content");
                 }
                 content.writeOriginal(writer);
@@ -95,7 +96,6 @@ public class GrailsLayoutView extends AbstractGrailsView {
                 }
             }
         }
-
 
     }
 
@@ -115,18 +115,18 @@ public class GrailsLayoutView extends AbstractGrailsView {
             HttpServletResponse response) throws Exception {
         Object oldPage = request.getAttribute(RequestConstants.PAGE);
         request.removeAttribute(RequestConstants.PAGE);
-        Object oldGspSiteMeshPage=request.getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
+        Object oldGspSiteMeshPage = request.getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE);
         HttpServletResponse previousResponse = webRequest.getWrappedResponse();
         HttpServletResponse previousWrappedResponse = WrappedResponseHolder.getWrappedResponse();
         try {
             request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, new GSPSitemeshPage());
-            
+
             GrailsContentBufferingResponse contentBufferingResponse = createContentBufferingResponse(model, webRequest, request, response);
             webRequest.setWrappedResponse(contentBufferingResponse);
             WrappedResponseHolder.setWrappedResponse(contentBufferingResponse);
-            
+
             renderInnerView(model, webRequest, request, response, contentBufferingResponse);
-            
+
             return contentBufferingResponse.getContent();
         }
         finally {
@@ -144,7 +144,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
     protected void renderInnerView(Map<String, Object> model, GrailsWebRequest webRequest, HttpServletRequest request,
             HttpServletResponse response,
             GrailsContentBufferingResponse contentBufferingResponse) throws Exception {
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Rendering inner view for layout and model {}", model);
         }
         innerView.render(model, request, contentBufferingResponse);
@@ -157,8 +157,8 @@ public class GrailsLayoutView extends AbstractGrailsView {
 
     @Override
     public Template getTemplate() {
-        if(innerView instanceof AbstractGrailsView) {
-            return ((AbstractGrailsView)innerView).getTemplate();
+        if (innerView instanceof AbstractGrailsView) {
+            return ((AbstractGrailsView) innerView).getTemplate();
         }
         return null;
     }
@@ -166,4 +166,5 @@ public class GrailsLayoutView extends AbstractGrailsView {
     public View getInnerView() {
         return innerView;
     }
+
 }

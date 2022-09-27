@@ -1,11 +1,30 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.plugins.web.taglib
+
+import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import grails.artefact.TagLibrary
 import grails.gsp.TagLib
 import grails.util.TypeConvertingMap
 import grails.web.mapping.LinkGenerator
 import grails.web.mapping.UrlMapping
-import groovy.transform.CompileStatic
+
 import org.grails.encoder.CodecLookup
 import org.grails.encoder.Encoder
 import org.grails.taglib.TagOutput
@@ -13,8 +32,6 @@ import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.web.mapping.ForwardUrlMappingInfo
 import org.grails.web.mapping.UrlMappingUtils
 import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.servlet.support.RequestContextUtils
 
 /**
  * Tag library with tags that integration with the URL mappings API (paginate, include etc.)
@@ -24,7 +41,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
  */
 @CompileStatic
 @TagLib
-class UrlMappingTagLib implements TagLibrary{
+class UrlMappingTagLib implements TagLibrary {
 
     CodecLookup codecLookup
 
@@ -48,16 +65,16 @@ class UrlMappingTagLib implements TagLibrary{
     Closure include = { Map attrs, body ->
         if (attrs.action && !attrs.controller) {
             def controller = request?.getAttribute(GrailsApplicationAttributes.CONTROLLER)
-            def controllerName = ((GroovyObject)controller)?.getProperty("controllerName")
+            def controllerName = ((GroovyObject) controller)?.getProperty("controllerName")
             attrs.controller = controllerName
         }
 
         if (attrs.controller || attrs.view) {
             def mapping = new ForwardUrlMappingInfo(controller: attrs.controller as String,
-                action: attrs.action as String,
-                view: attrs.view as String,
-                id: attrs.id as String,
-                params: attrs.params as Map)
+                    action: attrs.action as String,
+                    view: attrs.view as String,
+                    id: attrs.id as String,
+                    params: attrs.params as Map)
 
             if (attrs.namespace != null) {
                 mapping.namespace = attrs.namespace as String
@@ -65,7 +82,7 @@ class UrlMappingTagLib implements TagLibrary{
             if (attrs.plugin != null) {
                 mapping.pluginName = attrs.plugin as String
             }
-            out << UrlMappingUtils.includeForUrlMappingInfo(request, response, mapping, (Map)(attrs.model ?: [:]), linkGenerator)?.content
+            out << UrlMappingUtils.includeForUrlMappingInfo(request, response, mapping, (Map) (attrs.model ?: [:]), linkGenerator)?.content
         }
     }
 
@@ -94,7 +111,7 @@ class UrlMappingTagLib implements TagLibrary{
      * @attr fragment The link fragment (often called anchor tag) to use
      */
     Closure paginate = { Map attrsMap ->
-        TypeConvertingMap attrs = (TypeConvertingMap)attrsMap
+        TypeConvertingMap attrs = (TypeConvertingMap) attrsMap
         def writer = out
         if (attrs.total == null) {
             throwTagError("Tag [paginate] is missing required attribute [total]")
@@ -110,7 +127,7 @@ class UrlMappingTagLib implements TagLibrary{
         if (!max) max = (attrs.int('max') ?: 10)
 
         Map linkParams = [:]
-        if (attrs.params instanceof Map) linkParams.putAll((Map)attrs.params)
+        if (attrs.params instanceof Map) linkParams.putAll((Map) attrs.params)
         linkParams.offset = offset - max
         linkParams.max = max
         if (params.sort) linkParams.sort = params.sort
@@ -121,7 +138,8 @@ class UrlMappingTagLib implements TagLibrary{
         if (attrs.containsKey('mapping')) {
             linkTagAttrs.mapping = attrs.mapping
             action = attrs.action
-        } else {
+        }
+        else {
             action = attrs.action ?: params.action
         }
         if (action) {
@@ -154,7 +172,7 @@ class UrlMappingTagLib implements TagLibrary{
         if (currentstep > firststep && !attrs.boolean('omitPrev')) {
             linkTagAttrs.put('class', 'prevLink')
             linkParams.offset = offset - max
-            writer << callLink((Map)linkTagAttrs.clone()) {
+            writer << callLink((Map) linkTagAttrs.clone()) {
                 (attrs.prev ?: messageSource.getMessage('paginate.prev', null, messageSource.getMessage('default.paginate.prev', null, 'Previous', locale), locale))
             }
         }
@@ -182,10 +200,10 @@ class UrlMappingTagLib implements TagLibrary{
             // display firststep link when beginstep is not firststep
             if (beginstep > firststep && !attrs.boolean('omitFirst')) {
                 linkParams.offset = 0
-                writer << callLink((Map)linkTagAttrs.clone()) {firststep.toString()}
+                writer << callLink((Map) linkTagAttrs.clone()) { firststep.toString() }
             }
             //show a gap if beginstep isn't immediately after firststep, and if were not omitting first or rev
-            if (beginstep > firststep+1 && (!attrs.boolean('omitFirst') || !attrs.boolean('omitPrev')) ) {
+            if (beginstep > firststep + 1 && (!attrs.boolean('omitFirst') || !attrs.boolean('omitPrev'))) {
                 writer << '<span class="step gap">..</span>'
             }
 
@@ -196,18 +214,18 @@ class UrlMappingTagLib implements TagLibrary{
                 }
                 else {
                     linkParams.offset = (i - 1) * max
-                    writer << callLink((Map)linkTagAttrs.clone()) {i.toString()}
+                    writer << callLink((Map) linkTagAttrs.clone()) { i.toString() }
                 }
             }
 
             //show a gap if beginstep isn't immediately before firststep, and if were not omitting first or rev
-            if (endstep+1 < laststep && (!attrs.boolean('omitLast') || !attrs.boolean('omitNext'))) {
+            if (endstep + 1 < laststep && (!attrs.boolean('omitLast') || !attrs.boolean('omitNext'))) {
                 writer << '<span class="step gap">..</span>'
             }
             // display laststep link when endstep is not laststep
             if (endstep < laststep && !attrs.boolean('omitLast')) {
                 linkParams.offset = (laststep - 1) * max
-                writer << callLink((Map)linkTagAttrs.clone()) { laststep.toString() }
+                writer << callLink((Map) linkTagAttrs.clone()) { laststep.toString() }
             }
         }
 
@@ -215,7 +233,7 @@ class UrlMappingTagLib implements TagLibrary{
         if (currentstep < laststep && !attrs.boolean('omitNext')) {
             linkTagAttrs.put('class', 'nextLink')
             linkParams.offset = offset + max
-            writer << callLink((Map)linkTagAttrs.clone()) {
+            writer << callLink((Map) linkTagAttrs.clone()) {
                 (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
             }
         }
@@ -325,7 +343,7 @@ class UrlMappingTagLib implements TagLibrary{
         linkAttrs.action = action
         linkAttrs.namespace = namespace
 
-        writer << callLink((Map)linkAttrs) {
+        writer << callLink((Map) linkAttrs) {
             title
         }
         writer << '</th>'
@@ -334,4 +352,5 @@ class UrlMappingTagLib implements TagLibrary{
     private callLink(Map attrs, Object body) {
         TagOutput.captureTagOutput(tagLibraryLookup, 'g', 'link', attrs, body, OutputContextLookupHelper.lookupOutputContext())
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,31 +15,46 @@
  */
 package org.grails.compiler.web.taglib;
 
-import grails.artefact.TagLibrary;
-import grails.compiler.ast.AnnotatedClassInjector;
-import grails.compiler.ast.AstTransformer;
-import grails.compiler.ast.GrailsArtefactClassInjector;
-import groovy.lang.Closure;
-import org.codehaus.groovy.ast.*;
-import org.codehaus.groovy.ast.expr.*;
-import org.codehaus.groovy.ast.stmt.BlockStatement;
-import org.codehaus.groovy.ast.stmt.ExpressionStatement;
-import org.codehaus.groovy.ast.stmt.ReturnStatement;
-import org.codehaus.groovy.ast.stmt.Statement;
-import org.codehaus.groovy.classgen.GeneratorContext;
-import org.codehaus.groovy.control.SourceUnit;
-import org.grails.compiler.injection.GrailsASTUtils;
-import org.grails.core.artefact.gsp.TagLibArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
-import org.grails.taglib.TagOutput;
-import org.grails.taglib.encoder.OutputContextLookupHelper;
-
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import groovy.lang.Closure;
+import org.codehaus.groovy.ast.ClassHelper;
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.MethodNode;
+import org.codehaus.groovy.ast.Parameter;
+import org.codehaus.groovy.ast.PropertyNode;
+import org.codehaus.groovy.ast.expr.ArgumentListExpression;
+import org.codehaus.groovy.ast.expr.CastExpression;
+import org.codehaus.groovy.ast.expr.ClassExpression;
+import org.codehaus.groovy.ast.expr.ClosureExpression;
+import org.codehaus.groovy.ast.expr.ConstantExpression;
+import org.codehaus.groovy.ast.expr.ConstructorCallExpression;
+import org.codehaus.groovy.ast.expr.Expression;
+import org.codehaus.groovy.ast.expr.MapExpression;
+import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.VariableExpression;
+import org.codehaus.groovy.ast.stmt.BlockStatement;
+import org.codehaus.groovy.ast.stmt.ExpressionStatement;
+import org.codehaus.groovy.ast.stmt.ReturnStatement;
+import org.codehaus.groovy.ast.stmt.Statement;
+import org.codehaus.groovy.classgen.GeneratorContext;
+import org.codehaus.groovy.control.SourceUnit;
+
+import grails.artefact.TagLibrary;
+import grails.compiler.ast.AnnotatedClassInjector;
+import grails.compiler.ast.AstTransformer;
+import grails.compiler.ast.GrailsArtefactClassInjector;
+
+import org.grails.compiler.injection.GrailsASTUtils;
+import org.grails.core.artefact.gsp.TagLibArtefactHandler;
+import org.grails.io.support.GrailsResourceUtils;
+import org.grails.taglib.TagOutput;
+import org.grails.taglib.encoder.OutputContextLookupHelper;
 
 /**
  * Enhances tag library classes with the appropriate API at compile time.
@@ -56,25 +71,37 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
             GrailsResourceUtils.GRAILS_APP_DIR + "/taglib/(.+)TagLib\\.groovy");
 
     private static final String ATTRS_ARGUMENT = "attrs";
+
     private static final String BODY_ARGUMENT = "body";
+
     private static final Parameter[] MAP_CLOSURE_PARAMETERS = new Parameter[] {
-        new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT),
-        new Parameter(new ClassNode(Closure.class), BODY_ARGUMENT) };
+            new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT),
+            new Parameter(new ClassNode(Closure.class), BODY_ARGUMENT) };
+
     private static final Parameter[] CLOSURE_PARAMETERS = new Parameter[] {
-        new Parameter(new ClassNode(Closure.class), BODY_ARGUMENT) };
+            new Parameter(new ClassNode(Closure.class), BODY_ARGUMENT) };
+
     private static final Parameter[] MAP_PARAMETERS = new Parameter[] {
-        new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT) };
+            new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT) };
+
     private static final Parameter[] MAP_CHARSEQUENCE_PARAMETERS = new Parameter[] {
-        new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT),
-        new Parameter(new ClassNode(CharSequence.class), BODY_ARGUMENT) };
+            new Parameter(new ClassNode(Map.class), ATTRS_ARGUMENT),
+            new Parameter(new ClassNode(CharSequence.class), BODY_ARGUMENT) };
+
     private static final ClassNode TAG_OUTPUT_CLASS_NODE = new ClassNode(TagOutput.class);
+
     private static final VariableExpression ATTRS_EXPRESSION = new VariableExpression(ATTRS_ARGUMENT);
+
     private static final VariableExpression BODY_EXPRESSION = new VariableExpression(BODY_ARGUMENT);
+
     private static final MethodCallExpression CURRENT_OUTPUT_CONTEXT_METHOD_CALL =
-        new MethodCallExpression(new ClassExpression(new ClassNode(OutputContextLookupHelper.class)),
-                "lookupOutputContext", ZERO_ARGS);
+            new MethodCallExpression(new ClassExpression(new ClassNode(OutputContextLookupHelper.class)),
+                    "lookupOutputContext", ZERO_ARGS);
+
     private static final Expression NULL_EXPRESSION = new ConstantExpression(null);
+
     private static final String NAMESPACE_PROPERTY = "namespace";
+
     private static final ClassNode CLOSURE_CLASS_NODE = new ClassNode(Closure.class);
 
 
@@ -114,8 +141,7 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
                 namespace = initialExpression.getText();
             }
         }
-        
-        
+
         addGetTagLibNamespaceMethod(classNode, namespace);
 
         MethodCallExpression tagLibraryLookupMethodCall = new MethodCallExpression(new VariableExpression("this", ClassHelper.make(TagLibrary.class)), "getTagLibraryLookup", ZERO_ARGS);
@@ -142,7 +168,7 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
         ArgumentListExpression constructorArgs = new ArgumentListExpression();
         constructorArgs.addExpression(BODY_EXPRESSION);
         arguments.addExpression(new CastExpression(ClassHelper.make(Map.class), ATTRS_EXPRESSION))
-                 .addExpression(new ConstructorCallExpression(new ClassNode(TagOutput.ConstantClosure.class), constructorArgs));
+                .addExpression(new ConstructorCallExpression(new ClassNode(TagOutput.ConstantClosure.class), constructorArgs));
         methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(new VariableExpression("this"), tagName, arguments)));
         classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CHARSEQUENCE_PARAMETERS, null, methodBody));
     }
@@ -159,32 +185,32 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
         BlockStatement methodBody = new BlockStatement();
         ArgumentListExpression arguments = new ArgumentListExpression();
         arguments.addExpression(tagLibraryLookupMethodCall)
-                 .addExpression(new MethodCallExpression(new VariableExpression("this"), GET_TAG_LIB_NAMESPACE_METHOD_NAME, new ArgumentListExpression()))
-                 .addExpression(new ConstantExpression(tagName))
-                 .addExpression(includeAttrs ? new CastExpression(ClassHelper.make(Map.class), ATTRS_EXPRESSION) : new MapExpression())
-                 .addExpression(includeBody ? BODY_EXPRESSION : NULL_EXPRESSION)
-                 .addExpression(CURRENT_OUTPUT_CONTEXT_METHOD_CALL);
+                .addExpression(new MethodCallExpression(new VariableExpression("this"), GET_TAG_LIB_NAMESPACE_METHOD_NAME, new ArgumentListExpression()))
+                .addExpression(new ConstantExpression(tagName))
+                .addExpression(includeAttrs ? new CastExpression(ClassHelper.make(Map.class), ATTRS_EXPRESSION) : new MapExpression())
+                .addExpression(includeBody ? BODY_EXPRESSION : NULL_EXPRESSION)
+                .addExpression(CURRENT_OUTPUT_CONTEXT_METHOD_CALL);
 
-        methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(new ClassExpression(TAG_OUTPUT_CLASS_NODE),"captureTagOutput", arguments)));
+        methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(new ClassExpression(TAG_OUTPUT_CLASS_NODE), "captureTagOutput", arguments)));
 
         if (includeBody && includeAttrs) {
             if (!methodExists(classNode, tagName, MAP_CLOSURE_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CLOSURE_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else if (includeAttrs) {
             if (!methodExists(classNode, tagName, MAP_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,GrailsASTUtils.OBJECT_CLASS_NODE, MAP_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, MAP_PARAMETERS, null, methodBody));
             }
         }
         else if (includeBody) {
             if (!methodExists(classNode, tagName, CLOSURE_PARAMETERS)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,GrailsASTUtils.OBJECT_CLASS_NODE, CLOSURE_PARAMETERS, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else {
             if (!methodExists(classNode, tagName, Parameter.EMPTY_ARRAY)) {
-                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,GrailsASTUtils.OBJECT_CLASS_NODE, Parameter.EMPTY_ARRAY, null, methodBody));
+                classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC, GrailsASTUtils.OBJECT_CLASS_NODE, Parameter.EMPTY_ARRAY, null, methodBody));
             }
         }
     }
@@ -232,4 +258,5 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
     public boolean shouldInject(URL url) {
         return url != null && TAGLIB_PATTERN.matcher(url.getFile()).find();
     }
+
 }

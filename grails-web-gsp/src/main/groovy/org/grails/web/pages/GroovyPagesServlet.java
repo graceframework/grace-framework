@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,20 +15,15 @@
  */
 package org.grails.web.pages;
 
-import grails.plugins.GrailsPlugin;
-import grails.plugins.GrailsPluginManager;
-import grails.plugins.PluginManagerAware;
-import grails.util.GrailsStringUtils;
-import org.grails.web.util.GrailsApplicationAttributes;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import groovy.text.Template;
-import org.grails.core.io.support.GrailsFactoriesLoader;
-import org.grails.gsp.GroovyPageTemplate;
-import org.grails.gsp.GroovyPagesTemplateEngine;
-import org.grails.plugins.BinaryGrailsPlugin;
-import org.grails.gsp.io.GroovyPageCompiledScriptSource;
-import org.grails.gsp.io.GroovyPageScriptSource;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -38,13 +33,20 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import grails.plugins.GrailsPlugin;
+import grails.plugins.GrailsPluginManager;
+import grails.plugins.PluginManagerAware;
+import grails.util.GrailsStringUtils;
+
+import org.grails.core.io.support.GrailsFactoriesLoader;
+import org.grails.gsp.GroovyPageTemplate;
+import org.grails.gsp.GroovyPagesTemplateEngine;
+import org.grails.gsp.io.GroovyPageCompiledScriptSource;
+import org.grails.gsp.io.GroovyPageScriptSource;
+import org.grails.plugins.BinaryGrailsPlugin;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper;
+import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
  * NOTE: Based on work done by on the GSP standalone project (https://gsp.dev.java.net/)
@@ -52,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Main servlet class.  Example usage in web.xml:
  *
  * <pre>
- * {@code 
+ * {@code
  *     <servlet>
  *       <servlet-name>GroovyPagesServlet</servlet-name>
  *       <servlet-class>GroovyPagesServlet</servlet-class>
@@ -78,9 +80,11 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     private static final long serialVersionUID = -1918149859392123495L;
 
     private static final String WEB_INF = "/WEB-INF";
+
     private static final String GRAILS_APP = "/grails-app";
 
     private ServletContext context;
+
     private GrailsApplicationAttributes grailsAttributes;
 
     public GroovyPagesServlet() {
@@ -90,7 +94,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
 
     @Override
     protected ServletRequestAttributes buildRequestAttributes(HttpServletRequest request, HttpServletResponse response, RequestAttributes previousAttributes) {
-        if(previousAttributes instanceof GrailsWebRequest) {
+        if (previousAttributes instanceof GrailsWebRequest) {
             return null;
         }
         else {
@@ -102,8 +106,11 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
      * The size of the buffer used when formulating the response
      */
     public static final String SERVLET_INSTANCE = "org.codehaus.groovy.grails.GSP_SERVLET";
+
     private GroovyPagesTemplateEngine groovyPagesTemplateEngine;
+
     private GrailsPluginManager pluginManager;
+
     @SuppressWarnings("rawtypes")
     private Map<String, Class> binaryPluginViewsMap = new ConcurrentHashMap<String, Class>();
 
@@ -114,7 +121,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
         context.setAttribute(SERVLET_INSTANCE, this);
 
         final WebApplicationContext webApplicationContext = getWebApplicationContext();
-        grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class, getClass().getClassLoader(), new Object[]{context}).get(0);
+        grailsAttributes = GrailsFactoriesLoader.loadFactoriesWithArguments(GrailsApplicationAttributes.class, getClass().getClassLoader(), new Object[] { context }).get(0);
         final AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         if (autowireCapableBeanFactory != null) {
             autowireCapableBeanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
@@ -133,12 +140,12 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
         request.setAttribute(GrailsApplicationAttributes.REQUEST_SCOPE_ID, grailsAttributes);
         request.setAttribute(GroovyPagesServlet.SERVLET_INSTANCE, this);
 
-        String pageName = (String)request.getAttribute(GrailsApplicationAttributes.GSP_TO_RENDER);
+        String pageName = (String) request.getAttribute(GrailsApplicationAttributes.GSP_TO_RENDER);
         if (GrailsStringUtils.isBlank(pageName)) {
             pageName = getCurrentRequestUri(request);
         }
 
-        boolean isNotInclude = !WebUtils.isIncludeRequest(request) ;
+        boolean isNotInclude = !WebUtils.isIncludeRequest(request);
         if (isNotInclude && isSecurePath(pageName)) {
             sendNotFound(response, pageName);
         }
@@ -222,11 +229,11 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
         try {
             Template template = engine.createTemplate(scriptSource);
             if (template instanceof GroovyPageTemplate) {
-                ((GroovyPageTemplate)template).setAllowSettingContentType(true);
+                ((GroovyPageTemplate) template).setAllowSettingContentType(true);
             }
             template.make().writeTo(out);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             out.setError();
             throw e;
         }
@@ -243,7 +250,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
      */
     protected GSPResponseWriter createResponseWriter(HttpServletResponse response) {
         GSPResponseWriter out = GSPResponseWriter.getInstance(response);
-        GrailsWebRequest webRequest =  (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
+        GrailsWebRequest webRequest = (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
         webRequest.setOut(out);
         return out;
     }
@@ -251,4 +258,5 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     public void setPluginManager(GrailsPluginManager pluginManager) {
         this.pluginManager = pluginManager;
     }
+
 }

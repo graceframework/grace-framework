@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,8 +23,11 @@ import com.opensymphony.module.sitemesh.html.util.CharArray;
 import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage;
 
 public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
+
     private final CharArray body;
+
     private final CharArray head;
+
     private final char[] data;
 
     public GrailsTokenizedHTMLPage(char[] data, CharArray body, CharArray head) {
@@ -37,7 +40,7 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     @Override
     public void writeHead(Writer out) throws IOException {
         if (out instanceof PrintWriter) {
-            head.writeTo((PrintWriter)out);
+            head.writeTo((PrintWriter) out);
         }
         else {
             super.writeHead(out);
@@ -47,7 +50,7 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     @Override
     public void writeBody(Writer out) throws IOException {
         if (out instanceof PrintWriter) {
-            body.writeTo((PrintWriter)out);
+            body.writeTo((PrintWriter) out);
         }
         else {
             super.writeBody(out);
@@ -57,4 +60,5 @@ public class GrailsTokenizedHTMLPage extends TokenizedHTMLPage {
     public char[] getData() {
         return data;
     }
+
 }

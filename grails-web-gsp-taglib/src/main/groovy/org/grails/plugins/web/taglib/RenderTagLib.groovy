@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,26 @@
  */
 package org.grails.plugins.web.taglib
 
-import com.opensymphony.module.sitemesh.*
-import com.opensymphony.module.sitemesh.parser.AbstractHTMLPage
+import javax.servlet.http.HttpServletRequest
+
+import com.opensymphony.module.sitemesh.Decorator
+import com.opensymphony.module.sitemesh.DecoratorMapper
+import com.opensymphony.module.sitemesh.Factory
+import com.opensymphony.module.sitemesh.HTMLPage
+import com.opensymphony.module.sitemesh.Page
+import com.opensymphony.module.sitemesh.PageParser
+import com.opensymphony.module.sitemesh.RequestConstants
+import groovy.text.Template
+import groovy.transform.CompileStatic
+import org.springframework.http.HttpStatus
+import org.springframework.util.StringUtils
+
 import grails.artefact.TagLibrary
 import grails.core.GrailsApplication
 import grails.core.support.GrailsApplicationAware
 import grails.gsp.TagLib
 import grails.util.TypeConvertingMap
-import groovy.text.Template
-import groovy.transform.CompileStatic
+
 import org.grails.buffer.FastStringWriter
 import org.grails.buffer.StreamCharBuffer
 import org.grails.encoder.CodecLookup
@@ -37,12 +48,13 @@ import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.web.errors.ErrorsViewStackTracePrinter
 import org.grails.web.gsp.GroovyPagesTemplateRenderer
-import org.grails.web.sitemesh.*
+import org.grails.web.sitemesh.FactoryHolder
+import org.grails.web.sitemesh.GSPSitemeshPage
+import org.grails.web.sitemesh.GrailsHTMLPageParser
+import org.grails.web.sitemesh.GrailsLayoutView
+import org.grails.web.sitemesh.GroovyPageLayoutFinder
+import org.grails.web.sitemesh.SpringMVCViewDecorator
 import org.grails.web.util.WebUtils
-import org.springframework.http.HttpStatus
-import org.springframework.util.StringUtils
-
-import javax.servlet.http.HttpServletRequest
 
 /**
  * Tags to help rendering of views and layouts.
@@ -52,6 +64,7 @@ import javax.servlet.http.HttpServletRequest
 @CompileStatic
 @TagLib
 class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAware {
+
     GroovyPagesTemplateRenderer groovyPagesTemplateRenderer
     ErrorsViewStackTracePrinter errorsViewStackTracePrinter
     GroovyPagesTemplateEngine groovyPagesTemplateEngine
@@ -61,7 +74,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
     protected boolean sitemeshPreprocessMode = true
 
     protected HTMLPage getPage() {
-        return (HTMLPage)getRequest().getAttribute(PAGE)
+        return (HTMLPage) getRequest().getAttribute(PAGE)
     }
 
     @Override
@@ -97,8 +110,8 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
         def oldPage = getPage()
         String contentType = attrs.contentType ? attrs.contentType as String : "text/html"
 
-        Map pageParams = attrs.params instanceof Map ? (Map)attrs.params : [:]
-        Map viewModel = attrs.model instanceof Map ? (Map)attrs.model : [:]
+        Map pageParams = attrs.params instanceof Map ? (Map) attrs.params : [:]
+        Map viewModel = attrs.model instanceof Map ? (Map) attrs.model : [:]
         Object content = null
         GSPSitemeshPage gspSiteMeshPage = null
         if (attrs.url) {
@@ -125,8 +138,8 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
                     gspSiteMeshPage.setUsed(isSitemeshPreprocessMode())
                 }
                 else if (content != null) {
-                    FastStringWriter stringWriter=new FastStringWriter()
-                    stringWriter.print((Object)content)
+                    FastStringWriter stringWriter = new FastStringWriter()
+                    stringWriter.print((Object) content)
                     gspSiteMeshPage.setPageBuffer(stringWriter.buffer)
                     gspSiteMeshPage.setUsed(isSitemeshPreprocessMode())
                 }
@@ -135,20 +148,21 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
                 request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, oldGspSiteMeshPage)
             }
         }
-        if(content==null) {
-            content=''
+        if (content == null) {
+            content = ''
         }
 
         Page page = null
-        if (!((TypeConvertingMap)attrs).boolean('parse') && gspSiteMeshPage != null && gspSiteMeshPage.isUsed()) {
+        if (!((TypeConvertingMap) attrs).boolean('parse') && gspSiteMeshPage != null && gspSiteMeshPage.isUsed()) {
             page = gspSiteMeshPage
         }
         else {
             def parser = createPageParser(contentType)
             char[] charArray
-            if(content instanceof StreamCharBuffer) {
-                charArray = ((StreamCharBuffer)content).toCharArray()
-            } else {
+            if (content instanceof StreamCharBuffer) {
+                charArray = ((StreamCharBuffer) content).toCharArray()
+            }
+            else {
                 charArray = content.toString().toCharArray()
             }
             page = parser.parse(charArray)
@@ -167,22 +181,24 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
             finally {
                 request.setAttribute(PAGE, oldPage)
             }
-        } else {
+        }
+        else {
             out << content
         }
     }
 
     protected Template findTemplate(Decorator decorator) {
         Template template
-        if(decorator instanceof SpringMVCViewDecorator) {
-            template = ((SpringMVCViewDecorator)decorator).getTemplate()
-            if(template instanceof GroovyPageTemplate) {
-                GroovyPageTemplate gpt = (GroovyPageTemplate)template
-                gpt = (GroovyPageTemplate)gpt.clone()
+        if (decorator instanceof SpringMVCViewDecorator) {
+            template = ((SpringMVCViewDecorator) decorator).getTemplate()
+            if (template instanceof GroovyPageTemplate) {
+                GroovyPageTemplate gpt = (GroovyPageTemplate) template
+                gpt = (GroovyPageTemplate) gpt.clone()
                 gpt.setAllowSettingContentType(false)
                 template = gpt
             }
-        } else {
+        }
+        else {
             template = groovyPagesTemplateEngine.createTemplate(decorator.getPage())
         }
         return template
@@ -191,9 +207,10 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
     protected Decorator findDecorator(HttpServletRequest req, String layoutName) {
         DecoratorMapper decoratorMapper = sitemeshFactory?.getDecoratorMapper()
         Decorator d
-        if(decoratorMapper) {
+        if (decoratorMapper) {
             d = decoratorMapper.getNamedDecorator(req, layoutName)
-        } else {
+        }
+        else {
             d = groovyPageLayoutFinder.getNamedDecorator(req, layoutName)
         }
         d
@@ -201,7 +218,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
 
     protected PageParser createPageParser(String contentType) {
         PageParser parser = sitemeshFactory?.getPageParser(contentType)
-        if(parser == null) {
+        if (parser == null) {
             parser = new GrailsHTMLPageParser()
         }
         return parser
@@ -210,7 +227,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
     protected Factory getSitemeshFactory() {
         return FactoryHolder.getSitemeshFactory()
     }
-    
+
     /**
      * Used to retrieve a property of the decorated page.<br/>
      *
@@ -233,7 +250,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
 
         if (htmlPage instanceof GSPSitemeshPage) {
             // check if there is an component content buffer
-            propertyValue = ((GSPSitemeshPage)htmlPage).getContentBuffer(propertyName)
+            propertyValue = ((GSPSitemeshPage) htmlPage).getContentBuffer(propertyName)
         }
 
         if (!propertyValue) {
@@ -276,7 +293,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
         }
 
         def htmlPage = getPage()
-        List names = ((attrs.name instanceof List) ? (List)attrs.name : [attrs.name])
+        List names = ((attrs.name instanceof List) ? (List) attrs.name : [attrs.name])
 
         def invokeBody = true
         for (i in 0..<names.size()) {
@@ -294,7 +311,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
             if (propertyValue) {
                 if (attrs.containsKey('equals')) {
                     if (attrs.equals instanceof List) {
-                        invokeBody = ((List)attrs.equals)[i] == propertyValue
+                        invokeBody = ((List) attrs.equals)[i] == propertyValue
                     }
                     else {
                         invokeBody = attrs.equals == propertyValue
@@ -375,10 +392,10 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
      */
     Closure renderException = { Map attrs ->
         if (!(attrs?.exception instanceof Throwable)) {
-              return
+            return
         }
-        Throwable exception = (Throwable)attrs.exception
-        
+        Throwable exception = (Throwable) attrs.exception
+
         Encoder htmlEncoder = codecLookup.lookupEncoder('HTML')
 
         def currentOut = out
@@ -411,4 +428,5 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
         String httpStatusReason = HttpStatus.valueOf(statusCode).getReasonPhrase()
         "$statusCode: ${httpStatusReason}"
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,7 +43,7 @@ class WebXmlTagLibraryReader {
         def rootNode = SpringIOUtils.createXmlSlurper().parse(inputStream)
         rootNode.taglib.each { taglib ->
             String uri = taglib.'taglib-uri'.text()
-            String location =  taglib.'taglib-location'.text()
+            String location = taglib.'taglib-location'.text()
             tagLocations[uri] = location
         }
     }
