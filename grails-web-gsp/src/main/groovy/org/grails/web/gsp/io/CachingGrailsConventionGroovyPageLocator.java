@@ -147,7 +147,7 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
             this.contextPath = contextPath;
         }
 
-        public static final GroovyPageLocatorCacheKey build(final String uri, final String pluginName, final TemplateVariableBinding binding) {
+        public static GroovyPageLocatorCacheKey build(final String uri, final String pluginName, final TemplateVariableBinding binding) {
             String pluginNameInCacheKey = (pluginName == null)
                     ? (binding instanceof GroovyPageBinding && ((GroovyPageBinding) binding).getPagePlugin() != null
                             ? ((GroovyPageBinding) binding).getPagePlugin().getName() : null)
@@ -205,7 +205,7 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
 
     static class CustomCacheEntry<T> extends CacheEntry<T> {
 
-        public CustomCacheEntry() {
+        CustomCacheEntry() {
             super();
         }
 

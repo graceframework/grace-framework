@@ -45,7 +45,7 @@ public class TagOutput {
     }
 
     @SuppressWarnings("rawtypes")
-    public final static Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
+    public static final Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
             String tagName, Map attrs, Object body, OutputContext outputContext) {
 
         GroovyObject tagLib = lookupCachedTagLib(gspTagLibraryLookup, namespace, tagName);
@@ -136,13 +136,13 @@ public class TagOutput {
         }
     }
 
-    public final static GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
+    public static final GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
             String namespace, String tagName) {
 
         return gspTagLibraryLookup != null ? gspTagLibraryLookup.lookupTagLibrary(namespace, tagName) : null;
     }
 
-    public final static Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
+    public static final Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
             final OutputContext outputContext) {
         if (body1 == null) {
             return EMPTY_BODY_CLOSURE;

@@ -195,7 +195,7 @@ public class GroovyPageWritable implements Writable {
     private static final class GspNoneCodec {
 
         @SuppressWarnings("unused")
-        public final Object encode(Object object) {
+        public Object encode(Object object) {
             return object;
         }
 

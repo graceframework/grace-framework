@@ -273,7 +273,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
         private String actionUri;
 
-        public LayoutCacheKey(String controllerName, String actionUri) {
+        LayoutCacheKey(String controllerName, String actionUri) {
             this.controllerName = controllerName;
             this.actionUri = actionUri;
         }
@@ -314,7 +314,7 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
         long createTimestamp = System.currentTimeMillis();
 
-        public DecoratorCacheValue(Decorator decorator) {
+        DecoratorCacheValue(Decorator decorator) {
             this.decorator = decorator;
         }
 

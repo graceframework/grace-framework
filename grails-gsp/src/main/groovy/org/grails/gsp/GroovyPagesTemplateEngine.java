@@ -142,7 +142,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
         private final String pageName;
 
-        public GroovyPagesTemplateEngineCacheEntry(String pageName) {
+        GroovyPagesTemplateEngineCacheEntry(String pageName) {
             this.pageName = pageName;
         }
 
@@ -169,7 +169,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
         private final CacheEntry<GroovyPageMetaInfo> cacheEntry;
 
-        public GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry) {
+        GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry) {
             this.cacheEntry = cacheEntry;
         }
 

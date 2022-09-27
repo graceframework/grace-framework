@@ -68,7 +68,7 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
 
     private VariableExpression thisObjectVariable;
 
-    public GroovyPageOptimizerVisitor(ClassNode targetGroovyPage) {
+    GroovyPageOptimizerVisitor(ClassNode targetGroovyPage) {
         this.targetGroovyPageNode = targetGroovyPage;
 
         MethodCallExpression thisObjectMethodCall = new MethodCallExpression(new VariableExpression(THIS_RECEIVER), "getThisObject",
@@ -105,7 +105,6 @@ class GroovyPageOptimizerVisitor extends CodeVisitorSupport {
 
     @Override
     public void visitMethodCallExpression(MethodCallExpression call) {
-
         if (isCallFromGroovyPageClass(call)) {
             // TODO: Research why http://jira.grails.org/browse/GRAILS-8679 happens with this enabled. See ElvisAndClosureGroovyPageTests
             //proceedCallFromGroovyPageClass(call);

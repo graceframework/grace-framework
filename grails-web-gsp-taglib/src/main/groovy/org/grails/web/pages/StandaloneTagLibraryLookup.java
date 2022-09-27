@@ -31,7 +31,7 @@ import org.grails.core.gsp.DefaultGrailsTagLibClass;
 import org.grails.taglib.TagLibraryLookup;
 
 /**
- * GSP TagLibraryLookup class that's used for standalone GSP 
+ * GSP TagLibraryLookup class that's used for standalone GSP
  *
  * @author Lari Hotari
  * @since 2.4.0

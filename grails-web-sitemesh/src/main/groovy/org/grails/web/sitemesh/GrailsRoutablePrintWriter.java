@@ -55,7 +55,7 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
     /**
      * Factory to lazily instantiate the destination.
      */
-    public static interface DestinationFactory {
+    public interface DestinationFactory {
 
         Writer activateDestination() throws IOException;
 

@@ -549,7 +549,7 @@ public abstract class GroovyPage extends Script {
      * @param name True if it can't
      * @return A boolean true or false
      */
-    public final static boolean isReservedName(String name) {
+    public static final boolean isReservedName(String name) {
         return RESERVED_NAMES.contains(name);
     }
 

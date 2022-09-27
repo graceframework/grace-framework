@@ -163,9 +163,9 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
         return null;
     }
 
-    private static interface LazyRequestBasedValue {
+    private interface LazyRequestBasedValue {
 
-        public Object evaluate(GrailsWebRequest webRequest);
+        Object evaluate(GrailsWebRequest webRequest);
 
     }
 

@@ -175,7 +175,7 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
 
         private static final long serialVersionUID = 1L;
 
-        public WrappedInitializationException(Throwable cause) {
+        WrappedInitializationException(Throwable cause) {
             super(cause);
         }
 

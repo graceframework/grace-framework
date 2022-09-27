@@ -302,7 +302,7 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
 
         private final String encoding;
 
-        private final static TextEncoder TEXT_ENCODER = new TextEncoder();
+        private static final TextEncoder TEXT_ENCODER = new TextEncoder();
 
         private StreamCharBuffer charBuffer;
 
@@ -314,7 +314,7 @@ public class GrailsPageResponseWrapper extends HttpServletResponseWrapper {
 
         private GSPSitemeshPage gspSitemeshPage;
 
-        public GrailsBuffer(PageParserSelector parserSelector, String contentType, String encoding, GSPSitemeshPage gspSitemeshPage) {
+        GrailsBuffer(PageParserSelector parserSelector, String contentType, String encoding, GSPSitemeshPage gspSitemeshPage) {
             this.parserSelector = parserSelector;
             this.contentType = contentType;
             this.encoding = encoding;

@@ -129,7 +129,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
         private GroovyPagesPageContext pageCtx;
 
-        public GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
+        GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
             this.pageCtx = pageCtx;
         }
 

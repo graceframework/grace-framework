@@ -165,9 +165,9 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
         }
     }
 
-    static interface GroovyPageMetaInfoInitializer {
+    interface GroovyPageMetaInfoInitializer {
 
-        public void initialize(GroovyPageMetaInfo metaInfo);
+        void initialize(GroovyPageMetaInfo metaInfo);
 
     }
 

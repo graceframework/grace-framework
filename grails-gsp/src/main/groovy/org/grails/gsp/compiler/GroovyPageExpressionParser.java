@@ -26,7 +26,7 @@ import java.util.Stack;
  */
 class GroovyPageExpressionParser {
 
-    private static enum ParsingState {
+    private enum ParsingState {
         NORMAL, EXPRESSION, QUOTEDVALUE_SINGLE, QUOTEDVALUE_DOUBLE, TRIPLEQUOTED_SINGLE, TRIPLEQUOTED_DOUBLE;
     }
 
@@ -46,7 +46,7 @@ class GroovyPageExpressionParser {
 
     int relativeCharIndex = 0;
 
-    public GroovyPageExpressionParser(String scriptTokens, int startPos, char terminationChar,
+    GroovyPageExpressionParser(String scriptTokens, int startPos, char terminationChar,
             char nextTerminationChar, boolean startInExpression) {
         this.scriptTokens = scriptTokens;
         this.startPos = startPos;

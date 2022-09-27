@@ -89,7 +89,7 @@ public final class OutputEncodingStack {
         return null;
     }
 
-    private static final OutputEncodingStack createNew(OutputEncodingStackAttributes attributes) {
+    private static OutputEncodingStack createNew(OutputEncodingStackAttributes attributes) {
         if (attributes.getTopWriter() == null) {
             attributes = new OutputEncodingStackAttributes.Builder(attributes).topWriter(lookupCurrentWriter(attributes.getOutputContext())).build();
         }
@@ -103,7 +103,7 @@ public final class OutputEncodingStack {
         return outputStack;
     }
 
-    public static final Writer currentWriter() {
+    public static Writer currentWriter() {
         OutputEncodingStack outputStack = currentStack(false);
         if (outputStack != null) {
             return outputStack.getOutWriter();
