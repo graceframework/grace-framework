@@ -27,6 +27,10 @@ import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext;
 
 public class GrailsViewBufferingResponse extends GrailsContentBufferingResponse {
 
+    public GrailsViewBufferingResponse(HttpServletRequest request, HttpServletResponse response) {
+        super(response, new SimpleHtmlOnlyContentProcessor(), new SimpleWebAppContext(request, response));
+    }
+
     private static class SimpleWebAppContext extends SiteMeshWebAppContext {
 
         SimpleWebAppContext(HttpServletRequest request, HttpServletResponse response) {
@@ -52,10 +56,6 @@ public class GrailsViewBufferingResponse extends GrailsContentBufferingResponse 
             return contentType != null && contentType.contains("html");
         }
 
-    }
-
-    public GrailsViewBufferingResponse(HttpServletRequest request, HttpServletResponse response) {
-        super(response, new SimpleHtmlOnlyContentProcessor(), new SimpleWebAppContext(request, response));
     }
 
 }

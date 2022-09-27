@@ -165,12 +165,6 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
         }
     }
 
-    interface GroovyPageMetaInfoInitializer {
-
-        void initialize(GroovyPageMetaInfo metaInfo);
-
-    }
-
     synchronized void initializeOnDemand(GroovyPageMetaInfoInitializer initializer) {
         if (!initialized) {
             initializer.initialize(this);
@@ -572,6 +566,12 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
         if (metaClassShouldBeRemoved) {
             removePageMetaClass();
         }
+    }
+
+    interface GroovyPageMetaInfoInitializer {
+
+        void initialize(GroovyPageMetaInfo metaInfo);
+
     }
 
 }

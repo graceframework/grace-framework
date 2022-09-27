@@ -171,24 +171,6 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
         }
     }
 
-    private static class WrappedInitializationException extends RuntimeException {
-
-        private static final long serialVersionUID = 1L;
-
-        WrappedInitializationException(Throwable cause) {
-            super(cause);
-        }
-
-        public void rethrowCause() throws Exception {
-            if (getCause() instanceof Exception) {
-                throw (Exception) getCause();
-            }
-
-            throw this;
-        }
-
-    }
-
     protected View createGrailsView(String viewName) throws Exception {
         // try GSP if res is null
 
@@ -290,6 +272,24 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
 
     public void setResolveJspView(boolean resolveJspView) {
         this.resolveJspView = resolveJspView;
+    }
+
+    private static class WrappedInitializationException extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+
+        WrappedInitializationException(Throwable cause) {
+            super(cause);
+        }
+
+        public void rethrowCause() throws Exception {
+            if (getCause() instanceof Exception) {
+                throw (Exception) getCause();
+            }
+
+            throw this;
+        }
+
     }
 
 }

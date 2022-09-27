@@ -25,7 +25,7 @@ import grails.util.Holder;
  * @author Graeme Rocher
  * @since 0.6
  */
-public class FactoryHolder {
+public final class FactoryHolder {
 
     private static Holder<Factory> holder = new Holder<Factory>("factory");
 

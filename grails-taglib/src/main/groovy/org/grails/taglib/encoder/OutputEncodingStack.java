@@ -43,6 +43,64 @@ public final class OutputEncodingStack {
 
     private final OutputContext outputContext;
 
+    private Stack<StackEntry> stack = new Stack<StackEntry>();
+
+    private OutputProxyWriter taglibWriter;
+
+    private OutputProxyWriter outWriter;
+
+    private OutputProxyWriter staticWriter;
+
+    private OutputProxyWriter expressionWriter;
+
+    private boolean autoSync;
+
+    private EncodingStateRegistry encodingStateRegistry;
+
+    private OutputProxyWriterGroup writerGroup = new OutputProxyWriterGroup();
+
+    private OutputEncodingStack(OutputEncodingStackAttributes attributes) {
+        outWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
+            public Writer activateDestination() throws IOException {
+                StackEntry stackEntry = stack.peek();
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.outEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.OUT_CODEC_NAME);
+            }
+        });
+        staticWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
+            public Writer activateDestination() throws IOException {
+                StackEntry stackEntry = stack.peek();
+                if (stackEntry.staticEncoder == null) {
+                    return stackEntry.unwrappedTarget;
+                }
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.staticEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.STATIC_CODEC_NAME);
+            }
+        });
+        expressionWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
+            public Writer activateDestination() throws IOException {
+                StackEntry stackEntry = stack.peek();
+                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.expressionEncoder, encodingStateRegistry,
+                        OutputEncodingSettings.EXPRESSION_CODEC_NAME);
+            }
+        });
+        taglibWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
+            public Writer activateDestination() throws IOException {
+                StackEntry stackEntry = stack.peek();
+                return createEncodingWriter(stackEntry.unwrappedTarget,
+                        stackEntry.taglibEncoder != null ? stackEntry.taglibEncoder : stackEntry.defaultTaglibEncoder,
+                        encodingStateRegistry, OutputEncodingSettings.TAGLIB_CODEC_NAME);
+            }
+        });
+        this.autoSync = attributes.isAutoSync();
+        push(attributes, false);
+        if (!autoSync) {
+            applyWriterThreadLocals(outWriter);
+        }
+        this.encodingStateRegistry = attributes.getOutputContext().getEncodingStateRegistry();
+        this.outputContext = attributes.getOutputContext() != null ? attributes.getOutputContext() : OutputContextLookupHelper.lookupOutputContext();
+    }
+
     public static OutputEncodingStack currentStack() {
         return currentStack(true);
     }
@@ -122,165 +180,6 @@ public final class OutputEncodingStack {
             return outputContext.getCurrentWriter();
         }
         return null;
-    }
-
-    private Stack<StackEntry> stack = new Stack<StackEntry>();
-
-    private OutputProxyWriter taglibWriter;
-
-    private OutputProxyWriter outWriter;
-
-    private OutputProxyWriter staticWriter;
-
-    private OutputProxyWriter expressionWriter;
-
-    private boolean autoSync;
-
-    private EncodingStateRegistry encodingStateRegistry;
-
-    private OutputProxyWriterGroup writerGroup = new OutputProxyWriterGroup();
-
-    private static class StackEntry implements Cloneable {
-
-        Writer originalTarget;
-
-        Writer unwrappedTarget;
-
-        Encoder staticEncoder;
-
-        Encoder taglibEncoder;
-
-        Encoder defaultTaglibEncoder;
-
-        Encoder outEncoder;
-
-        Encoder expressionEncoder;
-
-        StackEntry(Writer originalTarget, Writer unwrappedTarget) {
-            this.originalTarget = originalTarget;
-            this.unwrappedTarget = unwrappedTarget;
-        }
-
-        @Override
-        public StackEntry clone() {
-            StackEntry newEntry = new StackEntry(originalTarget, unwrappedTarget);
-            newEntry.staticEncoder = staticEncoder;
-            newEntry.outEncoder = outEncoder;
-            newEntry.taglibEncoder = taglibEncoder;
-            newEntry.defaultTaglibEncoder = defaultTaglibEncoder;
-            newEntry.expressionEncoder = expressionEncoder;
-            return newEntry;
-        }
-
-    }
-
-    static class OutputProxyWriterGroup {
-
-        OutputProxyWriter activeWriter;
-
-        void reset() {
-            activateWriter(null);
-        }
-
-        void activateWriter(OutputProxyWriter newWriter) {
-            if (newWriter != activeWriter) {
-                flushActive();
-                activeWriter = newWriter;
-            }
-        }
-
-        void flushActive() {
-            if (activeWriter != null) {
-                activeWriter.flush();
-            }
-        }
-
-    }
-
-    public class OutputProxyWriter extends GrailsLazyProxyPrintWriter implements EncodedAppenderFactory, EncoderAware {
-
-        OutputProxyWriterGroup writerGroup;
-
-        OutputProxyWriter(OutputProxyWriterGroup writerGroup, DestinationFactory factory) {
-            super(factory);
-            this.writerGroup = writerGroup;
-        }
-
-        public OutputEncodingStack getOutputStack() {
-            return OutputEncodingStack.this;
-        }
-
-        @Override
-        public Writer getOut() {
-            writerGroup.activateWriter(this);
-            return super.getOut();
-        }
-
-        @Override
-        public EncodedAppender getEncodedAppender() {
-            Writer out = getOut();
-            if (out instanceof EncodedAppenderFactory) {
-                return ((EncodedAppenderFactory) out).getEncodedAppender();
-            }
-            else if (out instanceof EncodedAppender) {
-                return (EncodedAppender) getOut();
-            }
-            else {
-                return null;
-            }
-        }
-
-        @Override
-        public Encoder getEncoder() {
-            Writer out = getOut();
-            if (out instanceof EncoderAware) {
-                return ((EncoderAware) out).getEncoder();
-            }
-            return null;
-        }
-
-    }
-
-    private OutputEncodingStack(OutputEncodingStackAttributes attributes) {
-        outWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
-            public Writer activateDestination() throws IOException {
-                StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.outEncoder, encodingStateRegistry,
-                        OutputEncodingSettings.OUT_CODEC_NAME);
-            }
-        });
-        staticWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
-            public Writer activateDestination() throws IOException {
-                StackEntry stackEntry = stack.peek();
-                if (stackEntry.staticEncoder == null) {
-                    return stackEntry.unwrappedTarget;
-                }
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.staticEncoder, encodingStateRegistry,
-                        OutputEncodingSettings.STATIC_CODEC_NAME);
-            }
-        });
-        expressionWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
-            public Writer activateDestination() throws IOException {
-                StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget, stackEntry.expressionEncoder, encodingStateRegistry,
-                        OutputEncodingSettings.EXPRESSION_CODEC_NAME);
-            }
-        });
-        taglibWriter = new OutputProxyWriter(writerGroup, new DestinationFactory() {
-            public Writer activateDestination() throws IOException {
-                StackEntry stackEntry = stack.peek();
-                return createEncodingWriter(stackEntry.unwrappedTarget,
-                        stackEntry.taglibEncoder != null ? stackEntry.taglibEncoder : stackEntry.defaultTaglibEncoder,
-                        encodingStateRegistry, OutputEncodingSettings.TAGLIB_CODEC_NAME);
-            }
-        });
-        this.autoSync = attributes.isAutoSync();
-        push(attributes, false);
-        if (!autoSync) {
-            applyWriterThreadLocals(outWriter);
-        }
-        this.encodingStateRegistry = attributes.getOutputContext().getEncodingStateRegistry();
-        this.outputContext = attributes.getOutputContext() != null ? attributes.getOutputContext() : OutputContextLookupHelper.lookupOutputContext();
     }
 
     private Writer unwrapTargetWriter(Writer targetWriter) {
@@ -474,6 +373,107 @@ public final class OutputEncodingStack {
 
     public OutputContext getOutputContext() {
         return outputContext;
+    }
+
+    private static class StackEntry implements Cloneable {
+
+        Writer originalTarget;
+
+        Writer unwrappedTarget;
+
+        Encoder staticEncoder;
+
+        Encoder taglibEncoder;
+
+        Encoder defaultTaglibEncoder;
+
+        Encoder outEncoder;
+
+        Encoder expressionEncoder;
+
+        StackEntry(Writer originalTarget, Writer unwrappedTarget) {
+            this.originalTarget = originalTarget;
+            this.unwrappedTarget = unwrappedTarget;
+        }
+
+        @Override
+        public StackEntry clone() {
+            StackEntry newEntry = new StackEntry(originalTarget, unwrappedTarget);
+            newEntry.staticEncoder = staticEncoder;
+            newEntry.outEncoder = outEncoder;
+            newEntry.taglibEncoder = taglibEncoder;
+            newEntry.defaultTaglibEncoder = defaultTaglibEncoder;
+            newEntry.expressionEncoder = expressionEncoder;
+            return newEntry;
+        }
+
+    }
+
+    static class OutputProxyWriterGroup {
+
+        OutputProxyWriter activeWriter;
+
+        void reset() {
+            activateWriter(null);
+        }
+
+        void activateWriter(OutputProxyWriter newWriter) {
+            if (newWriter != activeWriter) {
+                flushActive();
+                activeWriter = newWriter;
+            }
+        }
+
+        void flushActive() {
+            if (activeWriter != null) {
+                activeWriter.flush();
+            }
+        }
+
+    }
+
+    public class OutputProxyWriter extends GrailsLazyProxyPrintWriter implements EncodedAppenderFactory, EncoderAware {
+
+        OutputProxyWriterGroup writerGroup;
+
+        OutputProxyWriter(OutputProxyWriterGroup writerGroup, DestinationFactory factory) {
+            super(factory);
+            this.writerGroup = writerGroup;
+        }
+
+        public OutputEncodingStack getOutputStack() {
+            return OutputEncodingStack.this;
+        }
+
+        @Override
+        public Writer getOut() {
+            writerGroup.activateWriter(this);
+            return super.getOut();
+        }
+
+        @Override
+        public EncodedAppender getEncodedAppender() {
+            Writer out = getOut();
+            if (out instanceof EncodedAppenderFactory) {
+                return ((EncodedAppenderFactory) out).getEncodedAppender();
+            }
+            else if (out instanceof EncodedAppender) {
+                return (EncodedAppender) getOut();
+            }
+            else {
+                return null;
+            }
+        }
+
+        @Override
+        public Encoder getEncoder() {
+            Writer out = getOut();
+            if (out instanceof EncoderAware) {
+                return ((EncoderAware) out).getEncoder();
+            }
+            return null;
+        }
+
     }
 
 }

@@ -138,48 +138,6 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         }
     }
 
-    private class GroovyPagesTemplateEngineCacheEntry extends CacheEntry<GroovyPageMetaInfo> {
-
-        private final String pageName;
-
-        GroovyPagesTemplateEngineCacheEntry(String pageName) {
-            this.pageName = pageName;
-        }
-
-        @Override
-        protected boolean hasExpired(long timeout, Object cacheRequestObject) {
-            GroovyPageMetaInfo meta = getValue();
-            Resource resource = (Resource) cacheRequestObject;
-            return meta == null || isGroovyPageReloadable(resource, meta);
-        }
-
-        @Override
-        protected GroovyPageMetaInfo updateValue(GroovyPageMetaInfo oldValue, Callable<GroovyPageMetaInfo> updater, Object cacheRequestObject)
-                throws Exception {
-            if (oldValue != null) {
-                oldValue.removePageMetaClass();
-            }
-            Resource resource = (Resource) cacheRequestObject;
-            return buildPageMetaInfo(resource, pageName);
-        }
-
-    }
-
-    private static class GroovyPagesTemplateEngineCallable implements Callable<CacheEntry<GroovyPageMetaInfo>> {
-
-        private final CacheEntry<GroovyPageMetaInfo> cacheEntry;
-
-        GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry) {
-            this.cacheEntry = cacheEntry;
-        }
-
-        @Override
-        public CacheEntry<GroovyPageMetaInfo> call() throws Exception {
-            return cacheEntry;
-        }
-
-    }
-
     public GroovyPagesTemplateEngine() {
         // default
     }
@@ -842,6 +800,48 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
     public String getGspEncoding() {
         return this.gspEncoding;
+    }
+
+    private class GroovyPagesTemplateEngineCacheEntry extends CacheEntry<GroovyPageMetaInfo> {
+
+        private final String pageName;
+
+        GroovyPagesTemplateEngineCacheEntry(String pageName) {
+            this.pageName = pageName;
+        }
+
+        @Override
+        protected boolean hasExpired(long timeout, Object cacheRequestObject) {
+            GroovyPageMetaInfo meta = getValue();
+            Resource resource = (Resource) cacheRequestObject;
+            return meta == null || isGroovyPageReloadable(resource, meta);
+        }
+
+        @Override
+        protected GroovyPageMetaInfo updateValue(GroovyPageMetaInfo oldValue, Callable<GroovyPageMetaInfo> updater, Object cacheRequestObject)
+                throws Exception {
+            if (oldValue != null) {
+                oldValue.removePageMetaClass();
+            }
+            Resource resource = (Resource) cacheRequestObject;
+            return buildPageMetaInfo(resource, pageName);
+        }
+
+    }
+
+    private static class GroovyPagesTemplateEngineCallable implements Callable<CacheEntry<GroovyPageMetaInfo>> {
+
+        private final CacheEntry<GroovyPageMetaInfo> cacheEntry;
+
+        GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry) {
+            this.cacheEntry = cacheEntry;
+        }
+
+        @Override
+        public CacheEntry<GroovyPageMetaInfo> call() throws Exception {
+            return cacheEntry;
+        }
+
     }
 
 }

@@ -68,7 +68,6 @@ public class GroovyPageWritable implements Writable {
         this.allowSettingContentType = allowSettingContentType;
     }
 
-
     /**
      * This sets any additional variables that need to be placed in the Binding of the GSP page.
      *
@@ -192,15 +191,6 @@ public class GroovyPageWritable implements Writable {
         this.showSource = showSource;
     }
 
-    private static final class GspNoneCodec {
-
-        @SuppressWarnings("unused")
-        public Object encode(Object object) {
-            return object;
-        }
-
-    }
-
     private GroovyPageBinding createBinding(Binding parent) {
         GroovyPageBinding binding = new GroovyPageBinding();
         binding.setParent(parent);
@@ -308,6 +298,15 @@ public class GroovyPageWritable implements Writable {
             out.close();
             in.close();
         }
+    }
+
+    private static final class GspNoneCodec {
+
+        @SuppressWarnings("unused")
+        public Object encode(Object object) {
+            return object;
+        }
+
     }
 
 }

@@ -19,7 +19,7 @@ import java.io.Writer;
 
 import org.grails.encoder.Encoder;
 
-public class OutputEncodingStackAttributes {
+public final class OutputEncodingStackAttributes {
 
     private final Writer topWriter;
 
@@ -91,6 +91,21 @@ public class OutputEncodingStackAttributes {
 
     public OutputContext getOutputContext() {
         return outputContext;
+    }
+
+    private OutputEncodingStackAttributes(Builder builder) {
+        this.topWriter = builder.topWriter;
+        this.staticEncoder = builder.staticEncoder;
+        this.outEncoder = builder.outEncoder;
+        this.taglibEncoder = builder.taglibEncoder;
+        this.defaultTaglibEncoder = builder.defaultTaglibEncoder;
+        this.expressionEncoder = builder.expressionEncoder;
+        this.allowCreate = builder.allowCreate;
+        this.pushTop = builder.pushTop;
+        this.autoSync = builder.autoSync;
+        this.outputContext = builder.outputContext;
+        this.inheritPreviousEncoders = builder.inheritPreviousEncoders;
+        this.replaceOnly = builder.replaceOnly;
     }
 
     public static class Builder {
@@ -201,21 +216,6 @@ public class OutputEncodingStackAttributes {
             return new OutputEncodingStackAttributes(this);
         }
 
-    }
-
-    private OutputEncodingStackAttributes(Builder builder) {
-        this.topWriter = builder.topWriter;
-        this.staticEncoder = builder.staticEncoder;
-        this.outEncoder = builder.outEncoder;
-        this.taglibEncoder = builder.taglibEncoder;
-        this.defaultTaglibEncoder = builder.defaultTaglibEncoder;
-        this.expressionEncoder = builder.expressionEncoder;
-        this.allowCreate = builder.allowCreate;
-        this.pushTop = builder.pushTop;
-        this.autoSync = builder.autoSync;
-        this.outputContext = builder.outputContext;
-        this.inheritPreviousEncoders = builder.inheritPreviousEncoders;
-        this.replaceOnly = builder.replaceOnly;
     }
 
 }

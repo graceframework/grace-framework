@@ -56,7 +56,7 @@ import org.grails.web.util.BoundedCharsAsEncodedBytesCounter;
  *
  * Date: Jan 10, 2004
  */
-public class GSPResponseWriter extends GrailsRoutablePrintWriter implements EncoderAware, EncodedAppenderFactory {
+public final class GSPResponseWriter extends GrailsRoutablePrintWriter implements EncoderAware, EncodedAppenderFactory {
 
     protected static final Log LOG = LogFactory.getLog(GSPResponseWriter.class);
 
@@ -85,6 +85,27 @@ public class GSPResponseWriter extends GrailsRoutablePrintWriter implements Enco
         catch (Exception e) {
             LOG.debug("Couldn't get direct performance optimized instantiator for GSPResponseWriter. Using default instantiation.", e);
         }
+    }
+
+    /**
+     * Private constructor.  Use getInstance() instead.
+     * @param activeWriter buffered writer
+     */
+    private GSPResponseWriter(final Writer activeWriter) {
+        super(null);
+        initialize(activeWriter);
+    }
+
+    /**
+     * Private constructor.  Use getInstance() instead.
+     * @param buffer buffered writer
+     * @param response The servlet response
+     * @param bytesCounter    Keeps count of encoded bytes count
+     */
+    private GSPResponseWriter(final StreamCharBuffer buffer, final ServletResponse response, BoundedCharsAsEncodedBytesCounter bytesCounter) {
+        super(null);
+
+        initialize(buffer, response, bytesCounter);
     }
 
     public static GSPResponseWriter getInstance(final ServletResponse response) {
@@ -174,18 +195,6 @@ public class GSPResponseWriter extends GrailsRoutablePrintWriter implements Enco
         return instance;
     }
 
-    /**
-     * Private constructor.  Use getInstance() instead.
-     * @param buffer buffered writer
-     * @param response The servlet response
-     * @param bytesCounter    Keeps count of encoded bytes count
-     */
-    private GSPResponseWriter(final StreamCharBuffer buffer, final ServletResponse response, BoundedCharsAsEncodedBytesCounter bytesCounter) {
-        super(null);
-
-        initialize(buffer, response, bytesCounter);
-    }
-
     void initialize(final StreamCharBuffer buffer, final ServletResponse response,
             BoundedCharsAsEncodedBytesCounter bytesCounter) {
         DestinationFactory lazyTargetFactory = new DestinationFactory() {
@@ -204,15 +213,6 @@ public class GSPResponseWriter extends GrailsRoutablePrintWriter implements Enco
         this.bytesCounter = bytesCounter;
         setBlockClose(true);
         setBlockFlush(false);
-    }
-
-    /**
-     * Private constructor.  Use getInstance() instead.
-     * @param activeWriter buffered writer
-     */
-    private GSPResponseWriter(final Writer activeWriter) {
-        super(null);
-        initialize(activeWriter);
     }
 
     void initialize(final Writer activeWriter) {

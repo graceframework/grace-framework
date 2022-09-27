@@ -261,55 +261,6 @@ public class GroovyPageParser implements Tokens {
 
     private Set<String> allowedTaglibNamespaces = new LinkedHashSet<>(DEFAULT_TAGLIB_NAMESPACES);
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public int getCurrentOutputLineNumber() {
-        return scan.getLineNumberForToken();
-    }
-
-    public Map<String, String> getJspTags() {
-        return jspTags;
-    }
-
-    public void setKeepGeneratedDirectory(File keepGeneratedDirectory) {
-        this.keepGeneratedDirectory = keepGeneratedDirectory;
-    }
-
-    public void setEnableSitemeshPreprocessing(boolean enableSitemeshPreprocessing) {
-        this.enableSitemeshPreprocessing = enableSitemeshPreprocessing;
-    }
-
-    class TagMeta {
-
-        String name;
-
-        String namespace;
-
-        Object instance;
-
-        boolean isDynamic;
-
-        boolean hasAttributes;
-
-        int lineNumber;
-
-        boolean emptyTag;
-
-        int tagIndex;
-
-        boolean bufferMode = false;
-
-        int bufferPartNumber = -1;
-
-        @Override
-        public String toString() {
-            return "<" + namespace + ":" + name + ">";
-        }
-
-    }
-
     public GroovyPageParser(String name, String uri, String filename, InputStream in, String encoding, String expressionCodecName)
             throws IOException {
         this(name, uri, filename, readStream(in, encoding), expressionCodecName);
@@ -342,9 +293,28 @@ public class GroovyPageParser implements Tokens {
         makeSourceName(filename);
     }
 
-
     public GroovyPageParser(String name, String uri, String filename, InputStream in) throws IOException {
         this(name, uri, filename, in, null, null);
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public int getCurrentOutputLineNumber() {
+        return scan.getLineNumberForToken();
+    }
+
+    public Map<String, String> getJspTags() {
+        return jspTags;
+    }
+
+    public void setKeepGeneratedDirectory(File keepGeneratedDirectory) {
+        this.keepGeneratedDirectory = keepGeneratedDirectory;
+    }
+
+    public void setEnableSitemeshPreprocessing(boolean enableSitemeshPreprocessing) {
+        this.enableSitemeshPreprocessing = enableSitemeshPreprocessing;
     }
 
     /**
@@ -766,7 +736,6 @@ public class GroovyPageParser implements Tokens {
             }
         }
     }
-
 
     private void html() {
         if (!finalPass) {
@@ -1582,6 +1551,35 @@ public class GroovyPageParser implements Tokens {
 
     public boolean isModelFieldsMode() {
         return modelFieldsMode;
+    }
+
+    class TagMeta {
+
+        String name;
+
+        String namespace;
+
+        Object instance;
+
+        boolean isDynamic;
+
+        boolean hasAttributes;
+
+        int lineNumber;
+
+        boolean emptyTag;
+
+        int tagIndex;
+
+        boolean bufferMode = false;
+
+        int bufferPartNumber = -1;
+
+        @Override
+        public String toString() {
+            return "<" + namespace + ":" + name + ">";
+        }
+
     }
 
 }

@@ -25,6 +25,7 @@ package org.grails.gsp.compiler;
  *
  * Date: Jan 10, 2004
  */
+@SuppressWarnings("checkstyle:InterfaceIsType")
 interface Tokens {
 
     int EOF = -1;

@@ -23,7 +23,7 @@ import org.grails.core.io.support.GrailsFactoriesLoader;
  * @author Lari Hotari
  * @author Graeme Rocher
  */
-public class OutputContextLookupHelper {
+public final class OutputContextLookupHelper {
 
     private static final OutputContextLookup outputContextLookup;
 

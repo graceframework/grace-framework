@@ -449,6 +449,14 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         return new PluginViewPathInfo(uri);
     }
 
+    public boolean isReloadEnabled() {
+        return reloadEnabled;
+    }
+
+    public void setReloadEnabled(boolean reloadEnabled) {
+        this.reloadEnabled = reloadEnabled;
+    }
+
     public static class PluginViewPathInfo {
 
         public String basePath;
@@ -466,14 +474,6 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
             }
         }
 
-    }
-
-    public boolean isReloadEnabled() {
-        return reloadEnabled;
-    }
-
-    public void setReloadEnabled(boolean reloadEnabled) {
-        this.reloadEnabled = reloadEnabled;
     }
 
 }

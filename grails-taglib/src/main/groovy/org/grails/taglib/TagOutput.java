@@ -31,7 +31,7 @@ import org.grails.taglib.encoder.WithCodecHelper;
 /**
  * Created by lari on 16/07/14.
  */
-public class TagOutput {
+public final class TagOutput {
 
     public static final String APPLY_CODEC_TAG_NAME = "applyCodec";
 
@@ -45,7 +45,7 @@ public class TagOutput {
     }
 
     @SuppressWarnings("rawtypes")
-    public static final Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
+    public static Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
             String tagName, Map attrs, Object body, OutputContext outputContext) {
 
         GroovyObject tagLib = lookupCachedTagLib(gspTagLibraryLookup, namespace, tagName);
@@ -136,13 +136,13 @@ public class TagOutput {
         }
     }
 
-    public static final GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
+    public static GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
             String namespace, String tagName) {
 
         return gspTagLibraryLookup != null ? gspTagLibraryLookup.lookupTagLibrary(namespace, tagName) : null;
     }
 
-    public static final Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
+    public static Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
             final OutputContext outputContext) {
         if (body1 == null) {
             return EMPTY_BODY_CLOSURE;

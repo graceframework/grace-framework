@@ -25,7 +25,7 @@ import org.grails.taglib.GrailsTagException;
  *
  * @author Graeme Rocher
  */
-public class GrailsTagRegistry {
+public final class GrailsTagRegistry {
 
     private static GrailsTagRegistry instance = new GrailsTagRegistry();
 

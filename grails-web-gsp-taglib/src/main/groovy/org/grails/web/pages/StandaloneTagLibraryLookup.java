@@ -36,7 +36,7 @@ import org.grails.taglib.TagLibraryLookup;
  * @author Lari Hotari
  * @since 2.4.0
  */
-public class StandaloneTagLibraryLookup extends TagLibraryLookup implements ApplicationListener<ContextRefreshedEvent> {
+public final class StandaloneTagLibraryLookup extends TagLibraryLookup implements ApplicationListener<ContextRefreshedEvent> {
 
     Set<Object> tagLibInstancesSet;
 

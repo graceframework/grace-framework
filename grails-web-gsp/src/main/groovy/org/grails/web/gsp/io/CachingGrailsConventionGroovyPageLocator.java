@@ -133,6 +133,18 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
         this.cacheTimeout = cacheTimeout;
     }
 
+    @Override
+    public void removePrecompiledPage(GroovyPageCompiledScriptSource scriptSource) {
+        super.removePrecompiledPage(scriptSource);
+        // remove the entry from uriResolveCache
+        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<>(uriResolveCache.entrySet())) {
+            GroovyPageScriptSource ss = entry.getValue().getValue();
+            if (ss == scriptSource || (ss instanceof GroovyPageCompiledScriptSource && scriptSource.getURI().equals(ss.getURI()))) {
+                uriResolveCache.remove(entry.getKey());
+            }
+        }
+    }
+
     private static final class GroovyPageLocatorCacheKey {
 
         private final String uri;
@@ -189,18 +201,6 @@ public class CachingGrailsConventionGroovyPageLocator extends GrailsConventionGr
             return result;
         }
 
-    }
-
-    @Override
-    public void removePrecompiledPage(GroovyPageCompiledScriptSource scriptSource) {
-        super.removePrecompiledPage(scriptSource);
-        // remove the entry from uriResolveCache
-        for (Map.Entry<GroovyPageLocatorCacheKey, CacheEntry<GroovyPageScriptSource>> entry : new HashSet<>(uriResolveCache.entrySet())) {
-            GroovyPageScriptSource ss = entry.getValue().getValue();
-            if (ss == scriptSource || (ss instanceof GroovyPageCompiledScriptSource && scriptSource.getURI().equals(ss.getURI()))) {
-                uriResolveCache.remove(entry.getKey());
-            }
-        }
     }
 
     static class CustomCacheEntry<T> extends CacheEntry<T> {

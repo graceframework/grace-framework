@@ -163,12 +163,6 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
         return null;
     }
 
-    private interface LazyRequestBasedValue {
-
-        Object evaluate(GrailsWebRequest webRequest);
-
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Set<String> getVariableNames() {
@@ -179,6 +173,12 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
         Set<String> variableNames = new HashSet<String>(lazyRequestBasedValuesMap.keySet());
         variableNames.addAll(getVariablesMap().keySet());
         return variableNames;
+    }
+
+    private interface LazyRequestBasedValue {
+
+        Object evaluate(GrailsWebRequest webRequest);
+
     }
 
 }

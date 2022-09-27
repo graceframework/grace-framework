@@ -52,15 +52,6 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
         }
     }
 
-    /**
-     * Factory to lazily instantiate the destination.
-     */
-    public interface DestinationFactory {
-
-        Writer activateDestination() throws IOException;
-
-    }
-
     public GrailsRoutablePrintWriter(DestinationFactory factory) {
         super(new NullWriter());
         this.factory = factory;
@@ -289,33 +280,6 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
         return super.append(csq);
     }
 
-    /**
-     * Just to keep super constructor for PrintWriter happy - it's never
-     * actually used.
-     */
-    private static class NullWriter extends Writer {
-
-        protected NullWriter() {
-            super();
-        }
-
-        @Override
-        public void write(char[] cbuf, int off, int len) throws IOException {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void flush() throws IOException {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void close() throws IOException {
-            throw new UnsupportedOperationException();
-        }
-
-    }
-
     public boolean isBlockFlush() {
         return blockFlush;
     }
@@ -369,6 +333,42 @@ public class GrailsRoutablePrintWriter extends GrailsPrintWriterAdapter {
         if (!this.destinationActivated) {
             super.setTarget(new NullWriter());
         }
+    }
+
+    /**
+     * Just to keep super constructor for PrintWriter happy - it's never
+     * actually used.
+     */
+    private static class NullWriter extends Writer {
+
+        protected NullWriter() {
+            super();
+        }
+
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void flush() throws IOException {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void close() throws IOException {
+            throw new UnsupportedOperationException();
+        }
+
+    }
+
+    /**
+     * Factory to lazily instantiate the destination.
+     */
+    public interface DestinationFactory {
+
+        Writer activateDestination() throws IOException;
+
     }
 
 }
