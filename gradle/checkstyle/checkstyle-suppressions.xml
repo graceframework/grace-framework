@@ -4,11 +4,8 @@
 
 	<!-- global -->
 	<suppress files="package-info\.java" checks=".*"/>
-	<suppress files="ControllersDomainBindingApi" checks="HideUtilityClassConstructor"/>
+	<suppress files="Tokens" checks="InterfaceIsType"/>
 	<!-- Ignore third-party code -->
-	<suppress files="org[\\/]grails[\\/]asm[\\/]" checks=".*"/>
-	<suppress files="org[\\/]grails[\\/]web[\\/]json[\\/]JSON(Array|Object|Tokener|Writer)\.java" checks=".*"/>
-	<suppress files="org[\\/]grails[\\/]web[\\/]json[\\/]parser[\\/]" checks=".*"/>
 	<!-- generated sources -->
 	<suppress files="[\\/]build[\\/]generated[\\/]sources[\\/]" checks=".*"/>
 
