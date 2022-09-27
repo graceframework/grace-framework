@@ -1502,7 +1502,7 @@ public class GroovyPageParser implements Tokens {
     }
 
     public String[] getHtmlPartsArray() {
-        return this.htmlParts.toArray(new String[this.htmlParts.size()]);
+        return this.htmlParts.toArray(new String[0]);
     }
 
     public boolean isInClosure() {

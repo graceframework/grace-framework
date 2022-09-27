@@ -61,7 +61,7 @@ public class GroovyPageInjectionOperation extends GrailsAwareInjectionOperation 
                     injectors.add((GroovyPageInjector) ci);
                 }
             }
-            this.groovyPageInjectors = injectors.toArray(new GroovyPageInjector[injectors.size()]);
+            this.groovyPageInjectors = injectors.toArray(new GroovyPageInjector[0]);
         }
         return this.groovyPageInjectors;
     }
