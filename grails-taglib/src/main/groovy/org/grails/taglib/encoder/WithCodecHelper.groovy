@@ -146,7 +146,7 @@ class WithCodecHelper {
 
             if (allFallback || nameFallback) {
                 for (String codecWriterName : OutputEncodingSettings.VALID_CODEC_SETTING_NAMES) {
-                    String codecName = codecInfoMap.get(codecWriterName)?.toString()
+                    String codecName = codecInfoMap.get(codecWriterName)
                     if (!codecName) {
                         if (nameFallback && codecWriterName != OutputEncodingSettings.STATIC_CODEC_NAME) {
                             codecName = nameFallback

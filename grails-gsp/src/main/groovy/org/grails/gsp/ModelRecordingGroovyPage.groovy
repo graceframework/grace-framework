@@ -198,8 +198,7 @@ class ModelEntry {
                                 cleanedFieldType = defaultType
                             }
                         }
-                        catch (e) {
-                            // ignore
+                        catch (ignore) {
                         }
                     }
                     gspDeclaration << "${cleanedFieldType} ${fieldName}\n"

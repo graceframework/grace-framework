@@ -1124,8 +1124,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
                 value = conversionService.convert(value, keyClass)
                 selected = keyValue == value
             }
-            catch (e) {
-                // ignore
+            catch (ignore) {
             }
         }
         keyValue = processFormFieldValueIfNecessary(selectName, "${keyValue}", "option")

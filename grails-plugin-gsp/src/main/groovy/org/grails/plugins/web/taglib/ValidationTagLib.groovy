@@ -89,7 +89,7 @@ class ValidationTagLib implements TagLibrary {
      */
     Closure fieldValue = { attrs, body ->
         def bean = attrs.bean
-        String field = attrs.field?.toString()
+        String field = attrs.field
         if (!bean || !field) {
             return
         }
@@ -333,7 +333,7 @@ class ValidationTagLib implements TagLibrary {
             }
         }
         else if (attrs.code) {
-            String code = attrs.code?.toString()
+            String code = attrs.code
             List args = []
             if (attrs.args) {
                 args = attrs.encodeAs ? attrs.args as List : encodeArgsIfRequired(attrs.args)
