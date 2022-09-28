@@ -331,6 +331,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         uri = removePrefix(uri, GrailsResourceUtils.WEB_INF);
         uri = removePrefix(uri, SLASHED_VIEWS_DIR_PATH);
         uri = removePrefix(uri, GrailsResourceUtils.VIEWS_DIR_PATH);
+        uri = removePrefix(uri, "app/views/");
         return uri;
     }
 
@@ -358,12 +359,15 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
                                 pathInfo.pluginName, GrailsResourceUtils.VIEWS_DIR_PATH, pathInfo.path),
+                        GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
+                                pathInfo.pluginName, "app/views/", pathInfo.path),
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, uri),
                         uri);
             }
             else {
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
+                        GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                         uri);
             }
         }
@@ -371,6 +375,8 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
             searchPaths = CollectionUtils.newList(
                     GrailsResourceUtils.appendPiecesForUri(SLASHED_VIEWS_DIR_PATH, uri),
                     GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
+                    GrailsResourceUtils.appendPiecesForUri("/app/views/", uri),
+                    GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                     uri);
         }
         return searchPaths;
