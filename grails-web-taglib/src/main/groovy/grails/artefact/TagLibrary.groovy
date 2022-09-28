@@ -56,7 +56,8 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
     @PostConstruct
     void initializeTagLibrary() {
         if (!Environment.isDevelopmentMode()) {
-            TagLibraryMetaUtils.enhanceTagLibMetaClass(GrailsMetaClassUtils.getExpandoMetaClass(getClass()), getTagLibraryLookup(), getTaglibNamespace())
+            TagLibraryMetaUtils.enhanceTagLibMetaClass(GrailsMetaClassUtils.getExpandoMetaClass(getClass()),
+                    getTagLibraryLookup(), getTaglibNamespace())
         }
     }
 
@@ -64,8 +65,9 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
     def raw(Object value) {
         if (rawEncoder == null) {
             rawEncoder = WithCodecHelper.lookupEncoder(grailsApplication, "Raw")
-            if (rawEncoder == null)
+            if (rawEncoder == null) {
                 return InvokerHelper.invokeMethod(value, "encodeAsRaw", null)
+            }
         }
         return rawEncoder.encode(value)
     }
@@ -93,7 +95,8 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
      */
     TemplateVariableBinding getPageScope() {
         GrailsWebRequest webRequest = getWebRequest()
-        TemplateVariableBinding binding = (TemplateVariableBinding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, RequestAttributes.SCOPE_REQUEST)
+        TemplateVariableBinding binding =
+                (TemplateVariableBinding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, RequestAttributes.SCOPE_REQUEST)
         if (binding == null) {
             binding = new TemplateVariableBinding(new WebRequestTemplateVariableBinding(webRequest))
             binding.root = true
@@ -130,7 +133,6 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
     Object propertyMissing(String name) {
         TagLibraryLookup gspTagLibraryLookup = getTagLibraryLookup();
         if (gspTagLibraryLookup != null) {
-
             Object result = gspTagLibraryLookup.lookupNamespaceDispatcher(name);
             if (result == null) {
                 String namespace = getTaglibNamespace()

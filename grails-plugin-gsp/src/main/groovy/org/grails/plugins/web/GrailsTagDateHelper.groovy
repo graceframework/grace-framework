@@ -71,7 +71,9 @@ interface GrailsTagDateHelper {
     /**
      * Formats a given date
      *
-     * @param formatter The formatter retrieved from any one of these methods: {@link #getFormatFromPattern}, {@link #getDateFormat}, {@link #getTimeFormat}, {@link #getDateTimeFormat}
+     * @param formatter The formatter retrieved from any one of these methods:
+     * {@link #getFormatFromPattern}, {@link #getDateFormat}, {@link #getTimeFormat}, {@link #getDateTimeFormat}
+     *
      * @param date The date to be formatted
      * @return The string representation of the date
      */

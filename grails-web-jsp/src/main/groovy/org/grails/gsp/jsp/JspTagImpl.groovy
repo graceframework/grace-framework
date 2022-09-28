@@ -103,7 +103,6 @@ class JspTagImpl implements JspTag {
         else if (tag instanceof Tag) {
             Tag theTag = (Tag) tag
             withJspWriterDelegate pageContext, targetWriter, {
-
                 try {
                     pageContext.pushTopTag theTag
                     int state = theTag.doStartTag()
@@ -241,6 +240,7 @@ class JspTagImpl implements JspTag {
         checkInitialized()
         return tryCatchFinally
     }
+
 }
 
 class JspFragmentImpl extends JspFragment {
@@ -260,4 +260,5 @@ class JspFragmentImpl extends JspFragment {
     void invoke(Writer out) {
         out << body.toString()
     }
+
 }

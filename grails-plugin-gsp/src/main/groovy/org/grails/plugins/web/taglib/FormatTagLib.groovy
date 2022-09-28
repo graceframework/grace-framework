@@ -133,20 +133,25 @@ class FormatTagLib implements TagLibrary {
      *
      * @attr date the date object to display; defaults to now if not specified
      * @attr format The formatting pattern to use for the date, see SimpleDateFormat
-     * @attr formatName Look up format from the default MessageSource / ResourceBundle (i18n/*.properties file) with this key. If format and formatName are empty, format is looked up with 'default.date.format' key. If the key is missing, 'yyyy-MM-dd HH:mm:ss z' formatting pattern is used.
-     * @attr type The type of format to use for the date / time. format or formatName aren't used when type is specified. Possible values: 'date' - shows only date part, 'time' - shows only time part, 'both'/'datetime' - shows date and time
+     * @attr formatName Look up format from the default MessageSource / ResourceBundle (i18n/*.properties file) with this key.
+     * If format and formatName are empty, format is looked up with 'default.date.format' key.
+     * If the key is missing, 'yyyy-MM-dd HH:mm:ss z' formatting pattern is used.
+     * @attr type The type of format to use for the date / time. format or formatName aren't used when type is specified.
+     * Possible values: 'date' - shows only date part, 'time' - shows only time part, 'both'/'datetime' - shows date and time
      * @attr timeZone the time zone for formatting. See TimeZone class.
      * @attr locale Force the locale for formatting.
-     * @attr style Use default date/time formatting of the country specified by the locale. Possible values: SHORT (default), MEDIUM, LONG, FULL . See DateFormat for explanation.
+     * @attr style Use default date/time formatting of the country specified by the locale.
+     * Possible values: SHORT (default), MEDIUM, LONG, FULL . See DateFormat for explanation.
      * @attr dateStyle Set separate style for the date part.
      * @attr timeStyle Set separate style for the time part.
      */
     Closure formatDate = { attrs ->
-
         def date
         if (attrs.containsKey('date')) {
             date = attrs.date
-            if (date == null) return
+            if (date == null) {
+                return
+            }
         }
         else {
             date = new Date()
@@ -177,11 +182,14 @@ class FormatTagLib implements TagLibrary {
             if (!format && formatName) {
                 format = messageHelper(formatName, null, null, locale)
                 if (!format) {
-                    throwTagError("Attribute [formatName] of Tag [formatDate] specifies a format key [$formatName] that does not exist within a message bundle!")
+                    throwTagError("Attribute [formatName] of Tag [formatDate] specifies a format key [$formatName] " +
+                            "that does not exist within a message bundle!")
                 }
             }
             else if (!format) {
-                format = messageHelper('date.format', { messageHelper('default.date.format', 'yyyy-MM-dd HH:mm:ss z', null, locale) }, null, locale)
+                format = messageHelper('date.format',
+                        { messageHelper('default.date.format', 'yyyy-MM-dd HH:mm:ss z', null, locale) },
+                        null, locale)
             }
 
             dateFormat = grailsTagDateHelper.getFormatFromPattern(format, timeZone, locale)
@@ -214,7 +222,10 @@ class FormatTagLib implements TagLibrary {
      *
      * @attr number REQUIRED the number to display
      * @attr format The formatting pattern to use for the number, see DecimalFormat
-     * @attr formatName Look up format from the default MessageSource / ResourceBundle (i18n/.properties file) with this key.Look up format from the default MessageSource / ResourceBundle (i18n/.properties file) with this key. If format and formatName are empty, format is looked up with 'default.number.format' key. If the key is missing, '0' formatting pattern is used.
+     * @attr formatName Look up format from the default MessageSource / ResourceBundle (i18n/.properties file) with this key.
+     * Look up format from the default MessageSource / ResourceBundle (i18n/.properties file) with this key.
+     * If format and formatName are empty, format is looked up with 'default.number.format' key.
+     * If the key is missing, '0' formatting pattern is used.
      * @attr type The type of formatter to use: 'number', 'currency' or 'percent' . format or formatName aren't used when type is specified.
      * @attr locale Override the locale of the request , String or java.util.Locale value
      * @attr groupingUsed Set whether or not grouping will be used in this format.
@@ -222,9 +233,12 @@ class FormatTagLib implements TagLibrary {
      * @attr maxIntegerDigits Sets the maximum number of digits allowed in the integer portion of a number.
      * @attr minFractionDigits Sets the minimum number of digits allowed in the fraction portion of a number.
      * @attr maxFractionDigits Sets the maximum number of digits allowed in the fraction portion of a number.
-     * @attr currencyCode The standard currency code ('EUR', 'USD', etc.), uses formatting settings for the currency. type='currency' attribute is recommended.
-     * @attr currencySymbol Force the currency symbol to some symbol, recommended way is to use currencyCode attribute instead (takes symbol information from java.util.Currency)
-     * @attr roundingMode Sets the RoundingMode used in this DecimalFormat. Usual values: HALF_UP, HALF_DOWN. If roundingMode is UNNECESSARY and ArithemeticException raises, the original number formatted with default number formatting will be returned.
+     * @attr currencyCode The standard currency code ('EUR', 'USD', etc.), uses formatting settings for the currency.
+     * type='currency' attribute is recommended.
+     * @attr currencySymbol Force the currency symbol to some symbol,
+     * recommended way is to use currencyCode attribute instead (takes symbol information from java.util.Currency)
+     * @attr roundingMode Sets the RoundingMode used in this DecimalFormat. Usual values: HALF_UP, HALF_DOWN.
+     * If roundingMode is UNNECESSARY and ArithemeticException raises, the original number formatted with default number formatting will be returned.
      * @attr nan String to be used for display if numberic value is NaN
      */
     Closure formatNumber = { attrs ->
@@ -233,7 +247,9 @@ class FormatTagLib implements TagLibrary {
         }
 
         def number = attrs.number
-        if (number == null) return
+        if (number == null) {
+            return
+        }
 
         def formatName = attrs.formatName
         def format = attrs.format
@@ -244,11 +260,13 @@ class FormatTagLib implements TagLibrary {
             if (!format && formatName) {
                 format = messageHelper(formatName, null, null, locale)
                 if (!format) {
-                    throwTagError("Attribute [formatName] of Tag [formatNumber] specifies a format key [$formatName] that does not exist within a message bundle!")
+                    throwTagError("Attribute [formatName] of Tag [formatNumber] specifies a format key [$formatName] " +
+                            "that does not exist within a message bundle!")
                 }
             }
             else if (!format) {
-                format = messageHelper("number.format", { messageHelper("default.number.format", "0", null, locale) }, null, locale)
+                format = messageHelper("number.format",
+                        { messageHelper("default.number.format", "0", null, locale) }, null, locale)
             }
         }
 

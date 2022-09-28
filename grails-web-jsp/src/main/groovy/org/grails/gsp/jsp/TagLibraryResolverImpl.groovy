@@ -45,12 +45,15 @@ import grails.core.support.GrailsApplicationAware
 class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAware, TagLibraryResolver, ResourceLoaderAware, BeanClassLoaderAware {
 
     protected Map<String, JspTagLib> tagLibs = new ConcurrentHashMap<String, JspTagLib>()
+
     GrailsApplication grailsApplication
     ServletContext servletContext
     ClassLoader classLoader
     ResourceLoader resourceLoader
+
     @Value('${grails.gsp.tldScanPattern:}')
     String[] tldScanPatterns = [] as String[]
+
     volatile boolean initialized = false
 
     /**

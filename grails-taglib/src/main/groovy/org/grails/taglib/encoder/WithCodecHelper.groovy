@@ -41,7 +41,6 @@ class WithCodecHelper {
 
     private static final String ALREADY_CANONICAL_KEY_NAME = "_canonical_"
 
-
     /**
      * Executes closure with given codecs.
      *
@@ -62,7 +61,7 @@ class WithCodecHelper {
      * In addition there is
      * <ul>
      * <li>inherit (boolean) - defaults to true. Controls whether codecs should be inherited to deeper level (taglib calls)</li>
-     * <li>replaceonly (boolean) - defaults to false. Codecs will be only replaced if the previous inherited codec is safe.</li> 
+     * <li>replaceonly (boolean) - defaults to false. Codecs will be only replaced if the previous inherited codec is safe.</li>
      * </ul>
      *
      * @param grailsApplication the grailsApplication instance
@@ -127,7 +126,8 @@ class WithCodecHelper {
             String nameFallback = null
             (Map<String, String>) ((Map) codecInfo).each { k, v ->
                 String codecWriterName = k.toString().toLowerCase() - 'codec'
-                if (codecWriterName == OutputEncodingSettings.INHERIT_SETTING_NAME || codecWriterName == OutputEncodingSettings.REPLACE_ONLY_SETTING_NAME) {
+                if (codecWriterName == OutputEncodingSettings.INHERIT_SETTING_NAME
+                        || codecWriterName == OutputEncodingSettings.REPLACE_ONLY_SETTING_NAME) {
                     codecInfoMap.put(codecWriterName, convertToBoolean(v))
                 }
                 else {

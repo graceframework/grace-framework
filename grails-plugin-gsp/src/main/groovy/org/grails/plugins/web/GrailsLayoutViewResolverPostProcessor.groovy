@@ -29,13 +29,12 @@ import org.springframework.core.io.DescriptiveResource
 import org.grails.web.servlet.view.SitemeshLayoutViewResolver
 
 /**
- * This BeanDefinitionRegistryPostProcessor replaces the existing jspViewResolver bean with GrailsLayoutViewResolver 
+ * This BeanDefinitionRegistryPostProcessor replaces the existing jspViewResolver bean with GrailsLayoutViewResolver
  * and moves the previous jspViewResolver bean configuration as an inner bean of GrailsLayoutViewResolver to be used as
  * the innerViewResolver of it.
  *
- * Scaffolding plugin replaces jspViewResolver with it's own implementation and this solution makes it easier to customize 
+ * Scaffolding plugin replaces jspViewResolver with it's own implementation and this solution makes it easier to customize
  * the inner view resolver.
- *
  *
  * @author Lari Hotari
  * @since 2.4.0
@@ -55,7 +54,6 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
     }
 
     @Override
@@ -75,7 +73,8 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
             beanDefinition.setResource(new DescriptiveResource("org.grails.plugins.web.GroovyPagesGrailsPlugin"))
             final MutablePropertyValues propertyValues = beanDefinition.getPropertyValues()
             propertyValues.addPropertyValue('innerViewResolver', previousViewResolver)
-            propertyValues.addPropertyValue('groovyPageLayoutFinder', new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
+            propertyValues.addPropertyValue('groovyPageLayoutFinder',
+                    new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
             registry.registerBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME, beanDefinition)
         }
     }

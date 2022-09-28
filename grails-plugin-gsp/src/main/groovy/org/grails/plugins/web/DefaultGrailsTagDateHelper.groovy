@@ -60,7 +60,6 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
     @Override
     Object getFormatFromPattern(String format, Object timeZone, Locale locale) {
         DateTimeFormatter.ofPattern(format, locale).withZone((ZoneId) timeZone)
-
     }
 
     @Override
@@ -126,7 +125,6 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
         clazz == Date || TemporalAccessor.isAssignableFrom(clazz)
     }
 
-
     @Override
     GregorianCalendar buildCalendar(Object date) {
         if (date instanceof Date) {
@@ -144,11 +142,9 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
             }
             else if (date instanceof OffsetDateTime) {
                 zonedDateTime = ((OffsetDateTime) date).toZonedDateTime()
-
             }
             else if (date instanceof ZonedDateTime) {
                 zonedDateTime = (ZonedDateTime) date
-
             }
             else if (date instanceof TemporalAccessor) {
                 zonedDateTime = ZonedDateTime.from(date)
@@ -159,4 +155,5 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
             GregorianCalendar.from(zonedDateTime)
         }
     }
+
 }

@@ -110,7 +110,6 @@ class ValidationTagLib implements TagLibrary {
             if (rejectedValue == null) {
                 rejectedValue = parseForRejectedValue(bean, field)
             }
-
         }
         else {
             rejectedValue = parseForRejectedValue(bean, field)
@@ -258,7 +257,9 @@ class ValidationTagLib implements TagLibrary {
 
         if (renderAs == 'list') {
             def codec = attrs.codec ?: 'HTML'
-            if (codec == 'none') codec = ''
+            if (codec == 'none') {
+                codec = ''
+            }
 
             def errorsList = extractErrors(attrs)
             if (errorsList) {
@@ -310,7 +311,8 @@ class ValidationTagLib implements TagLibrary {
             if (!attrs.encodeAs && error instanceof MessageSourceResolvable) {
                 MessageSourceResolvable errorResolvable = (MessageSourceResolvable) error
                 if (errorResolvable.arguments) {
-                    error = new DefaultMessageSourceResolvable(errorResolvable.codes, encodeArgsIfRequired(errorResolvable.arguments) as Object[], errorResolvable.defaultMessage)
+                    error = new DefaultMessageSourceResolvable(errorResolvable.codes,
+                            encodeArgsIfRequired(errorResolvable.arguments) as Object[], errorResolvable.defaultMessage)
                 }
             }
             try {
@@ -344,8 +346,7 @@ class ValidationTagLib implements TagLibrary {
                 defaultMessage = code
             }
 
-            def message = messageSource.getMessage(code, args == null ? null : args.toArray(),
-                    defaultMessage, locale)
+            def message = messageSource.getMessage(code, args == null ? null : args.toArray(), defaultMessage, locale)
             if (message != null) {
                 text = message
             }
@@ -448,11 +449,21 @@ class ValidationTagLib implements TagLibrary {
                         out << "document.forms['${form}'].elements['${constraint.propertyName}']," // the field
                         out << '"Test message"' // TODO: Resolve the actual message
                         switch (vt) {
-                            case 'mask': out << ",function() { return '${constraint.regex}'; }"; break
-                            case 'intRange': out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"; break
-                            case 'floatRange': out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"; break
-                            case 'maxLength': out << ",function() { return ${constraint.maxSize};  }"; break
-                            case 'minLength': out << ",function() { return ${constraint.minSize};  }"; break
+                            case 'mask':
+                                out << ",function() { return '${constraint.regex}'; }"
+                                break
+                            case 'intRange':
+                                out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"
+                                break
+                            case 'floatRange':
+                                out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"
+                                break
+                            case 'maxLength':
+                                out << ",function() { return ${constraint.maxSize};  }"
+                                break
+                            case 'minLength':
+                                out << ",function() { return ${constraint.minSize};  }"
+                                break
                         }
                         out << ');\n'
                     }

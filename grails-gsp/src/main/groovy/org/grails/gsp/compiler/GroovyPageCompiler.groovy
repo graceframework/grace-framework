@@ -244,7 +244,6 @@ class GroovyPageCompiler {
         }
 
         return compileGSPResults
-
     }
 
     // find out the relative path from relbase to file
@@ -280,4 +279,5 @@ class GroovyPageCompiler {
         }
         sb.toString()
     }
+
 }

@@ -100,7 +100,6 @@ class GroovyPagesGrailsPlugin extends Plugin {
             SitemeshTagLib
     ]
 
-
     /**
      * Clear the page cache with the ApplicationContext is loaded
      */
@@ -302,8 +301,12 @@ class GroovyPagesGrailsPlugin extends Plugin {
     }
 
     static String transformToValidLocation(String location) {
-        if (location == '.') return location
-        if (!location.endsWith(File.separator)) return "${location}${File.separator}"
+        if (location == '.') {
+            return location
+        }
+        if (!location.endsWith(File.separator)) {
+            return "${location}${File.separator}"
+        }
         return location
     }
 

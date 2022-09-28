@@ -30,7 +30,8 @@ import javax.servlet.jsp.PageContext
  */
 class GroovyPagesJspFactory extends JspFactory {
 
-    PageContext getPageContext(Servlet servlet, ServletRequest servletRequest, ServletResponse servletResponse, String s, boolean b, int i, boolean b1) {
+    PageContext getPageContext(Servlet servlet, ServletRequest servletRequest, ServletResponse servletResponse,
+                               String s, boolean b, int i, boolean b1) {
         throw new UnsupportedOperationException()
     }
 

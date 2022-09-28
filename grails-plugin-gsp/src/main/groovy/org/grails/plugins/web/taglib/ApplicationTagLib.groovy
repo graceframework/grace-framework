@@ -113,10 +113,14 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      */
     Closure set = { attrs, body ->
         def var = attrs.var
-        if (!var) throw new IllegalArgumentException("[var] attribute must be specified to for <g:set>!")
+        if (!var) {
+            throw new IllegalArgumentException("[var] attribute must be specified to for <g:set>!")
+        }
 
         def scope = attrs.scope ? SCOPES[attrs.scope] : 'pageScope'
-        if (!scope) throw new IllegalArgumentException("Invalid [scope] attribute for tag <g:set>!")
+        if (!scope) {
+            throw new IllegalArgumentException("Invalid [scope] attribute for tag <g:set>!")
+        }
 
         def value
         if (attrs.bean) {
@@ -125,7 +129,9 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
         else {
             value = attrs.value
             def containsValue = attrs.containsKey('value')
-            if (!containsValue && body) value = body()
+            if (!containsValue && body) {
+                value = body()
+            }
         }
 
         this."$scope"."$var" = value
@@ -151,11 +157,14 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      *
      * @emptyTag
      *
-     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL. This overrides the behaviour of the absolute property, if both are specified.x≈
-     * @attr contextPath the context path to use (relative to the application context path). Defaults to "" or path to the plugin for a plugin view or template.
+     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL.
+     * This overrides the behaviour of the absolute property, if both are specified.x≈
+     * @attr contextPath the context path to use (relative to the application context path).
+     * Defaults to "" or path to the plugin for a plugin view or template.
      * @attr dir the name of the directory within the grails app to link to
      * @attr file the name of the file within the grails app to link to
-     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config, or http://localhost:&lt;port&gt; if no value in Config and not running in production.
+     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config,
+     * or http://localhost:&lt;port&gt; if no value in Config and not running in production.
      * @attr plugin The plugin to look for the resource in
      */
     Closure resource = { attrs ->
@@ -202,8 +211,10 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      * @attr action The name of the action to use in the link, if not specified the default action will be linked
      * @attr uri relative URI
      * @attr url A map containing the action,controller,id etc.
-     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL. This overrides the behaviour of the absolute property, if both are specified.
-     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config, or http://localhost:&lt;port&gt; if no value in Config and not running in production.
+     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL.
+     * This overrides the behaviour of the absolute property, if both are specified.
+     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config,
+     * or http://localhost:&lt;port&gt; if no value in Config and not running in production.
      * @attr id The id to use in the link
      * @attr fragment The link fragment (often called anchor tag) to use
      * @attr params A map containing URL query parameters
@@ -212,7 +223,6 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      * @attr elementId DOM element id
      */
     Closure link = { attrs, body ->
-
         def writer = getOut()
         def elementId = attrs.remove('elementId')
         def linkAttrs
@@ -322,7 +332,8 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
 
         def typeInfo = SUPPORTED_TYPES[type]?.clone()
         if (!typeInfo) {
-            throwTagError "I can't work out the type of ${uri} with type [${type}]. Please check the URL, resource definition or specify [type] attribute"
+            throwTagError "I can't work out the type of ${uri} with type [${type}]. " +
+                    "Please check the URL, resource definition or specify [type] attribute"
         }
 
         def writerName = typeInfo.remove('writer')
@@ -348,8 +359,10 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      * @attr action The name of the action to use in the link, if not specified the default action will be linked
      * @attr uri relative URI
      * @attr url A map containing the action,controller,id etc.
-     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL. This overrides the behaviour of the absolute property, if both are specified.
-     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config, or http://localhost:&lt;port&gt; if no value in Config and not running in production.
+     * @attr base Sets the prefix to be added to the link target address, typically an absolute server URL.
+     * This overrides the behaviour of the absolute property, if both are specified.
+     * @attr absolute If set to "true" will prefix the link target address with the value of the grails.serverURL property from Config,
+     * or http://localhost:&lt;port&gt; if no value in Config and not running in production.
      * @attr id The id to use in the link
      * @attr fragment The link fragment (often called anchor tag) to use
      * @attr params A map containing URL query parameters
@@ -400,7 +413,9 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
         def writer = out
         writer << "<${attrs.name}"
         attrs.attrs?.each { k, v ->
-            if (!v) return
+            if (!v) {
+                return
+            }
             if (v instanceof Closure) {
                 writer << " $k=\""
                 v()
@@ -422,7 +437,8 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
      * @emptyTag
      *
      * @attr REQUIRED in The collection to iterate over
-     * @attr delimiter The value of the delimiter to use during the join. If no delimiter is specified then ", " (a comma followed by a space) will be used as the delimiter.
+     * @attr delimiter The value of the delimiter to use during the join.
+     * If no delimiter is specified then ", " (a comma followed by a space) will be used as the delimiter.
      */
     Closure join = { attrs ->
         def collection = attrs.'in'

@@ -94,6 +94,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
         }
         return value
     }
+
 }
 
 @CompileStatic
@@ -141,10 +142,12 @@ class ModelRecordingCache {
             }
         }
     }
+
 }
 
 @CompileStatic
 class ModelEntry {
+
     // defaults are defined by org.grails.web.taglib.WebRequestTemplateVariableBinding
     static Map<String, String> DEFAULT_TYPES = [webRequest: 'org.grails.web.servlet.mvc.GrailsWebRequest',
                                                 request: 'javax.servlet.http.HttpServletRequest',
@@ -211,4 +214,5 @@ class ModelEntry {
         }
         return null
     }
+
 }

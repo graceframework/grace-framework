@@ -41,11 +41,11 @@ class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
     }
 
     protected void registerTagMetaMethods(ExpandoMetaClass emc) {
-
     }
 
     protected callRender(Map attrs, Object body) {
-        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, 'render', attrs, body, OutputContextLookupHelper.lookupOutputContext())
+        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, 'render', attrs, body,
+                OutputContextLookupHelper.lookupOutputContext())
     }
 
     protected Map argsToAttrs(String name, Object args) {

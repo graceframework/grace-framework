@@ -60,12 +60,14 @@ class JspTagLibImpl implements JspTagLib {
 
             Map<String, Object> attrs = args[0] instanceof Map ? (Map) args[0] : [:]
             Closure body = args[0] instanceof Closure ? (Closure) args[0] : null
-            if (args.size() > 1) body = args[1] instanceof Closure ? (Closure) args[1] : null
+            if (args.size() > 1) {
+                body = args[1] instanceof Closure ? (Closure) args[1] : null
+            }
             if (body == null && args.size() > 1) {
                 body = { args[1] }
             }
             else {
-                body = {}
+                body = { }
             }
 
             def sw = new FastStringPrintWriter()

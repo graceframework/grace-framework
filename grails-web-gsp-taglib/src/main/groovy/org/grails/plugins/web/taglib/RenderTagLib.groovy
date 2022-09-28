@@ -79,13 +79,13 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
 
     @Override
     void setGrailsApplication(GrailsApplication grailsApplication) {
-        sitemeshPreprocessMode = grailsApplication.config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_SITEMESH_PREPROCESS, Boolean, true)
+        sitemeshPreprocessMode = grailsApplication.config.getProperty(
+                GroovyPageParser.CONFIG_PROPERTY_GSP_SITEMESH_PREPROCESS, Boolean, true)
     }
 
     protected boolean isSitemeshPreprocessMode() {
         return sitemeshPreprocessMode
     }
-
 
     /**
      * Apply a layout to a particular block of text or to the given view or template.<br/>
@@ -106,7 +106,9 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
      * @attr parse Optional. If true, Sitemesh parser will always be used to parse the content.
      */
     Closure applyLayout = { Map attrs, body ->
-        if (!groovyPagesTemplateEngine) throw new IllegalStateException("Property [groovyPagesTemplateEngine] must be set!")
+        if (!groovyPagesTemplateEngine) {
+            throw new IllegalStateException("Property [groovyPagesTemplateEngine] must be set!")
+        }
         def oldPage = getPage()
         String contentType = attrs.contentType ? attrs.contentType as String : "text/html"
 
@@ -119,7 +121,8 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
         }
         else if (attrs.action && attrs.controller) {
             def includeAttrs = [action: attrs.action, controller: attrs.controller, params: pageParams, model: viewModel]
-            content = TagOutput.captureTagOutput(gspTagLibraryLookup, 'g', 'include', includeAttrs, null, OutputContextLookupHelper.lookupOutputContext())
+            content = TagOutput.captureTagOutput(gspTagLibraryLookup, 'g', 'include', includeAttrs, null,
+                    OutputContextLookupHelper.lookupOutputContext())
         }
         else {
             def oldGspSiteMeshPage = request.getAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE)
@@ -127,7 +130,8 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
                 gspSiteMeshPage = new GSPSitemeshPage()
                 request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, gspSiteMeshPage)
                 if (attrs.view || attrs.template) {
-                    content = TagOutput.captureTagOutput(gspTagLibraryLookup, 'g', 'render', attrs, null, OutputContextLookupHelper.lookupOutputContext())
+                    content = TagOutput.captureTagOutput(gspTagLibraryLookup, 'g', 'render', attrs, null,
+                            OutputContextLookupHelper.lookupOutputContext())
                 }
                 else {
                     def bodyClosure = TagOutput.createOutputCapturingClosure(this, body, OutputContextLookupHelper.lookupOutputContext())
@@ -339,8 +343,12 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
      */
     Closure layoutTitle = { Map attrs ->
         String title = page.title
-        if (!title && attrs.'default') title = attrs.'default'
-        if (title) out << title
+        if (!title && attrs.'default') {
+            title = attrs.'default'
+        }
+        if (title) {
+            out << title
+        }
     }
 
     /**
@@ -373,7 +381,8 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
      * &lt;g:render template="atemplate" bean="${user}" /&gt;<br/>
      *
      * @attr template REQUIRED The name of the template to apply
-     * @attr contextPath the context path to use (relative to the application context path). Defaults to "" or path to the plugin for a plugin view or template.
+     * @attr contextPath the context path to use (relative to the application context path).
+     * Defaults to "" or path to the plugin for a plugin view or template.
      * @attr bean The bean to apply the template against
      * @attr model The model to apply the template against as a java.util.Map
      * @attr collection A collection of model objects to apply the template to

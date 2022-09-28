@@ -31,13 +31,16 @@ class GroovyPagesMetaUtils {
     }
 
     static void registerMethodMissingForGSP(final MetaClass emc, final TagLibraryLookup gspTagLibraryLookup) {
-        if (gspTagLibraryLookup == null) return
+        if (gspTagLibraryLookup == null) {
+            return
+        }
         final boolean addMethodsToMetaClass = !Environment.isDevelopmentMode()
 
         GroovyObject mc = (GroovyObject) emc
         synchronized (emc) {
             mc.setProperty("methodMissing", { String name, Object args ->
-                TagLibraryMetaUtils.methodMissingForTagLib(emc, emc.getTheClass(), gspTagLibraryLookup, GroovyPage.DEFAULT_NAMESPACE, name, args, addMethodsToMetaClass)
+                TagLibraryMetaUtils.methodMissingForTagLib(emc, emc.getTheClass(), gspTagLibraryLookup,
+                        GroovyPage.DEFAULT_NAMESPACE, name, args, addMethodsToMetaClass)
             })
         }
         TagLibraryMetaUtils.registerTagMetaMethods(emc, gspTagLibraryLookup, GroovyPage.DEFAULT_NAMESPACE)
