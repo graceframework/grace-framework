@@ -38,7 +38,7 @@ import org.grails.taglib.encoder.WithCodecHelper
 trait TagLibraryInvoker extends WebAttributes {
 
     private TagLibraryLookup tagLibraryLookup
-    private boolean developmentMode = Environment.isDevelopmentMode();
+    private final boolean developmentMode = Environment.isDevelopmentMode();
 
     @Autowired(required = false)
     void setTagLibraryLookup(TagLibraryLookup tagLibraryLookup) {

@@ -44,7 +44,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
  */
 class PageRenderer implements ApplicationContextAware, ServletContextAware {
 
-    private GroovyPagesTemplateEngine templateEngine
+    private final GroovyPagesTemplateEngine templateEngine
     GrailsConventionGroovyPageLocator groovyPageLocator
     ApplicationContext applicationContext
     ServletContext servletContext

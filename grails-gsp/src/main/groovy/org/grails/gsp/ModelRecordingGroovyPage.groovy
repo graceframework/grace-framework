@@ -100,7 +100,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
 @CompileStatic
 class ModelRecordingCache {
 
-    private Map<String, ModelEntry> models = new ConcurrentHashMap<>()
+    private final Map<String, ModelEntry> models = new ConcurrentHashMap<>()
     private boolean initialized
 
     synchronized Map<String, ModelEntry> getModels() {

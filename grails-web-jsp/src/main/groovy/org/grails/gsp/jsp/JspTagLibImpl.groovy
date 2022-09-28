@@ -27,8 +27,8 @@ import org.grails.buffer.FastStringPrintWriter
 @CompileStatic
 class JspTagLibImpl implements JspTagLib {
 
-    private String uri
-    private Map<String, JspTagImpl> tags = [:]
+    private final String uri
+    private final Map<String, JspTagImpl> tags = [:]
 
     JspTagLibImpl(String uri, Map<String, String> tagClasses, ClassLoader classLoader) {
         Assert.notNull uri, "The URI of the tag library must be specified!"

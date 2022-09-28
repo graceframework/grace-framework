@@ -49,7 +49,7 @@ class GroovyPageCompiler {
     private static final Log LOG = LogFactory.getLog(GroovyPageCompiler)
 
     private Map compileGSPRegistry = [:]
-    private Object mutexObject = new Object()
+    private final Object mutexObject = new Object()
     File generatedGroovyPagesDirectory
     File targetDir
     CompilerConfiguration compilerConfig = new CompilerConfiguration()
