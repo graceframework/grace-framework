@@ -100,7 +100,6 @@ class GroovyPagesGrailsPlugin extends Plugin {
             SitemeshTagLib
     ]
 
-
     /**
      * Clear the page cache with the ApplicationContext is loaded
      */
@@ -244,7 +243,7 @@ class GroovyPagesGrailsPlugin extends Plugin {
             }
 
             boolean jstlPresent = ClassUtils.isPresent(
-                    "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.class.getClassLoader())
+                    "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
 
             abstractViewResolver {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
@@ -302,8 +301,12 @@ class GroovyPagesGrailsPlugin extends Plugin {
     }
 
     static String transformToValidLocation(String location) {
-        if (location == '.') return location
-        if (!location.endsWith(File.separator)) return "${location}${File.separator}"
+        if (location == '.') {
+            return location
+        }
+        if (!location.endsWith(File.separator)) {
+            return "${location}${File.separator}"
+        }
         return location
     }
 

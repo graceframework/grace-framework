@@ -27,7 +27,7 @@ class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
 
     public static final String TEMPLATE_NAMESPACE = "tmpl"
 
-    private boolean developmentMode = Environment.current.isDevelopmentMode()
+    private final boolean developmentMode = Environment.current.isDevelopmentMode()
 
     TemplateNamespacedTagDispatcher(Class callingType, GrailsApplication application, TagLibraryLookup lookup) {
         super(TEMPLATE_NAMESPACE, callingType, application, lookup)
@@ -41,11 +41,11 @@ class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
     }
 
     protected void registerTagMetaMethods(ExpandoMetaClass emc) {
-
     }
 
     protected callRender(Map attrs, Object body) {
-        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, 'render', attrs, body, OutputContextLookupHelper.lookupOutputContext())
+        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, 'render', attrs, body,
+                OutputContextLookupHelper.lookupOutputContext())
     }
 
     protected Map argsToAttrs(String name, Object args) {

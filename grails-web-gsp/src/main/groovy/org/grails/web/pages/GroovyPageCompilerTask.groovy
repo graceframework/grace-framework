@@ -77,7 +77,6 @@ class GroovyPageCompilerTask extends MatchingTask {
         return configs.createPath()
     }
 
-
     /**
      * Adds a reference to a classpath defined elsewhere.
      *

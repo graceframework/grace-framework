@@ -44,7 +44,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
  */
 class PageRenderer implements ApplicationContextAware, ServletContextAware {
 
-    private GroovyPagesTemplateEngine templateEngine
+    private final GroovyPagesTemplateEngine templateEngine
     GrailsConventionGroovyPageLocator groovyPageLocator
     ApplicationContext applicationContext
     ServletContext servletContext
@@ -144,7 +144,6 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
     static class PageRenderRequestCreator {
 
         static HttpServletRequest createInstance(final String requestURI, Locale localeToUse = Locale.getDefault()) {
-
             def params = new ConcurrentHashMap()
             def attributes = new ConcurrentHashMap()
 
@@ -154,7 +153,6 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
             (HttpServletRequest) Proxy.newProxyInstance(HttpServletRequest.classLoader, [HttpServletRequest] as Class[], new InvocationHandler() {
 
                 Object invoke(proxy, Method method, Object[] args) {
-
                     String methodName = method.name
 
                     if (methodName == 'getContentType') {
@@ -308,6 +306,7 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
 
                     return null
                 }
+
             })
         }
 
@@ -323,14 +322,15 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
                 Object nextElement() {
                     iterator.next()
                 }
+
             }
         }
+
     }
 
     static class PageRenderResponseCreator {
 
         static HttpServletResponse createInstance(final PrintWriter writer, Locale localeToUse = Locale.getDefault()) {
-
             String characterEncoding = "UTF-8"
             String contentType = null
             int bufferSize = 0
@@ -338,7 +338,6 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
             (HttpServletResponse) Proxy.newProxyInstance(HttpServletResponse.classLoader, [HttpServletResponse] as Class[], new InvocationHandler() {
 
                 Object invoke(proxy, Method method, Object[] args) {
-
                     String methodName = method.name
 
                     if (methodName == 'getContentType') {
@@ -376,7 +375,8 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
                     }
 
                     if (methodName == 'getOutputStream') {
-                        throw new UnsupportedOperationException("You cannot use the OutputStream in non-request rendering operations. Use getWriter() instead")
+                        throw new UnsupportedOperationException("You cannot use the OutputStream in non-request rendering operations. "
+                                + "Use getWriter() instead")
                     }
 
                     if (methodName == 'getHeaderNames') {
@@ -393,8 +393,10 @@ class PageRenderer implements ApplicationContextAware, ServletContextAware {
 
                     return null
                 }
+
             })
         }
+
     }
 
 }

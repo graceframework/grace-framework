@@ -98,7 +98,8 @@ class UrlMappingTagLib implements TagLibrary {
      * @attr controller the name of the controller to use in the link, if not specified the current controller will be linked
      * @attr id The id to use in the link
      * @attr params A map containing request parameters
-     * @attr prev The text to display for the previous link (defaults to "Previous" as defined by default.paginate.prev property in I18n messages.properties)
+     * @attr prev The text to display for the previous link
+     * (defaults to "Previous" as defined by default.paginate.prev property in I18n messages.properties)
      * @attr next The text to display for the next link (defaults to "Next" as defined by default.paginate.next property in I18n messages.properties)
      * @attr omitPrev Whether to not show the previous link (if set to true, the previous link will not be shown)
      * @attr omitNext Whether to not show the next link (if set to true, the next link will not be shown)
@@ -124,14 +125,22 @@ class UrlMappingTagLib implements TagLibrary {
         def offset = attrs.int('offset') ?: params.int('offset') ?: 0
         def max = params.int('max')
         def maxsteps = (attrs.int('maxsteps') ?: 10)
-        if (!max) max = (attrs.int('max') ?: 10)
+        if (!max) {
+            max = (attrs.int('max') ?: 10)
+        }
 
         Map linkParams = [:]
-        if (attrs.params instanceof Map) linkParams.putAll((Map) attrs.params)
+        if (attrs.params instanceof Map) {
+            linkParams.putAll((Map) attrs.params)
+        }
         linkParams.offset = offset - max
         linkParams.max = max
-        if (params.sort) linkParams.sort = params.sort
-        if (params.order) linkParams.order = params.order
+        if (params.sort) {
+            linkParams.sort = params.sort
+        }
+        if (params.order) {
+            linkParams.order = params.order
+        }
 
         Map linkTagAttrs = [:]
         def action
@@ -173,7 +182,8 @@ class UrlMappingTagLib implements TagLibrary {
             linkTagAttrs.put('class', 'prevLink')
             linkParams.offset = offset - max
             writer << callLink((Map) linkTagAttrs.clone()) {
-                (attrs.prev ?: messageSource.getMessage('paginate.prev', null, messageSource.getMessage('default.paginate.prev', null, 'Previous', locale), locale))
+                (attrs.prev ?: messageSource.getMessage('paginate.prev', null,
+                        messageSource.getMessage('default.paginate.prev', null, 'Previous', locale), locale))
             }
         }
 
@@ -234,7 +244,8 @@ class UrlMappingTagLib implements TagLibrary {
             linkTagAttrs.put('class', 'nextLink')
             linkParams.offset = offset + max
             writer << callLink((Map) linkTagAttrs.clone()) {
-                (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
+                (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null,
+                        messageSource.getMessage('default.paginate.next', null, 'Next', locale), locale))
             }
         }
     }
@@ -281,7 +292,9 @@ class UrlMappingTagLib implements TagLibrary {
         def namespace = attrs.remove("namespace")
 
         def defaultOrder = attrs.remove("defaultOrder")
-        if (defaultOrder != "desc") defaultOrder = "asc"
+        if (defaultOrder != "desc") {
+            defaultOrder = "asc"
+        }
 
         // current sorting property and order
         def sort = params.sort
@@ -289,14 +302,22 @@ class UrlMappingTagLib implements TagLibrary {
 
         // add sorting property and params to link params
         Map linkParams = [:]
-        if (params.id) linkParams.put("id", params.id)
+        if (params.id) {
+            linkParams.put("id", params.id)
+        }
         def paramsAttr = attrs.remove("params")
-        if (paramsAttr instanceof Map) linkParams.putAll(paramsAttr)
+        if (paramsAttr instanceof Map) {
+            linkParams.putAll(paramsAttr)
+        }
         linkParams.sort = property
 
         // propagate "max" and "offset" standard params
-        if (params.max) linkParams.max = params.max
-        if (params.offset) linkParams.offset = params.offset
+        if (params.max) {
+            linkParams.max = params.max
+        }
+        if (params.offset) {
+            linkParams.offset = params.offset
+        }
 
         // determine and add sorting order for this column to link params
         attrs['class'] = (attrs['class'] ? "${attrs['class']} sortable" : "sortable")
@@ -318,7 +339,9 @@ class UrlMappingTagLib implements TagLibrary {
         String titleKey = attrs.remove("titleKey") as String
         Object mapping = attrs.remove('mapping')
         if (titleKey) {
-            if (!title) title = titleKey
+            if (!title) {
+                title = titleKey
+            }
             def messageSource = grailsAttributes.messageSource
             def locale = RequestContextUtils.getLocale(request)
             title = messageSource.getMessage(titleKey, null, title, locale)

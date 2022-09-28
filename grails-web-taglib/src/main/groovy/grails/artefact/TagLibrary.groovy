@@ -56,7 +56,8 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
     @PostConstruct
     void initializeTagLibrary() {
         if (!Environment.isDevelopmentMode()) {
-            TagLibraryMetaUtils.enhanceTagLibMetaClass(GrailsMetaClassUtils.getExpandoMetaClass(getClass()), getTagLibraryLookup(), getTaglibNamespace())
+            TagLibraryMetaUtils.enhanceTagLibMetaClass(GrailsMetaClassUtils.getExpandoMetaClass(getClass()),
+                    getTagLibraryLookup(), getTaglibNamespace())
         }
     }
 
@@ -64,8 +65,9 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
     def raw(Object value) {
         if (rawEncoder == null) {
             rawEncoder = WithCodecHelper.lookupEncoder(grailsApplication, "Raw")
-            if (rawEncoder == null)
+            if (rawEncoder == null) {
                 return InvokerHelper.invokeMethod(value, "encodeAsRaw", null)
+            }
         }
         return rawEncoder.encode(value)
     }
@@ -93,7 +95,8 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
      */
     TemplateVariableBinding getPageScope() {
         GrailsWebRequest webRequest = getWebRequest()
-        TemplateVariableBinding binding = (TemplateVariableBinding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, RequestAttributes.SCOPE_REQUEST)
+        TemplateVariableBinding binding =
+                (TemplateVariableBinding) webRequest.getAttribute(GrailsApplicationAttributes.PAGE_SCOPE, RequestAttributes.SCOPE_REQUEST)
         if (binding == null) {
             binding = new TemplateVariableBinding(new WebRequestTemplateVariableBinding(webRequest))
             binding.root = true
@@ -128,36 +131,35 @@ trait TagLibrary implements WebAttributes, ServletAttributes, TagLibraryInvoker 
      * @throws MissingPropertyException When no tag namespace or tag is found
      */
     Object propertyMissing(String name) {
-        TagLibraryLookup gspTagLibraryLookup = getTagLibraryLookup();
+        TagLibraryLookup gspTagLibraryLookup = getTagLibraryLookup()
         if (gspTagLibraryLookup != null) {
-
-            Object result = gspTagLibraryLookup.lookupNamespaceDispatcher(name);
+            Object result = gspTagLibraryLookup.lookupNamespaceDispatcher(name)
             if (result == null) {
                 String namespace = getTaglibNamespace()
-                GroovyObject tagLibrary = gspTagLibraryLookup.lookupTagLibrary(namespace, name);
+                GroovyObject tagLibrary = gspTagLibraryLookup.lookupTagLibrary(namespace, name)
                 if (tagLibrary == null) {
-                    tagLibrary = gspTagLibraryLookup.lookupTagLibrary(TagOutput.DEFAULT_NAMESPACE, name);
+                    tagLibrary = gspTagLibraryLookup.lookupTagLibrary(TagOutput.DEFAULT_NAMESPACE, name)
                 }
 
                 if (tagLibrary != null) {
-                    Object tagProperty = tagLibrary.getProperty(name);
+                    Object tagProperty = tagLibrary.getProperty(name)
                     if (tagProperty instanceof Closure) {
-                        result = ((Closure<?>) tagProperty).clone();
+                        result = ((Closure<?>) tagProperty).clone()
                     }
                 }
             }
 
             if (result != null && !Environment.isDevelopmentMode()) {
                 MetaClass mc = GrailsMetaClassUtils.getExpandoMetaClass(getClass())
-                TagLibraryMetaUtils.registerPropertyMissingForTag(mc, name, result);
+                TagLibraryMetaUtils.registerPropertyMissingForTag(mc, name, result)
             }
 
             if (result != null) {
-                return result;
+                return result
             }
         }
 
-        throw new MissingPropertyException(name, this.getClass());
+        throw new MissingPropertyException(name, this.getClass())
     }
 
 }

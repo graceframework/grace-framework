@@ -89,7 +89,7 @@ class ValidationTagLib implements TagLibrary {
      */
     Closure fieldValue = { attrs, body ->
         def bean = attrs.bean
-        String field = attrs.field?.toString()
+        String field = attrs.field
         if (!bean || !field) {
             return
         }
@@ -110,7 +110,6 @@ class ValidationTagLib implements TagLibrary {
             if (rejectedValue == null) {
                 rejectedValue = parseForRejectedValue(bean, field)
             }
-
         }
         else {
             rejectedValue = parseForRejectedValue(bean, field)
@@ -258,7 +257,9 @@ class ValidationTagLib implements TagLibrary {
 
         if (renderAs == 'list') {
             def codec = attrs.codec ?: 'HTML'
-            if (codec == 'none') codec = ''
+            if (codec == 'none') {
+                codec = ''
+            }
 
             def errorsList = extractErrors(attrs)
             if (errorsList) {
@@ -271,7 +272,7 @@ class ValidationTagLib implements TagLibrary {
         }
         else if (renderAs.equalsIgnoreCase("xml")) {
             def mkp = new MarkupBuilder(out)
-            mkp.errors() {
+            mkp.errors {
                 eachErrorInternal(attrs, {
                     error(object: it.objectName,
                             field: it.field,
@@ -310,7 +311,8 @@ class ValidationTagLib implements TagLibrary {
             if (!attrs.encodeAs && error instanceof MessageSourceResolvable) {
                 MessageSourceResolvable errorResolvable = (MessageSourceResolvable) error
                 if (errorResolvable.arguments) {
-                    error = new DefaultMessageSourceResolvable(errorResolvable.codes, encodeArgsIfRequired(errorResolvable.arguments) as Object[], errorResolvable.defaultMessage)
+                    error = new DefaultMessageSourceResolvable(errorResolvable.codes,
+                            encodeArgsIfRequired(errorResolvable.arguments) as Object[], errorResolvable.defaultMessage)
                 }
             }
             try {
@@ -331,7 +333,7 @@ class ValidationTagLib implements TagLibrary {
             }
         }
         else if (attrs.code) {
-            String code = attrs.code?.toString()
+            String code = attrs.code
             List args = []
             if (attrs.args) {
                 args = attrs.encodeAs ? attrs.args as List : encodeArgsIfRequired(attrs.args)
@@ -344,8 +346,7 @@ class ValidationTagLib implements TagLibrary {
                 defaultMessage = code
             }
 
-            def message = messageSource.getMessage(code, args == null ? null : args.toArray(),
-                    defaultMessage, locale)
+            def message = messageSource.getMessage(code, args == null ? null : args.toArray(), defaultMessage, locale)
             if (message != null) {
                 text = message
             }
@@ -374,7 +375,7 @@ class ValidationTagLib implements TagLibrary {
     }
 
     // Maps out how Grails contraints map to Apache commons validators
-    static CONSTRAINT_TYPE_MAP = [email: 'email',
+    static final CONSTRAINT_TYPE_MAP = [email: 'email',
                                   creditCard: 'creditCard',
                                   matches: 'mask',
                                   blank: 'required',
@@ -448,11 +449,21 @@ class ValidationTagLib implements TagLibrary {
                         out << "document.forms['${form}'].elements['${constraint.propertyName}']," // the field
                         out << '"Test message"' // TODO: Resolve the actual message
                         switch (vt) {
-                            case 'mask': out << ",function() { return '${constraint.regex}'; }"; break
-                            case 'intRange': out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"; break
-                            case 'floatRange': out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"; break
-                            case 'maxLength': out << ",function() { return ${constraint.maxSize};  }"; break
-                            case 'minLength': out << ",function() { return ${constraint.minSize};  }"; break
+                            case 'mask':
+                                out << ",function() { return '${constraint.regex}'; }"
+                                break
+                            case 'intRange':
+                                out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"
+                                break
+                            case 'floatRange':
+                                out << ",function() { if (arguments[0]=='min') return ${constraint.range.from}; else return ${constraint.range.to} }"
+                                break
+                            case 'maxLength':
+                                out << ",function() { return ${constraint.maxSize};  }"
+                                break
+                            case 'minLength':
+                                out << ",function() { return ${constraint.minSize};  }"
+                                break
                         }
                         out << ');\n'
                     }

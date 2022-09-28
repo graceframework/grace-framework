@@ -39,7 +39,9 @@ class PageContextFactory {
         def request = webRequest.getCurrentRequest()
 
         def pageContext = request.getAttribute(PC.PAGECONTEXT)
-        if (pageContext instanceof GroovyPagesPageContext) return pageContext
+        if (pageContext instanceof GroovyPagesPageContext) {
+            return pageContext
+        }
 
         ServletContext servletContext = webRequest.getServletContext()
         def gspServlet = servletContext.getAttribute(GroovyPagesServlet.SERVLET_INSTANCE)
@@ -58,4 +60,5 @@ class PageContextFactory {
 
         return pageContext
     }
+
 }

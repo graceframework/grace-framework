@@ -45,12 +45,15 @@ import grails.core.support.GrailsApplicationAware
 class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAware, TagLibraryResolver, ResourceLoaderAware, BeanClassLoaderAware {
 
     protected Map<String, JspTagLib> tagLibs = new ConcurrentHashMap<String, JspTagLib>()
+
     GrailsApplication grailsApplication
     ServletContext servletContext
     ClassLoader classLoader
     ResourceLoader resourceLoader
+
     @Value('${grails.gsp.tldScanPattern:}')
     String[] tldScanPatterns = [] as String[]
+
     volatile boolean initialized = false
 
     /**
@@ -63,7 +66,7 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
         return tagLibs[uri]
     }
 
-    public synchronized void initialize() {
+    synchronized void initialize() {
         if (servletContext) {
             Resource webXml = getWebXmlFromServletContext()
             if (webXml?.exists()) {
@@ -165,13 +168,11 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
         if (tldReader.tags) {
             return new JspTagLibImpl(uri, tldReader.tags, classLoader)
         }
-        else {
-            return null
-        }
+        return null
     }
 
     @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
+    void setBeanClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader
     }
 

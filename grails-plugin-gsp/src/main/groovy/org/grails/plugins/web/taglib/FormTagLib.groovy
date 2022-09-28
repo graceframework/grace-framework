@@ -55,6 +55,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
     private static final DEFAULT_CURRENCY_CODES = ['EUR', 'XCD', 'USD', 'XOF', 'NOK', 'AUD',
                                                    'XAF', 'NZD', 'MAD', 'DKK', 'GBP', 'CHF',
                                                    'XPF', 'ILS', 'ROL', 'TRL']
+    private static final PRECISION_RANKINGS = ["year": 0, "month": 10, "day": 20, "hour": 30, "minute": 40]
 
     ApplicationContext applicationContext
     RequestDataValueProcessor requestDataValueProcessor
@@ -204,11 +205,15 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             checked = attrs.remove('checked')
         }
 
-        if (checked instanceof String) checked = Boolean.valueOf(checked)
+        if (checked instanceof String) {
+            checked = Boolean.valueOf(checked)
+        }
 
-        if (value == null) value = false
+        if (value == null) {
+            value = false
+        }
+
         def hiddenValue = ""
-
         def unprocessed = value
         value = processFormFieldValueIfNecessary(name, value, "checkbox")
         hiddenValue = processFormFieldValueIfNecessary("_${name}", hiddenValue, "hidden")
@@ -388,7 +393,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr method the form method to use, either 'POST' or 'GET'; defaults to 'POST'
      */
     Closure form = { attrs, body ->
-
         boolean useToken = false
         if (attrs.containsKey('useToken')) {
             useToken = attrs.boolean('useToken')
@@ -438,7 +442,9 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         attrs.remove('method')
         // process remaining attributes
-        if (attrs.id == null) attrs.remove('id')
+        if (attrs.id == null) {
+            attrs.remove('id')
+        }
 
         outputAttributes(attrs, writer, true)
 
@@ -578,15 +584,19 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr value The current value of the date picker; defaults to either the value specified by the default attribute or now if no default is set
      * @attr default A Date or parsable date string that will be used if there is no value
      * @attr precision The desired granularity of the date to be rendered
-     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box. If there is no current selection this will be shown as it is first in the list, and if submitted with this selected, the key that you provide will be submitted. Typically this will be blank.
-     * @attr years A list or range of years to display, in the order specified. i.e. specify 2007..1900 for a reverse order list going back to 1900. If this attribute is not specified, a range of years from the current year - 100 to current year + 100 will be shown.
-     * @attr relativeYears A range of int representing values relative to value. For example, a relativeYears of -2..7 and a value of today will render a list of 10 years starting with 2 years ago through 7 years in the future. This can be useful for things like credit card expiration dates or birthdates which should be bound relative to today.
+     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box.
+     * If there is no current selection this will be shown as it is first in the list, and if submitted with this selected,
+     * the key that you provide will be submitted. Typically this will be blank.
+     * @attr years A list or range of years to display, in the order specified. i.e. specify 2007..1900 for a reverse order list going back to 1900.
+     * If this attribute is not specified, a range of years from the current year - 100 to current year + 100 will be shown.
+     * @attr relativeYears A range of int representing values relative to value. For example, a relativeYears of -2..7
+     * and a value of today will render a list of 10 years starting with 2 years ago through 7 years in the future.
+     * This can be useful for things like credit card expiration dates or birthdates which should be bound relative to today.
      * @attr id the DOM element id
      * @attr disabled Makes the resulting inputs and selects to be disabled. Is treated as a Groovy Truth.
      * @attr readonly Makes the resulting inputs and selects to be made read only. Is treated as a Groovy Truth.
      */
     Closure datePicker = { attrs ->
-        def out = out // let x = x ?
         def xdefault = attrs['default']
         if (xdefault == null) {
             xdefault = new Date()
@@ -594,7 +604,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -633,8 +642,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             noSelection = noSelection.entrySet().iterator().next()
         }
 
-        // make below final once GROOVY-8093 is fixed
-        def PRECISION_RANKINGS = ["year": 0, "month": 10, "day": 20, "hour": 30, "minute": 40]
         def precision = (attrs.precision ? PRECISION_RANKINGS[attrs.precision] :
                 (grailsApplication.config.grails.tags.datePicker.default.precision ?
                         PRECISION_RANKINGS["${grailsApplication.config.grails.tags.datePicker.default.precision}"] :
@@ -789,8 +796,10 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             }
 
             for (i in 0..23) {
-                def h = '' + i
-                if (i < 10) h = '0' + h
+                def h = i
+                if (i < 10) {
+                    h = '0' + h
+                }
                 // This option add hour to requestDataValueProcessor
                 h = processFormFieldValueIfNecessary("${name}_hour", "${h}", "option")
                 out.println "<option value=\"${h}\"${i == hour ? ' selected="selected"' : ''}>$h</option>"
@@ -820,8 +829,10 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             }
 
             for (i in 0..59) {
-                def m = '' + i
-                if (i < 10) m = '0' + m
+                def m = i
+                if (i < 10) {
+                    m = '0' + m
+                }
                 m = processFormFieldValueIfNecessary("${name}_minute", "${m}", "option")
                 out.println "<option value=\"${m}\"${i == minute ? ' selected="selected"' : ''}>$m</option>"
             }
@@ -835,7 +846,8 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
     def renderNoSelectionOptionImpl(out, noSelectionKey, noSelectionValue, value) {
         // If a label for the '--Please choose--' first item is supplied, write it out
-        out << "<option value=\"${(noSelectionKey == null ? '' : noSelectionKey)}\"${noSelectionKey == value ? ' selected="selected"' : ''}>${noSelectionValue.encodeAsHTML()}</option>"
+        out << "<option value=\"${(noSelectionKey == null ? '' : noSelectionKey)}\"${noSelectionKey == value ? ' selected="selected"' : ''}>" +
+                "${noSelectionValue.encodeAsHTML()}</option>"
     }
 
     /**
@@ -929,15 +941,28 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr id the DOM element id - uses the name attribute if not specified
      * @attr from REQUIRED The list or range to select from
      * @attr keys A list of values to be used for the value attribute of each "option" element.
-     * @attr optionKey By default value attribute of each &lt;option&gt; element will be the result of a "toString()" call on each element. Setting this allows the value to be a bean property of each element in the list.
-     * @attr optionValue By default the body of each &lt;option&gt; element will be the result of a "toString()" call on each element in the "from" attribute list. Setting this allows the value to be a bean property of each element in the list.
+     * @attr optionKey By default value attribute of each &lt;option&gt; element will be the result of a "toString()" call on each element.
+     * Setting this allows the value to be a bean property of each element in the list.
+     * @attr optionValue By default the body of each &lt;option&gt; element will be the result of a "toString()" call on each element
+     * in the "from" attribute list. Setting this allows the value to be a bean property of each element in the list.
      * @attr value The current selected value that evaluates equals() to true for one of the elements in the from list.
-     * @attr multiple boolean value indicating whether the select a multi-select (automatically true if the value is a collection, sets to single-select either if multiple is missing or it is explicitly set to false)
-     * @attr valueMessagePrefix By default the value "option" element will be the result of a "toString()" call on each element in the "from" attribute list. Setting this allows the value to be resolved from the I18n messages. The valueMessagePrefix will be suffixed with a dot ('.') and then the value attribute of the option to resolve the message. If the message could not be resolved, the value is presented.
-     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box. If there is no current selection this will be shown as it is first in the list, and if submitted with this selected, the key that you provide will be submitted. Typically this will be blank - but you can also use 'null' in the case that you're passing the ID of an object
+     * @attr multiple boolean value indicating whether the select a multi-select (automatically true if the value is a collection,
+     * sets to single-select either if multiple is missing or it is explicitly set to false)
+     * @attr valueMessagePrefix By default the value "option" element will be the result of a "toString()" call on each element
+     * in the "from" attribute list. Setting this allows the value to be resolved from the I18n messages.
+     * The valueMessagePrefix will be suffixed with a dot ('.') and then the value attribute of the option to resolve the message.
+     * If the message could not be resolved, the value is presented.
+     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box.
+     * If there is no current selection this will be shown as it is first in the list, and if submitted with this selected,
+     * the key that you provide will be submitted. Typically this will be blank - but you can also use 'null' in the case that
+     * you're passing the ID of an object
      * @attr disabled boolean value indicating whether the select is disabled or enabled (defaults to false - enabled)
      * @attr readonly boolean value indicating whether the select is read only or editable (defaults to false - editable)
-     * @attr dataAttrs a Map that adds data-* attributes to the &lt;option&gt; elements. Map's keys will be used as names of the data-* attributes like so: data-${key} (i.e. with a "data-" prefix). The object belonging to a Map's key determines the value of the data-* attribute. It can be a string referring to a property of beans in {@code from}, a Closure that accepts an item from {@code from} and returns the value or a List that contains a value for each of the &lt;option&gt;s.
+     * @attr dataAttrs a Map that adds data-* attributes to the &lt;option&gt; elements.
+     * Map's keys will be used as names of the data-* attributes like so: data-${key} (i.e. with a "data-" prefix).
+     * The object belonging to a Map's key determines the value of the data-* attribute.
+     * It can be a string referring to a property of beans in {@code from}, a Closure that accepts an item from {@code from}
+     * and returns the value or a List that contains a value for each of the &lt;option&gt;s.
      */
     Closure select = { attrs ->
         if (!attrs.name) {
@@ -1041,19 +1066,25 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
                 }
                 else if (keyValue && keys) {
                     def s = el.toString()
-                    if (s) writer << s.encodeAsHTML()
+                    if (s) {
+                        writer << s.encodeAsHTML()
+                    }
                 }
                 else if (keyValue) {
                     writer << keyValue.encodeAsHTML()
                 }
                 else {
                     def s = el.toString()
-                    if (s) writer << s.encodeAsHTML()
+                    if (s) {
+                        writer << s.encodeAsHTML()
+                    }
                 }
             }
             else {
                 def s = el.toString()
-                if (s) writer << s.encodeAsHTML()
+                if (s) {
+                    writer << s.encodeAsHTML()
+                }
             }
             writer << '</option>'
             writer.println()
@@ -1071,7 +1102,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
     }
 
     private void writeValueAndCheckIfSelected(selectName, keyValue, value, writer, dataAttrsMap, el, keyDisabled) {
-
         boolean selected = false
         def keyClass = keyValue?.getClass()
         if (keyClass.isInstance(value)) {
@@ -1094,8 +1124,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
                 value = conversionService.convert(value, keyClass)
                 selected = keyValue == value
             }
-            catch (e) {
-                // ignore
+            catch (ignore) {
             }
         }
         keyValue = processFormFieldValueIfNecessary(selectName, "${keyValue}", "option")
@@ -1171,7 +1200,8 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr name REQUIRED The name of the group
      * @attr values REQUIRED The list values for the radio buttons
      * @attr value The current selected value
-     * @attr labels Labels for each value contained in the values list. If this is ommitted the label property on the iterator variable (see below) will default to 'Radio ' + value.
+     * @attr labels Labels for each value contained in the values list.
+     * If this is ommitted the label property on the iterator variable (see below) will default to 'Radio ' + value.
      * @attr disabled Disables the resulting radio buttons.
      * @attr readonly Makes the resulting radio buttons to not be editable
      */

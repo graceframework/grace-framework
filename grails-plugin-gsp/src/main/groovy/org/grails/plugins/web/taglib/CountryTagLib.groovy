@@ -277,7 +277,7 @@ class CountryTagLib implements TagLibrary {
 
     // This needs to change, to sort on demand using the BROWSER's locale
     static final COUNTRY_CODES_BY_NAME_ORDER =
-            ISO3166_3.entrySet().sort { a, b -> a.value.compareTo(b.value) }.collect() { it.key }
+            ISO3166_3.entrySet().sort { a, b -> a.value.compareTo(b.value) }.collect { it.key }
     static final COUNTRY_CODES_BY_NAME = new TreeMap()
 
     static {
@@ -298,10 +298,17 @@ class CountryTagLib implements TagLibrary {
      * @attr name the select name
      * @attr id the DOM element id - uses the name attribute if not specified
      * @attr keys A list of values to be used for the value attribute of each "option" element.
-     * @attr optionKey By default value attribute of each <option> element will be the result of a "toString()" call on each element. Setting this allows the value to be a bean property of each element in the list.
-     * @attr optionValue By default the body of each &lt;option&gt; element will be the result of a "toString()" call on each element in the "from" attribute list. Setting this allows the value to be a bean property of each element in the list.
-     * @attr multiple boolean value indicating whether the select a multi-select (automatically true if the value is a collection, defaults to false - single-select)
-     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box. If there is no current selection this will be shown as it is first in the list, and if submitted with this selected, the key that you provide will be submitted. Typically this will be blank - but you can also use 'null' in the case that you're passing the ID of an object
+     * @attr optionKey By default value attribute of each <option> element will be the result of a "toString()" call on each element.
+     * Setting this allows the value to be a bean property of each element in the list.
+     * @attr optionValue By default the body of each &lt;option&gt;
+     * element will be the result of a "toString()" call on each element in the "from" attribute list.
+     * Setting this allows the value to be a bean property of each element in the list.
+     * @attr multiple boolean value indicating whether the select a multi-select (automatically true if the value is a collection,
+     * defaults to false - single-select)
+     * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box.
+     * If there is no current selection this will be shown as it is first in the list, and if submitted with this selected,
+     * the key that you provide will be submitted. Typically this will be blank - but you can also use 'null' in the case
+     * that you're passing the ID of an object
      * @attr disabled boolean value indicating whether the select is disabled or enabled (defaults to false - enabled)
      */
     Closure countrySelect = { attrs ->
@@ -309,7 +316,9 @@ class CountryTagLib implements TagLibrary {
             attrs.from = COUNTRY_CODES_BY_NAME_ORDER
         }
 
-        if (!attrs['valueMessagePrefix']) attrs.optionValue = { ISO3166_3[it] }
+        if (!attrs['valueMessagePrefix']) {
+            attrs.optionValue = { ISO3166_3[it] }
+        }
 
         if (!attrs.value) {
             attrs.value = attrs.remove('default')

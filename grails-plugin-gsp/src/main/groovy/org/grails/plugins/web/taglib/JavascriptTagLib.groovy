@@ -65,7 +65,8 @@ class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
      * @attr src The name of the javascript file to import. Will look in web-app/js dir
      * @attr library The name of the library to include. e.g. "jquery", "prototype", "scriptaculous", "yahoo" or "dojo"
      * @attr plugin The plugin to look for the javascript in
-     * @attr contextPath the context path to use (relative to the application context path). Defaults to "" or path to the plugin for a plugin view or template.
+     * @attr contextPath the context path to use (relative to the application context path).
+     * Defaults to "" or path to the plugin for a plugin view or template.
      * @attr base specifies the full base url to prepend to the library name
      */
     Closure javascript = { attrs, body ->

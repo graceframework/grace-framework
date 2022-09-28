@@ -30,6 +30,8 @@ import org.grails.gsp.compiler.GroovyPageCompiler
 @CompileStatic
 public class GroovyPageCompilerForkTask {
 
+    static final String FILE_EXTENSION = '.gsp'
+
     @Delegate
     CompilerConfiguration configuration = new CompilerConfiguration()
 
@@ -46,13 +48,11 @@ public class GroovyPageCompilerForkTask {
         this.tmpdir = tmpdir
         this.destDir = destDir
         this.sourceDir = sourceDir
-
     }
 
     GroovyPageCompiler createPageCompiler() {
         GroovyPageCompiler compiler = new GroovyPageCompiler()
         CompilerConfiguration config = new CompilerConfiguration()
-
 
         if (configs) {
             String[] configPaths = extractValidConfigPaths(configs)
@@ -106,14 +106,12 @@ public class GroovyPageCompilerForkTask {
         run(args)
     }
 
-
-    static final String fileExtension = '.gsp'
-
     static void run(String[] args) {
         if (args.length != 8) {
             System.err.println("Invalid arguments: [${args.join(',')}]")
             System.err.println("""
-Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir] [targetCompatibility] [packageName] [serverPath] [configFile] [encoding]
+Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir] [targetCompatibility] [packageName] [serverPath]
+[configFile] [encoding]
 """)
             System.exit(1)
         }
@@ -126,7 +124,6 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String[] configFiles = args[6].tokenize(',')
         File configFile = new File(args[6])
         String encoding = args[7] ?: 'UTF-8'
-
 
         GroovyPageCompilerForkTask compiler = new GroovyPageCompilerForkTask(srcDir, destinationDir, tmpDir)
         if (configFiles) {
@@ -147,10 +144,11 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
 
         List<File> allFiles = []
         srcDir.eachFileRecurse(FileType.FILES) { File f ->
-            if (f.name.endsWith(fileExtension)) {
+            if (f.name.endsWith(FILE_EXTENSION)) {
                 allFiles.add(f)
             }
         }
         compiler.compile(allFiles)
     }
+
 }

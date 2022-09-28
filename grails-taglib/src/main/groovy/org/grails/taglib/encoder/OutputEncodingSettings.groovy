@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class OutputEncodingSettings {
+
     /** scriptlet codec escapes the static html parts coming from the GSP file scriptlets to output */
     public static final String OUT_CODEC_NAME = "scriptlet"
     /** expression codec escapes values inside ${} to output */
@@ -41,16 +42,15 @@ class OutputEncodingSettings {
     public static final Set<String> VALID_CODEC_SETTING_NAMES =
             ([OUT_CODEC_NAME, EXPRESSION_CODEC_NAME, STATIC_CODEC_NAME, TAGLIB_CODEC_NAME, TAGLIB_DEFAULT_CODEC_NAME] as Set).asImmutable()
 
-    private static final Map<String, String> defaultSettings =
+    private static final Map<String, String> DEFAULT_SETTINGS =
             [(EXPRESSION_CODEC_NAME): 'html',
              (STATIC_CODEC_NAME): 'none',
              (OUT_CODEC_NAME): 'none',
              (TAGLIB_CODEC_NAME): 'none',
              (TAGLIB_DEFAULT_CODEC_NAME): 'none']
 
-
     static String getDefaultValue(String codecName) {
-        defaultSettings.get(codecName)
+        DEFAULT_SETTINGS.get(codecName)
     }
 
 }

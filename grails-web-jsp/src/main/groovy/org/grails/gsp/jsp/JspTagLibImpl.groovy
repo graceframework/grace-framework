@@ -27,8 +27,8 @@ import org.grails.buffer.FastStringPrintWriter
 @CompileStatic
 class JspTagLibImpl implements JspTagLib {
 
-    private String uri
-    private Map<String, JspTagImpl> tags = [:]
+    private final String uri
+    private final Map<String, JspTagImpl> tags = [:]
 
     JspTagLibImpl(String uri, Map<String, String> tagClasses, ClassLoader classLoader) {
         Assert.notNull uri, "The URI of the tag library must be specified!"
@@ -60,12 +60,14 @@ class JspTagLibImpl implements JspTagLib {
 
             Map<String, Object> attrs = args[0] instanceof Map ? (Map) args[0] : [:]
             Closure body = args[0] instanceof Closure ? (Closure) args[0] : null
-            if (args.size() > 1) body = args[1] instanceof Closure ? (Closure) args[1] : null
+            if (args.size() > 1) {
+                body = args[1] instanceof Closure ? (Closure) args[1] : null
+            }
             if (body == null && args.size() > 1) {
                 body = { args[1] }
             }
             else {
-                body = {}
+                body = { }
             }
 
             def sw = new FastStringPrintWriter()
