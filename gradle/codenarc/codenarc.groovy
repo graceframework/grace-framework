@@ -104,7 +104,7 @@ ruleset {
     // rulesets/convention.xml
     // CompileStatic
     // ConfusingTernary
-    CouldBeElvis
+    // CouldBeElvis
     // CouldBeSwitchStatement
     // FieldTypeRequired
     // HashtableIsObsolete
@@ -409,7 +409,7 @@ ruleset {
     UnnecessaryElseStatement
     UnnecessaryFinalOnPrivateMethod
     UnnecessaryFloatInstantiation
-    UnnecessaryGString
+    // UnnecessaryGString
     // UnnecessaryGetter
     UnnecessaryIfStatement
     UnnecessaryInstanceOfCheck
@@ -424,14 +424,14 @@ ruleset {
     UnnecessaryPackageReference
     UnnecessaryParenthesesForMethodCallWithClosure
     UnnecessaryPublicModifier
-    UnnecessaryReturnKeyword
+    // UnnecessaryReturnKeyword
     UnnecessarySafeNavigationOperator
-    UnnecessarySelfAssignment
+    // UnnecessarySelfAssignment
     UnnecessarySemicolon
     // UnnecessarySetter
     UnnecessaryStringInstantiation
     UnnecessaryTernaryExpression
-    UnnecessaryToString
+    // UnnecessaryToString
     UnnecessaryTransientModifier
 
     // rulesets/unused.xml
