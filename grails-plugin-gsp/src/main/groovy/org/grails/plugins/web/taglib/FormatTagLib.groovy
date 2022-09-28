@@ -178,7 +178,18 @@ class FormatTagLib implements TagLibrary {
         def timeZone = grailsTagDateHelper.getTimeZone(attrs.timeZone)
 
         def dateFormat
-        if (!type) {
+        if (type) {
+            if (type == 'DATE') {
+                dateFormat = grailsTagDateHelper.getDateFormat(dateStyle, timeZone, locale)
+            }
+            else if (type == 'TIME') {
+                dateFormat = grailsTagDateHelper.getTimeFormat(timeStyle, timeZone, locale)
+            }
+            else { // 'both' or 'datetime'
+                dateFormat = grailsTagDateHelper.getDateTimeFormat(dateStyle, timeStyle, timeZone, locale)
+            }
+        }
+        else {
             if (!format && formatName) {
                 format = messageHelper(formatName, null, null, locale)
                 if (!format) {
@@ -193,17 +204,6 @@ class FormatTagLib implements TagLibrary {
             }
 
             dateFormat = grailsTagDateHelper.getFormatFromPattern(format, timeZone, locale)
-        }
-        else {
-            if (type == 'DATE') {
-                dateFormat = grailsTagDateHelper.getDateFormat(dateStyle, timeZone, locale)
-            }
-            else if (type == 'TIME') {
-                dateFormat = grailsTagDateHelper.getTimeFormat(timeStyle, timeZone, locale)
-            }
-            else { // 'both' or 'datetime'
-                dateFormat = grailsTagDateHelper.getDateTimeFormat(dateStyle, timeStyle, timeZone, locale)
-            }
         }
 
         return grailsTagDateHelper.format(dateFormat, date)
@@ -273,10 +273,7 @@ class FormatTagLib implements TagLibrary {
         DecimalFormatSymbols dcfs = locale ? new DecimalFormatSymbols(locale) : new DecimalFormatSymbols()
 
         DecimalFormat decimalFormat
-        if (!type) {
-            decimalFormat = new DecimalFormat(format, dcfs)
-        }
-        else {
+        if (type) {
             if (type == 'currency') {
                 decimalFormat = NumberFormat.getCurrencyInstance(locale)
             }
@@ -289,6 +286,9 @@ class FormatTagLib implements TagLibrary {
             else {
                 throwTagError("Attribute [type] of Tag [formatNumber] specifies an unknown type. Known types are currency, number and percent.")
             }
+        }
+        else {
+            decimalFormat = new DecimalFormat(format, dcfs)
         }
 
         if (attrs.nan) {

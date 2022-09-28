@@ -85,7 +85,11 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
             writer << '>'
         }
         else {
-            if (!useXmlClosingForEmptyTag) {
+            if (useXmlClosingForEmptyTag) {
+                // XML / XHTML empty tag
+                writer << '/>'
+            }
+            else {
                 writer << '>'
                 // in valid HTML , closing of an empty tag depends on the element name
                 // for empty title, the tag must be closed properly
@@ -96,15 +100,11 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
                     writer << '>'
                 }
             }
-            else {
-                // XML / XHTML empty tag
-                writer << '/>'
-            }
         }
         content
     }
 
-    def StreamCharBuffer wrapContentInBuffer(Object content) {
+    StreamCharBuffer wrapContentInBuffer(Object content) {
         if (content instanceof Closure) {
             content = content()
         }
@@ -116,9 +116,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
             newbuffer.setPreferSubChunkWhenWritingToOtherBuffer(true)
             return newbuffer
         }
-        else {
-            return (StreamCharBuffer) content
-        }
+        return (StreamCharBuffer) content
     }
 
     /**

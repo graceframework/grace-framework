@@ -272,7 +272,7 @@ class ValidationTagLib implements TagLibrary {
         }
         else if (renderAs.equalsIgnoreCase("xml")) {
             def mkp = new MarkupBuilder(out)
-            mkp.errors() {
+            mkp.errors {
                 eachErrorInternal(attrs, {
                     error(object: it.objectName,
                             field: it.field,

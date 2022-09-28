@@ -277,7 +277,7 @@ class CountryTagLib implements TagLibrary {
 
     // This needs to change, to sort on demand using the BROWSER's locale
     static final COUNTRY_CODES_BY_NAME_ORDER =
-            ISO3166_3.entrySet().sort { a, b -> a.value.compareTo(b.value) }.collect() { it.key }
+            ISO3166_3.entrySet().sort { a, b -> a.value.compareTo(b.value) }.collect { it.key }
     static final COUNTRY_CODES_BY_NAME = new TreeMap()
 
     static {

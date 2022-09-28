@@ -168,9 +168,7 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
         if (tldReader.tags) {
             return new JspTagLibImpl(uri, tldReader.tags, classLoader)
         }
-        else {
-            return null
-        }
+        return null
     }
 
     @Override

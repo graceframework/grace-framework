@@ -597,7 +597,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr readonly Makes the resulting inputs and selects to be made read only. Is treated as a Groovy Truth.
      */
     Closure datePicker = { attrs ->
-        def out = out // let x = x ?
         def xdefault = attrs['default']
         if (xdefault == null) {
             xdefault = new Date()
@@ -797,7 +796,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             }
 
             for (i in 0..23) {
-                def h = '' + i
+                def h = i
                 if (i < 10) {
                     h = '0' + h
                 }
@@ -830,7 +829,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             }
 
             for (i in 0..59) {
-                def m = '' + i
+                def m = i
                 if (i < 10) {
                     m = '0' + m
                 }

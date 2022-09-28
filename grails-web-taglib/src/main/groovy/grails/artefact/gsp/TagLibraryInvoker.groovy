@@ -98,9 +98,7 @@ trait TagLibraryInvoker extends WebAttributes {
             // don't add any new metamethod if an existing render method exists, see GRAILS-11581
             return !this.respondsTo("render")
         }
-        else {
-            return true
-        }
+        return true
     }
 
     /**

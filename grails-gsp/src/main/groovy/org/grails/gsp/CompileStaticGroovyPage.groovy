@@ -39,8 +39,7 @@ abstract class CompileStaticGroovyPage extends GroovyPage {
 
     @Override
     protected Object lookupTagDispatcher(String namespace) {
-        gspTagLibraryLookup != null && gspTagLibraryLookup.hasNamespace(namespace)
-                ? new TagLibNamespaceMethodDispatcher(namespace, gspTagLibraryLookup, outputContext) : null
+        gspTagLibraryLookup?.hasNamespace(namespace) ? new TagLibNamespaceMethodDispatcher(namespace, gspTagLibraryLookup, outputContext) : null
     }
 
     @Override

@@ -243,7 +243,7 @@ class GroovyPagesGrailsPlugin extends Plugin {
             }
 
             boolean jstlPresent = ClassUtils.isPresent(
-                    "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.class.getClassLoader())
+                    "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
 
             abstractViewResolver {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
