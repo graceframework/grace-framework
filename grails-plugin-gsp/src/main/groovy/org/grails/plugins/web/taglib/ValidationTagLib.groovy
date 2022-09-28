@@ -375,7 +375,7 @@ class ValidationTagLib implements TagLibrary {
     }
 
     // Maps out how Grails contraints map to Apache commons validators
-    static CONSTRAINT_TYPE_MAP = [email: 'email',
+    static final CONSTRAINT_TYPE_MAP = [email: 'email',
                                   creditCard: 'creditCard',
                                   matches: 'mask',
                                   blank: 'required',

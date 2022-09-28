@@ -30,6 +30,8 @@ import org.grails.gsp.compiler.GroovyPageCompiler
 @CompileStatic
 public class GroovyPageCompilerForkTask {
 
+    static final String FILE_EXTENSION = '.gsp'
+
     @Delegate
     CompilerConfiguration configuration = new CompilerConfiguration()
 
@@ -104,8 +106,6 @@ public class GroovyPageCompilerForkTask {
         run(args)
     }
 
-    static final String fileExtension = '.gsp'
-
     static void run(String[] args) {
         if (args.length != 8) {
             System.err.println("Invalid arguments: [${args.join(',')}]")
@@ -144,7 +144,7 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
 
         List<File> allFiles = []
         srcDir.eachFileRecurse(FileType.FILES) { File f ->
-            if (f.name.endsWith(fileExtension)) {
+            if (f.name.endsWith(FILE_EXTENSION)) {
                 allFiles.add(f)
             }
         }

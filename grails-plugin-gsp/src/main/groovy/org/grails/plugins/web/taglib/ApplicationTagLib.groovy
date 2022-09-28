@@ -66,6 +66,16 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
                            session: 'session',
                            flash: 'flash']
 
+    static final LINK_WRITERS = [
+            js: { url, constants, attrs ->
+                return "<script src=\"${url}\"${getAttributesToRender(constants, attrs)}></script>"
+            },
+
+            link: { url, constants, attrs ->
+                return "<link href=\"${url}\"${getAttributesToRender(constants, attrs)}/>"
+            }
+    ]
+
     boolean useJsessionId = false
     boolean hasResourceProcessor = false
 
@@ -268,16 +278,6 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
         return sb.toString()
     }
 
-    static LINK_WRITERS = [
-            js: { url, constants, attrs ->
-                return "<script src=\"${url}\"${getAttributesToRender(constants, attrs)}></script>"
-            },
-
-            link: { url, constants, attrs ->
-                return "<link href=\"${url}\"${getAttributesToRender(constants, attrs)}/>"
-            }
-    ]
-
     static getAttributesToRender(constants, attrs) {
         StringBuilder sb = new StringBuilder()
         if (constants) {
@@ -289,7 +289,7 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
         return sb.toString()
     }
 
-    static SUPPORTED_TYPES = [
+    static final SUPPORTED_TYPES = [
             css: [type: "text/css", rel: 'stylesheet', media: 'screen, projection'],
             js: [type: 'text/javascript', writer: 'js'],
 

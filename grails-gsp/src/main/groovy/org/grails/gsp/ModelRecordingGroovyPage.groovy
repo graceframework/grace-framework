@@ -45,17 +45,17 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
         CONFIG_SYSTEM_PROPERTY_NAME = "grails.views.gsp.modelrecording"
         ENABLED = Boolean.getBoolean(CONFIG_SYSTEM_PROPERTY_NAME)
     }
-    private static final ModelRecordingCache modelRecordingCache = new ModelRecordingCache()
+    private static final ModelRecordingCache MODEL_RECORDING_CACHE = new ModelRecordingCache()
     private ModelEntry modelEntry
 
     @Override
     void initRun(Writer target, OutputContext outputContext, GroovyPageMetaInfo metaInfo) {
         super.initRun(target, outputContext, metaInfo)
         def key = getGroovyPageFileName()
-        modelEntry = modelRecordingCache.models.get(key)
+        modelEntry = MODEL_RECORDING_CACHE.models.get(key)
         if (modelEntry == null) {
             modelEntry = new ModelEntry()
-            modelRecordingCache.models.put(key, modelEntry)
+            MODEL_RECORDING_CACHE.models.put(key, modelEntry)
         }
     }
 
@@ -149,7 +149,7 @@ class ModelRecordingCache {
 class ModelEntry {
 
     // defaults are defined by org.grails.web.taglib.WebRequestTemplateVariableBinding
-    static Map<String, String> DEFAULT_TYPES = [webRequest: 'org.grails.web.servlet.mvc.GrailsWebRequest',
+    static final Map<String, String> DEFAULT_TYPES = [webRequest: 'org.grails.web.servlet.mvc.GrailsWebRequest',
                                                 request: 'javax.servlet.http.HttpServletRequest',
                                                 response: 'javax.servlet.http.HttpServletResponse',
                                                 flash: 'grails.web.mvc.FlashScope',

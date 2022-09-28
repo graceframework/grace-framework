@@ -42,7 +42,7 @@ class OutputEncodingSettings {
     public static final Set<String> VALID_CODEC_SETTING_NAMES =
             ([OUT_CODEC_NAME, EXPRESSION_CODEC_NAME, STATIC_CODEC_NAME, TAGLIB_CODEC_NAME, TAGLIB_DEFAULT_CODEC_NAME] as Set).asImmutable()
 
-    private static final Map<String, String> defaultSettings =
+    private static final Map<String, String> DEFAULT_SETTINGS =
             [(EXPRESSION_CODEC_NAME): 'html',
              (STATIC_CODEC_NAME): 'none',
              (OUT_CODEC_NAME): 'none',
@@ -50,7 +50,7 @@ class OutputEncodingSettings {
              (TAGLIB_DEFAULT_CODEC_NAME): 'none']
 
     static String getDefaultValue(String codecName) {
-        defaultSettings.get(codecName)
+        DEFAULT_SETTINGS.get(codecName)
     }
 
 }
