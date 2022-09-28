@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package org.grails.gsp.compiler.transform;
 
-import grails.compiler.ast.AstTransformer;
-import grails.compiler.ast.GroovyPageInjector;
+import java.net.URL;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.ast.Parameter;
@@ -24,12 +24,13 @@ import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
-import java.net.URL;
+import grails.compiler.ast.AstTransformer;
+import grails.compiler.ast.GroovyPageInjector;
 
 @AstTransformer
 public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
 
-    private final static String RUN_METHOD = "run";
+    private static final String RUN_METHOD = "run";
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
 
@@ -57,4 +58,5 @@ public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
     public boolean shouldInject(URL url) {
         return false;
     }
+
 }

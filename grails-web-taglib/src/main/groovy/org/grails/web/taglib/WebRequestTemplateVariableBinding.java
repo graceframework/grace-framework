@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +15,19 @@
  */
 package org.grails.web.taglib;
 
-import grails.util.Environment;
-import groovy.lang.Binding;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.grails.taglib.AbstractTemplateVariableBinding;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import groovy.lang.Binding;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import grails.util.Environment;
+
+import org.grails.taglib.AbstractTemplateVariableBinding;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
 
 /**
  * Script binding to be used as the top-level binding in GSP evaluation.
@@ -33,12 +35,17 @@ import java.util.Set;
  * @author Lari Hotari
  */
 public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableBinding {
-    private static Log log = LogFactory.getLog(WebRequestTemplateVariableBinding.class);
-    private GrailsWebRequest webRequest;
-    private boolean developmentMode = Environment.isDevelopmentMode();
-    private Set<String> requestAttributeVariables=new HashSet<String>();
 
-    private static Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<String, LazyRequestBasedValue>();
+    private static final Log log = LogFactory.getLog(WebRequestTemplateVariableBinding.class);
+
+    private final GrailsWebRequest webRequest;
+
+    private final boolean developmentMode = Environment.isDevelopmentMode();
+
+    private final Set<String> requestAttributeVariables = new HashSet<>();
+
+    private static final Map<String, LazyRequestBasedValue> lazyRequestBasedValuesMap = new HashMap<>();
+
     static {
         Map<String, LazyRequestBasedValue> m = lazyRequestBasedValuesMap;
         m.put("webRequest", new LazyRequestBasedValue() {
@@ -104,20 +111,20 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
 
     public Binding findBindingForVariable(String name) {
         Binding binding = super.findBindingForVariable(name);
-        if(binding == null) {
-            if(webRequest.getCurrentRequest().getAttribute(name) != null) {
-                requestAttributeVariables.add(name);
+        if (binding == null) {
+            if (this.webRequest.getCurrentRequest().getAttribute(name) != null) {
+                this.requestAttributeVariables.add(name);
                 binding = this;
             }
         }
-        if(binding == null && lazyRequestBasedValuesMap.containsKey(name)) {
+        if (binding == null && lazyRequestBasedValuesMap.containsKey(name)) {
             binding = this;
         }
         return binding;
     }
 
     public boolean isRequestAttributeVariable(String name) {
-        return requestAttributeVariables.contains(name);
+        return this.requestAttributeVariables.contains(name);
     }
 
     public boolean isVariableCachingAllowed(String name) {
@@ -127,20 +134,22 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
     @Override
     public Object getVariable(String name) {
         Object val = getVariablesMap().get(name);
-        if (val == null && !getVariablesMap().containsKey(name) && webRequest != null) {
-            val = webRequest.getCurrentRequest().getAttribute(name);
+        if (val == null && !getVariablesMap().containsKey(name) && this.webRequest != null) {
+            val = this.webRequest.getCurrentRequest().getAttribute(name);
             if (val != null) {
-                requestAttributeVariables.add(name);
-            } else {
+                this.requestAttributeVariables.add(name);
+            }
+            else {
                 LazyRequestBasedValue lazyValue = lazyRequestBasedValuesMap.get(name);
                 if (lazyValue != null) {
-                    val = lazyValue.evaluate(webRequest);
-                } else {
+                    val = lazyValue.evaluate(this.webRequest);
+                }
+                else {
                     val = resolveMissingVariable(name);
                 }
 
                 // warn about missing variables in development mode
-                if (val == null && developmentMode) {
+                if (val == null && this.developmentMode) {
                     if (log.isDebugEnabled()) {
                         log.debug("Variable '" + name + "' not found in binding or the value is null.");
                     }
@@ -154,10 +163,6 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
         return null;
     }
 
-    private static interface LazyRequestBasedValue {
-        public Object evaluate(GrailsWebRequest webRequest);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Set<String> getVariableNames() {
@@ -165,8 +170,15 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
             return lazyRequestBasedValuesMap.keySet();
         }
 
-        Set<String> variableNames = new HashSet<String>(lazyRequestBasedValuesMap.keySet());
+        Set<String> variableNames = new HashSet<>(lazyRequestBasedValuesMap.keySet());
         variableNames.addAll(getVariablesMap().keySet());
         return variableNames;
     }
+
+    private interface LazyRequestBasedValue {
+
+        Object evaluate(GrailsWebRequest webRequest);
+
+    }
+
 }

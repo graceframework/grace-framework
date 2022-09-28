@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,12 +21,10 @@ import java.util.NoSuchElementException;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
-import grails.core.GrailsApplication;
-import grails.core.support.GrailsApplicationAware;
-import org.grails.web.sitemesh.FactoryHolder;
-import org.grails.web.sitemesh.Grails5535Factory;
-import org.grails.web.sitemesh.GroovyPageLayoutFinder;
-import org.grails.web.sitemesh.SitemeshLayoutView;
+import com.opensymphony.module.sitemesh.Config;
+import com.opensymphony.module.sitemesh.Factory;
+import com.opensymphony.sitemesh.ContentProcessor;
+import com.opensymphony.sitemesh.compatability.PageParser2ContentProcessor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -34,18 +32,27 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import com.opensymphony.module.sitemesh.Config;
-import com.opensymphony.module.sitemesh.Factory;
-import com.opensymphony.sitemesh.ContentProcessor;
-import com.opensymphony.sitemesh.compatability.PageParser2ContentProcessor;
+import grails.core.GrailsApplication;
+import grails.core.support.GrailsApplicationAware;
 
-public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver implements GrailsApplicationAware, DisposableBean, Ordered, ApplicationListener<ContextRefreshedEvent>{
+import org.grails.web.sitemesh.FactoryHolder;
+import org.grails.web.sitemesh.Grails5535Factory;
+import org.grails.web.sitemesh.GroovyPageLayoutFinder;
+import org.grails.web.sitemesh.SitemeshLayoutView;
+
+public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
+        implements GrailsApplicationAware, DisposableBean, Ordered, ApplicationListener<ContextRefreshedEvent> {
+
     private static final String FACTORY_SERVLET_CONTEXT_ATTRIBUTE = "sitemesh.factory";
+
     private ContentProcessor contentProcessor;
+
     protected GrailsApplication grailsApplication;
+
     private boolean sitemeshConfigLoaded = false;
+
     private int order = Ordered.LOWEST_PRECEDENCE - 50;
-    
+
     public SitemeshLayoutViewResolver() {
         super();
     }
@@ -56,26 +63,28 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver impleme
 
     @Override
     protected View createLayoutView(View innerView) {
-        return new SitemeshLayoutView(groovyPageLayoutFinder, innerView, contentProcessor);
+        return new SitemeshLayoutView(groovyPageLayoutFinder, innerView, this.contentProcessor);
     }
-    
-    public void init() {
-        if(servletContext == null) return;
 
-        Factory sitemeshFactory = (Factory)servletContext.getAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE);
-        if(sitemeshFactory==null) {
+    public void init() {
+        if (servletContext == null) {
+            return;
+        }
+
+        Factory sitemeshFactory = (Factory) servletContext.getAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE);
+        if (sitemeshFactory == null) {
             sitemeshFactory = loadSitemeshConfig();
         }
-        contentProcessor = new PageParser2ContentProcessor(sitemeshFactory);
+        this.contentProcessor = new PageParser2ContentProcessor(sitemeshFactory);
     }
 
     protected Factory loadSitemeshConfig() {
-        FilterConfig filterConfig=new FilterConfig() {
+        FilterConfig filterConfig = new FilterConfig() {
             @Override
             public ServletContext getServletContext() {
                 return servletContext;
             }
-            
+
             @Override
             public Enumeration<String> getInitParameterNames() {
                 return new Enumeration<String>() {
@@ -83,19 +92,19 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver impleme
                     public boolean hasMoreElements() {
                         return false;
                     }
-                    
+
                     @Override
                     public String nextElement() {
                         throw new NoSuchElementException();
                     }
                 };
             }
-            
+
             @Override
             public String getInitParameter(String name) {
                 return null;
             }
-            
+
             @Override
             public String getFilterName() {
                 return null;
@@ -103,12 +112,12 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver impleme
         };
         Config config = new Config(filterConfig);
         Grails5535Factory sitemeshFactory = new Grails5535Factory(config);
-        if(servletContext != null) {
+        if (servletContext != null) {
             servletContext.setAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE, sitemeshFactory);
         }
         sitemeshFactory.refresh();
         FactoryHolder.setFactory(sitemeshFactory);
-        sitemeshConfigLoaded = true;
+        this.sitemeshConfigLoaded = true;
         return sitemeshFactory;
     }
 
@@ -123,18 +132,20 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver impleme
     }
 
     protected void clearSitemeshConfig() {
-        if(servletContext == null) return;
-        if(sitemeshConfigLoaded) {
+        if (servletContext == null) {
+            return;
+        }
+        if (this.sitemeshConfigLoaded) {
             FactoryHolder.setFactory(null);
-            if(servletContext != null) {
+            if (servletContext != null) {
                 servletContext.removeAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE);
             }
-            sitemeshConfigLoaded = false;
+            this.sitemeshConfigLoaded = false;
         }
     }
 
     public int getOrder() {
-        return order;
+        return this.order;
     }
 
     public void setOrder(int order) {
@@ -145,4 +156,5 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver impleme
     public void onApplicationEvent(ContextRefreshedEvent event) {
         init();
     }
+
 }

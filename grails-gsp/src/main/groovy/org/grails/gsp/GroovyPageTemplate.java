@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package org.grails.gsp;
 
+import java.util.Map;
+
 import groovy.lang.Writable;
 import groovy.text.Template;
+
 import org.grails.taglib.encoder.OutputContextLookup;
 import org.grails.taglib.encoder.OutputContextLookupHelper;
-
-import java.util.Map;
 
 /**
  * Knows how to make in instance of GroovyPageWritable.
@@ -29,8 +30,11 @@ import java.util.Map;
  * @since 0.5
  */
 public class GroovyPageTemplate implements Template, Cloneable {
+
     private final OutputContextLookup outputContextLookup;
+
     private GroovyPageMetaInfo metaInfo;
+
     private boolean allowSettingContentType = false;
 
     public GroovyPageTemplate(GroovyPageMetaInfo metaInfo) {
@@ -43,32 +47,33 @@ public class GroovyPageTemplate implements Template, Cloneable {
     }
 
     public Writable make() {
-        return new GroovyPageWritable(metaInfo, outputContextLookup, allowSettingContentType);
+        return new GroovyPageWritable(this.metaInfo, this.outputContextLookup, this.allowSettingContentType);
     }
 
     @SuppressWarnings("rawtypes")
     public GroovyPageWritable make(Map binding) {
-        GroovyPageWritable gptw = new GroovyPageWritable(metaInfo, outputContextLookup, allowSettingContentType);
+        GroovyPageWritable gptw = new GroovyPageWritable(this.metaInfo, this.outputContextLookup, this.allowSettingContentType);
         gptw.setBinding(binding);
         return gptw;
     }
 
     public GroovyPageMetaInfo getMetaInfo() {
-        return metaInfo;
+        return this.metaInfo;
     }
 
     public boolean isAllowSettingContentType() {
-        return allowSettingContentType;
+        return this.allowSettingContentType;
     }
 
     public void setAllowSettingContentType(boolean allowSettingContentType) {
         this.allowSettingContentType = allowSettingContentType;
     }
-    
+
     @Override
     public Object clone() {
-        GroovyPageTemplate cloned = new GroovyPageTemplate(metaInfo);
-        cloned.setAllowSettingContentType(allowSettingContentType);
+        GroovyPageTemplate cloned = new GroovyPageTemplate(this.metaInfo);
+        cloned.setAllowSettingContentType(this.allowSettingContentType);
         return cloned;
     }
+
 }

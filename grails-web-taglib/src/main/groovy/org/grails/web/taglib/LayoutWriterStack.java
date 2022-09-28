@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,15 @@
  */
 package org.grails.web.taglib;
 
-import groovy.lang.Closure;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+
+import groovy.lang.Closure;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * Class that can be used by "layout" tags, i.e. tags that use the different parts in their body to assemble a bigger part.
@@ -41,8 +41,10 @@ import java.util.Stack;
  *  @author Ivo Houbrechts
  */
 public class LayoutWriterStack {
+
     private static final String ATTRIBUTE_NAME_WRITER_STACK = "be.ixor.grails.gsptaglib.WRITER_STACK";
-    private Stack<Map<String, Object>> stack = new Stack<Map<String, Object>>();
+
+    private Stack<Map<String, Object>> stack = new Stack<>();
 
     /**
      * Returns a {@link Writer} where a layout part can write its contents to.
@@ -89,7 +91,7 @@ public class LayoutWriterStack {
     public static Map<String, Object> writeParts(Closure<?> body) {
         LayoutWriterStack stack = LayoutWriterStack.currentStack();
         stack.push();
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("body", body.call());
         result.putAll(stack.pop());
         return result;
@@ -109,10 +111,11 @@ public class LayoutWriterStack {
     }
 
     private void push() {
-        stack.push(new HashMap<String, Object>());
+        this.stack.push(new HashMap<>());
     }
 
     private Map<String, Object> pop() {
-        return stack.pop();
+        return this.stack.pop();
     }
+
 }

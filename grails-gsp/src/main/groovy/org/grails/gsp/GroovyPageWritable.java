@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,26 @@
  */
 package org.grails.gsp;
 
-import grails.util.Environment;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import groovy.lang.Binding;
 import groovy.lang.Writable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import grails.util.Environment;
+
 import org.grails.taglib.AbstractTemplateVariableBinding;
 import org.grails.taglib.TemplateVariableBinding;
 import org.grails.taglib.encoder.OutputContext;
 import org.grails.taglib.encoder.OutputContextLookup;
-
-import java.io.*;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Writes itself to the specified writer, typically the response writer.
@@ -39,23 +44,29 @@ import java.util.Map;
  * @since 0.5
  */
 public class GroovyPageWritable implements Writable {
-    private static final Log LOG = LogFactory.getLog(GroovyPageWritable.class);
+
+    private static final Log logger = LogFactory.getLog(GroovyPageWritable.class);
+
     private static final String GSP_NONE_CODEC_NAME = "none";
+
     private GroovyPageMetaInfo metaInfo;
+
     private OutputContextLookup outputContextLookup;
+
     private boolean allowSettingContentType;
+
     @SuppressWarnings("rawtypes")
     private Map additionalBinding = new LinkedHashMap();
+
     private boolean showSource;
 
     private static final String GROOVY_SOURCE_CONTENT_TYPE = "text/plain";
+
     public GroovyPageWritable(GroovyPageMetaInfo metaInfo, OutputContextLookup outputContextLookup, boolean allowSettingContentType) {
         this.metaInfo = metaInfo;
         this.outputContextLookup = outputContextLookup;
         this.allowSettingContentType = allowSettingContentType;
     }
-
-
 
     /**
      * This sets any additional variables that need to be placed in the Binding of the GSP page.
@@ -65,7 +76,7 @@ public class GroovyPageWritable implements Writable {
     @SuppressWarnings("rawtypes")
     public void setBinding(Map binding) {
         if (binding != null) {
-            additionalBinding = binding;
+            this.additionalBinding = binding;
         }
     }
 
@@ -77,28 +88,29 @@ public class GroovyPageWritable implements Writable {
      * @throws IOException
      */
     public Writer writeTo(Writer out) throws IOException {
-        OutputContext outputContext = outputContextLookup.lookupOutputContext();
+        OutputContext outputContext = this.outputContextLookup.lookupOutputContext();
         try {
             return doWriteTo(outputContext, out);
-        } finally {
+        }
+        finally {
             doCleanUp(outputContext, out);
         }
     }
 
     protected void doCleanUp(OutputContext outputContext, Writer out) {
-        metaInfo.writeToFinished(out);
+        this.metaInfo.writeToFinished(out);
     }
 
     protected Writer doWriteTo(OutputContext outputContext, Writer out) throws IOException {
         if (shouldShowGroovySource(outputContext)) {
             // Set it to TEXT
             outputContext.setContentType(GROOVY_SOURCE_CONTENT_TYPE); // must come before response.getOutputStream()
-            writeGroovySourceToResponse(metaInfo, out);
+            writeGroovySourceToResponse(this.metaInfo, out);
         }
         else {
             // Set it to HTML by default
-            if (metaInfo.getCompilationException()!=null) {
-                throw metaInfo.getCompilationException();
+            if (this.metaInfo.getCompilationException() != null) {
+                throw this.metaInfo.getCompilationException();
             }
 
             // Set up the script context
@@ -114,14 +126,14 @@ public class GroovyPageWritable implements Writable {
                 }
             }
 
-            if (allowSettingContentType && hasRequest) {
+            if (this.allowSettingContentType && hasRequest) {
                 // only try to set content type when evaluating top level GSP
                 boolean contentTypeAlreadySet = outputContext.isContentTypeAlreadySet();
                 if (!contentTypeAlreadySet) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Writing output with content type: " + metaInfo.getContentType());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Writing output with content type: " + this.metaInfo.getContentType());
                     }
-                    outputContext.setContentType(metaInfo.getContentType()); // must come before response.getWriter()
+                    outputContext.setContentType(this.metaInfo.getContentType()); // must come before response.getWriter()
                 }
             }
 
@@ -132,14 +144,15 @@ public class GroovyPageWritable implements Writable {
 
             GroovyPage page = null;
             try {
-                page = (GroovyPage)metaInfo.getPageClass().newInstance();
-            } catch (Exception e) {
+                page = (GroovyPage) this.metaInfo.getPageClass().newInstance();
+            }
+            catch (Exception e) {
                 throw new GroovyPagesException("Problem instantiating page class", e);
             }
             page.setBinding(binding);
             binding.setOwner(page);
 
-            page.initRun(out, outputContext, metaInfo);
+            page.initRun(out, outputContext, this.metaInfo);
 
             try {
                 page.run();
@@ -149,7 +162,8 @@ public class GroovyPageWritable implements Writable {
                 if (hasRequest) {
                     if (newParentCreated) {
                         outputContext.setBinding(null);
-                    } else  {
+                    }
+                    else {
                         outputContext.setBinding(parentBinding);
                     }
                 }
@@ -164,40 +178,34 @@ public class GroovyPageWritable implements Writable {
     }
 
     private boolean shouldShowGroovySource(OutputContext outputContext) {
-        return isShowSource() && Environment.getCurrent() == Environment.DEVELOPMENT && metaInfo.getGroovySource() != null;
+        return isShowSource() && Environment.getCurrent() == Environment.DEVELOPMENT && this.metaInfo.getGroovySource() != null;
     }
 
     private static final GspNoneCodec gspNoneCodeInstance = new GspNoneCodec();
 
     public boolean isShowSource() {
-        return showSource;
+        return this.showSource;
     }
 
     public void setShowSource(boolean showSource) {
         this.showSource = showSource;
     }
 
-    private static final class GspNoneCodec {
-        @SuppressWarnings("unused")
-        public final Object encode(Object object) {
-            return object;
-        }
-    }
-
     private GroovyPageBinding createBinding(Binding parent) {
         GroovyPageBinding binding = new GroovyPageBinding();
         binding.setParent(parent);
         binding.setVariableDirectly("it", null);
-        if (additionalBinding != null) {
-            binding.addMap(additionalBinding);
+        if (this.additionalBinding != null) {
+            binding.addMap(this.additionalBinding);
         }
         // set plugin context path for top level rendering, this means actual view + layout
         // view is top level when parent is GroovyPageRequestBinding
         // pluginContextPath is also resetted when a plugin template is overrided by an application view
-        if (parent==null || (parent instanceof TemplateVariableBinding && ((TemplateVariableBinding)parent).isRoot()) || "".equals(metaInfo.getPluginPath())) {
-            binding.setPluginContextPath(metaInfo.getPluginPath());
+        if (parent == null || (parent instanceof TemplateVariableBinding
+                && ((TemplateVariableBinding) parent).isRoot()) || "".equals(this.metaInfo.getPluginPath())) {
+            binding.setPluginContextPath(this.metaInfo.getPluginPath());
         }
-        binding.setPagePlugin(metaInfo.getPagePlugin());
+        binding.setPagePlugin(this.metaInfo.getPagePlugin());
         return binding;
     }
 
@@ -213,9 +221,11 @@ public class GroovyPageWritable implements Writable {
             Reader reader = new InputStreamReader(in, "UTF-8");
             char[] buf = new char[8192];
 
-            for (;;) {
+            for (; ; ) {
                 int read = reader.read(buf);
-                if (read <= 0) break;
+                if (read <= 0) {
+                    break;
+                }
                 out.write(buf, 0, read);
             }
         }
@@ -238,7 +248,9 @@ public class GroovyPageWritable implements Writable {
      */
     protected void writeGroovySourceToResponse(GroovyPageMetaInfo info, Writer out) throws IOException {
         InputStream in = info.getGroovySource();
-        if (in == null) return;
+        if (in == null) {
+            return;
+        }
         try {
             try {
                 in.reset();
@@ -287,4 +299,14 @@ public class GroovyPageWritable implements Writable {
             in.close();
         }
     }
+
+    private static final class GspNoneCodec {
+
+        @SuppressWarnings("unused")
+        public Object encode(Object object) {
+            return object;
+        }
+
+    }
+
 }

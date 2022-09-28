@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,15 @@ package org.grails.web.taglib.jsp;
 public class JspRenderTag extends JspInvokeGrailsTagLibTag {
 
     private static final long serialVersionUID = -3650113799207644153L;
+
     private static final String TAG_NAME = "render";
+
     private String template;
+
     private String bean;
+
     private String collection;
+
     private String model;
 
     public JspRenderTag() {
@@ -34,7 +39,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getTemplate() {
-        return template;
+        return this.template;
     }
 
     public void setTemplate(String template) {
@@ -42,7 +47,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getBean() {
-        return bean;
+        return this.bean;
     }
 
     public void setBean(String bean) {
@@ -50,7 +55,7 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getCollection() {
-        return collection;
+        return this.collection;
     }
 
     public void setCollection(String collection) {
@@ -58,10 +63,11 @@ public class JspRenderTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getModel() {
-        return model;
+        return this.model;
     }
 
     public void setModel(String model) {
         this.model = model;
     }
+
 }

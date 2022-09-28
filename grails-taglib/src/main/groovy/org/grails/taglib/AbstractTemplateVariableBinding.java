@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,15 @@
  */
 package org.grails.taglib;
 
-import groovy.lang.Binding;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import groovy.lang.Binding;
 
 /**
  * Abstract super class for GroovyPage bindings
@@ -27,6 +33,7 @@ import java.util.*;
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractTemplateVariableBinding extends Binding {
+
     public AbstractTemplateVariableBinding() {
         super();
     }
@@ -80,22 +87,23 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
     }
 
     protected static final class TemplateVariableBindingMap implements Map {
+
         AbstractTemplateVariableBinding binding;
 
         public TemplateVariableBindingMap(AbstractTemplateVariableBinding binding) {
-            this.binding=binding;
+            this.binding = binding;
         }
 
         public int size() {
-            return binding.getVariableNames().size();
+            return this.binding.getVariableNames().size();
         }
 
         public boolean isEmpty() {
-            return binding.getVariableNames().isEmpty();
+            return this.binding.getVariableNames().isEmpty();
         }
 
         public boolean containsKey(Object key) {
-            return binding.getVariableNames().contains(key);
+            return this.binding.getVariableNames().contains(key);
         }
 
         public boolean containsValue(Object value) {
@@ -103,23 +111,23 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
         }
 
         public Object get(Object key) {
-            return binding.getVariable(String.valueOf(key));
+            return this.binding.getVariable(String.valueOf(key));
         }
 
         public Object put(Object key, Object value) {
-            binding.setVariable(String.valueOf(key), value);
+            this.binding.setVariable(String.valueOf(key), value);
             return null;
         }
 
         public Object remove(Object key) {
-            binding.setVariable(String.valueOf(key), null);
+            this.binding.setVariable(String.valueOf(key), null);
             return null;
         }
 
         public void putAll(Map m) {
             for (Object entryObj : m.entrySet()) {
-                Map.Entry entry=(Map.Entry)entryObj;
-                binding.setVariable(String.valueOf(entry.getKey()), entry.getValue());
+                Map.Entry entry = (Map.Entry) entryObj;
+                this.binding.setVariable(String.valueOf(entry.getKey()), entry.getValue());
             }
         }
 
@@ -128,15 +136,15 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
         }
 
         public Set keySet() {
-            return binding.getVariableNames();
+            return this.binding.getVariableNames();
         }
 
         @SuppressWarnings("unchecked")
         public Collection values() {
-            Set<String> variableNames = binding.getVariableNames();
+            Set<String> variableNames = this.binding.getVariableNames();
             Collection values = new ArrayList(variableNames.size());
             for (String variable : variableNames) {
-                values.add(binding.getVariable(variable));
+                values.add(this.binding.getVariable(variable));
             }
             return values;
         }
@@ -150,7 +158,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
 
                 @Override
                 public int size() {
-                    return binding.getVariableNames().size();
+                    return TemplateVariableBindingMap.this.binding.getVariableNames().size();
                 }
             });
         }
@@ -161,23 +169,29 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
                 public boolean hasNext() {
                     return iter.hasNext();
                 }
+
                 public Object next() {
                     Object key = iter.next();
                     Object value = get(key);
-                    return new BindingMapEntry(binding, key, value);
+                    return new BindingMapEntry(TemplateVariableBindingMap.this.binding, key, value);
                 }
+
                 public void remove() {
                     throw new UnsupportedOperationException("remove() not supported");
                 }
             };
         }
+
     }
 
     protected static class BindingMapEntry implements Map.Entry {
+
         private AbstractTemplateVariableBinding binding;
 
         private Object key;
+
         private Object value;
+
         protected BindingMapEntry(AbstractTemplateVariableBinding binding, Object key, Object value) {
             this.binding = binding;
             this.key = key;
@@ -186,19 +200,19 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
 
         @Override
         public Object getKey() {
-            return key;
+            return this.key;
         }
 
         @Override
         public Object getValue() {
-            return value;
+            return this.value;
         }
 
         @Override
         public Object setValue(Object value) {
             String key = String.valueOf(getKey());
-            Object oldValue = binding.getVariable(key);
-            binding.setVariable(key, value);
+            Object oldValue = this.binding.getVariable(key);
+            this.binding.setVariable(key, value);
             this.value = value;
             return oldValue;
         }
@@ -222,5 +236,7 @@ public abstract class AbstractTemplateVariableBinding extends Binding {
             return (getKey() == null ? 0 : getKey().hashCode()) ^
                     (getValue() == null ? 0 : getValue().hashCode());
         }
+
     }
+
 }

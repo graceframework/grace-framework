@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,17 @@ package org.grails.web.taglib.jsp;
  * @since 28-Feb-2006
  */
 public class JspSelectTag extends JspInvokeGrailsTagLibTag {
+
     private static final long serialVersionUID = 294858160471737590L;
 
     private static final String TAG_NAME = "select";
 
     private String name;
+
     private String from;
+
     private String optionKey;
+
     private String optionValue;
 
     public JspSelectTag() {
@@ -34,7 +38,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -42,7 +46,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getFrom() {
-        return from;
+        return this.from;
     }
 
     public void setFrom(String from) {
@@ -50,7 +54,7 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOptionKey() {
-        return optionKey;
+        return this.optionKey;
     }
 
     public void setOptionKey(String optionKey) {
@@ -58,10 +62,11 @@ public class JspSelectTag extends JspInvokeGrailsTagLibTag {
     }
 
     public String getOptionValue() {
-        return optionValue;
+        return this.optionValue;
     }
 
     public void setOptionValue(String optionValue) {
         this.optionValue = optionValue;
     }
+
 }

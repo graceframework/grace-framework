@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@ import org.apache.tools.ant.taskdefs.MatchingTask
 import org.apache.tools.ant.types.Path
 import org.apache.tools.ant.types.Reference
 import org.codehaus.groovy.control.CompilerConfiguration
+
 import org.grails.gsp.compiler.GroovyPageCompiler
 
 /**
@@ -38,8 +39,6 @@ import org.grails.gsp.compiler.GroovyPageCompiler
  */
 class GroovyPageCompilerTask extends MatchingTask {
 
-
-
     File destdir
     Path classpath
     Path configs
@@ -51,7 +50,8 @@ class GroovyPageCompilerTask extends MatchingTask {
 
     boolean verbose
 
-    @Delegate GroovyPageCompiler compiler = new GroovyPageCompiler()
+    @Delegate
+    GroovyPageCompiler compiler = new GroovyPageCompiler()
 
     /**
      * Adds a path to the classpath.
@@ -95,7 +95,7 @@ class GroovyPageCompilerTask extends MatchingTask {
             compiler.compilerConfig = config
         }
 
-        if(configs) {
+        if (configs) {
             compiler.configs = configs.list()
         }
         if (!destdir || !destdir.exists()) {
@@ -118,7 +118,7 @@ class GroovyPageCompilerTask extends MatchingTask {
 
         int gspCount = gspFiles?.size()
         if (gspCount) {
-            log("Compiling ${gspCount} GSP file${gspCount>1?'s':''} for package [${packagename}]")
+            log("Compiling ${gspCount} GSP file${gspCount > 1 ? 's' : ''} for package [${packagename}]")
         }
 
         if (tmpdir) {
@@ -129,7 +129,7 @@ class GroovyPageCompilerTask extends MatchingTask {
             compiler.packagePrefix = packagename
         }
         if (serverpath) {
-            compiler.viewPrefix=serverpath
+            compiler.viewPrefix = serverpath
         }
         if (encoding) {
             compiler.encoding = encoding
@@ -138,4 +138,5 @@ class GroovyPageCompilerTask extends MatchingTask {
         compiler.compile()
         compiler = null
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,14 @@
  */
 package org.grails.plugins.web.taglib
 
-import grails.artefact.TagLibrary
-import grails.gsp.TagLib
-import grails.plugins.GrailsPluginManager
+import javax.annotation.PostConstruct
+
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 
-import javax.annotation.PostConstruct
+import grails.artefact.TagLibrary
+import grails.gsp.TagLib
+import grails.plugins.GrailsPluginManager
 
 /**
  * Javascript tags.
@@ -30,14 +31,15 @@ import javax.annotation.PostConstruct
  */
 @TagLib
 class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
+
     ApplicationContext applicationContext
 
     GrailsPluginManager pluginManager
 
     boolean hasResourceProcessor = false
 
-    static encodeAsForTags = [escapeJavascript: 'JavaScript', 
-                              javascript: [expressionCodec:"JavaScript", scriptletCodec:"JavaScript", replaceOnly:true]]
+    static encodeAsForTags = [escapeJavascript: 'JavaScript',
+                              javascript: [expressionCodec: "JavaScript", scriptletCodec: "JavaScript", replaceOnly: true]]
 
     @PostConstruct
     private void initHasResourceProcessor() {
@@ -69,10 +71,12 @@ class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
     Closure javascript = { attrs, body ->
         if (attrs.src) {
             javascriptInclude(attrs)
-        } else {
+        }
+        else {
             if (hasResourceProcessor) {
                 out << r.script(Collections.EMPTY_MAP, body)
-            } else {
+            }
+            else {
                 out.println '<script type="text/javascript">'
                 out << body()
                 out.println()
@@ -97,7 +101,8 @@ class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
 
         if (attrs.base) {
             attrs.uri = attrs.remove('base') + attrs.remove('src')
-        } else {
+        }
+        else {
             def appBase = request.contextPath
             if (!appBase.endsWith('/')) {
                 appBase += '/'
@@ -106,7 +111,7 @@ class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
             if (requestPluginContext) {
                 reqResCtx = (requestPluginContext.startsWith("/") ? requestPluginContext.substring(1) : requestPluginContext) + '/'
             }
-            attrs.uri = appBase + reqResCtx + 'js/'+attrs.remove('src')
+            attrs.uri = appBase + reqResCtx + 'js/' + attrs.remove('src')
         }
         out << g.external(attrs)
     }
@@ -124,4 +129,5 @@ class JavascriptTagLib implements ApplicationContextAware, TagLibrary {
             out << attrs.value
         }
     }
+
 }

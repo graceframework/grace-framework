@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,11 +27,13 @@ import org.grails.exceptions.reporting.SourceCodeAware;
 public class GroovyPagesException extends GrailsException implements SourceCodeAware {
 
     private static final long serialVersionUID = 6142857809397583528L;
+
     private int lineNumber;
+
     private String fileName;
 
     public GroovyPagesException(String message, Throwable e) {
-        super(message,e);
+        super(message, e);
     }
 
     public GroovyPagesException(String message, Throwable exception, int lineNumber, String fileName) {
@@ -45,16 +47,17 @@ public class GroovyPagesException extends GrailsException implements SourceCodeA
     }
 
     public String getFileName() {
-        if (fileName == null && getCause() instanceof SourceCodeAware) {
-            return ((SourceCodeAware)getCause()).getFileName();
+        if (this.fileName == null && getCause() instanceof SourceCodeAware) {
+            return ((SourceCodeAware) getCause()).getFileName();
         }
-        return fileName;
+        return this.fileName;
     }
 
     public int getLineNumber() {
-        if (lineNumber == -1 && getCause() instanceof SourceCodeAware) {
-            return ((SourceCodeAware)getCause()).getLineNumber();
+        if (this.lineNumber == -1 && getCause() instanceof SourceCodeAware) {
+            return ((SourceCodeAware) getCause()).getLineNumber();
         }
-        return lineNumber;
+        return this.lineNumber;
     }
+
 }

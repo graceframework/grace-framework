@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,43 @@
  */
 package org.grails.gsp;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import groovy.lang.GroovyClassLoader;
+import groovy.text.Template;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.runtime.IOGroovyMethods;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
+import org.springframework.scripting.ScriptSource;
+import org.springframework.scripting.support.ResourceScriptSource;
+import org.springframework.util.Assert;
+
 import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
@@ -23,41 +60,18 @@ import grails.io.IOUtils;
 import grails.util.CacheEntry;
 import grails.util.Environment;
 import grails.util.GrailsUtil;
-import groovy.lang.GroovyClassLoader;
-import groovy.text.Template;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.runtime.IOGroovyMethods;
+
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.exceptions.DefaultErrorsPrinter;
 import org.grails.exceptions.ExceptionUtils;
 import org.grails.gsp.compiler.GroovyPageParser;
-import org.grails.gsp.io.*;
+import org.grails.gsp.io.DefaultGroovyPageLocator;
+import org.grails.gsp.io.GroovyPageCompiledScriptSource;
+import org.grails.gsp.io.GroovyPageLocator;
+import org.grails.gsp.io.GroovyPageResourceScriptSource;
+import org.grails.gsp.io.GroovyPageScriptSource;
 import org.grails.gsp.jsp.TagLibraryResolver;
 import org.grails.taglib.TagLibraryLookup;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.io.*;
-import org.springframework.scripting.ScriptSource;
-import org.springframework.scripting.support.ResourceScriptSource;
-import org.springframework.util.Assert;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.PrivilegedAction;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Based on (but not extending) the existing TemplateEngine implementations
@@ -75,32 +89,44 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @since 0.1
  */
-public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine implements ResourceLoaderAware, ApplicationContextAware, InitializingBean, BeanClassLoaderAware {
+public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
+        implements ResourceLoaderAware, ApplicationContextAware, InitializingBean, BeanClassLoaderAware {
+
+    private static final Log logger = LogFactory.getLog(GroovyPagesTemplateEngine.class);
 
     public static final String CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES = Settings.GSP_DISABLE_CACHING_RESOURCES;
+
     public static final String CONFIG_PROPERTY_GSP_ENABLE_RELOAD = Settings.GSP_ENABLE_RELOAD;
+
     public static final String BEAN_ID = ResourceAwareTemplateEngine.BEAN_ID;
 
     private static final String GENERATED_GSP_NAME_PREFIX = "gsp_script_";
-    private static final Log LOG = LogFactory.getLog(GroovyPagesTemplateEngine.class);
+
     private static File dumpLineNumbersTo;
 
-    private ConcurrentMap<String, CacheEntry<GroovyPageMetaInfo>> pageCache = new ConcurrentHashMap<String, CacheEntry<GroovyPageMetaInfo>>();
+    private ConcurrentMap<String, CacheEntry<GroovyPageMetaInfo>> pageCache = new ConcurrentHashMap<>();
+
     private ClassLoader classLoader;
-    private AtomicInteger scriptNameCount=new AtomicInteger(0);
+
+    private AtomicInteger scriptNameCount = new AtomicInteger(0);
 
     private GroovyPageLocator groovyPageLocator = new DefaultGroovyPageLocator();
 
     private boolean reloadEnabled;
+
     private TagLibraryLookup tagLibraryLookup;
+
     private TagLibraryResolver jspTagLibraryResolver;
+
     private boolean cacheResources = true;
+
     private String gspEncoding = System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING);
 
     private GrailsApplication grailsApplication;
+
     private Map<String, Class<?>> cachedDomainsWithoutPackage;
 
-    private List<GroovyPageSourceDecorator> groovyPageSourceDecorators = new ArrayList();
+    private List<GroovyPageSourceDecorator> groovyPageSourceDecorators = new ArrayList<>();
 
     static {
         String dirPath = System.getProperty("grails.dump.gsp.line.numbers.to.dir");
@@ -112,56 +138,16 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         }
     }
 
-	private class GroovyPagesTemplateEngineCacheEntry extends CacheEntry<GroovyPageMetaInfo>{
-		private final String pageName;
-
-		public GroovyPagesTemplateEngineCacheEntry(String pageName){
-			this.pageName = pageName;
-		}
-
-		 @Override
-         protected boolean hasExpired(long timeout, Object cacheRequestObject) {
-             GroovyPageMetaInfo meta = getValue();
-             Resource resource = (Resource)cacheRequestObject;
-             return meta == null || isGroovyPageReloadable(resource, meta);
-         }
-
-         @Override
-         protected GroovyPageMetaInfo updateValue(GroovyPageMetaInfo oldValue, Callable<GroovyPageMetaInfo> updater, Object cacheRequestObject)
-                 throws Exception {
-             if(oldValue != null) {
-                 oldValue.removePageMetaClass();
-             }
-             Resource resource = (Resource)cacheRequestObject;
-             return buildPageMetaInfo(resource, pageName);
-         }
-	}
-
-	private static class GroovyPagesTemplateEngineCallable implements Callable<CacheEntry<GroovyPageMetaInfo>> {
-
-		private final CacheEntry<GroovyPageMetaInfo> cacheEntry;
-
-		public GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry){
-			this.cacheEntry = cacheEntry;
-		}
-
-		@Override
-		public CacheEntry<GroovyPageMetaInfo> call() throws Exception {
-			return cacheEntry;
-		}
-
-	}
-
     public GroovyPagesTemplateEngine() {
         // default
     }
 
-    public void setGroovyPageSourceDecorators(List<GroovyPageSourceDecorator> groovyPageSourceDecorators){
-    	this.groovyPageSourceDecorators = groovyPageSourceDecorators;
+    public void setGroovyPageSourceDecorators(List<GroovyPageSourceDecorator> groovyPageSourceDecorators) {
+        this.groovyPageSourceDecorators = groovyPageSourceDecorators;
     }
 
-    public List<GroovyPageSourceDecorator> getGroovyPageSourceDecorators(){
-    	return groovyPageSourceDecorators;
+    public List<GroovyPageSourceDecorator> getGroovyPageSourceDecorators() {
+        return this.groovyPageSourceDecorators;
     }
 
     public void setGroovyPageLocator(GroovyPageLocator groovyPageLocator) {
@@ -169,21 +155,22 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     public GroovyPageLocator getGroovyPageLocator() {
-        return groovyPageLocator;
+        return this.groovyPageLocator;
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        groovyPageLocator.addResourceLoader(resourceLoader);
+        this.groovyPageLocator.addResourceLoader(resourceLoader);
     }
 
     public void afterPropertiesSet() {
-        if (classLoader == null) {
-            classLoader = initGroovyClassLoader(Thread.currentThread().getContextClassLoader());
-        }else if (!classLoader.getClass().equals(GroovyPageClassLoader.class)) {
-            classLoader = initGroovyClassLoader(classLoader);
+        if (this.classLoader == null) {
+            this.classLoader = initGroovyClassLoader(Thread.currentThread().getContextClassLoader());
+        }
+        else if (!this.classLoader.getClass().equals(GroovyPageClassLoader.class)) {
+            this.classLoader = initGroovyClassLoader(this.classLoader);
         }
         if (!Environment.isDevelopmentMode()) {
-            cachedDomainsWithoutPackage = createDomainClassMap();
+            this.cachedDomainsWithoutPackage = createDomainClassMap();
         }
     }
 
@@ -213,13 +200,13 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         try {
             Template t = createTemplate(url);
             if (t instanceof GroovyPageTemplate) {
-                return ((GroovyPageTemplate)t).getMetaInfo().getLineNumbers();
+                return ((GroovyPageTemplate) t).getMetaInfo().getLineNumbers();
             }
         }
         catch (Exception e) {
             // ignore, non critical method used for retrieving debug info
-            LOG.warn("Exception retrieving line numbers from GSP: " + url + ", message: " + e.getMessage());
-            LOG.debug("Full stack trace of error", e);
+            logger.warn("Exception retrieving line numbers from GSP: " + url + ", message: " + e.getMessage());
+            logger.debug("Full stack trace of error", e);
         }
         return new int[0];
     }
@@ -240,7 +227,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      */
     @Override
     public Template createTemplate(Resource resource) {
-        return createTemplate(resource, cacheResources);
+        return createTemplate(resource, this.cacheResources);
     }
 
     /**
@@ -255,10 +242,13 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         if (resource == null) {
             throw new GroovyPagesException("Resource is null. No Groovy page found.");
         }
-        //Yags: Because, "pageName" was sent as null originally, it is never go in pageCache, but will force to compile the String again and till the time this request
-        // is getting executed, it will occupy space in PermGen space. So if there are 1000 request for the same resource at a particular instance, there will be 1000 instance
+        // Yags: Because, "pageName" was sent as null originally, it is never go in pageCache,
+        // but will force to compile the String again and till the time this request
+        // is getting executed, it will occupy space in PermGen space.
+        // So if there are 1000 request for the same resource at a particular instance, there will be 1000 instance
         // class in PermGen instead of ideally being 1 as they as essentially same resource.
-        //we will cache metaInfo only is Developer wants-to. Developer will make sure that he creates unique key for every unique pages s/he wants to put in cache
+        // we will cache metaInfo only is Developer wants-to.
+        // Developer will make sure that he creates unique key for every unique pages s/he wants to put in cache
         final String pageName = establishPageName(resource, cacheable);
         try {
             return createTemplate(resource, pageName, cacheable);
@@ -270,11 +260,11 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
 
     protected Template createTemplate(Resource resource, final String pageName, final boolean cacheable) throws IOException {
         GroovyPageMetaInfo meta;
-        if(cacheable) {
-            meta = CacheEntry.getValue(pageCache, pageName, -1, null,
-                    new GroovyPagesTemplateEngineCallable(new GroovyPagesTemplateEngineCacheEntry(pageName))
-                    , true, resource);
-        } else {
+        if (cacheable) {
+            meta = CacheEntry.getValue(this.pageCache, pageName, -1, null,
+                    new GroovyPagesTemplateEngineCallable(new GroovyPagesTemplateEngineCacheEntry(pageName)), true, resource);
+        }
+        else {
             meta = buildPageMetaInfo(resource, pageName);
         }
         return new GroovyPageTemplate(meta);
@@ -284,7 +274,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         String name;
         if (cacheable) {
             name = establishPageName(resource, getPathForResource(resource));
-        } else {
+        }
+        else {
             name = establishPageName(resource, null);
         }
         return name;
@@ -307,7 +298,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         if (isReloadEnabled()) {
             GroovyPageResourceScriptSource changedResourceScriptSource = compiledScriptSource.getReloadableScriptSource();
             if (changedResourceScriptSource != null) {
-                groovyPageLocator.removePrecompiledPage(compiledScriptSource);
+                this.groovyPageLocator.removePrecompiledPage(compiledScriptSource);
                 return createTemplate(changedResourceScriptSource);
             }
         }
@@ -317,21 +308,21 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     private GroovyPageMetaInfo initializeCompiledMetaInfo(GroovyPageMetaInfo meta) {
         meta.initializeOnDemand(new GroovyPageMetaInfo.GroovyPageMetaInfoInitializer() {
             public void initialize(GroovyPageMetaInfo metaInfo) {
-                metaInfo.setGrailsApplication(grailsApplication);
-                metaInfo.setJspTagLibraryResolver(jspTagLibraryResolver);
-                metaInfo.setTagLibraryLookup(tagLibraryLookup);
+                metaInfo.setGrailsApplication(GroovyPagesTemplateEngine.this.grailsApplication);
+                metaInfo.setJspTagLibraryResolver(GroovyPagesTemplateEngine.this.jspTagLibraryResolver);
+                metaInfo.setTagLibraryLookup(GroovyPagesTemplateEngine.this.tagLibraryLookup);
                 metaInfo.initialize();
-                GroovyPagesMetaUtils.registerMethodMissingForGSP(metaInfo.getPageClass(), tagLibraryLookup);
+                GroovyPagesMetaUtils.registerMethodMissingForGSP(metaInfo.getPageClass(), GroovyPagesTemplateEngine.this.tagLibraryLookup);
             }
         });
         return meta;
     }
 
     public Template createTemplateForUri(String uri) {
-        return createTemplateForUri(new String[]{uri});
+        return createTemplateForUri(new String[] { uri });
     }
 
-    public Template createTemplateForUri(String[] uris)  {
+    public Template createTemplateForUri(String[] uris) {
         GroovyPageScriptSource scriptSource = findScriptSource(uris);
 
         if (scriptSource != null) {
@@ -341,15 +332,17 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     public GroovyPageScriptSource findScriptSource(String uri) {
-        return findScriptSource(new String[]{uri});
+        return findScriptSource(new String[] { uri });
     }
 
     public GroovyPageScriptSource findScriptSource(String[] uris) {
         GroovyPageScriptSource scriptSource = null;
 
         for (String uri : uris) {
-            scriptSource = groovyPageLocator.findPage(uri);
-            if (scriptSource != null) break;
+            scriptSource = this.groovyPageLocator.findPage(uri);
+            if (scriptSource != null) {
+                break;
+            }
         }
         return scriptSource;
     }
@@ -368,7 +361,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
 
         try {
             return createTemplate(scriptSource.getScriptAsString(), scriptSource.suggestedClassName());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException("IOException in createTemplate", e);
         }
     }
@@ -443,10 +437,10 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     private StringBuilder decorateGroovyPageSource(StringBuilder source) throws IOException {
-    	for(GroovyPageSourceDecorator groovyPageSourceDecorator : groovyPageSourceDecorators){
-    		source = groovyPageSourceDecorator.decorate(source);
-    	}
-    	return source;
+        for (GroovyPageSourceDecorator groovyPageSourceDecorator : this.groovyPageSourceDecorators) {
+            source = groovyPageSourceDecorator.decorate(source);
+        }
+        return source;
     }
 
     /**
@@ -470,7 +464,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * @return true if it is
      */
     public boolean isReloadEnabled() {
-        return reloadEnabled;
+        return this.reloadEnabled;
     }
 
     /**
@@ -479,7 +473,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * @param b True if it is enabled
      */
     public void setReloadEnabled(boolean b) {
-        reloadEnabled = b;
+        this.reloadEnabled = b;
     }
 
     /**
@@ -491,14 +485,14 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     public Resource getResourceForUri(String uri) {
         GroovyPageScriptSource scriptSource = getResourceWithinContext(uri);
         if (scriptSource != null && (scriptSource instanceof GroovyPageResourceScriptSource)) {
-            return ((GroovyPageResourceScriptSource)scriptSource).getResource();
+            return ((GroovyPageResourceScriptSource) scriptSource).getResource();
         }
         return null;
     }
 
     private GroovyPageScriptSource getResourceWithinContext(String uri) {
-        Assert.state(groovyPageLocator != null, "TemplateEngine not initialised correctly, no [groovyPageLocator] specified!");
-        GroovyPageScriptSource scriptSource = groovyPageLocator.findPage(uri);
+        Assert.state(this.groovyPageLocator != null, "TemplateEngine not initialised correctly, no [groovyPageLocator] specified!");
+        GroovyPageScriptSource scriptSource = this.groovyPageLocator.findPage(uri);
         if (scriptSource != null) {
             return scriptSource;
         }
@@ -519,16 +513,16 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
         GroovyPageParser parser;
         String path = getPathForResource(res);
         try {
-        	String gspSource = IOUtils.toString(inputStream, getGspEncoding());
+            String gspSource = IOUtils.toString(inputStream, getGspEncoding());
             parser = new GroovyPageParser(name, path, path, decorateGroovyPageSource(new StringBuilder(gspSource)).toString());
 
-            if (grailsApplication != null) {
-                Config config = grailsApplication.getConfig();
+            if (this.grailsApplication != null) {
+                Config config = this.grailsApplication.getConfig();
                 parser.configure(config);
             }
         }
         catch (IOException e) {
-            throw new GroovyPagesException("I/O parsing Groovy page ["+(res != null ? res.getDescription() : name)+"]: " + e.getMessage(),e);
+            throw new GroovyPagesException("I/O parsing Groovy page [" + (res != null ? res.getDescription() : name) + "]: " + e.getMessage(), e);
         }
 
         InputStream in = parser.parse();
@@ -548,7 +542,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     private String getPathForResource(Resource res) {
-        if (res == null) return "";
+        if (res == null) {
+            return "";
+        }
 
         String path = null;
         try {
@@ -588,31 +584,31 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
             scriptClass = groovyClassLoader.parseClass(groovySource, name);
         }
         catch (CompilationFailedException e) {
-            LOG.error("Compilation error compiling GSP ["+name+"]:" + e.getMessage(), e);
+            logger.error("Compilation error compiling GSP [" + name + "]:" + e.getMessage(), e);
 
             int lineNumber = ExceptionUtils.extractLineNumber(e);
 
             final int[] lineMappings = metaInfo.getLineNumbers();
-            if (lineNumber>0 && lineNumber < lineMappings.length) {
-                lineNumber = lineMappings[lineNumber-1];
+            if (lineNumber > 0 && lineNumber < lineMappings.length) {
+                lineNumber = lineMappings[lineNumber - 1];
             }
             String relativePageName = DefaultErrorsPrinter.makeRelativeIfPossible(pageName);
-            throw new GroovyPagesException("Could not parse script [" + relativePageName + "]: " + e.getMessage(),e, lineNumber, pageName);
+            throw new GroovyPagesException("Could not parse script [" + relativePageName + "]: " + e.getMessage(), e, lineNumber, pageName);
         }
         catch (IOException e) {
             String relativePageName = DefaultErrorsPrinter.makeRelativeIfPossible(pageName);
-            throw new GroovyPagesException("IO exception parsing script ["+ relativePageName + "]: " + e.getMessage(), e);
+            throw new GroovyPagesException("IO exception parsing script [" + relativePageName + "]: " + e.getMessage(), e);
         }
-        GroovyPagesMetaUtils.registerMethodMissingForGSP(scriptClass, tagLibraryLookup);
+        GroovyPagesMetaUtils.registerMethodMissingForGSP(scriptClass, this.tagLibraryLookup);
 
         return scriptClass;
     }
 
     private synchronized GroovyClassLoader findOrInitGroovyClassLoader() {
-        if (!(classLoader instanceof GroovyPageClassLoader)) {
-            classLoader = initGroovyClassLoader(classLoader);
+        if (!(this.classLoader instanceof GroovyPageClassLoader)) {
+            this.classLoader = initGroovyClassLoader(this.classLoader);
         }
-        return (GroovyClassLoader)classLoader;
+        return (GroovyClassLoader) this.classLoader;
     }
 
     /**
@@ -625,9 +621,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      */
     private GroovyPageMetaInfo createPageMetaInfo(GroovyPageParser parse, InputStream in) {
         GroovyPageMetaInfo pageMeta = new GroovyPageMetaInfo();
-        pageMeta.setGrailsApplication(grailsApplication);
-        pageMeta.setJspTagLibraryResolver(jspTagLibraryResolver);
-        pageMeta.setTagLibraryLookup(tagLibraryLookup);
+        pageMeta.setGrailsApplication(this.grailsApplication);
+        pageMeta.setJspTagLibraryResolver(this.jspTagLibraryResolver);
+        pageMeta.setTagLibraryLookup(this.tagLibraryLookup);
         pageMeta.setContentType(parse.getContentType());
         pageMeta.setLineNumbers(parse.getLineNumberMatrix());
         pageMeta.setJspTags(parse.getJspTags());
@@ -667,7 +663,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * @param res The Resource to calculate the name for
      * @param pageName The name of the page, can be null, in which case method responsible for calculation
      *
-     * @return  The name as a String
+     * @return The name as a String
      */
     protected String establishPageName(Resource res, String pageName) {
         if (res == null) {
@@ -678,7 +674,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
             String name = pageName != null ? pageName : res.getURL().getPath();
             // As the name take the first / off and then replace all characters that aren't
             // a word character or a digit with an underscore
-            if (name.startsWith("/")) name = name.substring(1);
+            if (name.startsWith("/")) {
+                name = name.substring(1);
+            }
             return name.replaceAll("[^\\w\\d]", "_");
         }
         catch (IllegalStateException e) {
@@ -695,7 +693,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * @return The template name
      */
     private String generateTemplateName() {
-        return GENERATED_GSP_NAME_PREFIX + scriptNameCount.incrementAndGet();
+        return GENERATED_GSP_NAME_PREFIX + this.scriptNameCount.incrementAndGet();
     }
 
     /**
@@ -707,8 +705,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (applicationContext.containsBean(GrailsApplication.APPLICATION_ID)) {
             this.grailsApplication = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
-            Config config = grailsApplication.getConfig();
-            this.gspEncoding = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_ENCODING, System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING));
+            Config config = this.grailsApplication.getConfig();
+            this.gspEncoding = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_ENCODING,
+                    System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING));
         }
     }
 
@@ -725,11 +724,11 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
             relativeUri = relativeUri.substring(1);
         }
 
-        if (relativeUri.indexOf('/')>-1) {
+        if (relativeUri.indexOf('/') > -1) {
             tokens = relativeUri.split("/");
         }
         else {
-            tokens = new String[]{relativeUri};
+            tokens = new String[] { relativeUri };
         }
 
         buf.append(DefaultGroovyPageLocator.PATH_TO_WEB_INF_VIEWS);
@@ -746,10 +745,10 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * Clears the page cache. Views will be re-compiled.
      */
     public void clearPageCache() {
-        for(Iterator<Map.Entry<String, CacheEntry<GroovyPageMetaInfo>>> it = pageCache.entrySet().iterator(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<String, CacheEntry<GroovyPageMetaInfo>>> it = this.pageCache.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<String, CacheEntry<GroovyPageMetaInfo>> entry = it.next();
             GroovyPageMetaInfo metaInfo = entry.getValue().getValue();
-            if(metaInfo != null) {
+            if (metaInfo != null) {
                 metaInfo.removePageMetaClass();
             }
             it.remove();
@@ -757,7 +756,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     public boolean isCacheResources() {
-        return cacheResources;
+        return this.cacheResources;
     }
 
     public void setCacheResources(boolean cacheResources) {
@@ -765,8 +764,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     }
 
     public Map<String, Class<?>> getDomainClassMap() {
-        if (cachedDomainsWithoutPackage != null) {
-            return cachedDomainsWithoutPackage;
+        if (this.cachedDomainsWithoutPackage != null) {
+            return this.cachedDomainsWithoutPackage;
         }
         return createDomainClassMap();
     }
@@ -779,9 +778,9 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
      * to prevent using the static cache that was used previously.
      */
     private Map<String, Class<?>> createDomainClassMap() {
-        Map<String, Class<?>> domainsWithoutPackage = new HashMap<String, Class<?>>();
-        if (grailsApplication != null) {
-            GrailsClass[] domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE);
+        Map<String, Class<?>> domainsWithoutPackage = new HashMap<>();
+        if (this.grailsApplication != null) {
+            GrailsClass[] domainClasses = this.grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE);
             for (GrailsClass domainClass : domainClasses) {
                 final Class<?> theClass = domainClass.getClazz();
                 domainsWithoutPackage.put(theClass.getName(), theClass);
@@ -794,7 +793,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
         // support passing BeanClassLoader as parent classloader for templates
         // don't set the classLoader field if it already has an explicit value
-        if(beanClassLoader != null && this.classLoader == null) {
+        if (beanClassLoader != null && this.classLoader == null) {
             this.classLoader = beanClassLoader;
         }
     }
@@ -802,4 +801,47 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine imple
     public String getGspEncoding() {
         return this.gspEncoding;
     }
+
+    private class GroovyPagesTemplateEngineCacheEntry extends CacheEntry<GroovyPageMetaInfo> {
+
+        private final String pageName;
+
+        GroovyPagesTemplateEngineCacheEntry(String pageName) {
+            this.pageName = pageName;
+        }
+
+        @Override
+        protected boolean hasExpired(long timeout, Object cacheRequestObject) {
+            GroovyPageMetaInfo meta = getValue();
+            Resource resource = (Resource) cacheRequestObject;
+            return meta == null || isGroovyPageReloadable(resource, meta);
+        }
+
+        @Override
+        protected GroovyPageMetaInfo updateValue(GroovyPageMetaInfo oldValue, Callable<GroovyPageMetaInfo> updater, Object cacheRequestObject)
+                throws Exception {
+            if (oldValue != null) {
+                oldValue.removePageMetaClass();
+            }
+            Resource resource = (Resource) cacheRequestObject;
+            return buildPageMetaInfo(resource, this.pageName);
+        }
+
+    }
+
+    private static class GroovyPagesTemplateEngineCallable implements Callable<CacheEntry<GroovyPageMetaInfo>> {
+
+        private final CacheEntry<GroovyPageMetaInfo> cacheEntry;
+
+        GroovyPagesTemplateEngineCallable(CacheEntry<GroovyPageMetaInfo> cacheEntry) {
+            this.cacheEntry = cacheEntry;
+        }
+
+        @Override
+        public CacheEntry<GroovyPageMetaInfo> call() throws Exception {
+            return this.cacheEntry;
+        }
+
+    }
+
 }

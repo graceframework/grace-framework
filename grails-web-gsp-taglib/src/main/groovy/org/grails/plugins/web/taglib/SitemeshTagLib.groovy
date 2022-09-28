@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,11 @@
 package org.grails.plugins.web.taglib
 
 import com.opensymphony.module.sitemesh.RequestConstants
+import groovy.transform.CompileStatic
+
 import grails.artefact.TagLibrary
 import grails.gsp.TagLib
-import groovy.transform.CompileStatic
+
 import org.grails.buffer.FastStringWriter
 import org.grails.buffer.GrailsPrintWriter
 import org.grails.buffer.StreamCharBuffer
@@ -36,12 +38,13 @@ import org.grails.web.sitemesh.GSPSitemeshPage
 @CompileStatic
 @TagLib
 class SitemeshTagLib implements RequestConstants, TagLibrary {
+
     protected static final String GSP_SITEMESH_PAGE = 'org.grails.web.sitemesh.GrailsLayoutView.GSP_SITEMESH_PAGE'
 
     static String namespace = 'sitemesh'
     CodecLookup codecLookup
 
-    def captureTagContent(GrailsPrintWriter writer, String tagname, Map attrs, Object body, boolean noEndTagForEmpty=false) {
+    def captureTagContent(GrailsPrintWriter writer, String tagname, Map attrs, Object body, boolean noEndTagForEmpty = false) {
         def content = null
         if (body != null) {
             if (body instanceof Closure) {
@@ -60,7 +63,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
         def useXmlClosingForEmptyTag = false
         if (attrs) {
             def xmlClosingString = attrs.remove(SitemeshPreprocessor.XML_CLOSING_FOR_EMPTY_TAG_ATTRIBUTE_NAME)
-            if (xmlClosingString=='/') {
+            if (xmlClosingString == '/') {
                 useXmlClosingForEmptyTag = true
             }
             Encoder htmlEncoder = codecLookup?.lookupEncoder('HTML')
@@ -68,7 +71,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
                 writer << ' '
                 writer << k
                 writer << '="'
-                writer << (htmlEncoder != null ? htmlEncoder.encode(v) : v) 
+                writer << (htmlEncoder != null ? htmlEncoder.encode(v) : v)
                 writer << '"'
             }
         }
@@ -107,13 +110,14 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
         }
         if (!(content instanceof StreamCharBuffer)) {
             // the body closure might be a string constant, so wrap it in a StreamCharBuffer in that case
-            FastStringWriter stringWriter=new FastStringWriter()
-            stringWriter.print((Object)content)
+            FastStringWriter stringWriter = new FastStringWriter()
+            stringWriter.print((Object) content)
             StreamCharBuffer newbuffer = stringWriter.buffer
             newbuffer.setPreferSubChunkWhenWritingToOtherBuffer(true)
             return newbuffer
-        } else {
-            return (StreamCharBuffer)content
+        }
+        else {
+            return (StreamCharBuffer) content
         }
     }
 
@@ -132,7 +136,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
     }
 
     protected GSPSitemeshPage findGSPSitemeshPage(javax.servlet.http.HttpServletRequest request) {
-        (GSPSitemeshPage)request.getAttribute(GSP_SITEMESH_PAGE)
+        (GSPSitemeshPage) request.getAttribute(GSP_SITEMESH_PAGE)
     }
 
     /**
@@ -141,7 +145,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
      * &lt;sitemesh:parameter name="foo" value="bar" /&gt;
      */
     Closure parameter = { Map attrs, body ->
-        GSPSitemeshPage smpage=findGSPSitemeshPage(request)
+        GSPSitemeshPage smpage = findGSPSitemeshPage(request)
         def name = attrs.name?.toString()
         def val = attrs.value?.toString()
         if (smpage && name && val != null) {
@@ -172,7 +176,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
      */
     Closure captureContent = { Map attrs, body ->
         if (body != null) {
-            GSPSitemeshPage smpage=findGSPSitemeshPage(request)
+            GSPSitemeshPage smpage = findGSPSitemeshPage(request)
             if (smpage && attrs.tag) {
                 smpage.setContentBuffer(attrs.tag as String, wrapContentInBuffer(body))
             }
@@ -194,7 +198,7 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
             else if (attrs['http-equiv']) {
                 String httpEquiv = attrs['http-equiv'] as String
                 def httpEquivFormats = [httpEquiv, httpEquiv.toLowerCase()]
-                if(httpEquiv.equalsIgnoreCase('content-type')) {
+                if (httpEquiv.equalsIgnoreCase('content-type')) {
                     httpEquivFormats << 'Content-Type'
                 }
                 for (def httpEquivFormat : httpEquivFormats) {
@@ -221,12 +225,13 @@ class SitemeshTagLib implements RequestConstants, TagLibrary {
      */
     Closure wrapTitleTag = { Map attrs, body ->
         if (body != null) {
-            GSPSitemeshPage smpage=findGSPSitemeshPage(request)
+            GSPSitemeshPage smpage = findGSPSitemeshPage(request)
             if (smpage) {
                 def wrapped = wrapContentInBuffer(body)
                 smpage.setTitleBuffer(wrapped)
                 out << wrapped
-            } else if (body instanceof Closure) {
+            }
+            else if (body instanceof Closure) {
                 out << body()
             }
         }

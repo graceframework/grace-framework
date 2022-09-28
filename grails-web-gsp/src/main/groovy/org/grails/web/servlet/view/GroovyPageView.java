@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,28 +15,28 @@
  */
 package org.grails.web.servlet.view;
 
-import grails.util.Environment;
-import grails.util.GrailsUtil;
-import groovy.lang.Writable;
-import groovy.text.Template;
-
 import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import groovy.text.Template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.grails.gsp.GroovyPageWritable;
-import org.grails.web.pages.GSPResponseWriter;
-import org.grails.gsp.GroovyPageTemplate;
-import org.grails.gsp.GroovyPagesTemplateEngine;
-import org.grails.gsp.GroovyPagesException;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper;
 import org.springframework.core.io.Resource;
 import org.springframework.scripting.ScriptSource;
+
+import grails.util.Environment;
+import grails.util.GrailsUtil;
+
+import org.grails.gsp.GroovyPageTemplate;
+import org.grails.gsp.GroovyPageWritable;
+import org.grails.gsp.GroovyPagesException;
+import org.grails.gsp.GroovyPagesTemplateEngine;
+import org.grails.web.pages.GSPResponseWriter;
+import org.grails.web.servlet.mvc.GrailsWebRequest;
+import org.grails.web.sitemesh.GrailsLayoutDecoratorMapper;
 
 /**
  * A Spring View that renders Groovy Server Pages to the response. It requires an instance
@@ -55,15 +55,23 @@ import org.springframework.scripting.ScriptSource;
  * @since 0.4
  */
 public class GroovyPageView extends AbstractGrailsView {
-    private static final Log LOG = LogFactory.getLog(GroovyPageView.class);
+
+    private static final Log logger = LogFactory.getLog(GroovyPageView.class);
+
     protected GroovyPagesTemplateEngine templateEngine;
+
     private long createTimestamp = System.currentTimeMillis();
-    private static final long LASTMODIFIED_CHECK_INTERVAL =  Long.getLong("grails.gsp.reload.interval", 5000).longValue();
+
+    private static final long LASTMODIFIED_CHECK_INTERVAL = Long.getLong("grails.gsp.reload.interval", 5000).longValue();
+
     private ScriptSource scriptSource;
+
     protected GroovyPageTemplate template;
+
     public static final String EXCEPTION_MODEL_KEY = "exception";
+
     private static boolean developmentMode = Environment.isDevelopmentMode();
-    
+
     @Override
     protected void renderTemplate(Map<String, Object> model, GrailsWebRequest webRequest, HttpServletRequest request,
             HttpServletResponse response) {
@@ -71,13 +79,13 @@ public class GroovyPageView extends AbstractGrailsView {
         GSPResponseWriter out = null;
         try {
             out = createResponseWriter(webRequest, response);
-            final GroovyPageWritable writable = template.make(model);
-            writable.setShowSource( developmentMode  && request.getParameter("showSource") != null);
+            final GroovyPageWritable writable = this.template.make(model);
+            writable.setShowSource(developmentMode && request.getParameter("showSource") != null);
             writable.writeTo(out);
         }
         catch (Exception e) {
             out.setError();
-            handleException(e, templateEngine);
+            handleException(e, this.templateEngine);
         }
         finally {
             if (out != null) {
@@ -94,11 +102,11 @@ public class GroovyPageView extends AbstractGrailsView {
      * @param engine The GSP engine
      */
     protected void handleException(Exception exception,
-            GroovyPagesTemplateEngine engine)  {
+            GroovyPagesTemplateEngine engine) {
 
         GrailsUtil.deepSanitize(exception);
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("Error processing GroovyPageView: " + exception.getMessage(), exception);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Error processing GroovyPageView: " + exception.getMessage(), exception);
         }
         if (exception instanceof GroovyPagesException) {
             throw (GroovyPagesException) exception;
@@ -106,7 +114,7 @@ public class GroovyPageView extends AbstractGrailsView {
 
         if (engine == null) {
             throw new GroovyPagesException("Error processing GroovyPageView: " + exception.getMessage(),
-                 exception, -1, getUrl());
+                    exception, -1, getUrl());
         }
 
         throw createGroovyPageException(exception, engine, getUrl());
@@ -128,7 +136,8 @@ public class GroovyPageView extends AbstractGrailsView {
         String file;
         try {
             file = resource != null && resource.exists() ? resource.getFile().getAbsolutePath() : pageUrl;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             file = pageUrl;
         }
 
@@ -153,7 +162,7 @@ public class GroovyPageView extends AbstractGrailsView {
     }
 
     public boolean isExpired() {
-        return System.currentTimeMillis() - createTimestamp > LASTMODIFIED_CHECK_INTERVAL;
+        return System.currentTimeMillis() - this.createTimestamp > LASTMODIFIED_CHECK_INTERVAL;
     }
 
     public void setScriptSource(ScriptSource scriptSource) {
@@ -165,30 +174,32 @@ public class GroovyPageView extends AbstractGrailsView {
         super.afterPropertiesSet();
         try {
             initTemplate();
-        } catch(Exception e) {
-            handleException(e, templateEngine);
+        }
+        catch (Exception e) {
+            handleException(e, this.templateEngine);
         }
     }
 
     protected void initTemplate() throws IOException {
-        if (template == null) {
-            if (scriptSource == null) {
-                template = (GroovyPageTemplate) templateEngine.createTemplate(getUrl());
-            } else {
-                template = (GroovyPageTemplate) templateEngine.createTemplate(scriptSource);
+        if (this.template == null) {
+            if (this.scriptSource == null) {
+                this.template = (GroovyPageTemplate) this.templateEngine.createTemplate(getUrl());
+            }
+            else {
+                this.template = (GroovyPageTemplate) this.templateEngine.createTemplate(this.scriptSource);
             }
         }
-        if (template != null) {
-            template.setAllowSettingContentType(true);
+        if (this.template != null) {
+            this.template.setAllowSettingContentType(true);
         }
     }
-    
+
     public void rethrowRenderException(Throwable ex, String message) {
         throw new GroovyPagesException(message, ex);
     }
 
     public Template getTemplate() {
-        return template;
+        return this.template;
     }
 
     public void setTemplate(Template template) {
@@ -197,6 +208,7 @@ public class GroovyPageView extends AbstractGrailsView {
 
     @Override
     protected boolean isUrlRequired() {
-        return template == null;
+        return this.template == null;
     }
+
 }

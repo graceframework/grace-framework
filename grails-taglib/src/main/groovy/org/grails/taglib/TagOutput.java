@@ -1,32 +1,52 @@
+/*
+ * Copyright 2004-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.taglib;
+
+import java.io.Writer;
+import java.util.Map;
 
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
+
 import org.grails.encoder.Encoder;
 import org.grails.taglib.encoder.OutputContext;
 import org.grails.taglib.encoder.OutputEncodingStack;
 import org.grails.taglib.encoder.OutputEncodingStackAttributes;
 import org.grails.taglib.encoder.WithCodecHelper;
 
-import java.io.Writer;
-import java.util.Map;
-
 /**
  * Created by lari on 16/07/14.
  */
-public class TagOutput {
+public final class TagOutput {
+
     public static final String APPLY_CODEC_TAG_NAME = "applyCodec";
+
     public static final String ENCODE_AS_ATTRIBUTE_NAME = "encodeAs";
+
     public static final Closure<?> EMPTY_BODY_CLOSURE = new ConstantClosure("");
+
     public static final String DEFAULT_NAMESPACE = "g";
 
     private TagOutput() {
     }
 
     @SuppressWarnings("rawtypes")
-    public final static Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
-                                                String tagName, Map attrs, Object body, OutputContext outputContext) {
+    public static Object captureTagOutput(TagLibraryLookup gspTagLibraryLookup, String namespace,
+            String tagName, Map attrs, Object body, OutputContext outputContext) {
 
         GroovyObject tagLib = lookupCachedTagLib(gspTagLibraryLookup, namespace, tagName);
 
@@ -37,7 +57,7 @@ public class TagOutput {
         if (!(attrs instanceof GroovyPageAttributes)) {
             attrs = new GroovyPageAttributes(attrs, false);
         }
-        ((GroovyPageAttributes)attrs).setGspTagSyntaxCall(false);
+        ((GroovyPageAttributes) attrs).setGspTagSyntaxCall(false);
         Closure actualBody = createOutputCapturingClosure(tagLib, body, outputContext);
 
         final GroovyPageTagWriter tagOutput = new GroovyPageTagWriter();
@@ -50,7 +70,8 @@ public class TagOutput {
             Map<String, Object> defaultEncodeAs = gspTagLibraryLookup.getEncodeAsForTag(namespace, tagName);
             Map<String, Object> codecSettings = createCodecSettings(namespace, tagName, attrs, defaultEncodeAs);
 
-            OutputEncodingStackAttributes.Builder builder = WithCodecHelper.createOutputStackAttributesBuilder(codecSettings, outputContext.getGrailsApplication());
+            OutputEncodingStackAttributes.Builder builder =
+                    WithCodecHelper.createOutputStackAttributesBuilder(codecSettings, outputContext.getGrailsApplication());
             builder.topWriter(tagOutput);
             outputStack.push(builder.build());
 
@@ -61,13 +82,14 @@ public class TagOutput {
 
                 switch (tag.getParameterTypes().length) {
                     case 1:
-                        bodyResult = tag.call(new Object[]{attrs});
+                        bodyResult = tag.call(new Object[] { attrs });
                         if (actualBody != null && actualBody != EMPTY_BODY_CLOSURE) {
                             Object bodyResult2 = actualBody.call();
                             if (bodyResult2 != null) {
                                 if (actualBody instanceof ConstantClosure) {
                                     outputStack.getStaticWriter().print(bodyResult2);
-                                } else {
+                                }
+                                else {
                                     outputStack.getTaglibWriter().print(bodyResult2);
                                 }
                             }
@@ -75,7 +97,7 @@ public class TagOutput {
 
                         break;
                     case 2:
-                        bodyResult = tag.call(new Object[]{attrs, actualBody});
+                        bodyResult = tag.call(new Object[] { attrs, actualBody });
                         break;
                     default:
                         throw new GrailsTagException("Tag [" + tagName +
@@ -90,7 +112,7 @@ public class TagOutput {
 
                 if (returnsObject && bodyResult != null && !(bodyResult instanceof Writer)) {
                     if (taglibEncoder != null) {
-                        bodyResult=taglibEncoder.encode(bodyResult);
+                        bodyResult = taglibEncoder.encode(bodyResult);
                     }
                     return bodyResult;
                 }
@@ -98,26 +120,30 @@ public class TagOutput {
                 // add some method to always return string, configurable?
                 if (taglibEncoder != null) {
                     return taglibEncoder.encode(tagOutput.getBuffer());
-                } else {
+                }
+                else {
                     return tagOutput.getBuffer();
                 }
             }
 
             throw new GrailsTagException("Tag [" + tagName + "] does not exist in tag library [" +
                     tagLib.getClass().getName() + "]");
-        } finally {
-            if (outputStack != null) outputStack.pop();
+        }
+        finally {
+            if (outputStack != null) {
+                outputStack.pop();
+            }
         }
     }
 
-    public final static GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
-                                                        String namespace, String tagName) {
+    public static GroovyObject lookupCachedTagLib(TagLibraryLookup gspTagLibraryLookup,
+            String namespace, String tagName) {
 
         return gspTagLibraryLookup != null ? gspTagLibraryLookup.lookupTagLibrary(namespace, tagName) : null;
     }
 
-    public final static Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
-                                                                final OutputContext outputContext) {
+    public static Closure<?> createOutputCapturingClosure(Object wrappedInstance, final Object body1,
+            final OutputContext outputContext) {
         if (body1 == null) {
             return EMPTY_BODY_CLOSURE;
         }
@@ -134,11 +160,12 @@ public class TagOutput {
     }
 
     public static Map<String, Object> createCodecSettings(String namespace, String tagName, @SuppressWarnings("rawtypes") Map attrs,
-                                                          Map<String, Object> defaultEncodeAs) {
+            Map<String, Object> defaultEncodeAs) {
         Object codecInfo = null;
         if (attrs.containsKey(ENCODE_AS_ATTRIBUTE_NAME)) {
             codecInfo = attrs.get(ENCODE_AS_ATTRIBUTE_NAME);
-        } else if (DEFAULT_NAMESPACE.equals(namespace) && APPLY_CODEC_TAG_NAME.equals(tagName)) {
+        }
+        else if (DEFAULT_NAMESPACE.equals(namespace) && APPLY_CODEC_TAG_NAME.equals(tagName)) {
             codecInfo = attrs;
         }
         Map<String, Object> codecSettings = WithCodecHelper.mergeSettingsAndMakeCanonical(codecInfo, defaultEncodeAs);
@@ -147,8 +174,11 @@ public class TagOutput {
 
     @SuppressWarnings("rawtypes")
     public static final class ConstantClosure extends Closure {
+
         private static final long serialVersionUID = 1L;
-        private static final Class[] EMPTY_CLASS_ARR=new Class[0];
+
+        private static final Class[] EMPTY_CLASS_ARR = new Class[0];
+
         final Object retval;
 
         public ConstantClosure(Object retval) {
@@ -167,24 +197,26 @@ public class TagOutput {
         }
 
         public Object doCall(Object obj) {
-            return retval;
+            return this.retval;
         }
 
         public Object doCall() {
-            return retval;
+            return this.retval;
         }
 
         public Object doCall(Object[] args) {
-            return retval;
+            return this.retval;
         }
 
         @Override
         public Object call(Object... args) {
-            return retval;
+            return this.retval;
         }
 
         public boolean asBoolean() {
-            return DefaultTypeTransformation.castToBoolean(retval);
+            return DefaultTypeTransformation.castToBoolean(this.retval);
         }
+
     }
+
 }

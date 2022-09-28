@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,8 +19,6 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.grails.web.sitemesh.GrailsLayoutView;
-import org.grails.web.sitemesh.GroovyPageLayoutFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -32,35 +30,44 @@ import org.springframework.web.servlet.SmartView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
+import org.grails.web.sitemesh.GrailsLayoutView;
+import org.grails.web.sitemesh.GroovyPageLayoutFinder;
+
 public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, ServletContextAware, ApplicationContextAware {
+
     private static final Logger LOG = LoggerFactory.getLogger(GrailsLayoutViewResolver.class);
 
     protected ViewResolver innerViewResolver;
+
     protected GroovyPageLayoutFinder groovyPageLayoutFinder;
+
     private int order = Ordered.LOWEST_PRECEDENCE - 30;
+
     protected ServletContext servletContext;
-    
+
     public GrailsLayoutViewResolver(ViewResolver innerViewResolver, GroovyPageLayoutFinder groovyPageLayoutFinder) {
         this.innerViewResolver = innerViewResolver;
         this.groovyPageLayoutFinder = groovyPageLayoutFinder;
     }
-    
+
     public GrailsLayoutViewResolver() {
-        
+
     }
 
     @Override
     public View resolveViewName(String viewName, Locale locale) throws Exception {
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Resolving view for name {} and locale {}", viewName, locale);
         }
-        View innerView = innerViewResolver.resolveViewName(viewName, locale);
-        if(innerView == null) {
+        View innerView = this.innerViewResolver.resolveViewName(viewName, locale);
+        if (innerView == null) {
             return null;
-        } else if(innerView instanceof SmartView && ((SmartView)innerView).isRedirectView()) { 
+        }
+        else if (innerView instanceof SmartView && ((SmartView) innerView).isRedirectView()) {
             return innerView;
-        } else {
-            if(LOG.isDebugEnabled()) {
+        }
+        else {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Creating layout view name {} and locale {}", viewName, locale);
             }
             return createLayoutView(innerView);
@@ -68,16 +75,16 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     }
 
     protected View createLayoutView(View innerView) {
-        return new GrailsLayoutView(groovyPageLayoutFinder, innerView);
+        return new GrailsLayoutView(this.groovyPageLayoutFinder, innerView);
     }
 
     @Override
     public ViewResolver getInnerViewResolver() {
-        return innerViewResolver;
+        return this.innerViewResolver;
     }
 
     public int getOrder() {
-        return order;
+        return this.order;
     }
 
     public void setOrder(int order) {
@@ -87,15 +94,15 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     @Override
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
-        if(innerViewResolver instanceof ServletContextAware) {
-            ((ServletContextAware)innerViewResolver).setServletContext(servletContext);
+        if (this.innerViewResolver instanceof ServletContextAware) {
+            ((ServletContextAware) this.innerViewResolver).setServletContext(servletContext);
         }
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if(innerViewResolver instanceof ApplicationContextAware) {
-            ((ApplicationContextAware)innerViewResolver).setApplicationContext(applicationContext);
+        if (this.innerViewResolver instanceof ApplicationContextAware) {
+            ((ApplicationContextAware) this.innerViewResolver).setApplicationContext(applicationContext);
         }
     }
 
@@ -106,4 +113,5 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     public void setGroovyPageLayoutFinder(GroovyPageLayoutFinder groovyPageLayoutFinder) {
         this.groovyPageLayoutFinder = groovyPageLayoutFinder;
     }
+
 }

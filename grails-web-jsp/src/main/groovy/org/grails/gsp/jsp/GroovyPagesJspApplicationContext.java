@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 Graeme Rocher
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,30 @@
  */
 package org.grails.gsp.jsp;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.ClassUtils;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import javax.el.*;
+import javax.el.ArrayELResolver;
+import javax.el.BeanELResolver;
+import javax.el.CompositeELResolver;
+import javax.el.ELContext;
+import javax.el.ELContextEvent;
+import javax.el.ELContextListener;
+import javax.el.ELResolver;
+import javax.el.ExpressionFactory;
+import javax.el.FunctionMapper;
+import javax.el.ListELResolver;
+import javax.el.MapELResolver;
+import javax.el.ResourceBundleELResolver;
+import javax.el.ValueExpression;
+import javax.el.VariableMapper;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.el.ImplicitObjectELResolver;
 import javax.servlet.jsp.el.ScopedAttributeELResolver;
-import java.util.Iterator;
-import java.util.LinkedList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author Graeme Rocher
@@ -32,23 +46,25 @@ import java.util.LinkedList;
  */
 public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
-    private static final Log LOG = LogFactory.getLog(GroovyPagesJspApplicationContext.class);
+    private static final Log logger = LogFactory.getLog(GroovyPagesJspApplicationContext.class);
 
     private static final ExpressionFactory expressionFactoryImpl = findExpressionFactoryImplementation();
 
-    private final LinkedList<ELContextListener> listeners = new LinkedList<ELContextListener>();
+    private final LinkedList<ELContextListener> listeners = new LinkedList<>();
+
     private final CompositeELResolver elResolver = new CompositeELResolver();
+
     private final CompositeELResolver additionalResolvers = new CompositeELResolver();
 
     public GroovyPagesJspApplicationContext() {
-        elResolver.add(new ImplicitObjectELResolver());
-        elResolver.add(additionalResolvers);
-        elResolver.add(new MapELResolver());
-        elResolver.add(new ResourceBundleELResolver());
-        elResolver.add(new ListELResolver());
-        elResolver.add(new ArrayELResolver());
-        elResolver.add(new BeanELResolver());
-        elResolver.add(new ScopedAttributeELResolver());
+        this.elResolver.add(new ImplicitObjectELResolver());
+        this.elResolver.add(this.additionalResolvers);
+        this.elResolver.add(new MapELResolver());
+        this.elResolver.add(new ResourceBundleELResolver());
+        this.elResolver.add(new ListELResolver());
+        this.elResolver.add(new ArrayELResolver());
+        this.elResolver.add(new BeanELResolver());
+        this.elResolver.add(new ScopedAttributeELResolver());
     }
 
     private static ExpressionFactory findExpressionFactoryImplementation() {
@@ -56,7 +72,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
         if (ef == null) {
             ef = tryExpressionFactoryImplementation("org.apache");
             if (ef == null) {
-                LOG.warn("Could not find any implementation for " +
+                logger.warn("Could not find any implementation for " +
                         ExpressionFactory.class.getName());
             }
         }
@@ -68,24 +84,24 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
         try {
             Class<?> cl = ClassUtils.forName(className, null);
             if (ExpressionFactory.class.isAssignableFrom(cl)) {
-                LOG.info("Using " + className + " as implementation of " +
+                logger.info("Using " + className + " as implementation of " +
                         ExpressionFactory.class.getName());
-                return (ExpressionFactory)cl.newInstance();
+                return (ExpressionFactory) cl.newInstance();
             }
-            LOG.warn("Class " + className + " does not implement " +
+            logger.warn("Class " + className + " does not implement " +
                     ExpressionFactory.class.getName());
         }
-        catch(ClassNotFoundException e) {
+        catch (ClassNotFoundException e) {
             // ignored
         }
-        catch(Exception e) {
-            LOG.error("Failed to instantiate " + className, e);
+        catch (Exception e) {
+            logger.error("Failed to instantiate " + className, e);
         }
         return null;
     }
 
     public void addELResolver(ELResolver resolver) {
-        additionalResolvers.add(resolver);
+        this.additionalResolvers.add(resolver);
     }
 
     public ExpressionFactory getExpressionFactory() {
@@ -93,16 +109,16 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     public void addELContextListener(ELContextListener elContextListener) {
-        synchronized(listeners) {
-            listeners.addLast(elContextListener);
+        synchronized (this.listeners) {
+            this.listeners.addLast(elContextListener);
         }
     }
 
     ELContext createELContext(GroovyPagesPageContext pageCtx) {
         ELContext ctx = new GroovyPagesELContext(pageCtx);
         ELContextEvent event = new ELContextEvent(ctx);
-        synchronized(listeners) {
-            for (Iterator<ELContextListener> iter = listeners.iterator(); iter.hasNext();) {
+        synchronized (this.listeners) {
+            for (Iterator<ELContextListener> iter = this.listeners.iterator(); iter.hasNext(); ) {
                 iter.next().contextCreated(event);
             }
         }
@@ -110,15 +126,16 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     private class GroovyPagesELContext extends ELContext {
+
         private GroovyPagesPageContext pageCtx;
 
-        public GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
+        GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
             this.pageCtx = pageCtx;
         }
 
         @Override
         public ELResolver getELResolver() {
-            return elResolver;
+            return GroovyPagesJspApplicationContext.this.elResolver;
         }
 
         @Override
@@ -132,18 +149,22 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
                 @Override
                 public ValueExpression resolveVariable(String name) {
-                    Object o = pageCtx.findAttribute(name);
-                    if (o == null) return null;
+                    Object o = GroovyPagesELContext.this.pageCtx.findAttribute(name);
+                    if (o == null) {
+                        return null;
+                    }
                     return expressionFactoryImpl.createValueExpression(o, o.getClass());
                 }
 
                 @Override
                 public ValueExpression setVariable(String name, ValueExpression valueExpression) {
                     ValueExpression previous = resolveVariable(name);
-                    pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
+                    GroovyPagesELContext.this.pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
                     return previous;
                 }
             };
         }
+
     }
+
 }

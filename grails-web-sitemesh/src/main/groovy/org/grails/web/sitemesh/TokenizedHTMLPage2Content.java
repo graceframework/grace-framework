@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@ import java.io.Writer;
 import com.opensymphony.sitemesh.Content;
 
 final class TokenizedHTMLPage2Content implements Content {
+
     private final GrailsTokenizedHTMLPage page;
 
     TokenizedHTMLPage2Content(GrailsTokenizedHTMLPage page) {
@@ -29,27 +30,27 @@ final class TokenizedHTMLPage2Content implements Content {
 
     @Override
     public void writeOriginal(Writer out) throws IOException {
-        out.write(page.getData());
+        out.write(this.page.getData());
     }
 
     @Override
     public void writeHead(Writer out) throws IOException {
-        page.writeHead(out);              
+        this.page.writeHead(out);
     }
 
     @Override
     public void writeBody(Writer out) throws IOException {
-        page.writeBody(out);
+        this.page.writeBody(out);
     }
 
     @Override
     public int originalLength() {
-        return page.getContentLength();
+        return this.page.getContentLength();
     }
 
     @Override
     public String getTitle() {
-        return page.getTitle();
+        return this.page.getTitle();
     }
 
     @Override
@@ -59,15 +60,16 @@ final class TokenizedHTMLPage2Content implements Content {
 
     @Override
     public String getProperty(String name) {
-        return page.getProperty(name);
+        return this.page.getProperty(name);
     }
 
     @Override
     public void addProperty(String name, String value) {
-        page.addProperty(name, value);                    
+        this.page.addProperty(name, value);
     }
 
     public GrailsTokenizedHTMLPage getPage() {
-        return page;
+        return this.page;
     }
+
 }

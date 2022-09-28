@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,13 @@
  */
 package org.grails.plugins.web.taglib
 
-import grails.artefact.TagLibrary
-import grails.gsp.TagLib
+import java.beans.PropertyEditor
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+
 import groovy.transform.CompileStatic
 import groovy.xml.MarkupBuilder
 import org.apache.commons.lang.StringEscapeUtils
-import org.grails.encoder.CodecLookup
-import org.grails.encoder.Encoder
-import org.grails.taglib.GroovyPageAttributes
-import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.springframework.beans.PropertyEditorRegistry
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceResolvable
@@ -31,9 +29,13 @@ import org.springframework.context.NoSuchMessageException
 import org.springframework.context.support.DefaultMessageSourceResolvable
 import org.springframework.validation.Errors
 
-import java.beans.PropertyEditor
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
+import grails.artefact.TagLibrary
+import grails.gsp.TagLib
+
+import org.grails.encoder.CodecLookup
+import org.grails.encoder.Encoder
+import org.grails.taglib.GroovyPageAttributes
+import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  * Tags to handle validation and errors.
@@ -93,22 +95,24 @@ class ValidationTagLib implements TagLibrary {
         }
         def valueMessagePrefix = attrs.valueMessagePrefix
         def valueMessage = (valueMessagePrefix) ?
-            messageSource.getMessage("${valueMessagePrefix}.${field}", null, null, request.locale) :
-            null
+                messageSource.getMessage("${valueMessagePrefix}.${field}", null, null, request.locale) :
+                null
 
         def tagSyntaxCall = (attrs instanceof GroovyPageAttributes) ? attrs.isGspTagSyntaxCall() : false
 
         def rejectedValue = null
         if (valueMessage) {
             rejectedValue = valueMessage
-        } else if (bean.metaClass.hasProperty(bean, 'errors')) {
+        }
+        else if (bean.metaClass.hasProperty(bean, 'errors')) {
             Errors errors = bean.errors
             rejectedValue = errors?.getFieldError(field)?.rejectedValue
             if (rejectedValue == null) {
                 rejectedValue = parseForRejectedValue(bean, field)
             }
 
-        } else {
+        }
+        else {
             rejectedValue = parseForRejectedValue(bean, field)
         }
         if (rejectedValue != null) {
@@ -131,18 +135,21 @@ class ValidationTagLib implements TagLibrary {
             if (attrs.bean) {
                 checkList << attrs.bean
             }
-        } else if (attrs.containsKey('model')) {
+        }
+        else if (attrs.containsKey('model')) {
             if (model) {
                 checkList = model.findAll { it.value?.errors instanceof Errors }.collect { it.value }
             }
-        } else {
+        }
+        else {
             for (attributeName in request.attributeNames) {
                 def ra = request[attributeName]
                 if (ra) {
                     def mc = GroovySystem.metaClassRegistry.getMetaClass(ra.getClass())
                     if (ra instanceof Errors && !checkList.contains(ra)) {
                         checkList << ra
-                    } else if (mc.hasProperty(ra, 'errors') && ra.errors instanceof Errors && !checkList.contains(ra.errors)) {
+                    }
+                    else if (mc.hasProperty(ra, 'errors') && ra.errors instanceof Errors && !checkList.contains(ra.errors)) {
                         checkList << ra.errors
                     }
                 }
@@ -155,7 +162,8 @@ class ValidationTagLib implements TagLibrary {
             def errors = null
             if (i instanceof Errors) {
                 errors = i
-            } else {
+            }
+            else {
                 def mc = GroovySystem.metaClassRegistry.getMetaClass(i.getClass())
                 if (mc.hasProperty(i, 'errors')) {
                     errors = i.errors
@@ -214,7 +222,8 @@ class ValidationTagLib implements TagLibrary {
                 if (errors.hasFieldErrors(field)) {
                     errorList += errors.getFieldErrors(field)
                 }
-            } else {
+            }
+            else {
                 errorList += errors.allErrors
             }
         }
@@ -223,7 +232,8 @@ class ValidationTagLib implements TagLibrary {
             def result
             if (var) {
                 result = body([(var): error])
-            } else {
+            }
+            else {
                 result = body(error)
             }
             if (outputResult) {
@@ -258,7 +268,8 @@ class ValidationTagLib implements TagLibrary {
                 })
                 out << "</ul>"
             }
-        } else if (renderAs.equalsIgnoreCase("xml")) {
+        }
+        else if (renderAs.equalsIgnoreCase("xml")) {
             def mkp = new MarkupBuilder(out)
             mkp.errors() {
                 eachErrorInternal(attrs, {
@@ -305,18 +316,21 @@ class ValidationTagLib implements TagLibrary {
             try {
                 if (error instanceof MessageSourceResolvable) {
                     text = messageSource.getMessage(error, locale)
-                } else {
+                }
+                else {
                     text = messageSource.getMessage(error.toString(), null, locale)
                 }
             }
             catch (NoSuchMessageException e) {
                 if (error instanceof MessageSourceResolvable) {
                     text = ((MessageSourceResolvable) error).codes[0]
-                } else {
+                }
+                else {
                     text = error?.toString()
                 }
             }
-        } else if (attrs.code) {
+        }
+        else if (attrs.code) {
             String code = attrs.code?.toString()
             List args = []
             if (attrs.args) {
@@ -325,7 +339,8 @@ class ValidationTagLib implements TagLibrary {
             String defaultMessage
             if (attrs.containsKey('default')) {
                 defaultMessage = attrs['default']?.toString()
-            } else {
+            }
+            else {
                 defaultMessage = code
             }
 
@@ -333,7 +348,8 @@ class ValidationTagLib implements TagLibrary {
                     defaultMessage, locale)
             if (message != null) {
                 text = message
-            } else {
+            }
+            else {
                 text = defaultMessage
             }
         }
@@ -349,7 +365,8 @@ class ValidationTagLib implements TagLibrary {
         arguments.collect { value ->
             if (value == null || value instanceof Number || value instanceof Date) {
                 value
-            } else {
+            }
+            else {
                 Encoder encoder = codecLookup.lookupEncoder('HTML')
                 encoder ? encoder.encode(value) : value
             }
@@ -357,16 +374,16 @@ class ValidationTagLib implements TagLibrary {
     }
 
     // Maps out how Grails contraints map to Apache commons validators
-    static CONSTRAINT_TYPE_MAP = [email     : 'email',
+    static CONSTRAINT_TYPE_MAP = [email: 'email',
                                   creditCard: 'creditCard',
-                                  matches   : 'mask',
-                                  blank     : 'required',
-                                  nullable  : 'required',
-                                  maxSize   : 'maxLength',
-                                  minSize   : 'minLength',
-                                  range     : 'intRange',
-                                  size      : 'intRange',
-                                  length    : 'maxLength,minLength']
+                                  matches: 'mask',
+                                  blank: 'required',
+                                  nullable: 'required',
+                                  maxSize: 'maxLength',
+                                  minSize: 'minLength',
+                                  range: 'intRange',
+                                  size: 'intRange',
+                                  length: 'maxLength,minLength']
 
     /**
      * Validates a form using Apache commons validator javascript against constraints defined in a Grails
@@ -401,7 +418,8 @@ class ValidationTagLib implements TagLibrary {
             if (validateType) {
                 if (fieldValidations[validateType]) {
                     fieldValidations[validateType] << it
-                } else {
+                }
+                else {
                     fieldValidations[validateType] = [it]
                 }
             }
@@ -486,4 +504,5 @@ class ValidationTagLib implements TagLibrary {
 
         return value.toString().encodeAsHTML()
     }
+
 }

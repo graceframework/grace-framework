@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,9 @@ import org.grails.io.support.GrailsResourceUtils;
 public class GrailsTagException extends GrailsException implements SourceCodeAware {
 
     private static final long serialVersionUID = -2340187595590923592L;
+
     private String fileName;
+
     private int lineNumber;
 
     public GrailsTagException(String message) {
@@ -52,22 +54,23 @@ public class GrailsTagException extends GrailsException implements SourceCodeAwa
     }
 
     public String getFileName() {
-        return fileName;
+        return this.fileName;
     }
 
     public int getLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     @Override
     public String getMessage() {
         String fn = getFileName();
         int ln = getLineNumber();
-        if(fn != null && ln > 0) {
-            return "[" + fn +  ":" + ln + "] " + super.getMessage();
+        if (fn != null && ln > 0) {
+            return "[" + fn + ":" + ln + "] " + super.getMessage();
         }
         else {
             return super.getMessage();
         }
     }
+
 }

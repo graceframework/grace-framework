@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource
+ * Copyright 2011-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,12 @@
  */
 package org.grails.gsp.io;
 
-import org.grails.gsp.GroovyPageMetaInfo;
-import org.springframework.core.io.Resource;
-
 import java.io.IOException;
 import java.security.PrivilegedAction;
+
+import org.springframework.core.io.Resource;
+
+import org.grails.gsp.GroovyPageMetaInfo;
 
 /**
  * Represents a pre-compiled GSP.
@@ -28,10 +29,15 @@ import java.security.PrivilegedAction;
  * @since 2.0
  */
 public class GroovyPageCompiledScriptSource implements GroovyPageScriptSource {
+
     private String uri;
+
     private Class<?> compiledClass;
+
     private GroovyPageMetaInfo groovyPageMetaInfo;
+
     private PrivilegedAction<Resource> resourceCallable;
+
     private boolean isPublic;
 
     public GroovyPageCompiledScriptSource(String uri, String fullPath, Class<?> compiledClass) {
@@ -42,7 +48,7 @@ public class GroovyPageCompiledScriptSource implements GroovyPageScriptSource {
     }
 
     public String getURI() {
-        return uri;
+        return this.uri;
     }
 
     /**
@@ -51,42 +57,45 @@ public class GroovyPageCompiledScriptSource implements GroovyPageScriptSource {
      * @return true if it can be rendered publicly
      */
     public boolean isPublic() {
-        return isPublic;
+        return this.isPublic;
     }
 
     /**
      * @return The compiled class
      */
     public Class<?> getCompiledClass() {
-        return compiledClass;
+        return this.compiledClass;
     }
 
     public String getScriptAsString() throws IOException {
-        throw new UnsupportedOperationException("You cannot retrieve the source of a pre-compiled GSP script: " + uri);
+        throw new UnsupportedOperationException("You cannot retrieve the source of a pre-compiled GSP script: " + this.uri);
     }
 
     public boolean isModified() {
-        if (resourceCallable == null) {
+        if (this.resourceCallable == null) {
             return false;
         }
-        return groovyPageMetaInfo.shouldReload(resourceCallable);
+        return this.groovyPageMetaInfo.shouldReload(this.resourceCallable);
     }
 
     public GroovyPageResourceScriptSource getReloadableScriptSource() {
-        if (resourceCallable == null) return null;
-        Resource resource = groovyPageMetaInfo.checkIfReloadableResourceHasChanged(resourceCallable);
-        return resource == null ? null : new GroovyPageResourceScriptSource(uri, resource);
+        if (this.resourceCallable == null) {
+            return null;
+        }
+        Resource resource = this.groovyPageMetaInfo.checkIfReloadableResourceHasChanged(this.resourceCallable);
+        return resource == null ? null : new GroovyPageResourceScriptSource(this.uri, resource);
     }
 
     public String suggestedClassName() {
-        return compiledClass.getName();
+        return this.compiledClass.getName();
     }
 
     public GroovyPageMetaInfo getGroovyPageMetaInfo() {
-        return groovyPageMetaInfo;
+        return this.groovyPageMetaInfo;
     }
 
     public void setResourceCallable(PrivilegedAction<Resource> resourceCallable) {
         this.resourceCallable = resourceCallable;
     }
+
 }

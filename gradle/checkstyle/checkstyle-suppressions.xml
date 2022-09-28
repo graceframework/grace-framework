@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+
+	<!-- global -->
+	<suppress files="package-info\.java" checks=".*"/>
+	<suppress files="Tokens" checks="InterfaceIsType"/>
+	<!-- Ignore third-party code -->
+	<!-- generated sources -->
+	<suppress files="[\\/]build[\\/]generated[\\/]sources[\\/]" checks=".*"/>
+
+</suppressions>

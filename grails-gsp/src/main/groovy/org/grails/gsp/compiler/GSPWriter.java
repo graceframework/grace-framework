@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 package org.grails.gsp.compiler;
 
-import grails.util.GrailsStringUtils;
-import org.grails.gsp.GroovyPage;
-
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
+
+import grails.util.GrailsStringUtils;
+
+import org.grails.gsp.GroovyPage;
 
 
 /**
@@ -32,7 +33,9 @@ import java.lang.reflect.Array;
 public class GSPWriter extends PrintWriter {
 
     private int lineNumber = 1;
+
     private int[] lineNumbers = new int[1000];
+
     //private static final Pattern LINE_BREAK = Pattern.compile("\\r\\n|\\n|\\r");
     private GroovyPageParser parse;
 
@@ -42,7 +45,7 @@ public class GSPWriter extends PrintWriter {
     }
 
     @Override
-    public void write(char buf[], int off, int len) {
+    public void write(char[] buf, int off, int len) {
         super.write(buf, off, len);
     }
 
@@ -55,7 +58,7 @@ public class GSPWriter extends PrintWriter {
             return;
         }
 
-        parse.flushTagBuffering();
+        this.parse.flushTagBuffering();
         super.print(outVarName);
         super.print(".print(");
         super.print(s);
@@ -64,8 +67,10 @@ public class GSPWriter extends PrintWriter {
     }
 
     public void printlnToBuffer(String s, int index) {
-        if (s == null) s = "''";
-        super.print("buf"+index+" << ");
+        if (s == null) {
+            s = "''";
+        }
+        super.print("buf" + index + " << ");
         super.print(s);
         println();
     }
@@ -77,31 +82,32 @@ public class GSPWriter extends PrintWriter {
     }
 
     private void addLineNumber() {
-        if (lineNumber >= lineNumbers.length) {
-            lineNumbers = (int[])resizeArray(lineNumbers, lineNumbers.length * 2);
+        if (this.lineNumber >= this.lineNumbers.length) {
+            this.lineNumbers = (int[]) resizeArray(this.lineNumbers, this.lineNumbers.length * 2);
         }
         else {
-            lineNumbers[lineNumber - 1] = parse.getCurrentOutputLineNumber();
-            lineNumber++;
+            this.lineNumbers[this.lineNumber - 1] = this.parse.getCurrentOutputLineNumber();
+            this.lineNumber++;
         }
     }
 
-    private Object resizeArray (Object oldArray, int newSize) {
+    private Object resizeArray(Object oldArray, int newSize) {
         int oldSize = java.lang.reflect.Array.getLength(oldArray);
         Class<?> elementType = oldArray.getClass().getComponentType();
-        Object newArray = Array.newInstance(elementType,newSize);
-        int preserveLength = Math.min(oldSize,newSize);
+        Object newArray = Array.newInstance(elementType, newSize);
+        int preserveLength = Math.min(oldSize, newSize);
         if (preserveLength > 0) {
-            System.arraycopy (oldArray,0,newArray,0,preserveLength);
+            System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
         }
         return newArray;
     }
 
     public int getCurrentLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     public int[] getLineNumbers() {
-        return lineNumbers;
+        return this.lineNumbers;
     }
+
 }
