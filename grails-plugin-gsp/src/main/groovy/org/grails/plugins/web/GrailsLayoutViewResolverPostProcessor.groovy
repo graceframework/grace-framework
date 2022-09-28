@@ -59,8 +59,8 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         if (enabled && registry.containsBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)) {
-            BeanDefinition previousViewResolver = registry.getBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME);
-            registry.removeBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME);
+            BeanDefinition previousViewResolver = registry.getBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)
+            registry.removeBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)
 
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition()
             beanDefinition.beanClass = layoutViewResolverClass

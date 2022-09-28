@@ -61,7 +61,7 @@ class TagLibraryMetaUtils {
     @CompileStatic
     static registerMethodMissingForTags(MetaClass metaClass, TagLibraryLookup gspTagLibraryLookup, String namespace, String name,
                                         boolean addAll = true, boolean overrideMethods = true) {
-        GroovyObject mc = (GroovyObject) metaClass;
+        GroovyObject mc = (GroovyObject) metaClass
 
         if (overrideMethods || !doesMethodExist(metaClass, name, [Map, Closure] as Class[])) {
             mc.setProperty(name) { Map attrs, Closure body ->
@@ -102,7 +102,7 @@ class TagLibraryMetaUtils {
 
     @CompileStatic
     static void registerPropertyMissingForTag(MetaClass metaClass, String name, Object result) {
-        GroovyObject mc = (GroovyObject) metaClass;
+        GroovyObject mc = (GroovyObject) metaClass
         mc.setProperty(GrailsClassUtils.getGetterName(name)) { -> result }
     }
 

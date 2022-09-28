@@ -106,7 +106,7 @@ class DefaultGrailsTagDateHelper implements GrailsTagDateHelper {
         }
         else {
             throw new IllegalArgumentException("Cannot format class as date: " +
-                    (date == null ? "<null>" : date.getClass().getName()));
+                    (date == null ? "<null>" : date.getClass().getName()))
         }
         ((DateTimeFormatter) formatter).format(instant)
     }

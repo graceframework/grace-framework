@@ -38,7 +38,7 @@ import org.grails.taglib.encoder.WithCodecHelper
 trait TagLibraryInvoker extends WebAttributes {
 
     private TagLibraryLookup tagLibraryLookup
-    private final boolean developmentMode = Environment.isDevelopmentMode();
+    private final boolean developmentMode = Environment.isDevelopmentMode()
 
     @Autowired(required = false)
     void setTagLibraryLookup(TagLibraryLookup tagLibraryLookup) {
@@ -77,8 +77,8 @@ trait TagLibraryInvoker extends WebAttributes {
                 def usedNamespace = getTaglibNamespace()
                 GroovyObject tagLibrary = lookup.lookupTagLibrary(usedNamespace, methodName)
                 if (tagLibrary == null) {
-                    tagLibrary = lookup.lookupTagLibrary(TagOutput.DEFAULT_NAMESPACE, methodName);
-                    usedNamespace = TagOutput.DEFAULT_NAMESPACE;
+                    tagLibrary = lookup.lookupTagLibrary(TagOutput.DEFAULT_NAMESPACE, methodName)
+                    usedNamespace = TagOutput.DEFAULT_NAMESPACE
                 }
 
                 if (tagLibrary) {
