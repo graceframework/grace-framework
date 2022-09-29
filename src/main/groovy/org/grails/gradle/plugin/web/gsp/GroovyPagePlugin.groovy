@@ -52,13 +52,15 @@ class GroovyPagePlugin implements Plugin<Project> {
             allClasspath += providedConfig
         }
 
+        String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
+
         def allTasks = project.tasks
 
         def compileGroovyPages = allTasks.create("compileGroovyPages", GroovyPageForkCompileTask) {
             destinationDir = destDir
             tmpDirPath = getTmpDirPath(project)
-            source = project.file("${project.projectDir}/grails-app/views")
-            serverpath = "/WEB-INF/grails-app/views/"
+            source = project.file("${project.projectDir}/${grailsAppDir}/views")
+            serverpath = "/WEB-INF/${grailsAppDir}/views/"
         }
 
         compileGroovyPages.setClasspath( allClasspath )
