@@ -60,7 +60,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             destinationDir = destDir
             tmpDirPath = getTmpDirPath(project)
             source = project.file("${project.projectDir}/${grailsAppDir}/views")
-            serverpath = "/WEB-INF/${grailsAppDir}/views/"
+            serverpath = "/WEB-INF/grails-app/views/"
         }
 
         compileGroovyPages.setClasspath( allClasspath )
