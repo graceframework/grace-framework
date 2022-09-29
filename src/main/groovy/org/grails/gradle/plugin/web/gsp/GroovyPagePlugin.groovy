@@ -37,7 +37,7 @@ class GroovyPagePlugin implements Plugin<Project> {
         }
 
         project.dependencies {
-            gspCompile 'javax.servlet:javax.servlet-api:3.1.0'
+            gspCompile 'javax.servlet:javax.servlet-api:4.0.1'
         }
 
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
