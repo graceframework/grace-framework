@@ -213,16 +213,21 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
     }
 
     protected GroovyPageScriptSource resolveViewInBinaryPlugin(BinaryGrailsPlugin binaryPlugin, String uri) {
-        GroovyPageScriptSource scriptSource = null;
-        uri = removeViewLocationPrefixes(uri);
-        uri = GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri);
-        Class<?> viewClass = binaryPlugin.resolveView(uri);
-        if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
-            scriptSource = createGroovyPageCompiledScriptSource(uri, uri, viewClass);
-            // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
-            ((GroovyPageCompiledScriptSource) scriptSource).setResourceCallable(null);
+        for (String dir : Arrays.asList("grails-app", "app")) {
+            GroovyPageScriptSource scriptSource = null;
+            String fullUri = removeViewLocationPrefixes(uri);
+            fullUri = GrailsResourceUtils.appendPiecesForUri("/WEB-INF/" + dir + "/views", fullUri);
+            Class<?> viewClass = binaryPlugin.resolveView(fullUri);
+            if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
+                scriptSource = createGroovyPageCompiledScriptSource(uri, fullUri, viewClass);
+                // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
+                ((GroovyPageCompiledScriptSource) scriptSource).setResourceCallable(null);
+            }
+            if (scriptSource != null) {
+                return scriptSource;
+            }
         }
-        return scriptSource;
+        return null;
     }
 
     protected GroovyPageCompiledScriptSource createGroovyPageCompiledScriptSource(final String uri, String fullPath, Class<?> viewClass) {
