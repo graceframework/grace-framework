@@ -106,7 +106,7 @@ class MainClassFinder {
             def parent = file.parentFile
 
             while (parent != null) {
-                if (new File(parent, 'build.gradle').exists() || new File(parent, 'grails-app').exists()) {
+                if (new File(parent, 'build.gradle').exists() || new File(parent, 'grails-app').exists() || new File(parent, 'app').exists()) {
                     return parent
                 }
                 parent = parent.parentFile
@@ -170,7 +170,7 @@ class MainClassFinder {
     }
 
     protected static boolean isMainClass(ClassReader classReader) {
-        if (classReader.superName?.startsWith('grails/boot/config/')) {
+        if (classReader.className?.endsWith('Application')) {
             def mainMethodFinder = new MainMethodFinder()
             classReader.accept(mainMethodFinder, ClassReader.SKIP_CODE)
             return mainMethodFinder.found
