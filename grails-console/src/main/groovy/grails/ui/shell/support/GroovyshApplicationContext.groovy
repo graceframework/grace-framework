@@ -15,7 +15,7 @@
  */
 package grails.ui.shell.support
 
-import org.codehaus.groovy.tools.shell.Groovysh
+import org.apache.groovy.groovysh.Groovysh
 import org.codehaus.groovy.tools.shell.IO
 import org.springframework.context.support.GenericApplicationContext
 

@@ -17,7 +17,7 @@ package grails.ui.shell.support
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
-import org.codehaus.groovy.tools.shell.Groovysh
+import org.apache.groovy.groovysh.Groovysh
 import org.codehaus.groovy.tools.shell.IO
 
 import grails.core.GrailsApplication
