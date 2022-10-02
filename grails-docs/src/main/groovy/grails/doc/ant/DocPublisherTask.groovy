@@ -14,6 +14,7 @@
  */
 package grails.doc.ant
 
+import groovy.ant.AntBuilder
 import org.apache.tools.ant.BuildException
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.Task
