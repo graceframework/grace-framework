@@ -15,6 +15,7 @@
  */
 package grails.doc
 
+import groovy.ant.AntBuilder
 import groovy.io.FileType
 import groovy.text.Template
 import org.apache.commons.logging.LogFactory
