@@ -14,7 +14,7 @@
  */
 package grails.util;
 
-import groovy.util.GroovyTestCase;
+import groovy.test.GroovyTestCase;
 import groovy.util.ObjectGraphBuilder;
 
 import java.util.ArrayList;
