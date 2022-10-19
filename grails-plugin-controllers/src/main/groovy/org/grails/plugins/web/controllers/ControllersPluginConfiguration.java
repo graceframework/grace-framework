@@ -25,6 +25,8 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
@@ -43,6 +45,8 @@ import grails.config.Settings;
 import grails.core.GrailsApplication;
 
 import org.grails.web.errors.GrailsExceptionResolver;
+import org.grails.web.filters.HiddenHttpMethodFilter;
+import org.grails.web.filters.OrderedHiddenHttpMethodFilter;
 import org.grails.web.servlet.mvc.GrailsDispatcherServlet;
 import org.grails.web.servlet.mvc.GrailsWebRequestFilter;
 import org.grails.web.servlet.mvc.ParameterCreationListener;
@@ -123,6 +127,13 @@ public class ControllersPluginConfiguration {
 
         GrailsWebMvcConfigurer webMvcConfigurer = new GrailsWebMvcConfigurer(resourcesCachePeriod, resourcesEnabled, resourcesPattern);
         return webMvcConfigurer;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
+    @ConditionalOnProperty(prefix = "grails.web.hiddenmethod.filter", name = "enabled", matchIfMissing = true)
+    public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        return new OrderedHiddenHttpMethodFilter();
     }
 
     static class GrailsWebMvcConfigurer implements WebMvcConfigurer {
