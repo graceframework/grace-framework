@@ -137,7 +137,7 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
     }
 
     public Closure getBeanDefinitions(BeanDefinitionRegistry beanDefinitionRegistry) {
-        ApplicationEventPublisher eventPublisher = super.findEventPublisher(beanDefinitionRegistry)
+        ApplicationEventPublisher eventPublisher = findEventPublisher(beanDefinitionRegistry)
         Closure beanDefinitions = {
             def common = getCommonConfiguration(beanDefinitionRegistry, "hibernate")
             common.delegate = delegate
