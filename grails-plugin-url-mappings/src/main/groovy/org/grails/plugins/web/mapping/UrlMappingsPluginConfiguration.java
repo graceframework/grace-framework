@@ -39,6 +39,8 @@ import grails.web.UrlConverter;
 import grails.web.mapping.LinkGenerator;
 import grails.web.mapping.UrlMappings;
 import grails.web.mapping.UrlMappingsHolder;
+import grails.web.mapping.cors.GrailsCorsConfiguration;
+import grails.web.mapping.cors.GrailsCorsFilter;
 
 import org.grails.plugins.web.controllers.ControllersPluginConfiguration;
 import org.grails.web.mapping.CachingLinkGenerator;
@@ -58,8 +60,14 @@ import org.grails.web.servlet.mvc.ActionResultTransformer;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @AutoConfigureAfter(ControllersPluginConfiguration.class)
-@EnableConfigurationProperties({ UrlMappingsProperties.class })
+@EnableConfigurationProperties({ UrlMappingsProperties.class, GrailsCorsConfiguration.class })
 public class UrlMappingsPluginConfiguration {
+
+    private final GrailsApplication grailsApplication;
+
+    public UrlMappingsPluginConfiguration(ObjectProvider<GrailsApplication> grailsApplicationProvider) {
+        this.grailsApplication = grailsApplicationProvider.getIfAvailable();
+    }
 
     @Bean(name = UrlConverter.BEAN_NAME)
     @ConditionalOnMissingBean(name = UrlConverter.BEAN_NAME)
@@ -76,9 +84,17 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean
-    public UrlMappingsHandlerMapping urlMappingsHandlerMapping(ObjectProvider<UrlMappingsHolder> urlMappingsHolderProvider) {
+    public UrlMappingsHandlerMapping urlMappingsHandlerMapping(ObjectProvider<UrlMappingsHolder> urlMappingsHolderProvider,
+            GrailsCorsConfiguration grailsCorsConfiguration) {
+
+        Config config = this.grailsApplication.getConfig();
+        boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean.class, true);
 
         UrlMappingsHandlerMapping handlerMapping = new UrlMappingsHandlerMapping(urlMappingsHolderProvider.getIfAvailable());
+
+        if (!corsFilterEnabled) {
+            handlerMapping.setGrailsCorsConfiguration(grailsCorsConfiguration);
+        }
 
         return handlerMapping;
     }
@@ -113,8 +129,8 @@ public class UrlMappingsPluginConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public LinkGenerator grailsLinkGenerator(ObjectProvider<GrailsApplication> grailsApplication) {
-        Config config = grailsApplication.getIfAvailable().getConfig();
+    public LinkGenerator grailsLinkGenerator() {
+        Config config = this.grailsApplication.getConfig();
         boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.getCurrent().isReloadEnabled();
         boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean.class, !isReloadEnabled);
         String serverURL = config.getProperty(Settings.SERVER_URL);
@@ -134,6 +150,12 @@ public class UrlMappingsPluginConfiguration {
         UrlMappingsErrorPageCustomizer errorPageCustomizer = new UrlMappingsErrorPageCustomizer();
         errorPageCustomizer.setUrlMappings(urlMappingsProvider.getIfAvailable());
         return errorPageCustomizer;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "grails.cors", name = "filter.enabled", havingValue = "true", matchIfMissing = true)
+    public GrailsCorsFilter grailsCorsFilter(GrailsCorsConfiguration grailsCorsConfiguration) {
+        return new GrailsCorsFilter(grailsCorsConfiguration);
     }
 
 }
