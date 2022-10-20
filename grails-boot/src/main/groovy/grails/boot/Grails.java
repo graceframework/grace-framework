@@ -124,7 +124,6 @@ public class Grails extends SpringApplication {
             catch (IOException e) {
                 log.error("Enable development mode watch fail", e);
             }
-            Environment.isDevtoolsRestart();
         }
 
         printRunStatus(applicationContext);

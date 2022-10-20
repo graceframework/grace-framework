@@ -363,61 +363,6 @@ enum Environment {
     }
 
     /**
-     * Checks if the run of the app is due to spring dev-tools or not.
-     * @return True if spring-dev-tools restart
-     */
-    static boolean isDevtoolsRestart() {
-        File pidFile = new File(BuildSettings.TARGET_DIR.toString() + File.separator + '.grailspid')
-        LOG.get().debug('Looking for pid file at: {}', pidFile)
-        boolean isDevToolsRestart = false
-        try {
-            if (isDevelopmentMode()) {
-                String pid = ManagementFactory.getRuntimeMXBean().getName()
-                if (pidFile.exists()) {
-                    if (pid == Files.readAllLines(pidFile.toPath()).get(0)) {
-                        LOG.get().debug('spring-dev-tools restart detected.')
-                        isDevToolsRestart = true
-                    }
-                    else {
-                        LOG.get().debug('spring-dev-tools first app start - creating pid file.')
-                        writeDevToolsPidFile(pidFile, pid)
-                    }
-                }
-                else {
-                    LOG.get().debug('spring-dev-tools pid file did not exist.')
-                    writeDevToolsPidFile(pidFile, pid)
-                }
-            }
-        }
-        catch (Exception ex) {
-            LOG.get().error('spring-dev-tools restart detection error: {}', ex)
-        }
-        LOG.get().debug('spring-dev-tools restart: {}', isDevToolsRestart)
-        isDevToolsRestart
-    }
-
-    private static void writeDevToolsPidFile(File pidFile, String content) {
-        BufferedWriter writer = null
-        try {
-            writer = new BufferedWriter(new FileWriter(pidFile))
-            writer.write(content)
-        }
-        catch (Exception ex) {
-            LOG.get().error('spring-dev-tools restart unable to write pid file: {}', ex)
-        }
-        finally {
-            try {
-                if (writer != null) {
-                    writer.flush()
-                    writer.close()
-                }
-            }
-            catch (Exception ignored) {
-            }
-        }
-    }
-
-    /**
      * Check whether the application is deployed
      * @return true if is
      */
