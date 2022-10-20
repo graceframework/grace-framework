@@ -20,7 +20,8 @@ class EmbeddedContainerWithGrailsSpec extends Specification {
 
     void "Test that you can load Grails in an embedded server config"() {
         when: "An embedded server config is created"
-        this.context = new AnnotationConfigServletWebServerApplicationContext(Application)
+        Grails app = new Grails(Application)
+        context = (AnnotationConfigServletWebServerApplicationContext) app.run("--server.port=0")
 
         then: "The context is valid"
         context != null
