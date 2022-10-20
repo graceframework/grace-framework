@@ -5,3 +5,8 @@ grails.boot.config.GrailsAutoConfiguration
 # Application Context Initializers
 org.springframework.context.ApplicationContextInitializer=\
 org.grails.boot.context.GrailsConfigurationWarningsApplicationContextInitializer
+
+# Application Listener
+org.springframework.context.ApplicationListener=\
+org.grails.boot.context.GrailsApplicationPidFileWriter,\
+org.grails.boot.context.web.GrailsWebServerPortFileWriter
