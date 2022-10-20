@@ -51,8 +51,6 @@ class InterceptorsGrailsPlugin extends Plugin {
                 return
             }
 
-            grailsInterceptorMappedInterceptor(MappedInterceptor, ['/**'] as String[], bean(GrailsInterceptorHandlerInterceptorAdapter))
-
             def enableJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
             for (GrailsClass i in interceptors) {
                 "${i.propertyName}"(i.clazz) { bean ->
@@ -68,7 +66,7 @@ class InterceptorsGrailsPlugin extends Plugin {
     @Override
     void doWithApplicationContext() {
         if (applicationContext.containsBeanDefinition('grailsInterceptorMappedInterceptor')) {
-            interceptorAdapter = (GrailsInterceptorHandlerInterceptorAdapter) applicationContext
+            this.interceptorAdapter = (GrailsInterceptorHandlerInterceptorAdapter) applicationContext
                     .getBean('grailsInterceptorMappedInterceptor', MappedInterceptor).getInterceptor()
         }
     }
