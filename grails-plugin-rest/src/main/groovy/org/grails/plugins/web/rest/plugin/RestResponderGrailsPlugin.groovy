@@ -42,13 +42,16 @@ class RestResponderGrailsPlugin extends Plugin {
     Closure doWithSpring() {
         { ->
             def application = grailsApplication
-            RestResponderGrailsPlugin.registryResourceControllers(application)
+            registryResourceControllers(application)
         }
     }
 
     @Override
     void onChange(Map<String, Object> event) {
-        RestResponderGrailsPlugin.registryResourceControllers(grailsApplication)
+        if (!(event.source instanceof Class)) {
+            return
+        }
+        registryResourceControllers(grailsApplication)
     }
 
     @CompileStatic
