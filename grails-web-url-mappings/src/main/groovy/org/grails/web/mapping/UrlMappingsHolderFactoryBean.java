@@ -22,7 +22,6 @@ import groovy.lang.Script;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
@@ -69,7 +68,6 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
 
     private ApplicationContext applicationContext;
 
-    @Autowired
     private UrlConverter grailsUrlConverter;
 
     public UrlMappings getObject() throws Exception {
@@ -151,6 +149,10 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
                 });
 
         this.urlMappingsHolder = grailsControllerUrlMappings;
+    }
+
+    public void setUrlConverter(UrlConverter urlConverter) {
+        this.grailsUrlConverter = urlConverter;
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {

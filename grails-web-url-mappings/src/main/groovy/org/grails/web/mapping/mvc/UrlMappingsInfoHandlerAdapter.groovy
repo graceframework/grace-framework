@@ -50,14 +50,21 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
 
     ApplicationContext applicationContext
 
-    protected Collection<ActionResultTransformer> actionResultTransformers = Collections.emptyList()
+    protected Collection<ActionResultTransformer> actionResultTransformers = []
     protected Map<String, Object> controllerCache = new ConcurrentHashMap<>()
     protected ResponseRedirector redirector
 
     void setApplicationContext(ApplicationContext applicationContext) {
-        this.actionResultTransformers = applicationContext.getBeansOfType(ActionResultTransformer).values()
         this.applicationContext = applicationContext
-        this.redirector = new ResponseRedirector(applicationContext.getBean(LinkGenerator))
+    }
+
+    void setActionResultTransformers(Collection<ActionResultTransformer> actionResultTransformers) {
+        this.actionResultTransformers.clear()
+        this.actionResultTransformers.addAll(actionResultTransformers)
+    }
+
+    void setLinkGenerator(LinkGenerator linkGenerator) {
+        this.redirector = new ResponseRedirector(linkGenerator)
     }
 
     @Override
