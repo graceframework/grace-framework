@@ -16,10 +16,7 @@
 package org.grails.plugins.web.rest.plugin
 
 import groovy.transform.CompileStatic
-import org.apache.commons.logging.Log
-import org.apache.commons.logging.LogFactory
 
-import grails.config.Settings
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
 import grails.plugins.Plugin
@@ -28,15 +25,12 @@ import grails.util.GrailsUtil
 
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
-import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 
 /**
  * @since 2.3
  * @author Graeme Rocher
  */
 class RestResponderGrailsPlugin extends Plugin {
-
-    private static final Log LOG = LogFactory.getLog(RestResponderGrailsPlugin)
 
     def version = GrailsUtil.getGrailsVersion()
     def loadBefore = ['controllers']
@@ -48,18 +42,16 @@ class RestResponderGrailsPlugin extends Plugin {
     Closure doWithSpring() {
         { ->
             def application = grailsApplication
-            RestResponderGrailsPlugin.registryResourceControllers(application)
-
-            rendererRegistry(DefaultRendererRegistry) { bean ->
-                bean.lazyInit = true
-                modelSuffix = application.config.getProperty(Settings.SCAFFOLDING_DOMAIN_SUFFIX, '')
-            }
+            registryResourceControllers(application)
         }
     }
 
     @Override
     void onChange(Map<String, Object> event) {
-        RestResponderGrailsPlugin.registryResourceControllers(grailsApplication)
+        if (!(event.source instanceof Class)) {
+            return
+        }
+        registryResourceControllers(grailsApplication)
     }
 
     @CompileStatic
