@@ -4,7 +4,7 @@ import grails.core.DefaultGrailsApplication
 import grails.plugins.DefaultGrailsPluginManager
 import grails.plugins.metadata.GrailsPlugin
 import grails.util.GrailsUtil
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
@@ -21,13 +21,13 @@ class GrailsPluginMetadataTests {
         def pluginManager = new DefaultGrailsPluginManager([] as Class[], app)
         pluginManager.loadPlugins()
 
-        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}", pluginManager.getPluginPathForClass(Test1)
+        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}".toString(), pluginManager.getPluginPathForClass(Test1)
         assertNull pluginManager.getPluginPathForClass(Test3)
 
-        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}", pluginManager.getPluginPathForInstance(new Test1())
+        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}".toString(), pluginManager.getPluginPathForInstance(new Test1())
         assertNull pluginManager.getPluginPathForInstance(new Test3())
 
-        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}/grails-app/views", pluginManager.getPluginViewsPathForClass(Test1)
+        assertEquals "/plugins/controllers-${GrailsUtil.grailsVersion}/grails-app/views".toString(), pluginManager.getPluginViewsPathForClass(Test1)
         assertNull pluginManager.getPluginViewsPathForClass(Test3)
     }
 }

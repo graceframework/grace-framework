@@ -5,10 +5,9 @@ import grails.gorm.validation.ConstrainedProperty
 import grails.gorm.validation.DefaultConstrainedProperty
 import grails.web.mapping.UrlMapping
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry
-import org.junit.Test
-import org.springframework.mock.web.MockServletContext
+import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
+import static org.junit.jupiter.api.Assertions.*
 
 /*
  * Copyright 2014 original authors
