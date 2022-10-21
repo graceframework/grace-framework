@@ -1,9 +1,9 @@
 package org.grails.web.converters
 
-import static org.junit.Assert.assertEquals
-
 import org.grails.web.json.JSONArray
-import org.junit.Test
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class JSONArrayTests {
 

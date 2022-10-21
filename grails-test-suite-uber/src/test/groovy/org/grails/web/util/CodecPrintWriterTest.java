@@ -1,7 +1,5 @@
 package org.grails.web.util;
 
-import static org.junit.Assert.assertEquals;
-
 import grails.config.Config;
 import grails.util.Metadata;
 
@@ -28,10 +26,12 @@ import org.grails.encoder.EncodingStateRegistry;
 import org.grails.buffer.FastStringWriter;
 import org.grails.taglib.encoder.OutputEncodingStack;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CodecPrintWriterTest {
     EncodingStateRegistry registry=new DefaultEncodingStateRegistry();
