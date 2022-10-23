@@ -51,7 +51,6 @@ import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.build.parsing.CommandLineParser
-import org.grails.gradle.plugin.agent.AgentTasksEnhancer
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
@@ -533,14 +532,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void enableFileWatch(Environment environment, Project project) {
         if (environment.isReloadEnabled()) {
-            project.configurations {
-                agent
-            }
             final String micronautVersion = resolveMicronautVersion(project)
             if (project.configurations.findByName("developmentOnly")) {
                 project.dependencies.add("developmentOnly", "io.micronaut:micronaut-inject-groovy:${micronautVersion?:defaultMicronautVersion}")
             }
-            project.afterEvaluate(new AgentTasksEnhancer())
         }
     }
 

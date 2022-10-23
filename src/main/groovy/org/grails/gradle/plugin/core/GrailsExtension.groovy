@@ -44,40 +44,11 @@ class GrailsExtension {
     boolean pathingJar = false
 
     /**
-     * Configure the reloading agent
-     */
-    Agent agent = new Agent()
-
-    /**
-     * Configure the reloading agent
-     */
-    Agent agent(@DelegatesTo(Agent) Closure configurer) {
-        ConfigureUtil.configure(configurer, agent)
-    }
-
-    /**
      * Allows defining plugins in the available scopes
      */
     void plugins(Closure pluginDefinitions) {
         def definer = new PluginDefiner(project,exploded)
         ConfigureUtil.configureSelf(pluginDefinitions, definer)
     }
-    /**
-     * Configuration for the reloading agent
-     */
-    static class Agent {
-        boolean enabled = true
-        File path
-        String inclusions = "grails.plugins..*"
-        String exclusions
-        Boolean logging
-        boolean synchronize = true
-        boolean allowSplitPackages = true
-        File cacheDir = new File("build/springloaded")
-
-        Map<String, String> systemProperties = ['jdk.reflect.allowGetCallerClass': 'true']
-        List<String> jvmArgs = ['-Xverify:none']
-    }
-
 
 }
