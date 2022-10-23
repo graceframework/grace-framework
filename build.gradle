@@ -29,7 +29,6 @@ ext {
     isBuildSnapshot = grailsVersion.endsWith("-SNAPSHOT")
     isReleaseVersion = !isBuildSnapshot
     isCiBuild = System.getenv().get("CI") as Boolean
-    springLoadedCommonOptions = "-Xverify:none -Dspringloaded.synchronize=true -Djdk.reflect.allowGetCallerClass=true"
     dependencyVersions = [
         'javax.annotation-api': [
                 version: javaxAnnotationApiVersion,
@@ -107,12 +106,6 @@ ext {
             version: methvinDirectoryWatcherVersion,
             group  : 'io.methvin',
             names  : ['directory-watcher'],
-            modules: ['']
-        ],
-        springLoaded: [
-            version: springLoadedVersion,
-            group  : 'org.springframework',
-            names  : ['springloaded'],
             modules: ['']
         ],
         async: [
