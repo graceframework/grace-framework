@@ -10,5 +10,4 @@ dependencies {
     api "org.grails:grails-datastore-gorm:$datastoreVersion"
 
     compileOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
-    runtimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-log4j:$tomcatLog4jVersion"
 }
