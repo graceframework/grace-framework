@@ -17,6 +17,7 @@ package org.grails.plugins.core;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
@@ -40,6 +41,7 @@ import org.grails.spring.context.support.GrailsPlaceholderConfigurer;
  * @since 2022.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureOrder(10010)
 @AutoConfigureBefore(PropertyPlaceholderAutoConfiguration.class)
 public class PropertyPlaceholderConfiguration {
 
