@@ -31,8 +31,6 @@ import grails.core.support.GrailsApplicationAware
 import grails.spring.BeanBuilder
 import grails.util.Environment
 
-import org.grails.spring.context.support.MapBasedSmartPropertyOverrideConfigurer
-
 /**
  * Super class for plugins to implement. Plugin implementations should define the various plugin hooks
  * (doWithSpring, doWithApplicationContext, doWithDynamicMethods etc.)
@@ -179,8 +177,6 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
         bb.setBeanBuildResource(new DescriptiveResource(this.getClass().getName()))
         bb.beans beanDefinitions
         bb.registerBeans((BeanDefinitionRegistry) applicationContext)
-        new MapBasedSmartPropertyOverrideConfigurer(grailsApplication: grailsApplication)
-                .postProcessBeanFactory(((ConfigurableApplicationContext) applicationContext).beanFactory)
     }
 
 }

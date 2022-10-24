@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.grails.plugins.core.CoreConfiguration
+org.grails.plugins.core.CoreConfiguration,\
+org.grails.plugins.core.PropertyPlaceholderConfiguration

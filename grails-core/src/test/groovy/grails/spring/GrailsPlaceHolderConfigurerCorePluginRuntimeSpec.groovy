@@ -1,9 +1,10 @@
 package grails.spring
 
 import grails.core.DefaultGrailsApplication
-import org.grails.plugins.CoreGrailsPlugin
 import spock.lang.Issue
 import spock.lang.Specification
+
+import org.grails.spring.context.support.GrailsPlaceholderConfigurer
 
 /**
  * @author Graeme Rocher
@@ -25,10 +26,8 @@ class GrailsPlaceHolderConfigurerCorePluginRuntimeSpec extends Specification{
             beanBinding.setVariable('application', app)
             bb.setBinding(beanBinding)
 
-            def plugin = new CoreGrailsPlugin()
-            plugin.grailsApplication = app
-            bb.beans plugin.doWithSpring()
             bb.beans {
+                propertySourcesPlaceholderConfigurer(GrailsPlaceholderConfigurer, '${', app.config.toProperties())
                 testBean(ReplacePropertyBean) {
                     foo = '${foo.bar}'
                 }
