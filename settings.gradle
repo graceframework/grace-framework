@@ -45,6 +45,7 @@ include (
         'grails-spring',
         'grails-spring-boot',
         'grails-test',
+        'grails-test-support',
         'grails-util',
         'grails-web',
         'grails-web-common',

@@ -29,6 +29,7 @@ dependencies {
     testImplementation project(":grails-web")
     testImplementation project(":grails-web-databinding")
     testImplementation project(":grails-spring")
+    testImplementation project(":grails-test-support")
     testImplementation "org.grails.plugins:converters:$convertersVersion"
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
@@ -61,15 +62,6 @@ dependencies {
     testImplementation 'taglibs:standard:1.1.2'
     testImplementation "javax.servlet:jstl:1.2"
 
-    testImplementation "org.grails:grails-web-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-codecs'
-        exclude module:'grails-plugin-rest'
-        exclude module:'grails-plugin-interceptors'
-        exclude module:'grails-test'
-        exclude module:'grails-core'
-        exclude module:'async'
-        exclude module:'gsp'
-    }
     testImplementation "org.grails.plugins:gsp:$gspVersion", {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
@@ -83,12 +75,6 @@ dependencies {
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
         exclude module:'grails-plugin-domain-class'
-    }
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-codecs'
-        exclude module:'grails-plugin-domain-class'
-        exclude module:'grails-test'
-        exclude module:'async'
     }
 
     testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
