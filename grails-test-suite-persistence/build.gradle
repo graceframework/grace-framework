@@ -57,11 +57,7 @@ dependencies {
         exclude module:'grails-core'
         exclude module:'grails-plugin-domain-class'
     }
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-domain-class'
-        exclude module:'grails-test'
-        exclude module:'async'
-    }
+    testImplementation project(":grails-test-support")
 }
 
 test {

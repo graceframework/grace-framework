@@ -31,6 +31,7 @@ dependencies {
     testImplementation project(":grails-plugin-i18n")
     testImplementation project(":grails-plugin-databinding")
     testImplementation project(":grails-spring")
+    testImplementation project(":grails-test-support")
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
@@ -71,20 +72,6 @@ dependencies {
         exclude module:'grails-plugin-domain-class'
         exclude module:'grails-web-common'
         exclude module:'grails-encoder'
-    }
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-domain-class'
-        exclude module:'grails-test'
-        exclude module:'grails-core'
-        exclude module:'async'
-    }
-    testImplementation "org.grails:grails-web-testing-support:$testingSupportVersionForTests", {
-        exclude module:'grails-plugin-rest'
-        exclude module:'grails-plugin-interceptors'
-        exclude module:'grails-test'
-        exclude module:'grails-core'
-        exclude module:'async'
-        exclude module:'gsp'
     }
 }
 
