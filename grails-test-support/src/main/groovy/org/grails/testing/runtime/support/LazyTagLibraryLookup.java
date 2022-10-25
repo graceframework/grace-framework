@@ -38,7 +38,7 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
 
     List<Class> tagLibClasses = (List<Class>) new GroovyPagesGrailsPlugin().getProvidedArtefacts();
 
-    private Map<String, GrailsTagLibClass> lazyLoadableTagLibs = new HashMap<>();
+    private final Map<String, GrailsTagLibClass> lazyLoadableTagLibs = new HashMap<>();
 
     @Override
     protected void registerTagLibraries() {
@@ -58,14 +58,14 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
             try {
                 defaultTagLibClass = Class.forName("org.grails.core.DefaultGrailsTagLibClass");
             }
-            catch (ClassNotFoundException f) {
+            catch (ClassNotFoundException ignore) {
             }
         }
 
         try {
             grailsTagLibClass = (GrailsTagLibClass) defaultTagLibClass.getConstructor(Class.class).newInstance(tagLibClass);
         }
-        catch (Exception e) {
+        catch (Exception ignore) {
         }
 
         if (!hasNamespace(grailsTagLibClass.getNamespace())) {
