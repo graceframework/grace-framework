@@ -132,12 +132,6 @@ ext {
             names  : ['gsp'],
             modules: ['']
         ],
-        testingSupport: [
-            version: testingSupportVersion,
-            group  : 'org.grails',
-            names  : ['grails-testing-support', 'grails-gorm-testing-support', 'grails-web-testing-support'],
-            modules: ['']
-        ],
         'views-json-testing-support': [
             version: viewsVersion,
             group  : 'org.grails',
