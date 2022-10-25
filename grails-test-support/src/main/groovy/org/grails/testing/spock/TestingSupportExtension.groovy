@@ -21,7 +21,7 @@ import java.lang.reflect.Modifier
 
 import groovy.transform.CompileStatic
 import org.junit.jupiter.api.BeforeEach
-import org.spockframework.runtime.extension.AbstractGlobalExtension
+import org.spockframework.runtime.extension.IGlobalExtension
 import org.spockframework.runtime.model.MethodInfo
 import org.spockframework.runtime.model.MethodKind
 import org.spockframework.runtime.model.SpecInfo
@@ -31,7 +31,7 @@ import grails.testing.spring.AutowiredTest
 import org.grails.testing.GrailsUnitTest
 
 @CompileStatic
-class TestingSupportExtension extends AbstractGlobalExtension {
+class TestingSupportExtension implements IGlobalExtension {
 
     AutowiredInterceptor autowiredInterceptor = new AutowiredInterceptor()
     CleanupContextInterceptor cleanupContextInterceptor = new CleanupContextInterceptor()

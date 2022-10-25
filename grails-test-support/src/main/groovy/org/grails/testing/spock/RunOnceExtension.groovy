@@ -16,13 +16,13 @@
 package org.grails.testing.spock
 
 import groovy.transform.CompileStatic
-import org.spockframework.runtime.extension.AbstractAnnotationDrivenExtension
+import org.spockframework.runtime.extension.IAnnotationDrivenExtension
 import org.spockframework.runtime.model.MethodInfo
 
 import grails.testing.spock.RunOnce
 
 @CompileStatic
-class RunOnceExtension extends AbstractAnnotationDrivenExtension<RunOnce> {
+class RunOnceExtension implements IAnnotationDrivenExtension<RunOnce> {
 
     @Override
     void visitFixtureAnnotation(RunOnce annotation, MethodInfo fixtureMethod) {

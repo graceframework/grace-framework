@@ -16,7 +16,7 @@
 package org.grails.testing.spock
 
 import groovy.transform.CompileStatic
-import org.spockframework.runtime.extension.AbstractGlobalExtension
+import org.spockframework.runtime.extension.IGlobalExtension
 import org.spockframework.runtime.model.SpecInfo
 
 import grails.testing.web.GrailsWebUnitTest
@@ -24,7 +24,7 @@ import grails.testing.web.UrlMappingsUnitTest
 import grails.testing.web.interceptor.InterceptorUnitTest
 
 @CompileStatic
-class WebTestingSupportExtension extends AbstractGlobalExtension {
+class WebTestingSupportExtension implements IGlobalExtension {
 
     WebSetupSpecInterceptor webSetupSpecInterceptor = new WebSetupSpecInterceptor()
     WebSetupInterceptor webSetupInterceptor = new WebSetupInterceptor()
