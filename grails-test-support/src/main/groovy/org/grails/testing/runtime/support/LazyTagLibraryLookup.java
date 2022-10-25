@@ -1,49 +1,49 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Copyright 2016-2022 the original author or authors.
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.grails.testing.runtime.support;
-
-import grails.core.GrailsTagLibClass;
-import groovy.lang.GroovyObject;
-import org.grails.plugins.web.GroovyPagesGrailsPlugin;
-import org.grails.taglib.TagLibraryLookup;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import groovy.lang.GroovyObject;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.support.GenericApplicationContext;
+
+import grails.core.GrailsTagLibClass;
+
+import org.grails.plugins.web.GroovyPagesGrailsPlugin;
+import org.grails.taglib.TagLibraryLookup;
+
 /**
  * Lazy implementation of the tag library lookup class designed for testing purposes.
  *
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class LazyTagLibraryLookup extends TagLibraryLookup {
+
     List<Class> tagLibClasses = (List<Class>) new GroovyPagesGrailsPlugin().getProvidedArtefacts();
+
     private Map<String, GrailsTagLibClass> lazyLoadableTagLibs = new HashMap<String, GrailsTagLibClass>();
 
     @Override
     protected void registerTagLibraries() {
         super.registerTagLibraries();
-        for (Class providedArtefact : tagLibClasses) {
+        for (Class providedArtefact : this.tagLibClasses) {
             registerLazyLoadableTagLibClass(providedArtefact);
         }
     }
@@ -53,16 +53,19 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
         GrailsTagLibClass grailsTagLibClass = null;
         try {
             defaultTagLibClass = Class.forName("org.grails.core.gsp.DefaultGrailsTagLibClass");
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             try {
                 defaultTagLibClass = Class.forName("org.grails.core.DefaultGrailsTagLibClass");
-            } catch (ClassNotFoundException f) {
+            }
+            catch (ClassNotFoundException f) {
             }
         }
 
         try {
-            grailsTagLibClass = (GrailsTagLibClass)defaultTagLibClass.getConstructor(Class.class).newInstance(tagLibClass);
-        } catch (Exception e) {
+            grailsTagLibClass = (GrailsTagLibClass) defaultTagLibClass.getConstructor(Class.class).newInstance(tagLibClass);
+        }
+        catch (Exception e) {
         }
 
         if (!hasNamespace(grailsTagLibClass.getNamespace())) {
@@ -70,7 +73,7 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
         }
         for (String tagName : grailsTagLibClass.getTagNames()) {
             String tagKey = tagNameKey(grailsTagLibClass.getNamespace(), tagName);
-            lazyLoadableTagLibs.put(tagKey, grailsTagLibClass);
+            this.lazyLoadableTagLibs.put(tagKey, grailsTagLibClass);
         }
     }
 
@@ -79,14 +82,15 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
         GroovyObject tagLibrary = super.lookupTagLibrary(namespace, tagName);
         if (tagLibrary == null) {
             String tagKey = tagNameKey(namespace, tagName);
-            GrailsTagLibClass taglibClass = lazyLoadableTagLibs.get(tagKey);
+            GrailsTagLibClass taglibClass = this.lazyLoadableTagLibs.get(tagKey);
             if (taglibClass != null) {
-                if (!applicationContext.containsBean(taglibClass.getFullName())) {
+                if (!this.applicationContext.containsBean(taglibClass.getFullName())) {
                     GenericBeanDefinition bd = new GenericBeanDefinition();
                     bd.setBeanClass(taglibClass.getClazz());
                     bd.setAutowireCandidate(true);
                     bd.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME);
-                    ((GenericApplicationContext) applicationContext).getDefaultListableBeanFactory().registerBeanDefinition(taglibClass.getFullName(), bd);
+                    ((GenericApplicationContext) this.applicationContext).getDefaultListableBeanFactory()
+                            .registerBeanDefinition(taglibClass.getFullName(), bd);
                 }
                 registerTagLib(taglibClass);
                 tagLibrary = super.lookupTagLibrary(namespace, tagName);
@@ -101,8 +105,9 @@ public class LazyTagLibraryLookup extends TagLibraryLookup {
 
     @Override
     protected void putTagLib(Map<String, Object> tags, String name, grails.core.GrailsTagLibClass taglib) {
-        if (applicationContext.containsBean(taglib.getFullName())) {
+        if (this.applicationContext.containsBean(taglib.getFullName())) {
             super.putTagLib(tags, name, taglib);
         }
     }
+
 }

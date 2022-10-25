@@ -1,51 +1,49 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Copyright 2016-2022 the original author or authors.
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package grails.testing.web.controllers
 
-import grails.testing.web.GrailsWebUnitTest
-import grails.web.mime.MimeType
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import org.grails.testing.ParameterizedGrailsUnitTest
-import org.grails.web.pages.GroovyPagesUriSupport
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.util.GrailsApplicationAttributes
 import javassist.util.proxy.ProxyFactory
+
+import grails.testing.web.GrailsWebUnitTest
+import grails.web.mime.MimeType
+
+import org.grails.testing.ParameterizedGrailsUnitTest
 import org.grails.testing.runtime.support.ActionSettingMethodHandler
+import org.grails.web.pages.GroovyPagesUriSupport
+import org.grails.web.util.GrailsApplicationAttributes
 
 @CompileStatic
 trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWebUnitTest {
 
-    static String FORM_CONTENT_TYPE = MimeType.FORM.name
-    static String MULTIPART_FORM_CONTENT_TYPE = MimeType.MULTIPART_FORM.name
-    static String ALL_CONTENT_TYPE = MimeType.ALL.name
-    static String HTML_CONTENT_TYPE = MimeType.HTML.name
-    static String XHTML_CONTENT_TYPE = MimeType.XHTML.name
-    static String XML_CONTENT_TYPE = MimeType.XML.name
-    static String JSON_CONTENT_TYPE = MimeType.JSON.name
-    static String TEXT_XML_CONTENT_TYPE = MimeType.TEXT_XML.name
-    static String TEXT_JSON_CONTENT_TYPE = MimeType.TEXT_JSON.name
-    static String HAL_JSON_CONTENT_TYPE = MimeType.HAL_JSON.name
-    static String HAL_XML_CONTENT_TYPE = MimeType.HAL_XML.name
-    static String ATOM_XML_CONTENT_TYPE = MimeType.ATOM_XML.name
+    static final String FORM_CONTENT_TYPE = MimeType.FORM.name
+    static final String MULTIPART_FORM_CONTENT_TYPE = MimeType.MULTIPART_FORM.name
+    static final String ALL_CONTENT_TYPE = MimeType.ALL.name
+    static final String HTML_CONTENT_TYPE = MimeType.HTML.name
+    static final String XHTML_CONTENT_TYPE = MimeType.XHTML.name
+    static final String XML_CONTENT_TYPE = MimeType.XML.name
+    static final String JSON_CONTENT_TYPE = MimeType.JSON.name
+    static final String TEXT_XML_CONTENT_TYPE = MimeType.TEXT_XML.name
+    static final String TEXT_JSON_CONTENT_TYPE = MimeType.TEXT_JSON.name
+    static final String HAL_JSON_CONTENT_TYPE = MimeType.HAL_JSON.name
+    static final String HAL_XML_CONTENT_TYPE = MimeType.HAL_XML.name
+    static final String ATOM_XML_CONTENT_TYPE = MimeType.ATOM_XML.name
 
-    private T _proxyInstance
+    private T proxyInstance
 
     /**
      * @return The model of the current controller
@@ -56,7 +54,7 @@ trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWeb
         if (model == null) {
             model = request.getAttribute(GrailsApplicationAttributes.TEMPLATE_MODEL)
         }
-        return model ?: [:]
+        model ?: [:]
     }
 
     /**
@@ -73,7 +71,8 @@ trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWeb
 
         if (webRequest.controllerName && webRequest.actionName) {
             new GroovyPagesUriSupport().getViewURI(webRequest.controllerName, webRequest.actionName)
-        } else {
+        }
+        else {
             return null
         }
     }
@@ -101,13 +100,14 @@ trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWeb
             getArtefactInstance()
         }
         else {
-            if (_proxyInstance == null) {
+            if (this.proxyInstance == null) {
                 T artefact = getArtefactInstance()
                 ProxyFactory factory = new ProxyFactory()
                 factory.setSuperclass(getTypeUnderTest())
-                _proxyInstance = (T)factory.create(new Class<?>[0], new Object[0], new ActionSettingMethodHandler(artefact, getWebRequest()))
+                this.proxyInstance = (T) factory.create(new Class<?>[0], new Object[0], new ActionSettingMethodHandler(artefact, getWebRequest()))
             }
-            _proxyInstance
+            this.proxyInstance
         }
     }
+
 }

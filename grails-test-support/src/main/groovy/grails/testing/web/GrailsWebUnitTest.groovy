@@ -1,22 +1,26 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Copyright 2016-2022 the original author or authors.
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package grails.testing.web
+
+import groovy.text.Template
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+import org.springframework.mock.web.MockHttpSession
+import org.springframework.mock.web.MockServletContext
 
 import grails.artefact.TagLibrary
 import grails.core.GrailsClass
@@ -25,10 +29,7 @@ import grails.core.gsp.GrailsTagLibClass
 import grails.util.GrailsNameUtils
 import grails.web.mvc.FlashScope
 import grails.web.servlet.mvc.GrailsParameterMap
-import groovy.text.Template
-import groovy.transform.CompileDynamic
-import groovy.transform.CompileStatic
-import groovy.util.logging.Slf4j
+
 import org.grails.buffer.GrailsPrintWriter
 import org.grails.commons.CodecArtefactHandler
 import org.grails.commons.DefaultGrailsCodecClass
@@ -42,27 +43,25 @@ import org.grails.taglib.TagLibraryLookup
 import org.grails.testing.GrailsUnitTest
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
-import org.springframework.mock.web.MockHttpSession
-import org.springframework.mock.web.MockServletContext
 
 @CompileStatic
 @Slf4j
 trait GrailsWebUnitTest implements GrailsUnitTest {
 
-    private Set<Class> loadedCodecs = new HashSet<Class>()
+    private final Set<Class> loadedCodecs = new HashSet<Class>()
     static Map<String, String> groovyPages = [:]
     GrailsWebRequest webRequest
 
     GrailsMockHttpServletRequest getRequest() {
-        return (GrailsMockHttpServletRequest) getWebRequest().getCurrentRequest()
+        (GrailsMockHttpServletRequest) getWebRequest().getCurrentRequest()
     }
 
     GrailsMockHttpServletResponse getResponse() {
-        return (GrailsMockHttpServletResponse) getWebRequest().getCurrentResponse()
+        (GrailsMockHttpServletResponse) getWebRequest().getCurrentResponse()
     }
 
     MockServletContext getServletContext() {
-        (MockServletContext)optionalServletContext
+        (MockServletContext) optionalServletContext
     }
 
     Map<String, String> getViews() {
@@ -103,7 +102,6 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         GrailsTagLibClass tagLib = grailsApplication.addArtefact(TagLibArtefactHandler.TYPE, tagLibClass)
         final tagLookup = applicationContext.getBean(TagLibraryLookup)
 
-
         defineBeans {
             "${tagLib.fullName}"(tagLibClass) { bean ->
                 bean.autowire = true
@@ -113,8 +111,8 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         tagLookup.registerTagLib(tagLib)
 
         def taglibObject = applicationContext.getBean(tagLib.fullName)
-        if(taglibObject instanceof TagLibrary) {
-            ((TagLibrary)taglibObject).setTagLibraryLookup(tagLookup)
+        if (taglibObject instanceof TagLibrary) {
+            ((TagLibrary) taglibObject).setTagLibraryLookup(tagLookup)
         }
         taglibObject
     }
@@ -132,7 +130,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         def controller = applicationContext.getBean(controllerClass.name)
 
         if (webRequest == null) {
-            throw new IllegalAccessException("Cannot access the controller outside of a request. Is the controller referenced in a where: block?")
+            throw new IllegalAccessException('Cannot access the controller outside of a request. Is the controller referenced in a where: block?')
         }
 
         webRequest.request.setAttribute(GrailsApplicationAttributes.CONTROLLER, controller)
@@ -142,14 +140,14 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
     }
 
     private GrailsClass createAndEnhanceController(Class controllerClass) {
-        final GrailsControllerClass controllerArtefact = (GrailsControllerClass) grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, controllerClass)
+        final GrailsControllerClass controllerArtefact =
+                (GrailsControllerClass) grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, controllerClass)
         controllerArtefact.initialize()
-        return controllerArtefact
+        controllerArtefact
     }
 
-
     void mockTagLibs(Class<?>... tagLibClasses) {
-        for(Class c : tagLibClasses) {
+        for (Class c : tagLibClasses) {
             mockTagLib c
         }
     }
@@ -177,8 +175,9 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         String uri = null
         Map model
         if (args.containsKey('model')) {
-            model = (Map)args.model
-        } else {
+            model = (Map) args.model
+        }
+        else {
             model = [:]
         }
         final attributes = webRequest.attributes
@@ -197,7 +196,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
                 return sw.toString()
             }
         }
-        return null
+        null
     }
 
     /**
@@ -210,7 +209,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
     String applyTemplate(String contents, Map model = [:]) {
         def sw = new StringWriter()
         applyTemplate sw, contents, model
-        return sw.toString()
+        sw.toString()
     }
 
     /**
@@ -223,27 +222,23 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
     void applyTemplate(StringWriter sw, String template, Map params = [:]) {
         def engine = applicationContext.getBean(GroovyPagesTemplateEngine)
 
-        def t = engine.createTemplate(template, "test_" + System.currentTimeMillis())
+        def t = engine.createTemplate(template, 'test_' + System.currentTimeMillis())
         renderTemplateToStringWriter(sw, t, params)
     }
 
     private renderTemplateToStringWriter(StringWriter sw, Template t, Map params) {
-        if (!webRequest.controllerName) {
-            webRequest.controllerName = 'test'
-        }
-        if (!webRequest.actionName) {
-            webRequest.actionName = 'index'
-        }
+        webRequest.controllerName = webRequest.controllerName ?: 'test'
+        webRequest.actionName = webRequest.actionName ?: 'index'
         def w = t.make(params)
         def previousOut = webRequest.out
         try {
             def out = new GrailsPrintWriter(sw)
             webRequest.out = out
             w.writeTo(out)
-
         }
         finally {
             webRequest.out = previousOut
         }
     }
+
 }

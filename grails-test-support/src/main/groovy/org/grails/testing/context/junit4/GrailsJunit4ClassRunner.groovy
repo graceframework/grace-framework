@@ -1,18 +1,11 @@
-package org.grails.testing.context.junit4
-
-import grails.boot.test.GrailsApplicationContextLoader
-import groovy.transform.CompileStatic
-import groovy.transform.InheritConstructors
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-
 /*
- * Copyright 2014 original authors
+ * Copyright 2016-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.grails.testing.context.junit4
+
+import groovy.transform.CompileStatic
+import groovy.transform.InheritConstructors
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+
+import grails.boot.test.GrailsApplicationContextLoader
 
 /**
  * @author Graeme Rocher
@@ -30,6 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 class GrailsJunit4ClassRunner extends SpringJUnit4ClassRunner {
 
     protected String getDefaultContextLoaderClassName(Class<?> clazz) {
-        return GrailsApplicationContextLoader.name
+        GrailsApplicationContextLoader.name
     }
+
 }
