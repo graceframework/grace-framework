@@ -14,11 +14,9 @@ dependencies {
 
     api "org.grails:grails-datastore-core:$datastoreVersion"
 
-    testImplementation project(":grails-plugin-core")
     testImplementation project(":grails-test")
     testImplementation "org.springframework:spring-jdbc:${springVersion}"
     testImplementation "org.springframework:spring-test:${springVersion}"
-    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
 }
 
 def writeProps = tasks.register('writeGrailsProperties', WriteProperties) {

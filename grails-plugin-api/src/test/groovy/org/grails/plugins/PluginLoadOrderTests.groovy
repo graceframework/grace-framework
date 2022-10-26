@@ -1,6 +1,5 @@
 package org.grails.plugins
 
-import grails.core.DefaultGrailsApplication
 import grails.plugins.DefaultGrailsPluginManager
 import org.junit.jupiter.api.Test
 
@@ -45,7 +44,7 @@ class ThreeGrailsPlugin {
         def four = gcl.loadClass("FourGrailsPlugin")
         def five = gcl.loadClass("FiveGrailsPlugin")
         def pluginManager = new DefaultGrailsPluginManager([one,two,three, four,five] as Class[],
-            new DefaultGrailsApplication())
+            new MockGrailsApplication())
 
         pluginManager.loadCorePlugins = false
         pluginManager.loadPlugins()

@@ -9,6 +9,7 @@ dependencies {
     api project(":grails-util")
 
     api "org.grails.plugins:converters:$convertersVersion"
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
     testImplementation project(":grails-plugin-url-mappings")

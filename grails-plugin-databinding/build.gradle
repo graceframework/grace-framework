@@ -1,8 +1,8 @@
   dependencies {
     api project(':grails-core')
     api project(':grails-plugin-api')
-    api project(':grails-plugin-core')
     api project(':grails-web')
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     testImplementation project(':grails-boot')
     testImplementation project(':grails-test-suite-base')

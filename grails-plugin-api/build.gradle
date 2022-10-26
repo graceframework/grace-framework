@@ -5,6 +5,7 @@ dependencies {
 
     api "org.grails:grails-datastore-core:$datastoreVersion"
 
+    testImplementation project(":grails-test")
     testImplementation("org.springframework:spring-jdbc:${springVersion}") {
         exclude group: 'commons-logging', module:'commons-logging'
     }

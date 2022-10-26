@@ -3,18 +3,15 @@ dependencies {
     api project(":grails-plugin-api")
     api project(":grails-spring")
     api project(":grails-spring-boot")
-    api project(":grails-util")
 
     compileOnly("org.codehaus.groovy:groovy:$groovyVersion")
     api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-context:${springVersion}")
     api("org.springframework:spring-beans:${springVersion}")
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    testImplementation project(":grails-test")
     testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
     testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion"
     testRuntimeOnly "org.aspectj:aspectjweaver:$aspectjVersion"
     testImplementation("org.springframework:spring-test:${springVersion}")
-    testImplementation("io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion")
-    testImplementation(project(":grails-boot"))
-    testImplementation(project(":grails-test-suite-base"))
 }
