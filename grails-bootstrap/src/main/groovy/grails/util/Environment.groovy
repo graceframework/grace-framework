@@ -15,8 +15,6 @@
  */
 package grails.util
 
-import java.lang.management.ManagementFactory
-import java.nio.file.Files
 import java.util.function.Supplier
 import java.util.jar.Attributes
 import java.util.jar.Manifest
