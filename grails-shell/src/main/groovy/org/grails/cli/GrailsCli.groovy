@@ -29,6 +29,8 @@ import jline.console.completer.ArgumentCompleter
 import jline.internal.NonBlockingInputStream
 import org.gradle.tooling.BuildActionExecuter
 import org.gradle.tooling.BuildCancelledException
+import org.gradle.tooling.ProgressEvent
+import org.gradle.tooling.ProgressListener
 import org.gradle.tooling.ProjectConnection
 
 import grails.build.logging.GrailsConsole
@@ -557,6 +559,14 @@ class GrailsCli {
                         buildActionExecuter.standardOutput = System.out
                         buildActionExecuter.standardError = System.err
                         buildActionExecuter.withArguments("-Dgrails.profile=${config.navigate('grails', 'profile')}")
+                        buildActionExecuter.addProgressListener(new ProgressListener() {
+
+                            @Override
+                            void statusChanged(ProgressEvent event) {
+                                GrailsConsole.instance.updateStatus(event.description)
+                            }
+
+                        })
 
                         def grailsClasspath = buildActionExecuter.run()
                         if (grailsClasspath.error) {
