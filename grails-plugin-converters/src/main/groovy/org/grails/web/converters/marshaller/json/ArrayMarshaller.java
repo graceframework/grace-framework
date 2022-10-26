@@ -15,13 +15,13 @@
  */
 package org.grails.web.converters.marshaller.json;
 
-import grails.converters.JSON;
-
 import java.lang.reflect.Array;
 
-import org.grails.web.json.JSONWriter;
+import grails.converters.JSON;
+
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
+import org.grails.web.json.JSONWriter;
 
 /**
  * @author Siegfried Puchbauer
@@ -42,4 +42,5 @@ public class ArrayMarshaller implements ObjectMarshaller<JSON> {
         }
         writer.endArray();
     }
+
 }

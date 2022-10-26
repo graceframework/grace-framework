@@ -15,10 +15,11 @@
  */
 package org.grails.web.converters.marshaller;
 
-import grails.util.GrailsNameUtils;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
 import groovy.lang.MetaClassRegistry;
+
+import grails.util.GrailsNameUtils;
 
 import org.grails.web.converters.Converter;
 import org.grails.web.converters.exceptions.ConverterException;
@@ -35,6 +36,7 @@ import org.grails.web.converters.exceptions.ConverterException;
 public class ProxyUnwrappingMarshaller<C extends Converter> implements ObjectMarshaller<C>, NameAwareMarshaller {
 
     private static final String HIBERNATE_LAZY_INITIALIZER_PROP = "hibernateLazyInitializer";
+
     private static final String IMPLEMENTATION_PROP = "implementation";
 
     public boolean supports(Object object) {
@@ -62,4 +64,5 @@ public class ProxyUnwrappingMarshaller<C extends Converter> implements ObjectMar
     public String getElementName(Object o) {
         return GrailsNameUtils.getPropertyName(unwrap(o).getClass().getName());
     }
+
 }

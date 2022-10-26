@@ -15,13 +15,29 @@
  */
 package grails.converters;
 
-import grails.io.IOUtils;
-import grails.util.GrailsWebUtil;
-import grails.web.mime.MimeType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import groovy.lang.Closure;
 import groovy.util.BuilderSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import grails.io.IOUtils;
+import grails.util.GrailsWebUtil;
+import grails.web.mime.MimeType;
+
 import org.grails.web.converters.AbstractConverter;
 import org.grails.web.converters.Converter;
 import org.grails.web.converters.ConverterUtil;
@@ -32,12 +48,14 @@ import org.grails.web.converters.configuration.DefaultConverterConfiguration;
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ClosureObjectMarshaller;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
-import org.grails.web.json.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.*;
+import org.grails.web.json.JSONArray;
+import org.grails.web.json.JSONElement;
+import org.grails.web.json.JSONException;
+import org.grails.web.json.JSONObject;
+import org.grails.web.json.JSONTokener;
+import org.grails.web.json.JSONWriter;
+import org.grails.web.json.PathCapturingJSONWriterWrapper;
+import org.grails.web.json.PrettyPrintJSONWriter;
 
 /**
  * A converter that converts domain classes, Maps, Lists, Arrays, POJOs and POGOs to JSON.
@@ -48,13 +66,19 @@ import java.util.*;
 public class JSON extends AbstractConverter<JSONWriter> implements IncludeExcludeConverter<JSONWriter> {
 
     private final static Log log = LogFactory.getLog(JSON.class);
+
     private static final String CACHED_JSON = "org.codehaus.groovy.grails.CACHED_JSON_REQUEST_CONTENT";
 
     protected Object target;
+
     protected final ConverterConfiguration<JSON> config;
+
     protected final CircularReferenceBehaviour circularReferenceBehaviour;
+
     protected boolean prettyPrint;
+
     protected JSONWriter writer;
+
     protected Stack<Object> referenceStack;
 
     protected ConverterConfiguration<JSON> initConfig() {
@@ -162,13 +186,15 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                 writer.value(o);
             }
             else if (o instanceof Class<?>) {
-                writer.value(((Class<?>)o).getName());
+                writer.value(((Class<?>) o).getName());
             }
             else if (o instanceof Number) {
-                writer.value((Number)o);
-            } else if (o instanceof Boolean) {
-                writer.value((Boolean)o);
-            } else if (o.getClass().isPrimitive() && !o.getClass().equals(byte[].class)) {
+                writer.value((Number) o);
+            }
+            else if (o instanceof Boolean) {
+                writer.value((Boolean) o);
+            }
+            else if (o.getClass().isPrimitive() && !o.getClass().equals(byte[].class)) {
                 writer.value(o);
             }
             else {
@@ -270,7 +296,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      * @throws ConverterException when the JSON content is not valid
      */
     public static JSONElement parse(InputStream is, String encoding) throws ConverterException {
-          return parse(IOUtils.toString(is, encoding));
+        return parse(IOUtils.toString(is, encoding));
     }
 
     /**
@@ -296,7 +322,8 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             try {
                 pushbackInputStream = new PushbackInputStream(request.getInputStream());
                 firstByte = pushbackInputStream.read();
-            } catch (IOException ioe) {}
+            }
+            catch (IOException ioe) {}
 
             // code has only been changed from here down
             if (firstByte == -1) {
@@ -342,7 +369,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                     value(props);
                 }
                 else {
-                    if(isMap) {
+                    if (isMap) {
                         writer.object(); writer.endObject();
                     }
                     else {
@@ -481,7 +508,9 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
         }
 
         private Stack<BuilderMode> stack = new Stack<BuilderMode>();
+
         private boolean start = true;
+
         private JSONWriter writer;
 
         @Override
@@ -541,7 +570,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
         @SuppressWarnings("rawtypes")
         @Override
         protected Object createNode(Object key, Object value) {
-            if (getCurrent() == null && stack.peek()== BuilderMode.OBJECT) {
+            if (getCurrent() == null && stack.peek() == BuilderMode.OBJECT) {
                 throw new IllegalArgumentException("only call to [element { }] is allowed when creating array");
             }
 
@@ -552,7 +581,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                     retVal = 1;
                 }
                 if (value instanceof Collection) {
-                    Collection c = (Collection)value;
+                    Collection c = (Collection) value;
                     writer.key(String.valueOf(key));
                     handleCollectionRecurse(c);
                 }
@@ -590,7 +619,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             }
 
             try {
-                int i = ((Integer)node);
+                int i = ((Integer) node);
                 while (i-- > 0) {
                     last = stack.pop();
                     if (BuilderMode.ARRAY == last) {
@@ -615,10 +644,12 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             writer.object();
             stack.push(BuilderMode.OBJECT);
         }
+
     }
 
     private enum BuilderMode {
         ARRAY,
         OBJECT
     }
+
 }

@@ -45,4 +45,5 @@ public interface ObjectMarshaller<T extends Converter> {
      * @throws ConverterException on failure
      */
     void marshalObject(Object object, T converter) throws ConverterException;
+
 }

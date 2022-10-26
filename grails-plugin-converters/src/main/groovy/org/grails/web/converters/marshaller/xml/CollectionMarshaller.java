@@ -15,10 +15,10 @@
  */
 package org.grails.web.converters.marshaller.xml;
 
-import grails.converters.XML;
-
 import java.util.Collection;
 import java.util.Set;
+
+import grails.converters.XML;
 
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.NameAwareMarshaller;
@@ -53,4 +53,5 @@ public class CollectionMarshaller implements ObjectMarshaller<XML>, NameAwareMar
     public String getElementName(Object o) {
         return o instanceof Set ? "set" : "list";
     }
+
 }

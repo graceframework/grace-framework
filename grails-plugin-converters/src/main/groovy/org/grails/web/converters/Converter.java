@@ -15,13 +15,13 @@
  */
 package org.grails.web.converters;
 
-import groovy.lang.Closure;
-
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+
+import groovy.lang.Closure;
 
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
@@ -77,4 +77,5 @@ public interface Converter<W> {
             return v;
         }
     }
+
 }

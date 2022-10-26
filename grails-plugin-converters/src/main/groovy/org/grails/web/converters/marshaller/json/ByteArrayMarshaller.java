@@ -34,4 +34,5 @@ public class ByteArrayMarshaller implements ObjectMarshaller<JSON> {
         byte[] bytes = (byte[]) object;
         converter.convertAnother(String.format("%d Bytes", bytes.length));
     }
+
 }

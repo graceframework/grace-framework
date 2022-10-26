@@ -15,14 +15,15 @@
  */
 package org.grails.web.converters.marshaller.json;
 
-import grails.converters.JSON;
-
 import java.lang.reflect.Method;
 
-import org.grails.web.json.JSONWriter;
+import org.springframework.beans.BeanUtils;
+
+import grails.converters.JSON;
+
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
-import org.springframework.beans.BeanUtils;
+import org.grails.web.json.JSONWriter;
 
 /**
  * @author Siegfried Puchbauer
@@ -42,7 +43,7 @@ public class EnumMarshaller implements ObjectMarshaller<JSON> {
             json.property("enumType", enumClass.getName());
             Method nameMethod = BeanUtils.findDeclaredMethod(enumClass, "name", null);
             try {
-                json.property("name",nameMethod.invoke(en));
+                json.property("name", nameMethod.invoke(en));
             }
             catch (Exception e) {
                 json.property("name", "");
@@ -56,4 +57,5 @@ public class EnumMarshaller implements ObjectMarshaller<JSON> {
             throw new ConverterException("Error converting Enum with class " + en.getClass().getName(), e);
         }
     }
+
 }

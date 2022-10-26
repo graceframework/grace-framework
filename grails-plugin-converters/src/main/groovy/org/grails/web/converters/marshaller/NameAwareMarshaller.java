@@ -29,4 +29,5 @@ public interface NameAwareMarshaller {
      * @return the tag name
      */
     String getElementName(Object o);
+
 }

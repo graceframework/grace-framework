@@ -15,13 +15,13 @@
  */
 package org.grails.web.converters.marshaller.json;
 
-import grails.converters.JSON;
-
 import java.util.Date;
 
-import org.grails.web.json.JSONException;
+import grails.converters.JSON;
+
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
+import org.grails.web.json.JSONException;
 
 /**
  * @author Siegfried Puchbauer
@@ -42,4 +42,5 @@ public class JavascriptDateMarshaller implements ObjectMarshaller<JSON> {
             throw new ConverterException(e);
         }
     }
+
 }

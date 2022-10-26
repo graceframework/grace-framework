@@ -15,21 +15,32 @@
  */
 package grails.converters;
 
-import grails.util.GrailsNameUtils;
-import grails.util.GrailsWebUtil;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Writer;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import groovy.lang.Closure;
 import groovy.util.BuilderSupport;
 import groovy.xml.slurpersupport.GPathResult;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.grails.io.support.SpringIOUtils;
+import org.springframework.util.Assert;
 
 import grails.core.support.proxy.EntityProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
+import grails.util.GrailsNameUtils;
+import grails.util.GrailsWebUtil;
 import grails.web.mime.MimeType;
 
 import org.grails.buffer.FastStringWriter;
+import org.grails.io.support.SpringIOUtils;
 import org.grails.web.converters.AbstractConverter;
 import org.grails.web.converters.Converter;
 import org.grails.web.converters.ConverterUtil;
@@ -44,18 +55,6 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
 import org.grails.web.xml.PrettyPrintXMLStreamWriter;
 import org.grails.web.xml.StreamingMarkupWriter;
 import org.grails.web.xml.XMLStreamWriter;
-import org.springframework.util.Assert;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 /**
  * A converter that converts domain classes to XML.
@@ -70,12 +69,19 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     private static final String CACHED_XML = "org.codehaus.groovy.grails.CACHED_XML_REQUEST_CONTENT";
 
     private Object target;
+
     private StreamingMarkupWriter stream;
+
     private final ConverterConfiguration<XML> config;
+
     private final String encoding;
+
     private final CircularReferenceBehaviour circularReferenceBehaviour;
+
     private XMLStreamWriter writer;
+
     private Stack<Object> referenceStack = new Stack<Object>();
+
     private boolean isRendering = false;
 
     public XML() {
@@ -95,7 +101,6 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
         this.writer = writer;
         this.isRendering = true;
     }
-
 
 
     protected ConverterConfiguration<XML> initConfig() {
@@ -121,7 +126,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
 
     public void render(Writer out) throws ConverterException {
         stream = new StreamingMarkupWriter(out, encoding);
-        writer = config.isPrettyPrint() ? new PrettyPrintXMLStreamWriter(stream): new XMLStreamWriter(stream);
+        writer = config.isPrettyPrint() ? new PrettyPrintXMLStreamWriter(stream) : new XMLStreamWriter(stream);
 
         try {
             isRendering = true;
@@ -168,7 +173,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
                 writer.characters(o.toString());
             }
             else if (o instanceof Class<?>) {
-                writer.characters(((Class<?>)o).getName());
+                writer.characters(((Class<?>) o).getName());
             }
             else if ((o.getClass().isPrimitive() && !o.getClass().equals(byte[].class)) ||
                     o instanceof Number || o instanceof Boolean) {
@@ -520,5 +525,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
         protected void setParent(Object o, Object o1) {
             // do nothing
         }
+
     }
+
 }

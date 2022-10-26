@@ -15,22 +15,23 @@
  */
 package org.grails.web.converters.marshaller.json;
 
-import grails.converters.JSON;
-import grails.persistence.PersistenceMethod;
-import grails.web.controllers.ControllerMethod;
-import groovy.lang.GroovyObject;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import groovy.lang.GroovyObject;
+import org.springframework.beans.BeanUtils;
+
+import grails.converters.JSON;
+import grails.persistence.PersistenceMethod;
+import grails.web.controllers.ControllerMethod;
+
 import org.grails.core.util.IncludeExcludeSupport;
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.IncludeExcludePropertyMarshaller;
 import org.grails.web.json.JSONWriter;
-import org.springframework.beans.BeanUtils;
 
 /**
  * @author Siegfried Puchbauer
@@ -57,11 +58,11 @@ public class GroovyBeanMarshaller extends IncludeExcludePropertyMarshaller<JSON>
                 Method readMethod = property.getReadMethod();
                 String name = property.getName();
 
-                if(!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) continue;
+                if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) continue;
 
-                if (readMethod != null && !(name.equals("metaClass"))&& !(name.equals("class"))) {
-                    if(readMethod.getAnnotation(PersistenceMethod.class) != null) continue;
-                    if(readMethod.getAnnotation(ControllerMethod.class) != null) continue;
+                if (readMethod != null && !(name.equals("metaClass")) && !(name.equals("class"))) {
+                    if (readMethod.getAnnotation(PersistenceMethod.class) != null) continue;
+                    if (readMethod.getAnnotation(ControllerMethod.class) != null) continue;
                     Object value = readMethod.invoke(o, (Object[]) null);
                     writer.key(name);
                     json.convertAnother(value);
@@ -71,7 +72,7 @@ public class GroovyBeanMarshaller extends IncludeExcludePropertyMarshaller<JSON>
                 int modifiers = field.getModifiers();
                 if (Modifier.isPublic(modifiers) && !(Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers))) {
                     String name = field.getName();
-                    if(!shouldInclude(includeExcludeSupport,includes,excludes,o,name)) continue;
+                    if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) continue;
                     writer.key(name);
                     json.convertAnother(field.get(o));
                 }
@@ -87,7 +88,7 @@ public class GroovyBeanMarshaller extends IncludeExcludePropertyMarshaller<JSON>
     }
 
     private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport, List<String> includes, List<String> excludes, Object o, String name) {
-        return includeExcludeSupport.shouldInclude(includes,excludes, name) && shouldInclude(o,name);
+        return includeExcludeSupport.shouldInclude(includes, excludes, name) && shouldInclude(o, name);
     }
 
 }

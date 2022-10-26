@@ -15,12 +15,13 @@
  */
 package org.grails.web.converters.marshaller.xml;
 
-import grails.converters.XML;
-import groovy.lang.Writable;
-
 import java.io.IOException;
 
+import groovy.lang.Writable;
 import org.codehaus.groovy.runtime.EncodingGroovyMethods;
+
+import grails.converters.XML;
+
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.ObjectMarshaller;
 
@@ -40,10 +41,10 @@ public class Base64ByteArrayMarshaller implements ObjectMarshaller<XML> {
 
         Writable w;
         if (object instanceof byte[]) {
-            w = EncodingGroovyMethods.encodeBase64((byte[])object);
+            w = EncodingGroovyMethods.encodeBase64((byte[]) object);
         }
         else {
-            w = EncodingGroovyMethods.encodeBase64((Byte[])object);
+            w = EncodingGroovyMethods.encodeBase64((Byte[]) object);
         }
 
         try {
@@ -53,4 +54,5 @@ public class Base64ByteArrayMarshaller implements ObjectMarshaller<XML> {
             throw new ConverterException(e);
         }
     }
+
 }

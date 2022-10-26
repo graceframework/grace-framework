@@ -15,8 +15,6 @@
  */
 package org.grails.web.converters.configuration;
 
-import grails.util.Environment;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import grails.core.support.proxy.DefaultProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
+import grails.util.Environment;
 
 import org.grails.web.converters.Converter;
 import org.grails.web.converters.exceptions.ConverterException;
@@ -43,18 +42,28 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
 public class ChainedConverterConfiguration<C extends Converter> implements ConverterConfiguration<C> {
 
     private List<ObjectMarshaller<C>> marshallerList;
+
     private ChainedObjectMarshaller<C> root;
+
     private final String encoding;
+
     private final Converter.CircularReferenceBehaviour circularReferenceBehaviour;
+
     private final boolean prettyPrint;
+
     private ProxyHandler proxyHandler;
+
     private final boolean cacheObjectMarshallerByClass;
+
     private Map<Integer, ObjectMarshaller<C>> objectMarshallerForClassCache;
+
     private final boolean developmentMode = Environment.isDevelopmentMode();
-    private final ObjectMarshaller<C> NULL_HOLDER=new ObjectMarshaller<C>() {
+
+    private final ObjectMarshaller<C> NULL_HOLDER = new ObjectMarshaller<C>() {
         public boolean supports(Object object) {
             return false;
         }
+
         public void marshalObject(Object object, C converter) throws ConverterException {
         }
     };
@@ -124,6 +133,7 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
     public class ChainedObjectMarshaller<C extends Converter> implements ObjectMarshaller<C> {
 
         private ObjectMarshaller<C> om;
+
         private ChainedObjectMarshaller<C> next;
 
         public ChainedObjectMarshaller(ObjectMarshaller<C> om, ChainedObjectMarshaller<C> next) {
@@ -146,6 +156,7 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
         public void marshalObject(Object object, C converter) throws ConverterException {
             om.marshalObject(object, converter);
         }
+
     }
 
     public ProxyHandler getProxyHandler() {
@@ -155,4 +166,5 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
     public boolean isCacheObjectMarshallerByClass() {
         return cacheObjectMarshallerByClass;
     }
+
 }

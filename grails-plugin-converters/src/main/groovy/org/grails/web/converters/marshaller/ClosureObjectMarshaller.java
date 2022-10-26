@@ -50,7 +50,7 @@ public class ClosureObjectMarshaller<T extends Converter> implements ObjectMarsh
                 result = closure.call(object);
             }
             else if (argCount == 2) {
-                result = closure.call(new Object[]{object, converter});
+                result = closure.call(new Object[] { object, converter });
             }
             else {
                 throw new ConverterException(
@@ -65,4 +65,5 @@ public class ClosureObjectMarshaller<T extends Converter> implements ObjectMarsh
             throw e instanceof ConverterException ? (ConverterException) e : new ConverterException(e);
         }
     }
+
 }

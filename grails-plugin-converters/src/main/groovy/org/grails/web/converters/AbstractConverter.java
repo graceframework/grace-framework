@@ -15,16 +15,17 @@
  */
 package org.grails.web.converters;
 
-import groovy.lang.Writable;
-import org.grails.buffer.FastStringWriter;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import groovy.lang.Writable;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
+import org.grails.buffer.FastStringWriter;
 
 /**
  * Abstract base implementation of the Converter interface that provides a default toString() implementation.
@@ -35,8 +36,11 @@ import java.util.Map;
 public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, Writable {
 
     protected String contentType;
+
     protected String encoding = "UTF-8";
+
     protected Map<Class, List<String>> includes = new LinkedHashMap<Class, List<String>>();
+
     protected Map<Class, List<String>> excludes = new LinkedHashMap<Class, List<String>>();
 
     public abstract void setTarget(Object target);
@@ -116,7 +120,8 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
         FastStringWriter writer = new FastStringWriter();
         try {
             render(writer);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
         return writer.toString();
@@ -125,4 +130,5 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
     protected BeanWrapper createBeanWrapper(Object o) {
         return new BeanWrapperImpl(o);
     }
+
 }

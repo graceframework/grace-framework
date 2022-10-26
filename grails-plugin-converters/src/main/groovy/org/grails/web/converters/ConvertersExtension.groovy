@@ -15,15 +15,14 @@
  */
 package org.grails.web.converters
 
-import grails.converters.JSON
-import grails.converters.XML
-import groovy.transform.CompileStatic
-
 import javax.servlet.http.HttpServletRequest
 
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.springframework.context.ApplicationContext
+import groovy.transform.CompileStatic
 
+import grails.converters.JSON
+import grails.converters.XML
+
+import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  *
@@ -37,7 +36,7 @@ import org.springframework.context.ApplicationContext
  */
 @CompileStatic
 class ConvertersExtension {
-    
+
     static getJSON(HttpServletRequest request) {
         JSON.parse(request)
     }
@@ -45,19 +44,19 @@ class ConvertersExtension {
     static getXML(HttpServletRequest request) {
         XML.parse(request)
     }
-    
+
     static <T> T asType(instance, Class<T> clazz) {
         if (ConverterUtil.isConverterClass(clazz)) {
-            return ConverterUtil.createConverter(clazz, 
-                                                 instance, 
-                                                 GrailsWebRequest.lookup()?.applicationContext)
+            return ConverterUtil.createConverter(clazz,
+                    instance,
+                    GrailsWebRequest.lookup()?.applicationContext)
         }
         else {
-            return (T)ConverterUtil.invokeOriginalAsTypeMethod(instance, clazz)
+            return (T) ConverterUtil.invokeOriginalAsTypeMethod(instance, clazz)
         }
     }
-    
-    static <T> T  asType(Object[] array, Class<T> clazz) {
-        asType((Object)array, clazz)
+
+    static <T> T asType(Object[] array, Class<T> clazz) {
+        asType((Object) array, clazz)
     }
 }

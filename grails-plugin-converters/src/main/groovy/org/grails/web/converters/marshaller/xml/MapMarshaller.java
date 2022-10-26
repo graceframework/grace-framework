@@ -15,9 +15,9 @@
  */
 package org.grails.web.converters.marshaller.xml;
 
-import grails.converters.XML;
-
 import java.util.Map;
+
+import grails.converters.XML;
 
 import org.grails.web.converters.exceptions.ConverterException;
 import org.grails.web.converters.marshaller.NameAwareMarshaller;
@@ -36,8 +36,8 @@ public class MapMarshaller implements ObjectMarshaller<XML>, NameAwareMarshaller
     @SuppressWarnings("unchecked")
     public void marshalObject(Object o, XML xml) throws ConverterException {
 
-        Map<Object,Object> map = (Map<Object,Object>) o;
-        for (Map.Entry<Object,Object> entry : map.entrySet()) {
+        Map<Object, Object> map = (Map<Object, Object>) o;
+        for (Map.Entry<Object, Object> entry : map.entrySet()) {
             xml.startNode("entry").attribute("key", entry.getKey().toString());
             xml.convertAnother(entry.getValue());
             xml.end();
@@ -47,4 +47,5 @@ public class MapMarshaller implements ObjectMarshaller<XML>, NameAwareMarshaller
     public String getElementName(Object o) {
         return "map";
     }
+
 }

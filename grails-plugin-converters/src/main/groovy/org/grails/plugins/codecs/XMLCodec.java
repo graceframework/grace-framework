@@ -15,8 +15,9 @@
  */
 package org.grails.plugins.codecs;
 
-import org.grails.encoder.impl.XMLCodecFactory;
 import grails.encoders.XMLEncoder;
+
+import org.grails.encoder.impl.XMLCodecFactory;
 
 /**
  * Escapes some characters for inclusion in XML documents. The decoder part can
@@ -26,8 +27,10 @@ import grails.encoders.XMLEncoder;
  * @since 2.3
  */
 public class XMLCodec extends XMLCodecFactory {
+
     public XMLCodec() {
         super();
         this.encoder = new XMLEncoder();
     }
+
 }

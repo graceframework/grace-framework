@@ -50,4 +50,5 @@ public abstract class IncludeExcludePropertyMarshaller<T extends Converter> impl
     protected boolean includesProperty(Object object, String property) {
         return true;
     }
+
 }

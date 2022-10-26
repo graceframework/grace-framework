@@ -74,4 +74,5 @@ public interface ConverterConfiguration<C extends Converter> {
      * @return a boolean
      */
     boolean isCacheObjectMarshallerByClass();
+
 }

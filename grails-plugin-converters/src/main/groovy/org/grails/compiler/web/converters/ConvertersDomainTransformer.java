@@ -17,13 +17,12 @@ package org.grails.compiler.web.converters;
 
 import java.net.URL;
 
-import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
-import org.grails.plugins.converters.api.ConvertersApi;
-
 import grails.compiler.ast.AstTransformer;
 
+import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
+import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.io.support.GrailsResourceUtils;
+import org.grails.plugins.converters.api.ConvertersApi;
 
 /**
  * Adds the asType method to domain classes.
@@ -32,7 +31,7 @@ import org.grails.io.support.GrailsResourceUtils;
  * @since 2.0
  */
 @AstTransformer
-public class ConvertersDomainTransformer extends AbstractGrailsArtefactTransformer{
+public class ConvertersDomainTransformer extends AbstractGrailsArtefactTransformer {
 
     @Override
     public String getArtefactType() {
@@ -57,4 +56,5 @@ public class ConvertersDomainTransformer extends AbstractGrailsArtefactTransform
     public boolean shouldInject(URL url) {
         return GrailsResourceUtils.isDomainClass(url);
     }
+
 }

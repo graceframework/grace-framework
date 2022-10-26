@@ -28,7 +28,9 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
 public class ObjectMarshallerRegisterer {
 
     private ObjectMarshaller marshaller;
+
     private Class<? extends Converter> converterClass;
+
     private int priority = DefaultConverterConfiguration.DEFAULT_PRIORITY;
 
     public ObjectMarshaller getMarshaller() {
@@ -54,4 +56,5 @@ public class ObjectMarshallerRegisterer {
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
 }

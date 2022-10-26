@@ -15,13 +15,13 @@
  */
 package org.grails.web.converters.configuration;
 
-import groovy.lang.Closure;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import groovy.lang.Closure;
 
 import grails.core.support.proxy.DefaultProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
@@ -44,11 +44,17 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     private static final AtomicInteger MARSHALLER_SEQUENCE = new AtomicInteger(0);
 
     private ConverterConfiguration<C> delegate;
+
     private String encoding;
+
     private boolean prettyPrint = false;
+
     private final SortedSet<Entry> objectMarshallers = new TreeSet<Entry>();
+
     private Converter.CircularReferenceBehaviour circularReferenceBehaviour;
+
     private ProxyHandler proxyHandler;
+
     private boolean cacheObjectMarshallerByClass = true;
 
     public String getEncoding() {
@@ -60,7 +66,7 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     }
 
     public Converter.CircularReferenceBehaviour getCircularReferenceBehaviour() {
-        return circularReferenceBehaviour != null ? circularReferenceBehaviour : (delegate != null ? delegate.getCircularReferenceBehaviour(): null);
+        return circularReferenceBehaviour != null ? circularReferenceBehaviour : (delegate != null ? delegate.getCircularReferenceBehaviour() : null);
     }
 
     public boolean isPrettyPrint() {
@@ -151,8 +157,11 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     }
 
     public class Entry implements Comparable<Entry> {
+
         protected final ObjectMarshaller<C> marshaller;
+
         private final int priority;
+
         private final int seq;
 
         private Entry(ObjectMarshaller<C> marshaller, int priority) {
@@ -164,6 +173,7 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
         public int compareTo(Entry entry) {
             return priority == entry.priority ? entry.seq - seq : entry.priority - priority;
         }
+
     }
 
     public ProxyHandler getProxyHandler() {
@@ -177,4 +187,5 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     public void setCacheObjectMarshallerByClass(boolean cacheObjectMarshallerByClass) {
         this.cacheObjectMarshallerByClass = cacheObjectMarshallerByClass;
     }
+
 }

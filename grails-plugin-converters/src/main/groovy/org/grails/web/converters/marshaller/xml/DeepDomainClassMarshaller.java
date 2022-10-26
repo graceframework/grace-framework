@@ -46,4 +46,5 @@ public class DeepDomainClassMarshaller extends DomainClassMarshaller {
     protected boolean isRenderDomainClassRelations() {
         return true;
     }
+
 }

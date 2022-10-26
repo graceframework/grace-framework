@@ -102,4 +102,5 @@ public class ImmutableConverterConfiguration<C extends Converter> implements Con
     public boolean isCacheObjectMarshallerByClass() {
         return cacheObjectMarshallerByClass;
     }
+
 }
