@@ -41,9 +41,9 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
 @SuppressWarnings("rawtypes")
 public class ChainedConverterConfiguration<C extends Converter> implements ConverterConfiguration<C> {
 
-    private List<ObjectMarshaller<C>> marshallerList;
+    private final List<ObjectMarshaller<C>> marshallerList;
 
-    private ChainedObjectMarshaller<C> root;
+    private final ChainedObjectMarshaller<C> root;
 
     private final String encoding;
 
@@ -51,7 +51,7 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
 
     private final boolean prettyPrint;
 
-    private ProxyHandler proxyHandler;
+    private final ProxyHandler proxyHandler;
 
     private final boolean cacheObjectMarshallerByClass;
 
@@ -60,12 +60,14 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
     private final boolean developmentMode = Environment.isDevelopmentMode();
 
     private final ObjectMarshaller<C> NULL_HOLDER = new ObjectMarshaller<C>() {
+
         public boolean supports(Object object) {
             return false;
         }
 
         public void marshalObject(Object object, C converter) throws ConverterException {
         }
+
     };
 
     public ChainedConverterConfiguration(ConverterConfiguration<C> cfg) {
@@ -73,68 +75,76 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
     }
 
     public ChainedConverterConfiguration(ConverterConfiguration<C> cfg, ProxyHandler proxyHandler) {
-        marshallerList = cfg.getOrderedObjectMarshallers();
+        this.marshallerList = cfg.getOrderedObjectMarshallers();
         this.proxyHandler = proxyHandler;
 
-        encoding = cfg.getEncoding();
-        prettyPrint = cfg.isPrettyPrint();
-        cacheObjectMarshallerByClass = cfg.isCacheObjectMarshallerByClass();
-        if (cacheObjectMarshallerByClass) {
-            objectMarshallerForClassCache = new ConcurrentHashMap<Integer, ObjectMarshaller<C>>();
+        this.encoding = cfg.getEncoding();
+        this.prettyPrint = cfg.isPrettyPrint();
+        this.cacheObjectMarshallerByClass = cfg.isCacheObjectMarshallerByClass();
+        if (this.cacheObjectMarshallerByClass) {
+            this.objectMarshallerForClassCache = new ConcurrentHashMap<>();
         }
-        circularReferenceBehaviour = cfg.getCircularReferenceBehaviour();
+        this.circularReferenceBehaviour = cfg.getCircularReferenceBehaviour();
 
-        List<ObjectMarshaller<C>> oms = new ArrayList<ObjectMarshaller<C>>(marshallerList);
+        List<ObjectMarshaller<C>> oms = new ArrayList<>(this.marshallerList);
         Collections.reverse(oms);
         ChainedObjectMarshaller<C> prev = null;
         for (ObjectMarshaller<C> om : oms) {
             prev = new ChainedObjectMarshaller<C>(om, prev);
         }
-        root = prev;
+        this.root = prev;
     }
 
     public ObjectMarshaller<C> getMarshaller(Object o) {
         ObjectMarshaller<C> marshaller = null;
 
         Integer cacheKey = null;
-        if (!developmentMode && cacheObjectMarshallerByClass && o != null) {
+        if (!this.developmentMode && this.cacheObjectMarshallerByClass && o != null) {
             cacheKey = System.identityHashCode(o.getClass());
-            marshaller = objectMarshallerForClassCache.get(cacheKey);
-            if (marshaller != NULL_HOLDER && marshaller != null && !marshaller.supports(o)) {
+            marshaller = this.objectMarshallerForClassCache.get(cacheKey);
+            if (marshaller != this.NULL_HOLDER && marshaller != null && !marshaller.supports(o)) {
                 marshaller = null;
             }
         }
         if (marshaller == null) {
-            marshaller = root.findMarhallerFor(o);
+            marshaller = this.root.findMarhallerFor(o);
             if (cacheKey != null) {
-                objectMarshallerForClassCache.put(cacheKey, marshaller != null ? marshaller : NULL_HOLDER);
+                this.objectMarshallerForClassCache.put(cacheKey, marshaller != null ? marshaller : this.NULL_HOLDER);
             }
         }
-        return marshaller != NULL_HOLDER ? marshaller : null;
+        return marshaller != this.NULL_HOLDER ? marshaller : null;
     }
 
     public String getEncoding() {
-        return encoding;
+        return this.encoding;
     }
 
     public Converter.CircularReferenceBehaviour getCircularReferenceBehaviour() {
-        return circularReferenceBehaviour;
+        return this.circularReferenceBehaviour;
     }
 
     public boolean isPrettyPrint() {
-        return prettyPrint;
+        return this.prettyPrint;
     }
 
     public List<ObjectMarshaller<C>> getOrderedObjectMarshallers() {
-        return marshallerList;
+        return this.marshallerList;
+    }
+
+    public ProxyHandler getProxyHandler() {
+        return this.proxyHandler;
+    }
+
+    public boolean isCacheObjectMarshallerByClass() {
+        return this.cacheObjectMarshallerByClass;
     }
 
     @SuppressWarnings("hiding")
     public class ChainedObjectMarshaller<C extends Converter> implements ObjectMarshaller<C> {
 
-        private ObjectMarshaller<C> om;
+        private final ObjectMarshaller<C> om;
 
-        private ChainedObjectMarshaller<C> next;
+        private final ChainedObjectMarshaller<C> next;
 
         public ChainedObjectMarshaller(ObjectMarshaller<C> om, ChainedObjectMarshaller<C> next) {
             this.om = om;
@@ -143,28 +153,20 @@ public class ChainedConverterConfiguration<C extends Converter> implements Conve
 
         public ObjectMarshaller<C> findMarhallerFor(Object o) {
             if (supports(o)) {
-                return om;
+                return this.om;
             }
 
-            return next != null ? next.findMarhallerFor(o) : null;
+            return this.next != null ? this.next.findMarhallerFor(o) : null;
         }
 
         public boolean supports(Object object) {
-            return om.supports(object);
+            return this.om.supports(object);
         }
 
         public void marshalObject(Object object, C converter) throws ConverterException {
-            om.marshalObject(object, converter);
+            this.om.marshalObject(object, converter);
         }
 
-    }
-
-    public ProxyHandler getProxyHandler() {
-        return proxyHandler;
-    }
-
-    public boolean isCacheObjectMarshallerByClass() {
-        return cacheObjectMarshallerByClass;
     }
 
 }

@@ -29,9 +29,9 @@ import org.grails.web.converters.exceptions.ConverterException;
 @SuppressWarnings("rawtypes")
 public class ClosureObjectMarshaller<T extends Converter> implements ObjectMarshaller<T> {
 
-    private Class<?> clazz;
+    private final Class<?> clazz;
 
-    private Closure closure;
+    private final Closure closure;
 
     public ClosureObjectMarshaller(Class<?> clazz, Closure closure) {
         this.clazz = clazz;
@@ -39,22 +39,22 @@ public class ClosureObjectMarshaller<T extends Converter> implements ObjectMarsh
     }
 
     public boolean supports(Object object) {
-        return clazz.isAssignableFrom(object.getClass());
+        return this.clazz.isAssignableFrom(object.getClass());
     }
 
     public void marshalObject(Object object, T converter) throws ConverterException {
         try {
-            int argCount = closure.getParameterTypes().length;
+            int argCount = this.closure.getParameterTypes().length;
             Object result = null;
             if (argCount <= 1) {
-                result = closure.call(object);
+                result = this.closure.call(object);
             }
             else if (argCount == 2) {
-                result = closure.call(new Object[] { object, converter });
+                result = this.closure.call(object, converter);
             }
             else {
                 throw new ConverterException(
-                        "Invalid Parameter count for registered Object Marshaller for class " + clazz.getName());
+                        "Invalid Parameter count for registered Object Marshaller for class " + this.clazz.getName());
             }
 
             if (result != null && result != object && result != converter) {

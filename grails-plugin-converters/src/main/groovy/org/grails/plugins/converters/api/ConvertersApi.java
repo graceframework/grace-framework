@@ -47,13 +47,13 @@ public class ConvertersApi implements ApplicationContextAware {
     }
 
     public ApplicationContext getApplicationContext() {
-        if (applicationContext == null) {
+        if (this.applicationContext == null) {
             GrailsWebRequest webRequest = GrailsWebRequest.lookup();
             if (webRequest != null) {
-                applicationContext = webRequest.getApplicationContext();
+                this.applicationContext = webRequest.getApplicationContext();
             }
         }
-        return applicationContext;
+        return this.applicationContext;
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -39,9 +39,9 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
 
     protected String encoding = "UTF-8";
 
-    protected Map<Class, List<String>> includes = new LinkedHashMap<Class, List<String>>();
+    protected Map<Class, List<String>> includes = new LinkedHashMap<>();
 
-    protected Map<Class, List<String>> excludes = new LinkedHashMap<Class, List<String>>();
+    protected Map<Class, List<String>> excludes = new LinkedHashMap<>();
 
     public abstract void setTarget(Object target);
 
@@ -73,7 +73,7 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
      */
     @Override
     public void setIncludes(Class type, List<String> properties) {
-        includes.put(type, properties);
+        this.includes.put(type, properties);
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
      */
     @Override
     public void setExcludes(Class type, List<String> properties) {
-        excludes.put(type, properties);
+        this.excludes.put(type, properties);
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
      */
     @Override
     public List<String> getExcludes(Class type) {
-        return excludes.get(type);
+        return this.excludes.get(type);
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class AbstractConverter<W> implements ConfigurableConverter<W>, 
      */
     @Override
     public List<String> getIncludes(Class type) {
-        return includes.get(type);
+        return this.includes.get(type);
     }
 
     @Override

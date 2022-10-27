@@ -55,13 +55,14 @@ public class ValidationErrorsMarshaller implements ObjectMarshaller<XML>, NameAw
                     xml.startNode("rejected-value").convertAnother(fe.getRejectedValue());
                     xml.end();
                     Locale locale = LocaleContextHolder.getLocale();
-                    if (applicationContext != null) {
-                        xml.startNode("message").chars(applicationContext.getMessage(fe, locale)).end();
+                    if (this.applicationContext != null) {
+                        xml.startNode("message").chars(this.applicationContext.getMessage(fe, locale)).end();
                     }
                     else {
                         String defaultMessage = fe.getDefaultMessage();
-                        if (defaultMessage != null)
+                        if (defaultMessage != null) {
                             xml.startNode("message").chars(defaultMessage).end();
+                        }
                     }
                     xml.end();
                 }

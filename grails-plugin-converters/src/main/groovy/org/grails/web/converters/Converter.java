@@ -42,7 +42,7 @@ public interface Converter<W> {
      * @param out The Writer to write to
      * @throws ConverterException
      */
-    public void render(Writer out) throws ConverterException;
+    void render(Writer out) throws ConverterException;
 
     /**
      * Marshalls the target and writes it a HttpServletResponse
@@ -51,7 +51,7 @@ public interface Converter<W> {
      * @param response The response to write to
      * @throws ConverterException
      */
-    public void render(HttpServletResponse response) throws ConverterException;
+    void render(HttpServletResponse response) throws ConverterException;
 
     W getWriter() throws ConverterException;
 
@@ -70,7 +70,7 @@ public interface Converter<W> {
         PATH;
 
         public static List<String> allowedValues() {
-            List<String> v = new ArrayList<String>();
+            List<String> v = new ArrayList<>();
             for (CircularReferenceBehaviour crb : values()) {
                 v.add(crb.name());
             }

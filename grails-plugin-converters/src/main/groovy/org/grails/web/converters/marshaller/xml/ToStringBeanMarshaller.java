@@ -41,14 +41,13 @@ public class ToStringBeanMarshaller implements ObjectMarshaller<XML> {
         this.classes = classes;
     }
 
-    @SuppressWarnings("unchecked")
     public ToStringBeanMarshaller() {
-        classes = Collections.unmodifiableSet(new HashSet<Class<?>>(Arrays.asList(
+        this.classes = Collections.unmodifiableSet(new HashSet<Class<?>>(Arrays.asList(
                 Currency.class, TimeZone.class, Locale.class, URL.class)));
     }
 
     public boolean supports(Object object) {
-        return classes.contains(object.getClass());
+        return this.classes.contains(object.getClass());
     }
 
     public void marshalObject(Object object, XML converter) throws ConverterException {

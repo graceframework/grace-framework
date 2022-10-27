@@ -59,8 +59,8 @@ public class ValidationErrorsMarshaller implements ObjectMarshaller<JSON>, Appli
                     json.property("field", fe.getField());
                     json.property("rejected-value", fe.getRejectedValue());
                     Locale locale = LocaleContextHolder.getLocale();
-                    if (applicationContext != null) {
-                        json.property("message", applicationContext.getMessage(fe, locale));
+                    if (this.applicationContext != null) {
+                        json.property("message", this.applicationContext.getMessage(fe, locale));
                     }
                     else {
                         json.property("message", fe.getDefaultMessage());
@@ -72,8 +72,8 @@ public class ValidationErrorsMarshaller implements ObjectMarshaller<JSON>, Appli
                     writer.object();
                     json.property("object", fe.getObjectName());
                     Locale locale = LocaleContextHolder.getLocale();
-                    if (applicationContext != null) {
-                        json.property("message", applicationContext.getMessage(fe, locale));
+                    if (this.applicationContext != null) {
+                        json.property("message", this.applicationContext.getMessage(fe, locale));
                     }
                     else {
                         json.property("message", fe.getDefaultMessage());

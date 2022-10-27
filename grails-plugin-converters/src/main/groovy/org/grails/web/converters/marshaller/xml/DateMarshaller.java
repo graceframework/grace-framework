@@ -55,7 +55,7 @@ public class DateMarshaller implements ObjectMarshaller<XML> {
 
     public void marshalObject(Object object, XML xml) throws ConverterException {
         try {
-            xml.chars(formatter.format(object));
+            xml.chars(this.formatter.format(object));
         }
         catch (Exception e) {
             throw ConverterUtil.resolveConverterException(e);

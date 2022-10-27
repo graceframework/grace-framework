@@ -29,7 +29,7 @@ import grails.converters.JSON
 @Deprecated
 class JSONBuilder {
 
-    static NODE_ELEMENT = "element"
+    static final NODE_ELEMENT = 'element'
 
     def root
 
@@ -39,7 +39,7 @@ class JSONBuilder {
 
     JSON build(Closure c) {
         def result = buildRoot(c)
-        return result as JSON // requires deep
+        result as JSON // requires deep
     }
 
     private buildRoot(Closure c) {
@@ -51,7 +51,7 @@ class JSONBuilder {
         if (!root) {
             return returnValue
         }
-        return root
+        root
     }
 
     def invokeMethod(String methodName) {
@@ -68,7 +68,7 @@ class JSONBuilder {
         finally {
             current = prev
         }
-        return list
+        list
     }
 
     def invokeMethod(String methodName, Object args) {
@@ -157,7 +157,7 @@ class JSONBuilder {
                     return nestedObject
                 }
 
-                return it
+                it
             }
             current[propName] = value
         }
@@ -169,4 +169,5 @@ class JSONBuilder {
     def getProperty(String propName) {
         current[propName]
     }
+
 }

@@ -42,8 +42,7 @@ public class EnumMarshaller implements ObjectMarshaller<XML> {
             try {
                 xml.chars(nameMethod.invoke(en).toString());
             }
-            catch (Exception e) {
-                // ignored
+            catch (Exception ignored) {
             }
         }
         catch (ConverterException ce) {

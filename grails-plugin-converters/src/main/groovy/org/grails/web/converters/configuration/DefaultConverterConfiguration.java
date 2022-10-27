@@ -49,7 +49,7 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
 
     private boolean prettyPrint = false;
 
-    private final SortedSet<Entry> objectMarshallers = new TreeSet<Entry>();
+    private final SortedSet<Entry> objectMarshallers = new TreeSet<>();
 
     private Converter.CircularReferenceBehaviour circularReferenceBehaviour;
 
@@ -57,53 +57,16 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
 
     private boolean cacheObjectMarshallerByClass = true;
 
-    public String getEncoding() {
-        return encoding != null ? encoding : (delegate != null ? delegate.getEncoding() : null);
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public Converter.CircularReferenceBehaviour getCircularReferenceBehaviour() {
-        return circularReferenceBehaviour != null ? circularReferenceBehaviour : (delegate != null ? delegate.getCircularReferenceBehaviour() : null);
-    }
-
-    public boolean isPrettyPrint() {
-        return prettyPrint;
-    }
-
-    public void setPrettyPrint(boolean prettyPrint) {
-        this.prettyPrint = prettyPrint;
-    }
-
-    public List<ObjectMarshaller<C>> getOrderedObjectMarshallers() {
-        List<ObjectMarshaller<C>> list = new ArrayList<ObjectMarshaller<C>>();
-        for (Entry entry : objectMarshallers) {
-            list.add(entry.marshaller);
-        }
-        if (delegate != null) {
-            for (ObjectMarshaller<C> om : delegate.getOrderedObjectMarshallers()) {
-                list.add(om);
-            }
-        }
-        return list;
-    }
-
-    public void setCircularReferenceBehaviour(Converter.CircularReferenceBehaviour circularReferenceBehaviour) {
-        this.circularReferenceBehaviour = circularReferenceBehaviour;
-    }
-
     public DefaultConverterConfiguration() {
-        proxyHandler = new DefaultProxyHandler();
+        this.proxyHandler = new DefaultProxyHandler();
     }
 
     public DefaultConverterConfiguration(ConverterConfiguration<C> delegate) {
         this();
         this.delegate = delegate;
-        prettyPrint = delegate.isPrettyPrint();
-        circularReferenceBehaviour = delegate.getCircularReferenceBehaviour();
-        encoding = delegate.getEncoding();
+        this.prettyPrint = delegate.isPrettyPrint();
+        this.circularReferenceBehaviour = delegate.getCircularReferenceBehaviour();
+        this.encoding = delegate.getEncoding();
     }
 
     public DefaultConverterConfiguration(ProxyHandler proxyHandler) {
@@ -113,9 +76,9 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     public DefaultConverterConfiguration(ConverterConfiguration<C> delegate, ProxyHandler proxyHandler) {
         this(proxyHandler);
         this.delegate = delegate;
-        prettyPrint = delegate.isPrettyPrint();
-        circularReferenceBehaviour = delegate.getCircularReferenceBehaviour();
-        encoding = delegate.getEncoding();
+        this.prettyPrint = delegate.isPrettyPrint();
+        this.circularReferenceBehaviour = delegate.getCircularReferenceBehaviour();
+        this.encoding = delegate.getEncoding();
     }
 
     public DefaultConverterConfiguration(List<ObjectMarshaller<C>> oms) {
@@ -131,12 +94,51 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
         this.proxyHandler = proxyHandler;
     }
 
+    public String getEncoding() {
+        return this.encoding != null ? this.encoding : (this.delegate != null ? this.delegate.getEncoding() : null);
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public Converter.CircularReferenceBehaviour getCircularReferenceBehaviour() {
+        return this.circularReferenceBehaviour != null
+                ? this.circularReferenceBehaviour
+                : (this.delegate != null ? this.delegate.getCircularReferenceBehaviour() : null);
+    }
+
+    public boolean isPrettyPrint() {
+        return this.prettyPrint;
+    }
+
+    public void setPrettyPrint(boolean prettyPrint) {
+        this.prettyPrint = prettyPrint;
+    }
+
+    public List<ObjectMarshaller<C>> getOrderedObjectMarshallers() {
+        List<ObjectMarshaller<C>> list = new ArrayList<>();
+        for (Entry entry : this.objectMarshallers) {
+            list.add(entry.marshaller);
+        }
+        if (this.delegate != null) {
+            for (ObjectMarshaller<C> om : this.delegate.getOrderedObjectMarshallers()) {
+                list.add(om);
+            }
+        }
+        return list;
+    }
+
+    public void setCircularReferenceBehaviour(Converter.CircularReferenceBehaviour circularReferenceBehaviour) {
+        this.circularReferenceBehaviour = circularReferenceBehaviour;
+    }
+
     public void registerObjectMarshaller(ObjectMarshaller<C> marshaller) {
         registerObjectMarshaller(marshaller, DEFAULT_PRIORITY);
     }
 
     public void registerObjectMarshaller(ObjectMarshaller<C> marshaller, int priority) {
-        objectMarshallers.add(new Entry(marshaller, priority));
+        this.objectMarshallers.add(new Entry(marshaller, priority));
     }
 
     public void registerObjectMarshaller(Class<?> c, int priority, Closure callable) {
@@ -148,17 +150,29 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
     }
 
     public ObjectMarshaller<C> getMarshaller(Object o) {
-        for (Entry entry : objectMarshallers) {
+        for (Entry entry : this.objectMarshallers) {
             if (entry.marshaller.supports(o)) {
                 return entry.marshaller;
             }
         }
-        return delegate != null ? delegate.getMarshaller(o) : null;
+        return this.delegate != null ? this.delegate.getMarshaller(o) : null;
     }
 
-    public class Entry implements Comparable<Entry> {
+    public ProxyHandler getProxyHandler() {
+        return this.proxyHandler;
+    }
 
-        protected final ObjectMarshaller<C> marshaller;
+    public boolean isCacheObjectMarshallerByClass() {
+        return this.cacheObjectMarshallerByClass;
+    }
+
+    public void setCacheObjectMarshallerByClass(boolean cacheObjectMarshallerByClass) {
+        this.cacheObjectMarshallerByClass = cacheObjectMarshallerByClass;
+    }
+
+    public final class Entry implements Comparable<Entry> {
+
+        private final ObjectMarshaller<C> marshaller;
 
         private final int priority;
 
@@ -167,25 +181,13 @@ public class DefaultConverterConfiguration<C extends Converter> implements Conve
         private Entry(ObjectMarshaller<C> marshaller, int priority) {
             this.marshaller = marshaller;
             this.priority = priority;
-            seq = MARSHALLER_SEQUENCE.incrementAndGet();
+            this.seq = MARSHALLER_SEQUENCE.incrementAndGet();
         }
 
         public int compareTo(Entry entry) {
-            return priority == entry.priority ? entry.seq - seq : entry.priority - priority;
+            return this.priority == entry.priority ? entry.seq - this.seq : entry.priority - this.priority;
         }
 
-    }
-
-    public ProxyHandler getProxyHandler() {
-        return proxyHandler;
-    }
-
-    public boolean isCacheObjectMarshallerByClass() {
-        return cacheObjectMarshallerByClass;
-    }
-
-    public void setCacheObjectMarshallerByClass(boolean cacheObjectMarshallerByClass) {
-        this.cacheObjectMarshallerByClass = cacheObjectMarshallerByClass;
     }
 
 }

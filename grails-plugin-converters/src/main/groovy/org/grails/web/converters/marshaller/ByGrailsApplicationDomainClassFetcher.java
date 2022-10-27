@@ -29,7 +29,7 @@ public class ByGrailsApplicationDomainClassFetcher implements DomainClassFetcher
 
     @Override
     public PersistentEntity findDomainClass(Object instance) {
-        return grailsApplication.getMappingContext().getPersistentEntity(instance.getClass().getName());
+        return this.grailsApplication.getMappingContext().getPersistentEntity(instance.getClass().getName());
     }
 
 }

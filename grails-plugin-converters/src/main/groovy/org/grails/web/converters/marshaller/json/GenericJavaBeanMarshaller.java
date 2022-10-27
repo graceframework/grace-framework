@@ -48,7 +48,7 @@ public class GenericJavaBeanMarshaller extends IncludeExcludePropertyMarshaller<
         Class<? extends Object> clazz = o.getClass();
         List<String> excludes = json.getExcludes(clazz);
         List<String> includes = json.getIncludes(clazz);
-        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<String>();
+        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<>();
 
         try {
             writer.object();
@@ -56,11 +56,17 @@ public class GenericJavaBeanMarshaller extends IncludeExcludePropertyMarshaller<
                 String name = property.getName();
                 Method readMethod = property.getReadMethod();
 
-                if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) continue;
+                if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) {
+                    continue;
+                }
 
                 if (readMethod != null && !(name.equals("metaClass")) && !(name.equals("class"))) {
-                    if (readMethod.getAnnotation(PersistenceMethod.class) != null) continue;
-                    if (readMethod.getAnnotation(ControllerMethod.class) != null) continue;
+                    if (readMethod.getAnnotation(PersistenceMethod.class) != null) {
+                        continue;
+                    }
+                    if (readMethod.getAnnotation(ControllerMethod.class) != null) {
+                        continue;
+                    }
                     Object value = readMethod.invoke(o, (Object[]) null);
                     writer.key(name);
                     json.convertAnother(value);
@@ -70,7 +76,9 @@ public class GenericJavaBeanMarshaller extends IncludeExcludePropertyMarshaller<
                 int modifiers = field.getModifiers();
                 if (field.isAccessible() && Modifier.isPublic(modifiers) && !(Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers))) {
                     String name = field.getName();
-                    if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) continue;
+                    if (!shouldInclude(includeExcludeSupport, includes, excludes, o, name)) {
+                        continue;
+                    }
                     writer.key(field.getName());
                     json.convertAnother(field.get(o));
                 }
@@ -85,7 +93,8 @@ public class GenericJavaBeanMarshaller extends IncludeExcludePropertyMarshaller<
         }
     }
 
-    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport, List<String> includes, List<String> excludes, Object o, String name) {
+    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport,
+            List<String> includes, List<String> excludes, Object o, String name) {
         return includeExcludeSupport.shouldInclude(includes, excludes, name) && shouldInclude(o, name);
     }
 

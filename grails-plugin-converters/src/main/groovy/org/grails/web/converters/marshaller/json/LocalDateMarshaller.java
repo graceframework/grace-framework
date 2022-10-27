@@ -60,7 +60,7 @@ public class LocalDateMarshaller implements ObjectMarshaller<JSON> {
 
     public void marshalObject(Object object, JSON converter) throws ConverterException {
         try {
-            converter.getWriter().value(formatter.format(object));
+            converter.getWriter().value(this.formatter.format(object));
         }
         catch (JSONException e) {
             throw new ConverterException(e);

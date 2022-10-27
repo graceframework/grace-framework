@@ -34,7 +34,7 @@ public class ObjectMarshallerRegisterer {
     private int priority = DefaultConverterConfiguration.DEFAULT_PRIORITY;
 
     public ObjectMarshaller getMarshaller() {
-        return marshaller;
+        return this.marshaller;
     }
 
     public void setMarshaller(ObjectMarshaller marshaller) {
@@ -42,7 +42,7 @@ public class ObjectMarshallerRegisterer {
     }
 
     public Class<? extends Converter> getConverterClass() {
-        return converterClass;
+        return this.converterClass;
     }
 
     public void setConverterClass(Class<? extends Converter> converterClass) {
@@ -50,7 +50,7 @@ public class ObjectMarshallerRegisterer {
     }
 
     public int getPriority() {
-        return priority;
+        return this.priority;
     }
 
     public void setPriority(int priority) {

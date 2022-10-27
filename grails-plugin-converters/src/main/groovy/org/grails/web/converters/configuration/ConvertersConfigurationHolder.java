@@ -33,7 +33,7 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
  * @since 1.1
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class ConvertersConfigurationHolder {
+public final class ConvertersConfigurationHolder {
 
     public static final String CONVERTERS_DEFAULT_ENCODING = "UTF-8";
 
@@ -47,22 +47,14 @@ public class ConvertersConfigurationHolder {
 
     private static ConvertersConfigurationHolder INSTANCE = new ConvertersConfigurationHolder();
 
-    private final ConcurrentMap<Class<? extends Converter>, ConverterConfiguration> defaultConfiguration =
-            new ConcurrentHashMap<Class<? extends Converter>, ConverterConfiguration>();
+    private final ConcurrentMap<Class<? extends Converter>, ConverterConfiguration> defaultConfiguration = new ConcurrentHashMap<>();
 
-    private final ConcurrentMap<Class<? extends Converter>, Map<String, ConverterConfiguration>> namedConfigurations =
-            new ConcurrentHashMap<Class<? extends Converter>, Map<String, ConverterConfiguration>>();
+    private final ConcurrentMap<Class<? extends Converter>, Map<String, ConverterConfiguration>> namedConfigurations = new ConcurrentHashMap<>();
 
     private ThreadLocal<Map<Class<? extends Converter>, ConverterConfiguration>> threadLocalConfiguration = createThreadLocalConfiguration();
 
-    protected static ThreadLocal<Map<Class<? extends Converter>, ConverterConfiguration>> createThreadLocalConfiguration() {
-        return new ThreadLocal<Map<Class<? extends Converter>, ConverterConfiguration>>() {
-            protected Map<java.lang.Class<? extends Converter>, ConverterConfiguration> initialValue() {
-                return new HashMap<Class<? extends Converter>, ConverterConfiguration>();
-            }
-
-            ;
-        };
+    private static ThreadLocal<Map<Class<? extends Converter>, ConverterConfiguration>> createThreadLocalConfiguration() {
+        return ThreadLocal.withInitial(HashMap::new);
     }
 
     private ConvertersConfigurationHolder() {
@@ -81,14 +73,15 @@ public class ConvertersConfigurationHolder {
     }
 
     public static <C extends Converter> void setDefaultConfiguration(Class<C> c, List<ObjectMarshaller<C>> om) {
-        getInstance().defaultConfiguration.put(c, new DefaultConverterConfiguration<C>(om));
+        getInstance().defaultConfiguration.put(c, new DefaultConverterConfiguration<>(om));
     }
 
     private static ConvertersConfigurationHolder getInstance() throws ConverterException {
         return INSTANCE;
     }
 
-    public static <C extends Converter> ConverterConfiguration<C> getConverterConfiguration(Class<C> converterClass) throws ConverterException {
+    public static <C extends Converter> ConverterConfiguration<C> getConverterConfiguration(Class<C> converterClass)
+            throws ConverterException {
         ConverterConfiguration<C> cfg = getThreadLocalConverterConfiguration(converterClass);
         if (cfg == null) {
             cfg = getInstance().defaultConfiguration.get(converterClass);
@@ -103,34 +96,39 @@ public class ConvertersConfigurationHolder {
         return cfg;
     }
 
-    public static <C extends Converter> ConverterConfiguration<C> getNamedConverterConfiguration(String name, Class<C> converterClass) throws ConverterException {
+    public static <C extends Converter> ConverterConfiguration<C> getNamedConverterConfiguration(String name, Class<C> converterClass)
+            throws ConverterException {
         Map<String, ConverterConfiguration> map = getNamedConfigMapForConverter(converterClass, false);
         return map != null ? map.get(name) : null;
     }
 
-    public static <C extends Converter> ConverterConfiguration<C> getThreadLocalConverterConfiguration(Class<C> converterClass) throws ConverterException {
+    public static <C extends Converter> ConverterConfiguration<C> getThreadLocalConverterConfiguration(Class<C> converterClass)
+            throws ConverterException {
         return getInstance().threadLocalConfiguration.get().get(converterClass);
     }
 
-    public static <C extends Converter> void setThreadLocalConverterConfiguration(Class<C> converterClass, ConverterConfiguration<C> cfg) throws ConverterException {
+    public static <C extends Converter> void setThreadLocalConverterConfiguration(Class<C> converterClass, ConverterConfiguration<C> cfg)
+            throws ConverterException {
         getInstance().threadLocalConfiguration.get().put(converterClass, cfg);
     }
 
-    public static <C extends Converter> void setNamedConverterConfiguration(Class<C> converterClass, String name, ConverterConfiguration<C> cfg) throws ConverterException {
+    public static <C extends Converter> void setNamedConverterConfiguration(Class<C> converterClass, String name, ConverterConfiguration<C> cfg)
+            throws ConverterException {
         getNamedConfigMapForConverter(converterClass, true).put(name, cfg);
     }
 
     private static <C extends Converter> Map<String, ConverterConfiguration> getNamedConfigMapForConverter(Class<C> clazz, boolean create) {
         Map<String, ConverterConfiguration> namedConfigs = getInstance().namedConfigurations.get(clazz);
         if (namedConfigs == null && create) {
-            namedConfigs = new HashMap<String, ConverterConfiguration>();
+            namedConfigs = new HashMap<>();
             getInstance().namedConfigurations.put(clazz, namedConfigs);
         }
         return namedConfigs;
     }
 
-    public static <C extends Converter> void setNamedConverterConfiguration(Class<C> converterClass, String name, List<ObjectMarshaller<C>> om) throws ConverterException {
-        getNamedConfigMapForConverter(converterClass, true).put(name, new DefaultConverterConfiguration<C>(om));
+    public static <C extends Converter> void setNamedConverterConfiguration(Class<C> converterClass, String name, List<ObjectMarshaller<C>> om)
+            throws ConverterException {
+        getNamedConfigMapForConverter(converterClass, true).put(name, new DefaultConverterConfiguration<>(om));
     }
 
 }

@@ -25,14 +25,11 @@ import grails.converters.XML
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
- *
- *
+ * An extension that adds methods to the {@link HttpServletRequest} object
  *
  * @author Jeff Brown
  * @author Graeme Rocher
- *
  * @since 3.0
- *
  */
 @CompileStatic
 class ConvertersExtension {
@@ -51,12 +48,12 @@ class ConvertersExtension {
                     instance,
                     GrailsWebRequest.lookup()?.applicationContext)
         }
-        else {
-            return (T) ConverterUtil.invokeOriginalAsTypeMethod(instance, clazz)
-        }
+
+        (T) ConverterUtil.invokeOriginalAsTypeMethod(instance, clazz)
     }
 
     static <T> T asType(Object[] array, Class<T> clazz) {
         asType((Object) array, clazz)
     }
+
 }

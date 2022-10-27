@@ -16,6 +16,7 @@
 package org.grails.web.converters.marshaller.json;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -70,9 +71,9 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
 
     private boolean includeClass = false;
 
-    private ProxyHandler proxyHandler;
+    private final ProxyHandler proxyHandler;
 
-    private GrailsApplication application;
+    private final GrailsApplication application;
 
     private List<DomainClassFetcher> domainClassFetchers;
 
@@ -95,18 +96,18 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
     }
 
     private void initializeDomainClassFetchers() {
-        this.domainClassFetchers = new ArrayList<DomainClassFetcher>() {{
-            add(new ByGrailsApplicationDomainClassFetcher(application));
-            add(new ByDatasourceDomainClassFetcher());
-        }};
+        this.domainClassFetchers = Arrays.asList(
+                new ByGrailsApplicationDomainClassFetcher(this.application),
+                new ByDatasourceDomainClassFetcher()
+        );
     }
 
     public boolean isIncludeVersion() {
-        return includeVersion;
+        return this.includeVersion;
     }
 
     public boolean isIncludeClass() {
-        return includeClass;
+        return this.includeClass;
     }
 
     public void setIncludeClass(boolean includeClass) {
@@ -119,37 +120,37 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
 
     public boolean supports(Object object) {
         String name = ConverterUtil.trimProxySuffix(object.getClass().getName());
-        return application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
+        return this.application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void marshalObject(Object value, JSON json) throws ConverterException {
         JSONWriter writer = json.getWriter();
-        value = proxyHandler.unwrapIfProxy(value);
+        value = this.proxyHandler.unwrapIfProxy(value);
         Class<?> clazz = value.getClass();
 
         List<String> excludes = json.getExcludes(clazz);
         List<String> includes = json.getIncludes(clazz);
-        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<String>();
-
+        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<>();
 
         BeanWrapper beanWrapper = new BeanWrapperImpl(value);
 
         writer.object();
 
-        if (includeClass && shouldInclude(includeExcludeSupport, includes, excludes, value, "class")) {
+        if (this.includeClass && shouldInclude(includeExcludeSupport, includes, excludes, value, "class")) {
             writer.key("class").value(clazz.getName());
         }
 
         PersistentEntity domainClass = findDomainClass(value);
 
         if (domainClass == null) {
-            throw new GrailsConfigurationException("Could not retrieve the respective entity for domain " + value.getClass().getName() + " in the mapping context API");
+            throw new GrailsConfigurationException(
+                    String.format("Could not retrieve the respective entity for domain %s in the mapping context API", value.getClass().getName()));
         }
 
         PersistentProperty id = domainClass.getIdentity();
         if (id != null) {
-            //Composite keys dont return an identity. They also do not render in the JSON. 
+            //Composite keys don't return an identity. They also do not render in the JSON.
             //If using Composite keys, it may be advisable to use a customer Marshaller.
             if (shouldInclude(includeExcludeSupport, includes, excludes, value, id.getName())) {
                 Object idValue = extractValue(value, id);
@@ -158,7 +159,6 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
                 }
             }
         }
-
 
         if (shouldInclude(includeExcludeSupport, includes, excludes, value, GormProperties.VERSION) && isIncludeVersion()) {
             PersistentProperty versionProperty = domainClass.getVersion();
@@ -175,7 +175,9 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
                 continue;
             }
 
-            if (!shouldInclude(includeExcludeSupport, includes, excludes, value, property.getName())) continue;
+            if (!shouldInclude(includeExcludeSupport, includes, excludes, value, property.getName())) {
+                continue;
+            }
 
             writer.key(property.getName());
             if (!(property instanceof Association)) {
@@ -190,7 +192,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
                         writer.valueNull();
                     }
                     else {
-                        referenceObject = proxyHandler.unwrapIfProxy(referenceObject);
+                        referenceObject = this.proxyHandler.unwrapIfProxy(referenceObject);
                         if (referenceObject instanceof SortedMap) {
                             referenceObject = new TreeMap((SortedMap) referenceObject);
                         }
@@ -214,7 +216,6 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
                         json.value(null);
                     }
                     else {
-
                         PersistentEntity referencedDomainClass = ((Association) property).getAssociatedEntity();
 
                         // Embedded are now always fully rendered
@@ -256,7 +257,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
     }
 
     private PersistentEntity findDomainClass(Object value) {
-        for (DomainClassFetcher fetcher : domainClassFetchers) {
+        for (DomainClassFetcher fetcher : this.domainClassFetchers) {
             PersistentEntity domain = fetcher.findDomainClass(value);
             if (domain != null) {
                 return domain;
@@ -265,16 +266,18 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<JSON
         return null;
     }
 
-    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport, List<String> includes, List<String> excludes, Object object, String propertyName) {
+    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport,
+            List<String> includes, List<String> excludes, Object object, String propertyName) {
         return includeExcludeSupport.shouldInclude(includes, excludes, propertyName) && shouldInclude(object, propertyName);
     }
 
-    protected void asShortObject(Object refObj, JSON json, PersistentProperty idProperty, PersistentEntity referencedDomainClass) throws ConverterException {
+    protected void asShortObject(Object refObj, JSON json,
+            PersistentProperty idProperty, PersistentEntity referencedDomainClass) throws ConverterException {
 
         Object idValue;
 
-        if (proxyHandler instanceof EntityProxyHandler) {
-            idValue = ((EntityProxyHandler) proxyHandler).getProxyIdentifier(refObj);
+        if (this.proxyHandler instanceof EntityProxyHandler) {
+            idValue = ((EntityProxyHandler) this.proxyHandler).getProxyIdentifier(refObj);
             if (idValue == null) {
                 idValue = extractValue(refObj, idProperty);
             }

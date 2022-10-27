@@ -40,7 +40,7 @@ import org.grails.web.converters.exceptions.ConverterException;
  * @author Siegfried Puchbauer
  * @since 0.6
  */
-public class ConverterUtil {
+public final class ConverterUtil {
 
     private static final String PERSISTENCE_BEAN_WRAPPER_CLASS = "org.codehaus.groovy.grails.orm.hibernate.support.HibernateBeanWrapper";
 

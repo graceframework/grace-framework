@@ -21,7 +21,8 @@ package org.grails.web.converters
  * @author Graeme Rocher
  * @since 2.3
  */
-public interface ConfigurableConverter<W> extends Converter<W> {
+interface ConfigurableConverter<W> extends Converter<W> {
+
     /**
      * Sets the content type of the converter
      * @param contentType The content type
@@ -61,4 +62,5 @@ public interface ConfigurableConverter<W> extends Converter<W> {
      * @return The includes
      */
     List<String> getIncludes(Class type)
+
 }

@@ -99,7 +99,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
 
     public boolean supports(Object object) {
         String name = ConverterUtil.trimProxySuffix(object.getClass().getName());
-        return application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
+        return this.application.isArtefactOfType(DomainClassArtefactHandler.TYPE, name);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -108,12 +108,13 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
 
         List<String> excludes = xml.getExcludes(clazz);
         List<String> includes = xml.getIncludes(clazz);
-        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<String>();
+        IncludeExcludeSupport<String> includeExcludeSupport = new IncludeExcludeSupport<>();
 
         PersistentEntity domainClass = findDomainClass(value);
 
         if (domainClass == null) {
-            throw new GrailsConfigurationException("Could not retrieve the respective entity for domain " + value.getClass().getName() + " in the mapping context API");
+            throw new GrailsConfigurationException(
+                    String.format("Could not retrieve the respective entity for domain %s in the mapping context API", value.getClass().getName()));
         }
         BeanWrapper beanWrapper = new BeanWrapperImpl(value);
 
@@ -121,10 +122,12 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
         if (shouldInclude(includeExcludeSupport, includes, excludes, value, id.getName())) {
             Object idValue = beanWrapper.getPropertyValue(id.getName());
 
-            if (idValue != null) xml.attribute("id", String.valueOf(idValue));
+            if (idValue != null) {
+                xml.attribute("id", String.valueOf(idValue));
+            }
         }
 
-        if (shouldInclude(includeExcludeSupport, includes, excludes, value, GormProperties.VERSION) && includeVersion) {
+        if (shouldInclude(includeExcludeSupport, includes, excludes, value, GormProperties.VERSION) && this.includeVersion) {
             Object versionValue = beanWrapper.getPropertyValue(domainClass.getVersion().getName());
             if (versionValue != null) {
                 final String str = String.valueOf(versionValue);
@@ -133,7 +136,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
                 }
             }
         }
-        if (includeClass && shouldInclude(includeExcludeSupport, includes, excludes, value, "class")) {
+        if (this.includeClass && shouldInclude(includeExcludeSupport, includes, excludes, value, "class")) {
             xml.attribute("class", domainClass.getJavaClass().getName());
         }
 
@@ -145,7 +148,9 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
                 continue;
             }
 
-            if (!shouldInclude(includeExcludeSupport, includes, excludes, value, property.getName())) continue;
+            if (!shouldInclude(includeExcludeSupport, includes, excludes, value, property.getName())) {
+                continue;
+            }
 
             xml.startNode(propertyName);
             if (!(property instanceof Association)) {
@@ -157,7 +162,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
                 if (isRenderDomainClassRelations()) {
                     Object referenceObject = beanWrapper.getPropertyValue(propertyName);
                     if (referenceObject != null && shouldInitializeProxy(referenceObject)) {
-                        referenceObject = proxyHandler.unwrapIfProxy(referenceObject);
+                        referenceObject = this.proxyHandler.unwrapIfProxy(referenceObject);
                         if (referenceObject instanceof SortedMap) {
                             referenceObject = new TreeMap((SortedMap) referenceObject);
                         }
@@ -218,12 +223,13 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
         }
     }
 
-    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport, List<String> includes, List<String> excludes, Object object, String name) {
+    private boolean shouldInclude(IncludeExcludeSupport<String> includeExcludeSupport,
+            List<String> includes, List<String> excludes, Object object, String name) {
         return includeExcludeSupport.shouldInclude(includes, excludes, name) && shouldInclude(object, name);
     }
 
     private boolean shouldInitializeProxy(Object object) {
-        return proxyHandler.isInitialized(object) || shouldInitializeProxies();
+        return this.proxyHandler.isInitialized(object) || shouldInitializeProxies();
     }
 
     protected boolean shouldInitializeProxies() {
@@ -231,10 +237,11 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
     }
 
 
-    protected void asShortObject(Object refObj, XML xml, PersistentProperty idProperty, PersistentEntity referencedDomainClass) throws ConverterException {
+    protected void asShortObject(Object refObj, XML xml,
+            PersistentProperty idProperty, PersistentEntity referencedDomainClass) throws ConverterException {
         Object idValue;
-        if (proxyHandler instanceof EntityProxyHandler) {
-            idValue = ((EntityProxyHandler) proxyHandler).getProxyIdentifier(refObj);
+        if (this.proxyHandler instanceof EntityProxyHandler) {
+            idValue = ((EntityProxyHandler) this.proxyHandler).getProxyIdentifier(refObj);
             if (idValue == null) {
                 ClassPropertyFetcher propertyFetcher = ClassPropertyFetcher.forClass(refObj.getClass());
                 idValue = propertyFetcher.getPropertyValue(refObj, idProperty.getName());
@@ -252,7 +259,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
     }
 
     private PersistentEntity findDomainClass(Object value) {
-        for (DomainClassFetcher fetcher : domainClassFetchers) {
+        for (DomainClassFetcher fetcher : this.domainClassFetchers) {
             PersistentEntity domain = fetcher.findDomainClass(value);
             if (domain != null) {
                 return domain;

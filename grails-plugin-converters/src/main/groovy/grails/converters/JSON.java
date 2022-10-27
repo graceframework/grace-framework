@@ -65,7 +65,7 @@ import org.grails.web.json.PrettyPrintJSONWriter;
  */
 public class JSON extends AbstractConverter<JSONWriter> implements IncludeExcludeConverter<JSONWriter> {
 
-    private final static Log log = LogFactory.getLog(JSON.class);
+    private static final Log log = LogFactory.getLog(JSON.class);
 
     private static final String CACHED_JSON = "org.codehaus.groovy.grails.CACHED_JSON_REQUEST_CONTENT";
 
@@ -89,11 +89,11 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      * Default Constructor for a JSON Converter
      */
     public JSON() {
-        config = initConfig();
-        encoding = config != null ? config.getEncoding() : "UTF-8";
+        this.config = initConfig();
+        encoding = this.config != null ? this.config.getEncoding() : "UTF-8";
         contentType = MimeType.JSON.getName();
-        circularReferenceBehaviour = config != null ? config.getCircularReferenceBehaviour() : CircularReferenceBehaviour.DEFAULT;
-        prettyPrint = config != null && config.isPrettyPrint();
+        this.circularReferenceBehaviour = this.config != null ? this.config.getCircularReferenceBehaviour() : CircularReferenceBehaviour.DEFAULT;
+        this.prettyPrint = this.config != null && this.config.isPrettyPrint();
     }
 
     /**
@@ -111,14 +111,14 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     }
 
     private void prepareRender(Writer out) {
-        writer = prettyPrint ? new PrettyPrintJSONWriter(out) : new JSONWriter(out);
-        if (circularReferenceBehaviour == CircularReferenceBehaviour.PATH) {
+        this.writer = this.prettyPrint ? new PrettyPrintJSONWriter(out) : new JSONWriter(out);
+        if (this.circularReferenceBehaviour == CircularReferenceBehaviour.PATH) {
             if (log.isInfoEnabled()) {
                 log.info(String.format("Using experimental CircularReferenceBehaviour.PATH for %s", getClass().getName()));
             }
-            writer = new PathCapturingJSONWriterWrapper(writer);
+            this.writer = new PathCapturingJSONWriterWrapper(this.writer);
         }
-        referenceStack = new Stack<>();
+        this.referenceStack = new Stack<>();
     }
 
     private void finalizeRender(Writer out) {
@@ -140,7 +140,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      */
     public void render(Writer out) throws ConverterException {
         prepareRender(out);
-        value(target);
+        value(this.target);
         finalizeRender(out);
     }
 
@@ -161,7 +161,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     }
 
     public JSONWriter getWriter() throws ConverterException {
-        return writer;
+        return this.writer;
     }
 
     public void convertAnother(Object o) throws ConverterException {
@@ -177,38 +177,38 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      * @throws ConverterException
      */
     public void value(Object o) throws ConverterException {
-        o = config.getProxyHandler().unwrapIfProxy(o);
+        o = this.config.getProxyHandler().unwrapIfProxy(o);
         try {
             if (o == null) {
-                writer.valueNull();
+                this.writer.valueNull();
             }
             else if (o instanceof CharSequence) {
-                writer.value(o);
+                this.writer.value(o);
             }
             else if (o instanceof Class<?>) {
-                writer.value(((Class<?>) o).getName());
+                this.writer.value(((Class<?>) o).getName());
             }
             else if (o instanceof Number) {
-                writer.value((Number) o);
+                this.writer.value((Number) o);
             }
             else if (o instanceof Boolean) {
-                writer.value((Boolean) o);
+                this.writer.value((Boolean) o);
             }
             else if (o.getClass().isPrimitive() && !o.getClass().equals(byte[].class)) {
-                writer.value(o);
+                this.writer.value(o);
             }
             else {
-                if (referenceStack.contains(o)) {
+                if (this.referenceStack.contains(o)) {
                     handleCircularRelationship(o);
                 }
                 else {
-                    referenceStack.push(o);
-                    ObjectMarshaller<JSON> marshaller = config.getMarshaller(o);
+                    this.referenceStack.push(o);
+                    ObjectMarshaller<JSON> marshaller = this.config.getMarshaller(o);
                     if (marshaller == null) {
                         throw new ConverterException("Unconvertable Object of class: " + o.getClass().getName());
                     }
                     marshaller.marshalObject(o, this);
-                    referenceStack.pop();
+                    this.referenceStack.pop();
                 }
             }
         }
@@ -221,15 +221,15 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     }
 
     public ObjectMarshaller<JSON> lookupObjectMarshaller(Object target) {
-        return config.getMarshaller(target);
+        return this.config.getMarshaller(target);
     }
 
     public int getDepth() {
-        return referenceStack.size();
+        return this.referenceStack.size();
     }
 
     public void property(String key, Object value) throws JSONException, ConverterException {
-        writer.key(key);
+        this.writer.key(key);
         value(value);
     }
 
@@ -323,7 +323,8 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                 pushbackInputStream = new PushbackInputStream(request.getInputStream());
                 firstByte = pushbackInputStream.read();
             }
-            catch (IOException ioe) {}
+            catch (IOException ignore) {
+            }
 
             // code has only been changed from here down
             if (firstByte == -1) {
@@ -353,16 +354,16 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     }
 
     protected void handleCircularRelationship(Object o) throws ConverterException {
-        switch (circularReferenceBehaviour) {
+        switch (this.circularReferenceBehaviour) {
             case DEFAULT:
                 final boolean isCollection = Collection.class.isAssignableFrom(o.getClass());
                 final boolean isMap = Map.class.isAssignableFrom(o.getClass());
                 if (!(isMap || isCollection)) {
-                    Map<String, Object> props = new HashMap<String, Object>();
+                    Map<String, Object> props = new HashMap<>();
                     props.put("class", o.getClass());
                     StringBuilder ref = new StringBuilder();
-                    int idx = referenceStack.indexOf(o);
-                    for (int i = referenceStack.size() - 1; i > idx; i--) {
+                    int idx = this.referenceStack.indexOf(o);
+                    for (int i = this.referenceStack.size() - 1; i > idx; i--) {
                         ref.append("../");
                     }
                     props.put("_ref", ref.substring(0, ref.length() - 1));
@@ -370,10 +371,12 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                 }
                 else {
                     if (isMap) {
-                        writer.object(); writer.endObject();
+                        this.writer.object();
+                        this.writer.endObject();
                     }
                     else {
-                        writer.array(); writer.endArray();
+                        this.writer.array();
+                        this.writer.endArray();
                     }
                 }
                 break;
@@ -385,8 +388,8 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             case PATH:
                 Map<String, Object> props = new HashMap<String, Object>();
                 props.put("class", o.getClass());
-                int idx = referenceStack.indexOf(o);
-                PathCapturingJSONWriterWrapper pcWriter = (PathCapturingJSONWriterWrapper) writer;
+                int idx = this.referenceStack.indexOf(o);
+                PathCapturingJSONWriterWrapper pcWriter = (PathCapturingJSONWriterWrapper) this.writer;
                 props.put("ref", String.format("root%s", pcWriter.getStackReference(idx)));
                 value(props);
                 break;
@@ -438,7 +441,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             throw new ConverterException("Default Configuration not found for class " + JSON.class.getName());
         }
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<JSON>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
             ConvertersConfigurationHolder.setDefaultConfiguration(JSON.class, cfg);
         }
         ((DefaultConverterConfiguration<JSON>) cfg).registerObjectMarshaller(om);
@@ -450,14 +453,15 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             throw new ConverterException("Default Configuration not found for class " + JSON.class.getName());
         }
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<JSON>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
             ConvertersConfigurationHolder.setDefaultConfiguration(JSON.class, cfg);
         }
         ((DefaultConverterConfiguration<JSON>) cfg).registerObjectMarshaller(om, priority);
     }
 
     public static void createNamedConfig(String name, Closure<?> callable) throws ConverterException {
-        DefaultConverterConfiguration<JSON> cfg = new DefaultConverterConfiguration<JSON>(ConvertersConfigurationHolder.getConverterConfiguration(JSON.class));
+        DefaultConverterConfiguration<JSON> cfg =
+                new DefaultConverterConfiguration<>(ConvertersConfigurationHolder.getConverterConfiguration(JSON.class));
         try {
             callable.call(cfg);
             ConvertersConfigurationHolder.setNamedConverterConfiguration(JSON.class, name, cfg);
@@ -470,7 +474,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     public static void withDefaultConfiguration(Closure<?> callable) throws ConverterException {
         ConverterConfiguration<JSON> cfg = ConvertersConfigurationHolder.getConverterConfiguration(JSON.class);
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<JSON>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
         }
         try {
             callable.call(cfg);
@@ -484,21 +488,27 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
 
     @Override
     public void setIncludes(List<String> includes) {
-        setIncludes(target.getClass(), includes);
+        setIncludes(this.target.getClass(), includes);
     }
 
     @Override
     public void setExcludes(List<String> excludes) {
-        setExcludes(target.getClass(), excludes);
+        setExcludes(this.target.getClass(), excludes);
     }
 
     public class Builder extends BuilderSupport {
 
-        private JSON json;
+        private final JSON json;
+
+        private final Stack<BuilderMode> stack = new Stack<>();
+
+        private boolean start = true;
+
+        private final JSONWriter writer;
 
         public Builder(JSON json) {
             this.json = json;
-            writer = json.writer;
+            this.writer = json.writer;
         }
 
         public void execute(Closure<?> callable) {
@@ -507,30 +517,24 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             invokeMethod("json", new Object[] { callable });
         }
 
-        private Stack<BuilderMode> stack = new Stack<BuilderMode>();
-
-        private boolean start = true;
-
-        private JSONWriter writer;
-
         @Override
         protected Object createNode(Object name) {
             int retVal = 1;
             try {
-                if (start) {
-                    start = false;
+                if (this.start) {
+                    this.start = false;
                     writeObject();
                 }
                 else {
-                    if (getCurrent() == null && stack.peek() == BuilderMode.OBJECT) {
+                    if (getCurrent() == null && this.stack.peek() == BuilderMode.OBJECT) {
                         throw new IllegalArgumentException("only call to [element { }] is allowed when creating array");
                     }
-                    if (stack.peek() == BuilderMode.ARRAY) {
+                    if (this.stack.peek() == BuilderMode.ARRAY) {
                         writeObject();
                         retVal = 2;
                     }
-                    writer.key(String.valueOf(name)).array();
-                    stack.push(BuilderMode.ARRAY);
+                    this.writer.key(String.valueOf(name)).array();
+                    this.stack.push(BuilderMode.ARRAY);
                 }
             }
             catch (JSONException e) {
@@ -544,16 +548,16 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
         @Override
         protected Object createNode(Object key, Map valueMap) {
             try {
-                if (stack.peek().equals(BuilderMode.OBJECT)) {
-                    writer.key(String.valueOf(key));
+                if (this.stack.peek().equals(BuilderMode.OBJECT)) {
+                    this.writer.key(String.valueOf(key));
                 }
-                writer.object();
+                this.writer.object();
                 for (Object o : valueMap.entrySet()) {
                     Map.Entry element = (Map.Entry) o;
-                    writer.key(String.valueOf(element.getKey()));//.value(element.getValue());
-                    json.convertAnother(element.getValue());
+                    this.writer.key(String.valueOf(element.getKey())); //.value(element.getValue());
+                    this.json.convertAnother(element.getValue());
                 }
-                writer.endObject();
+                this.writer.endObject();
                 return null;
             }
             catch (JSONException e) {
@@ -570,24 +574,24 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
         @SuppressWarnings("rawtypes")
         @Override
         protected Object createNode(Object key, Object value) {
-            if (getCurrent() == null && stack.peek() == BuilderMode.OBJECT) {
+            if (getCurrent() == null && this.stack.peek() == BuilderMode.OBJECT) {
                 throw new IllegalArgumentException("only call to [element { }] is allowed when creating array");
             }
 
             try {
                 int retVal = 0;
-                if (stack.peek().equals(BuilderMode.ARRAY)) {
+                if (this.stack.peek().equals(BuilderMode.ARRAY)) {
                     writeObject();
                     retVal = 1;
                 }
                 if (value instanceof Collection) {
                     Collection c = (Collection) value;
-                    writer.key(String.valueOf(key));
+                    this.writer.key(String.valueOf(key));
                     handleCollectionRecurse(c);
                 }
                 else {
-                    writer.key(String.valueOf(key));
-                    json.convertAnother(value); //.value(value);
+                    this.writer.key(String.valueOf(key));
+                    this.json.convertAnother(value); //.value(value);
                 }
                 return retVal != 0 ? retVal : null;
             }
@@ -598,16 +602,16 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
 
         @SuppressWarnings("rawtypes")
         private void handleCollectionRecurse(Collection c) throws JSONException {
-            writer.array();
+            this.writer.array();
             for (Object element : c) {
                 if (element instanceof Collection) {
                     handleCollectionRecurse((Collection) element);
                 }
                 else {
-                    json.convertAnother(element);
+                    this.json.convertAnother(element);
                 }
             }
-            writer.endArray();
+            this.writer.endArray();
         }
 
         @Override
@@ -621,12 +625,12 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
             try {
                 int i = ((Integer) node);
                 while (i-- > 0) {
-                    last = stack.pop();
+                    last = this.stack.pop();
                     if (BuilderMode.ARRAY == last) {
-                        writer.endArray();
+                        this.writer.endArray();
                     }
                     if (BuilderMode.OBJECT == last) {
-                        writer.endObject();
+                        this.writer.endObject();
                     }
                 }
             }
@@ -641,8 +645,8 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
         }
 
         private void writeObject() throws JSONException {
-            writer.object();
-            stack.push(BuilderMode.OBJECT);
+            this.writer.object();
+            this.stack.push(BuilderMode.OBJECT);
         }
 
     }

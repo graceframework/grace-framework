@@ -50,11 +50,11 @@ public class ImmutableConverterConfiguration<C extends Converter> implements Con
     }
 
     public ImmutableConverterConfiguration(ConverterConfiguration<C> cfg, ProxyHandler proxyHandler) {
-        marshallers = Collections.unmodifiableList(cfg.getOrderedObjectMarshallers());
-        encoding = cfg.getEncoding();
-        prettyPrint = cfg.isPrettyPrint();
-        cacheObjectMarshallerByClass = cfg.isCacheObjectMarshallerByClass();
-        circularReferenceBehaviour = cfg.getCircularReferenceBehaviour();
+        this.marshallers = Collections.unmodifiableList(cfg.getOrderedObjectMarshallers());
+        this.encoding = cfg.getEncoding();
+        this.prettyPrint = cfg.isPrettyPrint();
+        this.cacheObjectMarshallerByClass = cfg.isCacheObjectMarshallerByClass();
+        this.circularReferenceBehaviour = cfg.getCircularReferenceBehaviour();
         this.proxyHandler = proxyHandler;
     }
 
@@ -62,7 +62,7 @@ public class ImmutableConverterConfiguration<C extends Converter> implements Con
      * @see ConverterConfiguration#getMarshaller(Object)
      */
     public ObjectMarshaller<C> getMarshaller(Object o) {
-        for (ObjectMarshaller<C> om : marshallers) {
+        for (ObjectMarshaller<C> om : this.marshallers) {
             if (om.supports(o)) {
                 return om;
             }
@@ -74,33 +74,33 @@ public class ImmutableConverterConfiguration<C extends Converter> implements Con
      * @see ConverterConfiguration#getEncoding()
      */
     public String getEncoding() {
-        return encoding;
+        return this.encoding;
     }
 
     /**
      * @see ConverterConfiguration#getCircularReferenceBehaviour()
      */
     public Converter.CircularReferenceBehaviour getCircularReferenceBehaviour() {
-        return circularReferenceBehaviour;
+        return this.circularReferenceBehaviour;
     }
 
     /**
      * @see ConverterConfiguration#isPrettyPrint()
      */
     public boolean isPrettyPrint() {
-        return prettyPrint;
+        return this.prettyPrint;
     }
 
     public List<ObjectMarshaller<C>> getOrderedObjectMarshallers() {
-        return marshallers;
+        return this.marshallers;
     }
 
     public ProxyHandler getProxyHandler() {
-        return proxyHandler;
+        return this.proxyHandler;
     }
 
     public boolean isCacheObjectMarshallerByClass() {
-        return cacheObjectMarshallerByClass;
+        return this.cacheObjectMarshallerByClass;
     }
 
 }

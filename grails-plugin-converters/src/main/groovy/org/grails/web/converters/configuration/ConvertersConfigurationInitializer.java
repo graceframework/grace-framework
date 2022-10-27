@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,10 @@ import org.grails.web.converters.marshaller.ProxyUnwrappingMarshaller;
  * @author Michael Yan
  * @since 1.1
  */
-public class ConvertersConfigurationInitializer implements ApplicationContextAware, GrailsApplicationAware, InitializingBean, SmartInitializingSingleton {
+public class ConvertersConfigurationInitializer implements ApplicationContextAware, GrailsApplicationAware,
+        InitializingBean, SmartInitializingSingleton {
+
+    public static final Log logger = LogFactory.getLog(ConvertersConfigurationInitializer.class);
 
     public static final String SETTING_CONVERTERS_JSON_DATE = "grails.converters.json.date";
 
@@ -70,14 +73,12 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     private GrailsApplication grailsApplication;
 
     public ApplicationContext getApplicationContext() {
-        return applicationContext;
+        return this.applicationContext;
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-
-    public final Log LOG = LogFactory.getLog(ConvertersConfigurationInitializer.class);
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -90,8 +91,8 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     }
 
     public void initialize() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing Converters Default Configurations...");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Initializing Converters Default Configurations...");
         }
         initJSONConfiguration();
         initXMLConfiguration();
@@ -100,30 +101,31 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     }
 
     private void initJSONConfiguration() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing default JSON Converters Configuration...");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Initializing default JSON Converters Configuration...");
         }
 
-        List<ObjectMarshaller<JSON>> marshallers = new ArrayList<ObjectMarshaller<JSON>>();
+        List<ObjectMarshaller<JSON>> marshallers = new ArrayList<>();
         marshallers.addAll(getPreviouslyConfiguredMarshallers(JSON.class));
         marshallers.add(new org.grails.web.converters.marshaller.json.ArrayMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.json.ByteArrayMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.json.CollectionMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.json.MapMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.json.EnumMarshaller());
-        marshallers.add(new org.grails.web.converters.marshaller.ProxyUnwrappingMarshaller<JSON>());
+        marshallers.add(new org.grails.web.converters.marshaller.ProxyUnwrappingMarshaller<>());
 
         Config grailsConfig = getGrailsConfig();
 
-        if ("javascript".equals(grailsConfig.getProperty(SETTING_CONVERTERS_JSON_DATE, String.class, "default", Arrays.asList("javascript", "default")))) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Using Javascript JSON Date Marshaller.");
+        if ("javascript".equals(grailsConfig.getProperty(SETTING_CONVERTERS_JSON_DATE,
+                String.class, "default", Arrays.asList("javascript", "default")))) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Using Javascript JSON Date Marshaller.");
             }
             marshallers.add(new org.grails.web.converters.marshaller.json.JavascriptDateMarshaller());
         }
         else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Using default JSON Date Marshaller");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Using default JSON Date Marshaller");
             }
             marshallers.add(new org.grails.web.converters.marshaller.json.DateMarshaller());
         }
@@ -133,11 +135,13 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
         boolean includeDomainClassName = includeDomainClassProperty(grailsConfig, "json");
         ProxyHandler proxyHandler = getProxyHandler();
         if (grailsConfig.getProperty(SETTING_CONVERTERS_JSON_DEFAULT_DEEP, Boolean.class, false)) {
-            LOG.debug("Using DeepDomainClassMarshaller as default.");
-            marshallers.add(new org.grails.web.converters.marshaller.json.DeepDomainClassMarshaller(includeDomainVersion, includeDomainClassName, proxyHandler, grailsApplication));
+            logger.debug("Using DeepDomainClassMarshaller as default.");
+            marshallers.add(new org.grails.web.converters.marshaller.json.DeepDomainClassMarshaller(
+                    includeDomainVersion, includeDomainClassName, proxyHandler, this.grailsApplication));
         }
         else {
-            marshallers.add(new org.grails.web.converters.marshaller.json.DomainClassMarshaller(includeDomainVersion, includeDomainClassName, proxyHandler, grailsApplication));
+            marshallers.add(new org.grails.web.converters.marshaller.json.DomainClassMarshaller(
+                    includeDomainVersion, includeDomainClassName, proxyHandler, this.grailsApplication));
         }
         marshallers.add(new org.grails.web.converters.marshaller.json.GroovyBeanMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.json.GenericJavaBeanMarshaller());
@@ -156,13 +160,13 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
 
         registerObjectMarshallersFromApplicationContext(cfg, JSON.class);
 
-        ConvertersConfigurationHolder.setDefaultConfiguration(JSON.class, new ChainedConverterConfiguration<JSON>(cfg, proxyHandler));
+        ConvertersConfigurationHolder.setDefaultConfiguration(JSON.class, new ChainedConverterConfiguration<>(cfg, proxyHandler));
     }
 
     private Config getGrailsConfig() {
         Config grailsConfig;
-        if (grailsApplication != null) {
-            grailsConfig = grailsApplication.getConfig();
+        if (this.grailsApplication != null) {
+            grailsConfig = this.grailsApplication.getConfig();
         }
         else {
             // empty config, will trigger defaults
@@ -172,15 +176,19 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     }
 
     private void initDeepJSONConfiguration() {
-        DefaultConverterConfiguration<JSON> deepConfig = new DefaultConverterConfiguration<JSON>(ConvertersConfigurationHolder.getConverterConfiguration(JSON.class), getProxyHandler());
-        deepConfig.registerObjectMarshaller(new org.grails.web.converters.marshaller.json.DeepDomainClassMarshaller(includeDomainVersionProperty(getGrailsConfig(), "json"), includeDomainClassProperty(getGrailsConfig(), "json"), getProxyHandler(), grailsApplication));
+        DefaultConverterConfiguration<JSON> deepConfig = new DefaultConverterConfiguration<>(
+                ConvertersConfigurationHolder.getConverterConfiguration(JSON.class), getProxyHandler());
+        deepConfig.registerObjectMarshaller(new org.grails.web.converters.marshaller.json.DeepDomainClassMarshaller(
+                includeDomainVersionProperty(getGrailsConfig(), "json"),
+                includeDomainClassProperty(getGrailsConfig(), "json"),
+                getProxyHandler(), this.grailsApplication));
         ConvertersConfigurationHolder.setNamedConverterConfiguration(JSON.class, "deep", deepConfig);
     }
 
     private void initXMLConfiguration() {
-        LOG.debug("Initializing default XML Converters Configuration...");
+        logger.debug("Initializing default XML Converters Configuration...");
 
-        List<ObjectMarshaller<XML>> marshallers = new ArrayList<ObjectMarshaller<XML>>();
+        List<ObjectMarshaller<XML>> marshallers = new ArrayList<>();
         marshallers.addAll(getPreviouslyConfiguredMarshallers(XML.class));
         marshallers.add(new org.grails.web.converters.marshaller.xml.Base64ByteArrayMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.xml.ArrayMarshaller());
@@ -196,10 +204,12 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
 
         boolean includeDomainVersion = includeDomainVersionProperty(grailsConfig, "xml");
         if (grailsConfig.getProperty(SETTING_CONVERTERS_XML_DEEP, Boolean.class, false)) {
-            marshallers.add(new org.grails.web.converters.marshaller.xml.DeepDomainClassMarshaller(includeDomainVersion, proxyHandler, grailsApplication));
+            marshallers.add(new org.grails.web.converters.marshaller.xml.DeepDomainClassMarshaller(
+                    includeDomainVersion, proxyHandler, this.grailsApplication));
         }
         else {
-            marshallers.add(new org.grails.web.converters.marshaller.xml.DomainClassMarshaller(includeDomainVersion, proxyHandler, grailsApplication));
+            marshallers.add(new org.grails.web.converters.marshaller.xml.DomainClassMarshaller(
+                    includeDomainVersion, proxyHandler, this.grailsApplication));
         }
         marshallers.add(new org.grails.web.converters.marshaller.xml.GroovyBeanMarshaller());
         marshallers.add(new org.grails.web.converters.marshaller.xml.GenericJavaBeanMarshaller());
@@ -214,15 +224,16 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
         Boolean defaultPrettyPrint = grailsConfig.getProperty(SETTING_CONVERTERS_PRETTY_PRINT, Boolean.class, false);
         Boolean prettyPrint = grailsConfig.getProperty("grails.converters.xml.pretty.print", Boolean.class, defaultPrettyPrint);
         cfg.setPrettyPrint(prettyPrint);
-        cfg.setCacheObjectMarshallerByClass(grailsConfig.getProperty("grails.converters.xml.cacheObjectMarshallerSelectionByClass", Boolean.class, true));
+        cfg.setCacheObjectMarshallerByClass(
+                grailsConfig.getProperty("grails.converters.xml.cacheObjectMarshallerSelectionByClass", Boolean.class, true));
         registerObjectMarshallersFromApplicationContext(cfg, XML.class);
         ConvertersConfigurationHolder.setDefaultConfiguration(XML.class, new ChainedConverterConfiguration<XML>(cfg, proxyHandler));
     }
 
     private ProxyHandler getProxyHandler() {
         ProxyHandler proxyHandler;
-        if (applicationContext != null) {
-            proxyHandler = applicationContext.getBean(ProxyHandler.class);
+        if (this.applicationContext != null) {
+            proxyHandler = this.applicationContext.getBean(ProxyHandler.class);
         }
         else {
             proxyHandler = new DefaultProxyHandler();
@@ -231,29 +242,33 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     }
 
     private void initDeepXMLConfiguration() {
-        DefaultConverterConfiguration<XML> deepConfig = new DefaultConverterConfiguration<XML>(ConvertersConfigurationHolder.getConverterConfiguration(XML.class), getProxyHandler());
-        deepConfig.registerObjectMarshaller(new org.grails.web.converters.marshaller.xml.DeepDomainClassMarshaller(includeDomainVersionProperty(getGrailsConfig(), "xml"), includeDomainClassProperty(getGrailsConfig(), "xml"), getProxyHandler(), grailsApplication));
+        DefaultConverterConfiguration<XML> deepConfig = new DefaultConverterConfiguration<>(
+                ConvertersConfigurationHolder.getConverterConfiguration(XML.class), getProxyHandler());
+        deepConfig.registerObjectMarshaller(new org.grails.web.converters.marshaller.xml.DeepDomainClassMarshaller(
+                includeDomainVersionProperty(getGrailsConfig(), "xml"),
+                includeDomainClassProperty(getGrailsConfig(), "xml"), getProxyHandler(), this.grailsApplication));
         ConvertersConfigurationHolder.setNamedConverterConfiguration(XML.class, "deep", deepConfig);
     }
 
     private boolean includeDomainVersionProperty(Config grailsConfig, String converterType) {
-        return grailsConfig.getProperty(String.format("grails.converters.%s.domain.include.version", converterType), Boolean.class, grailsConfig.getProperty("grails.converters.domain.include.version", Boolean.class, false));
+        return grailsConfig.getProperty(String.format("grails.converters.%s.domain.include.version", converterType),
+                Boolean.class, grailsConfig.getProperty("grails.converters.domain.include.version", Boolean.class, false));
     }
 
     private boolean includeDomainClassProperty(Config grailsConfig, String converterType) {
-        return grailsConfig.getProperty(String.format("grails.converters.%s.domain.include.class", converterType), Boolean.class, grailsConfig.getProperty("grails.converters.domain.include.class", Boolean.class, false));
+        return grailsConfig.getProperty(String.format("grails.converters.%s.domain.include.class", converterType),
+                Boolean.class, grailsConfig.getProperty("grails.converters.domain.include.class", Boolean.class, false));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private <C extends Converter> void registerObjectMarshallersFromApplicationContext(
             DefaultConverterConfiguration<C> cfg, Class<C> converterClass) {
 
-        if (applicationContext == null) {
+        if (this.applicationContext == null) {
             return;
         }
 
-        for (Object o : applicationContext.getBeansOfType(ObjectMarshallerRegisterer.class).values()) {
-            ObjectMarshallerRegisterer omr = (ObjectMarshallerRegisterer) o;
+        for (ObjectMarshallerRegisterer omr : this.applicationContext.getBeansOfType(ObjectMarshallerRegisterer.class).values()) {
             if (omr.getConverterClass() == converterClass) {
                 cfg.registerObjectMarshaller(omr.getMarshaller(), omr.getPriority());
             }

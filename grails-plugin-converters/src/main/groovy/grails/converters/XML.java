@@ -80,15 +80,15 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
 
     private XMLStreamWriter writer;
 
-    private Stack<Object> referenceStack = new Stack<Object>();
+    private final Stack<Object> referenceStack = new Stack<>();
 
     private boolean isRendering = false;
 
     public XML() {
-        config = ConvertersConfigurationHolder.getConverterConfiguration(XML.class);
-        encoding = config.getEncoding() != null ? config.getEncoding() : "UTF-8";
+        this.config = ConvertersConfigurationHolder.getConverterConfiguration(XML.class);
+        this.encoding = this.config.getEncoding() != null ? this.config.getEncoding() : "UTF-8";
         contentType = MimeType.XML.getName();
-        circularReferenceBehaviour = config.getCircularReferenceBehaviour();
+        this.circularReferenceBehaviour = this.config.getCircularReferenceBehaviour();
     }
 
     public XML(Object target) {
@@ -125,35 +125,35 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     }
 
     public void render(Writer out) throws ConverterException {
-        stream = new StreamingMarkupWriter(out, encoding);
-        writer = config.isPrettyPrint() ? new PrettyPrintXMLStreamWriter(stream) : new XMLStreamWriter(stream);
+        this.stream = new StreamingMarkupWriter(out, this.encoding);
+        this.writer = this.config.isPrettyPrint() ? new PrettyPrintXMLStreamWriter(this.stream) : new XMLStreamWriter(this.stream);
 
         try {
-            isRendering = true;
-            writer.startDocument(encoding, "1.0");
-            writer.startNode(getElementName(target));
-            convertAnother(target);
-            writer.end();
+            this.isRendering = true;
+            this.writer.startDocument(this.encoding, "1.0");
+            this.writer.startNode(getElementName(this.target));
+            convertAnother(this.target);
+            this.writer.end();
             finalizeRender(out);
         }
         catch (Exception e) {
             throw new ConverterException(e);
         }
         finally {
-            isRendering = false;
+            this.isRendering = false;
         }
     }
 
     private void checkState() {
-        Assert.state(isRendering, "Illegal XML Converter call!");
+        Assert.state(this.isRendering, "Illegal XML Converter call!");
     }
 
     public String getElementName(Object o) {
-        ObjectMarshaller<XML> om = config.getMarshaller(o);
+        ObjectMarshaller<XML> om = this.config.getMarshaller(o);
         if (om instanceof NameAwareMarshaller) {
             return ((NameAwareMarshaller) om).getElementName(o);
         }
-        final ProxyHandler proxyHandler = config.getProxyHandler();
+        final ProxyHandler proxyHandler = this.config.getProxyHandler();
         if (proxyHandler.isProxy(o) && (proxyHandler instanceof EntityProxyHandler)) {
             EntityProxyHandler entityProxyHandler = (EntityProxyHandler) proxyHandler;
             final Class<?> cls = entityProxyHandler.getProxiedClass(o);
@@ -163,35 +163,35 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     }
 
     public void convertAnother(Object o) throws ConverterException {
-        o = config.getProxyHandler().unwrapIfProxy(o);
+        o = this.config.getProxyHandler().unwrapIfProxy(o);
 
         try {
             if (o == null) {
                 // noop
             }
             else if (o instanceof CharSequence) {
-                writer.characters(o.toString());
+                this.writer.characters(o.toString());
             }
             else if (o instanceof Class<?>) {
-                writer.characters(((Class<?>) o).getName());
+                this.writer.characters(((Class<?>) o).getName());
             }
             else if ((o.getClass().isPrimitive() && !o.getClass().equals(byte[].class)) ||
                     o instanceof Number || o instanceof Boolean) {
-                writer.characters(String.valueOf(o));
+                this.writer.characters(String.valueOf(o));
             }
             else {
 
-                if (referenceStack.contains(o)) {
+                if (this.referenceStack.contains(o)) {
                     handleCircularRelationship(o);
                 }
                 else {
-                    referenceStack.push(o);
-                    ObjectMarshaller<XML> marshaller = config.getMarshaller(o);
+                    this.referenceStack.push(o);
+                    ObjectMarshaller<XML> marshaller = this.config.getMarshaller(o);
                     if (marshaller == null) {
                         throw new ConverterException("Unconvertable Object of class: " + o.getClass().getName());
                     }
                     marshaller.marshalObject(o, this);
-                    referenceStack.pop();
+                    this.referenceStack.pop();
                 }
             }
         }
@@ -201,17 +201,17 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     }
 
     public ObjectMarshaller<XML> lookupObjectMarshaller(Object target) {
-        return config.getMarshaller(target);
+        return this.config.getMarshaller(target);
     }
 
     public int getDepth() {
-        return referenceStack.size();
+        return this.referenceStack.size();
     }
 
     public XML startNode(String tagName) {
         checkState();
         try {
-            writer.startNode(tagName);
+            this.writer.startNode(tagName);
         }
         catch (Exception e) {
             throw ConverterUtil.resolveConverterException(e);
@@ -222,7 +222,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     public XML chars(String chars) {
         checkState();
         try {
-            writer.characters(chars);
+            this.writer.characters(chars);
         }
         catch (Exception e) {
             throw ConverterUtil.resolveConverterException(e);
@@ -233,7 +233,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     public XML attribute(String name, String value) {
         checkState();
         try {
-            writer.attribute(name, value);
+            this.writer.attribute(name, value);
         }
         catch (Exception e) {
             throw ConverterUtil.resolveConverterException(e);
@@ -244,7 +244,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     public XML end() {
         checkState();
         try {
-            writer.end();
+            this.writer.end();
         }
         catch (Exception e) {
             throw ConverterUtil.resolveConverterException(e);
@@ -254,11 +254,11 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
 
     @SuppressWarnings("incomplete-switch")
     protected void handleCircularRelationship(Object o) throws ConverterException {
-        switch (circularReferenceBehaviour) {
+        switch (this.circularReferenceBehaviour) {
             case DEFAULT:
                 StringBuilder ref = new StringBuilder();
-                int idx = referenceStack.indexOf(o);
-                for (int i = referenceStack.size() - 1; i > idx; i--) {
+                int idx = this.referenceStack.indexOf(o);
+                for (int i = this.referenceStack.size() - 1; i > idx; i--) {
                     ref.append("../");
                 }
                 attribute("ref", ref.substring(0, ref.length() - 1));
@@ -271,7 +271,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     }
 
     public void render(HttpServletResponse response) throws ConverterException {
-        response.setContentType(GrailsWebUtil.getContentType(contentType, encoding));
+        response.setContentType(GrailsWebUtil.getContentType(contentType, this.encoding));
         try {
             render(response.getWriter());
         }
@@ -282,12 +282,12 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
 
     public XMLStreamWriter getWriter() throws ConverterException {
         checkState();
-        return writer;
+        return this.writer;
     }
 
     public StreamingMarkupWriter getStream() {
         checkState();
-        return stream;
+        return this.stream;
     }
 
     public void build(@SuppressWarnings("rawtypes") Closure c) throws ConverterException {
@@ -356,7 +356,9 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
      */
     public static Object parse(HttpServletRequest request) throws ConverterException {
         Object xml = request.getAttribute(CACHED_XML);
-        if (xml != null) return xml;
+        if (xml != null) {
+            return xml;
+        }
 
         String encoding = request.getCharacterEncoding();
         if (encoding == null) {
@@ -405,11 +407,11 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     }
 
     public static void registerObjectMarshaller(Class<?> clazz, Closure<?> callable) throws ConverterException {
-        registerObjectMarshaller(new ClosureObjectMarshaller<XML>(clazz, callable));
+        registerObjectMarshaller(new ClosureObjectMarshaller<>(clazz, callable));
     }
 
     public static void registerObjectMarshaller(Class<?> clazz, int priority, Closure<?> callable) throws ConverterException {
-        registerObjectMarshaller(new ClosureObjectMarshaller<XML>(clazz, callable), priority);
+        registerObjectMarshaller(new ClosureObjectMarshaller<>(clazz, callable), priority);
     }
 
     public static void registerObjectMarshaller(ObjectMarshaller<XML> om) throws ConverterException {
@@ -418,7 +420,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
             throw new ConverterException("Default Configuration not found for class " + XML.class.getName());
         }
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<XML>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
             ConvertersConfigurationHolder.setDefaultConfiguration(XML.class, cfg);
         }
         ((DefaultConverterConfiguration<XML>) cfg).registerObjectMarshaller(om);
@@ -430,14 +432,15 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
             throw new ConverterException("Default Configuration not found for class " + XML.class.getName());
         }
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<XML>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
             ConvertersConfigurationHolder.setDefaultConfiguration(XML.class, cfg);
         }
         ((DefaultConverterConfiguration<XML>) cfg).registerObjectMarshaller(om, priority);
     }
 
     public static void createNamedConfig(String name, Closure<?> callable) throws ConverterException {
-        DefaultConverterConfiguration<XML> cfg = new DefaultConverterConfiguration<XML>(ConvertersConfigurationHolder.getConverterConfiguration(XML.class));
+        DefaultConverterConfiguration<XML> cfg =
+                new DefaultConverterConfiguration<>(ConvertersConfigurationHolder.getConverterConfiguration(XML.class));
         try {
             callable.call(cfg);
             ConvertersConfigurationHolder.setNamedConverterConfiguration(XML.class, name, cfg);
@@ -450,7 +453,7 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
     public static void withDefaultConfiguration(Closure<?> callable) throws ConverterException {
         ConverterConfiguration<XML> cfg = ConvertersConfigurationHolder.getConverterConfiguration(XML.class);
         if (!(cfg instanceof DefaultConverterConfiguration<?>)) {
-            cfg = new DefaultConverterConfiguration<XML>(cfg);
+            cfg = new DefaultConverterConfiguration<>(cfg);
         }
         try {
             callable.call(cfg);
@@ -463,12 +466,12 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
 
     @Override
     public void setIncludes(List<String> includes) {
-        setIncludes(target.getClass(), includes);
+        setIncludes(this.target.getClass(), includes);
     }
 
     @Override
     public void setExcludes(List<String> excludes) {
-        setExcludes(target.getClass(), excludes);
+        setExcludes(this.target.getClass(), excludes);
     }
 
     public class Builder extends BuilderSupport {
@@ -503,22 +506,22 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
         @SuppressWarnings("rawtypes")
         @Override
         protected Object createNode(Object name, Map attributes, Object value) {
-            xml.startNode(name.toString());
+            this.xml.startNode(name.toString());
             if (attributes != null) {
                 for (Object o : attributes.entrySet()) {
                     Map.Entry attribute = (Map.Entry) o;
-                    xml.attribute(attribute.getKey().toString(), attribute.getValue().toString());
+                    this.xml.attribute(attribute.getKey().toString(), attribute.getValue().toString());
                 }
             }
             if (value != null) {
-                xml.convertAnother(value);
+                this.xml.convertAnother(value);
             }
             return name;
         }
 
         @Override
         protected void nodeCompleted(Object o, Object o1) {
-            xml.end();
+            this.xml.end();
         }
 
         @Override
