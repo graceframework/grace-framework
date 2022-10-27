@@ -36,7 +36,7 @@ publishing {
                                 }
                             }
                         }
-                        for(sub in ['rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
+                        for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
                             delegate.dependency {
                                 delegate.groupId "org.grails"
                                 delegate.artifactId "grails-plugin-${sub}"
@@ -55,12 +55,6 @@ publishing {
                                     delegate.artifactId 'javaee-web-api'
                                 }
                             }
-                        }
-                        delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
-                            delegate.artifactId "converters"
-                            delegate.version convertersVersion
-                            delegate.scope "api"
                         }
                         delegate.dependency {
                             delegate.groupId "org.grails.plugins"

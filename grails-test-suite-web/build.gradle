@@ -18,6 +18,7 @@ dependencies {
     testImplementation project(":grails-test-suite-base")
     testImplementation project(":grails-plugin-domain-class")
     testImplementation project(":grails-plugin-codecs")
+    testImplementation project(":grails-plugin-converters")
     testImplementation project(":grails-plugin-datasource")
     testImplementation project(":grails-plugin-i18n")
     testImplementation project(":grails-plugin-url-mappings")
@@ -30,7 +31,6 @@ dependencies {
     testImplementation project(":grails-web-databinding")
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
-    testImplementation "org.grails.plugins:converters:$convertersVersion"
 
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
         exclude group: 'org.grails', module:'grails-datastore-gorm'

@@ -1,0 +1,3 @@
+<plugin name='converters'>
+  <type>org.grails.plugins.converters.ConvertersGrailsPlugin</type>
+</plugin>

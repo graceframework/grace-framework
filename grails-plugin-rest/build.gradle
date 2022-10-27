@@ -5,10 +5,10 @@ dependencies {
     api project(":grails-web-common")
     api project(':grails-plugin-api')
     api project(":grails-plugin-controllers")
+    api project(":grails-plugin-converters")
     api project(":grails-plugin-datasource")
     api project(":grails-util")
 
-    api "org.grails.plugins:converters:$convertersVersion"
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"

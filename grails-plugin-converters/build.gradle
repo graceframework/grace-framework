@@ -1,0 +1,6 @@
+dependencies {
+    api project(":grails-plugin-domain-class")
+    api project(":grails-web")
+    api "org.grails.plugins:async:$asyncVersion"
+    api "org.apache.commons:commons-lang3:$commonsLang3Version"
+}
