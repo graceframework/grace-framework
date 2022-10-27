@@ -145,6 +145,14 @@ public class DefaultGrailsControllerClass extends AbstractInjectableGrailsClass 
         }
     }
 
+    public boolean isActionMethod(String methodName) {
+        Method m = ReflectionUtils.findMethod(getClazz(), methodName, new Class[0]);
+        if (m != null) {
+            ReflectionUtils.makeAccessible(m);
+        }
+        return m != null && m.getAnnotation(Action.class) != null;
+    }
+
     @Override
     public boolean mapsToURI(String uri) {
         if (uri.startsWith("/")) {
