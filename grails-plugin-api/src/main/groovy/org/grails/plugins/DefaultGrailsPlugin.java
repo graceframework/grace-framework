@@ -48,7 +48,6 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.type.filter.TypeFilter;
 
 import grails.core.ArtefactHandler;
 import grails.core.GrailsApplication;
@@ -130,8 +129,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     private Map pluginEnvs;
 
     private List<String> pluginExcludes = new ArrayList<>();
-
-    private Collection<? extends TypeFilter> typeFilters = new ArrayList<>();
 
     private Resource pluginDescriptor;
 
@@ -229,15 +226,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         evaluatePluginStatus();
         evaluatePluginScopes();
         evaluatePluginExcludes();
-        evaluateTypeFilters();
-    }
-
-    @SuppressWarnings("unchecked")
-    private void evaluateTypeFilters() {
-        Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, TYPE_FILTERS);
-        if (result instanceof List) {
-            this.typeFilters = (List<TypeFilter>) result;
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -249,7 +237,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     }
 
     private void evaluatePluginScopes() {
-        // Damn I wish Java had closures
         this.pluginEnvs = evaluateIncludeExcludeProperty(ENVIRONMENTS, new Closure(this) {
             private static final long serialVersionUID = 1;
 
@@ -904,10 +891,6 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     public List<String> getPluginExcludes() {
         return this.pluginExcludes;
-    }
-
-    public Collection<? extends TypeFilter> getTypeFilters() {
-        return this.typeFilters;
     }
 
     public String getFullName() {

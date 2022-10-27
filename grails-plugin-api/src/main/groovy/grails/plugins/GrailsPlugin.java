@@ -15,7 +15,6 @@
  */
 package grails.plugins;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.type.filter.TypeFilter;
 
 import grails.core.GrailsApplication;
 import grails.util.Environment;
@@ -171,11 +169,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     String PLUGIN_EXCLUDES = "pluginExcludes";
 
     /**
-     * The field that represents the list of type filters a plugin provides
-     */
-    String TYPE_FILTERS = "typeFilters";
-
-    /**
      * The field that represents the plugin names that this plugin is observing for changes.
      */
     String OBSERVE = "observe";
@@ -236,7 +229,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
     String getPluginPathCamelCase();
 
     /**
-     * @return The names of the plugins this plugin is dependant on
+     * @return The names of the plugins this plugin is dependent on
      */
     String[] getDependencyNames();
 
@@ -341,7 +334,7 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
 
     /**
      * Called prior to the initialisation of the GrailsApplication instance to allow the registration
-     * of additonal ArtefactHandlers
+     * of additional ArtefactHandlers
      *
      * @see grails.core.ArtefactHandler
      *
@@ -400,13 +393,6 @@ public interface GrailsPlugin extends ApplicationContextAware, Comparable, Grail
      * @see #isBasePlugin()
      */
     void setBasePlugin(boolean isBase);
-
-    /**
-     * Plugin can provide a list of Spring TypeFilters so that annotated components can
-     * be scanned into the ApplicationContext
-     * @return A collection of TypeFilter instance
-     */
-    Collection<? extends TypeFilter> getTypeFilters();
 
     /**
      * Resources that this plugin watches
