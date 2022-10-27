@@ -62,6 +62,7 @@ include (
         'grails-plugin-api',
         'grails-plugin-codecs',
         'grails-plugin-controllers',
+        'grails-plugin-converters',
         'grails-plugin-core',
         'grails-plugin-databinding',
         'grails-plugin-datasource',
