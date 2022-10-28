@@ -1,7 +1,7 @@
 dependencies {
     api("org.codehaus.groovy:groovy-console:$groovyVersion")
-    api("org.codehaus.groovy:groovy-swing:$groovyVersion")
     api("org.codehaus.groovy:groovy-groovysh:$groovyVersion")
+    api("org.codehaus.groovy:groovy-swing:$groovyVersion")
     api("org.springframework.boot:spring-boot:$springBootVersion")
     api("org.springframework:spring-web:${springVersion}", optional)
     api("javax.servlet:javax.servlet-api:$servletApiVersion", optional)

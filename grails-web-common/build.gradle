@@ -1,5 +1,6 @@
 dependencies {
     api project(":grails-api")
+    api project(":grails-core")
     api project(":grails-databinding")
     api project(":grails-encoder")
     api "org.grails:grails-gsp:$gspVersion", {
@@ -8,8 +9,7 @@ dependencies {
     }
 
     api "org.codehaus.groovy:groovy-templates:$groovyVersion"
-
-    api "org.springframework:spring-webmvc:${springVersion}"
     api "org.springframework:spring-context-support:${springVersion}"
+    api "org.springframework:spring-webmvc:${springVersion}"
     implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
 }

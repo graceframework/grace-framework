@@ -1,14 +1,13 @@
 dependencies {
-    api 'javax.xml.bind:jaxb-api:2.3.1'
-
     api project(":grails-api")
-    api project(":grails-web-common")
     api project(':grails-plugin-api')
     api project(":grails-plugin-controllers")
     api project(":grails-plugin-converters")
     api project(":grails-plugin-datasource")
     api project(":grails-util")
+    api project(":grails-web-common")
 
+    api 'javax.xml.bind:jaxb-api:2.3.1'
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"

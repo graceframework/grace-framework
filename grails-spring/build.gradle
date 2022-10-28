@@ -1,8 +1,8 @@
 dependencies {
     api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+    api "org.springframework:spring-context:${springVersion}"
     api "org.springframework:spring-tx:${springVersion}"
     api "org.springframework:spring-web:${springVersion}"
-    api "org.springframework:spring-context:${springVersion}"
 
     testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
     testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
