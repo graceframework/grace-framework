@@ -2,6 +2,7 @@ dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-spring")
+    api project(":grails-spring-boot")
 
     api "org.grails:grails-datastore-core:$datastoreVersion"
 
