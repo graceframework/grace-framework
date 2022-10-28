@@ -40,10 +40,10 @@ import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.util.GrailsNameUtils;
 
-import org.grails.config.yaml.YamlPropertySourceLoader;
 import org.grails.core.AbstractGrailsClass;
-import org.grails.core.cfg.GroovyConfigPropertySourceLoader;
 import org.grails.plugins.support.WatchPattern;
+import org.grails.spring.boot.env.GroovyConfigPropertySourceLoader;
+import org.grails.spring.boot.env.YamlPropertySourceLoader;
 
 /**
  * Abstract implementation that provides some default behaviours

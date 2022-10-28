@@ -2,7 +2,7 @@ package grails.config
 
 import org.grails.config.NavigableMap
 import org.grails.config.PropertySourcesConfig
-import org.grails.config.yaml.YamlPropertySourceLoader
+import org.grails.spring.boot.env.YamlPropertySourceLoader
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import spock.lang.Specification

@@ -3,9 +3,11 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-util")
 
-    api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-beans:${springVersion}")
     api("org.springframework:spring-context:${springVersion}")
-    api "org.springframework:spring-tx:${springVersion}"
-    testImplementation("org.springframework:spring-test:${springVersion}")
+    api("org.springframework:spring-core:${springVersion}")
+    api("org.springframework:spring-tx:${springVersion}")
+    api("org.springframework.boot:spring-boot:$springBootVersion")
+
+    testImplementation project(":grails-test-support")
 }

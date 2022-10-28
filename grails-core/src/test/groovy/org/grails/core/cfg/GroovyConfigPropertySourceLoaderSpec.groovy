@@ -7,6 +7,8 @@ import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
 import spock.lang.Specification
 
+import org.grails.spring.boot.env.GroovyConfigPropertySourceLoader
+
 @SuppressWarnings("GrMethodMayBeStatic")
 class GroovyConfigPropertySourceLoaderSpec extends Specification {
 
