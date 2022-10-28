@@ -65,11 +65,11 @@ import org.grails.config.NavigableMap;
 import org.grails.config.PrefixedMapPropertySource;
 import org.grails.config.PropertySourcesConfig;
 import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.core.support.GrailsApplicationAwareBeanPostProcessor;
+import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor;
 import org.grails.spring.DefaultRuntimeSpringConfiguration;
 import org.grails.spring.RuntimeSpringConfigUtilities;
 import org.grails.spring.RuntimeSpringConfiguration;
-import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor;
-import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor;
 
 /**
  * A {@link BeanDefinitionRegistryPostProcessor} that enhances any ApplicationContext with plugin manager capabilities
