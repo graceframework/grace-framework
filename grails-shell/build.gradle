@@ -4,11 +4,11 @@ mainClassName = "org.grails.cli.GrailsCli"
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
 ext {
-//    gradleToolingApiVersion = gradle.gradleVersion
-    gradleToolingApiVersion = '6.9'
+    gradleToolingApiVersion = gradle.gradleVersion
 }
 
 configurations {
