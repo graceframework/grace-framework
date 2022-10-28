@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.core.cfg
+package org.grails.spring.boot.env
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
