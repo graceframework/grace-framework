@@ -31,7 +31,7 @@ import org.springframework.util.StringUtils;
 
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
-import grails.plugins.GrailsVersionUtils;
+import grails.plugins.metadata.GrailsPlugin;
 import grails.util.GrailsMetaClassUtils;
 import grails.util.GrailsNameUtils;
 
@@ -98,7 +98,8 @@ public abstract class AbstractGrailsClass implements GrailsClass {
 
     @Override
     public String getPluginName() {
-        return GrailsVersionUtils.getPluginName(this.clazz);
+        GrailsPlugin ann = getClazz().getAnnotation(GrailsPlugin.class);
+        return ann != null ? ann.name() : null;
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {
