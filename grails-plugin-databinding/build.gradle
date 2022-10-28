@@ -5,7 +5,5 @@
 
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
-    testImplementation project(':grails-boot')
-    testImplementation project(':grails-test-suite-base')
     testImplementation project(":grails-test-support")
 }
