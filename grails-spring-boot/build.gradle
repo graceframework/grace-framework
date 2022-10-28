@@ -8,5 +8,6 @@ dependencies {
     api("org.springframework:spring-core:${springVersion}")
     api("org.springframework:spring-tx:${springVersion}")
     api("org.springframework.boot:spring-boot:$springBootVersion")
-    testImplementation("org.springframework:spring-test:${springVersion}")
+
+    testImplementation project(":grails-test-support")
 }
