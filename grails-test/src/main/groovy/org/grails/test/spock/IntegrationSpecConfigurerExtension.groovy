@@ -18,7 +18,7 @@ package org.grails.test.spock
 import java.lang.annotation.Annotation
 
 import groovy.transform.CompileStatic
-import org.spockframework.runtime.extension.AbstractAnnotationDrivenExtension
+import org.spockframework.runtime.extension.IAnnotationDrivenExtension
 import org.spockframework.runtime.extension.IMethodInterceptor
 import org.spockframework.runtime.extension.IMethodInvocation
 import org.spockframework.runtime.model.FeatureInfo
@@ -38,7 +38,7 @@ import org.grails.test.support.GrailsTestMode
  *
  */
 @CompileStatic
-class IntegrationSpecConfigurerExtension extends AbstractAnnotationDrivenExtension<Annotation> {
+class IntegrationSpecConfigurerExtension implements IAnnotationDrivenExtension<Annotation> {
 
     void visitSpecAnnotation(Annotation annotation, SpecInfo spec) {
         final context = Holders.getApplicationContext()
