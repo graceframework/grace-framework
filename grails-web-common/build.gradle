@@ -3,6 +3,7 @@ dependencies {
     api project(":grails-core")
     api project(":grails-databinding")
     api project(":grails-encoder")
+    api project(":grails-util")
     api "org.grails:grails-gsp:$gspVersion", {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'org.grails', module:'grails-encoder'
