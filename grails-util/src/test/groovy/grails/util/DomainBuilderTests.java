@@ -14,19 +14,22 @@
  */
 package grails.util;
 
-import groovy.test.GroovyTestCase;
-import groovy.util.ObjectGraphBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
+import groovy.util.ObjectGraphBuilder;
 
-public class DomainBuilderTests extends GroovyTestCase {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DomainBuilderTests {
 
     private DomainBuilder builder;
     private ObjectGraphBuilder.ChildPropertySetter childPropertySetter;
     private Employer employer;
 
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception {
         builder = new DomainBuilder();
         childPropertySetter = builder.getChildPropertySetter();
@@ -35,7 +38,7 @@ public class DomainBuilderTests extends GroovyTestCase {
         employer.setName("Spacely Space Sprockets");
     }
 
-    @SuppressWarnings("rawtypes")
+    @Test
     public void testChildIsCollection() throws Exception {
         Employee one = new Employee();
         one.setName("Cosmo");
@@ -55,6 +58,7 @@ public class DomainBuilderTests extends GroovyTestCase {
         assertEquals(two.getName(), ((Employee)employees.get(1)).getName());
     }
 
+    @Test
     public void testChildIsNotCollection() throws Exception {
         Address address = new Address();
         address.setStreet("Park Pl.");
@@ -68,7 +72,7 @@ public class DomainBuilderTests extends GroovyTestCase {
         assertEquals(0, employer.getEmployees().size());
     }
 
-    @SuppressWarnings({"unchecked","rawtypes"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static class Employer {
         private String name = null;
         private Address address = null;

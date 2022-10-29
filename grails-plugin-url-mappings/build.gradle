@@ -2,6 +2,7 @@ dependencies {
     api project(":grails-api")
     api project(":grails-core")
     api project(":grails-plugin-controllers")
+    api project(":grails-util")
     api project(":grails-web")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")

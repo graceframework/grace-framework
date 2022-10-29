@@ -46,13 +46,10 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
-import org.springframework.cglib.reflect.FastClass;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
-
-import grails.artefact.Enhanced;
 
 /**
  * Utility methods for dealing with Grails class artifacts.
@@ -996,36 +993,6 @@ public final class GrailsClassUtils {
             className = configName.toString();
         }
         return ClassUtils.forName(className, ClassUtils.getDefaultClassLoader()).newInstance();
-    }
-
-    /**
-     * Checks to see if a class is marked with @grails.artefact.Enhanced and if the enhancedFor
-     * attribute of the annotation contains a specific feature name
-     *
-     * @param controllerClass The class to inspect
-     * @param featureName The name of a feature to check for
-     * @return true if controllerClass is marked with Enhanced and the enhancedFor attribute includes featureName, otherwise returns false
-     * @see Enhanced
-     * @see Enhanced#enhancedFor()
-     */
-    public static Boolean hasBeenEnhancedForFeature(final Class<?> controllerClass, final String featureName) {
-        boolean hasBeenEnhanced = false;
-        final Enhanced enhancedAnnotation = controllerClass.getAnnotation(Enhanced.class);
-        if (enhancedAnnotation != null) {
-            final String[] enhancedFor = enhancedAnnotation.enhancedFor();
-            if (enhancedFor != null) {
-                hasBeenEnhanced = GrailsArrayUtils.contains(enhancedFor, featureName);
-            }
-        }
-        return hasBeenEnhanced;
-    }
-
-    public static FastClass fastClass(Class superClass) {
-        FastClass.Generator gen = new FastClass.Generator();
-        gen.setType(superClass);
-        gen.setClassLoader(superClass.getClassLoader());
-        gen.setUseCache(!Environment.isReloadingAgentEnabled());
-        return gen.create();
     }
 
 }

@@ -1,5 +1,6 @@
 dependencies {
     api project(":grails-plugin-api")
+    api project(":grails-util")
     api project(":grails-web-common")
 
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"

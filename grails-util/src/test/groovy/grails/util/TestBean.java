@@ -1,4 +1,4 @@
-package org.grails.commons;
+package grails.util;
 
 /**
  * Original author: marc

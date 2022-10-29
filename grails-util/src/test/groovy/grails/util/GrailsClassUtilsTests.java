@@ -12,15 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.commons;
+package grails.util;
 
-import grails.util.GrailsClassUtils;
-import grails.util.GrailsNameUtils;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
 import spock.lang.Issue;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -209,16 +205,11 @@ public class GrailsClassUtilsTests {
 
     @Test
     public void testGetStaticProperty() {
-        assertEquals(HttpServletRequest.BASIC_AUTH,
-                GrailsClassUtils.getStaticPropertyValue(HttpServletRequest.class, "BASIC_AUTH"));
-
         assertEquals("hello", GrailsClassUtils.getStaticPropertyValue(TestBean.class, "welcomeMessage"));
     }
 
     @Test
     public void testIsPublicStatic() throws Exception {
-        assertTrue(GrailsClassUtils.isPublicStatic(HttpServletRequest.class.getDeclaredField("BASIC_AUTH")));
-
         assertFalse(GrailsClassUtils.isPublicStatic(String.class.getDeclaredField("serialVersionUID")));
 
         assertFalse(GrailsClassUtils.isPublicStatic(TestBean.class.getDeclaredField("welcomeMessage")));
@@ -377,21 +368,21 @@ public class GrailsClassUtilsTests {
 
     @Test
     public void testIsPropertyGetter() throws Exception {
-        assertTrue(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getName", null)));
-        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("setName", null)));
-        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getSurname", null)));
-        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getNewYear", null)));
+        assertTrue(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getName")));
+        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("setName")));
+        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getSurname")));
+        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getNewYear")));
         assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getFilename", String.class)));
-        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getTitle", null)));
+        assertFalse(GrailsClassUtils.isPropertyGetter(ClassHavingPropertyGetters.class.getDeclaredMethod("getTitle")));
     }
 
     @Test
     @Issue("https://github.com/grails/grails-core/issues/10343")
     public void testPropertiesBeginningWithSingleLowerCaseLetter() throws Exception {
-        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("getaString", null)));
-        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("isaBoolean", null)));
-        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("getS", null)));
-        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("isB", null)));
+        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("getaString")));
+        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("isaBoolean")));
+        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("getS")));
+        assertTrue(GrailsClassUtils.isPropertyGetter(SomeGroovyClass.class.getDeclaredMethod("isB")));
     }
 }
 
