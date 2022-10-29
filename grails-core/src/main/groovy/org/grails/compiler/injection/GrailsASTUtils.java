@@ -41,6 +41,7 @@ import groovy.transform.CompileStatic;
 import groovy.transform.TypeChecked;
 import groovy.transform.TypeCheckingMode;
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils;
+import org.apache.groovy.util.BeanUtils;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -82,7 +83,6 @@ import org.codehaus.groovy.classgen.VariableScopeVisitor;
 import org.codehaus.groovy.control.Janitor;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
-import org.codehaus.groovy.runtime.MetaClassHelper;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
@@ -1478,7 +1478,7 @@ public final class GrailsASTUtils {
      */
     public static MethodCallExpression buildGetPropertyExpression(final Expression objectExpression, final String propertyName,
             final ClassNode targetClassNode, final boolean useBooleanGetter) {
-        String methodName = (useBooleanGetter ? "is" : "get") + MetaClassHelper.capitalize(propertyName);
+        String methodName = (useBooleanGetter ? "is" : "get") + BeanUtils.capitalize(propertyName);
         MethodCallExpression methodCallExpression = new MethodCallExpression(objectExpression, methodName, MethodCallExpression.NO_ARGUMENTS);
         MethodNode getterMethod = targetClassNode.getGetterMethod(methodName);
         if (getterMethod != null) {
@@ -1498,7 +1498,7 @@ public final class GrailsASTUtils {
      */
     public static MethodCallExpression buildSetPropertyExpression(final Expression objectExpression, final String propertyName,
             final ClassNode targetClassNode, final Expression valueExpression) {
-        String methodName = "set" + MetaClassHelper.capitalize(propertyName);
+        String methodName = "set" + BeanUtils.capitalize(propertyName);
         MethodCallExpression methodCallExpression = new MethodCallExpression(objectExpression, methodName,
                 new ArgumentListExpression(valueExpression));
         MethodNode setterMethod = targetClassNode.getSetterMethod(methodName);

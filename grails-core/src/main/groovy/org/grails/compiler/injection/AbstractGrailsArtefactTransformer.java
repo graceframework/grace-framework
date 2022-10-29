@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.groovy.ast.tools.AnnotatedNodeUtils;
+import org.apache.groovy.util.BeanUtils;
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
@@ -50,7 +51,6 @@ import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.ThrowStatement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
-import org.codehaus.groovy.runtime.MetaClassHelper;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -379,7 +379,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
                     implementationNode, classNode, initialValueExpression);
             classNode.addField(fieldNode);
 
-            String setterName = "set" + MetaClassHelper.capitalize(apiProperty);
+            String setterName = "set" + BeanUtils.capitalize(apiProperty);
             Parameter setterParameter = new Parameter(implementationNode, apiProperty);
             BlockStatement setterBody = new BlockStatement();
             setterBody.addStatement(new ExpressionStatement(new BinaryExpression(new AttributeExpression(

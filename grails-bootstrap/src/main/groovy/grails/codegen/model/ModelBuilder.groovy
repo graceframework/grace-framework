@@ -16,7 +16,7 @@
 package grails.codegen.model
 
 import groovy.transform.CompileStatic
-import org.codehaus.groovy.runtime.MetaClassHelper
+import org.apache.groovy.util.BeanUtils
 
 import grails.util.GrailsNameUtils
 
@@ -91,7 +91,7 @@ trait ModelBuilder {
         final String packagePath
 
         ModelImpl(String className) {
-            this.className = MetaClassHelper.capitalize(GrailsNameUtils.getShortName(className))
+            this.className = BeanUtils.capitalize(GrailsNameUtils.getShortName(className))
             this.fullName = className
             this.propertyName = GrailsNameUtils.getPropertyName(className)
             this.packageName = GrailsNameUtils.getPackageName(className)

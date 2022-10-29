@@ -28,7 +28,7 @@ class FooGrailsPlugin {
     def dependsOn = [core: version]
 }
 ''')
-            cu.addPhaseOperation(new CompilationUnit.PrimaryClassNodeOperation() {
+            cu.addPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
                 @Override
                 void call(SourceUnit source, GeneratorContext context, ClassNode cn) throws CompilationFailedException {
                     if(cn.name == "FooGrailsPlugin") {

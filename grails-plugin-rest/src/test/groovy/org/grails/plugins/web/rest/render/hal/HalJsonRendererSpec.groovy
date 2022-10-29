@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.plugins.web.rest.render.hal
 
 import grails.config.Config
@@ -23,13 +22,13 @@ import grails.persistence.Entity
 import grails.rest.render.Renderer
 import grails.rest.render.hal.HalJsonCollectionRenderer
 import grails.rest.render.hal.HalJsonRenderer
+import groovy.test.NotYetImplemented
 import grails.util.GrailsWebMockUtil
 import grails.util.GrailsWebUtil
 import grails.web.CamelCaseUrlConverter
 import grails.web.mapping.LinkGenerator
 import grails.web.mapping.UrlMappingsHolder
 import grails.web.mime.MimeType
-import groovy.transform.NotYetImplemented
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.lifecycle.ShutdownOperations
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
@@ -194,7 +193,7 @@ class HalJsonRendererSpec extends Specification{
 }'''
 
     }
-    
+
     @Issue('GRAILS-10533')
     void "Test customizing the embedded name for a rendered collection of domain objects" () {
         given: "A HAL Collection renderer with a custom embedded name"
@@ -310,13 +309,13 @@ class HalJsonRendererSpec extends Specification{
 }'''
 
     }
-    
+
     @Issue('GRAILS-10512')
     void "Test that the HAL renderer renders JSON values correctly for a collection of simple POGOs"() {
         given:"A HAL renderer"
             HalJsonRenderer renderer = getRenderer()
             renderer.prettyPrint = true
- 
+
             when:"A collection of POGO is rendered"
             def webRequest = boundMimeTypeRequest()
             webRequest.request.addHeader("ACCEPT", "application/hal+json")
@@ -328,7 +327,7 @@ class HalJsonRendererSpec extends Specification{
                 new SimpleProduct(name: "iMac", numberInStock: 8, category: new SimpleCategory(name: 'Desktops'))
             ]
             renderer.render(products, renderContext)
- 
+
         then:"The resulting HAL is correct"
             response.contentType == GrailsWebUtil.getContentType(HalJsonRenderer.MIME_TYPE.name, GrailsWebUtil.DEFAULT_ENCODING)
             response.contentAsString == '''{
@@ -370,7 +369,7 @@ class HalJsonRendererSpec extends Specification{
         }
     ]
 }'''
- 
+
     }
 
     @Issue('GRAILS-10520')

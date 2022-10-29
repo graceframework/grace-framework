@@ -1,5 +1,6 @@
 package org.grails.plugins.web.rest.render.xml
 
+import groovy.xml.XmlSlurper
 import grails.converters.XML
 import grails.core.DefaultGrailsApplication
 import grails.persistence.Entity
