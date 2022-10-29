@@ -14,6 +14,8 @@
  */
 package grails.doc
 
+import java.nio.charset.StandardCharsets
+
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -129,7 +131,7 @@ class PdfBuilder {
         dbf.setFeature 'http://apache.org/xml/features/nonvalidating/load-dtd-grammar', false
 
         DocumentBuilder builder = dbf.newDocumentBuilder()
-        builder.parse(new ByteArrayInputStream(xml.getBytes('UTF-8')))
+        builder.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
     }
 
     static void createPdfWithDocument(Document doc, File outputFile, File urlBase) {

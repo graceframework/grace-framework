@@ -15,6 +15,8 @@
  */
 package org.grails.plugins.codecs
 
+import java.nio.charset.StandardCharsets
+
 import org.apache.commons.codec.binary.Base64
 import org.codehaus.groovy.runtime.NullObject
 
@@ -34,7 +36,7 @@ class Base64CodecExtensionMethods {
             return new String(Base64.encodeBase64(theTarget))
         }
 
-        new String(Base64.encodeBase64(theTarget.toString().getBytes('UTF-8')))
+        new String(Base64.encodeBase64(theTarget.toString().getBytes(StandardCharsets.UTF_8)))
     }
 
     static decodeBase64(theTarget) {
@@ -46,7 +48,7 @@ class Base64CodecExtensionMethods {
             return Base64.decodeBase64(theTarget)
         }
 
-        Base64.decodeBase64(theTarget.toString().getBytes('UTF-8'))
+        Base64.decodeBase64(theTarget.toString().getBytes(StandardCharsets.UTF_8))
     }
 
 }

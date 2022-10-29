@@ -15,6 +15,8 @@
  */
 package org.grails.test.io
 
+import java.nio.charset.StandardCharsets
+
 import groovy.transform.CompileStatic
 
 import org.grails.build.logging.GrailsConsolePrintStream
@@ -126,7 +128,7 @@ class SystemOutAndErrSwapper {
 
         TestOutputCapturingPrintStream(PrintStream out) {
             super(out)
-            textOut = new BufferedWriter(new OutputStreamWriter(out, 'UTF-8'))
+            textOut = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))
         }
 
         @Override

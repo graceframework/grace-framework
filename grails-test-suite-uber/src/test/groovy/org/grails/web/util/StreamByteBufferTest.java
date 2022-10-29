@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,22 +43,22 @@ public class StreamByteBufferTest {
     @Test
     public void testToString() throws IOException {
         StreamByteBuffer byteBuffer = new StreamByteBuffer();
-        PrintWriter pw=new PrintWriter(new OutputStreamWriter(byteBuffer.getOutputStream(),"UTF-8"));
+        PrintWriter pw=new PrintWriter(new OutputStreamWriter(byteBuffer.getOutputStream(), StandardCharsets.UTF_8));
         pw.print(TEST_STRING);
         pw.close();
-        assertEquals(TEST_STRING, byteBuffer.readAsString("UTF-8"));
+        assertEquals(TEST_STRING, byteBuffer.readAsString(StandardCharsets.UTF_8));
     }
 
     @Test
     public void testToStringRetain() throws IOException {
         StreamByteBuffer byteBuffer = new StreamByteBuffer(1024, StreamByteBuffer.ReadMode.RETAIN_AFTER_READING);
-        PrintWriter pw=new PrintWriter(new OutputStreamWriter(byteBuffer.getOutputStream(),"UTF-8"));
+        PrintWriter pw=new PrintWriter(new OutputStreamWriter(byteBuffer.getOutputStream(), StandardCharsets.UTF_8));
         pw.print(TEST_STRING);
         pw.close();
-        assertEquals(TEST_STRING, byteBuffer.readAsString("UTF-8"));
+        assertEquals(TEST_STRING, byteBuffer.readAsString(StandardCharsets.UTF_8));
         byteBuffer.reset();
         // call a second time to test if the RETAIN_AFTER_READING mode works as expected
-        assertEquals(TEST_STRING, byteBuffer.readAsString("UTF-8"));
+        assertEquals(TEST_STRING, byteBuffer.readAsString(StandardCharsets.UTF_8));
     }
 
     @Test

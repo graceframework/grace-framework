@@ -15,6 +15,8 @@
  */
 package org.grails.plugins.codecs
 
+import java.nio.charset.StandardCharsets
+
 import org.codehaus.groovy.runtime.NullObject
 
 class HexCodecExtensionMethods {
@@ -29,7 +31,7 @@ class HexCodecExtensionMethods {
 
         def result = new StringBuilder()
         if (theTarget instanceof String) {
-            theTarget = theTarget.getBytes('UTF-8')
+            theTarget = theTarget.getBytes(StandardCharsets.UTF_8)
         }
         theTarget.each {
             result << HexCodecExtensionMethods.HEXDIGITS[(it & 0xF0) >> 4]

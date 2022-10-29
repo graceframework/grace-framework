@@ -1,5 +1,7 @@
 package org.grails.web.binding.json
 
+import java.nio.charset.StandardCharsets
+
 import grails.artefact.Artefact
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Issue
@@ -72,7 +74,7 @@ class JsonBindingSpec extends Specification implements ControllerUnitTest<Bindin
             String jsonString = '{"name":"Hello öäåÖÄÅ"}'
             request.method = 'POST'
             request.contentType = 'application/json; charset=UTF-16'
-            request.content = jsonString.getBytes("UTF-16")
+            request.content = jsonString.getBytes(StandardCharsets.UTF_16)
         when:
             def model = controller.createPersonCommandObject()
         then:

@@ -1,7 +1,7 @@
 package org.grails.plugins
 
-import org.grails.plugins.BinaryGrailsPlugin
-import org.grails.plugins.BinaryGrailsPluginDescriptor
+import java.nio.charset.StandardCharsets
+
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
@@ -22,7 +22,8 @@ class BinaryPluginSpec extends Specification {
 
     def "Test creation of a binary plugin"() {
         when:
-            def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes('UTF-8')), ['org.grails.plugins.TestBinaryResource'])
+            def descriptor = new BinaryGrailsPluginDescriptor(
+                    new ByteArrayResource(testBinary.getBytes(StandardCharsets.UTF_8)), ['org.grails.plugins.TestBinaryResource'])
             def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new MockGrailsApplication())
 
         then:
@@ -35,7 +36,7 @@ class BinaryPluginSpec extends Specification {
 
     def "Test load static resource from binary plugin"() {
         when:
-            def resource = new MockBinaryPluginResource(testBinary.getBytes('UTF-8'))
+            def resource = new MockBinaryPluginResource(testBinary.getBytes(StandardCharsets.UTF_8))
             def descriptor = new BinaryGrailsPluginDescriptor(resource, ['org.grails.plugins.TestBinaryResource'])
             resource.relativesResources['static/css/main.css'] = new ByteArrayResource(''.bytes)
             def binaryPlugin = new BinaryGrailsPlugin(TestBinaryGrailsPlugin, descriptor, new MockGrailsApplication())
@@ -52,7 +53,7 @@ class BinaryPluginSpec extends Specification {
 
     def "Test plugin with both plugin.yml and plugin.groovy throws exception"() {
         when:
-        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes('UTF-8')), ['org.grails.plugins.TestBinaryResource'])
+        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes(StandardCharsets.UTF_8)), ['org.grails.plugins.TestBinaryResource'])
         MockConfigBinaryGrailsPlugin.YAML_EXISTS = true
         MockConfigBinaryGrailsPlugin.GROOVY_EXISTS = true
         new MockConfigBinaryGrailsPlugin(descriptor)
@@ -63,7 +64,7 @@ class BinaryPluginSpec extends Specification {
 
     def "Test plugin with only plugin.yml"() {
         when:
-        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes('UTF-8')), ['org.grails.plugins.TestBinaryResource'])
+        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes(StandardCharsets.UTF_8)), ['org.grails.plugins.TestBinaryResource'])
         MockConfigBinaryGrailsPlugin.YAML_EXISTS = true
         MockConfigBinaryGrailsPlugin.GROOVY_EXISTS = false
         def binaryPlugin = new MockConfigBinaryGrailsPlugin(descriptor)
@@ -74,7 +75,7 @@ class BinaryPluginSpec extends Specification {
 
     def "Test plugin with only plugin.groovy"() {
         when:
-        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes('UTF-8')), ['org.grails.plugins.TestBinaryResource'])
+        def descriptor = new BinaryGrailsPluginDescriptor(new ByteArrayResource(testBinary.getBytes(StandardCharsets.UTF_8)), ['org.grails.plugins.TestBinaryResource'])
         MockConfigBinaryGrailsPlugin.YAML_EXISTS = false
         MockConfigBinaryGrailsPlugin.GROOVY_EXISTS = true
         def binaryPlugin = new MockConfigBinaryGrailsPlugin(descriptor)

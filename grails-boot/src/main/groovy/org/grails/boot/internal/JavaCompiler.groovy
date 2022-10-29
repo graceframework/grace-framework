@@ -15,7 +15,7 @@
  */
 package org.grails.boot.internal
 
-import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 
 import javax.tools.ToolProvider
 
@@ -39,7 +39,7 @@ class JavaCompiler {
     static boolean recompile(CompilerConfiguration config, File... files) {
         // compile java source
         javax.tools.JavaCompiler compiler = ToolProvider.getSystemJavaCompiler()
-        def sfm = compiler.getStandardFileManager(null, null, Charset.forName('UTF-8'))
+        def sfm = compiler.getStandardFileManager(null, null, StandardCharsets.UTF_8)
         def compileTask = compiler.getTask(null, null, null,
                 ['-d', config.targetDirectory.absolutePath], null, sfm.getJavaFileObjects(files))
         compileTask.call()

@@ -1,5 +1,7 @@
 package org.grails.web.databinding.bindingsource.json.api
 
+import java.nio.charset.StandardCharsets
+
 import grails.databinding.DataBindingSource
 import org.grails.web.databinding.bindingsource.JsonApiDataBindingSourceCreator
 import spock.lang.Shared
@@ -34,7 +36,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -72,7 +74,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -98,7 +100,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -120,7 +122,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -142,7 +144,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -158,7 +160,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:
@@ -175,7 +177,7 @@ class JsonApiDataBindingSourceCreatorSpec extends Specification {
         }'''
 
         when:
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
         DataBindingSource source = creator.createDataBindingSource(null, null, inputStream)
 
         then:

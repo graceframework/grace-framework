@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -499,7 +500,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
         }
 
         public InputStream getInputStream() throws IOException {
-            return new ByteArrayInputStream(this.contents.getBytes("UTF-8"));
+            return new ByteArrayInputStream(this.contents.getBytes(StandardCharsets.UTF_8));
         }
 
     }

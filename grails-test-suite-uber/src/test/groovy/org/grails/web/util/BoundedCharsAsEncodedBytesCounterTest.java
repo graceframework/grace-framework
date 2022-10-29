@@ -1,5 +1,7 @@
 package org.grails.web.util;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,11 +12,11 @@ public class BoundedCharsAsEncodedBytesCounterTest {
 
     @Test
     public void testCalculation() throws Exception {
-        BoundedCharsAsEncodedBytesCounter counter = new BoundedCharsAsEncodedBytesCounter(1024, "ISO-8859-1");
+        BoundedCharsAsEncodedBytesCounter counter = new BoundedCharsAsEncodedBytesCounter(1024, StandardCharsets.ISO_8859_1.name());
         counter.getCountingWriter();
         counter.update(TEST_STRING);
         assertEquals(13, counter.size());
-        assertEquals(13, TEST_STRING.getBytes("ISO-8859-1").length);
+        assertEquals(13, TEST_STRING.getBytes(StandardCharsets.ISO_8859_1).length);
         counter.update(TEST_STRING);
         assertEquals(26, counter.size());
     }

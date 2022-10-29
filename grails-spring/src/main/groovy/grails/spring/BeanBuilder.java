@@ -17,6 +17,7 @@ package grails.spring;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -371,7 +372,7 @@ public class BeanBuilder extends GroovyObjectSupport {
         for (Resource resource : resources) {
             try {
                 GroovyShell shell = this.classLoader == null ? new GroovyShell(b) : new GroovyShell(this.classLoader, b);
-                shell.evaluate(new InputStreamReader(resource.getInputStream(), "UTF-8"));
+                shell.evaluate(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
             }
             catch (Throwable e) {
                 throw new BeanDefinitionParsingException(

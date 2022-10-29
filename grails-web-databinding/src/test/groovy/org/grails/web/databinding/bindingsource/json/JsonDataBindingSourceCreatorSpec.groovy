@@ -1,5 +1,7 @@
 package org.grails.web.databinding.bindingsource.json
 
+import java.nio.charset.StandardCharsets
+
 import groovy.json.JsonException
 import org.grails.web.databinding.bindingsource.JsonDataBindingSourceCreator
 
@@ -15,8 +17,8 @@ class JsonDataBindingSourceCreatorSpec extends Specification {
   "languages" : [ {"name": "Groovy", "company": "GoPivotal"}, {"name": "Java", "company": "Oracle"}]
 }'''
 
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
-        def bindingSource = new JsonDataBindingSourceCreator().createBindingSource(inputStream, "UTF-8")
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
+        def bindingSource = new JsonDataBindingSourceCreator().createBindingSource(inputStream, 'UTF-8')
 
         when:
         def propertyNames = bindingSource.propertyNames
@@ -50,11 +52,11 @@ class JsonDataBindingSourceCreatorSpec extends Specification {
         given:
         def json = '''{"mapData": {"name":"Jeff{{{'''
 
-        def inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"))
+        def inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))
 
 
         when:
-        def bindingSource = new JsonDataBindingSourceCreator().createBindingSource(inputStream, "UTF-8")
+        def bindingSource = new JsonDataBindingSourceCreator().createBindingSource(inputStream, 'UTF-8')
 
         then:
         thrown JsonException

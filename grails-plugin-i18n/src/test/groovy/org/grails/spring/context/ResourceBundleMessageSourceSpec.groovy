@@ -1,5 +1,7 @@
 package org.grails.spring.context
 
+import java.nio.charset.StandardCharsets
+
 import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.DefaultResourceLoader
@@ -12,11 +14,11 @@ class ResourceBundleMessageSourceSpec extends Specification {
     void setup(){
         messages = new TestResource('messages.properties','''\
             foo=bar
-        '''.stripIndent().getBytes('UTF-8'))
+        '''.stripIndent().getBytes(StandardCharsets.UTF_8))
          
         other = new TestResource('other.properties','''\
             bar=foo
-        '''.stripIndent().getBytes('UTF-8'))
+        '''.stripIndent().getBytes(StandardCharsets.UTF_8))
     }
     
     void 'Check method to retrieve bundle codes per messagebundle'(){

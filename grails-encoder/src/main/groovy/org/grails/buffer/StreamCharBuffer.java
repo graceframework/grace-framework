@@ -27,6 +27,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.ref.SoftReference;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1188,7 +1189,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         int len = in.readInt();
         if (len > 0) {
             char[] buf = new char[len];
-            Reader reader = new InputStreamReader((InputStream) in, "UTF-8");
+            Reader reader = new InputStreamReader((InputStream) in, StandardCharsets.UTF_8);
             reader.read(buf);
             String str = StringCharArrayAccessor.createString(buf);
             MultipartStringChunk mpStringChunk = new MultipartStringChunk(str);
@@ -1219,7 +1220,7 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
         if (stringChunk != null && stringChunk.str.length() > 0) {
             char[] buf = StringCharArrayAccessor.getValue(stringChunk.str);
             out.writeInt(buf.length);
-            Writer writer = new OutputStreamWriter((OutputStream) out, "UTF-8");
+            Writer writer = new OutputStreamWriter((OutputStream) out, StandardCharsets.UTF_8);
             writer.write(buf);
             writer.flush();
             if (stringChunk instanceof MultipartStringChunk) {

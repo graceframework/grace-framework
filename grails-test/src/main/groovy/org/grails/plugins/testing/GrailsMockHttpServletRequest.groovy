@@ -15,6 +15,8 @@
  */
 package org.grails.plugins.testing
 
+import java.nio.charset.StandardCharsets
+
 import javax.servlet.AsyncContext
 import javax.servlet.AsyncEvent
 import javax.servlet.AsyncListener
@@ -105,13 +107,13 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         setContentType('application/json; charset=UTF-8')
         setFormat('json')
         if (sourceJson instanceof String) {
-            setContent(sourceJson.getBytes('UTF-8'))
+            setContent(sourceJson.getBytes(StandardCharsets.UTF_8))
         }
         else if (sourceJson instanceof JSON) {
-            setContent(sourceJson.toString().getBytes('UTF-8'))
+            setContent(sourceJson.toString().getBytes(StandardCharsets.UTF_8))
         }
         else {
-            setContent(new JSON(sourceJson).toString().getBytes('UTF-8'))
+            setContent(new JSON(sourceJson).toString().getBytes(StandardCharsets.UTF_8))
         }
         getAttribute('org.codehaus.groovy.grails.WEB_REQUEST')?.informParameterCreationListeners()
     }
@@ -126,7 +128,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
         setFormat('xml')
 
         if (sourceXml instanceof String) {
-            setContent(sourceXml.getBytes('UTF-8'))
+            setContent(sourceXml.getBytes(StandardCharsets.UTF_8))
         }
         else {
             XML xml
@@ -136,7 +138,7 @@ class GrailsMockHttpServletRequest extends MockHttpServletRequest implements Mul
             else {
                 xml = new XML(sourceXml)
             }
-            setContent(xml.toString().getBytes('UTF-8'))
+            setContent(xml.toString().getBytes(StandardCharsets.UTF_8))
         }
 
         getAttribute('org.codehaus.groovy.grails.WEB_REQUEST')?.informParameterCreationListeners()

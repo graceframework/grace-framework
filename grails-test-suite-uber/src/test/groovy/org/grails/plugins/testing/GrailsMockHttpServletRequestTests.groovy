@@ -14,7 +14,8 @@
  */
 package org.grails.plugins.testing
 
-import org.grails.plugins.testing.GrailsMockHttpServletRequest
+import java.nio.charset.StandardCharsets
+
 import org.junit.jupiter.api.Test
 
 import static org.junit.jupiter.api.Assertions.*
@@ -52,7 +53,7 @@ class GrailsMockHttpServletRequestTests {
         def request = new GrailsMockHttpServletRequest()
         request.method = 'POST'
         request.contentType = "application/xml; charset=UTF-8"
-        request.content = TEST_XML_CONTENT.getBytes("UTF-8")
+        request.content = TEST_XML_CONTENT.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         verifyXmlResult request.XML
@@ -63,7 +64,7 @@ class GrailsMockHttpServletRequestTests {
         def request = new GrailsMockHttpServletRequest()
         request.method = 'POST'
         request.contentType = "application/xml; charset=UTF-8"
-        request.content = TEST_XML_CONTENT.getBytes("UTF-8")
+        request.content = TEST_XML_CONTENT.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         verifyXmlResult request.XML
@@ -94,7 +95,7 @@ Second line
         def request = new GrailsMockHttpServletRequest()
         request.method = 'POST'
         request.contentType = "text/plain; charset=UTF-8"
-        request.content = content.getBytes("UTF-8")
+        request.content = content.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         assertThrows(Exception) {
@@ -107,7 +108,7 @@ Second line
         // Set up the test data.
         def request = new GrailsMockHttpServletRequest()
         request.contentType = "text/json; charset=UTF-8"
-        request.content = TEST_JSON_CONTENT.getBytes("UTF-8")
+        request.content = TEST_JSON_CONTENT.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         verifyJsonResult request.JSON
@@ -118,7 +119,7 @@ Second line
         // Set up the test data.
         def request = new GrailsMockHttpServletRequest()
         request.contentType = "text/json; charset=UTF-8"
-        request.content = TEST_JSON_CONTENT.getBytes("UTF-8")
+        request.content = TEST_JSON_CONTENT.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         verifyJsonResult request.JSON
@@ -145,7 +146,7 @@ Second line
 """
         def request = new GrailsMockHttpServletRequest()
         request.contentType = "text/plain; charset=UTF-8"
-        request.content = content.getBytes("UTF-8")
+        request.content = content.getBytes(StandardCharsets.UTF_8)
 
         // Test the method.
         assertTrue request.JSON.isEmpty(), "should not contain JSON"

@@ -15,6 +15,8 @@
  */
 package grails.dev.commands.template
 
+import java.nio.charset.StandardCharsets
+
 import groovy.text.GStringTemplateEngine
 import groovy.text.Template
 import groovy.transform.CompileDynamic
@@ -179,7 +181,7 @@ class TemplateRendererImpl implements TemplateRenderer {
                 if (t == null) {
                     try {
                         def templateEngine = new GStringTemplateEngine()
-                        def reader = new InputStreamReader(template.inputStream, 'UTF-8')
+                        def reader = new InputStreamReader(template.inputStream, StandardCharsets.UTF_8)
                         try {
                             t = templateEngine.createTemplate(reader)
                         }
