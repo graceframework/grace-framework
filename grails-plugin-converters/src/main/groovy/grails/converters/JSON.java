@@ -386,7 +386,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
                 value(null);
                 break;
             case PATH:
-                Map<String, Object> props = new HashMap<String, Object>();
+                Map<String, Object> props = new HashMap<>();
                 props.put("class", o.getClass());
                 int idx = this.referenceStack.indexOf(o);
                 PathCapturingJSONWriterWrapper pcWriter = (PathCapturingJSONWriterWrapper) this.writer;

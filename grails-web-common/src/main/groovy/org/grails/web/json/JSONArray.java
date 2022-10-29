@@ -613,7 +613,7 @@ public class JSONArray implements JSONElement, List {
      * @throws JSONException if the value is not finite.
      */
     public JSONArray put(double value) throws JSONException {
-        Double d = Double.valueOf(value);
+        Double d = value;
         JSONObject.testValidity(d);
         put(d);
         return this;
@@ -859,14 +859,16 @@ public class JSONArray implements JSONElement, List {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
 
         JSONArray that = (JSONArray) obj;
 
-        if (myArrayList != null ? !myArrayList.equals(that.myArrayList) : that.myArrayList != null) return false;
-
-        return true;
+        return Objects.equals(myArrayList, that.myArrayList);
     }
 
     @Override

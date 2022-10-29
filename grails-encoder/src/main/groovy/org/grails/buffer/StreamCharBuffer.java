@@ -1122,9 +1122,8 @@ public class StreamCharBuffer extends GroovyObjectSupport implements Writable, C
     protected List<StreamCharBuffer> getCurrentParentBuffers() {
         List<StreamCharBuffer> currentParentBuffers = new ArrayList<>();
         if (this.parentBuffers != null) {
-            for (Iterator<SoftReference<StreamCharBufferKey>> i = this.parentBuffers.iterator(); i.hasNext(); ) {
-                SoftReference<StreamCharBufferKey> ref = i.next();
-                final StreamCharBuffer.StreamCharBufferKey parentKey = ref.get();
+            for (SoftReference<StreamCharBufferKey> ref : this.parentBuffers) {
+                final StreamCharBufferKey parentKey = ref.get();
                 if (parentKey != null) {
                     currentParentBuffers.add(parentKey.getBuffer());
                 }

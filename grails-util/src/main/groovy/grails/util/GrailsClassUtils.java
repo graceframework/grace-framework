@@ -327,8 +327,8 @@ public final class GrailsClassUtils {
         PropertyDescriptor descriptor = null;
         try {
             PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(clazz);
-            for (int i = 0; i < descriptors.length; i++) {
-                descriptor = descriptors[i];
+            for (PropertyDescriptor propertyDescriptor : descriptors) {
+                descriptor = propertyDescriptor;
                 Class<?> currentPropertyType = descriptor.getPropertyType();
                 if (isTypeInstanceOfPropertyType(propertyType, currentPropertyType)) {
                     properties.add(descriptor);
@@ -369,8 +369,8 @@ public final class GrailsClassUtils {
         PropertyDescriptor descriptor = null;
         try {
             PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(clazz);
-            for (int i = 0; i < descriptors.length; i++) {
-                descriptor = descriptors[i];
+            for (PropertyDescriptor propertyDescriptor : descriptors) {
+                descriptor = propertyDescriptor;
                 Class<?> currentPropertyType = descriptor.getPropertyType();
                 if (propertySuperType.isAssignableFrom(descriptor.getPropertyType())) {
                     properties.add(descriptor);

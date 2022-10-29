@@ -89,7 +89,7 @@ public final class SpringIOUtils {
             return null;
         }
 
-        StringBuffer out = new StringBuffer(in.length * 2);
+        StringBuilder out = new StringBuilder(in.length * 2);
 
         //CheckStyle:MagicNumber OFF
         for (int i = 0; i < in.length; i++) {

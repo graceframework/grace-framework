@@ -59,13 +59,13 @@ public class GrailsApplicationAttributesTests {
         context.registerMockBean(GrailsApplication.APPLICATION_ID,app);
 
         GrailsClass[] controllers = app.getArtefacts(ControllerArtefactHandler.TYPE);
-        for (int i = 0; i < controllers.length; i++) {
-            context.registerMockBean(controllers[i].getFullName(), controllers[i].newInstance());
+        for (GrailsClass controller : controllers) {
+            context.registerMockBean(controller.getFullName(), controller.newInstance());
         }
 
         GrailsClass[] taglibs = app.getArtefacts(TagLibArtefactHandler.TYPE);
-        for (int i = 0; i < taglibs.length; i++) {
-            context.registerMockBean(taglibs[i].getFullName(), taglibs[i].newInstance());
+        for (GrailsClass taglib : taglibs) {
+            context.registerMockBean(taglib.getFullName(), taglib.newInstance());
         }
         return new DefaultGrailsApplicationAttributes(servletContext);
     }

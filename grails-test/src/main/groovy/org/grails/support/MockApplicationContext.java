@@ -199,8 +199,7 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
         String[] beanNames = getBeanNamesForType(type);
         Map<String, T> newMap = new HashMap<>();
-        for (int i = 0; i < beanNames.length; i++) {
-            String beanName = beanNames[i];
+        for (String beanName : beanNames) {
             newMap.put(beanName, (T) getBean(beanName));
         }
         return newMap;

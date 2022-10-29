@@ -249,11 +249,11 @@ public class UrlCreatorCache {
             weight += (this.action != null) ? this.action.length() : 0;
             weight += (this.namespace != null) ? this.namespace.length() : 0;
             weight += (this.pluginName != null) ? this.pluginName.length() : 0;
-            for (int i = 0; i < this.paramKeys.length; i++) {
-                weight += (this.paramKeys[i] != null) ? this.paramKeys[i].length() : 0;
+            for (String paramKey : this.paramKeys) {
+                weight += (paramKey != null) ? paramKey.length() : 0;
             }
-            for (int i = 0; i < this.paramValues.length; i++) {
-                weight += (this.paramValues[i] != null) ? this.paramValues[i].length() : 0;
+            for (String paramValue : this.paramValues) {
+                weight += (paramValue != null) ? paramValue.length() : 0;
             }
             return weight;
         }

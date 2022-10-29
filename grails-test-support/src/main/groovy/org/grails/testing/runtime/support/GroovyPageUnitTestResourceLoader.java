@@ -46,7 +46,7 @@ public class GroovyPageUnitTestResourceLoader extends DefaultResourceLoader impl
 
     public static final String WEB_INF_PREFIX = "/WEB-INF/grails-app/views";
 
-    private Map<String, String> groovyPages = new ConcurrentHashMap<String, String>();
+    private Map<String, String> groovyPages = new ConcurrentHashMap<>();
 
     private String basePath;
 

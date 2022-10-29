@@ -110,8 +110,8 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
                 }
 
                 if (!StringUtils.isEmpty(mapping.getPluginName())) {
-                    for (int j = 0; j < grailsClassMappings.size(); j++) {
-                        grailsClassMappings.get(j).setPluginIndex(i);
+                    for (UrlMapping grailsClassMapping : grailsClassMappings) {
+                        grailsClassMapping.setPluginIndex(i);
                     }
                 }
 

@@ -564,8 +564,7 @@ public class JSONObject implements JSONElement, Map {
     public double optDouble(String key, double defaultValue) {
         try {
             Object o = opt(key);
-            return o instanceof Number ? ((Number) o).doubleValue() :
-                    Double.valueOf((String) o);
+            return o instanceof Number ? ((Number) o).doubleValue() : Double.parseDouble((String) o);
         } catch (Exception e) {
             return defaultValue;
         }
@@ -1225,14 +1224,16 @@ public class JSONObject implements JSONElement, Map {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         JSONObject that = (JSONObject) o;
 
-        if (myHashMap != null ? !myHashMap.equals(that.myHashMap) : that.myHashMap != null) return false;
-
-        return true;
+        return Objects.equals(myHashMap, that.myHashMap);
     }
 
     @Override
