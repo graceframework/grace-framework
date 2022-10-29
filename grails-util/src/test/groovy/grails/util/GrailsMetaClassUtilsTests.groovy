@@ -1,6 +1,5 @@
-package org.grails.commons
+package grails.util
 
-import grails.util.GrailsMetaClassUtils
 import org.junit.jupiter.api.Test
 import org.springframework.beans.BeanUtils
 
