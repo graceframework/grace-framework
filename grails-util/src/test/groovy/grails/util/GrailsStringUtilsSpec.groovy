@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package grails.util
 
-import grails.util.GrailsStringUtils
 import spock.lang.Specification
 
 /**
  */
-class GrailsStringUtilsSpec extends Specification{
+class GrailsStringUtilsSpec extends Specification {
 
     void "Test toBoolean"() {
         expect:
@@ -63,4 +61,21 @@ class GrailsStringUtilsSpec extends Specification{
             GrailsStringUtils.trimStart("abc", "ab") == 'c'
             GrailsStringUtils.trimStart("abc", "c") == 'abc'
     }
+
+    void "Test isEmpty method"() {
+        expect:
+        GrailsStringUtils.isEmpty('')
+        GrailsStringUtils.isEmpty(null)
+        GrailsStringUtils.isNotEmpty(' ')
+        GrailsStringUtils.isNotEmpty('abc')
+    }
+
+    void "Test isBlank method"() {
+        expect:
+        GrailsStringUtils.isBlank('')
+        GrailsStringUtils.isBlank(' ')
+        GrailsStringUtils.isBlank(null)
+        GrailsStringUtils.isNotBlank('abc')
+    }
+
 }

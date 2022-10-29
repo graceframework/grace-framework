@@ -16,6 +16,8 @@
 package grails.util
 
 import groovy.transform.CompileStatic
+import org.springframework.lang.Nullable
+import org.springframework.util.ObjectUtils
 import org.springframework.util.StringUtils
 
 import java.util.regex.Pattern
@@ -169,21 +171,26 @@ abstract class GrailsStringUtils extends StringUtils {
      * Same as {@link StringUtils#isEmpty(java.lang.Object)} but trims the string for surrounding whitespace
      */
     static boolean isBlank(String str) {
-        isEmpty(str?.trim())
+        !hasText(str)
     }
 
     /**
      * Opposite of {@link GrailsStringUtils#isBlank(java.lang.String)}
      */
     static boolean isNotBlank(String str) {
-        !isBlank(str?.trim())
+        hasText(str)
+    }
+
+    @Override
+    static boolean isEmpty(@Nullable Object str) {
+        return ObjectUtils.isEmpty(str)
     }
 
     /**
      * Opposite of {@link GrailsStringUtils#isEmpty(java.lang.Object)}
      */
     static boolean isNotEmpty(String str) {
-        !isEmpty(str)
+        hasLength(str)
     }
 
     /**

@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import grails.config.Config;
 import grails.core.GrailsApplication;
@@ -38,6 +37,7 @@ import grails.core.events.ArtefactAdditionEvent;
 import grails.core.support.GrailsApplicationAware;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
+import grails.util.GrailsStringUtils;
 import grails.web.UrlConverter;
 import grails.web.mapping.UrlMapping;
 import grails.web.mapping.UrlMappings;
@@ -109,7 +109,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
                     grailsClassMappings = mappingEvaluator.evaluateMappings(mappingClass.getMappingsClosure());
                 }
 
-                if (!StringUtils.isEmpty(mapping.getPluginName())) {
+                if (GrailsStringUtils.isNotEmpty(mapping.getPluginName())) {
                     for (UrlMapping grailsClassMapping : grailsClassMappings) {
                         grailsClassMapping.setPluginIndex(i);
                     }

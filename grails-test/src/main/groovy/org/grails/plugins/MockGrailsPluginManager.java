@@ -72,7 +72,7 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public void checkForChanges() {
-        Assert.isTrue(this.checkForChangesExpected);
+        Assert.isTrue(this.checkForChangesExpected, "checkForChangesExpected must be true");
         this.checkForChangesExpected = false;
     }
 
@@ -98,12 +98,12 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     public void expectCheckForChanges() {
-        Assert.state(!this.checkForChangesExpected);
+        Assert.state(!this.checkForChangesExpected, "checkForChangesExpected must be false");
         this.checkForChangesExpected = true;
     }
 
     public void verify() {
-        Assert.state(!this.checkForChangesExpected);
+        Assert.state(!this.checkForChangesExpected, "checkForChangesExpected must be false");
     }
 
 }

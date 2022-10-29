@@ -460,10 +460,10 @@ public class RegexUrlMapping extends AbstractUrlMapping {
             paramValues = new HashMap();
         }
 
-        boolean hasController = !GrailsStringUtils.isBlank(controller);
-        boolean hasAction = !GrailsStringUtils.isBlank(action);
-        boolean hasPlugin = !GrailsStringUtils.isBlank(pluginName);
-        boolean hasNamespace = !GrailsStringUtils.isBlank(namespace);
+        boolean hasController = GrailsStringUtils.isNotBlank(controller);
+        boolean hasAction = GrailsStringUtils.isNotBlank(action);
+        boolean hasPlugin = GrailsStringUtils.isNotBlank(pluginName);
+        boolean hasNamespace = GrailsStringUtils.isNotBlank(namespace);
 
         try {
             if (hasController) {
