@@ -169,6 +169,11 @@ enum Environment {
                 }
 
                 if (isBlank(version)) {
+                    Properties grailsBuildProperties = new Properties()
+                    grailsBuildProperties.load(BuildSettings.class.getResourceAsStream("/grails.build.properties"))
+                    version = grailsBuildProperties.getProperty("grails.version")
+                }
+                else {
                     version = 'Unknown'
                 }
             }
