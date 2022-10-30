@@ -51,7 +51,6 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.util.ClassUtils;
 
 import grails.util.Environment;
-import grails.util.GrailsUtil;
 
 /**
  *
@@ -73,7 +72,7 @@ public class OptimizedAutowireCapableBeanFactory extends DefaultListableBeanFact
      * Default constructor.
      */
     public OptimizedAutowireCapableBeanFactory() {
-        this.reloadEnabled = GrailsUtil.isDevelopmentEnv() || Environment.getCurrent().isReloadEnabled();
+        this.reloadEnabled = Environment.getCurrent().isReloadEnabled();
         if (this.reloadEnabled) {
 
             // Implementation note: The default Spring InstantiationStrategy caches constructors.
