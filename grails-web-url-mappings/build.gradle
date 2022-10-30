@@ -1,5 +1,6 @@
 dependencies {
     api project(":grails-api")
+    api project(":grails-cli")
     api project(":grails-util")
     api project(":grails-web-common")
 
