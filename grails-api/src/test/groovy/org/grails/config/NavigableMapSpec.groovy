@@ -1,6 +1,5 @@
-package grails.config
+package org.grails.config
 
-import org.grails.config.NavigableMap
 import spock.lang.Specification
 import spock.lang.Unroll
 
