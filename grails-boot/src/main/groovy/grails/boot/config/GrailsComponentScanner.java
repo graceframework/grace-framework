@@ -16,6 +16,7 @@
 package grails.boot.config;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.metrics.ApplicationStartup;
+import org.springframework.core.metrics.StartupStep;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -41,6 +44,8 @@ public class GrailsComponentScanner {
 
     private final ApplicationContext context;
 
+    private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
+
     /**
      * Create a new {@link GrailsComponentScanner} instance.
      * @param context the source application context
@@ -48,6 +53,11 @@ public class GrailsComponentScanner {
     public GrailsComponentScanner(ApplicationContext context) {
         Assert.notNull(context, "Context must not be null");
         this.context = context;
+    }
+
+    public GrailsComponentScanner(ApplicationContext context, ApplicationStartup applicationStartup) {
+        this(context);
+        this.applicationStartup = applicationStartup;
     }
 
     /**
@@ -58,6 +68,7 @@ public class GrailsComponentScanner {
      */
     @SafeVarargs
     public final Set<Class<?>> scan(Class<? extends Annotation>... annotationTypes) throws ClassNotFoundException {
+        StartupStep artefactScan = this.applicationStartup.start("grails.application.artefact-classes.scan");
         List<String> packages = getPackages();
         if (packages.isEmpty()) {
             return Collections.emptySet();
@@ -75,6 +86,7 @@ public class GrailsComponentScanner {
                 }
             }
         }
+        artefactScan.tag("packages", Arrays.toString(packages.toArray())).end();
         return entitySet;
     }
 

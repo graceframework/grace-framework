@@ -21,6 +21,8 @@ import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationStartupAware;
+import org.springframework.core.metrics.ApplicationStartup;
 
 import grails.core.GrailsApplication;
 import grails.plugins.exceptions.PluginException;
@@ -60,7 +62,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * @author Graeme Rocher
  * @since 0.4
  */
-public interface GrailsPluginManager extends ApplicationContextAware {
+public interface GrailsPluginManager extends ApplicationContextAware, ApplicationStartupAware {
 
     String BEAN_NAME = "pluginManager";
 
@@ -179,6 +181,21 @@ public interface GrailsPluginManager extends ApplicationContextAware {
      * Get the GrailsApplication used be this plugin manager
      */
     GrailsApplication getApplication();
+
+    /**
+     * Set the {@link ApplicationStartup} for this plugin manager.
+     * <p>This allows the plugin manager to record metrics
+     * during startup.
+     * @param applicationStartup the new context event factory
+     * @since 2022.0.0
+     */
+    void setApplicationStartup(ApplicationStartup applicationStartup);
+
+    /**
+     * Return the {@link ApplicationStartup} for this plugin manager.
+     * @since 2022.0.0
+     */
+    ApplicationStartup getApplicationStartup();
 
     /**
      * @return the initialised
