@@ -1,8 +1,10 @@
 dependencies {
     api project(":grails-api")
+    api project(":grails-core")
     api project(":grails-encoder")
-    api project(":grails-web")
     runtimeOnly project(":grails-codecs")
 
     api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+
+    testImplementation project(":grails-web-common")
 }
