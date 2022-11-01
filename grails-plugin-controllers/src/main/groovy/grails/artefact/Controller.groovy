@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse
 
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.runtime.InvokerHelper
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ApplicationContext
@@ -381,7 +382,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             def entityIdentifierValue = null
             final boolean isDomainClass
             if (GroovyObject.isAssignableFrom(type)) {
-                isDomainClass = DomainClass.isAssignableFrom(type)
+                isDomainClass = ClassHelper.make(type).implementsInterface(ClassHelper.make('grails.artefact.DomainClass'))
             }
             else {
                 isDomainClass = DomainClassArtefactHandler
