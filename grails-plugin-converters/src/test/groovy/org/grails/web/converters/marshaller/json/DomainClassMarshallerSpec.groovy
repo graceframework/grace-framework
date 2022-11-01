@@ -10,6 +10,7 @@ import org.grails.web.converters.configuration.ConvertersConfigurationInitialize
 import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 import spock.lang.Unroll
+import net.javacrumbs.jsonunit.JsonAssert
 
 class DomainClassMarshallerSpec extends Specification {
 
@@ -72,10 +73,11 @@ class DomainClassMarshallerSpec extends Specification {
     void "test marshaller should render the ID properly"() {
         initJson(false)
         when:
+        def expectedJson = '{"newId":3,"name":"Sally","version":null}'
         RenamedIdentifier ri = new RenamedIdentifier(newId: 3, name: "Sally")
 
         then:
-        new JSON(ri).toString() == '{"newId":3,"name":"Sally","version":null}'
+        JsonAssert.assertJsonEquals(new JSON(ri).toString(), expectedJson)
     }
 
     void "test marshallers generate class names when options are set"() {
