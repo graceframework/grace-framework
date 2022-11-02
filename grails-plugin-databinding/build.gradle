@@ -1,5 +1,5 @@
   dependencies {
-    api project(":grails-core")
+    api project(":grails-api")
     api project(":grails-plugin-api")
     api project(":grails-web-databinding")
 

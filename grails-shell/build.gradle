@@ -19,6 +19,7 @@ dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-gradle-model")
+    api project(":grails-util")
     dependenciesBom(project(path: ":grails-bom", configuration: 'effectiveBom'))
     api "org.apache.ant:ant:$antVersion"
     api "org.codehaus.groovy:groovy-ant:$groovyVersion"
