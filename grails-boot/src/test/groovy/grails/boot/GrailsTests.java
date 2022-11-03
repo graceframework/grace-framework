@@ -17,11 +17,13 @@ package grails.boot;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.Banner;
@@ -39,9 +41,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.core.metrics.ApplicationStartup;
+import org.springframework.core.metrics.StartupStep;
+
+import grails.boot.config.GrailsAutoConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 
 /**
  * Tests for {@link Grails}.
@@ -151,6 +169,32 @@ public class GrailsTests {
         AtomicReference<ApplicationReadyEvent> reference = addListener(app, ApplicationReadyEvent.class);
         this.context = app.run("--foo=bar");
         assertThat(app).isSameAs(reference.get().getSpringApplication());
+    }
+
+    @Test
+    void customApplicationStartupPublishStartupSteps() {
+        ApplicationStartup applicationStartup = mock(ApplicationStartup.class);
+        StartupStep startupStep = mock(StartupStep.class);
+        given(applicationStartup.start(anyString())).willReturn(startupStep);
+        given(startupStep.tag(anyString(), anyString())).willReturn(startupStep);
+        given(startupStep.tag(anyString(), ArgumentMatchers.<Supplier<String>>any())).willReturn(startupStep);
+        Grails application = new Grails(GrailsAutoConfiguration.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.setApplicationStartup(applicationStartup);
+        this.context = application.run();
+        assertThat(this.context.getBean(ApplicationStartup.class)).isEqualTo(applicationStartup);
+        then(applicationStartup).should().start("grails.application.config.prepared");
+        then(applicationStartup).should().start("grails.application.artefact-classes.scan");
+        then(applicationStartup).should().start("grails.application.artefact-classes.loaded");
+        then(applicationStartup).should().start("grails.application.bean-definitions.registered");
+        then(applicationStartup).should().start("grails.application.context.dynamic-methods");
+        then(applicationStartup).should().start("grails.application.context.post-processing");
+        then(applicationStartup).should().start("grails.application.context.startup");
+        long startCount = mockingDetails(applicationStartup).getInvocations().stream()
+                .filter((invocation) -> invocation.getMethod().toString().contains("start(")).count();
+        long endCount = mockingDetails(startupStep).getInvocations().stream()
+                .filter((invocation) -> invocation.getMethod().toString().contains("end(")).count();
+        assertThat(startCount).isEqualTo(endCount);
     }
 
     private <E extends ApplicationEvent> AtomicReference<E> addListener(Grails app, Class<E> eventType) {
