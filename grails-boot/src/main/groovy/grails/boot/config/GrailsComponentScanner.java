@@ -71,6 +71,7 @@ public class GrailsComponentScanner {
         StartupStep artefactScan = this.applicationStartup.start("grails.application.artefact-classes.scan");
         List<String> packages = getPackages();
         if (packages.isEmpty()) {
+            artefactScan.tag("packages", "[]").end();
             return Collections.emptySet();
         }
         ClassPathScanningCandidateComponentProvider scanner = createClassPathScanningCandidateComponentProvider(

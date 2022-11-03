@@ -169,6 +169,7 @@ public class GrailsApplicationPostProcessor
     }
 
     protected void loadArtefactClasses() {
+        StartupStep artefactStep = this.applicationStartup.start("grails.application.artefact-classes.loaded");
         GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext, this.applicationStartup);
         Set<Class<?>> classes;
         try {
@@ -181,12 +182,11 @@ public class GrailsApplicationPostProcessor
         for (Class<?> cls : classes) {
             this.grailsApplication.addArtefact(cls);
         }
-        this.applicationStartup.start("grails.application.artefact-classes.loaded")
-                .tag("classCount", String.valueOf(classes.size())).end();
+        artefactStep.tag("classCount", String.valueOf(classes.size())).end();
     }
 
     protected void loadApplicationConfig() {
-        StartupStep configLoader = this.applicationStartup.start("grails.application.config.prepared");
+        StartupStep configStep = this.applicationStartup.start("grails.application.config.prepared");
         org.springframework.core.env.Environment environment = this.applicationContext.getEnvironment();
         ConfigurableConversionService conversionService = null;
         if (environment instanceof ConfigurableEnvironment) {
@@ -241,13 +241,13 @@ public class GrailsApplicationPostProcessor
                 config.setConversionService(conversionService);
             }
             ((DefaultGrailsApplication) this.grailsApplication).setConfig(config);
-            configLoader.end();
         }
+        configStep.end();
     }
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        StartupStep runtimeConfigurer = this.applicationStartup.start("grails.application.beans.register");
+        StartupStep springConfigStep = this.applicationStartup.start("grails.application.bean-definitions.registered");
         RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration();
 
         GrailsApplication application = this.grailsApplication;
@@ -316,7 +316,7 @@ public class GrailsApplicationPostProcessor
         }
 
         springConfig.registerBeansWithRegistry(registry);
-        runtimeConfigurer.end();
+        springConfigStep.tag("beanDefinitionCount", String.valueOf(springConfig.getBeanNames().size())).end();
     }
 
     @Override
