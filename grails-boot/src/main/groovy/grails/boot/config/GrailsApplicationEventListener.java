@@ -28,6 +28,9 @@ import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.OrderComparator;
+import org.springframework.core.metrics.ApplicationStartup;
+import org.springframework.core.metrics.StartupStep;
+import org.springframework.util.Assert;
 
 import grails.boot.Grails;
 import grails.core.GrailsApplication;
@@ -51,6 +54,14 @@ import org.grails.datastore.mapping.model.MappingContext;
  */
 public class GrailsApplicationEventListener implements ApplicationListener<ApplicationContextEvent> {
 
+    /** Application startup metrics. **/
+    private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
+
+    public void setApplicationStartup(ApplicationStartup applicationStartup) {
+        Assert.notNull(applicationStartup, "applicationStartup should not be null");
+        this.applicationStartup = applicationStartup;
+    }
+
     @Override
     public void onApplicationEvent(ApplicationContextEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
@@ -71,27 +82,34 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             }
             Environment.setInitializing(false);
 
+            StartupStep dynamicMethods = this.applicationStartup.start("grails.application.context.dynamic-methods");
             pluginManager.setApplicationContext(applicationContext);
             pluginManager.doDynamicMethods();
             for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
                 lifeCycle.doWithDynamicMethods();
             }
+            dynamicMethods.end();
 
+            StartupStep postProcessing = this.applicationStartup.start("grails.application.context.post-processing");
             pluginManager.doPostProcessing(applicationContext);
             for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
                 lifeCycle.doWithApplicationContext();
             }
+            postProcessing.end();
 
             Holders.setPluginManager(pluginManager);
 
+            StartupStep startupStep = this.applicationStartup.start("grails.application.context.startup");
             Map<String, Object> eventMap = new HashMap<>();
             eventMap.put("source", pluginManager);
             pluginManager.onStartup(eventMap);
             for (GrailsApplicationLifeCycle lifeCycle : lifeCycleBeans) {
                 lifeCycle.onStartup(eventMap);
             }
+            startupStep.end();
         }
         else if (event instanceof ContextClosedEvent) {
+            StartupStep shutdown = this.applicationStartup.start("grails.application.context.shutdown");
             Map<String, Object> eventMap = new HashMap<>();
             eventMap.put("source", pluginManager);
 
@@ -105,6 +123,7 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             ShutdownOperations.runOperations();
             Holders.clear();
             Grails.setDevelopmentModeActive(false);
+            shutdown.end();
         }
     }
 

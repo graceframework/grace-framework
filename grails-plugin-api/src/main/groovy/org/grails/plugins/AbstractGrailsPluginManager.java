@@ -41,6 +41,7 @@ import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -93,6 +94,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected ApplicationContext applicationContext;
 
+    /** Application startup metrics. **/
+    private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
+
     protected Map<String, GrailsPlugin> failedPlugins = new HashMap<>();
 
     protected boolean loadCorePlugins = true;
@@ -127,6 +131,17 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected void checkInitialised() {
         Assert.state(this.initialised, "Must call loadPlugins() before invoking configurational methods on GrailsPluginManager");
+    }
+
+    @Override
+    public void setApplicationStartup(ApplicationStartup applicationStartup) {
+        Assert.notNull(applicationStartup, "applicationStartup should not be null");
+        this.applicationStartup = applicationStartup;
+    }
+
+    @Override
+    public ApplicationStartup getApplicationStartup() {
+        return this.applicationStartup;
     }
 
     public GrailsPlugin getFailedPlugin(String name) {

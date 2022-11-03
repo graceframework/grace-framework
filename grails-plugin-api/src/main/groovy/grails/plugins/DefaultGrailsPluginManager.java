@@ -45,6 +45,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
 
 import grails.core.GrailsApplication;
@@ -241,11 +242,12 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
      * @see grails.plugins.GrailsPluginManager#loadPlugins()
      */
     public void loadPlugins() throws PluginException {
-        long time = System.currentTimeMillis();
         if (this.initialised) {
             return;
         }
 
+        long time = System.currentTimeMillis();
+        StartupStep pluginStep = getApplicationStartup().start("grails.plugins.loading");
         ClassLoader gcl = this.application.getClassLoader();
 
         attemptLoadPlugins(gcl);
@@ -262,6 +264,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         this.initialised = true;
         logger.info(String.format("Total %d plugins loaded successfully, take in %dms.", this.pluginList.size(),
                 (System.currentTimeMillis() - time)));
+        pluginStep.tag("pluginCount", String.valueOf(this.pluginList.size())).end();
     }
 
     protected List<GrailsPlugin> sortPlugins(List<GrailsPlugin> toSort) {
@@ -377,6 +380,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
         for (Class<?> pluginClass : corePluginClasses) {
             if (pluginClass != null && !Modifier.isAbstract(pluginClass.getModifiers()) && pluginClass != DefaultGrailsPlugin.class) {
+                StartupStep pluginStep = getApplicationStartup().start("grails.plugins.instantiate");
                 final BinaryGrailsPluginDescriptor binaryDescriptor = finder.getBinaryDescriptor(pluginClass);
                 GrailsPlugin plugin;
                 if (binaryDescriptor != null) {
@@ -390,6 +394,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 isCompatiblePlugin(plugin);
 
                 grailsCorePlugins.add(plugin);
+                pluginStep.tag("pluginName", plugin.getName())
+                        .tag("pluginClass", plugin.getPluginClass().getName())
+                        .end();
             }
         }
         return grailsCorePlugins;
@@ -695,10 +702,15 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private void registerPlugin(GrailsPlugin plugin) {
+        StartupStep pluginStep = getApplicationStartup().start("grails.plugins.loaded")
+                .tag("pluginName", plugin.getName())
+                .tag("pluginClass", plugin.getPluginClass().getName());
         if (!canRegisterPlugin(plugin)) {
+            String message = "Grails plugin " + plugin + " is disabled and was not loaded";
             if (logger.isInfoEnabled()) {
-                logger.info("Grails plugin " + plugin + " is disabled and was not loaded");
+                logger.info(message);
             }
+            pluginStep.tag("message", message).end();
             return;
         }
 
@@ -723,6 +735,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         this.pluginList.add(plugin);
         this.plugins.put(plugin.getName(), plugin);
         this.classNameToPluginMap.put(plugin.getPluginClass().getName(), plugin);
+        pluginStep.end();
     }
 
     protected boolean canRegisterPlugin(GrailsPlugin plugin) {
