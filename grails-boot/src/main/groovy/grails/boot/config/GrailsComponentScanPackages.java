@@ -110,12 +110,12 @@ public class GrailsComponentScanPackages {
         Assert.notNull(registry, "Registry must not be null");
         Assert.notNull(packageNames, "PackageNames must not be null");
         if (registry.containsBeanDefinition(BEAN)) {
-            EntityScanPackagesBeanDefinition beanDefinition = (EntityScanPackagesBeanDefinition) registry
+            ComponentScanPackagesBeanDefinition beanDefinition = (ComponentScanPackagesBeanDefinition) registry
                     .getBeanDefinition(BEAN);
             beanDefinition.addPackageNames(packageNames);
         }
         else {
-            registry.registerBeanDefinition(BEAN, new EntityScanPackagesBeanDefinition(packageNames));
+            registry.registerBeanDefinition(BEAN, new ComponentScanPackagesBeanDefinition(packageNames));
         }
     }
 
@@ -159,11 +159,11 @@ public class GrailsComponentScanPackages {
 
     }
 
-    static class EntityScanPackagesBeanDefinition extends GenericBeanDefinition {
+    static class ComponentScanPackagesBeanDefinition extends GenericBeanDefinition {
 
         private final Set<String> packageNames = new LinkedHashSet<>();
 
-        EntityScanPackagesBeanDefinition(Collection<String> packageNames) {
+        ComponentScanPackagesBeanDefinition(Collection<String> packageNames) {
             setBeanClass(GrailsComponentScan.class);
             setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
             addPackageNames(packageNames);
