@@ -439,7 +439,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                 }
 
                 if (shouldDoDataBinding) {
-                    bindData(commandObjectInstance, commandObjectBindingSource, Collections.EMPTY_MAP, null)
+                    bindData(commandObjectInstance, commandObjectBindingSource, Collections.emptyMap(), null)
                 }
             }
         }

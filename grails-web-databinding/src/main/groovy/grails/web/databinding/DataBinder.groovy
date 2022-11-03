@@ -41,12 +41,12 @@ trait DataBinder {
 
     @Generated
     BindingResult bindData(target, bindingSource) {
-        bindData target, bindingSource, Collections.EMPTY_MAP, null
+        bindData target, bindingSource, Collections.emptyMap(), null
     }
 
     @Generated
     BindingResult bindData(target, bindingSource, String filter) {
-        bindData target, bindingSource, Collections.EMPTY_MAP, filter
+        bindData target, bindingSource, Collections.emptyMap(), filter
     }
 
     @Generated

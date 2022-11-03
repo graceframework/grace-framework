@@ -58,7 +58,7 @@ class DynamicElementReader extends GroovyObjectSupport {
     boolean beanDecorator = false
     boolean firstCall = true
 
-    DynamicElementReader(String namespace, Map namespaceMap=Collections.EMPTY_MAP,
+    DynamicElementReader(String namespace, Map namespaceMap = Collections.emptyMap(),
                          NamespaceHandler namespaceHandler = null, ParserContext parserContext = null) {
         this.xmlNamespaces = namespaceMap
         this.rootNamespace = namespace

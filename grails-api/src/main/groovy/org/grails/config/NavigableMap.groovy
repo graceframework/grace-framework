@@ -603,7 +603,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         Iterator iterator() {
-            Collections.EMPTY_LIST.iterator()
+            Collections.emptyList().iterator()
         }
 
         Object plus(String s) {
