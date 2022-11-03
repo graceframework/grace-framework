@@ -603,20 +603,12 @@ enum Environment {
         }
         try {
             Class.forName('org.springframework.boot.devtools.RemoteSpringApplication')
-            RELOADING_AGENT_ENABLED = getCurrent().isReloadEnabled()
-            LOG.get().debug('Found spring-dev-tools on the class path')
+            boolean devToolsEnabled = Metadata.current.getProperty('spring.devtools.restart.enabled', Boolean, true)
+            RELOADING_AGENT_ENABLED = getCurrent().isReloadEnabled() && devToolsEnabled
+            LOG.get().debug("Found 'spring-boot-devtools' on the classpath, spring.devtools.restart.enabled: $devToolsEnabled")
         }
         catch (ClassNotFoundException e) {
             RELOADING_AGENT_ENABLED = false
-            try {
-                Class.forName('org.springsource.loaded.TypeRegistry')
-                String jvmVersion = System.getProperty('java.specification.version')
-                LOG.get().debug('Found spring-loaded on the class path')
-                RELOADING_AGENT_ENABLED = getCurrent().isReloadEnabled()
-            }
-            catch (ClassNotFoundException e1) {
-                RELOADING_AGENT_ENABLED = false
-            }
         }
         RELOADING_AGENT_ENABLED
     }
