@@ -109,7 +109,7 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             startupStep.end();
         }
         else if (event instanceof ContextClosedEvent) {
-            StartupStep shutdown = this.applicationStartup.start("grails.application.context.shutdown");
+            StartupStep shutdownStep = this.applicationStartup.start("grails.application.context.shutdown");
             Map<String, Object> eventMap = new HashMap<>();
             eventMap.put("source", pluginManager);
 
@@ -123,7 +123,7 @@ public class GrailsApplicationEventListener implements ApplicationListener<Appli
             ShutdownOperations.runOperations();
             Holders.clear();
             Grails.setDevelopmentModeActive(false);
-            shutdown.end();
+            shutdownStep.end();
         }
     }
 

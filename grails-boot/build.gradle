@@ -27,8 +27,8 @@ dependencies {
     testImplementation project(":grails-test")
 
     testImplementation("org.assertj:assertj-core:3.11.1")
-	testImplementation("org.mockito:mockito-core:4.0.0")
-	testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
     testImplementation("org.springframework.boot:spring-boot-test:$springBootVersion")
     testImplementation "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
     testRuntimeOnly project(":grails-plugin-i18n")
