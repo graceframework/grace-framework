@@ -51,7 +51,6 @@ import grails.util.Environment;
 import org.grails.boot.internal.JavaCompiler;
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
 import org.grails.compiler.injection.GrailsAwareInjectionOperation;
-import org.grails.core.util.BeanCreationProfilingPostProcessor;
 import org.grails.io.watch.DirectoryWatcher;
 import org.grails.io.watch.FileExtensionFileChangeListener;
 import org.grails.plugins.BinaryGrailsPlugin;
@@ -73,8 +72,6 @@ public class Grails extends SpringApplication {
     private static boolean developmentModeActive = false;
 
     private static DirectoryWatcher directoryWatcher;
-
-    protected boolean enableBeanCreationProfiler = false;
 
     protected ConfigurableEnvironment configuredEnvironment;
 
@@ -135,13 +132,8 @@ public class Grails extends SpringApplication {
     protected ConfigurableApplicationContext createApplicationContext() {
         setAllowBeanDefinitionOverriding(true);
         setAllowCircularReferences(true);
-        ConfigurableApplicationContext applicationContext = super.createApplicationContext();
 
-        if (this.enableBeanCreationProfiler) {
-            BeanCreationProfilingPostProcessor processor = new BeanCreationProfilingPostProcessor();
-            applicationContext.getBeanFactory().addBeanPostProcessor(processor);
-            applicationContext.addApplicationListener(processor);
-        }
+        ConfigurableApplicationContext applicationContext = super.createApplicationContext();
         return applicationContext;
     }
 
@@ -157,10 +149,6 @@ public class Grails extends SpringApplication {
         Environment env = Environment.getCurrent();
         environment.addActiveProfile(env.getName());
         this.configuredEnvironment = environment;
-    }
-
-    public void setEnableBeanCreationProfiler(boolean enableBeanCreationProfiler) {
-        this.enableBeanCreationProfiler = enableBeanCreationProfiler;
     }
 
     protected void enableDevelopmentModeWatch(Environment environment, ConfigurableApplicationContext applicationContext, String... args)
