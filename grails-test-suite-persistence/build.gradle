@@ -4,16 +4,16 @@ configurations.testCompileClasspath {
 
 dependencies {
     testImplementation project(":grails-boot")
-    testImplementation project(":grails-test-suite-base")
-    testImplementation project(":grails-plugin-domain-class")
-    testImplementation project(":grails-plugin-datasource")
-    testImplementation project(":grails-plugin-i18n")
-    testImplementation project(":grails-plugin-url-mappings")
-    testImplementation project(":grails-plugin-databinding")
-    testImplementation project(":grails-plugin-services")
-    testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-bootstrap")
+    testImplementation project(":grails-plugin-controllers")
+    testImplementation project(":grails-plugin-databinding")
+    testImplementation project(":grails-plugin-datasource")
+    testImplementation project(":grails-plugin-domain-class")
+    testImplementation project(":grails-plugin-i18n")
+    testImplementation project(":grails-plugin-services")
+    testImplementation project(":grails-plugin-url-mappings")
     testImplementation project(":grails-spring")
+    testImplementation project(":grails-test-suite-base")
 
     testImplementation "org.grails:grails-datastore-gorm-validation:$datastoreVersion"
     testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins
+package org.grails.plugins.core
 
 import java.lang.reflect.Field
 

@@ -3,6 +3,7 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-core")
     api project(":grails-plugin-converters")
+    api project(":grails-plugin-core")
     api project(":grails-plugin-domain-class")
     api project(":grails-spring")
     api project(":grails-web")

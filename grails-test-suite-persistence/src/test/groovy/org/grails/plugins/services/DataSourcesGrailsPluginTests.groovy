@@ -46,7 +46,7 @@ class DataSourcesGrailsPluginTests  extends AbstractGrailsMockTests {
 
     private ApplicationContext initializeContext(Map dataSources) {
         ga.getConfig().putAll(dataSources)
-        def corePluginClass = gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
+        def corePluginClass = gcl.loadClass("org.grails.plugins.core.CoreGrailsPlugin")
         def corePlugin = new DefaultGrailsPlugin(corePluginClass, ga)
         def dataSourcePluginClass = gcl.loadClass("org.grails.plugins.datasource.DataSourceGrailsPlugin")
 
