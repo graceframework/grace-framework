@@ -1,20 +1,41 @@
+/*
+ * Copyright 2004-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.plugins;
-
-import grails.config.Config;
-import grails.core.*;
-import grails.util.Metadata;
-import groovy.lang.GroovyClassLoader;
-import org.grails.config.PropertySourcesConfig;
-import org.grails.datastore.mapping.model.MappingContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 
 import java.util.Map;
 
-class MockGrailsApplication implements GrailsApplication {
+import groovy.lang.GroovyClassLoader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+
+import grails.config.Config;
+import grails.core.ArtefactHandler;
+import grails.core.ArtefactInfo;
+import grails.core.GrailsApplication;
+import grails.core.GrailsClass;
+import grails.util.Metadata;
+
+import org.grails.config.PropertySourcesConfig;
+import org.grails.datastore.mapping.model.MappingContext;
+
+public class MockGrailsApplication implements GrailsApplication {
+
     private ClassLoader classLoader;
 
-    MockGrailsApplication() {
+    public MockGrailsApplication() {
     }
 
     public MockGrailsApplication(Class[] classes, GroovyClassLoader groovyClassLoader) {
@@ -174,4 +195,5 @@ class MockGrailsApplication implements GrailsApplication {
     public ArtefactHandler getArtefactHandler(String type) {
         throw new UnsupportedOperationException();
     }
+
 }
