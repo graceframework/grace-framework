@@ -39,7 +39,7 @@ class ConvertersGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
     def observe = ['controllers']
-    def dependsOn = [controllers: version, domainClass: version]
+    def dependsOn = [controllers: version]
     def providedArtefacts = [
             JSONCodec,
             XMLCodec

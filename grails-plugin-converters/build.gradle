@@ -3,6 +3,7 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-core")
     api project(":grails-plugin-api")
+    runtimeOnly project(":grails-plugin-controllers")
     api project(":grails-util")
     api project(":grails-web-common")
     compileOnly("org.grails:grails-datastore-core:$datastoreVersion") {
