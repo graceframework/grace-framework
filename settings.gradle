@@ -83,5 +83,6 @@ include (
         'grails-test-suite-web',
 
         // Gradle Plugin
-        'grails-gradle-model'
+        'grails-gradle-model',
+        'grails-gradle-plugin'
 )
