@@ -1,8 +1,9 @@
-package org.grails.plugins
+package org.grails.plugins.core
 
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import org.grails.config.PropertySourcesConfig
+import org.grails.plugins.DefaultGrailsPlugin
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
 import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
 import org.grails.support.MockApplicationContext
@@ -46,7 +47,7 @@ class CoreGrailsPluginTests {
 
     @Test
     void testCorePlugin() {
-        def pluginClass = gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
+        def pluginClass = gcl.loadClass("org.grails.plugins.core.CoreGrailsPlugin")
 
         def plugin = new DefaultGrailsPlugin(pluginClass, ga)
 
@@ -64,7 +65,7 @@ class CoreGrailsPluginTests {
 
     @Test
     void testDisableAspectj() {
-        def pluginClass = gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
+        def pluginClass = gcl.loadClass("org.grails.plugins.core.CoreGrailsPlugin")
 
         def plugin = new DefaultGrailsPlugin(pluginClass, ga)
 
