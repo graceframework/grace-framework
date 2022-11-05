@@ -1,15 +1,10 @@
 package grails.boot
 
-import grails.plugins.GrailsPlugin
-import grails.plugins.GrailsPluginManager
+import grails.boot.config.GrailsAutoConfiguration
 import grails.plugins.Plugin
 import grails.util.Environment
-import org.grails.plugins.DefaultGrailsPlugin
-import org.grails.plugins.MockGrailsPluginManager
 import org.springframework.boot.WebApplicationType
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
@@ -22,10 +17,10 @@ class DevelopmentModeWatchSpec extends Specification {
         setup:
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
         System.setProperty("base.dir", ".")
-        Grails app = new Grails(GrailsTestConfigurationClass.class)
+        Grails app = new Grails(GrailsAutoConfiguration.class)
         app.webApplicationType = WebApplicationType.NONE
-        ConfigurableApplicationContext context = app.run()
-        WatchedResourcesGrailsPlugin plugin = context.getBean('pluginManager').pluginList[0].plugin.instance
+        ConfigurableApplicationContext context = app.run("--server.port=0")
+        WatchedResourcesGrailsPlugin plugin = context.getBean('pluginManager').getGrailsPlugin('watchedResources').instance
         PollingConditions pollingCondition = new PollingConditions(timeout: 10, initialDelay: 5, factor: 1)
 
         when:
@@ -44,18 +39,6 @@ class DevelopmentModeWatchSpec extends Specification {
         if(watchedFile != null) {
             watchedFile.delete()
         }
-    }
-}
-
-@Configuration
-class GrailsTestConfigurationClass {
-
-    @Bean(name = "pluginManager")
-    GrailsPluginManager getGrailsPluginManager() {
-        MockGrailsPluginManager mockGrailsPluginManager = new MockGrailsPluginManager()
-        GrailsPlugin watchedPlugin = new DefaultGrailsPlugin(WatchedResourcesGrailsPlugin.class, mockGrailsPluginManager.application)
-        mockGrailsPluginManager.registerMockPlugin(watchedPlugin)
-        return mockGrailsPluginManager
     }
 }
 
