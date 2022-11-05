@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,7 +60,8 @@ class PublishGuideTask extends AbstractCompile {
                 throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
             }
             super.setSource(source)
-        } catch (e) {
+        }
+        catch (ignore) {
             throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
         }
     }
@@ -68,10 +69,10 @@ class PublishGuideTask extends AbstractCompile {
     @CompileDynamic
     @TaskAction
     void compile(InputChanges inputChanges) {
-        def urls = getClasspath().files.collect() { File f -> f.toURI().toURL() }
+        def urls = getClasspath().files.collect { File f -> f.toURI().toURL() }
 
         URLClassLoader classLoader = new URLClassLoader(urls as URL[], (ClassLoader) null)
-        def docPublisher = classLoader.loadClass("grails.doc.DocPublisher").newInstance(srcDir, destinationDir, project.logger)
+        def docPublisher = classLoader.loadClass('grails.doc.DocPublisher').newInstance(srcDir, destinationDir, project.logger)
         if (groovydocDir?.exists()) {
             project.copy {
                 from groovydocDir
@@ -88,18 +89,17 @@ class PublishGuideTask extends AbstractCompile {
         docPublisher.version = project.version
         docPublisher.src = srcDir
         docPublisher.target = destinationDir
-        docPublisher.workDir = new File(project.buildDir, "doc-tmp")
+        docPublisher.workDir = new File(project.buildDir, 'doc-tmp')
         docPublisher.apiDir = destinationDir
         if (resourcesDir) {
-            docPublisher.images = new File(resourcesDir, "img")
-            docPublisher.css = new File(resourcesDir, "css")
-            docPublisher.js = new File(resourcesDir, "js")
-            docPublisher.style = new File(resourcesDir, "style")
+            docPublisher.images = new File(resourcesDir, 'img')
+            docPublisher.css = new File(resourcesDir, 'css')
+            docPublisher.js = new File(resourcesDir, 'js')
+            docPublisher.style = new File(resourcesDir, 'style')
         }
         if (propertiesFile) {
             docPublisher.propertiesFile = propertiesFile
         }
-
 
         docPublisher.publish()
     }

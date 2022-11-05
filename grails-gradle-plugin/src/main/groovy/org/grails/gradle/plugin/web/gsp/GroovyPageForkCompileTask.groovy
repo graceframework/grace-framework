@@ -1,4 +1,23 @@
+/*
+ * Copyright 2014-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.gradle.plugin.web.gsp
+
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
@@ -17,10 +36,6 @@ import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
-
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 
 /**
  * Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
@@ -61,18 +76,19 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     @Override
     @PathSensitive(PathSensitivity.RELATIVE)
     FileTree getSource() {
-        return super.getSource()
+        super.getSource()
     }
 
     @Override
     void setSource(Object source) {
         try {
             srcDir = project.file(source)
-            if(srcDir.exists() && !srcDir.isDirectory()) {
+            if (srcDir.exists() && !srcDir.isDirectory()) {
                 throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
             }
             super.setSource(source)
-        } catch (e) {
+        }
+        catch (ignore) {
             throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
         }
     }
@@ -83,16 +99,13 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     }
 
     protected void compile() {
-
-        if(packageName == null) {
-            packageName = project.name
-            if(!packageName) {
-                packageName = project.projectDir.canonicalFile.name
-            }
+        if (packageName == null) {
+            packageName = project.name ?: project.projectDir.canonicalFile.name
         }
 
         ExecResult result = project.javaexec(
                 new Action<JavaExecSpec>() {
+
                     @Override
                     @CompileDynamic
                     void execute(JavaExecSpec javaExecSpec) {
@@ -100,35 +113,36 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         javaExecSpec.setClasspath(getClasspath())
 
                         def jvmArgs = compileOptions.forkOptions.jvmArgs
-                        if(jvmArgs) {
+                        if (jvmArgs) {
                             javaExecSpec.jvmArgs(jvmArgs)
                         }
-                        javaExecSpec.setMaxHeapSize( compileOptions.forkOptions.memoryMaximumSize )
-                        javaExecSpec.setMinHeapSize( compileOptions.forkOptions.memoryInitialSize )
+                        javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
+                        javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
 
                         //This is the OLD Style and seems kinda silly to be hard coded this way. but restores functionality
                         //for now
                         def configFiles = [
-                            project.file("grails-app/conf/application.yml").canonicalPath,
-                            project.file("grails-app/conf/application.groovy").canonicalPath
+                                project.file('grails-app/conf/application.yml').canonicalPath,
+                                project.file('grails-app/conf/application.groovy').canonicalPath
                         ].join(',')
 
                         Path path = Paths.get(tmpDirPath)
                         File tmp = tmpDir
                         if (Files.exists(path)) {
                             tmp = path.toFile()
-                        } else {
+                        }
+                        else {
                             tmp = Files.createDirectories(path).toFile()
                         }
                         def arguments = [
-                            srcDir.canonicalPath,
-                            destinationDir.canonicalPath,
-                            tmp.canonicalPath,
-                            targetCompatibility,
-                            packageName,
-                            serverpath,
-                            configFiles,
-                            compileOptions.encoding
+                                srcDir.canonicalPath,
+                                destinationDir.canonicalPath,
+                                tmp.canonicalPath,
+                                targetCompatibility,
+                                packageName,
+                                serverpath,
+                                configFiles,
+                                compileOptions.encoding
                         ]
 
                         prepareArguments(arguments)
@@ -138,7 +152,6 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                 }
         )
         result.assertNormalExitValue()
-
     }
 
     void prepareArguments(List<String> arguments) {
@@ -147,11 +160,12 @@ class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Input
     protected String getCompilerName() {
-        "org.grails.web.pages.GroovyPageCompilerForkTask"
+        'org.grails.web.pages.GroovyPageCompilerForkTask'
     }
 
     @Input
     String getFileExtension() {
-        "gsp"
+        'gsp'
     }
+
 }
