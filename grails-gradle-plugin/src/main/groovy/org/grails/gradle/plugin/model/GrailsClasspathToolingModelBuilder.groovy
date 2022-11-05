@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.gradle.plugin.model
 
 import groovy.transform.CompileStatic
@@ -28,31 +27,34 @@ import org.gradle.tooling.provider.model.ToolingModelBuilder
  */
 @CompileStatic
 class GrailsClasspathToolingModelBuilder implements ToolingModelBuilder {
+
     @Override
     boolean canBuild(String modelName) {
-        return modelName == GrailsClasspath.name
+        modelName == GrailsClasspath.name
     }
 
     @Override
     Object buildAll(String modelName, Project project) {
         // testRuntimeClasspath includes provided
         try {
-
-            List<URL> runtimeDependencies = project.getConfigurations().getByName("testRuntimeClasspath").getResolvedConfiguration().getResolvedArtifacts().collect { ResolvedArtifact artifact ->
-                artifact.getFile().toURI().toURL()
-            }
+            List<URL> runtimeDependencies =
+                    project.getConfigurations().getByName('testRuntimeClasspath')
+                            .getResolvedConfiguration()
+                            .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
 
             DefaultGrailsClasspath grailsClasspath = new DefaultGrailsClasspath(dependencies: runtimeDependencies)
 
-            Configuration profileConfiguration = project.getConfigurations().getByName("profile")
+            Configuration profileConfiguration = project.getConfigurations().getByName('profile')
             if (profileConfiguration != null) {
-                grailsClasspath.profileDependencies = profileConfiguration.getResolvedConfiguration().getResolvedArtifacts().collect() { ResolvedArtifact artifact ->
-                    artifact.getFile().toURI().toURL()
-                }
+                grailsClasspath.profileDependencies =
+                        profileConfiguration.getResolvedConfiguration()
+                                .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
             }
             return grailsClasspath
-        } catch (ResolveException e) {
+        }
+        catch (ResolveException e) {
             new DefaultGrailsClasspath(error: e.message)
         }
     }
+
 }

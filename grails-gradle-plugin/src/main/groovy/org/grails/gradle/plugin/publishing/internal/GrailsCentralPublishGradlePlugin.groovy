@@ -1,11 +1,11 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2022 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,6 @@
 //file:noinspection DuplicatedCode
 package org.grails.gradle.plugin.publishing.internal
 
-import grails.util.GrailsNameUtils
 import io.github.gradlenexus.publishplugin.NexusPublishPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -31,9 +30,11 @@ import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 
+import grails.util.GrailsNameUtils
+
+import static com.bmuschko.gradle.nexus.NexusPlugin.getSIGNING_KEYRING
 import static com.bmuschko.gradle.nexus.NexusPlugin.getSIGNING_KEY_ID
 import static com.bmuschko.gradle.nexus.NexusPlugin.getSIGNING_PASSWORD
-import static com.bmuschko.gradle.nexus.NexusPlugin.getSIGNING_KEYRING
 
 /**
  * A plugin to setup publishing to Grails central repo
@@ -44,14 +45,13 @@ import static com.bmuschko.gradle.nexus.NexusPlugin.getSIGNING_KEYRING
 class GrailsCentralPublishGradlePlugin implements Plugin<Project> {
 
     String getErrorMessage(String missingSetting) {
-        return """No '$missingSetting' was specified. Please provide a valid publishing configuration. Example:
+        """No '$missingSetting' was specified. Please provide a valid publishing configuration. Example:
 
 grailsPublish {
     user = 'user'
     key = 'key'
     userOrg = 'my-company' // optional, otherwise published to personal bintray account
     repo = 'plugins' // optional, defaults to 'plugins'
-
 
     websiteUrl = 'http://foo.com/myplugin'
     license {
@@ -94,28 +94,37 @@ BINTRAY_KEY=key
     void apply(Project project) {
         final ExtensionContainer extensionContainer = project.extensions
         final TaskContainer taskContainer = project.tasks
-        final GrailsPublishExtension gpe = extensionContainer.create("grailsPublish", GrailsPublishExtension)
+        final GrailsPublishExtension gpe = extensionContainer.create('grailsPublish', GrailsPublishExtension)
 
-        final String artifactoryUsername = project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : System.getenv("ARTIFACTORY_USERNAME") ?: ''
-        final String artifactoryPassword = project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : System.getenv("ARTIFACTORY_PASSWORD") ?: ''
-        final String ossNexusUrl = project.hasProperty("sonatypeNexusUrl") ? project.sonatypeNexusUrl : System.getenv("SONATYPE_NEXUS_URL") ?: ''
-        final String ossSnapshotUrl = project.hasProperty("sonatypeSnapshotUrl") ? project.sonatypeSnapshotUrl : System.getenv("SONATYPE_SNAPSHOT_URL") ?: ''
-        final String ossUser = project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : System.getenv("SONATYPE_USERNAME") ?: ''
-        final String ossPass = project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : System.getenv("SONATYPE_PASSWORD") ?: ''
-        final String ossStagingProfileId = project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: ''
+        final String artifactoryUsername = project.hasProperty('artifactoryPublishUsername')
+                ? project.artifactoryPublishUsername : System.getenv('ARTIFACTORY_USERNAME') ?: ''
+        final String artifactoryPassword = project.hasProperty('artifactoryPublishPassword')
+                ? project.artifactoryPublishPassword : System.getenv('ARTIFACTORY_PASSWORD') ?: ''
+        final String ossNexusUrl = project.hasProperty('sonatypeNexusUrl')
+                ? project.sonatypeNexusUrl : System.getenv('SONATYPE_NEXUS_URL') ?: ''
+        final String ossSnapshotUrl = project.hasProperty('sonatypeSnapshotUrl')
+                ? project.sonatypeSnapshotUrl : System.getenv('SONATYPE_SNAPSHOT_URL') ?: ''
+        final String ossUser = project.hasProperty('sonatypeOssUsername')
+                ? project.sonatypeOssUsername : System.getenv('SONATYPE_USERNAME') ?: ''
+        final String ossPass = project.hasProperty('sonatypeOssPassword')
+                ? project.sonatypeOssPassword : System.getenv('SONATYPE_PASSWORD') ?: ''
+        final String ossStagingProfileId = project.hasProperty('sonatypeOssStagingProfileId')
+                ? project.sonatypeOssStagingProfileId : System.getenv('SONATYPE_STAGING_PROFILE_ID') ?: ''
 
         final ExtraPropertiesExtension extraPropertiesExtension = extensionContainer.findByType(ExtraPropertiesExtension)
 
-        extraPropertiesExtension.setProperty(SIGNING_KEY_ID, project.hasProperty(SIGNING_KEY_ID) ? project[SIGNING_KEY_ID] : System.getenv("SIGNING_KEY") ?: null)
-        extraPropertiesExtension.setProperty(SIGNING_PASSWORD, project.hasProperty(SIGNING_PASSWORD) ? project[SIGNING_PASSWORD] : System.getenv("SIGNING_PASSPHRASE") ?: null)
-        extraPropertiesExtension.setProperty(SIGNING_KEYRING, project.hasProperty(SIGNING_KEYRING) ? project[SIGNING_KEYRING] : System.getenv("SIGNING_KEYRING") ?: null)
-
+        extraPropertiesExtension.setProperty(SIGNING_KEY_ID, project.hasProperty(SIGNING_KEY_ID)
+                ? project[SIGNING_KEY_ID] : System.getenv('SIGNING_KEY') ?: null)
+        extraPropertiesExtension.setProperty(SIGNING_PASSWORD, project.hasProperty(SIGNING_PASSWORD)
+                ? project[SIGNING_PASSWORD] : System.getenv('SIGNING_PASSPHRASE') ?: null)
+        extraPropertiesExtension.setProperty(SIGNING_KEYRING, project.hasProperty(SIGNING_KEYRING)
+                ? project[SIGNING_KEYRING] : System.getenv('SIGNING_KEYRING') ?: null)
 
         project.afterEvaluate {
-            boolean isSnapshot = project.version.endsWith("SNAPSHOT")
+            boolean isSnapshot = project.version.endsWith('SNAPSHOT')
             boolean isRelease = !isSnapshot
             final PluginManager pluginManager = project.getPluginManager()
-            pluginManager.apply(MavenPublishPlugin.class)
+            pluginManager.apply(MavenPublishPlugin)
 
             project.publishing {
                 if (isSnapshot) {
@@ -135,11 +144,11 @@ BINTRAY_KEY=key
                         artifactId project.name
 
                         doAddArtefact(project, delegate)
-                        def sourcesJar = taskContainer.findByName("sourcesJar")
+                        def sourcesJar = taskContainer.findByName('sourcesJar')
                         if (sourcesJar != null) {
                             artifact sourcesJar
                         }
-                        def javadocJar = taskContainer.findByName("javadocJar")
+                        def javadocJar = taskContainer.findByName('javadocJar')
                         if (javadocJar != null) {
                             artifact javadocJar
                         }
@@ -152,7 +161,7 @@ BINTRAY_KEY=key
                             Node pomNode = asNode()
 
                             if (pomNode.dependencyManagement) {
-                                pomNode.dependencyManagement[0].replaceNode {}
+                                pomNode.dependencyManagement[0].replaceNode { }
                             }
 
                             if (gpe != null) {
@@ -168,13 +177,10 @@ BINTRAY_KEY=key
 
                                     delegate.url websiteUrl
 
-
                                     def license = gpe.license
                                     if (license != null) {
-
                                         def concreteLicense = GrailsPublishExtension.License.LICENSES.get(license.name)
                                         if (concreteLicense != null) {
-
                                             delegate.licenses {
                                                 delegate.license {
                                                     delegate.name concreteLicense.name
@@ -182,7 +188,8 @@ BINTRAY_KEY=key
                                                     delegate.distribution concreteLicense.distribution
                                                 }
                                             }
-                                        } else if (license.name && license.url) {
+                                        }
+                                        else if (license.name && license.url) {
                                             delegate.licenses {
                                                 delegate.license {
                                                     delegate.name license.name
@@ -191,7 +198,8 @@ BINTRAY_KEY=key
                                                 }
                                             }
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         throw new RuntimeException(getErrorMessage('license'))
                                     }
 
@@ -202,33 +210,34 @@ BINTRAY_KEY=key
                                             delegate.developerConnection "scm:git@github.com:${gpe.githubSlug}.git"
                                         }
                                         delegate.issueManagement {
-                                            delegate.system "Github Issues"
+                                            delegate.system 'Github Issues'
                                             delegate.url "https://github.com/$gpe.githubSlug/issues"
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         if (gpe.vcsUrl) {
                                             delegate.scm {
                                                 delegate.url gpe.vcsUrl
                                                 delegate.connection "scm:$gpe.vcsUrl"
                                                 delegate.developerConnection "scm:$gpe.vcsUrl"
                                             }
-                                        } else {
+                                        }
+                                        else {
                                             throw new RuntimeException(getErrorMessage('vcsUrl'))
                                         }
 
                                         if (gpe.issueTrackerUrl) {
                                             delegate.issueManagement {
-                                                delegate.system "Issue Tracker"
+                                                delegate.system 'Issue Tracker'
                                                 delegate.url gpe.issueTrackerUrl
                                             }
-                                        } else {
+                                        }
+                                        else {
                                             throw new RuntimeException(getErrorMessage('issueTrackerUrl'))
                                         }
-
                                     }
 
                                     if (gpe.developers) {
-
                                         delegate.developers {
                                             for (entry in gpe.developers.entrySet()) {
                                                 delegate.developer {
@@ -237,11 +246,11 @@ BINTRAY_KEY=key
                                                 }
                                             }
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         throw new RuntimeException(getErrorMessage('developers'))
                                     }
                                 }
-
                             }
 
                             // simply remove dependencies without a version
@@ -250,7 +259,7 @@ BINTRAY_KEY=key
                             pomNode.dependencies.dependency.findAll {
                                 it.version.text().isEmpty()
                             }.each {
-                                it.replaceNode {}
+                                it.replaceNode { }
                             }
                         }
                     }
@@ -258,8 +267,8 @@ BINTRAY_KEY=key
             }
 
             if (isRelease) {
-                pluginManager.apply(NexusPublishPlugin.class)
-                pluginManager.apply(SigningPlugin.class)
+                pluginManager.apply(NexusPublishPlugin)
+                pluginManager.apply(SigningPlugin)
 
                 extensionContainer.configure(SigningExtension, {
                     it.required = isRelease
@@ -293,20 +302,20 @@ BINTRAY_KEY=key
                 }
             }
 
-            def installTask = taskContainer.findByName("install")
+            def installTask = taskContainer.findByName('install')
             def publishToSonatypeTask = taskContainer.findByName('publishToSonatype')
             def closeAndReleaseSonatypeStagingRepositoryTask = taskContainer.findByName('closeAndReleaseSonatypeStagingRepository')
-            def publishToMavenLocal = taskContainer.findByName("publishToMavenLocal")
+            def publishToMavenLocal = taskContainer.findByName('publishToMavenLocal')
             if (publishToSonatypeTask != null && taskContainer.findByName("publish${GrailsNameUtils.getClassName(defaultClassifier)}") == null) {
                 taskContainer.register("publish${GrailsNameUtils.getClassName(defaultClassifier)}", { Task task ->
                     task.dependsOn([publishToSonatypeTask, closeAndReleaseSonatypeStagingRepositoryTask])
-                    task.setGroup("publishing")
+                    task.setGroup('publishing')
                 })
             }
             if (installTask == null) {
-                taskContainer.register("install", { Task task ->
+                taskContainer.register('install', { Task task ->
                     task.dependsOn(publishToMavenLocal)
-                    task.setGroup("publishing")
+                    task.setGroup('publishing')
                 })
             }
         }
@@ -321,28 +330,28 @@ BINTRAY_KEY=key
     }
 
     protected String getDefaultGrailsCentralReleaseRepo() {
-        "https://repo.grails.org/grails/plugins3-releases-local"
+        'https://repo.grails.org/grails/plugins3-releases-local'
     }
 
     protected String getDefaultGrailsCentralSnapshotRepo() {
-        "https://repo.grails.org/grails/plugins3-snapshots-local"
+        'https://repo.grails.org/grails/plugins3-snapshots-local'
     }
 
     protected Map<String, String> getDefaultExtraArtifact(Project project) {
         def directory
         try {
             directory = project.sourceSets.main.groovy.outputDir
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             directory = project.sourceSets.main.output.classesDirs
         }
-        [source    : "${directory}/META-INF/grails-plugin.xml".toString(),
+        [source: "${directory}/META-INF/grails-plugin.xml".toString(),
          classifier: getDefaultClassifier(),
-         extension : 'xml']
+         extension: 'xml']
     }
 
     protected String getDefaultClassifier() {
-        "plugin"
+        'plugin'
     }
 
     protected String getDefaultDescription(Project project) {
@@ -350,7 +359,7 @@ BINTRAY_KEY=key
     }
 
     protected String getDefaultRepo() {
-        "plugins"
+        'plugins'
     }
-}
 
+}
