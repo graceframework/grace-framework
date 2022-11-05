@@ -30,6 +30,7 @@ targetCompatibility = "1.8"
 
 configurations {
     documentation
+    all*.exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
 }
 
 dependencies {
