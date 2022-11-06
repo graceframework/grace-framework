@@ -120,6 +120,7 @@ task configurePopulateDependencies {
 }
 
 task populateDependencies(type: Sync, dependsOn: configurePopulateDependencies) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     into homeLibDir
     includeEmptyDirs = false
 }
