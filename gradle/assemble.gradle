@@ -149,6 +149,7 @@ task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
 }
 
 class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateStartScripts {
+    @org.gradle.api.tasks.Internal
     Collection<String> projectArtifacts=[]
 
     @org.gradle.api.tasks.TaskAction
