@@ -96,7 +96,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     // NOTE: mongodb, neo4j etc. should NOT be included here so they can be independently versioned
     protected static final List<String> CORE_GORM_PLUGINS = ['hibernate4', 'hibernate5']
 
-    List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin]
+    List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
     List<String> excludedGrailsAppSourceDirs = ['migrations', 'assets']
     List<String> grailsAppResourceDirs = ['views', 'i18n', 'conf']
     private final ToolingModelBuilderRegistry registry

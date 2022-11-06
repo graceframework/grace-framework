@@ -8,7 +8,6 @@ buildscript {
         classpath "commons-io:commons-io:2.11.0"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
-        classpath "com.bmuschko:gradle-nexus-plugin:$gradleNexusPluginVersion"
         classpath "gradle.plugin.io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
         classpath "javax.xml.bind:jaxb-api:$jaxbVersion"
         classpath "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
@@ -345,7 +344,6 @@ subprojects { project ->
     apply plugin: 'java-library'
     apply plugin: 'groovy'
     if(!isTestSuite) {
-        apply plugin: 'com.bmuschko.nexus'
         apply plugin: 'maven-publish'
         apply plugin: 'signing'
     }
@@ -358,15 +356,12 @@ subprojects { project ->
     apply plugin: 'nebula.optional-base'
     apply plugin: "org.gradle.test-retry"
 
-    if (!isTestSuite) {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
 
-        modifyPom {
-            delegate.project {
-                def updatePom = pomInfo.clone()
-                updatePom.delegate = delegate
-                updatePom()
-            }
-        }
+    if (!isTestSuite) {
 
         publishing {
 
@@ -388,13 +383,9 @@ subprojects { project ->
             if(project.name == 'grails-bom') return
 
             publications {
-                maven(MavenPublication) {
+                mavenJava(MavenPublication) {
                     from components.java
 
-                    afterEvaluate {
-                        artifact source: sourcesJar, classifier: "sources"
-                        artifact source: javadocJar, classifier: "javadoc"
-                    }
                     pom.withXml {
                         def xml = asNode()
 
@@ -405,21 +396,29 @@ subprojects { project ->
             }
         }
 
-        afterEvaluate {
-            signing {
-                required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-                sign publishing.publications.maven
-            }
-        }
+        // signing {
+        //     required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+        //     sign publishing.publications.mavenJava
+        // }
 
         tasks.withType(Sign) {
             onlyIf { isReleaseVersion }
         }
 
-        //do not generate extra load on Nexus with new staging repository if signing fails
-        tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
-            shouldRunAfter(tasks.withType(Sign))
+        javadoc {
+            if(JavaVersion.current().isJava9Compatible()) {
+                options.addBooleanOption('html5', true)
+            }
         }
+
+        processResources {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+
+        jar {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+
     }
 
     if(project.name == 'grails-dependencies') return

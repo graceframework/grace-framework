@@ -128,6 +128,7 @@ configurations {
 def effectiveBom = file("$buildDir/generated/effective-bom/${project.name}.xml")
 
 task generateEffectiveBom(type: Copy) {
+    dependsOn generatePomFileForMavenPublication
 	from file("$buildDir/publications/maven")
     destinationDir file("$buildDir/generated/effective-bom")
     include "pom-default.xml"
