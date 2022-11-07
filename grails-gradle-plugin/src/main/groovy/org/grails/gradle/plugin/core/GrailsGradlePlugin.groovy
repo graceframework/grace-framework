@@ -628,7 +628,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected Jar createPathingJarTask(Project project, String name, Configuration... configurations) {
         project.tasks.create(name, Jar) { Jar task ->
             task.dependsOn(configurations)
-            task.appendix = 'pathing'
+            task.archiveAppendix = 'pathing'
 
             Set files = []
             configurations.each {
