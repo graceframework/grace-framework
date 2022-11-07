@@ -127,7 +127,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         ].join(',')
 
                         Path path = Paths.get(tmpDirPath)
-                        File tmp = tmpDir
+                        File tmp
                         if (Files.exists(path)) {
                             tmp = path.toFile()
                         }
@@ -136,7 +136,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         }
                         def arguments = [
                                 srcDir.canonicalPath,
-                                destinationDir.canonicalPath,
+                                destinationDirectory.getAsFile().getOrNull()?.canonicalPath,
                                 tmp.canonicalPath,
                                 targetCompatibility,
                                 packageName,

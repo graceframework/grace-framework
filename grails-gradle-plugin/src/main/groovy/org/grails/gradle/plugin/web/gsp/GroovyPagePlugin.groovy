@@ -67,7 +67,7 @@ class GroovyPagePlugin implements Plugin<Project> {
         def allTasks = project.tasks
 
         def compileGroovyPages = allTasks.create('compileGroovyPages', GroovyPageForkCompileTask) {
-            destinationDir = destDir
+            destinationDirectory.set(destDir)
             tmpDirPath = getTmpDirPath(project)
             source = project.file("${project.projectDir}/${grailsAppDir}/views")
             serverpath = '/WEB-INF/grails-app/views/'
@@ -76,7 +76,7 @@ class GroovyPagePlugin implements Plugin<Project> {
         compileGroovyPages.setClasspath(allClasspath)
 
         def compileWebappGroovyPages = allTasks.create('compileWebappGroovyPages', GroovyPageForkCompileTask) {
-            destinationDir = destDir
+            destinationDirectory.set(destDir)
             source = project.file("${project.projectDir}/src/main/webapp")
             tmpDirPath = getTmpDirPath(project)
             serverpath = '/'
@@ -88,7 +88,8 @@ class GroovyPagePlugin implements Plugin<Project> {
             GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
             if (grailsExt.pathingJar && Os.isFamily(Os.FAMILY_WINDOWS)) {
                 Jar pathingJar = (Jar) allTasks.findByName('pathingJar')
-                allClasspath = project.files("${project.buildDir}/classes/groovy/main", "${project.buildDir}/resources/main", pathingJar.archivePath)
+                allClasspath = project.files("${project.buildDir}/classes/groovy/main",
+                        "${project.buildDir}/resources/main", pathingJar.archiveFile.get().getAsFile())
                 compileGroovyPages.dependsOn(pathingJar)
                 compileGroovyPages.setClasspath(allClasspath)
                 compileWebappGroovyPages.dependsOn(pathingJar)

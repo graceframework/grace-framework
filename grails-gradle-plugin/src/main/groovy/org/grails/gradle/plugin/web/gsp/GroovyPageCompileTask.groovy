@@ -71,9 +71,9 @@ class GroovyPageCompileTask extends AbstractCompile {
 
         antBuilder.withClasspath(classpath).execute {
             taskdef(name: 'gspc', classname: 'org.grails.web.pages.GroovyPageCompilerTask')
-            def dest = compileTask.destinationDir
+            def dest = compileTask.destinationDirectory.getAsFile().getOrNull()
             def tmpdir = new File(gradleProject.buildDir, 'gsptmp')
-            dest.mkdirs()
+            dest?.mkdirs()
 
             gspc(destdir: dest,
                     srcdir: compileTask.srcDir,
