@@ -110,7 +110,7 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
     @CompileDynamic
     private integrateIdea(Project project, List<File> acceptedSourceDirs) {
         project.afterEvaluate {
-            if (project.convention.findByName('idea')) {
+            if (project.extensions.findByName('idea')) {
                 // IDE integration for IDEA. Eclipse plugin already handles all source folders.
                 project.idea {
                     module {
