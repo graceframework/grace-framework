@@ -33,9 +33,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
-import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
+import org.gradle.work.InputChanges
 
 /**
  * Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
@@ -94,7 +94,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     }
 
     @TaskAction
-    void execute(IncrementalTaskInputs inputs) {
+    void execute(InputChanges inputs) {
         compile()
     }
 
