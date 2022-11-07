@@ -512,7 +512,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
             classpath = project.sourceSets.main.runtimeClasspath + configuration
-            main = 'grails.ui.console.GrailsSwingConsole'
+            mainClass = 'grails.ui.console.GrailsSwingConsole'
         }
     }
 
@@ -520,7 +520,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
             classpath = project.sourceSets.main.runtimeClasspath + configuration
-            main = 'grails.ui.shell.GrailsShell'
+            mainClass = 'grails.ui.shell.GrailsShell'
             standardInput = System.in
         }
     }
