@@ -73,7 +73,7 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
             setClassesDirs(integrationTestTask, integrationTest)
             integrationTestTask.classpath = integrationTest.runtimeClasspath
             integrationTestTask.maxParallelForks = 1
-            integrationTestTask.reports.html.enabled = false
+            integrationTestTask.reports.html.required.set(false)
             integrationTestTask.shouldRunAfter('test')
 
             tasks.findByName('check')?.dependsOn(integrationTestTask)
