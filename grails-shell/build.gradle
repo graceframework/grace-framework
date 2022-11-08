@@ -7,12 +7,9 @@ repositories {
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
-ext {
-    gradleToolingApiVersion = gradle.gradleVersion
-}
-
 configurations {
 	dependenciesBom
+    all*.exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
 }
 
 dependencies {
@@ -27,7 +24,7 @@ dependencies {
     api "org.codehaus.groovy:groovy-jmx:$groovyVersion"
     api "org.fusesource.jansi:jansi:$jansiVersion"
     api "jline:jline:$jlineVersion"
-    api "org.gradle:gradle-tooling-api:$gradleToolingApiVersion"
+    api gradleApi()
 
     api "org.springframework.boot:spring-boot-cli:$springBootVersion", {
         exclude group: "org.codehaus.groovy", module: "groovy"
