@@ -12,6 +12,10 @@ subprojects { subproject ->
             libsConfigurations << libs {
                 extendsFrom compileClasspath, runtimeClasspath
                 ["jsp21", "uaa"].collect { configurations.findByName(it) }.findAll { it != null }.each { extendsFrom it }
+                attributes {
+                    attribute(Usage.USAGE_ATTRIBUTE, subproject.objects.named(Usage, Usage.JAVA_RUNTIME))
+                    attribute(Category.CATEGORY_ATTRIBUTE, subproject.objects.named(Category, Category.LIBRARY))
+                }
             }
         }
     }
