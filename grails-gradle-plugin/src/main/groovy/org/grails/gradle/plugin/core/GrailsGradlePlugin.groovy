@@ -512,7 +512,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
             classpath = project.sourceSets.main.runtimeClasspath + configuration
-            main = 'grails.ui.console.GrailsSwingConsole'
+            mainClass.set('grails.ui.console.GrailsSwingConsole')
         }
     }
 
@@ -520,7 +520,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
             classpath = project.sourceSets.main.runtimeClasspath + configuration
-            main = 'grails.ui.shell.GrailsShell'
+            mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
         }
     }
@@ -628,7 +628,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected Jar createPathingJarTask(Project project, String name, Configuration... configurations) {
         project.tasks.create(name, Jar) { Jar task ->
             task.dependsOn(configurations)
-            task.appendix = 'pathing'
+            task.archiveAppendix.set('pathing')
 
             Set files = []
             configurations.each {
@@ -697,11 +697,11 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
 
                 FileCollection pathingClasspath = project.files("${project.buildDir}/resources/main",
-                        "${project.projectDir}/gsp-classes", pathingJar.archivePath) + mainFiles
+                        "${project.projectDir}/gsp-classes", pathingJar.getArchiveFile().get().getAsFile()) + mainFiles
 
                 Jar pathingJarCommand = createPathingJarTask(project, 'pathingJarCommand', runtime, console)
                 FileCollection pathingClasspathCommand = project.files("${project.buildDir}/resources/main",
-                        "${project.projectDir}/gsp-classes", pathingJarCommand.archivePath) + mainFiles
+                        "${project.projectDir}/gsp-classes", pathingJarCommand.getArchiveFile().get().getAsFile()) + mainFiles
 
                 GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
 

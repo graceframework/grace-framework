@@ -136,7 +136,7 @@ task sourcesJars(type: Sync) {
 
 task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
     description = "Creates OS specific scripts to run grails-shell as a JVM application."
-    mainClassName = 'org.grails.cli.GrailsCli'
+    mainClass = 'org.grails.cli.GrailsCli'
     applicationName = 'grails'
     defaultJvmOpts = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
     outputDir = file('bin')
@@ -186,9 +186,9 @@ task install(dependsOn: [populateDependencies, grailsCreateStartScripts]) { task
 //                                                                                                        *.collect { Project p -> p.tasks.withType(PublishToMavenLocal)})
 
 task zipDist(type: Zip, dependsOn: [sourcesJars, install]) {
-    destinationDir = "${buildDir}/distributions" as File
-    baseName = 'grails'
-    appendix = grailsVersion
+    destinationDirectory = "${buildDir}/distributions" as File
+    archiveBaseName = 'grails'
+    archiveAppendix = grailsVersion
 
     exclude "**/CVS/**"
 

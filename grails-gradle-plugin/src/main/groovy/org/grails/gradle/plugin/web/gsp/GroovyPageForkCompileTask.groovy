@@ -33,9 +33,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
-import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
+import org.gradle.work.InputChanges
 
 /**
  * Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
@@ -94,7 +94,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     }
 
     @TaskAction
-    void execute(IncrementalTaskInputs inputs) {
+    void execute(InputChanges inputs) {
         compile()
     }
 
@@ -109,7 +109,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                     @Override
                     @CompileDynamic
                     void execute(JavaExecSpec javaExecSpec) {
-                        javaExecSpec.setMain(getCompilerName())
+                        javaExecSpec.getMainClass().set(getCompilerName())
                         javaExecSpec.setClasspath(getClasspath())
 
                         def jvmArgs = compileOptions.forkOptions.jvmArgs
@@ -127,7 +127,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         ].join(',')
 
                         Path path = Paths.get(tmpDirPath)
-                        File tmp = tmpDir
+                        File tmp
                         if (Files.exists(path)) {
                             tmp = path.toFile()
                         }
@@ -136,7 +136,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         }
                         def arguments = [
                                 srcDir.canonicalPath,
-                                destinationDir.canonicalPath,
+                                destinationDirectory.getAsFile().getOrNull()?.canonicalPath,
                                 tmp.canonicalPath,
                                 targetCompatibility,
                                 packageName,

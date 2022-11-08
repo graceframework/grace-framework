@@ -587,7 +587,7 @@ subprojects { project ->
 
     if(!isTestSuite) {
 
-        task installToHomeDist(type: Upload) {
+        task installToHomeDist(type: org.grails.gradle.Upload) {
             configuration = configurations.archives
             repositories {
                 flatDir name: 'libs', dirs: distInstallDir

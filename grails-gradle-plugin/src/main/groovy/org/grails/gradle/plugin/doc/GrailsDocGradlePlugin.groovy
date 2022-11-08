@@ -56,7 +56,7 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
             if (applicationYml.exists()) {
                 docsTask.propertiesFile = applicationYml
             }
-            docsTask.destinationDir = project.file("${project.buildDir}/docs/manual")
+            docsTask.destinationDirectory.set(project.file("${project.buildDir}/docs/manual"))
             docsTask.source = project.file("${project.projectDir}/src/docs")
             docsTask.resourcesDir = project.file("${project.projectDir}/src/docs")
             docsTask.groovydocDir = groovydocTask.destinationDir

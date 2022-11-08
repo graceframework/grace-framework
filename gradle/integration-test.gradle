@@ -9,19 +9,26 @@ sourceSets {
   }
 }
 
+configurations {
+  integrationTestImplementation {
+    extendsFrom testCompileClasspath
+  }
+  integrationTestRuntimeOnly {
+    extendsFrom testRuntimeClasspath
+  }
+}
+
 // Setup dependencies for integration testing
 dependencies {
   integrationTestImplementation sourceSets.main.output
   integrationTestImplementation sourceSets.test.output
-  integrationTestImplementation configurations.testCompileClasspath
-  integrationTestRuntimeOnly configurations.testRuntimeClasspath
 }
 
 // Define integration test task
 task integrationTest(type: Test) {
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  reports.html.enabled = false
+  reports.html.required = false
 }
 
 // Make sure 'check' task calls integration test

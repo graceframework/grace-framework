@@ -19,6 +19,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.SourceSet
@@ -62,8 +63,9 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
             DependencyHandler dependencies = project.dependencies
             dependencies.add('integrationTestImplementation', SourceSets.findMainSourceSet(project).output)
             dependencies.add('integrationTestImplementation', SourceSets.findSourceSet(project, SourceSet.TEST_SOURCE_SET_NAME).output)
-            dependencies.add('integrationTestImplementation', project.configurations.findByName('testCompileClasspath'))
-            dependencies.add('integrationTestRuntimeOnly', project.configurations.findByName('testRuntimeClasspath'))
+            ConfigurationContainer configurations = project.configurations
+            configurations.getByName('integrationTestImplementation').extendsFrom(configurations.getByName('testCompileClasspath'))
+            configurations.getByName('integrationTestRuntimeOnly').extendsFrom(configurations.getByName('testRuntimeClasspath'))
 
             TaskContainer tasks = project.tasks
             Test integrationTestTask = tasks.create('integrationTest', Test)
@@ -71,7 +73,7 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
             setClassesDirs(integrationTestTask, integrationTest)
             integrationTestTask.classpath = integrationTest.runtimeClasspath
             integrationTestTask.maxParallelForks = 1
-            integrationTestTask.reports.html.enabled = false
+            integrationTestTask.reports.html.required.set(false)
             integrationTestTask.shouldRunAfter('test')
 
             tasks.findByName('check')?.dependsOn(integrationTestTask)
@@ -108,7 +110,7 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
     @CompileDynamic
     private integrateIdea(Project project, List<File> acceptedSourceDirs) {
         project.afterEvaluate {
-            if (project.convention.findByName('idea')) {
+            if (project.extensions.findByName('idea')) {
                 // IDE integration for IDEA. Eclipse plugin already handles all source folders.
                 project.idea {
                     module {
