@@ -124,8 +124,8 @@ task execIsolatedTests(type: Test) {
 }
 
 task createCombinedReport(type: TestReport) {
-    destinationDir = file("$buildDir/reports/allTests")
-    reportOn execIsolatedTests, test
+    destinationDirectory.set(file("$buildDir/reports/allTests"))
+    testResults.builtBy(execIsolatedTests, test)
 }
 
 test {
