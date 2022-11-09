@@ -11,9 +11,6 @@ buildscript {
     }
 }
 
-group "org.grails"
-version project.projectVersion
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -21,12 +18,7 @@ repositories {
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
-apply plugin: 'idea'
 apply plugin: 'java-gradle-plugin'
-apply plugin: 'groovy'
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
 
 configurations {
     documentation
