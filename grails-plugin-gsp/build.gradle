@@ -19,17 +19,12 @@ dependencies {
 
     runtimeOnly(project(":grails-web-jsp"))
     api "commons-lang:commons-lang:2.6"
+    api "org.grails:grails-plugin-api:$grailsVersion"
     api "org.grails:grails-plugin-codecs:$grailsVersion"
     astImplementation "org.grails:grails-web:$grailsVersion"
     astImplementation "org.grails:grails-plugin-controllers:$grailsVersion"
 
-    testImplementation "org.grails:grails-web-testing-support:$testingSupportVersion", {
-        exclude module:'async'
-    }
-    testImplementation "org.grails:grails-testing-support:$testingSupportVersion", {
-        exclude module:'async'
-    }
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersion", {
+    testImplementation "org.grails:grails-test-support:$grailsVersion", {
         exclude module:'async'
     }
 
