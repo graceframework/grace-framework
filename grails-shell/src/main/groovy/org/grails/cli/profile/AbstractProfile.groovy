@@ -105,6 +105,11 @@ abstract class AbstractProfile implements Profile {
         }
     }
 
+    @Override
+    String getName() {
+        name
+    }
+
     String getVersion() {
         version
     }
