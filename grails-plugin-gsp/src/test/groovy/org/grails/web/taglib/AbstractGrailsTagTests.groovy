@@ -1,21 +1,47 @@
 package org.grails.web.taglib
 
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.xpath.XPath
-import javax.xml.xpath.XPathConstants
-import javax.xml.xpath.XPathFactory
-
+import com.opensymphony.module.sitemesh.RequestConstants
+import grails.build.support.MetaClassRegistryCleaner
+import grails.core.DefaultGrailsApplication
+import grails.core.GrailsApplication
+import grails.gorm.validation.PersistentEntityValidator
+import grails.plugins.GrailsPluginManager
+import grails.util.GrailsWebMockUtil
+import grails.util.Holders
+import grails.util.Metadata
+import grails.web.pages.GroovyPagesUriService
+import org.grails.buffer.FastStringWriter
+import org.grails.config.PropertySourcesConfig
+import org.grails.core.artefact.ControllerArtefactHandler
+import org.grails.core.artefact.gsp.TagLibArtefactHandler
+import org.grails.encoder.Encoder
+import org.grails.gsp.GroovyPage
+import org.grails.gsp.GroovyPageMetaInfo
+import org.grails.gsp.GroovyPageTemplate
+import org.grails.gsp.GroovyPagesTemplateEngine
+import org.grails.gsp.compiler.SitemeshPreprocessor
+import org.grails.plugins.DefaultGrailsPlugin
+import org.grails.plugins.MockGrailsPluginManager
+import org.grails.taglib.GroovyPageAttributes
+import org.grails.taglib.TagOutput
+import org.grails.taglib.encoder.OutputContextLookupHelper
+import org.grails.taglib.encoder.OutputEncodingStack
+import org.grails.taglib.encoder.WithCodecHelper
+import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
+import org.grails.web.mapping.DefaultLinkGenerator
+import org.grails.web.pages.DefaultGroovyPagesUriService
+import org.grails.web.pages.GSPResponseWriter
+import org.grails.web.servlet.context.support.WebRuntimeSpringConfiguration
+import org.grails.web.servlet.mvc.GrailsWebRequest
+import org.grails.web.sitemesh.GSPSitemeshPage
+import org.grails.web.sitemesh.GrailsHTMLPageParser
+import org.grails.web.sitemesh.GrailsLayoutView
+import org.grails.web.util.GrailsApplicationAttributes
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import com.opensymphony.module.sitemesh.RequestConstants
-import org.springframework.beans.BeansException
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext
-import org.springframework.core.io.DescriptiveResource
+import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
 import org.springframework.context.ApplicationContext
 import org.springframework.context.MessageSource
 import org.springframework.context.support.StaticMessageSource
@@ -36,73 +62,20 @@ import org.springframework.web.servlet.support.JstlUtils
 import org.springframework.web.servlet.theme.SessionThemeResolver
 import org.w3c.dom.Document
 
-import grails.build.support.MetaClassRegistryCleaner
-import grails.core.DefaultGrailsApplication
-import grails.core.GrailsApplication
-import grails.gorm.validation.PersistentEntityValidator
-import grails.plugins.GrailsPluginManager
-import grails.util.GrailsWebMockUtil
-import grails.util.Holders
-import grails.util.Metadata
-import grails.web.pages.GroovyPagesUriService
-import org.grails.buffer.FastStringWriter
-import org.grails.commons.CodecArtefactHandler
-import org.grails.config.PropertySourcesConfig
-import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.gsp.TagLibArtefactHandler
-import org.grails.encoder.Encoder
-import org.grails.encoder.impl.HTML4Codec
-import org.grails.encoder.impl.HTMLJSCodec
-import org.grails.encoder.impl.JavaScriptCodec
-import org.grails.encoder.impl.RawCodec
-import org.grails.gsp.GroovyPage
-import org.grails.gsp.GroovyPageMetaInfo
-import org.grails.gsp.GroovyPageTemplate
-import org.grails.gsp.GroovyPagesTemplateEngine
-import org.grails.gsp.compiler.SitemeshPreprocessor
-import org.grails.plugins.DefaultGrailsPlugin
-import org.grails.plugins.MockGrailsPluginManager
-import org.grails.plugins.codecs.CodecsPluginConfiguration
-import org.grails.plugins.codecs.HTMLCodec
-import org.grails.plugins.codecs.URLCodec
-import org.grails.plugins.core.CoreConfiguration
-import org.grails.plugins.databinding.DataBindingConfiguration
-import org.grails.plugins.web.controllers.ControllersPluginConfiguration
-import org.grails.plugins.web.mime.MimeTypesConfiguration
-import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
-import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
-import org.grails.taglib.GroovyPageAttributes
-import org.grails.taglib.TagOutput
-import org.grails.taglib.encoder.OutputContextLookupHelper
-import org.grails.taglib.encoder.OutputEncodingStack
-import org.grails.taglib.encoder.WithCodecHelper
-import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
-import org.grails.web.mapping.DefaultLinkGenerator
-import org.grails.web.pages.DefaultGroovyPagesUriService
-import org.grails.web.pages.GSPResponseWriter
-import org.grails.web.servlet.context.support.WebRuntimeSpringConfiguration
-import org.grails.web.servlet.mvc.GrailsWebRequest
-import org.grails.web.sitemesh.GSPSitemeshPage
-import org.grails.web.sitemesh.GrailsHTMLPageParser
-import org.grails.web.sitemesh.GrailsLayoutView
-import org.grails.web.util.GrailsApplicationAttributes
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.xpath.XPath
+import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathFactory
 
 import static org.junit.jupiter.api.Assertions.*
 
 abstract class AbstractGrailsTagTests {
-
-    static final Class[] DEFAULT_AUTO_CONFIGURATIONS = [
-            CoreConfiguration,
-            CodecsPluginConfiguration,
-            ControllersPluginConfiguration,
-            DataBindingConfiguration,
-            MimeTypesConfiguration]
-
     MockServletContext servletContext
     GrailsWebRequest webRequest
     MockHttpServletRequest request
     MockHttpServletResponse response
-    AnnotationConfigServletWebApplicationContext ctx
+    ApplicationContext ctx
     def originalHandler
     ApplicationContext appCtx
     GrailsApplication ga
@@ -267,58 +240,50 @@ info.app.name: ${getClass().name}
         mockManager.registerProvidedArtefacts(grailsApplication)
 
         def mockControllerClass = gcl.parseClass("class MockController {  def index = {} } ")
-        grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, mockControllerClass)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, HTMLCodec)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, HTML4Codec)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, JavaScriptCodec)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, HTMLJSCodec)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, URLCodec)
-        grailsApplication.addArtefact(CodecArtefactHandler.TYPE, RawCodec)
-
-        ctx = new AnnotationConfigServletWebApplicationContext()
+        ctx = new AnnotationConfigServletWebServerApplicationContext()
         ctx.setServletContext(new MockServletContext())
         ctx.registerBeanDefinition("messageSource", new RootBeanDefinition(StaticMessageSource))
-
-        ctx.beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
-        ctx.beanFactory.registerSingleton("pluginManager", mockManager)
-        ctx.beanFactory.registerSingleton("grailsLinkGenerator", new DefaultLinkGenerator("http://localhost:8080"))
-        ctx.beanFactory.registerSingleton("manager", mockManager)
-        ctx.beanFactory.registerSingleton("conversionService", new DefaultConversionService())
-        ctx.beanFactory.registerSingleton(GroovyPagesUriService.BEAN_ID, new DefaultGroovyPagesUriService())
-        ctx.register(DEFAULT_AUTO_CONFIGURATIONS)
         ctx.refresh()
         ctx.servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, ctx)
 
         grailsApplication.setApplicationContext(ctx)
 
+        ctx.beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, grailsApplication)
+        ctx.beanFactory.registerSingleton("pluginManager", mockManager)
+
+        grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, mockControllerClass)
+
         messageSource = ctx.getBean("messageSource", MessageSource)
+
+        ctx.beanFactory.registerSingleton("classLoader", gcl)
+        ctx.beanFactory.registerSingleton("grailsLinkGenerator", new DefaultLinkGenerator("http://localhost:8080"))
+        ctx.beanFactory.registerSingleton("manager", mockManager)
+        ctx.beanFactory.registerSingleton("conversionService", new DefaultConversionService())
+        ctx.beanFactory.registerSingleton(GroovyPagesUriService.BEAN_ID, new DefaultGroovyPagesUriService())
 
         onInitMockBeans()
 
-        List<Class> dependantPluginClasses = []
+        def dependantPluginClasses = []
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
-        dependantPluginClasses << gcl.loadClass("org.grails.plugins.codecs.CodecsGrailsPlugin")
+        dependantPluginClasses << gcl.loadClass("org.grails.plugins.CodecsGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.domain.DomainClassGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.i18n.I18nGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.web.mapping.UrlMappingsGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.web.controllers.ControllersGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.web.GroovyPagesGrailsPlugin")
 
-        List<DefaultGrailsPlugin> dependentPlugins = dependantPluginClasses.collect {
-            new DefaultGrailsPlugin(it, new DescriptiveResource(it.toString()), grailsApplication)
-        }
+        def dependentPlugins = dependantPluginClasses.collect { new DefaultGrailsPlugin(it, grailsApplication)}
 
         dependentPlugins.each { mockManager.registerMockPlugin(it); it.manager = mockManager }
         mockManager.registerProvidedArtefacts(grailsApplication)
-        mockManager.setApplicationContext(ctx)
-
         def springConfig = new WebRuntimeSpringConfiguration(ctx)
 
         webRequest = GrailsWebMockUtil.bindMockWebRequest(ctx)
         onInit()
         try {
             JstlUtils.exposeLocalizationContext webRequest.getRequest(), null
-        } catch (Throwable ignore) {
+        } catch (Throwable e) {
+            // ignore
         }
 
         servletContext = webRequest.servletContext
@@ -326,13 +291,6 @@ info.app.name: ${getClass().name}
         Holders.addApplicationDiscoveryStrategy(new ServletEnvironmentGrailsApplicationDiscoveryStrategy(servletContext));
 
         springConfig.servletContext = servletContext
-        springConfig.registerPostProcessor(new BeanFactoryPostProcessor() {
-            @Override
-            void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-                beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
-                beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(mockManager))
-            }
-        })
 
         dependentPlugins*.doWithRuntimeConfiguration(springConfig)
 

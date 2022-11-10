@@ -2,7 +2,6 @@ dependencies {
     api "org.grails:grails-core:$grailsVersion", {
         exclude group:'org.grails', module:'grails-spring'
     }
-    api "org.grails:grails-plugin-core:$grailsVersion"
     api project(":grails-taglib")
     api "org.codehaus.groovy:groovy-templates:$groovyVersion"
 }
