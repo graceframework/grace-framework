@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.Generated
+import groovy.transform.TypeChecked
 import groovy.transform.TypeCheckingMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -30,6 +31,7 @@ import grails.artefact.Controller
 import grails.artefact.controller.support.ResponseRenderer
 import grails.core.support.proxy.ProxyHandler
 import grails.rest.Resource
+import grails.rest.render.RenderContext
 import grails.rest.render.Renderer
 import grails.rest.render.RendererRegistry
 import grails.web.mime.MimeType
@@ -150,13 +152,13 @@ trait RestResponder {
         List<String> formats = calculateFormats(webRequest.actionName, value, args)
         final response = webRequest.getCurrentResponse()
         MimeType[] mimeTypes = getResponseFormat(response)
-        def registry = rendererRegistry
+        RendererRegistry registry = rendererRegistry
         if (registry == null) {
             registry = new DefaultRendererRegistry()
             registry.initialize()
         }
 
-        Renderer renderer = null
+        Renderer<Object> renderer = null
 
         for (MimeType mimeType in mimeTypes) {
             if (mimeType == MimeType.ALL && formats) {
@@ -195,7 +197,7 @@ trait RestResponder {
                     return callRender([status: statusCode ?: 404])
                 }
 
-                final valueType = value.getClass()
+                Class<Object> valueType = value.getClass()
                 if (registry.isContainerType(valueType)) {
                     renderer = registry.findContainerRenderer(mimeType, valueType, value)
                     if (renderer == null) {
@@ -213,7 +215,7 @@ trait RestResponder {
         }
 
         if (renderer) {
-            final context = new ServletRenderContext(webRequest, args)
+            RenderContext context = new ServletRenderContext(webRequest, args)
             if (statusCode != null) {
                 context.setStatus(HttpStatus.valueOf(statusCode))
             }
@@ -230,6 +232,7 @@ trait RestResponder {
         ((ResponseRenderer) this).render args
     }
 
+    @TypeChecked(TypeCheckingMode.SKIP)
     private List<String> calculateFormats(String actionName, value, Map args) {
         if (args.formats) {
             return (List<String>) args.formats
