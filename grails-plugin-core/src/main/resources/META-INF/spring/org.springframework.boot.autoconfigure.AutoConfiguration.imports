@@ -1,0 +1,2 @@
+org.grails.plugins.core.CoreConfiguration
+org.grails.plugins.core.PropertyPlaceholderConfiguration
