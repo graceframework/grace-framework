@@ -49,7 +49,7 @@ import org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin
 @CompileStatic
 class ProfileCompilerTask extends AbstractCompile {
 
-    public static final String DEFAULT_COMPATIBILITY = '1.8'
+    public static final String DEFAULT_COMPATIBILITY = '11'
     public static final String PROFILE_NAME = 'name'
     public static final String PROFILE_COMMANDS = 'commands'
 
