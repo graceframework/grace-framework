@@ -20,7 +20,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -35,7 +35,7 @@ import grails.transaction.TransactionManagerAware;
  * @author Graeme Rocher
  * @since 0.4
  */
-public class TransactionManagerPostProcessor extends InstantiationAwareBeanPostProcessorAdapter implements BeanFactoryAware, PriorityOrdered {
+public class TransactionManagerPostProcessor implements InstantiationAwareBeanPostProcessor, BeanFactoryAware, PriorityOrdered {
 
     private ConfigurableListableBeanFactory beanFactory;
 
