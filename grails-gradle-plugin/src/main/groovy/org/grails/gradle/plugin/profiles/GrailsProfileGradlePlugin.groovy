@@ -123,7 +123,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             jar.dependsOn(processResources, compileTask)
             jar.from(resourcesDir)
             jar.from(classsesDir)
-            jar.destinationDir = new File(project.buildDir, 'libs')
+            jar.destinationDirectory.set(new File(project.buildDir, 'libs'))
             jar.setDescription('Assembles a jar archive containing the profile classes.')
             jar.setGroup(BUILD_GROUP)
 
@@ -151,8 +151,8 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             jar.from(skeletonsDir) { CopySpec spec ->
                 spec.into('skeleton')
             }
-            jar.classifier = 'sources'
-            jar.destinationDir = new File(project.buildDir, 'libs')
+            jar.archiveClassifier.set('sources')
+            jar.destinationDirectory.set(new File(project.buildDir, 'libs'))
             jar.setDescription('Assembles a jar archive containing the profile sources.')
             jar.setGroup(BUILD_GROUP)
 
