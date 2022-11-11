@@ -49,7 +49,7 @@ import org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin
 @CompileStatic
 class ProfileCompilerTask extends AbstractCompile {
 
-    public static final String DEFAULT_COMPATIBILITY = '1.8'
+    public static final String DEFAULT_COMPATIBILITY = '11'
     public static final String PROFILE_NAME = 'name'
     public static final String PROFILE_COMMANDS = 'commands'
 
@@ -78,7 +78,7 @@ class ProfileCompilerTask extends AbstractCompile {
     @Override
     void setDestinationDir(File destinationDir) {
         profileFile = new File(destinationDir, 'META-INF/grails-profile/profile.yml')
-        super.setDestinationDir(destinationDir)
+        getDestinationDirectory().set(destinationDir)
     }
 
     @TaskAction
@@ -173,8 +173,8 @@ class ProfileCompilerTask extends AbstractCompile {
         if (groovySourceFiles) {
             CompilerConfiguration configuration = new CompilerConfiguration()
             configuration.setScriptBaseClass(GroovyScriptCommand.name)
-            destinationDir.mkdirs()
-            configuration.setTargetDirectory(destinationDir)
+            destinationDirectory.getAsFile().getOrNull()?.mkdirs()
+            configuration.setTargetDirectory(destinationDirectory.getAsFile().getOrNull())
 
             def importCustomizer = new ImportCustomizer()
             importCustomizer.addStarImports('org.grails.cli.interactive.completers')
