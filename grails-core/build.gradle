@@ -1,22 +1,21 @@
 dependencies {
-    compileOnly "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
-    api "org.springframework.boot:spring-boot:$springBootVersion"
-    api "org.springframework:spring-beans:${springVersion}"
-    api "org.springframework:spring-context:${springVersion}"
-    api "org.springframework:spring-core:${springVersion}"
-    api "org.springframework:spring-tx:${springVersion}"
-
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-plugin-api")
     api project(":grails-spring")
     api project(":grails-util")
 
-    api "org.grails:grails-datastore-core:$datastoreVersion"
+    api libs.gorm.datastore
+    api libs.spring.boot
+    api libs.spring.beans
+    api libs.spring.context
+    api libs.spring.core
+    api libs.spring.tx
+    compileOnly libs.micronaut.spring.context
 
     testImplementation project(":grails-test")
-    testImplementation "org.springframework:spring-jdbc:${springVersion}"
-    testImplementation "org.springframework:spring-test:${springVersion}"
+    testImplementation libs.spring.jdbc
+    testImplementation libs.spring.test
 }
 
 def writeProps = tasks.register('writeGrailsProperties', WriteProperties) {

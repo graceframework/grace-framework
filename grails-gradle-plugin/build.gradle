@@ -26,8 +26,8 @@ configurations {
 }
 
 dependencies {
-    documentation "org.fusesource.jansi:jansi:2.4.0"
-    documentation "org.codehaus.groovy:groovy-cli-picocli:$groovyVersion"
+    documentation libs.fusesource.jansi
+    documentation libs.groovy.picocli
 
     api gradleApi()
     api "io.github.gradle-nexus:publish-plugin:1.1.0"
@@ -38,9 +38,9 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
 
-    api "org.apache.maven:maven-model:3.6.3"
-    api "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    api "io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE"
+    api libs.maven.model
+    api libs.spring.boot.gradle.plugin
+    api libs.dependency.management.plugin
     api "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
 }
 

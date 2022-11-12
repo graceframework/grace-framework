@@ -8,22 +8,22 @@ dependencies {
     api project(":grails-web-url-mappings")
     api project(":grails-util")
 
-    compileOnly("org.grails:grails-datastore-core:$datastoreVersion") {
+    compileOnly(libs.gorm.datastore) {
         transitive = false
     }
-    compileOnly("org.grails:grails-datastore-gorm:$datastoreVersion") {
+    compileOnly(libs.gorm.datastore.gorm) {
         transitive = false
     }
-    compileOnly "org.grails:grails-web-gsp:$gspVersion", {
+    compileOnly libs.grails.web.gsp, {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'org.grails', module:'grails-encoder'
         exclude group:'org.grails', module:'grails-web-common'
     }
 
-    api 'javax.xml.bind:jaxb-api:2.3.1'
-    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    api libs.javax.jaxb
+    api(libs.spring.boot.autoconfigure)
 
-    implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    implementation libs.caffeine
     testImplementation project(":grails-plugin-url-mappings")
     testImplementation project(":grails-test-suite-base")
 }

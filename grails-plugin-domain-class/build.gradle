@@ -5,16 +5,16 @@ dependencies {
     api project(":grails-spring")
 
     // Datastore APIs
-    api("org.grails:grails-datastore-core:$datastoreVersion") {
+    api(libs.gorm.datastore) {
         transitive = false
     }
-    api("org.grails:grails-datastore-gorm:$datastoreVersion") {
+    api(libs.gorm.datastore.gorm) {
         transitive = false
     }
-    api("org.grails:grails-datastore-gorm-support:$datastoreVersion") {
+    api(libs.gorm.datastore.gorm.support) {
         transitive = false
     }
-    api("org.grails:grails-datastore-gorm-validation:$datastoreVersion") {
+    api(libs.gorm.datastore.gorm.validation) {
         transitive = false
     }
 }

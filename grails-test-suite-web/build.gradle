@@ -10,9 +10,9 @@ configurations.testCompileClasspath {
 
 dependencies {
 
-    testImplementation "javax.servlet.jsp:jsp-api:2.2"
-    testImplementation "jstl:jstl:1.2"
-    testImplementation "javax.el:el-api:2.2"
+    testImplementation libs.javax.jsp
+    testImplementation libs.javax.jstl
+    testImplementation libs.javax.el
 
     testImplementation project(":grails-boot")
     testImplementation project(":grails-test-suite-base")
@@ -32,7 +32,7 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
 
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
+    testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -59,10 +59,10 @@ dependencies {
     }
 
     // Required for tag library support
-    testImplementation 'taglibs:standard:1.1.2'
-    testImplementation "javax.servlet:jstl:1.2"
+    testImplementation libs.taglib
+    testImplementation libs.javax.jstl
 
-    testImplementation "org.grails.plugins:gsp:$gspVersion", {
+    testImplementation libs.grails.plugins.gsp, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
@@ -70,16 +70,16 @@ dependencies {
         exclude module:'grails-web-common'
         exclude module:'grails-encoder'
     }
-    testImplementation "org.grails.plugins:async:$asyncVersion", {
+    testImplementation libs.grails.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
         exclude module:'grails-plugin-domain-class'
     }
 
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
-            "org.aspectj:aspectjweaver:$aspectjVersion"
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
 
 }
 

@@ -1,18 +1,18 @@
 dependencies {
-    api "io.micronaut:micronaut-inject:$micronautVersion"
-    api "javax.inject:javax.inject:1"
-    api "javax.persistence:javax.persistence-api:2.2"
-    api "javax.annotation:javax.annotation-api:$javaxAnnotationApiVersion"
+    api libs.micronaut.inject
+    api libs.javax.inject
+    api libs.javax.persistence
+    api libs.javax.annotation
 
-    api("org.springframework.boot:spring-boot:$springBootVersion")
-    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-    api("org.springframework:spring-beans:${springVersion}")
-    api("org.springframework:spring-context:${springVersion}")
-    api("org.springframework:spring-core:${springVersion}")
-    api("org.springframework:spring-web:${springVersion}")
+    api(libs.spring.boot)
+    api(libs.spring.boot.autoconfigure)
+    api(libs.spring.beans)
+    api(libs.spring.context)
+    api(libs.spring.core)
+    api(libs.spring.web)
 
-    compileOnly("io.micronaut.spring:micronaut-spring:$micronautSpringVersion")
-    compileOnly("io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion")
+    compileOnly(libs.micronaut.spring)
+    compileOnly(libs.micronaut.spring.context)
 
     api project(":grails-api")
     api project(":grails-bootstrap")
@@ -26,11 +26,11 @@ dependencies {
     testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-test")
 
-    testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
-    testImplementation("org.springframework.boot:spring-boot-test:$springBootVersion")
-    testImplementation "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.junit)
+    testImplementation(libs.spring.boot.test)
+    testImplementation libs.tomcat.embed.core
     testRuntimeOnly project(":grails-plugin-i18n")
     testRuntimeOnly project(":grails-plugin-url-mappings")
 }

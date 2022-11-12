@@ -15,8 +15,8 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-suite-base")
 
-    testImplementation "org.grails:grails-datastore-gorm-validation:$datastoreVersion"
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
+    testImplementation libs.gorm.datastore.gorm.validation
+    testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -42,16 +42,16 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    api "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
+    api libs.tomcat.jdbc
 
-    testRuntimeOnly "com.h2database:h2:$h2Version"
+    testRuntimeOnly libs.h2
 
     //    // Required for AspectJ support
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
-                  "org.aspectj:aspectjweaver:$aspectjVersion"
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
 
-    testImplementation "org.grails.plugins:async:$asyncVersion", {
+    testImplementation libs.grails.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'

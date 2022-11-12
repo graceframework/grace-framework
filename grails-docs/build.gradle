@@ -5,24 +5,23 @@ configurations {
 
 dependencies {
     gradleConf gradleApi()
-    api "commons-lang:commons-lang:$commonsLangVersion",
-            "org.slf4j:jcl-over-slf4j:$slf4jVersion",
-            "org.apache.ant:ant:$antVersion",
-            "org.grails:grails-gdoc-engine:$gdocEngineVersion",
-            "org.yaml:snakeyaml:$snakeyamlVersion",
-            "org.codehaus.groovy:groovy-ant:$groovyVersion"
+    api libs.commons.lang
+    api libs.slf4j.jcl
+    api libs.ant
+    api libs.grails.gdoc.engine
+    api libs.snakeyaml
+    api libs.groovy.ant
 
-    api "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
-    api('org.xhtmlrenderer:core-renderer:8.0') {
+    api libs.asciidoctorj
+    api libs.xhtmlrenderer, {
         exclude group: 'bouncycastle', module:'bcprov-jdk14'
     }
 
-    runtimeOnly "org.slf4j:slf4j-api:$slf4jVersion"
+    runtimeOnly libs.slf4j
+    runtimeOnly libs.itext
 
-    runtimeOnly("com.lowagie:itext:$itextVersion")
-
-    api "org.jsoup:jsoup:$jsoupVersion"
-    testImplementation("org.spockframework:spock-core:${spockVersion}") { transitive = false }
+    api libs.jsoup
+    testImplementation libs.spock.core, { transitive = false }
 }
 
 sourceSets {

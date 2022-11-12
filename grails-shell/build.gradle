@@ -21,32 +21,32 @@ dependencies {
     api project(":grails-gradle-model")
     api project(":grails-util")
     dependenciesBom(project(path: ":grails-bom", configuration: 'effectiveBom'))
-    api "org.apache.ant:ant:$antVersion"
-    api "org.codehaus.groovy:groovy-ant:$groovyVersion"
-    api "org.codehaus.groovy:groovy-json:$groovyVersion"
-    api "org.codehaus.groovy:groovy-jmx:$groovyVersion"
-    api "org.fusesource.jansi:jansi:$jansiVersion"
-    api "jline:jline:$jlineVersion"
-    api "org.gradle:gradle-tooling-api:$gradleToolingApiVersion"
+    api libs.ant
+    api libs.groovy.ant
+    api libs.groovy.json
+    api libs.groovy.jmx
+    api libs.fusesource.jansi
+    api libs.jline
+    api libs.gradle.tooling.api
 
-    api "org.springframework.boot:spring-boot-cli:$springBootVersion", {
+    api libs.spring.boot.cli, {
         exclude group: "org.codehaus.groovy", module: "groovy"
     }
-    implementation("org.apache.maven:maven-resolver-provider:3.6.3") {
+    implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
     }
 
-    implementation("org.apache.maven.resolver:maven-resolver-connector-basic:1.6.3")
-    implementation("org.apache.maven.resolver:maven-resolver-impl:1.6.3")
-    implementation("org.apache.maven.resolver:maven-resolver-transport-file:1.6.3")
-    implementation("org.apache.maven.resolver:maven-resolver-transport-http:1.6.3") {
+    implementation(libs.maven.resolver.connectorBasic)
+    implementation(libs.maven.resolver.impl)
+    implementation(libs.maven.resolver.transportFile)
+    implementation(libs.maven.resolver.transportHttp) {
         exclude group: "org.slf4j", module:"jcl-over-slf4j"
     }
 
     testImplementation "net.sf.expectit:expectit-core:0.9.0"
     testImplementation "com.github.jnr:jnr-posix:3.1.15"
 
-    runtimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
+    runtimeOnly libs.slf4j.simple
 }
 
 task syncGrailsDependenciesBom(type: Sync) {

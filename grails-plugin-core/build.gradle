@@ -4,15 +4,15 @@ dependencies {
     api project(":grails-spring")
     api project(":grails-spring-boot")
 
-    compileOnly("org.codehaus.groovy:groovy:$groovyVersion")
-    api("org.springframework:spring-beans:${springVersion}")
-    api("org.springframework:spring-context:${springVersion}")
-    api("org.springframework:spring-core:${springVersion}")
-    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    compileOnly(libs.groovy.core)
+    api libs.spring.beans
+    api libs.spring.context
+    api libs.spring.core
+    api libs.spring.boot.autoconfigure
 
     testImplementation project(":grails-test")
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion"
-    testRuntimeOnly "org.aspectj:aspectjweaver:$aspectjVersion"
-    testImplementation("org.springframework:spring-test:${springVersion}")
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+    testImplementation(libs.spring.test)
 }

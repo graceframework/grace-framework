@@ -9,17 +9,17 @@ dependencies {
     api project(":grails-plugin-interceptors")
     api project(":grails-plugin-controllers")
 
-    api "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
+    api libs.tomcat.jdbc
 
-    testRuntimeOnly 'javax.servlet.jsp:jsp-api:2.2'
-    testRuntimeOnly 'jstl:jstl:1.2'
-    testRuntimeOnly 'javax.el:el-api:2.2'
-    testRuntimeOnly "com.h2database:h2:$h2Version"
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
-            "org.aspectj:aspectjweaver:$aspectjVersion"
+    testRuntimeOnly libs.javax.jsp
+    testRuntimeOnly libs.javax.jstl
+    testRuntimeOnly libs.javax.el
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
 
-    testImplementation "io.micronaut.spring:micronaut-spring-context:$micronautSpringVersion"
+    testImplementation libs.micronaut.spring.context
 
     testImplementation project(":grails-boot")
     testImplementation project(":grails-plugin-codecs")
@@ -33,7 +33,7 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
 
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
+    testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -59,13 +59,13 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    testImplementation "org.grails.plugins:async:$asyncVersion", {
+    testImplementation libs.grails.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
         exclude module:'grails-plugin-domain-class'
     }
-    testImplementation "org.grails.plugins:gsp:$gspVersion", {
+    testImplementation libs.grails.plugins.gsp, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
