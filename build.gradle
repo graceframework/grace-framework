@@ -5,19 +5,13 @@ buildscript {
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
-        classpath "commons-io:commons-io:2.11.0"
-        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
-        classpath "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
+        classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
+        classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$gradleExtraConfigurationsPluginVersion"
         classpath "gradle.plugin.io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
-        classpath "javax.xml.bind:jaxb-api:$jaxbVersion"
-        classpath "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
-        classpath "org.codehaus.groovy.modules.http-builder:http-builder:0.7.2"
-        classpath "org.gradle:test-retry-gradle-plugin:1.3.1"
+        classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPlugin"
         classpath "org.codenarc:CodeNarc:$codenarcVersion"
     }
 }
-
-import static groovyx.net.http.ContentType.*
 
 apply plugin: 'idea'
 
@@ -151,10 +145,6 @@ ext {
         ],
     ]
 
-    nexusUsername = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-    nexusPassword = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-
-
 }
 
 version = grailsVersion
@@ -246,26 +236,6 @@ allprojects {
                 }
             }
         }
-    }
-
-    [Javadoc, Groovydoc].each {
-        tasks.withType(it).all {
-            // exclude problematic jar file from javadoc classpath
-            // http://www.adam-bien.com/roller/abien/entry/trouble_with_crippled_java_ee
-            if (classpath) {
-                classpath -= classpath.filter { it.name == 'javaee-web-api-6.0.jar' }
-            }
-
-            // this will apply the javadoc fix tool to all generated javadocs
-            // we use it to make sure that the javadocs are not vulnerable independently of the JDK used to build
-            doLast {
-                def javadocFix = new JavadocFixTool()
-                javadocFix.recursive = true
-                javadocFix.doPatch = true
-                javadocFix.searchAndPatch(destinationDir)
-            }
-        }
-
     }
 
     tasks.withType(Javadoc) {
@@ -624,16 +594,6 @@ apply {
 
 task buildscriptDependencies(type: org.gradle.api.tasks.diagnostics.DependencyReportTask) {
     configurations = project.buildscript.configurations
-}
-
-[Javadoc, Groovydoc].each {
-    tasks.withType(it).all {
-        // exclude problematic jar file from javadoc classpath
-        // http://www.adam-bien.com/roller/abien/entry/trouble_with_crippled_java_ee
-        if (classpath) {
-            classpath -= classpath.filter { it.name == 'javaee-web-api-6.0.jar' }
-        }
-    }
 }
 
 project.afterEvaluate {
