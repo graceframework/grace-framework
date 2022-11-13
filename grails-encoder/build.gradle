@@ -3,8 +3,7 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-util")
 
-    // HtmlUtils is used from spring-web
-    api "org.codehaus.groovy:groovy-json:$groovyVersion"
-    api "org.springframework:spring-context:${springVersion}"
-    api "org.springframework:spring-web:${springVersion}"
+    api libs.groovy.json
+    api libs.spring.context
+    api libs.spring.web
 }

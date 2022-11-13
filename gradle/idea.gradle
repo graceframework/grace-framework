@@ -37,7 +37,7 @@ configurations {
     slf4j_simple
 }
 dependencies {
-    slf4j_simple "org.slf4j:slf4j-simple:${slf4jVersion}@jar"
+    slf4j_simple libs.slf4j.simple
 }
 
 subprojects {

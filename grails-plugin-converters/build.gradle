@@ -6,14 +6,15 @@ dependencies {
     runtimeOnly project(":grails-plugin-controllers")
     api project(":grails-util")
     api project(":grails-web-common")
-    compileOnly("org.grails:grails-datastore-core:$datastoreVersion") {
-        transitive = false
-    }
-    compileOnly("org.grails:grails-datastore-gorm:$datastoreVersion") {
-        transitive = false
-    }
-    api "org.apache.commons:commons-lang3:$commonsLang3Version"
 
-    testImplementation 'net.javacrumbs.json-unit:json-unit:2.36.0'
-    testRuntimeOnly 'com.google.code.gson:gson:2.9.0'
+    api libs.commons.lang3
+    compileOnly(libs.gorm.datastore.core) {
+        transitive = false
+    }
+    compileOnly(libs.gorm.datastore.gorm) {
+        transitive = false
+    }
+
+    testImplementation libs.json.unit
+    testRuntimeOnly libs.gson
 }

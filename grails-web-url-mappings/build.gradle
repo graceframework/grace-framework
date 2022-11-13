@@ -4,14 +4,13 @@ dependencies {
     api project(":grails-util")
     api project(":grails-web-common")
 
-    api("org.grails:grails-datastore-gorm-validation:$datastoreVersion") {
+    api(libs.gorm.datastore.gorm.validation) {
         transitive = false
     }
 
-    api "org.fusesource.jansi:jansi:$jansiVersion"
-    compileOnly "jline:jline:$jlineVersion"
-
-    implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    implementation libs.caffeine
+    compileOnly libs.jansi
+    compileOnly libs.jline
 
     testImplementation project(":grails-test-suite-base")
 }

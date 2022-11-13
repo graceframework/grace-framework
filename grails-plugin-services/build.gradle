@@ -5,5 +5,5 @@ dependencies {
     api project(':grails-plugin-api')
     api project(':grails-util')
 
-    api "org.springframework:spring-tx:${springVersion}"
+    api libs.spring.tx
 }

@@ -1,7 +1,7 @@
 dependencies {
     api project(":grails-core")
     api project(":grails-util")
-    api("org.grails:grails-datastore-gorm-validation:$datastoreVersion") {
+    api(libs.gorm.datastore.gorm.validation) {
         transitive = false
     }
 

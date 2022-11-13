@@ -5,7 +5,7 @@ dependencies {
     api project(":grails-encoder")
     runtimeOnly project(":grails-codecs")
 
-    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    api(libs.spring.boot.autoconfigure)
 
     testImplementation project(":grails-web-common")
 }

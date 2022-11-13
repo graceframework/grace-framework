@@ -1,10 +1,10 @@
 dependencies {
-    api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-    api "org.springframework:spring-context:${springVersion}"
-    api "org.springframework:spring-tx:${springVersion}"
-    api "org.springframework:spring-web:${springVersion}"
+    api libs.groovy.xml
+    api libs.spring.context
+    api libs.spring.tx
+    api libs.spring.web
 
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
-            "org.aspectj:aspectjweaver:$aspectjVersion"
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
 }

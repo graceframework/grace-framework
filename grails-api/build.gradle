@@ -2,12 +2,12 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-util")
 
-    api "org.grails:grails-datastore-core:$datastoreVersion", {
+    api libs.gorm.datastore.core, {
         transitive = false
     }
 
-    api("org.springframework:spring-beans:${springVersion}")
-    api("org.springframework:spring-context:${springVersion}")
-    api("org.springframework:spring-core:${springVersion}")
-    api("org.springframework.boot:spring-boot:$springBootVersion")
+    api(libs.spring.beans)
+    api(libs.spring.boot)
+    api(libs.spring.context)
+    api(libs.spring.core)
 }

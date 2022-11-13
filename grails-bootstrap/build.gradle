@@ -1,23 +1,20 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 dependencies {
-    api "org.codehaus.groovy:groovy-templates:$groovyVersion"
-    api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-    api "org.yaml:snakeyaml:$snakeyamlVersion"
-    api "io.micronaut:micronaut-inject:$micronautVersion"
-
     api project(":grails-util")
 
-    compileOnly("io.methvin:directory-watcher:$methvinDirectoryWatcherVersion")
-    compileOnly("org.fusesource.jansi:jansi:$jansiVersion")
-    compileOnly("jline:jline:$jlineVersion")
-    compileOnly("net.java.dev.jna:jna:$jnaVersion")
+    api libs.groovy.templates
+    api libs.groovy.xml
+    api libs.snakeyaml
+    api libs.micronaut.inject
+    compileOnly libs.groovy.ant
+    compileOnly libs.jansi
+    compileOnly libs.jline
+    compileOnly libs.jna
+    compileOnly libs.methvin.directoryWatcher
 
-    // Ant
-    compileOnly "org.codehaus.groovy:groovy-ant:$groovyVersion"
-
-    testImplementation("org.fusesource.jansi:jansi:$jansiVersion")
-    testImplementation("jline:jline:$jlineVersion")
+    testImplementation libs.jansi
+    testImplementation libs.jline
 }
 
 processResources {

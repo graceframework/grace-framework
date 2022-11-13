@@ -14,9 +14,16 @@ dependencies {
     testImplementation project(":grails-plugin-url-mappings")
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-suite-base")
+    testImplementation project(":grails-test-support")
 
-    testImplementation "org.grails:grails-datastore-gorm-validation:$datastoreVersion"
-    testImplementation "org.grails:grails-datastore-gorm-hibernate5:$hibernateDatastoreVersion", {
+    testImplementation libs.grails.async, {
+        exclude module:'grails-plugin-codecs'
+        exclude module:'grails-plugin-controllers'
+        exclude module:'grails-core'
+        exclude module:'grails-plugin-domain-class'
+    }
+    testImplementation libs.gorm.datastore.gorm.validation
+    testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -42,22 +49,11 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    api "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
-
-    testRuntimeOnly "com.h2database:h2:$h2Version"
-
-    //    // Required for AspectJ support
-    testRuntimeOnly "org.springframework:spring-aspects:${springVersion}"
-    testRuntimeOnly "org.aspectj:aspectjrt:$aspectjVersion",
-                  "org.aspectj:aspectjweaver:$aspectjVersion"
-
-    testImplementation "org.grails.plugins:async:$asyncVersion", {
-        exclude module:'grails-plugin-codecs'
-        exclude module:'grails-plugin-controllers'
-        exclude module:'grails-core'
-        exclude module:'grails-plugin-domain-class'
-    }
-    testImplementation project(":grails-test-support")
+    api libs.tomcat.jdbc
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+    testRuntimeOnly libs.spring.aspects
 }
 
 test {
@@ -73,8 +69,8 @@ test {
 
 task testGrailsDomainBinder(type: Test) { includes = [
         '**/GrailsDomainBinderTests.class'
-    ] }
-
+    ]
+}
 
 task testIsolatedPersistentOne(type: Test) {
     includes = ['**/ComponentValidationTests.class']

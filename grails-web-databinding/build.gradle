@@ -2,7 +2,8 @@ dependencies {
     api project(":grails-databinding")
     api project(":grails-util")
     api project(":grails-web-common")
-    api "org.grails:grails-datastore-core:$datastoreVersion", {
+
+    api libs.gorm.datastore.core, {
         transitive = false
     }
 }

@@ -1,4 +1,3 @@
 dependencies {
-    api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+    api libs.groovy.xml
 }
-

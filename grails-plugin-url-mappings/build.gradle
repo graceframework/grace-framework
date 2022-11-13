@@ -6,6 +6,6 @@ dependencies {
     api project(":grails-util")
     api project(":grails-web-url-mappings")
 
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
-    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    annotationProcessor libs.spring.boot.configurationProcessor
+    api libs.spring.boot.autoconfigure
 }

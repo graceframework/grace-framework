@@ -4,13 +4,14 @@ dependencies {
     api project(":grails-databinding")
     api project(":grails-encoder")
     api project(":grails-util")
-    api "org.grails:grails-gsp:$gspVersion", {
+
+    api libs.grails.gsp, {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'org.grails', module:'grails-encoder'
     }
 
-    api "org.codehaus.groovy:groovy-templates:$groovyVersion"
-    api "org.springframework:spring-context-support:${springVersion}"
-    api "org.springframework:spring-webmvc:${springVersion}"
-    implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    api libs.groovy.templates
+    api libs.spring.contextSupport
+    api libs.spring.webmvc
+    implementation libs.caffeine
 }

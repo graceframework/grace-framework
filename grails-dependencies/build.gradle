@@ -47,7 +47,7 @@ publishing {
                         delegate.dependency {
                             delegate.groupId "org.grails.plugins"
                             delegate.artifactId "async"
-                            delegate.version asyncVersion
+                            delegate.version libs.versions.grails.async.get()
                             delegate.scope "api"
                             delegate.exclusions {
                                 delegate.exclusion {
@@ -59,7 +59,7 @@ publishing {
                         delegate.dependency {
                             delegate.groupId "org.grails.plugins"
                             delegate.artifactId "gsp"
-                            delegate.version gspVersion
+                            delegate.version libs.versions.grails.gsp.get()
                             delegate.scope "api"
                             delegate.exclusions {
                                 delegate.exclusion {
@@ -71,7 +71,7 @@ publishing {
                         delegate.dependency {
                             delegate.groupId "com.h2database"
                             delegate.artifactId "h2"
-                            delegate.version( h2Version )
+                            delegate.version libs.versions.h2.get()
                             delegate.scope "runtimeOnly"
                         }
 

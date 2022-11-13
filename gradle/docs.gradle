@@ -14,7 +14,7 @@ configurations {
 }
 
 dependencies {
-    documentation "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
+    documentation libs.groovy.groovydoc
 }
 
 task stubs {
