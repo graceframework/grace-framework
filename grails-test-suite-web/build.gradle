@@ -59,7 +59,7 @@ dependencies {
     }
 
     // Required for tag library support
-    testImplementation libs.taglib
+    testImplementation libs.standard.taglib
     testImplementation libs.javax.jstl
 
     testImplementation libs.grails.plugins.gsp, {

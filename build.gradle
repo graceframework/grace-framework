@@ -467,7 +467,7 @@ subprojects { project ->
     }
 
     dependencies {
-        documentation libs.fusesource.jansi
+        documentation libs.jansi
         documentation libs.jline
         documentation libs.groovy.ant
         documentation libs.groovy.picocli

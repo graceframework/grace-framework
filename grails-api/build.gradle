@@ -2,7 +2,7 @@ dependencies {
     api project(":grails-bootstrap")
     api project(":grails-util")
 
-    api libs.gorm.datastore, {
+    api libs.gorm.datastore.core, {
         transitive = false
     }
 

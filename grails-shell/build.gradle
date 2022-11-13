@@ -25,7 +25,7 @@ dependencies {
     api libs.groovy.ant
     api libs.groovy.json
     api libs.groovy.jmx
-    api libs.fusesource.jansi
+    api libs.jansi
     api libs.jline
     api libs.gradle.tooling.api
 

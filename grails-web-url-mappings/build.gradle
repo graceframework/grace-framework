@@ -8,7 +8,7 @@ dependencies {
         transitive = false
     }
 
-    api libs.fusesource.jansi
+    api libs.jansi
     compileOnly libs.jline
     implementation libs.caffeine
 

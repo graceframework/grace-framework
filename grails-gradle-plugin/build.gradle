@@ -26,7 +26,7 @@ configurations {
 }
 
 dependencies {
-    documentation libs.fusesource.jansi
+    documentation libs.jansi
     documentation libs.groovy.picocli
 
     api gradleApi()
@@ -40,7 +40,7 @@ dependencies {
 
     api libs.maven.model
     api libs.spring.boot.gradle.plugin
-    api libs.dependency.management.plugin
+    api libs.spring.dependency.management.plugin
     api "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
 }
 

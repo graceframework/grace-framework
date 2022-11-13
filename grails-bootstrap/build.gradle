@@ -9,14 +9,14 @@ dependencies {
     api project(":grails-util")
 
     compileOnly(libs.methvin.directoryWatcher)
-    compileOnly(libs.fusesource.jansi)
+    compileOnly(libs.jansi)
     compileOnly(libs.jline)
     compileOnly(libs.jna)
 
     // Ant
     compileOnly libs.groovy.ant
 
-    testImplementation(libs.fusesource.jansi)
+    testImplementation(libs.jansi)
     testImplementation(libs.jline)
 }
 

@@ -8,7 +8,7 @@ dependencies {
     api project(":grails-web-url-mappings")
     api project(":grails-util")
 
-    compileOnly(libs.gorm.datastore) {
+    compileOnly(libs.gorm.datastore.core) {
         transitive = false
     }
     compileOnly(libs.gorm.datastore.gorm) {

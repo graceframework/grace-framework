@@ -5,7 +5,7 @@ dependencies {
     api(libs.spring.boot)
     api(libs.spring.web, optional)
     api(libs.javax.servlet, optional)
-    implementation(libs.fusesource.jansi)
+    implementation(libs.jansi)
     implementation(libs.jline)
     implementation(libs.jna)
 

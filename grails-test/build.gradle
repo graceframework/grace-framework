@@ -14,7 +14,7 @@ dependencies {
 
     // command line requirements
     api libs.jline
-    api libs.fusesource.jansi
+    api libs.jansi
 
     // Ant
     api libs.ant

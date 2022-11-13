@@ -12,5 +12,5 @@ dependencies {
     api(libs.spring.boot.autoconfigure)
 
     testRuntimeOnly libs.jline
-    testRuntimeOnly libs.fusesource.jansi
+    testRuntimeOnly libs.jansi
 }
