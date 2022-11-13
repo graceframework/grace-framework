@@ -751,14 +751,15 @@ public class RegexUrlMapping extends AbstractUrlMapping {
      * Compares this UrlMapping instance with the specified UrlMapping instance and deals with URL mapping precedence rules.
      *  URL Mapping Precedence Order
      *   1. Less wildcard tokens.
-     *       /foo          <- match
+     * <pre>
+     *       /foo          &lt;- match
      *       /foo/(*)
-     *      /foo/(*)/bar/  <- match
+     *      /foo/(*)/bar/  &lt;- match
      *      /foo/(*)/(*)
      *    2. More static tokens.
-     *      /foo/(*)/bar   <- match
+     *      /foo/(*)/bar   &lt;- match
      *      /foo/(*)
-     *
+     * </pre>
      * @param o An instance of the UrlMapping interface
      * @return greater than 0 if this UrlMapping should match before the specified UrlMapping.
      * 0 if they are equal or less than 0 if this UrlMapping should match after the given UrlMapping

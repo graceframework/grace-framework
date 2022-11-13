@@ -44,7 +44,7 @@ import org.springframework.util.Assert;
  * cause the remaining transaction managers to roll back instead of committing.
  *
  * original source:
- * {@link org.springframework.data.transaction.ChainedTransactionManager}
+ * org.springframework.data.transaction.ChainedTransactionManager
  *
  * @author Michael Hunger
  * @author Oliver Gierke

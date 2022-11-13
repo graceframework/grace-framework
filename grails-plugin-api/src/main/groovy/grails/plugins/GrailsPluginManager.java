@@ -50,7 +50,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * <pre>
  * class ClassEditorGrailsPlugin {
  *      def version = 1.1
- *      def doWithSpring = { application ->
+ *      def doWithSpring = { application -gt;
  *          classEditor(org.springframework.beans.propertyeditors.ClassEditor, application.classLoader)
  *      }
  * }

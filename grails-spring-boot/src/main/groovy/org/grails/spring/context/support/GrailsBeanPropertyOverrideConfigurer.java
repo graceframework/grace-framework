@@ -44,7 +44,8 @@ import grails.core.GrailsApplication;
  *
  * <p>The general format is:
  * <pre class="code">
- * <&lt;bean name&gt;>.<&lt;property name&gt;> = <&lt;value&gt;> </pre>
+ * &lt;bean name&gt;.&lt;property name&gt; = &lt;value&gt;
+ * </pre>
  * The same configuration in a Java properties file would be:
  * <pre class="code">
  * beans.bookService.webServiceURL=http://www.amazon.com

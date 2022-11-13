@@ -70,7 +70,7 @@ public class CacheEntry<V> {
      * @param key the key to look up
      * @param timeoutMillis cache entry timeout
      * @param updater callback to create/update value
-     * @param cacheEntryClass CacheEntry implementation class to use
+     * @param cacheEntryFactory callback to get CacheEntry
      * @param returnExpiredWhileUpdating when true, return expired value while updating new value
      * @param cacheRequestObject context object that gets passed to hasExpired,
      *                           shouldUpdate and updateValue methods, not used in default implementation

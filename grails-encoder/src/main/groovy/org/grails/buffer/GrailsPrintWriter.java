@@ -101,7 +101,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     /**
-     * Provides Groovy << left shift operator, but intercepts call to make sure
+     * Provides Groovy &lt;&lt; left shift operator, but intercepts call to make sure
      * nulls are converted to "" strings
      *
      * @param obj The value

@@ -375,7 +375,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * for a Locale, after merging all specified resource bundles.
      * Either fetches the holder from the cache or freshly loads it.
      * <p>Only used when caching resource bundle contents forever, i.e.
-     * with cacheSeconds < 0. Therefore, merged properties are always
+     * with cacheSeconds &lt; 0. Therefore, merged properties are always
      * cached forever.
      */
     protected PropertiesHolder getMergedProperties(final Locale locale) {
@@ -439,7 +439,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
     /**
      * Calculate the filenames for the given bundle basename and Locale,
      * appending language code, country code, and variant code.
-     * E.g.: basename "messages", Locale "de_AT_oo" -> "messages_de_AT_OO",
+     * E.g.: basename "messages", Locale "de_AT_oo" -&gt; "messages_de_AT_OO",
      * "messages_de_AT", "messages_de".
      * <p>Follows the rules defined by {@link java.util.Locale#toString()}.
      * @param basename the basename of the bundle

@@ -23,7 +23,7 @@ import org.codehaus.groovy.ast.ClassNode;
  * be identified, created and initialized.
  *
  * <p>Artefacts need to provide info about themselves, and some callbacks are required
- * to verify whether or not a class is that kind of artefact/p>
+ * to verify whether or not a class is that kind of artefact</p>
  *
  * @see GrailsApplication#registerArtefactHandler(ArtefactHandler)
  *
