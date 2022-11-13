@@ -9,11 +9,6 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-
-    testImplementation libs.javax.jsp
-    testImplementation libs.javax.jstl
-    testImplementation libs.javax.el
-
     testImplementation project(":grails-boot")
     testImplementation project(":grails-test-suite-base")
     testImplementation project(":grails-plugin-domain-class")
@@ -31,6 +26,12 @@ dependencies {
     testImplementation project(":grails-web-databinding")
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
+
+    testImplementation libs.javax.el
+    testImplementation libs.javax.jsp
+    testImplementation libs.javax.jstl
+    testImplementation libs.javax.jstl
+    testImplementation libs.standard.taglib
 
     testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
@@ -58,10 +59,6 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    // Required for tag library support
-    testImplementation libs.standard.taglib
-    testImplementation libs.javax.jstl
-
     testImplementation libs.grails.plugins.gsp, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
@@ -80,7 +77,6 @@ dependencies {
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt
     testRuntimeOnly libs.aspectj.weaver
-
 }
 
 // javaee-web-api has a bad versions of classes we need to compile against

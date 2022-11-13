@@ -6,8 +6,8 @@ dependencies {
     api project(":grails-util")
 
     api libs.gorm.datastore.core
-    api libs.spring.boot
     api libs.spring.beans
+    api libs.spring.boot
     api libs.spring.context
     api libs.spring.core
     api libs.spring.tx

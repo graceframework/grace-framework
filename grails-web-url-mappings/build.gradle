@@ -8,9 +8,9 @@ dependencies {
         transitive = false
     }
 
-    api libs.jansi
-    compileOnly libs.jline
     implementation libs.caffeine
+    compileOnly libs.jansi
+    compileOnly libs.jline
 
     testImplementation project(":grails-test-suite-base")
 }

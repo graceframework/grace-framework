@@ -4,15 +4,15 @@ dependencies {
     api project(":grails-spring")
     api project(":grails-spring-boot")
 
-    compileOnly(libs.groovy.core)
+    api libs.groovy.core
     api libs.spring.beans
+    api libs.spring.boot.autoconfigure
     api libs.spring.context
     api libs.spring.core
-    api libs.spring.boot.autoconfigure
 
     testImplementation project(":grails-test")
+    testImplementation libs.spring.test
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt
     testRuntimeOnly libs.aspectj.weaver
-    testImplementation(libs.spring.test)
 }

@@ -268,12 +268,12 @@ subprojects { project ->
     ext.pomInfo = {
         delegate.name 'Grails'
         delegate.description 'Grails Web Application Framework'
-        delegate.url 'http://grails.org/'
+        delegate.url 'https://grails.org/'
 
         delegate.licenses {
             delegate.license {
                 delegate.name 'The Apache Software License, Version 2.0'
-                delegate.url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                delegate.url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                 delegate.distribution 'repo'
             }
         }
@@ -328,7 +328,6 @@ subprojects { project ->
     if (!isTestSuite) {
 
         publishing {
-
             if (isBuildSnapshot) {
                 repositories {
                     maven {

@@ -2,7 +2,6 @@ dependencies {
     api project(":grails-web-common")
 
     testImplementation project(":grails-plugin-controllers")
-
     testImplementation libs.tomcat.embed.core
     testRuntimeOnly project(":grails-plugin-i18n")
     testRuntimeOnly project(":grails-plugin-url-mappings")

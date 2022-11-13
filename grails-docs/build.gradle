@@ -5,14 +5,14 @@ configurations {
 
 dependencies {
     gradleConf gradleApi()
-    api libs.commons.lang
-    api libs.slf4j.jcl
-    api libs.ant
-    api libs.grails.gdoc.engine
-    api libs.snakeyaml
-    api libs.groovy.ant
-
     api libs.asciidoctorj
+    api libs.ant
+    api libs.commons.lang
+    api libs.grails.gdoc.engine
+    api libs.groovy.ant
+    api libs.jsoup
+    api libs.slf4j.jcl
+    api libs.snakeyaml
     api libs.xhtmlrenderer, {
         exclude group: 'bouncycastle', module:'bcprov-jdk14'
     }
@@ -20,7 +20,6 @@ dependencies {
     runtimeOnly libs.slf4j
     runtimeOnly libs.itext
 
-    api libs.jsoup
     testImplementation libs.spock.core, { transitive = false }
 }
 

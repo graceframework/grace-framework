@@ -11,16 +11,6 @@ dependencies {
 
     api libs.tomcat.jdbc
 
-    testRuntimeOnly libs.javax.jsp
-    testRuntimeOnly libs.javax.jstl
-    testRuntimeOnly libs.javax.el
-    testRuntimeOnly libs.h2
-    testRuntimeOnly libs.spring.aspects
-    testRuntimeOnly libs.aspectj.rt
-    testRuntimeOnly libs.aspectj.weaver
-
-    testImplementation libs.micronaut.spring.context
-
     testImplementation project(":grails-boot")
     testImplementation project(":grails-plugin-codecs")
     testImplementation project(":grails-plugin-domain-class")
@@ -32,7 +22,7 @@ dependencies {
     testImplementation project(":grails-plugin-databinding")
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
-
+    testImplementation libs.micronaut.spring.context
     testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
@@ -58,7 +48,6 @@ dependencies {
         exclude group: 'java-persistence', module:'persistence-api'
         exclude group: 'javassist', module: 'javassist'
     }
-
     testImplementation libs.grails.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
@@ -73,6 +62,14 @@ dependencies {
         exclude module:'grails-web-common'
         exclude module:'grails-encoder'
     }
+
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+    testRuntimeOnly libs.javax.jsp
+    testRuntimeOnly libs.javax.jstl
+    testRuntimeOnly libs.javax.el
+    testRuntimeOnly libs.spring.aspects
 }
 
 test {

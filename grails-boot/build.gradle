@@ -1,19 +1,4 @@
 dependencies {
-    api libs.micronaut.inject
-    api libs.javax.inject
-    api libs.javax.persistence
-    api libs.javax.annotation
-
-    api(libs.spring.boot)
-    api(libs.spring.boot.autoconfigure)
-    api(libs.spring.beans)
-    api(libs.spring.context)
-    api(libs.spring.core)
-    api(libs.spring.web)
-
-    compileOnly(libs.micronaut.spring)
-    compileOnly(libs.micronaut.spring.context)
-
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-core")
@@ -23,13 +8,27 @@ dependencies {
     api project(":grails-spring-boot")
     api project(":grails-web")
 
+    api libs.javax.annotation
+    api libs.javax.inject
+    api libs.javax.persistence
+    api libs.spring.beans
+    api libs.spring.boot
+    api libs.spring.boot.autoconfigure
+    api libs.spring.context
+    api libs.spring.core
+    api libs.spring.web
+
+    api libs.micronaut.inject
+    compileOnly libs.micronaut.spring
+    compileOnly libs.micronaut.spring.context
+
     testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-test")
 
-    testImplementation(libs.assertj.core)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.junit)
-    testImplementation(libs.spring.boot.test)
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.junit
+    testImplementation libs.spring.boot.test
     testImplementation libs.tomcat.embed.core
     testRuntimeOnly project(":grails-plugin-i18n")
     testRuntimeOnly project(":grails-plugin-url-mappings")

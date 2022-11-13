@@ -6,13 +6,14 @@ dependencies {
     runtimeOnly project(":grails-plugin-controllers")
     api project(":grails-util")
     api project(":grails-web-common")
+
+    api libs.commons.lang3
     compileOnly(libs.gorm.datastore.core) {
         transitive = false
     }
     compileOnly(libs.gorm.datastore.gorm) {
         transitive = false
     }
-    api libs.commons.lang3
 
     testImplementation libs.json.unit
     testRuntimeOnly libs.gson

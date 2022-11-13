@@ -4,19 +4,15 @@ dependencies {
     api project(":grails-plugin-mimetypes")
     api project(":grails-web")
 
-    api libs.spring.tx
-    api libs.spring.boot.test
-    api libs.groovy.test
-    api libs.groovy.test.junit5
-    api libs.spock.core, { transitive = false }
-    api libs.objenesis
-    api libs.junit.platform.runner
-
-    // command line requirements
-    api libs.jline
-    api libs.jansi
-
-    // Ant
     api libs.ant
     api libs.ant.junit
+    api libs.jansi
+    api libs.jline
+    api libs.junit.platform.runner
+    api libs.groovy.test
+    api libs.groovy.test.junit5
+    api libs.objenesis
+    api libs.spring.tx
+    api libs.spring.boot.test
+    api libs.spock.core, { transitive = false }
 }

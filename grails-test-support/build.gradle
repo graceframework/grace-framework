@@ -7,21 +7,22 @@ dependencies {
     api project(":grails-plugin-interceptors")
     api project(":grails-plugin-rest")
     api project(":grails-test")
+
     api libs.grails.async, {
         exclude module: 'grails-plugin-controllers'
         exclude module: 'grails-core'
     }
+    api libs.grails.plugins.gsp
+    api libs.groovy.test.junit5
     api libs.gorm.datastore.gorm
     api libs.gorm.datastore.gorm.test
-    api libs.grails.plugins.gsp
-    api libs.javax.servlet
+    api libs.junit.jupiter.api
+    api libs.junit.platform.runner
     api libs.javassist
+    api libs.javax.servlet
     api libs.spring.test
     api libs.spring.boot.test
     api libs.spock.core, { transitive = false }
     api libs.spock.spring, { transitive = false }
-    api libs.groovy.test.junit5
-    api libs.junit.jupiter.api
-    api libs.junit.platform.runner
     runtimeOnly libs.junit.jupiter.engine
 }

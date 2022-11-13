@@ -1,15 +1,15 @@
 dependencies {
-    api(libs.groovy.console)
-    api(libs.groovy.groovysh)
-    api(libs.groovy.swing)
-    api(libs.spring.boot)
-    api(libs.spring.web, optional)
-    api(libs.javax.servlet, optional)
-    implementation(libs.jansi)
-    implementation(libs.jline)
-    implementation(libs.jna)
-
     api project(":grails-api")
     api project(":grails-core")
     api project(":grails-boot")
+
+    api libs.javax.servlet, optional
+    api libs.groovy.console
+    api libs.groovy.groovysh
+    api libs.groovy.swing
+    api libs.spring.boot
+    api libs.spring.web, optional
+    implementation libs.jansi
+    implementation libs.jline
+    implementation libs.jna
 }

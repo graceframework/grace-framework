@@ -1,18 +1,11 @@
 buildscript {
     repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'https://repo.gradle.org/gradle/libs-releases' }
-    }
-    dependencies {
-        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
-        classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
     }
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
@@ -26,22 +19,21 @@ configurations {
 }
 
 dependencies {
-    documentation libs.jansi
-    documentation libs.groovy.picocli
-
-    api gradleApi()
-    api "io.github.gradle-nexus:publish-plugin:1.1.0"
-    api "com.bmuschko:gradle-nexus-plugin:2.3.1"
     api project(":grails-bootstrap")
     api project(":grails-gradle-model")
     api project(":grails-shell"), {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
-
+    api gradleApi()
+    api libs.gradle.extra.configurations.plugin
+    api libs.gradle.nexus.publish.plugin
+    api libs.gradle.nexus.plugin
     api libs.maven.model
     api libs.spring.boot.gradle.plugin
     api libs.spring.dependency.management.plugin
-    api "com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0"
+
+    documentation libs.jansi
+    documentation libs.groovy.picocli
 }
 
 gradlePlugin {

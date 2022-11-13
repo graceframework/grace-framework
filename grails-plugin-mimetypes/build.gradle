@@ -4,5 +4,5 @@ dependencies {
     api project(":grails-plugin-api")
     api project(":grails-web")
 
-    api(libs.spring.boot.autoconfigure)
+    api libs.spring.boot.autoconfigure
 }
