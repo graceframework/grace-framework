@@ -116,8 +116,7 @@ javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
 javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation" }
 javax-el = { module = "javax.el:el-api", version.ref = "javax-el" }
-javax-jaxb = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
-javax-jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "javax-jaxb" }
+javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 javax-jsp = { module = "javax.servlet.jsp:jsp-api", version.ref = "javax-jsp" }
 javax-jstl = { module = "javax.servlet:jstl", version.ref = "javax-jstl" }
