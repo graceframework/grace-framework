@@ -17,7 +17,7 @@ dependencies {
         exclude group: 'bouncycastle', module:'bcprov-jdk14'
     }
 
-    runtimeOnly libs.slf4j
+    runtimeOnly libs.slf4j.api
     runtimeOnly libs.itext
 
     testImplementation libs.spock.core, { transitive = false }

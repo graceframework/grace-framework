@@ -10,7 +10,4 @@ dependencies {
 
     annotationProcessor(libs.spring.boot.configurationProcessor)
     api(libs.spring.boot.autoconfigure)
-
-    testRuntimeOnly libs.jline
-    testRuntimeOnly libs.jansi
 }

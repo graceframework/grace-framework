@@ -12,6 +12,7 @@ dependencies {
     api libs.groovy.test
     api libs.groovy.test.junit5
     api libs.objenesis
+    api libs.spring.test
     api libs.spring.tx
     api libs.spring.boot.test
     api libs.spock.core, { transitive = false }

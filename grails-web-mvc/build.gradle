@@ -5,4 +5,5 @@ dependencies {
     api libs.grails.web.sitemesh, {
         exclude group:'org.grails', module:'grails-web-common'
     }
+    api libs.javax.servlet
 }

@@ -6,4 +6,6 @@ dependencies {
     api libs.gorm.datastore.core, {
         transitive = false
     }
+
+    api libs.javax.servlet
 }

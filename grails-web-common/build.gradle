@@ -10,6 +10,7 @@ dependencies {
         exclude group:'org.grails', module:'grails-encoder'
     }
 
+    api libs.javax.servlet
     api libs.groovy.templates
     api libs.spring.contextSupport
     api libs.spring.webmvc

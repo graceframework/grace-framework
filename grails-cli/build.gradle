@@ -2,6 +2,5 @@ dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
 
-    api libs.groovy.core
     api libs.groovy.templates
 }
