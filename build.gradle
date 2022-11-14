@@ -400,13 +400,6 @@ subprojects { project ->
         }
     }
 
-    if(project.name =~ /^(grails-plugin-datasource|grails-test-suite)/) {
-        dependencies {
-            testImplementation libs.hsqldb
-            testImplementation libs.h2
-        }
-    }
-
     jar{
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
