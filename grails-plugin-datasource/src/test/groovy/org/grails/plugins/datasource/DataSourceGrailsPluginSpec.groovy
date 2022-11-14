@@ -39,16 +39,15 @@ class DataSourceGrailsPluginSpec extends Specification {
         DataSource ds = ctx.getBean('dataSource', DataSource)
         Sql sql = new Sql(ds)
         int result = sql.call('''
-CREATE TABLE user (
+CREATE TABLE `user` (
     username VARCHAR(50),
     password VARCHAR(50));
 
 
-select * from user''')
+select * from `user`''')
 
         then:""
         result == 0
-
 
     }
  }
