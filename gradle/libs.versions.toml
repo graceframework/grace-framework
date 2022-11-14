@@ -58,7 +58,7 @@ spock = "2.3-groovy-3.0"
 spring-boot = "2.7.5"
 spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.23"
-standard-taglib = "1.1.2"
+standard-taglib = "1.2.5"
 tomcat = "9.0.68"
 xhtmlrenderer = "8.0"
 
@@ -166,7 +166,7 @@ spring-test = { module = "org.springframework:spring-test", version.ref = "sprin
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-framework" }
 spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring-framework" }
-standard-taglib = { module = "taglibs:standard", version.ref = "standard-taglib" }
+standard-taglib = { module = "org.apache.taglibs:taglibs-standard-impl", version.ref = "standard-taglib" }
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
 tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
