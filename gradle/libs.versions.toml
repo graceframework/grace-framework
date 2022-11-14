@@ -2,7 +2,7 @@
 ant = "1.10.12"
 asciidoctorj = "2.5.6"
 aspectj = "1.9.8"
-assertj = "3.11.1"
+assertj = "3.22.0"
 caffeine = "2.9.3"
 cglib = "3.3.0"
 commons-codec = "1.15"
@@ -20,9 +20,9 @@ grails-gsp = "5.2.2-SNAPSHOT"
 grails-scaffolding = "5.0.0-SNAPSHOT"
 grails-views = "2.3.2"
 groovy = "3.0.12"
-gson = "2.9.0"
-h2 = "1.4.200"
-hsqldb = "1.8.1.1"
+gson = "2.9.1"
+h2 = "2.1.214"
+hsqldb = "2.5.2"
 itext = "2.0.8"
 jansi = "1.18"
 jakarta-annotation-api = "2.0.0"
@@ -55,10 +55,10 @@ objenesis = "3.2"
 slf4j = "1.7.36"
 snakeyaml = "1.32"
 spock = "2.3-groovy-3.0"
-spring-boot = "2.6.13"
+spring-boot = "2.7.5"
 spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.23"
-standard-taglib = "1.1.2"
+standard-taglib = "1.2.5"
 tomcat = "9.0.68"
 xhtmlrenderer = "8.0"
 
@@ -109,15 +109,14 @@ groovy-test-junit5 = { module = "org.codehaus.groovy:groovy-test-junit5", versio
 groovy-xml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
-hsqldb = { module = "hsqldb:hsqldb", version.ref = "hsqldb" }
+hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
 itext = { module = "com.lowagie:itext", version.ref = "itext" }
 jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
 javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation" }
 javax-el = { module = "javax.el:el-api", version.ref = "javax-el" }
-javax-jaxb = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
-javax-jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "javax-jaxb" }
+javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 javax-jsp = { module = "javax.servlet.jsp:jsp-api", version.ref = "javax-jsp" }
 javax-jstl = { module = "javax.servlet:jstl", version.ref = "javax-jstl" }
@@ -144,7 +143,7 @@ micronaut-spring-context = { module = "io.micronaut.spring:micronaut-spring-cont
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
-slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-jcl = { module = "org.slf4j:jcl-over-slf4j", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
@@ -167,7 +166,7 @@ spring-test = { module = "org.springframework:spring-test", version.ref = "sprin
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-framework" }
 spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring-framework" }
-standard-taglib = { module = "taglibs:standard", version.ref = "standard-taglib" }
+standard-taglib = { module = "org.apache.taglibs:taglibs-standard-impl", version.ref = "standard-taglib" }
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
 tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }

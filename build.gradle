@@ -390,23 +390,6 @@ subprojects { project ->
     sourceCompatibility = 11
     targetCompatibility = 11
 
-    if(project.name =~ /^(grails-web|grails-plugin-|grails-test-suite|grails-test)/) {
-        dependencies {
-            api libs.javax.servlet
-            // MockHttpServletRequest/Response/Context used in many classes
-            api libs.spring.test, {
-                exclude group: 'commons-logging', module:'commons-logging'
-            }
-        }
-    }
-
-    if(project.name =~ /^(grails-plugin-datasource|grails-test-suite)/) {
-        dependencies {
-            testImplementation libs.hsqldb
-            testImplementation libs.h2
-        }
-    }
-
     jar{
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
@@ -481,7 +464,7 @@ subprojects { project ->
 
         if (project.name != "grails-docs") {
             // Logging
-            api libs.slf4j
+            api libs.slf4j.api
             api libs.slf4j.jcl
 
             // Testing

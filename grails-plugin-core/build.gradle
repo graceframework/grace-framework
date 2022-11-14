@@ -4,7 +4,6 @@ dependencies {
     api project(":grails-spring")
     api project(":grails-spring-boot")
 
-    api libs.groovy.core
     api libs.spring.beans
     api libs.spring.boot.autoconfigure
     api libs.spring.context

@@ -8,6 +8,7 @@ dependencies {
         transitive = false
     }
 
+    api libs.javax.servlet
     implementation libs.caffeine
     compileOnly libs.jansi
     compileOnly libs.jline
