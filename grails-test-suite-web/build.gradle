@@ -34,7 +34,7 @@ dependencies {
     testImplementation libs.javax.jstl
     testImplementation libs.standard.taglib
 
-    testImplementation libs.gorm.datastore.gorm.hibernate5, {
+    testImplementation libs.grails.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -60,7 +60,7 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    testImplementation libs.grails.plugins.gsp, {
+    testImplementation libs.grails.plugin.gsp, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'

@@ -8,10 +8,10 @@ dependencies {
     api project(":grails-web-common")
 
     api libs.commons.lang3
-    compileOnly(libs.gorm.datastore.core) {
+    compileOnly(libs.grails.datastore.core) {
         transitive = false
     }
-    compileOnly(libs.gorm.datastore.gorm) {
+    compileOnly(libs.grails.datastore.gorm) {
         transitive = false
     }
 

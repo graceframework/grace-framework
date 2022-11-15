@@ -8,14 +8,14 @@ cglib = "3.3.0"
 commons-codec = "1.15"
 commons-lang = "2.6"
 commons-lang3 = "3.12.0"
-gorm = "7.2.2-SNAPSHOT"
-gorm-hibernate = "7.2.3-SNAPSHOT"
 gradle = "7.5.1"
 gradle-extra-configurations-plugin = "7.0.0"
 gradle-nexus-plugin = "2.3.1"
 gradle-nexus-publish-plugin = "1.1.0"
 grails-async = "5.0.0-SNAPSHOT"
 grails-gdoc = "1.0.1"
+grails-gorm = "7.2.2-SNAPSHOT"
+grails-gorm-hibernate = "7.2.3-SNAPSHOT"
 grails-gsp = "5.2.2-SNAPSHOT"
 grails-scaffolding = "5.0.0-SNAPSHOT"
 grails-views = "2.3.2"
@@ -74,23 +74,23 @@ cglib = { module = "cglib:cglib-nodep", version.ref = "cglib" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
-gorm-datastore-core = { module = "org.grails:grails-datastore-core", version.ref = "gorm" }
-gorm-datastore-async = { module = "org.grails:grails-datastore-async", version.ref = "gorm" }
-gorm-datastore-gorm = { module = "org.grails:grails-datastore-gorm", version.ref = "gorm" }
-gorm-datastore-gorm-async = { module = "org.grails:grails-datastore-gorm-async", version.ref = "gorm" }
-gorm-datastore-gorm-hibernate5 = { module = "org.grails:grails-datastore-gorm-hibernate5", version.ref = "gorm-hibernate" }
-gorm-datastore-gorm-support = { module = "org.grails:grails-datastore-gorm-support", version.ref = "gorm" }
-gorm-datastore-gorm-test = { module = "org.grails:grails-datastore-gorm-test", version.ref = "gorm" }
-gorm-datastore-gorm-validation = { module = "org.grails:grails-datastore-gorm-validation", version.ref = "gorm" }
-gorm-datastore-web = { module = "org.grails:grails-datastore-web", version.ref = "gorm" }
 gradle-extra-configurations-plugin = { module = "com.netflix.nebula:gradle-extra-configurations-plugin", version.ref = "gradle-extra-configurations-plugin" }
 gradle-nexus-plugin = { module = "com.bmuschko:gradle-nexus-plugin", version.ref = "gradle-nexus-plugin" }
 gradle-nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 grails-async = { module = "org.grails.plugins:async", version.ref = "grails-async" }
+grails-datastore-core = { module = "org.grails:grails-datastore-core", version.ref = "grails-gorm" }
+grails-datastore-async = { module = "org.grails:grails-datastore-async", version.ref = "grails-gorm" }
+grails-datastore-gorm = { module = "org.grails:grails-datastore-gorm", version.ref = "grails-gorm" }
+grails-datastore-gorm-async = { module = "org.grails:grails-datastore-gorm-async", version.ref = "grails-gorm" }
+grails-datastore-gorm-hibernate5 = { module = "org.grails:grails-datastore-gorm-hibernate5", version.ref = "grails-gorm-hibernate" }
+grails-datastore-gorm-support = { module = "org.grails:grails-datastore-gorm-support", version.ref = "grails-gorm" }
+grails-datastore-gorm-test = { module = "org.grails:grails-datastore-gorm-test", version.ref = "grails-gorm" }
+grails-datastore-gorm-validation = { module = "org.grails:grails-datastore-gorm-validation", version.ref = "grails-gorm" }
+grails-datastore-web = { module = "org.grails:grails-datastore-web", version.ref = "grails-gorm" }
 grails-gdoc-engine = { module = "org.grails:grails-gdoc-engine", version.ref = "grails-gdoc" }
 grails-gsp = { module = "org.grails:grails-gsp", version.ref = "grails-gsp" }
-grails-plugins-gsp = { module = "org.grails.plugins:gsp", version.ref = "grails-gsp" }
+grails-plugin-gsp = { module = "org.grails.plugins:gsp", version.ref = "grails-gsp" }
 grails-web-gsp = { module = "org.grails:grails-web-gsp", version.ref = "grails-gsp" }
 grails-web-sitemesh = { module = "org.grails:grails-web-sitemesh", version.ref = "grails-gsp" }
 groovy-ant = { module = "org.codehaus.groovy:groovy-ant", version.ref = "groovy" }

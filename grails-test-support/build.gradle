@@ -12,10 +12,10 @@ dependencies {
         exclude module: 'grails-plugin-controllers'
         exclude module: 'grails-core'
     }
-    api libs.grails.plugins.gsp
+    api libs.grails.plugin.gsp
     api libs.groovy.test.junit5
-    api libs.gorm.datastore.gorm
-    api libs.gorm.datastore.gorm.test
+    api libs.grails.datastore.gorm
+    api libs.grails.datastore.gorm.test
     api libs.junit.jupiter.api
     api libs.junit.platform.runner
     api libs.javassist

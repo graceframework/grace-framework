@@ -18,4 +18,5 @@ dependencies {
     }
 
     api libs.javax.servlet
+    testImplementation project(":grails-test")
 }

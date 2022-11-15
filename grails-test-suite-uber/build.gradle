@@ -23,7 +23,7 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
     testImplementation libs.micronaut.spring.context
-    testImplementation libs.gorm.datastore.gorm.hibernate5, {
+    testImplementation libs.grails.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'
         exclude group: 'org.grails', module:'grails-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -54,7 +54,7 @@ dependencies {
         exclude module:'grails-core'
         exclude module:'grails-plugin-domain-class'
     }
-    testImplementation libs.grails.plugins.gsp, {
+    testImplementation libs.grails.plugin.gsp, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'

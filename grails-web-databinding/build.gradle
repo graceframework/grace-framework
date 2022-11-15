@@ -3,7 +3,7 @@ dependencies {
     api project(":grails-util")
     api project(":grails-web-common")
 
-    api libs.gorm.datastore.core, {
+    api libs.grails.datastore.core, {
         transitive = false
     }
 

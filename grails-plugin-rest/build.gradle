@@ -10,10 +10,10 @@ dependencies {
 
     api libs.javax.jaxb.api
     api libs.spring.boot.autoconfigure
-    compileOnly(libs.gorm.datastore.core) {
+    compileOnly(libs.grails.datastore.core) {
         transitive = false
     }
-    compileOnly(libs.gorm.datastore.gorm) {
+    compileOnly(libs.grails.datastore.gorm) {
         transitive = false
     }
     compileOnly(libs.grails.web.gsp) {

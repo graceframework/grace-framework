@@ -4,16 +4,16 @@ dependencies {
     api project(":grails-plugin-validation")
     api project(":grails-spring")
 
-    api(libs.gorm.datastore.core) {
+    api(libs.grails.datastore.core) {
         transitive = false
     }
-    api(libs.gorm.datastore.gorm) {
+    api(libs.grails.datastore.gorm) {
         transitive = false
     }
-    api(libs.gorm.datastore.gorm.support) {
+    api(libs.grails.datastore.gorm.support) {
         transitive = false
     }
-    api(libs.gorm.datastore.gorm.validation) {
+    api(libs.grails.datastore.gorm.validation) {
         transitive = false
     }
 }

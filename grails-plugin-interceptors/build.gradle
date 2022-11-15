@@ -7,4 +7,6 @@ dependencies {
     api project(":grails-plugin-url-mappings")
 
     api libs.spring.boot.autoconfigure
+
+    testImplementation project(":grails-test")
 }

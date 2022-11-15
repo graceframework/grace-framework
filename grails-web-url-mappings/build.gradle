@@ -4,7 +4,7 @@ dependencies {
     api project(":grails-util")
     api project(":grails-web-common")
 
-    api(libs.gorm.datastore.gorm.validation) {
+    api(libs.grails.datastore.gorm.validation) {
         transitive = false
     }
 

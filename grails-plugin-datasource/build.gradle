@@ -3,8 +3,8 @@ dependencies {
     api project(':grails-plugin-api')
     api project(":grails-spring-boot")
 
-    api libs.gorm.datastore.core
-    api libs.gorm.datastore.gorm
+    api libs.grails.datastore.core
+    api libs.grails.datastore.gorm
     api libs.groovy.sql
     api libs.spring.context
     api libs.spring.jdbc

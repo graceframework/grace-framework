@@ -5,7 +5,7 @@ dependencies {
     api project(":grails-spring-boot")
     api project(":grails-util")
 
-    api libs.gorm.datastore.core
+    api libs.grails.datastore.core
 
     testImplementation project(":grails-test")
     testImplementation(libs.spring.jdbc) {

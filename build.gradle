@@ -66,13 +66,13 @@ ext {
                 modules: ['core', 'sync']
         ],
         gorm: [
-            version: libs.versions.gorm.asProvider().get(),
+            version: libs.versions.grails.gorm.asProvider().get(),
             group  : 'org.grails',
             names  : ['grails-datastore'],
             modules: ['async','core', 'web', 'gorm','gorm-async','gorm-support', 'gorm-rx', 'gorm-test', 'gorm-validation']
         ],
         'gorm.hibernate': [
-            version: libs.versions.gorm.hibernate.get(),
+            version: libs.versions.grails.gorm.hibernate.get(),
             group  : 'org.grails',
             names  : ['grails-datastore-gorm-hibernate5'],
             modules: ['']
