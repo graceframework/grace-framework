@@ -6,4 +6,6 @@ dependencies {
         exclude group:'org.grails', module:'grails-web-common'
     }
     api libs.javax.servlet
+
+    testImplementation libs.spring.test
 }

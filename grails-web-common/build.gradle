@@ -15,4 +15,6 @@ dependencies {
     api libs.spring.contextSupport
     api libs.spring.webmvc
     implementation libs.caffeine
+
+    testImplementation project(":grails-test")
 }

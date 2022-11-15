@@ -8,4 +8,6 @@ dependencies {
     }
 
     api libs.javax.servlet
+
+    testImplementation libs.spring.test
 }
