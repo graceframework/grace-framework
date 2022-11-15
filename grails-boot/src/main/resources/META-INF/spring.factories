@@ -1,7 +1,8 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 grails.boot.config.GrailsAutoConfiguration,\
-org.grails.boot.actuate.autoconfigure.PluginsEndpointAutoConfiguration
+org.grails.boot.actuate.autoconfigure.PluginsEndpointAutoConfiguration,\
+org.grails.boot.actuate.autoconfigure.AppInfoContributorAutoConfiguration
 
 # Application Context Initializers
 org.springframework.context.ApplicationContextInitializer=\
