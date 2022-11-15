@@ -1,1 +1,2 @@
 grails.boot.config.GrailsAutoConfiguration
+org.grails.boot.actuate.autoconfigure.PluginsEndpointAutoConfiguration
