@@ -15,7 +15,7 @@ dependencies {
     api libs.spring.boot
     api libs.spring.boot.autoconfigure
     annotationProcessor(libs.spring.boot.configurationProcessor)
-    compileOnly libs.spring.boot.starter.actuator
+    api libs.spring.boot.actuator.autoconfigure
     api libs.spring.context
     api libs.spring.core
     api libs.spring.web

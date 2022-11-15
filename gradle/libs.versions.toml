@@ -152,11 +152,11 @@ spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spoc
 spring-aspects = { module = "org.springframework:spring-aspects", version.ref = "spring-framework" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-framework" }
 spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
+spring-boot-actuator-autoconfigure = { module = "org.springframework.boot:spring-boot-actuator-autoconfigure", version.ref = "spring-boot" }
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
 spring-boot-cli = { module = "org.springframework.boot:spring-boot-cli", version.ref = "spring-boot" }
 spring-boot-configurationProcessor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
 spring-boot-test = { module = "org.springframework.boot:spring-boot-test", version.ref = "spring-boot" }
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring-framework" }
 spring-contextSupport = { module = "org.springframework:spring-context-support", version.ref = "spring-framework" }
