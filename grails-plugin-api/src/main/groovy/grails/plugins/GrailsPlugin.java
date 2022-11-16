@@ -21,6 +21,7 @@ import java.util.Map;
 import groovy.lang.GroovyObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 
@@ -47,7 +48,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * @see org.springframework.beans.factory.support.BeanDefinitionRegistry
  */
 @SuppressWarnings("rawtypes")
-public interface GrailsPlugin extends ApplicationContextAware, Comparable, GrailsPluginInfo {
+public interface GrailsPlugin extends GrailsPluginInfo, ApplicationContextAware, Comparable, Ordered {
 
     int EVENT_ON_CHANGE = 0;
 

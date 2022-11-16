@@ -43,6 +43,7 @@ import org.codehaus.groovy.runtime.IOGroovyMethods;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.OrderComparator;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.metrics.StartupStep;
@@ -362,6 +363,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         List<GrailsPlugin> orderedPlugins = new ArrayList<>();
         orderedPlugins.addAll(orderedCorePlugins);
         orderedPlugins.addAll(orderedUserPlugins);
+        OrderComparator.sort(orderedPlugins);
 
         for (GrailsPlugin plugin : orderedPlugins) {
             attemptPluginLoad(plugin);

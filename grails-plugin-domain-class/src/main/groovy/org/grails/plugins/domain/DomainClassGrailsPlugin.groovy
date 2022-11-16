@@ -16,6 +16,7 @@
 package org.grails.plugins.domain
 
 import groovy.util.logging.Slf4j
+import org.springframework.core.PriorityOrdered
 
 import grails.core.GrailsApplication
 import grails.plugins.Plugin
@@ -36,7 +37,7 @@ import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
  * @since 0.4
  */
 @Slf4j
-class DomainClassGrailsPlugin extends Plugin {
+class DomainClassGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def watchedResources = ['file:./grails-app/domain/**/*.groovy',
                             'file:./plugins/*/grails-app/domain/**/*.groovy',
@@ -67,6 +68,11 @@ class DomainClassGrailsPlugin extends Plugin {
             def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
             log.info(String.format('Found %d Domains', domainClasses.size()))
         }
+    }
+
+    @Override
+    int getOrder() {
+        300
     }
 
 }

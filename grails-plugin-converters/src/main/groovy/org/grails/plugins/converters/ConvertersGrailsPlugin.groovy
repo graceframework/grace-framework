@@ -15,6 +15,8 @@
  */
 package org.grails.plugins.converters
 
+import org.springframework.core.PriorityOrdered
+
 import grails.converters.JSON
 import grails.converters.XML
 import grails.plugins.Plugin
@@ -35,7 +37,7 @@ import org.grails.web.converters.marshaller.xml.ValidationErrorsMarshaller as Xm
  *
  * @since 0.6
  */
-class ConvertersGrailsPlugin extends Plugin {
+class ConvertersGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def observe = ['controllers']
@@ -64,6 +66,11 @@ class ConvertersGrailsPlugin extends Plugin {
                 converterClass = JSON
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        60
     }
 
 }

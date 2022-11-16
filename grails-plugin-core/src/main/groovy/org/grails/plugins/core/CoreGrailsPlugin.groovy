@@ -23,6 +23,7 @@ import org.springframework.beans.factory.config.CustomEditorConfigurer
 import org.springframework.beans.factory.support.DefaultListableBeanFactory
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 import org.springframework.context.support.GenericApplicationContext
+import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 
@@ -49,7 +50,7 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  * @author Graeme Rocher
  * @since 0.4
  */
-class CoreGrailsPlugin extends Plugin {
+class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def watchedResources = ['file:./grails-app/conf/spring/resources.xml',
@@ -151,6 +152,11 @@ class CoreGrailsPlugin extends Plugin {
                 springConfig.registerBeansWithContext(applicationContext)
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        0
     }
 
 }

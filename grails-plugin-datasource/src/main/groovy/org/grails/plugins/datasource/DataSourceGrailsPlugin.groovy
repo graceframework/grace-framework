@@ -20,6 +20,7 @@ import javax.sql.DataSource
 import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
+import org.springframework.core.PriorityOrdered
 import org.springframework.jmx.support.JmxUtils
 import org.springframework.util.ClassUtils
 
@@ -37,7 +38,7 @@ import org.grails.transaction.ChainedTransactionManagerPostProcessor
  * @author Graeme Rocher
  * @since 0.4
  */
-class DataSourceGrailsPlugin extends Plugin {
+class DataSourceGrailsPlugin extends Plugin implements PriorityOrdered {
 
     private static final Log log = LogFactory.getLog(DataSourceGrailsPlugin)
     public static final String TRANSACTION_MANAGER_WHITE_LIST_PATTERN = 'grails.transaction.chainedTransactionManager.whitelistPattern'
@@ -110,6 +111,11 @@ class DataSourceGrailsPlugin extends Plugin {
                 log.debug "Error deregistering JDBC drivers: $e.message", e
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        10
     }
 
 }

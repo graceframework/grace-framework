@@ -23,11 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import groovy.lang.GroovyObject;
 import groovy.lang.GroovyObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.OrderUtils;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -38,6 +41,7 @@ import grails.core.GrailsApplication;
 import grails.io.IOUtils;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
+import grails.util.GrailsClassUtils;
 import grails.util.GrailsNameUtils;
 
 import org.grails.core.AbstractGrailsClass;
@@ -53,6 +57,8 @@ import org.grails.spring.boot.env.YamlPropertySourceLoader;
 public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implements GrailsPlugin {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractGrailsPlugin.class);
+
+    private static final int DEFAULT_ORDER = Ordered.LOWEST_PRECEDENCE;
 
     public static final String PLUGIN_YML = "plugin.yml";
 
@@ -302,6 +308,21 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         }
 
         return 0;
+    }
+
+    @Override
+    public int getOrder() {
+        GroovyObject pluginInstance = getInstance();
+        if (pluginInstance instanceof Ordered) {
+            return ((Ordered) pluginInstance).getOrder();
+        }
+
+        Object orderProperty = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(pluginInstance, "order");
+        if (orderProperty != null) {
+            return Integer.parseInt(String.valueOf(orderProperty));
+        }
+
+        return OrderUtils.getOrder(getPluginClass(), DEFAULT_ORDER);
     }
 
     /**
