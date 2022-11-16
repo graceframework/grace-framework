@@ -13,57 +13,57 @@ ext {
     dependencyVersions = [
         'javax.annotation-api': [
                 version: libs.versions.javax.annotation.get(),
-                group:'javax.annotation',
-                names:['javax.annotation'],
-                modules:['api']
+                group  : 'javax.annotation',
+                names  : ['javax.annotation'],
+                modules: ['api']
         ],
         'jakarta-annotation': [
                 version: libs.versions.jakarta.annotation.api.get(),
-                group:'jakarta.annotation',
-                names:['jakarta.annotation-api'],
-                modules:['']
+                group  : 'jakarta.annotation',
+                names  : ['jakarta.annotation-api'],
+                modules: ['']
         ],
         'micronaut': [
                 version: libs.versions.micronaut.core.get(),
-                group:'io.micronaut',
-                names:['micronaut'],
-                modules:['aop', 'bom', 'buffer-netty', 'context', 'core', 'http', 'http-client', 'http-client-core', 'http-netty', 'inject', 'inject-groovy', 'inject-java', 'runtime', 'validation']
+                group  : 'io.micronaut',
+                names  : ['micronaut'],
+                modules: ['aop', 'bom', 'buffer-netty', 'context', 'core', 'http', 'http-client', 'http-client-core', 'http-netty', 'inject', 'inject-groovy', 'inject-java', 'runtime', 'validation']
         ],
         'micronaut.cache': [
                 version: libs.versions.micronaut.cache.get(),
-                group: 'io.micronaut.cache',
-                names:['micronaut-cache'],
-                modules:['caffeine', 'core', 'ehcache', 'hazelcast', 'infinispan', 'management']
+                group  : 'io.micronaut.cache',
+                names  : ['micronaut-cache'],
+                modules: ['caffeine', 'core', 'ehcache', 'hazelcast', 'infinispan', 'management']
         ],
         'micronaut.micronaut-runtime-groovy': [
                 version: libs.versions.micronaut.groovy.get(),
-                group:'io.micronaut.groovy',
-                names:['micronaut'],
-                modules:['runtime-groovy']
+                group  : 'io.micronaut.groovy',
+                names  : ['micronaut'],
+                modules: ['runtime-groovy']
         ],
         'micronaut.spring': [
                 version: libs.versions.micronaut.spring.get(),
-                group:'io.micronaut.spring',
-                names:['micronaut-spring'],
-                modules:['', 'annotation', 'bom', 'boot', 'boot-annotation', 'boot-starter', 'context', 'web', 'web-annotation']
+                group  : 'io.micronaut.spring',
+                names  : ['micronaut-spring'],
+                modules: ['', 'annotation', 'bom', 'boot', 'boot-annotation', 'boot-starter', 'context', 'web', 'web-annotation']
         ],
         'mongodb': [
                 version: libs.versions.mongodb.java.driver.get(),
-                group: 'org.mongodb',
-                names: ['mongodb-driver'],
+                group  : 'org.mongodb',
+                names  : ['mongodb-driver'],
                 modules: ['core', 'sync']
         ],
         gorm: [
-            version: libs.versions.grails.gorm.asProvider().get(),
-            group  : 'org.grails',
-            names  : ['grails-datastore'],
-            modules: ['async','core', 'web', 'gorm','gorm-async','gorm-support', 'gorm-rx', 'gorm-test', 'gorm-validation']
+                version: libs.versions.grails.gorm.asProvider().get(),
+                group  : 'org.grails',
+                names  : ['grails-datastore'],
+                modules: ['async', 'core', 'web', 'gorm', 'gorm-async', 'gorm-rx', 'gorm-support', 'gorm-test', 'gorm-validation']
         ],
         'gorm.hibernate': [
-            version: libs.versions.grails.gorm.hibernate.get(),
-            group  : 'org.grails',
-            names  : ['grails-datastore-gorm-hibernate5'],
-            modules: ['']
+                version: libs.versions.grails.gorm.hibernate.get(),
+                group  : 'org.grails',
+                names  : ['grails-datastore-gorm-hibernate5'],
+                modules: ['']
         ],
         'scaffolding-core': [
                 version: libs.versions.grails.scaffolding.get(),
@@ -72,64 +72,64 @@ ext {
                 modules: ['core']
         ],
         'groovy': [
-            version: libs.versions.groovy.get(),
-            group  : 'org.codehaus.groovy',
-            names  : ['groovy'],
-            modules: ['', 'xml', 'swing', 'console', 'json', 'ant', 'sql', 'templates', 'nio', 'dateutil', 'macro']
+                version: libs.versions.groovy.get(),
+                group  : 'org.codehaus.groovy',
+                names  : ['groovy'],
+                modules: ['', 'ant', 'console', 'dateutil', 'json', 'macro', 'nio', 'sql', 'swing', 'templates', 'xml']
         ],
         'spring': [
-            version: libs.versions.spring.framework.get(),
-            group  : 'org.springframework',
-            names  : ['spring'],
-            modules: ['aop', 'aspects', 'beans', 'context-support', 'context', 'core', 'expression', 'instrument', 'jdbc', 'jms', 'messaging', 'orm', 'oxm', 'test', 'tx', 'web', 'webmvc', 'websocket']
+                version: libs.versions.spring.framework.get(),
+                group  : 'org.springframework',
+                names  : ['spring'],
+                modules: ['aop', 'aspects', 'beans', 'context-support', 'context', 'core', 'expression', 'instrument', 'jdbc', 'jms', 'messaging', 'orm', 'oxm', 'test', 'tx', 'web', 'webmvc', 'websocket']
         ],
         directoryWatcher: [
-            version: libs.versions.methvin.directory.watcher.get(),
-            group  : 'io.methvin',
-            names  : ['directory-watcher'],
-            modules: ['']
+                version: libs.versions.methvin.directory.watcher.get(),
+                group  : 'io.methvin',
+                names  : ['directory-watcher'],
+                modules: ['']
         ],
         async: [
-            version: libs.versions.grails.async.get(),
-            group  : 'org.grails.plugins',
-            names  : ['async', 'events'],
-            modules: ['']
+                version: libs.versions.grails.async.get(),
+                group  : 'org.grails.plugins',
+                names  : ['async', 'events'],
+                modules: ['']
         ],
         asyncImpls: [
-            version: libs.versions.grails.async.get(),
-            group  : 'org.grails',
-            names  : ['grails-async', 'grails-events'],
-            modules: ['gpars', 'rxjava', 'rxjava2']
+                version: libs.versions.grails.async.get(),
+                group  : 'org.grails',
+                names  : ['grails-async', 'grails-events'],
+                modules: ['gpars', 'rxjava', 'rxjava2']
         ],
         spock: [
-            version: libs.versions.spock.get(),
-            group  : 'org.spockframework',
-            names  : ['spock-core', 'spock-spring'],
-            modules: ['']
+                version: libs.versions.spock.get(),
+                group  : 'org.spockframework',
+                names  : ['spock-core', 'spock-spring'],
+                modules: ['']
         ],
         gsp: [
-            version: libs.versions.grails.gsp.get(),
-            group  : 'org.grails.plugins',
-            names  : ['gsp'],
-            modules: ['']
+                version: libs.versions.grails.gsp.get(),
+                group  : 'org.grails.plugins',
+                names  : ['gsp'],
+                modules: ['']
         ],
         'views-json-testing-support': [
-            version: libs.versions.grails.views.get(),
-            group  : 'org.grails',
-            names  : ['views-json-testing-support'],
-            modules: ['']
+                version: libs.versions.grails.views.get(),
+                group  : 'org.grails',
+                names  : ['views-json-testing-support'],
+                modules: ['']
         ],
         h2: [
-            version: libs.versions.h2.get(),
-            group  : 'com.h2database',
-            names  : ['h2'],
-            modules: ['']
+                version: libs.versions.h2.get(),
+                group  : 'com.h2database',
+                names  : ['h2'],
+                modules: ['']
         ],
         'spring-boot': [
-            version: libs.versions.spring.boot.get(),
-            group  : 'org.springframework.boot',
-            names  : ['spring-boot'],
-            modules: ['', 'dependencies', 'cli']
+                version: libs.versions.spring.boot.get(),
+                group  : 'org.springframework.boot',
+                names  : ['spring-boot'],
+                modules: ['', 'cli', 'dependencies']
         ],
     ]
 }
@@ -176,27 +176,6 @@ publishing {
                                     mkp.version sub.version
                                     if (sub.name == 'grails-dependencies') {
                                         mkp.type 'pom'
-                                    }
-
-                                    if (sub.name == 'grails-bootstrap') {
-                                        mkp.exclusions {
-                                            mkp.exclusion {
-                                                mkp.groupId 'jline'
-                                                mkp.artifactId 'jline'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'org.fusesource.jansi'
-                                                mkp.artifactId 'jansi'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'net.java.dev.jna'
-                                                mkp.artifactId 'jna'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'org.codehaus.groovy'
-                                                mkp.artifactId 'groovy-ant'
-                                            }
-                                        }
                                     }
                                 }
                             }
