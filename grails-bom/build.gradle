@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.apache.groovy:groovy-toml:4.0.6'
+    }
+}
+
 apply plugin: 'maven-publish'
 
 ext {
@@ -125,23 +134,21 @@ ext {
     ]
 }
 
+def toml = new groovy.toml.TomlSlurper()
+def grails = toml.parse(rootProject.file('gradle/grails.versions.toml'))
+
 publishing {
     publications {
         maven(MavenPublication) {
             pom.withXml {
                 def xml = asNode()
-                def plugins = new Properties()
-                plugins.load(new StringReader(new File("$projectDir/plugins.properties").text))
-
-                def profiles = new Properties()
-                profiles.load(new StringReader(new File("$projectDir/profiles.properties").text))
 
                 xml.children().last() + pomInfo
                 xml.children().last() + {
                     def mkp = delegate
 
                     mkp.properties {
-                        for (dep in plugins) {
+                        for (dep in grails.plugins) {
                             String version = dep.value
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
@@ -210,11 +217,11 @@ publishing {
                                 }
                             }
 
-                            for (plugin in plugins) {
+                            for (plugin in grails.plugins) {
                                 String artifactId = plugin.key
                                 String version = "\${${plugin.key}.version}"
-                                if (artifactId.startsWith("gorm.")) {
-                                    artifactId = artifactId.replace("gorm.", "")
+                                if (artifactId.startsWith('gorm-')) {
+                                    artifactId = artifactId.replace('gorm-', '')
                                 }
                                 mkp.dependency {
                                     mkp.groupId 'org.grails.plugins'
@@ -227,7 +234,7 @@ publishing {
                                 }
                             }
 
-                            for (profile in profiles) {
+                            for (profile in grails.profiles) {
                                 mkp.dependency {
                                     mkp.groupId 'org.grails.profiles'
                                     mkp.artifactId profile.key
