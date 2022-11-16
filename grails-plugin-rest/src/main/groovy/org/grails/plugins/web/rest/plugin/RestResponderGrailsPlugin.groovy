@@ -16,6 +16,7 @@
 package org.grails.plugins.web.rest.plugin
 
 import groovy.transform.CompileStatic
+import org.springframework.core.PriorityOrdered
 
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
@@ -30,7 +31,7 @@ import org.grails.core.artefact.DomainClassArtefactHandler
  * @since 2.3
  * @author Graeme Rocher
  */
-class RestResponderGrailsPlugin extends Plugin {
+class RestResponderGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def loadBefore = ['controllers']
@@ -69,6 +70,11 @@ class RestResponderGrailsPlugin extends Plugin {
                 }
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        40
     }
 
 }

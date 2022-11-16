@@ -18,6 +18,7 @@ package org.grails.plugins.i18n
 import java.nio.file.Files
 
 import groovy.util.logging.Slf4j
+import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
 
 import grails.plugins.Plugin
@@ -34,7 +35,7 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
  * @since 0.4
  */
 @Slf4j
-class I18nGrailsPlugin extends Plugin {
+class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
     String watchedResources = ['file:./grails-app/i18n/**/*.properties',
@@ -107,6 +108,11 @@ class I18nGrailsPlugin extends Plugin {
             currentFile = currentFile.parentFile
         }
         false
+    }
+
+    @Override
+    int getOrder() {
+        20
     }
 
 }

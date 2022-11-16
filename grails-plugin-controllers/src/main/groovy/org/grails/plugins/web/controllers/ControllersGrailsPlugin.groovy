@@ -18,6 +18,7 @@ package org.grails.plugins.web.controllers
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.support.AbstractBeanDefinition
 import org.springframework.context.ApplicationContext
+import org.springframework.core.PriorityOrdered
 
 import grails.config.Settings
 import grails.core.GrailsControllerClass
@@ -34,7 +35,7 @@ import org.grails.plugins.web.servlet.context.BootStrapClassRunner
  * @since 0.4
  */
 @Slf4j
-class ControllersGrailsPlugin extends Plugin {
+class ControllersGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def watchedResources = ['file:./grails-app/controllers/**/*Controller.groovy',
                             'file:./app/controllers/**/*Controller.groovy',
@@ -43,7 +44,7 @@ class ControllersGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
     def observe = ['domainClass']
-    def dependsOn = [core: version, i18n: version, urlMappings: version]
+    def dependsOn = [core: version, i18n: version]
 
     @Override
     Closure doWithSpring() {
@@ -115,6 +116,11 @@ class ControllersGrailsPlugin extends Plugin {
                 }
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        50
     }
 
 }

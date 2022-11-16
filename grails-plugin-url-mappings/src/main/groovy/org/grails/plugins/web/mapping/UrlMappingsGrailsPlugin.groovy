@@ -17,6 +17,7 @@ package org.grails.plugins.web.mapping
 
 import groovy.transform.CompileDynamic
 import org.springframework.context.ApplicationContext
+import org.springframework.core.PriorityOrdered
 
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
@@ -32,7 +33,7 @@ import org.grails.web.mapping.CachingLinkGenerator
  * @author Michael Yan
  * @since 0.4
  */
-class UrlMappingsGrailsPlugin extends Plugin {
+class UrlMappingsGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def watchedResources = ['file:./grails-app/controllers/*UrlMappings.groovy',
                             'file:./app/controllers/*UrlMappings.groovy']
@@ -66,6 +67,11 @@ class UrlMappingsGrailsPlugin extends Plugin {
         if (linkGenerator instanceof CachingLinkGenerator) {
             linkGenerator.clearCache()
         }
+    }
+
+    @Override
+    int getOrder() {
+        70
     }
 
     @CompileDynamic

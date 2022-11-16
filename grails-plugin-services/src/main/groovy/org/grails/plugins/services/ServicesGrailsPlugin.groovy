@@ -18,6 +18,7 @@ package org.grails.plugins.services
 import java.lang.reflect.Modifier
 
 import groovy.util.logging.Slf4j
+import org.springframework.core.PriorityOrdered
 
 import grails.config.Settings
 import grails.core.GrailsApplication
@@ -36,7 +37,7 @@ import org.grails.core.exceptions.GrailsConfigurationException
  * @since 0.4
  */
 @Slf4j
-class ServicesGrailsPlugin extends Plugin {
+class ServicesGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def loadAfter = ['hibernate']
@@ -112,6 +113,11 @@ class ServicesGrailsPlugin extends Plugin {
                 }
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        500
     }
 
 }

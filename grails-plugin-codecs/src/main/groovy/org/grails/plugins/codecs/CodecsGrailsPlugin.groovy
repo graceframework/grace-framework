@@ -15,6 +15,8 @@
  */
 package org.grails.plugins.codecs
 
+import org.springframework.core.PriorityOrdered
+
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
@@ -30,7 +32,7 @@ import org.grails.encoder.impl.RawCodec
  * @since 0.4
  * @deprecated as of 2022.0.0; use {@link CodecsPluginConfiguration} instead
  */
-class CodecsGrailsPlugin extends Plugin {
+class CodecsGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [core: version]
@@ -48,6 +50,11 @@ class CodecsGrailsPlugin extends Plugin {
         { ->
             // Keep this because it is used by testing-support
         }
+    }
+
+    @Override
+    int getOrder() {
+        30
     }
 
 }

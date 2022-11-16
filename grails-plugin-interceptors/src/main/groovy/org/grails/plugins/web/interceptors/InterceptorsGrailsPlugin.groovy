@@ -17,6 +17,7 @@ package org.grails.plugins.web.interceptors
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.springframework.core.PriorityOrdered
 import org.springframework.web.servlet.handler.MappedInterceptor
 
 import grails.artefact.Interceptor
@@ -32,13 +33,13 @@ import grails.util.GrailsUtil
  * @since 3.0
  */
 @CompileStatic
-class InterceptorsGrailsPlugin extends Plugin {
+class InterceptorsGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [controllers: version, urlMappings: version]
+    def loadAfter = ['controllers']
     def watchedResources = ['file:./grails-app/controllers/**/*Interceptor.groovy',
                             'file:./app/controllers/**/*Interceptor.groovy']
-    def loadAfter = ['domainClass', 'hibernate']
 
     GrailsInterceptorHandlerInterceptorAdapter interceptorAdapter
 
@@ -100,6 +101,11 @@ class InterceptorsGrailsPlugin extends Plugin {
                 }
             }
         }
+    }
+
+    @Override
+    int getOrder() {
+        80
     }
 
 }
