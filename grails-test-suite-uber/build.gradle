@@ -48,7 +48,7 @@ dependencies {
         exclude group: 'java-persistence', module:'persistence-api'
         exclude group: 'javassist', module: 'javassist'
     }
-    testImplementation libs.grails.async, {
+    testImplementation libs.grails.plugin.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'

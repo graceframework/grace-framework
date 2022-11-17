@@ -1,160 +1,47 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.apache.groovy:groovy-toml:4.0.6'
+    }
+}
+
 apply plugin: 'maven-publish'
 
-ext {
-    dependencyVersions = [
-        'javax.annotation-api': [
-                version: libs.versions.javax.annotation.get(),
-                group:'javax.annotation',
-                names:['javax.annotation'],
-                modules:['api']
-        ],
-        'jakarta-annotation': [
-                version: libs.versions.jakarta.annotation.api.get(),
-                group:'jakarta.annotation',
-                names:['jakarta.annotation-api'],
-                modules:['']
-        ],
-        'micronaut': [
-                version: libs.versions.micronaut.core.get(),
-                group:'io.micronaut',
-                names:['micronaut'],
-                modules:['aop', 'bom', 'buffer-netty', 'context', 'core', 'http', 'http-client', 'http-client-core', 'http-netty', 'inject', 'inject-groovy', 'inject-java', 'runtime', 'validation']
-        ],
-        'micronaut.cache': [
-                version: libs.versions.micronaut.cache.get(),
-                group: 'io.micronaut.cache',
-                names:['micronaut-cache'],
-                modules:['caffeine', 'core', 'ehcache', 'hazelcast', 'infinispan', 'management']
-        ],
-        'micronaut.micronaut-runtime-groovy': [
-                version: libs.versions.micronaut.groovy.get(),
-                group:'io.micronaut.groovy',
-                names:['micronaut'],
-                modules:['runtime-groovy']
-        ],
-        'micronaut.spring': [
-                version: libs.versions.micronaut.spring.get(),
-                group:'io.micronaut.spring',
-                names:['micronaut-spring'],
-                modules:['', 'annotation', 'bom', 'boot', 'boot-annotation', 'boot-starter', 'context', 'web', 'web-annotation']
-        ],
-        'mongodb': [
-                version: libs.versions.mongodb.java.driver.get(),
-                group: 'org.mongodb',
-                names: ['mongodb-driver'],
-                modules: ['core', 'sync']
-        ],
-        gorm: [
-            version: libs.versions.grails.gorm.asProvider().get(),
-            group  : 'org.grails',
-            names  : ['grails-datastore'],
-            modules: ['async','core', 'web', 'gorm','gorm-async','gorm-support', 'gorm-rx', 'gorm-test', 'gorm-validation']
-        ],
-        'gorm.hibernate': [
-            version: libs.versions.grails.gorm.hibernate.get(),
-            group  : 'org.grails',
-            names  : ['grails-datastore-gorm-hibernate5'],
-            modules: ['']
-        ],
-        'scaffolding-core': [
-                version: libs.versions.grails.scaffolding.get(),
-                group  : 'org.grails',
-                names  : ['grails-scaffolding'],
-                modules: ['core']
-        ],
-        'groovy': [
-            version: libs.versions.groovy.get(),
-            group  : 'org.codehaus.groovy',
-            names  : ['groovy'],
-            modules: ['', 'xml', 'swing', 'console', 'json', 'ant', 'sql', 'templates', 'nio', 'dateutil', 'macro']
-        ],
-        'spring': [
-            version: libs.versions.spring.framework.get(),
-            group  : 'org.springframework',
-            names  : ['spring'],
-            modules: ['aop', 'aspects', 'beans', 'context-support', 'context', 'core', 'expression', 'instrument', 'jdbc', 'jms', 'messaging', 'orm', 'oxm', 'test', 'tx', 'web', 'webmvc', 'websocket']
-        ],
-        directoryWatcher: [
-            version: libs.versions.methvin.directory.watcher.get(),
-            group  : 'io.methvin',
-            names  : ['directory-watcher'],
-            modules: ['']
-        ],
-        async: [
-            version: libs.versions.grails.async.get(),
-            group  : 'org.grails.plugins',
-            names  : ['async', 'events'],
-            modules: ['']
-        ],
-        asyncImpls: [
-            version: libs.versions.grails.async.get(),
-            group  : 'org.grails',
-            names  : ['grails-async', 'grails-events'],
-            modules: ['gpars', 'rxjava', 'rxjava2']
-        ],
-        spock: [
-            version: libs.versions.spock.get(),
-            group  : 'org.spockframework',
-            names  : ['spock-core', 'spock-spring'],
-            modules: ['']
-        ],
-        gsp: [
-            version: libs.versions.grails.gsp.get(),
-            group  : 'org.grails.plugins',
-            names  : ['gsp'],
-            modules: ['']
-        ],
-        'views-json-testing-support': [
-            version: libs.versions.grails.views.get(),
-            group  : 'org.grails',
-            names  : ['views-json-testing-support'],
-            modules: ['']
-        ],
-        h2: [
-            version: libs.versions.h2.get(),
-            group  : 'com.h2database',
-            names  : ['h2'],
-            modules: ['']
-        ],
-        'spring-boot': [
-            version: libs.versions.spring.boot.get(),
-            group  : 'org.springframework.boot',
-            names  : ['spring-boot'],
-            modules: ['', 'dependencies', 'cli']
-        ],
-    ]
-}
+def toml = new groovy.toml.TomlSlurper()
+def grails = toml.parse(rootProject.file('gradle/grails.versions.toml'))
+def libs = toml.parse(rootProject.file('gradle/libs.versions.toml'))
+
+def bundles = libs.bundles
+def libraries = bundles*.value.flatten().unique().sort()
+def libraryVersions = libraries.collect({ libs.libraries[it] })*.version.ref.unique().sort()
 
 publishing {
     publications {
         maven(MavenPublication) {
             pom.withXml {
                 def xml = asNode()
-                def plugins = new Properties()
-                plugins.load(new StringReader(new File("$projectDir/plugins.properties").text))
-
-                def profiles = new Properties()
-                profiles.load(new StringReader(new File("$projectDir/profiles.properties").text))
 
                 xml.children().last() + pomInfo
                 xml.children().last() + {
                     def mkp = delegate
 
                     mkp.properties {
-                        for (dep in plugins) {
+                        for (dep in grails.plugins) {
                             String version = dep.value
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
                             }
-                            mkp."${dep.key}.version"(version)
+                            mkp."grails-plugin-${dep.key}.version"(version)
                         }
 
-                        for (dep in dependencyVersions) {
-                            String version = dep.value.version
+                        for (ver in libraryVersions) {
+                            String version = libs.versions[ver]
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
                             }
-                            mkp."${dep.key}.version"(version)
+                            mkp."${ver}.version"(version)
                         }
                     }
 
@@ -169,53 +56,30 @@ publishing {
                                     mkp.version sub.version
                                     if (sub.name == 'grails-dependencies') {
                                         mkp.type 'pom'
-                                    }
-
-                                    if (sub.name == 'grails-bootstrap') {
-                                        mkp.exclusions {
-                                            mkp.exclusion {
-                                                mkp.groupId 'jline'
-                                                mkp.artifactId 'jline'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'org.fusesource.jansi'
-                                                mkp.artifactId 'jansi'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'net.java.dev.jna'
-                                                mkp.artifactId 'jna'
-                                            }
-                                            mkp.exclusion {
-                                                mkp.groupId 'org.codehaus.groovy'
-                                                mkp.artifactId 'groovy-ant'
-                                            }
-                                        }
+                                        mkp.scope 'import'
                                     }
                                 }
                             }
 
-                            for (dep in dependencyVersions) {
-                                def info = dep.value
-                                def depList = GroovyCollections
-                                        .combinations(info.names, info.modules)
-                                        .collect { it.join('-') }
-                                        .collect { it.endsWith('-') ? it[0..-2] : it }
-
-                                for (dependency in depList) {
-                                    mkp.dependency {
-                                        mkp.groupId info.group
-                                        mkp.artifactId dependency
-                                        mkp.version dep.value.version
+                            for (lib in libraries) {
+                                def dep = libs.libraries[lib]
+                                def groupId = dep.module.split(':')[0]
+                                def artifactId = dep.module.split(':')[1]
+                                def version = libs.versions[dep.version.ref]
+                                mkp.dependency {
+                                    mkp.groupId groupId
+                                    mkp.artifactId artifactId
+                                    mkp.version version
+                                    if (lib in libs.bundles.bom) {
+                                        mkp.type 'pom'
+                                        mkp.scope 'import'
                                     }
                                 }
                             }
 
-                            for (plugin in plugins) {
+                            for (plugin in grails.plugins) {
                                 String artifactId = plugin.key
-                                String version = "\${${plugin.key}.version}"
-                                if (artifactId.startsWith("gorm.")) {
-                                    artifactId = artifactId.replace("gorm.", "")
-                                }
+                                String version = "\${grails-plugin-${plugin.key}.version}"
                                 mkp.dependency {
                                     mkp.groupId 'org.grails.plugins'
                                     mkp.artifactId artifactId
@@ -227,7 +91,7 @@ publishing {
                                 }
                             }
 
-                            for (profile in profiles) {
+                            for (profile in grails.profiles) {
                                 mkp.dependency {
                                     mkp.groupId 'org.grails.profiles'
                                     mkp.artifactId profile.key

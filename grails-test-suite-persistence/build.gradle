@@ -16,7 +16,7 @@ dependencies {
     testImplementation project(":grails-test-suite-base")
     testImplementation project(":grails-test-support")
 
-    testImplementation libs.grails.async, {
+    testImplementation libs.grails.plugin.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
