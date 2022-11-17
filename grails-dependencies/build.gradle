@@ -15,40 +15,21 @@ publishing {
                             delegate.groupId "org.grails"
                             delegate.artifactId "grails-bootstrap"
                             delegate.version( project.version )
-                            delegate.scope "api"
-
-                            delegate.exclusions {
-                                delegate.exclusion {
-                                    delegate.groupId 'jline'
-                                    delegate.artifactId 'jline'
-                                }
-                                delegate.exclusion {
-                                    delegate.groupId 'org.fusesource.jansi'
-                                    delegate.artifactId 'jansi'
-                                }
-                                delegate.exclusion {
-                                    delegate.groupId 'net.java.dev.jna'
-                                    delegate.artifactId 'jna'
-                                }
-                                delegate.exclusion {
-                                    delegate.groupId 'org.codehaus.groovy'
-                                    delegate.artifactId 'groovy-ant'
-                                }
-                            }
+                            delegate.scope "compile"
                         }
-                        for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
+                        for(sub in ['converters', 'databinding', 'i18n', 'interceptors', 'rest', 'services', 'url-mappings']) {
                             delegate.dependency {
                                 delegate.groupId "org.grails"
                                 delegate.artifactId "grails-plugin-${sub}"
                                 delegate.version( project.version )
-                                delegate.scope "api"
+                                delegate.scope "compile"
                             }
                         }
                         delegate.dependency {
                             delegate.groupId "org.grails.plugins"
                             delegate.artifactId "async"
                             delegate.version libs.versions.grails.async.get()
-                            delegate.scope "api"
+                            delegate.scope "compile"
                             delegate.exclusions {
                                 delegate.exclusion {
                                     delegate.groupId 'javax'
@@ -60,7 +41,7 @@ publishing {
                             delegate.groupId "org.grails.plugins"
                             delegate.artifactId "gsp"
                             delegate.version libs.versions.grails.gsp.get()
-                            delegate.scope "api"
+                            delegate.scope "compile"
                             delegate.exclusions {
                                 delegate.exclusion {
                                     delegate.groupId 'javax'
@@ -72,13 +53,11 @@ publishing {
                             delegate.groupId "com.h2database"
                             delegate.artifactId "h2"
                             delegate.version libs.versions.h2.get()
-                            delegate.scope "runtimeOnly"
+                            delegate.scope "test"
                         }
-
                     }
                 }
             }
-
         }
     }
 }
