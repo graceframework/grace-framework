@@ -8,7 +8,7 @@ dependencies {
     api project(":grails-plugin-rest")
     api project(":grails-test")
 
-    api libs.grails.async, {
+    api libs.grails.plugin.async, {
         exclude module: 'grails-plugin-controllers'
         exclude module: 'grails-core'
     }
