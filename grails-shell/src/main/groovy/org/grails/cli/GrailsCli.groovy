@@ -43,6 +43,7 @@ import grails.util.Environment
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
 import org.grails.build.parsing.DefaultCommandLine
+import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.gradle.ClasspathBuildAction
 import org.grails.cli.gradle.GradleAsyncInvoker
 import org.grails.cli.gradle.cache.MapReadingCachedGradleOperation
@@ -218,9 +219,23 @@ class GrailsCli {
         }
 
         if (mainCommandLine.hasOption(CommandLine.VERSION_ARGUMENT) || mainCommandLine.hasOption('v')) {
+            def grailsDependencies = new GrailsDependenciesDependencyManagement()
+            StringBuilder sb = new StringBuilder()
+            sb.append("%n------------------------------------------------------------%nGrails ")
+            sb.append(GrailsCli.getPackage().implementationVersion)
+            sb.append("%n------------------------------------------------------------%n")
+            sb.append("%nSpring Boot:  ")
+            sb.append(grailsDependencies.getSpringBootVersion())
+            sb.append("%nGroovy:       ")
+            sb.append(grailsDependencies.getGroovyVersion())
+            sb.append("%nJVM:          ")
+            sb.append(String.format("%s (%s %s)", System.getProperty('java.version'),
+                    System.getProperty('java.vm.vendor'), System.getProperty('java.vm.version')))
+            sb.append("%nOS:           ")
+            sb.append(String.format("%s %s %s", System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch')))
+            sb.append("%n%n")
             def console = GrailsConsole.instance
-            console.addStatus("Grails Version: ${GrailsCli.getPackage().implementationVersion}")
-            console.addStatus("JVM Version: ${System.getProperty('java.version')}")
+            console.log(String.format(sb.toString()))
             exit(0)
         }
 
