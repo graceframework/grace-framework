@@ -13,6 +13,7 @@ def toml = new groovy.toml.TomlSlurper()
 def grails = toml.parse(rootProject.file('gradle/grails.versions.toml'))
 def libs = toml.parse(rootProject.file('gradle/libs.versions.toml'))
 
+def tokens = [:]
 def bundles = libs.bundles
 def libraries = bundles*.value.flatten().unique().sort()
 def libraryVersions = libraries.collect({ libs.libraries[it] })*.version.ref.unique().sort()
@@ -30,14 +31,25 @@ publishing {
                     mkp.properties {
                         for (dep in grails.plugins) {
                             String version = dep.value
+                            tokens["grails-plugin-${dep.key}.version"] = version
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
                             }
                             mkp."grails-plugin-${dep.key}.version"(version)
                         }
 
+                        for (dep in grails.profiles) {
+                            String version = dep.value
+                            tokens["grails-profile-${dep.key}.version"] = version
+                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
+                                throw new RuntimeException("Cannot have a snapshot dependency on a profile [$dep.key] for a release!")
+                            }
+                            mkp."grails-profile-${dep.key}.version"(version)
+                        }
+
                         for (ver in libraryVersions) {
                             String version = libs.versions[ver]
+                            tokens["${ver}.version"] = version
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
                             }
@@ -69,7 +81,7 @@ publishing {
                                 mkp.dependency {
                                     mkp.groupId groupId
                                     mkp.artifactId artifactId
-                                    mkp.version version
+                                    mkp.version "\${${dep.version.ref}.version}"
                                     if (lib in libs.bundles.bom) {
                                         mkp.type 'pom'
                                         mkp.scope 'import'
@@ -84,9 +96,6 @@ publishing {
                                     mkp.groupId 'org.grails.plugins'
                                     mkp.artifactId artifactId
                                     String versionValue = plugin.value
-                                    if (!isBuildSnapshot && versionValue.endsWith("-SNAPSHOT")) {
-                                        throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$artifactId] for a release!")
-                                    }
                                     mkp.version version
                                 }
                             }
@@ -96,10 +105,7 @@ publishing {
                                     mkp.groupId 'org.grails.profiles'
                                     mkp.artifactId profile.key
                                     String version = profile.value
-                                    if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
-                                        throw new RuntimeException("Cannot have a snapshot dependency on a profile [$profile.key] for a release!")
-                                    }
-                                    mkp.version(version)
+                                    mkp.version("\${grails-profile-${profile.key}.version}")
                                 }
                             }
                         }
@@ -114,14 +120,16 @@ configurations {
 	effectiveBom
 }
 
-def effectiveBom = file("$buildDir/generated/effective-bom/${project.name}.xml")
+def effectiveBom = file("$buildDir/generated/effective-bom/${project.name}-effective.xml")
 
 task generateEffectiveBom(type: Copy) {
     dependsOn generatePomFileForMavenPublication
-	from file("$buildDir/publications/maven")
+	from("$buildDir/publications/maven") {
+        include "pom-default.xml"
+        filter(org.apache.tools.ant.filters.ReplaceTokens, beginToken: '${', endToken: '}', tokens: tokens)
+    }
     destinationDir file("$buildDir/generated/effective-bom")
-    include "pom-default.xml"
-    rename "pom-default.xml", "${project.name}.xml"
+    rename "pom-default.xml", "${project.name}-effective.xml"
 }
 
 artifacts {

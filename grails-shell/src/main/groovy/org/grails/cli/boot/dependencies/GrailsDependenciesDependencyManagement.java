@@ -43,7 +43,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
 
         try {
             return modelProcessor.read(GrailsDependenciesDependencyManagement.class
-                    .getResourceAsStream("grails-bom.xml"), null);
+                    .getResourceAsStream("grails-bom-effective.xml"), null);
         }
         catch (IOException ex) {
             throw new IllegalStateException("Failed to build model from effective pom", ex);
@@ -59,7 +59,12 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     }
 
     public String getMicronautVersion() {
-        return find("micronaut-core").getVersion();
+        return find("micronaut-bom").getVersion();
+    }
+
+    @Override
+    public String getSpringBootVersion() {
+        return find("spring-boot-dependencies").getVersion();
     }
 
 }
