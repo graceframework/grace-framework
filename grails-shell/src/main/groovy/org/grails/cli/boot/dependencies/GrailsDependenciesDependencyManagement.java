@@ -55,7 +55,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     }
 
     public String getGroovyVersion() {
-        return find("groovy").getVersion();
+        return find("groovy-bom").getVersion();
     }
 
     public String getMicronautVersion() {
