@@ -30,8 +30,6 @@ import org.apache.commons.logging.Log;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.springframework.boot.Banner;
-import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.web.context.WebServerApplicationContext;
@@ -84,7 +82,6 @@ public class Grails extends SpringApplication {
      */
     public Grails(Class<?>... sources) {
         super(sources);
-        setBannerMode(Banner.Mode.OFF);
     }
 
     /**
@@ -97,7 +94,6 @@ public class Grails extends SpringApplication {
      */
     public Grails(ResourceLoader resourceLoader, Class<?>... sources) {
         super(resourceLoader, sources);
-        setBannerMode(Banner.Mode.OFF);
     }
 
     @Override
@@ -455,7 +451,13 @@ public class Grails extends SpringApplication {
      */
     public static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
         Grails grails = new Grails(sources);
-        grails.setBanner(new ResourceBanner(new ClassPathResource(GRAILS_BANNER)));
+        ClassPathResource resource = new ClassPathResource(GRAILS_BANNER);
+        if (resource.exists()) {
+            grails.setBanner(new GrailsResourceBanner(resource));
+        }
+        else {
+            grails.setBanner(new GrailsBanner());
+        }
         return grails.run(args);
     }
 
