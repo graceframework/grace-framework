@@ -56,7 +56,6 @@ class ServicesGrailsPlugin extends Plugin implements PriorityOrdered {
                         'Yes the @grails.gorm.transactions.Transactional annotation instead')
             }
 
-            def start = System.currentTimeMillis()
             def serviceClasses = application.getArtefacts(ServiceArtefactHandler.TYPE)
             for (GrailsServiceClass serviceClass in serviceClasses) {
                 GrailsPlugin providingPlugin = manager?.getPluginForClass(serviceClass.clazz)
@@ -81,8 +80,6 @@ class ServicesGrailsPlugin extends Plugin implements PriorityOrdered {
                     }
                 }
             }
-            log.info(String.format('Found %d Services: initialization completed in %d ms',
-                    serviceClasses.size(), (System.currentTimeMillis() - start)))
 
             serviceBeanAliasPostProcessor(ServiceBeanAliasPostProcessor)
         }
