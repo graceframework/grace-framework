@@ -393,7 +393,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         if (!grailsVersion) {
             Properties grailsBuildProperties = new Properties()
-            grailsBuildProperties.load(BuildSettings.getResourceAsStream('/grails.build.properties'))
+            grailsBuildProperties.load(BuildSettings.getResourceAsStream('/grails-build.properties'))
             grailsVersion = grailsBuildProperties.getProperty('grails.version')
         }
         grailsVersion

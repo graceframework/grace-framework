@@ -170,7 +170,7 @@ enum Environment {
 
                 if (isBlank(version)) {
                     Properties grailsBuildProperties = new Properties()
-                    grailsBuildProperties.load(BuildSettings.getResourceAsStream('/grails.build.properties'))
+                    grailsBuildProperties.load(BuildSettings.getResourceAsStream('/grails-build.properties'))
                     version = grailsBuildProperties.getProperty('grails.version')
                 }
 
