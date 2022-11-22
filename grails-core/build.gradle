@@ -18,15 +18,6 @@ dependencies {
     testImplementation libs.spring.test
 }
 
-def writeProps = tasks.register('writeGrailsProperties', WriteProperties) {
-    outputFile = file("${buildDir}/grails.build.properties")
-    property("grails.version", project.version)
-}
-
-tasks.named('processResources') {
-    from writeProps
-}
-
 eclipse {
     classpath {
        file {
