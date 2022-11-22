@@ -23,7 +23,6 @@ import grails.plugins.Plugin
 import grails.util.GrailsUtil
 import grails.validation.ConstraintsEvaluator
 
-import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
 import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean
 import org.grails.plugins.domain.support.DefaultMappingContextFactoryBean
@@ -64,9 +63,6 @@ class DomainClassGrailsPlugin extends Plugin implements PriorityOrdered {
             gormValidatorRegistry(ValidatorRegistryFactoryBean) { bean ->
                 bean.lazyInit = true
             }
-
-            def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
-            log.info(String.format('Found %d Domains', domainClasses.size()))
         }
     }
 

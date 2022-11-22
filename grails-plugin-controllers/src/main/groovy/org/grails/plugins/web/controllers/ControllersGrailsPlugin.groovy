@@ -59,7 +59,6 @@ class ControllersGrailsPlugin extends Plugin implements PriorityOrdered {
                 bootStrapClassRunner(BootStrapClassRunner)
             }
 
-            def start = System.currentTimeMillis()
             def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)
             for (controller in controllerClasses) {
                 log.debug "Configuring controller $controller.fullName"
@@ -79,8 +78,6 @@ class ControllersGrailsPlugin extends Plugin implements PriorityOrdered {
                     }
                 }
             }
-            log.info(String.format('Found %d Controllers: initialization completed in %d ms',
-                    controllerClasses.size(), (System.currentTimeMillis() - start)))
 
             if (config.getProperty(Settings.SETTING_LEGACY_JSON_BUILDER, Boolean, false)) {
                 log.warn("'grails.json.legacy.builder' is set to TRUE but is NOT supported in this version of Grails.")
