@@ -20,7 +20,7 @@ dependencies {
 }
 
 gitProperties {
-    gitPropertiesName = "grails.build.properties"
+    gitPropertiesName = "grails-build.properties"
     dateFormat = "yyyy-MM-dd HH:mm:ss z"
     dateFormatTimeZone = "UTC"
     customProperty 'grails.version', { project.version }
