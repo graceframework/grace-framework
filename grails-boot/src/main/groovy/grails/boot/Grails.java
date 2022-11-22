@@ -17,6 +17,8 @@ package grails.boot;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -424,8 +426,34 @@ public class Grails extends SpringApplication {
             if (applicationContext instanceof WebServerApplicationContext) {
                 port = ((WebServerApplicationContext) applicationContext).getWebServer().getPort();
             }
-            System.out.printf("Grails application running at %s://%s:%d%s in environment: %s%n",
-                    protocol, hostName, port, contextPath, Environment.getCurrent().getName());
+            String hostAddress = "localhost";
+            try {
+                hostAddress = InetAddress.getLocalHost().getHostAddress();
+            }
+            catch (UnknownHostException e) {
+                getApplicationLog().warn("The host name could not be determined, using `localhost` as fallback");
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append("%n----------------------------------------------------------------------------------------------");
+            sb.append("%n        Application:   %s");
+            sb.append("%n        Version:       %s");
+            sb.append("%n        Environment:   %s");
+            sb.append("%n        Local:         %s://%s:%s%s");
+            sb.append("%n        External:      %s://%s:%s%s");
+            sb.append("%n----------------------------------------------------------------------------------------------");
+            sb.append("%n");
+            getApplicationLog().info(String.format(sb.toString(),
+                    app.getConfig().getProperty("info.app.name"),
+                    app.getConfig().getProperty("info.app.version"),
+                    Environment.getCurrent().getName(),
+                    protocol,
+                    hostName,
+                    port,
+                    contextPath,
+                    protocol,
+                    hostAddress,
+                    port,
+                    contextPath));
         }
         catch (Exception ignored) {
         }
