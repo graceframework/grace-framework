@@ -1,3 +1,6 @@
+import java.time.*
+import java.time.format.DateTimeFormatter
+
 plugins {
     id "com.gorylenko.gradle-git-properties" version libs.versions.gradle.git.properties
 }
@@ -23,5 +26,10 @@ gitProperties {
     gitPropertiesName = "grails-build.properties"
     dateFormat = "yyyy-MM-dd HH:mm:ss z"
     dateFormatTimeZone = "UTC"
+    customProperty 'grails.buildTime', { getBuildTime() }
     customProperty 'grails.version', { project.version }
+}
+
+def getBuildTime() {
+    ZonedDateTime.now(ZoneId.of('UTC')).format(DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss z'))
 }

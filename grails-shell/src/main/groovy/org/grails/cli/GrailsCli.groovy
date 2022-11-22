@@ -32,6 +32,7 @@ import org.gradle.tooling.BuildCancelledException
 import org.gradle.tooling.ProgressEvent
 import org.gradle.tooling.ProgressListener
 import org.gradle.tooling.ProjectConnection
+import org.gradle.util.internal.DefaultGradleVersion
 
 import grails.build.logging.GrailsConsole
 import grails.build.proxy.SystemPropertiesAuthenticator
@@ -39,6 +40,7 @@ import grails.config.ConfigMap
 import grails.io.support.SystemStreamsRedirector
 import grails.util.BuildSettings
 import grails.util.Environment
+import grails.util.GrailsVersion
 
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
@@ -219,13 +221,19 @@ class GrailsCli {
         }
 
         if (mainCommandLine.hasOption(CommandLine.VERSION_ARGUMENT) || mainCommandLine.hasOption('v')) {
+            def currentVersion = GrailsVersion.current()
             def grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
             sb.append("%n------------------------------------------------------------%nGrails ")
-            sb.append(GrailsCli.getPackage().implementationVersion)
-            sb.append("%n------------------------------------------------------------%n")
-            sb.append("%nSpring Boot:  ")
+            sb.append(currentVersion.getVersion())
+            sb.append("%n------------------------------------------------------------%n%nBuild time:   ");
+            sb.append(currentVersion.getBuildTimestamp());
+            sb.append("%nRevision:     ");
+            sb.append(currentVersion.getGitRevision());
+            sb.append("%n%nSpring Boot:  ")
             sb.append(grailsDependencies.getSpringBootVersion())
+            sb.append("%nGradle:       ")
+            sb.append(DefaultGradleVersion.current().getVersion())
             sb.append("%nGroovy:       ")
             sb.append(grailsDependencies.getGroovyVersion())
             sb.append("%nJVM:          ")
