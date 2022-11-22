@@ -48,18 +48,11 @@ import grails.boot.config.GrailsAutoConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockingDetails;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 
 /**
  * Tests for {@link Grails}.
@@ -125,11 +118,11 @@ public class GrailsTests {
     }
 
     @Test
-    void bannerModeOffWithGrailsApp() {
+    void bannerModeOnWithGrailsApp() {
         Grails app = new Grails(ExampleConfig.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         this.context = app.run();
-        assertThat(app).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.OFF);
+        assertThat(app).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.CONSOLE);
     }
 
     @Test
