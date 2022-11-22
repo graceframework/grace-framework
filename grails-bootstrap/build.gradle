@@ -1,4 +1,6 @@
-import org.apache.tools.ant.filters.ReplaceTokens
+plugins {
+    id "com.gorylenko.gradle-git-properties" version libs.versions.gradle.git.properties
+}
 
 dependencies {
     api project(":grails-util")
@@ -17,7 +19,9 @@ dependencies {
     testImplementation libs.jline
 }
 
-processResources {
-    inputs.property "version", version
-    filter(ReplaceTokens, tokens:[version:version])
+gitProperties {
+    gitPropertiesName = "grails.build.properties"
+    dateFormat = "yyyy-MM-dd HH:mm:ss z"
+    dateFormatTimeZone = "UTC"
+    customProperty 'grails.version', { project.version }
 }
