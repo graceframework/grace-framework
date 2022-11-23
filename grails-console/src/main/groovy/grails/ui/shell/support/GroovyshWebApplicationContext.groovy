@@ -17,10 +17,7 @@ package grails.ui.shell.support
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
-import org.apache.groovy.groovysh.Groovysh
-import org.codehaus.groovy.tools.shell.IO
 
-import grails.core.GrailsApplication
 import grails.ui.support.DevelopmentWebApplicationContext
 
 /**
@@ -34,17 +31,6 @@ class GroovyshWebApplicationContext extends DevelopmentWebApplicationContext {
     @Override
     protected void finishRefresh() {
         super.finishRefresh()
-        startConsole()
-    }
-
-    protected void startConsole() {
-        Binding binding = new Binding()
-        binding.setVariable('ctx', this)
-        binding.setVariable(GrailsApplication.APPLICATION_ID, getBean(GrailsApplication))
-
-        final GroovyshWebApplicationContext self = this
-
-        new Groovysh(binding, new IO()).run('')
     }
 
 }

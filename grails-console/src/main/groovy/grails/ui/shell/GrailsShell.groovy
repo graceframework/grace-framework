@@ -17,14 +17,20 @@ package grails.ui.shell
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
+import org.apache.groovy.groovysh.Groovysh
+import org.apache.groovy.groovysh.InteractiveShellRunner
+import org.codehaus.groovy.tools.shell.IO
+import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
 import grails.boot.Grails
+import grails.core.GrailsApplication
 import grails.ui.shell.support.GroovyshApplicationContext
 import grails.ui.shell.support.GroovyshWebApplicationContext
+import grails.util.GrailsUtil
 
 /**
  * A Shell
@@ -53,6 +59,36 @@ class GrailsShell extends Grails {
         else {
             setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyshApplicationContext))
         }
+    }
+
+    @Override
+    protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
+        startConsole(context)
+    }
+
+    protected void startConsole(ConfigurableApplicationContext context) {
+        GrailsApplication grailsApplication = context.getBean(GrailsApplication)
+        Set<String> packageNames = (getAllSources() as Set<Class>)*.package.name as Set<String>
+
+        Binding binding = new Binding()
+        binding.setVariable('ctx', this)
+        binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
+
+        Groovysh groovysh = new Groovysh(binding, new IO()) {
+
+            @Override
+            void displayWelcomeBanner(InteractiveShellRunner runner) {
+                io.out.println(String.format('@|green Groovy Shell|@ (%s, Grails: %s, JVM: %s)',
+                        GroovySystem.version,
+                        GrailsUtil.grailsVersion,
+                        System.properties['java.version']))
+                io.out.println("Type '@|bold :help|@' or '@|bold :h|@' for help.")
+                io.out.println('-' * (95 - 1))
+            }
+
+        }
+        groovysh.getImports().addAll(packageNames.collect({ it + '.*' }).toList())
+        groovysh.run('')
     }
 
     /**
@@ -85,7 +121,7 @@ class GrailsShell extends Grails {
     static void main(String[] args) {
         if (args) {
             def applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
-            new GrailsShell(applicationClass).run(args)
+            GrailsShell.run(applicationClass, args)
         }
         else {
             System.err.println('Missing application class name argument')

@@ -18,8 +18,6 @@ package grails.ui.console.support
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
-import grails.core.GrailsApplication
-import grails.persistence.support.PersistenceContextInterceptor
 import grails.ui.support.DevelopmentWebApplicationContext
 
 /**
@@ -31,44 +29,5 @@ import grails.ui.support.DevelopmentWebApplicationContext
 @InheritConstructors
 @CompileStatic
 class GroovyConsoleWebApplicationContext extends DevelopmentWebApplicationContext {
-
-    @Override
-    protected void finishRefresh() {
-        super.finishRefresh()
-        startConsole()
-    }
-
-    protected void startConsole() {
-        Binding binding = new Binding()
-        binding.setVariable('ctx', this)
-        binding.setVariable(GrailsApplication.APPLICATION_ID, getBean(GrailsApplication))
-
-        final GroovyConsoleWebApplicationContext self = this
-        groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(binding) {
-
-            @Override
-            boolean exit(EventObject evt) {
-                boolean exit = super.exit(evt)
-                self.close()
-                System.exit(0)
-                exit
-            }
-
-        }
-
-        def interceptors = getBeansOfType(PersistenceContextInterceptor).values()
-        groovyConsole.beforeExecution = {
-            for (i in interceptors) {
-                i.init()
-            }
-        }
-
-        groovyConsole.afterExecution = {
-            for (i in interceptors) {
-                i.destroy()
-            }
-        }
-        groovyConsole.run()
-    }
 
 }

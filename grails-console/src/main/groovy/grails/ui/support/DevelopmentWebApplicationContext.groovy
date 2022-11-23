@@ -16,11 +16,7 @@
 package grails.ui.support
 
 import groovy.transform.InheritConstructors
-import org.springframework.mock.web.MockServletConfig
-import org.springframework.mock.web.MockServletContext
-import org.springframework.web.context.support.GenericWebApplicationContext
-
-import grails.util.BuildSettings
+import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext
 
 /**
  * A {@link org.springframework.web.context.WebApplicationContext} used during development
@@ -30,12 +26,6 @@ import grails.util.BuildSettings
  * @since
  */
 @InheritConstructors
-class DevelopmentWebApplicationContext extends GenericWebApplicationContext {
-
-    DevelopmentWebApplicationContext() {
-        def context = new MockServletContext("${BuildSettings.BASE_DIR}/src/main/webapp")
-        setServletContext(context)
-        setServletConfig(new MockServletConfig(context))
-    }
+class DevelopmentWebApplicationContext extends AnnotationConfigServletWebServerApplicationContext {
 
 }

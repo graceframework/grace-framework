@@ -16,12 +16,17 @@
 package grails.ui.console
 
 import groovy.transform.CompileStatic
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ImportCustomizer
+import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
 import grails.boot.Grails
+import grails.core.GrailsApplication
+import grails.persistence.support.PersistenceContextInterceptor
 import grails.ui.console.support.GroovyConsoleApplicationContext
 import grails.ui.console.support.GroovyConsoleWebApplicationContext
 
@@ -57,7 +62,53 @@ class GrailsSwingConsole extends Grails {
         }
     }
 
-    /**
+    @Override
+    protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
+        startConsole(context)
+    }
+
+    protected void startConsole(ConfigurableApplicationContext context) {
+        GrailsApplication grailsApplication = context.getBean(GrailsApplication)
+        Set<String> packageNames = (getAllSources() as Set<Class>)*.package.name as Set<String>
+        String[] imports = packageNames.toArray(new String[0])
+
+        Binding binding = new Binding()
+        binding.setVariable('ctx', context)
+        binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
+
+        CompilerConfiguration baseConfig = new CompilerConfiguration()
+        baseConfig.addCompilationCustomizers(new ImportCustomizer().addStarImports(imports))
+
+        ConfigurableApplicationContext self = context
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
+        groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(classLoader, binding, baseConfig) {
+
+            @Override
+            boolean exit(EventObject evt) {
+                boolean exit = super.exit(evt)
+                self.close()
+                System.exit(0)
+                exit
+            }
+
+        }
+
+        def interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
+        groovyConsole.beforeExecution = {
+            for (i in interceptors) {
+                i.init()
+            }
+        }
+
+        groovyConsole.afterExecution = {
+            for (i in interceptors) {
+                i.destroy()
+            }
+        }
+        groovyConsole.run()
+    }
+
+   /**
      * Static helper that can be used to run a {@link Grails} from the
      * specified source using default settings.
      * @param source the source to load
