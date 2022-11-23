@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ClassUtils;
 
 /**
  * Utility class to watch directories for changes.
@@ -55,8 +56,14 @@ public class DirectoryWatcher extends Thread {
                     }
                 }
                 if (jnaAvailable) {
-                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
-                            "org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
+                    if (ClassUtils.isPresent("io.methvin.watchservice.MacOSXListeningWatchService", this.getContextClassLoader())) {
+                        directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
+                                "org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
+                    }
+                    else {
+                        directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
+                                "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                    }
                 }
                 else {
                     directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
