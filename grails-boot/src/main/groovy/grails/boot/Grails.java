@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.web.context.WebServerApplicationContext;
@@ -100,8 +101,9 @@ public class Grails extends SpringApplication {
 
     @Override
     public ConfigurableApplicationContext run(String... args) {
-        ConfigurableApplicationContext applicationContext = super.run(args);
         Environment environment = Environment.getCurrent();
+        configureBanner(environment);
+        ConfigurableApplicationContext applicationContext = super.run(args);
 
         Log log = getApplicationLog();
         if (log.isDebugEnabled()) {
@@ -147,6 +149,16 @@ public class Grails extends SpringApplication {
         Environment env = Environment.getCurrent();
         environment.addActiveProfile(env.getName());
         this.configuredEnvironment = environment;
+    }
+
+    protected void configureBanner(Environment environment) {
+        ClassPathResource resource = new ClassPathResource(GRAILS_BANNER);
+        if (resource.exists()) {
+            setBanner(new GrailsResourceBanner(resource));
+        }
+        else {
+            setBanner(new GrailsBanner());
+        }
     }
 
     protected void enableDevelopmentModeWatch(Environment environment, ConfigurableApplicationContext applicationContext, String... args)
@@ -479,13 +491,6 @@ public class Grails extends SpringApplication {
      */
     public static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
         Grails grails = new Grails(sources);
-        ClassPathResource resource = new ClassPathResource(GRAILS_BANNER);
-        if (resource.exists()) {
-            grails.setBanner(new GrailsResourceBanner(resource));
-        }
-        else {
-            grails.setBanner(new GrailsBanner());
-        }
         return grails.run(args);
     }
 
