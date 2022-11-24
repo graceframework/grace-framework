@@ -71,7 +71,7 @@ class GrailsShell extends Grails {
         Set<String> packageNames = (getAllSources() as Set<Class>)*.package.name as Set<String>
 
         Binding binding = new Binding()
-        binding.setVariable('ctx', this)
+        binding.setVariable('ctx', context)
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
 
         Groovysh groovysh = new Groovysh(binding, new IO()) {
