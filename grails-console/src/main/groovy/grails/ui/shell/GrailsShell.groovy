@@ -30,7 +30,6 @@ import grails.boot.Grails
 import grails.core.GrailsApplication
 import grails.ui.shell.support.GroovyshApplicationContext
 import grails.ui.shell.support.GroovyshWebApplicationContext
-import grails.util.GrailsUtil
 
 /**
  * A Shell
@@ -79,16 +78,29 @@ class GrailsShell extends Grails {
 
             @Override
             void displayWelcomeBanner(InteractiveShellRunner runner) {
-                io.out.println(String.format('@|green Groovy Shell|@ (%s, Grails: %s, JVM: %s)',
+                String[] BANNER = [
+                        '  _____                         ______       ____',
+                        ' / ___/______  ___ _  ____ __  / __/ /  ___ / / /',
+                        '/ (_ / __/ _ \\/ _ \\ |/ / // / _\\ \\/ _ \\/ -_) / /',
+                        '\\___/_/  \\___/\\___/___/\\_, / /___/_//_/\\__/_/_/',
+                        '                      /___/'
+                ]
+                io.out.println()
+
+                for (String line : BANNER) {
+                    io.out.println(String.format('@|green  %s|@', line))
+                }
+
+                io.out.println('-' * (95 - 1))
+                io.out.println(String.format('Groovy: %s, JVM: %s',
                         GroovySystem.version,
-                        GrailsUtil.grailsVersion,
                         System.properties['java.version']))
                 io.out.println("Type '@|bold :help|@' or '@|bold :h|@' for help.")
                 io.out.println('-' * (95 - 1))
             }
 
         }
-        groovysh.getImports().addAll(packageNames.collect({ it + '.*' }).toList())
+        groovysh.imports.addAll(packageNames.collect({ it + '.*' }).toList())
         groovysh.run('')
     }
 
