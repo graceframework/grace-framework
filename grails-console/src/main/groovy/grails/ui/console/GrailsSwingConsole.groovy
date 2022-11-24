@@ -73,6 +73,7 @@ class GrailsSwingConsole extends Grails {
         String[] imports = packageNames.toArray(new String[0])
 
         Binding binding = new Binding()
+        binding.setVariable('app', this)
         binding.setVariable('ctx', context)
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
 
