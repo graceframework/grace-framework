@@ -45,7 +45,7 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.io.support.SpringIOUtils;
 
 /**
- * Loads core plugin classes. Contains functionality moved in from <code>DefaultGrailsPluginManager</code>.
+ * Loads binary plugin classes. Contains functionality moved in from <code>DefaultGrailsPluginManager</code>.
  *
  * @author Graeme Rocher
  * @author Phil Zoio
@@ -69,7 +69,6 @@ public class CorePluginFinder implements ParentApplicationContextAware {
     }
 
     public Class<?>[] getPluginClasses() {
-
         // just in case we try to use this twice
         this.foundPluginClasses.clear();
 
@@ -79,12 +78,13 @@ public class CorePluginFinder implements ParentApplicationContextAware {
                 loadCorePluginsFromResources(resources);
             }
             else {
-                throw new IllegalStateException("Grails was unable to load plugins dynamically. " +
-                        "This is normally a problem with the container class loader configuration, see troubleshooting and FAQ for more info. ");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Grails plugin manager didn't find any binary plugins to load dynamically.");
+                }
             }
         }
         catch (IOException e) {
-            throw new IllegalStateException("WARNING: I/O exception loading core plugin dynamically, attempting static load. " +
+            throw new IllegalStateException("WARNING: I/O exception loading binary plugin dynamically, attempting static load. " +
                     "This is usually due to deployment onto containers with unusual classloading setups. Message: " + e.getMessage());
         }
         return this.foundPluginClasses.toArray(new Class[0]);
@@ -123,7 +123,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             }
         }
         catch (ParserConfigurationException | SAXException e) {
-            throw new GrailsConfigurationException("XML parsing error loading core plugins: " + e.getMessage(), e);
+            throw new GrailsConfigurationException("XML parsing error loading binary plugins: " + e.getMessage(), e);
         }
     }
 
@@ -133,8 +133,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             return classLoader.loadClass(pluginClassName);
         }
         catch (ClassNotFoundException e) {
-            logger.warn("[GrailsPluginManager] Core plugin [" + pluginClassName +
-                    "] not found, resuming load without..");
+            logger.warn("Binary plugin [" + pluginClassName + "] not found, resuming load without..");
             if (logger.isDebugEnabled()) {
                 logger.debug(e.getMessage(), e);
             }

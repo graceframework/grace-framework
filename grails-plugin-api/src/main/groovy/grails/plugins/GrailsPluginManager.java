@@ -17,6 +17,7 @@ package grails.plugins;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
@@ -65,6 +66,13 @@ import org.grails.spring.RuntimeSpringConfiguration;
 public interface GrailsPluginManager extends ApplicationContextAware, ApplicationStartupAware {
 
     String BEAN_NAME = "pluginManager";
+
+    /**
+     * Returns the list of all the plug-ins, included failed and unenabled
+     * @return the list of plug-ins
+     * @since 2022.0.0
+     */
+    List<GrailsPlugin> getPluginList();
 
     /**
      * Returns an array of all the loaded plug-ins
