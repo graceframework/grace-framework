@@ -133,8 +133,7 @@ public class CorePluginFinder implements ParentApplicationContextAware {
             return classLoader.loadClass(pluginClassName);
         }
         catch (ClassNotFoundException e) {
-            logger.warn("[GrailsPluginManager] Binary plugin [" + pluginClassName +
-                    "] not found, resuming load without..");
+            logger.warn("Binary plugin [" + pluginClassName + "] not found, resuming load without..");
             if (logger.isDebugEnabled()) {
                 logger.debug(e.getMessage(), e);
             }

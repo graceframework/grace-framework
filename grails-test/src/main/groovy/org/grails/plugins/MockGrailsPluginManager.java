@@ -17,6 +17,7 @@ package org.grails.plugins;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import groovy.lang.GroovyClassLoader;
@@ -60,7 +61,12 @@ public class MockGrailsPluginManager extends AbstractGrailsPluginManager {
     public void registerMockPlugin(GrailsPlugin plugin) {
         plugin.setManager(this);
         plugins.put(plugin.getName(), plugin);
-        pluginList.add(plugin);
+        loadedPlugins.add(plugin);
+    }
+
+    @Override
+    public List<GrailsPlugin> getPluginList() {
+        return List.of(getAllPlugins());
     }
 
     public GrailsPlugin[] getUserPlugins() {

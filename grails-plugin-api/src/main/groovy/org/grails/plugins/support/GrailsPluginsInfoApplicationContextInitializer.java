@@ -56,9 +56,7 @@ public class GrailsPluginsInfoApplicationContextInitializer implements
 
         GrailsPluginManager pluginManager = applicationContext.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
 
-        List<GrailsPlugin> allPlugins = new ArrayList<>();
-        allPlugins.addAll(List.of(pluginManager.getAllPlugins()));
-        allPlugins.addAll(List.of(pluginManager.getFailedLoadPlugins()));
+        List<GrailsPlugin> allPlugins = pluginManager.getPluginList();
 
         if (allPlugins.isEmpty()) {
             return;
@@ -70,11 +68,12 @@ public class GrailsPluginsInfoApplicationContextInitializer implements
         sb.append("%n----------------------------------------------------------------------------------------------");
         for (int i = 0; i < allPlugins.size(); i++) {
             GrailsPlugin plugin = allPlugins.get(i);
+            boolean enabled = plugin.isEnabled() && (pluginManager.getFailedPlugin(plugin.getName()) == null);
             sb.append(String.format("%n%s      %s%s%s",
                     StringUtils.leftPad(String.valueOf(i + 1), 5),
                     StringUtils.rightPad(StringUtils.capitalize(plugin.getName()), 41),
-                    StringUtils.rightPad(plugin.getVersion(), 35),
-                    StringUtils.leftPad(plugin.isEnabled() ? "Y" : "N", 7)));
+                    StringUtils.rightPad(plugin.getVersion(), 41),
+                    enabled ? "Y" : "N"));
         }
         sb.append("%n----------------------------------------------------------------------------------------------%n");
 

@@ -76,7 +76,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public static final String CONFIG_FILE = "application.groovy";
 
-    protected List<GrailsPlugin> pluginList = new ArrayList<>();
+    protected List<GrailsPlugin> loadedPlugins = new ArrayList<>();
 
     protected GrailsApplication application;
 
@@ -115,7 +115,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public GrailsPlugin[] getAllPlugins() {
-        return this.pluginList.toArray(new GrailsPlugin[0]);
+        return this.loadedPlugins.toArray(new GrailsPlugin[0]);
     }
 
     public GrailsPlugin[] getFailedLoadPlugins() {
@@ -182,7 +182,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
         checkInitialised();
 
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             if (plugin.supportsCurrentScopeAndEnvironment() && plugin.isEnabled(context.getEnvironment().getActiveProfiles())) {
                 plugin.doWithRuntimeConfiguration(springConfig);
             }
@@ -245,7 +245,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public void doPostProcessing(ApplicationContext ctx) {
         checkInitialised();
 
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             if (isPluginDisabledForProfile(plugin)) {
                 continue;
             }
@@ -298,7 +298,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 emc.initialize();
             }
             ApplicationContext ctx = this.applicationContext;
-            for (GrailsPlugin plugin : this.pluginList) {
+            for (GrailsPlugin plugin : this.loadedPlugins) {
                 if (!plugin.isEnabled(ctx.getEnvironment().getActiveProfiles())) {
                     continue;
                 }
@@ -309,7 +309,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             plugin.setApplicationContext(applicationContext);
         }
     }
@@ -318,7 +318,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         Assert.notNull(application, "Argument [application] cannot be null");
         this.application = application;
 
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             plugin.setApplication(application);
         }
     }
@@ -333,7 +333,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         // since plugin classes are added as overridable artefacts, which are added as the first
         // item in the list of artefacts, we have to iterate in reverse order to ensure plugin
         // load sequence is maintained
-        ArrayList<GrailsPlugin> plugins = new ArrayList<>(this.pluginList);
+        ArrayList<GrailsPlugin> plugins = new ArrayList<>(this.loadedPlugins);
         Collections.reverse(plugins);
 
         for (GrailsPlugin plugin : plugins) {
@@ -366,7 +366,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public void doArtefactConfiguration() {
         checkInitialised();
 
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             if (isPluginDisabledForProfile(plugin)) {
                 continue;
             }
@@ -381,7 +381,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     }
 
     public void onStartup(Map<String, Object> event) {
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             if (plugin.getInstance() instanceof Plugin) {
                 ((Plugin) plugin.getInstance()).onStartup(event);
             }
@@ -393,7 +393,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
         try {
             // Shutdown plugins in reverse dependency order
-            List<GrailsPlugin> reversePluginList = new ArrayList<>(this.pluginList);
+            List<GrailsPlugin> reversePluginList = new ArrayList<>(this.loadedPlugins);
             Collections.reverse(reversePluginList);
 
             for (GrailsPlugin plugin : reversePluginList) {
@@ -450,7 +450,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             String classNameAsPath = aClass.getName().replace('.', File.separatorChar);
             String groovyClass = classNameAsPath + ".groovy";
             String javaClass = classNameAsPath + ".java";
-            for (GrailsPlugin grailsPlugin : this.pluginList) {
+            for (GrailsPlugin grailsPlugin : this.loadedPlugins) {
                 List<WatchPattern> watchPatterns = grailsPlugin.getWatchedResourcePatterns();
                 if (watchPatterns != null) {
                     for (WatchPattern watchPattern : watchPatterns) {
@@ -520,7 +520,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     @Override
     public void informPluginsOfConfigChange() {
-        for (GrailsPlugin plugin : this.pluginList) {
+        for (GrailsPlugin plugin : this.loadedPlugins) {
             plugin.notifyOfEvent(GrailsPlugin.EVENT_ON_CONFIG_CHANGE, this.application.getConfig());
         }
     }
@@ -584,7 +584,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 }
             }
 
-            for (GrailsPlugin grailsPlugin : this.pluginList) {
+            for (GrailsPlugin grailsPlugin : this.loadedPlugins) {
                 if (grailsPlugin.hasInterestInChange(file.getAbsolutePath())) {
                     try {
                         if (cls == null) {
