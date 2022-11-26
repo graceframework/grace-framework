@@ -60,6 +60,10 @@ public class GrailsPluginsInfoApplicationContextInitializer implements
         allPlugins.addAll(List.of(pluginManager.getAllPlugins()));
         allPlugins.addAll(List.of(pluginManager.getFailedLoadPlugins()));
 
+        if (allPlugins.isEmpty()) {
+            return;
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("%n----------------------------------------------------------------------------------------------%n");
         sb.append("Order      Plugin Name                              Plugin Version                     Enabled");
