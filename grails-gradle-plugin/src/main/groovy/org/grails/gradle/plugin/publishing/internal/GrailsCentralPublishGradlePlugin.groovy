@@ -156,7 +156,11 @@ BINTRAY_KEY=key
                         if (extraArtefact) {
                             artifact extraArtefact
                         }
-
+                        def pluginXml = null
+                        def pluginFile = new File(extraArtefact.source)
+                        if (pluginFile.exists()) {
+                            pluginXml = new groovy.xml.XmlSlurper().parse(pluginFile)
+                        }
                         pom.withXml {
                             Node pomNode = asNode()
 
@@ -166,9 +170,23 @@ BINTRAY_KEY=key
 
                             if (gpe != null) {
                                 pomNode.children().last() + {
-                                    def title = gpe.title ?: project.name
+                                    def title = gpe.title
+                                    if (!title && pluginXml) {
+                                        title = pluginXml.title?.text()
+                                    }
+                                    if (!title) {
+                                        title = project.name
+                                    }
                                     delegate.name title
-                                    delegate.description gpe.desc ?: title
+                                    def desc = gpe.desc
+                                    if (!desc && pluginXml) {
+                                        desc = pluginXml.description?.text()
+                                        println 'pluginXml:' + desc
+                                    }
+                                    if (!desc) {
+                                        desc = title
+                                    }
+                                    delegate.description desc
 
                                     def websiteUrl = gpe.websiteUrl ?: gpe.githubSlug ? "https://github.com/$gpe.githubSlug" : ''
                                     if (!websiteUrl) {
@@ -248,7 +266,12 @@ BINTRAY_KEY=key
                                         }
                                     }
                                     else {
-                                        throw new RuntimeException(getErrorMessage('developers'))
+                                        pluginXml?.developers?.each {
+                                            delegate.developer {
+                                                delegate.id it.id
+                                                delegate.name it.name
+                                            }
+                                        }
                                     }
                                 }
                             }
