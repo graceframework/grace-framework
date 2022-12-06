@@ -127,8 +127,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureGroovy(project)
 
-        configureMicronaut(project)
-
         registerToolingModelBuilder(project, registry)
 
         registerGrailsExtension(project)
@@ -215,10 +213,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         'web'
     }
 
-    protected String getDefaultMicronautVersion() {
-        '3.7.2'
-    }
-
     void addDefaultProfile(Project project, Configuration profileConfig) {
         project.dependencies.add('profile', "org.grails.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
     }
@@ -253,24 +247,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 tasks.findByName('processResources')?.dependsOn(buildPropertiesTask)
             }
         }
-    }
-
-    @CompileStatic
-    protected void configureMicronaut(Project project) {
-        final String micronautVersion = resolveMicronautVersion(project)
-
-        project.configurations.all({ Configuration configuration ->
-            configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
-                String dependencyName = details.requested.name
-                String group = details.requested.group
-                if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
-                    details.useVersion(micronautVersion)
-                }
-                if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
-                    details.useVersion('2.1.1')
-                }
-            } as Action<DependencyResolveDetails>)
-        } as Action<Configuration>)
     }
 
     @CompileStatic
@@ -421,7 +397,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def micronautVersion = project.findProperty('micronautVersion')
 
         micronautVersion = micronautVersion ?: new GrailsDependenciesDependencyManagement().getMicronautVersion()
-        micronautVersion = micronautVersion ?: getDefaultMicronautVersion()
 
         micronautVersion
     }
@@ -532,7 +507,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             if (project.configurations.findByName('developmentOnly')) {
                 project.dependencies.add(
                         'developmentOnly',
-                        "io.micronaut:micronaut-inject-groovy:${micronautVersion ?: defaultMicronautVersion}")
+                        "io.micronaut:micronaut-inject-groovy:${micronautVersion}")
             }
         }
     }
