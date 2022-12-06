@@ -268,6 +268,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             processDelayedEvictions();
         }
 
+        loadedPlugins = sortPlugins(loadedPlugins);
         initializePlugins();
         this.initialised = true;
 
@@ -359,12 +360,30 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         List<GrailsPlugin> grailsUserPlugins = findUserPlugins(gcl);
         this.userPlugins = grailsUserPlugins;
 
-        List<GrailsPlugin> filteredPlugins = new ArrayList<>(grailsCorePlugins);
-        filteredPlugins.addAll(grailsUserPlugins);
+        List<GrailsPlugin> grailsAllPlugins = new ArrayList<>(grailsCorePlugins);
+        grailsAllPlugins.addAll(grailsUserPlugins);
 
-        this.allPlugins.addAll(getPluginFilter().filterPluginList(filteredPlugins));
+        List<GrailsPlugin> filteredPlugins = getPluginFilter().filterPluginList(grailsAllPlugins);
+
+        //make sure core plugins are loaded first
+        List<GrailsPlugin> orderedCorePlugins = new ArrayList<>();
+        List<GrailsPlugin> orderedUserPlugins = new ArrayList<>();
+
+        for (GrailsPlugin plugin : filteredPlugins) {
+            if (grailsCorePlugins.contains(plugin)) {
+                orderedCorePlugins.add(plugin);
+            }
+            else {
+                orderedUserPlugins.add(plugin);
+            }
+        }
+
+        List<GrailsPlugin> orderedPlugins = new ArrayList<>();
+        orderedPlugins.addAll(orderedCorePlugins);
+        orderedPlugins.addAll(orderedUserPlugins);
+
+        this.allPlugins.addAll(orderedPlugins);
         OrderComparator.sort(this.allPlugins);
-        this.allPlugins = sortPlugins(this.allPlugins);
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format("Attempting to load [%d] core plugins and [%d] user defined plugins...",

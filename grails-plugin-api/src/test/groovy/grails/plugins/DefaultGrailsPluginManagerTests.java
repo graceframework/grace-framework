@@ -52,7 +52,7 @@ public class DefaultGrailsPluginManagerTests {
                 "def loadBefore = ['first', 'second']\n" +
                 "}");
 
-        List<GrailsPlugin> pluginList = manager.getPluginList();
+        List<GrailsPlugin> pluginList = List.of(manager.getAllPlugins());
 
         List<GrailsPlugin> expectedOrder = new ArrayList<>();
         expectedOrder.add(manager.getGrailsPlugin("third"));
