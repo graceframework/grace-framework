@@ -16,7 +16,6 @@
 package org.grails.gradle.plugin.profiles
 
 import groovy.transform.CompileStatic
-import org.apache.tools.ant.DirectoryScanner
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -94,14 +93,14 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             spec.into('skeleton')
         }
 
-        def processResources = project.tasks.create('processResources', Copy, (Action) { Copy c ->
+        def processProfileResources = project.tasks.create('processProfileResources', Copy, (Action) { Copy c ->
             c.with(spec1, spec2, spec3, spec4)
             c.into(new File(resourcesDir, '/META-INF/grails-profile'))
         })
 
-        def classsesDir = new File(project.buildDir, 'classes/profile')
-        def compileTask = project.tasks.create('compileProfile', ProfileCompilerTask, (Action) { ProfileCompilerTask task ->
-            task.destinationDir = classsesDir
+        def classesDir = new File(project.buildDir, 'classes/profile')
+        def compileProfileTask = project.tasks.create('compileProfile', ProfileCompilerTask, (Action) { ProfileCompilerTask task ->
+            task.destinationDir = classesDir
             task.source = commandsDir
             task.config = profileYml
             if (templatesDir.exists()) {
@@ -110,17 +109,41 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             task.classpath = project.configurations.getByName(RUNTIME_CONFIGURATION) + project.files(IOUtils.findJarFile(GroovyScriptCommand))
         })
 
-        def jarTask = project.tasks.create('jar', Jar, (Action) { Jar jar ->
-            jar.dependsOn(processResources, compileTask)
-            jar.from(resourcesDir)
-            jar.from(classsesDir)
-            jar.destinationDirectory.set(new File(project.buildDir, 'libs'))
-            jar.setDescription('Assembles a jar archive containing the profile classes.')
-            jar.setGroup(BUILD_GROUP)
+        def groovyClassesDir = new File(project.buildDir, 'classes/groovy/main')
+        def compileTask = project.tasks.getByName('compileGroovy')
+        if (compileTask) {
+            compileTask.dependsOn(compileProfileTask)
+        }
 
-            ArchivePublishArtifact jarArtifact = new ArchivePublishArtifact(jar)
+        Jar jarTask = (Jar) project.tasks.getByName('jar')
+
+        if (jarTask) {
+            jarTask.dependsOn(processProfileResources, compileTask)
+            jarTask.from(resourcesDir)
+            jarTask.from(classesDir)
+            jarTask.from(groovyClassesDir)
+            jarTask.destinationDirectory.set(new File(project.buildDir, 'libs'))
+            jarTask.setDescription('Assembles a jar archive containing the profile classes.')
+            jarTask.setGroup(BUILD_GROUP)
+
+            ArchivePublishArtifact jarArtifact = new ArchivePublishArtifact(jarTask)
             project.artifacts.add(CONFIGURATION_NAME, jarArtifact)
-        })
+        }
+        else {
+            // Create jar task
+            jarTask = project.tasks.create('jar', Jar, (Action) { Jar jar ->
+                jar.dependsOn(processProfileResources, compileTask)
+                jar.from(resourcesDir)
+                jar.from(classesDir)
+                jar.from(groovyClassesDir)
+                jar.destinationDirectory.set(new File(project.buildDir, 'libs'))
+                jar.setDescription('Assembles a jar archive containing the profile classes.')
+                jar.setGroup(BUILD_GROUP)
+
+                ArchivePublishArtifact jarArtifact = new ArchivePublishArtifact(jar)
+                project.artifacts.add(CONFIGURATION_NAME, jarArtifact)
+            })
+        }
 
         project.tasks.create('sourcesJar', Jar, (Action) { Jar jar ->
             jar.from(commandsDir)
@@ -138,6 +161,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             jar.setDescription('Assembles a jar archive containing the profile sources.')
             jar.setGroup(BUILD_GROUP)
         })
+
         project.tasks.findByName('assemble').dependsOn jarTask
     }
 
