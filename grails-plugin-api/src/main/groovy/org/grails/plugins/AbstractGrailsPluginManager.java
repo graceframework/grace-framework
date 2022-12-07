@@ -644,4 +644,13 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         return null;
     }
 
+    /**
+     * Add User Plugin from Class
+     * @param pluginClass the class of Plugin
+     * @since 2022.0.0
+     */
+    public void addUserPlugin(Class<?> pluginClass) {
+        this.pluginClasses.add(pluginClass);
+    }
+
 }

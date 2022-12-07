@@ -95,7 +95,7 @@ public class GrailsApplicationPostProcessor
 
     protected final GrailsApplication grailsApplication;
 
-    protected final DefaultGrailsPluginManager pluginManager;
+    protected final GrailsPluginManager pluginManager;
 
     protected final GrailsApplicationEventListener grailsApplicationEventListener;
 

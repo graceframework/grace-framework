@@ -190,15 +190,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         super(application);
     }
 
-    /**
-     * Add User Plugin from Class
-     * @param pluginClass the class of Plugin
-     * @since 2022.0.0
-     */
-    public void addUserPlugin(Class<?> pluginClass) {
-        this.pluginClasses.add(pluginClass);
-    }
-
     public GrailsPlugin[] getUserPlugins() {
         return this.userPlugins.toArray(new GrailsPlugin[0]);
     }

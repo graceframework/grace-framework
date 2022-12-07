@@ -358,4 +358,10 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
      */
     void setPluginFilter(PluginFilter pluginFilter);
 
+    /**
+     * Add User Plugin from Class
+     * @param pluginClass the class of Plugin
+     * @since 2022.0.0
+     */
+    void addUserPlugin(Class<?> pluginClass);
 }
