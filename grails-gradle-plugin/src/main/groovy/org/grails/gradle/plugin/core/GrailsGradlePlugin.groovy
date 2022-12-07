@@ -47,6 +47,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
+import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
@@ -126,6 +127,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureGroovy(project)
 
+        configureMicronaut(project)
+
         registerToolingModelBuilder(project, registry)
 
         registerGrailsExtension(project)
@@ -200,8 +203,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     private void applyBomImport(DependencyManagementExtension dme, Project project) {
+        String springBootVersion = resolveSpringBootVersion(project)
         dme.imports({
             mavenBom("org.grails:grails-bom:${grailsVersion}")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
         })
         dme.setApplyMavenExclusions(false)
     }
@@ -261,6 +266,24 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 } as Action<DependencyResolveDetails>)
             } as Action<Configuration>)
         }
+    }
+
+    @CompileStatic
+    protected void configureMicronaut(Project project) {
+        final String micronautVersion = resolveMicronautVersion(project)
+
+        project.configurations.all({ Configuration configuration ->
+            configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
+                String dependencyName = details.requested.name
+                String group = details.requested.group
+                if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
+                    details.useVersion(micronautVersion)
+                }
+                if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
+                    details.useVersion('2.1.1')
+                }
+            } as Action<DependencyResolveDetails>)
+        } as Action<Configuration>)
     }
 
     @CompileStatic
@@ -379,6 +402,15 @@ class GrailsGradlePlugin extends GroovyPlugin {
         groovyVersion = groovyVersion ?: GroovySystem.getVersion()
 
         groovyVersion
+    }
+
+    protected String resolveSpringBootVersion(Project project) {
+        def springBootVersion = project.findProperty('springBootVersion')
+
+        springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
+        springBootVersion = springBootVersion ?: new SpringBootDependenciesDependencyManagement().getSpringBootVersion()
+
+        springBootVersion
     }
 
     protected String resolveMicronautVersion(Project project) {
