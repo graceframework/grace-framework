@@ -74,12 +74,14 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
 
         Set<String> transformedClasses = []
+        boolean isPlugin = false
         Object projectName = null
         Object projectVersion = null
         ClassNode pluginClassNode = null
 
         List<ClassNode> classes = new ArrayList<>(ast.getClasses())
         for (ClassNode classNode : classes) {
+            isPlugin = Boolean.parseBoolean((String) classNode.getNodeMetaData('isPlugin'))
             projectName = classNode.getNodeMetaData('projectName')
             projectVersion = classNode.getNodeMetaData('projectVersion') ?: getClass().getPackage().getImplementationVersion()
 
@@ -101,7 +103,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 continue
             }
 
-            if (projectName && projectVersion) {
+            if (projectName && projectVersion && isPlugin) {
                 Map<String, Object> members = [
                         name: GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(String.valueOf(projectName)),
                         version: projectVersion]
@@ -115,10 +117,12 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             }
         }
 
-        def compilationTargetDirectory = resolveCompilationTargetDirectory(source)
-        def pluginXmlFile = new File(compilationTargetDirectory, 'META-INF/grails-plugin.xml')
-        pluginXmlFile.parentFile.mkdirs()
-        generatePluginXml(pluginClassNode, String.valueOf(projectVersion), transformedClasses, pluginXmlFile)
+        if (isPlugin) {
+            def compilationTargetDirectory = resolveCompilationTargetDirectory(source)
+            def pluginXmlFile = new File(compilationTargetDirectory, 'META-INF/grails-plugin.xml')
+            pluginXmlFile.parentFile.mkdirs()
+            generatePluginXml(pluginClassNode, String.valueOf(projectVersion), transformedClasses, pluginXmlFile)
+        }
     }
 
     static File resolveCompilationTargetDirectory(SourceUnit source) {
