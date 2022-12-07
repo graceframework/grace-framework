@@ -19,8 +19,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import groovy.lang.ExpandoMetaClass;
 import groovy.lang.GroovySystem;
@@ -86,7 +88,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected Map<String, GrailsPlugin> classNameToPluginMap = new HashMap<>();
 
-    protected Class<?>[] pluginClasses = new Class[0];
+    protected Set<Class<?>> pluginClasses = new HashSet<>();
 
     protected boolean initialised = false;
 
@@ -640,6 +642,15 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             }
         }
         return null;
+    }
+
+    /**
+     * Add User Plugin from Class
+     * @param pluginClass the class of Plugin
+     * @since 2022.0.0
+     */
+    public void addUserPlugin(Class<?> pluginClass) {
+        this.pluginClasses.add(pluginClass);
     }
 
 }

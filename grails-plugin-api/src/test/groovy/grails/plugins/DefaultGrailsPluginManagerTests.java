@@ -92,4 +92,24 @@ public class DefaultGrailsPluginManagerTests {
         assertEquals(7, manager.getGrailsPlugin("third").getOrder(), "Expected third plugin is 7");
     }
 
+    @Test
+    public void testAddUserPlugin() {
+        GroovyClassLoader gcl = new GroovyClassLoader();
+
+        Class<?> first = gcl.parseClass("class FirstGrailsPlugin {\n" +
+                "def version = '1.0'\n" +
+                "}");
+
+        GrailsApplication app = new MockGrailsApplication(new Class[] {}, gcl);
+        GenericApplicationContext parent = new GenericApplicationContext();
+        parent.getDefaultListableBeanFactory().registerSingleton(GrailsApplication.APPLICATION_ID, app);
+
+        DefaultGrailsPluginManager manager = new DefaultGrailsPluginManager(new Class[] {}, app);
+
+        manager.addUserPlugin(first);
+        manager.loadPlugins();
+
+        assertEquals(1, manager.getUserPlugins().length);
+    }
+
 }

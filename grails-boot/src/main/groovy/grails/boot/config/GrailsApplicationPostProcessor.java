@@ -70,6 +70,7 @@ import org.grails.config.PrefixedMapPropertySource;
 import org.grails.config.PropertySourcesConfig;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.support.GrailsApplicationAwareBeanPostProcessor;
+import org.grails.plugins.GrailsPluginArtefactHandler;
 import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor;
 import org.grails.spring.DefaultRuntimeSpringConfiguration;
 import org.grails.spring.RuntimeSpringConfigUtilities;
@@ -101,6 +102,8 @@ public class GrailsApplicationPostProcessor
     protected ApplicationContext applicationContext;
 
     protected GrailsApplicationLifeCycle lifeCycle;
+
+    protected Set<Class<?>> classes;
 
     protected boolean loadExternalBeans = true;
 
@@ -144,6 +147,9 @@ public class GrailsApplicationPostProcessor
         Environment.setInitializing(true);
         this.grailsApplication.setApplicationContext(applicationContext);
         this.grailsApplication.setMainContext(applicationContext);
+        this.classes = loadArtefactClasses();
+        this.classes.stream().filter(GrailsPluginArtefactHandler::isGrailsPlugin)
+                .forEach(this.pluginManager::addUserPlugin);
         customizePluginManager(this.pluginManager);
         this.pluginManager.loadPlugins();
         this.pluginManager.setApplicationContext(applicationContext);
@@ -165,10 +171,10 @@ public class GrailsApplicationPostProcessor
         // for application classes to override those provided by a plugin
         this.pluginManager.registerProvidedArtefacts(this.grailsApplication);
 
-        loadArtefactClasses();
+        this.classes.forEach(this.grailsApplication::addArtefact);
     }
 
-    protected void loadArtefactClasses() {
+    protected Set<Class<?>> loadArtefactClasses() {
         StartupStep artefactStep = this.applicationStartup.start("grails.application.artefact-classes.loaded");
         GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext, this.applicationStartup);
         Set<Class<?>> classes;
@@ -179,10 +185,8 @@ public class GrailsApplicationPostProcessor
             classes = Collections.emptySet();
         }
 
-        for (Class<?> cls : classes) {
-            this.grailsApplication.addArtefact(cls);
-        }
         artefactStep.tag("classCount", String.valueOf(classes.size())).end();
+        return classes;
     }
 
     protected void loadApplicationConfig() {

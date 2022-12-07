@@ -44,7 +44,6 @@ import grails.plugins.GrailsPluginManager;
 import grails.util.GrailsClassUtils;
 import grails.util.GrailsNameUtils;
 
-import org.grails.core.AbstractGrailsClass;
 import org.grails.plugins.support.WatchPattern;
 import org.grails.spring.boot.env.GroovyConfigPropertySourceLoader;
 import org.grails.spring.boot.env.YamlPropertySourceLoader;
@@ -323,19 +322,6 @@ public abstract class AbstractGrailsPlugin extends GroovyObjectSupport implement
         }
 
         return OrderUtils.getOrder(getPluginClass(), DEFAULT_ORDER);
-    }
-
-    /**
-     * Wrapper Grails class for plugins.
-     *
-     * @author Graeme Rocher
-     */
-    protected class GrailsPluginClass extends AbstractGrailsClass {
-
-        public GrailsPluginClass(Class<?> clazz) {
-            super(clazz, TRAILING_NAME);
-        }
-
     }
 
 }
