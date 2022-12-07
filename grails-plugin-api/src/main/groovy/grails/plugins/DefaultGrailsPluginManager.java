@@ -172,7 +172,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(Class<?>[] plugins, GrailsApplication application) {
         super(application);
-        this.pluginClasses = plugins;
+        this.pluginClasses.addAll(Set.of(plugins));
         this.resolver = CachingPathMatchingResourcePatternResolver.INSTANCE;
         this.application = application;
         setPluginFilter();
@@ -188,6 +188,15 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     public DefaultGrailsPluginManager(GrailsApplication application) {
         super(application);
+    }
+
+    /**
+     * Add User Plugin from Class
+     * @param pluginClass the class of Plugin
+     * @since 2022.0.0
+     */
+    public void addUserPlugin(Class<?> pluginClass) {
+        this.pluginClasses.add(pluginClass);
     }
 
     public GrailsPlugin[] getUserPlugins() {
@@ -532,7 +541,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         List<GrailsPlugin> grailsUserPlugins = new ArrayList<>();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Found [" + this.pluginResources.length + "] user defined plugins to load");
+            int totalUserPlugins = this.pluginResources.length + this.pluginClasses.size();
+            logger.debug("Found [" + totalUserPlugins + "] user defined plugins to load...");
         }
         for (Resource r : this.pluginResources) {
             Class<?> pluginClass = loadPluginClass(gcl, r);

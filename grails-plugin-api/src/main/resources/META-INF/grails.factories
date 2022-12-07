@@ -1,0 +1,2 @@
+grails.core.ArtefactHandler=\
+org.grails.plugins.GrailsPluginArtefactHandler
