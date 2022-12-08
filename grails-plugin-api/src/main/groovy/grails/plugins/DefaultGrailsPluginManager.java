@@ -62,6 +62,7 @@ import org.grails.plugins.AbstractGrailsPluginManager;
 import org.grails.plugins.BinaryGrailsPlugin;
 import org.grails.plugins.BinaryGrailsPluginDescriptor;
 import org.grails.plugins.CorePluginFinder;
+import org.grails.plugins.DefaultDynamicGrailsPlugin;
 import org.grails.plugins.DefaultGrailsPlugin;
 import org.grails.plugins.IdentityPluginFilter;
 import org.grails.plugins.PluginFilterRetriever;
@@ -521,6 +522,11 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     protected GrailsPlugin createGrailsPlugin(Class<?> pluginClass) {
+        if (DynamicPlugin.class.isAssignableFrom(pluginClass)) {
+            DefaultDynamicGrailsPlugin dynamicGrailsPlugin = new DefaultDynamicGrailsPlugin(pluginClass, this.application);
+            dynamicGrailsPlugin.setModuleDescriptorFactory(moduleDescriptorFactory);
+            return dynamicGrailsPlugin;
+        }
         return new DefaultGrailsPlugin(pluginClass, this.application);
     }
 

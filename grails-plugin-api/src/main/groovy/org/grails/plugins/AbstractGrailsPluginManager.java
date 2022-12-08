@@ -17,9 +17,11 @@ package org.grails.plugins;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,9 +52,12 @@ import org.springframework.util.StringUtils;
 import grails.artefact.Enhanced;
 import grails.core.ArtefactHandler;
 import grails.core.GrailsApplication;
+import grails.plugins.DynamicGrailsPlugin;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.GrailsVersionUtils;
+import grails.plugins.ModuleDescriptor;
+import grails.plugins.ModuleDescriptorFactory;
 import grails.plugins.Plugin;
 import grails.plugins.PluginFilter;
 import grails.plugins.exceptions.PluginException;
@@ -63,6 +68,9 @@ import org.grails.config.NavigableMap;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.support.WatchPattern;
 import org.grails.spring.RuntimeSpringConfiguration;
+
+import static org.apache.commons.lang3.StringUtils.substringBefore;
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /**
  * Abstract implementation of the GrailsPluginManager interface
@@ -95,6 +103,8 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     protected boolean shutdown = false;
 
     protected ApplicationContext applicationContext;
+
+    protected ModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
 
     /** Application startup metrics. **/
     private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
@@ -355,6 +365,30 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                     }
                     if (!isAlreadyRegistered(app, artefact)) {
                         app.addOverridableArtefact(artefact);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void registerProvidedModules() {
+        checkInitialised();
+
+        for (GrailsPlugin plugin : this.loadedPlugins) {
+            if (plugin.supportsCurrentScopeAndEnvironment()) {
+                if (isPluginDisabledForProfile(plugin)) {
+                    continue;
+                }
+                if (!(plugin instanceof DynamicGrailsPlugin)) {
+                    continue;
+                }
+                DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
+                for (Class<?> clazz : dynamicPlugin.getProvidedModules()) {
+                    String shortName = GrailsNameUtils.getShortName(clazz);
+                    String type = uncapitalize(substringBefore(shortName, "ModuleDescriptor"));
+                    if (ModuleDescriptor.class.isAssignableFrom(clazz)) {
+                        this.moduleDescriptorFactory.addModuleDescriptor(type, (Class<? extends ModuleDescriptor>) clazz);
                     }
                 }
             }
@@ -651,6 +685,22 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
      */
     public void addUserPlugin(Class<?> pluginClass) {
         this.pluginClasses.add(pluginClass);
+    }
+
+    /**
+     * Gets all module descriptors of installed modules.
+     * @since 2022.0.0
+     */
+    @Override
+    public Collection<ModuleDescriptor<?>> getModuleDescriptors() {
+        List<ModuleDescriptor<?>> moduleDescriptors = new LinkedList<>();
+        for (GrailsPlugin plugin : this.loadedPlugins) {
+            if (plugin instanceof DynamicGrailsPlugin) {
+                DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
+                moduleDescriptors.addAll(dynamicPlugin.getModuleDescriptors());
+            }
+        }
+        return moduleDescriptors;
     }
 
 }

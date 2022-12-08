@@ -170,6 +170,7 @@ public class GrailsApplicationPostProcessor
         // register plugin provided classes first, this gives the opportunity
         // for application classes to override those provided by a plugin
         this.pluginManager.registerProvidedArtefacts(this.grailsApplication);
+        this.pluginManager.registerProvidedModules();
 
         this.classes.forEach(this.grailsApplication::addArtefact);
     }
