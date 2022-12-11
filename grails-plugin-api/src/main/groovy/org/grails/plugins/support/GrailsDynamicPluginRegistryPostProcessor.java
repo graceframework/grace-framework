@@ -43,7 +43,9 @@ public class GrailsDynamicPluginRegistryPostProcessor
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        logger.info("GrailsPluginManager exists? " + beanFactory.containsSingleton(GrailsPluginManager.BEAN_NAME));
+        if (!beanFactory.containsSingleton(GrailsPluginManager.BEAN_NAME)) {
+            return;
+        }
 
         GrailsPluginManager pluginManager = beanFactory.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
         for (GrailsPlugin plugin : pluginManager.getAllPlugins()) {
