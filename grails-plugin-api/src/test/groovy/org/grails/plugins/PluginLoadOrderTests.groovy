@@ -3,7 +3,10 @@ package org.grails.plugins
 import grails.plugins.DefaultGrailsPluginManager
 import org.junit.jupiter.api.Test
 
+import grails.plugins.GrailsPlugin
+
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertTrue
 
 /**
  * @author Graeme Rocher
@@ -49,10 +52,28 @@ class ThreeGrailsPlugin {
         pluginManager.loadCorePlugins = false
         pluginManager.loadPlugins()
 
-        assertEquals "one", pluginManager.pluginList[0].name
-        assertEquals "three", pluginManager.pluginList[1].name
-        assertEquals "five", pluginManager.pluginList[2].name
-        assertEquals "two", pluginManager.pluginList[3].name
-        assertEquals "four", pluginManager.pluginList[4].name
+        List<GrailsPlugin> pluginList = List.of(pluginManager.getAllPlugins());
+
+        assertEquals(5, pluginList.size())
+
+        int orderOne = getOrderOfPlugin(pluginList, 'one')
+        int orderTwo = getOrderOfPlugin(pluginList, 'two')
+        int orderThree = getOrderOfPlugin(pluginList, 'three')
+        int orderFour = getOrderOfPlugin(pluginList, 'four')
+        int orderFive = getOrderOfPlugin(pluginList, 'five')
+        // Plugin loaded order not Fixed
+        assertTrue orderOne < orderTwo, 'One should load before Two'
+        assertTrue orderThree < orderTwo, 'Three should load before Two'
+        assertTrue orderFour > orderTwo, 'Four should load after Two'
+        assertTrue orderFive > orderOne, 'Five should load after Two'
+    }
+
+    def getOrderOfPlugin(List<GrailsPlugin> pluginList, String name) {
+        for (int i = 0; i < pluginList.size(); i++) {
+            if (pluginList[i].name == name) {
+                return i
+            }
+        }
+        return -1
     }
 }

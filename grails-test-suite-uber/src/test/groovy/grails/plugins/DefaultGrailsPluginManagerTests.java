@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultGrailsPluginManagerTests {
 
@@ -53,7 +54,7 @@ public class DefaultGrailsPluginManagerTests {
 
         manager.loadPlugins();
 
-        List pluginList = manager.getPluginList();
+        List pluginList = List.of(manager.getAllPlugins());
 
         assertNotNull(manager.getGrailsPlugin("dataSource"));
         assertNotNull(manager.getGrailsPlugin("first"));
@@ -105,7 +106,7 @@ public class DefaultGrailsPluginManagerTests {
 
         manager.loadPlugins();
 
-        List pluginList = manager.getPluginList();
+        List pluginList = List.of(manager.getAllPlugins());
 
         assertNotNull(manager.getGrailsPlugin("first"));
         assertNotNull(manager.getGrailsPlugin("second"));
@@ -132,22 +133,30 @@ public class DefaultGrailsPluginManagerTests {
                                 "def loadBefore = ['first', 'second']\n" +
                                 "}");
 
-        List<GrailsPlugin> pluginList = manager.getPluginList();
+        List<GrailsPlugin> pluginList = List.of(manager.getAllPlugins());
 
         assertNotNull(manager.getGrailsPlugin("first"));
         assertNotNull(manager.getGrailsPlugin("second"));
         assertNotNull(manager.getGrailsPlugin("third"));
         assertNotNull(manager.getGrailsPlugin("fourth"));
 
-        List<GrailsPlugin> expectedOrder = new ArrayList<>();
-        expectedOrder.add(manager.getGrailsPlugin("fourth"));
-        expectedOrder.add(manager.getGrailsPlugin("first"));
-        expectedOrder.add(manager.getGrailsPlugin("second"));
-        expectedOrder.add(manager.getGrailsPlugin("third"));
-
-        assertEquals(expectedOrder, pluginList, "Expected plugin order");
+        int orderFirst = getOrderOfPlugin(pluginList, "first");
+        int orderSecond = getOrderOfPlugin(pluginList, "second");
+        int orderThird = getOrderOfPlugin(pluginList, "third");
+        int orderFourth = getOrderOfPlugin(pluginList, "fourth");
+        assertTrue(orderFourth < orderFirst, "fourth should load before first");
+        assertTrue(orderFourth < orderSecond, "fourth should load before second");
 
         assertEquals(4, pluginList.size(), "Expected plugins not loaded. Expected " + 4 + " but got " + pluginList);
+    }
+
+    int getOrderOfPlugin(List<GrailsPlugin> pluginList, String name) {
+        for (int i = 0; i < pluginList.size(); i++) {
+            if (pluginList.get(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     DefaultGrailsPluginManager loadPlugins(String firstClassString, String secondClassString, String thirdClassString, String fourthClassString) {
@@ -186,7 +195,7 @@ public class DefaultGrailsPluginManagerTests {
                                 "def loadBefore = ['first', 'second']\n" +
                                 "}");
 
-        List<GrailsPlugin> pluginList = manager.getPluginList();
+        List<GrailsPlugin> pluginList = List.of(manager.getAllPlugins());
 
         List<GrailsPlugin> expectedOrder = new ArrayList<>();
         expectedOrder.add(manager.getGrailsPlugin("third"));
