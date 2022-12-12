@@ -44,7 +44,6 @@ class DomainClassGrailsPlugin extends Plugin implements PriorityOrdered {
                             'file:./plugins/*/app/domain/**/*.groovy']
 
     def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [i18n: version]
     def loadAfter = ['controllers', 'dataSource']
 
     Closure doWithSpring() {
