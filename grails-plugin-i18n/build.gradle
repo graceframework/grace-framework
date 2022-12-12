@@ -4,7 +4,7 @@ dependencies {
     api project(":grails-core")
     api project(":grails-plugin-api")
     api project(":grails-util")
-    api project(":grails-web-common")
+    compileOnly project(":grails-web-common")
 
     api libs.groovy.ant
     api libs.spring.boot.autoconfigure

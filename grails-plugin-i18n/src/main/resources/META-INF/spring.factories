@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.grails.plugins.i18n.GrailsI18nPluginConfiguration
+org.grails.plugins.i18n.GrailsI18nPluginConfiguration,\
+org.grails.plugins.i18n.GrailsMessageSourceConfiguration
