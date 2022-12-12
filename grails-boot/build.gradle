@@ -10,7 +10,6 @@ dependencies {
 
     api libs.javax.annotation
     api libs.javax.inject
-    api libs.javax.persistence
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.boot.autoconfigure
