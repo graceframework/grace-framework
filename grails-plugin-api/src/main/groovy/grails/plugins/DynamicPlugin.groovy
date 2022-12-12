@@ -37,15 +37,16 @@ abstract class DynamicPlugin extends Plugin {
 
     @Override
     Object invokeMethod(String name, Object args) {
-        println "invokeMethod: " + name + " with args: " + args
-
-        if (plugin instanceof DynamicGrailsPlugin) {
-            DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin
-            if (args instanceof Object[] && args?.length > 0) {
-                dynamicPlugin.addModuleDescriptor(name, ((Object[]) args)[0] as Map<String, Object>)
-            }
+        if (plugin !instanceof DynamicGrailsPlugin) {
+            return false
         }
-        null
+
+        DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin
+        Object[] array = (Object[]) args
+        if (array.length > 0) {
+            dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>)
+        }
+        true
     }
 
 }
