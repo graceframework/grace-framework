@@ -118,7 +118,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
 
         this.baseResourcesResource = new UrlResource(rootResourcesURL);
         if (descriptor != null) {
-            initializeProvidedArtefacts(descriptor.getProvidedlassNames());
+            initializeProvidedArtefacts(descriptor.getProvidedClassNames());
             initializeViewMap(descriptor);
         }
     }

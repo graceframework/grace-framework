@@ -62,7 +62,9 @@ import org.grails.plugins.AbstractGrailsPluginManager;
 import org.grails.plugins.BinaryGrailsPlugin;
 import org.grails.plugins.BinaryGrailsPluginDescriptor;
 import org.grails.plugins.CorePluginFinder;
+import org.grails.plugins.DefaultDynamicGrailsPlugin;
 import org.grails.plugins.DefaultGrailsPlugin;
+import org.grails.plugins.DynamicBinaryGrailsPlugin;
 import org.grails.plugins.IdentityPluginFilter;
 import org.grails.plugins.PluginFilterRetriever;
 import org.grails.spring.DefaultRuntimeSpringConfiguration;
@@ -517,10 +519,20 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private GrailsPlugin createBinaryGrailsPlugin(Class<?> pluginClass, BinaryGrailsPluginDescriptor binaryDescriptor) {
+        if (DynamicPlugin.class.isAssignableFrom(pluginClass)) {
+            DynamicBinaryGrailsPlugin dynamicGrailsPlugin = new DynamicBinaryGrailsPlugin(pluginClass, binaryDescriptor, this.application);
+            dynamicGrailsPlugin.setModuleDescriptorFactory(moduleDescriptorFactory);
+            return dynamicGrailsPlugin;
+        }
         return new BinaryGrailsPlugin(pluginClass, binaryDescriptor, this.application);
     }
 
     protected GrailsPlugin createGrailsPlugin(Class<?> pluginClass) {
+        if (DynamicPlugin.class.isAssignableFrom(pluginClass)) {
+            DefaultDynamicGrailsPlugin dynamicGrailsPlugin = new DefaultDynamicGrailsPlugin(pluginClass, this.application);
+            dynamicGrailsPlugin.setModuleDescriptorFactory(moduleDescriptorFactory);
+            return dynamicGrailsPlugin;
+        }
         return new DefaultGrailsPlugin(pluginClass, this.application);
     }
 

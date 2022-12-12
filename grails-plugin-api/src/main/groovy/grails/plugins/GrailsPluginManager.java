@@ -61,6 +61,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * depends on and which ones it is incompatable with and should evict
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public interface GrailsPluginManager extends ApplicationContextAware, ApplicationStartupAware {
@@ -250,6 +251,13 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
     void registerProvidedArtefacts(GrailsApplication application);
 
     /**
+     * Registers provided {@link ModuleDescriptor} by {@link DynamicGrailsPlugin}.
+     *
+     * @since 2022.0.0
+     */
+    void registerProvidedModules();
+
+    /**
      * Shuts down the PluginManager
      */
     void shutdown();
@@ -364,4 +372,11 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
      * @since 2022.0.0
      */
     void addUserPlugin(Class<?> pluginClass);
+
+    /**
+     * Gets all module descriptors of installed modules.
+     * @since 2022.0.0
+     */
+    Collection<ModuleDescriptor<?>> getModuleDescriptors();
+
 }

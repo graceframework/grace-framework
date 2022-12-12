@@ -1,0 +1,119 @@
+/*
+ * Copyright 2021-2022 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.grails.plugins;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import groovy.lang.Closure;
+
+import grails.core.GrailsApplication;
+import grails.plugins.DynamicGrailsPlugin;
+import grails.plugins.DynamicPlugin;
+import grails.plugins.ModuleDescriptor;
+import grails.plugins.ModuleDescriptorFactory;
+import grails.util.GrailsClassUtils;
+
+public class DynamicBinaryGrailsPlugin extends BinaryGrailsPlugin implements DynamicGrailsPlugin {
+
+    private List<ModuleDescriptor<?>> moduleDescriptors = new ArrayList<>();
+
+    private ModuleDescriptorFactory moduleDescriptorFactory;
+
+    private Class<?>[] providedModules = {};
+
+    /**
+     * Creates a binary plugin instance.
+     *
+     * @param pluginClass The plugin class
+     * @param descriptor  The META-INF/grails-plugin.xml descriptor
+     * @param application The application
+     */
+    public DynamicBinaryGrailsPlugin(Class<?> pluginClass, BinaryGrailsPluginDescriptor descriptor, GrailsApplication application) {
+        super(pluginClass, descriptor, application);
+
+        evaluateProvidedModules();
+    }
+
+    public void setModuleDescriptorFactory(ModuleDescriptorFactory moduleDescriptorFactory) {
+        this.moduleDescriptorFactory = moduleDescriptorFactory;
+    }
+
+    public Class<?>[] getProvidedModules() {
+        return this.providedModules;
+    }
+
+    private void evaluateProvidedModules() {
+        Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, getInstance(), PROVIDED_MODULES);
+        if (result instanceof Collection) {
+            Collection<Class<?>> moduleList = (Collection<Class<?>>) result;
+            this.providedModules = (Class<?>[]) moduleList.toArray(new Class[0]);
+        }
+    }
+
+    @Override
+    public void doWithDynamicModules() {
+        if (getInstance() instanceof DynamicPlugin) {
+            DynamicPlugin dynamicPlugin = (DynamicPlugin) getInstance();
+            dynamicPlugin.doWithDynamicModules();
+        }
+    }
+
+    @Override
+    public void addModuleDescriptor(String type, Map<String, Object> args) {
+        addModuleDescriptor(type, args, null);
+    }
+
+    @Override
+    public void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure) {
+        try {
+            ModuleDescriptor moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
+            moduleDescriptor.init(this, args);
+            if (closure != null) {
+                closure.setDelegate(moduleDescriptor);
+                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+                closure.call();
+            }
+            this.moduleDescriptors.add(moduleDescriptor);
+        }
+        catch (ClassNotFoundException e) {
+            logger.error("Unable to get module description of '" + type + "'", e);
+        }
+    }
+
+    @Override
+    public Collection<ModuleDescriptor<?>> getModuleDescriptors() {
+        return this.moduleDescriptors;
+    }
+
+    @Override
+    public ModuleDescriptor<?> getModuleDescriptor(String key) {
+        return this.moduleDescriptors.stream()
+                .filter(moduleDescriptor -> moduleDescriptor.getKey().equals(key))
+                .findFirst().get();
+    }
+
+    @Override
+    public List<ModuleDescriptor<?>> getModuleDescriptorsByModuleClass(Class<?> moduleClass) {
+        return this.moduleDescriptors.stream()
+                .filter(moduleDescriptor -> moduleDescriptor.getModuleClass().equals(moduleClass))
+                .collect(Collectors.toList());
+    }
+
+}

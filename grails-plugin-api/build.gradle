@@ -7,6 +7,7 @@ dependencies {
 
     api libs.commons.lang3
     api libs.grails.datastore.core
+    api libs.spring.boot.autoconfigure
 
     testImplementation project(":grails-test")
     testImplementation(libs.spring.jdbc) {
