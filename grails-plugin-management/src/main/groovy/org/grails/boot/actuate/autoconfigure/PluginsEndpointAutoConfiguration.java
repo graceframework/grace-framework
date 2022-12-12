@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 
 import grails.plugins.GrailsPluginManager;
 
-import org.grails.boot.actuate.PluginsEndpoint;
+import org.grails.boot.actuate.endpoint.PluginsEndpoint;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for the {@link PluginsEndpoint}.

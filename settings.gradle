@@ -40,6 +40,7 @@ include (
         'grails-plugin-domain-class',
         'grails-plugin-interceptors',
         'grails-plugin-i18n',
+        'grails-plugin-management',
         'grails-plugin-mimetypes',
         'grails-plugin-rest',
         'grails-plugin-services',

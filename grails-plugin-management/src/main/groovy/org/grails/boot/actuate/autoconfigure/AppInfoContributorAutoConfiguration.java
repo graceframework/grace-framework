@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
-import org.grails.boot.actuate.AppInfoContributor;
+import org.grails.boot.actuate.endpoint.AppInfoContributor;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for standard

@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.grails.boot.actuate.autoconfigure.PluginsEndpointAutoConfiguration,\
+org.grails.boot.actuate.autoconfigure.AppInfoContributorAutoConfiguration

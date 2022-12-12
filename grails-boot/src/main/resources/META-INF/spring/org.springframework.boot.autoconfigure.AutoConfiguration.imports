@@ -1,3 +1,1 @@
 grails.boot.config.GrailsAutoConfiguration
-org.grails.boot.actuate.autoconfigure.PluginsEndpointAutoConfiguration
-org.grails.boot.actuate.autoconfigure.AppInfoContributorAutoConfiguration
