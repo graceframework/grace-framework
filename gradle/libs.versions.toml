@@ -220,7 +220,7 @@ tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", vers
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
 
 [bundles]
-bom = ["groovy-bom", "micronaut-bom", "micronaut-cache-bom", "spring-framework-bom", "spring-boot-dependencies"]
+bom = ["groovy-bom", "micronaut-cache-bom", "spring-framework-bom", "spring-boot-dependencies"]
 grails-async = ["grails-async", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-plugin-async"]
 grails-devtools = ["methvin-directoryWatcher"]
 grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
@@ -231,7 +231,7 @@ grails-views = ["grails-views-core", "grails-views-gradle", "grails-views-json",
 groovy = ["groovy-bom"]
 jakarta = ["jakarta-annotation-api"]
 javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet"]
-micronaut = ["micronaut-bom"]
+micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
 micronaut-cache = ["micronaut-cache-bom"]
 micronaut-groovy = ["micronaut-runtime-groovy"]
 micronaut-spring = ["micronaut-spring", "micronaut-spring-annotation", "micronaut-spring-boot", "micronaut-spring-boot-annotation", "micronaut-spring-boot-starter", "micronaut-spring-context", "micronaut-spring-web", "micronaut-spring-web-annotation"]

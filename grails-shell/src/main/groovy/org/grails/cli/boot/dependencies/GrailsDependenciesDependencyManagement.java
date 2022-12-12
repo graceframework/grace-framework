@@ -59,7 +59,7 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     }
 
     public String getMicronautVersion() {
-        return find("micronaut-bom").getVersion();
+        return find("micronaut-core").getVersion();
     }
 
     @Override
