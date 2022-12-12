@@ -1,7 +1,6 @@
 package grails.boot
 
 import grails.boot.config.GrailsAutoConfiguration
-import grails.plugins.Plugin
 import grails.util.Environment
 import org.springframework.boot.WebApplicationType
 import org.springframework.context.ConfigurableApplicationContext
@@ -17,7 +16,7 @@ class DevelopmentModeWatchSpec extends Specification {
         setup:
         System.setProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
         System.setProperty("base.dir", ".")
-        Grails app = new Grails(GrailsAutoConfiguration.class)
+        Grails app = new Grails(GrailsAutoConfiguration, WatchedResourcesGrailsPlugin)
         app.webApplicationType = WebApplicationType.NONE
         ConfigurableApplicationContext context = app.run("--server.port=0")
         WatchedResourcesGrailsPlugin plugin = context.getBean('pluginManager').getGrailsPlugin('watchedResources').instance
@@ -40,14 +39,4 @@ class DevelopmentModeWatchSpec extends Specification {
             watchedFile.delete()
         }
     }
-}
-
-class WatchedResourcesGrailsPlugin extends Plugin {
-    def version = "1.0"
-    def watchedResources = "file:./**/*.properties"
-
-    void onChange(Map<String, Object> event) {
-        fileIsChanged = event.source.path.toString()
-    }
-    String fileIsChanged = ""
 }
