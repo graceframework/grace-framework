@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import groovy.lang.Closure;
 import org.springframework.core.io.Resource;
 
 import grails.core.GrailsApplication;
@@ -76,9 +77,19 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
 
     @Override
     public void addModuleDescriptor(String type, Map<String, Object> args) {
+        addModuleDescriptor(type, args, null);
+    }
+
+    @Override
+    public void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure) {
         try {
             ModuleDescriptor moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
             moduleDescriptor.init(this, args);
+            if (closure != null) {
+                closure.setDelegate(moduleDescriptor);
+                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+                closure.call();
+            }
             this.moduleDescriptors.add(moduleDescriptor);
         }
         catch (ClassNotFoundException e) {

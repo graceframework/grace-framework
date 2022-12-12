@@ -44,7 +44,12 @@ abstract class DynamicPlugin extends Plugin {
         DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin
         Object[] array = (Object[]) args
         if (array.length > 0) {
-            dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>)
+            if (array.length > 1) {
+                dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>, array[1] as Closure)
+            }
+            else {
+                dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>)
+            }
         }
         true
     }

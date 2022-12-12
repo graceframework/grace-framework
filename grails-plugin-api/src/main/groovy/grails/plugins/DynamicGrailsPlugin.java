@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import groovy.lang.Closure;
+
 public interface DynamicGrailsPlugin extends GrailsPlugin {
 
     String PROVIDED_MODULES = "providedModules";
@@ -35,6 +37,7 @@ public interface DynamicGrailsPlugin extends GrailsPlugin {
 
     List<ModuleDescriptor<?>> getModuleDescriptorsByModuleClass(Class<?> moduleClass);
 
-    void addModuleDescriptor(String name, Map<String, Object> args);
+    void addModuleDescriptor(String type, Map<String, Object> args);
 
+    void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure);
 }
