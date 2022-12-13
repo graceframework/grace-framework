@@ -21,6 +21,13 @@ import java.util.Map;
 
 import groovy.lang.Closure;
 
+/**
+ * Dynamic plugins to implement.
+ * Plugin implementations should define the plugin hooks doWithDynamicModules
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public interface DynamicGrailsPlugin extends GrailsPlugin {
 
     String PROVIDED_MODULES = "providedModules";

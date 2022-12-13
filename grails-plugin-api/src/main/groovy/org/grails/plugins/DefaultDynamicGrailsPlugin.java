@@ -31,9 +31,15 @@ import grails.plugins.ModuleDescriptor;
 import grails.plugins.ModuleDescriptorFactory;
 import grails.util.GrailsClassUtils;
 
+/**
+ * Default implementation of {@link DynamicGrailsPlugin}
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements DynamicGrailsPlugin {
 
-    private List<ModuleDescriptor<?>> moduleDescriptors = new ArrayList<>();
+    private final List<ModuleDescriptor<?>> moduleDescriptors = new ArrayList<>();
 
     private ModuleDescriptorFactory moduleDescriptorFactory;
 
@@ -83,11 +89,11 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
     @Override
     public void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure) {
         try {
-            ModuleDescriptor moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
+            ModuleDescriptor<?> moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
             moduleDescriptor.init(this, args);
             if (closure != null) {
                 closure.setDelegate(moduleDescriptor);
-                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+                closure.setResolveStrategy(Closure.DELEGATE_ONLY);
                 closure.call();
             }
             this.moduleDescriptors.add(moduleDescriptor);

@@ -30,6 +30,13 @@ import grails.plugins.ModuleDescriptor;
 import grails.plugins.ModuleDescriptorFactory;
 import grails.util.GrailsClassUtils;
 
+/**
+ * Binary plugin with dynamic modules.
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ * @see BinaryGrailsPlugin
+ */
 public class DynamicBinaryGrailsPlugin extends BinaryGrailsPlugin implements DynamicGrailsPlugin {
 
     private List<ModuleDescriptor<?>> moduleDescriptors = new ArrayList<>();

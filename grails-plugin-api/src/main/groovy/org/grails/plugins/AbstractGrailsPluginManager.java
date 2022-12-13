@@ -385,9 +385,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 }
                 DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
                 for (Class<?> clazz : dynamicPlugin.getProvidedModules()) {
-                    String shortName = GrailsNameUtils.getShortName(clazz);
-                    String type = uncapitalize(substringBefore(shortName, "ModuleDescriptor"));
                     if (ModuleDescriptor.class.isAssignableFrom(clazz)) {
+                        String shortName = GrailsNameUtils.getShortName(clazz);
+                        String type = uncapitalize(substringBefore(shortName, "ModuleDescriptor"));
                         this.moduleDescriptorFactory.addModuleDescriptor(type, (Class<? extends ModuleDescriptor>) clazz);
                     }
                 }

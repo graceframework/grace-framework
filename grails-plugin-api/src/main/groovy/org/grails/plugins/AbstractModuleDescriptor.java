@@ -15,12 +15,19 @@
  */
 package org.grails.plugins;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import grails.plugins.DynamicGrailsPlugin;
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.exceptions.PluginException;
 
+/**
+ * Abstract ModuleDescriptor
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
     protected DynamicGrailsPlugin plugin;
@@ -52,12 +59,13 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     public void init(final DynamicGrailsPlugin plugin, final Map<String, ?> args) throws PluginException {
         this.plugin = plugin;
         this.key = String.valueOf(args.get("key"));
-//        this.completeKey = buildCompleteKey(plugin, this.key);
+        this.completeKey = buildCompleteKey(plugin, this.key);
         this.name = String.valueOf(args.get("name"));
         this.i18nNameKey = String.valueOf(args.get("i18nNameKey"));
         this.description = String.valueOf(args.get("description"));
+        this.descriptionKey = String.valueOf(args.get("descriptionKey"));
         this.moduleClassName = String.valueOf(args.get("class"));
-//        this.params = LoaderUtils.getParams(element);
+        this.params = new HashMap<>();
     }
 
     @Override
@@ -67,7 +75,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
     @Override
     public String getPluginKey() {
-        return this.plugin.getFileSystemShortName() + "-" + this.key;
+        return this.plugin.getFileSystemShortName();
     }
 
     @Override
@@ -100,6 +108,10 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
         return this.params;
     }
 
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
     @Override
     public Class<T> getModuleClass() {
         return this.moduleClass;
@@ -128,6 +140,14 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     @Override
     public void disabled() {
 
+    }
+
+    private String buildCompleteKey(final DynamicGrailsPlugin plugin, final String moduleKey) {
+        if (plugin == null) {
+            return null;
+        }
+
+        return plugin.getFileSystemShortName() + ":" + moduleKey;
     }
 
     @Override

@@ -27,6 +27,12 @@ import grails.plugins.ModuleDescriptor;
 import grails.plugins.ModuleDescriptorFactory;
 import grails.plugins.exceptions.PluginException;
 
+/**
+ * Default implementation of {@link ModuleDescriptorFactory}
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory, ApplicationContextAware {
 
     private final Map<String, Class<? extends ModuleDescriptor>> moduleDescriptorClasses = new ConcurrentHashMap<>();

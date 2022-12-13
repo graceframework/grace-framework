@@ -19,6 +19,12 @@ import java.util.Map;
 
 import grails.plugins.exceptions.PluginException;
 
+/**
+ * Descriptor for dynamic Module.
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public interface ModuleDescriptor<T> {
 
     String getKey();

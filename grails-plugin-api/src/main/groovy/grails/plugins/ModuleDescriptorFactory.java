@@ -17,6 +17,12 @@ package grails.plugins;
 
 import grails.plugins.exceptions.PluginException;
 
+/**
+ * The factory to manage {@link ModuleDescriptor}
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public interface ModuleDescriptorFactory {
 
     void addModuleDescriptor(String type, Class<? extends ModuleDescriptor> moduleDescriptorClass);

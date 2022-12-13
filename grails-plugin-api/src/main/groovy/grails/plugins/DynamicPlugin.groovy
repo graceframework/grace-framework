@@ -18,8 +18,8 @@ package grails.plugins
 import groovy.transform.CompileStatic
 
 /**
- * Super class for dynamic plugins to implement.
- * Plugin implementations should define the plugin hooks doWithDynamicModules
+ * A dynamic plugin is one that can be loaded into an application and used without restarting the application.
+ * Plugin implementations should define the plugin hooks doWithDynamicModules.
  *
  * @author Michael Yan
  * @since 2022.0.0

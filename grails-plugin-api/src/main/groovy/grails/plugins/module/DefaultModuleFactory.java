@@ -18,6 +18,12 @@ package grails.plugins.module;
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.exceptions.PluginException;
 
+/**
+ * The {@link ModuleFactory} creates the module class of a {@link grails.plugins.ModuleDescriptor}.
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public class DefaultModuleFactory implements ModuleFactory {
 
     public <T> T createModule(String name, ModuleDescriptor<T> moduleDescriptor) throws PluginException {
