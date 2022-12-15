@@ -703,4 +703,24 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         return moduleDescriptors;
     }
 
+    /**
+     * Get all enabled module descriptors that have a specific descriptor class.
+     *
+     * @param descriptorClazz module descriptor class
+     * @return List of {@link ModuleDescriptor}s that implement or extend the given class.
+     * @since 2022.0.0
+     */
+    @Override
+    public <D> List<ModuleDescriptor<D>> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz) {
+        List<ModuleDescriptor<D>> result = new LinkedList<>();
+
+        for (ModuleDescriptor<?> moduleDescriptor : getModuleDescriptors()) {
+            if (descriptorClazz.isInstance(moduleDescriptor)) {
+                result.add((ModuleDescriptor<D>) moduleDescriptor);
+            }
+        }
+
+        return result;
+    }
+
 }
