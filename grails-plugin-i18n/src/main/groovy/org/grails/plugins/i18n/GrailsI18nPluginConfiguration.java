@@ -19,13 +19,14 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -42,11 +43,12 @@ import org.grails.web.i18n.ParamsAwareLocaleChangeInterceptor;
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 8)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnClass(ParamsAwareLocaleChangeInterceptor.class)
+@EnableConfigurationProperties(WebLocaleProperties.class)
 public class GrailsI18nPluginConfiguration {
 
-    private final WebProperties webProperties;
+    private final WebLocaleProperties webProperties;
 
-    public GrailsI18nPluginConfiguration(WebProperties webProperties) {
+    public GrailsI18nPluginConfiguration(WebLocaleProperties webProperties) {
         this.webProperties = webProperties;
     }
 
@@ -54,19 +56,23 @@ public class GrailsI18nPluginConfiguration {
     @ConditionalOnMissingBean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         ParamsAwareLocaleChangeInterceptor localeChangeInterceptor = new ParamsAwareLocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("lang");
+        localeChangeInterceptor.setParamName(this.webProperties.getParamName());
         return localeChangeInterceptor;
     }
 
     @Bean
     @ConditionalOnMissingBean(name = DispatcherServlet.LOCALE_RESOLVER_BEAN_NAME)
     public LocaleResolver localeResolver() {
-        if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.FIXED) {
+        if (this.webProperties.getLocaleResolver() == WebLocaleProperties.LocaleResolver.FIXED) {
             return new FixedLocaleResolver(this.webProperties.getLocale());
         }
-        else if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.ACCEPT_HEADER) {
+        else if (this.webProperties.getLocaleResolver() == WebLocaleProperties.LocaleResolver.ACCEPT_HEADER) {
             AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
             localeResolver.setDefaultLocale(this.webProperties.getLocale());
+            return localeResolver;
+        }
+        else if (this.webProperties.getLocaleResolver() == WebLocaleProperties.LocaleResolver.Cookie) {
+            CookieLocaleResolver localeResolver = new CookieLocaleResolver();
             return localeResolver;
         }
         return new SessionLocaleResolver();
