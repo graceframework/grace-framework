@@ -1,0 +1,3 @@
+moduleName=grails-boot-module
+moduleVersion=1.0
+extensionClasses=org.grails.boot.extension.GrailsExtension
