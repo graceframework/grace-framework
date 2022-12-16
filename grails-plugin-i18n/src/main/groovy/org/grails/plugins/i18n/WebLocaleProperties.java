@@ -65,7 +65,7 @@ public class WebLocaleProperties {
         /**
          * Use a cookie.
          */
-        Cookie
+        COOKIE
 
     }
 }

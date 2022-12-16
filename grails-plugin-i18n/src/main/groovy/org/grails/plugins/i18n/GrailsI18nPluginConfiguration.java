@@ -71,7 +71,7 @@ public class GrailsI18nPluginConfiguration {
             localeResolver.setDefaultLocale(this.webProperties.getLocale());
             return localeResolver;
         }
-        else if (this.webProperties.getLocaleResolver() == WebLocaleProperties.LocaleResolver.Cookie) {
+        else if (this.webProperties.getLocaleResolver() == WebLocaleProperties.LocaleResolver.COOKIE) {
             CookieLocaleResolver localeResolver = new CookieLocaleResolver();
             return localeResolver;
         }
