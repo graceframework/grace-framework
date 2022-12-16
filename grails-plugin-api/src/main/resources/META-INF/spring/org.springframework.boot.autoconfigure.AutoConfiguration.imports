@@ -1,1 +1,2 @@
 org.grails.plugins.config.GrailsDynamicModuleConfiguration
+org.grails.plugins.config.GrailsPluginManagerConfiguration

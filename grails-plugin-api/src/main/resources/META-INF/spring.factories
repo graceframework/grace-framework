@@ -4,4 +4,5 @@ org.grails.plugins.support.GrailsPluginsInfoApplicationContextInitializer
 
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.grails.plugins.config.GrailsDynamicModuleConfiguration
+org.grails.plugins.config.GrailsDynamicModuleConfiguration,\
+org.grails.plugins.config.GrailsPluginManagerConfiguration
