@@ -24,6 +24,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
 import org.springframework.util.ClassUtils
 
+import grails.binding.GroovyShellBindingCustomizer
 import grails.boot.Grails
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
@@ -69,6 +70,7 @@ class GrailsSwingConsole extends Grails {
 
     protected void startConsole(ConfigurableApplicationContext context) {
         GrailsApplication grailsApplication = context.getBean(GrailsApplication)
+        Collection<GroovyShellBindingCustomizer> bindingCustomizers = context.getBeansOfType(GroovyShellBindingCustomizer).values()
         Set<String> packageNames = (getAllSources() as Set<Class>)*.package.name as Set<String>
         String[] imports = packageNames.toArray(new String[0])
 
@@ -76,6 +78,7 @@ class GrailsSwingConsole extends Grails {
         binding.setVariable('app', this)
         binding.setVariable('ctx', context)
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
+        bindingCustomizers?.each {customizer -> customizer.customize(binding) }
 
         CompilerConfiguration baseConfig = new CompilerConfiguration()
         baseConfig.addCompilationCustomizers(new ImportCustomizer().addStarImports(imports))

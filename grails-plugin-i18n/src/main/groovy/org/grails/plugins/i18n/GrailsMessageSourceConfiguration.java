@@ -78,4 +78,9 @@ public class GrailsMessageSourceConfiguration {
         return messageSource;
     }
 
+    @Bean
+    public I18nGroovyShellBindingCustomizer i18nShellBindingCustomizer(MessageSource messageSource) {
+        return new I18nGroovyShellBindingCustomizer(messageSource);
+    }
+
 }
