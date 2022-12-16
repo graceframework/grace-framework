@@ -1,0 +1,3 @@
+moduleName=grails-i18n-module
+moduleVersion=1.0
+extensionClasses=org.grails.plugins.i18n.GrailsMessageSourceExtension
