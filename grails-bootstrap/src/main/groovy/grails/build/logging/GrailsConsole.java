@@ -339,7 +339,7 @@ public class GrailsConsole implements ConsoleLogger {
      * handle it and the wrapped stream will not pass the ansi chars on to Eclipse).
      */
     protected OutputStream ansiWrap(OutputStream out) {
-        return AnsiConsole.wrapOutputStream(out);
+        return new PrintStream(out, true);//AnsiConsole.wrapOutputStream(out);
     }
 
     public boolean isWindows() {
