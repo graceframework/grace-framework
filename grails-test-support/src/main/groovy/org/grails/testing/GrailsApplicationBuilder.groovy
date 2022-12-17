@@ -241,11 +241,13 @@ class GrailsApplicationBuilder {
 
         @Override
         protected void customizePluginManager(GrailsPluginManager pluginManager) {
+            super.customizePluginManager(pluginManager)
             pluginManager.pluginFilter = new IncludingPluginFilter(includedPlugins)
         }
 
         @Override
         protected void customizeGrailsApplication(GrailsApplication grailsApplication) {
+            super.customizeGrailsApplication(grailsApplication)
             customizeGrailsApplicationClosure?.call(grailsApplication)
         }
 

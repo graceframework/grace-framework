@@ -68,9 +68,11 @@ import grails.util.Holders;
 import org.grails.config.NavigableMap;
 import org.grails.config.PrefixedMapPropertySource;
 import org.grails.config.PropertySourcesConfig;
+import org.grails.core.GrailsApplicationCustomizer;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.core.support.GrailsApplicationAwareBeanPostProcessor;
 import org.grails.plugins.GrailsPluginArtefactHandler;
+import org.grails.plugins.GrailsPluginManagerCustomizer;
 import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor;
 import org.grails.spring.DefaultRuntimeSpringConfiguration;
 import org.grails.spring.RuntimeSpringConfigUtilities;
@@ -158,10 +160,14 @@ public class GrailsApplicationPostProcessor
         performGrailsInitializationSequence();
     }
 
-    protected void customizePluginManager(GrailsPluginManager grailsApplication) {
+    protected void customizePluginManager(GrailsPluginManager grailsPluginManager) {
+        Collection<GrailsPluginManagerCustomizer> pluginManagerCustomizers = applicationContext.getBeansOfType(GrailsPluginManagerCustomizer.class).values();
+        pluginManagerCustomizers.forEach(customizer -> customizer.customize(grailsPluginManager));
     }
 
     protected void customizeGrailsApplication(GrailsApplication grailsApplication) {
+        Collection<GrailsApplicationCustomizer> grailsApplicationCustomizers = applicationContext.getBeansOfType(GrailsApplicationCustomizer.class).values();
+        grailsApplicationCustomizers.forEach(customizer -> customizer.customize(grailsApplication));
     }
 
     protected void performGrailsInitializationSequence() {
