@@ -1,4 +1,4 @@
-rootProject.name = "grails.core.ROOT"
+rootProject.name = "grails-framework"
 
 include (
         'grails-api',

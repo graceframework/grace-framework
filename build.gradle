@@ -143,7 +143,7 @@ subprojects { project ->
     ext.isTestSuite = project.name.startsWith("grails-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
-        delegate.name 'Grails'
+        delegate.name 'Grails Framework'
         delegate.description 'Grails Web Application Framework'
         delegate.url 'https://grails.org/'
 
@@ -156,9 +156,9 @@ subprojects { project ->
         }
 
         delegate.scm {
-            delegate.url 'scm:git@github.com:grails/grails-core.git'
-            delegate.connection 'scm:git@github.com:grails/grails-core.git'
-            delegate.developerConnection 'scm:git@github.com:grails/grails-core.git'
+            delegate.url 'scm:git@github.com:rainboyan/grails-framework.git'
+            delegate.connection 'scm:git@github.com:rainboyan/grails-framework.git'
+            delegate.developerConnection 'scm:git@github.com:rainboyan/grails-framework.git'
         }
 
         delegate.developers {
@@ -173,6 +173,10 @@ subprojects { project ->
             delegate.developer {
                 delegate.id 'lhotari'
                 delegate.name 'Lari Hotari'
+            }
+            delegate.developer {
+                delegate.id 'rainboyan'
+                delegate.name 'Michael Yan'
             }
         }
 
@@ -271,7 +275,7 @@ subprojects { project ->
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grails",
+            "Implementation-Title": "Grails Framework",
             "Implementation-Version": grailsVersion,
             "Implementation-Vendor": 'grails.org')
     }
