@@ -48,6 +48,24 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
     }
 
     @Override
+    void doWithDynamicMethods() {
+        String.metaClass.getMessage = { ->
+            def messageSource = applicationContext.messageSource
+            messageSource.getMessage(delegate, null, Locale.ENGLISH)
+        }
+        String.metaClass.message = { String lang ->
+            def locale = Locale.forLanguageTag(lang.replace('_', '-'))
+            def messageSource = applicationContext.messageSource
+            messageSource.getMessage(delegate, null, locale)
+        }
+        String.metaClass.message = { List<Object> args, String lang ->
+            def locale = Locale.forLanguageTag(lang.replace('_', '-'))
+            def messageSource = applicationContext.messageSource
+            messageSource.getMessage(delegate, args.toArray(), locale)
+        }
+    }
+
+    @Override
     void onChange(Map<String, Object> event) {
         def ctx = applicationContext
         def application = grailsApplication
