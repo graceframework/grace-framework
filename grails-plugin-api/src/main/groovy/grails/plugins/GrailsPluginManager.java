@@ -386,6 +386,6 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
      * @return List of {@link ModuleDescriptor}s that implement or extend the given class.
      * @since 2022.0.0
      */
-    <D> List<ModuleDescriptor<D>> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz);
+    <D extends ModuleDescriptor<?>> List<D> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz);
 
 }

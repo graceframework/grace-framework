@@ -711,12 +711,12 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
      * @since 2022.0.0
      */
     @Override
-    public <D> List<ModuleDescriptor<D>> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz) {
-        List<ModuleDescriptor<D>> result = new LinkedList<>();
+    public <D extends ModuleDescriptor<?>> List<D> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz) {
+        List<D> result = new LinkedList<>();
 
-        for (ModuleDescriptor<?> moduleDescriptor : getModuleDescriptors()) {
+        for (ModuleDescriptor moduleDescriptor : getModuleDescriptors()) {
             if (descriptorClazz.isInstance(moduleDescriptor)) {
-                result.add((ModuleDescriptor<D>) moduleDescriptor);
+                result.add(descriptorClazz.cast(moduleDescriptor));
             }
         }
 
