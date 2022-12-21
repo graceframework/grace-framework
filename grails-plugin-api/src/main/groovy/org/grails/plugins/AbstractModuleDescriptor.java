@@ -22,6 +22,8 @@ import grails.plugins.DynamicGrailsPlugin;
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.exceptions.PluginException;
 
+import static org.apache.commons.lang3.StringUtils.defaultString;
+
 /**
  * Abstract ModuleDescriptor
  *
@@ -42,7 +44,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
     protected Class<T> moduleClass;
 
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     private Map<String, String> params;
 
@@ -65,6 +67,12 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
         this.description = String.valueOf(args.get("description"));
         this.descriptionKey = String.valueOf(args.get("descriptionKey"));
         this.moduleClassName = String.valueOf(args.get("class"));
+        if (args.get("enabled") instanceof String) {
+            this.enabled = Boolean.parseBoolean(defaultString((String) args.get("enabled"), "true"));
+        }
+        else if (args.get("enabled") instanceof Boolean) {
+            this.enabled = args.get("enabled") != null ? (Boolean) args.get("enabled") : true;
+        }
         this.params = new HashMap<>();
     }
 
@@ -134,12 +142,17 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
     @Override
     public void enabled() {
-
+        this.enabled = true;
     }
 
     @Override
     public void disabled() {
+        this.enabled = false;
+    }
 
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     private String buildCompleteKey(final DynamicGrailsPlugin plugin, final String moduleKey) {

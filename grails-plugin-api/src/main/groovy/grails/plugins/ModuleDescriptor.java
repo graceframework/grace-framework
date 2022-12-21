@@ -57,4 +57,6 @@ public interface ModuleDescriptor<T> {
 
     void disabled();
 
+    boolean isEnabled();
+
 }

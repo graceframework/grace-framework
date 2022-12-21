@@ -714,9 +714,14 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public <D extends ModuleDescriptor<?>> List<D> getEnabledModuleDescriptorsByClass(Class<D> descriptorClazz) {
         List<D> result = new LinkedList<>();
 
-        for (ModuleDescriptor moduleDescriptor : getModuleDescriptors()) {
-            if (descriptorClazz.isInstance(moduleDescriptor)) {
-                result.add(descriptorClazz.cast(moduleDescriptor));
+        for (GrailsPlugin plugin : this.loadedPlugins) {
+            if (plugin instanceof DynamicGrailsPlugin && plugin.isEnabled()) {
+                DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
+                for (ModuleDescriptor<?> moduleDescriptor : dynamicPlugin.getModuleDescriptors()) {
+                    if (descriptorClazz.isInstance(moduleDescriptor) && moduleDescriptor.isEnabled()) {
+                        result.add(descriptorClazz.cast(moduleDescriptor));
+                    }
+                }
             }
         }
 
