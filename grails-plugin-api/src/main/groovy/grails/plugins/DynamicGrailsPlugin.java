@@ -42,7 +42,7 @@ public interface DynamicGrailsPlugin extends GrailsPlugin {
 
     ModuleDescriptor<?> getModuleDescriptor(String key);
 
-    List<ModuleDescriptor<?>> getModuleDescriptorsByModuleClass(Class<?> moduleClass);
+    <M> List<ModuleDescriptor<M>> getModuleDescriptorsByModuleClass(Class<M> moduleClass);
 
     void addModuleDescriptor(String type, Map<String, Object> args);
 

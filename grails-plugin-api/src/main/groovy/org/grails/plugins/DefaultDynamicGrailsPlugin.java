@@ -17,9 +17,9 @@ package org.grails.plugins;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import groovy.lang.Closure;
 import org.springframework.core.io.Resource;
@@ -39,7 +39,7 @@ import grails.util.GrailsClassUtils;
  */
 public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements DynamicGrailsPlugin {
 
-    private final List<ModuleDescriptor<?>> moduleDescriptors = new ArrayList<>();
+    private final Map<String, ModuleDescriptor<?>> modules = new LinkedHashMap<>();
 
     private ModuleDescriptorFactory moduleDescriptorFactory;
 
@@ -96,7 +96,7 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
                 closure.setResolveStrategy(Closure.DELEGATE_ONLY);
                 closure.call();
             }
-            this.moduleDescriptors.add(moduleDescriptor);
+            this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);
         }
         catch (ClassNotFoundException e) {
             logger.error("Unable to get module description of '" + type + "'", e);
@@ -105,21 +105,26 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
 
     @Override
     public Collection<ModuleDescriptor<?>> getModuleDescriptors() {
-        return this.moduleDescriptors;
+        return this.modules.values();
     }
 
     @Override
     public ModuleDescriptor<?> getModuleDescriptor(String key) {
-        return this.moduleDescriptors.stream()
-                .filter(moduleDescriptor -> moduleDescriptor.getKey().equals(key))
-                .findFirst().get();
+        return this.modules.get(key);
     }
 
     @Override
-    public List<ModuleDescriptor<?>> getModuleDescriptorsByModuleClass(Class<?> moduleClass) {
-        return this.moduleDescriptors.stream()
-                .filter(moduleDescriptor -> moduleDescriptor.getModuleClass().equals(moduleClass))
-                .collect(Collectors.toList());
+    public <M> List<ModuleDescriptor<M>> getModuleDescriptorsByModuleClass(Class<M> aClass) {
+        List<ModuleDescriptor<M>> result = new ArrayList<>();
+        for (ModuleDescriptor<?> moduleDescriptor : this.modules.values()) {
+            Class<?> moduleClass = moduleDescriptor.getModuleClass();
+            if (moduleClass != null && aClass.isAssignableFrom(moduleClass)) {
+                @SuppressWarnings("unchecked")
+                ModuleDescriptor<M> typedModuleDescriptor = (ModuleDescriptor<M>) moduleDescriptor;
+                result.add(typedModuleDescriptor);
+            }
+        }
+        return result;
     }
 
 }
