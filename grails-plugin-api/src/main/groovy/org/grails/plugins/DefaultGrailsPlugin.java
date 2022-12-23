@@ -416,7 +416,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
         catch (IllegalArgumentException e) {
             if (GrailsUtil.isDevelopmentEnv()) {
-                logger.debug("Cannot load plug-in resource watch list from [" + GrailsArrayUtils.toString(this.watchedResourcePatternReferences) +
+                logger.debug("Cannot load plug-in resource watch list from [" + Arrays.asList(this.watchedResourcePatternReferences) +
                         "]. This means that the plugin " + this +
                         ", will not be able to auto-reload changes effectively. Try running grails upgrade.: " + e.getMessage());
             }

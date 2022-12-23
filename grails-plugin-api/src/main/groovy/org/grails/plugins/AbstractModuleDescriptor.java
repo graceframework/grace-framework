@@ -18,11 +18,11 @@ package org.grails.plugins;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import grails.plugins.DynamicGrailsPlugin;
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.exceptions.PluginException;
-
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 /**
  * Abstract ModuleDescriptor
@@ -68,7 +68,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
         this.descriptionKey = String.valueOf(args.get("descriptionKey"));
         this.moduleClassName = String.valueOf(args.get("class"));
         if (args.get("enabled") instanceof String) {
-            this.enabled = Boolean.parseBoolean(defaultString((String) args.get("enabled"), "true"));
+            this.enabled = Boolean.parseBoolean(StringUtils.defaultString((String) args.get("enabled"), "true"));
         }
         else if (args.get("enabled") instanceof Boolean) {
             this.enabled = args.get("enabled") != null ? (Boolean) args.get("enabled") : true;
@@ -165,15 +165,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("ModuleDescriptor: [")
-                .append("\n    key: ").append(key)
-                .append("\n    name: ").append(name)
-                .append("\n    i18nNameKey: ").append(i18nNameKey)
-                .append("\n    description: ").append(description)
-                .append("\n    moduleClassName: ").append(moduleClassName)
-                .append("]");
-        return sb.toString();
+        return getCompleteKey() + " (" + getDescription() + ")";
     }
 
 }

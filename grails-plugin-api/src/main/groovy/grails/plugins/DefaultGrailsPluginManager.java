@@ -627,7 +627,8 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
                 else {
                     this.failedPlugins.put(plugin.getName(), plugin);
                     this.allPluginsOrdered.add(plugin);
-                    logger.error("Plugin [" + plugin.getName() + "] with version [" + plugin.getVersion() + "] cannot be loaded, because its dependencies " +
+                    logger.error("Plugin [" + plugin.getName() + "] with version [" +
+                            plugin.getVersion() + "] cannot be loaded, because its dependencies " +
                             DefaultGroovyMethods.inspect(plugin.getDependencyNames()) + " cannot be resolved");
                 }
             }
