@@ -25,12 +25,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import groovy.lang.ExpandoMetaClass;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClassRegistry;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
@@ -47,7 +51,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import grails.artefact.Enhanced;
 import grails.core.ArtefactHandler;
@@ -68,9 +71,6 @@ import org.grails.config.NavigableMap;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.support.WatchPattern;
 import org.grails.spring.RuntimeSpringConfiguration;
-
-import static org.apache.commons.lang3.StringUtils.substringBefore;
-import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
 /**
  * Abstract implementation of the GrailsPluginManager interface
@@ -106,7 +106,9 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected ModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
 
-    /** Application startup metrics. **/
+    /**
+     * Application startup metrics.
+     **/
     private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 
     protected Map<String, GrailsPlugin> failedPlugins = new HashMap<>();
@@ -165,6 +167,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     /**
      * Base implementation that simply goes through the list of plugins and calls doWithRuntimeConfiguration on each
+     *
      * @param springConfig The RuntimeSpringConfiguration instance
      */
     public void doRuntimeConfiguration(RuntimeSpringConfiguration springConfig) {
@@ -387,7 +390,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                 for (Class<?> clazz : dynamicPlugin.getProvidedModules()) {
                     if (ModuleDescriptor.class.isAssignableFrom(clazz)) {
                         String shortName = GrailsNameUtils.getShortName(clazz);
-                        String type = uncapitalize(substringBefore(shortName, "ModuleDescriptor"));
+                        String type = StringUtils.uncapitalize(StringUtils.substringBefore(shortName, "ModuleDescriptor"));
                         this.moduleDescriptorFactory.addModuleDescriptor(type, (Class<? extends ModuleDescriptor>) clazz);
                     }
                 }
@@ -671,7 +674,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     public String getPluginViewsPathForClass(Class<?> theClass) {
         if (theClass != null) {
             final String path = getPluginPathForClass(theClass);
-            if (StringUtils.hasText(path)) {
+            if (StringUtils.isNotBlank(path)) {
                 return path + '/' + GrailsResourceUtils.GRAILS_APP_DIR + "/views";
             }
         }
@@ -680,6 +683,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     /**
      * Add User Plugin from Class
+     *
      * @param pluginClass the class of Plugin
      * @since 2022.0.0
      */
@@ -689,6 +693,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     /**
      * Gets all module descriptors of installed modules.
+     *
      * @since 2022.0.0
      */
     @Override
@@ -701,6 +706,24 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             }
         }
         return moduleDescriptors;
+    }
+
+    public <M> Collection<ModuleDescriptor<M>> getModuleDescriptors(Predicate<ModuleDescriptor<M>> moduleDescriptorPredicate) {
+        List<DynamicGrailsPlugin> dynamicPlugins = this.loadedPlugins.stream()
+                .filter(plugin -> plugin instanceof DynamicGrailsPlugin)
+                .map(plugin -> (DynamicGrailsPlugin) plugin).collect(Collectors.toList());
+
+        return getModuleDescriptors(dynamicPlugins, moduleDescriptorPredicate)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+    }
+
+    private <M> Stream<ModuleDescriptor<M>> getModuleDescriptors(Collection<DynamicGrailsPlugin> plugins,
+            Predicate<ModuleDescriptor<M>> predicate) {
+
+        return plugins.stream()
+                .flatMap(plugin -> plugin.getModuleDescriptors().stream())
+                .map(descriptor -> (ModuleDescriptor<M>) descriptor)
+                .filter(predicate);
     }
 
     /**

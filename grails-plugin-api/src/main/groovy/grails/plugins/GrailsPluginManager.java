@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -378,6 +379,15 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
      * @since 2022.0.0
      */
     Collection<ModuleDescriptor<?>> getModuleDescriptors();
+
+    /**
+     * Gets all module descriptors of installed modules that match the given predicate.
+     *
+     * @param moduleDescriptorPredicate describes which modules to match
+     * @return a collection of {@link ModuleDescriptor}s that match the given predicate.
+     * @since 2022.0.0
+     */
+    <M> Collection<ModuleDescriptor<M>> getModuleDescriptors(Predicate<ModuleDescriptor<M>> moduleDescriptorPredicate);
 
     /**
      * Get all enabled module descriptors that have a specific descriptor class.
