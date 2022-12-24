@@ -47,7 +47,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     CodeGenConfig(CodeGenConfig copyOf) {
-        this((Map<String, Object>) copyOf.configMap)
+        this((Map<String, Object>) copyOf.getConfigMap())
     }
 
     CodeGenConfig(Map<String, Object> copyOf) {

@@ -265,7 +265,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     subMap = (NavigableMap) currentValue
                 }
                 else {
-                    subMap = new NavigableMap((NavigableMap) targetMap.rootConfig, newPathList.asImmutable())
+                    subMap = new NavigableMap((NavigableMap) targetMap.getRootConfig(), newPathList.asImmutable())
                     if (currentValue instanceof Map) {
                         subMap.putAll((Map) currentValue)
                     }
@@ -383,7 +383,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                 newPathList.addAll(currentMap.getPath())
                 newPathList.add(pathElement)
 
-                Map<String, Object> newMap = new NavigableMap((NavigableMap) currentMap.rootConfig, newPathList.asImmutable())
+                Map<String, Object> newMap = new NavigableMap((NavigableMap) currentMap.getRootConfig(), newPathList.asImmutable())
                 currentMap.put(pathElement, newMap)
 
                 def fullPath = accumulatedPath.toString()
