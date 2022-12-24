@@ -47,61 +47,61 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     final String dottedPath
 
     NavigableMap() {
-        rootConfig = this
-        path = []
-        dottedPath = ''
-        delegateMap = new LinkedHashMap<>()
+        this.rootConfig = this
+        this.path = []
+        this.dottedPath = ''
+        this.delegateMap = new LinkedHashMap<>()
     }
 
     NavigableMap(NavigableMap rootConfig, List<String> path) {
         super()
         this.rootConfig = rootConfig
         this.path = path
-        dottedPath = path.join('.')
-        delegateMap = new LinkedHashMap<>()
+        this.dottedPath = path.join('.')
+        this.delegateMap = new LinkedHashMap<>()
     }
 
     private NavigableMap(NavigableMap rootConfig, List<String> path, Map<String, Object> delegateMap) {
         this.rootConfig = rootConfig
         this.path = path
-        dottedPath = path.join('.')
+        this.dottedPath = path.join('.')
         this.delegateMap = delegateMap
     }
 
     @Override
     String toString() {
-        delegateMap.toString()
+        this.delegateMap.toString()
     }
 
     @CompileDynamic
     NavigableMap clone() {
-        new NavigableMap(rootConfig, path, delegateMap.clone())
+        new NavigableMap(this.rootConfig, this.path, this.delegateMap.clone())
     }
 
     @Override
     int size() {
-        delegateMap.size()
+        this.delegateMap.size()
     }
 
     @Override
     boolean isEmpty() {
-        delegateMap.isEmpty()
+        this.delegateMap.isEmpty()
     }
 
     @Override
     boolean containsKey(Object key) {
-        delegateMap.containsKey key
+        this.delegateMap.containsKey key
     }
 
     @Override
     boolean containsValue(Object value) {
-        delegateMap.containsValue value
+        this.delegateMap.containsValue value
     }
 
     @CompileDynamic
     @Override
     Object get(Object key) {
-        Object result = delegateMap.get(key)
+        Object result = this.delegateMap.get(key)
         if (result != null) {
             return result
         }
@@ -110,37 +110,37 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
     @Override
     Object put(String key, Object value) {
-        delegateMap.put(key, value)
+        this.delegateMap.put(key, value)
     }
 
     @Override
     Object remove(Object key) {
-        delegateMap.remove key
+        this.delegateMap.remove key
     }
 
     @Override
     void putAll(Map<? extends String, ? extends Object> m) {
-        delegateMap.putAll m
+        this.delegateMap.putAll m
     }
 
     @Override
     void clear() {
-        delegateMap.clear()
+        this.delegateMap.clear()
     }
 
     @Override
     Set<String> keySet() {
-        delegateMap.keySet()
+        this.delegateMap.keySet()
     }
 
     @Override
     Collection<Object> values() {
-        delegateMap.values()
+        this.delegateMap.values()
     }
 
     @Override
     Set<Map.Entry<String, Object>> entrySet() {
-        delegateMap.entrySet()
+        this.delegateMap.entrySet()
     }
 
     void merge(Map sourceMap, boolean parseFlatKeys = false) {
@@ -328,7 +328,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     void setProperty(String name, Object value) {
-        mergeMapEntry(rootConfig, dottedPath, this, name, value, false, true)
+        mergeMapEntry(this.rootConfig, this.dottedPath, this, name, value, false, true)
     }
 
     Object navigate(String... path) {
@@ -454,12 +454,12 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
     @Override
     int hashCode() {
-        delegateMap.hashCode()
+        this.delegateMap.hashCode()
     }
 
     @Override
     boolean equals(Object obj) {
-        delegateMap.equals(obj)
+        this.delegateMap.equals(obj)
     }
 
     /**
@@ -492,7 +492,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         int size() {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.size()
             }
@@ -501,7 +501,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         boolean isEmpty() {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.isEmpty()
             }
@@ -509,16 +509,16 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         boolean containsKey(Object key) {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
-                parentMap.containsKey(key)
+                return parentMap.containsKey(key)
             }
             false
         }
 
         @Override
         boolean containsValue(Object value) {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.containsValue(value)
             }
@@ -552,7 +552,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         Set<String> keySet() {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.keySet()
             }
@@ -561,7 +561,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         Collection<Object> values() {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.values()
             }
@@ -570,7 +570,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
 
         @Override
         Set<Map.Entry<String, Object>> entrySet() {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.entrySet()
             }
@@ -578,15 +578,15 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         }
 
         Object getProperty(String name) {
-            NavigableMap parentMap = parent.navigateSubMap(path, false)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, false)
             if (parentMap != null) {
                 return parentMap.get(name)
             }
-            new NullSafeNavigator(parent, ((path + [name]) as List<String>).asImmutable())
+            new NullSafeNavigator(this.parent, ((this.path + [name]) as List<String>).asImmutable())
         }
 
         void setProperty(String name, Object value) {
-            NavigableMap parentMap = parent.navigateSubMap(path, true)
+            NavigableMap parentMap = this.parent.navigateSubMap(this.path, true)
             parentMap.setProperty(name, value)
         }
 

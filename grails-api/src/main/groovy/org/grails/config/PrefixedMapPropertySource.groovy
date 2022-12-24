@@ -43,9 +43,9 @@ class PrefixedMapPropertySource extends EnumerablePropertySource {
 
     @Override
     Object getProperty(String name) {
-        if (name.startsWith(prefix)) {
-            String key = name - prefix - '.'
-            return source.getProperty(key)
+        if (name.startsWith(this.prefix)) {
+            String key = name - this.prefix - '.'
+            return this.source.getProperty(key)
         }
         null
     }

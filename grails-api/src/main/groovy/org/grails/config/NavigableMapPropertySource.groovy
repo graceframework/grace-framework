@@ -40,12 +40,12 @@ class NavigableMapPropertySource extends MapPropertySource {
         this.propertyNames = source.keySet().findAll { key ->
             !(source.get(key) instanceof NavigableMap)
         }
-        navigablePropertyNames = StringUtils.toStringArray(source.keySet())
+        this.navigablePropertyNames = StringUtils.toStringArray(source.keySet())
     }
 
     @Override
     String[] getPropertyNames() {
-        propertyNames
+        this.propertyNames
     }
 
     @Override

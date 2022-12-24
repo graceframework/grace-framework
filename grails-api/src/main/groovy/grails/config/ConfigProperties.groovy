@@ -34,12 +34,12 @@ class ConfigProperties extends Properties {
 
     @Override
     Set<String> stringPropertyNames() {
-        config.keySet()
+        this.config.keySet()
     }
 
     @Override
     Enumeration<?> propertyNames() {
-        def i = config.keySet().iterator()
+        def i = this.config.keySet().iterator()
         ([
                 hasMoreElements: { -> i.hasNext() },
                 nextElement: { -> i.next() }
@@ -48,7 +48,7 @@ class ConfigProperties extends Properties {
 
     @Override
     String getProperty(String key) {
-        config.getProperty(key)
+        this.config.getProperty(key)
     }
 
     @Override
@@ -58,7 +58,7 @@ class ConfigProperties extends Properties {
 
     @Override
     String getProperty(String key, String defaultValue) {
-        config.getProperty(key, defaultValue)
+        this.config.getProperty(key, defaultValue)
     }
 
     @Override
@@ -73,7 +73,7 @@ class ConfigProperties extends Properties {
 
     @Override
     String toString() {
-        config.toString()
+        this.config.toString()
     }
 
 }

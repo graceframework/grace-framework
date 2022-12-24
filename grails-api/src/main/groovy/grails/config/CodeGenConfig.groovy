@@ -43,7 +43,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     GroovyClassLoader groovyClassLoader = new GroovyClassLoader(CodeGenConfig.getClassLoader())
 
     CodeGenConfig() {
-        configMap = new NavigableMap()
+        this.configMap = new NavigableMap()
     }
 
     CodeGenConfig(CodeGenConfig copyOf) {
@@ -61,32 +61,32 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     int size() {
-        configMap.size()
+        this.configMap.size()
     }
 
     @Override
     boolean isEmpty() {
-        configMap.isEmpty()
+        this.configMap.isEmpty()
     }
 
     @Override
     boolean containsKey(Object key) {
-        configMap.containsKey(key)
+        this.configMap.containsKey(key)
     }
 
     @Override
     boolean containsValue(Object value) {
-        configMap.containsValue(value)
+        this.configMap.containsValue(value)
     }
 
     @Override
     Object get(Object key) {
-        configMap.get(key)
+        this.configMap.get(key)
     }
 
     @Override
     Object put(String key, Object value) {
-        configMap.put(key, value)
+        this.configMap.put(key, value)
     }
 
     @Override
@@ -106,17 +106,17 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     Set<String> keySet() {
-        configMap.keySet()
+        this.configMap.keySet()
     }
 
     @Override
     Collection<Object> values() {
-        configMap.values()
+        this.configMap.values()
     }
 
     @Override
     Set<Map.Entry<String, Object>> entrySet() {
-        configMap.entrySet()
+        this.configMap.entrySet()
     }
 
     @Override
@@ -164,11 +164,11 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     void mergeMap(Map sourceMap, boolean parseFlatKeys = false) {
-        configMap.merge(sourceMap, parseFlatKeys)
+        this.configMap.merge(sourceMap, parseFlatKeys)
     }
 
     <T> T navigate(Class<T> requiredType, String... path) {
-        Object result = configMap.navigate(path)
+        Object result = this.configMap.navigate(path)
         if (result == null) {
             return null
         }
@@ -226,7 +226,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     boolean asBoolean() {
-        !configMap.isEmpty()
+        !this.configMap.isEmpty()
     }
 
     Object asType(Class type) {
@@ -257,23 +257,23 @@ class CodeGenConfig implements Cloneable, ConfigMap {
         if (name == 'configMap') {
             return this.configMap
         }
-        configMap.get(name)
+        this.configMap.get(name)
     }
 
     Object get(String name) {
         if (name == 'configMap') {
             return this.configMap
         }
-        configMap.get(name)
+        this.configMap.get(name)
     }
 
     @Override
     Iterator<Map.Entry<String, Object>> iterator() {
-        DefaultGroovyMethods.iterator(configMap)
+        DefaultGroovyMethods.iterator(this.configMap)
     }
 
     <T> T getProperty(String name, Class<T> requiredType) {
-        convertToType(configMap.get(name), requiredType)
+        convertToType(this.configMap.get(name), requiredType)
     }
 
     @Override
@@ -286,7 +286,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     void setProperty(String name, Object value) {
-        configMap.setProperty(name, value)
+        this.configMap.setProperty(name, value)
     }
 
     /**
