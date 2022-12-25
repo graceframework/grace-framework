@@ -25,10 +25,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * @deprecated This class is deprecated to reduce complexity, improve performance, and increase maintainability.
+ * This class is deprecated to reduce complexity, improve performance, and increase maintainability.
  * Use {@code config.getProperty(String key, Class<T> targetType)} instead.
  */
-@Deprecated
 @EqualsAndHashCode
 @CompileStatic
 class NavigableMap implements Map<String, Object>, Cloneable {
@@ -318,12 +317,6 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             return new NullSafeNavigator(this, [name].asImmutable())
         }
         Object result = get(name)
-        if (!(result instanceof NavigableMap)) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Accessing config key '{}' through dot notation is deprecated, and it will be removed in a future release. " +
-                        "Use 'config.getProperty(key, targetClass)' instead.", name)
-            }
-        }
         result
     }
 
@@ -463,10 +456,9 @@ class NavigableMap implements Map<String, Object>, Cloneable {
     }
 
     /**
-     * @deprecated This class will be removed in future.
+     * This class will be removed in future.
      * Use {@code config.getProperty(String key, Class<T> targetType)} instead of dot based navigation.
      */
-    @Deprecated
     @CompileStatic
     static class NullSafeNavigator implements Map<String, Object> {
 
@@ -476,10 +468,6 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         NullSafeNavigator(NavigableMap parent, List<String> path) {
             this.parent = parent
             this.path = path
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Accessing config key '{}' through dot notation is deprecated, and it will be removed in a future release. " +
-                        "Use 'config.getProperty(key, targetClass)' instead.", path)
-            }
         }
 
         Object getAt(Object key) {

@@ -42,12 +42,11 @@ import org.grails.core.exceptions.GrailsConfigurationException;
 /**
  * A {@link Config} implementation that operates against a {@link org.grails.config.NavigableMap}
  *
- * @deprecated This class behavior is related to {@link org.grails.config.NavigableMap} which will be removed in future.
+ * This class behavior is related to {@link org.grails.config.NavigableMap} which will be removed in future.
  * Use {@link grails.config.Config} instead.
  * @author Graeme Rocher
  * @since 3.0
  */
-@Deprecated
 public abstract class NavigableMapConfig implements Config {
 
     protected static final Logger logger = LoggerFactory.getLogger(NavigableMapConfig.class);
