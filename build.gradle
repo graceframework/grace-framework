@@ -13,8 +13,6 @@ buildscript {
     }
 }
 
-apply plugin: 'idea'
-
 ext {
     grailsVersion = project.projectVersion
     groovyVersion = System.getenv('CI_GROOVY_VERSION') ?: libs.versions.groovy.get()
@@ -22,14 +20,9 @@ ext {
     isBuildSnapshot = grailsVersion.endsWith("-SNAPSHOT")
     isReleaseVersion = !isBuildSnapshot
     isCiBuild = System.getenv().get("CI") as Boolean
-}
 
-version = grailsVersion
-group = "org.grails"
-
-// directories created during the build which are related
-// to turning the workspace root into a GRAILS_HOME
-ext {
+    // directories created during the build which are related
+    // to turning the workspace root into a GRAILS_HOME
     distInstallDir = file("$buildDir/dist-tmp")
     homeDistDir = file("dist")
     homeBinDir = file("bin")
@@ -38,16 +31,16 @@ ext {
     homeSrcDir = file("src")
 }
 
+ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
+ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
+
 // Groovy is added as a dependency to both the 'groovy' and 'compile'
 // configurations, so place the dependency in a shared variable. The
 // 'compile' is required so that Groovy appears as a dependency in the
 // artifacts' POMs.
 ext.jointBuildGroovyJarProperty = System.getProperty('groovy.jar')
 ext.groovyDependency = null
-
-ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
-ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
-ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
 
 if (jointBuildGroovyJarProperty) {
     def jointBuildGroovyJar = file(jointBuildGroovyJarProperty)
@@ -62,6 +55,11 @@ if (jointBuildGroovyJarProperty) {
         exclude module:"ant"
     }
 }
+
+version = grailsVersion
+group = "org.grails"
+
+apply plugin: 'idea'
 
 if (isReleaseVersion) {
     apply plugin: 'maven-publish'
@@ -179,16 +177,15 @@ subprojects { project ->
                 delegate.name 'Michael Yan'
             }
         }
-
     }
 
-    if(!project.hasProperty("artifactoryPublishPassword") && System.getenv("ARTIFACTORY_PASSWORD")) {
+    if (!project.hasProperty("artifactoryPublishPassword") && System.getenv("ARTIFACTORY_PASSWORD")) {
         project.ext.artifactoryPublishPassword = System.getenv("ARTIFACTORY_PASSWORD")
     }
 
     apply plugin: 'java-library'
     apply plugin: 'groovy'
-    if(!isTestSuite) {
+    if (!isTestSuite) {
         apply plugin: 'maven-publish'
         apply plugin: 'signing'
     }
@@ -207,7 +204,6 @@ subprojects { project ->
     }
 
     if (!isTestSuite) {
-
         publishing {
             if (isBuildSnapshot) {
                 repositories {
@@ -223,9 +219,7 @@ subprojects { project ->
                 }
             }
 
-            if(project.name == 'grails-dependencies') return
-            if(project.name == 'grails-bom') return
-            if(project.name == 'grails-gradle-plugin') return
+            if (project.name in ['grails-bom', 'grails-dependencies', 'grails-gradle-plugin']) return
 
             publications {
                 mavenJava(MavenPublication) {
@@ -236,7 +230,6 @@ subprojects { project ->
 
                         xml.children().last() + pomInfo
                     }
-
                 }
             }
         }
@@ -251,7 +244,7 @@ subprojects { project ->
         }
 
         javadoc {
-            if(JavaVersion.current().isJava9Compatible()) {
+            if (JavaVersion.current().isJava9Compatible()) {
                 options.addBooleanOption('html5', true)
             }
         }
@@ -266,13 +259,12 @@ subprojects { project ->
 
     }
 
-    if(project.name == 'grails-dependencies') return
-    if(project.name == 'grails-bom') return
+    if (project.name in ['grails-bom', 'grails-dependencies']) return
 
     sourceCompatibility = 11
     targetCompatibility = 11
 
-    jar{
+    jar {
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
@@ -390,7 +382,7 @@ subprojects { project ->
         } else {
             maxHeapSize = '1024m'
         }
-        if(System.getProperty("debug.tests")) {
+        if (System.getProperty("debug.tests")) {
             jvmArgs debugArguments
         }
         finalizedBy jacocoTestReport
@@ -402,7 +394,7 @@ subprojects { project ->
 
     task singleTest(type: Test) {
         // task for running a single test with -DsingleTest.single=TestName singleTest
-        if(System.getProperty("debug.tests")) {
+        if (System.getProperty("debug.tests")) {
             jvmArgs debugArguments
         }
     }
@@ -413,7 +405,7 @@ subprojects { project ->
         all*.exclude group:'commons-logging', module: 'commons-logging'
     }
 
-    if(!isTestSuite) {
+    if (!isTestSuite) {
 
         task installToHomeDist(type: org.grails.gradle.Upload) {
             configuration = configurations.archives
