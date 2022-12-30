@@ -225,6 +225,7 @@ subprojects { project ->
 
             if(project.name == 'grails-dependencies') return
             if(project.name == 'grails-bom') return
+            if(project.name == 'grails-gradle-plugin') return
 
             publications {
                 mavenJava(MavenPublication) {
