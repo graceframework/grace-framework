@@ -60,13 +60,13 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     @Override
     public void init(final DynamicGrailsPlugin plugin, final Map<String, ?> args) throws PluginException {
         this.plugin = plugin;
-        this.key = String.valueOf(args.get("key"));
+        this.key = (String) args.get("key");
         this.completeKey = buildCompleteKey(plugin, this.key);
-        this.name = String.valueOf(args.get("name"));
-        this.i18nNameKey = String.valueOf(args.get("i18nNameKey"));
-        this.description = String.valueOf(args.get("description"));
-        this.descriptionKey = String.valueOf(args.get("descriptionKey"));
-        this.moduleClassName = String.valueOf(args.get("class"));
+        this.name = (String) args.get("name");
+        this.i18nNameKey = (String) args.get("i18nNameKey");
+        this.description = (String) args.get("description");
+        this.descriptionKey = (String) args.get("descriptionKey");
+        this.moduleClassName = (String) args.get("class");
         if (args.get("enabled") instanceof String) {
             this.enabled = Boolean.parseBoolean(StringUtils.defaultString((String) args.get("enabled"), "true"));
         }
