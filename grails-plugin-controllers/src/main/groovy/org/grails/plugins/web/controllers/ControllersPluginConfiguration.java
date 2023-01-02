@@ -19,6 +19,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.Servlet;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -97,7 +98,7 @@ public class ControllersPluginConfiguration {
 
     @Bean(name = DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME)
     public DispatcherServletRegistrationBean dispatcherServletRegistration(ObjectProvider<GrailsApplication> grailsApplicationProvider,
-            GrailsDispatcherServlet dispatcherServlet) {
+            GrailsDispatcherServlet dispatcherServlet, ObjectProvider<MultipartConfigElement> multipartConfig) {
         GrailsApplication grailsApplication = grailsApplicationProvider.getIfAvailable();
         Config config = grailsApplication.getConfig();
         boolean isTomcat = ClassUtils.isPresent("org.apache.catalina.startup.Tomcat", grailsApplication.getClassLoader());
@@ -105,8 +106,10 @@ public class ControllersPluginConfiguration {
                 isTomcat ? Settings.DEFAULT_TOMCAT_SERVLET_PATH : Settings.DEFAULT_WEB_SERVLET_PATH);
 
         DispatcherServletRegistrationBean registration = new DispatcherServletRegistrationBean(dispatcherServlet, grailsServletPath);
+        registration.setName(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME);
         registration.setLoadOnStartup(2);
         registration.setAsyncSupported(true);
+        multipartConfig.ifAvailable(registration::setMultipartConfig);
         return registration;
     }
 
