@@ -104,7 +104,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected ApplicationContext applicationContext;
 
-    protected ModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
+    protected DefaultModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
 
     /**
      * Application startup metrics.
@@ -324,6 +324,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+        this.moduleDescriptorFactory.setApplicationContext(applicationContext);
         for (GrailsPlugin plugin : this.loadedPlugins) {
             plugin.setApplicationContext(applicationContext);
         }

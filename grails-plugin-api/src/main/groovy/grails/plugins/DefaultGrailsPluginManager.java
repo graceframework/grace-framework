@@ -815,6 +815,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+        this.moduleDescriptorFactory.setApplicationContext(applicationContext);
         for (GrailsPlugin plugin : this.loadedPlugins) {
             plugin.setApplicationContext(applicationContext);
         }

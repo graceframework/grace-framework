@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -73,15 +74,9 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory, 
     }
 
     public <T> T create(Class<T> moduleClass) throws IllegalArgumentException {
-        try {
-            return moduleClass.newInstance();
-        }
-        catch (InstantiationException e) {
-            throw new IllegalArgumentException("Unable to instantiate constructor", e);
-        }
-        catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Unable to access constructor", e);
-        }
+        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
+        Object object = beanFactory.createBean(moduleClass, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+        return moduleClass.cast(object);
     }
 
     @Override
