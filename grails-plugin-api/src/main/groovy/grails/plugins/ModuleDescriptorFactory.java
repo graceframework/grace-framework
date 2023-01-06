@@ -15,6 +15,8 @@
  */
 package grails.plugins;
 
+import org.springframework.context.ApplicationContextAware;
+
 import grails.plugins.exceptions.PluginException;
 
 /**
@@ -23,7 +25,7 @@ import grails.plugins.exceptions.PluginException;
  * @author Michael Yan
  * @since 2022.0.0
  */
-public interface ModuleDescriptorFactory {
+public interface ModuleDescriptorFactory extends ApplicationContextAware {
 
     void addModuleDescriptor(String type, Class<? extends ModuleDescriptor> moduleDescriptorClass);
 

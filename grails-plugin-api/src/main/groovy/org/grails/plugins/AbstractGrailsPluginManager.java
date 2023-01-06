@@ -104,7 +104,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     protected ApplicationContext applicationContext;
 
-    protected DefaultModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
+    protected ModuleDescriptorFactory moduleDescriptorFactory = new DefaultModuleDescriptorFactory();
 
     /**
      * Application startup metrics.

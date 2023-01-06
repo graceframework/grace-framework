@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.ModuleDescriptorFactory;
@@ -34,7 +33,7 @@ import grails.plugins.exceptions.PluginException;
  * @author Michael Yan
  * @since 2022.0.0
  */
-public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory, ApplicationContextAware {
+public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
 
     private final Map<String, Class<? extends ModuleDescriptor>> moduleDescriptorClasses = new ConcurrentHashMap<>();
 
