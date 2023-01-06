@@ -40,7 +40,6 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.IOGroovyMethods;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.OrderComparator;
@@ -810,15 +809,6 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
     private boolean hasGrailsPlugin(String name, String version) {
         return getGrailsPlugin(name, version) != null;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-        this.moduleDescriptorFactory.setApplicationContext(applicationContext);
-        for (GrailsPlugin plugin : this.loadedPlugins) {
-            plugin.setApplicationContext(applicationContext);
-        }
     }
 
     public void setParentApplicationContext(ApplicationContext parent) {
