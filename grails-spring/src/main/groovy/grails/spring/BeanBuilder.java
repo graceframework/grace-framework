@@ -73,27 +73,29 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * Spring configuration. Allows syntax like:</p>
  *
  * <pre>
+ *     <code>
  * import org.hibernate.SessionFactory
  * import org.apache.tomcat.jdbc.pool.DataSource
  *
  * BeanBuilder builder = new BeanBuilder()
  * builder.beans {
- *   dataSource(DataSource) {                  // <--- invokeMethod
- *      driverClassName = "org.h2.Driver"
- *      url = "jdbc:h2:mem:grailsDB"
- *      username = "sa"                            // <-- setProperty
- *      password = ""
- *      settings = [mynew:"setting"]
- *  }
- *  sessionFactory(SessionFactory) {
- *         dataSource = dataSource                 // <-- getProperty for retrieving refs
- *  }
- *  myService(MyService) {
- *      nestedBean = { AnotherBean bean->          // <-- setProperty with closure for nested bean
- *              dataSource = dataSource
- *      }
- *  }
+ *   dataSource(DataSource) {                  // &lt;--- invokeMethod
+ *     driverClassName = "org.h2.Driver"
+ *     url = "jdbc:h2:mem:grailsDB"
+ *     username = "sa"                            // &lt;-- setProperty
+ *     password = ""
+ *     settings = [mynew:"setting"]
+ *   }
+ *   sessionFactory(SessionFactory) {
+ *     dataSource = dataSource                 // &lt;-- getProperty for retrieving refs
+ *   }
+ *   myService(MyService) {
+ *     nestedBean = { AnotherBean bean -&gt;          // &lt;-- setProperty with closure for nested bean
+ *       dataSource = dataSource
+ *     }
+ *   }
  * }
+ * </code>
  * </pre>
  * <p>
  *   You can also use the Spring IO API to load resources containing beans defined as a Groovy
