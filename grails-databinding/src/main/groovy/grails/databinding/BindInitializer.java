@@ -19,7 +19,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This annotation may be applied to a a field to
+ * This annotation may be applied to a field to
  * customize initialization of object properties in the data binding process.
  * When the annotation is applied to a field, the value assigned to the
  * annotation should be a Closure which accepts 1 parameter.
@@ -35,7 +35,7 @@ class Contact{
 }
 class User {
     &#064;BindInitializer({
-        obj -> new Contact(account:obj.account)
+        obj -&gt; new Contact(account:obj.account)
     })
     Contact contact
     Account account

@@ -33,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 <pre>
 class SomeClass {
     &#064;BindUsing({
-        obj, source -> source['name']?.toUpperCase()
+        obj, source -&gt; source['name']?.toUpperCase()
     })
     String name
 }

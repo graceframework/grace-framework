@@ -27,7 +27,7 @@ class Address {
 }
 class StructuredAddressBindingEditor implements StructuredBindingEditor {
 
-    public Object getPropertyValue(Object obj, String propertyName, Map<String, Object> source) {
+    public Object getPropertyValue(Object obj, String propertyName, Map&lt;String, Object&gt; source) {
         def address = new Address()
 
         address.state = source[propertyName + '_someState']
