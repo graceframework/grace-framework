@@ -282,8 +282,8 @@ public final class GrailsResourceUtils {
 
     /**
      * Extract the filename from the given path,
-     * e.g. "mypath/myfile.txt" -> "myfile.txt".
-     * @param path the file path (may be <code>null</code>)
+     * e.g. "mypath/myfile.txt" -&gt; "myfile.txt".
+     * @param path the file path (maybe <code>null</code>)
      * @return the extracted filename, or <code>null</code> if none
      */
     public static String getFilename(String path) {
