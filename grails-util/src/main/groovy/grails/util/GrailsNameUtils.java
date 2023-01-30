@@ -25,7 +25,7 @@ import java.util.Set;
 
 /**
  * Utility methods for converting between different name types,
- * for example from class names -> property names and vice-versa. The
+ * for example from class names -&gt; property names and vice-versa. The
  * key aspect of this class is that it has no dependencies outside the JDK!
  */
 public final class GrailsNameUtils {
