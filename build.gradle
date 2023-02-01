@@ -298,11 +298,14 @@ subprojects { project ->
         groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
         groovyOptions.encoding = "UTF-8"
         options.encoding = "UTF-8"
+        options.deprecation = true
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
     configure([compileJava, compileTestJava]) {
         options.deprecation = true
         options.debug = true
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
     configure([groovydoc]) {
