@@ -161,12 +161,14 @@ public class GrailsApplicationPostProcessor
     }
 
     protected void customizePluginManager(GrailsPluginManager grailsPluginManager) {
-        Collection<GrailsPluginManagerCustomizer> pluginManagerCustomizers = applicationContext.getBeansOfType(GrailsPluginManagerCustomizer.class).values();
+        Collection<GrailsPluginManagerCustomizer> pluginManagerCustomizers = this.applicationContext.getBeansOfType(
+                GrailsPluginManagerCustomizer.class).values();
         pluginManagerCustomizers.forEach(customizer -> customizer.customize(grailsPluginManager));
     }
 
     protected void customizeGrailsApplication(GrailsApplication grailsApplication) {
-        Collection<GrailsApplicationCustomizer> grailsApplicationCustomizers = applicationContext.getBeansOfType(GrailsApplicationCustomizer.class).values();
+        Collection<GrailsApplicationCustomizer> grailsApplicationCustomizers = this.applicationContext.getBeansOfType(
+                GrailsApplicationCustomizer.class).values();
         grailsApplicationCustomizers.forEach(customizer -> customizer.customize(grailsApplication));
     }
 

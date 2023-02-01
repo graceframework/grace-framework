@@ -36,7 +36,7 @@ public class I18nGroovyShellBindingCustomizer implements GroovyShellBindingCusto
 
     @Override
     public void customize(Binding binding) {
-        binding.setVariable("i18n", messageSource);
+        binding.setVariable("i18n", this.messageSource);
     }
 
 }
