@@ -13,7 +13,6 @@ dependencies {
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.boot.autoconfigure
-    annotationProcessor(libs.spring.boot.configurationProcessor)
     api libs.spring.context
     api libs.spring.core
     api libs.spring.web
