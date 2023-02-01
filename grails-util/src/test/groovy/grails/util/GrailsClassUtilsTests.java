@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Graeme Rocher
  */
+@SuppressWarnings("deprecation")
 public class GrailsClassUtilsTests {
 
     @Test
