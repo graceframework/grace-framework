@@ -14,7 +14,7 @@ dependencies {
     api libs.groovy.templates
     api libs.spring.contextSupport
     api libs.spring.webmvc
-    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+    compileOnly libs.jsr305
     implementation libs.caffeine
 
     testImplementation project(":grails-test")

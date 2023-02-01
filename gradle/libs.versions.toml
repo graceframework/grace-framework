@@ -26,6 +26,7 @@ gson = "2.9.1"
 h2 = "2.1.214"
 hsqldb = "2.5.2"
 itext = "2.0.8"
+jackson-databind = "2.13.4"
 jansi = "2.4.0"
 jakarta-annotation = "2.0.0"
 javaparser = "3.15.14"
@@ -42,6 +43,7 @@ jline = "2.14.6"
 jna = "5.10.0"
 json-unit = "2.36.0"
 jsoup = "1.15.3"
+jsr305 = "3.0.2"
 junit-jupiter = "5.8.2"
 junit-platform = "1.8.2"
 maven = "3.6.3"
@@ -140,6 +142,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
 itext = { module = "com.lowagie:itext", version.ref = "itext" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
 jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
 jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
@@ -156,6 +159,7 @@ jline = { module = "jline:jline", version.ref = "jline" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 json-unit = { module = "net.javacrumbs.json-unit:json-unit", version.ref = "json-unit" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }

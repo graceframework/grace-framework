@@ -5,7 +5,7 @@ dependencies {
 
     api libs.spring.boot.actuator.autoconfigure
     api libs.spring.boot.autoconfigure
-    compileOnly("com.fasterxml.jackson.core:jackson-databind:2.13.4")
+    compileOnly libs.jackson.databind
 
     testImplementation project(":grails-test")
 }
