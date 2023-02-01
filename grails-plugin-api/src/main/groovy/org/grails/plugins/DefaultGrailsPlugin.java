@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.plugins;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,6 +49,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.util.ReflectionUtils;
 
 import grails.core.ArtefactHandler;
 import grails.core.GrailsApplication;
@@ -862,16 +864,23 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
         for (Object artefact : l) {
             if (artefact instanceof Class) {
-                Class artefactClass = (Class) artefact;
+                Class<?> artefactClass = (Class) artefact;
                 if (ArtefactHandler.class.isAssignableFrom(artefactClass)) {
                     try {
-                        this.grailsApplication.registerArtefactHandler((ArtefactHandler) artefactClass.newInstance());
+                        ArtefactHandler artefactHandler = (ArtefactHandler) ReflectionUtils.accessibleConstructor(artefactClass).newInstance();
+                        this.grailsApplication.registerArtefactHandler(artefactHandler);
                     }
                     catch (InstantiationException e) {
                         logger.error("Cannot instantiate an Artefact Handler:" + e.getMessage(), e);
                     }
                     catch (IllegalAccessException e) {
                         logger.error("The constructor of the Artefact Handler is not accessible:" + e.getMessage(), e);
+                    }
+                    catch (InvocationTargetException e) {
+                        logger.error("Failed to invoke Artefact constructor: " + artefactClass.getName(), e);
+                    }
+                    catch (NoSuchMethodException e) {
+                        logger.error("No default constructor on Artefact class: " + artefactClass.getName(), e);
                     }
                 }
                 else {
@@ -916,6 +925,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getProperties() {
         return DefaultGroovyMethods.getProperties(this.plugin);
     }
