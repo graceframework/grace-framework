@@ -174,18 +174,13 @@ BINTRAY_KEY=key
                                     if (!title && pluginXml) {
                                         title = pluginXml.title?.text()
                                     }
-                                    if (!title) {
-                                        title = project.name
-                                    }
+                                    title = title ?: project.name
                                     delegate.name title
                                     def desc = gpe.desc
                                     if (!desc && pluginXml) {
                                         desc = pluginXml.description?.text()
-                                        println 'pluginXml:' + desc
                                     }
-                                    if (!desc) {
-                                        desc = title
-                                    }
+                                    desc = desc ?: title
                                     delegate.description desc
 
                                     def websiteUrl = gpe.websiteUrl ?: gpe.githubSlug ? "https://github.com/$gpe.githubSlug" : ''

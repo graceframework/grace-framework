@@ -38,10 +38,10 @@ class GrailsExtension {
 
     static String getInfo(Grails grails) {
         new StringBuilder()
-                .append("\nApplication: ").append(Metadata.current.getApplicationName())
-                .append("\nVersion:     ").append(Metadata.current.getApplicationVersion())
-                .append("\nEnvironment: ").append(Environment.current.name)
-                .append("\n")
+                .append('\nApplication: ').append(Metadata.current.getApplicationName())
+                .append('\nVersion:     ').append(Metadata.current.getApplicationVersion())
+                .append('\nEnvironment: ').append(Environment.current.name)
+                .append('\n')
                 .toString()
     }
 

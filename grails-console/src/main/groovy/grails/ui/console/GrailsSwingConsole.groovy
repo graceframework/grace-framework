@@ -78,7 +78,7 @@ class GrailsSwingConsole extends Grails {
         binding.setVariable('app', this)
         binding.setVariable('ctx', context)
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
-        bindingCustomizers?.each {customizer -> customizer.customize(binding) }
+        bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
         CompilerConfiguration baseConfig = new CompilerConfiguration()
         baseConfig.addCompilationCustomizers(new ImportCustomizer().addStarImports(imports))

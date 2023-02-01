@@ -42,6 +42,14 @@ import grails.ui.shell.support.GroovyshWebApplicationContext
 @InheritConstructors
 class GrailsShell extends Grails {
 
+    static final String[] BANNER = [
+            '  _____                         ______       ____',
+            ' / ___/______  ___ _  ____ __  / __/ /  ___ / / /',
+            '/ (_ / __/ _ \\/ _ \\ |/ / // / _\\ \\/ _ \\/ -_) / /',
+            '\\___/_/  \\___/\\___/___/\\_, / /___/_//_/\\__/_/_/',
+            '                      /___/'
+    ]
+
     GrailsShell(Class<?>... sources) {
         super(sources)
         configureApplicationContextClass()
@@ -75,19 +83,12 @@ class GrailsShell extends Grails {
         binding.setVariable('app', this)
         binding.setVariable('ctx', context)
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
-        bindingCustomizers?.each {customizer -> customizer.customize(binding) }
+        bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
         Groovysh groovysh = new Groovysh(binding, new IO()) {
 
             @Override
             void displayWelcomeBanner(InteractiveShellRunner runner) {
-                String[] BANNER = [
-                        '  _____                         ______       ____',
-                        ' / ___/______  ___ _  ____ __  / __/ /  ___ / / /',
-                        '/ (_ / __/ _ \\/ _ \\ |/ / // / _\\ \\/ _ \\/ -_) / /',
-                        '\\___/_/  \\___/\\___/___/\\_, / /___/_//_/\\__/_/_/',
-                        '                      /___/'
-                ]
                 io.out.println()
 
                 for (String line : BANNER) {

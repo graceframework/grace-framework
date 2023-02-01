@@ -183,7 +183,7 @@ abstract class GrailsStringUtils extends StringUtils {
 
     @Override
     static boolean isEmpty(@Nullable Object str) {
-        return ObjectUtils.isEmpty(str)
+        ObjectUtils.isEmpty(str)
     }
 
     /**

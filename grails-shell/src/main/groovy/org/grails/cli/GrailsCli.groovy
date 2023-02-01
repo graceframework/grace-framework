@@ -224,24 +224,24 @@ class GrailsCli {
             def currentVersion = GrailsVersion.current()
             def grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
-            sb.append("%n------------------------------------------------------------%nGrails ")
+            sb.append('%n------------------------------------------------------------%nGrails ')
             sb.append(currentVersion.getVersion())
-            sb.append("%n------------------------------------------------------------%n%nBuild time:   ");
-            sb.append(currentVersion.getBuildTimestamp());
-            sb.append("%nRevision:     ");
-            sb.append(currentVersion.getGitRevision());
-            sb.append("%n%nSpring Boot:  ")
+            sb.append('%n------------------------------------------------------------%n%nBuild time:   ')
+            sb.append(currentVersion.getBuildTimestamp())
+            sb.append('%nRevision:     ')
+            sb.append(currentVersion.getGitRevision())
+            sb.append('%n%nSpring Boot:  ')
             sb.append(grailsDependencies.getSpringBootVersion())
-            sb.append("%nGradle:       ")
+            sb.append('%nGradle:       ')
             sb.append(DefaultGradleVersion.current().getVersion())
-            sb.append("%nGroovy:       ")
+            sb.append('%nGroovy:       ')
             sb.append(grailsDependencies.getGroovyVersion())
-            sb.append("%nJVM:          ")
-            sb.append(String.format("%s (%s %s)", System.getProperty('java.version'),
+            sb.append('%nJVM:          ')
+            sb.append(String.format('%s (%s %s)', System.getProperty('java.version'),
                     System.getProperty('java.vm.vendor'), System.getProperty('java.vm.version')))
-            sb.append("%nOS:           ")
-            sb.append(String.format("%s %s %s", System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch')))
-            sb.append("%n%n")
+            sb.append('%nOS:           ')
+            sb.append(String.format('%s %s %s', System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch')))
+            sb.append('%n%n')
             def console = GrailsConsole.instance
             console.log(String.format(sb.toString()))
             exit(0)
