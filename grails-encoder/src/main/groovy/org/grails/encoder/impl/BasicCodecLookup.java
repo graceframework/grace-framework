@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,6 +102,7 @@ public class BasicCodecLookup implements CodecLookup, InitializingBean {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected <T extends CodecIdentifierProvider> T createChainedCodecInstance(String codecName, ConcurrentMap<String, T> map, Class<T> returnType) {
         String[] codecs = codecName.split(",");
         List<T> codecInstances = new ArrayList<>(codecs.length);
