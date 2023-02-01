@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.io.support;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,6 +38,7 @@ import java.util.regex.Pattern;
 import groovy.lang.Closure;
 import groovy.util.ConfigObject;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.springframework.util.ReflectionUtils;
 
 import grails.util.BuildSettings;
 
@@ -245,6 +247,7 @@ public final class GrailsResourceUtils {
         }
     };
 
+    @SuppressWarnings("unchecked")
     private static final Map<String, Boolean> KNOWN_DOMAIN_CLASSES = DefaultGroovyMethods.withDefault(new LinkedHashMap<String, Boolean>() {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
@@ -1023,18 +1026,20 @@ public final class GrailsResourceUtils {
 
     @SuppressWarnings("unchecked")
     public static Object instantiateFromConfig(ConfigObject config, String configKey, String defaultClassName)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, LinkageError {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException,
+            LinkageError, InvocationTargetException, NoSuchMethodException {
         return instantiateFromFlatConfig(config.flatten(), configKey, defaultClassName);
     }
 
     public static Object instantiateFromFlatConfig(Map<String, Object> flatConfig, String configKey, String defaultClassName)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, LinkageError {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException,
+            LinkageError, NoSuchMethodException, InvocationTargetException {
         String className = defaultClassName;
         Object configName = flatConfig.get(configKey);
         if (configName instanceof CharSequence) {
             className = configName.toString();
         }
-        return forName(className, DefaultResourceLoader.getDefaultClassLoader()).newInstance();
+        return ReflectionUtils.accessibleConstructor(forName(className, DefaultResourceLoader.getDefaultClassLoader())).newInstance();
     }
 
     private static Class<?> forName(String className, ClassLoader defaultClassLoader) throws ClassNotFoundException {

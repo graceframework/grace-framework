@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-import org.fusesource.jansi.AnsiConsole;
+import org.springframework.util.ReflectionUtils;
 
 import grails.util.Environment;
 
@@ -385,7 +385,7 @@ public class GrailsConsole implements ConsoleLogger {
         if (this.terminal instanceof UnixTerminal) {
             // workaround for GRAILS-11494
             try {
-                new TerminalLineSettings().set("sane");
+                TerminalLineSettings.getSettings(TerminalLineSettings.DEFAULT_TTY).set("sane");
             }
             catch (Exception ignored) {
             }
@@ -416,13 +416,13 @@ public class GrailsConsole implements ConsoleLogger {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static GrailsConsole createInstance() throws IOException {
         String className = System.getProperty("grails.console.class");
         if (className != null) {
             try {
-                @SuppressWarnings("unchecked")
                 Class<? extends GrailsConsole> klass = (Class<? extends GrailsConsole>) Class.forName(className);
-                return klass.newInstance();
+                return ReflectionUtils.accessibleConstructor(klass).newInstance();
             }
             catch (Exception e) {
                 e.printStackTrace();
