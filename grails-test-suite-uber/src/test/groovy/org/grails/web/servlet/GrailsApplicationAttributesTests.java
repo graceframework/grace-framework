@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockServletContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("deprecation")
 public class GrailsApplicationAttributesTests {
 
     /*
