@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.ReflectionUtils;
 
 import org.grails.web.converters.exceptions.ConverterException;
 
@@ -69,7 +70,7 @@ public final class ConverterUtil {
 
     public static <T> T createConverter(Class<T> converterClass, Object target, ApplicationContext applicationContext) throws ConverterException {
         try {
-            T converter = converterClass.newInstance();
+            T converter = ReflectionUtils.accessibleConstructor(converterClass).newInstance();
             if (converter instanceof ApplicationContextAware && applicationContext != null) {
                 ((ApplicationContextAware) converter).setApplicationContext(applicationContext);
             }
