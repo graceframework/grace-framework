@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.compiler.injection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Opcodes;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.ClassInjector;
@@ -52,7 +54,7 @@ import org.grails.io.support.Resource;
  * @author Graeme Rocher
  * @since 0.6
  */
-public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassNodeOperation {
+public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryClassNodeOperation {
 
     private static final String INJECTOR_SCAN_PACKAGE = "org.grails.compiler";
 
@@ -94,6 +96,7 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
         return this.localClassInjectors;
     }
 
+    @SuppressWarnings("unchecked")
     private static void initializeState() {
         if (classInjectors != null) {
             return;
@@ -141,7 +144,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                                     if (ClassInjector.class.isAssignableFrom(injectorClass)) {
 
                                         injectorClasses.add(injectorClass);
-                                        ClassInjector classInjector = (ClassInjector) injectorClass.newInstance();
+                                        ClassInjector classInjector = (ClassInjector) ReflectionUtils.accessibleConstructor(injectorClass)
+                                                .newInstance();
                                         injectors.add(classInjector);
                                         if (GlobalClassInjector.class.isAssignableFrom(injectorClass)) {
                                             globalInjectors.add(classInjector);
@@ -149,7 +153,8 @@ public class GrailsAwareInjectionOperation extends CompilationUnit.PrimaryClassN
                                     }
                                 }
                             }
-                            catch (ClassNotFoundException | InstantiationException | IllegalAccessException ignored) {
+                            catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                                   | InvocationTargetException | NoSuchMethodException ignored) {
                             }
                             return super.visitAnnotation(desc, visible);
                         }

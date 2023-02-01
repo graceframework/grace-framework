@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ import org.grails.io.support.Resource;
  * @author Graeme Rocher
  * @author Marc Palmer (marc@anyware.co.uk)
  */
+@SuppressWarnings("deprecation")
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements GrailsApplicationAware, Ordered {
 
     public static final String TYPE = "Domain";

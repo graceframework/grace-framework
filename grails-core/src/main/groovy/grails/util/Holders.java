@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package grails.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.Lifecycle;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 
 import grails.config.Config;
 import grails.core.GrailsApplication;
@@ -40,6 +42,7 @@ import org.grails.core.support.GrailsApplicationDiscoveryStrategy;
  *
  * @since 2.0
  */
+@SuppressWarnings("unchecked")
 public final class Holders {
 
     private static final Log logger = LogFactory.getLog(Holders.class);
@@ -222,9 +225,9 @@ public final class Holders {
     private static void createServletContextsHolder() {
         try {
             Class<?> clazz = Holders.class.getClassLoader().loadClass("grails.web.context.WebRequestServletHolder");
-            servletContexts = (Holder) clazz.newInstance();
+            servletContexts = (Holder) ReflectionUtils.accessibleConstructor(clazz).newInstance();
         }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             // shouldn't happen
             logger.debug("Error initializing servlet context holder, not running in Servlet environment: " + e.getMessage(), e);
         }
