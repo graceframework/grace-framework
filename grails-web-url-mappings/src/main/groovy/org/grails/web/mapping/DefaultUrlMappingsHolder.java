@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1026,6 +1026,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         // A map from a UrlMappingsListKey to a list of UrlMappingKeys
         private final Map<UrlMappingsListKey, List<UrlMappingKey>> lookup = new HashMap<>();
 
+        @SuppressWarnings("unchecked")
         public void put(UrlMappingsListKey key, UrlMappingKey mapping) {
             List<UrlMappingKey> mappingsList = this.lookup.computeIfAbsent(key, k -> new ArrayList<>());
 
