@@ -6,7 +6,7 @@ import org.grails.web.json.JSONElement;
 import org.grails.web.json.JSONObject;
 
 
-@SuppressWarnings("all")
+@SuppressWarnings({ "deprecation", "unchecked" })
 public final class JSONParser implements JsonParserConstants {
 
     final public Object parse() throws ParseException {

@@ -28,18 +28,25 @@ import org.codehaus.groovy.runtime.StringGroovyMethods;
 /**
  * PathMatcher implementation for Ant-style path patterns. Examples are provided below.
  *
- * <p>Part of this mapping code has been kindly borrowed from <a href="http://ant.apache.org">Apache Ant</a>.
+ * <p>Part of this mapping code has been kindly borrowed from <a href="http://ant.apache.org">Apache Ant</a>.</p>
  *
- * <p>The mapping matches URLs using the following rules:<br> <ul> <li>? matches one character</li> <li>* matches zero
- * or more characters</li> <li>** matches zero or more 'directories' in a path</li> </ul>
+ * <p>The mapping matches URLs using the following rules:<br>
+ * <ul>
+ *     <li>{@code ?} matches one character</li>
+ *     <li>{@code *} matches zero or more characters</li>
+ *     <li>{@code **} matches zero or more 'directories' in a path</li>
+ * </ul>
  *
- * <p>Some examples:<br> <ul> <li><code>com/t?st.jsp</code> - matches <code>com/test.jsp</code> but also
- * <code>com/tast.jsp</code> or <code>com/txst.jsp</code></li> <li><code>com/*.jsp</code> - matches all
- * <code>.jsp</code> files in the <code>com</code> directory</li> <li><code>com/&#42;&#42;/test.jsp</code> - matches all
- * <code>test.jsp</code> files underneath the <code>com</code> path</li> <li><code>org/springframework/&#42;&#42;/*.jsp</code>
- * - matches all <code>.jsp</code> files underneath the <code>org/springframework</code> path</li>
- * <li><code>org/&#42;&#42;/servlet/bla.jsp</code> - matches <code>org/springframework/servlet/bla.jsp</code> but also
- * <code>org/springframework/testing/servlet/bla.jsp</code> and <code>org/servlet/bla.jsp</code></li> </ul>
+ * <h3>Some examples:</h3>
+ * <ul>
+ *     <li>{@code com/t?st.jsp} - matches {@code com/test.jsp} but also {@code com/tast.jsp} or {@code com/txst.jsp}</li>
+ *     <li>{@code com/*.jsp} - matches all {@code .jsp} files in the {@code com} directory</li>
+ *     <li><code>com/&#42;&#42;/test.jsp</code> - matches all</li>
+ *     <li>{@code test.jsp} files underneath the com path</li>
+ *     <li><code>org/springframework/&#42;&#42;/*.jsp</code> - matches all {@code .jsp} files underneath the {@code org/springframework} path</li>
+ *     <li><code>org/&#42;&#42;/servlet/bla.jsp</code> - matches {@code org/springframework/servlet/bla.jsp} but also
+ *     {@code org/springframework/testing/servlet/bla.jsp} and {@code org/servlet/bla.jsp}</li>
+ * </ul>
  *
  * @author Alef Arendsen
  * @author Juergen Hoeller
@@ -226,15 +233,15 @@ public class AntPathMatcher {
 
     /**
      * Given a pattern and a full path, determine the pattern-mapped part. <p>For example: <ul>
-     * <li>'<code>/docs/cvs/commit.html</code>' and '<code>/docs/cvs/commit.html</code> -> ''</li>
-     * <li>'<code>/docs/*</code>' and '<code>/docs/cvs/commit</code> -> '<code>cvs/commit</code>'</li>
-     * <li>'<code>/docs/cvs/*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '<code>commit.html</code>'</li>
-     * <li>'<code>/docs&#47;**</code>' and '<code>/docs/cvs/commit</code> -> '<code>cvs/commit</code>'</li>
-     * <li>'<code>/docs&#47;**&#47;*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '<code>cvs/commit.html</code>'</li>
-     * <li>'<code>/*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '<code>docs/cvs/commit.html</code>'</li>
-     * <li>'<code>*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '<code>/docs/cvs/commit.html</code>'</li>
-     * <li>'<code>*</code>' and '<code>/docs/cvs/commit.html</code> -> '<code>/docs/cvs/commit.html</code>'</li> </ul>
-     * <p>Assumes that {@link #match} returns <code>true</code> for '<code>pattern</code>' and '<code>path</code>', but
+     * <li>'{@code /docs/cvs/commit.html}' and '{@code /docs/cvs/commit.html} &rarr; ''</li>
+     * <li>'{@code /docs/*}' and '{@code /docs/cvs/commit} &rarr; '{@code cvs/commit}'</li>
+     * <li>'{@code /docs/cvs/*.html}' and '{@code /docs/cvs/commit.html} &rarr; '{@code commit.html}'</li>
+     * <li>'{@code /docs/**}' and '{@code /docs/cvs/commit} &rarr; '{@code cvs/commit}'</li>
+     * <li>'{@code /docs/**\/*.html}' and '{@code /docs/cvs/commit.html} &rarr; '{@code cvs/commit.html}'</li>
+     * <li>'{@code /*.html}' and '{@code /docs/cvs/commit.html} &rarr; '{@code docs/cvs/commit.html}'</li>
+     * <li>'{@code *.html}' and '{@code /docs/cvs/commit.html} &rarr; '{@code /docs/cvs/commit.html}'</li>
+     * <li>'{@code *}' and '{@code /docs/cvs/commit.html} &rarr; '{@code /docs/cvs/commit.html}'</li> </ul>
+     * <p>Assumes that {@link #match} returns {@code true} for '{@code pattern}' and '{@code path}', but
      * does <strong>not</strong> enforce this.
      */
     public String extractPathWithinPattern(String pattern, String path) {

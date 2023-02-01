@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package grails.web.databinding;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import javax.servlet.ServletRequest;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -173,7 +175,7 @@ public final class DataBindingUtils {
      */
     public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate,
             final CollectionDataBindingSource collectionBindingSource)
-            throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         final GrailsApplication application = Holders.findApplication();
         PersistentEntity entity = null;
@@ -187,7 +189,7 @@ public final class DataBindingUtils {
         }
         final List<DataBindingSource> dataBindingSources = collectionBindingSource.getDataBindingSources();
         for (final DataBindingSource dataBindingSource : dataBindingSources) {
-            final T newObject = targetType.newInstance();
+            final T newObject = ReflectionUtils.accessibleConstructor(targetType).newInstance();
             bindObjectToDomainInstance(entity, newObject, dataBindingSource, getBindingIncludeList(newObject), Collections.emptyList(), null);
             collectionToPopulate.add(newObject);
         }
@@ -195,7 +197,7 @@ public final class DataBindingUtils {
 
     public static <T> void bindToCollection(final Class<T> targetType,
             final Collection<T> collectionToPopulate, final ServletRequest request)
-            throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
         final GrailsApplication grailsApplication = Holders.findApplication();
         final CollectionDataBindingSource collectionDataBindingSource = createCollectionDataBindingSource(grailsApplication, targetType, request);

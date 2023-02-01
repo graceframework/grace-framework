@@ -1,4 +1,4 @@
-/* Copyright 2004-2005 Graeme Rocher
+/* Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * @author Graeme Rocher
  * @since 1.0
  */
+@SuppressWarnings("deprecation")
 public class GroovyPagesUriSupportTests {
 
     @Test

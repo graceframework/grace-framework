@@ -17,6 +17,7 @@ package grails.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -894,6 +895,7 @@ public final class GrailsClassUtils {
      * @return true if it is a javabean property getter
      * @deprecated use {@link #isGetter(String, Class, Class[])} instead because this method has a defect for "is.." method with Boolean return types.
      */
+    @Deprecated
     public static boolean isGetter(String name, Class<?>[] args) {
         return GrailsNameUtils.isGetter(name, boolean.class, args);
     }
@@ -920,6 +922,7 @@ public final class GrailsClassUtils {
      * @deprecated Use {@link #getPropertyForGetter(String, Class)} instead
      * because this method has a defect for "is.." method with Boolean return types.
      */
+    @Deprecated
     public static String getPropertyForGetter(String getterName) {
         return GrailsNameUtils.getPropertyForGetter(getterName);
     }
@@ -981,18 +984,21 @@ public final class GrailsClassUtils {
 
     @SuppressWarnings("unchecked")
     public static Object instantiateFromConfig(ConfigObject config, String configKey, String defaultClassName)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, LinkageError {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException,
+            LinkageError, InvocationTargetException, NoSuchMethodException {
         return instantiateFromFlatConfig(config.flatten(), configKey, defaultClassName);
     }
 
     public static Object instantiateFromFlatConfig(Map<String, Object> flatConfig, String configKey, String defaultClassName)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException, LinkageError {
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException,
+            LinkageError, NoSuchMethodException, InvocationTargetException {
         String className = defaultClassName;
         Object configName = flatConfig.get(configKey);
         if (configName instanceof CharSequence) {
             className = configName.toString();
         }
-        return ClassUtils.forName(className, ClassUtils.getDefaultClassLoader()).newInstance();
+        Class<?> clazz = ClassUtils.forName(className, ClassUtils.getDefaultClassLoader());
+        return ReflectionUtils.accessibleConstructor(clazz).newInstance();
     }
 
 }

@@ -117,8 +117,8 @@ abstract class AbstractDirectoryWatcher implements Runnable {
 
     /**
      * Extract the filename extension from the given path,
-     * e.g. "mypath/myfile.txt" -> "txt".
-     * @param path the file path (may be {@code null})
+     * e.g. "mypath/myfile.txt" -&gt; "txt".
+     * @param path the file path (maybe {@code null})
      * @return the extracted filename extension, or {@code null} if none
      */
     public static String getFilenameExtension(String path) {

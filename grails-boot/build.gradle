@@ -21,6 +21,7 @@ dependencies {
     api libs.micronaut.inject
     compileOnly libs.micronaut.spring
     compileOnly libs.micronaut.spring.context
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
     testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-test")

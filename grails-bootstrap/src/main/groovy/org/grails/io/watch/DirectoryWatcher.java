@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * Utility class to watch directories for changes.
@@ -57,22 +58,23 @@ public class DirectoryWatcher extends Thread {
                 }
                 if (jnaAvailable) {
                     if (ClassUtils.isPresent("io.methvin.watchservice.MacOSXListeningWatchService", this.getContextClassLoader())) {
-                        directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
-                                "org.grails.io.watch.MacOsWatchServiceDirectoryWatcher").newInstance();
+                        directoryWatcherDelegate =
+                                (AbstractDirectoryWatcher) ReflectionUtils.accessibleConstructor(
+                                        Class.forName("org.grails.io.watch.MacOsWatchServiceDirectoryWatcher")).newInstance();
                     }
                     else {
-                        directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
-                                "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                        directoryWatcherDelegate = (AbstractDirectoryWatcher) ReflectionUtils.accessibleConstructor(
+                                Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher")).newInstance();
                     }
                 }
                 else {
-                    directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
-                            "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                    directoryWatcherDelegate = (AbstractDirectoryWatcher) ReflectionUtils.accessibleConstructor(
+                            Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher")).newInstance();
                 }
             }
             else {
-                directoryWatcherDelegate = (AbstractDirectoryWatcher) Class.forName(
-                        "org.grails.io.watch.WatchServiceDirectoryWatcher").newInstance();
+                directoryWatcherDelegate = (AbstractDirectoryWatcher) ReflectionUtils.accessibleConstructor(
+                        Class.forName("org.grails.io.watch.WatchServiceDirectoryWatcher")).newInstance();
             }
         }
         catch (Throwable e) {

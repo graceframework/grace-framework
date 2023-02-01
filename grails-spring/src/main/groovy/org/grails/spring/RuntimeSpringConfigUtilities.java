@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.grails.spring;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import groovy.lang.Binding;
@@ -29,6 +30,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 import grails.spring.BeanBuilder;
 
@@ -101,13 +103,13 @@ public final class RuntimeSpringConfigUtilities {
 
     public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config,
             Map<String, Object> variables, Class<?> groovySpringResourcesClass)
-            throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         springGroovyResourcesBeanBuilder = new BeanBuilder(null, config, classLoader);
         springGroovyResourcesBeanBuilder.setBinding(new Binding(variables));
         springGroovyResourcesBeanBuilder.setBeanBuildResource(new DescriptiveResource(groovySpringResourcesClass.getName()));
-        Script script = (Script) groovySpringResourcesClass.newInstance();
+        Script script = (Script) ReflectionUtils.accessibleConstructor(groovySpringResourcesClass).newInstance();
         script.run();
         Object beans = script.getProperty("beans");
         springGroovyResourcesBeanBuilder.beans((Closure<?>) beans);
@@ -116,7 +118,7 @@ public final class RuntimeSpringConfigUtilities {
 
     public static BeanBuilder reloadSpringResourcesConfig(RuntimeSpringConfiguration config,
             Map<String, Object> variables, Resource resource)
-            throws InstantiationException, IllegalAccessException, IOException {
+            throws InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         GroovyClassLoader gcl = new GroovyClassLoader(classLoader);
@@ -124,7 +126,7 @@ public final class RuntimeSpringConfigUtilities {
         springGroovyResourcesBeanBuilder = new BeanBuilder(null, config, classLoader);
         springGroovyResourcesBeanBuilder.setBinding(new Binding(variables));
         springGroovyResourcesBeanBuilder.setBeanBuildResource(resource);
-        Script script = (Script) groovySpringResourcesClass.newInstance();
+        Script script = (Script) ReflectionUtils.accessibleConstructor(groovySpringResourcesClass).newInstance();
         script.run();
         Object beans = script.getProperty("beans");
         springGroovyResourcesBeanBuilder.beans((Closure<?>) beans);

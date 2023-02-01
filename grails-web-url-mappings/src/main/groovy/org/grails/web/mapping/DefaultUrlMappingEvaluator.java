@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,8 +173,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public List evaluateMappings(Resource resource) {
+    public List<UrlMapping> evaluateMappings(Resource resource) {
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();
@@ -493,6 +492,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param callable the customizer
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping get(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.GET.toString());
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -514,6 +514,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping post(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.POST);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -535,6 +536,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping put(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.PUT);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -556,6 +558,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping patch(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.PATCH);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -577,6 +580,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping delete(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.DELETE);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -598,6 +602,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping head(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.HEAD);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);
@@ -619,6 +624,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
          * @param uri The URI
          * @return the UrlMapping
          */
+        @SuppressWarnings("unchecked")
         public UrlMapping options(Map arguments, String uri, Closure callable) {
             arguments.put(UrlMapping.HTTP_METHOD, HttpMethod.OPTIONS);
             return (UrlMapping) _invoke(uri, new Object[] { arguments, callable }, this);

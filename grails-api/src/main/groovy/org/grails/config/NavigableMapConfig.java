@@ -186,6 +186,7 @@ public abstract class NavigableMapConfig implements Config {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Iterator<Entry<String, Object>> iterator() {
         return DefaultGroovyMethods.iterator(this.configMap);
     }
@@ -309,6 +310,7 @@ public abstract class NavigableMapConfig implements Config {
         return to;
     }
 
+    @SuppressWarnings("unchecked")
     private ConfigObject convertPropsToMap(ConfigObject config) {
         for (Map.Entry<String, Object> entry : (Set<Map.Entry<String, Object>>) config.entrySet()) {
             final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
@@ -331,6 +333,7 @@ public abstract class NavigableMapConfig implements Config {
         return config;
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T convertValueIfNecessary(Object originalValue, Class<T> targetType, T defaultValue) {
         if (originalValue != null) {
             if (targetType.isInstance(originalValue)) {
@@ -368,6 +371,7 @@ public abstract class NavigableMapConfig implements Config {
         return defaultValue;
     }
 
+    @SuppressWarnings("unchecked")
     private Object toEnumValue(Class targetType, String stringValue) {
         return Enum.valueOf(targetType, stringValue.toUpperCase());
     }

@@ -119,6 +119,7 @@ public abstract class AbstractGrailsClass implements GrailsClass {
         return this.clazz;
     }
 
+    @SuppressWarnings("deprecation")
     public Object newInstance() {
         try {
             Constructor<?> defaultConstructor = getClazz().getDeclaredConstructor();

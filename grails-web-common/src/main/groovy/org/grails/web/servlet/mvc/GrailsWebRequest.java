@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,13 +153,13 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
     }
 
     /**
-     * Overriden to return the GrailsParameterMap instance,
+     * Overridden to return the GrailsParameterMap instance,
      *
      * @return An instance of GrailsParameterMap
      */
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Map getParameterMap() {
+    @SuppressWarnings({ "unchecked" })
+    public Map<String, String[]> getParameterMap() {
         if (this.params == null) {
             resetParams();
         }

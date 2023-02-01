@@ -88,7 +88,7 @@ import java.util.*;
  * @author JSON.org
  * @version 2
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 public class JSONObject implements JSONElement, Map {
     private static EncodesToWriter javascriptEncoderStateless;
     private static StreamingEncoder javascriptEncoder;

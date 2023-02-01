@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,24 +42,30 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
     public DefaultModuleDescriptorFactory() {
     }
 
-    public Class<? extends ModuleDescriptor> getModuleDescriptorClass(String type) {
-        return this.moduleDescriptorClasses.get(type);
+    @Override
+    @SuppressWarnings("unchecked")
+    public <M> Class<? extends ModuleDescriptor<M>> getModuleDescriptorClass(String type) {
+        return (Class<? extends ModuleDescriptor<M>>) this.moduleDescriptorClasses.get(type);
     }
 
-    public ModuleDescriptor<?> getModuleDescriptor(String type) throws PluginException, ClassNotFoundException {
+    @Override
+    @SuppressWarnings("unchecked")
+    public <M> ModuleDescriptor<M> getModuleDescriptor(String type) throws PluginException, ClassNotFoundException {
         Class<? extends ModuleDescriptor> moduleDescriptorClazz = getModuleDescriptorClass(type);
 
         if (moduleDescriptorClazz == null) {
             throw new PluginException("Cannot find ModuleDescriptor class for plugin of type '" + type + "'.");
         }
 
-        return create(moduleDescriptorClazz);
+        return (ModuleDescriptor<M>) create(moduleDescriptorClazz);
     }
 
+    @Override
     public boolean hasModuleDescriptor(String type) {
         return this.moduleDescriptorClasses.containsKey(type);
     }
 
+    @Override
     public void addModuleDescriptor(String type, Class<? extends ModuleDescriptor> moduleDescriptorClass) {
         this.moduleDescriptorClasses.put(type, moduleDescriptorClass);
     }
