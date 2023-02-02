@@ -11,7 +11,7 @@ import org.grails.gsp.io.GroovyPageCompiledScriptSource
 import org.grails.gsp.io.GroovyPageResourceScriptSource
 import org.grails.plugins.BinaryGrailsPlugin
 import org.grails.plugins.BinaryGrailsPluginDescriptor
-import org.grails.plugins.CoreGrailsPlugin
+import org.grails.plugins.core.CoreGrailsPlugin
 import org.grails.web.util.GrailsApplicationAttributes
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
@@ -228,7 +228,7 @@ class GrailsConventionGroovyPageLocatorSpec extends Specification {
         def pluginManager = new DefaultGrailsPluginManager([CoreGrailsPlugin] as Class[], new DefaultGrailsApplication())
 
         pluginManager.loadPlugins()
-        pluginManager.@pluginList << binaryPlugin
+        pluginManager.@loadedPlugins << binaryPlugin
         locator.pluginManager = pluginManager
 
         locator.addResourceLoader(resourceLoader)

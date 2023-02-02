@@ -10,5 +10,6 @@ dependencies {
     }
 
     testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "org.grails:grails-test:$grailsVersion"
     testRuntimeOnly "org.grails:grails-spring:$grailsVersion"
 }

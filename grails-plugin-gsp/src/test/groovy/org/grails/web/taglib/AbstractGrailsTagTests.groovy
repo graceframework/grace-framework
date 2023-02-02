@@ -52,6 +52,7 @@ import org.grails.commons.CodecArtefactHandler
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
+import org.grails.core.support.GrailsApplicationAwareBeanPostProcessor
 import org.grails.encoder.Encoder
 import org.grails.encoder.impl.HTML4Codec
 import org.grails.encoder.impl.HTMLJSCodec
@@ -69,10 +70,10 @@ import org.grails.plugins.codecs.HTMLCodec
 import org.grails.plugins.codecs.URLCodec
 import org.grails.plugins.core.CoreConfiguration
 import org.grails.plugins.databinding.DataBindingConfiguration
+import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor
 import org.grails.plugins.web.controllers.ControllersPluginConfiguration
+import org.grails.plugins.web.mapping.UrlMappingsPluginConfiguration
 import org.grails.plugins.web.mime.MimeTypesConfiguration
-import org.grails.spring.beans.GrailsApplicationAwareBeanPostProcessor
-import org.grails.spring.beans.PluginManagerAwareBeanPostProcessor
 import org.grails.taglib.GroovyPageAttributes
 import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
@@ -101,7 +102,8 @@ abstract class AbstractGrailsTagTests {
             CodecsPluginConfiguration,
             ControllersPluginConfiguration,
             DataBindingConfiguration,
-            MimeTypesConfiguration]
+            MimeTypesConfiguration,
+            UrlMappingsPluginConfiguration]
 
     MockServletContext servletContext
     GrailsWebRequest webRequest
@@ -307,7 +309,7 @@ info.app.name: ${getClass().name}
         onInitMockBeans()
 
         List<Class> dependantPluginClasses = []
-        dependantPluginClasses << gcl.loadClass("org.grails.plugins.CoreGrailsPlugin")
+        dependantPluginClasses << gcl.loadClass("org.grails.plugins.core.CoreGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.codecs.CodecsGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.domain.DomainClassGrailsPlugin")
         dependantPluginClasses << gcl.loadClass("org.grails.plugins.i18n.I18nGrailsPlugin")

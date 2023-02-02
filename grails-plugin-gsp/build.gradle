@@ -21,6 +21,7 @@ dependencies {
     api "commons-lang:commons-lang:2.6"
     api "org.grails:grails-plugin-api:$grailsVersion"
     api "org.grails:grails-plugin-codecs:$grailsVersion"
+    api "org.grails:grails-plugin-url-mappings:$grailsVersion"
     astImplementation "org.grails:grails-web:$grailsVersion"
     astImplementation "org.grails:grails-plugin-controllers:$grailsVersion"
 
@@ -36,7 +37,6 @@ dependencies {
     testImplementation "javax.servlet:jstl:${jstlVersion}"
 
     testImplementation "org.grails:grails-plugin-codecs:$grailsVersion"
-    testRuntimeOnly "org.grails:grails-plugin-url-mappings:$grailsVersion"
 }
 // disable main class
 bootJar {
