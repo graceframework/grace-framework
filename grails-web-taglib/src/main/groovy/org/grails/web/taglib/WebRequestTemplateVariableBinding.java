@@ -75,7 +75,7 @@ public class WebRequestTemplateVariableBinding extends AbstractTemplateVariableB
         });
         m.put("applicationContext", new LazyRequestBasedValue() {
             public Object evaluate(GrailsWebRequest webRequest) {
-                return webRequest.getAttributes().getApplicationContext();
+                return webRequest.getApplicationContext();
             }
         });
         m.put("grailsApplication", new LazyRequestBasedValue() {
