@@ -6,20 +6,21 @@ import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
+import com.opensymphony.module.sitemesh.RequestConstants
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import com.opensymphony.module.sitemesh.RequestConstants
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext
-import org.springframework.core.io.DescriptiveResource
 import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 import org.springframework.context.MessageSource
 import org.springframework.context.support.StaticMessageSource
 import org.springframework.core.convert.support.DefaultConversionService
+import org.springframework.core.io.DescriptiveResource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.mock.web.MockHttpServletRequest
@@ -45,6 +46,7 @@ import grails.util.GrailsWebMockUtil
 import grails.util.Holders
 import grails.util.Metadata
 import grails.web.pages.GroovyPagesUriService
+
 import org.grails.buffer.FastStringWriter
 import org.grails.commons.CodecArtefactHandler
 import org.grails.config.PropertySourcesConfig
@@ -87,7 +89,10 @@ import org.grails.web.sitemesh.GrailsHTMLPageParser
 import org.grails.web.sitemesh.GrailsLayoutView
 import org.grails.web.util.GrailsApplicationAttributes
 
-import static org.junit.jupiter.api.Assertions.*
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.fail
 
 abstract class AbstractGrailsTagTests {
 
@@ -150,10 +155,10 @@ abstract class AbstractGrailsTagTests {
         for (i in 0..100) {
             callable.call()
         }
-        println "$name took ${System.currentTimeMillis()-now}ms"
+        println "$name took ${System.currentTimeMillis() - now}ms"
     }
 
-    def withTag(String tagName, Writer out, String tagNamespace="g", Closure callable) {
+    def withTag(String tagName, Writer out, String tagNamespace = "g", Closure callable) {
         def result = null
         runTest {
             def webRequest = RequestContextHolder.currentRequestAttributes()
@@ -170,9 +175,12 @@ abstract class AbstractGrailsTagTests {
             }
             def go = tagLibrary.newInstance()
             appCtx.autowireCapableBeanFactory.autowireBeanProperties(go, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
+            if (go instanceof ApplicationContextAware) {
+                go.applicationContext = appCtx
+            }
             def gspTagLibraryLookup = appCtx.gspTagLibraryLookup
 
-            OutputEncodingStack stack=OutputEncodingStack.currentStack(OutputContextLookupHelper.lookupOutputContext(), true)
+            OutputEncodingStack stack = OutputEncodingStack.currentStack(OutputContextLookupHelper.lookupOutputContext(), true)
 
             stack.push(out)
             try {
@@ -184,7 +192,7 @@ abstract class AbstractGrailsTagTests {
                     if (!(attrs instanceof GroovyPageAttributes)) {
                         attrs = new GroovyPageAttributes(attrs)
                     }
-                    ((GroovyPageAttributes)attrs).setGspTagSyntaxCall(true)
+                    ((GroovyPageAttributes) attrs).setGspTagSyntaxCall(true)
                     def body = args?.size() > 1 ? args[1] : null
                     if (body && !(body instanceof Closure)) {
                         body = new TagOutput.ConstantClosure(body)
@@ -192,18 +200,19 @@ abstract class AbstractGrailsTagTests {
 
                     def tagresult = null
 
-                    boolean encodeAsPushedToStack=false
+                    boolean encodeAsPushedToStack = false
                     try {
-                        boolean returnsObject=gspTagLibraryLookup.doesTagReturnObject(tagNamespace, tagName)
-                        Object codecInfo=gspTagLibraryLookup.getEncodeAsForTag(tagNamespace, tagName)
+                        boolean returnsObject = gspTagLibraryLookup.doesTagReturnObject(tagNamespace, tagName)
+                        Object codecInfo = gspTagLibraryLookup.getEncodeAsForTag(tagNamespace, tagName)
                         if (attrs.containsKey(GroovyPage.ENCODE_AS_ATTRIBUTE_NAME)) {
                             codecInfo = attrs.get(GroovyPage.ENCODE_AS_ATTRIBUTE_NAME)
-                        } else if (GroovyPage.DEFAULT_NAMESPACE.equals(tagNamespace) && GroovyPage.APPLY_CODEC_TAG_NAME.equals(tagName)) {
+                        }
+                        else if (GroovyPage.DEFAULT_NAMESPACE.equals(tagNamespace) && GroovyPage.APPLY_CODEC_TAG_NAME.equals(tagName)) {
                             codecInfo = attrs
                         }
                         if (codecInfo != null) {
                             stack.push(WithCodecHelper.createOutputStackAttributesBuilder(codecInfo, webRequest.getAttributes().getGrailsApplication()).build())
-                            encodeAsPushedToStack=true
+                            encodeAsPushedToStack = true
                         }
                         switch (tag.getParameterTypes().length) {
                             case 1:
@@ -221,15 +230,17 @@ abstract class AbstractGrailsTagTests {
 
                         Encoder taglibEncoder = stack.taglibEncoder
                         if (returnsObject && tagresult && !(tagresult instanceof Writer) && taglibEncoder) {
-                            tagresult=taglibEncoder.encode(tagresult)
+                            tagresult = taglibEncoder.encode(tagresult)
                         }
                         tagresult
-                    } finally {
+                    }
+                    finally {
                         if (encodeAsPushedToStack) stack.pop()
                     }
                 }
                 result = callable.call(tagWrapper)
-            } finally {
+            }
+            finally {
                 stack.pop()
             }
         }
@@ -318,7 +329,8 @@ info.app.name: ${getClass().name}
         onInit()
         try {
             JstlUtils.exposeLocalizationContext webRequest.getRequest(), null
-        } catch (Throwable ignore) {
+        }
+        catch (Throwable ignore) {
         }
 
         servletContext = webRequest.servletContext
@@ -327,6 +339,7 @@ info.app.name: ${getClass().name}
 
         springConfig.servletContext = servletContext
         springConfig.registerPostProcessor(new BeanFactoryPostProcessor() {
+
             @Override
             void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
                 beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
@@ -389,8 +402,10 @@ info.app.name: ${getClass().name}
 
     protected void onInit() {
     }
+
     protected void onDestroy() {
     }
+
     protected void onInitMockBeans() {
     }
 
@@ -412,7 +427,7 @@ info.app.name: ${getClass().name}
         def engine = appCtx.groovyPagesTemplateEngine
 
         assert engine
-        def t = engine.createTemplate(template, "test_"+ System.currentTimeMillis())
+        def t = engine.createTemplate(template, "test_" + System.currentTimeMillis())
 
         def w = t.make(params)
         w.showSource = true
@@ -426,7 +441,7 @@ info.app.name: ${getClass().name}
     }
 
     def assertCompiledSourceContains(expected, template, params = [:]) {
-        def text =  getCompiledSource(template, params)
+        def text = getCompiledSource(template, params)
         return text.indexOf(expected) > -1
     }
 
@@ -498,7 +513,7 @@ info.app.name: ${getClass().name}
         //printCompiledSource(template)
 
         assert engine
-        def t = engine.createTemplate(template, filename ?: "test_"+ System.currentTimeMillis())
+        def t = engine.createTemplate(template, filename ?: "test_" + System.currentTimeMillis())
 
         def w = t.make(params)
 
@@ -517,11 +532,11 @@ info.app.name: ${getClass().name}
      * Applies sitemesh preprocessing to a template
      */
     String sitemeshPreprocess(String template) {
-        def preprocessor=new SitemeshPreprocessor()
+        def preprocessor = new SitemeshPreprocessor()
         preprocessor.addGspSitemeshCapturing(template)
     }
 
-    String applyLayout(String layout, String template, Map params=[:]) {
+    String applyLayout(String layout, String template, Map params = [:]) {
         def gspSiteMeshPage = new GSPSitemeshPage()
         request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, gspSiteMeshPage)
         def content = applyTemplate(template, params)
@@ -538,7 +553,7 @@ info.app.name: ${getClass().name}
         try {
             request.setAttribute(RequestConstants.PAGE, page)
             request.setAttribute(GrailsLayoutView.GSP_SITEMESH_PAGE, new GSPSitemeshPage())
-            return applyTemplate(layout, params,null, "/layouts/test_"+System.currentTimeMillis())
+            return applyTemplate(layout, params, null, "/layouts/test_" + System.currentTimeMillis())
         }
         finally {
             request.removeAttribute(RequestConstants.PAGE)
@@ -570,9 +585,12 @@ info.app.name: ${getClass().name}
 }
 
 class MockThemeSource implements ThemeSource {
+
     private messageSource
+
     MockThemeSource(MessageSource messageSource) {
         this.messageSource = messageSource
     }
+
     Theme getTheme(String themeName) { new SimpleTheme(themeName, messageSource) }
 }

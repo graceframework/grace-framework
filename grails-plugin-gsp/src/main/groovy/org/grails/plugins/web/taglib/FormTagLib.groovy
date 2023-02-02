@@ -971,7 +971,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         if (!attrs.containsKey('from')) {
             throwTagError("Tag [select] is missing required attribute [from]")
         }
-        def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
+        def messageSource = applicationContext.getBean("messageSource")
         def locale = RCU.getLocale(request)
         def writer = out
         def from = attrs.remove('from')
