@@ -1,6 +1,8 @@
 package org.grails.web.taglib
 
 import com.opensymphony.module.sitemesh.RequestConstants
+import org.springframework.context.ApplicationContextAware
+
 import grails.build.support.MetaClassRegistryCleaner
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
@@ -143,6 +145,9 @@ abstract class AbstractGrailsTagTests {
             }
             def go = tagLibrary.newInstance()
             appCtx.autowireCapableBeanFactory.autowireBeanProperties(go, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
+            if (go instanceof ApplicationContextAware) {
+                go.applicationContext = appCtx
+            }
             def gspTagLibraryLookup = appCtx.gspTagLibraryLookup
 
             OutputEncodingStack stack=OutputEncodingStack.currentStack(OutputContextLookupHelper.lookupOutputContext(), true)
