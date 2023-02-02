@@ -25,11 +25,8 @@ dependencies {
     astImplementation "org.grails:grails-web:$grailsVersion"
     astImplementation "org.grails:grails-plugin-controllers:$grailsVersion"
 
-    testImplementation "org.grails:grails-test-support:$grailsVersion", {
-        exclude module:'async'
-    }
+    testImplementation "org.grails:grails-test-support:$grailsVersion"
 
-    testRuntimeOnly "org.grails.plugins:async"
     testImplementation "javax.servlet.jsp:jsp-api:${jspApiVersion}"
     testImplementation "org.springframework:spring-test:$springVersion"
 
