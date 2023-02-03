@@ -168,7 +168,6 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
             // domain model mapping context, used for configuration
             grailsDomainClassMappingContext(hibernateDatastore: "getMappingContext")
 
-            def start = System.currentTimeMillis()
             Map<String, Class<?>> dataServices = loadDataServices(null)
             dataServices.each { serviceName, serviceClass ->
                 "$serviceName"(DatastoreServiceMethodInvokingFactoryBean, serviceClass) {
@@ -177,7 +176,6 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
                     arguments = [serviceClass]
                 }
             }
-            log.info(String.format("Found %d DataServices: initialization completed in %d ms", dataServices.size(), (System.currentTimeMillis() - start)))
 
             if (isGrailsPresent) {
                 if (ClassUtils.isPresent("org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor")) {
