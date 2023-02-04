@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.plugins.web.taglib
 
 import java.text.DateFormat
 import java.text.DateFormatSymbols
+import java.text.SimpleDateFormat
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -55,7 +56,9 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
     private static final DEFAULT_CURRENCY_CODES = ['EUR', 'XCD', 'USD', 'XOF', 'NOK', 'AUD',
                                                    'XAF', 'NZD', 'MAD', 'DKK', 'GBP', 'CHF',
                                                    'XPF', 'ILS', 'ROL', 'TRL']
-    private static final PRECISION_RANKINGS = ["year": 0, "month": 10, "day": 20, "hour": 30, "minute": 40]
+    private static final PRECISION_RANKINGS = ["year": 0, "month": 10, "day": 20, "hour": 30, "minute": 40, "second": 50]
+    private static final DEFAULT_CSS_CLASSES = ['year': 'year', 'month': 'month', 'day': 'day',
+                                                'hour': 'hour', 'minute': 'minute', 'second': 'second']
 
     ApplicationContext applicationContext
     RequestDataValueProcessor requestDataValueProcessor
@@ -584,6 +587,9 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr value The current value of the date picker; defaults to either the value specified by the default attribute or now if no default is set
      * @attr default A Date or parsable date string that will be used if there is no value
      * @attr precision The desired granularity of the date to be rendered
+     * @attr cssClasses The css styles of the select tags
+     * @attr order Set to an array containing 'day', 'month' and 'year' to customize the order in which the select fields are shown.
+     * Defaults to the order defined in the respective locale (e.g. ['month', 'day', 'year'] in the en locale that ships with Grails).
      * @attr noSelection A single-entry map detailing the key and value to use for the "no selection made" choice in the select box.
      * If there is no current selection this will be shown as it is first in the list, and if submitted with this selected,
      * the key that you provide will be submitted. Typically this will be blank.
@@ -597,6 +603,82 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
      * @attr readonly Makes the resulting inputs and selects to be made read only. Is treated as a Groovy Truth.
      */
     Closure datePicker = { attrs ->
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def order = attrs.order ?: []
+
+        if (order) {
+            def forbidden = order - ['year', 'month', 'day']
+            if (forbidden) {
+                throwTagError("Tag [datePicker].order only accepts 'year', 'month', 'day'")
+            }
+        }
+        else {
+            def formatter = SimpleDateFormat.getDateInstance(DateFormat.SHORT, RCU.getLocale(request))
+            def pattern = formatter.toPattern()
+
+            def letters = []
+            if (pattern.indexOf('/') > 0) {
+                letters = pattern.tokenize('/')
+            }
+            else if (pattern.indexOf('.') > 0) {
+                letters = pattern.tokenize('.')
+            }
+            else if (pattern.indexOf('-') > 0) {
+                letters = pattern.tokenize('-')
+            }
+            else {
+                letters = pattern.tokenize()
+            }
+
+            def mapping = ['year': ['y', 'yy', 'yyyy'], 'month': ['M', 'MM'], 'day': ['d', 'dd']]
+            letters.each { letter ->
+                mapping.each { k, v ->
+                    if (letter in v) order << k
+                }
+            }
+        }
+
+        def precision = (attrs.precision ? PRECISION_RANKINGS[attrs.precision] :
+                (grailsApplication.config.getProperty('grails.tags.datePicker.default.precision') ?
+                        PRECISION_RANKINGS["${grailsApplication.config.getProperty('grails.tags.datePicker.default.precision')}"] :
+                        PRECISION_RANKINGS["minute"]))
+
+        booleanToAttribute(attrs, 'disabled')
+        booleanToAttribute(attrs, 'readonly')
+
+        // Change this hidden to use requestDataValueProcessor
+        def dateStructValue = processFormFieldValueIfNecessary("${name}", "date.struct", "hidden")
+        out.println "<input type=\"hidden\" name=\"${name}\" value=\"${dateStructValue}\" />"
+
+        order += ['hour', 'minute', 'second']
+
+        order.each {
+            if (precision >= PRECISION_RANKINGS[it]) {
+                out.println("<label style=\"display:none;\" for=\"${name}_${it}\" id=\"label_${name}_${it}\">${it.capitalize()}</label>")
+                "select${it.capitalize()}"(out, attrs)
+            }
+        }
+    }
+
+    Closure timePicker = { attrs ->
+        def name = attrs.name
+        def id = attrs.id ?: name
+
+        booleanToAttribute(attrs, 'disabled')
+        booleanToAttribute(attrs, 'readonly')
+
+        // Change this hidden to use requestDataValueProcessor
+        def dateStructValue = processFormFieldValueIfNecessary("${name}", "date.struct", "hidden")
+        out.println "<input type=\"hidden\" name=\"${name}\" value=\"${dateStructValue}\" />"
+
+        ['hour', 'minute', 'second'].each {
+            out.println("<label style=\"display:none;\" for=\"${name}_${it}\" id=\"label_${name}_${it}\">${it.capitalize()}</label>")
+            "select${it.capitalize()}"(out, attrs)
+        }
+    }
+
+    def selectYear(out, attrs) {
         def xdefault = attrs['default']
         if (xdefault == null) {
             xdefault = new Date()
@@ -604,6 +686,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
+
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -612,6 +695,41 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else {
             xdefault = null
         }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def year
+        if (c != null) {
+            year = c.get(GregorianCalendar.YEAR)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
         def years = attrs.years
         def relativeYears = attrs.relativeYears
         if (years != null && relativeYears != null) {
@@ -626,48 +744,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
                 }
                 relativeYears = relativeYears[0]
             }
-        }
-        def value = attrs.value
-        if (value.toString() == 'none') {
-            value = null
-        }
-        else if (!value) {
-            value = xdefault
-        }
-        def name = attrs.name
-        def id = attrs.id ?: name
-
-        def noSelection = attrs.noSelection
-        if (noSelection != null) {
-            noSelection = noSelection.entrySet().iterator().next()
-        }
-
-        def precision = (attrs.precision ? PRECISION_RANKINGS[attrs.precision] :
-                (grailsApplication.config.grails.tags.datePicker.default.precision ?
-                        PRECISION_RANKINGS["${grailsApplication.config.grails.tags.datePicker.default.precision}"] :
-                        PRECISION_RANKINGS["minute"]))
-
-        def day
-        def month
-        def year
-        def hour
-        def minute
-        def dfs = new DateFormatSymbols(RCU.getLocale(request))
-
-        def c = null
-        if (value instanceof Calendar) {
-            c = value
-        }
-        else if (value != null) {
-            c = grailsTagDateHelper.buildCalendar(value)
-        }
-
-        if (c != null) {
-            day = c.get(GregorianCalendar.DAY_OF_MONTH)
-            month = c.get(GregorianCalendar.MONTH)
-            year = c.get(GregorianCalendar.YEAR)
-            hour = c.get(GregorianCalendar.HOUR_OF_DAY)
-            minute = c.get(GregorianCalendar.MINUTE)
         }
 
         if (years == null) {
@@ -684,160 +760,439 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             if (relativeYears) {
                 if (relativeYears.reverse) {
                     years = (tempyear + relativeYears.toInt)..(tempyear + relativeYears.fromInt)
-                }
-                else {
+                } else {
                     years = (tempyear + relativeYears.fromInt)..(tempyear + relativeYears.toInt)
                 }
-            }
-            else {
+            } else {
                 years = (tempyear + 100)..(tempyear - 100)
             }
         }
 
-        booleanToAttribute(attrs, 'disabled')
-        booleanToAttribute(attrs, 'readonly')
-        out.println("<label style=\"display:none;\" for=\"${name}_day\" id=\"label_${name}_day\">Day</label>")
-        out.println("<label style=\"display:none;\" for=\"${name}_month\" id=\"label_${name}_month\">Month</label>")
-        out.println("<label style=\"display:none;\" for=\"${name}_year\" id=\"label_${name}_year\">Year</label>")
-        out.println("<label style=\"display:none;\" for=\"${name}_hour\" id=\"label_${name}_hour\">Hour</label>")
-        out.println("<label style=\"display:none;\" for=\"${name}_minute\" id=\"label_${name}_minute\">Minute</label>")
-        // Change this hidden to use requestDataValueProcessor
-        def dateStructValue = processFormFieldValueIfNecessary("${name}", "date.struct", "hidden")
-        out.println "<input type=\"hidden\" name=\"${name}\" value=\"${dateStructValue}\" />"
+        out.println "<select name=\"${name}_year\" id=\"${id}_year\" aria-labelledby=\"${name} ${name}_year\""
+        if (attrs.disabled) {
+            out << ' disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << ' readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['year'] + "\""
+        }
+        out << '>'
 
-        // create day select
-        if (precision >= PRECISION_RANKINGS["day"]) {
-            out.println "<select name=\"${name}_day\" id=\"${id}_day\" aria-labelledby=\"${name} ${name}_day\""
-            if (attrs.disabled) {
-                out << ' disabled="disabled"'
-            }
-            if (attrs.readonly) {
-                out << ' readonly="readonly"'
-            }
-            out << '>'
-
-            if (noSelection) {
-                renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
-                out.println()
-            }
-
-            for (i in 1..31) {
-                // Change this option to use requestDataValueProcessor
-                def dayIndex = processFormFieldValueIfNecessary("${name}_day", "${i}", "option")
-                out.println "<option value=\"${dayIndex}\"${i == day ? ' selected="selected"' : ''}>${i}</option>"
-            }
-            out.println '</select>'
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
         }
 
-        // create month select
-        if (precision >= PRECISION_RANKINGS["month"]) {
-            out.println "<select name=\"${name}_month\" id=\"${id}_month\" aria-labelledby=\"${name} ${name}_month\""
-            if (attrs.disabled) {
-                out << ' disabled="disabled"'
-            }
-            if (attrs.readonly) {
-                out << ' readonly="readonly"'
-            }
-            out << '>'
-
-            if (noSelection) {
-                renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
-                out.println()
-            }
-
-            dfs.months.eachWithIndex { m, i ->
-                if (m) {
-                    def monthIndex = i + 1
-                    monthIndex = processFormFieldValueIfNecessary("${name}_month", "${monthIndex}", "option")
-                    out.println "<option value=\"${monthIndex}\"${i == month ? ' selected="selected"' : ''}>$m</option>"
-                }
-            }
-            out.println '</select>'
+        for (i in years) {
+            // Change this year option to use requestDataValueProcessor
+            def yearIndex  = processFormFieldValueIfNecessary("${name}_year","${i}","option")
+            out.println "<option value=\"${yearIndex}\"${i == year ? ' selected="selected"' : ''}>${i}</option>"
         }
+        out.println '</select>'
+    }
 
-        // create year select
-        if (precision >= PRECISION_RANKINGS["year"]) {
-            out.println "<select name=\"${name}_year\" id=\"${id}_year\" aria-labelledby=\"${name} ${name}_year\""
-            if (attrs.disabled) {
-                out << ' disabled="disabled"'
-            }
-            if (attrs.readonly) {
-                out << ' readonly="readonly"'
-            }
-            out << '>'
-
-            if (noSelection) {
-                renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
-                out.println()
-            }
-
-            for (i in years) {
-                // Change this year option to use requestDataValueProcessor
-                def yearIndex = processFormFieldValueIfNecessary("${name}_year", "${i}", "option")
-                out.println "<option value=\"${yearIndex}\"${i == year ? ' selected="selected"' : ''}>${i}</option>"
-            }
-            out.println '</select>'
+    def selectMonth(out, attrs) {
+        def xdefault = attrs['default']
+        if (xdefault == null) {
+            xdefault = new Date()
         }
+        else if (xdefault.toString() != 'none') {
+            if (xdefault instanceof String) {
+                xdefault = DateFormat.getInstance().parse(xdefault)
 
-        // do hour select
-        if (precision >= PRECISION_RANKINGS["hour"]) {
-            out.println "<select name=\"${name}_hour\" id=\"${id}_hour\" aria-labelledby=\"${name} ${name}_hour\""
-            if (attrs.disabled) {
-                out << ' disabled="disabled"'
             }
-            if (attrs.readonly) {
-                out << ' readonly="readonly"'
-            }
-            out << '>'
-
-            if (noSelection) {
-                renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
-                out.println()
-            }
-
-            for (i in 0..23) {
-                def h = i
-                if (i < 10) {
-                    h = '0' + h
-                }
-                // This option add hour to requestDataValueProcessor
-                h = processFormFieldValueIfNecessary("${name}_hour", "${h}", "option")
-                out.println "<option value=\"${h}\"${i == hour ? ' selected="selected"' : ''}>$h</option>"
-            }
-            out.println '</select> :'
-
-            // If we're rendering the hour, but not the minutes, then display the minutes as 00 in read-only format
-            if (precision < PRECISION_RANKINGS["minute"]) {
-                out.println '00'
+            else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
+                throwTagError("Tag [datePicker] the default date is not a supported class")
             }
         }
-
-        // do minute select
-        if (precision >= PRECISION_RANKINGS["minute"]) {
-            out.println "<select name=\"${name}_minute\" id=\"${id}_minute\" aria-labelledby=\"${name} ${name}_minute\""
-            if (attrs.disabled) {
-                out << 'disabled="disabled"'
-            }
-            if (attrs.readonly) {
-                out << 'readonly="readonly"'
-            }
-            out << '>'
-
-            if (noSelection) {
-                renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
-                out.println()
-            }
-
-            for (i in 0..59) {
-                def m = i
-                if (i < 10) {
-                    m = '0' + m
-                }
-                m = processFormFieldValueIfNecessary("${name}_minute", "${m}", "option")
-                out.println "<option value=\"${m}\"${i == minute ? ' selected="selected"' : ''}>$m</option>"
-            }
-            out.println '</select>'
+        else {
+            xdefault = null
         }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def month
+        if (c != null) {
+            month = c.get(GregorianCalendar.MONTH)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
+        out.println "<select name=\"${name}_month\" id=\"${id}_month\" aria-labelledby=\"${name} ${name}_month\""
+        if (attrs.disabled) {
+            out << ' disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << ' readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['month'] + "\""
+        }
+        out << '>'
+
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
+        }
+
+        def dfs = new DateFormatSymbols(RCU.getLocale(request))
+        dfs.months.eachWithIndex {m, i ->
+            if (m) {
+                def monthIndex = i + 1
+                monthIndex = processFormFieldValueIfNecessary("${name}_month","${monthIndex}","option")
+                out.println "<option value=\"${monthIndex}\"${i == month ? ' selected="selected"' : ''}>$m</option>"
+            }
+        }
+        out.println '</select>'
+    }
+
+    def selectDay(out, attrs) {
+        def xdefault = attrs['default']
+        if (xdefault == null) {
+            xdefault = new Date()
+        }
+        else if (xdefault.toString() != 'none') {
+            if (xdefault instanceof String) {
+                xdefault = DateFormat.getInstance().parse(xdefault)
+
+            }
+            else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
+                throwTagError("Tag [datePicker] the default date is not a supported class")
+            }
+        }
+        else {
+            xdefault = null
+        }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def day
+        if (c != null) {
+            day = c.get(GregorianCalendar.DAY_OF_MONTH)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
+        out.println "<select name=\"${name}_day\" id=\"${id}_day\" aria-labelledby=\"${name} ${name}_day\""
+        if (attrs.disabled) {
+            out << ' disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << ' readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['day'] + "\""
+        }
+        out << '>'
+
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
+        }
+
+        for (i in 1..31) {
+            // Change this option to use requestDataValueProcessor
+            def dayIndex = processFormFieldValueIfNecessary("${name}_day","${i}","option")
+            out.println "<option value=\"${dayIndex}\"${i == day ? ' selected="selected"' : ''}>${i}</option>"
+        }
+        out.println '</select>'
+    }
+
+    def selectHour(out, attrs) {
+        def xdefault = attrs['default']
+        if (xdefault == null) {
+            xdefault = new Date()
+        }
+        else if (xdefault.toString() != 'none') {
+            if (xdefault instanceof String) {
+                xdefault = DateFormat.getInstance().parse(xdefault)
+
+            }
+            else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
+                throwTagError("Tag [datePicker] the default date is not a supported class")
+            }
+        }
+        else {
+            xdefault = null
+        }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def precision = (attrs.precision ? PRECISION_RANKINGS[attrs.precision] :
+                (grailsApplication.config.getProperty('grails.tags.datePicker.default.precision') ?
+                        PRECISION_RANKINGS["${grailsApplication.config.getProperty('grails.tags.datePicker.default.precision')}"] :
+                        PRECISION_RANKINGS["minute"]))
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def hour
+        if (c != null) {
+            hour = c.get(GregorianCalendar.HOUR_OF_DAY)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
+        out.println "<select name=\"${name}_hour\" id=\"${id}_hour\" aria-labelledby=\"${name} ${name}_hour\""
+        if (attrs.disabled) {
+            out << ' disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << ' readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['hour'] + "\""
+        }
+        out << '>'
+
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
+        }
+
+        for (i in 0..23) {
+            def h = '' + i
+            if (i < 10) h = '0' + h
+            // This option add hour to requestDataValueProcessor
+            h  = processFormFieldValueIfNecessary("${name}_hour","${h}","option")
+            out.println "<option value=\"${h}\"${i == hour ? ' selected="selected"' : ''}>$h</option>"
+        }
+        out.println '</select> :'
+
+        // If we're rendering the hour, but not the minutes, then display the minutes as 00 in read-only format
+        if (precision < PRECISION_RANKINGS["minute"]) {
+            out.println '00'
+        }
+    }
+
+    def selectMinute(out, attrs) {
+        def xdefault = attrs['default']
+        if (xdefault == null) {
+            xdefault = new Date()
+        }
+        else if (xdefault.toString() != 'none') {
+            if (xdefault instanceof String) {
+                xdefault = DateFormat.getInstance().parse(xdefault)
+
+            }
+            else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
+                throwTagError("Tag [datePicker] the default date is not a supported class")
+            }
+        }
+        else {
+            xdefault = null
+        }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def minute
+        if (c != null) {
+            minute = c.get(GregorianCalendar.MINUTE)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
+        out.println "<select name=\"${name}_minute\" id=\"${id}_minute\" aria-labelledby=\"${name} ${name}_minute\""
+        if (attrs.disabled) {
+            out << 'disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << 'readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['minute'] + "\""
+        }
+        out << '>'
+
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
+        }
+
+        for (i in 0..59) {
+            def m = '' + i
+            if (i < 10) m = '0' + m
+            m  = processFormFieldValueIfNecessary("${name}_minute","${m}","option")
+            out.println "<option value=\"${m}\"${i == minute ? ' selected="selected"' : ''}>$m</option>"
+        }
+        out.println '</select>'
+    }
+
+    def selectSecond(out, attrs) {
+        def xdefault = attrs['default']
+        if (xdefault == null) {
+            xdefault = new Date()
+        }
+        else if (xdefault.toString() != 'none') {
+            if (xdefault instanceof String) {
+                xdefault = DateFormat.getInstance().parse(xdefault)
+
+            }
+            else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
+                throwTagError("Tag [datePicker] the default date is not a supported class")
+            }
+        }
+        else {
+            xdefault = null
+        }
+
+        def name = attrs.name
+        def id = attrs.id ?: name
+        def cssClasses = attrs.cssClasses
+
+        if (cssClasses == 'true') {
+            cssClasses = DEFAULT_CSS_CLASSES
+        }
+
+        def value = attrs.value
+        if (value.toString() == 'none') {
+            value = null
+        }
+        else if (!value) {
+            value = xdefault
+        }
+
+        def c = null
+        if (value instanceof Calendar) {
+            c = value
+        }
+        else if (value != null) {
+            c = grailsTagDateHelper.buildCalendar(value)
+        }
+
+        def second
+        if (c != null) {
+            second = c.get(GregorianCalendar.SECOND)
+        }
+
+        def noSelection = attrs.noSelection
+        if (noSelection != null) {
+            noSelection = noSelection.entrySet().iterator().next()
+        }
+
+        out.println "<select name=\"${name}_second\" id=\"${id}_second\" aria-labelledby=\"${name} ${name}_second\""
+        if (attrs.disabled) {
+            out << 'disabled="disabled"'
+        }
+        if (attrs.readonly) {
+            out << 'readonly="readonly"'
+        }
+        if (cssClasses) {
+            out << "class=\"" + cssClasses['second'] + "\""
+        }
+        out << '>'
+
+        if (noSelection) {
+            renderNoSelectionOptionImpl(out, noSelection.key, noSelection.value, '')
+            out.println()
+        }
+
+        for (i in 0..59) {
+            def m = '' + i
+            if (i < 10) m = '0' + m
+            m  = processFormFieldValueIfNecessary("${name}_second","${m}","option")
+            out.println "<option value=\"${m}\"${i == second ? ' selected="selected"' : ''}>$m</option>"
+        }
+        out.println '</select>'
     }
 
     Closure renderNoSelectionOption = { noSelectionKey, noSelectionValue, value ->
