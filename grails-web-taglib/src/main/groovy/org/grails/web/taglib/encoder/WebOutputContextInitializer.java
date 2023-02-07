@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,21 @@
  */
 package org.grails.web.taglib.encoder;
 
-import org.grails.taglib.encoder.OutputContext;
-import org.grails.web.servlet.mvc.GrailsWebRequest;
-
 /**
- * Web implementation for {@link OutputContext}
+ * Callback interface for initializing a Grails {@link WebOutputContext}
  *
- * @author Lari Hotari
- * @since 3.0
+ * @author Michael Yan
+ * @since 2022.0.0
+ * @see WebOutputContext
  */
-public class WebRequestOutputContext extends WebOutputContext {
+@FunctionalInterface
+public interface WebOutputContextInitializer {
 
-    private final GrailsWebRequest webRequest;
-
-    public WebRequestOutputContext(GrailsWebRequest webRequest) {
-        this.webRequest = webRequest;
-    }
-
-    protected GrailsWebRequest lookupWebRequest() {
-        return this.webRequest;
-    }
+    /**
+     *
+     * Initialize the given output context.
+     * @param outputContext the output context to configure
+     */
+    void initialize(WebOutputContext outputContext);
 
 }

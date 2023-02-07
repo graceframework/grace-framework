@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.grails.taglib.encoder;
 
+import java.util.List;
+
 import org.grails.core.io.support.GrailsFactoriesLoader;
 
 /**
@@ -28,14 +30,11 @@ public final class OutputContextLookupHelper {
     private static final OutputContextLookup outputContextLookup;
 
     static {
-        OutputContextLookup foundViaFactory = GrailsFactoriesLoader.loadFactory(OutputContextLookup.class,
-                OutputContextLookupHelper.class.getClassLoader());
-        if (foundViaFactory != null) {
-            outputContextLookup = foundViaFactory;
-        }
-        else {
-            outputContextLookup = new DefaultOutputContextLookup();
-        }
+        ClassLoader classLoader = OutputContextLookupHelper.class.getClassLoader();
+        OutputContextLookup foundViaFactory = GrailsFactoriesLoader.loadFactory(OutputContextLookup.class, classLoader);
+        List<OutputContextCustomizer> contextCustomizers = GrailsFactoriesLoader.loadFactories(OutputContextCustomizer.class, classLoader);
+        outputContextLookup = foundViaFactory != null ? foundViaFactory : new DefaultOutputContextLookup();
+        outputContextLookup.setContextCustomizers(contextCustomizers);
     }
 
     private OutputContextLookupHelper() {
