@@ -307,7 +307,7 @@ class UrlMappingTagLib implements TagLibrary {
         }
         def paramsAttr = attrs.remove("params")
         if (paramsAttr instanceof Map) {
-            linkParams.putAll(paramsAttr)
+            linkParams.putAll((Map) paramsAttr)
         }
         linkParams.sort = property
 
