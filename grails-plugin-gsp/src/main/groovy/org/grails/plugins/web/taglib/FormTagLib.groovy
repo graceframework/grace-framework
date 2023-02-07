@@ -634,7 +634,9 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             def mapping = ['year': ['y', 'yy', 'yyyy'], 'month': ['M', 'MM'], 'day': ['d', 'dd']]
             letters.each { letter ->
                 mapping.each { k, v ->
-                    if (letter in v) order << k
+                    if (letter in v) {
+                        order << k
+                    }
                 }
             }
         }
@@ -686,7 +688,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -760,10 +761,12 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
             if (relativeYears) {
                 if (relativeYears.reverse) {
                     years = (tempyear + relativeYears.toInt)..(tempyear + relativeYears.fromInt)
-                } else {
+                }
+                else {
                     years = (tempyear + relativeYears.fromInt)..(tempyear + relativeYears.toInt)
                 }
-            } else {
+            }
+            else {
                 years = (tempyear + 100)..(tempyear - 100)
             }
         }
@@ -787,7 +790,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         for (i in years) {
             // Change this year option to use requestDataValueProcessor
-            def yearIndex  = processFormFieldValueIfNecessary("${name}_year","${i}","option")
+            def yearIndex  = processFormFieldValueIfNecessary("${name}_year", "${i}", "option")
             out.println "<option value=\"${yearIndex}\"${i == year ? ' selected="selected"' : ''}>${i}</option>"
         }
         out.println '</select>'
@@ -801,7 +804,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -863,10 +865,10 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         }
 
         def dfs = new DateFormatSymbols(RCU.getLocale(request))
-        dfs.months.eachWithIndex {m, i ->
+        dfs.months.eachWithIndex { m, i ->
             if (m) {
                 def monthIndex = i + 1
-                monthIndex = processFormFieldValueIfNecessary("${name}_month","${monthIndex}","option")
+                monthIndex = processFormFieldValueIfNecessary("${name}_month", "${monthIndex}", "option")
                 out.println "<option value=\"${monthIndex}\"${i == month ? ' selected="selected"' : ''}>$m</option>"
             }
         }
@@ -881,7 +883,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -944,7 +945,7 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
 
         for (i in 1..31) {
             // Change this option to use requestDataValueProcessor
-            def dayIndex = processFormFieldValueIfNecessary("${name}_day","${i}","option")
+            def dayIndex = processFormFieldValueIfNecessary("${name}_day", "${i}", "option")
             out.println "<option value=\"${dayIndex}\"${i == day ? ' selected="selected"' : ''}>${i}</option>"
         }
         out.println '</select>'
@@ -958,7 +959,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -1025,10 +1025,9 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         }
 
         for (i in 0..23) {
-            def h = '' + i
-            if (i < 10) h = '0' + h
+            def h = String.valueOf(i).padLeft(2, '0')
             // This option add hour to requestDataValueProcessor
-            h  = processFormFieldValueIfNecessary("${name}_hour","${h}","option")
+            h  = processFormFieldValueIfNecessary("${name}_hour", "${h}", "option")
             out.println "<option value=\"${h}\"${i == hour ? ' selected="selected"' : ''}>$h</option>"
         }
         out.println '</select> :'
@@ -1047,7 +1046,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -1109,9 +1107,8 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         }
 
         for (i in 0..59) {
-            def m = '' + i
-            if (i < 10) m = '0' + m
-            m  = processFormFieldValueIfNecessary("${name}_minute","${m}","option")
+            def m = String.valueOf(i).padLeft(2, '0')
+            m  = processFormFieldValueIfNecessary("${name}_minute", "${m}", "option")
             out.println "<option value=\"${m}\"${i == minute ? ' selected="selected"' : ''}>$m</option>"
         }
         out.println '</select>'
@@ -1125,7 +1122,6 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         else if (xdefault.toString() != 'none') {
             if (xdefault instanceof String) {
                 xdefault = DateFormat.getInstance().parse(xdefault)
-
             }
             else if (!grailsTagDateHelper.supportsDatePicker(xdefault.class)) {
                 throwTagError("Tag [datePicker] the default date is not a supported class")
@@ -1187,9 +1183,8 @@ class FormTagLib implements ApplicationContextAware, InitializingBean, TagLibrar
         }
 
         for (i in 0..59) {
-            def m = '' + i
-            if (i < 10) m = '0' + m
-            m  = processFormFieldValueIfNecessary("${name}_second","${m}","option")
+            def m = String.valueOf(i).padLeft(2, '0')
+            m  = processFormFieldValueIfNecessary("${name}_second", "${m}", "option")
             out.println "<option value=\"${m}\"${i == second ? ' selected="selected"' : ''}>$m</option>"
         }
         out.println '</select>'
