@@ -124,7 +124,7 @@ class WithCodecHelper {
             }
             String allFallback = null
             String nameFallback = null
-            (Map<String, String>) ((Map) codecInfo).each { k, v ->
+            ((Map) codecInfo).each { k, v ->
                 String codecWriterName = k.toString().toLowerCase() - 'codec'
                 if (codecWriterName == OutputEncodingSettings.INHERIT_SETTING_NAME
                         || codecWriterName == OutputEncodingSettings.REPLACE_ONLY_SETTING_NAME) {
