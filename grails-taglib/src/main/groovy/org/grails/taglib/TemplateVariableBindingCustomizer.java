@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.taglib.encoder;
-
-import java.util.Collection;
+package org.grails.taglib;
 
 /**
- * Interface to lookup {@link OutputContext}
+ * Callback interface that can be used to customize a {@link AbstractTemplateVariableBinding}.
  *
- * @author Lari Hotari
- * @since 3.0
+ * @author Michael Yan
+ * @since 2022.0.0
+ * @see AbstractTemplateVariableBinding
  */
-public interface OutputContextLookup {
+public interface TemplateVariableBindingCustomizer {
 
-    OutputContext lookupOutputContext();
-
-    void addContextCustomizers(OutputContextCustomizer... customizers);
-
-    void setContextCustomizers(Collection<? extends OutputContextCustomizer> customizers);
-
-    Collection<OutputContextCustomizer> getContextCustomizers();
+    /**
+     * Callback to customize a {@link AbstractTemplateVariableBinding} instance.
+     * @param binding the Output Context to customize
+     */
+    void customize(AbstractTemplateVariableBinding binding);
 
 }
