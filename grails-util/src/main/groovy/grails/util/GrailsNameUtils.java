@@ -358,6 +358,35 @@ public final class GrailsNameUtils {
     }
 
     /**
+     * Retrieves the snake case name of the supplied class.
+     * For example MyFunkyGrailsScript would be my_funky_grails_script.
+     *
+     * @param clazz The class to convert
+     * @return The script name representation
+     */
+    public static String getSnakeCaseName(Class<?> clazz) {
+        return clazz == null ? null : getSnakeCaseName(clazz.getName());
+    }
+
+    /**
+     * Retrieves the snake case name of the given class name.
+     * For example MyFunkyGrailsScript would be my_funky_grails_script.
+     *
+     * @param name The class name to convert.
+     * @return The snake case name representation.
+     */
+    public static String getSnakeCaseName(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        if (name.endsWith(".groovy")) {
+            name = name.substring(0, name.length() - 7);
+        }
+        return getNaturalName(name).replaceAll("\\s", "_").toLowerCase();
+    }
+
+    /**
      * Calculates the class name from a script name in the form my-funk-grails-script.
      *
      * @param scriptName The script name

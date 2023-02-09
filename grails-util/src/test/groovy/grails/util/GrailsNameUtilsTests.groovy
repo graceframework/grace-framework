@@ -104,6 +104,15 @@ class GrailsNameUtilsTests {
     }
 
     @Test
+    void testGetSnakeCaseName() {
+        assertEquals("grails_name_utils_tests", GrailsNameUtils.getSnakeCaseName(getClass()))
+        assertEquals("grails_name_utils_tests", GrailsNameUtils.getSnakeCaseName("GrailsNameUtilsTests"))
+        assertEquals("", GrailsNameUtils.getSnakeCaseName(""))
+        assertNull(GrailsNameUtils.getSnakeCaseName((String) null))
+        assertNull(GrailsNameUtils.getSnakeCaseName((Class<?>) null))
+    }
+
+    @Test
     void testGetNameFromScript() {
         assertEquals("GrailsClassUtilsTests", GrailsNameUtils.getNameFromScript("grails-class-utils-tests"))
         assertEquals("Grails", GrailsNameUtils.getNameFromScript("grails"))
