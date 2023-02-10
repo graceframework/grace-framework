@@ -78,6 +78,7 @@ class GrailsNameUtilsTests {
 
     @Test
     void testGetLogicalPropertyName() {
+        assertEquals("grailsNameUtils", GrailsNameUtils.getLogicalPropertyName(getClass(), "Tests"))
         assertEquals("myFunky", GrailsNameUtils.getLogicalPropertyName("MyFunkyController", "Controller"))
         assertEquals("HTML", GrailsNameUtils.getLogicalPropertyName("HTMLCodec", "Codec"))
         assertEquals("payRoll", GrailsNameUtils.getLogicalPropertyName("org.something.PayRollController", "Controller"))

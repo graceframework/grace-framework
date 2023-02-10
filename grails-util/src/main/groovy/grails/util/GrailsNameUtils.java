@@ -209,6 +209,10 @@ public final class GrailsNameUtils {
         return shortName.substring(0, shortName.length() - trailingName.length());
     }
 
+    public static String getLogicalPropertyName(Class<?> clazz, String trailingName) {
+        return getLogicalPropertyName(clazz.getName(), trailingName);
+    }
+
     public static String getLogicalPropertyName(String className, String trailingName) {
         if (!isBlank(className) && !isBlank(trailingName)) {
             if (className.length() == trailingName.length() + 1 && className.endsWith(trailingName)) {
