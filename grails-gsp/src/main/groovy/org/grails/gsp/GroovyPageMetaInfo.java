@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,10 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -50,6 +52,7 @@ import org.grails.encoder.Encoder;
 import org.grails.gsp.compiler.GroovyPageParser;
 import org.grails.gsp.jsp.TagLibraryResolver;
 import org.grails.io.support.SpringIOUtils;
+import org.grails.taglib.TagInvocationContextCustomizer;
 import org.grails.taglib.TagLibraryLookup;
 import org.grails.taglib.encoder.WithCodecHelper;
 
@@ -126,6 +129,8 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
     private boolean initialized = false;
 
     private CacheEntry<Resource> shouldReloadCacheEntry = new CacheEntry<>();
+
+    private List<TagInvocationContextCustomizer> tagInvocationContextCustomizers = new ArrayList<>();
 
     public static String DEFAULT_PLUGIN_PATH = "";
 
@@ -573,6 +578,14 @@ public class GroovyPageMetaInfo implements GrailsApplicationAware {
         if (this.metaClassShouldBeRemoved) {
             removePageMetaClass();
         }
+    }
+
+    public List<TagInvocationContextCustomizer> getTagInvocationContextCustomizers() {
+        return this.tagInvocationContextCustomizers;
+    }
+
+    public void setTagInvocationContextCustomizers(List<TagInvocationContextCustomizer> tagInvocationContextCustomizers) {
+        this.tagInvocationContextCustomizers = tagInvocationContextCustomizers;
     }
 
     interface GroovyPageMetaInfoInitializer {

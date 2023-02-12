@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ import grails.util.GrailsUtil;
 
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.core.exceptions.DefaultErrorsPrinter;
+import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.exceptions.ExceptionUtils;
 import org.grails.gsp.compiler.GroovyPageParser;
 import org.grails.gsp.io.DefaultGroovyPageLocator;
@@ -71,6 +72,7 @@ import org.grails.gsp.io.GroovyPageLocator;
 import org.grails.gsp.io.GroovyPageResourceScriptSource;
 import org.grails.gsp.io.GroovyPageScriptSource;
 import org.grails.gsp.jsp.TagLibraryResolver;
+import org.grails.taglib.TagInvocationContextCustomizer;
 import org.grails.taglib.TagLibraryLookup;
 
 /**
@@ -128,6 +130,8 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
     private List<GroovyPageSourceDecorator> groovyPageSourceDecorators = new ArrayList<>();
 
+    private List<TagInvocationContextCustomizer> tagInvocationContextCustomizers = new ArrayList<>();
+
     static {
         String dirPath = System.getProperty("grails.dump.gsp.line.numbers.to.dir");
         if (dirPath != null) {
@@ -172,6 +176,10 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         if (!Environment.isDevelopmentMode()) {
             this.cachedDomainsWithoutPackage = createDomainClassMap();
         }
+        this.tagInvocationContextCustomizers = GrailsFactoriesLoader.loadFactories(TagInvocationContextCustomizer.class,
+                getClass().getClassLoader());
+        this.tagInvocationContextCustomizers.addAll(this.grailsApplication.getMainContext()
+                .getBeansOfType(TagInvocationContextCustomizer.class).values());
     }
 
     private GroovyClassLoader initGroovyClassLoader(ClassLoader parent) {
@@ -533,6 +541,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         try {
             metaInfo.setPageClass(compileGroovyPage(in, name, path, metaInfo));
             metaInfo.setHtmlParts(parser.getHtmlPartsArray());
+            metaInfo.setTagInvocationContextCustomizers(this.tagInvocationContextCustomizers);
         }
         catch (GroovyPagesException e) {
             metaInfo.setCompilationException(e);

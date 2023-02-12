@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,8 @@ import org.grails.taglib.AbstractTemplateVariableBinding;
 import org.grails.taglib.GrailsTagException;
 import org.grails.taglib.GroovyPageAttributes;
 import org.grails.taglib.TagBodyClosure;
+import org.grails.taglib.TagInvocationContext;
+import org.grails.taglib.TagInvocationContextCustomizer;
 import org.grails.taglib.TagLibraryLookup;
 import org.grails.taglib.TagOutput;
 import org.grails.taglib.encoder.OutputContext;
@@ -89,10 +91,6 @@ public abstract class GroovyPage extends Script {
 
     public static final String DEFAULT_NAMESPACE = "g";
 
-    public static final String LINK_NAMESPACE = "link";
-
-    public static final String TEMPLATE_NAMESPACE = "tmpl";
-
     public static final String PAGE_SCOPE = "pageScope";
 
     public static final Collection<String> RESERVED_NAMES = CollectionUtils.newSet(
@@ -133,6 +131,8 @@ public abstract class GroovyPage extends Script {
 
     private final List<Closure<?>> bodyClosures = new ArrayList<>(15);
 
+    private List<TagInvocationContextCustomizer> tagInvocationContextCustomizers = new ArrayList<>();
+
     public GroovyPage() {
         init();
     }
@@ -161,6 +161,7 @@ public abstract class GroovyPage extends Script {
             setGspTagLibraryLookup(metaInfo.getTagLibraryLookup());
             setHtmlParts(metaInfo.getHtmlParts());
             setPluginContextPath(metaInfo.getPluginPath());
+            setTagInvocationContextCustomizers(metaInfo.getTagInvocationContextCustomizers());
             attributesBuilder.outEncoder(metaInfo.getOutEncoder());
             attributesBuilder.staticEncoder(metaInfo.getStaticEncoder());
             attributesBuilder.expressionEncoder(metaInfo.getExpressionEncoder());
@@ -281,6 +282,15 @@ public abstract class GroovyPage extends Script {
     }
 
     /**
+     * Set the customizers
+     * @param tagInvocationContextCustomizers the customizer
+     * @since 2022.0.0
+     */
+    void setTagInvocationContextCustomizers(List<TagInvocationContextCustomizer> tagInvocationContextCustomizers) {
+        this.tagInvocationContextCustomizers = tagInvocationContextCustomizers;
+    }
+
+    /**
      * In the development environment this method is used to evaluate expressions and improve error reporting
      *
      * @param exprText   The expression text
@@ -368,7 +378,7 @@ public abstract class GroovyPage extends Script {
     }
 
     /**
-     * Attempts to invokes a dynamic tag
+     * Attempts to invoke a dynamic tag
      *
      * @param tagName          The name of the tag
      * @param tagNamespace     The taglib's namespace
@@ -378,53 +388,38 @@ public abstract class GroovyPage extends Script {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public final void invokeTag(String tagName, String tagNamespace, int lineNumber, Map attrs, int bodyClosureIndex) {
+        // Handling custom namespace and tags
+        TagInvocationContext tagInvocationContext = new TagInvocationContext(tagNamespace, tagName, attrs);
+        applyTagInvocationContextCustomizers(tagInvocationContext);
+
+        String theNamespace = tagInvocationContext.getNamespace();
+        String theTagName = tagInvocationContext.getTagName();
+        Map theAttrs = tagInvocationContext.getAttrs();
         Closure body = getBodyClosure(bodyClosureIndex);
 
-        // TODO custom namespace stuff needs to be generalized and pluggable
-        if (tagNamespace.equals(TEMPLATE_NAMESPACE) || tagNamespace.equals(LINK_NAMESPACE)) {
-            final String tmpTagName = tagName;
-            final Map tmpAttrs = attrs;
-            Object encodeAs = tmpAttrs.remove(ENCODE_AS_ATTRIBUTE_NAME);
-            if (tagNamespace.equals(TEMPLATE_NAMESPACE)) {
-                tagName = "render";
-                attrs = CollectionUtils.newMap("model", tmpAttrs, "template", tmpTagName);
-            }
-            else if (tagNamespace.equals(LINK_NAMESPACE)) {
-                tagName = "link";
-                attrs = CollectionUtils.newMap("mapping", tmpTagName);
-                if (!tmpAttrs.isEmpty()) {
-                    attrs.put("params", tmpAttrs);
-                }
-            }
-            if (encodeAs != null) {
-                attrs.put(ENCODE_AS_ATTRIBUTE_NAME, encodeAs);
-            }
-            tagNamespace = DEFAULT_NAMESPACE;
-        }
-
         try {
-            GroovyObject tagLib = getTagLib(tagNamespace, tagName);
-            if (tagLib != null || (this.gspTagLibraryLookup != null && this.gspTagLibraryLookup.hasNamespace(tagNamespace))) {
+            GroovyObject tagLib = getTagLib(theNamespace, theTagName);
+            if (tagLib != null || (this.gspTagLibraryLookup != null && this.gspTagLibraryLookup.hasNamespace(theNamespace))) {
                 if (tagLib != null) {
-                    boolean returnsObject = this.gspTagLibraryLookup.doesTagReturnObject(tagNamespace, tagName);
-                    Object tagLibClosure = tagLib.getProperty(tagName);
+                    boolean returnsObject = this.gspTagLibraryLookup.doesTagReturnObject(theNamespace, theTagName);
+                    Object tagLibClosure = tagLib.getProperty(theTagName);
                     if (tagLibClosure instanceof Closure) {
-                        Map<String, Object> encodeAsForTag = this.gspTagLibraryLookup.getEncodeAsForTag(tagNamespace, tagName);
-                        invokeTagLibClosure(tagName, tagNamespace, (Closure) tagLibClosure, attrs, body, returnsObject, encodeAsForTag);
+                        Map<String, Object> encodeAsForTag = this.gspTagLibraryLookup.getEncodeAsForTag(theNamespace, theTagName);
+                        invokeTagLibClosure(theTagName, theNamespace, (Closure) tagLibClosure, theAttrs, body, returnsObject, encodeAsForTag);
                     }
                     else {
-                        throw new GrailsTagException("Tag [" + tagName + "] does not exist in tag library [" + tagLib.getClass().getName() + "]",
+                        throw new GrailsTagException("Tag [" + theTagName + "] does not exist in tag library [" + tagLib.getClass().getName() + "]",
                                 getGroovyPageFileName(), lineNumber);
                     }
                 }
                 else {
-                    throw new GrailsTagException("Tag [" + tagName + "] does not exist. No tag library found for namespace: " + tagNamespace,
+                    throw new GrailsTagException("Tag [" + theTagName + "] does not exist. No tag library found for namespace: " + theNamespace,
                             getGroovyPageFileName(), lineNumber);
                 }
             }
             else {
-                this.staticOut.append('<').append(tagNamespace).append(':').append(tagName);
-                for (Object o : attrs.entrySet()) {
+                this.staticOut.append('<').append(theNamespace).append(':').append(theTagName);
+                for (Object o : theAttrs.entrySet()) {
                     Map.Entry entry = (Map.Entry) o;
                     this.staticOut.append(' ');
                     this.staticOut.append(entry.getKey()).append('=');
@@ -452,7 +447,7 @@ public abstract class GroovyPage extends Script {
                     if (bodyOutput != null) {
                         this.staticOut.print(bodyOutput);
                     }
-                    this.staticOut.append("</").append(tagNamespace).append(':').append(tagName).append('>');
+                    this.staticOut.append("</").append(theNamespace).append(':').append(theTagName).append('>');
                 }
 
             }
@@ -464,17 +459,17 @@ public abstract class GroovyPage extends Script {
 
             // The capture* tags are internal tags and not to be displayed to the user
             // hence we don't wrap the exception and simple rethrow it
-            if (tagName.matches("capture(Body|Head|Meta|Title|Component)")) {
+            if (theTagName.matches("capture(Body|Head|Meta|Title|Component)")) {
                 RuntimeException rte = ExceptionUtils.getFirstRuntimeException(e);
                 if (rte == null) {
-                    throwRootCause(tagName, tagNamespace, lineNumber, e);
+                    throwRootCause(theTagName, theNamespace, lineNumber, e);
                 }
                 else {
                     throw rte;
                 }
             }
             else {
-                throwRootCause(tagName, tagNamespace, lineNumber, e);
+                throwRootCause(theTagName, theNamespace, lineNumber, e);
             }
         }
     }
@@ -594,6 +589,12 @@ public abstract class GroovyPage extends Script {
 
     public OutputContext getOutputContext() {
         return this.outputContext;
+    }
+
+    public void applyTagInvocationContextCustomizers(TagInvocationContext tagInvocationContext) {
+        for (TagInvocationContextCustomizer customizer : this.tagInvocationContextCustomizers) {
+            customizer.customize(tagInvocationContext);
+        }
     }
 
     public final void registerSitemeshPreprocessMode() {
