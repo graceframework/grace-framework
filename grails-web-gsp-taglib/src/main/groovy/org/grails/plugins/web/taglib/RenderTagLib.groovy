@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
                     content = bodyClosure()
                 }
                 if (content instanceof StreamCharBuffer) {
-                    gspSiteMeshPage.setPageBuffer(content)
+                    gspSiteMeshPage.setPageBuffer((StreamCharBuffer) content)
                     gspSiteMeshPage.setUsed(isSitemeshPreprocessMode())
                 }
                 else if (content != null) {
@@ -250,7 +250,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
 
         String propertyName = attrs.name as String
         def htmlPage = getPage()
-        def propertyValue
+        def propertyValue = null
 
         if (htmlPage instanceof GSPSitemeshPage) {
             // check if there is an component content buffer
@@ -305,7 +305,7 @@ class RenderTagLib implements RequestConstants, TagLibrary, GrailsApplicationAwa
             def propertyValue = null
             if (htmlPage instanceof GSPSitemeshPage) {
                 // check if there is an component content buffer
-                propertyValue = htmlPage.getContentBuffer(propertyName)
+                propertyValue = ((GSPSitemeshPage) htmlPage).getContentBuffer(propertyName)
             }
 
             if (!propertyValue) {
