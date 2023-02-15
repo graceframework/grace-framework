@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
             GroovyCompile groovyCompile = (GroovyCompile) allTasks.findByName('compileGroovy')
             ProcessResources processResources = (ProcessResources) allTasks.findByName('processResources')
 
-            runtimeConfiguration.artifacts.add(new ExplodedDir(groovyCompile.destinationDir, groovyCompile, processResources))
+            runtimeConfiguration.artifacts.add(new ExplodedDir(groovyCompile.destinationDirectory.get().asFile, groovyCompile, processResources))
             explodedConfig.artifacts.add(new ExplodedDir(processResources.destinationDir, groovyCompile, processResources))
         }
     }
@@ -120,7 +120,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         def taskContainer = project.tasks
         if (taskContainer.findByName('sourcesJar') == null) {
             def jarTask = taskContainer.create('sourcesJar', Jar)
-            jarTask.classifier = 'sources'
+            jarTask.archiveClassifier.set('sources')
             jarTask.from SourceSets.findMainSourceSet(project).allSource
         }
     }
