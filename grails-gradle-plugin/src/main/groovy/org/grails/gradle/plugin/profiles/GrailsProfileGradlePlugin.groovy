@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencyResolveDetails
 import org.gradle.api.file.CopySpec
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
-import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Jar
 
@@ -49,7 +49,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.getPluginManager().apply(BasePlugin)
+        project.getPluginManager().apply(GroovyPlugin)
         project.configurations.create(CONFIGURATION_NAME)
         def profileConfiguration = project.configurations.create(RUNTIME_CONFIGURATION)
 
