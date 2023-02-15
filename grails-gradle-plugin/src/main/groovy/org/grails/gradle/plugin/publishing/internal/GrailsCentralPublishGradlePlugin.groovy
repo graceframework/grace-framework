@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,9 +157,11 @@ BINTRAY_KEY=key
                             artifact extraArtefact
                         }
                         def pluginXml = null
-                        def pluginFile = new File(extraArtefact.source)
-                        if (pluginFile.exists()) {
-                            pluginXml = new groovy.xml.XmlSlurper().parse(pluginFile)
+                        if (extraArtefact?.source?.endsWith('plugin.xml')) {
+                            def pluginFile = new File(extraArtefact.source)
+                            if (pluginFile.exists()) {
+                                pluginXml = new groovy.xml.XmlSlurper().parse(pluginFile)
+                            }
                         }
                         pom.withXml {
                             Node pomNode = asNode()
@@ -170,23 +172,12 @@ BINTRAY_KEY=key
 
                             if (gpe != null) {
                                 pomNode.children().last() + {
-                                    def title = gpe.title
-                                    if (!title && pluginXml) {
-                                        title = pluginXml.title?.text()
-                                    }
-                                    title = title ?: project.name
+                                    def title = gpe.title ?: pluginXml?.title?.text() ?: project.name
                                     delegate.name title
-                                    def desc = gpe.desc
-                                    if (!desc && pluginXml) {
-                                        desc = pluginXml.description?.text()
-                                    }
-                                    desc = desc ?: title
+                                    def desc = gpe.desc ?: pluginXml?.description?.text() ?: title
                                     delegate.description desc
 
                                     def websiteUrl = gpe.websiteUrl ?: gpe.githubSlug ? "https://github.com/$gpe.githubSlug" : ''
-                                    if (!websiteUrl) {
-                                        throw new RuntimeException(getErrorMessage('websiteUrl'))
-                                    }
 
                                     delegate.url websiteUrl
 
