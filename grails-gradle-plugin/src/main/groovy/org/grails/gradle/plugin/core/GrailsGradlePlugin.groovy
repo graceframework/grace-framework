@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,7 +216,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
-        project.dependencies.add('profile', "org.grails.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
+        project.dependencies.add(PROFILE_CONFIGURATION, "org.grails.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
     }
 
     @CompileDynamic
@@ -323,7 +323,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureApplicationCommands(Project project) {
         def applicationContextCommands = FactoriesLoaderSupport.loadFactoryNames(APPLICATION_CONTEXT_COMMAND_CLASS)
         project.afterEvaluate {
-            FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console)
+            FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
+                    project.configurations.profile)
             for (ctxCommand in applicationContextCommands) {
                 String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand, 'Command')
                 String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand, 'Command'))
@@ -644,7 +645,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureRunScript(Project project) {
         if (project.tasks.findByName('runScript') == null) {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
-                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console
+                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
@@ -657,7 +658,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureRunCommand(Project project) {
         if (project.tasks.findByName('runCommand') == null) {
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
-                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console
+                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
