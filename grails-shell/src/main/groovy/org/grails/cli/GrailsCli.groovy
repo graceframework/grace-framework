@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ class GrailsCli {
     private static ExecutionContext currentExecutionContext = null
 
     private static boolean interactiveModeActive
-    private static boolean tiggerAppLoad = false
+    private static boolean triggerAppLoad = false
     private static final NavigableMap SETTINGS_MAP = new NavigableMap()
 
     static {
@@ -191,8 +191,8 @@ class GrailsCli {
         interactiveModeActive
     }
 
-    static void tiggerAppLoad() {
-        GrailsCli.tiggerAppLoad = true
+    static void triggerAppLoad() {
+        GrailsCli.triggerAppLoad = true
     }
 
     private int getBaseUsage() {
@@ -403,14 +403,14 @@ class GrailsCli {
                     System.setProperty('grails.full.stacktrace', 'false')
                 }
                 if (profile.handleCommand(context)) {
-                    if (tiggerAppLoad) {
+                    if (triggerAppLoad) {
                         console.updateStatus('Initializing application. Please wait...')
                         try {
                             initializeApplication(context.commandLine)
                             setupCompleters()
                         }
                         finally {
-                            tiggerAppLoad = false
+                            triggerAppLoad = false
                         }
                     }
                     return true
