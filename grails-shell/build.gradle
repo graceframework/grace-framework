@@ -18,6 +18,7 @@ configurations {
 dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
+    api project(":grails-cli")
     api project(":grails-gradle-model")
     api project(":grails-util")
 

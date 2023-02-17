@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
 package org.grails.cli.profile.commands.factory
 
 import grails.build.logging.GrailsConsole
+import grails.dev.commands.ApplicationCommand
 import grails.util.Named
 
 import org.grails.cli.gradle.commands.GradleTaskCommandAdapter
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.Profile
+import org.grails.core.io.support.GrailsFactoriesLoader
 
 /**
  * Automatically populates ApplicationContext command instances and adapts the interface to the shell
@@ -37,16 +39,10 @@ class ApplicationContextCommandFactory implements CommandFactory {
         }
 
         try {
-            def classLoader = Thread.currentThread().contextClassLoader
-            Class registry
-            try {
-                registry = classLoader.loadClass('grails.dev.commands.ApplicationContextCommandRegistry')
-            }
-            catch (ClassNotFoundException cnf) {
-                return []
-            }
-            def commands = registry.findCommands()
-            return commands.collect { Named named -> new GradleTaskCommandAdapter(profile, named) }
+            ClassLoader classLoader = Thread.currentThread().contextClassLoader
+            List<ApplicationCommand> registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand.class, classLoader)
+
+            return registeredCommands.collect { Named named -> new GradleTaskCommandAdapter(profile, named) }
         }
         catch (Throwable e) {
             GrailsConsole.instance.error("Error occurred loading commands: $e.message", e)
