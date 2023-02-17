@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,19 +37,20 @@ class GrailsClasspathToolingModelBuilder implements ToolingModelBuilder {
     Object buildAll(String modelName, Project project) {
         // testRuntimeClasspath includes provided
         try {
-            List<URL> runtimeDependencies =
-                    project.getConfigurations().getByName('testRuntimeClasspath')
-                            .getResolvedConfiguration()
-                            .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
+            List<URL> runtimeDependencies = project.getConfigurations().getByName('testRuntimeClasspath')
+                    .getResolvedConfiguration()
+                    .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
 
-            DefaultGrailsClasspath grailsClasspath = new DefaultGrailsClasspath(dependencies: runtimeDependencies)
-
+            List<URL> profileDependencies = []
             Configuration profileConfiguration = project.getConfigurations().getByName('profile')
             if (profileConfiguration != null) {
-                grailsClasspath.profileDependencies =
-                        profileConfiguration.getResolvedConfiguration()
-                                .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
+                profileDependencies = profileConfiguration.getResolvedConfiguration()
+                        .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
             }
+
+            DefaultGrailsClasspath grailsClasspath = new DefaultGrailsClasspath(dependencies: (runtimeDependencies + profileDependencies),
+                    profileDependencies: profileDependencies)
+
             return grailsClasspath
         }
         catch (ResolveException e) {

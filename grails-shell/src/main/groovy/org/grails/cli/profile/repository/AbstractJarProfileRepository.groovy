@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,11 +95,11 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
             return
         }
 
-        def classLoader = new URLClassLoader([url] as URL[], parent)
-        def profileYml = classLoader.getResource('META-INF/grails-profile/profile.yml')
+        URLClassLoader classLoader = new URLClassLoader([url] as URL[])
+        URL profileYml = classLoader.getResource('META-INF/grails-profile/profile.yml')
         if (profileYml != null) {
             registeredUrls.add(url)
-            def profile = new JarProfile(this, new ClassPathResource('META-INF/grails-profile/', classLoader), classLoader)
+            JarProfile profile = new JarProfile(this, new ClassPathResource('META-INF/grails-profile/', classLoader), parent)
             profile.profileRepository = this
             allProfiles.add profile
             profilesByName[profile.name] = profile

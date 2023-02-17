@@ -45,7 +45,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
 
     static final String CONFIGURATION_NAME = 'grails'
 
-    public static final String RUNTIME_CONFIGURATION = 'profileRuntimeOnly'
+    public static final String RUNTIME_CONFIGURATION = 'profile'
 
     @Override
     void apply(Project project) {
