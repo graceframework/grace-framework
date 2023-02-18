@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.boot.internal
 
 import java.nio.charset.StandardCharsets
 
+import javax.tools.StandardJavaFileManager
 import javax.tools.ToolProvider
 
 import groovy.transform.CompileStatic
@@ -39,8 +40,8 @@ class JavaCompiler {
     static boolean recompile(CompilerConfiguration config, File... files) {
         // compile java source
         javax.tools.JavaCompiler compiler = ToolProvider.getSystemJavaCompiler()
-        def sfm = compiler.getStandardFileManager(null, null, StandardCharsets.UTF_8)
-        def compileTask = compiler.getTask(null, null, null,
+        StandardJavaFileManager sfm = compiler.getStandardFileManager(null, null, StandardCharsets.UTF_8)
+        javax.tools.JavaCompiler.CompilationTask compileTask = compiler.getTask(null, null, null,
                 ['-d', config.targetDirectory.absolutePath], null, sfm.getJavaFileObjects(files))
         compileTask.call()
     }

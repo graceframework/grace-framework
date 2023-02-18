@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
+import org.codehaus.groovy.ast.stmt.Statement
 import org.codehaus.groovy.control.SourceUnit
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.web.WebApplicationInitializer
@@ -83,14 +84,14 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
 
         if (applicationArtefactHandler.isArtefact(classNode)
                 && !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)) {
-            def methods = classNode.getMethods('main')
+            List<MethodNode> methods = classNode.getMethods('main')
             for (MethodNode mn in methods) {
                 if (Modifier.isStatic(mn.modifiers) && Modifier.isPublic(mn.modifiers)) {
-                    def mainMethodBody = mn.code
+                    Statement mainMethodBody = mn.code
                     if (mainMethodBody instanceof BlockStatement) {
                         BlockStatement bs = (BlockStatement) mainMethodBody
                         if (!bs.statements.isEmpty()) {
-                            def methodCallExpression = new MethodCallExpression(
+                            MethodCallExpression methodCallExpression = new MethodCallExpression(
                                     new ClassExpression(ClassHelper.make(System)),
                                     'setProperty',
                                     new ArgumentListExpression(
@@ -103,15 +104,15 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
                         }
                     }
 
-                    def loaderClassNode = new ClassNode("${classNode.name}Loader",
+                    ClassNode loaderClassNode = new ClassNode("${classNode.name}Loader",
                             Modifier.PUBLIC, ClassHelper.make(GrailsServletInitializer))
 
                     loaderClassNode.addInterface(ClassHelper.make(WebApplicationInitializer))
 
-                    def springApplicationBuilder = ClassHelper.make(SpringApplicationBuilder)
+                    ClassNode springApplicationBuilder = ClassHelper.make(SpringApplicationBuilder)
 
-                    def parameter = new Parameter(springApplicationBuilder, 'application')
-                    def methodBody = new BlockStatement()
+                    Parameter parameter = new Parameter(springApplicationBuilder, 'application')
+                    BlockStatement methodBody = new BlockStatement()
 
                     methodBody.addStatement(new ExpressionStatement(new MethodCallExpression(
                             new VariableExpression(parameter), 'sources', new ClassExpression(classNode))))
