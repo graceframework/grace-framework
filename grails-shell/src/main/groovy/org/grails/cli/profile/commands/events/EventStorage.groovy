@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class EventStorage {
     }
 
     static void fireEvent(Object caller, String eventName, Object... args) {
-        def listeners = EVENT_LISTENERS[eventName]
+        Collection<Closure> listeners = EVENT_LISTENERS[eventName]
         for (listener in listeners) {
             listener.delegate = caller
             listener.call args

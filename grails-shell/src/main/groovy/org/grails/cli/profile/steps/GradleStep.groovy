@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,10 @@ import groovy.transform.CompileStatic
 import org.gradle.tooling.BuildException
 import org.gradle.tooling.BuildLauncher
 
+import org.grails.build.parsing.CommandLine
 import org.grails.cli.gradle.GradleUtil
 import org.grails.cli.profile.AbstractStep
+import org.grails.cli.profile.CommandArgument
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.ProfileCommand
 import org.grails.exceptions.ExceptionUtils
@@ -77,18 +79,18 @@ class GradleStep extends AbstractStep {
     }
 
     protected BuildLauncher fillArguments(ExecutionContext context, BuildLauncher buildLauncher) {
-        def commandLine = context.commandLine
+        CommandLine commandLine = context.commandLine
 
         List<String> argList = baseArguments ? [baseArguments] : new ArrayList<String>()
 
         for (Map.Entry<String, Object> entry in commandLine.undeclaredOptions) {
-            def flagName = entry.key
+            String flagName = entry.key
             if (GRADLE_ARGUMENT_ADAPTER.containsKey(flagName)) {
                 argList.addAll(GRADLE_ARGUMENT_ADAPTER[flagName].split(/\s/))
                 continue
             }
 
-            def flag = command.description.getFlag(flagName)
+            CommandArgument flag = command.description.getFlag(flagName)
             if (flag) {
                 flagName = flag.target ?: flagName
             }

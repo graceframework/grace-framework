@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ class GroovyScriptCommandFactory extends ResourceResolvingCommandFactory<GroovyS
 
     @Override
     protected String evaluateFileName(String fileName) {
-        def fn = super.evaluateFileName(fileName)
+        String fn = super.evaluateFileName(fileName)
         fn.contains('-') ? fn.toLowerCase() : GrailsNameUtils.getScriptName(fn)
     }
 

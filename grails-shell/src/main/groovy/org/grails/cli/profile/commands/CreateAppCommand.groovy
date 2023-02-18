@@ -28,6 +28,7 @@ import groovy.ant.AntBuilder
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
 
 import grails.build.logging.GrailsConsole
@@ -98,10 +99,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @Override
     protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
-        def lastOption = commandLine.lastOption()
+        Map.Entry<String, Object> lastOption = commandLine.lastOption()
         if (lastOption != null) {
             // if value == true it means no profile is specified and only the flag is present
-            def profileNames = profileRepository.allProfiles*.name
+            List<String> profileNames = profileRepository.allProfiles*.name
             if (lastOption.key == PROFILE_FLAG) {
                 def val = lastOption.value
                 if (val == true) {
@@ -109,9 +110,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    def valStr = val.toString()
+                    String valStr = val.toString()
 
-                    def candidateProfiles = profileNames.findAll { String pn ->
+                    List<String> candidateProfiles = profileNames.findAll { String pn ->
                         pn.startsWith(valStr)
                     }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
@@ -121,25 +122,25 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
             else if (lastOption.key == FEATURES_FLAG) {
-                def val = lastOption.value
-                def profile = profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
+                Object val = lastOption.value
+                Profile profile = profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
                         commandLine.optionValue(PROFILE_FLAG).toString() : getDefaultProfile())
-                def featureNames = profile.features*.name
+                List<String> featureNames = profile.features*.name
                 if (val == true) {
                     candidates.addAll(featureNames)
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    def valStr = val.toString()
+                    String valStr = val.toString()
                     if (valStr.endsWith(',')) {
-                        def specified = valStr.split(',')
+                        String[] specified = valStr.split(',')
                         candidates.addAll(featureNames.findAll { String f ->
                             !specified.contains(f)
                         })
                         return cursor
                     }
 
-                    def candidatesFeatures = featureNames.findAll { String pn ->
+                    List<String> candidatesFeatures = featureNames.findAll { String pn ->
                         pn.startsWith(valStr)
                     }.collect { String pn ->
                         "${pn.substring(valStr.size())} ".toString()
@@ -168,9 +169,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     protected void appendFeatureFiles(File skeletonDir) {
-        def ymlFiles = findAllFilesByName(skeletonDir, APPLICATION_YML)
-        def buildGradleFiles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
-        def gradlePropertiesFiles = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
+        Set<File> ymlFiles = findAllFilesByName(skeletonDir, APPLICATION_YML)
+        Set<File> buildGradleFiles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
+        Set<File> gradlePropertiesFiles = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
 
         ymlFiles.each { File newYml ->
             File oldYml = new File(getDestinationDirectory(newYml), APPLICATION_YML)
@@ -277,7 +278,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return false
             }
 
-            def profiles = profileRepository.getProfileAndDependencies(profileInstance)
+            List<Profile> profiles = profileRepository.getProfileAndDependencies(profileInstance)
 
             Map<Profile, File> targetDirs = [:]
             buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
@@ -306,7 +307,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             def ant = new GrailsConsoleAntBuilder()
 
             for (Feature f in features) {
-                def location = f.location
+                Resource location = f.location
 
                 File skeletonDir
                 File tmpDir
@@ -404,8 +405,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected File unzipProfile(AntBuilder ant, Resource location) {
-        def url = location.URL
-        def tmpDir = unzippedDirectories.get(url)
+        URI url = location.URL
+        File tmpDir = unzippedDirectories.get(url)
 
         if (tmpDir == null) {
             def jarFile = IOUtils.findJarFile(url)
@@ -420,19 +421,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     @CompileDynamic
     protected void replaceBuildTokens(String profileCoords, Profile profile, List<Feature> features, File targetDirectory) {
         AntBuilder ant = new GrailsConsoleAntBuilder()
-        def ln = System.getProperty('line.separator')
+        String ln = System.getProperty('line.separator')
 
         Closure repositoryUrl = { int spaces, String repo ->
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
 
-        def repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
+        String repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
-        def dependencies = profileDependencies.findAll { Dependency dep ->
+        List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
             dep.scope != 'build'
         }
-        def buildDependencies = profileDependencies.findAll { Dependency dep ->
+        List<Dependency> buildDependencies = profileDependencies.findAll { Dependency dep ->
             dep.scope == 'build'
         }
 
@@ -453,7 +454,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 .unique()
                 .join(ln)
 
-        def buildRepositories = profile.buildRepositories
+        List<String> buildRepositories = profile.buildRepositories
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
@@ -464,7 +465,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             "        classpath \"${artifactStr}\"".toString()
         }.unique().join(ln)
 
-        def buildPlugins = profile.buildPlugins.collect { String name ->
+        List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
             "apply plugin:\"$name\""
         }
 
@@ -497,7 +498,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 replacetoken('@repositories@')
                 replacevalue(repositories)
             }
-            variables.each { k, v ->
+            variables.each { String k, String v ->
                 replacefilter {
                     replacetoken("@${k}@".toString())
                     replacevalue(v)
@@ -537,7 +538,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     protected String createNewApplicationYml(String previousYml, String newYml) {
-        def ln = System.getProperty('line.separator')
+        String ln = System.getProperty('line.separator')
         if (newYml != previousYml) {
             StringBuilder appended = new StringBuilder(previousYml.length() + newYml.length() + 30)
             if (!previousYml.startsWith('---')) {
@@ -638,14 +639,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     @CompileStatic(TypeCheckingMode.SKIP)
     private void copySkeleton(Profile profile, Profile participatingProfile) {
         def buildMergeProfileNames = profile.buildMergeProfileNames
-        def excludes = profile.skeletonExcludes
+        List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
             excludes = []
         }
 
         AntBuilder ant = new GrailsConsoleAntBuilder()
 
-        def skeletonResource = participatingProfile.profileDir.createRelative('skeleton')
+        Resource skeletonResource = participatingProfile.profileDir.createRelative('skeleton')
         File skeletonDir
         File tmpDir
         if (skeletonResource instanceof FileSystemResource) {
@@ -760,8 +761,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     protected String resolveArtifactString(Dependency dep) {
-        def artifact = dep.artifact
-        def v = artifact.version.replace('BOM', '')
+        Artifact artifact = dep.artifact
+        String v = artifact.version.replace('BOM', '')
 
         v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
     }

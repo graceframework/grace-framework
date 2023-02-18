@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class OpenCommand implements ProjectCommand, Completer {
 
     @Override
     boolean handle(ExecutionContext executionContext) {
-        def filePath = executionContext.commandLine.remainingArgsString
+        String filePath = executionContext.commandLine.remainingArgsString
         if (filePath) {
             if (filePath == 'test-report') {
                 filePath = 'build/reports/tests/index.html'

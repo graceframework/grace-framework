@@ -21,6 +21,7 @@ import groovy.transform.InheritConstructors
 import grails.build.logging.GrailsConsole
 import grails.util.GrailsNameUtils
 
+import org.grails.build.parsing.CommandLine
 import org.grails.cli.interactive.completers.ClassNameCompleter
 import org.grails.cli.profile.AbstractStep
 import org.grails.cli.profile.ExecutionContext
@@ -50,11 +51,11 @@ class RenderStep extends AbstractStep {
 
     @Override
     boolean handle(ExecutionContext context) {
-        def commandLine = context.getCommandLine()
+        CommandLine commandLine = context.getCommandLine()
         String nameAsArgument = commandLine.getRemainingArgs()[0]
         String artifactName
         String artifactPackage
-        def nameAndPackage = resolveNameAndPackage(context, nameAsArgument)
+        List<String> nameAndPackage = resolveNameAndPackage(context, nameAsArgument)
         artifactName = nameAndPackage[0]
         artifactPackage = nameAndPackage[1]
         def variableResolver = new ArtefactVariableResolver(artifactName, (String) parameters.convention, artifactPackage)
@@ -124,8 +125,8 @@ class RenderStep extends AbstractStep {
     }
 
     protected String relativePath(File relbase, File file) {
-        def pathParts = []
-        def currentFile = file
+        List pathParts = []
+        File currentFile = file
         while (currentFile != null && currentFile != relbase) {
             pathParts += currentFile.name
             currentFile = currentFile.parentFile

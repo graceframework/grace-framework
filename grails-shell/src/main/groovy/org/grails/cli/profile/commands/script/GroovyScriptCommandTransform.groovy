@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,8 +71,8 @@ class GroovyScriptCommandTransform implements ASTTransformation {
         @Override
         void visitMethodCallExpression(MethodCallExpression call) {
             if (call.methodAsString == 'description' && (call.arguments instanceof ArgumentListExpression)) {
-                def constructorBody = new BlockStatement()
-                def defaultConstructor = getDefaultConstructor(classNode)
+                BlockStatement constructorBody = new BlockStatement()
+                ConstructorNode defaultConstructor = getDefaultConstructor(classNode)
                 if (defaultConstructor == null) {
                     defaultConstructor = new ConstructorNode(Modifier.PUBLIC, constructorBody)
                     classNode.addConstructor(defaultConstructor)
@@ -84,26 +84,26 @@ class GroovyScriptCommandTransform implements ASTTransformation {
 
                 ArgumentListExpression existing = (ArgumentListExpression) call.arguments
 
-                def arguments = existing.expressions
+                List<Expression> arguments = existing.expressions
                 if (arguments.size() == 2) {
-                    def constructorArgs = new ArgumentListExpression()
+                    ArgumentListExpression constructorArgs = new ArgumentListExpression()
                     constructorArgs.addExpression(new VariableExpression('name'))
-                    def secondArg = arguments.get(1)
+                    Expression secondArg = arguments.get(1)
                     Expression constructDescription = new ConstructorCallExpression(ClassHelper.make(CommandDescription), constructorArgs)
                     if (secondArg instanceof ClosureExpression) {
                         constructorArgs.addExpression(arguments.get(0))
                         ClosureExpression closureExpression = (ClosureExpression) secondArg
-                        def body = closureExpression.code
+                        Statement body = closureExpression.code
                         if (body instanceof BlockStatement) {
                             BlockStatement bodyBlock = (BlockStatement) body
                             for (Statement s in bodyBlock.statements) {
                                 if (s instanceof ExpressionStatement) {
                                     ExpressionStatement es = (ExpressionStatement) s
 
-                                    def expr = es.expression
+                                    Expression expr = es.expression
                                     if (expr instanceof MethodCallExpression) {
                                         MethodCallExpression mce = (MethodCallExpression) expr
-                                        def methodCallArgs = mce.getArguments()
+                                        Expression methodCallArgs = mce.getArguments()
 
                                         switch (mce.methodAsString) {
                                             case 'usage':
@@ -126,7 +126,7 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                         constructorArgs.expressions.addAll(arguments)
                     }
 
-                    def assignDescription = new MethodCallExpression(new VariableExpression('this'),
+                    MethodCallExpression assignDescription = new MethodCallExpression(new VariableExpression('this'),
                             'setDescription', constructDescription)
                     constructorBody.addStatement(new ExpressionStatement(assignDescription))
                 }

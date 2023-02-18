@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.grails.cli.profile.commands
 
 import jline.console.completer.Completer
+
+import grails.build.logging.GrailsConsole
 
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
@@ -54,8 +56,8 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
 
     @Override
     boolean handle(ExecutionContext executionContext) {
-        def console = executionContext.console
-        def commandLine = executionContext.commandLine
+        GrailsConsole console = executionContext.console
+        CommandLine commandLine = executionContext.commandLine
         Collection<CommandDescription> allCommands = findAllCommands()
         String remainingArgs = commandLine.getRemainingArgsString()
         if (remainingArgs?.trim()) {
@@ -114,7 +116,7 @@ grails [environment]* [target] [arguments]*'
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        def allCommands = findAllCommands()*.name
+        List<String> allCommands = findAllCommands()*.name
 
         for (cmd in allCommands) {
             if (buffer) {

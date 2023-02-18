@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class DefaultFeature implements Feature {
         this.profile = profile
         this.name = name
         this.location = location
-        def featureYml = location.createRelative('feature.yml')
+        Resource featureYml = location.createRelative('feature.yml')
         Map<String, Object> featureConfig = new Yaml(new SafeConstructor()).<Map<String, Object>>load(featureYml.getInputStream())
         configuration.merge(featureConfig)
         def dependenciesConfig = configuration.get('dependencies')
@@ -58,9 +58,9 @@ class DefaultFeature implements Feature {
         if (dependenciesConfig instanceof List) {
             for (entry in ((List) dependenciesConfig)) {
                 if (entry instanceof Map) {
-                    def scope = (String) entry.scope
-                    def os = entry.os
-                    if (os && !isSupportedOs(os.toString())) {
+                    String scope = (String) entry.scope
+                    String os = (String) entry.os
+                    if (os && !isSupportedOs(os)) {
                         continue
                     }
                     String coords = (String) entry.coords

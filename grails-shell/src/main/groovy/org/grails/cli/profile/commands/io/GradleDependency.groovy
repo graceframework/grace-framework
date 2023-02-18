@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 the original author or authors.
+ * Copyright 2017-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.grails.cli.profile.commands.io
 
+import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
 
 class GradleDependency {
@@ -42,8 +43,8 @@ class GradleDependency {
 
     GradleDependency(String scope, Dependency dependency) {
         this.scope = scope
-        def artifact = dependency.artifact
-        def v = artifact.version.replace('BOM', '')
+        Artifact artifact = dependency.artifact
+        String v = artifact.version.replace('BOM', '')
         StringBuilder artifactString = new StringBuilder()
         if (dependency.exclusions != null && !dependency.exclusions.empty) {
             artifactString.append('(')
@@ -59,7 +60,7 @@ class GradleDependency {
         }
         artifactString.append('"')
 
-        def ln = System.getProperty('line.separator')
+        String ln = System.getProperty('line.separator')
 
         if (dependency.exclusions != null && !dependency.exclusions.empty) {
             artifactString.append(') {').append(ln)

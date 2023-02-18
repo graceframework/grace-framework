@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import grails.util.Environment
 import grails.util.GrailsNameUtils
 
 import org.grails.build.logging.GrailsConsoleAntBuilder
+import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
 import org.grails.cli.boot.SpringInvoker
 import org.grails.cli.gradle.GradleInvoker
@@ -178,11 +179,11 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      */
     def methodMissing(String name, args) {
         Object[] argsArray = (Object[]) args
-        def commandName = GrailsNameUtils.getScriptName(name)
-        def context = executionContext
+        String commandName = GrailsNameUtils.getScriptName(name)
+        ExecutionContext context = executionContext
         if (profile?.hasCommand(context, commandName)) {
-            def commandLine = context.commandLine
-            def newArgs = [commandName]
+            CommandLine commandLine = context.commandLine
+            List<String> newArgs = [commandName]
             newArgs.addAll(argsArray*.toString() as Collection<String>)
             def newContext = new GrailsCli.ExecutionContextImpl(commandLine.parseNew(newArgs as String[]), context)
             return profile.handleCommand(newContext)

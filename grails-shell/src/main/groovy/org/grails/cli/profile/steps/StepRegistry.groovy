@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class StepRegistry {
     private static final Collection<StepFactory> REGISTERED_STEP_FACTORIES = []
 
     static {
-        def stepFactories = ServiceLoader.load(StepFactory).iterator()
+        Iterator<StepFactory> stepFactories = ServiceLoader.load(StepFactory).iterator()
 
         while (stepFactories.hasNext()) {
             StepFactory stepFactory = stepFactories.next()
@@ -52,7 +52,7 @@ class StepRegistry {
             return null
         }
         for (StepFactory sf in REGISTERED_STEP_FACTORIES) {
-            def step = sf.createStep(name, command, parameters)
+            Step step = sf.createStep(name, command, parameters)
             if (step) {
                 return step
             }

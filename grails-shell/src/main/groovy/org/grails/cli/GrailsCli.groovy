@@ -23,9 +23,13 @@ import java.util.concurrent.Future
 
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
+import jline.Terminal
 import jline.UnixTerminal
+import jline.console.ConsoleReader
 import jline.console.UserInterruptException
 import jline.console.completer.ArgumentCompleter
+import jline.console.completer.Completer
+import jline.console.history.History
 import jline.internal.NonBlockingInputStream
 import org.gradle.tooling.BuildActionExecuter
 import org.gradle.tooling.BuildCancelledException
@@ -68,6 +72,7 @@ import org.grails.cli.profile.repository.StaticJarProfileRepository
 import org.grails.config.CodeGenConfig
 import org.grails.config.NavigableMap
 import org.grails.exceptions.ExceptionUtils
+import org.grails.gradle.plugin.model.GrailsClasspath
 
 /**
  * Main class for the Grails command line.
@@ -140,7 +145,7 @@ class GrailsCli {
      * @param defaultValue The default value
      */
     static <T> T getSetting(String key, Class<T> targetType = Object, T defaultValue = null) {
-        def value = SETTINGS_MAP.get(key, defaultValue)
+        Object value = SETTINGS_MAP.get(key, defaultValue)
         if (value == null) {
             return null
         }
@@ -163,7 +168,7 @@ class GrailsCli {
      */
     static void main(String[] args) {
         Authenticator.setDefault(getSetting(BuildSettings.AUTHENTICATOR, Authenticator, new SystemPropertiesAuthenticator()))
-        def proxySelector = getSetting(BuildSettings.PROXY_SELECTOR, ProxySelector)
+        ProxySelector proxySelector = getSetting(BuildSettings.PROXY_SELECTOR, ProxySelector)
         if (proxySelector != null) {
             ProxySelector.setDefault(proxySelector)
         }
@@ -221,8 +226,8 @@ class GrailsCli {
         }
 
         if (mainCommandLine.hasOption(CommandLine.VERSION_ARGUMENT) || mainCommandLine.hasOption('v')) {
-            def currentVersion = GrailsVersion.current()
-            def grailsDependencies = new GrailsDependenciesDependencyManagement()
+            GrailsVersion currentVersion = GrailsVersion.current()
+            GrailsDependenciesDependencyManagement grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
             sb.append('%n------------------------------------------------------------%nGrails ')
             sb.append(currentVersion.getVersion())
@@ -242,14 +247,14 @@ class GrailsCli {
             sb.append('%nOS:           ')
             sb.append(String.format('%s %s %s', System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch')))
             sb.append('%n%n')
-            def console = GrailsConsole.instance
+            GrailsConsole console = GrailsConsole.instance
             console.log(String.format(sb.toString()))
             exit(0)
         }
 
         if (mainCommandLine.hasOption(CommandLine.HELP_ARGUMENT) || mainCommandLine.hasOption('h')) {
             profileRepository = createMavenProfileRepository()
-            def cmd = CommandRegistry.getCommand('help', profileRepository)
+            Command cmd = CommandRegistry.getCommand('help', profileRepository)
             cmd.handle(createExecutionContext(mainCommandLine))
             exit(0)
         }
@@ -266,16 +271,16 @@ class GrailsCli {
             profileRepository = createMavenProfileRepository()
             if (!mainCommandLine || !mainCommandLine.commandName) {
                 integrateGradle = false
-                def console = GrailsConsole.getInstance()
+                GrailsConsole console = GrailsConsole.getInstance()
                 // force resolve of all profiles
                 profileRepository.getAllProfiles()
-                def commandNames = CommandRegistry.findCommands(profileRepository)*.name
+                List<String> commandNames = CommandRegistry.findCommands(profileRepository)*.name
                 console.reader.addCompleter(new StringsCompleter(commandNames))
                 console.reader.addCompleter(new CommandCompleter(CommandRegistry.findCommands(profileRepository)))
                 profile = [handleCommand: { ExecutionContext context ->
-                    def cl = context.commandLine
-                    def name = cl.commandName
-                    def cmd = CommandRegistry.getCommand(name, profileRepository)
+                    CommandLine cl = context.commandLine
+                    String name = cl.commandName
+                    Command cmd = CommandRegistry.getCommand(name, profileRepository)
                     if (cmd != null) {
                         return executeCommandWithArgumentValidation(cmd, cl)
                     }
@@ -286,7 +291,7 @@ class GrailsCli {
                 startInteractiveMode(console)
                 return 0
             }
-            def cmd = CommandRegistry.getCommand(mainCommandLine.commandName, profileRepository)
+            Command cmd = CommandRegistry.getCommand(mainCommandLine.commandName, profileRepository)
             if (cmd) {
                 return executeCommandWithArgumentValidation(cmd, mainCommandLine) ? 0 : 1
             }
@@ -303,8 +308,8 @@ class GrailsCli {
     }
 
     protected boolean executeCommandWithArgumentValidation(Command cmd, CommandLine mainCommandLine) {
-        def arguments = cmd.description.arguments
-        def requiredArgs = arguments.count { CommandArgument arg -> arg.required }
+        Collection<CommandArgument> arguments = cmd.description.arguments
+        Number requiredArgs = arguments.count { CommandArgument arg -> arg.required }
         if (mainCommandLine.remainingArgs.size() < requiredArgs) {
             outputMissingArgumentsMessage cmd
             return false
@@ -332,14 +337,14 @@ class GrailsCli {
     }
 
     protected MavenProfileRepository createMavenProfileRepository() {
-        def profileRepos = getSetting(BuildSettings.PROFILE_REPOSITORIES, Map, Collections.emptyMap())
+        Map profileRepos = getSetting(BuildSettings.PROFILE_REPOSITORIES, Map, Collections.emptyMap())
         if (!profileRepos.isEmpty()) {
             profileRepositories.clear()
             for (repoName in profileRepos.keySet()) {
-                def data = profileRepos.get(repoName)
+                Object data = profileRepos.get(repoName)
                 if (data instanceof Map) {
-                    def uri = data.get('url')
-                    def snapshots = data.get('snapshotsEnabled')
+                    Object uri = data.get('url')
+                    Object snapshots = data.get('snapshotsEnabled')
                     if (uri != null) {
                         boolean enableSnapshots = snapshots != null ? Boolean.valueOf(snapshots.toString()) : false
                         GrailsRepositoryConfiguration repositoryConfiguration
@@ -362,7 +367,7 @@ class GrailsCli {
     }
 
     protected void outputMissingArgumentsMessage(Command cmd) {
-        def console = GrailsConsole.instance
+        GrailsConsole console = GrailsConsole.instance
         console.error("Command $cmd.name is missing required arguments:")
         for (CommandArgument arg in cmd.description.arguments.findAll { CommandArgument ca -> ca.required }) {
             console.log("* $arg.name - $arg.description")
@@ -378,7 +383,7 @@ class GrailsCli {
     }
 
     Boolean handleCommand(ExecutionContext context) {
-        def console = GrailsConsole.getInstance()
+        GrailsConsole console = GrailsConsole.getInstance()
         synchronized (GrailsCli) {
             try {
                 currentExecutionContext = context
@@ -386,7 +391,7 @@ class GrailsCli {
                     return true
                 }
 
-                def mainCommandLine = context.getCommandLine()
+                CommandLine mainCommandLine = context.getCommandLine()
                 if (mainCommandLine.hasOption(CommandLine.STACKTRACE_ARGUMENT)) {
                     console.setStacktrace(true)
                 }
@@ -436,9 +441,9 @@ class GrailsCli {
         System.setProperty(Environment.INTERACTIVE_MODE_ENABLED, 'true')
         GrailsConsole console = projectContext.console
 
-        def consoleReader = console.reader
+        ConsoleReader consoleReader = console.reader
         consoleReader.setHandleUserInterrupt(true)
-        def completers = aggregateCompleter.getCompleters()
+        Collection<Completer> completers = aggregateCompleter.getCompleters()
 
         console.resetCompleters()
         // add bang operator completer
@@ -502,7 +507,7 @@ class GrailsCli {
                                                          ExecutorService commandExecutor, NonBlockingInputStream nonBlockingInput) {
         ExecutionContext executionContext = createExecutionContext(cliParser.parseString(commandLine))
         Future<?> commandFuture = commandExecutor.submit({ handleCommand(executionContext) } as Callable<Boolean>)
-        def terminal = console.reader.terminal
+        Terminal terminal = console.reader.terminal
         if (terminal instanceof UnixTerminal) {
             ((UnixTerminal) terminal).disableInterruptCharacter()
         }
@@ -559,7 +564,7 @@ class GrailsCli {
     protected void populateContextLoader() {
         try {
             if (new File(BuildSettings.BASE_DIR, 'build.gradle').exists()) {
-                def dependencyMap = new MapReadingCachedGradleOperation<List<URL>>(projectContext, '.dependencies') {
+                Map<String, List<URL>> dependencyMap = new MapReadingCachedGradleOperation<List<URL>>(projectContext, '.dependencies') {
 
                     @Override
                     void updateStatusMessage() {
@@ -576,7 +581,7 @@ class GrailsCli {
 
                     @Override
                     Map<String, List<URL>> readFromGradle(ProjectConnection connection) {
-                        def config = applicationConfig
+                        CodeGenConfig config = applicationConfig
 
                         BuildActionExecuter buildActionExecuter = connection.action(new ClasspathBuildAction())
                         buildActionExecuter.standardOutput = System.out
@@ -591,7 +596,7 @@ class GrailsCli {
 
                         })
 
-                        def grailsClasspath = buildActionExecuter.run()
+                        GrailsClasspath grailsClasspath = buildActionExecuter.run()
                         if (grailsClasspath.error) {
                             GrailsConsole.instance.error("${grailsClasspath.error} Type 'gradle dependencies' for more information")
                             exit 1
@@ -604,14 +609,14 @@ class GrailsCli {
 
                 }.call()
 
-                def urls = (List<URL>) dependencyMap.get('dependencies')
+                List<URL> urls = (List<URL>) dependencyMap.get('dependencies')
                 try {
                     // add tools.jar
                     urls.add(new File("${System.getenv('JAVA_HOME')}/lib/tools.jar").toURI().toURL())
                 }
                 catch (Throwable ignored) {
                 }
-                def profiles = (List<URL>) dependencyMap.get('profiles')
+                List<URL> profiles = (List<URL>) dependencyMap.get('profiles')
                 URLClassLoader classLoader = new URLClassLoader(urls as URL[], Thread.currentThread().contextClassLoader)
                 this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])
                 Thread.currentThread().contextClassLoader = classLoader
@@ -641,7 +646,7 @@ class GrailsCli {
 
     private boolean handleBuiltInCommands(ExecutionContext context) {
         CommandLine commandLine = context.commandLine
-        def commandName = commandLine.commandName
+        String commandName = commandLine.commandName
 
         if (commandName && commandName.size() > 1 && commandName.startsWith('!')) {
             return executeProcess(context, commandLine.rawArguments)
@@ -662,10 +667,10 @@ class GrailsCli {
     }
 
     protected boolean executeProcess(ExecutionContext context, String[] args) {
-        def console = context.console
+        GrailsConsole console = context.console
         try {
             args[0] = args[0].substring(1)
-            def process = new ProcessBuilder(args).redirectErrorStream(true).start()
+            Process process = new ProcessBuilder(args).redirectErrorStream(true).start()
             console.log process.inputStream.getText('UTF-8')
             return true
         }
@@ -683,8 +688,8 @@ class GrailsCli {
     }
 
     protected Boolean bang(ExecutionContext context) {
-        def console = context.console
-        def history = console.reader.history
+        GrailsConsole console = context.console
+        History history = console.reader.history
 
         //move one step back to !
         history.previous()

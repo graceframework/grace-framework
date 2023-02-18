@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import grails.config.ConfigMap
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
@@ -55,7 +56,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
 
     @Override
     boolean handle(ExecutionContext executionContext) {
-        def console = executionContext.console
+        GrailsConsole console = executionContext.console
         if (profileRepository == null) {
             console.error('No profile repository provided')
             return false
@@ -63,7 +64,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
 
         def profileName = executionContext.commandLine.remainingArgs[0]
 
-        def profile = profileRepository.getProfile(profileName)
+        Profile profile = profileRepository.getProfile(profileName)
         if (profile == null) {
             console.error("Profile not found for name [$profileName]")
         }
@@ -77,13 +78,13 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             Iterable<Command> commands = findCommands(profile, console).toUnique { Command c -> c.name }
 
             for (cmd in commands) {
-                def description = cmd.description
+                CommandDescription description = cmd.description
                 console.log("* ${description.name} - ${description.description}")
             }
             console.log('')
             console.log('Provided Features:')
             console.log('--------------------')
-            def features = profile.features
+            Iterable<Feature> features = profile.features
 
             for (feature in features) {
                 console.log("* ${feature.name} - ${feature.description}")
@@ -94,7 +95,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
     }
 
     protected Iterable<Command> findCommands(Profile profile, GrailsConsole console) {
-        def commands = profile.getCommands(new ProjectContext() {
+        Iterable<Command> commands = profile.getCommands(new ProjectContext() {
 
             @Override
             GrailsConsole getConsole() {

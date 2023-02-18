@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,14 +40,14 @@ class CommandRegistry {
     private static final List<CommandFactory> REGISTERED_COMMAND_FACTORIES = []
 
     static {
-        def commands = ServiceLoader.load(Command).iterator()
+        Iterator<Command> commands = ServiceLoader.load(Command).iterator()
 
         while (commands.hasNext()) {
             Command command = commands.next()
             REGISTERED_COMMANDS[command.name] = command
         }
 
-        def commandFactories = ServiceLoader.load(CommandFactory).iterator()
+        Iterator<CommandFactory> commandFactories = ServiceLoader.load(CommandFactory).iterator()
         while (commandFactories.hasNext()) {
             CommandFactory commandFactory = commandFactories.next()
 
@@ -63,7 +63,7 @@ class CommandRegistry {
      * @return A command or null of non exists
      */
     static Command getCommand(String name, ProfileRepository repository) {
-        def command = REGISTERED_COMMANDS[name]
+        Command command = REGISTERED_COMMANDS[name]
         if (command instanceof ProfileRepositoryAware) {
             command.profileRepository = repository
         }
@@ -83,9 +83,9 @@ class CommandRegistry {
         Collection<Command> commands = []
 
         for (CommandFactory cf in REGISTERED_COMMAND_FACTORIES) {
-            def factoryCommands = cf.findCommands(profile, inherited)
-            def condition = { Command c -> c.name == 'events' }
-            def eventCommands = factoryCommands.findAll(condition)
+            Collection<Command> factoryCommands = cf.findCommands(profile, inherited)
+            Closure<?> condition = { Command c -> c.name == 'events' }
+            Collection<Command> eventCommands = factoryCommands.findAll(condition)
             for (ec in eventCommands) {
                 ec.handle(new GrailsCli.ExecutionContextImpl(new CodeGenConfig(profile.configuration)))
             }

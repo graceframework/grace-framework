@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,24 +31,24 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
 
     @Override
     final int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        def desc = getDescription()
-        def commandLine = cliParser.parseString(buffer)
+        CommandDescription desc = getDescription()
+        CommandLine commandLine = cliParser.parseString(buffer)
         complete(commandLine, desc, candidates, cursor)
     }
 
     protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
-        def invalidOptions = commandLine.undeclaredOptions.keySet().findAll { String str ->
+        Set<String> invalidOptions = commandLine.undeclaredOptions.keySet().findAll { String str ->
             desc.getFlag(str.trim()) == null
         }
 
-        def lastOption = commandLine.lastOption()
+        Map.Entry<String, Object> lastOption = commandLine.lastOption()
 
         for (arg in desc.flags) {
-            def argName = arg.name
-            def flag = "-$argName".toString()
+            String argName = arg.name
+            String flag = "-$argName".toString()
             if (!commandLine.hasOption(arg.name)) {
                 if (lastOption) {
-                    def lastArg = lastOption.key
+                    String lastArg = lastOption.key
                     if (arg.name.startsWith(lastArg)) {
                         candidates.add("${argName.substring(lastArg.length())} ".toString())
                     }

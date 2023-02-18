@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ abstract class AbstractStep implements Step {
      * @param name The name of the flag
      * @return The flag information, or null if it isn't set by the user
      */
-    def flag(CommandLine commandLine, String name) {
+    Object flag(CommandLine commandLine, String name) {
         def value = commandLine?.undeclaredOptions?.get(name)
         value ?: null
     }

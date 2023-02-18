@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,13 @@ abstract class ResourceResolvingCommandFactory<T> implements CommandFactory {
 
     @Override
     Collection<Command> findCommands(Profile profile, boolean inherited) {
-        def resources = findCommandResources(profile, inherited)
+        Collection<Resource> resources = findCommandResources(profile, inherited)
         Collection<Command> commands = []
         for (Resource resource in resources) {
             String commandName = evaluateFileName(resource.filename)
-            def data = readCommandFile(resource)
+            T data = readCommandFile(resource)
 
-            def command = createCommand(profile, commandName, resource, data)
+            Command command = createCommand(profile, commandName, resource, data)
             if (command) {
                 commands << command
             }
