@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,10 +61,10 @@ class FactoriesLoaderSupport {
             Map<String, String[]> loadedProperties = LOADED_PROPERTIES_FOR_CLASSLOADER.get(System.identityHashCode(classLoader))
             if (loadedProperties == null) {
                 Set<String> allKeys = [] as Set
-                def urls = classLoader.getResources(FACTORIES_RESOURCE_LOCATION)
+                Enumeration<URL> urls = classLoader.getResources(FACTORIES_RESOURCE_LOCATION)
                 Collection<Properties> allProperties = []
                 urls.each { URL url ->
-                    def properties = new Properties()
+                    Properties properties = new Properties()
                     url.withInputStream { InputStream input ->
                         properties.load(input)
                     }

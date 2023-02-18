@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,13 @@ class DefaultStackTracePrinter implements StackTracePrinter {
         if (!t.stackTrace) {
             return 'No stack trace available'
         }
-        final sw = new StringWriter()
-        def sb = new PrintWriter(sw)
-        def mln = Math.max(4, t.stackTrace.lineNumber.max())
-        def lineNumWidth = mln.toString().size()
-        def methodNameBaseWidth = t.stackTrace.methodName*.size().max() + 1
+        StringWriter sw = new StringWriter()
+        PrintWriter sb = new PrintWriter(sw)
+        int mln = Math.max(4, t.stackTrace.lineNumber.max())
+        int lineNumWidth = mln.toString().size()
+        int methodNameBaseWidth = t.stackTrace.methodName*.size().max() + 1
 
-        def lh = 'Line'.padLeft(lineNumWidth + 4)
+        String lh = 'Line'.padLeft(lineNumWidth + 4)
         String header = "$lh | Method"
         printHeader(sb, header)
 
@@ -48,10 +48,10 @@ class DefaultStackTracePrinter implements StackTracePrinter {
                 continue
             }
 
-            def stackTrace = e.stackTrace
-            def last = stackTrace.size()
-            def prevFn
-            def prevLn
+            StackTraceElement[] stackTrace = e.stackTrace
+            int last = stackTrace.size()
+            String prevFn
+            String prevLn
             boolean evenRow = false
             if (!first) {
                 printCausedByMessage(sb, e)
@@ -60,9 +60,9 @@ class DefaultStackTracePrinter implements StackTracePrinter {
                 break
             }
             if (last > 0) {
-                stackTrace[0..-1].eachWithIndex { te, idx ->
-                    def fileName = getFileName(te)
-                    def lineNumber
+                stackTrace[0..-1].eachWithIndex { StackTraceElement te, int idx ->
+                    String fileName = getFileName(te)
+                    String lineNumber
                     if (e instanceof SourceCodeAware) {
                         if (e.lineNumber && e.lineNumber > -1) {
                             lineNumber = e.lineNumber.toString().padLeft(lineNumWidth)
@@ -93,10 +93,10 @@ class DefaultStackTracePrinter implements StackTracePrinter {
 
                         fileName = fileName ?: te.className
 
-                        def padChar = (evenRow || idx == 0) ? ' ' : ' .'
+                        String padChar = (evenRow || idx == 0) ? ' ' : ' .'
                         evenRow = !evenRow
 
-                        def methodName = te.methodName
+                        String methodName = te.methodName
                         if (methodName.size() < methodNameBaseWidth) {
                             methodName = methodName.padRight(methodNameBaseWidth - 1, padChar)
                         }
@@ -125,7 +125,7 @@ class DefaultStackTracePrinter implements StackTracePrinter {
     }
 
     static String makeRelativeIfPossible(String fileName) {
-        final base = System.getProperty('base.dir')
+        String base = System.getProperty('base.dir')
         if (base) {
             fileName = fileName - base
         }

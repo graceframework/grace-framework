@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2010 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class CosineSimilarity {
      * @param candidates  the possible matches
      * @return  the ordered candidates
      */
-    static List<String> mostSimilar(String pattern, candidates, double threshold = 0) {
+    static List<String> mostSimilar(String pattern, Iterable<String> candidates, double threshold = 0) {
         SortedMap<Double, String> sorted = new TreeMap<Double, String>()
         for (candidate in candidates) {
             double score = stringSimilarity(pattern, candidate)
@@ -45,14 +45,14 @@ class CosineSimilarity {
         similarity s1.toLowerCase().toCharArray(), s2.toLowerCase().toCharArray(), degree
     }
 
-    private static double similarity(sequence1, sequence2, int degree = 2) {
+    private static double similarity(char[] sequence1, char[] sequence2, int degree = 2) {
         Map<List, Integer> m1 = countNgramFrequency(sequence1, degree)
         Map<List, Integer> m2 = countNgramFrequency(sequence2, degree)
 
         dotProduct(m1, m2) / Math.sqrt(dotProduct(m1, m1) * dotProduct(m2, m2))
     }
 
-    private static Map<List, Integer> countNgramFrequency(sequence, int degree) {
+    private static Map<List, Integer> countNgramFrequency(char[] sequence, int degree) {
         Map<List, Integer> m = [:]
         int count = sequence.size()
 
@@ -65,7 +65,7 @@ class CosineSimilarity {
     }
 
     private static double dotProduct(Map<List, Integer> m1, Map<List, Integer> m2) {
-        m1.keySet().collect { key -> m1[key] * m2.get(key, 0) }.sum()
+        m1.keySet().collect { List key -> m1[key] * m2.get(key, 0) }.sum()
     }
 
 }

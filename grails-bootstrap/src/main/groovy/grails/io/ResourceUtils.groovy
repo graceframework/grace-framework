@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class ResourceUtils {
         if (rootDir?.exists()) {
             File[] allFiles = rootDir.listFiles()
             rootDir.eachDir { File dir ->
-                def dirName = dir.name
+                String dirName = dir.name
                 if (!dir.hidden && !dirName.startsWith('.') && !['conf', 'i18n', 'assets', 'views', 'migrations'].contains(dirName)) {
                     File[] files = dir.listFiles()
                     populatePackages(dir, files, packageNames, '')
@@ -62,7 +62,7 @@ class ResourceUtils {
                 if (dir.isDirectory()) {
                     String dirName = dir.name
                     if (!dir.hidden && !dirName.startsWith('.')) {
-                        def dirFiles = dir.listFiles()
+                        File[] dirFiles = dir.listFiles()
                         if (dirFiles != null) {
                             boolean hasGroovySources = dirFiles?.find { File f -> f.name.endsWith('.groovy') }
                             if (hasGroovySources) {

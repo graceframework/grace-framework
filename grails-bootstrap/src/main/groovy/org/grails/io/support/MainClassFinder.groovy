@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,16 +53,16 @@ class MainClassFinder {
             return null
         }
 
-        def pathStr = path.toString()
+        String pathStr = path.toString()
         if (MAIN_CLASSES.containsKey(pathStr)) {
             return MAIN_CLASSES.get(pathStr)
         }
 
         try {
             File file = path ? Paths.get(path).toFile() : null
-            def rootDir = findRootDirectory(file)
+            File rootDir = findRootDirectory(file)
 
-            def classesDir = BuildSettings.CLASSES_DIR
+            File classesDir = BuildSettings.CLASSES_DIR
             Collection<File> searchDirs
             if (classesDir == null) {
                 searchDirs = []
@@ -72,7 +72,7 @@ class MainClassFinder {
             }
 
             if (rootDir) {
-                def rootClassesDir = new File(rootDir, BuildSettings.BUILD_CLASSES_PATH)
+                File rootClassesDir = new File(rootDir, BuildSettings.BUILD_CLASSES_PATH)
                 if (rootClassesDir.exists()) {
                     searchDirs << rootClassesDir
                 }
@@ -96,17 +96,19 @@ class MainClassFinder {
             }
             return mainClass
         }
-        catch (Throwable e) {
+        catch (Throwable ignored) {
             return null
         }
     }
 
     private static File findRootDirectory(File file) {
         if (file) {
-            def parent = file.parentFile
+            File parent = file.parentFile
 
             while (parent != null) {
-                if (new File(parent, 'build.gradle').exists() || new File(parent, 'grails-app').exists() || new File(parent, 'app').exists()) {
+                if (new File(parent, 'build.gradle').exists()
+                        || new File(parent, 'grails-app').exists()
+                        || new File(parent, 'app').exists()) {
                     return parent
                 }
                 parent = parent.parentFile
@@ -121,7 +123,7 @@ class MainClassFinder {
             rootFolder = new File('build/classes/main')
         }
 
-        def rootFolderPath = rootFolder.canonicalPath
+        String rootFolderPath = rootFolder.canonicalPath
         if (MAIN_CLASSES.containsKey(rootFolderPath)) {
             return MAIN_CLASSES.get(rootFolderPath)
         }
@@ -133,7 +135,7 @@ class MainClassFinder {
             throw new IllegalArgumentException("Invalid root folder '$rootFolder'")
         }
         String prefix = "${rootFolderPath}/"
-        def stack = new ArrayDeque<File>()
+        ArrayDeque stack = new ArrayDeque<File>()
         stack.push rootFolder
 
         while (!stack.empty) {
@@ -141,10 +143,10 @@ class MainClassFinder {
             if (file.isFile()) {
                 InputStream inputStream = file.newInputStream()
                 try {
-                    def classReader = new ClassReader(inputStream)
+                    ClassReader classReader = new ClassReader(inputStream)
 
                     if (isMainClass(classReader)) {
-                        def mainClassName = classReader.getClassName().replace('/', '.').replace('\\', '.')
+                        String mainClassName = classReader.getClassName().replace('/', '.').replace('\\', '.')
                         MAIN_CLASSES.put(rootFolderPath, mainClassName)
                         return mainClassName
                     }
@@ -154,7 +156,7 @@ class MainClassFinder {
                 }
             }
             if (file.isDirectory()) {
-                def files = file.listFiles()?.findAll { File f ->
+                Collection<File> files = file.listFiles()?.findAll { File f ->
                     (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
                             (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
                 }
@@ -171,7 +173,7 @@ class MainClassFinder {
 
     protected static boolean isMainClass(ClassReader classReader) {
         if (classReader.className?.endsWith('Application')) {
-            def mainMethodFinder = new MainMethodFinder()
+            MainMethodFinder mainMethodFinder = new MainMethodFinder()
             classReader.accept(mainMethodFinder, ClassReader.SKIP_CODE)
             return mainMethodFinder.found
         }

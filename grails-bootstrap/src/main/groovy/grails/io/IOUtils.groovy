@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ class IOUtils {
      * @return The string
      */
     static String toString(Reader reader) {
-        def writer = new StringWriter()
+        StringWriter writer = new StringWriter()
         SpringIOUtils.copy reader, writer
         writer.toString()
     }
@@ -81,7 +81,7 @@ class IOUtils {
      * @return The string
      */
     static String toString(InputStream stream, String encoding = null) {
-        def writer = new StringWriter()
+        StringWriter writer = new StringWriter()
         copy stream, writer, encoding
         writer.toString()
     }
@@ -93,7 +93,7 @@ class IOUtils {
      * @param encoding The encoding
      */
     static void copy(InputStream input, Writer output, String encoding = null) {
-        def reader = encoding ? new InputStreamReader(input, encoding) : new InputStreamReader(input)
+        InputStreamReader reader = encoding ? new InputStreamReader(input, encoding) : new InputStreamReader(input)
         SpringIOUtils.copy(reader, output)
     }
 
@@ -103,7 +103,7 @@ class IOUtils {
      * @return The JAR file
      */
     static File findJarFile(Class targetClass) {
-        def resource = findClassResource(targetClass)
+        URL resource = findClassResource(targetClass)
         findJarFile(resource)
     }
 
@@ -124,9 +124,9 @@ class IOUtils {
      * @return The JAR file or null if it can't be found
      */
     static File findJarFile(Resource resource) {
-        def absolutePath = resource?.getFilename()
+        String absolutePath = resource?.getFilename()
         if (absolutePath) {
-            final jarPath = absolutePath.substring('file:'.length(), absolutePath.lastIndexOf('!'))
+            String jarPath = absolutePath.substring('file:'.length(), absolutePath.lastIndexOf('!'))
             new File(jarPath)
         }
         null
@@ -140,12 +140,12 @@ class IOUtils {
      */
     static File findJarFile(URL resource) {
         if (resource?.protocol == 'jar') {
-            def absolutePath = resource?.path
+            String absolutePath = resource?.path
             if (absolutePath) {
                 try {
                     return Paths.get(new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!'))).toURI()).toFile()
                 }
-                catch (MalformedURLException e) {
+                catch (MalformedURLException ignored) {
                     return null
                 }
             }
@@ -170,10 +170,10 @@ class IOUtils {
      * @return The URL to class file or null
      */
     static URL findRootResource(Class targetClass) {
-        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
-        def classRes = targetClass.getResource(pathToClassFile)
+        String pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
+        URL classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
-            def rootPath = classRes.toString() - pathToClassFile
+            String rootPath = classRes.toString() - pathToClassFile
             return new URL("$rootPath/")
         }
         throw new IllegalStateException('Root classpath resource not found! Check your disk permissions')
@@ -190,8 +190,8 @@ class IOUtils {
      * @return
      */
     static URL findRootResourcesURL(Class targetClass) {
-        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
-        def classRes = targetClass.getResource(pathToClassFile)
+        String pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
+        URL classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
             String rootPath = classRes.toString() - pathToClassFile
             if (rootPath.endsWith(BuildSettings.BUILD_CLASSES_PATH)) {
@@ -212,13 +212,13 @@ class IOUtils {
      * @return The URL to class file or null
      */
     static URL findJarResource(Class targetClass) {
-        def classUrl = findClassResource(targetClass)
+        URL classUrl = findClassResource(targetClass)
         if (classUrl != null) {
-            def urlPath = classUrl.toString()
-            def bang = urlPath.lastIndexOf('!')
+            String urlPath = classUrl.toString()
+            int bang = urlPath.lastIndexOf('!')
 
             if (bang > -1) {
-                def newPath = urlPath.substring(0, bang)
+                String newPath = urlPath.substring(0, bang)
                 return new URL("${newPath}!/")
             }
         }
@@ -233,10 +233,10 @@ class IOUtils {
      * @return
      */
     static URL findResourceRelativeToClass(Class targetClass, String path) {
-        def pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
-        def classRes = targetClass.getResource(pathToClassFile)
+        String pathToClassFile = '/' + targetClass.name.replace('.', '/') + '.class'
+        URL classRes = targetClass.getResource(pathToClassFile)
         if (classRes) {
-            def rootPath = classRes.toString() - pathToClassFile
+            String rootPath = classRes.toString() - pathToClassFile
             if (rootPath.endsWith(BuildSettings.BUILD_CLASSES_PATH)) {
                 rootPath = rootPath.replace('/build/classes/groovy/', '/build/resources/')
             }
@@ -247,9 +247,9 @@ class IOUtils {
 
     @Memoized
     static File findApplicationDirectoryFile() {
-        def directory = findApplicationDirectory()
+        String directory = findApplicationDirectory()
         if (directory) {
-            def f = new File(directory)
+            File f = new File(directory)
             if (f.exists()) {
                 return f
             }
@@ -264,12 +264,12 @@ class IOUtils {
      * @return The application directory or null if it can't be found
      */
     static File findApplicationDirectoryFile(Class targetClass) {
-        def rootResource = findRootResource(targetClass)
+        URL rootResource = findRootResource(targetClass)
         if (rootResource != null) {
             try {
-                def rootFile = new UrlResource(rootResource).file.canonicalFile
-                def rootPath = rootFile.path
-                def buildClasspath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
+                File rootFile = new UrlResource(rootResource).file.canonicalFile
+                String rootPath = rootFile.path
+                String buildClasspath = BuildSettings.BUILD_CLASSES_PATH.replace('/', File.separator)
                 if (rootPath.contains(buildClasspath)) {
                     return new File(rootPath - buildClasspath)
                 }
@@ -300,7 +300,7 @@ class IOUtils {
             List<File> allDirs = [new File(applicationDir, 'src/main/groovy')]
 
             for (String dir : ['grails-app', 'app']) {
-                def grailsAppDir = new File(applicationDir, dir)
+                File grailsAppDir = new File(applicationDir, dir)
                 if (grailsAppDir.exists()) {
                     grailsAppDir.eachFile(FileType.DIRECTORIES) { File d ->
                         if (!d.isHidden() && !d.name.startsWith('.')) {
@@ -335,11 +335,11 @@ class IOUtils {
         try {
             String mainClassName = System.getProperty(BuildSettings.MAIN_CLASS_NAME)
             if (!mainClassName) {
-                def stackTraceElements = Arrays.asList(Thread.currentThread().getStackTrace()).reverse()
+                List<StackTraceElement> stackTraceElements = Arrays.asList(Thread.currentThread().getStackTrace()).reverse()
                 if (stackTraceElements) {
                     for (lastElement in stackTraceElements) {
-                        def className = lastElement.className
-                        def methodName = lastElement.methodName
+                        String className = lastElement.className
+                        String methodName = lastElement.methodName
                         if (className.endsWith('.Application') && methodName == '<clinit>') {
                             mainClassName = className
                             break

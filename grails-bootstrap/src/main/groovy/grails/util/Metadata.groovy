@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,13 +125,13 @@ class Metadata extends PropertySourcePropertyResolver {
 
     private void loadFromDefault() {
         try {
-            def classLoader = Thread.currentThread().getContextClassLoader()
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
             URL url = classLoader.getResource(FILE)
             if (url == null) {
                 url = getClass().getClassLoader().getResource(FILE)
             }
             if (url != null) {
-                url.withInputStream { input ->
+                url.withInputStream { InputStream input ->
                     addPropertySource(PropertySource.of('application', new YamlPropertySourceLoader().read('application', input)))
                 }
                 this.metadataFile = new UrlResource(url)
@@ -140,8 +140,8 @@ class Metadata extends PropertySourcePropertyResolver {
             url = classLoader.getResource(BUILD_INFO_FILE)
             if (url != null) {
                 if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
-                    url.withInputStream { input ->
-                        def buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
+                    url.withInputStream { InputStream input ->
+                        Map<String, Object> buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
                         addPropertySource(PropertySource.of('build.info', buildInfo))
                     }
                 }
@@ -151,8 +151,8 @@ class Metadata extends PropertySourcePropertyResolver {
                 url = classLoader.getResource('../../' + BUILD_INFO_FILE)
                 if (url != null) {
                     if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
-                        url.withInputStream { input ->
-                            def buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
+                        url.withInputStream { InputStream input ->
+                            Map<String, Object> buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
                             addPropertySource(PropertySource.of('build.info', buildInfo))
                         }
                     }
