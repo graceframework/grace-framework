@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ConfigurableApplicationContext
 
 import grails.config.Settings
+import grails.dev.commands.ApplicationCommand
 import grails.dev.commands.ApplicationContextCommandRegistry
 import grails.dev.commands.ExecutionContext
 import grails.ui.support.DevelopmentGrailsApplication
@@ -43,7 +44,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
 
     @Override
     ConfigurableApplicationContext run(String... args) {
-        def command = ApplicationContextCommandRegistry.findCommand(commandName)
+        ApplicationCommand command = ApplicationContextCommandRegistry.findCommand(commandName)
         if (command) {
             Object skipBootstrap = command.hasProperty('skipBootstrap')?.getProperty(command)
             if (skipBootstrap instanceof Boolean && !System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP)) {
@@ -63,7 +64,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
                 CommandLine commandLine = new CommandLineParser().parse(args)
                 ctx.autowireCapableBeanFactory.autowireBeanProperties(command, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false)
                 command.applicationContext = ctx
-                def result = command.handle(new ExecutionContext(commandLine))
+                boolean result = command.handle(new ExecutionContext(commandLine))
                 result ? System.exit(0) : System.exit(1)
             }
             catch (Throwable e) {
@@ -101,7 +102,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
                 System.exit(1)
             }
 
-            def runner = new GrailsApplicationContextCommandRunner(args[0], applicationClass)
+            GrailsApplicationContextCommandRunner runner = new GrailsApplicationContextCommandRunner(args[0], applicationClass)
             runner.run(args.init() as String[])
         }
         else {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ class GrailsSwingConsole extends Grails {
 
         }
 
-        def interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
+        Collection<PersistenceContextInterceptor> interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
         groovyConsole.beforeExecution = {
             for (i in interceptors) {
                 i.init()
@@ -141,7 +141,7 @@ class GrailsSwingConsole extends Grails {
      */
     static void main(String[] args) {
         if (args) {
-            def applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
+            Class<?> applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
             new GrailsSwingConsole(applicationClass).run(args)
         }
         else {
