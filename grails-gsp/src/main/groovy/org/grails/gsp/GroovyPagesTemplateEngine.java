@@ -716,8 +716,7 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
 
             this.tagInvocationContextCustomizers = GrailsFactoriesLoader.loadFactories(TagInvocationContextCustomizer.class,
                     getClass().getClassLoader());
-            this.tagInvocationContextCustomizers.addAll(this.grailsApplication.getMainContext()
-                    .getBeansOfType(TagInvocationContextCustomizer.class).values());
+            this.tagInvocationContextCustomizers.addAll(applicationContext.getBeansOfType(TagInvocationContextCustomizer.class).values());
         }
     }
 
