@@ -176,10 +176,6 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
         if (!Environment.isDevelopmentMode()) {
             this.cachedDomainsWithoutPackage = createDomainClassMap();
         }
-        this.tagInvocationContextCustomizers = GrailsFactoriesLoader.loadFactories(TagInvocationContextCustomizer.class,
-                getClass().getClassLoader());
-        this.tagInvocationContextCustomizers.addAll(this.grailsApplication.getMainContext()
-                .getBeansOfType(TagInvocationContextCustomizer.class).values());
     }
 
     private GroovyClassLoader initGroovyClassLoader(ClassLoader parent) {
@@ -717,6 +713,11 @@ public class GroovyPagesTemplateEngine extends ResourceAwareTemplateEngine
             Config config = this.grailsApplication.getConfig();
             this.gspEncoding = config.getProperty(GroovyPageParser.CONFIG_PROPERTY_GSP_ENCODING,
                     System.getProperty("file.encoding", GroovyPageParser.DEFAULT_ENCODING));
+
+            this.tagInvocationContextCustomizers = GrailsFactoriesLoader.loadFactories(TagInvocationContextCustomizer.class,
+                    getClass().getClassLoader());
+            this.tagInvocationContextCustomizers.addAll(this.grailsApplication.getMainContext()
+                    .getBeansOfType(TagInvocationContextCustomizer.class).values());
         }
     }
 
