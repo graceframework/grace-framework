@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 if (handler.isArtefact(classNode)) {
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
                         transformedClasses.add classNodeName
-                        def annotationNode = new AnnotationNode(new ClassNode(Artefact))
+                        AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Artefact))
                         annotationNode.addMember('value', new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
@@ -146,9 +146,9 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 return false
             }
 
-            def classNodeName = classNode.name
-            def props = new Properties()
-            def superTypeName = superType.name
+            String classNodeName = classNode.name
+            String superTypeName = superType.name
+            Properties props = new Properties()
 
             // generate META-INF/grails.factories
             File factoriesFile = new File(compilationTargetDirectory, 'META-INF/grails.factories')

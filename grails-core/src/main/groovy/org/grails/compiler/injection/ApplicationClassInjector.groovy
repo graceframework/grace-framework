@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.compiler.injection
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.codehaus.groovy.ast.AnnotationNode
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.expr.ClassExpression
@@ -79,7 +80,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
     @CompileDynamic
     void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         if (applicationArtefactHandler.isArtefact(classNode)) {
-            def objectId = Integer.valueOf(System.identityHashCode(classNode))
+            Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
             if (!TRANSFORMED_INSTANCES.contains(objectId)) {
                 TRANSFORMED_INSTANCES << objectId
 
@@ -89,14 +90,14 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                 ]
                 classNode.addStaticInitializerStatements(statements, true)
 
-                def classLoader = getClass().classLoader
+                ClassLoader classLoader = getClass().classLoader
                 if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
-                    def springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
+                    AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
                             ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
 
                     for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
                         if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
-                            def autoConfigClassExpression = new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
+                            ClassExpression autoConfigClassExpression = new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
                             GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                         }
                     }
@@ -110,7 +111,7 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
         if (url == null) {
             return false
         }
-        def res = new UrlResource(url)
+        UrlResource res = new UrlResource(url)
         res.filename.endsWith('Application.groovy')
     }
 

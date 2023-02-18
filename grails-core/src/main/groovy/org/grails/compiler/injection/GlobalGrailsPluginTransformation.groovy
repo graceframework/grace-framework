@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import grails.core.ArtefactHandler
+import grails.plugins.GrailsPluginInfo
 import grails.plugins.metadata.GrailsPlugin
 import grails.util.GrailsNameUtils
 
@@ -85,7 +86,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             projectName = classNode.getNodeMetaData('projectName')
             projectVersion = classNode.getNodeMetaData('projectVersion') ?: getClass().getPackage().getImplementationVersion()
 
-            def classNodeName = classNode.name
+            String classNodeName = classNode.name
 
             if (classNodeName.endsWith('GrailsPlugin') && !classNode.isAbstract()) {
                 pluginClassNode = classNode
@@ -118,15 +119,15 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         }
 
         if (isPlugin) {
-            def compilationTargetDirectory = resolveCompilationTargetDirectory(source)
-            def pluginXmlFile = new File(compilationTargetDirectory, 'META-INF/grails-plugin.xml')
+            File compilationTargetDirectory = resolveCompilationTargetDirectory(source)
+            File pluginXmlFile = new File(compilationTargetDirectory, 'META-INF/grails-plugin.xml')
             pluginXmlFile.parentFile.mkdirs()
             generatePluginXml(pluginClassNode, String.valueOf(projectVersion), transformedClasses, pluginXmlFile)
         }
     }
 
     static File resolveCompilationTargetDirectory(SourceUnit source) {
-        File targetDirectory = null
+        File targetDirectory
         if (source.class.name == 'org.codehaus.jdt.groovy.control.EclipseSourceUnit') {
             targetDirectory = GroovyEclipseCompilationHelper.resolveEclipseCompilationTargetDirectory(source)
         }
@@ -139,7 +140,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
 
     static void generatePluginXml(ClassNode pluginClassNode, String projectVersion,
                                   Set<String> transformedClasses, File pluginXmlFile) {
-        def pluginXmlExists = pluginXmlFile.exists()
+        boolean pluginXmlExists = pluginXmlFile.exists()
         Set<String> artefactClasses = []
         artefactClasses.addAll(transformedClasses)
         artefactClasses.addAll(pendingArtefactClasses)
@@ -169,16 +170,16 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                                File pluginXmlFile, Set<String> artefactClasses) {
         if (pluginClassNode) {
             PluginAstReader pluginAstReader = new PluginAstReader()
-            def info = pluginAstReader.readPluginInfo(pluginClassNode)
+            GrailsPluginInfo info = pluginAstReader.readPluginInfo(pluginClassNode)
 
             pluginXmlFile.withWriter('UTF-8') { Writer writer ->
-                def mkp = new MarkupBuilder(writer)
-                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
+                MarkupBuilder mkp = new MarkupBuilder(writer)
+                String pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
 
-                def pluginProperties = info.getProperties()
-                def pluginVersion = pluginProperties['version'] ?: projectVersion
-                def grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
-                def excludes = pluginProperties['pluginExcludes']
+                Map<String, Object> pluginProperties = info.getProperties()
+                String pluginVersion = pluginProperties['version'] ?: projectVersion
+                String grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
+                String excludes = pluginProperties['pluginExcludes']
                 if (excludes instanceof List) {
                     pluginExcludes.clear()
                     pluginExcludes.addAll(excludes)
@@ -193,7 +194,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
 
                     // if there are pending classes to add to the plugin.xml add those
                     if (artefactClasses) {
-                        def antPathMatcher = new AntPathMatcher()
+                        AntPathMatcher antPathMatcher = new AntPathMatcher()
                         resources {
                             for (String cn in artefactClasses) {
                                 if (!pluginExcludes.any { String exc -> antPathMatcher.match(exc, cn.replace('.', '/')) }) {
@@ -215,15 +216,15 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
         try {
             XmlSlurper xmlSlurper = SpringIOUtils.createXmlSlurper()
 
-            def pluginXml = xmlSlurper.parse(pluginXmlFile)
+            GPathResult pluginXml = xmlSlurper.parse(pluginXmlFile)
             if (pluginClassNode) {
                 PluginAstReader pluginAstReader = new PluginAstReader()
-                def info = pluginAstReader.readPluginInfo(pluginClassNode)
+                GrailsPluginInfo info = pluginAstReader.readPluginInfo(pluginClassNode)
 
-                def pluginProperties = info.getProperties()
-                def pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
-                def pluginVersion = pluginProperties['version'] ?: projectVersion
-                def grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
+                Map<String, Object> pluginProperties = info.getProperties()
+                String pluginName = GrailsNameUtils.getLogicalPropertyName(pluginClassNode.name, 'GrailsPlugin')
+                String pluginVersion = pluginProperties['version'] ?: projectVersion
+                String grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
 
                 pluginXml.@name = pluginName
                 pluginXml.@version = pluginVersion
@@ -233,7 +234,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                     pluginXml."$entry.key" = entry.value
                 }
 
-                def excludes = pluginProperties['pluginExcludes']
+                Object excludes = pluginProperties['pluginExcludes']
                 if (excludes instanceof List) {
                     pluginExcludes.clear()
                     pluginExcludes.addAll(excludes)
@@ -273,7 +274,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
     @CompileDynamic
     protected static void handleExcludes(GPathResult pluginXml) {
         if (pluginExcludes) {
-            def antPathMatcher = new AntPathMatcher()
+            AntPathMatcher antPathMatcher = new AntPathMatcher()
             pluginXml.resources.resource.each { res ->
                 if (pluginExcludes.any { String exc -> antPathMatcher.match(exc, res.text().replace('.', '/')) }) {
                     res.replaceNode {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package grails.validation
 
 import org.springframework.validation.BeanPropertyBindingResult
+import org.springframework.validation.FieldError
 
 /**
  * Models validation errors in a Grails application.
@@ -33,11 +34,11 @@ class ValidationErrors extends BeanPropertyBindingResult {
         super(target, objectName)
     }
 
-    def getAt(String field) {
+    FieldError getAt(String field) {
         getFieldError(field)
     }
 
-    def putAt(String field, String errorCode) {
+    void putAt(String field, String errorCode) {
         rejectValue(field, errorCode)
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,10 @@ import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.MixinNode
+import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.ast.expr.CastExpression
 import org.codehaus.groovy.ast.expr.ClassExpression
+import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.ListExpression
 import org.codehaus.groovy.ast.stmt.ReturnStatement
 import org.codehaus.groovy.control.CompilationUnit
@@ -66,13 +68,13 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
         ClassNode cNode = (ClassNode) parent
 
         if (isTrait(cNode)) {
-            def expr = ann.getMember('value')
+            Expression expr = ann.getMember('value')
             if (!(expr instanceof ListExpression)) {
-                def newList = new ListExpression()
+                ListExpression newList = new ListExpression()
                 newList.addExpression(expr)
                 expr = newList
             }
-            def interfaces = [ClassHelper.make(TraitInjector)] as ClassNode[]
+            ClassNode[] interfaces = [ClassHelper.make(TraitInjector)] as ClassNode[]
 
             String traitClassName = cNode.name
             if (traitClassName.endsWith('$Trait$Helper')) {
@@ -82,24 +84,24 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
             ClassNode transformerNode = new ClassNode("${traitClassName}TraitInjector", Modifier.PUBLIC,
                     ClassHelper.OBJECT_TYPE, interfaces, MixinNode.EMPTY_ARRAY)
 
-            def classNodeRef = ClassHelper.make(traitClassName).getPlainNodeReference()
+            ClassNode classNodeRef = ClassHelper.make(traitClassName).getPlainNodeReference()
             MethodNode getTraitMethodNode = transformerNode.addMethod(
                     'getTrait', Modifier.PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
                     GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(new ClassExpression(classNodeRef)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getTraitMethodNode)
 
-            def strArrayType = ClassHelper.STRING_TYPE.makeArray()
+            ClassNode strArrayType = ClassHelper.STRING_TYPE.makeArray()
             MethodNode getArtefactTypesMethodNode = transformerNode.addMethod(
                     'getArtefactTypes', Modifier.PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
                     new ReturnStatement(CastExpression.asExpression(strArrayType, expr)))
             AnnotatedNodeUtils.markAsGenerated(transformerNode, getArtefactTypesMethodNode)
 
-            def ast = source.AST
+            ModuleNode ast = source.AST
             transformerNode.module = ast
 
             ast.classes.add transformerNode
 
-            def compilationTargetDirectory = GlobalGrailsClassInjectorTransformation.resolveCompilationTargetDirectory(source)
+            File compilationTargetDirectory = GlobalGrailsClassInjectorTransformation.resolveCompilationTargetDirectory(source)
             GlobalGrailsClassInjectorTransformation.updateGrailsFactoriesWithType(transformerNode,
                     GlobalGrailsClassInjectorTransformation.TRAIT_INJECTOR_CLASS, compilationTargetDirectory)
         }
