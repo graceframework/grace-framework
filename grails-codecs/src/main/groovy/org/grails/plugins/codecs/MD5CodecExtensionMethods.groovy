@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ class MD5CodecExtensionMethods {
 
     // Returns the byte[] of the digest, taken from UTF-8 of the string representation
     // or the raw data coerced to bytes
-    static encodeAsMD5(theTarget) {
+    static Object encodeAsMD5(Object theTarget) {
         theTarget.encodeAsMD5Bytes()?.encodeAsHex()
     }
 
-    static decodeMD5(theTarget) {
+    static Object decodeMD5(Object theTarget) {
         throw new UnsupportedOperationException('Cannot decode MD5 hashes')
     }
 

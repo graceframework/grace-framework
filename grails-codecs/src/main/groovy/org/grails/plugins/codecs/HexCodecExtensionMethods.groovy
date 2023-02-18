@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,39 +21,39 @@ import org.codehaus.groovy.runtime.NullObject
 
 class HexCodecExtensionMethods {
 
-    static final HEXDIGITS = '0123456789abcdef'
+    static final String HEXDIGITS = '0123456789abcdef'
 
     // Expects an array/list of numbers
-    static encodeAsHex(theTarget) {
+    static Object encodeAsHex(Object theTarget) {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
 
-        def result = new StringBuilder()
+        StringBuilder result = new StringBuilder()
         if (theTarget instanceof String) {
             theTarget = theTarget.getBytes(StandardCharsets.UTF_8)
         }
         theTarget.each {
-            result << HexCodecExtensionMethods.HEXDIGITS[(it & 0xF0) >> 4]
-            result << HexCodecExtensionMethods.HEXDIGITS[it & 0x0F]
+            result << HEXDIGITS[(it & 0xF0) >> 4]
+            result << HEXDIGITS[it & 0x0F]
         }
         result.toString()
     }
 
-    static decodeHex(theTarget) {
+    static Object decodeHex(Object theTarget) {
         if (!theTarget) {
             return null
         }
 
-        def output = []
+        List output = []
 
-        def str = theTarget.toString().toLowerCase()
+        String str = theTarget.toString().toLowerCase()
         if (str.size() % 2) {
             throw new UnsupportedOperationException('Decode of hex strings requires strings of even length')
         }
 
-        def currentByte
-        str.eachWithIndex { val, idx ->
+        int currentByte
+        str.eachWithIndex { String val, int idx ->
             if (idx % 2) {
                 output << (currentByte | HEXDIGITS.indexOf(val))
                 currentByte = 0
@@ -63,8 +63,8 @@ class HexCodecExtensionMethods {
             }
         }
 
-        def result = new byte[output.size()]
-        output.eachWithIndex { v, i -> result[i] = v }
+        byte[] result = new byte[output.size()]
+        output.eachWithIndex { v, int i -> result[i] = v }
         result
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,25 +27,25 @@ import org.codehaus.groovy.runtime.NullObject
  */
 class Base64CodecExtensionMethods {
 
-    static encodeAsBase64(theTarget) {
+    static Object encodeAsBase64(Object theTarget) {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
 
         if (theTarget instanceof Byte[] || theTarget instanceof byte[]) {
-            return new String(Base64.encodeBase64(theTarget))
+            return new String(Base64.encodeBase64((byte[]) theTarget))
         }
 
         new String(Base64.encodeBase64(theTarget.toString().getBytes(StandardCharsets.UTF_8)))
     }
 
-    static decodeBase64(theTarget) {
+    static Object decodeBase64(Object theTarget) {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
 
         if (theTarget instanceof Byte[] || theTarget instanceof byte[]) {
-            return Base64.decodeBase64(theTarget)
+            return Base64.decodeBase64((byte[]) theTarget)
         }
 
         Base64.decodeBase64(theTarget.toString().getBytes(StandardCharsets.UTF_8))

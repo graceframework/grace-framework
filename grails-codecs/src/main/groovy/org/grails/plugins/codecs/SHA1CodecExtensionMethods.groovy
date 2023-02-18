@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ import org.codehaus.groovy.runtime.NullObject
 class SHA1CodecExtensionMethods {
 
     // Returns the byte[] of the digest
-    static encodeAsSHA1(theTarget) {
+    static Object encodeAsSHA1(Object theTarget) {
         if (theTarget == null || theTarget instanceof NullObject) {
             return null
         }
         theTarget.encodeAsSHA1Bytes().encodeAsHex()
     }
 
-    static decodeSHA1(theTarget) {
+    static Object decodeSHA1(Object theTarget) {
         throw new UnsupportedOperationException('Cannot decode SHA-1 hashes')
     }
 
