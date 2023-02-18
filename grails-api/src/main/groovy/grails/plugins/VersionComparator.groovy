@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,18 +35,18 @@ class VersionComparator implements Comparator<String> {
             result = -1
         }
         else {
-            def nums1
+            List<Integer> nums1
             try {
-                def tokens = deSnapshot(o1).split(/\./)
+                String[] tokens = deSnapshot(o1).split(/\./)
                 tokens = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
                 nums1 = tokens*.toInteger()
             }
             catch (NumberFormatException e) {
                 throw new InvalidVersionException("Cannot compare versions, left side [$o1] is invalid: ${e.message}")
             }
-            def nums2
+            List<Integer> nums2
             try {
-                def tokens = deSnapshot(o2).split(/\./)
+                String[] tokens = deSnapshot(o2).split(/\./)
                 tokens = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
                 nums2 = tokens*.toInteger()
             }
@@ -80,8 +80,8 @@ class VersionComparator implements Comparator<String> {
         if (result == 0) {
             // Versions are equal, but one may be a snapshot.
             // A snapshot version is considered less than a non snapshot version
-            def o1IsSnapshot = isSnapshot(o1)
-            def o2IsSnapshot = isSnapshot(o2)
+            boolean o1IsSnapshot = isSnapshot(o1)
+            boolean o2IsSnapshot = isSnapshot(o2)
 
             if (o1IsSnapshot && !o2IsSnapshot) {
                 result = -1

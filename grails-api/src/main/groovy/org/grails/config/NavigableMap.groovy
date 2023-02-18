@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -159,7 +159,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                 String[] keyParts = sourceKey.split(/\./)
                 if (keyParts.length > 1) {
                     mergeMapEntry(rootMap, path, targetMap, sourceKey, sourceValue, parseFlatKeys)
-                    def pathParts = keyParts[0..-2]
+                    List<String> pathParts = keyParts[0..-2]
                     Map actualTarget = targetMap.navigateSubMap(pathParts as List, true)
                     sourceKey = keyParts[-1]
                     mergeMapEntry(rootMap, pathParts.join('.'), actualTarget, sourceKey, sourceValue, parseFlatKeys)
@@ -196,10 +196,10 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     boolean isNumber = index.isNumber()
                     if (isNumber) {
                         int i = index.toInteger()
-                        def currentValue = targetMap.get(k)
+                        Object currentValue = targetMap.get(k)
                         List list = currentValue instanceof List ? currentValue : []
                         if (list.size() > i) {
-                            def v = list.get(i)
+                            Object v = list.get(i)
                             if (v instanceof Map) {
                                 ((Map) v).put(remainder, sourceValue)
                             }
@@ -219,11 +219,11 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                         targetMap.put(k, list)
                     }
                     else {
-                        def currentValue = targetMap.get(k)
+                        Object currentValue = targetMap.get(k)
                         Map nestedMap = currentValue instanceof Map ? currentValue : [:]
                         targetMap.put(k, nestedMap)
 
-                        def v = nestedMap.get(index)
+                        Object v = nestedMap.get(index)
                         if (v instanceof Map) {
                             ((Map) v).put(remainder, sourceValue)
                         }
@@ -235,7 +235,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                     }
                 }
                 else {
-                    def currentValue = targetMap.get(k)
+                    Object currentValue = targetMap.get(k)
                     if (index.isNumber()) {
                         List list = currentValue instanceof List ? currentValue : []
                         int i = index.toInteger()
@@ -278,11 +278,11 @@ class NavigableMap implements Map<String, Object>, Cloneable {
             }
             if (isNestedSet && newValue == null) {
                 if (path) {
-                    def subMap = rootMap.get(path)
+                    Object subMap = rootMap.get(path)
                     if (subMap instanceof Map) {
                         subMap.remove(sourceKey)
                     }
-                    def keysToRemove = rootMap.keySet().findAll { String key ->
+                    Set<String> keysToRemove = rootMap.keySet().findAll { String key ->
                         key.startsWith("${path}.")
                     }
                     for (key in keysToRemove) {
@@ -338,7 +338,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
         else if (path.length == 1) {
             return map.get(path[0])
         }
-        def submap = map.get(path[0])
+        Object submap = map.get(path[0])
         if (submap instanceof Map) {
             return navigateMap((Map<String, Object>) submap, path.tail())
         }
@@ -379,7 +379,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                 Map<String, Object> newMap = new NavigableMap((NavigableMap) currentMap.getRootConfig(), newPathList.asImmutable())
                 currentMap.put(pathElement, newMap)
 
-                def fullPath = accumulatedPath.toString()
+                String fullPath = accumulatedPath.toString()
                 if (!rootMap.containsKey(fullPath)) {
                     rootMap.put(fullPath, newMap)
                 }

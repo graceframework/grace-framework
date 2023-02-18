@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ interface GrailsApplicationLifeCycle {
      * where plugins can add dynamic methods. Subclasses should override
      */
     void doWithDynamicMethods()
+
     /**
      * Invoked once the {@link org.springframework.context.ApplicationContext} has been refreshed
      * and after {#doWithDynamicMethods()} is invoked. Subclasses should override
@@ -57,6 +58,7 @@ interface GrailsApplicationLifeCycle {
      * @param event The event
      */
     void onStartup(Map<String, Object> event)
+
     /**
      * Invoked when the {@link org.springframework.context.ApplicationContext} is closed
      *

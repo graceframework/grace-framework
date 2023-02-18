@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import org.codehaus.groovy.runtime.typehandling.GroovyCastException
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
@@ -121,7 +122,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     @Override
     <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
-        def value = getProperty(key, targetType)
+        T value = getProperty(key, targetType)
         if (value == null) {
             throw new IllegalStateException("Property [$key] not found")
         }
@@ -133,8 +134,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
             loadYml(input)
         }
 
-        def envName = Environment.current.name
-        def environmentSpecific = getProperty("environments.${envName}", Map)
+        String envName = Environment.current.name
+        Map environmentSpecific = getProperty("environments.${envName}", Map)
         if (environmentSpecific != null) {
             if (!environmentSpecific.isEmpty()) {
                 mergeMap(environmentSpecific, false)
@@ -144,10 +145,10 @@ class CodeGenConfig implements Cloneable, ConfigMap {
 
     void loadGroovy(File groovyConfig) {
         if (groovyConfig.exists()) {
-            def envName = Environment.current.name
-            def configSlurper = new ConfigSlurper(envName)
+            String envName = Environment.current.name
+            ConfigSlurper configSlurper = new ConfigSlurper(envName)
             configSlurper.classLoader = groovyClassLoader
-            def configObject = configSlurper.parse(groovyConfig.toURI().toURL())
+            ConfigObject configObject = configSlurper.parse(groovyConfig.toURI().toURL())
             mergeMap(configObject, false)
         }
     }
@@ -155,7 +156,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     @CompileDynamic
     // fails with CompileStatic!
     void loadYml(InputStream input) {
-        Yaml yaml = new Yaml(new SafeConstructor())
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()))
         for (Object yamlObject : yaml.loadAll(input)) {
             if (yamlObject instanceof Map) { // problem here with CompileStatic
                 mergeMap((Map) yamlObject)
@@ -277,8 +278,8 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     @Override
-    def <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
-        def v = getProperty(key, targetType)
+    <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
+        T v = getProperty(key, targetType)
         if (v == null) {
             return defaultValue
         }

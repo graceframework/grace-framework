@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,11 +69,11 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
     static <T> List<Class<T>> loadFactoryClasses(Class<T> factoryClass, ClassLoader classLoader = GrailsFactoriesLoader.classLoader) {
         Assert.notNull factoryClass, "'factoryClass' must not be null"
 
-        def factoryNames = loadFactoryNames(factoryClass, classLoader)
+        String[] factoryNames = loadFactoryNames(factoryClass, classLoader)
 
         List<Class<T>> result = []
         for (String factoryName in factoryNames) {
-            def clazz = loadFactoryClass(factoryName, factoryClass, classLoader)
+            Class<?> clazz = loadFactoryClass(factoryName, factoryClass, classLoader)
             if (clazz) {
                 result.add clazz
             }
@@ -83,7 +83,7 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
 
     private static <T> Class<? extends T> loadFactoryClass(String instanceClassName, Class<T> factoryClass, ClassLoader classLoader) {
         try {
-            def instanceClass = ClassUtils.forName(instanceClassName, classLoader)
+            Class<?> instanceClass = ClassUtils.forName(instanceClassName, classLoader)
             if (!factoryClass.isAssignableFrom(instanceClass)) {
                 throw new IllegalArgumentException(
                         "Class [$instanceClassName] is not assignable to [$factoryClass.name]")
@@ -97,7 +97,7 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
     }
 
     static <T> T loadFactory(Class<T> factoryClass, ClassLoader classLoader = GrailsFactoriesLoader.classLoader) {
-        def all = loadFactories(factoryClass, classLoader)
+        List<T> all = loadFactories(factoryClass, classLoader)
         if (all) {
             return all.get(0)
         }
@@ -108,7 +108,7 @@ class GrailsFactoriesLoader extends FactoriesLoaderSupport {
     }
 
     static <T> T loadFactory(Class<T> factoryClass, ClassLoader classLoader, Object... arguments) {
-        def all = loadFactoriesWithArguments(factoryClass, classLoader, arguments)
+        List<T> all = loadFactoriesWithArguments(factoryClass, classLoader, arguments)
         if (all) {
             return (T) all.get(0)
         }

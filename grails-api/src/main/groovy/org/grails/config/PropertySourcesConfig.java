@@ -82,8 +82,8 @@ public class PropertySourcesConfig extends NavigableMapConfig {
     }
 
     protected void initializeFromPropertySources(PropertySources propertySources) {
-
         EnvironmentAwarePropertySource environmentAwarePropertySource = new EnvironmentAwarePropertySource(propertySources);
+
         if (propertySources instanceof MutablePropertySources) {
             final String applicationConfig = "applicationConfigurationProperties";
             if (propertySources.contains(applicationConfig)) {

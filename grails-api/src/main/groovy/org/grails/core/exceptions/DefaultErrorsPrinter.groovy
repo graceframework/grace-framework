@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
     }
 
     protected String getFileName(StackTraceElement te) {
-        final res = resourceLocator?.findResourceForClassName(te.className)
+        Resource res = resourceLocator?.findResourceForClassName(te.className)
         res == null ? te.className : res.getFilename()
     }
 
@@ -55,9 +55,9 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
             return ''
         }
 
-        def sw = new StringWriter()
-        def pw = new PrintWriter(sw)
-        def lineNumbersShown = [:].withDefault { k -> [] }
+        StringWriter sw = new StringWriter()
+        PrintWriter pw = new PrintWriter(sw)
+        Map<Object, List> lineNumbersShown = [:].withDefault { k -> [] }
 
         Throwable cause = exception
         while (cause) {
@@ -93,13 +93,13 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
 
                     lineNumbersShown[res.filename] << lineNumber
                     pw.print formatCodeSnippetStart(res, lineNumber)
-                    def input = null
+                    InputStream input = null
                     try {
                         input = res.inputStream
                         input.withReader { fileIn ->
-                            def reader = new LineNumberReader(fileIn)
+                            LineNumberReader reader = new LineNumberReader(fileIn)
                             int last = lineNumber + 3
-                            def range = (lineNumber - 3..last)
+                            IntRange range = (lineNumber - 3..last)
                             String currentLine = reader.readLine()
 
                             while (currentLine != null) {

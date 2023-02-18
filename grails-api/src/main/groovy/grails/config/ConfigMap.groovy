@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ interface ConfigMap extends Iterable<Map.Entry<String, Object>>, Map<String, Obj
      * @param key The key
      * @return The value or null
      */
-    def getAt(Object key)
+    Object getAt(Object key)
 
     /**
      * Enables the object[foo] = 'stuff' syntax
@@ -46,7 +46,7 @@ interface ConfigMap extends Iterable<Map.Entry<String, Object>>, Map<String, Obj
      * @param targetType the expected type of the property value
      * @see #getRequiredProperty(String, Class)
      */
-    def <T> T getProperty(String key, Class<T> targetType)
+    <T> T getProperty(String key, Class<T> targetType)
 
     /**
      * Return the property value associated with the given key, or {@code null}
@@ -55,14 +55,14 @@ interface ConfigMap extends Iterable<Map.Entry<String, Object>>, Map<String, Obj
      * @param targetType the expected type of the property value
      * @see #getRequiredProperty(String, Class)
      */
-    def <T> T getProperty(String key, Class<T> targetType, T defaultValue)
+    <T> T getProperty(String key, Class<T> targetType, T defaultValue)
 
     /**
      * Return the property value associated with the given key, converted to the given
      * targetType (never {@code null}).
      * @throws IllegalStateException if the given key cannot be resolved
      */
-    def <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException
+    <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException
 
     /**
      * Navigate the map for the given path
