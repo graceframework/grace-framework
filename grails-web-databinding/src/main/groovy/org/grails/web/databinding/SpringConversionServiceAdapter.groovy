@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,22 +21,22 @@ import org.springframework.core.convert.support.DefaultConversionService
 import org.grails.databinding.converters.ConversionService
 
 /**
- * This class implements org.grails.databinding.converters.ConversionService
- * and delegates to a org.springfraemwork core.convert.support.DefaultConversionService.
+ * This class implements {@link ConversionService}
+ * and delegates to a {@link DefaultConversionService}.
  *
- * @see org.grails.databinding.converters.ConversionService
- * @see org.springframework.core.convert.support.DefaultConversionService
+ * @see ConversionService
+ * @see DefaultConversionService
  */
 class SpringConversionServiceAdapter implements ConversionService {
 
     private final SpringConversionService springConversionService = new DefaultConversionService()
 
     boolean canConvert(Class<?> source, Class<?> target) {
-        springConversionService.canConvert source, target
+        springConversionService.canConvert(source, target)
     }
 
-    def convert(Object object, Class<?> targetType) {
-        springConversionService.convert object, targetType
+    Object convert(Object object, Class<?> targetType) {
+        springConversionService.convert(object, targetType)
     }
 
 }

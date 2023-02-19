@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class XmlDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCr
     @Override
     DataBindingSource createDataBindingSource(MimeType mimeType, Class bindingTargetType, Object bindingSource) {
         if (bindingSource instanceof GPathResult) {
-            def gpathMap = new GPathResultMap((GPathResult) bindingSource)
+            GPathResultMap gpathMap = new GPathResultMap((GPathResult) bindingSource)
             return new SimpleMapDataBindingSource(gpathMap)
         }
         super.createDataBindingSource(mimeType, bindingTargetType, bindingSource)
@@ -56,8 +56,8 @@ class XmlDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCr
 
     @Override
     protected DataBindingSource createBindingSource(Reader reader) {
-        def gpath = SpringIOUtils.createXmlSlurper().parse(reader)
-        def gpathMap = new GPathResultMap(gpath)
+        GPathResult gpath = SpringIOUtils.createXmlSlurper().parse(reader)
+        GPathResultMap gpathMap = new GPathResultMap(gpath)
         new SimpleMapDataBindingSource(gpathMap)
     }
 
@@ -72,7 +72,7 @@ class XmlDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCr
 
     @Override
     protected CollectionDataBindingSource createCollectionBindingSource(Reader reader) {
-        def gpath = SpringIOUtils.createXmlSlurper().parse(reader)
+        GPathResult gpath = SpringIOUtils.createXmlSlurper().parse(reader)
         new GPathResultCollectionDataBindingSource(gpath)
     }
 

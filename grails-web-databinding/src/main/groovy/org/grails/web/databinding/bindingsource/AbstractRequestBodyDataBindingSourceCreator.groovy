@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.grails.web.databinding.bindingsource
 
+import javax.servlet.ServletInputStream
 import javax.servlet.http.HttpServletRequest
 
 import groovy.transform.CompileStatic
@@ -42,19 +43,19 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
             throws DataBindingSourceCreationException {
         try {
             if (bindingSource instanceof HttpServletRequest) {
-                def req = (HttpServletRequest) bindingSource
+                HttpServletRequest req = (HttpServletRequest) bindingSource
                 HttpMethod method = HttpMethod.resolve(req.method)
                 if (req.contentLength != 0 && !ignoredRequestBodyMethods.contains(method)) {
-                    def is = req.getInputStream()
+                    ServletInputStream is = req.getInputStream()
                     return createBindingSource(is, req.getCharacterEncoding())
                 }
             }
             if (bindingSource instanceof InputStream) {
-                def is = (InputStream) bindingSource
+                InputStream is = (InputStream) bindingSource
                 return createBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
-                def is = (Reader) bindingSource
+                Reader is = (Reader) bindingSource
                 return createBindingSource(is)
             }
 
@@ -74,21 +75,21 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
             throws DataBindingSourceCreationException {
         try {
             if (bindingSource instanceof GrailsParameterMap) {
-                def req = bindingSource.getRequest()
-                def is = req.getInputStream()
+                HttpServletRequest req = bindingSource.getRequest()
+                ServletInputStream is = req.getInputStream()
                 return createCollectionBindingSource(is, req.getCharacterEncoding())
             }
             if (bindingSource instanceof HttpServletRequest) {
-                def req = (HttpServletRequest) bindingSource
-                def is = req.getInputStream()
+                HttpServletRequest req = (HttpServletRequest) bindingSource
+                ServletInputStream is = req.getInputStream()
                 return createCollectionBindingSource(is, req.getCharacterEncoding())
             }
             if (bindingSource instanceof InputStream) {
-                def is = (InputStream) bindingSource
+                InputStream is = (InputStream) bindingSource
                 return createCollectionBindingSource(is, 'UTF-8')
             }
             if (bindingSource instanceof Reader) {
-                def is = (Reader) bindingSource
+                Reader is = (Reader) bindingSource
                 return createCollectionBindingSource(is)
             }
 

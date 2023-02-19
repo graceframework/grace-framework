@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import grails.databinding.SimpleMapDataBindingSource
 import grails.web.mime.MimeType
 
 import org.grails.databinding.bindingsource.DataBindingSourceCreationException
+import org.grails.databinding.bindingsource.DataBindingSourceCreator
 import org.grails.web.json.JSONObject
 
 /**
@@ -38,7 +39,7 @@ import org.grails.web.json.JSONObject
  * @author Graeme Rocher
  *
  * @see DataBindingSource
- * @see org.grails.databinding.bindingsource.DataBindingSourceCreator
+ * @see DataBindingSourceCreator
  */
 @CompileStatic
 class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceCreator {
@@ -68,7 +69,8 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
     @Override
     protected CollectionDataBindingSource createCollectionBindingSource(Reader reader) {
         Object jsonElement = jsonSlurper.parse(reader)
-        def dataBindingSources = jsonElement.collect { element ->
+
+        List<? extends DataBindingSource> dataBindingSources = jsonElement.collect { element ->
             if (element instanceof Map) {
                 new SimpleMapDataBindingSource(createJsonMap(element))
             }
@@ -76,6 +78,7 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
                 new SimpleMapDataBindingSource(Collections.emptyMap())
             }
         }
+
         new CollectionDataBindingSource() {
 
             List<DataBindingSource> getDataBindingSources() {

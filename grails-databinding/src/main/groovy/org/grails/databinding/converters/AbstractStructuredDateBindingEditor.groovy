@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,14 @@ import grails.databinding.StructuredBindingEditor
 abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindingEditor<T> {
 
     T assemble(String propertyName, DataBindingSource fieldValues) throws IllegalArgumentException {
-        final prefix = propertyName + '_'
+        String prefix = propertyName + '_'
         assert fieldValues.containsProperty(prefix + 'year'), "Can't populate a date without a year"
 
-        def yearString = (String) fieldValues.getPropertyValue(prefix + 'year')
-        def monthString = (String) fieldValues.getPropertyValue(prefix + 'month')
-        def dayString = (String) fieldValues.getPropertyValue(prefix + 'day')
-        def hourString = (String) fieldValues.getPropertyValue(prefix + 'hour')
-        def minuteString = (String) fieldValues.getPropertyValue(prefix + 'minute')
+        String yearString = (String) fieldValues.getPropertyValue(prefix + 'year')
+        String monthString = (String) fieldValues.getPropertyValue(prefix + 'month')
+        String dayString = (String) fieldValues.getPropertyValue(prefix + 'day')
+        String hourString = (String) fieldValues.getPropertyValue(prefix + 'hour')
+        String minuteString = (String) fieldValues.getPropertyValue(prefix + 'minute')
         if (!yearString &&
                 !monthString &&
                 !dayString &&
@@ -43,7 +43,7 @@ abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindi
                 !minuteString) {
             return null
         }
-        def year
+        int year
         try {
             assert yearString, "Can't populate a date without a year"
 
@@ -54,10 +54,10 @@ abstract class AbstractStructuredDateBindingEditor<T> implements StructuredBindi
             int hour = getIntegerValue(fieldValues, prefix + 'hour', 0)
             int minute = getIntegerValue(fieldValues, prefix + 'minute', 0)
 
-            def c = new GregorianCalendar(year, month - 1, day, hour, minute)
+            GregorianCalendar c = new GregorianCalendar(year, month - 1, day, hour, minute)
             return getDate(c)
         }
-        catch (NumberFormatException nfe) {
+        catch (NumberFormatException ignored) {
             throw new IllegalArgumentException("Unable to parse structured date from request for date [${propertyName}]")
         }
     }

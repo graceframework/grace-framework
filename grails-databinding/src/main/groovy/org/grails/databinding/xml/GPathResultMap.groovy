@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,29 +33,32 @@ class GPathResultMap implements Map {
         this.@id = gpath.@id.text() ?: null
     }
 
+    @Override
     int size() {
-        def uniqueNames = [] as Set
+        Set uniqueNames = [] as Set
         gpath.children().each { child ->
             uniqueNames << getPropertyNameForNodeChild(child)
         }
         uniqueNames.size()
     }
 
-    boolean containsKey(key) {
+    @Override
+    boolean containsKey(Object key) {
         if (key == 'id') {
             return this.@id != null || gpath['id'].size()
         }
         gpath[key].size()
     }
 
+    @Override
     Set entrySet() {
-        def entries = [] as Set
-        def uniqueChildNames = [] as Set
+        Set entries = [] as Set
+        Set uniqueChildNames = [] as Set
         gpath.childNodes().each { childNode ->
             uniqueChildNames << getPropertyNameForNode(childNode)
         }
         uniqueChildNames.each { name ->
-            def value = get name
+            Object value = get(name)
             entries << new AbstractMap.SimpleImmutableEntry(name, value)
         }
         if (this.@id != null) {
@@ -64,22 +67,23 @@ class GPathResultMap implements Map {
         entries
     }
 
-    Object get(key) {
+    @Override
+    Object get(Object key) {
         if (key == 'id' && this.@id) {
             return this.@id
         }
 
-        def value = gpath.children().findAll { it.name() == key }
+        GPathResult value = gpath.children().findAll { it.name() == key }
         if (value.size() == 0) {
             return null
         }
         if (value.size() > 1) {
-            def list = []
+            List list = []
             value.iterator().each {
-                def theId = it.@id.text()
+                String theId = it.@id.text()
                 if (theId == '') {
                     if (it.children().size() > 0) {
-                        def theMap = new GPathResultMap(it)
+                        GPathResultMap theMap = new GPathResultMap(it)
                         list << theMap
                     }
                     else {
@@ -87,7 +91,7 @@ class GPathResultMap implements Map {
                     }
                 }
                 else {
-                    def theMap = new GPathResultMap(it)
+                    GPathResultMap theMap = new GPathResultMap(it)
                     list << theMap
                 }
             }
@@ -102,8 +106,9 @@ class GPathResultMap implements Map {
         new GPathResultMap(value)
     }
 
+    @Override
     Set keySet() {
-        def keys = gpath.children().collect {
+        Set keys = gpath.children().collect {
             getPropertyNameForNodeChild it
         } as Set
         if (this.@id != null) {
@@ -120,30 +125,37 @@ class GPathResultMap implements Map {
         node.name()
     }
 
+    @Override
     void clear() {
         throw new UnsupportedOperationException()
     }
 
-    boolean containsValue(value) {
+    @Override
+    boolean containsValue(Object value) {
         throw new UnsupportedOperationException()
     }
 
+    @Override
     boolean isEmpty() {
         !size()
     }
 
+    @Override
     Object put(key, value) {
         throw new UnsupportedOperationException()
     }
 
+    @Override
     void putAll(Map m) {
         throw new UnsupportedOperationException()
     }
 
-    Object remove(key) {
+    @Override
+    Object remove(Object key) {
         throw new UnsupportedOperationException()
     }
 
+    @Override
     Collection values() {
         throw new UnsupportedOperationException()
     }

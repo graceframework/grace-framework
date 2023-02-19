@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class GPathResultCollectionDataBindingSource implements CollectionDataBindingSou
 
     GPathResultCollectionDataBindingSource(GPathResult gpath) {
         dataBindingSources = gpath?.children()?.collect { child ->
-            def map = new GPathResultMap((GPathResult) child)
+            GPathResultMap map = new GPathResultMap((GPathResult) child)
             DataBindingSource bindingSource = new SimpleMapDataBindingSource(map)
             bindingSource
         }

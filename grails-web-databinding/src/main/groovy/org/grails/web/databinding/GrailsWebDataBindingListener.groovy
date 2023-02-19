@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
                 bindingResult.resolveMessageCodes('typeMismatch', propertyName),
         ].flatten() as String[]
         Object[] args = [getPropertyName(className, classAsPropertyName, propertyName)] as Object[]
-        def defaultMessage = error.cause?.message ?: 'Data Binding Failed'
+        String defaultMessage = error.cause?.message ?: 'Data Binding Failed'
         def fieldError = new FieldError(className, propertyName, error.getRejectedValue(), true, codes, args, defaultMessage)
         bindingResult.addError(fieldError)
     }
@@ -58,10 +58,10 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
             return propertyName
         }
 
-        final Locale locale = LocaleContextHolder.getLocale()
+        Locale locale = LocaleContextHolder.getLocale()
         String propertyNameCode = className + '.' + propertyName + '.label'
         String resolvedPropertyName = messageSource.getMessage(propertyNameCode, null, propertyName, locale)
-        if (resolvedPropertyName.equals(propertyName)) {
+        if (resolvedPropertyName == propertyName) {
             propertyNameCode = classAsPropertyName + '.' + propertyName + '.label'
             resolvedPropertyName = messageSource.getMessage(propertyNameCode, null, propertyName, locale)
         }

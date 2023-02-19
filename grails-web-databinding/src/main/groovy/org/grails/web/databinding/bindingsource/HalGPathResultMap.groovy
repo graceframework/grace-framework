@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class HalGPathResultMap extends GPathResultMap {
     Object get(key) {
         def resourceElements = this.@gpath['resource']
         if (resourceElements.size() > 0) {
-            def match = resourceElements.iterator().findAll {
+            Collection match = resourceElements.iterator().findAll {
                 it.@rel.text() == key
             }
             if (match) {
@@ -42,7 +42,7 @@ class HalGPathResultMap extends GPathResultMap {
                     return new HalGPathResultMap(match[0])
                 }
                 if (match.size() > 1) {
-                    def list = []
+                    List list = []
                     match.each {
                         list << new HalGPathResultMap(it)
                     }
@@ -54,7 +54,7 @@ class HalGPathResultMap extends GPathResultMap {
     }
 
     protected String getPropertyNameForNodeChild(NodeChild child) {
-        def propertyName = child.name()
+        String propertyName = child.name()
         if (propertyName == 'resource') {
             propertyName = child.attributes().get('rel')
         }
@@ -62,7 +62,7 @@ class HalGPathResultMap extends GPathResultMap {
     }
 
     protected String getPropertyNameForNode(Node node) {
-        def propertyName = node.name()
+        String propertyName = node.name()
         if (propertyName == 'resource') {
             propertyName = node.attributes().get('rel')
         }

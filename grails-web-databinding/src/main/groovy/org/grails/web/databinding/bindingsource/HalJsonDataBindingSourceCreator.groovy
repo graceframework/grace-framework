@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import groovy.transform.CompileStatic
 
 import grails.databinding.DataBindingSource
 import grails.web.mime.MimeType
+
+import org.grails.databinding.bindingsource.DataBindingSourceCreator
 
 /**
  * Creates DataBindingSource objects from HAL JSON in the request body
@@ -44,7 +46,7 @@ class HalJsonDataBindingSourceCreator extends JsonDataBindingSourceCreator {
     @Override
     protected Map createJsonMap(Object jsonElement) {
         if (jsonElement instanceof Map) {
-            def jsonMap = (Map) jsonElement
+            Map jsonMap = (Map) jsonElement
             if (jsonMap.containsKey(HAL_EMBEDDED_ELEMENT)) {
                 jsonMap = new LinkedHashMap(jsonMap)
                 def embedded = jsonMap.get(HAL_EMBEDDED_ELEMENT)

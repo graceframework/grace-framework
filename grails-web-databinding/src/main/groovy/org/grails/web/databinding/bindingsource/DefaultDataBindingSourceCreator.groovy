@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class DefaultDataBindingSourceCreator implements DataBindingSourceCreator {
 
     @Override
     DataBindingSource createDataBindingSource(MimeType mimeType, Class bindingTargetType, Object bindingSource) {
-        final DataBindingSource dataBindingSource
+        DataBindingSource dataBindingSource
         if (bindingSource instanceof DataBindingSource) {
             dataBindingSource = (DataBindingSource) bindingSource
         }
@@ -70,8 +70,8 @@ class DefaultDataBindingSourceCreator implements DataBindingSourceCreator {
     }
 
     protected DataBindingSource createDataBindingSource(Object bindingTarget, HttpServletRequest req) {
-        final GrailsWebRequest grailsWebRequest = GrailsWebRequest.lookup(req)
-        final GrailsParameterMap parameterMap = grailsWebRequest.getParams()
+        GrailsWebRequest grailsWebRequest = GrailsWebRequest.lookup(req)
+        GrailsParameterMap parameterMap = grailsWebRequest.getParams()
         new SimpleMapDataBindingSource(parameterMap)
     }
 

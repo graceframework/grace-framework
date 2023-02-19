@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,28 +32,26 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 public class BindingFormatASTTransformation implements ASTTransformation {
 
     @Override
-    public void visit(final ASTNode[] astNodes, final SourceUnit source) {
+    public void visit(ASTNode[] astNodes, SourceUnit source) {
         if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof FieldNode)) {
             throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
         }
 
-        final AnnotationNode annotationNode = (AnnotationNode) astNodes[0];
-        final FieldNode fieldNode = (FieldNode) astNodes[1];
-        final Map<String, Expression> members = annotationNode.getMembers();
+        AnnotationNode annotationNode = (AnnotationNode) astNodes[0];
+        FieldNode fieldNode = (FieldNode) astNodes[1];
+        Map<String, Expression> members = annotationNode.getMembers();
         if (members == null || (!members.containsKey("code") && !members.containsKey("value"))) {
-            final String message = "The @BindingFormat annotation on the field ["
-                    + fieldNode.getName() +
-                    "] in class [" +
-                    fieldNode.getDeclaringClass().getName() +
+            String message = "The @BindingFormat annotation on the field [" +
+                    fieldNode.getName() + "] in class [" + fieldNode.getDeclaringClass().getName() +
                     "] must provide a value for either the value() or code() attribute.";
 
             error(source, fieldNode, message);
         }
     }
 
-    protected void error(final SourceUnit sourceUnit, final ASTNode astNode, final String message) {
-        final SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber());
-        final SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit);
+    protected void error(SourceUnit sourceUnit, ASTNode astNode, String message) {
+        SyntaxException syntaxException = new SyntaxException(message, astNode.getLineNumber(), astNode.getColumnNumber());
+        SyntaxErrorMessage syntaxErrorMessage = new SyntaxErrorMessage(syntaxException, sourceUnit);
         sourceUnit.getErrorCollector().addError(syntaxErrorMessage, false);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class DefaultDataBindingSourceRegistry extends ClassAndMimeTypeRegistry<DataBind
 
     @Autowired(required = false)
     void setDataBindingSourceCreators(DataBindingSourceCreator[] dataBindingSourceCreators) {
-        for (dbsc in dataBindingSourceCreators) {
+        for (DataBindingSourceCreator dbsc in dataBindingSourceCreators) {
             addToRegisteredObjects(dbsc.targetType, dbsc)
         }
     }
@@ -48,7 +48,7 @@ class DefaultDataBindingSourceRegistry extends ClassAndMimeTypeRegistry<DataBind
     }
 
     protected DataBindingSourceCreator getDataBindingSourceCreator(MimeType mimeType, Class targetType, Object bindingSource) {
-        def bindingSourceCreator = findMatchingObjectForMimeType(mimeType, targetType)
+        DataBindingSourceCreator bindingSourceCreator = findMatchingObjectForMimeType(mimeType, targetType)
         if (bindingSourceCreator == null) {
             bindingSourceCreator = new DefaultDataBindingSourceCreator()
         }
@@ -62,13 +62,13 @@ class DefaultDataBindingSourceRegistry extends ClassAndMimeTypeRegistry<DataBind
 
     @Override
     DataBindingSource createDataBindingSource(MimeType mimeType, Class bindingTargetType, bindingSource) {
-        def helper = getDataBindingSourceCreator(mimeType, bindingTargetType, bindingSource)
+        DataBindingSourceCreator helper = getDataBindingSourceCreator(mimeType, bindingTargetType, bindingSource)
         helper.createDataBindingSource(mimeType, bindingTargetType, bindingSource)
     }
 
     @Override
     CollectionDataBindingSource createCollectionDataBindingSource(MimeType mimeType, Class bindingTargetType, bindingSource) {
-        def helper = getDataBindingSourceCreator(mimeType, bindingTargetType, bindingSource)
+        DataBindingSourceCreator helper = getDataBindingSourceCreator(mimeType, bindingTargetType, bindingSource)
         helper.createCollectionDataBindingSource(mimeType, bindingTargetType, bindingSource)
     }
 
