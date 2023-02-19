@@ -242,7 +242,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
             }
 
             if (artefactClasses) {
-                def resources = pluginXml.resources
+                GPathResult resources = pluginXml.resources
 
                 for (String cn in artefactClasses) {
                     if (!resources.resource.find { it.text() == cn }) {

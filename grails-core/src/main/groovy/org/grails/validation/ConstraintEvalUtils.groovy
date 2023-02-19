@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,12 +45,12 @@ class ConstraintEvalUtils {
      * Looks up the default configured constraints from the given configuration
      */
     static Map<String, Object> getDefaultConstraints(Config config) {
-        def cid = System.identityHashCode(config)
+        int cid = System.identityHashCode(config)
         if (defaultConstraintsMap == null || configId != cid) {
             configId = cid
-            def constraints = config.getProperty(Settings.GORM_DEFAULT_CONSTRAINTS, Closure)
+            Closure<?> constraints = config.getProperty(Settings.GORM_DEFAULT_CONSTRAINTS, Closure)
             if (constraints) {
-                defaultConstraintsMap = new ClosureToMapPopulator().populate((Closure<?>) constraints)
+                defaultConstraintsMap = new ClosureToMapPopulator().populate(constraints)
             }
             else {
                 defaultConstraintsMap = Collections.emptyMap()
