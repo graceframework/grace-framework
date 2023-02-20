@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,12 +52,12 @@ class ResponseRedirector {
     boolean useJessionId = false
 
     ResponseRedirector(LinkGenerator linkGenerator) {
-        Assert.notNull linkGenerator, 'Argument [linkGenerator] cannot be null'
+        Assert.notNull(linkGenerator, 'Argument [linkGenerator] cannot be null')
         this.linkGenerator = linkGenerator
     }
 
     void redirect(Map arguments = Collections.emptyMap()) {
-        def webRequest = GrailsWebRequest.lookup()
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup()
         HttpServletRequest request = webRequest.currentRequest
         HttpServletResponse response = webRequest.getCurrentResponse()
 
@@ -77,21 +77,21 @@ class ResponseRedirector {
 
         boolean permanent
 
-        def permanentArgument = arguments.get(ARGUMENT_PERMANENT)
+        Object permanentArgument = arguments.get(ARGUMENT_PERMANENT)
         if (permanentArgument instanceof String) {
             permanent = Boolean.valueOf(permanentArgument)
         }
         else {
-            permanent = Boolean.TRUE == permanentArgument
+            permanent = (Boolean.TRUE == permanentArgument)
         }
 
-        final Map namedParameters = new LinkedHashMap<>(arguments)
+        Map<String, Object> namedParameters = new LinkedHashMap<>(arguments)
         // we generate a relative link with no context path so that the absolute can be calculated by combining the serverBaseURL
         // which includes the contextPath
-        namedParameters.put LinkGenerator.ATTRIBUTE_CONTEXT_PATH, BLANK
+        namedParameters.put(LinkGenerator.ATTRIBUTE_CONTEXT_PATH, BLANK)
 
         boolean absolute
-        def absoluteArgument = arguments.get(ARGUMENT_ABSOLUTE)
+        Object absoluteArgument = arguments.get(ARGUMENT_ABSOLUTE)
         if (absoluteArgument instanceof String) {
             absolute = Boolean.valueOf(absoluteArgument)
         }
@@ -105,7 +105,7 @@ class ResponseRedirector {
         if (Boolean.valueOf(arguments.get(KEEP_PARAMS_WHEN_REDIRECT).toString())) {
             // When redirecting from UrlMappings the original request params are on webRequest.originalParams
             // instead of arguments.params so we merge them.
-            def webRequest = GrailsWebRequest.lookup(request)
+            GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
             if (webRequest.originalParams) {
                 final Map configuredParams = (Map) arguments.get(LinkGenerator.ATTRIBUTE_PARAMS) ?: [:]
                 namedParameters.put(LinkGenerator.ATTRIBUTE_PARAMS, configuredParams + webRequest.originalParams)
@@ -139,15 +139,15 @@ class ResponseRedirector {
         int status = permanent ? HttpServletResponse.SC_MOVED_PERMANENTLY : HttpServletResponse.SC_MOVED_TEMPORARILY
 
         response.status = status
-        response.setHeader HttpHeaders.LOCATION, redirectUrl
+        response.setHeader(HttpHeaders.LOCATION, redirectUrl)
 
         if (redirectListeners) {
             for (redirectEventListener in redirectListeners) {
-                redirectEventListener.responseRedirected redirectUrl
+                redirectEventListener.responseRedirected(redirectUrl)
             }
         }
 
-        request.setAttribute GRAILS_REDIRECT_ISSUED, processedActualUri
+        request.setAttribute(GRAILS_REDIRECT_ISSUED, processedActualUri)
     }
 
     private String processedUrl(String link, HttpServletRequest request) {

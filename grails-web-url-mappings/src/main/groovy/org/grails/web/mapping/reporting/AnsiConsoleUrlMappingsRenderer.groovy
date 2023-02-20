@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.Ansi.Color
 
 import grails.build.logging.GrailsConsole
+import grails.gorm.validation.Constrained
 import grails.gorm.validation.ConstrainedProperty
 import grails.web.mapping.UrlMapping
 import grails.web.mapping.reporting.UrlMappingsRenderer
@@ -49,16 +50,16 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     @Override
     void render(List<UrlMapping> urlMappings) {
-        final mappingsByController = urlMappings.groupBy { UrlMapping mapping -> mapping.controllerName }
-        def longestMapping = establishUrlPattern(urlMappings.max {
+        Map<Object, List<UrlMapping>> mappingsByController = urlMappings.groupBy { UrlMapping mapping -> mapping.controllerName }
+        int longestMapping = establishUrlPattern(urlMappings.max {
             UrlMapping mapping -> establishUrlPattern(mapping, false).length()
         }, false).length() + 5
-        final longestActionName = urlMappings.max { UrlMapping mapping ->
+        UrlMapping longestActionName = urlMappings.max { UrlMapping mapping ->
             (mapping?.actionName) ? mapping?.actionName?.toString()?.length() : 0
         }
         int longestAction = (longestActionName.actionName ? longestActionName.actionName?.toString()?.length() : 0) + 10
         longestAction = longestAction < DEFAULT_ACTION.length() ? DEFAULT_ACTION.length() : longestAction
-        final controllerNames = mappingsByController.keySet().sort()
+        List<Object> controllerNames = mappingsByController.keySet().sort()
 
         for (controller in controllerNames) {
             if (controller == null) {
@@ -67,9 +68,9 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
             else {
                 targetStream.println(header('Controller', controller.toString()))
             }
-            final controllerUrlMappings = mappingsByController.get(controller)
+            List<UrlMapping> controllerUrlMappings = mappingsByController.get(controller)
             for (UrlMapping urlMapping in controllerUrlMappings) {
-                def urlPattern = establishUrlPattern(urlMapping, isAnsiEnabled, longestMapping)
+                String urlPattern = establishUrlPattern(urlMapping, isAnsiEnabled, longestMapping)
 
                 String actionName = urlMapping.actionName?.toString() ?: DEFAULT_ACTION
                 if (actionName && !urlMapping.viewName) {
@@ -94,14 +95,14 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
 
     protected String establishUrlPattern(UrlMapping urlMapping, boolean withAnsi = isAnsiEnabled, int padding = -1) {
         if (urlMapping instanceof ResponseCodeUrlMapping) {
-            def errorCode = 'ERROR: ' + ((ResponseCodeMappingData) urlMapping.urlData).responseCode
+            String errorCode = 'ERROR: ' + ((ResponseCodeMappingData) urlMapping.urlData).responseCode
             if (withAnsi) {
                 return padAnsi(error(errorCode), errorCode, padding)
             }
             return errorCode.padRight(padding)
         }
-        final constraints = urlMapping.constraints
-        final tokens = urlMapping.urlData.tokens
+        Constrained[] constraints = urlMapping.constraints
+        String[] tokens = urlMapping.urlData.tokens
         StringBuilder urlPattern = new StringBuilder(UrlMapping.SLASH)
         int constraintIndex = 0
         tokens.eachWithIndex { String token, int i ->
@@ -111,12 +112,12 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
                 while (hasTokens) {
                     if (finalToken.contains(UrlMapping.CAPTURED_WILDCARD)) {
                         ConstrainedProperty constraint = (ConstrainedProperty) constraints[constraintIndex++]
-                        def prop = '\\${' + constraint.propertyName + '}'
+                        String prop = '\\${' + constraint.propertyName + '}'
                         finalToken = finalToken.replaceFirst(/\(\*\)/, withAnsi ? variable(prop) : prop)
                     }
                     else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
                         ConstrainedProperty constraint = (ConstrainedProperty) constraints[constraintIndex++]
-                        def prop = '\\\${' + constraint.propertyName + '}**'
+                        String prop = '\\\${' + constraint.propertyName + '}**'
                         finalToken = finalToken.replaceFirst(/\(\*\*\)/, prop)
                     }
                     hasTokens = finalToken.contains(UrlMapping.CAPTURED_WILDCARD) || finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
@@ -132,13 +133,13 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
             }
         }
         if (urlMapping.urlData.hasOptionalExtension()) {
-            final allConstraints = urlMapping.constraints
+            Constrained[] allConstraints = urlMapping.constraints
             ConstrainedProperty lastConstraint = (ConstrainedProperty) allConstraints[-1]
             urlPattern << "(.\${${lastConstraint.propertyName})?"
         }
         if (padding) {
             if (withAnsi) {
-                final nonAnsiPattern = establishUrlPattern(urlMapping, false)
+                String nonAnsiPattern = establishUrlPattern(urlMapping, false)
                 return padAnsi(urlPattern.toString(), nonAnsiPattern, padding)
             }
             return urlPattern.toString().padRight(padding)
@@ -148,9 +149,9 @@ class AnsiConsoleUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     protected String padAnsi(String ansiString, String nonAnsiString, int padding) {
-        def toPad = padding - nonAnsiString.length()
+        int toPad = padding - nonAnsiString.length()
         if (toPad > 0) {
-            final padText = getPadding(' ', toPad)
+            String padText = getPadding(' ', toPad)
             return "${ansiString}$padText".toString()
         }
         ansiString.toString()

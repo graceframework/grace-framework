@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
         if (targetType == null) {
             return null
         }
-        def registeredObjects = registeredObjectsByType.get(targetType)
+        Collection<R> registeredObjects = registeredObjectsByType.get(targetType)
         if (registeredObjects == null) {
             registeredObjects = new ConcurrentLinkedQueue<R>()
             registeredObjectsByType.put(targetType, registeredObjects)
@@ -78,9 +78,9 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
             return null
         }
 
-        final clazz = object instanceof Class ? (Class) object : object.getClass()
+        Class clazz = object instanceof Class ? (Class) object : object.getClass()
 
-        final K cacheKey = createCacheKey(clazz, mimeType)
+        K cacheKey = createCacheKey(clazz, mimeType)
         R registeredObject = (R) resolvedObjectCache.getIfPresent(cacheKey)
         if (registeredObject == null) {
             Class currentClass = clazz
@@ -96,7 +96,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
                 currentClass = currentClass.getSuperclass()
             }
 
-            final interfaces = GrailsClassUtils.getAllInterfaces(object)
+            Class[] interfaces = GrailsClassUtils.getAllInterfaces(object)
             for (i in interfaces) {
                 registeredObject = findRegisteredObjectForType(i, mimeType)
                 if (registeredObject) {
@@ -123,7 +123,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
 
     protected R findRegisteredObjectForType(Class currentClass, MimeType mimeType) {
         R findObject = null
-        final objectList = registeredObjectsByType.get(currentClass)
+        Collection<R> objectList = registeredObjectsByType.get(currentClass)
         if (objectList) {
             findObject = (R) objectList.find {
                 MimeTypeProvider r = (MimeTypeProvider) it
@@ -144,7 +144,7 @@ abstract class ClassAndMimeTypeRegistry<R extends MimeTypeProvider, K> {
     }
 
     void removeFromCache(Class type, MimeType mimeType) {
-        final key = createCacheKey(type, mimeType)
+        K key = createCacheKey(type, mimeType)
         resolvedObjectCache.invalidate(key)
     }
 

@@ -31,10 +31,12 @@ class SpringConversionServiceAdapter implements ConversionService {
 
     private final SpringConversionService springConversionService = new DefaultConversionService()
 
+    @Override
     boolean canConvert(Class<?> source, Class<?> target) {
         springConversionService.canConvert(source, target)
     }
 
+    @Override
     Object convert(Object object, Class<?> targetType) {
         springConversionService.convert(object, targetType)
     }

@@ -49,7 +49,7 @@ class GrailsWebDataBindingListener extends DataBindingListenerAdapter {
         ].flatten() as String[]
         Object[] args = [getPropertyName(className, classAsPropertyName, propertyName)] as Object[]
         String defaultMessage = error.cause?.message ?: 'Data Binding Failed'
-        def fieldError = new FieldError(className, propertyName, error.getRejectedValue(), true, codes, args, defaultMessage)
+        FieldError fieldError = new FieldError(className, propertyName, error.getRejectedValue(), true, codes, args, defaultMessage)
         bindingResult.addError(fieldError)
     }
 

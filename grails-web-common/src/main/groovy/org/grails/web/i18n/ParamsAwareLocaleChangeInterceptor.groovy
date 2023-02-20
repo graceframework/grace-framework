@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import org.springframework.web.servlet.DispatcherServlet
 import org.springframework.web.servlet.LocaleResolver
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
 import org.springframework.web.servlet.support.RequestContextUtils
+
+import grails.web.servlet.mvc.GrailsParameterMap
 
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
@@ -59,9 +61,9 @@ class ParamsAwareLocaleChangeInterceptor extends LocaleChangeInterceptor {
     boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
 
-        def params = webRequest.params
+        GrailsParameterMap params = webRequest.params
 
-        def localeParam = params?.get(paramName)
+        Object localeParam = params?.get(paramName)
         if (!localeParam) {
             return super.preHandle(request, response, handler)
         }
@@ -71,7 +73,7 @@ class ParamsAwareLocaleChangeInterceptor extends LocaleChangeInterceptor {
             if (localeParam.getClass().isArray()) {
                 localeParam = ((Object[]) localeParam)[0]
             }
-            def localeResolver = RequestContextUtils.getLocaleResolver(request)
+            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request)
             if (localeResolver == null) {
                 localeResolver = this.localeResolver
                 request.setAttribute(DispatcherServlet.LOCALE_RESOLVER_ATTRIBUTE, localeResolver)

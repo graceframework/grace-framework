@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.grails.web.databinding.converters
 
 import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 import groovy.transform.CompileStatic
 
@@ -26,7 +27,7 @@ import grails.databinding.TypedStructuredBindingEditor
  * An abstract base class for StructuredBindingEditor instances which can be auto-discovered
  * as beans in the Spring application context
  *
- * @see StructuredBindingEditor
+ * @see grails.databinding.StructuredBindingEditor
  *
  * @since 2.3.4
  */
@@ -36,9 +37,9 @@ abstract class AbstractStructuredBindingEditor<T> implements TypedStructuredBind
     final Class<T> targetType
 
     AbstractStructuredBindingEditor() {
-        def superClass = getClass().genericSuperclass
-        def type = (ParameterizedType) superClass
-        def types = type.actualTypeArguments
+        Type superClass = getClass().genericSuperclass
+        ParameterizedType type = (ParameterizedType) superClass
+        Type[] types = type.actualTypeArguments
         targetType = types[0]
     }
 
@@ -66,10 +67,10 @@ abstract class AbstractStructuredBindingEditor<T> implements TypedStructuredBind
      */
     Map<String, Object> getPropertyValuesMap(String propertyPrefix, DataBindingSource bindingSource) {
         Map<String, Object> valuesMap = [:]
-        def prefix = propertyPrefix + '_'
+        String prefix = propertyPrefix + '_'
         for (String key : bindingSource.propertyNames) {
             if (key.startsWith(prefix) && key.size() > prefix.size()) {
-                def propName = key[prefix.size()..-1]
+                String propName = key[prefix.size()..-1]
                 valuesMap[propName] = bindingSource.getPropertyValue(key)
             }
         }

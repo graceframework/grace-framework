@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,13 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
 
     private static final String DESTROY_CLOSURE = "destroy";
 
-    private static final Closure<?> BLANK_CLOSURE = new Closure<Object>(DefaultGrailsBootstrapClass.class) {
+    private static final Closure<?> BLANK_CLOSURE = new Closure<>(DefaultGrailsBootstrapClass.class) {
+
         @Override
         public Object call(Object... args) {
             return null;
         }
+
     };
 
     private final Object instance;

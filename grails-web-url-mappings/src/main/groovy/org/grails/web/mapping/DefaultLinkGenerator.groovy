@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,37 +102,38 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     /**
      * {@inheritDoc}
      */
+    @Override
     String link(Map attrs, String encoding = 'UTF-8') {
-        def writer = new StringBuilder()
+        StringBuilder writer = new StringBuilder()
         // prefer URI attribute
         boolean includeContext = GrailsClassUtils.getBooleanFromMap(ATTRIBUTE_INCLUDE_CONTEXT, attrs, true)
 
         if (attrs.get(ATTRIBUTE_URI) != null) {
-            def uri = attrs.get(ATTRIBUTE_URI).toString()
+            String uri = attrs.get(ATTRIBUTE_URI).toString()
             if (!isUriAbsolute(uri)) {
-                final base = handleAbsolute(attrs)
+                String base = handleAbsolute(attrs)
                 if (base != null) {
-                    writer.append base
+                    writer.append(base)
                 }
                 else if (includeContext) {
-                    def cp = attrs.get(ATTRIBUTE_CONTEXT_PATH)
+                    Object cp = attrs.get(ATTRIBUTE_CONTEXT_PATH)
                     if (cp == null) {
                         cp = getContextPath()
                     }
                     if (cp != null) {
-                        writer.append cp
+                        writer.append(cp)
                     }
                 }
             }
-            writer.append uri
+            writer.append(uri)
 
-            def params = attrs.get(ATTRIBUTE_PARAMS)
+            Object params = attrs.get(ATTRIBUTE_PARAMS)
 
             if (params instanceof Map) {
-                def charset = GrailsWebUtil.DEFAULT_ENCODING
-                def paramString = params.collect { Map.Entry entry ->
-                    def encodedKey = URLEncoder.encode(entry.key as String, charset)
-                    def encodedValue = URLEncoder.encode(entry.value as String, charset)
+                String charset = GrailsWebUtil.DEFAULT_ENCODING
+                String paramString = params.collect { Map.Entry entry ->
+                    String encodedKey = URLEncoder.encode(entry.key as String, charset)
+                    String encodedValue = URLEncoder.encode(entry.value as String, charset)
                     "$encodedKey=$encodedValue"
                 }.join('&')
                 writer.append(uri.indexOf('?') >= 0 ? '&' : '?')
@@ -151,20 +152,20 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         else {
             // prefer a URL attribute
             Map urlAttrs = attrs
-            final urlAttribute = attrs.get(ATTRIBUTE_URL)
+            Object urlAttribute = attrs.get(ATTRIBUTE_URL)
             if (urlAttribute instanceof Map) {
                 urlAttrs = (Map) urlAttribute
             }
             if (!urlAttribute || urlAttribute instanceof Map) {
-                final controllerAttribute = urlAttrs.get(ATTRIBUTE_CONTROLLER)
-                final resourceAttribute = urlAttrs.get(ATTRIBUTE_RESOURCE)
+                Object controllerAttribute = urlAttrs.get(ATTRIBUTE_CONTROLLER)
+                Object resourceAttribute = urlAttrs.get(ATTRIBUTE_RESOURCE)
                 String controller
                 String action = urlAttrs.get(ATTRIBUTE_ACTION)
-                def id = urlAttrs.get(ATTRIBUTE_ID)
+                Object id = urlAttrs.get(ATTRIBUTE_ID)
                 String httpMethod
-                final methodAttribute = urlAttrs.get(ATTRIBUTE_METHOD)
-                final paramsAttribute = urlAttrs.get(ATTRIBUTE_PARAMS)
-                Map params = paramsAttribute instanceof Map ? (Map) paramsAttribute : [:]
+                Object methodAttribute = urlAttrs.get(ATTRIBUTE_METHOD)
+                Object paramsAttribute = urlAttrs.get(ATTRIBUTE_PARAMS)
+                Map params = (paramsAttribute instanceof Map) ? (Map) paramsAttribute : [:]
 
                 if (resourceAttribute) {
                     String resource
@@ -197,8 +198,8 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     controller = tokens[-1]
                     if (tokens.size() > 1) {
                         for (t in tokens[0..-2]) {
-                            final key = "${t}Id".toString()
-                            final attr = urlAttrs.remove(key)
+                            String key = "${t}Id".toString()
+                            Object attr = urlAttrs.remove(key)
                             // the params value might not be null
                             // only overwrite if urlAttrs actually had the key
                             if (attr) {
@@ -211,7 +212,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                         httpMethod = httpMethod ?: HttpMethod.GET.toString()
                     }
                     else if (methodAttribute && !action) {
-                        def method = methodAttribute.toString().toUpperCase()
+                        String method = methodAttribute.toString().toUpperCase()
                         httpMethod = method
                         if (method == 'GET' && id) {
                             method = "${method}_ID".toString()
@@ -243,16 +244,15 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
                 String frag = urlAttrs.get(ATTRIBUTE_FRAGMENT)
 
-                def mappingName = urlAttrs.get(ATTRIBUTE_MAPPING)
+                Object mappingName = urlAttrs.get(ATTRIBUTE_MAPPING)
                 if (mappingName != null) {
                     params.mappingName = mappingName
                 }
-                def url
                 if (id != null) {
                     params.put(ATTRIBUTE_ID, id)
                 }
-                def pluginName = attrs.get(UrlMapping.PLUGIN)?.toString()
-                def namespace = attrs.get(UrlMapping.NAMESPACE)?.toString()
+                String pluginName = attrs.get(UrlMapping.PLUGIN)?.toString()
+                String namespace = attrs.get(UrlMapping.NAMESPACE)?.toString()
                 if (namespace == null) {
                     if (controller == requestStateLookupStrategy.controllerName) {
                         namespace = requestStateLookupStrategy.controllerNamespace
@@ -268,10 +268,11 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
                 boolean absolute = isAbsolute(attrs)
 
+                String url
                 if (absolute) {
                     url = mapping.createRelativeURL(convertedControllerName, convertedActionName, namespace, pluginName, params, encoding, frag)
-                    writer.append handleAbsolute(attrs)
-                    writer.append url
+                    writer.append(handleAbsolute(attrs))
+                    writer.append(url)
                 }
                 else {
                     url = mapping.createRelativeURL(convertedControllerName, convertedActionName, namespace, pluginName, params, encoding, frag)
@@ -279,24 +280,24 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     final cp = contextPathAttribute == null ? getContextPath() : contextPathAttribute
                     if (attrs.get(ATTRIBUTE_BASE) || cp == null) {
                         attrs.put(ATTRIBUTE_ABSOLUTE, true)
-                        writer.append handleAbsolute(attrs)
+                        writer.append(handleAbsolute(attrs))
                     }
                     else if (includeContext) {
-                        writer.append cp
+                        writer.append(cp)
                     }
-                    writer.append url
+                    writer.append(url)
                 }
             }
             else {
-                writer.append urlAttribute
+                writer.append(urlAttribute)
             }
         }
         writer.toString()
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected String getResourceId(resourceAttribute) {
-        final id = resourceAttribute.id
+    protected String getResourceId(Object resourceAttribute) {
+        Object id = resourceAttribute?.id
         if (id) {
             return id.toString()
         }
@@ -305,14 +306,14 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
 
     protected boolean isAbsolute(Map attrs) {
         boolean absolute = false
-        def o = attrs.get(ATTRIBUTE_ABSOLUTE)
+        Object o = attrs.get(ATTRIBUTE_ABSOLUTE)
         if (o instanceof Boolean) {
             absolute = o
         }
         else {
             if (o != null) {
                 try {
-                    def str = o.toString()
+                    String str = o.toString()
                     if (str) {
                         absolute = Boolean.parseBoolean(str)
                     }
@@ -327,12 +328,13 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     /**
      * {@inheritDoc }
      */
+    @Override
     String resource(Map attrs) {
-        def absolutePath = handleAbsolute(attrs)
+        String absolutePath = handleAbsolute(attrs)
 
-        final contextPathAttribute = attrs.contextPath?.toString()
+        String contextPathAttribute = attrs.contextPath?.toString()
         if (absolutePath == null) {
-            final cp = contextPathAttribute == null ? getContextPath() : contextPathAttribute
+            String cp = contextPathAttribute == null ? getContextPath() : contextPathAttribute
             if (cp == null) {
                 absolutePath = handleAbsolute(absolute: true)
             }
@@ -341,42 +343,43 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
             }
         }
 
-        StringBuilder url = new StringBuilder(absolutePath?.toString() ?: '')
-        def dir = attrs.dir?.toString()
+        StringBuilder url = new StringBuilder(absolutePath ?: '')
+        String dir = attrs.dir?.toString()
         if (attrs.plugin) {
-            url.append pluginManager?.getPluginPath(attrs.plugin?.toString()) ?: ''
+            url.append(pluginManager?.getPluginPath(attrs.plugin?.toString()) ?: '')
         }
         else {
             if (contextPathAttribute == null) {
-                def pluginContextPath = attrs.pluginContextPath?.toString()
+                String pluginContextPath = attrs.pluginContextPath?.toString()
                 if (pluginContextPath != null && dir != pluginContextPath) {
                     url << pluginContextPath
                 }
             }
         }
 
-        def slash = '/'
+        String slash = '/'
         if (resourcePath != null) {
             url.append(resourcePath)
         }
         if (dir) {
             if (!dir.startsWith(slash)) {
-                url.append slash
+                url.append(slash)
             }
-            url.append dir
+            url.append(dir)
         }
 
-        def file = attrs.file?.toString()
+        String file = attrs.file?.toString()
         if (file) {
             if (!(file.startsWith(slash) || (dir != null && dir.endsWith(slash)))) {
-                url.append slash
+                url.append(slash)
             }
-            url.append file
+            url.append(file)
         }
 
         url.toString()
     }
 
+    @Override
     String getContextPath() {
         if (contextPath == null) {
             contextPath = requestStateLookupStrategy.getContextPath()
@@ -387,14 +390,14 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     /**
      * Check for "absolute" attribute and render server URL if available from Config or deducible in non-production.
      */
-    private handleAbsolute(Map attrs) {
-        def base = attrs.base
+    private String handleAbsolute(Map attrs) {
+        Object base = attrs.base
         if (base) {
-            return base
+            return base.toString()
         }
 
         if (isAbsolute(attrs)) {
-            def u = makeServerURL()
+            String u = makeServerURL()
             if (u) {
                 return u
             }
@@ -412,10 +415,10 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
      * Get the declared URL of the server from config, or guess at localhost for non-production.
      */
     String makeServerURL() {
-        def u = configuredServerBaseURL
+        String u = configuredServerBaseURL
         if (!u) {
             // Leave it null if we're in production so we can throw
-            final webRequest = GrailsWebRequest.lookup()
+            GrailsWebRequest webRequest = GrailsWebRequest.lookup()
 
             u = webRequest?.baseUrl
             if (!u && !Environment.isWarDeployed()) {
@@ -426,10 +429,12 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         u
     }
 
+    @Override
     String getServerBaseURL() {
         makeServerURL()
     }
 
+    @Override
     void setPluginManager(GrailsPluginManager pluginManager) {
         this.pluginManager = pluginManager
     }

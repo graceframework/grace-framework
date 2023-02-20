@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ class UrlMappingsFactory implements ApplicationContextAware {
     ApplicationContext applicationContext
 
     UrlMappings create(Closure mappings) {
-        def evaluator = new DefaultUrlMappingEvaluator(applicationContext)
+        DefaultUrlMappingEvaluator evaluator = new DefaultUrlMappingEvaluator(applicationContext)
         new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
     }
 
     UrlMappings create(Class mappings) {
-        def evaluator = new DefaultUrlMappingEvaluator(applicationContext)
+        DefaultUrlMappingEvaluator evaluator = new DefaultUrlMappingEvaluator(applicationContext)
         new DefaultUrlMappingsHolder(evaluator.evaluateMappings(mappings))
     }
 

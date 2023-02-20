@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,15 @@ import java.util.concurrent.CopyOnWriteArraySet
 
 import javax.servlet.http.HttpSession
 
+import groovy.transform.CompileStatic
+
 /**
  * A token used to handle double-submits.
  *
  * @author Graeme Rocher
  * @since 1.1
  */
+@CompileStatic
 class SynchronizerTokensHolder implements Serializable {
 
     private static final long serialVersionUID = 1
@@ -39,13 +42,13 @@ class SynchronizerTokensHolder implements Serializable {
         try {
             getTokens(url).contains UUID.fromString(token)
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException ignored) {
             false
         }
     }
 
     String generateToken(String url) {
-        final UUID uuid = UUID.randomUUID()
+        UUID uuid = UUID.randomUUID()
         getTokens(url).add(uuid)
         uuid
     }
@@ -56,7 +59,7 @@ class SynchronizerTokensHolder implements Serializable {
 
     void resetToken(String url, String token) {
         if (url && token) {
-            final Set set = getTokens(url)
+            Set set = getTokens(url)
             try {
                 set.remove UUID.fromString(token)
             }
@@ -81,7 +84,7 @@ class SynchronizerTokensHolder implements Serializable {
     }
 
     static SynchronizerTokensHolder store(HttpSession session) {
-        SynchronizerTokensHolder tokensHolder = session.getAttribute(HOLDER)
+        SynchronizerTokensHolder tokensHolder = session.getAttribute(HOLDER) as SynchronizerTokensHolder
         if (!tokensHolder) {
             tokensHolder = new SynchronizerTokensHolder()
             session.setAttribute(HOLDER, tokensHolder)

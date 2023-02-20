@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,16 +33,16 @@ import org.grails.web.util.WebUtils
 class HttpServletRequestExtension {
 
     static String getForwardURI(HttpServletRequest request) {
-        WebUtils.getForwardURI request
+        WebUtils.getForwardURI(request)
     }
 
-    static getProperty(HttpServletRequest request, String name) {
-        def mp = request.getClass().metaClass.getMetaProperty(name)
+    static Object getProperty(HttpServletRequest request, String name) {
+        MetaProperty mp = request.getClass().metaClass.getMetaProperty(name)
         mp ? mp.getProperty(request) : request.getAttribute(name)
     }
 
     static void setProperty(HttpServletRequest request, String name, val) {
-        def mp = request.getClass().metaClass.getMetaProperty(name)
+        MetaProperty mp = request.getClass().metaClass.getMetaProperty(name)
         if (mp != null) {
             mp.setProperty(request, val)
         }
@@ -51,30 +51,30 @@ class HttpServletRequestExtension {
         }
     }
 
-    static propertyMissing(HttpServletRequest request, String name) {
-        getProperty request, name
+    static Object propertyMissing(HttpServletRequest request, String name) {
+        getProperty(request, name)
     }
 
-    static propertyMissing(HttpServletRequest request, String name, value) {
-        def mp = request.getClass().metaClass.getMetaProperty(name)
+    static void propertyMissing(HttpServletRequest request, String name, value) {
+        MetaProperty mp = request.getClass().metaClass.getMetaProperty(name)
         if (mp) {
-            mp.setProperty request, value
+            mp.setProperty(request, value)
         }
         else {
-            request.setAttribute name, value
+            request.setAttribute(name, value)
         }
     }
 
-    static getAt(HttpServletRequest request, String name) {
-        getProperty request, name
+    static Object getAt(HttpServletRequest request, String name) {
+        getProperty(request, name)
     }
 
-    static putAt(HttpServletRequest request, String name, val) {
-        setProperty request, name, val
+    static void putAt(HttpServletRequest request, String name, val) {
+        setProperty(request, name, val)
     }
 
-    static each(HttpServletRequest request, Closure c) {
-        def attributeNames = request.getAttributeNames()
+    static Object each(HttpServletRequest request, Closure c) {
+        Enumeration<String> attributeNames = request.getAttributeNames()
         while (attributeNames.hasMoreElements()) {
             String name = attributeNames.nextElement()
             switch (c.parameterTypes.length) {
@@ -90,10 +90,10 @@ class HttpServletRequestExtension {
         }
     }
 
-    static find(HttpServletRequest request, Closure<Boolean> c) {
-        def result = [:]
+    static Map<String, Object> find(HttpServletRequest request, Closure<Boolean> c) {
+        Map<String, Object> result = [:]
 
-        def attributeNames = request.getAttributeNames()
+        Enumeration<String> attributeNames = request.getAttributeNames()
         while (attributeNames.hasMoreElements()) {
             String name = attributeNames.nextElement()
             boolean match = false
@@ -115,9 +115,9 @@ class HttpServletRequestExtension {
         result
     }
 
-    static findAll(HttpServletRequest request, Closure c) {
-        def results = [:]
-        def attributeNames = request.getAttributeNames()
+    static Map<String, Object> findAll(HttpServletRequest request, Closure c) {
+        Map<String, Object> results = [:]
+        Enumeration<String> attributeNames = request.getAttributeNames()
         while (attributeNames.hasMoreElements()) {
             String name = attributeNames.nextElement()
 

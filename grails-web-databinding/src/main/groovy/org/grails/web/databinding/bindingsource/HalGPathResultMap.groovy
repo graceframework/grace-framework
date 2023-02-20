@@ -31,6 +31,7 @@ class HalGPathResultMap extends GPathResultMap {
         super(gpath)
     }
 
+    @Override
     Object get(key) {
         def resourceElements = this.@gpath['resource']
         if (resourceElements.size() > 0) {

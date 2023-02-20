@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                 GrailsControllerClass controllerClass = controllerUrlMappingInfo.controllerClass
                 Object controller
 
-                def fullName = controllerClass.fullName
+                String fullName = controllerClass.fullName
                 if (controllerClass.isSingleton()) {
                     controller = controllerCache.get(fullName)
                     if (controller == null) {
@@ -104,11 +104,11 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                     controller = applicationContext ? applicationContext.getBean(fullName) : controllerClass.newInstance()
                 }
 
-                def action = controllerUrlMappingInfo.actionName ?: controllerClass.defaultAction
+                String action = controllerUrlMappingInfo.actionName ?: controllerClass.defaultAction
                 webRequest.actionName = webRequest.actionName ?: action
                 webRequest.controllerNamespace = controllerClass.namespace
                 request.setAttribute(GrailsApplicationAttributes.CONTROLLER, controller)
-                def result = controllerClass.invoke(controller, action)
+                Object result = controllerClass.invoke(controller, action)
 
                 if (actionResultTransformers) {
                     for (transformer in actionResultTransformers) {
@@ -116,16 +116,16 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                     }
                 }
 
-                def modelAndView = request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
+                Object modelAndView = request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
                 if (modelAndView instanceof ModelAndView) {
                     return (ModelAndView) modelAndView
                 }
                 else if (result instanceof Map) {
                     String viewName = controllerClass.actionUriToViewName(action)
-                    def finalModel = new HashMap<String, Object>()
-                    def flashScope = webRequest.getFlashScope()
+                    Map<String, Object> finalModel = new HashMap<String, Object>()
+                    FlashScope flashScope = webRequest.getFlashScope()
                     if (!flashScope.isEmpty()) {
-                        def chainModel = flashScope.get(FlashScope.CHAIN_MODEL)
+                        Object chainModel = flashScope.get(FlashScope.CHAIN_MODEL)
                         if (chainModel instanceof Map) {
                             finalModel.putAll((Map) chainModel)
                         }
@@ -145,7 +145,7 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                 return new ModelAndView(info.viewName)
             }
             else if (info.redirectInfo) {
-                def i = info.redirectInfo
+                Object i = info.redirectInfo
                 if (i instanceof Map) {
                     redirector?.redirect((Map) i)
                 }

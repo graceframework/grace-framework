@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ class PropertyEditorRegistryUtils {
      */
     static void registerCustomEditors(GrailsWebRequest grailsWebRequest, PropertyEditorRegistry registry, Locale locale) {
         // Formatters for the different number types.
-        def floatFormat = NumberFormat.getInstance(locale)
-        def integerFormat = NumberFormat.getIntegerInstance(locale)
+        NumberFormat floatFormat = NumberFormat.getInstance(locale)
+        NumberFormat integerFormat = NumberFormat.getIntegerInstance(locale)
 
-        def dateFormat = new SimpleDateFormat(DataBinder.DEFAULT_DATE_FORMAT, locale)
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DataBinder.DEFAULT_DATE_FORMAT, locale)
 
         registry.registerCustomEditor(Date, new CustomDateEditor(dateFormat, true))
         registry.registerCustomEditor(BigDecimal, new CustomNumberEditor(BigDecimal, floatFormat, true))

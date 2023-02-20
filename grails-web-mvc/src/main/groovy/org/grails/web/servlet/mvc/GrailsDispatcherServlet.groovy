@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
     }
 
     protected GrailsWebRequest buildGrailsWebRequest(HttpServletRequest request, HttpServletResponse response) {
-        def webRequest = new GrailsWebRequest(request, response, request.getServletContext())
+        GrailsWebRequest webRequest = new GrailsWebRequest(request, response, request.getServletContext())
         webRequest.informParameterCreationListeners()
         webRequest
     }
@@ -77,7 +77,7 @@ class GrailsDispatcherServlet extends DispatcherServlet implements ServletContex
         if (shouldProcessMultiPart) {
             HttpServletRequest processedRequest = super.checkMultipart(request)
             if (!processedRequest.is(request)) {
-                def webRequest = GrailsWebRequest.lookup(request)
+                GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
                 if (webRequest != null) {
                     webRequest.multipartRequest = processedRequest
                 }

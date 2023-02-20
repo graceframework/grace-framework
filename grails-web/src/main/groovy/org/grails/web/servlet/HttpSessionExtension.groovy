@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,21 +32,21 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class HttpSessionExtension {
 
-    static getProperty(HttpSession session, String name) {
-        def mp = session.class.metaClass.getMetaProperty(name)
+    static Object getProperty(HttpSession session, String name) {
+        MetaProperty mp = session.class.metaClass.getMetaProperty(name)
         mp ? mp.getProperty(session) : session.getAttribute(name)
     }
 
-    static propertyMissing(HttpSession session, String name, value) {
-        session.setAttribute name, value
+    static void propertyMissing(HttpSession session, String name, value) {
+        session.setAttribute(name, value)
     }
 
-    static getAt(HttpSession session, String name) {
-        getProperty session, name
+    static Object getAt(HttpSession session, String name) {
+        getProperty(session, name)
     }
 
-    static propertyMissing(HttpSession session, String name) {
-        getProperty session, name
+    static Object propertyMissing(HttpSession session, String name) {
+        getProperty(session, name)
     }
 
 }

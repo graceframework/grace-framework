@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package grails.web.mime
 
 import groovy.transform.CompileStatic
+import org.springframework.context.ApplicationContext
 
 import grails.util.Holders
 
@@ -65,25 +66,24 @@ class MimeType {
         if (name && name.contains(';')) {
             List tokenWithArgs = name.split(';').toList()
             name = tokenWithArgs[0]
-            final paramsList = tokenWithArgs[1..-1]
+            List<String> paramsList = tokenWithArgs[1..-1]
             paramsList.each { String it ->
-                def i = it.indexOf('=')
+                int i = it.indexOf('=')
                 if (i > -1) {
-                    parameters[it[0..i - 1].trim()] = it[i + 1..-1].trim()
+                    this.parameters[it[0..i - 1].trim()] = it[i + 1..-1].trim()
                 }
             }
         }
         this.name = name
         this.extension = extension
-        this.name = name
-        parameters.putAll(params)
+        this.parameters.putAll(params)
     }
 
     /**
      * @return The quality of the Mime type
      */
     String getQuality() {
-        parameters.q ?: QUALITY_RATING
+        this.parameters.q ?: QUALITY_RATING
     }
 
     /**
@@ -100,7 +100,7 @@ class MimeType {
      * @return The version of the Mime type
      */
     String getVersion() {
-        parameters.v ?: null
+        this.parameters.v ?: null
     }
 
     boolean equals(o) {
@@ -113,11 +113,11 @@ class MimeType {
 
         MimeType mimeType = (MimeType) o
 
-        if (name != mimeType.name) {
+        if (this.name != mimeType.name) {
             return false
         }
 
-        if (version && version != mimeType.version) {
+        if (this.version && this.version != mimeType.version) {
             return false
         }
 
@@ -125,24 +125,24 @@ class MimeType {
     }
 
     int hashCode() {
-        def result = name.hashCode()
-        result = 31 * result + (version != null ? version.hashCode() : 0)
+        int result = this.name.hashCode()
+        result = 31 * result + (this.version != null ? this.version.hashCode() : 0)
         result
     }
 
     String toString() {
-        "MimeType { name=$name,extension=$extension,parameters=$parameters }"
+        "MimeType { name=${this.name},extension=${this.extension},parameters=${this.parameters} }"
     }
 
     /**
      * @return An array of MimeTypes
      */
     static MimeType[] getConfiguredMimeTypes() {
-        def ctx = Holders.findApplicationContext()
+        ApplicationContext ctx = Holders.findApplicationContext()
         if (ctx == null) {
             ctx = GrailsWebRequest.lookup()?.getApplicationContext()
         }
-        (MimeType[]) (ctx?.containsBean(MimeType.BEAN_NAME) ? ctx?.getBean(MimeType.BEAN_NAME, MimeType[]) : DEFAULTS)
+        (MimeType[]) (ctx?.containsBean(BEAN_NAME) ? ctx?.getBean(BEAN_NAME, MimeType[]) : DEFAULTS)
     }
 
     /**
@@ -162,7 +162,7 @@ class MimeType {
     private BigDecimal getOrConvertQualityParameterToBigDecimal(MimeType mt) {
         BigDecimal bd
         try {
-            def q = mt.parameters.q
+            String q = mt.parameters.q
             if (q == null) {
                 return QUALITY_RATING_NUMBER
             }
@@ -171,7 +171,7 @@ class MimeType {
             mt.parameters.q = bd
             return bd
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException ignored) {
             bd = QUALITY_RATING_NUMBER
             return bd
         }

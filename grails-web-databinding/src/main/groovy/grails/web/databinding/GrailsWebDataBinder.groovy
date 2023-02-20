@@ -78,7 +78,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     GrailsWebDataBinder(GrailsApplication grailsApplication) {
         this.grailsApplication = grailsApplication
         this.conversionService = new SpringConversionServiceAdapter()
-        registerConverter new ByteArrayMultipartFileValueConverter()
+        registerConverter(new ByteArrayMultipartFileValueConverter())
     }
 
     @Override
@@ -93,7 +93,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
 
     @Override
     void bind(Object object, DataBindingSource source, String filter, List whiteList, List blackList, DataBindingListener listener) {
-        def bindingResult = new BeanPropertyBindingResult(object, object.getClass().name)
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(object, object.getClass().name)
         doBind(object, source, filter, whiteList, blackList, listener, bindingResult)
     }
 
@@ -161,7 +161,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         }
         MetaClass mc = GroovySystem.getMetaClassRegistry().getMetaClass(obj.getClass())
         if (mc.hasProperty(obj, 'errors') != null && bindingResult != null) {
-            def errors = new ValidationErrors(obj)
+            ValidationErrors errors = new ValidationErrors(obj)
             errors.addAllErrors(bindingResult)
             mc.setProperty(obj, 'errors', errors)
         }
@@ -201,8 +201,8 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         if (source.dataSourceAware) {
             boolean isDomainClass = isDomainClass propertyType
             if (isDomainClass && source.containsProperty(propName)) {
-                def val = source.getPropertyValue propName
-                def idValue = getIdentifierValueFrom(val)
+                Object val = source.getPropertyValue(propName)
+                Object idValue = getIdentifierValueFrom(val)
                 if (idValue != null) {
                     Object persistentInstance = getPersistentInstance(propertyType, idValue)
                     if (persistentInstance != null) {
@@ -213,11 +213,11 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             }
         }
         if (!isInitialized) {
-            super.initializeProperty obj, propName, propertyType, source
+            super.initializeProperty(obj, propName, propertyType, source)
         }
     }
 
-    protected Object getPersistentInstance(Class<?> type, id) {
+    protected Object getPersistentInstance(Class<?> type, Object id) {
         try {
             InvokerHelper.invokeStaticMethod(type, 'get', id)
         }
@@ -273,7 +273,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             String propName = metaProperty.name
             Class propertyType = getDomainClassType(obj, metaProperty.name)
             if (propertyType && isDomainClass(propertyType)) {
-                def idValue = getIdentifierValueFrom(val)
+                Object idValue = getIdentifierValueFrom(val)
                 if (idValue != 'null' && idValue != null && idValue != '') {
                     Object persistedInstance = getPersistentInstance(propertyType, idValue)
                     if (persistedInstance != null) {
@@ -313,13 +313,13 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             else if (Collection.isAssignableFrom(metaProperty.type)) {
                 Class referencedType = getReferencedTypeForCollection(propName, obj)
                 if (referencedType) {
-                    def listValue
+                    List listValue
                     if (val instanceof List) {
                         listValue = (List) val
                     }
                     else if (val instanceof GPathResultMap && ((GPathResultMap) val).size() == 1) {
-                        def mapValue = (GPathResultMap) val
-                        def valueInMap = mapValue[mapValue.keySet()[0]]
+                        GPathResultMap mapValue = (GPathResultMap) val
+                        Object valueInMap = mapValue[mapValue.keySet()[0]]
                         if (valueInMap instanceof List) {
                             listValue = (List) valueInMap
                         }
@@ -667,7 +667,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         if (value == null) {
             return null
         }
-        def persistentInstance
+        Object persistentInstance
         if (isDomainClass(typeToConvertTo)) {
             persistentInstance = getPersistentInstance(typeToConvertTo, value)
         }

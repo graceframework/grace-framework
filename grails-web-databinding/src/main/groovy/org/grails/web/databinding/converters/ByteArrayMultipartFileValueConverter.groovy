@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,16 @@ import grails.databinding.converters.ValueConverter
 @CompileStatic
 class ByteArrayMultipartFileValueConverter implements ValueConverter {
 
+    @Override
     Object convert(Object value) {
         MultipartFile mf
         if (value instanceof MultipartFile) {
             mf = (MultipartFile) value
         }
         else if (value instanceof Collection) {
-            def coll = (Collection) value
+            Collection coll = (Collection) value
             if (coll.size() > 0) {
-                def firstElement = coll[0]
+                Object firstElement = coll[0]
                 if (firstElement instanceof MultipartFile) {
                     mf = (MultipartFile) firstElement
                 }
@@ -44,12 +45,14 @@ class ByteArrayMultipartFileValueConverter implements ValueConverter {
         mf?.bytes
     }
 
+    @Override
     Class<?> getTargetType() {
         byte[]
     }
 
+    @Override
     boolean canConvert(Object value) {
-        def canConvertValue = false
+        boolean canConvertValue = false
         if (value instanceof MultipartFile) {
             canConvertValue = true
         }

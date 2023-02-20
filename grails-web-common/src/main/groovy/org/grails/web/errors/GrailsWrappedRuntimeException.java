@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,10 @@ import org.grails.web.util.GrailsApplicationAttributes;
  */
 public class GrailsWrappedRuntimeException extends GrailsException {
 
+    public static final String URL_PREFIX = "/WEB-INF/grails-app/";
+
+    private static final Log logger = LogFactory.getLog(GrailsWrappedRuntimeException.class);
+
     private static final Class<? extends GrailsApplicationAttributes> grailsApplicationAttributesClass = GrailsFactoriesLoader.loadFactoryClasses(
             GrailsApplicationAttributes.class, GrailsWebRequest.class.getClassLoader()).get(0);
 
@@ -73,27 +77,23 @@ public class GrailsWrappedRuntimeException extends GrailsException {
 
     private static final Pattern PARSE_GSP_DETAILS_STEP1 = Pattern.compile("_gsp\\.run\\(((\\w+?)_.*?):(\\d+)\\)");
 
-    public static final String URL_PREFIX = "/WEB-INF/grails-app/";
+    private final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-    private static final Log logger = LogFactory.getLog(GrailsWrappedRuntimeException.class);
+    private static final String UNKNOWN = "Unknown";
 
     private String className = UNKNOWN;
 
     private int lineNumber = -1;
 
-    private String stackTrace;
+    private final Throwable cause;
+
+    private final String stackTrace;
+
+    private final String[] stackTraceLines;
 
     private String[] codeSnippet = new String[0];
 
     private String gspFile;
-
-    private Throwable cause;
-
-    private PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-    private String[] stackTraceLines;
-
-    private static final String UNKNOWN = "Unknown";
 
     private String fileName;
 

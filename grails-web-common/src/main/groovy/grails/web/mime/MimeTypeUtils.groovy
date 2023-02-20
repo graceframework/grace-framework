@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ import groovy.transform.CompileStatic
 class MimeTypeUtils {
 
     static MimeType resolveMimeType(Object source, MimeTypeResolver mimeTypeResolver) {
-        final MimeType mimeType
+        MimeType mimeType
         if (mimeTypeResolver) {
-            def resolvedMimeType = mimeTypeResolver.resolveRequestMimeType()
+            MimeType resolvedMimeType = mimeTypeResolver.resolveRequestMimeType()
             mimeType = resolvedMimeType ?: MimeType.ALL
         }
         else if (source instanceof HttpServletRequest) {

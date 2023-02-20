@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.grails.web.mapping.mvc
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
@@ -116,32 +115,31 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
         chain
     }
 
-    @CompileDynamic
     protected MappedInterceptor mappedInterceptor(HandlerInterceptor interceptor) {
         (MappedInterceptor) interceptor
     }
 
     @Override
     protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-        def matchedInfo = request.getAttribute(MATCHED_REQUEST)
-        def errorStatus = request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE)
+        Object matchedInfo = request.getAttribute(MATCHED_REQUEST)
+        Object errorStatus = request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE)
         if (matchedInfo != null && errorStatus == null) {
             return matchedInfo
         }
 
         String uri = urlHelper.getPathWithinApplication(request)
-        def webRequest = GrailsWebRequest.lookup(request)
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
 
         Assert.notNull(webRequest, 'HandlerMapping requires a Grails web request')
 
         String version = findRequestedVersion(webRequest)
 
         if (errorStatus && !WebUtils.isInclude(request)) {
-            def exception = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE)
+            Object exception = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE)
             UrlMappingInfo info
             if (exception instanceof Throwable) {
                 exception = ExceptionUtils.getRootCause(exception)
-                def exceptionSpecificMatch = urlMappingsHolder.matchStatusCode(errorStatus.toString().toInteger(), (Throwable) exception)
+                UrlMappingInfo exceptionSpecificMatch = urlMappingsHolder.matchStatusCode(errorStatus.toString().toInteger(), (Throwable) exception)
                 if (exceptionSpecificMatch) {
                     info = exceptionSpecificMatch
                 }
@@ -157,7 +155,7 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
             return info
         }
 
-        def infos = urlMappingsHolder.matchAll(uri, request.getMethod(), version != null ? version : UrlMapping.ANY_VERSION)
+        UrlMappingInfo[] infos = urlMappingsHolder.matchAll(uri, request.getMethod(), version != null ? version : UrlMapping.ANY_VERSION)
 
         for (UrlMappingInfo info in infos) {
             if (info) {

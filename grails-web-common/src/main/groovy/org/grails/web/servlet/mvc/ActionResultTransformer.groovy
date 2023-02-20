@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.grails.web.servlet.mvc
 
+import groovy.transform.CompileStatic
+
 /**
  * Interface for classes which transform the result of an action.
  * These can be registered with the Spring context and are loaded and applied to action responses
@@ -22,6 +24,7 @@ package org.grails.web.servlet.mvc
  * @author Graeme Rocher
  * @since 2.3
  */
+@CompileStatic
 interface ActionResultTransformer {
 
     /**
@@ -32,6 +35,6 @@ interface ActionResultTransformer {
      * @param actionResult The return value of an action
      * @return The transformed result
      */
-    def transformActionResult(GrailsWebRequest webRequest, String viewName, actionResult)
+    Object transformActionResult(GrailsWebRequest webRequest, String viewName, Object actionResult)
 
 }

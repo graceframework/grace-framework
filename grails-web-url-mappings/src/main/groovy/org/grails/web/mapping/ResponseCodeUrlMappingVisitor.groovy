@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,20 @@
  */
 package org.grails.web.mapping
 
+import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassCodeVisitorSupport
 import org.codehaus.groovy.ast.PropertyNode
 import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.control.SourceUnit
 
+@CompileStatic
 class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
 
     boolean insideMapping = false
     List<String> responseCodes = []
 
+    @Override
     void visitProperty(PropertyNode node) {
         if (node?.name == 'mappings') {
             insideMapping = true
@@ -36,6 +39,7 @@ class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
         }
     }
 
+    @Override
     void visitMethodCallExpression(MethodCallExpression call) {
         if (insideMapping && call.methodAsString =~ /^\d{3}$/ && !responseCodes.contains(call.methodAsString)) {
             responseCodes << call.methodAsString
@@ -43,6 +47,7 @@ class ResponseCodeUrlMappingVisitor extends ClassCodeVisitorSupport {
         super.visitMethodCallExpression(call)
     }
 
+    @Override
     void visitExpressionStatement(ExpressionStatement statement) {
         super.visitExpressionStatement(statement)
     }
