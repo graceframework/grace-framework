@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (token == null) {
             return str
         }
-        def i = str.indexOf(token)
+        int i = str.indexOf(token)
 
         if (i > -1) {
             return str.substring(0, i)
@@ -92,7 +92,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (token == null) {
             return str
         }
-        def i = str.lastIndexOf(token)
+        int i = str.lastIndexOf(token)
 
         if (i > -1) {
             return str.substring(0, i)
@@ -119,7 +119,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (token == null) {
             return str
         }
-        def i = str.indexOf(token)
+        int i = str.indexOf(token)
 
         if (i > -1) {
             return str.substring(i + token.length())
@@ -146,7 +146,7 @@ abstract class GrailsStringUtils extends StringUtils {
         if (token == null) {
             return str
         }
-        def i = str.lastIndexOf(token)
+        int i = str.lastIndexOf(token)
 
         if (i > -1) {
             return str.substring(i + token.length())
