@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@ abstract class Plugin implements GrailsApplicationLifeCycle, GrailsApplicationAw
      * @return The BeanBuilder instance
      */
     void beans(Closure beanDefinitions) {
-        def bb = new BeanBuilder(null, grailsApplication.classLoader)
+        BeanBuilder bb = new BeanBuilder(null, grailsApplication.classLoader)
         bb.setBeanBuildResource(new DescriptiveResource(this.getClass().getName()))
         bb.beans beanDefinitions
         bb.registerBeans((BeanDefinitionRegistry) applicationContext)

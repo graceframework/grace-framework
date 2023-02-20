@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,11 +51,11 @@ class GrailsVersionUtils {
      * @return true if it is valid
      */
     static boolean isValidVersion(String pluginVersion, String requiredVersion) {
-        def vc = new VersionComparator()
+        VersionComparator vc = new VersionComparator()
         pluginVersion = trimTag(pluginVersion)
 
         if (requiredVersion.indexOf('>') > -1) {
-            def tokens = requiredVersion.split('>')*.trim()
+            List<String> tokens = requiredVersion.split('>')*.trim()
             tokens = tokens.stream().collect({ String it -> trimTag(it) })
             tokens << pluginVersion
             tokens.sort(true, vc)
@@ -81,10 +81,11 @@ class GrailsVersionUtils {
         if (leftVersion == rightVersion) {
             return false
         }
-        def versions = [leftVersion, rightVersion]
+        List<String> versions = [leftVersion, rightVersion]
         versions.sort(true, new VersionComparator())
         versions[1] == rightVersion
     }
+
     /**
      * Returns the upper version of a Grails version number expression in a plugin
      */
@@ -100,13 +101,13 @@ class GrailsVersionUtils {
     }
 
     static boolean supportsAtLeastVersion(String pluginVersion, String requiredVersion) {
-        def lowerVersion = getLowerVersion(pluginVersion)
+        String lowerVersion = getLowerVersion(pluginVersion)
         lowerVersion != '*' && isValidVersion(lowerVersion, "$requiredVersion > *")
     }
 
     private static getPluginVersionInternal(String pluginVersion, Integer index) {
         if (pluginVersion.indexOf('>') > -1) {
-            def tokens = pluginVersion.split('>')*.trim()
+            List<String> tokens = pluginVersion.split('>')*.trim()
             return tokens[index].trim()
         }
 
@@ -114,11 +115,11 @@ class GrailsVersionUtils {
     }
 
     private static String trimTag(String pluginVersion) {
-        def i = pluginVersion.indexOf('-')
+        int i = pluginVersion.indexOf('-')
         if (i > -1) {
             pluginVersion = pluginVersion[0..i - 1]
         }
-        def tokens = pluginVersion.split(/\./)
+        String[] tokens = pluginVersion.split(/\./)
 
         tokens.findAll { String it -> it ==~ /\d+/ || it == '*' }.join('.')
     }
