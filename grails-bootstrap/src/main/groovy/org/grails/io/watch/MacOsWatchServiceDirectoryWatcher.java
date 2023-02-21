@@ -123,7 +123,7 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                                 // new directory created, so watch its contents
                                 addWatchDirectory(child, fileExtensions);
                                 if (childFile.isDirectory() && childFile.exists()) {
-                                    final File[] files = childFile.listFiles();
+                                    File[] files = childFile.listFiles();
                                     if (files != null) {
                                         for (File newFile : files) {
                                             if (isValidFileToMonitor(newFile, fileExtensions)) {
@@ -183,13 +183,13 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
     }
 
     @Override
-    public void addWatchDirectory(File dir, final List<String> fileExtensions) {
+    public void addWatchDirectory(File dir, List<String> fileExtensions) {
         Path dirPath = dir.toPath();
         addWatchDirectory(dirPath, fileExtensions);
     }
 
     @SuppressWarnings("unchecked")
-    private void addWatchDirectory(Path dir, final List<String> fileExtensions) {
+    private void addWatchDirectory(Path dir, List<String> fileExtensions) {
         if (!isValidDirectoryToMonitor(dir.toFile())) {
             return;
         }
@@ -205,12 +205,12 @@ public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher 
                     Kind[] events = new Kind[] {StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE,
                             StandardWatchEventKinds.ENTRY_MODIFY};
                     WatchKey watchKey = watchPath.register(MacOsWatchServiceDirectoryWatcher.this.watchService, events);
-                    final List<String> originalFileExtensions = MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
+                    List<String> originalFileExtensions = MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
                     if (originalFileExtensions == null) {
                         MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
-                        final HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
+                        HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
                         MacOsWatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
                                 Collections.unmodifiableList(new ArrayList(newFileExtensions)));

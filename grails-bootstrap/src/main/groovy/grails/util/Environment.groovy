@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -435,7 +435,7 @@ enum Environment {
      * @return The Environment or null if not known
      */
     static Environment getEnvironment(String shortName) {
-        final String envName = ENV_NAME_MAPPINGS.get(shortName)
+        String envName = ENV_NAME_MAPPINGS.get(shortName)
         if (envName != null) {
             return valueOf(envName.toUpperCase())
         }
@@ -463,7 +463,7 @@ enum Environment {
      * @return The environment specific block or null if non exists
      */
     static Closure<?> getEnvironmentSpecificBlock(Closure<?> closure) {
-        final Environment env = getCurrent()
+        Environment env = getCurrent()
         getEnvironmentSpecificBlock(env, closure)
     }
 
@@ -488,7 +488,7 @@ enum Environment {
             return null
         }
 
-        final EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
+        EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
         evaluator.getCallable()
     }
 
@@ -508,7 +508,7 @@ enum Environment {
      * @return The result of the closure execution
      */
     static Object executeForCurrentEnvironment(Closure<?> closure) {
-        final Environment env = getCurrent()
+        Environment env = getCurrent()
         executeForEnvironment(env, closure)
     }
 
@@ -533,12 +533,12 @@ enum Environment {
             return null
         }
 
-        final EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
+        EnvironmentBlockEvaluator evaluator = evaluateEnvironmentSpecificBlock(env, closure)
         evaluator.execute()
     }
 
     private static EnvironmentBlockEvaluator evaluateEnvironmentSpecificBlock(Environment environment, Closure<?> closure) {
-        final EnvironmentBlockEvaluator evaluator = new EnvironmentBlockEvaluator(environment)
+        EnvironmentBlockEvaluator evaluator = new EnvironmentBlockEvaluator(environment)
         closure.setDelegate(evaluator)
         closure.call()
         evaluator
@@ -567,9 +567,9 @@ enum Environment {
      * @return Returns whether reload is enabled for the environment
      */
     boolean isReloadEnabled() {
-        final boolean reloadOverride = Boolean.getBoolean(RELOAD_ENABLED)
+        boolean reloadOverride = Boolean.getBoolean(RELOAD_ENABLED)
         getReloadLocation()
-        final boolean reloadLocationSpecified = hasLocation(reloadLocation)
+        boolean reloadLocationSpecified = hasLocation(reloadLocation)
         this == DEVELOPMENT && reloadLocationSpecified || reloadOverride && reloadLocationSpecified
     }
 

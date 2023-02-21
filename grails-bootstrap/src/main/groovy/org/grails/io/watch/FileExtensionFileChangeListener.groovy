@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ abstract class FileExtensionFileChangeListener implements DirectoryWatcher.FileC
     }
 
     @Override
-    final void onChange(File file) {
+    void onChange(File file) {
         if (file && extensions.any { String ext -> file.name.endsWith(ext) }) {
             onChange(file, extensions)
         }
@@ -42,7 +42,7 @@ abstract class FileExtensionFileChangeListener implements DirectoryWatcher.FileC
     abstract void onChange(File file, List<String> extensions) throws IOException
 
     @Override
-    final void onNew(File file) {
+    void onNew(File file) {
         if (file && extensions.any { String ext -> file.name.endsWith(ext) }) {
             onNew(file, extensions)
         }

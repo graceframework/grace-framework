@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -152,8 +152,8 @@ public final class SpringIOUtils {
             System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
         }
         catch (ArrayStoreException ase) {
-            final Class<?> type1 = array1.getClass().getComponentType();
-            final Class<?> type2 = array2.getClass().getComponentType();
+            Class<?> type1 = array1.getClass().getComponentType();
+            Class<?> type2 = array2.getClass().getComponentType();
             if (!type1.isAssignableFrom(type2)) {
                 throw new IllegalArgumentException("Cannot store " + type2.getName() + " in an array of " + type1.getName());
             }
@@ -175,10 +175,10 @@ public final class SpringIOUtils {
      * @param targetDir The target directory
      */
     public static void copyAll(Resource base, Resource[] resources, File targetDir) throws IOException {
-        final URL baseUrl = base.getURL();
+        URL baseUrl = base.getURL();
         for (Resource resource : resources) {
-            final InputStream input = resource.getInputStream();
-            final File target = new File(targetDir, resource.getURL().toString().substring(baseUrl.toString().length()));
+            InputStream input = resource.getInputStream();
+            File target = new File(targetDir, resource.getURL().toString().substring(baseUrl.toString().length()));
             copy(new BufferedInputStream(input), new BufferedOutputStream(Files.newOutputStream(target.toPath())));
         }
     }

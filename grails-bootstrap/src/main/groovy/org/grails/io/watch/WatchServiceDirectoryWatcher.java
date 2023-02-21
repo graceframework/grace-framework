@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                                     // new directory created, so watch its contents
                                     addWatchDirectory(child, fileExtensions);
                                     if (childFile.isDirectory() && childFile.exists()) {
-                                        final File[] files = childFile.listFiles();
+                                        File[] files = childFile.listFiles();
                                         if (files != null) {
                                             for (File newFile : files) {
                                                 if (isValidFileToMonitor(newFile, fileExtensions)) {
@@ -169,12 +169,12 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
     }
 
     @Override
-    public void addWatchDirectory(File dir, final List<String> fileExtensions) {
+    public void addWatchDirectory(File dir, List<String> fileExtensions) {
         Path dirPath = dir.toPath();
         addWatchDirectory(dirPath, fileExtensions);
     }
 
-    private void addWatchDirectory(Path dir, final List<String> fileExtensions) {
+    private void addWatchDirectory(Path dir, List<String> fileExtensions) {
         if (!isValidDirectoryToMonitor(dir.toFile())) {
             return;
         }
@@ -188,12 +188,12 @@ public class WatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
                     }
                     WatchKey watchKey = dir.register(WatchServiceDirectoryWatcher.this.watchService, StandardWatchEventKinds.ENTRY_CREATE,
                             StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-                    final List<String> originalFileExtensions = WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
+                    List<String> originalFileExtensions = WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.get(watchKey);
                     if (originalFileExtensions == null) {
                         WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey, fileExtensions);
                     }
                     else {
-                        final HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
+                        HashSet<String> newFileExtensions = new HashSet<>(originalFileExtensions);
                         newFileExtensions.addAll(fileExtensions);
                         WatchServiceDirectoryWatcher.this.watchKeyToExtensionsMap.put(watchKey,
                                 Collections.unmodifiableList(new ArrayList<>(newFileExtensions)));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
      * @return Factory method to create new Project instances
      */
     protected static Project createAntProject() {
-        final Project project = new Project();
+        Project project = new Project();
 
-        final ProjectHelper helper = ProjectHelper.getProjectHelper();
+        ProjectHelper helper = ProjectHelper.getProjectHelper();
         project.addReference(MagicNames.REFID_PROJECT_HELPER, helper);
         helper.getImportStack().addElement("AntBuilder"); // import checks that stack is not empty
 
@@ -60,7 +60,7 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
     }
 
     public static void addGrailsConsoleBuildListener(Project project) {
-        final BuildLogger logger = new GrailsConsoleLogger();
+        BuildLogger logger = new GrailsConsoleLogger();
 
         logger.setMessageOutputLevel(Project.MSG_INFO);
         logger.setOutputPrintStream(System.out);

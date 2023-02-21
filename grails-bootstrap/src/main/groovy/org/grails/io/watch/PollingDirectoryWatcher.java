@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private void checkForNewFiles() {
         for (File directory : this.directoryWatch.keySet()) {
-            final Long currentTimestamp = this.directoryWatch.get(directory);
+            Long currentTimestamp = this.directoryWatch.get(directory);
 
             if (currentTimestamp < directory.lastModified()) {
                 Collection<String> extensions = this.directoryToExtensionsMap.get(directory);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,7 +157,7 @@ public class DefaultCommandLine implements CommandLine {
 
     @Override
     public Map.Entry<String, Object> lastOption() {
-        final Iterator<Map.Entry<String, Object>> i = this.undeclaredOptions.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> i = this.undeclaredOptions.entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry<String, Object> next = i.next();
             if (!i.hasNext()) {

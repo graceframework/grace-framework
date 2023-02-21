@@ -104,7 +104,7 @@ class Metadata extends PropertySourcePropertyResolver {
         addPropertySource(systemPropertiesPropertySource)
 
         if (!containsProperty(APPLICATION_NAME)) {
-            final Map<String, Object> m = [(APPLICATION_NAME): (Object) DEFAULT_APPLICATION_NAME]
+            Map<String, Object> m = [(APPLICATION_NAME): (Object) DEFAULT_APPLICATION_NAME]
             addPropertySource('appName', m)
             resetCaches()
         }

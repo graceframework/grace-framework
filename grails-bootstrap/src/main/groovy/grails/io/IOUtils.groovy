@@ -348,8 +348,8 @@ class IOUtils {
                 }
             }
             if (mainClassName) {
-                final Class<?> mainClass = Thread.currentThread().contextClassLoader.loadClass(mainClassName)
-                final URL classResource = mainClass ? findClassResource(mainClass) : null
+                Class<?> mainClass = Thread.currentThread().contextClassLoader.loadClass(mainClassName)
+                URL classResource = mainClass ? findClassResource(mainClass) : null
                 if (classResource) {
                     File file = new UrlResource(classResource).getFile()
                     String path = file.canonicalPath

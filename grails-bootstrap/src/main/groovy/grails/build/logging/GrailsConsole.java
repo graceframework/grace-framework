@@ -273,8 +273,8 @@ public class GrailsConsole implements ConsoleLogger {
 
     protected ConsoleReader createConsoleReader(InputStream systemIn) throws IOException {
         // need to swap out the output to avoid logging during init
-        final PrintStream nullOutput = new PrintStream(new ByteArrayOutputStream());
-        final PrintStream originalOut = Log.getOutput();
+        PrintStream nullOutput = new PrintStream(new ByteArrayOutputStream());
+        PrintStream originalOut = Log.getOutput();
         try {
             Log.setOutput(nullOutput);
             ConsoleReader consoleReader = new ConsoleReader(systemIn, this.out);
@@ -300,7 +300,7 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     public void resetCompleters() {
-        final ConsoleReader reader = getReader();
+        ConsoleReader reader = getReader();
         if (reader != null) {
             Collection<Completer> completers = reader.getCompleters();
             for (Completer completer : completers) {
@@ -349,7 +349,7 @@ public class GrailsConsole implements ConsoleLogger {
     public static synchronized GrailsConsole getInstance() {
         if (instance == null) {
             try {
-                final GrailsConsole console = createInstance();
+                GrailsConsole console = createInstance();
                 console.addShutdownHook();
                 setInstance(console);
             }

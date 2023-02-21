@@ -964,7 +964,7 @@ public final class GrailsResourceUtils {
      */
     public static String getArtefactDirectory(String path) {
         if (path != null) {
-            final Matcher matcher = RESOURCE_PATH_PATTERN.matcher(path);
+            Matcher matcher = RESOURCE_PATH_PATTERN.matcher(path);
             if (matcher.find()) {
                 return matcher.group(1);
             }
