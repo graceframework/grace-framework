@@ -588,7 +588,7 @@ class DocPublisher {
 
         workDir = workDir ?: new File(System.getProperty('java.io.tmpdir'))
         apiDir = apiDir ?: target
-        ant = ant ?: new AntBuilder()
+        ant = ant ?: new groovy.util.AntBuilder()
 
         def metaProps = DocPublisher.metaClass.properties
         Properties props
