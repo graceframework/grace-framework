@@ -662,9 +662,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         Set<File> sourceBuildGradles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
 
         sourceBuildGradles.each { File srcFile ->
-            final File srcDir = srcFile.parentFile
-            final File destDir = getDestinationDirectory(srcFile)
-            final File destFile = new File(destDir, BUILD_GRADLE)
+            File srcDir = srcFile.parentFile
+            File destDir = getDestinationDirectory(srcFile)
+            File destFile = new File(destDir, BUILD_GRADLE)
 
             ant.copy(file: "${srcDir}/.gitignore", todir: destDir, failonerror: false)
 

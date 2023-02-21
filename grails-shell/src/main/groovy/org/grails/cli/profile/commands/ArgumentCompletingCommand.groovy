@@ -30,7 +30,7 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
     CommandLineParser cliParser = new CommandLineParser()
 
     @Override
-    final int complete(String buffer, int cursor, List<CharSequence> candidates) {
+    int complete(String buffer, int cursor, List<CharSequence> candidates) {
         CommandDescription desc = getDescription()
         CommandLine commandLine = cliParser.parseString(buffer)
         complete(commandLine, desc, candidates, cursor)

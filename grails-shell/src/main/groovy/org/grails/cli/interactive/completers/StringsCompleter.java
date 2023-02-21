@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class StringsCompleter implements Completer {
         this.strings = strings;
     }
 
-    public int complete(final String buffer, final int cursor, final List<CharSequence> candidates) {
+    public int complete(String buffer, int cursor, List<CharSequence> candidates) {
         // buffer could be null
         Preconditions.checkNotNull(candidates);
 

@@ -348,8 +348,8 @@ class GrailsCli {
                     if (uri != null) {
                         boolean enableSnapshots = snapshots != null ? Boolean.valueOf(snapshots.toString()) : false
                         GrailsRepositoryConfiguration repositoryConfiguration
-                        final String username = data.get('username')
-                        final String password = data.get('password')
+                        String username = data.get('username')
+                        String password = data.get('password')
                         if (username != null && password != null) {
                             repositoryConfiguration = new GrailsRepositoryConfiguration(repoName.toString(),
                                     new URI(uri.toString()), enableSnapshots, username, password)
