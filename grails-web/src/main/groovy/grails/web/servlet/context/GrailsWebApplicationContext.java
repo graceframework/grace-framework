@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,7 +195,7 @@ public class GrailsWebApplicationContext extends GrailsApplicationContext
         if (this.configLocations.length > 0) {
             for (String configLocation : this.configLocations) {
                 BeanBuilder beanBuilder = new BeanBuilder(getParent(), getClassLoader());
-                final ServletContextResource resource = new ServletContextResource(getServletContext(), configLocation);
+                ServletContextResource resource = new ServletContextResource(getServletContext(), configLocation);
                 beanBuilder.loadBeans(resource);
                 beanBuilder.registerBeans(this);
             }

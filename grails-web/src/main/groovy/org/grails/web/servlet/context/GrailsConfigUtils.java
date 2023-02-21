@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,8 +85,8 @@ public final class GrailsConfigUtils {
         try {
             GrailsClass[] bootstraps = application.getArtefacts(BootstrapArtefactHandler.TYPE);
             for (GrailsClass bootstrap : bootstraps) {
-                final GrailsBootstrapClass bootstrapClass = (GrailsBootstrapClass) bootstrap;
-                final Object instance = bootstrapClass.getReferenceInstance();
+                GrailsBootstrapClass bootstrapClass = (GrailsBootstrapClass) bootstrap;
+                Object instance = bootstrapClass.getReferenceInstance();
                 webContext.getAutowireCapableBeanFactory().autowireBeanProperties(
                         instance, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
                 bootstrapClass.callInit(servletContext);
