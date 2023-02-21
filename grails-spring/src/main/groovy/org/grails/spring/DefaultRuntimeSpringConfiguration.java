@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -311,7 +311,7 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
                     }
                 }
             }
-            final String beanName = key.toString();
+            String beanName = key.toString();
             registry.registerBeanDefinition(beanName, bd);
         }
     }
@@ -323,7 +323,7 @@ public class DefaultRuntimeSpringConfiguration implements RuntimeSpringConfigura
 
         ApplicationContext ctx = targetSpringConfig.getUnrefreshedApplicationContext();
         if (ctx instanceof BeanDefinitionRegistry) {
-            final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) ctx;
+            BeanDefinitionRegistry registry = (BeanDefinitionRegistry) ctx;
             registerUnrefreshedBeansWithRegistry(registry);
             registerBeansWithRegistry(registry);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -255,7 +255,7 @@ public class BeanBuilder extends GroovyObjectSupport {
 
             Assert.notNull(uri, "Namespace definition cannot supply a null URI");
 
-            final NamespaceHandler namespaceHandler = this.namespaceHandlerResolver.resolve(uri);
+            NamespaceHandler namespaceHandler = this.namespaceHandlerResolver.resolve(uri);
             if (namespaceHandler == null) {
                 throw new BeanDefinitionParsingException(
                         new Problem("No namespace handler found for URI: " + uri,
@@ -845,10 +845,10 @@ public class BeanBuilder extends GroovyObjectSupport {
         return super.getProperty(name);
     }
 
-    protected DynamicElementReader createDynamicElementReader(String namespace, final boolean decorator) {
+    protected DynamicElementReader createDynamicElementReader(String namespace, boolean decorator) {
         NamespaceHandler handler = this.namespaceHandlers.get(namespace);
         ParserContext parserContext = new ParserContext(this.readerContext, new BeanDefinitionParserDelegate(this.readerContext));
-        final DynamicElementReader dynamicElementReader = new DynamicElementReader(namespace, this.namespaces, handler, parserContext) {
+        DynamicElementReader dynamicElementReader = new DynamicElementReader(namespace, this.namespaces, handler, parserContext) {
             @Override
             protected void afterInvocation() {
                 if (!decorator) {
