@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,7 +130,7 @@ public class DomainClassMarshaller extends IncludeExcludePropertyMarshaller<XML>
         if (shouldInclude(includeExcludeSupport, includes, excludes, value, GormProperties.VERSION) && this.includeVersion) {
             Object versionValue = beanWrapper.getPropertyValue(domainClass.getVersion().getName());
             if (versionValue != null) {
-                final String str = String.valueOf(versionValue);
+                String str = String.valueOf(versionValue);
                 if (StringUtils.hasText(str)) {
                     xml.attribute("version", str);
                 }

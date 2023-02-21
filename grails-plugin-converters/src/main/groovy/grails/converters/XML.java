@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,10 +153,10 @@ public class XML extends AbstractConverter<XMLStreamWriter> implements IncludeEx
         if (om instanceof NameAwareMarshaller) {
             return ((NameAwareMarshaller) om).getElementName(o);
         }
-        final ProxyHandler proxyHandler = this.config.getProxyHandler();
+        ProxyHandler proxyHandler = this.config.getProxyHandler();
         if (proxyHandler.isProxy(o) && (proxyHandler instanceof EntityProxyHandler)) {
             EntityProxyHandler entityProxyHandler = (EntityProxyHandler) proxyHandler;
-            final Class<?> cls = entityProxyHandler.getProxiedClass(o);
+            Class<?> cls = entityProxyHandler.getProxiedClass(o);
             return GrailsNameUtils.getPropertyName(cls);
         }
         return GrailsNameUtils.getPropertyName(o.getClass());

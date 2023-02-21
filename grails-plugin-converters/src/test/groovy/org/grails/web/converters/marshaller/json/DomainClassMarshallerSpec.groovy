@@ -3,6 +3,7 @@ package org.grails.web.converters.marshaller.json
 import grails.converters.JSON
 import grails.converters.XML
 import grails.core.DefaultGrailsApplication
+import grails.core.GrailsApplication
 import grails.persistence.Entity
 import org.grails.datastore.mapping.keyvalue.mapping.config.KeyValueMappingContext
 import org.grails.datastore.mapping.model.MappingContext
@@ -19,12 +20,12 @@ class DomainClassMarshallerSpec extends Specification {
     }
 
     void initJson(boolean domainClassname) {
-        final initializer = new ConvertersConfigurationInitializer()
-        def grailsApplication = new DefaultGrailsApplication(Author, Book, RenamedIdentifier)
+        ConvertersConfigurationInitializer initializer = new ConvertersConfigurationInitializer()
+        GrailsApplication grailsApplication = new DefaultGrailsApplication(Author, Book, RenamedIdentifier)
         grailsApplication.config.setAt("grails.converters.json.domain.include.class", domainClassname)
         grailsApplication.config.setAt("grails.converters.xml.domain.include.class", domainClassname)
         grailsApplication.initialise()
-        def mappingContext = new KeyValueMappingContext("json")
+        MappingContext mappingContext = new KeyValueMappingContext("json")
         mappingContext.addPersistentEntities(Book, Author, RenamedIdentifier)
         grailsApplication.setApplicationContext(Stub(ApplicationContext) {
             getBean('grailsDomainClassMappingContext', MappingContext) >> {

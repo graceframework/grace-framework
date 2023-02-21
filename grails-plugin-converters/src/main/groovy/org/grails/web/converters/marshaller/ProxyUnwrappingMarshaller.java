@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,10 +57,10 @@ public class ProxyUnwrappingMarshaller<C extends Converter> implements ObjectMar
             return o;
         }
 
-        final MetaClassRegistry registry = GroovySystem.getMetaClassRegistry();
+        MetaClassRegistry registry = GroovySystem.getMetaClassRegistry();
         MetaClass mc = registry.getMetaClass(o.getClass());
 
-        final Object hibernateLazyInitializer = mc.getProperty(o, HIBERNATE_LAZY_INITIALIZER_PROP);
+        Object hibernateLazyInitializer = mc.getProperty(o, HIBERNATE_LAZY_INITIALIZER_PROP);
         return registry.getMetaClass(hibernateLazyInitializer.getClass()).getProperty(
                 hibernateLazyInitializer, IMPLEMENTATION_PROP);
     }

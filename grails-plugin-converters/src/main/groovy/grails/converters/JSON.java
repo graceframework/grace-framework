@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -274,7 +274,7 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
      */
     public static JSONElement parse(String source) throws ConverterException {
         try {
-            final Object value = new JSONTokener(source).nextValue();
+            Object value = new JSONTokener(source).nextValue();
             if (value instanceof JSONElement) {
                 return (JSONElement) value;
             }
@@ -356,8 +356,8 @@ public class JSON extends AbstractConverter<JSONWriter> implements IncludeExclud
     protected void handleCircularRelationship(Object o) throws ConverterException {
         switch (this.circularReferenceBehaviour) {
             case DEFAULT:
-                final boolean isCollection = Collection.class.isAssignableFrom(o.getClass());
-                final boolean isMap = Map.class.isAssignableFrom(o.getClass());
+                boolean isCollection = Collection.class.isAssignableFrom(o.getClass());
+                boolean isMap = Map.class.isAssignableFrom(o.getClass());
                 if (!(isMap || isCollection)) {
                     Map<String, Object> props = new HashMap<>();
                     props.put("class", o.getClass());

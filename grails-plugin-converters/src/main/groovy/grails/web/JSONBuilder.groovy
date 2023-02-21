@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ class JSONBuilder {
                 n.putAll(args[0])
             }
             else if (args[-1] instanceof Closure) {
-                final Object callable = args[-1]
+                Object callable = args[-1]
                 handleClosureNode(methodName, callable)
             }
             else if (args.size() == 1) {
@@ -150,10 +150,10 @@ class JSONBuilder {
             value = value.collect {
                 if (it instanceof Closure) {
                     def callable = it
-                    final JSONBuilder localBuilder = new JSONBuilder()
+                    JSONBuilder localBuilder = new JSONBuilder()
                     callable.delegate = localBuilder
                     callable.resolveStrategy = Closure.DELEGATE_FIRST
-                    final Map nestedObject = localBuilder.buildRoot(callable)
+                    Map nestedObject = localBuilder.buildRoot(callable)
                     return nestedObject
                 }
 
