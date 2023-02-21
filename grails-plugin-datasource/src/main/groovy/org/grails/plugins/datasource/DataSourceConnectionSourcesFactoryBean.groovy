@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 the original author or authors.
+ * Copyright 2017-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,14 +45,14 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
 
     final PropertyResolver configuration
     ApplicationContext applicationContext
-    private ConnectionSources<DataSource, DataSourceSettings> connectionSources
+    private ConnectionSources<DataSource, ? extends ConnectionSourceSettings> connectionSources
 
     DataSourceConnectionSourcesFactoryBean(PropertyResolver configuration) {
         this.configuration = configuration
     }
 
     @Override
-    ConnectionSources<DataSource, DataSourceSettings> getObject() throws Exception {
+    ConnectionSources<DataSource, ? extends ConnectionSourceSettings> getObject() throws Exception {
         connectionSources
     }
 
