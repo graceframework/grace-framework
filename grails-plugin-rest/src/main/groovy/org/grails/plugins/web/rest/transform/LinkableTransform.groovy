@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,26 +63,26 @@ class LinkableTransform implements ASTTransformation {
                 new ClassNode(Set).getPlainNodeReference(), classNode, new ListExpression())
         classNode.addField(linksField)
 
-        final resourceLinksVariable = new VariableExpression('$resourceLinks')
+        VariableExpression resourceLinksVariable = new VariableExpression('$resourceLinks')
         if (classNode.getMethods(LINK_METHOD).isEmpty()) {
-            final mapParameter = new Parameter(new ClassNode(Map), LINK_METHOD)
-            final linkMethodBody = new BlockStatement()
-            final linkArg = new MethodCallExpression(new ClassExpression(new ClassNode(Link)),
+            Parameter mapParameter = new Parameter(new ClassNode(Map), LINK_METHOD)
+            BlockStatement linkMethodBody = new BlockStatement()
+            MethodCallExpression linkArg = new MethodCallExpression(new ClassExpression(new ClassNode(Link)),
                     'createLink', new VariableExpression(mapParameter))
             linkMethodBody.addStatement(new ExpressionStatement(new MethodCallExpression(resourceLinksVariable, 'add', linkArg)))
-            def linkMethod = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE, [mapParameter] as Parameter[], null, linkMethodBody)
+            MethodNode linkMethod = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE, [mapParameter] as Parameter[], null, linkMethodBody)
             classNode.addMethod(linkMethod)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod)
 
-            def linkParameter = new Parameter(new ClassNode(Link), LINK_METHOD)
-            def linkMethod2 = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE,
+            Parameter linkParameter = new Parameter(new ClassNode(Link), LINK_METHOD)
+            MethodNode linkMethod2 = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE,
                     [linkParameter] as Parameter[], null, new ExpressionStatement(new MethodCallExpression(
                     resourceLinksVariable, 'add', new VariableExpression(linkParameter))))
             classNode.addMethod(linkMethod2)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod2)
         }
         if (classNode.getMethods(LINKS_METHOD).isEmpty()) {
-            def linksMethod = new MethodNode(LINKS_METHOD, Modifier.PUBLIC, new ClassNode(Collection),
+            MethodNode linksMethod = new MethodNode(LINKS_METHOD, Modifier.PUBLIC, new ClassNode(Collection),
                     GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(resourceLinksVariable))
             classNode.addMethod(linksMethod)
             AnnotatedNodeUtils.markAsGenerated(classNode, linksMethod)

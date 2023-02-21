@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,16 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode(includes = ['rel', 'href'])
 class Link implements Serializable {
 
+    /**
+     * The link relationship
+     */
+    final String rel
+
+    /**
+     * The link's href
+     */
+    final String href
+
     Link(String rel, String href) {
         if (!rel) {
             throw new IllegalArgumentException("The 'rel' argument - for defining the relationship of the link - is required.")
@@ -38,16 +48,6 @@ class Link implements Serializable {
         this.rel = rel
         this.href = href
     }
-
-    /**
-     * The link relationship
-     */
-    final String rel
-
-    /**
-     * The link's href
-     */
-    final String href
 
     /**
      * The language of the linked resource
@@ -81,13 +81,13 @@ class Link implements Serializable {
      * @return The link
      */
     static Link createLink(Map<String, Object> arguments) {
-        final rel = arguments.rel ? arguments.rel.toString() : null
-        final href = arguments.href ? arguments.href.toString() : null
-        def link = (Link) Link.newInstance(rel, href)
+        String rel = arguments.rel ? arguments.rel.toString() : null
+        String href = arguments.href ? arguments.href.toString() : null
+        Link link = (Link) Link.newInstance(rel, href)
 
-        final remaining = arguments.subMap(['hreflang', 'contentType', 'title', 'deprecated', 'templated'])
+        Map<String, Object> remaining = arguments.subMap(['hreflang', 'contentType', 'title', 'deprecated', 'templated'])
         for (entry in remaining.entrySet()) {
-            final value = entry.value
+            Object value = entry.value
             if (value) {
                 ((GroovyObject) link).setProperty(entry.key, value)
             }

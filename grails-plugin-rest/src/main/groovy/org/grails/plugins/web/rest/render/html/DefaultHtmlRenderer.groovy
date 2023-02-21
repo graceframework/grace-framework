@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,12 +53,12 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
     }
 
     Class<T> getTargetType() {
-        targetType
+        this.targetType
     }
 
     @Override
     void render(T object, RenderContext context) {
-        final mimeType = context.acceptMimeType ?: MimeType.HTML
+        MimeType mimeType = context.acceptMimeType ?: MimeType.HTML
         if (!mimeType.equals(MimeType.ALL)) {
             context.setContentType(mimeType.name)
         }

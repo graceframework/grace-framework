@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,15 @@
  */
 package grails.rest.render.hal
 
+import java.beans.PropertyDescriptor
+
 import javax.annotation.PostConstruct
 import javax.xml.bind.DatatypeConverter
 
 import groovy.json.JsonOutput
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileStatic
+import org.springframework.beans.BeanWrapper
 import org.springframework.beans.PropertyAccessorFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.converter.Converter
@@ -59,7 +62,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
 
         @Override
         String convert(Date source) {
-            final GregorianCalendar cal = new GregorianCalendar()
+            GregorianCalendar cal = new GregorianCalendar()
             cal.setTime(source)
             cal.setTimeZone(UTC)
             DatatypeConverter.printDateTime(cal)
@@ -90,9 +93,9 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
     @PostConstruct
     void initialize() {
         if (dataBindingSourceRegistry != null) {
-            final thisType = getTargetType()
-            final thisMimeTypes = getMimeTypes()
-            final halDataBindingSourceCreator = new HalJsonDataBindingSourceCreator() {
+            Class<?> thisType = getTargetType()
+            MimeType[] thisMimeTypes = getMimeTypes()
+            HalJsonDataBindingSourceCreator halDataBindingSourceCreator = new HalJsonDataBindingSourceCreator() {
 
                 @Override
                 Class getTargetType() {
@@ -111,13 +114,13 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
 
     @Override
     void renderInternal(T object, RenderContext context) {
-        final mimeType = context.acceptMimeType ?: mimeTypes[0]
-        final responseWriter = context.writer
+        MimeType mimeType = context.acceptMimeType ?: mimeTypes[0]
+        Writer responseWriter = context.writer
         Writer targetWriter = prettyPrint ? new StringWriter() : responseWriter
         StreamingJsonBuilder writer = new StreamingJsonBuilder(targetWriter)
 
         try {
-            final clazz = object.class
+            Class<?> clazz = object.class
 
             if (isDomainResource(clazz)) {
                 writer.call {
@@ -136,7 +139,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                         }
                     }
                     else {
-                        final writtenObjects = [] as Set
+                        Set writtenObjects = [] as Set
                         call(EMBEDDED_ATTRIBUTE, ((Collection) object)) { o ->
                             if (o) {
                                 if (isDomainResource(o.getClass())) {
@@ -167,7 +170,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
     }
 
     protected renderEmbeddedAttributes(StreamingJsonBuilder.StreamingJsonDelegate writer, object, RenderContext context, MimeType mimeType) {
-        final writtenObjects = [] as Set
+        Set writtenObjects = [] as Set
         writer.call(collectionName, ((Collection) object)) { o ->
             if (o) {
                 if (isDomainResource(o.getClass())) {
@@ -191,16 +194,16 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
     }
 
     protected void writeSimpleObject(Object object, RenderContext context, StreamingJsonBuilder.StreamingJsonDelegate writer) {
-        final bean = PropertyAccessorFactory.forBeanPropertyAccess(object)
-        final propertyDescriptors = bean.propertyDescriptors
+        BeanWrapper bean = PropertyAccessorFactory.forBeanPropertyAccess(object)
+        PropertyDescriptor[] propertyDescriptors = bean.propertyDescriptors
         for (pd in propertyDescriptors) {
-            final propertyName = pd.name
+            String propertyName = pd.name
             if (DEFAULT_EXCLUDES.contains(propertyName)) {
                 continue
             }
             if (shouldIncludeProperty(context, object, propertyName)) {
                 if (pd.readMethod && pd.writeMethod) {
-                    final value = bean.getPropertyValue(propertyName)
+                    Object value = bean.getPropertyValue(propertyName)
                     if (value instanceof Number) {
                         writer.call(propertyName, (Number) value)
                     }
@@ -226,10 +229,10 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
     }
 
     protected void writeLinkForCurrentPath(RenderContext context, MimeType mimeType, StreamingJsonBuilder.StreamingJsonDelegate writer) {
-        final href = linkGenerator.link(uri: context.resourcePath, method: HttpMethod.GET.toString(), absolute: absoluteLinks)
-        final resourceRef = href
-        final locale = context.locale
-        def link = new Link(RELATIONSHIP_SELF, href)
+        String href = linkGenerator.link(uri: context.resourcePath, method: HttpMethod.GET.toString(), absolute: absoluteLinks)
+        String resourceRef = href
+        Locale locale = context.locale
+        Link link = new Link(RELATIONSHIP_SELF, href)
         link.title = getResourceTitle(resourceRef, locale)
         link.contentType = mimeType ? mimeType.name : null
 
@@ -241,7 +244,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                                                    Locale locale, MimeType contentType, Set writtenObjects, Stack referenceStack) {
 
         PersistentEntity entity = mappingContext.getPersistentEntity(clazz.name)
-        final metaClazz = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
+        MetaClass metaClazz = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
         //If the object was already serialized , simply write its link for it and return.
         if (referenceStack.contains(object)) {
             writeLinks(context, metaClazz, object, entity, locale, contentType, writer, false)
@@ -257,14 +260,14 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
         if (associationMap) {
             writer.call(EMBEDDED_ATTRIBUTE) {
                 for (entry in associationMap.entrySet()) {
-                    final property = entry.key
-                    final isSingleEnded = property instanceof ToOne
+                    Association property = entry.key
+                    boolean isSingleEnded = property instanceof ToOne
 
                     if (isSingleEnded) {
                         Object value = entry.value
                         if (value != null) {
                             delegate.call(property.name) {
-                                final associatedEntity = property.associatedEntity
+                                PersistentEntity associatedEntity = property.associatedEntity
                                 if (associatedEntity) {
                                     writtenObjects << value
                                     writeDomainWithEmbeddedAndLinks(context, associatedEntity.javaClass, value,
@@ -277,7 +280,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                         Iterable iterable = (Iterable) entry.value
 
                         delegate.call(property.name, iterable == null ? Collections.emptyList() : iterable) { obj ->
-                            final associatedEntity = property.associatedEntity
+                            PersistentEntity associatedEntity = property.associatedEntity
                             if (associatedEntity) {
                                 writtenObjects << obj
                                 writeDomainWithEmbeddedAndLinks(context, associatedEntity.javaClass, obj,
@@ -296,11 +299,11 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
                                                   Locale locale, MimeType contentType, StreamingJsonBuilder.StreamingJsonDelegate writer,
                                                   boolean associationLinks = true) {
         Map<Association, Object> associationMap
-        final entityHref = linkGenerator.link(resource: object, method: HttpMethod.GET.toString(), absolute: absoluteLinks)
-        final title = getLinkTitle(entity, locale)
+        String entityHref = linkGenerator.link(resource: object, method: HttpMethod.GET.toString(), absolute: absoluteLinks)
+        String title = getLinkTitle(entity, locale)
 
         writer.call(LINKS_ATTRIBUTE) {
-            def link = new Link(RELATIONSHIP_SELF, entityHref)
+            Link link = new Link(RELATIONSHIP_SELF, entityHref)
             link.contentType = contentType ? contentType.name : null
             link.title = title
             link.hreflang = locale
@@ -312,17 +315,18 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
         associationMap
     }
 
+    @Override
     protected void writeLink(Link link, Locale locale, writer) {
         StreamingJsonBuilder.StreamingJsonDelegate links = (StreamingJsonBuilder.StreamingJsonDelegate) writer
 
         links.call(link.rel) {
             call(HREF_ATTRIBUTE, link.href)
             call(HREFLANG_ATTRIBUTE, (link.hreflang ?: locale).language)
-            final title = link.title
+            String title = link.title
             if (title) {
                 call(TITLE_ATTRIBUTE, title)
             }
-            final type = link.contentType
+            String type = link.contentType
             if (type) {
                 call(TYPE_ATTRIBUTE, type)
             }
@@ -335,6 +339,7 @@ class HalJsonRenderer<T> extends AbstractLinkingRenderer<T> {
         }
     }
 
+    @Override
     protected void writeDomainProperty(value, String propertyName, jsonWriter) {
         StreamingJsonBuilder.StreamingJsonDelegate builder = (StreamingJsonBuilder.StreamingJsonDelegate) jsonWriter
         builder.call(propertyName, value)

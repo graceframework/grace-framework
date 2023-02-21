@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,16 +64,16 @@ abstract class AbstractVndErrorRenderer implements ContainerRenderer<Errors, Obj
      * @param oe The ObjectError instance
      * @return The log reference
      */
-    protected String resolveLogRef(target, ObjectError oe) {
-        final objectId = getObjectId(target)
-        final name = GrailsNameUtils.getPropertyName(target.class)
-        final code = oe.code
-        def logref = "${name}.${code}${objectId ? '.' + objectId : ''}".toString()
+    protected String resolveLogRef(Object target, ObjectError oe) {
+        Object objectId = getObjectId(target)
+        String name = GrailsNameUtils.getPropertyName(target.class)
+        String code = oe.code
+        String logref = "${name}.${code}${objectId ? '.' + objectId : ''}".toString()
         logref
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    protected Object getObjectId(target) {
+    protected Object getObjectId(Object target) {
         target.id
     }
 

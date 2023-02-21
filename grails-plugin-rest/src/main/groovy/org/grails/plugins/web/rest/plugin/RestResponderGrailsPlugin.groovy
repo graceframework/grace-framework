@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class RestResponderGrailsPlugin extends Plugin implements PriorityOrdered {
     @CompileStatic
     static void registryResourceControllers(GrailsApplication app) {
         for (GrailsClass grailsClass in app.getArtefacts(DomainClassArtefactHandler.TYPE)) {
-            final clazz = grailsClass.clazz
+            Class<?> clazz = grailsClass.clazz
             if (clazz.getAnnotation(Resource)) {
                 String controllerClassName = "${clazz.name}Controller"
                 if (!app.getArtefact(ControllerArtefactHandler.TYPE, controllerClassName)) {

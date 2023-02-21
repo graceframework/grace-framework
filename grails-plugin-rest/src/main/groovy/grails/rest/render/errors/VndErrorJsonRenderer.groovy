@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,16 +52,16 @@ class VndErrorJsonRenderer extends AbstractVndErrorRenderer {
             context.setContentType(GrailsWebUtil.getContentType(MIME_TYPE.name, encoding))
             context.setStatus(HttpStatus.UNPROCESSABLE_ENTITY)
             Locale locale = context.locale
-            final target = object.target
+            Object target = object.target
 
-            def responseWriter = context.writer
+            Writer responseWriter = context.writer
             Writer targetWriter = prettyPrint ? new StringWriter() : responseWriter
             StreamingJsonBuilder writer = new StreamingJsonBuilder(targetWriter)
 
             writer.call(object.allErrors) { ObjectError oe ->
-                final msg = messageSource.getMessage(oe, locale)
-                final String logref = resolveLogRef(target, oe)
-                final String path = linkGenerator.link(resource: target, method: HttpMethod.GET, absolute: absoluteLinks)
+                String msg = messageSource.getMessage(oe, locale)
+                String logref = resolveLogRef(target, oe)
+                String path = linkGenerator.link(resource: target, method: HttpMethod.GET, absolute: absoluteLinks)
 
                 delegate.call(LOGREF_ATTRIBUTE, logref)
                 delegate.call(MESSAGE_ATTRIBUTE, msg)

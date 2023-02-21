@@ -15,7 +15,10 @@
  */
 package grails.rest.render.hal
 
+import java.beans.PropertyDescriptor
+
 import groovy.transform.CompileStatic
+import org.springframework.beans.BeanWrapper
 import org.springframework.beans.PropertyAccessorFactory
 import org.springframework.http.HttpMethod
 
@@ -26,6 +29,7 @@ import grails.rest.render.util.AbstractLinkingRenderer
 import grails.web.mime.MimeType
 
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.ToOne
 import org.grails.web.xml.PrettyPrintXMLStreamWriter
 import org.grails.web.xml.StreamingMarkupWriter
@@ -61,11 +65,11 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
 
     @Override
     void renderInternal(T object, RenderContext context) {
-        final streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
+        StreamingMarkupWriter streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
         XMLStreamWriter w = prettyPrint ? new PrettyPrintXMLStreamWriter(streamingWriter) : new XMLStreamWriter(streamingWriter)
         XML xml = new XML(w)
 
-        final entity = mappingContext.getPersistentEntity(object.class.name)
+        PersistentEntity entity = mappingContext.getPersistentEntity(object.class.name)
         boolean isDomain = entity != null
 
         Set writtenObjects = []
@@ -78,7 +82,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
             XMLStreamWriter writer = xml.getWriter()
             startResourceTagForCurrentPath(context, writer)
             for (o in ((Collection) object)) {
-                final currentEntity = mappingContext.getPersistentEntity(o.class.name)
+                PersistentEntity currentEntity = mappingContext.getPersistentEntity(o.class.name)
                 if (currentEntity) {
                     writeDomainWithEmbeddedAndLinks(currentEntity, o, context, xml, writtenObjects)
                 }
@@ -89,10 +93,10 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
             XMLStreamWriter writer = xml.getWriter()
             startResourceTagForCurrentPath(context, writer)
             writeExtraLinks(object, context.locale, xml)
-            final bean = PropertyAccessorFactory.forBeanPropertyAccess(object)
-            final propertyDescriptors = bean.propertyDescriptors
+            BeanWrapper bean = PropertyAccessorFactory.forBeanPropertyAccess(object)
+            PropertyDescriptor[] propertyDescriptors = bean.propertyDescriptors
             for (pd in propertyDescriptors) {
-                final propertyName = pd.name
+                String propertyName = pd.name
                 if (DEFAULT_EXCLUDES.contains(propertyName)) {
                     continue
                 }
@@ -109,26 +113,26 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
     }
 
     protected void startResourceTagForCurrentPath(RenderContext context, XMLStreamWriter writer) {
-        final locale = context.locale
+        Locale locale = context.locale
         String resourceHref = linkGenerator.link(uri: context.resourcePath, method: HttpMethod.GET, absolute: absoluteLinks)
-        final title = getResourceTitle(context.resourcePath, locale)
+        String title = getResourceTitle(context.resourcePath, locale)
         startResourceTag(writer, resourceHref, locale, title)
     }
 
     protected void writeDomainWithEmbeddedAndLinks(PersistentEntity entity, object, RenderContext context, XML xml, Set writtenObjects) {
-        final locale = context.locale
+        Locale locale = context.locale
         String resourceHref = linkGenerator.link(resource: object, method: HttpMethod.GET, absolute: absoluteLinks)
-        final title = getLinkTitle(entity, locale)
+        String title = getLinkTitle(entity, locale)
         XMLStreamWriter writer = xml.getWriter()
         startResourceTag(writer, resourceHref, locale, title)
-        final metaClass = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
-        final associationMap = writeAssociationLinks(context, object, locale, xml, entity, metaClass)
+        MetaClass metaClass = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
+        Map<Association, Object> associationMap = writeAssociationLinks(context, object, locale, xml, entity, metaClass)
         writeDomain(context, metaClass, entity, object, xml)
 
         if (associationMap) {
             for (entry in associationMap.entrySet()) {
-                final property = entry.key
-                final isSingleEnded = property instanceof ToOne
+                Association property = entry.key
+                boolean isSingleEnded = property instanceof ToOne
                 if (isSingleEnded) {
                     Object value = entry.value
                     if (writtenObjects.contains(value)) {
@@ -136,7 +140,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                     }
 
                     if (value != null) {
-                        final associatedEntity = property.associatedEntity
+                        PersistentEntity associatedEntity = property.associatedEntity
                         if (associatedEntity) {
                             writtenObjects << value
                             writeDomainWithEmbeddedAndLinks(associatedEntity, value, context, xml, writtenObjects)
@@ -144,7 +148,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                     }
                 }
                 else {
-                    final associatedEntity = property.associatedEntity
+                    PersistentEntity associatedEntity = property.associatedEntity
                     if (associatedEntity) {
                         for (obj in entry.value) {
                             writtenObjects << obj
@@ -167,6 +171,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
         }
     }
 
+    @Override
     void writeLink(Link link, Locale locale, writerObject) {
         XMLStreamWriter writer = ((XML) writerObject).getWriter()
         writer.startNode(LINK_TAG)
@@ -174,11 +179,11 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
                 .attribute(HREF_ATTRIBUTE, link.href)
                 .attribute(HREFLANG_ATTRIBUTE, (link.hreflang ?: locale).language)
 
-        final title = link.title
+        String title = link.title
         if (title) {
             writer.attribute(TITLE_ATTRIBUTE, title)
         }
-        final contentType = link.contentType
+        String contentType = link.contentType
         if (contentType) {
             writer.attribute(TYPE_ATTRIBUTE, contentType)
         }
@@ -194,7 +199,7 @@ class HalXmlRenderer<T> extends AbstractLinkingRenderer<T> {
 
     @Override
     protected void writeDomainProperty(value, String propertyName, writerObject) {
-        final xml = (XML) writerObject
+        XML xml = (XML) writerObject
         XMLStreamWriter writer = xml.getWriter()
 
         writer.startNode(propertyName)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,11 +70,11 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
     void initialize() {
         addDefaultRenderer(new DefaultXmlRenderer<Object>(Object, groovyPageLocator, this))
         addDefaultRenderer(new DefaultJsonRenderer<Object>(Object, groovyPageLocator, this))
-        final defaultHtmlRenderer = new DefaultHtmlRenderer<Object>(Object)
+        DefaultHtmlRenderer defaultHtmlRenderer = new DefaultHtmlRenderer<Object>(Object)
         defaultHtmlRenderer.suffix = modelSuffix
         defaultHtmlRenderer.proxyHandler = proxyHandler
         addDefaultRenderer(defaultHtmlRenderer)
-        final allHtmlRenderer = new DefaultHtmlRenderer<Object>(Object, MimeType.ALL)
+        DefaultHtmlRenderer allHtmlRenderer = new DefaultHtmlRenderer<Object>(Object, MimeType.ALL)
         allHtmlRenderer.suffix = modelSuffix
         allHtmlRenderer.proxyHandler = proxyHandler
         addDefaultRenderer(allHtmlRenderer)
@@ -82,7 +82,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
         containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.TEXT_XML), new DefaultXmlRenderer(Errors))
         containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.JSON), new DefaultJsonRenderer(Errors))
         containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.TEXT_JSON), new DefaultJsonRenderer(Errors))
-        final defaultContainerHtmlRenderer = new DefaultHtmlRenderer(Errors)
+        DefaultHtmlRenderer defaultContainerHtmlRenderer = new DefaultHtmlRenderer(Errors)
         defaultContainerHtmlRenderer.suffix = modelSuffix
         defaultContainerHtmlRenderer.proxyHandler = proxyHandler
         containerRenderers.put(new ContainerRendererCacheKey(Errors, Object, MimeType.HTML), defaultContainerHtmlRenderer)
@@ -163,7 +163,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                     }
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
-                        final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
+                        Class<?>[] containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
                         for (Class i in containerInterfaces) {
                             key = new ContainerRendererCacheKey(i, targetClass, mimeType)
                             renderer = containerRenderers.get(key)
@@ -181,7 +181,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
 
             if (renderer == null) {
                 //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
-                final interfaces = GrailsClassUtils.getAllInterfacesForClass(originalTargetClass)
+                Class<?>[] interfaces = GrailsClassUtils.getAllInterfacesForClass(originalTargetClass)
                 outer:
                 for (Class i in interfaces) {
                     key = new ContainerRendererCacheKey(containerType, i, mimeType)
@@ -191,7 +191,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
                     }
                     else {
                         //TODO: Remove explicit type-cast (Class<?>) once GROOVY-9460 is fixed
-                        final containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
+                        Class<?>[] containerInterfaces = GrailsClassUtils.getAllInterfacesForClass((Class<?>) containerType)
                         for (Class ci in containerInterfaces) {
                             key = new ContainerRendererCacheKey(ci, i, mimeType)
                             renderer = containerRenderers.get(key)
@@ -218,7 +218,7 @@ class DefaultRendererRegistry extends ClassAndMimeTypeRegistry<Renderer, Rendere
         }
         else if (object instanceof Iterable) {
             if (object) {
-                final iterator = object.iterator()
+                Iterator iterator = object.iterator()
                 def first = iterator.next()
                 if (first) {
                     if (proxyHandler != null) {

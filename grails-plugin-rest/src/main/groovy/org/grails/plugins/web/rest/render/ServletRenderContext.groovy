@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.grails.plugins.web.rest.render
+
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -51,9 +54,9 @@ class ServletRenderContext extends AbstractRenderContext {
         this.webRequest = webRequest
         if (arguments != null) {
             this.arguments = Collections.unmodifiableMap(arguments)
-            final argsMap = arguments
-            final incObject = argsMap != null ?  argsMap.get(IncludeExcludeSupport.INCLUDES_PROPERTY) : null
-            final excObject = argsMap != null ? argsMap.get(IncludeExcludeSupport.EXCLUDES_PROPERTY) : null
+            Map<String, Object> argsMap = arguments
+            Object incObject = argsMap != null ?  argsMap.get(IncludeExcludeSupport.INCLUDES_PROPERTY) : null
+            Object excObject = argsMap != null ? argsMap.get(IncludeExcludeSupport.EXCLUDES_PROPERTY) : null
             List<String> includes = incObject instanceof List ? (List<String>) incObject : null
             List<String> excludes = excObject instanceof List ? (List<String>) excObject : null
             if (includes != null) {
@@ -70,10 +73,10 @@ class ServletRenderContext extends AbstractRenderContext {
 
     @Override
     String getResourcePath() {
-        if (resourcePath == null) {
-            return WebUtils.getForwardURI(webRequest.request)
+        if (this.resourcePath == null) {
+            return WebUtils.getForwardURI(this.webRequest.request)
         }
-        resourcePath
+        this.resourcePath
     }
 
     void setResourcePath(String resourcePath) {
@@ -83,34 +86,34 @@ class ServletRenderContext extends AbstractRenderContext {
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     MimeType getAcceptMimeType() {
-        final response = webRequest.response
+        HttpServletResponse response = this.webRequest.response
         response.hasProperty('mimeType') ? response.mimeType : null
     }
 
     @Override
     Locale getLocale() {
-        webRequest.locale
+        this.webRequest.locale
     }
 
     @Override
     Writer getWriter() {
-        writerObtained = true
-        webRequest.currentResponse.writer
+        this.writerObtained = true
+        this.webRequest.currentResponse.writer
     }
 
     @Override
     HttpMethod getHttpMethod() {
-        HttpMethod.valueOf(webRequest.currentRequest.method)
+        HttpMethod.valueOf(this.webRequest.currentRequest.method)
     }
 
     @Override
     void setStatus(HttpStatus status) {
-        webRequest.currentResponse.setStatus(status.value())
+        this.webRequest.currentResponse.setStatus(status.value())
     }
 
     @Override
     void setContentType(String contentType) {
-        webRequest.currentResponse.contentType = contentType
+        this.webRequest.currentResponse.contentType = contentType
     }
 
     @Override
@@ -121,13 +124,13 @@ class ServletRenderContext extends AbstractRenderContext {
 
     @Override
     String getViewName() {
-        final request = webRequest.currentRequest
+        HttpServletRequest request = this.webRequest.currentRequest
         ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
         modelAndView ? modelAndView.viewName : null
     }
 
     protected ModelAndView getModelAndView() {
-        final request = webRequest.currentRequest
+        HttpServletRequest request = this.webRequest.currentRequest
         ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
         if (modelAndView == null) {
             modelAndView = new ModelAndView()
@@ -139,31 +142,31 @@ class ServletRenderContext extends AbstractRenderContext {
     @Override
     void setModel(Map model) {
         ModelAndView modelAndView = getModelAndView()
-        final viewModel = modelAndView.model
-        if (arguments?.model instanceof Map) {
-            viewModel.putAll((Map) arguments.model)
+        Map<String, Object> viewModel = modelAndView.model
+        if (this.arguments?.model instanceof Map) {
+            viewModel.putAll((Map) this.arguments.model)
         }
         viewModel.putAll(model)
     }
 
     @Override
     String getActionName() {
-        webRequest.actionName
+        this.webRequest.actionName
     }
 
     @Override
     String getControllerName() {
-        webRequest.controllerName
+        this.webRequest.controllerName
     }
 
     @Override
     String getControllerNamespace() {
-        webRequest.controllerNamespace
+        this.webRequest.controllerNamespace
     }
 
     @Override
     boolean wasWrittenTo() {
-        writerObtained
+        this.writerObtained
     }
 
 }

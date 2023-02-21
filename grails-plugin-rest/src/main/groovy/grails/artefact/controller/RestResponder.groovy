@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import grails.web.mime.MimeType
 import org.grails.datastore.mapping.model.config.GormProperties
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.plugins.web.rest.render.ServletRenderContext
+import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
 
 /**
@@ -127,7 +128,7 @@ trait RestResponder {
     private internalRespond(Object value, Map args = [:]) {
         Integer statusCode
         if (args.status) {
-            final statusValue = args.status
+            Object statusValue = args.status
             if (statusValue instanceof Number) {
                 statusCode = statusValue.intValue()
             }
@@ -148,9 +149,9 @@ trait RestResponder {
             value = proxyHandler.unwrapIfProxy(value)
         }
 
-        final webRequest = ((Controller) this).getWebRequest()
+        GrailsWebRequest webRequest = ((Controller) this).getWebRequest()
         List<String> formats = calculateFormats(webRequest.actionName, value, args)
-        final response = webRequest.getCurrentResponse()
+        HttpServletResponse response = webRequest.getCurrentResponse()
         MimeType[] mimeTypes = getResponseFormat(response)
         RendererRegistry registry = rendererRegistry
         if (registry == null) {
@@ -162,8 +163,8 @@ trait RestResponder {
 
         for (MimeType mimeType in mimeTypes) {
             if (mimeType == MimeType.ALL && formats) {
-                final allMimeTypes = MimeType.getConfiguredMimeTypes()
-                final firstFormat = formats[0]
+                MimeType[] allMimeTypes = MimeType.getConfiguredMimeTypes()
+                String firstFormat = formats[0]
                 mimeType = allMimeTypes.find { MimeType mt -> mt.extension == firstFormat }
                 if (mimeType) {
                     webRequest.currentRequest.setAttribute(GrailsApplicationAttributes.RESPONSE_MIME_TYPE, mimeType)
@@ -180,7 +181,7 @@ trait RestResponder {
                     }
                     Renderer<Errors> errorsRenderer = registry.findContainerRenderer(mimeType, Errors, target)
                     if (errorsRenderer) {
-                        final context = new ServletRenderContext(webRequest, [model: args.model])
+                        ServletRenderContext context = new ServletRenderContext(webRequest, [model: args.model])
                         if (args.view) {
                             context.viewName = args.view as String
                         }
@@ -239,14 +240,14 @@ trait RestResponder {
         }
 
         if (this.hasProperty(PROPERTY_RESPONSE_FORMATS)) {
-            final responseFormatsProperty = this.getProperty(PROPERTY_RESPONSE_FORMATS)
+            Object responseFormatsProperty = this.getProperty(PROPERTY_RESPONSE_FORMATS)
             if (responseFormatsProperty instanceof List) {
                 return (List<String>) responseFormatsProperty
             }
             if ((responseFormatsProperty instanceof Map) && actionName) {
                 Map<String, Object> responseFormatsMap = (Map<String, Object>) responseFormatsProperty
 
-                final responseFormatsForAction = responseFormatsMap.get(actionName)
+                Object responseFormatsForAction = responseFormatsMap.get(actionName)
                 if (responseFormatsForAction instanceof List) {
                     return (List<String>) responseFormatsForAction
                 }
@@ -263,11 +264,11 @@ trait RestResponder {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private Errors getDomainErrors(object) {
+    private Errors getDomainErrors(Object object) {
         if (object instanceof Errors) {
             return object
         }
-        final errors = object.errors
+        Object errors = object.errors
         if (errors instanceof Errors) {
             return errors
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,16 +52,16 @@ class VndErrorXmlRenderer extends AbstractVndErrorRenderer {
             context.setContentType(GrailsWebUtil.getContentType(MIME_TYPE.name, encoding))
             context.setStatus(HttpStatus.UNPROCESSABLE_ENTITY)
             Locale locale = context.locale
-            final target = object.target
-            final language = locale.language
+            Object target = object.target
+            String language = locale.language
 
-            final streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
+            StreamingMarkupWriter streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
             XMLStreamWriter w = prettyPrint ? new PrettyPrintXMLStreamWriter(streamingWriter) : new XMLStreamWriter(streamingWriter)
             w.startDocument(encoding, '1.0')
             w.startNode(ERRORS_TAG)
                     .attribute('xml:lang', language)
             for (ObjectError oe in object.allErrors) {
-                def logref = resolveLogRef(target, oe)
+                String logref = resolveLogRef(target, oe)
                 w.startNode(ERROR_TAG)
                         .attribute(LOGREF_ATTRIBUTE, logref)
                         .startNode(MESSAGE_ATTRIBUTE)

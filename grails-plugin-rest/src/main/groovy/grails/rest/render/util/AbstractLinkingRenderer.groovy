@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.Basic
 import org.grails.datastore.mapping.model.types.Embedded
 import org.grails.datastore.mapping.model.types.ToOne
+import org.grails.gsp.io.GroovyPageScriptSource
 import org.grails.plugins.web.rest.render.html.DefaultHtmlRenderer
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 
@@ -97,12 +98,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     }
 
     @Override
-    final void render(T object, RenderContext context) {
-        final mimeType = context.acceptMimeType ?: getMimeTypes()[0]
+    void render(T object, RenderContext context) {
+        MimeType mimeType = context.acceptMimeType ?: getMimeTypes()[0]
         context.setContentType(GrailsWebUtil.getContentType(mimeType.name, encoding))
 
-        def viewName = context.viewName ?: context.actionName
-        final view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
+        String viewName = context.viewName ?: context.actionName
+        GroovyPageScriptSource view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
         if (view) {
             // if a view is provided, we use the HTML renderer to return an appropriate model to the view
             Renderer htmlRenderer = rendererRegistry?.findRenderer(MimeType.HTML, object)
@@ -126,7 +127,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     }
 
     protected String getLinkTitle(PersistentEntity entity, Locale locale) {
-        final propertyName = entity.decapitalizedName
+        String propertyName = entity.decapitalizedName
         messageSource.getMessage("resource.${propertyName}.href.title", [propertyName, entity.name] as Object[], '', locale)
     }
 
@@ -155,25 +156,25 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
 
         Map<Association, Object> associationMap = [:]
         for (Association a in entity.associations) {
-            final propertyName = a.name
+            String propertyName = a.name
             if (!shouldIncludeProperty(context, object, propertyName)) {
                 continue
             }
-            final associatedEntity = a.associatedEntity
+            PersistentEntity associatedEntity = a.associatedEntity
             if (!associatedEntity) {
                 continue
             }
             if (proxyHandler.isInitialized(object, propertyName)) {
                 if (a instanceof ToOne) {
-                    final value = proxyHandler.unwrapIfProxy(metaClass.getProperty(object, propertyName))
+                    Object value = proxyHandler.unwrapIfProxy(metaClass.getProperty(object, propertyName))
                     if (a instanceof Embedded) {
                         // no links for embedded
                         associationMap[a] = value
                     }
                     else if (value != null) {
-                        final href = linkGenerator.link(resource: value, method: HttpMethod.GET, absolute: absoluteLinks)
-                        final associationTitle = getLinkTitle(associatedEntity, locale)
-                        final link = new Link(propertyName, href)
+                        String href = linkGenerator.link(resource: value, method: HttpMethod.GET, absolute: absoluteLinks)
+                        String associationTitle = getLinkTitle(associatedEntity, locale)
+                        Link link = new Link(propertyName, href)
                         link.title = associationTitle
                         link.hreflang = locale
                         writeLink(link, locale, writer)
@@ -186,12 +187,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
             }
             else if ((a instanceof ToOne) && (proxyHandler instanceof EntityProxyHandler)) {
                 if (associatedEntity) {
-                    final proxy = mappingContext.getEntityReflector(a.owner).getProperty(object, propertyName)
-                    final id = proxyHandler.getProxyIdentifier(proxy)
-                    final href = linkGenerator.link(resource: associatedEntity.decapitalizedName, id: id,
+                    Object proxy = mappingContext.getEntityReflector(a.owner).getProperty(object, propertyName)
+                    Object id = proxyHandler.getProxyIdentifier(proxy)
+                    String href = linkGenerator.link(resource: associatedEntity.decapitalizedName, id: id,
                             method: HttpMethod.GET, absolute: absoluteLinks)
-                    final associationTitle = getLinkTitle(associatedEntity, locale)
-                    def link = new Link(propertyName, href)
+                    String associationTitle = getLinkTitle(associatedEntity, locale)
+                    Link link = new Link(propertyName, href)
                     link.title = associationTitle
                     link.hreflang = locale
                     writeLink(link, locale, writer)
@@ -202,7 +203,7 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     }
 
     protected void writeExtraLinks(object, Locale locale, writer) {
-        final extraLinks = getLinksForObject(object)
+        Collection<Link> extraLinks = getLinksForObject(object)
         for (Link l in extraLinks) {
             writeLink(l, locale, writer)
         }
@@ -219,12 +220,12 @@ abstract class AbstractLinkingRenderer<T> extends AbstractIncludeExcludeRenderer
     protected void writeDomain(RenderContext context, MetaClass metaClass, PersistentEntity entity, Object object, writer) {
         if (entity) {
             for (PersistentProperty p in entity.persistentProperties) {
-                final propertyName = p.name
+                String propertyName = p.name
                 if (!shouldIncludeProperty(context, object, propertyName)) {
                     continue
                 }
                 if ((p instanceof Basic) || !(p instanceof Association)) {
-                    final value = metaClass.getProperty(object, propertyName)
+                    Object value = metaClass.getProperty(object, propertyName)
                     if (value != null) {
                         writeDomainProperty(value, propertyName, writer)
                     }

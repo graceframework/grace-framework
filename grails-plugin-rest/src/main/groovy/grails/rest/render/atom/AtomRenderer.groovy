@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import grails.rest.render.hal.HalXmlRenderer
 import grails.web.mime.MimeType
 
 import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.types.Association
 import org.grails.datastore.mapping.model.types.ToOne
 import org.grails.web.xml.PrettyPrintXMLStreamWriter
 import org.grails.web.xml.StreamingMarkupWriter
@@ -62,11 +63,11 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
 
     @Override
     void renderInternal(T object, RenderContext context) {
-        final streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
+        StreamingMarkupWriter streamingWriter = new StreamingMarkupWriter(context.writer, encoding)
         XMLStreamWriter w = prettyPrint ? new PrettyPrintXMLStreamWriter(streamingWriter) : new XMLStreamWriter(streamingWriter)
         XML xml = new XML(w)
 
-        final entity = mappingContext.getPersistentEntity(object.class.name)
+        PersistentEntity entity = mappingContext.getPersistentEntity(object.class.name)
         boolean isDomain = entity != null
 
         Set writtenObjects = []
@@ -76,9 +77,9 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             writeDomainWithEmbeddedAndLinks(entity, object, context, xml, writtenObjects)
         }
         else if (object instanceof Collection) {
-            final locale = context.locale
+            Locale locale = context.locale
             String resourceHref = linkGenerator.link(uri: context.resourcePath, method: HttpMethod.GET, absolute: true)
-            final title = getResourceTitle(context.resourcePath, locale)
+            String title = getResourceTitle(context.resourcePath, locale)
             XMLStreamWriter writer = xml.getWriter()
             writer
                     .startNode(FEED_TAG)
@@ -101,7 +102,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             writeLink(linkAlt, locale, xml)
 
             for (o in ((Collection) object)) {
-                final currentEntity = mappingContext.getPersistentEntity(o.class.name)
+                PersistentEntity currentEntity = mappingContext.getPersistentEntity(o.class.name)
                 if (currentEntity) {
                     writeDomainWithEmbeddedAndLinks(currentEntity, o, context, xml, writtenObjects, false)
                 }
@@ -124,7 +125,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
             url = url.substring(url.indexOf('//') + 2, url.length())
         }
         url = url.replace('#', '/')
-        final i = url.indexOf('/')
+        int i = url.indexOf('/')
         if (i > -1) {
             String dateCreatedId = ''
             if (dateCreated) {
@@ -136,15 +137,16 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
         "tag:$url"
     }
 
+    @Override
     protected void writeDomainWithEmbeddedAndLinks(PersistentEntity entity, Object object,
                                                    RenderContext context, XML xml, Set writtenObjects, boolean isFirst = true) {
         if (!entity.getPropertyByName('lastUpdated')) {
             throw new IllegalArgumentException("Cannot render object [$object] using Atom. " +
                     "The AtomRenderer can only be used with domain classes that specify 'dateCreated' and 'lastUpdated' properties")
         }
-        final locale = context.locale
+        Locale locale = context.locale
         String resourceHref = linkGenerator.link(resource: object, method: HttpMethod.GET, absolute: true)
-        final title = getLinkTitle(entity, locale)
+        String title = getLinkTitle(entity, locale)
         XMLStreamWriter writer = xml.getWriter()
         writer.startNode(isFirst ? FEED_TAG : ENTRY_TAG)
         if (isFirst) {
@@ -155,13 +157,13 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                     .characters(object.toString())
                     .end()
         }
-        final dateCreated = formatDateCreated(object)
+        String dateCreated = formatDateCreated(object)
         if (dateCreated) {
             writer.startNode(PUBLISHED_TAG)
                     .characters(dateCreated)
                     .end()
         }
-        final lastUpdated = formatLastUpdated(object)
+        String lastUpdated = formatLastUpdated(object)
         if (lastUpdated) {
             writer.startNode(UPDATED_TAG)
                     .characters(lastUpdated)
@@ -171,24 +173,24 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                 .characters(getObjectId(entity, object))
                 .end()
 
-        def linkSelf = new Link(RELATIONSHIP_SELF, resourceHref)
+        Link linkSelf = new Link(RELATIONSHIP_SELF, resourceHref)
         linkSelf.title = title
         linkSelf.contentType = mimeTypes[0].name
         linkSelf.hreflang = locale
         writeLink(linkSelf, locale, xml)
-        def linkAlt = new Link(RELATIONSHIP_ALTERNATE, resourceHref)
+        Link linkAlt = new Link(RELATIONSHIP_ALTERNATE, resourceHref)
         linkAlt.title = title
         linkAlt.hreflang = locale
 
         writeLink(linkAlt, locale, xml)
-        final metaClass = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
-        final associationMap = writeAssociationLinks(context, object, locale, xml, entity, metaClass)
+        MetaClass metaClass = GroovySystem.metaClassRegistry.getMetaClass(entity.javaClass)
+        Map<Association, Object> associationMap = writeAssociationLinks(context, object, locale, xml, entity, metaClass)
         writeDomain(context, metaClass, entity, object, xml)
 
         if (associationMap) {
             for (entry in associationMap.entrySet()) {
-                final property = entry.key
-                final isSingleEnded = property instanceof ToOne
+                Association property = entry.key
+                boolean isSingleEnded = property instanceof ToOne
                 if (isSingleEnded) {
                     Object value = entry.value
                     if (writtenObjects.contains(value)) {
@@ -196,7 +198,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                     }
 
                     if (value != null) {
-                        final associatedEntity = property.associatedEntity
+                        PersistentEntity associatedEntity = property.associatedEntity
                         if (associatedEntity) {
                             writtenObjects << value
                             writeDomainWithEmbeddedAndLinks(associatedEntity, value, context, xml, writtenObjects, false)
@@ -204,7 +206,7 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
                     }
                 }
                 else {
-                    final associatedEntity = property.associatedEntity
+                    PersistentEntity associatedEntity = property.associatedEntity
                     if (associatedEntity) {
                         writer.startNode(property.name)
                         for (obj in entry.value) {
@@ -220,17 +222,17 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    String getObjectId(PersistentEntity entity, def object) {
-        final name = entity.identity.name
-        final objectId = object[name]
-        final dateCreated = object.dateCreated
-        final url = linkGenerator.link(resource: object, method: HttpMethod.GET, absolute: true)
+    String getObjectId(PersistentEntity entity, Object object) {
+        String name = entity.identity.name
+        Object objectId = object[name]
+        Date dateCreated = object.dateCreated
+        String url = linkGenerator.link(resource: object, method: HttpMethod.GET, absolute: true)
         generateIdForURI(url, dateCreated, objectId)
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected String formatDateCreated(object) {
-        final dateCreated = object.dateCreated
+        Date dateCreated = object.dateCreated
         if (dateCreated != null) {
             return formatAtomDate(dateCreated)
         }
@@ -238,14 +240,14 @@ class AtomRenderer<T> extends HalXmlRenderer<T> {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected String formatLastUpdated(object) {
-        final lastUpdated = object.lastUpdated
+        Date lastUpdated = object.lastUpdated
         if (lastUpdated != null) {
             return formatAtomDate(lastUpdated)
         }
     }
 
     protected String formatAtomDate(Date dateCreated) {
-        def dateFormat = ATOM_DATE_FORMAT.format(dateCreated)
+        String dateFormat = ATOM_DATE_FORMAT.format(dateCreated)
         dateFormat.substring(0, 19) + dateFormat.substring(22, dateFormat.length())
     }
 

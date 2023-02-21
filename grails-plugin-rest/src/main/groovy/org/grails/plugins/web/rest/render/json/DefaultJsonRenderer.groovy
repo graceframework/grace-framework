@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import grails.rest.render.RendererRegistry
 import grails.util.GrailsWebUtil
 import grails.web.mime.MimeType
 
+import org.grails.gsp.io.GroovyPageScriptSource
 import org.grails.plugins.web.rest.render.html.DefaultHtmlRenderer
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator
 
@@ -74,10 +75,10 @@ class DefaultJsonRenderer<T> implements Renderer<T> {
 
     @Override
     void render(T object, RenderContext context) {
-        final mimeType = context.acceptMimeType ?: MimeType.JSON
+        MimeType mimeType = context.acceptMimeType ?: MimeType.JSON
         context.setContentType(GrailsWebUtil.getContentType(mimeType.name, encoding))
-        def viewName = context.viewName ?: context.actionName
-        final view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
+        String viewName = context.viewName ?: context.actionName
+        GroovyPageScriptSource view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
         if (view && !(object instanceof Errors)) {
             // if a view is provided, we use the HTML renderer to return an appropriate model to the view
             Renderer htmlRenderer = rendererRegistry?.findRenderer(MimeType.HTML, object)
