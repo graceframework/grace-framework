@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ class GroovyConfigPropertySourceLoader implements PropertySourceLoader {
                         def runtimeConfig = configSlurper.parse(runtimeResource.getURL())
                         propertySource.merge(runtimeConfig, false)
                     }
-                    final NavigableMapPropertySource navigableMapPropertySource = new NavigableMapPropertySource(name, propertySource)
+                    NavigableMapPropertySource navigableMapPropertySource = new NavigableMapPropertySource(name, propertySource)
                     loadedFiles.add(name)
                     return Collections.<PropertySource<?>>singletonList(navigableMapPropertySource)
                 }

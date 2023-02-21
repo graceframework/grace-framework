@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 the original author or authors.
+ * Copyright 2018-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
     public List<PropertySource<?>> load(String name, Resource resource, List<String> filteredKeys) throws IOException {
         setResources(resource);
         setDocumentMatchers(properties -> {
-            final String profile = properties.getProperty("spring.profiles");
+            String profile = properties.getProperty("spring.profiles");
             return profile == null || profile.equalsIgnoreCase(System.getProperty("spring.profiles.active")) ?
                     MatchStatus.FOUND : MatchStatus.NOT_FOUND;
         });
@@ -71,11 +71,11 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
         NavigableMap propertySource = new NavigableMap();
         //Now merge the environment config over the top of the normal stuff
         loaded.forEach(map -> {
-            final Environment env = Environment.getCurrentEnvironment();
+            Environment env = Environment.getCurrentEnvironment();
             String currentEnvironment = env != null ? env.getName() : null;
             if (currentEnvironment != null) {
-                final String prefix = ENVIRONMENTS + "." + currentEnvironment + ".";
-                final Set<String> environmentSpecificEntries =
+                String prefix = ENVIRONMENTS + "." + currentEnvironment + ".";
+                Set<String> environmentSpecificEntries =
                         map.keySet().stream().filter(k -> k.startsWith(prefix)).collect(Collectors.toSet());
 
                 for (String entry : environmentSpecificEntries) {
@@ -96,7 +96,7 @@ public class YamlPropertySourceLoader extends YamlProcessor implements PropertyS
     }
 
     public List<Map<String, Object>> load() {
-        final List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> result = new ArrayList<>();
         process((properties, map) -> result.add(getFlattenedMap(map)));
         return result;
     }
