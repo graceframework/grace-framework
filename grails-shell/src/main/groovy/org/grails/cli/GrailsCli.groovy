@@ -609,13 +609,7 @@ class GrailsCli {
 
                 }.call()
 
-                List<URL> urls = (List<URL>) dependencyMap.get('dependencies')
-                try {
-                    // add tools.jar
-                    urls.add(new File("${System.getenv('JAVA_HOME')}/lib/tools.jar").toURI().toURL())
-                }
-                catch (Throwable ignored) {
-                }
+                List<URL> urls = (List<URL>) dependencyMap.get('dependencies') + (List<URL>) dependencyMap.get('profiles')
                 List<URL> profiles = (List<URL>) dependencyMap.get('profiles')
                 URLClassLoader classLoader = new URLClassLoader(urls as URL[], Thread.currentThread().contextClassLoader)
                 this.profileRepository = new StaticJarProfileRepository(classLoader, profiles as URL[])

@@ -48,8 +48,10 @@ class GrailsClasspathToolingModelBuilder implements ToolingModelBuilder {
                         .getResolvedArtifacts().collect { ResolvedArtifact artifact -> artifact.getFile().toURI().toURL() }
             }
 
-            DefaultGrailsClasspath grailsClasspath = new DefaultGrailsClasspath(dependencies: (runtimeDependencies + profileDependencies),
-                    profileDependencies: profileDependencies)
+            DefaultGrailsClasspath grailsClasspath = new DefaultGrailsClasspath(
+                    dependencies: runtimeDependencies,
+                    profileDependencies: profileDependencies
+            )
 
             return grailsClasspath
         }
