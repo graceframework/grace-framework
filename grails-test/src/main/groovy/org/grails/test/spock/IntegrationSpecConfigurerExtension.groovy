@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.grails.test.support.GrailsTestMode
 class IntegrationSpecConfigurerExtension implements IAnnotationDrivenExtension<Annotation> {
 
     void visitSpecAnnotation(Annotation annotation, SpecInfo spec) {
-        final context = Holders.getApplicationContext()
+        ApplicationContext context = Holders.getApplicationContext()
         if (context) {
             for (FeatureInfo info in spec.getAllFeatures()) {
                 info.addInterceptor(new IntegrationSpecMethodInterceptor(context))
@@ -62,7 +62,7 @@ class IntegrationSpecConfigurerExtension implements IAnnotationDrivenExtension<A
 
         @Override
         void intercept(IMethodInvocation invocation) {
-            final instance = invocation.instance ?: invocation.sharedInstance
+            Object instance = invocation.instance ?: invocation.sharedInstance
             if (instance) {
                 GrailsTestInterceptor interceptor = new GrailsTestInterceptor(instance, mode, applicationContext,
                         ['Spec', 'Specification', 'Tests', 'Test'] as String[])

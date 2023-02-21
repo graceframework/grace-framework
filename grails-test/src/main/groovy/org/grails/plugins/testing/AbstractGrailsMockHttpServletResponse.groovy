@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2022 the original author or authors.
+ * Copyright 2008-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.grails.plugins.testing
+
+import java.lang.reflect.Field
 
 import javax.servlet.http.HttpServletRequest
 
@@ -103,10 +105,10 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
 
     @Override
     void reset() {
-        final webRequest = GrailsWebRequest.lookup()
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup()
         webRequest?.currentRequest?.removeAttribute(GrailsApplicationAttributes.REDIRECT_ISSUED)
         setCommitted(false)
-        def field = ReflectionUtils.findField(MockHttpServletResponse, 'writer')
+        Field field = ReflectionUtils.findField(MockHttpServletResponse, 'writer')
         ReflectionUtils.makeAccessible(field)
         field.set(this, null)
         webRequest.setOut(getWriter())
@@ -119,8 +121,8 @@ abstract class AbstractGrailsMockHttpServletResponse extends MockHttpServletResp
 
     @Override
     String getRedirectedUrl() {
-        final webRequest = GrailsWebRequest.lookup()
-        final redirectURI = webRequest?.currentRequest?.getAttribute(GrailsApplicationAttributes.REDIRECT_ISSUED)
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup()
+        Object redirectURI = webRequest?.currentRequest?.getAttribute(GrailsApplicationAttributes.REDIRECT_ISSUED)
 
         if (redirectURI != null) {
             return redirectURI
