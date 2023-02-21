@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ public class GrailsTests {
     void specificApplicationContextInitializer() {
         Grails app = new Grails(ExampleConfig.class);
         app.setWebApplicationType(WebApplicationType.NONE);
-        final AtomicReference<ApplicationContext> reference = new AtomicReference<>();
+        AtomicReference<ApplicationContext> reference = new AtomicReference<>();
         app.setInitializers(Collections
                 .singletonList((ApplicationContextInitializer<ConfigurableApplicationContext>) reference::set));
         this.context = app.run("--foo=bar");
