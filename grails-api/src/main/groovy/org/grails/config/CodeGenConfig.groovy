@@ -215,7 +215,7 @@ class CodeGenConfig implements Cloneable, ConfigMap {
             if (value instanceof Number) {
                 result = Double.valueOf(((Number) value).doubleValue())
             }
-            else{
+            else {
                 result = Double.valueOf(String.valueOf(value))
             }
         }

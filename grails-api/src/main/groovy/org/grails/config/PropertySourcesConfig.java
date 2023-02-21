@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
         EnvironmentAwarePropertySource environmentAwarePropertySource = new EnvironmentAwarePropertySource(propertySources);
 
         if (propertySources instanceof MutablePropertySources) {
-            final String applicationConfig = "applicationConfigurationProperties";
+            String applicationConfig = "applicationConfigurationProperties";
             if (propertySources.contains(applicationConfig)) {
                 ((MutablePropertySources) propertySources).addBefore(applicationConfig, environmentAwarePropertySource);
             }
@@ -111,7 +111,7 @@ public class PropertySourcesConfig extends NavigableMapConfig {
         else {
             Map<String, Object> map = new LinkedHashMap<>();
 
-            final String[] propertyNames = enumerablePropertySource.getPropertyNames();
+            String[] propertyNames = enumerablePropertySource.getPropertyNames();
             for (String propertyName : propertyNames) {
                 Object value = enumerablePropertySource.getProperty(propertyName);
                 if (value instanceof ConfigObject) {

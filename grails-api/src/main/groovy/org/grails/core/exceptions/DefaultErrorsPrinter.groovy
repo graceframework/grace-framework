@@ -155,7 +155,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
             if (start instanceof SourceCodeAware) {
                 try {
                     if (start.fileName) {
-                        final tmp = new FileSystemResource(start.fileName)
+                        FileSystemResource tmp = new FileSystemResource(start.fileName)
                         if (tmp.exists()) {
                             res = tmp
                             break
@@ -170,7 +170,7 @@ class DefaultErrorsPrinter extends DefaultStackTracePrinter implements CodeSnipp
                 Object message = mcee.getErrorCollector().getErrors().iterator().next()
                 if (message instanceof SyntaxErrorMessage) {
                     SyntaxErrorMessage sem = (SyntaxErrorMessage) message
-                    final tmp = new FileSystemResource(sem.getCause().getSourceLocator())
+                    FileSystemResource tmp = new FileSystemResource(sem.getCause().getSourceLocator())
                     if (tmp.exists()) {
                         res = tmp
                         break

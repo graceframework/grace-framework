@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -285,7 +285,7 @@ public abstract class NavigableMapConfig implements Config {
         if (cache.containsKey(from)) {
             return cache.get(from);
         }
-        final Map<Object, Object> to = new LinkedHashMap<>();
+        Map<Object, Object> to = new LinkedHashMap<>();
         for (Map.Entry<String, Object> entry : from.entrySet()) {
             if (entry.getValue() instanceof NavigableMap) {
                 to.put(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
@@ -313,12 +313,12 @@ public abstract class NavigableMapConfig implements Config {
     @SuppressWarnings("unchecked")
     private ConfigObject convertPropsToMap(ConfigObject config) {
         for (Map.Entry<String, Object> entry : (Set<Map.Entry<String, Object>>) config.entrySet()) {
-            final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
+            IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
             if (entry.getValue() instanceof NavigableMap) {
                 config.setProperty(entry.getKey(), convertToMap((NavigableMap) entry.getValue(), cache));
             }
             else if (entry.getValue() instanceof List) {
-                final List<Object> newList = new ArrayList<>();
+                List<Object> newList = new ArrayList<>();
                 for (Object o : (List<?>) entry.getValue()) {
                     if (o instanceof NavigableMap) {
                         newList.add(convertToMap((NavigableMap) o, cache));
@@ -338,7 +338,7 @@ public abstract class NavigableMapConfig implements Config {
         if (originalValue != null) {
             if (targetType.isInstance(originalValue)) {
                 if (originalValue instanceof NavigableMap && targetType.equals(Map.class)) {
-                    final IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
+                    IdentityHashMap<NavigableMap, Map<Object, Object>> cache = new IdentityHashMap<>();
                     return (T) convertToMap((NavigableMap) originalValue, cache);
                 }
                 else {

@@ -36,10 +36,9 @@ public class Pair<A, B> {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.aValue == null) ? 0 : this.aValue.hashCode());
-        result = prime * result + ((this.bValue == null) ? 0 : this.bValue.hashCode());
+        result = 31 * result + ((this.aValue == null) ? 0 : this.aValue.hashCode());
+        result = 31 * result + ((this.bValue == null) ? 0 : this.bValue.hashCode());
         return result;
     }
 

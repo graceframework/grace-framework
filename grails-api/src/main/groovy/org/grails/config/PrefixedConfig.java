@@ -152,7 +152,7 @@ public class PrefixedConfig implements Config {
 
     @Override
     public Set<Entry<String, Object>> entrySet() {
-        final Set<Entry<String, Object>> entries = this.delegate.entrySet();
+        Set<Entry<String, Object>> entries = this.delegate.entrySet();
         Set<Entry<String, Object>> newEntries = new HashSet<>();
         for (final Entry<String, Object> entry : entries) {
             newEntries.add(new Entry<>() {
