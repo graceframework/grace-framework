@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
     @Generated
     void header(String headerName, headerValue) {
         if (headerValue != null) {
-            final HttpServletResponse response = getResponse()
+            HttpServletResponse response = getResponse()
             response?.setHeader headerName, headerValue.toString()
         }
     }
@@ -303,7 +303,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
      * @param request The servlet request
      */
     private synchronized boolean isTokenValid(GrailsWebRequest webRequest) {
-        final request = webRequest.getCurrentRequest()
+        HttpServletRequest request = webRequest.getCurrentRequest()
         SynchronizerTokensHolder tokensHolderInSession = (SynchronizerTokensHolder) request.getSession(false)?.getAttribute(
                 SynchronizerTokensHolder.HOLDER)
         if (!tokensHolderInSession) {
@@ -332,7 +332,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
      * Resets the token in the request
      */
     private synchronized resetToken(GrailsWebRequest webRequest) {
-        final request = webRequest.getCurrentRequest()
+        HttpServletRequest request = webRequest.getCurrentRequest()
         SynchronizerTokensHolder tokensHolderInSession = (SynchronizerTokensHolder) request.getSession(false)?.getAttribute(
                 SynchronizerTokensHolder.HOLDER)
         String urlInRequest = webRequest.params[SynchronizerTokensHolder.TOKEN_URI]
@@ -369,18 +369,18 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
      * parameters included an id and no corresponding record was found in the database.
      */
     @Generated
-    def initializeCommandObject(final Class type, final String commandObjectParameterName) throws Exception {
-        final HttpServletRequest request = getRequest()
+    def initializeCommandObject(Class type, String commandObjectParameterName) throws Exception {
+        HttpServletRequest request = getRequest()
         def commandObjectInstance = null
         try {
-            final DataBindingSource dataBindingSource = DataBindingUtils
+            DataBindingSource dataBindingSource = DataBindingUtils
                     .createDataBindingSource(
                             getGrailsApplication(), type,
                             request)
-            final DataBindingSource commandObjectBindingSource = getCommandObjectBindingSourceForPrefix(
+            DataBindingSource commandObjectBindingSource = getCommandObjectBindingSourceForPrefix(
                     commandObjectParameterName, dataBindingSource)
             def entityIdentifierValue = null
-            final boolean isDomainClass
+            boolean isDomainClass
             if (GroovyObject.isAssignableFrom(type)) {
                 isDomainClass = ClassHelper.make(type).implementsInterface(ClassHelper.make('grails.artefact.DomainClass'))
             }
@@ -391,7 +391,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             if (isDomainClass) {
                 entityIdentifierValue = commandObjectBindingSource.getIdentifierValue()
                 if (entityIdentifierValue == null) {
-                    final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
+                    GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
                     entityIdentifierValue = webRequest?.getParams()?.getIdentifier()
                 }
             }
@@ -403,14 +403,14 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
                 }
             }
 
-            final HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod())
+            HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod())
 
             if (entityIdentifierValue != null) {
                 try {
                     commandObjectInstance = InvokerHelper.invokeStaticMethod(type, 'get', entityIdentifierValue)
                 }
                 catch (Exception e) {
-                    final Errors errors = getErrors()
+                    Errors errors = getErrors()
                     if (errors != null) {
                         errors.reject("${getClass().getName()}.commandObject.${commandObjectParameterName}.error", e.getMessage())
                     }
@@ -444,14 +444,14 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
             }
         }
         catch (Exception e) {
-            final exceptionHandlerMethodFor = getExceptionHandlerMethodFor(e.getClass())
+            Method exceptionHandlerMethodFor = getExceptionHandlerMethodFor(e.getClass())
             if (exceptionHandlerMethodFor != null) {
                 throw e
             }
             commandObjectInstance = type.newInstance()
-            final o = GrailsMetaClassUtils.invokeMethodIfExists(commandObjectInstance, 'getErrors')
+            Object o = GrailsMetaClassUtils.invokeMethodIfExists(commandObjectInstance, 'getErrors')
             if (o instanceof BindingResult) {
-                final BindingResult errors = (BindingResult) o
+                BindingResult errors = (BindingResult) o
                 String msg = "Error occurred initializing command object [${commandObjectParameterName}]. ${e.getMessage()}"
                 ObjectError error = new ObjectError(commandObjectParameterName, msg)
                 errors.addError(error)
@@ -459,8 +459,8 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         }
 
         if (commandObjectInstance != null) {
-            final ApplicationContext applicationContext = getApplicationContext()
-            final AutowireCapableBeanFactory autowireCapableBeanFactory = applicationContext.getAutowireCapableBeanFactory()
+            ApplicationContext applicationContext = getApplicationContext()
+            AutowireCapableBeanFactory autowireCapableBeanFactory = applicationContext.getAutowireCapableBeanFactory()
             autowireCapableBeanFactory.autowireBeanProperties(commandObjectInstance,
                     AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false)
         }
@@ -499,13 +499,13 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         }
 
         Method handlerMethod
-        final List<ControllerExceptionHandlerMetaData> exceptionHandlerMetaDataInstances =
+        List<ControllerExceptionHandlerMetaData> exceptionHandlerMetaDataInstances =
                 (List<ControllerExceptionHandlerMetaData>) GrailsClassUtils.getStaticFieldValue(this.getClass(),
                         ControllerActionTransformer.EXCEPTION_HANDLER_META_DATA_FIELD_NAME)
 
         if (exceptionHandlerMetaDataInstances) {
             // find all of the handler methods which could accept this exception type
-            final List<ControllerExceptionHandlerMetaData> matches =
+            List<ControllerExceptionHandlerMetaData> matches =
                     (List<ControllerExceptionHandlerMetaData>) exceptionHandlerMetaDataInstances.findAll {
                         ControllerExceptionHandlerMetaData cemd -> cemd.exceptionType.isAssignableFrom(exceptionType)
                     }
@@ -515,7 +515,7 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
 
                 // if there are more than 1, find the one that is farthest down the inheritance hierarchy
                 for (int i = 1; i < matches.size(); i++) {
-                    final ControllerExceptionHandlerMetaData nextMatch = matches.get(i)
+                    ControllerExceptionHandlerMetaData nextMatch = matches.get(i)
                     if (theOne.getExceptionType().isAssignableFrom(nextMatch.getExceptionType())) {
                         theOne = nextMatch
                     }

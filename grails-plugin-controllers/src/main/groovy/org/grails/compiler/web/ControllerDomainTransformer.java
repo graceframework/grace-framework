@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
     }
 
     @Override
-    public void performInjection(final SourceUnit source, final GeneratorContext context, final ClassNode classNode) {
+    public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         super.performInjection(source, context, classNode);
         new DefaultASTDatabindingHelper().injectDatabindingCode(source, context, classNode);
     }

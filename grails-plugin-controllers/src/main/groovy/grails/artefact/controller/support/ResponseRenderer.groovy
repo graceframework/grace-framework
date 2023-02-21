@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -467,11 +467,11 @@ trait ResponseRenderer extends WebAttributes {
                 }
                 else {
                     try {
-                        final int statusCode = statusObj instanceof Number ? ((Number) statusObj).intValue() : Integer.parseInt(statusObj.toString())
+                        int statusCode = statusObj instanceof Number ? ((Number) statusObj).intValue() : Integer.parseInt(statusObj.toString())
                         response.status = statusCode
                         statusSet = true
                     }
-                    catch (NumberFormatException e) {
+                    catch (NumberFormatException ignored) {
                         throw new ControllerExecutionException(
                                 'Argument [status] of method [render] must be a valid integer.')
                     }

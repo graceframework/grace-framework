@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class AllowedMethodsHelper {
 
-    static boolean isAllowed(final String actionName, final HttpServletRequest request, final Map allowedMethods) {
+    static boolean isAllowed(String actionName, HttpServletRequest request, Map allowedMethods) {
         boolean isAllowed = true
         if (allowedMethods?.containsKey(actionName)) {
-            def method = request.method
-            def value = allowedMethods[actionName]
+            String method = request.method
+            Object value = allowedMethods[actionName]
             if (value instanceof String) {
                 isAllowed = method.equalsIgnoreCase(value)
             }
