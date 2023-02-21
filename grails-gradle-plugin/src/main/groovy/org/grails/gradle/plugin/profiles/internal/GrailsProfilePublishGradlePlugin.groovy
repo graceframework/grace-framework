@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class GrailsProfilePublishGradlePlugin extends GrailsCentralPublishGradlePlugin 
     @Override
     void apply(Project project) {
         super.apply(project)
-        final File tempReadmeForJavadoc = Files.createTempFile('README', 'txt').toFile()
+        File tempReadmeForJavadoc = Files.createTempFile('README', 'txt').toFile()
         tempReadmeForJavadoc << 'https://central.sonatype.org/publish/requirements/#supply-javadoc-and-sources'
         project.tasks.create('javadocJar', Jar, (Action) { Jar jar ->
             jar.from(tempReadmeForJavadoc)

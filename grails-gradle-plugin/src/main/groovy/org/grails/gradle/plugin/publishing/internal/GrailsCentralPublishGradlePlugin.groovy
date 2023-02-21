@@ -92,26 +92,26 @@ BINTRAY_KEY=key
 
     @Override
     void apply(Project project) {
-        final ExtensionContainer extensionContainer = project.extensions
-        final TaskContainer taskContainer = project.tasks
-        final GrailsPublishExtension gpe = extensionContainer.create('grailsPublish', GrailsPublishExtension)
+        ExtensionContainer extensionContainer = project.extensions
+        TaskContainer taskContainer = project.tasks
+        GrailsPublishExtension gpe = extensionContainer.create('grailsPublish', GrailsPublishExtension)
 
-        final String artifactoryUsername = project.hasProperty('artifactoryPublishUsername')
+        String artifactoryUsername = project.hasProperty('artifactoryPublishUsername')
                 ? project.artifactoryPublishUsername : System.getenv('ARTIFACTORY_USERNAME') ?: ''
-        final String artifactoryPassword = project.hasProperty('artifactoryPublishPassword')
+        String artifactoryPassword = project.hasProperty('artifactoryPublishPassword')
                 ? project.artifactoryPublishPassword : System.getenv('ARTIFACTORY_PASSWORD') ?: ''
-        final String ossNexusUrl = project.hasProperty('sonatypeNexusUrl')
+        String ossNexusUrl = project.hasProperty('sonatypeNexusUrl')
                 ? project.sonatypeNexusUrl : System.getenv('SONATYPE_NEXUS_URL') ?: ''
-        final String ossSnapshotUrl = project.hasProperty('sonatypeSnapshotUrl')
+        String ossSnapshotUrl = project.hasProperty('sonatypeSnapshotUrl')
                 ? project.sonatypeSnapshotUrl : System.getenv('SONATYPE_SNAPSHOT_URL') ?: ''
-        final String ossUser = project.hasProperty('sonatypeOssUsername')
+        String ossUser = project.hasProperty('sonatypeOssUsername')
                 ? project.sonatypeOssUsername : System.getenv('SONATYPE_USERNAME') ?: ''
-        final String ossPass = project.hasProperty('sonatypeOssPassword')
+        String ossPass = project.hasProperty('sonatypeOssPassword')
                 ? project.sonatypeOssPassword : System.getenv('SONATYPE_PASSWORD') ?: ''
-        final String ossStagingProfileId = project.hasProperty('sonatypeOssStagingProfileId')
+        String ossStagingProfileId = project.hasProperty('sonatypeOssStagingProfileId')
                 ? project.sonatypeOssStagingProfileId : System.getenv('SONATYPE_STAGING_PROFILE_ID') ?: ''
 
-        final ExtraPropertiesExtension extraPropertiesExtension = extensionContainer.findByType(ExtraPropertiesExtension)
+        ExtraPropertiesExtension extraPropertiesExtension = extensionContainer.findByType(ExtraPropertiesExtension)
 
         extraPropertiesExtension.setProperty(SIGNING_KEY_ID, project.hasProperty(SIGNING_KEY_ID)
                 ? project[SIGNING_KEY_ID] : System.getenv('SIGNING_KEY') ?: null)
@@ -123,7 +123,7 @@ BINTRAY_KEY=key
         project.afterEvaluate {
             boolean isSnapshot = project.version.endsWith('SNAPSHOT')
             boolean isRelease = !isSnapshot
-            final PluginManager pluginManager = project.getPluginManager()
+            PluginManager pluginManager = project.getPluginManager()
             pluginManager.apply(MavenPublishPlugin)
 
             project.publishing {

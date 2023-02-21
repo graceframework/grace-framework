@@ -253,7 +253,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileStatic
     protected void configureGroovy(Project project) {
-        final String groovyVersion = resolveGroovyVersion(project)
+        String groovyVersion = resolveGroovyVersion(project)
         if (groovyVersion) {
             project.configurations.all({ Configuration configuration ->
                 configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
@@ -270,7 +270,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileStatic
     protected void configureMicronaut(Project project) {
-        final String micronautVersion = resolveMicronautVersion(project)
+        String micronautVersion = resolveMicronautVersion(project)
 
         project.configurations.all({ Configuration configuration ->
             configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
@@ -524,7 +524,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void enableFileWatch(Environment environment, Project project) {
         if (environment.isReloadEnabled()) {
-            final String micronautVersion = resolveMicronautVersion(project)
+            String micronautVersion = resolveMicronautVersion(project)
             if (project.configurations.findByName('developmentOnly')) {
                 project.dependencies.add(
                         'developmentOnly',
