@@ -297,14 +297,15 @@ class SimpleDataBinder implements DataBinder {
         descriptor
     }
 
-    protected void processProperty(Object obj, MetaProperty metaProperty, val, DataBindingSource source, DataBindingListener listener, Object errors) {
+    protected void processProperty(Object obj, MetaProperty metaProperty, Object val,
+                                   DataBindingSource source, DataBindingListener listener, Object errors) {
         String propName = metaProperty.name
         Class propertyType = metaProperty.type
         if (structuredEditors.containsKey(propertyType) && (val == 'struct' || val == 'date.struct')) {
             StructuredBindingEditor structuredEditor = structuredEditors[propertyType]
-            val = structuredEditor.getPropertyValue obj, propName, source
+            val = structuredEditor.getPropertyValue(obj, propName, source)
         }
-        bindProperty obj, source, metaProperty, val, listener, errors
+        bindProperty(obj, source, metaProperty, val, listener, errors)
     }
 
     protected SimpleMapDataBindingSource splitIndexedStruct(IndexedPropertyReferenceDescriptor indexedPropertyReferenceDescriptor,
@@ -645,7 +646,8 @@ class SimpleDataBinder implements DataBinder {
         propertyValue
     }
 
-    protected void setPropertyValue(Object obj, DataBindingSource source, MetaProperty metaProperty, Object propertyValue, DataBindingListener listener) {
+    protected void setPropertyValue(Object obj, DataBindingSource source, MetaProperty metaProperty,
+                                    Object propertyValue, DataBindingListener listener) {
         boolean convertCollectionElements = false
         if (propertyValue instanceof Collection) {
             Class referencedType = getReferencedTypeForCollection(metaProperty.name, obj)
