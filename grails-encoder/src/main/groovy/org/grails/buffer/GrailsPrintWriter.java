@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2022 the original author or authors.
+ * Copyright 2009-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -309,7 +309,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      * @param len Number of characters to write
      */
     @Override
-    public void write(final char[] buf, final int off, final int len) {
+    public void write(char[] buf, int off, int len) {
         this.usageFlag = true;
         if (this.trouble || buf == null || len == 0) {
             return;
@@ -330,7 +330,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
      * @param len Number of characters to write
      */
     @Override
-    public void write(final String s, final int off, final int len) {
+    public void write(String s, int off, int len) {
         this.usageFlag = true;
         if (this.trouble || s == null || s.length() == 0) {
             return;
@@ -345,7 +345,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     @Override
-    public void write(final char[] buf) {
+    public void write(char[] buf) {
         write(buf, 0, buf.length);
     }
 
@@ -447,7 +447,7 @@ public class GrailsPrintWriter extends Writer implements GrailsWrappedWriter, En
     }
 
     @Override
-    public GrailsPrintWriter append(final CharSequence csq, final int start, final int end) {
+    public GrailsPrintWriter append(CharSequence csq, int start, int end) {
         try {
             this.usageFlag = true;
             if (csq == null) {

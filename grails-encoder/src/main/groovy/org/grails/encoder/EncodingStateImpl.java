@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,9 +63,8 @@ public class EncodingStateImpl implements EncodingState {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.encoders == null) ? 0 : this.encoders.hashCode());
+        result = 31 * result + ((this.encoders == null) ? 0 : this.encoders.hashCode());
         return result;
     }
 

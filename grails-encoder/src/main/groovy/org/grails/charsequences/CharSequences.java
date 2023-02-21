@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public final class CharSequences {
         if (start != 0) {
             return false;
         }
-        final Class<?> csqClass = str.getClass();
+        Class<?> csqClass = str.getClass();
         return (csqClass == String.class || csqClass == StringBuilder.class || csqClass == StringBuffer.class) && count == str.length();
     }
 
@@ -88,7 +88,7 @@ public final class CharSequences {
      * @throws IOException
      */
     public static void writeCharSequence(Writer target, CharSequence csq, int start, int end) throws IOException {
-        final Class<?> csqClass = csq.getClass();
+        Class<?> csqClass = csq.getClass();
         if (csqClass == String.class) {
             target.write((String) csq, start, end - start);
         }
@@ -152,7 +152,7 @@ public final class CharSequences {
      *             </ul>
      */
     public static void getChars(CharSequence csq, int srcBegin, int srcEnd, char[] dst, int dstBegin) {
-        final Class<?> csqClass = csq.getClass();
+        Class<?> csqClass = csq.getClass();
         if (csqClass == String.class) {
             ((String) csq).getChars(srcBegin, srcEnd, dst, dstBegin);
         }

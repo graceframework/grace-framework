@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public class StreamingEncoderWriter extends FilterWriter implements EncodedAppen
 
     @Override
     public void write(String str, int off, int len) throws IOException {
-        final EncodingState encodingState = lookupEncodingState(str, off, len);
+        EncodingState encodingState = lookupEncodingState(str, off, len);
         if (shouldEncodeWith(this.encoder, encodingState)) {
             this.encodesToWriter.encodeToWriter(str, off, len, out, encodingState);
         }
