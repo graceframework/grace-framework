@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2022 the original author or authors.
+ * Copyright 2008-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public final class GrailsNameUtils {
      * @return The setter equivalent
      */
     public static String getSetterName(String propertyName) {
-        final String suffix = getSuffixForGetterOrSetter(propertyName);
+        String suffix = getSuffixForGetterOrSetter(propertyName);
         return PROPERTY_SET_PREFIX + suffix;
     }
 
@@ -53,12 +53,12 @@ public final class GrailsNameUtils {
      * @return The name for the getter method for this property, if it were to exist, i.e. getConstraints
      */
     public static String getGetterName(String propertyName) {
-        final String suffix = getSuffixForGetterOrSetter(propertyName);
+        String suffix = getSuffixForGetterOrSetter(propertyName);
         return PROPERTY_GET_PREFIX + suffix;
     }
 
     private static String getSuffixForGetterOrSetter(String propertyName) {
-        final String suffix;
+        String suffix;
         if (propertyName.length() > 1 &&
                 Character.isLowerCase(propertyName.charAt(0)) &&
                 Character.isUpperCase(propertyName.charAt(1))) {
@@ -514,7 +514,7 @@ public final class GrailsNameUtils {
         if (isBlank(packageName)) {
             return false;
         }
-        final String[] parts = packageName.split("\\.");
+        String[] parts = packageName.split("\\.");
         for (String part : parts) {
             if (!isValidJavaIdentifier(part)) {
                 return false;
@@ -534,7 +534,7 @@ public final class GrailsNameUtils {
             return false;
         }
 
-        final char[] chars = name.toCharArray();
+        char[] chars = name.toCharArray();
         if (!Character.isJavaIdentifierStart(chars[0])) {
             return false;
         }

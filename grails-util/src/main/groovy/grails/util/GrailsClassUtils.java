@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -554,7 +554,7 @@ public final class GrailsClassUtils {
      * @return true if the method is declared public static
      */
     public static boolean isPublicStatic(Method m) {
-        final int modifiers = m.getModifiers();
+        int modifiers = m.getModifiers();
         return Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers);
     }
 
@@ -564,7 +564,7 @@ public final class GrailsClassUtils {
      * @return true if the field is declared public static
      */
     public static boolean isPublicStatic(Field f) {
-        final int modifiers = f.getModifiers();
+        int modifiers = f.getModifiers();
         return Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers);
     }
 
