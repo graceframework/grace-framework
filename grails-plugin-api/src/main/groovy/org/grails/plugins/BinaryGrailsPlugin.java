@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,7 +128,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     }
 
     protected void initializeViewMap(BinaryGrailsPluginDescriptor descriptor) {
-        final Resource descriptorResource = descriptor.getResource();
+        Resource descriptorResource = descriptor.getResource();
 
         Resource viewsPropertiesResource = null;
         try {
@@ -159,9 +159,9 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
             viewsProperties.load(input);
             for (Object view : viewsProperties.keySet()) {
                 String viewName = view.toString();
-                final String viewClassName = viewsProperties.getProperty(viewName);
+                String viewClassName = viewsProperties.getProperty(viewName);
                 try {
-                    final Class<?> viewClass = this.grailsApplication.getClassLoader().loadClass(viewClassName);
+                    Class<?> viewClass = this.grailsApplication.getClassLoader().loadClass(viewClassName);
                     this.precompiledViewMap.put(viewName, viewClass);
                 }
                 catch (Throwable e) {
@@ -177,7 +177,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
     protected void initializeProvidedArtefacts(List<String> classNames) {
         List<Class<?>> artefacts = new ArrayList<>();
         if (!classNames.isEmpty()) {
-            final ClassLoader classLoader = this.grailsApplication.getClassLoader();
+            ClassLoader classLoader = this.grailsApplication.getClassLoader();
             for (String className : classNames) {
                 try {
                     artefacts.add(classLoader.loadClass(className));
@@ -212,7 +212,7 @@ public class BinaryGrailsPlugin extends DefaultGrailsPlugin {
      * @return The resource or null if it doesn't exist
      */
     public Resource getResource(String path) {
-        final Resource descriptorResource = this.descriptor.getResource();
+        Resource descriptorResource = this.descriptor.getResource();
 
         try {
             Resource resource = descriptorResource.createRelative("static" + path);

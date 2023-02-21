@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -402,7 +402,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
 
         List<GrailsPlugin> grailsCorePlugins = new ArrayList<>();
 
-        final Class<?>[] corePluginClasses = finder.getPluginClasses();
+        Class<?>[] corePluginClasses = finder.getPluginClasses();
 
         if (logger.isDebugEnabled()) {
             logger.debug("Found [" + corePluginClasses.length + "] core plugins to load...");
@@ -411,7 +411,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
         for (Class<?> pluginClass : corePluginClasses) {
             if (pluginClass != null && !Modifier.isAbstract(pluginClass.getModifiers()) && pluginClass != DefaultGrailsPlugin.class) {
                 StartupStep pluginStep = getApplicationStartup().start("grails.plugins.instantiate");
-                final BinaryGrailsPluginDescriptor binaryDescriptor = finder.getBinaryDescriptor(pluginClass);
+                BinaryGrailsPluginDescriptor binaryDescriptor = finder.getBinaryDescriptor(pluginClass);
                 GrailsPlugin plugin;
                 if (binaryDescriptor != null) {
                     plugin = createBinaryGrailsPlugin(pluginClass, binaryDescriptor);
@@ -433,7 +433,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
     }
 
     private String getPluginGrailsVersion(GrailsPlugin plugin) {
-        final Object grailsVersionValue = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(plugin.getInstance(), GRAILS_VERSION);
+        Object grailsVersionValue = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(plugin.getInstance(), GRAILS_VERSION);
         return grailsVersionValue != null ? grailsVersionValue.toString() : null;
     }
 
@@ -444,7 +444,7 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
      * @return true only in case plugin is compatible or impossible to determine, false otherwise
      */
     private boolean isCompatiblePlugin(GrailsPlugin plugin) {
-        final String pluginGrailsVersion = getPluginGrailsVersion(plugin);
+        String pluginGrailsVersion = getPluginGrailsVersion(plugin);
 
         if (pluginGrailsVersion == null || pluginGrailsVersion.contains("@")) {
             if (logger.isDebugEnabled()) {
@@ -453,9 +453,9 @@ public class DefaultGrailsPluginManager extends AbstractGrailsPluginManager {
             return true;
         }
 
-        final String appGrailsVersion = this.application.getMetadata().getGrailsVersion();
-        final String pluginMinGrailsVersion = GrailsVersionUtils.getLowerVersion(pluginGrailsVersion);
-        final String pluginMaxGrailsVersion = GrailsVersionUtils.getUpperVersion(pluginGrailsVersion);
+        String appGrailsVersion = this.application.getMetadata().getGrailsVersion();
+        String pluginMinGrailsVersion = GrailsVersionUtils.getLowerVersion(pluginGrailsVersion);
+        String pluginMaxGrailsVersion = GrailsVersionUtils.getUpperVersion(pluginGrailsVersion);
 
         if (appGrailsVersion == null) {
             return true;

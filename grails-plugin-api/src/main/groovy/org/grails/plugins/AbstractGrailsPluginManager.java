@@ -578,7 +578,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
     static ConfigSlurper getConfigSlurper(GrailsApplication application) {
         String environment = Environment.getCurrent().getName();
         ConfigSlurper configSlurper = new ConfigSlurper(environment);
-        final Map<String, Object> binding = new HashMap<>();
+        Map<String, Object> binding = new HashMap<>();
         // configure config slurper binding
         binding.put(CONFIG_BINDING_USER_HOME, System.getProperty("user.home"));
         binding.put(CONFIG_BINDING_GRAILS_HOME, System.getProperty("grails.home"));
@@ -599,7 +599,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
             try {
                 c = configSlurper.parse(file.toURI().toURL());
                 this.application.getConfig().merge(c);
-                final Map flat = c.flatten();
+                Map flat = c.flatten();
                 this.application.getConfig().merge(flat);
                 this.application.configChanged();
                 informPluginsOfConfigChange();
@@ -675,7 +675,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
 
     public String getPluginViewsPathForClass(Class<?> theClass) {
         if (theClass != null) {
-            final String path = getPluginPathForClass(theClass);
+            String path = getPluginPathForClass(theClass);
             if (StringUtils.isNotBlank(path)) {
                 return path + '/' + GrailsResourceUtils.GRAILS_APP_DIR + "/views";
             }

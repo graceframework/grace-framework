@@ -274,7 +274,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     private void evaluateAndAddIncludeExcludeObject(Map targetMap, Object includeExcludeObject, boolean include, Closure converter) {
         if (includeExcludeObject instanceof String) {
-            final String includeExcludeString = (String) includeExcludeObject;
+            String includeExcludeString = (String) includeExcludeObject;
             evaluateAndAddToIncludeExcludeSet(targetMap, includeExcludeString, include, converter);
         }
         else if (includeExcludeObject instanceof List) {
@@ -286,7 +286,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     private void evaluateAndAddListOfValues(Map targetMap, List includeExcludeList, boolean include, Closure converter) {
         for (Object value : includeExcludeList) {
             if (value instanceof String) {
-                final String scopeName = (String) value;
+                String scopeName = (String) value;
                 evaluateAndAddToIncludeExcludeSet(targetMap, scopeName, include, converter);
             }
         }
@@ -313,7 +313,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
     private void evaluateProvidedArtefacts() {
         Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, this.plugin, PROVIDED_ARTEFACTS);
         if (result instanceof Collection) {
-            final Collection artefactList = (Collection) result;
+            Collection artefactList = (Collection) result;
             this.providedArtefacts = (Class<?>[]) artefactList.toArray(new Class[0]);
         }
     }
@@ -370,8 +370,8 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         }
 
         Environment env = Environment.getCurrent();
-        final boolean warDeployed = env.isWarDeployed();
-        final boolean reloadEnabled = env.isReloadEnabled();
+        boolean warDeployed = env.isWarDeployed();
+        boolean reloadEnabled = env.isReloadEnabled();
 
         if (!((reloadEnabled || !warDeployed))) {
             return;
@@ -396,7 +396,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
             }
 
             List<String> resourceListTmp = new ArrayList<>();
-            final String baseLocation = env.getReloadLocation();
+            String baseLocation = env.getReloadLocation();
 
             for (Object ref : resourceList) {
                 String stringRef = ref.toString();
@@ -426,7 +426,7 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
     }
 
-    private void addBaseLocationPattern(List<String> resourceList, final String baseLocation, String pattern) {
+    private void addBaseLocationPattern(List<String> resourceList, String baseLocation, String pattern) {
         resourceList.add(baseLocation == null ? pattern : getResourcePatternForBaseLocation(baseLocation, pattern));
     }
 
