@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.Generated
 import org.springframework.core.Ordered
 import org.springframework.web.servlet.ModelAndView
+import org.springframework.web.servlet.View
 
 import grails.artefact.controller.support.RequestForwarder
 import grails.artefact.controller.support.ResponseRedirector
@@ -41,6 +42,7 @@ import org.grails.plugins.web.interceptors.GrailsInterceptorHandlerInterceptorAd
 import org.grails.plugins.web.interceptors.InterceptorArtefactHandler
 import org.grails.plugins.web.interceptors.UrlMappingMatcher
 import org.grails.web.mapping.mvc.UrlMappingsHandlerMapping
+import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.servlet.mvc.exceptions.ControllerExecutionException
 import org.grails.web.servlet.view.CompositeViewResolver
 import org.grails.web.util.GrailsApplicationAttributes
@@ -82,7 +84,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
         Collection<Matcher> allMatchers = matchers
         if (allMatchers.isEmpty()) {
             // default to map just the controller by convention
-            def matcher = new UrlMappingMatcher(this)
+            Matcher matcher = new UrlMappingMatcher(this)
             String propertyName = GrailsNameUtils.getLogicalPropertyName(getClass().simpleName, InterceptorArtefactHandler.TYPE)
             matcher.matches(controller: Pattern.compile(propertyName))
             allMatchers << matcher
@@ -94,9 +96,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
         String noCtxUri = uri - ctxPath
         boolean checkNoCtxUri = ctxPath && uri.startsWith(ctxPath)
 
-        def matchedInfo = request.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST)
-
-        UrlMappingInfo grailsMappingInfo = (UrlMappingInfo) matchedInfo
+        UrlMappingInfo grailsMappingInfo = (UrlMappingInfo) request.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST)
 
         for (Matcher matcher in allMatchers) {
             boolean matchUri = matcher.doesMatch(uri, grailsMappingInfo, req.method)
@@ -119,7 +119,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     Matcher matchAll() {
-        def matcher = new UrlMappingMatcher(this)
+        Matcher matcher = new UrlMappingMatcher(this)
         matcher.matchAll()
         matchers << matcher
         matcher
@@ -130,7 +130,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     Map<String, Object> getModel() {
-        def modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
+        ModelAndView modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
         modelAndView?.modelMap
     }
 
@@ -141,8 +141,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     void setModel(Map<String, Object> model) {
-        def request = currentRequestAttributes()
-        def modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
+        GrailsWebRequest request = currentRequestAttributes()
+        ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
         if (modelAndView == null) {
             modelAndView = new ModelAndView()
             request.setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, modelAndView, 0)
@@ -155,7 +155,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     String getView() {
-        def modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
+        ModelAndView modelAndView = (ModelAndView) currentRequestAttributes().getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
         modelAndView?.viewName
     }
 
@@ -166,8 +166,8 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     void setView(String view) {
-        def request = currentRequestAttributes()
-        def modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
+        GrailsWebRequest request = currentRequestAttributes()
+        ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0)
         if (modelAndView == null) {
             modelAndView = new ModelAndView()
             request.setAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, modelAndView, 0)
@@ -202,7 +202,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     Throwable getThrowable() {
-        def request = currentRequestAttributes()
+        GrailsWebRequest request = currentRequestAttributes()
 
         (Throwable) request.getAttribute(Matcher.THROWABLE, 0)
     }
@@ -214,7 +214,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
      */
     @Generated
     Matcher match(Map arguments) {
-        def matcher = new UrlMappingMatcher(this)
+        Matcher matcher = new UrlMappingMatcher(this)
         matcher.matches(arguments)
         matchers << matcher
         matcher
@@ -254,7 +254,7 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     @Generated
     void header(String headerName, headerValue) {
         if (headerValue != null) {
-            final HttpServletResponse response = getResponse()
+            HttpServletResponse response = getResponse()
             response?.setHeader headerName, headerValue.toString()
         }
     }
@@ -268,16 +268,16 @@ trait Interceptor implements ResponseRenderer, ResponseRedirector, RequestForwar
     void render(Map argMap) {
         boolean isRenderView = argMap.containsKey(RenderDynamicMethod.ARGUMENT_VIEW)
         if (isRenderView) {
-            def req = request
-            def previous = (ModelAndView) req.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
+            HttpServletRequest req = request
+            ModelAndView previous = (ModelAndView) req.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
             req.setAttribute(GrailsInterceptorHandlerInterceptorAdapter.INTERCEPTOR_RENDERED_VIEW, true)
             ResponseRenderer.super.render(argMap)
-            def mav = (ModelAndView) req.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
+            ModelAndView mav = (ModelAndView) req.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)
             if (mav != null) {
-                def view = applicationContext.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver)
+                View view = applicationContext.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver)
                         .resolveView(mav.viewName, request.getLocale())
                 if (view != null) {
-                    def resp = response
+                    HttpServletResponse resp = response
                     view.render(mav.model, req, resp)
                     mav.clear()
                     previous?.clear()
