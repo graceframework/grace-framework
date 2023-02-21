@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,7 +141,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         // expose the servlet 2.3 specs status code request attribute as 500
         request.setAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        final GrailsWrappedRuntimeException gwre = new GrailsWrappedRuntimeException(this.servletContext, e);
+        GrailsWrappedRuntimeException gwre = new GrailsWrappedRuntimeException(this.servletContext, e);
         mv.addObject(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, gwre);
         mv.addObject(WebUtils.EXCEPTION_ATTRIBUTE, gwre);
     }
@@ -279,7 +279,7 @@ public class GrailsExceptionResolver extends SimpleMappingExceptionResolver impl
         }
 
         Config config = this.grailsApplication != null ? this.grailsApplication.getConfig() : null;
-        final boolean shouldLogRequestParameters = config != null ? config.getProperty(Settings.SETTING_LOG_REQUEST_PARAMETERS,
+        boolean shouldLogRequestParameters = config != null ? config.getProperty(Settings.SETTING_LOG_REQUEST_PARAMETERS,
                 Boolean.class, Environment.getCurrent() == Environment.DEVELOPMENT) : false;
 
         if (shouldLogRequestParameters) {
