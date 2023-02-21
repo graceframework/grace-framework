@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class ServicesGrailsPlugin extends Plugin implements PriorityOrdered {
     Closure doWithSpring() {
         { ->
             GrailsApplication application = grailsApplication
-            final boolean springTransactionManagement = config.getProperty(Settings.SPRING_TRANSACTION_MANAGEMENT, Boolean, false)
+            boolean springTransactionManagement = config.getProperty(Settings.SPRING_TRANSACTION_MANAGEMENT, Boolean, false)
             if (springTransactionManagement) {
                 throw new GrailsConfigurationException('Spring proxy-based transaction management no longer supported.' +
                         'Yes the @grails.gorm.transactions.Transactional annotation instead')
