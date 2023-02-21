@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,15 +49,15 @@ class MimeTypesFactoryBean implements FactoryBean<MimeType[]>, ApplicationContex
 
     @Override
     MimeType[] getObject() {
-        final grailsApplication = this.grailsApplication ?: applicationContext.getBean(GrailsApplication)
-        def config = grailsApplication?.config
-        def mimeConfig = getMimeConfig(config)
+        GrailsApplication grailsApplication = this.grailsApplication ?: applicationContext.getBean(GrailsApplication)
+        Config config = grailsApplication?.config
+        Map<CharSequence, CharSequence> mimeConfig = getMimeConfig(config)
         if (!mimeConfig) {
-            mimeTypes = MimeType.createDefaults()
-            return mimeTypes
+            this.mimeTypes = MimeType.createDefaults()
+            return this.mimeTypes
         }
 
-        def mimes = []
+        List<MimeType> mimes = []
         for (entry in mimeConfig.entrySet()) {
             if (entry.value instanceof List) {
                 for (i in entry.value) {
@@ -75,8 +75,8 @@ class MimeTypesFactoryBean implements FactoryBean<MimeType[]>, ApplicationContex
                 }
             }
         }
-        mimeTypes = mimes as MimeType[]
-        mimeTypes
+        this.mimeTypes = mimes.toArray(new MimeType[0])
+        this.mimeTypes
     }
 
     @Override

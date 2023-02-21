@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ class MimeTypesApiSupport {
         LinkedHashMap<String, Object> formats = null
         def original = callable.delegate
         try {
-            final interceptor = new FormatInterceptor()
+            FormatInterceptor interceptor = new FormatInterceptor()
             callable.delegate = interceptor
             callable.resolveStrategy = Closure.DELEGATE_ONLY
             callable.call()

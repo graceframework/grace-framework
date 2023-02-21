@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class DefaultMimeUtility implements MimeUtility {
     public DefaultMimeUtility(List<MimeType> mimeTypes) {
         this.mimeTypes = mimeTypes;
         for (MimeType mimeType : mimeTypes) {
-            final String ext = mimeType.getExtension();
+            String ext = mimeType.getExtension();
             if (!this.extensionToMimeMap.containsKey(ext)) {
                 this.extensionToMimeMap.put(ext, mimeType);
             }
@@ -71,10 +71,10 @@ public class DefaultMimeUtility implements MimeUtility {
             return null;
         }
 
-        final int i = uri.lastIndexOf('.');
-        final int length = uri.length();
+        int i = uri.lastIndexOf('.');
+        int length = uri.length();
         if (i > -1) {
-            final String extension = uri.substring(i + 1, length);
+            String extension = uri.substring(i + 1, length);
             return getMimeTypeForExtension(extension);
         }
 

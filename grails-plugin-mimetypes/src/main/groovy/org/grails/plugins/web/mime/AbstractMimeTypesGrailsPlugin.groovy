@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,8 @@ abstract class AbstractMimeTypesGrailsPlugin extends Plugin {
     Closure doWithSpring() {
         { ->
             "${MimeType.BEAN_NAME}"(MimeTypesFactoryBean)
-            final mimeTypesBeanRef = ref(MimeType.BEAN_NAME)
 
-            grailsMimeUtility(DefaultMimeUtility, mimeTypesBeanRef)
+            grailsMimeUtility(DefaultMimeUtility, ref(MimeType.BEAN_NAME))
             "${MimeTypeResolver.BEAN_NAME}"(DefaultMimeTypeResolver)
         }
     }

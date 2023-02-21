@@ -65,8 +65,8 @@ public class MimeTypesConfiguration {
 
     @Bean
     public MimeType[] mimeTypes() {
-        final Config config = this.grailsApplication.getConfig();
-        final Map<CharSequence, Object> mimeConfig = getMimeConfig(config);
+        Config config = this.grailsApplication.getConfig();
+        Map<CharSequence, Object> mimeConfig = getMimeConfig(config);
         MimeType[] mimeTypes;
         if (mimeConfig == null || mimeConfig.isEmpty()) {
             mimeTypes = MimeType.createDefaults();
@@ -74,8 +74,8 @@ public class MimeTypesConfiguration {
         else {
             List<MimeType> mimes = new ArrayList<>();
             for (Map.Entry<CharSequence, Object> entry : mimeConfig.entrySet()) {
-                final String key = entry.getKey().toString();
-                final Object v = entry.getValue();
+                String key = entry.getKey().toString();
+                Object v = entry.getValue();
                 if (v instanceof List) {
                     List list = (List) v;
                     for (Object i : list) {
