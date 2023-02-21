@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,8 +82,8 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         }
     }
 
-    private void addStaticInitializer(final ClassNode classNode) {
-        final Expression nullOutConstrainedPropertiesExpression = new BinaryExpression(
+    private void addStaticInitializer(ClassNode classNode) {
+        Expression nullOutConstrainedPropertiesExpression = new BinaryExpression(
                 new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME),
                 Token.newSymbol(Types.EQUALS, 0, 0), new ConstantExpression(null));
         List<Statement> statements = new ArrayList<>();
@@ -91,65 +91,65 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
         classNode.addStaticInitializerStatements(statements, true);
     }
 
-    protected void addGetConstraintsMethod(final ClassNode classNode, boolean defaultNullable) {
-        final String getConstraintsMethodName = "getConstraints";
+    protected void addGetConstraintsMethod(ClassNode classNode, boolean defaultNullable) {
+        String getConstraintsMethodName = "getConstraints";
         MethodNode getConstraintsMethod = classNode.getMethod(getConstraintsMethodName, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (getConstraintsMethod == null || !getConstraintsMethod.getDeclaringClass().equals(classNode)) {
-            final BooleanExpression isConstraintsPropertyNull = new BooleanExpression(new BinaryExpression(
+            BooleanExpression isConstraintsPropertyNull = new BooleanExpression(new BinaryExpression(
                     new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(
                     Types.COMPARE_EQUAL, 0, 0), new ConstantExpression(null)));
 
-            final BlockStatement ifConstraintsPropertyIsNullBlockStatement = new BlockStatement();
-            final ArgumentListExpression getConstrainedPropertiesForClassArguments = new ArgumentListExpression();
+            BlockStatement ifConstraintsPropertyIsNullBlockStatement = new BlockStatement();
+            ArgumentListExpression getConstrainedPropertiesForClassArguments = new ArgumentListExpression();
             getConstrainedPropertiesForClassArguments.addExpression(new VariableExpression("this"));
             getConstrainedPropertiesForClassArguments.addExpression(new ConstantExpression(defaultNullable));
-            final Expression getConstraintsMethodCall = new StaticMethodCallExpression(ClassHelper.make(ValidationSupport.class),
+            Expression getConstraintsMethodCall = new StaticMethodCallExpression(ClassHelper.make(ValidationSupport.class),
                     "getConstrainedPropertiesForClass", getConstrainedPropertiesForClassArguments);
-            final Expression initializeConstraintsFieldExpression = new BinaryExpression(
+            Expression initializeConstraintsFieldExpression = new BinaryExpression(
                     new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), Token.newSymbol(Types.EQUALS, 0, 0),
                     getConstraintsMethodCall);
-            final Statement ifConstraintsPropertyIsNullStatement = new IfStatement(isConstraintsPropertyNull,
+            Statement ifConstraintsPropertyIsNullStatement = new IfStatement(isConstraintsPropertyNull,
                     ifConstraintsPropertyIsNullBlockStatement, new ExpressionStatement(new EmptyExpression()));
 
             ifConstraintsPropertyIsNullBlockStatement.addStatement(new ExpressionStatement(initializeConstraintsFieldExpression));
             if (!defaultNullable) {
-                final Map<String, ClassNode> propertiesToConstrain = getPropertiesToEnsureConstraintsFor(classNode);
-                for (final Map.Entry<String, ClassNode> entry : propertiesToConstrain.entrySet()) {
-                    final String propertyName = entry.getKey();
-                    final ClassNode propertyType = entry.getValue();
-                    final String cpName = "$" + propertyName + "$constrainedProperty";
-                    final ArgumentListExpression constrainedPropertyConstructorArgumentList = new ArgumentListExpression();
+                Map<String, ClassNode> propertiesToConstrain = getPropertiesToEnsureConstraintsFor(classNode);
+                for (Map.Entry<String, ClassNode> entry : propertiesToConstrain.entrySet()) {
+                    String propertyName = entry.getKey();
+                    ClassNode propertyType = entry.getValue();
+                    String cpName = "$" + propertyName + "$constrainedProperty";
+                    ArgumentListExpression constrainedPropertyConstructorArgumentList = new ArgumentListExpression();
                     constrainedPropertyConstructorArgumentList.addExpression(new ClassExpression(classNode));
                     constrainedPropertyConstructorArgumentList.addExpression(new ConstantExpression(propertyName));
                     constrainedPropertyConstructorArgumentList.addExpression(new ClassExpression(propertyType));
-                    final ConstructorCallExpression constrainedPropertyCtorCallExpression = new ConstructorCallExpression(
+                    ConstructorCallExpression constrainedPropertyCtorCallExpression = new ConstructorCallExpression(
                             new ClassNode(ConstrainedProperty.class), constrainedPropertyConstructorArgumentList);
-                    final Expression declareConstrainedPropertyExpression = new DeclarationExpression(
+                    Expression declareConstrainedPropertyExpression = new DeclarationExpression(
                             new VariableExpression(cpName, ClassHelper.OBJECT_TYPE),
                             Token.newSymbol(Types.EQUALS, 0, 0),
                             constrainedPropertyCtorCallExpression);
 
-                    final ArgumentListExpression applyConstraintMethodArgumentList = new ArgumentListExpression();
+                    ArgumentListExpression applyConstraintMethodArgumentList = new ArgumentListExpression();
                     applyConstraintMethodArgumentList.addExpression(new ConstantExpression(ConstrainedProperty.NULLABLE_CONSTRAINT));
                     applyConstraintMethodArgumentList.addExpression(new ConstantExpression(defaultNullable));
 
-                    final Expression applyNullableConstraintMethodCallExpression = new MethodCallExpression(
+                    Expression applyNullableConstraintMethodCallExpression = new MethodCallExpression(
                             new VariableExpression(cpName), "applyConstraint", applyConstraintMethodArgumentList);
-                    final ArgumentListExpression putMethodArgumentList = new ArgumentListExpression();
+                    ArgumentListExpression putMethodArgumentList = new ArgumentListExpression();
                     putMethodArgumentList.addExpression(new ConstantExpression(propertyName));
                     putMethodArgumentList.addExpression(new VariableExpression(cpName));
-                    final MethodCallExpression addToConstraintsMapExpression = new MethodCallExpression(
+                    MethodCallExpression addToConstraintsMapExpression = new MethodCallExpression(
                             new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME), "put", putMethodArgumentList);
-                    final BlockStatement addNullableConstraintBlock = new BlockStatement();
+                    BlockStatement addNullableConstraintBlock = new BlockStatement();
                     addNullableConstraintBlock.addStatement(new ExpressionStatement(declareConstrainedPropertyExpression));
                     addNullableConstraintBlock.addStatement(new ExpressionStatement(applyNullableConstraintMethodCallExpression));
                     addNullableConstraintBlock.addStatement(new ExpressionStatement(addToConstraintsMapExpression));
 
-                    final Expression constraintsMapContainsKeyExpression = new MethodCallExpression(
+                    Expression constraintsMapContainsKeyExpression = new MethodCallExpression(
                             new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME, ClassHelper.make(Map.class)),
                             "containsKey", new ArgumentListExpression(new ConstantExpression(propertyName)));
-                    final BooleanExpression ifPropertyIsAlreadyConstrainedExpression = new BooleanExpression(constraintsMapContainsKeyExpression);
-                    final Statement ifPropertyIsAlreadyConstrainedStatement = new IfStatement(
+                    BooleanExpression ifPropertyIsAlreadyConstrainedExpression = new BooleanExpression(constraintsMapContainsKeyExpression);
+                    Statement ifPropertyIsAlreadyConstrainedStatement = new IfStatement(
                             ifPropertyIsAlreadyConstrainedExpression,
                             new ExpressionStatement(new EmptyExpression()),
                             addNullableConstraintBlock);
@@ -157,13 +157,13 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
                 }
             }
 
-            final BlockStatement methodBlockStatement = new BlockStatement();
+            BlockStatement methodBlockStatement = new BlockStatement();
             methodBlockStatement.addStatement(ifConstraintsPropertyIsNullStatement);
 
-            final Statement returnStatement = new ReturnStatement(new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME));
+            Statement returnStatement = new ReturnStatement(new VariableExpression(CONSTRAINED_PROPERTIES_PROPERTY_NAME));
             methodBlockStatement.addStatement(returnStatement);
 
-            final MethodNode methodNode = new MethodNode(getConstraintsMethodName, Modifier.STATIC | Modifier.PUBLIC,
+            MethodNode methodNode = new MethodNode(getConstraintsMethodName, Modifier.STATIC | Modifier.PUBLIC,
                     new ClassNode(Map.class), GrailsArtefactClassInjector.ZERO_PARAMETERS, null, methodBlockStatement);
             if (classNode.redirect() == null) {
                 classNode.addMethod(methodNode);
@@ -184,28 +184,28 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
      * @param classNode the class to inspect
      * @return a Map describing all of the properties which need to be constrained
      */
-    protected Map<String, ClassNode> getPropertiesToEnsureConstraintsFor(final ClassNode classNode) {
-        final Map<String, ClassNode> fieldsToConstrain = new HashMap<>();
-        final List<FieldNode> allFields = classNode.getFields();
-        for (final FieldNode field : allFields) {
+    protected Map<String, ClassNode> getPropertiesToEnsureConstraintsFor(ClassNode classNode) {
+        Map<String, ClassNode> fieldsToConstrain = new HashMap<>();
+        List<FieldNode> allFields = classNode.getFields();
+        for (FieldNode field : allFields) {
             if (!field.isStatic()) {
-                final PropertyNode property = classNode.getProperty(field.getName());
+                PropertyNode property = classNode.getProperty(field.getName());
                 if (property != null) {
                     fieldsToConstrain.put(field.getName(), field.getType());
                 }
             }
         }
-        final Map<String, MethodNode> declaredMethodsMap = classNode.getDeclaredMethodsMap();
+        Map<String, MethodNode> declaredMethodsMap = classNode.getDeclaredMethodsMap();
         for (Entry<String, MethodNode> methodEntry : declaredMethodsMap.entrySet()) {
-            final MethodNode value = methodEntry.getValue();
+            MethodNode value = methodEntry.getValue();
             if (!value.isStatic() && value.isPublic() && classNode.equals(value.getDeclaringClass()) && value.getLineNumber() > 0) {
                 Parameter[] parameters = value.getParameters();
                 if (parameters == null || parameters.length == 0) {
-                    final String methodName = value.getName();
+                    String methodName = value.getName();
                     if (methodName.startsWith("get")) {
-                        final ClassNode returnType = value.getReturnType();
-                        final String restOfMethodName = methodName.substring(3);
-                        final String propertyName = GrailsNameUtils.getPropertyName(restOfMethodName);
+                        ClassNode returnType = value.getReturnType();
+                        String restOfMethodName = methodName.substring(3);
+                        String propertyName = GrailsNameUtils.getPropertyName(restOfMethodName);
 
                         fieldsToConstrain.put(propertyName, returnType);
                     }
@@ -213,40 +213,40 @@ public class DefaultASTValidateableHelper implements ASTValidateableHelper {
             }
         }
 
-        final ClassNode superClass = classNode.getSuperClass();
+        ClassNode superClass = classNode.getSuperClass();
         if (!superClass.equals(new ClassNode(Object.class))) {
             fieldsToConstrain.putAll(getPropertiesToEnsureConstraintsFor(superClass));
         }
         return fieldsToConstrain;
     }
 
-    protected void addValidateMethod(final ClassNode classNode) {
+    protected void addValidateMethod(ClassNode classNode) {
         String fieldsToValidateParameterName = "$fieldsToValidate";
-        final MethodNode listArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME,
+        MethodNode listArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME,
                 new Parameter[] { new Parameter(new ClassNode(List.class), fieldsToValidateParameterName) });
         if (listArgValidateMethod == null) {
-            final BlockStatement validateMethodCode = new BlockStatement();
-            final ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
+            BlockStatement validateMethodCode = new BlockStatement();
+            ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
             validateInstanceArguments.addExpression(new VariableExpression("this"));
             validateInstanceArguments.addExpression(new VariableExpression(fieldsToValidateParameterName, ClassHelper.LIST_TYPE));
-            final ClassNode validationSupportClassNode = ClassHelper.make(ValidationSupport.class);
-            final StaticMethodCallExpression invokeValidateInstanceExpression = new StaticMethodCallExpression(validationSupportClassNode,
+            ClassNode validationSupportClassNode = ClassHelper.make(ValidationSupport.class);
+            StaticMethodCallExpression invokeValidateInstanceExpression = new StaticMethodCallExpression(validationSupportClassNode,
                     "validateInstance", validateInstanceArguments);
             validateMethodCode.addStatement(new ExpressionStatement(invokeValidateInstanceExpression));
-            final Parameter fieldsToValidateParameter = new Parameter(new ClassNode(List.class), fieldsToValidateParameterName);
+            Parameter fieldsToValidateParameter = new Parameter(new ClassNode(List.class), fieldsToValidateParameterName);
             MethodNode methodNode = new MethodNode(
                     VALIDATE_METHOD_NAME, Modifier.PUBLIC, ClassHelper.boolean_TYPE,
                     new Parameter[] { fieldsToValidateParameter }, GrailsArtefactClassInjector.EMPTY_CLASS_ARRAY, validateMethodCode);
             classNode.addMethod(methodNode);
             AnnotatedNodeUtils.markAsGenerated(classNode, methodNode);
         }
-        final MethodNode noArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
+        MethodNode noArgValidateMethod = classNode.getMethod(VALIDATE_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (noArgValidateMethod == null) {
-            final BlockStatement validateMethodCode = new BlockStatement();
+            BlockStatement validateMethodCode = new BlockStatement();
 
-            final ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
+            ArgumentListExpression validateInstanceArguments = new ArgumentListExpression();
             validateInstanceArguments.addExpression(new CastExpression(new ClassNode(List.class), new ConstantExpression(null)));
-            final Expression callListArgValidateMethod = new MethodCallExpression(new VariableExpression("this"),
+            Expression callListArgValidateMethod = new MethodCallExpression(new VariableExpression("this"),
                     VALIDATE_METHOD_NAME, validateInstanceArguments);
             validateMethodCode.addStatement(new ReturnStatement(callListArgValidateMethod));
             MethodNode methodNode = new MethodNode(
