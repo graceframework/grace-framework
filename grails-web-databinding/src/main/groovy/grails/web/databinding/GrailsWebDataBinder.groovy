@@ -266,7 +266,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     }
 
     @Override
-    protected void processProperty(Object obj, MetaProperty metaProperty, val, DataBindingSource source, DataBindingListener listener, Object errors) {
+    protected void processProperty(Object obj, MetaProperty metaProperty, Object val, DataBindingSource source, DataBindingListener listener, Object errors) {
         boolean needsBinding = true
 
         if (source.dataSourceAware) {
@@ -636,7 +636,8 @@ class GrailsWebDataBinder extends SimpleDataBinder {
         super.addElementToCollection(obj, propName, propertyType, elementToAdd, clearCollection)
     }
 
-    protected boolean addElementToCollection(Object obj, String propName, PersistentProperty property, Object propertyValue, boolean clearCollection) {
+    protected boolean addElementToCollection(Object obj, String propName, PersistentProperty property, Object propertyValue,
+                                             boolean clearCollection) {
         addElementToCollection(obj, propName, property.type, propertyValue, clearCollection)
     }
 

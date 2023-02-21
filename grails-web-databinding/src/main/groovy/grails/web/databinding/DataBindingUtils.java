@@ -124,15 +124,15 @@ public final class DataBindingUtils {
     protected static List getBindingIncludeList(final Object object) {
         List includeList = Collections.emptyList();
         try {
-            final Class<?> objectClass = object.getClass();
+            Class<?> objectClass = object.getClass();
             if (CLASS_TO_BINDING_INCLUDE_LIST.containsKey(objectClass)) {
                 includeList = CLASS_TO_BINDING_INCLUDE_LIST.get(objectClass);
             }
             else {
-                final Field whiteListField = objectClass.getDeclaredField(DefaultASTDatabindingHelper.DEFAULT_DATABINDING_WHITELIST);
+                Field whiteListField = objectClass.getDeclaredField(DefaultASTDatabindingHelper.DEFAULT_DATABINDING_WHITELIST);
                 if (whiteListField != null) {
                     if ((whiteListField.getModifiers() & Modifier.STATIC) != 0) {
-                        final Object whiteListValue = whiteListField.get(objectClass);
+                        Object whiteListValue = whiteListField.get(objectClass);
                         if (whiteListValue instanceof List) {
                             includeList = (List) whiteListValue;
                         }
@@ -173,11 +173,11 @@ public final class DataBindingUtils {
      * @param collectionBindingSource A CollectionDataBindingSource
      * @since 2.3
      */
-    public static <T> void bindToCollection(final Class<T> targetType, final Collection<T> collectionToPopulate,
-            final CollectionDataBindingSource collectionBindingSource)
+    public static <T> void bindToCollection(Class<T> targetType, Collection<T> collectionToPopulate,
+            CollectionDataBindingSource collectionBindingSource)
             throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
-        final GrailsApplication application = Holders.findApplication();
+        GrailsApplication application = Holders.findApplication();
         PersistentEntity entity = null;
         if (application != null) {
             try {
@@ -187,20 +187,20 @@ public final class DataBindingUtils {
                 //no-op
             }
         }
-        final List<DataBindingSource> dataBindingSources = collectionBindingSource.getDataBindingSources();
-        for (final DataBindingSource dataBindingSource : dataBindingSources) {
-            final T newObject = ReflectionUtils.accessibleConstructor(targetType).newInstance();
+        List<DataBindingSource> dataBindingSources = collectionBindingSource.getDataBindingSources();
+        for (DataBindingSource dataBindingSource : dataBindingSources) {
+            T newObject = ReflectionUtils.accessibleConstructor(targetType).newInstance();
             bindObjectToDomainInstance(entity, newObject, dataBindingSource, getBindingIncludeList(newObject), Collections.emptyList(), null);
             collectionToPopulate.add(newObject);
         }
     }
 
-    public static <T> void bindToCollection(final Class<T> targetType,
-            final Collection<T> collectionToPopulate, final ServletRequest request)
+    public static <T> void bindToCollection(Class<T> targetType,
+            Collection<T> collectionToPopulate, ServletRequest request)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-        final GrailsApplication grailsApplication = Holders.findApplication();
-        final CollectionDataBindingSource collectionDataBindingSource = createCollectionDataBindingSource(grailsApplication, targetType, request);
+        GrailsApplication grailsApplication = Holders.findApplication();
+        CollectionDataBindingSource collectionDataBindingSource = createCollectionDataBindingSource(grailsApplication, targetType, request);
         bindToCollection(targetType, collectionToPopulate, collectionDataBindingSource);
     }
 
@@ -254,8 +254,8 @@ public final class DataBindingUtils {
         GrailsApplication grailsApplication = Holders.findApplication();
 
         try {
-            final DataBindingSource bindingSource = createDataBindingSource(grailsApplication, object.getClass(), source);
-            final DataBinder grailsWebDataBinder = getGrailsWebDataBinder(grailsApplication);
+            DataBindingSource bindingSource = createDataBindingSource(grailsApplication, object.getClass(), source);
+            DataBinder grailsWebDataBinder = getGrailsWebDataBinder(grailsApplication);
             grailsWebDataBinder.bind(object, bindingSource, filter, include, exclude);
         }
         catch (InvalidRequestBodyException e) {
@@ -276,14 +276,14 @@ public final class DataBindingUtils {
             for (Object error : bindingResult.getAllErrors()) {
                 if (error instanceof FieldError) {
                     FieldError fieldError = (FieldError) error;
-                    final boolean isBlank = BLANK.equals(fieldError.getRejectedValue());
+                    boolean isBlank = BLANK.equals(fieldError.getRejectedValue());
                     if (!isBlank) {
                         newResult.addError(fieldError);
                     }
                     else {
                         PersistentProperty property = entity.getPropertyByName(fieldError.getField());
                         if (property != null) {
-                            final boolean isOptional = property.isNullable();
+                            boolean isOptional = property.isNullable();
                             if (!isOptional) {
                                 newResult.addError(fieldError);
                             }
@@ -333,21 +333,21 @@ public final class DataBindingUtils {
     }
 
     public static DataBindingSource createDataBindingSource(GrailsApplication grailsApplication, Class bindingTargetType, Object bindingSource) {
-        final DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
-        final MimeType mimeType = getMimeType(grailsApplication, bindingSource);
+        DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
+        MimeType mimeType = getMimeType(grailsApplication, bindingSource);
         return registry.createDataBindingSource(mimeType, bindingTargetType, bindingSource);
     }
 
     public static CollectionDataBindingSource createCollectionDataBindingSource(GrailsApplication grailsApplication,
             Class bindingTargetType, Object bindingSource) {
 
-        final DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
-        final MimeType mimeType = getMimeType(grailsApplication, bindingSource);
+        DataBindingSourceRegistry registry = getDataBindingSourceRegistry(grailsApplication);
+        MimeType mimeType = getMimeType(grailsApplication, bindingSource);
         return registry.createCollectionDataBindingSource(mimeType, bindingTargetType, bindingSource);
     }
 
     public static MimeType getMimeType(GrailsApplication grailsApplication, Object bindingSource) {
-        final MimeTypeResolver mimeTypeResolver = getMimeTypeResolver(grailsApplication);
+        MimeTypeResolver mimeTypeResolver = getMimeTypeResolver(grailsApplication);
         return resolveMimeType(bindingSource, mimeTypeResolver);
     }
 
@@ -368,10 +368,10 @@ public final class DataBindingUtils {
         return MimeTypeUtils.resolveMimeType(bindingSource, mimeTypeResolver);
     }
 
-    private static DataBinder getGrailsWebDataBinder(final GrailsApplication grailsApplication) {
+    private static DataBinder getGrailsWebDataBinder(GrailsApplication grailsApplication) {
         DataBinder dataBinder = null;
         if (grailsApplication != null) {
-            final ApplicationContext mainContext = grailsApplication.getMainContext();
+            ApplicationContext mainContext = grailsApplication.getMainContext();
             if (mainContext != null && mainContext.containsBean(DATA_BINDER_BEAN_NAME)) {
                 dataBinder = mainContext.getBean(DATA_BINDER_BEAN_NAME, DataBinder.class);
             }

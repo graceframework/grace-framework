@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,27 +80,27 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
             new ClassNode(String.class),
             new ClassNode(URL.class));
 
-    public void injectDatabindingCode(final SourceUnit source, final GeneratorContext context, final ClassNode classNode) {
+    public void injectDatabindingCode(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         addDefaultDatabindingWhitelistField(source, classNode);
     }
 
-    private void addDefaultDatabindingWhitelistField(final SourceUnit sourceUnit, final ClassNode classNode) {
-        final FieldNode defaultWhitelistField = classNode.getDeclaredField(DEFAULT_DATABINDING_WHITELIST);
+    private void addDefaultDatabindingWhitelistField(SourceUnit sourceUnit, ClassNode classNode) {
+        FieldNode defaultWhitelistField = classNode.getDeclaredField(DEFAULT_DATABINDING_WHITELIST);
         if (defaultWhitelistField != null) {
             return;
         }
 
-        final Set<String> propertyNamesToIncludeInWhiteList = getPropertyNamesToIncludeInWhiteList(sourceUnit, classNode);
+        Set<String> propertyNamesToIncludeInWhiteList = getPropertyNamesToIncludeInWhiteList(sourceUnit, classNode);
 
-        final ListExpression listExpression = new ListExpression();
+        ListExpression listExpression = new ListExpression();
         if (propertyNamesToIncludeInWhiteList.size() > 0) {
             for (String propertyName : propertyNamesToIncludeInWhiteList) {
                 listExpression.addExpression(new ConstantExpression(propertyName));
 
-                final FieldNode declaredField = getDeclaredFieldInInheritanceHierarchy(classNode, propertyName);
+                FieldNode declaredField = getDeclaredFieldInInheritanceHierarchy(classNode, propertyName);
                 boolean isSimpleType = false;
                 if (declaredField != null) {
-                    final ClassNode type = declaredField.getType();
+                    ClassNode type = declaredField.getType();
                     if (type != null) {
                         isSimpleType = SIMPLE_TYPES.contains(type);
                     }
@@ -120,7 +120,7 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
                 listExpression);
     }
 
-    private FieldNode getDeclaredFieldInInheritanceHierarchy(final ClassNode classNode, String propertyName) {
+    private FieldNode getDeclaredFieldInInheritanceHierarchy(ClassNode classNode, String propertyName) {
         FieldNode fieldNode = classNode.getDeclaredField(propertyName);
         if (fieldNode == null) {
             if (!classNode.getSuperClass().equals(new ClassNode(Object.class))) {
@@ -130,8 +130,8 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         return fieldNode;
     }
 
-    private Set<String> getPropertyNamesToIncludeInWhiteListForParentClass(final SourceUnit sourceUnit, final ClassNode parentClassNode) {
-        final Set<String> propertyNames;
+    private Set<String> getPropertyNamesToIncludeInWhiteListForParentClass(SourceUnit sourceUnit, ClassNode parentClassNode) {
+        Set<String> propertyNames;
         if (CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.containsKey(parentClassNode)) {
             propertyNames = CLASS_NODE_TO_WHITE_LIST_PROPERTY_NAMES.get(parentClassNode);
         }
@@ -141,32 +141,32 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         return propertyNames;
     }
 
-    private Set<String> getPropertyNamesToIncludeInWhiteList(final SourceUnit sourceUnit, final ClassNode classNode) {
-        final Set<String> unbindablePropertyNames = new HashSet<>();
-        final Set<String> bindablePropertyNames = new HashSet<>();
+    private Set<String> getPropertyNamesToIncludeInWhiteList(SourceUnit sourceUnit, ClassNode classNode) {
+        Set<String> unbindablePropertyNames = new HashSet<>();
+        Set<String> bindablePropertyNames = new HashSet<>();
         if (!classNode.getSuperClass().equals(new ClassNode(Object.class))) {
-            final Set<String> parentClassPropertyNames = getPropertyNamesToIncludeInWhiteListForParentClass(sourceUnit, classNode.getSuperClass());
+            Set<String> parentClassPropertyNames = getPropertyNamesToIncludeInWhiteListForParentClass(sourceUnit, classNode.getSuperClass());
             bindablePropertyNames.addAll(parentClassPropertyNames);
         }
 
-        final FieldNode constraintsFieldNode = classNode.getDeclaredField(CONSTRAINTS_FIELD_NAME);
+        FieldNode constraintsFieldNode = classNode.getDeclaredField(CONSTRAINTS_FIELD_NAME);
         if (constraintsFieldNode != null && constraintsFieldNode.hasInitialExpression()) {
-            final Expression constraintsInitialExpression = constraintsFieldNode.getInitialExpression();
+            Expression constraintsInitialExpression = constraintsFieldNode.getInitialExpression();
             if (constraintsInitialExpression instanceof ClosureExpression) {
 
-                final Map<String, Map<String, Expression>> constraintsInfo =
+                Map<String, Map<String, Expression>> constraintsInfo =
                         GrailsASTUtils.getConstraintMetadata((ClosureExpression) constraintsInitialExpression);
 
                 for (Entry<String, Map<String, Expression>> constraintConfig : constraintsInfo.entrySet()) {
-                    final String propertyName = constraintConfig.getKey();
-                    final Map<String, Expression> mapEntryExpressions = constraintConfig.getValue();
+                    String propertyName = constraintConfig.getKey();
+                    Map<String, Expression> mapEntryExpressions = constraintConfig.getValue();
                     for (Entry<String, Expression> entry : mapEntryExpressions.entrySet()) {
-                        final String constraintName = entry.getKey();
+                        String constraintName = entry.getKey();
                         if (BINDABLE_CONSTRAINT_NAME.equals(constraintName)) {
-                            final Expression valueExpression = entry.getValue();
+                            Expression valueExpression = entry.getValue();
                             Boolean bindableValue = null;
                             if (valueExpression instanceof ConstantExpression) {
-                                final Object constantValue = ((ConstantExpression) valueExpression).getValue();
+                                Object constantValue = ((ConstantExpression) valueExpression).getValue();
                                 if (constantValue instanceof Boolean) {
                                     bindableValue = (Boolean) constantValue;
                                 }
@@ -192,32 +192,32 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
             }
         }
 
-        final Set<String> fieldsInTransientsList = getPropertyNamesExpressedInTransientsList(classNode);
-        final boolean isDomainClass = GrailsASTUtils.isDomainClass(classNode, sourceUnit);
+        Set<String> fieldsInTransientsList = getPropertyNamesExpressedInTransientsList(classNode);
+        boolean isDomainClass = GrailsASTUtils.isDomainClass(classNode, sourceUnit);
 
-        final Set<String> propertyNamesToIncludeInWhiteList = new HashSet<>(bindablePropertyNames);
-        final List<FieldNode> fields = classNode.getFields();
+        Set<String> propertyNamesToIncludeInWhiteList = new HashSet<>(bindablePropertyNames);
+        List<FieldNode> fields = classNode.getFields();
         for (FieldNode fieldNode : fields) {
-            final String fieldName = fieldNode.getName();
+            String fieldName = fieldNode.getName();
             if ((!unbindablePropertyNames.contains(fieldName)) &&
                     (bindablePropertyNames.contains(fieldName) || shouldFieldBeInWhiteList(fieldNode, fieldsInTransientsList, isDomainClass))) {
                 propertyNamesToIncludeInWhiteList.add(fieldName);
             }
         }
 
-        final Map<String, MethodNode> declaredMethodsMap = classNode.getDeclaredMethodsMap();
+        Map<String, MethodNode> declaredMethodsMap = classNode.getDeclaredMethodsMap();
         for (Entry<String, MethodNode> methodEntry : declaredMethodsMap.entrySet()) {
-            final MethodNode value = methodEntry.getValue();
+            MethodNode value = methodEntry.getValue();
             if (classNode.equals(value.getDeclaringClass())) {
                 Parameter[] parameters = value.getParameters();
                 if (parameters != null && parameters.length == 1) {
-                    final String methodName = value.getName();
+                    String methodName = value.getName();
                     if (methodName.startsWith("set")) {
-                        final Parameter parameter = parameters[0];
-                        final ClassNode paramType = parameter.getType();
+                        Parameter parameter = parameters[0];
+                        ClassNode paramType = parameter.getType();
                         if (!paramType.equals(new ClassNode(Object.class))) {
-                            final String restOfMethodName = methodName.substring(3);
-                            final String propertyName = GrailsNameUtils.getPropertyName(restOfMethodName);
+                            String restOfMethodName = methodName.substring(3);
+                            String propertyName = GrailsNameUtils.getPropertyName(restOfMethodName);
                             if (!unbindablePropertyNames.contains(propertyName) &&
                                     (!isDomainClass || !DOMAIN_CLASS_PROPERTIES_TO_EXCLUDE_BY_DEFAULT.contains(propertyName))) {
                                 propertyNamesToIncludeInWhiteList.add(propertyName);
@@ -237,10 +237,10 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         return propertyNamesToIncludeInWhiteList;
     }
 
-    private boolean shouldFieldBeInWhiteList(final FieldNode fieldNode, final Set<String> fieldsInTransientsList, final boolean isDomainClass) {
+    private boolean shouldFieldBeInWhiteList(FieldNode fieldNode, Set<String> fieldsInTransientsList, boolean isDomainClass) {
         boolean shouldInclude = true;
-        final int modifiers = fieldNode.getModifiers();
-        final String fieldName = fieldNode.getName();
+        int modifiers = fieldNode.getModifiers();
+        String fieldName = fieldNode.getName();
         if ((modifiers & Modifier.STATIC) != 0 ||
                 (modifiers & Modifier.TRANSIENT) != 0 ||
                 fieldsInTransientsList.contains(fieldName) ||
@@ -255,18 +255,18 @@ public class DefaultASTDatabindingHelper implements ASTDatabindingHelper {
         return shouldInclude;
     }
 
-    private Set<String> getPropertyNamesExpressedInTransientsList(final ClassNode classNode) {
-        final Set<String> transientFields = new HashSet<>();
-        final FieldNode transientsField = classNode.getField("transients");
+    private Set<String> getPropertyNamesExpressedInTransientsList(ClassNode classNode) {
+        Set<String> transientFields = new HashSet<>();
+        FieldNode transientsField = classNode.getField("transients");
         if (transientsField != null && transientsField.isStatic()) {
-            final Expression initialValueExpression = transientsField.getInitialValueExpression();
+            Expression initialValueExpression = transientsField.getInitialValueExpression();
             if (initialValueExpression instanceof ListExpression) {
-                final ListExpression le = (ListExpression) initialValueExpression;
-                final List<Expression> expressions = le.getExpressions();
+                ListExpression le = (ListExpression) initialValueExpression;
+                List<Expression> expressions = le.getExpressions();
                 for (Expression expr : expressions) {
                     if (expr instanceof ConstantExpression) {
-                        final ConstantExpression ce = (ConstantExpression) expr;
-                        final Object contantValue = ce.getValue();
+                        ConstantExpression ce = (ConstantExpression) expr;
+                        Object contantValue = ce.getValue();
                         if (contantValue instanceof String) {
                             transientFields.add((String) contantValue);
                         }

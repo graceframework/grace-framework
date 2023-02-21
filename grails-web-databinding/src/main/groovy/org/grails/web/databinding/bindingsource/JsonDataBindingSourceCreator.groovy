@@ -90,7 +90,7 @@ class JsonDataBindingSourceCreator extends AbstractRequestBodyDataBindingSourceC
 
     @Override
     protected DataBindingSource createBindingSource(Reader reader) {
-        final jsonElement = jsonSlurper.parse(reader)
+        Object jsonElement = jsonSlurper.parse(reader)
 
         if (jsonElement instanceof Map) {
             return new SimpleMapDataBindingSource(createJsonMap(jsonElement))
