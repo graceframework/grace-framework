@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2022 the original author or authors.
+ * Copyright 2002-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -409,7 +409,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * @see #setFallbackToSystemLocale
      * @see #calculateFilenamesForLocale
      */
-    protected List<Pair<String, Resource>> calculateAllFilenames(final String basename, final Locale locale) {
+    protected List<Pair<String, Resource>> calculateAllFilenames(String basename, Locale locale) {
         Pair<String, Locale> cacheKey = new Pair<>(basename, locale);
         return CacheEntry.getValue(this.cachedFilenames, cacheKey, this.cacheMillis, () -> {
             List<String> filenames = new ArrayList<>(7);
@@ -479,7 +479,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
      * @param filename the bundle filename (basename + Locale)
      * @return the current PropertiesHolder for the bundle
      */
-    protected PropertiesHolder getProperties(final String filename, final Resource resource) {
+    protected PropertiesHolder getProperties(String filename, Resource resource) {
         return CacheEntry.getValue(this.cachedProperties, filename, this.fileCacheMillis,
                 () -> new PropertiesHolder(filename, resource),
                 PropertiesHolderCacheEntry::new, true, null);
@@ -693,7 +693,7 @@ public class ReloadableResourceBundleMessageSource extends AbstractMessageSource
             return this.properties.getProperty(code);
         }
 
-        public MessageFormat getMessageFormat(final String code, final Locale locale) {
+        public MessageFormat getMessageFormat(String code, Locale locale) {
             if (this.properties == null) {
                 return null;
             }
