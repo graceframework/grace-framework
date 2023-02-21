@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -205,7 +205,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultShortConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Short.class);
         return converter;
@@ -213,7 +213,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultshortConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(short.class);
         return converter;
@@ -221,7 +221,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultIntegerConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Integer.class);
         return converter;
@@ -229,7 +229,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultintConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(int.class);
         return converter;
@@ -237,7 +237,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultFloatConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Float.class);
         return converter;
@@ -245,7 +245,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultfloatConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(float.class);
         return converter;
@@ -253,7 +253,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultLongConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Long.class);
         return converter;
@@ -261,7 +261,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultlongConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(long.class);
         return converter;
@@ -269,7 +269,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultDoubleConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(Double.class);
         return converter;
@@ -277,7 +277,7 @@ public class DefaultConvertersConfiguration {
 
     @Bean
     public LocaleAwareNumberConverter defaultdoubleConverter() {
-        final LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
+        LocaleAwareNumberConverter converter = new LocaleAwareNumberConverter();
         converter.setLocaleResolver(this.localResolver);
         converter.setTargetType(double.class);
         return converter;
