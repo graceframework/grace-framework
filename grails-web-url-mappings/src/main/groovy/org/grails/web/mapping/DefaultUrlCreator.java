@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class DefaultUrlCreator implements UrlCreator {
     private String createURLWithWebRequest(Map parameterValues, GrailsWebRequest webRequest, boolean includeContextPath) {
         GrailsRequestStateLookupStrategy requestStateLookupStrategy = new DefaultRequestStateLookupStrategy(webRequest);
 
-        final String encoding = requestStateLookupStrategy.getCharacterEncoding();
+        String encoding = requestStateLookupStrategy.getCharacterEncoding();
 
         String id = null;
         if (parameterValues.containsKey(ARGUMENT_ID)) {
@@ -178,7 +178,7 @@ public class DefaultUrlCreator implements UrlCreator {
     public String createRelativeURL(String controller, String action, String namespace,
             String pluginName, Map parameterValues, String encoding, String fragment) {
 
-        final String url = createURLInternal(controller, action, parameterValues, false);
+        String url = createURLInternal(controller, action, parameterValues, false);
         return createUrlWithFragment(encoding, fragment, url);
     }
 

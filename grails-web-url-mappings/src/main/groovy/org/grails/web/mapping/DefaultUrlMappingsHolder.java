@@ -262,7 +262,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         return this.excludePatterns;
     }
 
-    public UrlCreator getReverseMapping(final String controller, final String action, Map params) {
+    public UrlCreator getReverseMapping(String controller, String action, Map params) {
         return getReverseMapping(controller, action, null, null, params);
     }
 
@@ -302,8 +302,8 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     /**
      * @see UrlMappingsHolder#getReverseMapping(String, String, java.util.Map)
      */
-    public UrlCreator getReverseMapping(final String controller, final String action,
-            final String namespace, final String pluginName, Map params) {
+    public UrlCreator getReverseMapping(String controller, String action,
+            String namespace, String pluginName, Map params) {
         return getReverseMapping(controller, action, namespace, pluginName, null, params);
     }
 
@@ -342,10 +342,10 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     }
 
     @SuppressWarnings("unchecked")
-    private UrlCreator resolveUrlCreator(final String controller,
-            final String action,
-            final String namespace,
-            final String pluginName,
+    private UrlCreator resolveUrlCreator(String controller,
+            String action,
+            String namespace,
+            String pluginName,
             String httpMethod,
             String version,
             Map params,
@@ -509,12 +509,12 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
     protected UrlMapping lookupMapping(String controller, String action, String namespace,
             String pluginName, String httpMethod, String version, Map params) {
 
-        final UrlMappingsListKey lookupKey = new UrlMappingsListKey(controller, action, namespace, pluginName, httpMethod, version);
+        UrlMappingsListKey lookupKey = new UrlMappingsListKey(controller, action, namespace, pluginName, httpMethod, version);
         Collection mappingKeysSet = this.mappingsListLookup.get(lookupKey);
 
-        final String actionName = lookupKey.action;
+        String actionName = lookupKey.action;
         boolean secondAttempt = false;
-        final boolean isIndexAction = GrailsControllerClass.INDEX_ACTION.equals(actionName);
+        boolean isIndexAction = GrailsControllerClass.INDEX_ACTION.equals(actionName);
         if (mappingKeysSet == null) {
             lookupKey.httpMethod = UrlMapping.ANY_HTTP_METHOD;
             mappingKeysSet = this.mappingsListLookup.get(lookupKey);
@@ -539,7 +539,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         for (int i = mappingKeys.length; i > 0; i--) {
             UrlMappingKey mappingKey = mappingKeys[i - 1];
             if (lookupParams.containsAll(mappingKey.paramNames)) {
-                final UrlMapping mapping = this.mappingsLookup.get(mappingKey);
+                UrlMapping mapping = this.mappingsLookup.get(mappingKey);
                 if (canInferAction(actionName, secondAttempt, isIndexAction, mapping)) {
                     return mapping;
                 }
@@ -684,7 +684,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
                 if (responseCodeUrlMapping.getExceptionType() != null) {
                     continue;
                 }
-                final UrlMappingInfo current = responseCodeUrlMapping.match(responseCode);
+                UrlMappingInfo current = responseCodeUrlMapping.match(responseCode);
                 if (current != null) {
                     return current;
                 }
@@ -717,7 +717,7 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         for (UrlMapping mapping : this.mappings) {
             if (mapping instanceof ResponseCodeUrlMapping) {
                 ResponseCodeUrlMapping responseCodeUrlMapping = (ResponseCodeUrlMapping) mapping;
-                final UrlMappingInfo current = responseCodeUrlMapping.match(responseCode);
+                UrlMappingInfo current = responseCodeUrlMapping.match(responseCode);
                 if (current != null) {
                     if (responseCodeUrlMapping.getExceptionType() != null &&
                             responseCodeUrlMapping.getExceptionType().isInstance(e)) {
@@ -885,16 +885,16 @@ public class DefaultUrlMappingsHolder implements UrlMappings {
         }
 
         public int compareTo(Object o) {
-            final int BEFORE = -1;
-            final int EQUAL = 0;
-            final int AFTER = 1;
+            int BEFORE = -1;
+            int EQUAL = 0;
+            int AFTER = 1;
 
             //this optimization is usually worthwhile, and can always be added
             if (this == o) {
                 return EQUAL;
             }
 
-            final UrlMappingKey other = (UrlMappingKey) o;
+            UrlMappingKey other = (UrlMappingKey) o;
 
             if (this.paramNames.size() < other.paramNames.size()) {
                 return BEFORE;

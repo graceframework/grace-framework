@@ -333,7 +333,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         }
 
         public ServletContext getServletContext() {
-            final ApplicationContext ctx = getApplicationContext();
+            ApplicationContext ctx = getApplicationContext();
             if (ctx instanceof WebApplicationContext) {
                 return ((WebApplicationContext) ctx).getServletContext();
             }
@@ -351,7 +351,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         @Override
         public Object getProperty(String name) {
             if (this.urlDefiningMode) {
-                final ConstrainedProperty newConstrained = new DefaultConstrainedProperty(UrlMapping.class, name,
+                ConstrainedProperty newConstrained = new DefaultConstrainedProperty(UrlMapping.class, name,
                         String.class, DefaultUrlMappingEvaluator.this.constraintRegistry);
                 this.previousConstraints.add(newConstrained);
                 return CAPTURING_WILD_CARD;
@@ -679,7 +679,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
                 List<ConstrainedProperty> currentConstraints = mappingInfo.getConstraints();
                 Object[] args = (Object[]) arg;
                 String mappedURI = establishFullURI(methodName, currentConstraints);
-                final boolean isResponseCode = isResponseCode(mappedURI);
+                boolean isResponseCode = isResponseCode(mappedURI);
                 if (mappedURI.startsWith(SLASH) || isResponseCode) {
                     // Create a new parameter map for this mapping.
                     this.parameterValues = new HashMap<>();
@@ -1291,7 +1291,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
         private UrlMapping getURLMappingForNamedArgs(Map namedArguments,
                 UrlMappingData urlData, String mapping,
                 boolean isResponseCode, List<ConstrainedProperty> constrainedList) {
-            final Map bindingVariables = this.binding != null ? this.binding.getVariables() : null;
+            Map bindingVariables = this.binding != null ? this.binding.getVariables() : null;
             Object controllerName = getControllerName(namedArguments, bindingVariables);
             Object actionName = getActionName(namedArguments, bindingVariables);
             Object pluginName = getPluginName(namedArguments, bindingVariables);

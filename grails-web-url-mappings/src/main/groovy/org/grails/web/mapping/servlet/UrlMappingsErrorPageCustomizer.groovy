@@ -42,7 +42,7 @@ class UrlMappingsErrorPageCustomizer implements WebServerFactoryCustomizer<Confi
 
     @Override
     void customize(ConfigurableServletWebServerFactory container) {
-        final UrlMapping[] allMappings = urlMappings.getUrlMappings()
+        UrlMapping[] allMappings = urlMappings.getUrlMappings()
 
         List<ErrorPage> errorPages = []
         for (UrlMapping urlMapping : allMappings) {

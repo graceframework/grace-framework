@@ -77,7 +77,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
             return super.link(attrs, encoding);
         }
 
-        final String key = makeKey(LINK_PREFIX, attrs);
+        String key = makeKey(LINK_PREFIX, attrs);
         Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.link(attrs, encoding);
@@ -110,7 +110,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
         else {
             buffer.append(OPENING_BRACKET);
             Map map = new LinkedHashMap<>(params);
-            final String requestControllerName = getRequestStateLookupStrategy().getControllerName();
+            String requestControllerName = getRequestStateLookupStrategy().getControllerName();
             if (map.get(UrlMapping.ACTION) != null && map.get(UrlMapping.CONTROLLER) == null && map.get(RESOURCE_PREFIX) == null) {
                 Object action = map.remove(UrlMapping.ACTION);
                 map.put(UrlMapping.CONTROLLER, requestControllerName);
@@ -176,7 +176,7 @@ public class CachingLinkGenerator extends DefaultLinkGenerator {
 
     @Override
     public String resource(Map attrs) {
-        final String key = makeKey(RESOURCE_PREFIX, attrs);
+        String key = makeKey(RESOURCE_PREFIX, attrs);
         Object resourceLink = this.linkCache.getIfPresent(key);
         if (resourceLink == null) {
             resourceLink = super.resource(attrs);

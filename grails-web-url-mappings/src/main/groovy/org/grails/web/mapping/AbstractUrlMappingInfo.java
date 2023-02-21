@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
             dispatchParams.put(name, param);
         }
 
-        final String viewName = getViewName();
+        String viewName = getViewName();
         if (viewName == null && getURI() == null) {
             webRequest.setControllerNamespace(getNamespace());
             webRequest.setControllerName(getControllerName());
@@ -138,7 +138,7 @@ public abstract class AbstractUrlMappingInfo implements UrlMappingInfo {
         String name;
         if (value instanceof Closure) {
             Closure callable = (Closure) value;
-            final Closure cloned = (Closure) callable.clone();
+            Closure cloned = (Closure) callable.clone();
             cloned.setDelegate(webRequest);
             cloned.setResolveStrategy(Closure.DELEGATE_FIRST);
             Object result = cloned.call();

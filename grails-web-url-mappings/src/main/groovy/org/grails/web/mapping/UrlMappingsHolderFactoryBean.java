@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
 
         GrailsClass[] mappings = this.grailsApplication.getArtefacts(UrlMappingsArtefactHandler.TYPE);
 
-        final DefaultUrlMappingEvaluator mappingEvaluator = new DefaultUrlMappingEvaluator(this.applicationContext);
+        DefaultUrlMappingEvaluator mappingEvaluator = new DefaultUrlMappingEvaluator(this.applicationContext);
         mappingEvaluator.setPluginManager(this.pluginManager);
 
         if (mappings.length == 0) {
@@ -137,7 +137,7 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
         // call initialize() after settings are in place
         defaultUrlMappingsHolder.initialize();
 
-        final GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
+        GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
                 defaultUrlMappingsHolder, this.grailsUrlConverter);
 
         ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(

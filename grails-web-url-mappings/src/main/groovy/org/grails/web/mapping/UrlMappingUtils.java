@@ -127,7 +127,7 @@ public final class UrlMappingUtils {
             return info.getURI();
         }
 
-        final StringBuilder forwardUrl = new StringBuilder();
+        StringBuilder forwardUrl = new StringBuilder();
 
         if (info.getViewName() != null) {
             String viewName = info.getViewName();
@@ -146,7 +146,7 @@ public final class UrlMappingUtils {
             }
         }
 
-        final Map parameters = findAllParamsNotInUrlMappingKeywords(info.getParameters());
+        Map parameters = findAllParamsNotInUrlMappingKeywords(info.getParameters());
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
@@ -164,7 +164,7 @@ public final class UrlMappingUtils {
             return info.getURI();
         }
 
-        final StringBuilder forwardUrl = new StringBuilder();
+        StringBuilder forwardUrl = new StringBuilder();
 
         if (info.getViewName() != null) {
             // TODO: Evaluate if we can use the linkGenerator here.
@@ -187,7 +187,7 @@ public final class UrlMappingUtils {
             forwardUrl.append(linkGenerator.link(urlAttrs));
         }
 
-        final Map parameters = findAllParamsNotInUrlMappingKeywords(info.getParameters());
+        Map parameters = findAllParamsNotInUrlMappingKeywords(info.getParameters());
         if (parameters != null && !parameters.isEmpty() && includeParams) {
             try {
                 forwardUrl.append(WebUtils.toQueryString(parameters));
@@ -247,7 +247,7 @@ public final class UrlMappingUtils {
         // whatever we forward to may render the wrong thing! Note that we
         // don't care about the return value because we're delegating
         // responsibility for rendering the response.
-        final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
         webRequest.removeAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW, 0);
         info.configure(webRequest);
         webRequest.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST);
@@ -271,7 +271,7 @@ public final class UrlMappingUtils {
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model) {
 
-        final String includeUrl = buildDispatchUrlForMapping(info, true);
+        String includeUrl = buildDispatchUrlForMapping(info, true);
 
         return includeForUrlMappingInfoHelper(includeUrl, request, response, info, model);
     }
@@ -291,7 +291,7 @@ public final class UrlMappingUtils {
     public static IncludedContent includeForUrlMappingInfo(HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model, LinkGenerator linkGenerator) {
 
-        final String includeUrl = buildDispatchUrlForMapping(info, true, linkGenerator);
+        String includeUrl = buildDispatchUrlForMapping(info, true, linkGenerator);
 
         return includeForUrlMappingInfoHelper(includeUrl, request, response, info, model);
     }
@@ -299,7 +299,7 @@ public final class UrlMappingUtils {
     private static IncludedContent includeForUrlMappingInfoHelper(String includeUrl, HttpServletRequest request,
             HttpServletResponse response, UrlMappingInfo info, Map model) {
 
-        final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
 
         String currentController = null;
         String currentAction = null;
@@ -385,11 +385,11 @@ public final class UrlMappingUtils {
 
         Map toRestore = WebUtils.exposeRequestAttributesAndReturnOldValues(request, model);
 
-        final GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
-        final boolean hasPreviousWebRequest = webRequest != null;
-        final Object previousControllerClass = hasPreviousWebRequest ?
+        GrailsWebRequest webRequest = GrailsWebRequest.lookup(request);
+        boolean hasPreviousWebRequest = webRequest != null;
+        Object previousControllerClass = hasPreviousWebRequest ?
                 webRequest.getAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS_AVAILABLE, WebRequest.SCOPE_REQUEST) : null;
-        final Object previousMatchedRequest = hasPreviousWebRequest ?
+        Object previousMatchedRequest = hasPreviousWebRequest ?
                 webRequest.getAttribute(UrlMappingsHandlerMapping.MATCHED_REQUEST, WebRequest.SCOPE_REQUEST) : null;
 
         try {
@@ -399,7 +399,7 @@ public final class UrlMappingUtils {
                 webRequest.removeAttribute("grailsWebRequestFilter" + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX, WebRequest.SCOPE_REQUEST);
             }
 
-            final IncludeResponseWrapper responseWrapper = new IncludeResponseWrapper(response);
+            IncludeResponseWrapper responseWrapper = new IncludeResponseWrapper(response);
             try {
                 WrappedResponseHolder.setWrappedResponse(responseWrapper);
                 WebUtils.clearGrailsWebRequest();

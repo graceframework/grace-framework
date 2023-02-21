@@ -144,8 +144,8 @@ abstract class AbstractGrailsControllerUrlMappings implements UrlMappings {
         }
         String namespace = hasUrlConverter ? urlConverter.toUrlElement(controller.namespace) : controller.namespace
         String plugin = hasUrlConverter ? urlConverter.toUrlElement(controller.pluginName) : controller.pluginName
-        final boolean hasNamespace = namespace != null
-        final boolean hasPlugin = plugin != null
+        boolean hasNamespace = namespace != null
+        boolean hasPlugin = plugin != null
 
         String controllerName = hasUrlConverter ? urlConverter.toUrlElement(controller.logicalPropertyName) : controller.logicalPropertyName
         String pluginNameToRegister = hasPlugin ? GrailsNameUtils.getPropertyNameForLowerCaseHyphenSeparatedName(plugin) : null

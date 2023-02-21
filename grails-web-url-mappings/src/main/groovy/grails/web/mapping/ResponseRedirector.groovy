@@ -107,7 +107,7 @@ class ResponseRedirector {
             // instead of arguments.params so we merge them.
             GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
             if (webRequest.originalParams) {
-                final Map configuredParams = (Map) arguments.get(LinkGenerator.ATTRIBUTE_PARAMS) ?: [:]
+                Map configuredParams = (Map) arguments.get(LinkGenerator.ATTRIBUTE_PARAMS) ?: [:]
                 namedParameters.put(LinkGenerator.ATTRIBUTE_PARAMS, configuredParams + webRequest.originalParams)
             }
         }

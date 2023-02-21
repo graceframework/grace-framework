@@ -260,14 +260,13 @@ public class UrlCreatorCache {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
             int result = 1;
-            result = prime * result + ((this.action == null) ? 0 : this.action.hashCode());
-            result = prime * result + ((this.namespace == null) ? 0 : this.namespace.hashCode());
-            result = prime * result + ((this.pluginName == null) ? 0 : this.pluginName.hashCode());
-            result = prime * result + ((this.controller == null) ? 0 : this.controller.hashCode());
-            result = prime * result + Arrays.hashCode(this.paramKeys);
-            result = prime * result + Arrays.hashCode(this.paramValues);
+            result = 31 * result + ((this.action == null) ? 0 : this.action.hashCode());
+            result = 31 * result + ((this.namespace == null) ? 0 : this.namespace.hashCode());
+            result = 31 * result + ((this.pluginName == null) ? 0 : this.pluginName.hashCode());
+            result = 31 * result + ((this.controller == null) ? 0 : this.controller.hashCode());
+            result = 31 * result + Arrays.hashCode(this.paramKeys);
+            result = 31 * result + Arrays.hashCode(this.paramValues);
             return result;
         }
 
@@ -362,11 +361,10 @@ public class UrlCreatorCache {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
             int result = super.hashCode();
-            result = prime * result + ((this.encoding == null) ? 0 : this.encoding.hashCode());
-            result = prime * result + ((this.fragment == null) ? 0 : this.fragment.hashCode());
-            result = prime * result + this.urlType;
+            result = 31 * result + ((this.encoding == null) ? 0 : this.encoding.hashCode());
+            result = 31 * result + ((this.fragment == null) ? 0 : this.fragment.hashCode());
+            result = 31 * result + this.urlType;
             return result;
         }
 

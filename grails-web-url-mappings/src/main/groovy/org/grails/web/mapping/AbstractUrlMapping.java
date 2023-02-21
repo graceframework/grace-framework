@@ -94,7 +94,7 @@ public abstract class AbstractUrlMapping implements UrlMapping {
         this.grailsApplication = grailsApplication;
         if (grailsApplication != null) {
 
-            final ApplicationContext applicationContext = grailsApplication.getMainContext();
+            ApplicationContext applicationContext = grailsApplication.getMainContext();
             if (applicationContext instanceof WebApplicationContext) {
                 this.servletContext = ((WebApplicationContext) applicationContext).getServletContext();
             }
