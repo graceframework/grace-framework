@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
     }
 
     protected void addErrorsField(final ClassNode paramTypeClassNode) {
-        final ASTNode errorsField = paramTypeClassNode.getField(ERRORS_PROPERTY_NAME);
+        ASTNode errorsField = paramTypeClassNode.getField(ERRORS_PROPERTY_NAME);
         if (errorsField == null) {
             paramTypeClassNode.addField(new FieldNode(ERRORS_PROPERTY_NAME, Modifier.PRIVATE,
                     ERRORS_CLASS_NODE, paramTypeClassNode, NULL_EXPRESSION));
@@ -91,22 +91,22 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
     }
 
     protected void addInitErrorsMethod(final ClassNode paramTypeClassNode) {
-        final ASTNode initErrorsMethod = paramTypeClassNode.getMethod(INIT_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
+        ASTNode initErrorsMethod = paramTypeClassNode.getMethod(INIT_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (initErrorsMethod == null) {
-            final BlockStatement initErrorsMethodCode = new BlockStatement();
+            BlockStatement initErrorsMethodCode = new BlockStatement();
 
-            final BinaryExpression errorsIsNullExpression = new BinaryExpression(ERRORS_EXPRESSION, Token.newSymbol(
+            BinaryExpression errorsIsNullExpression = new BinaryExpression(ERRORS_EXPRESSION, Token.newSymbol(
                     Types.COMPARE_EQUAL, 0, 0), NULL_EXPRESSION);
 
             Expression beanPropertyBindingResultConstructorArgs = new ArgumentListExpression(
                     new VariableExpression("this"), new ConstantExpression(paramTypeClassNode.getName()));
-            final Statement newEvaluatorExpression = new ExpressionStatement(
+            Statement newEvaluatorExpression = new ExpressionStatement(
                     new BinaryExpression(ERRORS_EXPRESSION,
                             EQUALS_SYMBOL,
                             new ConstructorCallExpression(new ClassNode(
                                     ValidationErrors.class),
                                     beanPropertyBindingResultConstructorArgs)));
-            final Statement initErrorsIfNullStatement = new IfStatement(
+            Statement initErrorsIfNullStatement = new IfStatement(
                     new BooleanExpression(errorsIsNullExpression), newEvaluatorExpression,
                     new ExpressionStatement(new EmptyExpression()));
             initErrorsMethodCode.addStatement(initErrorsIfNullStatement);
@@ -119,10 +119,10 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
         }
     }
 
-    protected void addClearErrorsMethod(final ClassNode paramTypeClassNode) {
-        final ASTNode clearErrorsMethod = paramTypeClassNode.getMethod(CLEAR_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
+    protected void addClearErrorsMethod(ClassNode paramTypeClassNode) {
+        ASTNode clearErrorsMethod = paramTypeClassNode.getMethod(CLEAR_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (clearErrorsMethod == null) {
-            final BlockStatement clearErrorsMethodCode = new BlockStatement();
+            BlockStatement clearErrorsMethodCode = new BlockStatement();
             Expression nullOutErrorsFieldExpression = new BinaryExpression(ERRORS_EXPRESSION,
                     EQUALS_SYMBOL, NULL_EXPRESSION);
             clearErrorsMethodCode.addStatement(new ExpressionStatement(nullOutErrorsFieldExpression));
@@ -135,14 +135,14 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
         }
     }
 
-    protected void addHasErrorsMethod(final ClassNode paramTypeClassNode) {
-        final ASTNode getErrorsMethod = paramTypeClassNode.getMethod(HAS_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
+    protected void addHasErrorsMethod(ClassNode paramTypeClassNode) {
+        ASTNode getErrorsMethod = paramTypeClassNode.getMethod(HAS_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (getErrorsMethod == null) {
-            final BlockStatement hasErrorsMethodCode = new BlockStatement();
-            final Expression initErrorsMethodCallExpression = new MethodCallExpression(new VariableExpression("this"),
+            BlockStatement hasErrorsMethodCode = new BlockStatement();
+            Expression initErrorsMethodCallExpression = new MethodCallExpression(new VariableExpression("this"),
                     INIT_ERRORS_METHOD_NAME, EMPTY_TUPLE);
             hasErrorsMethodCode.addStatement(new ExpressionStatement(initErrorsMethodCallExpression));
-            final Statement returnStatement = new ReturnStatement(new BooleanExpression(new MethodCallExpression(ERRORS_EXPRESSION,
+            Statement returnStatement = new ReturnStatement(new BooleanExpression(new MethodCallExpression(ERRORS_EXPRESSION,
                     HAS_ERRORS_METHOD_NAME, EMPTY_TUPLE)));
             hasErrorsMethodCode.addStatement(returnStatement);
 
@@ -154,14 +154,14 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
         }
     }
 
-    protected void addGetErrorsMethod(final ClassNode paramTypeClassNode) {
-        final ASTNode getErrorsMethod = paramTypeClassNode.getMethod(GET_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
+    protected void addGetErrorsMethod(ClassNode paramTypeClassNode) {
+        ASTNode getErrorsMethod = paramTypeClassNode.getMethod(GET_ERRORS_METHOD_NAME, GrailsArtefactClassInjector.ZERO_PARAMETERS);
         if (getErrorsMethod == null) {
-            final BlockStatement getErrorsMethodCode = new BlockStatement();
-            final Expression initErrorsMethodCallExpression = new MethodCallExpression(new VariableExpression("this"),
+            BlockStatement getErrorsMethodCode = new BlockStatement();
+            Expression initErrorsMethodCallExpression = new MethodCallExpression(new VariableExpression("this"),
                     INIT_ERRORS_METHOD_NAME, EMPTY_TUPLE);
             getErrorsMethodCode.addStatement(new ExpressionStatement(initErrorsMethodCallExpression));
-            final Statement returnStatement = new ReturnStatement(ERRORS_EXPRESSION);
+            Statement returnStatement = new ReturnStatement(ERRORS_EXPRESSION);
             getErrorsMethodCode.addStatement(returnStatement);
 
             MethodNode methodNode = new MethodNode(GET_ERRORS_METHOD_NAME,
@@ -172,12 +172,12 @@ public class ASTValidationErrorsHelper implements ASTErrorsHelper {
         }
     }
 
-    protected void addSetErrorsMethod(final ClassNode paramTypeClassNode) {
-        final String errorsArgumentName = "$errorsArg";
+    protected void addSetErrorsMethod(ClassNode paramTypeClassNode) {
+        String errorsArgumentName = "$errorsArg";
         MethodNode setErrorsMethod = paramTypeClassNode.getMethod(SET_ERRORS_METHOD_NAME,
                 new Parameter[] { new Parameter(ERRORS_CLASS_NODE, errorsArgumentName) });
         if (setErrorsMethod == null) {
-            final Expression assignErrorsExpression = new BinaryExpression(ERRORS_EXPRESSION,
+            Expression assignErrorsExpression = new BinaryExpression(ERRORS_EXPRESSION,
                     EQUALS_SYMBOL, new VariableExpression(errorsArgumentName));
             setErrorsMethod = new MethodNode(SET_ERRORS_METHOD_NAME,
                     Modifier.PUBLIC, ClassHelper.VOID_TYPE,

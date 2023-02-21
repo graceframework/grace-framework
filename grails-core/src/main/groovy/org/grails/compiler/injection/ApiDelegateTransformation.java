@@ -52,8 +52,8 @@ public class ApiDelegateTransformation implements ASTTransformation {
         if (parent instanceof FieldNode) {
             Expression value = annotationNode.getMember("value");
             FieldNode fieldNode = (FieldNode) parent;
-            final ClassNode type = fieldNode.getType();
-            final ClassNode owner = fieldNode.getOwner();
+            ClassNode type = fieldNode.getType();
+            ClassNode owner = fieldNode.getOwner();
             ClassNode supportedType = owner;
             if (value instanceof ClassExpression) {
                 supportedType = value.getType();

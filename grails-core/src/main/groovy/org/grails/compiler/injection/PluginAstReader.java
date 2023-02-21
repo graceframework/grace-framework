@@ -72,8 +72,8 @@ public class PluginAstReader {
 
         Map<String, Object> pluginProperties = this.pluginInfo.getProperties();
         for (Map.Entry<String, Object> entry : pluginProperties.entrySet()) {
-            final String key = entry.getKey();
-            final Object value = entry.getValue();
+            String key = entry.getKey();
+            Object value = entry.getValue();
             if (value instanceof String) {
                 String val = (String) value;
                 if (val != null && val.length() > 2 && val.startsWith("@") && val.endsWith("@")) {
@@ -88,8 +88,8 @@ public class PluginAstReader {
             else if (value instanceof Map) {
                 Map<String, String> map = (Map<String, String>) value;
                 for (Map.Entry me : map.entrySet()) {
-                    final String k = String.valueOf(me.getKey());
-                    final String v = String.valueOf(me.getValue());
+                    String k = String.valueOf(me.getKey());
+                    String v = String.valueOf(me.getValue());
 
                     if (v != null && v.length() > 2 && v.startsWith("@") && v.endsWith("@")) {
                         String token = v.substring(1, v.length() - 1);
@@ -107,26 +107,26 @@ public class PluginAstReader {
         return this.pluginInfo;
     }
 
-    protected void visitContents(String className, final ClassNode classNode) {
+    protected void visitContents(String className, ClassNode classNode) {
         ClassCodeVisitorSupport visitor = new ClassCodeVisitorSupport() {
 
             @Override
             public void visitProperty(PropertyNode node) {
                 String name = node.getName();
 
-                final Expression expr = node.getField().getInitialExpression();
+                Expression expr = node.getField().getInitialExpression();
 
                 if (expr != null) {
                     Object value = null;
                     if (expr instanceof ListExpression) {
-                        final List<String> list = new ArrayList<>();
+                        List<String> list = new ArrayList<>();
                         for (Expression i : ((ListExpression) expr).getExpressions()) {
                             list.add(i.getText());
                         }
                         value = list;
                     }
                     else if (expr instanceof MapExpression) {
-                        final Map<String, String> map = new LinkedHashMap<>();
+                        Map<String, String> map = new LinkedHashMap<>();
                         MapExpression mapExpr = (MapExpression) expr;
                         for (MapEntryExpression mee : mapExpr.getMapEntryExpressions()) {
                             Expression keyExpr = mee.getKeyExpression();

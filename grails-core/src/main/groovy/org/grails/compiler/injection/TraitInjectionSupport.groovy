@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ class TraitInjectionSupport {
     static List<TraitInjector> resolveTraitInjectors(List<TraitInjector> injectors) {
         injectors = new ArrayList<>(injectors)
         injectors.sort { TraitInjector o1, TraitInjector o2 ->
-            final Class t1 = o1.trait
-            final Class t2 = o2.trait
+            Class t1 = o1.trait
+            Class t2 = o2.trait
             (t1 == t2) ? 0 : (o1.getClass().name.startsWith('grails.compiler.traits') ? -1 : 1)
         }
         injectors

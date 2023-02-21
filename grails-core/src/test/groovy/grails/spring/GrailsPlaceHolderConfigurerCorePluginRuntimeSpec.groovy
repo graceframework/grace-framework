@@ -1,5 +1,7 @@
 package grails.spring
 
+import org.springframework.context.ApplicationContext
+
 import grails.core.DefaultGrailsApplication
 import spock.lang.Issue
 import spock.lang.Specification
@@ -20,7 +22,7 @@ class GrailsPlaceHolderConfigurerCorePluginRuntimeSpec extends Specification{
             }
             def bb = new BeanBuilder(parent.createApplicationContext())
 
-            final beanBinding = new Binding()
+            Binding beanBinding = new Binding()
 
             def app = new DefaultGrailsApplication()
             beanBinding.setVariable('application', app)
@@ -35,7 +37,7 @@ class GrailsPlaceHolderConfigurerCorePluginRuntimeSpec extends Specification{
 
         when:"A system property is used in a bean property"
             System.setProperty('foo.bar', "test")
-            final appCtx = bb.createApplicationContext()
+            ApplicationContext appCtx = bb.createApplicationContext()
             def bean = appCtx.getBean("testBean")
 
         then:"The system property is ready"

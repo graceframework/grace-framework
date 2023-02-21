@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class PersistenceContextInterceptorExecutor {
 
     static void initPersistenceContext(ApplicationContext appCtx) {
         if (appCtx) {
-            final interceptors = appCtx.getBeansOfType(PersistenceContextInterceptor).values()
+            Collection<PersistenceContextInterceptor> interceptors = appCtx.getBeansOfType(PersistenceContextInterceptor).values()
             initPersistenceContextInternal(interceptors)
         }
     }
@@ -57,7 +57,7 @@ class PersistenceContextInterceptorExecutor {
 
     static void destroyPersistenceContext(ApplicationContext appCtx) {
         if (appCtx) {
-            final interceptors = appCtx.getBeansOfType(PersistenceContextInterceptor).values()
+            Collection<PersistenceContextInterceptor> interceptors = appCtx.getBeansOfType(PersistenceContextInterceptor).values()
             destroyPersistenceContextInternal(interceptors)
         }
     }

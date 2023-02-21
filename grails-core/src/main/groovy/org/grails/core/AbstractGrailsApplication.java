@@ -86,7 +86,7 @@ public abstract class AbstractGrailsApplication extends GroovyObjectSupport
 
     @Override
     public void configChanged() {
-        final ArtefactHandler[] handlers = getArtefactHandlers();
+        ArtefactHandler[] handlers = getArtefactHandlers();
         if (handlers != null) {
             for (ArtefactHandler handler : handlers) {
                 if (handler instanceof GrailsConfigurationAware) {

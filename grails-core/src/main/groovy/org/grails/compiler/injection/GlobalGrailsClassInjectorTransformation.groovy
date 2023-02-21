@@ -184,7 +184,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
     }
 
     private static Properties addToProps(Properties props, String superTypeName, String classNodeNames) {
-        final List<String> classNodesNameList = classNodeNames.tokenize(',')
+        List<String> classNodesNameList = classNodeNames.tokenize(',')
         classNodesNameList.forEach(classNodeName -> {
             String existing = props.getProperty(superTypeName)
             if (!existing) {

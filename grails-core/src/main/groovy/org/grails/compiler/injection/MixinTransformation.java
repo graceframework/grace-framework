@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ public class MixinTransformation implements ASTTransformation {
 
                     ClassNode mixinClassNode = ce.getType();
 
-                    final String fieldName = '$' + GrailsNameUtils.getPropertyName(mixinClassNode.getName());
+                    String fieldName = '$' + GrailsNameUtils.getPropertyName(mixinClassNode.getName());
 
                     if (classNode != null && classNode.getField(fieldName) == null) {
                         boolean isTargetAware = GrailsASTUtils.findInterface(mixinClassNode, new ClassNode(MixinTargetAware.class)) != null;
@@ -112,7 +112,7 @@ public class MixinTransformation implements ASTTransformation {
                     VariableExpression fieldReference = new VariableExpression(fieldName, mixinClassNode);
 
                     while (!mixinClassNode.getName().equals(OBJECT_CLASS)) {
-                        final List<MethodNode> mixinMethods = mixinClassNode.getMethods();
+                        List<MethodNode> mixinMethods = mixinClassNode.getMethods();
 
                         for (MethodNode mixinMethod : mixinMethods) {
                             if (isCandidateMethod(mixinMethod) && !hasDeclaredMethod(classNode, mixinMethod)) {

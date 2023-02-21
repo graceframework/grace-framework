@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
             return;
         }
 
-        final String className = classNode.getName();
+        String className = classNode.getName();
         KNOWN_TRANSFORMED_CLASSES.add(className);
         this.classesTransformedByThis.add(className);
 
@@ -161,7 +161,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
             Map<String, ClassNode> genericsPlaceholders, Class instanceImplementation) {
 
         ClassNode implementationNode;
-        final ConstructorCallExpression constructorCallExpression;
+        ConstructorCallExpression constructorCallExpression;
 
         try {
             implementationNode = GrailsASTUtils.replaceGenericsPlaceholders(ClassHelper.make(instanceImplementation), genericsPlaceholders);
@@ -179,7 +179,7 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         Expression apiInstance = new VariableExpression(apiInstanceProperty, implementationNode);
 
         if (requiresStaticLookupMethod()) {
-            final String lookupMethodName = CURRENT_PREFIX + instanceImplementation.getSimpleName();
+            String lookupMethodName = CURRENT_PREFIX + instanceImplementation.getSimpleName();
             MethodNode lookupMethod = createStaticLookupMethod(classNode, implementationNode, apiInstanceProperty, lookupMethodName);
             apiInstance = new MethodCallExpression(new ClassExpression(classNode), lookupMethodName, ZERO_ARGS);
             ((MethodCallExpression) apiInstance).setMethodTarget(lookupMethod);
@@ -222,13 +222,13 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         ClassNode staticImplementationNode = GrailsASTUtils.replaceGenericsPlaceholders(
                 ClassHelper.make(staticImplementation), genericsPlaceholders);
 
-        final List<MethodNode> declaredMethods = staticImplementationNode.getMethods();
-        final String staticImplementationSimpleName = staticImplementation.getSimpleName();
+        List<MethodNode> declaredMethods = staticImplementationNode.getMethods();
+        String staticImplementationSimpleName = staticImplementation.getSimpleName();
         String apiInstanceProperty = STATIC_PREFIX + staticImplementationSimpleName;
-        final String lookupMethodName = CURRENT_PREFIX + staticImplementationSimpleName;
+        String lookupMethodName = CURRENT_PREFIX + staticImplementationSimpleName;
 
         if (!requiresStaticLookupMethod()) {
-            final ConstructorCallExpression constructorCallExpression = new ConstructorCallExpression(staticImplementationNode, ZERO_ARGS);
+            ConstructorCallExpression constructorCallExpression = new ConstructorCallExpression(staticImplementationNode, ZERO_ARGS);
             addApiLookupFieldAndSetter(classNode, staticImplementationNode, apiInstanceProperty, constructorCallExpression);
         }
 

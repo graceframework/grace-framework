@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,8 +68,8 @@ public final class TraitInjectionUtils {
             traitNotLoaded = true;
         }
         if (!implementsTrait && !traitNotLoaded) {
-            final GenericsType[] genericsTypes = traitClassNode.getGenericsTypes();
-            final Map<String, ClassNode> parameterNameToParameterValue = new LinkedHashMap<>();
+            GenericsType[] genericsTypes = traitClassNode.getGenericsTypes();
+            Map<String, ClassNode> parameterNameToParameterValue = new LinkedHashMap<>();
             if (genericsTypes != null) {
                 for (GenericsType gt : genericsTypes) {
                     parameterNameToParameterValue.put(gt.getName(), classNode);
@@ -117,14 +117,11 @@ public final class TraitInjectionUtils {
         }
     }
 
-    public static void processTraitsForNode(final SourceUnit sourceUnit,
-            final ClassNode cNode,
-            final String artefactType,
-            final CompilationUnit compilationUnit) {
-        final List<TraitInjector> traitInjectors = getTraitInjectors();
-        final List<TraitInjector> injectorsToUse = new ArrayList<>();
-        for (final TraitInjector injector : traitInjectors) {
-            final List<String> artefactTypes = Arrays.asList(injector.getArtefactTypes());
+    public static void processTraitsForNode(SourceUnit sourceUnit, ClassNode cNode, String artefactType, CompilationUnit compilationUnit) {
+        List<TraitInjector> traitInjectors = getTraitInjectors();
+        List<TraitInjector> injectorsToUse = new ArrayList<>();
+        for (TraitInjector injector : traitInjectors) {
+            List<String> artefactTypes = Arrays.asList(injector.getArtefactTypes());
 
             boolean supportsClassNode = true;
 

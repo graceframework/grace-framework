@@ -118,9 +118,9 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
                 resolver = new PathMatchingResourcePatternResolver(classLoader);
                 resources = scanForPatterns(resolver, pattern2, pattern);
             }
-            final List<ClassInjector> injectors = new ArrayList<>();
-            final List<ClassInjector> globalInjectors = new ArrayList<>();
-            final Set<Class> injectorClasses = new HashSet<>();
+            List<ClassInjector> injectors = new ArrayList<>();
+            List<ClassInjector> globalInjectors = new ArrayList<>();
+            Set<Class> injectorClasses = new HashSet<>();
             for (Resource resource : resources) {
                 // ignore not readable classes and closures
                 if (!resource.isReadable() || resource.getFilename().contains("$_")) {
@@ -128,9 +128,9 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
                 }
 
                 try (InputStream inputStream = resource.getInputStream()) {
-                    final ClassReader classReader = new ClassReader(inputStream);
-                    final String astTransformerClassName = AstTransformer.class.getSimpleName();
-                    final ClassLoader finalClassLoader = classLoader;
+                    ClassReader classReader = new ClassReader(inputStream);
+                    String astTransformerClassName = AstTransformer.class.getSimpleName();
+                    ClassLoader finalClassLoader = classLoader;
 
                     classReader.accept(new ClassVisitor(Opcodes.ASM7) {
                         @Override
@@ -187,7 +187,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
     public void call(SourceUnit source, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
 
         URL url = null;
-        final String filename = source.getName();
+        String filename = source.getName();
         Resource resource = new FileSystemResource(filename);
         if (resource.exists()) {
             try {

@@ -97,7 +97,8 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
                     for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
                         if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
-                            ClassExpression autoConfigClassExpression = new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
+                            ClassExpression autoConfigClassExpression =
+                                    new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
                             GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                         }
                     }
