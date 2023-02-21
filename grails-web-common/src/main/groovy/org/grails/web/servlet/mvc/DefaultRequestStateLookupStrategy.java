@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     }
 
     public String getContextPath() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         if (req != null) {
             return req.getContextPath();
         }
@@ -59,7 +59,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     }
 
     public String getCharacterEncoding() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         if (req != null) {
             return req.getCurrentRequest().getCharacterEncoding();
         }
@@ -68,7 +68,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
 
     @Override
     public String getHttpMethod() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         if (req != null) {
             return req.getCurrentRequest().getMethod();
         }
@@ -76,7 +76,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     }
 
     public String getControllerName() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         return getControllerNameInternal(req);
     }
 
@@ -88,7 +88,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     }
 
     public String getControllerNamespace() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         if (req != null) {
             return req.getControllerNamespace();
         }
@@ -96,7 +96,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     }
 
     public String getActionName() {
-        final GrailsWebRequest req = getWebRequest();
+        GrailsWebRequest req = getWebRequest();
         if (req != null) {
             String actionName = req.getActionName();
             if (actionName == null) {
@@ -104,7 +104,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
                     this.grailsApplication = req.getAttributes().getGrailsApplication();
                 }
                 if (this.grailsApplication != null) {
-                    final String controllerName = getControllerNameInternal(req);
+                    String controllerName = getControllerNameInternal(req);
                     return getActionName(this.grailsApplication, controllerName);
                 }
             }
@@ -114,7 +114,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
 
     private String getActionName(GrailsApplication application, String controllerName) {
         if (application != null) {
-            final GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(
+            GrailsControllerClass controllerClass = (GrailsControllerClass) application.getArtefactByLogicalPropertyName(
                     ControllerArtefactHandler.TYPE, controllerName);
             if (controllerClass != null) {
                 return controllerClass.getDefaultAction();
@@ -126,7 +126,7 @@ public class DefaultRequestStateLookupStrategy implements GrailsRequestStateLook
     public String getActionName(String controllerName) {
         if (controllerName != null) {
             if (this.grailsApplication == null) {
-                final GrailsWebRequest grailsWebRequest = getWebRequest();
+                GrailsWebRequest grailsWebRequest = getWebRequest();
                 if (grailsWebRequest != null) {
                     this.grailsApplication = grailsWebRequest.getAttributes().getGrailsApplication();
                 }

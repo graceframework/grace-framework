@@ -273,7 +273,7 @@ public class GrailsWrappedRuntimeException extends GrailsException {
             return;
         }
 
-        final SourceCodeAware codeAware = (SourceCodeAware) t;
+        SourceCodeAware codeAware = (SourceCodeAware) t;
         if (codeAware.getFileName() != null) {
             this.fileName = codeAware.getFileName();
             if (this.className == null || UNKNOWN.equals(this.className)) {

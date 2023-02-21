@@ -93,7 +93,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     public static ViewResolver lookupViewResolver(ApplicationContext wac) {
-        final CompositeViewResolver viewResolver = wac.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver.class);
+        CompositeViewResolver viewResolver = wac.getBean(CompositeViewResolver.BEAN_NAME, CompositeViewResolver.class);
 
         return viewResolver::resolveView;
     }
@@ -107,13 +107,13 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static HandlerInterceptor[] lookupHandlerInterceptors(ServletContext servletContext) {
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
-        final Collection<HandlerInterceptor> allHandlerInterceptors = new ArrayList<>();
+        Collection<HandlerInterceptor> allHandlerInterceptors = new ArrayList<>();
 
         WebRequestInterceptor[] webRequestInterceptors = lookupWebRequestInterceptors(servletContext);
         for (WebRequestInterceptor webRequestInterceptor : webRequestInterceptors) {
             allHandlerInterceptors.add(new WebRequestHandlerInterceptorAdapter(webRequestInterceptor));
         }
-        final Collection<HandlerInterceptor> handlerInterceptors = wac.getBeansOfType(HandlerInterceptor.class).values();
+        Collection<HandlerInterceptor> handlerInterceptors = wac.getBeansOfType(HandlerInterceptor.class).values();
 
         allHandlerInterceptors.addAll(handlerInterceptors);
         return allHandlerInterceptors.toArray(new HandlerInterceptor[0]);
@@ -128,7 +128,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static WebRequestInterceptor[] lookupWebRequestInterceptors(ServletContext servletContext) {
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
-        final Collection<WebRequestInterceptor> webRequestInterceptors = wac.getBeansOfType(WebRequestInterceptor.class).values();
+        Collection<WebRequestInterceptor> webRequestInterceptors = wac.getBeansOfType(WebRequestInterceptor.class).values();
         return webRequestInterceptors.toArray(new WebRequestInterceptor[0]);
     }
 

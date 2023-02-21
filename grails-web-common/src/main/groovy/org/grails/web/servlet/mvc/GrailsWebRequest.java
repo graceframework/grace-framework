@@ -216,7 +216,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      */
     @Override
     public String getContextPath() {
-        final HttpServletRequest request = getCurrentRequest();
+        HttpServletRequest request = getCurrentRequest();
         String appUri = (String) request.getAttribute(GrailsApplicationAttributes.APP_URI_ATTRIBUTE);
         if (appUri == null) {
             appUri = this.urlHelper.getContextPath(request);
@@ -390,7 +390,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return true if the view for this GrailsWebRequest should be rendered
      */
     public boolean isRenderView() {
-        final HttpServletRequest currentRequest = getCurrentRequest();
+        HttpServletRequest currentRequest = getCurrentRequest();
         HttpServletResponse currentResponse = getCurrentResponse();
         return this.renderView &&
                 !currentResponse.isCommitted() &&
@@ -446,7 +446,7 @@ public class GrailsWebRequest extends DispatcherServletWebRequest {
      * @return The PropertyEditorRegistry
      */
     public PropertyEditorRegistry getPropertyEditorRegistry() {
-        final HttpServletRequest servletRequest = getCurrentRequest();
+        HttpServletRequest servletRequest = getCurrentRequest();
         PropertyEditorRegistry registry = (PropertyEditorRegistry) servletRequest.getAttribute(GrailsApplicationAttributes.PROPERTY_REGISTRY);
         if (registry == null) {
             registry = new PropertyEditorRegistrySupport();

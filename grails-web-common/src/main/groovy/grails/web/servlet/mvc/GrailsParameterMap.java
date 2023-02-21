@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
      */
     public GrailsParameterMap(HttpServletRequest request) {
         this.request = request;
-        final Map requestMap = new LinkedHashMap(request.getParameterMap());
+        Map requestMap = new LinkedHashMap(request.getParameterMap());
         if (requestMap.isEmpty() && ("PUT".equals(request.getMethod()) || "PATCH".equals(request.getMethod())) &&
                 request.getAttribute(REQUEST_BODY_PARSED) == null) {
 
@@ -295,7 +295,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
             Object entryKey = entry.getKey();
             if (entryKey instanceof String) {
                 String paramName = (String) entryKey;
-                final String prefix = key + "_";
+                String prefix = key + "_";
                 if (paramName.startsWith(prefix)) {
                     dateParams.put(paramName.substring(prefix.length()), entry.getValue());
                 }
@@ -330,7 +330,7 @@ public class GrailsParameterMap extends TypeConvertingMap implements Cloneable {
      * This also allows data binding to occur for only a subset of the properties in the parameter map.
      */
     private void processNestedKeys(Map requestMap, String key, String nestedKey, Map nestedLevel) {
-        final int nestedIndex = nestedKey.indexOf('.');
+        int nestedIndex = nestedKey.indexOf('.');
         if (nestedIndex == -1) {
             return;
         }

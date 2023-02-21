@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public final class GrailsWebUtil {
             return grailsApplication;
         }
 
-        final WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         if (context == null || !context.containsBean(GrailsApplication.APPLICATION_ID)) {
             return null;
         }
@@ -81,7 +81,7 @@ public final class GrailsWebUtil {
      * @since 2.0
      */
     public static GrailsApplication currentApplication() {
-        final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (!(requestAttributes instanceof GrailsWebRequest)) {
             return null;
         }
