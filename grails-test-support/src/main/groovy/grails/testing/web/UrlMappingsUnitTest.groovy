@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package grails.testing.web
 
+import groovy.text.Template
 import groovy.transform.CompileDynamic
 import junit.framework.AssertionFailedError
 import junit.framework.ComparisonFailure
@@ -43,7 +44,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
 
     void configuredMockedControllers() {
         for (Class c : controllersToMock) {
-            final GrailsControllerClass controllerArtefact = (GrailsControllerClass) grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, c)
+            GrailsControllerClass controllerArtefact = (GrailsControllerClass) grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, c)
             controllerArtefact.initialize()
             defineBeans {
                 "$controllerArtefact.name"(c) { bean ->
@@ -79,7 +80,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
             webRequest.params.putAll(backupParams)
             if (info.viewName == null && info.URI == null) {
                 if (info instanceof GrailsControllerUrlMappingInfo) {
-                    def controller = info.controllerClass
+                    GrailsControllerClass controller = info.controllerClass
                     if (controller != null) {
                         return applicationContext.getBean(controller.name)
                     }
@@ -89,7 +90,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
     }
 
     private boolean checkController(String controller, boolean throwEx) {
-        final controllerClass = getControllerClass(controller)
+        GrailsControllerClass controllerClass = getControllerClass(controller)
         if (!controllerClass && throwEx) {
             throw new AssertionFailedError("Url mapping assertion failed, '$controller' is not a valid controller")
         }
@@ -116,7 +117,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
     }
 
     private boolean checkAction(String controller, String action, boolean throwEx) {
-        final controllerClass = getControllerClass(controller)
+        GrailsControllerClass controllerClass = getControllerClass(controller)
         boolean valid = controllerClass?.mapsToURI("/$controller/$action")
         if (!valid && throwEx) {
             throw new AssertionFailedError("Url mapping assertion failed, '$action' is not a valid action of controller '$controller'")
@@ -150,7 +151,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
         }
         GroovyPagesTemplateEngine templateEngine = applicationContext.getBean('groovyPagesTemplateEngine', GroovyPagesTemplateEngine)
 
-        def t = templateEngine.createTemplate(pathPattern)
+        Template t = templateEngine.createTemplate(pathPattern)
         if (!t && throwEx) {
             throw new AssertionFailedError(
                     (controller) ? "Url mapping assertion failed, '$view' is not a valid view of controller '$controller'"
@@ -278,7 +279,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
 
         boolean returnVal = true
 
-        def mappingMatched = mappingInfos.any { mapping ->
+        boolean mappingMatched = mappingInfos.any { UrlMappingInfo mapping ->
             mapping.configure(webRequest)
             for (key in assertionKeys) {
                 if (assertions.containsKey(key)) {
@@ -301,7 +302,7 @@ trait UrlMappingsUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWe
                             break
                         case 'action':
                             if (key == 'action' && actual == null) {
-                                final controllerClass = getControllerClass(assertions.controller)
+                                GrailsControllerClass controllerClass = getControllerClass(assertions.controller)
                                 actual = controllerClass?.defaultAction
                             }
                             break

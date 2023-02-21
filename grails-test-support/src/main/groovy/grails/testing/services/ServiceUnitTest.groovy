@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.springframework.util.ClassUtils
 
+import grails.core.GrailsClass
 import grails.gorm.services.Service
 import grails.util.GrailsNameUtils
 
@@ -52,9 +53,10 @@ trait ServiceUnitTest<T> extends ParameterizedGrailsUnitTest<T> {
      * @return An instance of the service
      */
     @CompileDynamic
+    @Override
     void mockArtefact(Class<?> serviceClass) {
         try {
-            final serviceArtefact = grailsApplication.addArtefact(ServiceArtefactHandler.TYPE, serviceClass)
+            GrailsClass serviceArtefact = grailsApplication.addArtefact(ServiceArtefactHandler.TYPE, serviceClass)
 
             defineBeans {
                 "${serviceArtefact.propertyName}"(serviceClass) { bean ->
@@ -79,6 +81,7 @@ trait ServiceUnitTest<T> extends ParameterizedGrailsUnitTest<T> {
         }
     }
 
+    @Override
     String getBeanName(Class<?> serviceClass) {
         GrailsNameUtils.getPropertyName(serviceClass)
     }

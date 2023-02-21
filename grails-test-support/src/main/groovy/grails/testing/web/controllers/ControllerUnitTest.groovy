@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,9 +62,9 @@ trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWeb
      */
     @CompileStatic(TypeCheckingMode.SKIP)
     String getView() {
-        final controller = request.getAttribute(GrailsApplicationAttributes.CONTROLLER)
+        def controller = request.getAttribute(GrailsApplicationAttributes.CONTROLLER)
 
-        final viewName = controller?.modelAndView?.viewName
+        def viewName = controller?.modelAndView?.viewName
         if (viewName != null) {
             return viewName
         }
@@ -83,10 +83,12 @@ trait ControllerUnitTest<T> implements ParameterizedGrailsUnitTest<T>, GrailsWeb
      * @param controllerClass The controller class
      * @return An instance of the controller
      */
+    @Override
     void mockArtefact(Class<?> controllerClass) {
         mockController(controllerClass)
     }
 
+    @Override
     String getBeanName(Class<?> controllerClass) {
         controllerClass.name
     }

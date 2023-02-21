@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
     @CompileDynamic
     Object mockTagLib(Class<?> tagLibClass) {
         GrailsTagLibClass tagLib = grailsApplication.addArtefact(TagLibArtefactHandler.TYPE, tagLibClass)
-        final tagLookup = applicationContext.getBean(TagLibraryLookup)
+        TagLibraryLookup tagLookup = applicationContext.getBean(TagLibraryLookup)
 
         defineBeans {
             "${tagLib.fullName}"(tagLibClass) { bean ->
@@ -140,7 +140,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
     }
 
     private GrailsClass createAndEnhanceController(Class controllerClass) {
-        final GrailsControllerClass controllerArtefact =
+        GrailsControllerClass controllerArtefact =
                 (GrailsControllerClass) grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, controllerClass)
         controllerArtefact.initialize()
         controllerArtefact
@@ -180,7 +180,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         else {
             model = [:]
         }
-        final attributes = webRequest.attributes
+        GrailsApplicationAttributes attributes = webRequest.attributes
         if (args.template) {
             uri = attributes.getTemplateUri(args.template as String, request)
         }
@@ -189,7 +189,7 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
         }
         if (uri != null) {
             GroovyPagesTemplateEngine engine = applicationContext.getBean(GroovyPagesTemplateEngine)
-            final Template t = engine.createTemplate(uri)
+            Template t = engine.createTemplate(uri)
             if (t != null) {
                 def sw = new StringWriter()
                 renderTemplateToStringWriter(sw, t, model)
@@ -220,9 +220,9 @@ trait GrailsWebUnitTest implements GrailsUnitTest {
      * @param model The model
      */
     void applyTemplate(StringWriter sw, String template, Map params = [:]) {
-        def engine = applicationContext.getBean(GroovyPagesTemplateEngine)
+        GroovyPagesTemplateEngine engine = applicationContext.getBean(GroovyPagesTemplateEngine)
 
-        def t = engine.createTemplate(template, 'test_' + System.currentTimeMillis())
+        Template t = engine.createTemplate(template, 'test_' + System.currentTimeMillis())
         renderTemplateToStringWriter(sw, t, params)
     }
 

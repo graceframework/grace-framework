@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.springframework.util.ClassUtils
 import org.springframework.web.multipart.support.StandardServletMultipartResolver
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 
+import grails.config.Config
 import grails.config.Settings
 import grails.core.GrailsApplication
 import grails.testing.web.GrailsWebUnitTest
@@ -69,9 +70,9 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
 
         test.defineBeans(new ConvertersGrailsPlugin())
 
-        def config = grailsApplication.config
+        Config config = grailsApplication.config
         test.defineBeans {
-            final classLoader = ControllerUnitTest.getClassLoader()
+            ClassLoader classLoader = ControllerUnitTest.getClassLoader()
 
             boolean registerConstraintEvaluator
             if (ClassUtils.isPresent('grails.testing.gorm.DataTest', classLoader)) {
