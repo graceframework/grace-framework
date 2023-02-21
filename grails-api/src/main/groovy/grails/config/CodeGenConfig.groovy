@@ -177,45 +177,55 @@ class CodeGenConfig implements Cloneable, ConfigMap {
     }
 
     protected <T> T convertToType(Object value, Class<T> requiredType) {
+        Object result
         if (value == null || value instanceof NavigableMap.NullSafeNavigator) {
             return null
         }
         else if (requiredType.isInstance(value)) {
-            return (T) value
+            result = value
         }
-        if (requiredType == String) {
-            return String.valueOf(value)
+        else if (requiredType == String) {
+            result = String.valueOf(value)
         }
         else if (requiredType == Boolean) {
             Boolean booleanObject = toBooleanObject(String.valueOf(value))
-            return booleanObject != null ? booleanObject : Boolean.FALSE
+            result = booleanObject != null ? booleanObject : Boolean.FALSE
         }
         else if (requiredType == boolean) {
             Boolean booleanObject = toBooleanObject(String.valueOf(value))
-            return booleanObject != null ? booleanObject.booleanValue() : Boolean.FALSE.booleanValue()
+            result = booleanObject != null ? booleanObject.booleanValue() : Boolean.FALSE.booleanValue()
         }
         else if (requiredType == Integer) {
             if (value instanceof Number) {
-                return Integer.valueOf(((Number) value).intValue())
+                result = Integer.valueOf(((Number) value).intValue())
             }
-            return Integer.valueOf(String.valueOf(value))
+            else {
+                result = Integer.valueOf(String.valueOf(value))
+            }
         }
         else if (requiredType == Long) {
             if (value instanceof Number) {
-                return Long.valueOf(((Number) value).longValue())
+                result = Long.valueOf(((Number) value).longValue())
             }
-            return Long.valueOf(String.valueOf(value))
+            else {
+                result = Long.valueOf(String.valueOf(value))
+            }
         }
         else if (requiredType == Double) {
             if (value instanceof Number) {
-                return Double.valueOf(((Number) value).doubleValue())
+                result = Double.valueOf(((Number) value).doubleValue())
             }
-            return Double.valueOf(String.valueOf(value))
+            else{
+                result = Double.valueOf(String.valueOf(value))
+            }
         }
         else if (requiredType == BigDecimal) {
-            return new BigDecimal(String.valueOf(value))
+            result = new BigDecimal(String.valueOf(value))
         }
-        convertToOtherTypes(value, requiredType)
+        else {
+            result = convertToOtherTypes(value, requiredType)
+        }
+        result as T
     }
 
     protected <T> T convertToOtherTypes(Object value, Class<T> requiredType) {
