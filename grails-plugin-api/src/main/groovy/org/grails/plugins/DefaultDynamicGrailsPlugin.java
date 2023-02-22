@@ -43,7 +43,7 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
 
     private ModuleDescriptorFactory moduleDescriptorFactory;
 
-    private Class<?>[] providedModules = {};
+    private Object providedModules;
 
     public DefaultDynamicGrailsPlugin(Class<?> pluginClass, Resource resource, GrailsApplication application) {
         super(pluginClass, resource, application);
@@ -61,17 +61,13 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
         this.moduleDescriptorFactory = moduleDescriptorFactory;
     }
 
-    public Class<?>[] getProvidedModules() {
+    @Override
+    public Object getProvidedModules() {
         return this.providedModules;
     }
 
-    @SuppressWarnings("unchecked")
     private void evaluateProvidedModules() {
-        Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, getInstance(), PROVIDED_MODULES);
-        if (result instanceof Collection) {
-            Collection<Class<?>> moduleList = (Collection<Class<?>>) result;
-            this.providedModules = (Class<?>[]) moduleList.toArray(new Class[0]);
-        }
+        this.providedModules = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, getInstance(), PROVIDED_MODULES);
     }
 
     @Override

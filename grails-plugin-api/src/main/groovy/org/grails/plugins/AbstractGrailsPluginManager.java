@@ -64,6 +64,7 @@ import grails.plugins.ModuleDescriptorFactory;
 import grails.plugins.Plugin;
 import grails.plugins.PluginFilter;
 import grails.plugins.exceptions.PluginException;
+import grails.plugins.module.ModuleType;
 import grails.util.Environment;
 import grails.util.GrailsNameUtils;
 
@@ -389,11 +390,37 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                     continue;
                 }
                 DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
-                for (Class<?> clazz : dynamicPlugin.getProvidedModules()) {
-                    if (ModuleDescriptor.class.isAssignableFrom(clazz)) {
-                        String shortName = GrailsNameUtils.getShortName(clazz);
-                        String type = StringUtils.uncapitalize(StringUtils.substringBefore(shortName, "ModuleDescriptor"));
-                        this.moduleDescriptorFactory.addModuleDescriptor(type, (Class<? extends ModuleDescriptor>) clazz);
+                Object providedModules = dynamicPlugin.getProvidedModules();
+                if (providedModules instanceof Collection) {
+                    Collection<Class<?>> moduleTypesCollection = (Collection<Class<?>>) providedModules;
+                    for (Class<?> clazz : moduleTypesCollection) {
+                        if (ModuleDescriptor.class.isAssignableFrom(clazz)) {
+                            String type = null;
+                            ModuleType moduleType = clazz.getAnnotation(ModuleType.class);
+                            if (moduleType != null) {
+                                type = moduleType.value();
+                            }
+                            if (StringUtils.isBlank(type)) {
+                                String shortName = GrailsNameUtils.getShortName(clazz);
+                                if (shortName.endsWith("ModuleDescriptor")) {
+                                    type = StringUtils.uncapitalize(StringUtils.substringBefore(shortName, "ModuleDescriptor"));
+                                }
+                                else {
+                                    type = StringUtils.uncapitalize(shortName);
+                                }
+                            }
+                            this.moduleDescriptorFactory.addModuleDescriptor(type, (Class<? extends ModuleDescriptor<?>>) clazz);
+                        }
+                    }
+                }
+                else if (providedModules instanceof Map) {
+                    Map<String, Class<?>> moduleTypesMap = (Map<String, Class<?>>) providedModules;
+                    for (Map.Entry<String, Class<?>> moduleType : moduleTypesMap.entrySet()) {
+                        if (ModuleDescriptor.class.isAssignableFrom(moduleType.getValue())) {
+                            moduleDescriptorFactory.addModuleDescriptor(
+                                    moduleType.getKey(),
+                                    (Class<? extends ModuleDescriptor<?>>) moduleType.getValue());
+                        }
                     }
                 }
             }

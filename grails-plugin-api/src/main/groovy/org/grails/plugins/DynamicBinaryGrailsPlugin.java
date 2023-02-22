@@ -43,7 +43,7 @@ public class DynamicBinaryGrailsPlugin extends BinaryGrailsPlugin implements Dyn
 
     private ModuleDescriptorFactory moduleDescriptorFactory;
 
-    private Class<?>[] providedModules = {};
+    private Object providedModules;
 
     /**
      * Creates a binary plugin instance.
@@ -63,17 +63,12 @@ public class DynamicBinaryGrailsPlugin extends BinaryGrailsPlugin implements Dyn
     }
 
     @Override
-    public Class<?>[] getProvidedModules() {
+    public Object getProvidedModules() {
         return this.providedModules;
     }
 
-    @SuppressWarnings("unchecked")
     private void evaluateProvidedModules() {
-        Object result = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, getInstance(), PROVIDED_MODULES);
-        if (result instanceof Collection) {
-            Collection<Class<?>> moduleList = (Collection<Class<?>>) result;
-            this.providedModules = (Class<?>[]) moduleList.toArray(new Class[0]);
-        }
+        this.providedModules = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.pluginBean, getInstance(), PROVIDED_MODULES);
     }
 
     @Override
