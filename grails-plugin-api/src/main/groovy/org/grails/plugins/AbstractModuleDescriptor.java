@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,18 +60,15 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     @Override
     public void init(final DynamicGrailsPlugin plugin, final Map<String, ?> args) throws PluginException {
         this.plugin = plugin;
-        this.key = (String) args.get("key");
+        this.key = args.get("key") != null ? args.get("key").toString() : null;
         this.completeKey = buildCompleteKey(plugin, this.key);
-        this.name = (String) args.get("name");
-        this.i18nNameKey = (String) args.get("i18nNameKey");
-        this.description = (String) args.get("description");
-        this.descriptionKey = (String) args.get("descriptionKey");
-        this.moduleClassName = (String) args.get("class");
-        if (args.get("enabled") instanceof String) {
-            this.enabled = Boolean.parseBoolean(StringUtils.defaultString((String) args.get("enabled"), "true"));
-        }
-        else if (args.get("enabled") instanceof Boolean) {
-            this.enabled = args.get("enabled") != null ? (Boolean) args.get("enabled") : true;
+        this.name = args.get("name") != null ? args.get("name").toString() : null;
+        this.i18nNameKey = args.get("i18nNameKey") != null ? args.get("i18nNameKey").toString() : null;
+        this.description = args.get("description") != null ? args.get("description").toString() : null;
+        this.descriptionKey = args.get("descriptionKey") != null ? args.get("descriptionKey").toString() : null;
+        this.moduleClassName = args.get("class") != null ? args.get("class").toString() : null;
+        if (args.get("enabled") != null) {
+            this.enabled = Boolean.parseBoolean(StringUtils.defaultString(args.get("enabled").toString(), "true"));
         }
         this.params = new HashMap<>();
     }
