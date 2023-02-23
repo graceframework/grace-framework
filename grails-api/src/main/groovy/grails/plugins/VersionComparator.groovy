@@ -38,8 +38,8 @@ class VersionComparator implements Comparator<String> {
             List<Integer> nums1
             try {
                 String[] tokens = deSnapshot(o1).split(/\./)
-                tokens = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
-                nums1 = tokens*.toInteger()
+                Collection<String> tokenList = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
+                nums1 = tokenList*.toInteger()
             }
             catch (NumberFormatException e) {
                 throw new InvalidVersionException("Cannot compare versions, left side [$o1] is invalid: ${e.message}")
@@ -47,8 +47,8 @@ class VersionComparator implements Comparator<String> {
             List<Integer> nums2
             try {
                 String[] tokens = deSnapshot(o2).split(/\./)
-                tokens = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
-                nums2 = tokens*.toInteger()
+                Collection<String> tokenList = tokens.findAll { String it -> it.trim() ==~ /\d+/ }
+                nums2 = tokenList*.toInteger()
             }
             catch (NumberFormatException e) {
                 throw new InvalidVersionException("Cannot compare versions, right side [$o2] is invalid: ${e.message}")
