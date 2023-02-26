@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.apache.groovy:groovy-toml:4.0.7'
+        classpath 'org.apache.groovy:groovy-toml:4.0.9'
     }
 }
 
