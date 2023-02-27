@@ -41,11 +41,13 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test for the DefaultGrailsPlugin class
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 public class DefaultGrailsPluginTests {
     GroovyClassLoader gcl = new GroovyClassLoader();
@@ -137,7 +139,7 @@ public class DefaultGrailsPluginTests {
 
         try {
             GrailsPlugin notVersionPlugin = new DefaultGrailsPlugin(notVersion, ga);
-//            fail("Should have thrown IllegalArgumentException for unversioned plugin");
+            fail("Should have thrown IllegalArgumentException for unversioned plugin");
         }
         catch (PluginException ignored) {
             // expected
@@ -145,7 +147,7 @@ public class DefaultGrailsPluginTests {
 
         try {
             GrailsPlugin notPlugin = new DefaultGrailsPlugin(notPluginClass, ga);
-//            fail("Should have thrown an exception for invalid plugin");
+            fail("Should have thrown an exception for invalid plugin");
         }
         catch (IllegalArgumentException e) {
             // expected
