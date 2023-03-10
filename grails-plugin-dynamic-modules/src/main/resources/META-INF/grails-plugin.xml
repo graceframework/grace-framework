@@ -1,0 +1,3 @@
+<plugin name="dynamicModules">
+  <type>org.grails.plugins.modules.DynamicModulesGrailsPlugin</type>
+</plugin>
