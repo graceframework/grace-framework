@@ -21,7 +21,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.building.DefaultModelProcessor;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.locator.DefaultModelLocator;
-import org.springframework.boot.cli.compiler.dependencies.MavenModelDependencyManagement;
+import org.grails.cli.compiler.dependencies.MavenModelDependencyManagement;
 
 /**
  * DependencyManagement derived from the effective pom of
