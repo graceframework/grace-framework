@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.plugins;
+package grails.plugins.descriptors;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import grails.plugins.DynamicGrailsPlugin;
+import grails.plugins.GrailsPlugin;
 import grails.plugins.ModuleDescriptor;
 import grails.plugins.exceptions.PluginException;
 
@@ -32,7 +32,7 @@ import grails.plugins.exceptions.PluginException;
  */
 public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
 
-    protected DynamicGrailsPlugin plugin;
+    protected GrailsPlugin plugin;
 
     protected String key;
 
@@ -58,7 +58,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     }
 
     @Override
-    public void init(final DynamicGrailsPlugin plugin, final Map<String, ?> args) throws PluginException {
+    public void init(final GrailsPlugin plugin, final Map<String, ?> args) throws PluginException {
         this.plugin = plugin;
         this.key = args.get("key") != null ? args.get("key").toString() : null;
         this.completeKey = buildCompleteKey(plugin, this.key);
@@ -128,12 +128,12 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
     }
 
     @Override
-    public void destroy(DynamicGrailsPlugin plugin) {
+    public void destroy(GrailsPlugin plugin) {
 
     }
 
     @Override
-    public DynamicGrailsPlugin getPlugin() {
+    public GrailsPlugin getPlugin() {
         return this.plugin;
     }
 
@@ -152,7 +152,7 @@ public class AbstractModuleDescriptor<T> implements ModuleDescriptor<T> {
         return this.enabled;
     }
 
-    private String buildCompleteKey(final DynamicGrailsPlugin plugin, final String moduleKey) {
+    private String buildCompleteKey(final GrailsPlugin plugin, final String moduleKey) {
         if (plugin == null) {
             return null;
         }
