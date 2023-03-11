@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,12 +63,6 @@ import org.grails.web.servlet.mvc.ActionResultTransformer;
 @EnableConfigurationProperties({ UrlMappingsProperties.class, GrailsCorsConfiguration.class })
 public class UrlMappingsPluginConfiguration {
 
-    private final GrailsApplication grailsApplication;
-
-    public UrlMappingsPluginConfiguration(ObjectProvider<GrailsApplication> grailsApplicationProvider) {
-        this.grailsApplication = grailsApplicationProvider.getIfAvailable();
-    }
-
     @Bean(name = UrlConverter.BEAN_NAME)
     @ConditionalOnMissingBean(name = UrlConverter.BEAN_NAME)
     @ConditionalOnProperty(name = "grails.web.url.converter", havingValue = "camelCase", matchIfMissing = true)
@@ -84,10 +78,11 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean
-    public UrlMappingsHandlerMapping urlMappingsHandlerMapping(ObjectProvider<UrlMappingsHolder> urlMappingsHolderProvider,
+    public UrlMappingsHandlerMapping urlMappingsHandlerMapping(ObjectProvider<GrailsApplication> grailsApplicationProvider,
+            ObjectProvider<UrlMappingsHolder> urlMappingsHolderProvider,
             GrailsCorsConfiguration grailsCorsConfiguration) {
 
-        Config config = this.grailsApplication.getConfig();
+        Config config = grailsApplicationProvider.getIfAvailable().getConfig();
         boolean corsFilterEnabled = config.getProperty(Settings.SETTING_CORS_FILTER, Boolean.class, true);
 
         UrlMappingsHandlerMapping handlerMapping = new UrlMappingsHandlerMapping(urlMappingsHolderProvider.getIfAvailable());
@@ -127,21 +122,16 @@ public class UrlMappingsPluginConfiguration {
         return factoryBean;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public LinkGenerator grailsLinkGenerator() {
-        Config config = this.grailsApplication.getConfig();
+    @Bean({"linkGenerator", "grailsLinkGenerator"})
+    public LinkGenerator grailsLinkGenerator(ObjectProvider<GrailsApplication> grailsApplicationProvider,
+            ObjectProvider<UrlMappingsHolder> grailsUrlMappingsHolder) {
+        Config config = grailsApplicationProvider.getIfAvailable().getConfig();
         boolean isReloadEnabled = Environment.isDevelopmentMode() || Environment.getCurrent().isReloadEnabled();
         boolean cacheUrls = config.getProperty(Settings.WEB_LINK_GENERATOR_USE_CACHE, Boolean.class, !isReloadEnabled);
         String serverURL = config.getProperty(Settings.SERVER_URL);
 
-        LinkGenerator linkGenerator;
-        if (cacheUrls) {
-            linkGenerator = new CachingLinkGenerator(serverURL);
-        }
-        else {
-            linkGenerator = new DefaultLinkGenerator(serverURL);
-        }
+        DefaultLinkGenerator linkGenerator = cacheUrls ? new CachingLinkGenerator(serverURL) : new DefaultLinkGenerator(serverURL);
+        linkGenerator.setUrlMappingsHolder(grailsUrlMappingsHolder.getIfAvailable());
         return linkGenerator;
     }
 
