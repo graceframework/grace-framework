@@ -49,7 +49,7 @@ class Metadata extends PropertySourcePropertyResolver {
     public static final String APPLICATION_GRAILS_VERSION = 'info.app.grailsVersion'
     public static final String SERVLET_VERSION = 'info.app.servletVersion'
     public static final String WAR_DEPLOYED = 'info.app.warDeployed'
-    public static final String DEFAULT_SERVLET_VERSION = '3.0'
+    public static final String DEFAULT_SERVLET_VERSION = '4.0'
 
     private static final Holder<Reference<Metadata>> HOLDER = new Holder<Reference<Metadata>>('Metadata')
     private static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'
