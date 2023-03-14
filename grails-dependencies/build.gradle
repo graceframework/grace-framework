@@ -38,18 +38,6 @@ publishing {
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
-                            delegate.artifactId "gsp"
-                            delegate.version libs.versions.grails.gsp.get()
-                            delegate.scope "compile"
-                            delegate.exclusions {
-                                delegate.exclusion {
-                                    delegate.groupId 'javax'
-                                    delegate.artifactId 'javaee-web-api'
-                                }
-                            }
-                        }
-                        delegate.dependency {
                             delegate.groupId "com.h2database"
                             delegate.artifactId "h2"
                             delegate.version libs.versions.h2.get()
