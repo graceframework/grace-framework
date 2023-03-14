@@ -121,7 +121,7 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String targetCompatibility = args[3]
         String packageName = args[4].trim()
         String serverpath = args[5]
-        String[] configFiles = args[6].tokenize(',')
+        String[] configFiles = args[6].tokenize(',') as String[]
         File configFile = new File(args[6])
         String encoding = args[7] ?: 'UTF-8'
 
