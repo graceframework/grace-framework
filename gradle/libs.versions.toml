@@ -31,7 +31,7 @@ jakarta-annotation = "2.0.0"
 javaparser = "3.15.14"
 javassist = "3.29.0-GA"
 javax-annotation = "1.3.2"
-javax-el = "2.2"
+javax-el = "3.0.1-b04"
 javax-inject = "1"
 javax-jaxb = "2.3.1"
 javax-jsp = "2.2"
@@ -55,6 +55,7 @@ micronaut-spring = "4.5.0"
 mockito = "4.5.1"
 mongodb-java-driver = "4.6.1"
 objenesis = "3.2"
+sitemesh = "2.4.2"
 slf4j = "1.7.36"
 snakeyaml = "1.33"
 spock = "2.3-groovy-3.0"
@@ -139,7 +140,7 @@ jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
 javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation" }
-javax-el = { module = "javax.el:el-api", version.ref = "javax-el" }
+javax-el = { module = "javax.el:javax.el-api", version.ref = "javax-el" }
 javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 javax-jsp = { module = "javax.servlet.jsp:jsp-api", version.ref = "javax-jsp" }
@@ -181,6 +182,7 @@ micronaut-spring-web-annotation = { module = "io.micronaut.spring:micronaut-spri
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
+sitemesh = { module = "opensymphony:sitemesh", version.ref = "sitemesh" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-jcl = { module = "org.slf4j:jcl-over-slf4j", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
