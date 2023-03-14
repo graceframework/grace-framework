@@ -31,7 +31,7 @@ import groovy.transform.ToString
 class WebLink {
 
     String linkId
-    String url
+    Object url
 
     WebLink() {
     }
