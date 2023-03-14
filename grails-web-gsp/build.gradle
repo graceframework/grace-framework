@@ -1,0 +1,15 @@
+dependencies {
+    compileOnly "org.apache.ant:ant:${antVersion}"
+    api "javax.servlet:javax.servlet-api:$servletApiVersion"
+    api project(":grails-gsp")
+    api "org.grails:grails-web-common:$grailsVersion"
+    api project(":grails-web-taglib")
+
+    api project(":grails-web-sitemesh"), {
+        exclude group:'org.grails', module:'grails-web-common'
+    }
+
+    testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "org.grails:grails-test:$grailsVersion"
+    testRuntimeOnly "org.grails:grails-spring:$grailsVersion"
+}

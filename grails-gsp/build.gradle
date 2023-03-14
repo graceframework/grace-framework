@@ -1,0 +1,5 @@
+dependencies {
+    api "org.grails:grails-core:$grailsVersion"
+    api project(":grails-taglib")
+    api "org.codehaus.groovy:groovy-templates:$groovyVersion"
+}
