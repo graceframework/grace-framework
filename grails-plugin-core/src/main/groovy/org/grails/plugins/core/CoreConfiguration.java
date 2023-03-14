@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,24 +36,18 @@ import grails.core.GrailsApplication;
 @AutoConfigureOrder
 public class CoreConfiguration {
 
-    private final GrailsApplication grailsApplication;
-
-    public CoreConfiguration(ObjectProvider<GrailsApplication> grailsApplication) {
-        this.grailsApplication = grailsApplication.getIfAvailable();
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean
+    public ClassLoader classLoader(ObjectProvider<GrailsApplication> grailsApplication) {
+        return grailsApplication.getIfAvailable().getClassLoader();
     }
 
     @Bean
     @Primary
     @ConditionalOnMissingBean
-    public ClassLoader classLoader() {
-        return this.grailsApplication.getClassLoader();
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean
-    public ConfigProperties grailsConfigProperties() {
-        return new ConfigProperties(this.grailsApplication.getConfig());
+    public ConfigProperties grailsConfigProperties(ObjectProvider<GrailsApplication> grailsApplication) {
+        return new ConfigProperties(grailsApplication.getIfAvailable().getConfig());
     }
 
 }
