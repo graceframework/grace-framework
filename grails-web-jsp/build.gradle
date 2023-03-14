@@ -1,9 +1,9 @@
 dependencies {
-    api "org.grails:grails-web-common:$grailsVersion"
+    api project(":grails-web-common")
     api project(":grails-web-gsp")
 
-    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+    compileOnly libs.javax.servlet
     // Required for JSP support
-    compileOnly "javax.servlet.jsp:jsp-api:${jspApiVersion}"
-
+    compileOnly libs.javax.jsp
+    compileOnly "javax.el:javax.el-api:3.0.1-b04"
 }

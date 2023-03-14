@@ -1,4 +1,4 @@
 dependencies {
-    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+    compileOnly libs.javax.servlet
     api project(':grails-web-jsp')
 }

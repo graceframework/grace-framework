@@ -1,58 +1,22 @@
-ext {
-    isCiBuild = System.getenv().get("TRAVIS") == 'true' || System.getenv().get("CI") as Boolean
-}
-configurations.all {
-    resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
-        if (dependency.requested instanceof ModuleComponentSelector) {
-            if (group == 'org.grails' || group == 'org.grails.plugins') {
-                def targetProject = findProject(":${dependency.requested.module}")
-                if (targetProject != null) {
-                    dependency.useTarget targetProject
-                }
-            }
-        }
-    }
-}
 dependencies {
-    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+    compileOnly libs.javax.servlet
     api project(":grails-web-gsp-taglib")
 
     runtimeOnly(project(":grails-web-jsp"))
-    api "commons-lang:commons-lang:2.6"
-    api "org.grails:grails-plugin-api:$grailsVersion"
-    api "org.grails:grails-plugin-codecs:$grailsVersion"
-    api "org.grails:grails-plugin-url-mappings:$grailsVersion"
-    astImplementation "org.grails:grails-web:$grailsVersion"
-    astImplementation "org.grails:grails-plugin-controllers:$grailsVersion"
+    api libs.commons.lang
+    api project(":grails-plugin-api")
+    api project(":grails-plugin-codecs")
+    api project(":grails-plugin-url-mappings")
+    // astImplementation project(":grails-web")
+    // astImplementation project(":grails-plugin-controllers")
 
-    testImplementation "org.grails:grails-test-support:$grailsVersion"
+    // testImplementation "org.grails:grails-test-support"
 
-    testImplementation "javax.servlet.jsp:jsp-api:${jspApiVersion}"
-    testImplementation "org.springframework:spring-test:$springVersion"
+    // testImplementation "javax.servlet.jsp:jsp-api:${jspApiVersion}"
+    // testImplementation "org.springframework:spring-test:$springVersion"
 
-    testImplementation "taglibs:standard:${jstlVersion}"
-    testImplementation "javax.servlet:jstl:${jstlVersion}"
+    // testImplementation "taglibs:standard:${jstlVersion}"
+    // testImplementation "javax.servlet:jstl:${jstlVersion}"
 
-    testImplementation "org.grails:grails-plugin-codecs:$grailsVersion"
-}
-// disable main class
-bootJar {
-    mainClass.set('dummy.Application')
-}
-findMainClass.onlyIf { false }
-test {
-    if (isCiBuild) {
-        maxParallelForks = 1
-        forkEvery = 10
-    }
-    else {
-        maxParallelForks = 4
-        forkEvery = 20
-    }
-
-    jvmArgs = ['-Xmx1536M']
-    afterSuite {
-        System.out.print('.')
-        System.out.flush()
-    }
+    // testImplementation "org.grails:grails-plugin-codecs"
 }

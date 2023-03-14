@@ -1,6 +1,4 @@
 dependencies {
-    api "org.grails:grails-core:$grailsVersion", {
-        exclude group:'org.grails', module:'grails-spring'
-    }
-    api "org.grails:grails-encoder:$grailsVersion"
+    api project(":grails-core")
+    api project(":grails-encoder")
 }
