@@ -1,22 +1,20 @@
 dependencies {
     compileOnly libs.javax.servlet
-    api project(":grails-web-gsp-taglib")
-
-    runtimeOnly(project(":grails-web-jsp"))
     api libs.commons.lang
+    api project(":grails-core")
     api project(":grails-plugin-api")
     api project(":grails-plugin-codecs")
     api project(":grails-plugin-url-mappings")
-    // astImplementation project(":grails-web")
-    // astImplementation project(":grails-plugin-controllers")
+    api project(":grails-web-gsp-taglib")
+    runtimeOnly(project(":grails-web-jsp"))
 
-    // testImplementation "org.grails:grails-test-support"
+    testImplementation project(":grails-plugin-codecs")
+    testImplementation project(":grails-plugin-domain-class")
+    testImplementation project(":grails-test-support")
 
-    // testImplementation "javax.servlet.jsp:jsp-api:${jspApiVersion}"
-    // testImplementation "org.springframework:spring-test:$springVersion"
-
-    // testImplementation "taglibs:standard:${jstlVersion}"
-    // testImplementation "javax.servlet:jstl:${jstlVersion}"
-
-    // testImplementation "org.grails:grails-plugin-codecs"
+    testImplementation libs.javax.jsp
+    testImplementation libs.javax.jstl
+    testImplementation libs.standard.taglib
+    testImplementation libs.tomcat.embed.el
+    testImplementation libs.spring.test
 }

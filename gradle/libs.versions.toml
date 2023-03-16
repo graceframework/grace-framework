@@ -31,7 +31,7 @@ jakarta-annotation = "2.0.0"
 javaparser = "3.15.14"
 javassist = "3.29.0-GA"
 javax-annotation = "1.3.2"
-javax-el = "3.0.1-b04"
+javax-el = "3.0.1-b06"
 javax-inject = "1"
 javax-jaxb = "2.3.1"
 javax-jsp = "2.2"
@@ -214,6 +214,7 @@ spring-websocket = { module = "org.springframework:spring-websocket", version.re
 standard-taglib = { module = "org.apache.taglibs:taglibs-standard-impl", version.ref = "standard-taglib" }
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
 tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
+tomcat-embed-el = { module = "org.apache.tomcat.embed:tomcat-embed-el", version.ref = "tomcat" }
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
 
 [bundles]
