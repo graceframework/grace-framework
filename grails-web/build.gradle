@@ -6,12 +6,12 @@ dependencies {
     api project(":grails-web-mvc")
     api project(":grails-web-url-mappings")
 
-    api libs.grails.web.gsp, {
+    api project(":grails-web-gsp"), {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'org.grails', module:'grails-encoder'
         exclude group:'org.grails', module:'grails-web-common'
     }
-    api libs.grails.web.sitemesh, {
+    api project(":grails-web-sitemesh"), {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'org.grails', module:'grails-encoder'
         exclude group:'org.grails', module:'grails-web-common'

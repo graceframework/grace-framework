@@ -5,10 +5,7 @@ dependencies {
     api project(":grails-encoder")
     api project(":grails-util")
 
-    api libs.grails.gsp, {
-        exclude group:'org.grails', module:'grails-core'
-        exclude group:'org.grails', module:'grails-encoder'
-    }
+    api project(":grails-gsp")
 
     api libs.javax.servlet
     api libs.groovy.templates

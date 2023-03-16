@@ -60,7 +60,7 @@ dependencies {
         exclude group: 'javassist', module: 'javassist'
     }
 
-    testImplementation libs.grails.plugin.gsp, {
+    testImplementation project(":grails-plugin-gsp"), {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'

@@ -2,7 +2,7 @@ dependencies {
     api project(":grails-web-common")
     api project(":grails-web-url-mappings")
 
-    api libs.grails.web.sitemesh, {
+    api project(":grails-web-sitemesh"), {
         exclude group:'org.grails', module:'grails-web-common'
     }
     api libs.javax.servlet
