@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import grails.core.support.GrailsApplicationAware
  * @author Graeme Rocher
  */
 @CompileStatic
-class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAware, TagLibraryResolver, ResourceLoaderAware, BeanClassLoaderAware {
+class TagLibraryResolverImpl implements TagLibraryResolver, ServletContextAware, GrailsApplicationAware, ResourceLoaderAware, BeanClassLoaderAware {
 
     protected Map<String, JspTagLib> tagLibs = new ConcurrentHashMap<String, JspTagLib>()
 
@@ -174,6 +174,12 @@ class TagLibraryResolverImpl implements ServletContextAware, GrailsApplicationAw
     @Override
     void setBeanClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader
+    }
+
+    @Override
+    void setGrailsApplication(GrailsApplication grailsApplication) {
+        this.grailsApplication = grailsApplication
+        this.tldScanPatterns = grailsApplication.getConfig().getProperty('grails.gsp.tldScanPattern', String[])
     }
 
 }
