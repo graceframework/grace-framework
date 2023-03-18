@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ import jline.console.completer.Completer
 @CompileStatic
 class ClosureCompleter implements Completer {
 
-    private final Closure<Collection<String>> closure
+    private final Closure<List<String>> closure
     private Completer completer
 
-    ClosureCompleter(Closure<Collection<String>> closure) {
+    ClosureCompleter(Closure<List<String>> closure) {
         this.closure = closure
     }
 

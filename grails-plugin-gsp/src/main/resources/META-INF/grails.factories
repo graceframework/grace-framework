@@ -1,0 +1,2 @@
+grails.compiler.traits.TraitInjector=grails.compiler.traits.ControllerTagLibraryTraitInjector
+org.grails.taglib.TagInvocationContextCustomizer=org.grails.plugins.web.taglib.ApplicationTagInvocationContextCustomizer

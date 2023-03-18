@@ -21,8 +21,8 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.xml.XmlSlurper
 import groovy.xml.slurpersupport.GPathResult
-import org.springframework.boot.cli.compiler.dependencies.Dependency
-import org.springframework.boot.cli.compiler.dependencies.DependencyManagement
+import org.grails.cli.compiler.dependencies.Dependency
+import org.grails.cli.compiler.dependencies.DependencyManagement
 
 /**
  * Introduces dependency management based on a published BOM file
@@ -98,6 +98,11 @@ class GrailsDependencyVersions implements DependencyManagement {
     @Override
     String getSpringBootVersion() {
         find('spring-boot').getVersion()
+    }
+
+    @Override
+    String getGrailsVersion() {
+        find('grails-core').getVersion()
     }
 
     @Override

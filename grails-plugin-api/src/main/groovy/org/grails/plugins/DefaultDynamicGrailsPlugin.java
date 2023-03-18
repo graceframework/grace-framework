@@ -90,7 +90,7 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
             moduleDescriptor.init(this, args);
             if (closure != null) {
                 closure.setDelegate(moduleDescriptor);
-                closure.setResolveStrategy(Closure.DELEGATE_ONLY);
+                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
                 closure.call();
             }
             this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);

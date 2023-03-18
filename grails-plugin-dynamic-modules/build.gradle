@@ -1,0 +1,5 @@
+dependencies {
+    api project(":grails-api")
+    api project(":grails-bootstrap")
+    api project(":grails-plugin-api")
+}
