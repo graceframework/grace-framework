@@ -1,6 +1,7 @@
 package org.grails.gsp.jsp
 
-import grails.testing.spock.OnceBefore
+import org.junit.jupiter.api.BeforeEach
+
 import grails.testing.web.taglib.TagLibUnitTest
 import grails.web.http.HttpHeaders
 import org.grails.plugins.web.taglib.ApplicationTagLib
@@ -25,7 +26,7 @@ class GroovyPageWithJSPTagsTests extends Specification implements TagLibUnitTest
     @Override
     Closure doWithConfig() { JSP_CONFIG }
 
-    @OnceBefore
+    @BeforeEach
     void onInit() {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
         GroovySystem.metaClassRegistry.removeMetaClass HttpServletRequest

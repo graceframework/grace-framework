@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,14 @@ package org.grails.gsp.jsp;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.NoSuchElementException;
 
 import javax.el.ELContext;
 import javax.servlet.GenericServlet;
@@ -51,6 +49,8 @@ import javax.servlet.jsp.tagext.BodyContent;
 
 import groovy.lang.Binding;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import org.grails.gsp.GroovyPage;
@@ -64,40 +64,27 @@ import org.grails.web.servlet.mvc.GrailsWebRequest;
  */
 public class GroovyPagesPageContext extends PageContext {
 
-    private static final Enumeration EMPTY_ENUMERATION = new Enumeration() {
-        @Override
-        public boolean hasMoreElements() {
-            return false;
-        }
+    private final ServletContext servletContext;
 
-        @Override
-        public Object nextElement() {
-            return new NoSuchElementException();
-        }
-    };
+    private final Servlet servlet;
 
-    private ServletContext servletContext;
+    private final HttpServletRequest request;
 
-    private Servlet servlet;
+    private final HttpServletResponse response;
 
-    private HttpServletRequest request;
+    private final ServletConfig servletconfig;
 
-    private HttpServletResponse response;
+    private final Binding pageScope;
 
-    private ServletConfig servletconfig;
-
-    private Binding pageScope;
-
-    private GrailsWebRequest webRequest;
+    private final GrailsWebRequest webRequest;
 
     private JspWriter jspOut;
 
-    private Deque outStack = new ArrayDeque();
+    private final Deque<JspWriter> outStack = new ArrayDeque<>();
 
-    @SuppressWarnings("rawtypes")
-    private List tags = new ArrayList();
+    private final List<Object> tags = new ArrayList<>();
 
-    private HttpSession session;
+    private final HttpSession session;
 
     public GroovyPagesPageContext(Servlet pagesServlet, Binding pageScope) {
         Assert.notNull(pagesServlet, "GroovyPagesPageContext class requires a reference to the GSP servlet");
@@ -126,11 +113,10 @@ public class GroovyPagesPageContext extends PageContext {
 
     void popWriter() {
         this.outStack.pop();
-        this.jspOut = (JspWriter) this.outStack.peek();
+        this.jspOut = this.outStack.peek();
         setCurrentOut();
     }
 
-    @SuppressWarnings("unchecked")
     void pushWriter(JspWriter out) {
         this.outStack.push(out);
         this.jspOut = out;
@@ -157,7 +143,6 @@ public class GroovyPagesPageContext extends PageContext {
         this.tags.remove(this.tags.size() - 1);
     }
 
-    @SuppressWarnings("unchecked")
     void pushTopTag(Object tag) {
         this.tags.add(tag);
     }
@@ -413,12 +398,12 @@ public class GroovyPagesPageContext extends PageContext {
                     return httpSession.getAttributeNames();
                 }
                 else {
-                    return EMPTY_ENUMERATION;
+                    return Collections.emptyEnumeration();
                 }
             case APPLICATION_SCOPE:
                 return this.servletContext.getAttributeNames();
         }
-        return EMPTY_ENUMERATION;
+        return Collections.emptyEnumeration();
     }
 
     @Override
@@ -437,12 +422,8 @@ public class GroovyPagesPageContext extends PageContext {
     @Deprecated
     public ExpressionEvaluator getExpressionEvaluator() {
         try {
-            Class<?> type = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-                public ClassLoader run() {
-                    return Thread.currentThread().getContextClassLoader();
-                }
-            }).loadClass("org.apache.commons.el.ExpressionEvaluatorImpl");
-            return (ExpressionEvaluator) type.newInstance();
+            Class<?> type = ClassUtils.forName("org.apache.commons.el.ExpressionEvaluatorImpl", getClass().getClassLoader());
+            return (ExpressionEvaluator) ReflectionUtils.accessibleConstructor(type).newInstance();
         }
         catch (Exception e) {
             throw new UnsupportedOperationException("In order for the getExpressionEvaluator() " +
@@ -470,6 +451,7 @@ public class GroovyPagesPageContext extends PageContext {
 
     private ELContext elContext;
 
+    @Override
     public ELContext getELContext() {
         if (this.elContext == null) {
             JspApplicationContext jspContext = JspFactory.getDefaultFactory().getJspApplicationContext(getServletContext());

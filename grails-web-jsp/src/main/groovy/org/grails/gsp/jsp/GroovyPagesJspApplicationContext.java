@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,9 +69,9 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
     }
 
     private static ExpressionFactory findExpressionFactoryImplementation() {
-        ExpressionFactory ef = tryExpressionFactoryImplementation("com.sun");
+        ExpressionFactory ef = tryExpressionFactoryImplementation("org.apache");
         if (ef == null) {
-            ef = tryExpressionFactoryImplementation("org.apache");
+            ef = tryExpressionFactoryImplementation("com.sun");
             if (ef == null) {
                 logger.warn("Could not find any implementation for " +
                         ExpressionFactory.class.getName());
@@ -128,7 +128,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
 
     private class GroovyPagesELContext extends ELContext {
 
-        private GroovyPagesPageContext pageCtx;
+        private final GroovyPagesPageContext pageCtx;
 
         GroovyPagesELContext(GroovyPagesPageContext pageCtx) {
             this.pageCtx = pageCtx;
@@ -160,7 +160,9 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
                 @Override
                 public ValueExpression setVariable(String name, ValueExpression valueExpression) {
                     ValueExpression previous = resolveVariable(name);
-                    GroovyPagesELContext.this.pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
+                    if (valueExpression != null) {
+                        GroovyPagesELContext.this.pageCtx.setAttribute(name, valueExpression.getValue(GroovyPagesELContext.this));
+                    }
                     return previous;
                 }
             };
