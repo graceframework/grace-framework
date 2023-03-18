@@ -56,9 +56,7 @@ import org.grails.taglib.GrailsTagException;
  *
  * @author Graeme Rocher
  * @since 16-Jan-2006
- * @deprecated
  */
-@Deprecated
 public class JspInvokeGrailsTagLibTag extends BodyTagSupport implements DynamicAttributes {
 
     private static final long serialVersionUID = 4688821761801666631L;
