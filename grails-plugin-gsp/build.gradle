@@ -18,3 +18,23 @@ dependencies {
     testImplementation libs.tomcat.embed.el
     testImplementation libs.spring.test
 }
+
+task isolatedTestsOne(type:Test) {
+    includes = [
+        "**/FormTagLibResourceTests.class"
+    ]
+}
+
+task isolatedTestsTwo(type:Test) {
+    includes = [
+        "**/RestfulReverseUrlRenderingTests.class"
+    ]
+}
+
+test {
+    dependsOn isolatedTestsOne, isolatedTestsTwo
+    excludes = [
+        "**/FormTagLibResourceTests.class",
+        "**/RestfulReverseUrlRenderingTests.class"
+    ]
+}
