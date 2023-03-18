@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Set;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import grails.core.GrailsTagLibClass;
+import grails.core.gsp.GrailsTagLibClass;
 import grails.gsp.TagLib;
 
 import org.grails.core.gsp.DefaultGrailsTagLibClass;

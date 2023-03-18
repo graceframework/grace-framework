@@ -3,8 +3,6 @@ package org.grails.web.taglib
 import grails.artefact.Artefact
 import grails.testing.web.taglib.TagLibUnitTest
 import org.grails.core.io.MockStringResourceLoader
-import org.grails.core.artefact.TagLibArtefactHandler
-import org.grails.plugins.web.taglib.ApplicationTagLib
 import spock.lang.Specification
 
 /**

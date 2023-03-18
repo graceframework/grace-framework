@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import org.springframework.context.ApplicationContextAware;
 
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
-import grails.core.GrailsTagLibClass;
+import grails.core.gsp.GrailsTagLibClass;
 import grails.core.support.GrailsApplicationAware;
 
-import org.grails.core.artefact.TagLibArtefactHandler;
+import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.core.exceptions.GrailsConfigurationException;
 import org.grails.taglib.encoder.WithCodecHelper;
 

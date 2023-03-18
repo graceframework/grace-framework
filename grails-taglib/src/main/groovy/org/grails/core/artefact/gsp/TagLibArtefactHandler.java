@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
     private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<>();
 
-    private Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<>();
+    private final Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<>();
 
     public TagLibArtefactHandler() {
         super(TYPE, GrailsTagLibClass.class, DefaultGrailsTagLibClass.class, TYPE);
