@@ -28,6 +28,7 @@ import groovy.lang.Binding;
 import groovy.lang.Writable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.ReflectionUtils;
 
 import grails.util.Environment;
 
@@ -144,7 +145,7 @@ public class GroovyPageWritable implements Writable {
 
             GroovyPage page = null;
             try {
-                page = (GroovyPage) this.metaInfo.getPageClass().newInstance();
+                page = (GroovyPage) ReflectionUtils.accessibleConstructor(this.metaInfo.getPageClass()).newInstance();
             }
             catch (Exception e) {
                 throw new GroovyPagesException("Problem instantiating page class", e);

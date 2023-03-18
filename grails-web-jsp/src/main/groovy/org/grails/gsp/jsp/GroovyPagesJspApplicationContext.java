@@ -39,6 +39,7 @@ import javax.servlet.jsp.el.ScopedAttributeELResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * @author Graeme Rocher
@@ -86,7 +87,7 @@ public class GroovyPagesJspApplicationContext implements JspApplicationContext {
             if (ExpressionFactory.class.isAssignableFrom(cl)) {
                 logger.info("Using " + className + " as implementation of " +
                         ExpressionFactory.class.getName());
-                return (ExpressionFactory) cl.newInstance();
+                return (ExpressionFactory) ReflectionUtils.accessibleConstructor(cl).newInstance();
             }
             logger.warn("Class " + className + " does not implement " +
                     ExpressionFactory.class.getName());

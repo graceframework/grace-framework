@@ -22,6 +22,7 @@ public class GroovyCollectTagTests {
     private StringWriter sw = new StringWriter();
 
     @BeforeEach
+    @SuppressWarnings({"rawtypes", "unchecked"})
     protected void setUp() throws Exception {
         Map context = new HashMap();
         context.put(GroovyPage.OUT, new PrintWriter(sw));

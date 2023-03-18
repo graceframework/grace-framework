@@ -35,7 +35,7 @@ public class ApplicationTagInvocationContextCustomizer implements TagInvocationC
     private static final String LINK_NAMESPACE = "link";
 
     @Override
-    @SuppressWarnings({"rawtypes", "unckecked"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void customize(TagInvocationContext tagInvocationContext) {
         if (tagInvocationContext.getNamespace().equals(LINK_NAMESPACE)) {
             String tagName = "link";

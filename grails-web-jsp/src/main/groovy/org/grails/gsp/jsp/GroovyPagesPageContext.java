@@ -130,6 +130,7 @@ public class GroovyPagesPageContext extends PageContext {
         setCurrentOut();
     }
 
+    @SuppressWarnings("unchecked")
     void pushWriter(JspWriter out) {
         this.outStack.push(out);
         this.jspOut = out;
@@ -174,7 +175,6 @@ public class GroovyPagesPageContext extends PageContext {
         return (JspWriter) getAttribute(OUT);
     }
 
-    @SuppressWarnings("serial")
     public GroovyPagesPageContext(Binding pageScope) {
         this(new GenericServlet() {
             @Override
@@ -388,9 +388,9 @@ public class GroovyPagesPageContext extends PageContext {
         return 0;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Enumeration getAttributeNamesInScope(int scope) {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Enumeration<String> getAttributeNamesInScope(int scope) {
         switch (scope) {
             case PAGE_SCOPE:
                 final Iterator i = this.pageScope.getVariables().keySet().iterator();
@@ -434,6 +434,7 @@ public class GroovyPagesPageContext extends PageContext {
     }
 
     @Override
+    @Deprecated
     public ExpressionEvaluator getExpressionEvaluator() {
         try {
             Class<?> type = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
@@ -451,6 +452,7 @@ public class GroovyPagesPageContext extends PageContext {
     }
 
     @Override
+    @Deprecated
     public VariableResolver getVariableResolver() {
         final PageContext ctx = this;
         return new VariableResolver() {

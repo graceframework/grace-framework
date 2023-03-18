@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,11 @@
  */
 package org.grails.gsp.compiler.tags;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.util.ReflectionUtils;
 
 import org.grails.taglib.GrailsTagException;
 
@@ -75,13 +78,10 @@ public final class GrailsTagRegistry {
         Class<?> tagClass = tagRegistry.get(tagName);
 
         try {
-            return (GrailsTag) tagClass.newInstance();
+            return (GrailsTag) ReflectionUtils.accessibleConstructor(tagClass).newInstance();
         }
-        catch (InstantiationException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new GrailsTagException("Instantiation error loading tag [" + tagName + "]: " + e.getMessage(), e);
-        }
-        catch (IllegalAccessException e) {
-            throw new GrailsTagException("Illegal access error loading tag [" + tagName + "]: " + e.getMessage(), e);
         }
     }
 
