@@ -26,7 +26,7 @@ class TldReaderTests {
 
     @Test
     void testTldReader() {
-        def res = new ClassPathResource("org/codehaus/groovy/grails/web/pages/ext/jsp/tld-reader-test.tld")
+        def res = new ClassPathResource("org/grails/web/pages/ext/jsp/tld-reader-test.tld")
 
         TldReader tldReader = new TldReader(res.getInputStream())
 
