@@ -35,7 +35,7 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
-import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement;
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement;
 import org.grails.cli.compiler.AstUtils;
 import org.grails.cli.compiler.CompilerAutoConfiguration;
 import org.grails.cli.compiler.DependencyCustomizer;
