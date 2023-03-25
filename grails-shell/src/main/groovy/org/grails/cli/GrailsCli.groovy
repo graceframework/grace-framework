@@ -49,7 +49,7 @@ import grails.util.GrailsVersion
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
 import org.grails.build.parsing.DefaultCommandLine
-import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.gradle.ClasspathBuildAction
 import org.grails.cli.gradle.GradleAsyncInvoker
 import org.grails.cli.gradle.cache.MapReadingCachedGradleOperation
