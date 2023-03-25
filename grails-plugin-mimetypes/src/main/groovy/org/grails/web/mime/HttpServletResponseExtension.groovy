@@ -256,7 +256,7 @@ class HttpServletResponseExtension {
             def parser = new DefaultAcceptHeaderParser(getMimeTypes())
             String header = null
 
-            boolean disabledForUserAgent = !(useAcceptHeaderXhr && request.xhr) && disableForUserAgents != null &&
+            boolean disabledForUserAgent = !(useAcceptHeaderXhr && isAjaxRequest(request)) && disableForUserAgents != null &&
                     userAgent ? disableForUserAgents.matcher(userAgent).find() : false
             if (msie) {
                 header = '*/*'
@@ -281,6 +281,10 @@ class HttpServletResponseExtension {
             request.setAttribute(GrailsApplicationAttributes.RESPONSE_FORMATS, result)
         }
         result
+    }
+
+    private static boolean isAjaxRequest(HttpServletRequest request) {
+        request.getHeader('X-Requested-With') == 'XMLHttpRequest'
     }
 
 }
