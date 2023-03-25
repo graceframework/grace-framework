@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler;
 
 import java.io.IOException;
@@ -44,8 +43,7 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.ASTTransformationVisitor;
 
-import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement;
-import org.grails.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement;
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement;
 import org.grails.cli.compiler.grape.DependencyResolutionContext;
 import org.grails.cli.compiler.grape.GrapeEngineInstaller;
 import org.grails.cli.compiler.grape.MavenResolverGrapeEngineFactory;
@@ -73,7 +71,8 @@ import org.springframework.util.ClassUtils;
  * @author Phillip Webb
  * @author Dave Syer
  * @author Andy Wilkinson
- * @since 1.0.0
+ * @author Michael Yan
+ * @since 2022.1.0
  */
 public class GroovyCompiler {
 
@@ -95,7 +94,6 @@ public class GroovyCompiler {
 		this.loader = createLoader(configuration);
 
 		DependencyResolutionContext resolutionContext = new DependencyResolutionContext();
-//		resolutionContext.addDependencyManagement(new SpringBootDependenciesDependencyManagement());
 		resolutionContext.addDependencyManagement(new GrailsDependenciesDependencyManagement());
 
 		GrapeEngine grapeEngine = MavenResolverGrapeEngineFactory.create(this.loader,
