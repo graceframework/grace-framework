@@ -57,7 +57,7 @@ import grails.util.GrailsNameUtils
 import grails.util.Metadata
 
 import org.grails.build.parsing.CommandLineParser
-import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
