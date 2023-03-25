@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.boot.dependencies;
+package org.grails.cli.compiler.dependencies;
 
 import java.io.IOException;
 
@@ -21,7 +21,6 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.building.DefaultModelProcessor;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.locator.DefaultModelLocator;
-import org.grails.cli.compiler.dependencies.MavenModelDependencyManagement;
 
 /**
  * DependencyManagement derived from the effective pom of

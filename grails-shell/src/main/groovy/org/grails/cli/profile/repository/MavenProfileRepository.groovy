@@ -22,7 +22,7 @@ import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
 
-import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.compiler.grape.DependencyResolutionContext
 import org.grails.cli.compiler.grape.DependencyResolutionFailedException
 import org.grails.cli.compiler.grape.MavenResolverGrapeEngine
