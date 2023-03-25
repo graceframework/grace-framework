@@ -34,6 +34,8 @@ import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
+
+import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement;
 import org.grails.cli.compiler.AstUtils;
 import org.grails.cli.compiler.CompilerAutoConfiguration;
 import org.grails.cli.compiler.DependencyCustomizer;
@@ -98,7 +100,7 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
     }
 
     protected DependencyManagement getAdditionalDependencies() {
-        return new GrailsDependencyVersions();
+        return new GrailsDependenciesDependencyManagement();
     }
 
     public static AnnotationNode createGrabAnnotation(String group, String module,

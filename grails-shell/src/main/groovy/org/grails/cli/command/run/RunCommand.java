@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.command.run;
 
 import java.io.File;
@@ -34,7 +33,8 @@ import org.grails.cli.profile.ExecutionContext;
  * @author Phillip Webb
  * @author Dave Syer
  * @author Andy Wilkinson
- * @since 1.0.0
+ * @author Michael Yan
+ * @since 2022.1.0
  * @see SpringApplicationRunner
  */
 public class RunCommand implements Command {
@@ -68,8 +68,7 @@ public class RunCommand implements Command {
 			String[] sources = executionContext.getCommandLine().getRemainingArgs().toArray(new String[0]);
 			List<RepositoryConfiguration> repositoryConfiguration = RepositoryConfigurationFactory
 					.createDefaultRepositoryConfiguration();
-			repositoryConfiguration.add(0,
-					new RepositoryConfiguration("local", new File("repository").toURI(), true));
+			repositoryConfiguration.add(new RepositoryConfiguration("local", new File("repository").toURI(), true));
 
 			SpringApplicationRunnerConfiguration configuration = new SpringApplicationRunnerConfigurationAdapter(
 					repositoryConfiguration);
