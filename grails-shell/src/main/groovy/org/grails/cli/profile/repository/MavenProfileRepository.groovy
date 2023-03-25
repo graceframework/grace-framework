@@ -21,11 +21,11 @@ import groovy.xml.XmlSlurper
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
-import org.grails.cli.compiler.grape.AetherGrapeEngine
+
+import org.grails.cli.boot.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.compiler.grape.DependencyResolutionContext
 import org.grails.cli.compiler.grape.DependencyResolutionFailedException
-
-import org.grails.cli.boot.GrailsDependencyVersions
+import org.grails.cli.compiler.grape.MavenResolverGrapeEngine
 import org.grails.cli.profile.Profile
 
 /**
@@ -41,19 +41,19 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             'grailsCentral', new URI('https://repo.grails.org/grails/core'), true)
 
     List<GrailsRepositoryConfiguration> repositoryConfigurations
-    AetherGrapeEngine grapeEngine
+    MavenResolverGrapeEngine grapeEngine
     GroovyClassLoader classLoader
     DependencyResolutionContext resolutionContext
-    GrailsDependencyVersions profileDependencyVersions
+    GrailsDependenciesDependencyManagement profileDependencyVersions
     private boolean resolved = false
 
     MavenProfileRepository(List<GrailsRepositoryConfiguration> repositoryConfigurations) {
         this.repositoryConfigurations = repositoryConfigurations
-        classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader)
-        resolutionContext = new DependencyResolutionContext()
+        this.classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader)
+        this.resolutionContext = new DependencyResolutionContext()
         this.grapeEngine = GrailsAetherGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
-        profileDependencyVersions = new GrailsDependencyVersions(grapeEngine)
-        resolutionContext.addDependencyManagement(profileDependencyVersions)
+        this.profileDependencyVersions = new GrailsDependenciesDependencyManagement()
+        this.resolutionContext.addDependencyManagement(profileDependencyVersions)
     }
 
     MavenProfileRepository() {
@@ -68,7 +68,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             profileShortName = art.artifactId
         }
         if (!profilesByName.containsKey(profileShortName)) {
-            if (parentProfile && profileDependencyVersions.find(DEFAULT_PROFILE_GROUPID, profileShortName)) {
+            if (parentProfile && this.profileDependencyVersions.find(profileShortName)) {
                 return resolveProfile(profileShortName)
             }
             return resolveProfile(profileName)
@@ -85,7 +85,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         Artifact art = getProfileArtifact(profileName)
 
         try {
-            grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
+            this.grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
         }
         catch (DependencyResolutionFailedException e) {
             def localData = new File(System.getProperty('user.home'),
@@ -94,7 +94,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 def currentVersion = parseCurrentVersion(localData)
                 def profileFile = new File(localData.parentFile, "$currentVersion/${art.artifactId}-${currentVersion}.jar")
                 if (profileFile.exists()) {
-                    classLoader.addURL(profileFile.toURI().toURL())
+                    this.classLoader.addURL(profileFile.toURI().toURL())
                 }
                 else {
                     throw e
@@ -115,7 +115,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     }
 
     protected void processUrls() {
-        def urls = classLoader.getURLs()
+        def urls = this.classLoader.getURLs()
         for (URL url in urls) {
             registerProfile(url, new URLClassLoader([url] as URL[], Thread.currentThread().contextClassLoader))
         }
@@ -123,9 +123,9 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
 
     @Override
     List<Profile> getAllProfiles() {
-        if (!resolved) {
+        if (!this.resolved) {
             List<Map> profiles = []
-            resolutionContext.managedDependencies.each { Dependency dep ->
+            this.resolutionContext.managedDependencies.each { Dependency dep ->
                 if (dep.artifact.groupId == 'org.grails.profiles') {
                     profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId])
                 }
@@ -133,7 +133,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             profiles.sort { it.module }
 
             for (Map profile in profiles) {
-                grapeEngine.grab(profile)
+                this.grapeEngine.grab(profile)
             }
 
             def localData = new File(System.getProperty('user.home'), '/.m2/repository/org/grails/profiles')
@@ -145,7 +145,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                             def currentVersion = parseCurrentVersion(profileData)
                             def profileFile = new File(dir, "$currentVersion/${dir.name}-${currentVersion}.jar")
                             if (profileFile.exists()) {
-                                classLoader.addURL(profileFile.toURI().toURL())
+                                this.classLoader.addURL(profileFile.toURI().toURL())
                             }
                         }
                     }
@@ -153,7 +153,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             }
 
             processUrls()
-            resolved = true
+            this.resolved = true
         }
         super.getAllProfiles()
     }
