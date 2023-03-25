@@ -109,7 +109,7 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
 @AstTransformer
 public class ControllerActionTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector, CompilationUnitAware {
 
-    public static final AnnotationNode DELEGATING_METHOD_ANNOATION = new AnnotationNode(ClassHelper.make(DelegatingMethod.class));
+    public static final AnnotationNode DELEGATING_METHOD_ANNOTATION = new AnnotationNode(ClassHelper.make(DelegatingMethod.class));
 
     public static final Pattern CONTROLLER_PATTERN = Pattern.compile(".+/" +
             GrailsResourceUtils.GRAILS_APP_DIR + "/controllers/(.+)Controller\\.groovy");
@@ -365,7 +365,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
             GrailsASTUtils.copyAnnotations(methodNode, method);
 
-            methodNode.addAnnotation(DELEGATING_METHOD_ANNOATION);
+            methodNode.addAnnotation(DELEGATING_METHOD_ANNOTATION);
             annotateActionMethod(classNode, parameters, method);
             wrapMethodBodyWithExceptionHandling(classNode, method);
         }
