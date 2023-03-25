@@ -255,15 +255,15 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             if (profileRepository instanceof MavenProfileRepository) {
                 MavenProfileRepository mpr = (MavenProfileRepository) profileRepository
-                String gormDep = mpr.profileDependencyVersions.versionProperties.get('gorm.version')
+                String gormDep = mpr.profileDependencyVersions.getGormVersion()
                 if (gormDep != null) {
                     variables['gorm.version'] = gormDep
                 }
-                String groovyDep = mpr.profileDependencyVersions.versionProperties.get('groovy.version')
+                String groovyDep = mpr.profileDependencyVersions.getGroovyVersion()
                 if (groovyDep != null) {
                     variables['groovy.version'] = groovyDep
                 }
-                String grailsGradlePluginVersion = mpr.profileDependencyVersions.versionProperties.get('grails-gradle-plugin.version')
+                String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
                 if (grailsGradlePluginVersion != null) {
                     variables['grails-gradle-plugin.version'] = grailsGradlePluginVersion
                 }
