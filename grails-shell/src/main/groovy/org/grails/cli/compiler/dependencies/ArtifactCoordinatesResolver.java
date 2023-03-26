@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.dependencies;
 
 /**
@@ -29,28 +28,31 @@ package org.grails.cli.compiler.dependencies;
  */
 public interface ArtifactCoordinatesResolver {
 
-	/**
-	 * Gets the group id of the artifact identified by the given {@code module}. Returns
-	 * {@code null} if the artifact is unknown to the resolver.
-	 * @param module the id of the module
-	 * @return the group id of the module
-	 */
-	String getGroupId(String module);
+    /**
+     * Gets the group id of the artifact identified by the given {@code module}. Returns
+     * {@code null} if the artifact is unknown to the resolver.
+     *
+     * @param module the id of the module
+     * @return the group id of the module
+     */
+    String getGroupId(String module);
 
-	/**
-	 * Gets the artifact id of the artifact identified by the given {@code module}.
-	 * Returns {@code null} if the artifact is unknown to the resolver.
-	 * @param module the id of the module
-	 * @return the artifact id of the module
-	 */
-	String getArtifactId(String module);
+    /**
+     * Gets the artifact id of the artifact identified by the given {@code module}.
+     * Returns {@code null} if the artifact is unknown to the resolver.
+     *
+     * @param module the id of the module
+     * @return the artifact id of the module
+     */
+    String getArtifactId(String module);
 
-	/**
-	 * Gets the version of the artifact identified by the given {@code module}. Returns
-	 * {@code null} if the artifact is unknown to the resolver.
-	 * @param module the id of the module
-	 * @return the version of the module
-	 */
-	String getVersion(String module);
+    /**
+     * Gets the version of the artifact identified by the given {@code module}. Returns
+     * {@code null} if the artifact is unknown to the resolver.
+     *
+     * @param module the id of the module
+     * @return the version of the module
+     */
+    String getVersion(String module);
 
 }

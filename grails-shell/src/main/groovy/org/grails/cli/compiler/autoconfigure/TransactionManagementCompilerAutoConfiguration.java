@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.autoconfigure;
 
 import org.codehaus.groovy.ast.ClassNode;
@@ -28,26 +27,26 @@ import org.grails.cli.compiler.DependencyCustomizer;
  *
  * @author Dave Syer
  * @author Phillip Webb
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public class TransactionManagementCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
-	@Override
-	public boolean matches(ClassNode classNode) {
-		return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableTransactionManagement");
-	}
+    @Override
+    public boolean matches(ClassNode classNode) {
+        return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableTransactionManagement");
+    }
 
-	@Override
-	public void applyDependencies(DependencyCustomizer dependencies) {
-		dependencies.ifAnyMissingClasses("org.springframework.transaction.annotation.Transactional")
-			.add("spring-tx", "spring-boot-starter-aop");
-	}
+    @Override
+    public void applyDependencies(DependencyCustomizer dependencies) {
+        dependencies.ifAnyMissingClasses("org.springframework.transaction.annotation.Transactional")
+                .add("spring-tx", "spring-boot-starter-aop");
+    }
 
-	@Override
-	public void applyImports(ImportCustomizer imports) {
-		imports.addStarImports("org.springframework.transaction.annotation", "org.springframework.transaction.support");
-		imports.addImports("org.springframework.transaction.PlatformTransactionManager",
-				"org.springframework.transaction.support.AbstractPlatformTransactionManager");
-	}
+    @Override
+    public void applyImports(ImportCustomizer imports) {
+        imports.addStarImports("org.springframework.transaction.annotation", "org.springframework.transaction.support");
+        imports.addImports("org.springframework.transaction.PlatformTransactionManager",
+                "org.springframework.transaction.support.AbstractPlatformTransactionManager");
+    }
 
 }

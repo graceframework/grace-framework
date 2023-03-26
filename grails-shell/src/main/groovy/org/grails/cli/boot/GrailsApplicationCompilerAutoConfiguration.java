@@ -35,7 +35,8 @@ import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
-import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement;
+import grails.util.Environment;
+
 import org.grails.cli.compiler.AstUtils;
 import org.grails.cli.compiler.CompilerAutoConfiguration;
 import org.grails.cli.compiler.DependencyCustomizer;
@@ -43,9 +44,8 @@ import org.grails.cli.compiler.GroovyCompilerConfiguration;
 import org.grails.cli.compiler.autoconfigure.SpringMvcCompilerAutoConfiguration;
 import org.grails.cli.compiler.dependencies.Dependency;
 import org.grails.cli.compiler.dependencies.DependencyManagement;
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement;
 import org.grails.cli.compiler.grape.DependencyResolutionContext;
-
-import grails.util.Environment;
 
 /**
  * A {@link org.grails.cli.compiler.CompilerAutoConfiguration} for Grails Micro Service applications
