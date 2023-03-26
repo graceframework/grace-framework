@@ -44,7 +44,7 @@ import org.grails.cli.compiler.grape.RepositorySystemSessionAutoConfiguration
  * @since 3.2
  */
 @CompileStatic
-class GrailsAetherGrapeEngineFactory {
+class GrailsMavenGrapeEngineFactory {
 
     static MavenResolverGrapeEngine create(GroovyClassLoader classLoader,
                                            List<GrailsRepositoryConfiguration> repositoryConfigurations,
