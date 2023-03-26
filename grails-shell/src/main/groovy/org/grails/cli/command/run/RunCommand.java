@@ -19,6 +19,8 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.grails.cli.app.GrailsApplicationRunner;
+import org.grails.cli.app.GrailsApplicationRunnerConfiguration;
 import org.grails.cli.compiler.GroovyCompilerScope;
 import org.grails.cli.compiler.RepositoryConfigurationFactory;
 import org.grails.cli.compiler.grape.RepositoryConfiguration;
@@ -33,7 +35,7 @@ import org.grails.cli.profile.ExecutionContext;
  * @author Dave Syer
  * @author Andy Wilkinson
  * @author Michael Yan
- * @see SpringApplicationRunner
+ * @see GrailsApplicationRunner
  * @since 2022.1.0
  */
 public class RunCommand implements Command {
@@ -42,7 +44,7 @@ public class RunCommand implements Command {
 
     private final Object monitor = new Object();
 
-    private SpringApplicationRunner runner;
+    private GrailsApplicationRunner runner;
 
     public RunCommand() {
     }
@@ -69,11 +71,11 @@ public class RunCommand implements Command {
                     .createDefaultRepositoryConfiguration();
             repositoryConfiguration.add(new RepositoryConfiguration("local", new File("repository").toURI(), true));
 
-            SpringApplicationRunnerConfiguration configuration = new SpringApplicationRunnerConfigurationAdapter(
+            GrailsApplicationRunnerConfiguration configuration = new GrailsApplicationRunnerConfigurationAdapter(
                     repositoryConfiguration);
 
             try {
-                this.runner = new SpringApplicationRunner(configuration, sources);
+                this.runner = new GrailsApplicationRunner(configuration, sources);
                 this.runner.compileAndRun();
             }
             catch (Exception e) {
@@ -84,11 +86,11 @@ public class RunCommand implements Command {
         }
     }
 
-    static class SpringApplicationRunnerConfigurationAdapter implements SpringApplicationRunnerConfiguration {
+    static class GrailsApplicationRunnerConfigurationAdapter implements GrailsApplicationRunnerConfiguration {
 
         private final List<RepositoryConfiguration> repositoryConfiguration;
 
-        SpringApplicationRunnerConfigurationAdapter(List<RepositoryConfiguration> repositoryConfiguration) {
+        GrailsApplicationRunnerConfigurationAdapter(List<RepositoryConfiguration> repositoryConfiguration) {
             this.repositoryConfiguration = repositoryConfiguration;
         }
 

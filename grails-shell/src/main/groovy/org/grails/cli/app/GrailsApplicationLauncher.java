@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.boot;
+package org.grails.cli.app;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -23,18 +23,19 @@ import java.util.Map;
 /**
  * A launcher for {@code SpringApplication} or a {@code SpringApplication} subclass. The
  * class that is used can be configured using the System property
- * {@code spring.application.class.name} or the {@code SPRING_APPLICATION_CLASS_NAME}
+ * {@code grails.application.class.name} or the {@code GRAILS_APPLICATION_CLASS_NAME}
  * environment variable. Uses reflection to allow the launching code to exist in a
  * separate ClassLoader from the application code.
  *
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @see System#getProperty(String)
  * @see System#getenv(String)
  * @since 2022.1.0
  */
-public class SpringApplicationLauncher {
+public class GrailsApplicationLauncher {
 
-    private static final String DEFAULT_SPRING_APPLICATION_CLASS = "grails.boot.Grails";
+    private static final String DEFAULT_GRAILS_APPLICATION_CLASS = "grails.boot.Grails";
 
     private final ClassLoader classLoader;
 
@@ -44,7 +45,7 @@ public class SpringApplicationLauncher {
      *
      * @param classLoader the {@code ClassLoader} to use
      */
-    public SpringApplicationLauncher(ClassLoader classLoader) {
+    public GrailsApplicationLauncher(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
@@ -60,7 +61,7 @@ public class SpringApplicationLauncher {
     public Object launch(Class<?>[] sources, String[] args) throws Exception {
         Map<String, Object> defaultProperties = new HashMap<>();
         defaultProperties.put("spring.groovy.template.check-template-location", "false");
-        Class<?> applicationClass = Class.forName(getSpringApplicationClassName(), false, this.classLoader);
+        Class<?> applicationClass = Class.forName(getGrailsApplicationClassName(), false, this.classLoader);
         Constructor<?> constructor = applicationClass.getDeclaredConstructor(Class[].class);
         constructor.setAccessible(true);
         Object application = constructor.newInstance((Object) sources);
@@ -69,13 +70,13 @@ public class SpringApplicationLauncher {
         return method.invoke(application, (Object) args);
     }
 
-    private String getSpringApplicationClassName() {
-        String className = System.getProperty("spring.application.class.name");
+    private String getGrailsApplicationClassName() {
+        String className = System.getProperty("grails.application.class.name");
         if (className == null) {
-            className = getEnvironmentVariable("SPRING_APPLICATION_CLASS_NAME");
+            className = getEnvironmentVariable("GRAILS_APPLICATION_CLASS_NAME");
         }
         if (className == null) {
-            className = DEFAULT_SPRING_APPLICATION_CLASS;
+            className = DEFAULT_GRAILS_APPLICATION_CLASS;
         }
         return className;
     }

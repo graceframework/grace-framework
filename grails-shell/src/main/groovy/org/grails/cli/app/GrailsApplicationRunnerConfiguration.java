@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.grails.cli.command.run;
+package org.grails.cli.app;
 
 import java.util.logging.Level;
 
 import org.grails.cli.compiler.GroovyCompilerConfiguration;
 
 /**
- * Configuration for the {@link SpringApplicationRunner}.
+ * Configuration for the {@link GrailsApplicationRunner}.
  *
  * @author Phillip Webb
- * @since 1.0.0
+ * @author Michael Yan
+ * @since 2022.1.0
  */
-public interface SpringApplicationRunnerConfiguration extends GroovyCompilerConfiguration {
+public interface GrailsApplicationRunnerConfiguration extends GroovyCompilerConfiguration {
 
-	/**
-	 * Returns {@code true} if the source file should be monitored for changes and
-	 * automatically recompiled.
-	 * @return {@code true} if file watching should be performed, otherwise {@code false}
-	 */
-	boolean isWatchForFileChanges();
+    /**
+     * Returns {@code true} if the source file should be monitored for changes and
+     * automatically recompiled.
+     *
+     * @return {@code true} if file watching should be performed, otherwise {@code false}
+     */
+    boolean isWatchForFileChanges();
 
-	/**
-	 * Returns the logging level to use.
-	 * @return the logging level
-	 */
-	Level getLogLevel();
+    /**
+     * Returns the logging level to use.
+     *
+     * @return the logging level
+     */
+    Level getLogLevel();
 
 }

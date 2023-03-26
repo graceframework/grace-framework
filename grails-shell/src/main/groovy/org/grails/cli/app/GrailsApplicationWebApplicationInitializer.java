@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.boot;
+package org.grails.cli.app;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,14 +29,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * {@link SpringBootServletInitializer} for CLI packaged WAR files.
  *
  * @author Phillip Webb
+ * @author Michael Yan
  * @since 2022.1.0
  */
-public class SpringApplicationWebApplicationInitializer extends SpringBootServletInitializer {
+public class GrailsApplicationWebApplicationInitializer extends SpringBootServletInitializer {
 
     /**
      * The entry containing the source class.
      */
-    public static final String SOURCE_ENTRY = "Spring-Application-Source-Classes";
+    public static final String SOURCE_ENTRY = "Grails-Application-Source-Classes";
 
     private String[] sources;
 
