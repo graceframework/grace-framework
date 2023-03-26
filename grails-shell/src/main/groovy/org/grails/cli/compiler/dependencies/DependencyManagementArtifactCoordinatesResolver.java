@@ -21,10 +21,11 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link ArtifactCoordinatesResolver} backed by
- * {@link SpringBootDependenciesDependencyManagement}.
+ * {@link GrailsDependenciesDependencyManagement}.
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public class DependencyManagementArtifactCoordinatesResolver implements ArtifactCoordinatesResolver {
@@ -34,7 +35,7 @@ public class DependencyManagementArtifactCoordinatesResolver implements Artifact
     private final DependencyManagement dependencyManagement;
 
     public DependencyManagementArtifactCoordinatesResolver() {
-        this(new SpringBootDependenciesDependencyManagement());
+        this(new GrailsDependenciesDependencyManagement());
     }
 
     public DependencyManagementArtifactCoordinatesResolver(DependencyManagement dependencyManagement) {
