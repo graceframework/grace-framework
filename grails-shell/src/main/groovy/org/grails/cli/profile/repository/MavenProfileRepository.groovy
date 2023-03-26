@@ -51,7 +51,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         this.repositoryConfigurations = repositoryConfigurations
         this.classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader)
         this.resolutionContext = new DependencyResolutionContext()
-        this.grapeEngine = GrailsAetherGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
+        this.grapeEngine = GrailsMavenGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
         this.profileDependencyVersions = new GrailsDependenciesDependencyManagement()
         this.resolutionContext.addDependencyManagement(profileDependencyVersions)
     }
