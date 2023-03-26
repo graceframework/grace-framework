@@ -29,6 +29,7 @@ dependencies {
     api libs.gradle.nexus.publish.plugin
     api libs.gradle.nexus.plugin
     api libs.maven.model
+    api libs.spring.boot.cli
     api libs.spring.boot.gradle.plugin
     api libs.spring.dependency.management.plugin
 
