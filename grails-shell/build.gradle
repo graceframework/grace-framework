@@ -56,7 +56,7 @@ dependencies {
 }
 
 task syncGrailsDependenciesBom(type: Sync) {
-	destinationDir = file("${buildDir}/generated-resources/org/grails/cli/boot/dependencies")
+	destinationDir = file("${buildDir}/generated-resources/org/grails/cli/compiler/dependencies")
 	from configurations.dependenciesBom
 }
 
