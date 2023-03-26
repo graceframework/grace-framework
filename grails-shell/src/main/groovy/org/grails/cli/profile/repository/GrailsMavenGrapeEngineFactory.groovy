@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.grails.cli.profile.repository
 
+import groovy.grape.GrapeEngine
 import groovy.transform.CompileStatic
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils
 import org.eclipse.aether.DefaultRepositorySystemSession
@@ -30,24 +31,24 @@ import org.eclipse.aether.spi.locator.ServiceLocator
 import org.eclipse.aether.transport.file.FileTransporterFactory
 import org.eclipse.aether.transport.http.HttpTransporterFactory
 import org.eclipse.aether.util.repository.AuthenticationBuilder
-import org.grails.cli.compiler.grape.AetherGrapeEngine
 import org.grails.cli.compiler.grape.DefaultRepositorySystemSessionAutoConfiguration
 import org.grails.cli.compiler.grape.DependencyResolutionContext
+import org.grails.cli.compiler.grape.MavenResolverGrapeEngine
 import org.grails.cli.compiler.grape.RepositorySystemSessionAutoConfiguration
 
 /**
- *  Creates aether engine to resolve profiles. Mostly copied from {@link AetherGrapeEngine}.
- *  Created to support repositories with authentication.
+ *  Creates {@link GrapeEngine} to resolve profiles.
  *
  * @author James Kleeh
+ * @author Michael Yan
  * @since 3.2
  */
 @CompileStatic
-class GrailsAetherGrapeEngineFactory {
+class GrailsMavenGrapeEngineFactory {
 
-    static AetherGrapeEngine create(GroovyClassLoader classLoader,
-                                    List<GrailsRepositoryConfiguration> repositoryConfigurations,
-                                    DependencyResolutionContext dependencyResolutionContext) {
+    static MavenResolverGrapeEngine create(GroovyClassLoader classLoader,
+                                           List<GrailsRepositoryConfiguration> repositoryConfigurations,
+                                           DependencyResolutionContext dependencyResolutionContext) {
 
         RepositorySystem repositorySystem = createServiceLocator().getService(RepositorySystem)
 
@@ -62,7 +63,7 @@ class GrailsAetherGrapeEngineFactory {
 
         new DefaultRepositorySystemSessionAutoConfiguration().apply(repositorySystemSession, repositorySystem)
 
-        new AetherGrapeEngine(classLoader, repositorySystem,
+        new MavenResolverGrapeEngine(classLoader, repositorySystem,
                 repositorySystemSession, createRepositories(repositoryConfigurations),
                 dependencyResolutionContext, false)
     }
