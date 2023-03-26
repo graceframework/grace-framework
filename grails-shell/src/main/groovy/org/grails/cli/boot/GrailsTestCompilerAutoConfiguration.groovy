@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.customizers.ImportCustomizer
+
+import grails.util.Environment
+
 import org.grails.cli.compiler.AstUtils
 import org.grails.cli.compiler.CompilerAutoConfiguration
 import org.grails.cli.compiler.DependencyCustomizer
-
-import grails.util.Environment
 
 /**
  * @author Graeme Rocher

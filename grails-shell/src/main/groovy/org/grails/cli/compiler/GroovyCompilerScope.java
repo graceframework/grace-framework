@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler;
 
 /**
  * The scope in which a groovy compiler operates.
  *
  * @author Phillip Webb
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public enum GroovyCompilerScope {
 
-	/**
-	 * Default scope, exposes groovy.jar (loaded from the parent) and the shared cli
-	 * package (loaded through groovy classloader).
-	 */
-	DEFAULT,
+    /**
+     * Default scope, exposes groovy.jar (loaded from the parent) and the shared cli
+     * package (loaded through groovy classloader).
+     */
+    DEFAULT,
 
-	/**
-	 * Extension scope, allows full access to internal CLI classes.
-	 */
-	EXTENSION
+    /**
+     * Extension scope, allows full access to internal CLI classes.
+     */
+    EXTENSION
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.grape;
 
 import java.lang.reflect.Field;
@@ -25,21 +24,21 @@ import groovy.grape.GrapeEngine;
  * Utility to install a specific {@link Grape} engine with Groovy.
  *
  * @author Andy Wilkinson
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public abstract class GrapeEngineInstaller {
 
-	public static void install(GrapeEngine engine) {
-		synchronized (Grape.class) {
-			try {
-				Field field = Grape.class.getDeclaredField("instance");
-				field.setAccessible(true);
-				field.set(null, engine);
-			}
-			catch (Exception ex) {
-				throw new IllegalStateException("Failed to install GrapeEngine", ex);
-			}
-		}
-	}
+    public static void install(GrapeEngine engine) {
+        synchronized (Grape.class) {
+            try {
+                Field field = Grape.class.getDeclaredField("instance");
+                field.setAccessible(true);
+                field.set(null, engine);
+            }
+            catch (Exception ex) {
+                throw new IllegalStateException("Failed to install GrapeEngine", ex);
+            }
+        }
+    }
 
 }

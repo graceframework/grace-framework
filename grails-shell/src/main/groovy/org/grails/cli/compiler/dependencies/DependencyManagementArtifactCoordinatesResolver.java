@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.dependencies;
 
 import java.util.Set;
@@ -26,58 +25,58 @@ import org.springframework.util.StringUtils;
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public class DependencyManagementArtifactCoordinatesResolver implements ArtifactCoordinatesResolver {
 
-	public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate5", "gsp", "scaffolding");
+    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate5", "gsp", "scaffolding");
 
-	private final DependencyManagement dependencyManagement;
+    private final DependencyManagement dependencyManagement;
 
-	public DependencyManagementArtifactCoordinatesResolver() {
-		this(new SpringBootDependenciesDependencyManagement());
-	}
+    public DependencyManagementArtifactCoordinatesResolver() {
+        this(new SpringBootDependenciesDependencyManagement());
+    }
 
-	public DependencyManagementArtifactCoordinatesResolver(DependencyManagement dependencyManagement) {
-		this.dependencyManagement = dependencyManagement;
-	}
+    public DependencyManagementArtifactCoordinatesResolver(DependencyManagement dependencyManagement) {
+        this.dependencyManagement = dependencyManagement;
+    }
 
-	@Override
-	public String getGroupId(String artifactId) {
-		Dependency dependency = find(artifactId);
-		return (dependency != null) ? dependency.getGroupId() : null;
-	}
+    @Override
+    public String getGroupId(String artifactId) {
+        Dependency dependency = find(artifactId);
+        return (dependency != null) ? dependency.getGroupId() : null;
+    }
 
-	@Override
-	public String getArtifactId(String id) {
-		Dependency dependency = find(id);
-		return (dependency != null) ? dependency.getArtifactId() : null;
-	}
+    @Override
+    public String getArtifactId(String id) {
+        Dependency dependency = find(id);
+        return (dependency != null) ? dependency.getArtifactId() : null;
+    }
 
-	private Dependency find(String id) {
-		if (StringUtils.countOccurrencesOf(id, ":") == 2) {
-			String[] tokens = id.split(":");
-			return new Dependency(tokens[0], tokens[1], tokens[2]);
-		}
-		if (id != null) {
-			if (id.startsWith("spring-boot")) {
-				return new Dependency("org.springframework.boot", id, this.dependencyManagement.getSpringBootVersion());
-			}
-			if (id.startsWith("grails")) {
-				return new Dependency("org.grails", id, this.dependencyManagement.getGrailsVersion());
-			}
-			if (GRAILS_PLUGINS.contains(id)) {
-				return new Dependency("org.grails.plugins", id, this.dependencyManagement.find(id).getVersion());
-			}
-			return this.dependencyManagement.find(id);
-		}
-		return null;
-	}
+    private Dependency find(String id) {
+        if (StringUtils.countOccurrencesOf(id, ":") == 2) {
+            String[] tokens = id.split(":");
+            return new Dependency(tokens[0], tokens[1], tokens[2]);
+        }
+        if (id != null) {
+            if (id.startsWith("spring-boot")) {
+                return new Dependency("org.springframework.boot", id, this.dependencyManagement.getSpringBootVersion());
+            }
+            if (id.startsWith("grails")) {
+                return new Dependency("org.grails", id, this.dependencyManagement.getGrailsVersion());
+            }
+            if (GRAILS_PLUGINS.contains(id)) {
+                return new Dependency("org.grails.plugins", id, this.dependencyManagement.find(id).getVersion());
+            }
+            return this.dependencyManagement.find(id);
+        }
+        return null;
+    }
 
-	@Override
-	public String getVersion(String module) {
-		Dependency dependency = find(module);
-		return (dependency != null) ? dependency.getVersion() : null;
-	}
+    @Override
+    public String getVersion(String module) {
+        Dependency dependency = find(module);
+        return (dependency != null) ? dependency.getVersion() : null;
+    }
 
 }

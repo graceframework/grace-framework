@@ -18,6 +18,7 @@ package org.grails.cli.compiler.autoconfigure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
+import org.grails.cli.compiler.AstUtils;
 import org.grails.cli.compiler.CompilerAutoConfiguration;
 import org.grails.cli.compiler.DependencyCustomizer;
 
@@ -29,9 +30,22 @@ import org.grails.cli.compiler.DependencyCustomizer;
  */
 public class GrailsCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
+    public static final String[] DEFAULT_IMPORTS = new String[] {
+            "grails.persistence",
+            "grails.gorm",
+            "grails.rest",
+            "grails.artefact",
+            "grails.web",
+            "grails.boot.config"
+    };
+
     @Override
     public boolean matches(ClassNode classNode) {
-        return true;
+        boolean matches = AstUtils.hasAtLeastOneAnnotation(classNode,
+                "grails.persistence.Entity",
+                "grails.rest.Resource", "Resource",
+                "grails.artefact.Artefact", "grails.web.Controller");
+        return matches;
     }
 
     @Override
@@ -53,6 +67,7 @@ public class GrailsCompilerAutoConfiguration extends CompilerAutoConfiguration {
     @Override
     public void applyImports(ImportCustomizer imports) {
         imports.addImports("groovy.transform.CompileStatic");
+        imports.addStarImports(DEFAULT_IMPORTS);
     }
 
 }

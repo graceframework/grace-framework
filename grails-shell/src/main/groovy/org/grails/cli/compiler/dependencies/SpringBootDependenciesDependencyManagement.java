@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.dependencies;
 
 import java.io.IOException;
@@ -28,26 +27,26 @@ import org.apache.maven.model.locator.DefaultModelLocator;
  * {@code spring-boot-dependencies}.
  *
  * @author Andy Wilkinson
- * @since 1.3.0
+ * @since 2022.1.0
  */
 public class SpringBootDependenciesDependencyManagement extends MavenModelDependencyManagement {
 
-	public SpringBootDependenciesDependencyManagement() {
-		super(readModel());
-	}
+    public SpringBootDependenciesDependencyManagement() {
+        super(readModel());
+    }
 
-	private static Model readModel() {
-		DefaultModelProcessor modelProcessor = new DefaultModelProcessor();
-		modelProcessor.setModelLocator(new DefaultModelLocator());
-		modelProcessor.setModelReader(new DefaultModelReader());
+    private static Model readModel() {
+        DefaultModelProcessor modelProcessor = new DefaultModelProcessor();
+        modelProcessor.setModelLocator(new DefaultModelLocator());
+        modelProcessor.setModelReader(new DefaultModelReader());
 
-		try {
-			return modelProcessor.read(org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement.class
-				.getResourceAsStream("spring-boot-dependencies-effective-bom.xml"), null);
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to build model from effective pom", ex);
-		}
-	}
+        try {
+            return modelProcessor.read(org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement.class
+                    .getResourceAsStream("spring-boot-dependencies-effective-bom.xml"), null);
+        }
+        catch (IOException ex) {
+            throw new IllegalStateException("Failed to build model from effective pom", ex);
+        }
+    }
 
 }

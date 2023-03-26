@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.grape;
 
 import java.io.PrintStream;
@@ -28,39 +27,40 @@ import org.eclipse.aether.transfer.TransferResource;
  * Provide detailed progress feedback for long running resolves.
  *
  * @author Andy Wilkinson
+ * @since 2022.1.0
  */
 final class DetailedProgressReporter implements ProgressReporter {
 
-	DetailedProgressReporter(DefaultRepositorySystemSession session, final PrintStream out) {
+    DetailedProgressReporter(DefaultRepositorySystemSession session, final PrintStream out) {
 
-		session.setTransferListener(new AbstractTransferListener() {
+        session.setTransferListener(new AbstractTransferListener() {
 
-			@Override
-			public void transferStarted(TransferEvent event) throws TransferCancelledException {
-				out.println("Downloading: " + getResourceIdentifier(event.getResource()));
-			}
+            @Override
+            public void transferStarted(TransferEvent event) throws TransferCancelledException {
+                out.println("Downloading: " + getResourceIdentifier(event.getResource()));
+            }
 
-			@Override
-			public void transferSucceeded(TransferEvent event) {
-				out.printf("Downloaded: %s (%s)%n", getResourceIdentifier(event.getResource()),
-						getTransferSpeed(event));
-			}
-		});
-	}
+            @Override
+            public void transferSucceeded(TransferEvent event) {
+                out.printf("Downloaded: %s (%s)%n", getResourceIdentifier(event.getResource()),
+                        getTransferSpeed(event));
+            }
+        });
+    }
 
-	private String getResourceIdentifier(TransferResource resource) {
-		return resource.getRepositoryUrl() + resource.getResourceName();
-	}
+    private String getResourceIdentifier(TransferResource resource) {
+        return resource.getRepositoryUrl() + resource.getResourceName();
+    }
 
-	private String getTransferSpeed(TransferEvent event) {
-		long kb = event.getTransferredBytes() / 1024;
-		float seconds = (System.currentTimeMillis() - event.getResource().getTransferStartTime()) / 1000.0f;
+    private String getTransferSpeed(TransferEvent event) {
+        long kb = event.getTransferredBytes() / 1024;
+        float seconds = (System.currentTimeMillis() - event.getResource().getTransferStartTime()) / 1000.0f;
 
-		return String.format("%dKB at %.1fKB/sec", kb, (kb / seconds));
-	}
+        return String.format("%dKB at %.1fKB/sec", kb, (kb / seconds));
+    }
 
-	@Override
-	public void finished() {
-	}
+    @Override
+    public void finished() {
+    }
 
 }
