@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.autoconfigure;
 
 import org.codehaus.groovy.ast.ClassNode;
@@ -27,32 +26,32 @@ import org.grails.cli.compiler.DependencyCustomizer;
  * {@link CompilerAutoConfiguration} for Spring Security.
  *
  * @author Dave Syer
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public class SpringSecurityCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
-	@Override
-	public boolean matches(ClassNode classNode) {
-		return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableWebSecurity", "EnableGlobalMethodSecurity");
-	}
+    @Override
+    public boolean matches(ClassNode classNode) {
+        return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableWebSecurity", "EnableGlobalMethodSecurity");
+    }
 
-	@Override
-	public void applyDependencies(DependencyCustomizer dependencies) {
-		dependencies
-			.ifAnyMissingClasses(
-					"org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity")
-			.add("spring-boot-starter-security");
-	}
+    @Override
+    public void applyDependencies(DependencyCustomizer dependencies) {
+        dependencies
+                .ifAnyMissingClasses(
+                        "org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity")
+                .add("spring-boot-starter-security");
+    }
 
-	@Override
-	public void applyImports(ImportCustomizer imports) {
-		imports
-			.addImports("org.springframework.security.core.Authentication",
-					"org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity",
-					"org.springframework.security.core.authority.AuthorityUtils")
-			.addStarImports("org.springframework.security.config.annotation.web.configuration",
-					"org.springframework.security.authentication", "org.springframework.security.config.annotation.web",
-					"org.springframework.security.config.annotation.web.builders");
-	}
+    @Override
+    public void applyImports(ImportCustomizer imports) {
+        imports
+                .addImports("org.springframework.security.core.Authentication",
+                        "org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity",
+                        "org.springframework.security.core.authority.AuthorityUtils")
+                .addStarImports("org.springframework.security.config.annotation.web.configuration",
+                        "org.springframework.security.authentication", "org.springframework.security.config.annotation.web",
+                        "org.springframework.security.config.annotation.web.builders");
+    }
 
 }

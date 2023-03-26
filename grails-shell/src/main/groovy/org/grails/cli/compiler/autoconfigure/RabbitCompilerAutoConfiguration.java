@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.autoconfigure;
 
 import org.codehaus.groovy.ast.ClassNode;
@@ -29,28 +28,28 @@ import org.grails.cli.compiler.DependencyCustomizer;
  *
  * @author Greg Turnquist
  * @author Stephane Nicoll
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public class RabbitCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
-	@Override
-	public boolean matches(ClassNode classNode) {
-		return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableRabbit")
-				|| AstUtils.hasAtLeastOneAnnotation(classNode, "EnableRabbitMessaging");
-	}
+    @Override
+    public boolean matches(ClassNode classNode) {
+        return AstUtils.hasAtLeastOneAnnotation(classNode, "EnableRabbit")
+                || AstUtils.hasAtLeastOneAnnotation(classNode, "EnableRabbitMessaging");
+    }
 
-	@Override
-	public void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
-		dependencies.add("spring-rabbit");
+    @Override
+    public void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
+        dependencies.add("spring-rabbit");
 
-	}
+    }
 
-	@Override
-	public void applyImports(ImportCustomizer imports) throws CompilationFailedException {
-		imports.addStarImports("org.springframework.amqp.rabbit.annotation", "org.springframework.amqp.rabbit.core",
-				"org.springframework.amqp.rabbit.config", "org.springframework.amqp.rabbit.connection",
-				"org.springframework.amqp.rabbit.listener", "org.springframework.amqp.rabbit.listener.adapter",
-				"org.springframework.amqp.core");
-	}
+    @Override
+    public void applyImports(ImportCustomizer imports) throws CompilationFailedException {
+        imports.addStarImports("org.springframework.amqp.rabbit.annotation", "org.springframework.amqp.rabbit.core",
+                "org.springframework.amqp.rabbit.config", "org.springframework.amqp.rabbit.connection",
+                "org.springframework.amqp.rabbit.listener", "org.springframework.amqp.rabbit.listener.adapter",
+                "org.springframework.amqp.core");
+    }
 
 }

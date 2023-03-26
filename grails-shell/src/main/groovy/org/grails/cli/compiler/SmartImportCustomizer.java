@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler;
 
 import org.codehaus.groovy.ast.ClassHelper;
@@ -25,31 +24,32 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer;
  * class with the same name is not already explicitly imported.
  *
  * @author Dave Syer
+ * @since 2022.1.0
  */
 class SmartImportCustomizer extends ImportCustomizer {
 
-	private SourceUnit source;
+    private SourceUnit source;
 
-	SmartImportCustomizer(SourceUnit source) {
-		this.source = source;
-	}
+    SmartImportCustomizer(SourceUnit source) {
+        this.source = source;
+    }
 
-	@Override
-	public ImportCustomizer addImport(String alias, String className) {
-		if (this.source.getAST().getImport(ClassHelper.make(className).getNameWithoutPackage()) == null) {
-			super.addImport(alias, className);
-		}
-		return this;
-	}
+    @Override
+    public ImportCustomizer addImport(String alias, String className) {
+        if (this.source.getAST().getImport(ClassHelper.make(className).getNameWithoutPackage()) == null) {
+            super.addImport(alias, className);
+        }
+        return this;
+    }
 
-	@Override
-	public ImportCustomizer addImports(String... imports) {
-		for (String alias : imports) {
-			if (this.source.getAST().getImport(ClassHelper.make(alias).getNameWithoutPackage()) == null) {
-				super.addImports(alias);
-			}
-		}
-		return this;
-	}
+    @Override
+    public ImportCustomizer addImports(String... imports) {
+        for (String alias : imports) {
+            if (this.source.getAST().getImport(ClassHelper.make(alias).getNameWithoutPackage()) == null) {
+                super.addImports(alias);
+            }
+        }
+        return this;
+    }
 
 }

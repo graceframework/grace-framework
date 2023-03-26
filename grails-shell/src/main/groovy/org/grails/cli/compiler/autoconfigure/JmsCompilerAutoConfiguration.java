@@ -29,7 +29,7 @@ import org.grails.cli.compiler.DependencyCustomizer;
  *
  * @author Greg Turnquist
  * @author Stephane Nicoll
- * @since 1.0.0
+ * @since 2022.1.0
  */
 public class JmsCompilerAutoConfiguration extends CompilerAutoConfiguration {
 

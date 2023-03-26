@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.dependencies;
 
 import java.util.List;
@@ -22,29 +21,32 @@ import java.util.List;
  * An encapsulation of dependency management information.
  *
  * @author Andy Wilkinson
- * @since 1.3.0
+ * @since 2022.1.0
  */
 public interface DependencyManagement {
 
-	/**
-	 * Returns the managed dependencies.
-	 * @return the managed dependencies
-	 */
-	List<Dependency> getDependencies();
+    /**
+     * Returns the managed dependencies.
+     *
+     * @return the managed dependencies
+     */
+    List<Dependency> getDependencies();
 
-	/**
-	 * Returns the managed version of Spring Boot. May be {@code null}.
-	 * @return the Spring Boot version, or {@code null}
-	 */
-	String getSpringBootVersion();
+    /**
+     * Returns the managed version of Spring Boot. May be {@code null}.
+     *
+     * @return the Spring Boot version, or {@code null}
+     */
+    String getSpringBootVersion();
 
-	String getGrailsVersion();
+    String getGrailsVersion();
 
-	/**
-	 * Finds the managed dependency with the given {@code artifactId}.
-	 * @param artifactId the artifact ID of the dependency to find
-	 * @return the dependency, or {@code null}
-	 */
-	Dependency find(String artifactId);
+    /**
+     * Finds the managed dependency with the given {@code artifactId}.
+     *
+     * @param artifactId the artifact ID of the dependency to find
+     * @return the dependency, or {@code null}
+     */
+    Dependency find(String artifactId);
 
 }

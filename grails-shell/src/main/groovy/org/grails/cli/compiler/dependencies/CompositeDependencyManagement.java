@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.cli.compiler.dependencies;
 
 import java.util.ArrayList;
@@ -25,57 +24,57 @@ import java.util.List;
  * instances.
  *
  * @author Andy Wilkinson
- * @since 1.3.0
+ * @since 2022.1.0
  */
 public class CompositeDependencyManagement implements DependencyManagement {
 
-	private final List<DependencyManagement> delegates;
+    private final List<DependencyManagement> delegates;
 
-	private final List<Dependency> dependencies = new ArrayList<>();
+    private final List<Dependency> dependencies = new ArrayList<>();
 
-	public CompositeDependencyManagement(DependencyManagement... delegates) {
-		this.delegates = Arrays.asList(delegates);
-		for (DependencyManagement delegate : delegates) {
-			this.dependencies.addAll(delegate.getDependencies());
-		}
-	}
+    public CompositeDependencyManagement(DependencyManagement... delegates) {
+        this.delegates = Arrays.asList(delegates);
+        for (DependencyManagement delegate : delegates) {
+            this.dependencies.addAll(delegate.getDependencies());
+        }
+    }
 
-	@Override
-	public List<Dependency> getDependencies() {
-		return this.dependencies;
-	}
+    @Override
+    public List<Dependency> getDependencies() {
+        return this.dependencies;
+    }
 
-	@Override
-	public String getSpringBootVersion() {
-		for (DependencyManagement delegate : this.delegates) {
-			String version = delegate.getSpringBootVersion();
-			if (version != null) {
-				return version;
-			}
-		}
-		return null;
-	}
+    @Override
+    public String getSpringBootVersion() {
+        for (DependencyManagement delegate : this.delegates) {
+            String version = delegate.getSpringBootVersion();
+            if (version != null) {
+                return version;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public String getGrailsVersion() {
-		for (DependencyManagement delegate : this.delegates) {
-			String version = delegate.getGrailsVersion();
-			if (version != null) {
-				return version;
-			}
-		}
-		return null;
-	}
+    @Override
+    public String getGrailsVersion() {
+        for (DependencyManagement delegate : this.delegates) {
+            String version = delegate.getGrailsVersion();
+            if (version != null) {
+                return version;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public Dependency find(String artifactId) {
-		for (DependencyManagement delegate : this.delegates) {
-			Dependency found = delegate.find(artifactId);
-			if (found != null) {
-				return found;
-			}
-		}
-		return null;
-	}
+    @Override
+    public Dependency find(String artifactId) {
+        for (DependencyManagement delegate : this.delegates) {
+            Dependency found = delegate.find(artifactId);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
 
 }
