@@ -101,6 +101,7 @@ class DocPublisherTask extends Task {
         publisher.engineProperties = props
     }
 
+    @SuppressWarnings('UnnecessaryPackageReference')
     void execute() {
         publisher.ant = new groovy.util.AntBuilder(this)
         publisher.output = new AntLogAdapter(publisher.ant.project, this)

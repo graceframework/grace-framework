@@ -266,7 +266,8 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     }
 
     @Override
-    protected void processProperty(Object obj, MetaProperty metaProperty, Object val, DataBindingSource source, DataBindingListener listener, Object errors) {
+    protected void processProperty(Object obj, MetaProperty metaProperty, Object val,
+                                   DataBindingSource source, DataBindingListener listener, Object errors) {
         boolean needsBinding = true
 
         if (source.dataSourceAware) {
@@ -598,7 +599,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
             if (trimStrings) {
                 stringValue = stringValue.trim()
             }
-            if (convertEmptyStringsToNull && '' == stringValue) {
+            if (convertEmptyStringsToNull && stringValue == '') {
                 stringValue = null
             }
             return stringValue

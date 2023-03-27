@@ -45,7 +45,7 @@ abstract class ArgumentCompletingCommand implements Command, Completer {
 
         for (arg in desc.flags) {
             String argName = arg.name
-            String flag = "-$argName".toString()
+            String flag = "-$argName"
             if (!commandLine.hasOption(arg.name)) {
                 if (lastOption) {
                     String lastArg = lastOption.key

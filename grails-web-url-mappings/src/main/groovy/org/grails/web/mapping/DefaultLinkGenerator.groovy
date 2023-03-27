@@ -109,7 +109,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         boolean includeContext = GrailsClassUtils.getBooleanFromMap(ATTRIBUTE_INCLUDE_CONTEXT, attrs, true)
 
         if (attrs.get(ATTRIBUTE_URI) != null) {
-            String uri = attrs.get(ATTRIBUTE_URI).toString()
+            String uri = attrs.get(ATTRIBUTE_URI)
             if (!isUriAbsolute(uri)) {
                 String base = handleAbsolute(attrs)
                 if (base != null) {
@@ -198,7 +198,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                     controller = tokens[-1]
                     if (tokens.size() > 1) {
                         for (t in tokens[0..-2]) {
-                            String key = "${t}Id".toString()
+                            String key = "${t}Id"
                             Object attr = urlAttrs.remove(key)
                             // the params value might not be null
                             // only overwrite if urlAttrs actually had the key
@@ -251,8 +251,8 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
                 if (id != null) {
                     params.put(ATTRIBUTE_ID, id)
                 }
-                String pluginName = attrs.get(UrlMapping.PLUGIN)?.toString()
-                String namespace = attrs.get(UrlMapping.NAMESPACE)?.toString()
+                String pluginName = attrs.get(UrlMapping.PLUGIN)
+                String namespace = attrs.get(UrlMapping.NAMESPACE)
                 if (namespace == null) {
                     if (controller == requestStateLookupStrategy.controllerName) {
                         namespace = requestStateLookupStrategy.controllerNamespace
@@ -313,7 +313,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         else {
             if (o != null) {
                 try {
-                    String str = o.toString()
+                    String str = o
                     if (str) {
                         absolute = Boolean.parseBoolean(str)
                     }
@@ -332,7 +332,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
     String resource(Map attrs) {
         String absolutePath = handleAbsolute(attrs)
 
-        String contextPathAttribute = attrs.contextPath?.toString()
+        String contextPathAttribute = attrs.contextPath
         if (absolutePath == null) {
             String cp = contextPathAttribute == null ? getContextPath() : contextPathAttribute
             if (cp == null) {
@@ -344,13 +344,13 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
         }
 
         StringBuilder url = new StringBuilder(absolutePath ?: '')
-        String dir = attrs.dir?.toString()
+        String dir = attrs.dir
         if (attrs.plugin) {
             url.append(pluginManager?.getPluginPath(attrs.plugin?.toString()) ?: '')
         }
         else {
             if (contextPathAttribute == null) {
-                String pluginContextPath = attrs.pluginContextPath?.toString()
+                String pluginContextPath = attrs.pluginContextPath
                 if (pluginContextPath != null && dir != pluginContextPath) {
                     url << pluginContextPath
                 }
@@ -368,7 +368,7 @@ class DefaultLinkGenerator implements LinkGenerator, PluginManagerAware {
             url.append(dir)
         }
 
-        String file = attrs.file?.toString()
+        String file = attrs.file
         if (file) {
             if (!(file.startsWith(slash) || (dir != null && dir.endsWith(slash)))) {
                 url.append(slash)

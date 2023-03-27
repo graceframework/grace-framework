@@ -140,7 +140,7 @@ abstract class AbstractProfile implements Profile {
         if (commandsByName instanceof Map) {
             Map commandsMap = (Map) commandsByName
             for (clsName in commandsMap.keySet()) {
-                String fileName = commandsMap[clsName].toString()
+                String fileName = commandsMap[clsName]
                 if (fileName.endsWith('.groovy')) {
                     GroovyScriptCommand cmd = (GroovyScriptCommand) classLoader.loadClass(clsName.toString()).newInstance()
                     cmd.profile = this

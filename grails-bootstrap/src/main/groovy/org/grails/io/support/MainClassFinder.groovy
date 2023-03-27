@@ -53,7 +53,7 @@ class MainClassFinder {
             return null
         }
 
-        String pathStr = path.toString()
+        String pathStr = path
         if (MAIN_CLASSES.containsKey(pathStr)) {
             return MAIN_CLASSES.get(pathStr)
         }

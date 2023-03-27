@@ -68,7 +68,7 @@ abstract class AbstractVndErrorRenderer implements ContainerRenderer<Errors, Obj
         Object objectId = getObjectId(target)
         String name = GrailsNameUtils.getPropertyName(target.class)
         String code = oe.code
-        String logref = "${name}.${code}${objectId ? '.' + objectId : ''}".toString()
+        String logref = "${name}.${code}${objectId ? '.' + objectId : ''}"
         logref
     }
 
