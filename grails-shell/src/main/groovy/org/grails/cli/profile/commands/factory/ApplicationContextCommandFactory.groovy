@@ -40,7 +40,7 @@ class ApplicationContextCommandFactory implements CommandFactory {
 
         try {
             ClassLoader classLoader = Thread.currentThread().contextClassLoader
-            List<ApplicationCommand> registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand.class, classLoader)
+            List<ApplicationCommand> registeredCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand, classLoader)
 
             return registeredCommands.collect { Named named -> new GradleTaskCommandAdapter(profile, named) }
         }

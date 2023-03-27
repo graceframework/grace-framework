@@ -70,7 +70,8 @@ class LinkableTransform implements ASTTransformation {
             MethodCallExpression linkArg = new MethodCallExpression(new ClassExpression(new ClassNode(Link)),
                     'createLink', new VariableExpression(mapParameter))
             linkMethodBody.addStatement(new ExpressionStatement(new MethodCallExpression(resourceLinksVariable, 'add', linkArg)))
-            MethodNode linkMethod = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE, [mapParameter] as Parameter[], null, linkMethodBody)
+            MethodNode linkMethod = new MethodNode(LINK_METHOD, Modifier.PUBLIC, ClassHelper.VOID_TYPE,
+                    [mapParameter] as Parameter[], null, linkMethodBody)
             classNode.addMethod(linkMethod)
             AnnotatedNodeUtils.markAsGenerated(classNode, linkMethod)
 

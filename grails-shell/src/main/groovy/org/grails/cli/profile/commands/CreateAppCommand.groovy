@@ -110,7 +110,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val.toString()
+                    String valStr = val
 
                     List<String> candidateProfiles = profileNames.findAll { String pn ->
                         pn.startsWith(valStr)
@@ -131,7 +131,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val.toString()
+                    String valStr = val
                     if (valStr.endsWith(',')) {
                         String[] specified = valStr.split(',')
                         candidates.addAll(featureNames.findAll { String f ->
