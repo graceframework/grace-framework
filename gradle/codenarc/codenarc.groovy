@@ -356,7 +356,7 @@ ruleset {
     PackageName
     PackageNameMatchesFilePath
     ParameterName
-    PropertyName
+    PropertyName(ignorePropertyNames: 'log,logger')
     VariableName
 
     // rulesets/security.xml

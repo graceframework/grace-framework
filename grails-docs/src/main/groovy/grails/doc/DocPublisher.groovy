@@ -83,7 +83,7 @@ class DocPublisher {
     File js
 
     /**
-     * The directory cotnaining any templates to use (will override defaults)
+     * The directory containing any templates to use (will override defaults)
      */
     File style
 
@@ -95,7 +95,7 @@ class DocPublisher {
     /**
      * The AntBuilder instance to use
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings(['deprecation', 'UnnecessaryPackageReference'])
     groovy.util.AntBuilder ant
 
     /**
@@ -581,6 +581,7 @@ class DocPublisher {
         varsCopy.content
     }
 
+    @SuppressWarnings('UnnecessaryPackageReference')
     protected void initialize() {
         if (language) {
             src = new File(src, language)

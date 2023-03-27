@@ -379,7 +379,7 @@ class NavigableMap implements Map<String, Object>, Cloneable {
                 Map<String, Object> newMap = new NavigableMap((NavigableMap) currentMap.getRootConfig(), newPathList.asImmutable())
                 currentMap.put(pathElement, newMap)
 
-                String fullPath = accumulatedPath.toString()
+                String fullPath = accumulatedPath
                 if (!rootMap.containsKey(fullPath)) {
                     rootMap.put(fullPath, newMap)
                 }

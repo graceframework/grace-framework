@@ -61,12 +61,12 @@ class DefaultWebInterfaceManager implements WebInterfaceManager, PluginManagerAw
             }
         }
 
-        return result
+        result
     }
 
     @Override
     List<WebSectionModuleDescriptor> getDisplayableSections(String location, Map<String, Object> context) {
-        return getSections(location)
+        getSections(location)
     }
 
     @Override
@@ -79,16 +79,17 @@ class DefaultWebInterfaceManager implements WebInterfaceManager, PluginManagerAw
 
         List<WebItemModuleDescriptor> descriptors = pluginManager.getEnabledModuleDescriptorsByClass(WebItemModuleDescriptor)
         for (WebItemModuleDescriptor descriptor : descriptors) {
-            if (section.equalsIgnoreCase(descriptor.getSection()) && descriptor.isEnabled())
+            if (section.equalsIgnoreCase(descriptor.getSection()) && descriptor.isEnabled()) {
                 result.add(descriptor)
+            }
         }
 
-        return result
+        result
     }
 
     @Override
     List<WebItemModuleDescriptor> getDisplayableItems(String section, Map<String, Object> context) {
-        return getItems(section)
+        getItems(section)
     }
 
 }

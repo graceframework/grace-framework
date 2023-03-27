@@ -214,7 +214,7 @@ class IOUtils {
     static URL findJarResource(Class targetClass) {
         URL classUrl = findClassResource(targetClass)
         if (classUrl != null) {
-            String urlPath = classUrl.toString()
+            String urlPath = classUrl
             int bang = urlPath.lastIndexOf('!')
 
             if (bang > -1) {

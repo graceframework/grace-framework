@@ -15,22 +15,21 @@
  */
 package org.grails.plugins.modules
 
-import grails.plugins.*
+import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 class DynamicModulesGrailsPlugin extends Plugin {
 
     def version = GrailsUtil.getGrailsVersion()
-    def title = "Grails Dynamic Modules Plugin"
-    def author = "Michael Yan"
-    def authorEmail = "rain@rainboyan.com"
+    def title = 'Grails Dynamic Modules Plugin'
+    def author = 'Michael Yan'
+    def authorEmail = 'rain@rainboyan.com'
     def description = '''\
 Grails Dynamic Modules Plugin offer new ways of creating modular and maintainable Grails applications.
 '''
 
     Closure doWithSpring() {
-        {->
-
+        { ->
         }
     }
 
