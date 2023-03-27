@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.cli.gradle.cache
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 import org.yaml.snakeyaml.representer.Representer
@@ -35,7 +36,7 @@ abstract class MapReadingCachedGradleOperation<V> extends CachedGradleOperation<
     @Override
     Map<String, V> readFromCached(File f) {
         def map = (Map<String, Object>) f.withReader { BufferedReader r ->
-            new Yaml(new SafeConstructor()).load(r)
+            new Yaml(new SafeConstructor(new LoaderOptions())).load(r)
         }
         Map<String, V> newMap = [:]
 
@@ -57,7 +58,7 @@ abstract class MapReadingCachedGradleOperation<V> extends CachedGradleOperation<
             }
             [(key): val.toString()]
         }
-        new Yaml(new SafeConstructor(), new Representer(), options).dump(toWrite, writer)
+        new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(new DumperOptions()), options).dump(toWrite, writer)
     }
 
 }

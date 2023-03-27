@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.work.InputChanges
 import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 import org.yaml.snakeyaml.representer.Representer
@@ -87,7 +88,7 @@ class ProfileCompilerTask extends AbstractCompile {
 
         def options = new DumperOptions()
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK)
-        def yaml = new Yaml(new SafeConstructor(), new Representer(), options)
+        def yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(), options)
         Map<String, Object> profileData
         if (profileYmlExists) {
             profileData = (Map<String, Object>) config.withReader { BufferedReader r ->
