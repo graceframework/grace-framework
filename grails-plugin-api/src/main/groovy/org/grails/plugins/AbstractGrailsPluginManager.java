@@ -417,7 +417,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                     Map<String, Class<?>> moduleTypesMap = (Map<String, Class<?>>) providedModules;
                     for (Map.Entry<String, Class<?>> moduleType : moduleTypesMap.entrySet()) {
                         if (ModuleDescriptor.class.isAssignableFrom(moduleType.getValue())) {
-                            moduleDescriptorFactory.addModuleDescriptor(
+                            this.moduleDescriptorFactory.addModuleDescriptor(
                                     moduleType.getKey(),
                                     (Class<? extends ModuleDescriptor<?>>) moduleType.getValue());
                         }
