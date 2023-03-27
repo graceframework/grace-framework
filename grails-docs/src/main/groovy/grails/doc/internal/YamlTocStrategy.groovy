@@ -1,4 +1,4 @@
-/* Copyright 2011-2022 the original author or authors.
+/* Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  */
 package grails.doc.internal
 
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
@@ -22,7 +23,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
  */
 class YamlTocStrategy {
 
-    private final parser = new Yaml(new SafeConstructor())
+    private final parser = new Yaml(new SafeConstructor(new LoaderOptions()))
     private final resourceChecker
     private final String ext
 
