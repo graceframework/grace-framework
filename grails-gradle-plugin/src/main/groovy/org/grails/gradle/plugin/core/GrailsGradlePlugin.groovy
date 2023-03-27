@@ -47,7 +47,6 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
-import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
@@ -409,7 +408,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def springBootVersion = project.findProperty('springBootVersion')
 
         springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
-        springBootVersion = springBootVersion ?: new SpringBootDependenciesDependencyManagement().getSpringBootVersion()
 
         springBootVersion
     }
