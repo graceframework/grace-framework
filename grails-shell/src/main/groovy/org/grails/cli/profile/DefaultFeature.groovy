@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.eclipse.aether.graph.Dependency
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.SafeConstructor
 
@@ -51,7 +52,7 @@ class DefaultFeature implements Feature {
         this.name = name
         this.location = location
         Resource featureYml = location.createRelative('feature.yml')
-        Map<String, Object> featureConfig = new Yaml(new SafeConstructor()).<Map<String, Object>>load(featureYml.getInputStream())
+        Map<String, Object> featureConfig = new Yaml(new SafeConstructor(new LoaderOptions())).<Map<String, Object>>load(featureYml.getInputStream())
         configuration.merge(featureConfig)
         def dependenciesConfig = configuration.get('dependencies')
 
