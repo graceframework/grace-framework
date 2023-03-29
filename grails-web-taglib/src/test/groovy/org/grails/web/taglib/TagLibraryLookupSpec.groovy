@@ -2,7 +2,7 @@ package org.grails.web.taglib
 
 import grails.core.DefaultGrailsApplication
 import grails.gsp.TagLib
-import org.grails.taglib.NamespacedTagDispatcher
+import org.grails.taglib.DefaultNamespacedTagDispatcher
 import org.grails.taglib.TagLibraryLookup
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.springframework.mock.web.MockHttpServletRequest
@@ -22,7 +22,7 @@ class TagLibraryLookupSpec extends Specification {
 
 
     @Issue('GRAILS-11396')
-    @ConfineMetaClassChanges([NamespacedTagDispatcher, OneTagLib, TwoTagLib])
+    @ConfineMetaClassChanges([DefaultNamespacedTagDispatcher, OneTagLib, TwoTagLib])
     void "Test that TagLibraryLookup correctly registers namespace dispatchers"() {
         given:"A lookup instance"
             def lookup = new TagLibraryLookup()

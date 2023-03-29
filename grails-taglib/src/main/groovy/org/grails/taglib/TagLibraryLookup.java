@@ -15,9 +15,11 @@
  */
 package org.grails.taglib;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,12 +37,14 @@ import grails.core.support.GrailsApplicationAware;
 
 import org.grails.core.artefact.gsp.TagLibArtefactHandler;
 import org.grails.core.exceptions.GrailsConfigurationException;
+import org.grails.core.io.support.GrailsFactoriesLoader;
 import org.grails.taglib.encoder.WithCodecHelper;
 
 /**
  * Looks up tag library instances.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.1
  */
 public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicationAware, InitializingBean, SmartInitializingSingleton {
@@ -59,9 +63,7 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (this.grailsApplication == null || this.applicationContext == null) {
-            return;
-        }
+
     }
 
     @Override
@@ -72,7 +74,6 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         catch (GrailsConfigurationException e) {
             // ignore exception
         }
-        registerTemplateNamespace();
 
         registerNamespaceDispatchers();
     }
@@ -81,10 +82,37 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         for (String namespace : this.tagNamespaces.keySet()) {
             registerNamespaceDispatcher(namespace);
         }
+        // Register custom tag namespace and overwrite existing one
+        List<NamespacedTagDispatcher> tagDispatcherList = GrailsFactoriesLoader.loadFactories(
+                NamespacedTagDispatcher.class, this.getClass().getClassLoader());
+        Collection<NamespacedTagDispatcher> tagDispatcherBeans = this.applicationContext.getBeansOfType(NamespacedTagDispatcher.class).values();
+        tagDispatcherList.addAll(tagDispatcherBeans);
+        for (NamespacedTagDispatcher tagDispatcher : tagDispatcherList) {
+            tagDispatcher.setTagLibraryLookup(this);
+            if (tagDispatcher instanceof GrailsApplicationAware) {
+                ((GrailsApplicationAware) tagDispatcher).setGrailsApplication(this.grailsApplication);
+            }
+            if (tagDispatcher instanceof ApplicationContextAware) {
+                ((ApplicationContextAware) tagDispatcher).setApplicationContext(this.applicationContext);
+            }
+            if (tagDispatcher instanceof InitializingBean) {
+                try {
+                    ((InitializingBean) tagDispatcher).afterPropertiesSet();
+                }
+                catch (Exception ignore) {
+                    //
+                }
+            }
+            registerNamespaceDispatcher(tagDispatcher.getNamespace(), tagDispatcher);
+        }
     }
 
     protected void registerNamespaceDispatcher(String namespace) {
-        this.namespaceDispatchers.put(namespace, new NamespacedTagDispatcher(namespace, null, this.grailsApplication, this));
+        this.namespaceDispatchers.put(namespace, new DefaultNamespacedTagDispatcher(namespace, null, this.grailsApplication, this));
+    }
+
+    protected void registerNamespaceDispatcher(String namespace, NamespacedTagDispatcher tagDispatcher) {
+        this.namespaceDispatchers.put(namespace, tagDispatcher);
     }
 
     protected void registerTagLibraries() {
@@ -92,11 +120,6 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         for (GrailsClass grailsClass : taglibs) {
             registerTagLib((GrailsTagLibClass) grailsClass, true);
         }
-    }
-
-    protected void registerTemplateNamespace() {
-        this.namespaceDispatchers.put(TemplateNamespacedTagDispatcher.TEMPLATE_NAMESPACE,
-                new TemplateNamespacedTagDispatcher(null, this.grailsApplication, this));
     }
 
     /**
