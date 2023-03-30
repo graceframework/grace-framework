@@ -15,7 +15,6 @@
  */
 package org.grails.taglib;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,17 +75,19 @@ public class TagLibraryLookup implements ApplicationContextAware, GrailsApplicat
         }
 
         registerNamespaceDispatchers();
+        registerCustomNamespaceDispatchers();
     }
 
-    private void registerNamespaceDispatchers() {
+    protected void registerNamespaceDispatchers() {
         for (String namespace : this.tagNamespaces.keySet()) {
             registerNamespaceDispatcher(namespace);
         }
-        // Register custom tag namespace and overwrite existing one
+    }
+
+    protected void registerCustomNamespaceDispatchers() {
+        // Register custom tag namespace and maybe overwrite existing one
         List<NamespacedTagDispatcher> tagDispatcherList = GrailsFactoriesLoader.loadFactories(
                 NamespacedTagDispatcher.class, this.getClass().getClassLoader());
-        Collection<NamespacedTagDispatcher> tagDispatcherBeans = this.applicationContext.getBeansOfType(NamespacedTagDispatcher.class).values();
-        tagDispatcherList.addAll(tagDispatcherBeans);
         for (NamespacedTagDispatcher tagDispatcher : tagDispatcherList) {
             tagDispatcher.setTagLibraryLookup(this);
             if (tagDispatcher instanceof GrailsApplicationAware) {
