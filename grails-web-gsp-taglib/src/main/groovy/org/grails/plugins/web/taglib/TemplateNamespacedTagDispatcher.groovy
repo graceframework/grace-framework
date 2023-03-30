@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.taglib
+package org.grails.plugins.web.taglib
 
 import groovy.transform.CompileStatic
+import org.springframework.beans.factory.InitializingBean
 
-import grails.core.GrailsApplication
-import grails.util.Environment
-
+import org.grails.taglib.NamespacedTagDispatcher
+import org.grails.taglib.TagLibraryLookup
+import org.grails.taglib.TagLibraryMetaUtils
+import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
 
+/**
+ * Allows dispatching to namespaced tag libraries and is used within controllers and tag libraries
+ * to allow namespaced tags to be invoked as methods (eg. tmpl.person(model: )).
+ *
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 1.0
+ */
 @CompileStatic
-class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
+class TemplateNamespacedTagDispatcher extends GroovyObjectSupport implements NamespacedTagDispatcher, InitializingBean {
 
-    public static final String TEMPLATE_NAMESPACE = "tmpl"
+    public static final String TEMPLATE_NAMESPACE = 'tmpl'
+    public static final String RENDER_TAG_NAME = 'render'
 
-    private final boolean developmentMode = Environment.current.isDevelopmentMode()
+    private String namespace = TEMPLATE_NAMESPACE
+    private TagLibraryLookup lookup
 
-    TemplateNamespacedTagDispatcher(Class callingType, GrailsApplication application, TagLibraryLookup lookup) {
-        super(TEMPLATE_NAMESPACE, callingType, application, lookup)
+    TemplateNamespacedTagDispatcher() {
     }
 
+    @Override
+    void afterPropertiesSet() throws Exception {
+        initializeMetaClass()
+    }
+
+    void initializeMetaClass() {
+        ExpandoMetaClass emc = new ExpandoMetaClass(getClass(), false, true)
+        emc.initialize()
+        setMetaClass(emc)
+        registerTagMetaMethods(emc)
+    }
+
+    void registerTagMetaMethods(ExpandoMetaClass emc) {
+        TagLibraryMetaUtils.registerTagMetaMethods(emc, this.lookup, this.namespace)
+    }
+
+    @Override
+    String getNamespace() {
+        this.namespace
+    }
+
+    @Override
+    void setTagLibraryLookup(TagLibraryLookup lookup) {
+        if (!this.lookup) {
+            this.lookup = lookup
+        }
+    }
+
+    @Override
     def methodMissing(String name, Object args) {
         ((GroovyObject) getMetaClass()).setProperty(name, { Object[] varArgs ->
             callRender(argsToAttrs(name, varArgs), filterBodyAttr(varArgs))
@@ -40,15 +80,12 @@ class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
         callRender(argsToAttrs(name, args), filterBodyAttr(args))
     }
 
-    protected void registerTagMetaMethods(ExpandoMetaClass emc) {
-    }
-
-    protected callRender(Map attrs, Object body) {
-        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, 'render', attrs, body,
+    private callRender(Map attrs, Object body) {
+        TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, RENDER_TAG_NAME, attrs, body,
                 OutputContextLookupHelper.lookupOutputContext())
     }
 
-    protected Map argsToAttrs(String name, Object args) {
+    private Map argsToAttrs(String name, Object args) {
         Map<String, Object> attr = [:]
         attr.template = name
         if (args instanceof Object[]) {
@@ -65,7 +102,7 @@ class TemplateNamespacedTagDispatcher extends NamespacedTagDispatcher {
         attr
     }
 
-    protected Object filterBodyAttr(Object args) {
+    private Object filterBodyAttr(Object args) {
         if (args instanceof Object[]) {
             Object[] tagArgs = ((Object[]) args)
             if (tagArgs.length > 0) {

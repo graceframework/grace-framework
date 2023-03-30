@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,48 +17,20 @@ package org.grails.taglib
 
 import groovy.transform.CompileStatic
 
-import grails.core.GrailsApplication
-import grails.util.Environment
-
 /**
  * Allows dispatching to namespaced tag libraries and is used within controllers and tag libraries
  * to allow namespaced tags to be invoked as methods (eg. g.link(action:'foo')).
  *
- * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 @CompileStatic
-class NamespacedTagDispatcher extends GroovyObjectSupport {
+interface NamespacedTagDispatcher {
 
-    protected String namespace
-    protected GrailsApplication application
-    protected Class type
-    protected TagLibraryLookup lookup
-    protected boolean developmentMode
+    String getNamespace()
 
-    NamespacedTagDispatcher(String ns, Class callingType, GrailsApplication application, TagLibraryLookup lookup) {
-        this.namespace = ns
-        this.application = application
-        this.developmentMode = Environment.isDevelopmentMode()
-        this.lookup = lookup
-        this.type = callingType ?: this.getClass()
-        initializeMetaClass()
-    }
+    void setTagLibraryLookup(TagLibraryLookup lookup)
 
-    void initializeMetaClass() {
-        // use per-instance metaclass
-        ExpandoMetaClass emc = new ExpandoMetaClass(getClass(), false, true)
-        emc.initialize()
-        setMetaClass(emc)
-        registerTagMetaMethods(emc)
-    }
-
-    protected void registerTagMetaMethods(ExpandoMetaClass emc) {
-        TagLibraryMetaUtils.registerTagMetaMethods(emc, lookup, namespace)
-    }
-
-    def methodMissing(String name, Object args) {
-        TagLibraryMetaUtils.methodMissingForTagLib(getMetaClass(), type, lookup, namespace, name, args, !developmentMode)
-    }
+    def methodMissing(String name, Object args)
 
 }

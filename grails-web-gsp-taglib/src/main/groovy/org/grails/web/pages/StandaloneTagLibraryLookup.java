@@ -44,11 +44,6 @@ public final class StandaloneTagLibraryLookup extends TagLibraryLookup implement
 
     }
 
-    public void afterPropertiesSet() {
-        registerTagLibraries();
-        registerTemplateNamespace();
-    }
-
     protected void registerTagLibraries() {
         if (this.tagLibInstancesSet != null) {
             for (Object tagLibInstance : this.tagLibInstancesSet) {
