@@ -80,12 +80,12 @@ class TemplateNamespacedTagDispatcher extends GroovyObjectSupport implements Nam
         callRender(argsToAttrs(name, args), filterBodyAttr(args))
     }
 
-    protected callRender(Map attrs, Object body) {
+    private callRender(Map attrs, Object body) {
         TagOutput.captureTagOutput(lookup, TagOutput.DEFAULT_NAMESPACE, RENDER_TAG_NAME, attrs, body,
                 OutputContextLookupHelper.lookupOutputContext())
     }
 
-    protected Map argsToAttrs(String name, Object args) {
+    private Map argsToAttrs(String name, Object args) {
         Map<String, Object> attr = [:]
         attr.template = name
         if (args instanceof Object[]) {
@@ -102,7 +102,7 @@ class TemplateNamespacedTagDispatcher extends GroovyObjectSupport implements Nam
         attr
     }
 
-    protected Object filterBodyAttr(Object args) {
+    private Object filterBodyAttr(Object args) {
         if (args instanceof Object[]) {
             Object[] tagArgs = ((Object[]) args)
             if (tagArgs.length > 0) {
