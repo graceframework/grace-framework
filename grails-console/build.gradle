@@ -5,7 +5,7 @@ dependencies {
     api project(":grails-cli")
     api project(":grails-core")
 
-    api libs.javax.servlet, optional
+    api libs.jakarta.servlet, optional
     api libs.groovy.console
     api libs.groovy.groovysh
     api libs.groovy.swing

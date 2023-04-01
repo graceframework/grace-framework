@@ -27,11 +27,11 @@ dependencies {
     testImplementation project(":grails-spring")
     testImplementation project(":grails-test-support")
 
-    api libs.javax.servlet
-    testImplementation libs.javax.el
-    testImplementation libs.javax.jsp
-    testImplementation libs.javax.jstl
-    testImplementation libs.javax.jstl
+    api libs.jakarta.servlet
+    testImplementation libs.jakarta.el
+    testImplementation libs.jakarta.servlet.jsp
+    testImplementation libs.jakarta.servlet.jsp.jstl
+    testImplementation libs.jakarta.servlet.jsp.jstl
     testImplementation libs.standard.taglib
 
     testImplementation libs.grails.datastore.gorm.hibernate5, {

@@ -11,6 +11,7 @@ repositories {
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
+apply plugin: 'java-library'
 apply plugin: 'java-gradle-plugin'
 
 configurations {
@@ -23,6 +24,10 @@ dependencies {
     api project(":grails-gradle-model")
     api project(":grails-shell"), {
         exclude group: "org.slf4j", module: "slf4j-simple"
+        exclude group: "org.apache.maven.resolver", module: "maven-resolver-connector-basic"
+        exclude group: "org.apache.maven.resolver", module: "maven-resolver-impl"
+        exclude group: "org.apache.maven.resolver", module: "maven-resolver-transport-file"
+        exclude group: "org.apache.maven.resolver", module: "maven-resolver-transport-http"
     }
     api gradleApi()
     api libs.gradle.extra.configurations.plugin
@@ -88,6 +93,9 @@ gradlePlugin {
         }
     }
 }
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 jar {
     manifest.mainAttributes(

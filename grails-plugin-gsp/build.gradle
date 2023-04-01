@@ -1,5 +1,5 @@
 dependencies {
-    compileOnly libs.javax.servlet
+    compileOnly libs.jakarta.servlet
     api libs.commons.lang
     api project(":grails-core")
     api project(":grails-plugin-api")
@@ -12,9 +12,9 @@ dependencies {
     testImplementation project(":grails-plugin-domain-class")
     testImplementation project(":grails-test-support")
 
-    testImplementation libs.javax.jsp
-    testImplementation libs.javax.jstl
-    testImplementation libs.standard.taglib
+    testImplementation libs.jakarta.servlet.jsp
+    testImplementation libs.jakarta.servlet.jsp.jstl
+//    testImplementation libs.standard.taglib
     testImplementation libs.tomcat.embed.el
     testImplementation libs.spring.test
 }

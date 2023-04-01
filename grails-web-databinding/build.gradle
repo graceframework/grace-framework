@@ -7,7 +7,7 @@ dependencies {
         transitive = false
     }
 
-    api libs.javax.servlet
+    api libs.jakarta.servlet
 
     testImplementation libs.spring.test
 }

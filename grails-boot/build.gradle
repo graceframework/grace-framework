@@ -9,7 +9,7 @@ dependencies {
 
     api libs.javax.annotation
     api libs.javax.inject
-    api libs.javax.servlet
+    api libs.jakarta.servlet
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.boot.autoconfigure

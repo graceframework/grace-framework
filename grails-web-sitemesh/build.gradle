@@ -1,5 +1,5 @@
 dependencies {
-    api libs.javax.servlet
+    api libs.jakarta.servlet
     api libs.sitemesh
     api project(":grails-web-common")
 

@@ -7,7 +7,7 @@ dependencies {
 
     api project(":grails-gsp")
 
-    api libs.javax.servlet
+    api libs.jakarta.servlet
     api libs.groovy.templates
     api libs.spring.contextSupport
     api libs.spring.webmvc

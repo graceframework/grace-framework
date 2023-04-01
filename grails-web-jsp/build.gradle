@@ -2,8 +2,8 @@ dependencies {
     api project(":grails-web-common")
     api project(":grails-web-gsp")
 
-    compileOnly libs.javax.servlet
+    compileOnly libs.jakarta.servlet
     // Required for JSP support
-    compileOnly libs.javax.jsp
-    compileOnly libs.javax.el
+    compileOnly libs.jakarta.servlet.jsp
+    compileOnly libs.jakarta.el
 }

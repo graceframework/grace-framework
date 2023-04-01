@@ -5,7 +5,7 @@ dependencies {
     api project(":grails-web-sitemesh"), {
         exclude group:'org.grails', module:'grails-web-common'
     }
-    api libs.javax.servlet
+    api libs.jakarta.servlet
 
     testImplementation libs.spring.test
 }

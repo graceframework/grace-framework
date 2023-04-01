@@ -12,6 +12,7 @@ dependencies {
     api libs.groovy.xml
     api libs.snakeyaml
     api libs.micronaut.inject
+    api libs.spring.core
     compileOnly libs.groovy.ant
     compileOnly libs.jansi
     compileOnly libs.jline
