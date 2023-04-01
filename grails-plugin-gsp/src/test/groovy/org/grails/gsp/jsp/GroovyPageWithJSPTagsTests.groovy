@@ -9,7 +9,7 @@ import org.grails.web.pages.GroovyPagesServlet
 import org.springframework.context.MessageSource
 import org.springframework.web.servlet.support.JstlUtils
 import spock.lang.*
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 

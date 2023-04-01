@@ -93,7 +93,6 @@ public class GrailsTests {
             this.context.close();
         }
         System.clearProperty("spring.main.banner-mode");
-        System.clearProperty(CachedIntrospectionResults.IGNORE_BEANINFO_PROPERTY_NAME);
         SpringApplicationShutdownHookInstance.reset();
     }
 

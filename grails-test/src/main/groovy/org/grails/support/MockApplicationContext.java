@@ -27,8 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import groovy.lang.GroovyObjectSupport;
 import org.springframework.beans.BeansException;
@@ -222,6 +223,11 @@ public class MockApplicationContext extends GroovyObjectSupport implements WebAp
     public <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType, boolean allowFactoryBeanInit)
             throws NoSuchBeanDefinitionException {
         return findAnnotationOnBean(beanName, annotationType);
+    }
+
+    @Override
+    public <A extends Annotation> Set<A> findAllAnnotationsOnBean(String beanName, Class<A> annotationType, boolean allowFactoryBeanInit) throws NoSuchBeanDefinitionException {
+        return null;
     }
 
     public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) throws BeansException {

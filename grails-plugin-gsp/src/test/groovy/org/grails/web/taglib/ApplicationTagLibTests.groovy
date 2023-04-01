@@ -14,7 +14,7 @@ import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.util.WebUtils
 import spock.lang.Specification
 
-import javax.servlet.http.Cookie
+import jakarta.servlet.http.Cookie
 
 class ApplicationTagLibTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 

@@ -17,7 +17,7 @@ package org.grails.plugins.testing
 
 import java.lang.reflect.Field
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 import groovy.xml.slurpersupport.GPathResult
 import org.springframework.mock.web.MockHttpServletResponse

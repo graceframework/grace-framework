@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2022 the original author or authors.
+ * Copyright 2008-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@ package org.grails.plugins.testing
 
 import java.nio.charset.StandardCharsets
 
-import javax.servlet.AsyncContext
-import javax.servlet.AsyncEvent
-import javax.servlet.AsyncListener
-import javax.servlet.DispatcherType
-import javax.servlet.ServletContext
-import javax.servlet.ServletInputStream
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.http.Part
+import jakarta.servlet.AsyncContext
+import jakarta.servlet.AsyncEvent
+import jakarta.servlet.AsyncListener
+import jakarta.servlet.DispatcherType
+import jakarta.servlet.ServletContext
+import jakarta.servlet.ServletInputStream
+import jakarta.servlet.ServletRequest
+import jakarta.servlet.ServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.Part
 
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod

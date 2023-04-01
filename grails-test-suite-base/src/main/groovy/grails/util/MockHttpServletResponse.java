@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2022 the original author or authors.
+ * Copyright 2008-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,23 +28,5 @@ package grails.util;
  * Created: 08-Feb-2008
  */
 class MockHttpServletResponse extends org.springframework.mock.web.MockHttpServletResponse {
-
-    @Override
-    @Deprecated
-    public String encodeRedirectUrl(String url) {
-        return super.encodeRedirectURL(url);
-    }
-
-    @Override
-    @Deprecated
-    public String encodeUrl(String url) {
-        return super.encodeURL(url);
-    }
-
-    @Override
-    @Deprecated
-    public void setStatus(int status, String errorMessage) {
-        super.setStatus(status, errorMessage);
-    }
 
 }

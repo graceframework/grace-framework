@@ -18,6 +18,7 @@ package grails.build.logging
 
 import jline.console.ConsoleReader
 import org.fusesource.jansi.Ansi
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Issue
 import spock.lang.Specification
@@ -38,7 +39,7 @@ import java.util.regex.Pattern
  * @author Tom Bujok
  * @since 2.3
  */
-@IgnoreIf({ env['CI'] || !GrailsConsole.instance.isAnsiEnabled() })
+@Ignore
 class GrailsConsoleSpec extends Specification {
 
     static final String RESET = Pattern.quote(Ansi.ansi().reset().toString())

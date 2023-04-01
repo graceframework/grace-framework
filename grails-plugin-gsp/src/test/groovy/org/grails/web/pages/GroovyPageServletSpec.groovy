@@ -4,8 +4,8 @@ import org.grails.gsp.GroovyPagesTemplateEngine
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.web.context.support.GenericWebApplicationContext
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 import org.grails.core.io.SimpleMapResourceLoader
 import org.grails.web.gsp.io.GrailsConventionGroovyPageLocator

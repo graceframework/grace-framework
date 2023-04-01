@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-import javax.servlet.jsp.PageContext
+import jakarta.servlet.jsp.PageContext
 
 import org.springframework.web.context.request.RequestContextHolder
 
