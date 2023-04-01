@@ -15,8 +15,8 @@
  */
 package org.grails.web.databinding.bindingsource
 
-import javax.servlet.ServletInputStream
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.ServletInputStream
+import jakarta.servlet.http.HttpServletRequest
 
 import groovy.transform.CompileStatic
 import org.springframework.http.HttpMethod

@@ -15,7 +15,7 @@
  */
 package org.grails.plugins.web.taglib
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 import com.opensymphony.module.sitemesh.Decorator
 import com.opensymphony.module.sitemesh.DecoratorMapper

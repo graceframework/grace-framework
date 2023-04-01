@@ -28,9 +28,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
@@ -254,7 +254,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     }
 
     /**
-     * Expose the current request URI and paths as {@link javax.servlet.http.HttpServletRequest}
+     * Expose the current request URI and paths as {@link jakarta.servlet.http.HttpServletRequest}
      * attributes under the keys defined in the Servlet 2.4 specification,
      * for containers that implement 2.3 or an earlier version of the Servlet API:
      * <code>javax.servlet.forward.request_uri</code>,

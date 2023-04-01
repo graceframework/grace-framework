@@ -229,7 +229,7 @@ class GrailsCli {
             GrailsVersion currentVersion = GrailsVersion.current()
             GrailsDependenciesDependencyManagement grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
-            sb.append('%n------------------------------------------------------------%nGrails ')
+            sb.append('%n------------------------------------------------------------%nGoBoots ')
             sb.append(currentVersion.getVersion())
             sb.append('%n------------------------------------------------------------%n%nBuild time:   ')
             sb.append(currentVersion.getBuildTimestamp())

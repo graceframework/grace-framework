@@ -15,8 +15,8 @@
  */
 package org.grails.web.i18n
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 import groovy.transform.CompileStatic
 import org.slf4j.Logger

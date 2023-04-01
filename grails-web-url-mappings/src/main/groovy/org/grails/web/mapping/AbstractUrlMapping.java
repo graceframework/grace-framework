@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;

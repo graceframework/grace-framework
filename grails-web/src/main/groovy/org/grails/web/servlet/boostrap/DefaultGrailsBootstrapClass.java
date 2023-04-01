@@ -15,7 +15,7 @@
  */
 package org.grails.web.servlet.boostrap;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import groovy.lang.Closure;
 

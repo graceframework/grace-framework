@@ -15,7 +15,7 @@
  */
 package org.grails.plugins.web.servlet.context
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Commons

@@ -17,8 +17,8 @@ package org.grails.web.mapping.mvc
 
 import java.util.concurrent.ConcurrentHashMap
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 import groovy.transform.CompileStatic
 import org.springframework.context.ApplicationContext

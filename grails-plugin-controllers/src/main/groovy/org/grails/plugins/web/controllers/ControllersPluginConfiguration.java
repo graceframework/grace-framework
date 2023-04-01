@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 the original author or authors.
+ * Copyright 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package org.grails.plugins.web.controllers;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.Servlet;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.Servlet;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

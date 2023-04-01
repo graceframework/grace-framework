@@ -17,9 +17,9 @@ package grails.web.servlet.mvc;
 
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * An adapter class that takes a regular HttpSession and allows you to access it like a Groovy map.
@@ -93,64 +93,64 @@ public class GrailsHttpSession implements HttpSession {
     }
 
     /**
-     * @see javax.servlet.http.HttpSession#getSessionContext()
+     * @see jakarta.servlet.http.HttpSession#getSessionContext()
      * @deprecated
      */
-    @Deprecated
-    public javax.servlet.http.HttpSessionContext getSessionContext() {
-        createSessionIfNecessary();
-        synchronized (this) {
-            return this.adaptee.getSessionContext();
-        }
-    }
+//    @Deprecated
+//    public jakarta.servlet.http.HttpSessionContext getSessionContext() {
+//        createSessionIfNecessary();
+//        synchronized (this) {
+//            return this.adaptee.getSessionContext();
+//        }
+//    }
 
     /**
-     * @see javax.servlet.http.HttpSession#getValue(java.lang.String)
+     * @see jakarta.servlet.http.HttpSession#getValue(java.lang.String)
      * @deprecated
      */
-    @Deprecated
-    public Object getValue(String name) {
-        createSessionIfNecessary();
-        synchronized (this) {
-            return this.adaptee.getAttribute(name);
-        }
-    }
+//    @Deprecated
+//    public Object getValue(String name) {
+//        createSessionIfNecessary();
+//        synchronized (this) {
+//            return this.adaptee.getAttribute(name);
+//        }
+//    }
 
     /**
-     * @see javax.servlet.http.HttpSession#getValueNames()
+     * @see jakarta.servlet.http.HttpSession#getValueNames()
      * @deprecated
      */
-    @Deprecated
-    public String[] getValueNames() {
-        createSessionIfNecessary();
-        synchronized (this) {
-            return this.adaptee.getValueNames();
-        }
-    }
+//    @Deprecated
+//    public String[] getValueNames() {
+//        createSessionIfNecessary();
+//        synchronized (this) {
+//            return this.adaptee.getValueNames();
+//        }
+//    }
 
     /**
-     * @see javax.servlet.http.HttpSession#putValue(java.lang.String, java.lang.Object)
+     * @see jakarta.servlet.http.HttpSession#putValue(java.lang.String, java.lang.Object)
      * @deprecated
      */
-    @Deprecated
-    public void putValue(String name, Object value) {
-        createSessionIfNecessary();
-        synchronized (this) {
-            this.adaptee.setAttribute(name, value);
-        }
-    }
+//    @Deprecated
+//    public void putValue(String name, Object value) {
+//        createSessionIfNecessary();
+//        synchronized (this) {
+//            this.adaptee.setAttribute(name, value);
+//        }
+//    }
 
     /**
-     * @see javax.servlet.http.HttpSession#removeValue(java.lang.String)
+     * @see jakarta.servlet.http.HttpSession#removeValue(java.lang.String)
      * @deprecated
      */
-    @Deprecated
-    public void removeValue(String name) {
-        createSessionIfNecessary();
-        synchronized (this) {
-            this.adaptee.removeAttribute(name);
-        }
-    }
+//    @Deprecated
+//    public void removeValue(String name) {
+//        createSessionIfNecessary();
+//        synchronized (this) {
+//            this.adaptee.removeAttribute(name);
+//        }
+//    }
 
     public void invalidate() {
         createSessionIfNecessary();

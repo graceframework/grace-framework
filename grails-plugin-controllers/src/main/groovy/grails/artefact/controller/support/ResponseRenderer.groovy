@@ -15,8 +15,8 @@
  */
 package grails.artefact.controller.support
 
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileStatic

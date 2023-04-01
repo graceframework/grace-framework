@@ -15,7 +15,7 @@
  */
 package org.grails.web.servlet
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 import groovy.transform.CompileStatic
 

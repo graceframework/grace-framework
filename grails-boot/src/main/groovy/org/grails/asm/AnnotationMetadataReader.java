@@ -22,7 +22,7 @@ import org.springframework.asm.Type;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.ClassMetadata;
-import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
+//import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
 import org.springframework.core.type.classreading.MetadataReader;
 
 import java.io.BufferedInputStream;
@@ -38,9 +38,9 @@ import java.io.InputStream;
 public class AnnotationMetadataReader implements MetadataReader {
     private final Resource resource;
 
-    private final ClassMetadata classMetadata;
-
-    private final AnnotationMetadata annotationMetadata;
+//    private final ClassMetadata classMetadata;
+//
+//    private final AnnotationMetadata annotationMetadata;
 
     /**
      * Reads only the annotation names from a class resource
@@ -74,26 +74,26 @@ public class AnnotationMetadataReader implements MetadataReader {
             is.close();
         }
 
-        AnnotationMetadataReadingVisitor visitor;
-
-        if(readAttributeValues) {
-            visitor = new AnnotationMetadataReadingVisitor(classLoader);
-        }
-        else {
-            visitor = new AnnotationMetadataReadingVisitor(classLoader) {
-                @Override
-                public AnnotationVisitor visitAnnotation(final String desc, boolean visible) {
-                    String className = Type.getType(desc).getClassName();
-                    this.annotationSet.add(className);
-                    return new EmptyAnnotationVisitor();
-                }
-            };
-        }
-        classReader.accept(visitor, ClassReader.SKIP_DEBUG);
-
-        this.annotationMetadata = visitor;
-        // (since AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor)
-        this.classMetadata = visitor;
+//        AnnotationMetadataReadingVisitor visitor;
+//
+//        if(readAttributeValues) {
+//            visitor = new AnnotationMetadataReadingVisitor(classLoader);
+//        }
+//        else {
+//            visitor = new AnnotationMetadataReadingVisitor(classLoader) {
+//                @Override
+//                public AnnotationVisitor visitAnnotation(final String desc, boolean visible) {
+//                    String className = Type.getType(desc).getClassName();
+//                    this.annotationSet.add(className);
+//                    return new EmptyAnnotationVisitor();
+//                }
+//            };
+//        }
+//        classReader.accept(visitor, ClassReader.SKIP_DEBUG);
+//
+//        this.annotationMetadata = visitor;
+//        // (since AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor)
+//        this.classMetadata = visitor;
         this.resource = resource;
     }
 
@@ -104,12 +104,12 @@ public class AnnotationMetadataReader implements MetadataReader {
 
     @Override
     public ClassMetadata getClassMetadata() {
-        return this.classMetadata;
+        return null;
     }
 
     @Override
     public AnnotationMetadata getAnnotationMetadata() {
-        return this.annotationMetadata;
+        return null;
     }
 
     private static class EmptyAnnotationVisitor extends AnnotationVisitor {

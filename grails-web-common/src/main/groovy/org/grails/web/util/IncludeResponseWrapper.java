@@ -21,10 +21,10 @@ import java.io.PrintWriter;
 import java.nio.charset.CharacterCodingException;
 import java.util.Locale;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 import org.grails.buffer.GrailsPrintWriterAdapter;
 import org.grails.buffer.StreamByteBuffer;
@@ -219,12 +219,6 @@ public class IncludeResponseWrapper extends HttpServletResponseWrapper {
     @Override
     public void setContentLength(int len) {
         // do nothing
-    }
-
-    @Override
-    @Deprecated
-    public void setStatus(int sc, String sm) {
-        setStatus(sc);
     }
 
     @Override

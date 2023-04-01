@@ -18,7 +18,7 @@ package org.grails.web.beans
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.PropertyEditorRegistrar

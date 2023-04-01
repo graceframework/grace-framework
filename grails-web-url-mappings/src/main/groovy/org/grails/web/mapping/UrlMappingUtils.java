@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import groovy.lang.Binding;
 import org.springframework.web.context.WebApplicationContext;
@@ -200,7 +200,7 @@ public final class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * @see #forwardRequestForUrlMappingInfo(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse,
      * grails.web.mapping.UrlMappingInfo, java.util.Map)
      */
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request,
@@ -209,7 +209,7 @@ public final class UrlMappingUtils {
     }
 
     /**
-     * @see #forwardRequestForUrlMappingInfo(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * @see #forwardRequestForUrlMappingInfo(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse,
      * grails.web.mapping.UrlMappingInfo, java.util.Map, boolean)
      */
     @SuppressWarnings("rawtypes")

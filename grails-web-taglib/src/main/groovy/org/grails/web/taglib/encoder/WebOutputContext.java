@@ -17,7 +17,7 @@ package org.grails.web.taglib.encoder;
 
 import java.io.Writer;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.context.request.RequestAttributes;
 

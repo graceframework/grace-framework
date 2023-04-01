@@ -15,7 +15,7 @@
  */
 package grails.artefact.controller
 
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletResponse
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic

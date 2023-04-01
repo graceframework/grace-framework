@@ -23,6 +23,7 @@ import groovyjarjarasm.asm.ClassReader
 import groovyjarjarasm.asm.ClassVisitor
 import groovyjarjarasm.asm.MethodVisitor
 import groovyjarjarasm.asm.Opcodes
+import org.springframework.asm.SpringAsmInfo
 import groovyjarjarasm.asm.Type
 
 import grails.util.BuildSettings
@@ -186,7 +187,7 @@ class MainClassFinder {
         boolean found = false
 
         MainMethodFinder() {
-            super(Opcodes.ASM7)
+            super(SpringAsmInfo.ASM_VERSION)
         }
 
         @Override

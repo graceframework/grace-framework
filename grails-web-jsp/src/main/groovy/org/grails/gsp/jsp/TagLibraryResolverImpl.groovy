@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.BeanClassLoaderAware

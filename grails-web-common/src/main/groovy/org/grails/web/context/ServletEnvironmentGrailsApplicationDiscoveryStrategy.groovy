@@ -15,7 +15,7 @@
  */
 package org.grails.web.context
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 import groovy.transform.CompileStatic
 import org.springframework.context.ApplicationContext

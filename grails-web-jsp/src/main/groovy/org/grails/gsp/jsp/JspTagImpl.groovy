@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 package org.grails.gsp.jsp
 
-import javax.servlet.jsp.JspContext
-import javax.servlet.jsp.JspWriter
-import javax.servlet.jsp.tagext.BodyContent
-import javax.servlet.jsp.tagext.BodyTag
-import javax.servlet.jsp.tagext.DynamicAttributes
-import javax.servlet.jsp.tagext.IterationTag
-import javax.servlet.jsp.tagext.JspFragment
-import javax.servlet.jsp.tagext.SimpleTag
-import javax.servlet.jsp.tagext.Tag
-import javax.servlet.jsp.tagext.TagAdapter
-import javax.servlet.jsp.tagext.TryCatchFinally
+import jakarta.servlet.jsp.JspContext
+import jakarta.servlet.jsp.JspWriter
+import jakarta.servlet.jsp.tagext.BodyContent
+import jakarta.servlet.jsp.tagext.BodyTag
+import jakarta.servlet.jsp.tagext.DynamicAttributes
+import jakarta.servlet.jsp.tagext.IterationTag
+import jakarta.servlet.jsp.tagext.JspFragment
+import jakarta.servlet.jsp.tagext.SimpleTag
+import jakarta.servlet.jsp.tagext.Tag
+import jakarta.servlet.jsp.tagext.TagAdapter
+import jakarta.servlet.jsp.tagext.TryCatchFinally
 
 import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
@@ -81,13 +81,13 @@ class JspTagImpl implements JspTag {
         iteration = IterationTag.isAssignableFrom(tagClass)
     }
 
-    protected javax.servlet.jsp.tagext.JspTag createTagInstance() {
+    protected jakarta.servlet.jsp.tagext.JspTag createTagInstance() {
         checkInitialized()
-        (javax.servlet.jsp.tagext.JspTag) tagClass.newInstance()
+        (jakarta.servlet.jsp.tagext.JspTag) tagClass.newInstance()
     }
 
     void doTag(Writer targetWriter, Map<String, Object> attributes, Closure<?> body) {
-        javax.servlet.jsp.tagext.JspTag tag = createTagInstance()
+        jakarta.servlet.jsp.tagext.JspTag tag = createTagInstance()
         GroovyPagesPageContext pageContext = PageContextFactory.getCurrent()
 
         assignParentTag(pageContext, tag)
@@ -152,7 +152,7 @@ class JspTagImpl implements JspTag {
         }
     }
 
-    private assignPageContext(GroovyPagesPageContext pageContext, javax.servlet.jsp.tagext.JspTag tag) {
+    private assignPageContext(GroovyPagesPageContext pageContext, jakarta.servlet.jsp.tagext.JspTag tag) {
         if (tag instanceof SimpleTag) {
             tag.jspContext = pageContext
         }
@@ -161,7 +161,7 @@ class JspTagImpl implements JspTag {
         }
     }
 
-    private applyAttributes(javax.servlet.jsp.tagext.JspTag tag, Map<String, Object> attributes) {
+    private applyAttributes(jakarta.servlet.jsp.tagext.JspTag tag, Map<String, Object> attributes) {
         BeanWrapperImpl tagBean = new BeanWrapperImpl(tag)
 
         attributes?.each { String key, Object value ->
@@ -174,8 +174,8 @@ class JspTagImpl implements JspTag {
         }
     }
 
-    private assignParentTag(GroovyPagesPageContext pageContext, javax.servlet.jsp.tagext.JspTag tag) {
-        def parentTag = pageContext.peekTopTag(javax.servlet.jsp.tagext.JspTag)
+    private assignParentTag(GroovyPagesPageContext pageContext, jakarta.servlet.jsp.tagext.JspTag tag) {
+        def parentTag = pageContext.peekTopTag(jakarta.servlet.jsp.tagext.JspTag)
         if (parentTag) {
             if (tag instanceof Tag && parentTag instanceof SimpleTag) {
                 tag.parent = new TagAdapter(parentTag)

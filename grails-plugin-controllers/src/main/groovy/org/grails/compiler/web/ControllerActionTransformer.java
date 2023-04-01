@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import groovy.lang.Closure;
 import groovy.transform.CompilationUnitAware;

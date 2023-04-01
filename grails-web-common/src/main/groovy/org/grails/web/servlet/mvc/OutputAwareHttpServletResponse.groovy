@@ -15,8 +15,8 @@
  */
 package org.grails.web.servlet.mvc
 
-import javax.servlet.ServletOutputStream
-import javax.servlet.http.HttpServletResponseWrapper
+import jakarta.servlet.ServletOutputStream
+import jakarta.servlet.http.HttpServletResponseWrapper
 
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors

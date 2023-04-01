@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;

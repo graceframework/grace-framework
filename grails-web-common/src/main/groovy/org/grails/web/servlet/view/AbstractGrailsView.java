@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package org.grails.web.servlet.view;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import groovy.text.Template;
 import org.springframework.web.context.request.RequestAttributes;
@@ -42,7 +42,7 @@ public abstract class AbstractGrailsView extends AbstractUrlBasedView {
     /**
      * Delegates to renderMergedOutputModel(..)
      *
-     * @see #renderMergedOutputModel(java.util.Map, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * @see #renderMergedOutputModel(java.util.Map, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
      *
      * @param model The view model
      * @param request The HttpServletRequest
