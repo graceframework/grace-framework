@@ -13,6 +13,7 @@ include (
         'grails-encoder',
         'grails-gsp',
         'grails-logging',
+        'grails-sitemesh',
         'grails-shell',
         'grails-spring',
         'grails-spring-boot',

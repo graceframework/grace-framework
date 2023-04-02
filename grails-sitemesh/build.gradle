@@ -1,0 +1,4 @@
+dependencies {
+    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet.jsp
+}
