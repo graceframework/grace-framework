@@ -13,8 +13,6 @@ import com.opensymphony.module.sitemesh.factory.FactoryException;
 import com.opensymphony.module.sitemesh.util.ClassLoaderUtil;
 import com.opensymphony.module.sitemesh.util.Container;
 
-import javax.naming.InitialContext;
-import javax.rmi.PortableRemoteObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -40,7 +38,7 @@ public abstract class Factory implements PageParserSelector {
     public static Factory getInstance(Config config) {
         Factory instance = (Factory)config.getServletContext().getAttribute(SITEMESH_FACTORY);
         if (instance == null) {
-            String factoryClass = getEnvEntry("sitemesh.factory", "com.opensymphony.module.sitemesh.factory.DefaultFactory");
+            String factoryClass = "com.opensymphony.module.sitemesh.factory.DefaultFactory";
             try {
                 Class cls = ClassLoaderUtil.loadClass(factoryClass, config.getClass());
                 Constructor con = cls.getConstructor(new Class[] { Config.class });
@@ -82,20 +80,4 @@ public abstract class Factory implements PageParserSelector {
      */
     public abstract boolean isPathExcluded(String path);
 
-    /** Find String environment entry, or return default if not found. */
-    private static String getEnvEntry(String envEntry, String defaultValue) {
-        String result = null;
-        try {
-            if (Container.get() != Container.JRUN) {
-                // TODO: JRun really isn't happy with this
-                InitialContext ctx = new InitialContext();
-                Object o = ctx.lookup("java:comp/env/" + envEntry);
-                ctx.close();
-                result = (String)PortableRemoteObject.narrow(o, String.class); // rmi-iiop friendly.
-            }
-        }
-        catch (Exception e) { } // failed - don't moan, just return default.
-        catch (NoClassDefFoundError e) { } // to deal with restricted class loaders (i.e. on AppEngine).
-        return result == null || result.trim().length() == 0 ? defaultValue : result;
-    }
 }

@@ -9,9 +9,9 @@
 
 package com.opensymphony.module.sitemesh;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 
 /**
  * Common interface to ServletConfig and FilterConfig
