@@ -1,19 +1,24 @@
 package com.opensymphony.module.sitemesh.mapper;
 
-import junit.framework.TestCase;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-public class ConfigLoaderTest extends TestCase {
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public class ConfigLoaderTest {
 
     private ConfigLoader configLoader;
     private File tempConfigFile;
 
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         // create temp file
         tempConfigFile = File.createTempFile("decorators-test", ".xml");
         tempConfigFile.deleteOnExit();
@@ -67,11 +72,13 @@ public class ConfigLoaderTest extends TestCase {
         configLoader = new ConfigLoader(tempConfigFile);
     }
 
+    @AfterEach
     protected void tearDown() throws Exception {
         if (tempConfigFile != null) tempConfigFile.delete();
         configLoader = null;
     }
 
+    @Test
     public void testMappedNames() throws Exception {
         assertEquals(configLoader.getMappedName("/info/somepage.html"), "default");
         assertEquals(configLoader.getMappedName("/test/somepage.html"), "default");
@@ -85,6 +92,7 @@ public class ConfigLoaderTest extends TestCase {
         assertEquals(configLoader.getMappedName("/old/someoldpage.html"), "old");
     }
 
+    @Test
     public void testDecoratorPresence() throws Exception {
         assertNotNull(configLoader.getDecoratorByName("default"));
         assertNotNull(configLoader.getDecoratorByName("other"));
@@ -93,6 +101,7 @@ public class ConfigLoaderTest extends TestCase {
         assertNotNull(configLoader.getDecoratorByName("old"));
     }
 
+    @Test
     public void testDecorators() throws Exception {
         assertEquals(configLoader.getDecoratorByName("default").getName(), "default");
         assertEquals(configLoader.getDecoratorByName("default").getPage(), "/decorators/default.jsp");

@@ -1,7 +1,5 @@
 package com.opensymphony.module.sitemesh.html.rules;
 
-import junit.framework.TestCase;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
@@ -9,9 +7,13 @@ import java.io.StringWriter;
 import java.io.IOException;
 
 import com.opensymphony.module.sitemesh.html.HTMLProcessor;
+import org.junit.jupiter.api.Test;
 
-public class RegexReplacementTextFilterTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+public class RegexReplacementTextFilterTest {
+
+    @Test
     public void testReplacesTextContentMatchedByRegularExpression() throws IOException {
         Reader in = new StringReader("<hello>Today is DATE so hi</hello>");
         Writer out = new StringWriter();
@@ -23,6 +25,7 @@ public class RegexReplacementTextFilterTest extends TestCase {
         assertEquals("<hello>Today is 1-jan-2009 so hi</hello>", out.toString());
     }
 
+    @Test
     public void testAllowsMatchedGroupToBeUsedInSubsitution() throws IOException {
         Reader in = new StringReader("<hello>I think JIRA:SIM-1234 is the way forward</hello>");
         Writer out = new StringWriter();

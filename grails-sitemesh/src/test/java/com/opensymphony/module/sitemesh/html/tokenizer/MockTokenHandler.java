@@ -2,7 +2,7 @@ package com.opensymphony.module.sitemesh.html.tokenizer;
 
 import com.opensymphony.module.sitemesh.html.Tag;
 import com.opensymphony.module.sitemesh.html.Text;
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
 
 class MockTokenHandler implements TokenHandler {
 
@@ -26,7 +26,7 @@ class MockTokenHandler implements TokenHandler {
     }
 
     public boolean shouldProcessTag(String name) {
-        Assert.assertNotNull("Name should not be null", name);
+        Assertions.assertNotNull("Name should not be null", name);
         return true;
     }
 
@@ -43,11 +43,11 @@ class MockTokenHandler implements TokenHandler {
     }
 
     public void warning(String message, int line, int column) {
-        Assert.fail("Encountered error: " + message);
+        Assertions.fail("Encountered error: " + message);
     }
 
     public void verify() {
-        Assert.assertEquals(expected.toString(), actual.toString());
+        Assertions.assertEquals(expected.toString(), actual.toString());
     }
 
     private String typeAsString(int type) {

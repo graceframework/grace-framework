@@ -11,8 +11,13 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.io.IOException;
 
-public class HTMLProcessorTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class HTMLProcessorTest {
+
+    @Test
 	public void testCreatesStateTransitionEvent() throws IOException {
 		char[] input = "<a></a>".toCharArray();
 		HTMLProcessor htmlProcessor = new HTMLProcessor(input, new CharArray(128));
@@ -31,6 +36,7 @@ public class HTMLProcessorTest extends TestCase {
 		assertEquals("finished", stateLog.toString());
 	}
 
+    @Test
     public void testSupportsConventionalReaderAndWriter() throws IOException {
         Reader in = new StringReader("<hello><b id=\"something\">world</b></hello>");
         Writer out = new StringWriter();
@@ -42,6 +48,7 @@ public class HTMLProcessorTest extends TestCase {
         assertEquals("<hello><strong id=\"something\">world</strong></hello>", out.toString());
     }
 
+    @Test
     public void testAllowsRulesToModifyAttributes() throws IOException {
         Reader in = new StringReader("<hello><a href=\"modify-me\">world</a></hello>");
         Writer out = new StringWriter();
@@ -63,6 +70,7 @@ public class HTMLProcessorTest extends TestCase {
         assertEquals("<hello><a href=\"MODIFY-ME\">world</a></hello>", out.toString());
     }
 
+    @Test
     public void testSupportsChainedFilteringOfTextContent() throws IOException {
         Reader in = new StringReader("<hello>world</hello>");
         Writer out = new StringWriter();
@@ -83,6 +91,7 @@ public class HTMLProcessorTest extends TestCase {
         assertEquals("<HELLo>WoRLD</HELLo>", out.toString());
     }
 
+    @Test
     public void testSupportsTextFiltersForSpecificStates() throws IOException {
         Reader in = new StringReader("la la<br> la la <capitalism>laaaa<br> laaaa</capitalism> la la");
         Writer out = new StringWriter();
@@ -102,6 +111,7 @@ public class HTMLProcessorTest extends TestCase {
         assertEquals("la la<br> la la <capitalism>LAAAA<BR> LAAAA</capitalism> la la", out.toString());
     }
 
+    @Test
     public void testCanAddAttributesToCustomTag() throws IOException {
         CharArray buffer = new CharArray(64);
         String html = "<h1>Headline</h1>";

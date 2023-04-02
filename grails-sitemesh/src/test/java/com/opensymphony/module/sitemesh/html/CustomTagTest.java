@@ -1,15 +1,19 @@
 package com.opensymphony.module.sitemesh.html;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class CustomTagTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+public class CustomTagTest {
+
+    @Test
     public void testWritesOutUserDefinedTag() {
         assertEquals("<hello/>", new CustomTag("hello", Tag.EMPTY).getContents());
         assertEquals("<hello>", new CustomTag("hello", Tag.OPEN).getContents());
         assertEquals("</hello>", new CustomTag("hello", Tag.CLOSE).getContents());
     }
 
+    @Test
     public void testWritesAttributes() {
         CustomTag tag = new CustomTag("hello", Tag.EMPTY);
         tag.addAttribute("color", "green");
@@ -17,6 +21,7 @@ public class CustomTagTest extends TestCase {
         assertEquals("<hello color=\"green\" stuff/>", tag.getContents());
     }
 
+    @Test
     public void testAllowsAttributesToBeManipulated() {
         CustomTag tag = new CustomTag("hello", Tag.OPEN);
         assertEquals("<hello>", tag.getContents());

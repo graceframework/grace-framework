@@ -1,17 +1,19 @@
 package com.opensymphony.module.sitemesh.multipass;
 
+import java.io.IOException;
+
 import com.opensymphony.module.sitemesh.Page;
 import com.opensymphony.module.sitemesh.PageParser;
-import com.opensymphony.module.sitemesh.multipass.DivExtractingPageParser;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Joe Walnes
  */
-public class DivExtractingPageParserTest extends TestCase {
+public class DivExtractingPageParserTest {
 
+    @Test
     public void testReplacesTopLevelDivsWithPlaceHolders() throws IOException {
         String input = "" +
                 "<html>\n" +

@@ -1,8 +1,13 @@
 package com.opensymphony.module.sitemesh.html;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class StateTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class StateTest {
 
     class DummyRule extends BasicRule {
         public DummyRule(String acceptableTagName) {
@@ -13,6 +18,7 @@ public class StateTest extends TestCase {
         }
     }
 
+    @Test
     public void testMapsTagNameToRule() {
         TagRule mouseRule = new DummyRule("mouse");
         TagRule donkeyRule = new DummyRule("donkey");
@@ -28,6 +34,7 @@ public class StateTest extends TestCase {
         assertSame(mouseRule, state.getRule("mouse"));
     }
 
+    @Test
     public void testExposesWhetherItShouldProcessATagBasedOnAvailableRules() {
         TagRule mouseRule = new DummyRule("mouse");
         TagRule donkeyRule = new DummyRule("donkey");
@@ -43,6 +50,7 @@ public class StateTest extends TestCase {
         assertFalse(state.shouldProcessTag("yeeeehaa"));
     }
 
+    @Test
     public void testReturnsMostRecentlyAddedRuleIfMultipleMatchesFound() {
         TagRule oldRule = new DummyRule("something");
         TagRule newRule = new DummyRule("something");

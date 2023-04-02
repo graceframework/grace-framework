@@ -1,14 +1,17 @@
 package com.opensymphony.module.sitemesh.mapper;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PathMapperTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+public class PathMapperTest {
 
     private PathMapper pathMapper;
 
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         pathMapper = new PathMapper();
 
         // exact matches come first
@@ -29,6 +32,7 @@ public class PathMapperTest extends TestCase {
         pathMapper.put("default", "*");
     }
 
+    @Test
     public void testHardening() throws Exception {
         PathMapper bad = new PathMapper();
         bad.put(null, null);
@@ -37,6 +41,7 @@ public class PathMapperTest extends TestCase {
         assertNull(bad.get("/somenonexistingpath"));
     }
 
+    @Test
     public void testFindExactKey() throws Exception {
         assertEquals("exact1", pathMapper.get("/myexactfile.html"));
         assertEquals("exact2", pathMapper.get("/mydir/myexactfile.html"));
@@ -44,6 +49,7 @@ public class PathMapperTest extends TestCase {
         assertEquals("exact4", pathMapper.get("/mydir/dodo"));
 	}
 
+    @Test
 	public void testFindComplexKey() throws Exception {
 	    assertEquals("complex1", pathMapper.get("/mydir/"));
         assertEquals("complex1", pathMapper.get("/mydir/test1.xml"));
@@ -66,6 +72,7 @@ public class PathMapperTest extends TestCase {
         assertEquals("complex6", pathMapper.get("/mydir/complexx/a___b.xhtml"));
     }
 
+    @Test
     public void testFindDefaultKey() throws Exception {
         assertEquals("default", pathMapper.get(null));
         assertEquals("default", pathMapper.get("/"));
