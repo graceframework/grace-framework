@@ -1,9 +1,0 @@
-build
-dist
-target
-velocity.log*
-maven.log*
-clover
-*.i*
-.classpath
-.project

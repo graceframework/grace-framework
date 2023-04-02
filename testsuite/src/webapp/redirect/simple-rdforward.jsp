@@ -1,1 +1,0 @@
-<% application.getRequestDispatcher( "/redirect/page.jsp" ).forward( request, response ); %>
