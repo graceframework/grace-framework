@@ -4,7 +4,7 @@ dependencies {
     api project(":grails-plugin-validation")
     api project(":grails-spring")
 
-    api libs.javax.persistence
+    api libs.jakarta.persistence.api
     api(libs.grails.datastore.core) {
         transitive = false
     }
