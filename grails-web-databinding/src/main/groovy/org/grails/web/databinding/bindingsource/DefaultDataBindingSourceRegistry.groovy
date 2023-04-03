@@ -15,7 +15,7 @@
  */
 package org.grails.web.databinding.bindingsource
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic

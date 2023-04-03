@@ -17,7 +17,7 @@ package org.grails.plugins.web.rest.transform
 
 import java.lang.reflect.Modifier
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic

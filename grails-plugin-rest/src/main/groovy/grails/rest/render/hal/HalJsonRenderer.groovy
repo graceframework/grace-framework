@@ -17,7 +17,7 @@ package grails.rest.render.hal
 
 import java.beans.PropertyDescriptor
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 import javax.xml.bind.DatatypeConverter
 
 import groovy.json.JsonOutput

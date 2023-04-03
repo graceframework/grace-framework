@@ -17,7 +17,7 @@ package org.grails.web.mapping
 
 import java.util.regex.Pattern
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode

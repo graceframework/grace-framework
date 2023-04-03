@@ -17,7 +17,7 @@ package org.grails.plugins.web.rest.render
 
 import java.util.concurrent.ConcurrentHashMap
 
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
