@@ -54,7 +54,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     private static final String GRAILS_PACKAGE_PREFIX = "grails.";
 
-    private static final String JAVAX_PERSISTENCE = "javax.persistence";
+    private static final String JAVAX_PERSISTENCE = "jakarta.persistence";
 
     public DomainClassArtefactHandler() {
         super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, true);
