@@ -1,5 +1,7 @@
 package org.grails.web.taglib
 
+import groovy.xml.XmlSlurper
+
 import org.apache.commons.lang.WordUtils
 import org.junit.jupiter.api.Test
 import org.springframework.context.MessageSourceResolvable
