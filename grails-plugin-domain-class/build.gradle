@@ -7,9 +7,11 @@ dependencies {
     api libs.jakarta.persistence.api
     api(libs.grails.datastore.core) {
         transitive = false
+        exclude group: "org.codehaus.groovy"
     }
     api(libs.grails.datastore.gorm) {
         transitive = false
+        exclude group: "org.codehaus.groovy"
     }
     api(libs.grails.datastore.gorm.support) {
         transitive = false

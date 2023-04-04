@@ -16,11 +16,11 @@ gradle-nexus-publish-plugin = "1.1.0"
 grails-async = "5.0.0-SNAPSHOT"
 grails-events = "5.0.0-SNAPSHOT"
 grails-gdoc = "1.0.1"
-grails-gorm = "2022.1.0-SNAPSHOT"
+grails-gorm = "2023.0.0-SNAPSHOT"
 grails-gorm-hibernate = "2022.1.0-SNAPSHOT"
 grails-scaffolding = "5.0.0-SNAPSHOT"
 grails-views = "5.0.0-SNAPSHOT"
-groovy = "3.0.16"
+groovy = "4.0.10"
 gson = "2.9.1"
 h2 = "2.1.214"
 hsqldb = "2.7.1"
@@ -63,7 +63,7 @@ objenesis = "3.2"
 sitemesh = "2.4.2"
 slf4j = "1.7.36"
 snakeyaml = "1.33"
-spock = "2.3-groovy-3.0"
+spock = "2.3-groovy-4.0"
 spring-boot = "3.0.5"
 spring-dependency-management = "1.1.0"
 spring-framework = "6.0.7"
@@ -117,24 +117,24 @@ grails-views-json = { module = "org.grails.plugins:views-json", version.ref = "g
 grails-views-json-templates = { module = "org.grails.plugins:views-json-templates", version.ref = "grails-views" }
 grails-views-json-testing-support = { module = "org.grails:views-json-testing-support", version.ref = "grails-views" }
 grails-views-markup = { module = "org.grails.plugins:views-markup", version.ref = "grails-views" }
-groovy-ant = { module = "org.codehaus.groovy:groovy-ant", version.ref = "groovy" }
-groovy-bom = { module = "org.codehaus.groovy:groovy-bom", version.ref = "groovy" }
-groovy-console = { module = "org.codehaus.groovy:groovy-console", version.ref = "groovy" }
-groovy-core = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
-groovy-dateutil = { module = "org.codehaus.groovy:groovy-dateutil", version.ref = "groovy" }
-groovy-groovydoc = { module = "org.codehaus.groovy:groovy-groovydoc", version.ref = "groovy" }
-groovy-groovysh = { module = "org.codehaus.groovy:groovy-groovysh", version.ref = "groovy" }
-groovy-jmx = { module = "org.codehaus.groovy:groovy-jmx", version.ref = "groovy" }
-groovy-json = { module = "org.codehaus.groovy:groovy-json", version.ref = "groovy" }
-groovy-macro = { module = "org.codehaus.groovy:groovy-macro", version.ref = "groovy" }
-groovy-nio = { module = "org.codehaus.groovy:groovy-nio", version.ref = "groovy" }
-groovy-picocli = { module = "org.codehaus.groovy:groovy-cli-picocli", version.ref = "groovy" }
-groovy-sql = { module = "org.codehaus.groovy:groovy-sql", version.ref = "groovy" }
-groovy-swing = { module = "org.codehaus.groovy:groovy-swing", version.ref = "groovy" }
-groovy-templates = { module = "org.codehaus.groovy:groovy-templates", version.ref = "groovy" }
-groovy-test = { module = "org.codehaus.groovy:groovy-test", version.ref = "groovy" }
-groovy-test-junit5 = { module = "org.codehaus.groovy:groovy-test-junit5", version.ref = "groovy" }
-groovy-xml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
+groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
+groovy-bom = { module = "org.apache.groovy:groovy-bom", version.ref = "groovy" }
+groovy-console = { module = "org.apache.groovy:groovy-console", version.ref = "groovy" }
+groovy-core = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
+groovy-dateutil = { module = "org.apache.groovy:groovy-dateutil", version.ref = "groovy" }
+groovy-groovydoc = { module = "org.apache.groovy:groovy-groovydoc", version.ref = "groovy" }
+groovy-groovysh = { module = "org.apache.groovy:groovy-groovysh", version.ref = "groovy" }
+groovy-jmx = { module = "org.apache.groovy:groovy-jmx", version.ref = "groovy" }
+groovy-json = { module = "org.apache.groovy:groovy-json", version.ref = "groovy" }
+groovy-macro = { module = "org.apache.groovy:groovy-macro", version.ref = "groovy" }
+groovy-nio = { module = "org.apache.groovy:groovy-nio", version.ref = "groovy" }
+groovy-picocli = { module = "org.apache.groovy:groovy-cli-picocli", version.ref = "groovy" }
+groovy-sql = { module = "org.apache.groovy:groovy-sql", version.ref = "groovy" }
+groovy-swing = { module = "org.apache.groovy:groovy-swing", version.ref = "groovy" }
+groovy-templates = { module = "org.apache.groovy:groovy-templates", version.ref = "groovy" }
+groovy-test = { module = "org.apache.groovy:groovy-test", version.ref = "groovy" }
+groovy-test-junit5 = { module = "org.apache.groovy:groovy-test-junit5", version.ref = "groovy" }
+groovy-xml = { module = "org.apache.groovy:groovy-xml", version.ref = "groovy" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }

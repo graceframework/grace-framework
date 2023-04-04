@@ -50,7 +50,7 @@ if (jointBuildGroovyJarProperty) {
         throw new GradleException("The groovy.jar system property points to ${jointBuildGroovyJar.absolutePath} which does not exist.")
     }
 } else {
-    groovyDependency = dependencies.create("org.codehaus.groovy:groovy:${groovyVersion}") {
+    groovyDependency = dependencies.create("org.apache.groovy:groovy:${groovyVersion}") {
         exclude module:"commons-cli"
         exclude module:"ant"
     }
@@ -96,18 +96,31 @@ allprojects {
 
     configurations {
         all {
+            // resolutionStrategy {
+            //     def cacheHours = isCiBuild ? 0 : 24
+            //     cacheDynamicVersionsFor cacheHours, 'hours'
+            //     cacheChangingModulesFor cacheHours, 'hours'
+            //     eachDependency { DependencyResolveDetails details ->
+            //         //specifying a fixed version for all libraries with 'org.gradle' group
+            //         if (details.requested.group == 'org.apache.groovy') {
+            //             details.useVersion groovyVersion
+            //         }
+            //         if (details.requested.group == "org.spockframework") {
+            //             details.useVersion(spockVersion)
+            //         }
+            //     }
+            // }
             resolutionStrategy {
-                def cacheHours = isCiBuild ? 0 : 24
-                cacheDynamicVersionsFor cacheHours, 'hours'
-                cacheChangingModulesFor cacheHours, 'hours'
-                eachDependency { DependencyResolveDetails details ->
-                    //specifying a fixed version for all libraries with 'org.gradle' group
-                    if (details.requested.group == 'org.codehaus.groovy') {
-                        details.useVersion groovyVersion
-                    }
-                    if (details.requested.group == "org.spockframework") {
-                        details.useVersion(spockVersion)
-                    }
+                // Force groovy using 4.0
+                dependencySubstitution {
+                    substitute(module("org.codehaus.groovy:groovy")).using(module("org.apache.groovy:groovy:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-ant")).using(module("org.apache.groovy:groovy-ant:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-dateutil")).using(module("org.apache.groovy:groovy-dateutil:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-json")).using(module("org.apache.groovy:groovy-json:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-jmx")).using(module("org.apache.groovy:groovy-jmx:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-sql")).using(module("org.apache.groovy:groovy-sql:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-templates")).using(module("org.apache.groovy:groovy-templates:4.0.10"))
+                    substitute(module("org.codehaus.groovy:groovy-xml")).using(module("org.apache.groovy:groovy-xml:4.0.10"))
                 }
             }
         }

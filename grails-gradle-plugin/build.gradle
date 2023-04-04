@@ -17,6 +17,7 @@ apply plugin: 'java-gradle-plugin'
 configurations {
     documentation
     all*.exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    all*.exclude group: 'org.apache.groovy', module: 'groovy-xml'
 }
 
 dependencies {

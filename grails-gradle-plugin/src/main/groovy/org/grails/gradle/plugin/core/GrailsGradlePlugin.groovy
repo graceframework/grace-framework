@@ -258,7 +258,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
                     String dependencyName = details.requested.name
                     String group = details.requested.group
-                    if (group == 'org.codehaus.groovy' && dependencyName.startsWith('groovy')) {
+                    if (group == 'org.apache.groovy' && dependencyName.startsWith('groovy')) {
                         details.useVersion(groovyVersion)
                         return
                     }
@@ -271,18 +271,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureMicronaut(Project project) {
         String micronautVersion = resolveMicronautVersion(project)
 
-        project.configurations.all({ Configuration configuration ->
-            configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
-                String dependencyName = details.requested.name
-                String group = details.requested.group
-                if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
-                    details.useVersion(micronautVersion)
-                }
-                if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
-                    details.useVersion('2.1.1')
-                }
-            } as Action<DependencyResolveDetails>)
-        } as Action<Configuration>)
     }
 
     @CompileStatic
