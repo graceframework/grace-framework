@@ -59,7 +59,7 @@ import org.grails.transaction.TransactionManagerPostProcessor
 class GrailsApplicationBuilder {
 
     private static final boolean IS_SERVLET_API_PRESENT =
-            ClassUtils.isPresent('javax.servlet.ServletContext', GrailsApplicationBuilder.classLoader)
+            ClassUtils.isPresent('jakarta.servlet.ServletContext', GrailsApplicationBuilder.classLoader)
 
     static final Set DEFAULT_INCLUDED_PLUGINS = ['core', 'eventBus'] as Set
     static final Class[] DEFAULT_AUTO_CONFIGURATIONS = [

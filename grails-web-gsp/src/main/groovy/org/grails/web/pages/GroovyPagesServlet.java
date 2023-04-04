@@ -169,7 +169,7 @@ public class GroovyPagesServlet extends FrameworkServlet implements PluginManage
     }
 
     protected String getCurrentRequestUri(HttpServletRequest request) {
-        Object includePath = request.getAttribute("javax.servlet.include.servlet_path");
+        Object includePath = request.getAttribute("jakarta.servlet.include.servlet_path");
         if (includePath != null) {
             return (String) includePath;
         }

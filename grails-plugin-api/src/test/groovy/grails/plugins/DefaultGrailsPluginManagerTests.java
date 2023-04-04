@@ -68,7 +68,7 @@ public class DefaultGrailsPluginManagerTests {
         DefaultGrailsPluginManager manager = loadPlugins("class FirstGrailsPlugin {\n" +
                 "def version = '1.0'\n" +
                 "def order = 5\n" +
-                "}", "@javax.annotation.Priority(3) class SecondGrailsPlugin {\n" +
+                "}", "@jakarta.annotation.Priority(3) class SecondGrailsPlugin {\n" +
                 "def version = '1.0'\n" +
                 "}", "@org.springframework.core.annotation.Order(7) class ThirdGrailsPlugin {\n" +
                 "def version = '1.0'\n" +

@@ -105,7 +105,7 @@ public final class GrailsWebUtil {
      * @return The String URI
      */
     public static String getUriFromRequest(HttpServletRequest request) {
-        Object includeUri = request.getAttribute("javax.servlet.include.request_uri");
+        Object includeUri = request.getAttribute("jakarta.servlet.include.request_uri");
         return includeUri == null ? request.getRequestURI() : (String) includeUri;
     }
 

@@ -228,7 +228,7 @@ public final class UrlMappingUtils {
      * @param includeParams Whether to include any request parameters
      * @return The URI forwarded too
      *
-     * @throws javax.servlet.ServletException Thrown when an error occurs executing the forward
+     * @throws jakarta.servlet.ServletException Thrown when an error occurs executing the forward
      * @throws java.io.IOException Thrown when an error occurs executing the forward
      */
     public static String forwardRequestForUrlMappingInfo(HttpServletRequest request, HttpServletResponse response,

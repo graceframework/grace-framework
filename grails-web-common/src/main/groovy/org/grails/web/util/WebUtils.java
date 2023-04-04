@@ -84,7 +84,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
     public static final String EXCEPTION_ATTRIBUTE = "exception";
 
-    public static final String ASYNC_REQUEST_URI_ATTRIBUTE = "javax.servlet.async.request_uri";
+    public static final String ASYNC_REQUEST_URI_ATTRIBUTE = "jakarta.servlet.async.request_uri";
 
     public static ViewResolver lookupViewResolver(ServletContext servletContext) {
         WebApplicationContext wac = WebApplicationContextUtils
@@ -257,11 +257,11 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      * Expose the current request URI and paths as {@link jakarta.servlet.http.HttpServletRequest}
      * attributes under the keys defined in the Servlet 2.4 specification,
      * for containers that implement 2.3 or an earlier version of the Servlet API:
-     * <code>javax.servlet.forward.request_uri</code>,
-     * <code>javax.servlet.forward.context_path</code>,
-     * <code>javax.servlet.forward.servlet_path</code>,
-     * <code>javax.servlet.forward.path_info</code>,
-     * <code>javax.servlet.forward.query_string</code>.
+     * <code>jakarta.servlet.forward.request_uri</code>,
+     * <code>jakarta.servlet.forward.context_path</code>,
+     * <code>jakarta.servlet.forward.servlet_path</code>,
+     * <code>jakarta.servlet.forward.path_info</code>,
+     * <code>jakarta.servlet.forward.query_string</code>.
      * <p>Does not override values if already present, to not cause conflicts
      * with the attributes exposed by Servlet 2.4+ containers themselves.
      * @param request current servlet request
