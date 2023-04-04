@@ -56,10 +56,7 @@ junit-platform = "1.8.2"
 maven = "3.6.3"
 maven-resolver = "1.6.3"
 methvin-directory-watcher = "0.17.1"
-micronaut-cache = "3.5.0"
 micronaut-core = "3.8.6"
-micronaut-groovy = "3.4.0"
-micronaut-spring = "4.5.0"
 mockito = "4.5.1"
 mongodb-java-driver = "4.6.1"
 objenesis = "3.2"
@@ -181,20 +178,10 @@ maven-resolver-transportHttp = { module = "org.apache.maven.resolver:maven-resol
 methvin-directoryWatcher = { module = "io.methvin:directory-watcher", version.ref = "methvin-directory-watcher" }
 micronaut-aop = { module = "io.micronaut:micronaut-aop", version.ref = "micronaut-core" }
 micronaut-bom = { module = "io.micronaut:micronaut-bom", version.ref = "micronaut-core" }
-micronaut-cache-bom = { module = "io.micronaut.cache:micronaut-cache-bom", version.ref = "micronaut-cache" }
 micronaut-context = { module = "io.micronaut:micronaut-context", version.ref = "micronaut-core" }
 micronaut-core = { module = "io.micronaut:micronaut-core", version.ref = "micronaut-core" }
 micronaut-inject = { module = "io.micronaut:micronaut-inject", version.ref = "micronaut-core" }
 micronaut-inject-groovy = { module = "io.micronaut:micronaut-inject-groovy", version.ref = "micronaut-core" }
-micronaut-runtime-groovy = { module = "io.micronaut.groovy:micronaut-runtime-groovy", version.ref = "micronaut-groovy" }
-micronaut-spring = { module = "io.micronaut.spring:micronaut-spring", version.ref = "micronaut-spring" }
-micronaut-spring-annotation = { module = "io.micronaut.spring:micronaut-spring-annotation", version.ref = "micronaut-spring" }
-micronaut-spring-boot = { module = "io.micronaut.spring:micronaut-spring-boot", version.ref = "micronaut-spring" }
-micronaut-spring-boot-annotation = { module = "io.micronaut.spring:micronaut-spring-boot-annotation", version.ref = "micronaut-spring" }
-micronaut-spring-boot-starter = { module = "io.micronaut.spring:micronaut-spring-boot-starter", version.ref = "micronaut-spring" }
-micronaut-spring-context = { module = "io.micronaut.spring:micronaut-spring-context", version.ref = "micronaut-spring" }
-micronaut-spring-web = { module = "io.micronaut.spring:micronaut-spring-web", version.ref = "micronaut-spring" }
-micronaut-spring-web-annotation = { module = "io.micronaut.spring:micronaut-spring-web-annotation", version.ref = "micronaut-spring" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
@@ -234,7 +221,7 @@ tomcat-embed-el = { module = "org.apache.tomcat.embed:tomcat-embed-el", version.
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
 
 [bundles]
-bom = ["groovy-bom", "micronaut-cache-bom", "spring-framework-bom", "spring-boot-dependencies"]
+bom = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
 grails-async = ["grails-async", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-plugin-async"]
 grails-devtools = ["methvin-directoryWatcher"]
 grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
@@ -245,9 +232,6 @@ groovy = ["groovy-bom"]
 jakarta = ["jakarta-annotation-api"]
 javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet"]
 micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
-micronaut-cache = ["micronaut-cache-bom"]
-micronaut-groovy = ["micronaut-runtime-groovy"]
-micronaut-spring = ["micronaut-spring", "micronaut-spring-annotation", "micronaut-spring-boot", "micronaut-spring-boot-annotation", "micronaut-spring-boot-starter", "micronaut-spring-context", "micronaut-spring-web", "micronaut-spring-web-annotation"]
 spock = ["spock-core", "spock-spring"]
 spring-boot = ["spring-boot-dependencies"]
 spring-framework = ["spring-framework-bom"]

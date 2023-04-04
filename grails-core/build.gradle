@@ -12,7 +12,6 @@ dependencies {
     api libs.spring.context
     api libs.spring.core
     api libs.spring.tx
-    compileOnly libs.micronaut.spring.context
 
     testImplementation project(":grails-test")
     testImplementation libs.spring.jdbc

@@ -17,9 +17,6 @@ dependencies {
     api libs.spring.core
     api libs.spring.web
 
-    api libs.micronaut.inject
-    compileOnly libs.micronaut.spring
-    compileOnly libs.micronaut.spring.context
     compileOnly libs.jsr305
 
     testImplementation project(":grails-plugin-controllers")
