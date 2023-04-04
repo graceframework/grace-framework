@@ -509,14 +509,14 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     protected void enableFileWatch(Environment environment, Project project) {
-        if (environment.isReloadEnabled()) {
-            String micronautVersion = resolveMicronautVersion(project)
-            if (project.configurations.findByName('developmentOnly')) {
-                project.dependencies.add(
-                        'developmentOnly',
-                        "io.micronaut:micronaut-inject-groovy:${micronautVersion}")
-            }
-        }
+//        if (environment.isReloadEnabled()) {
+//            String micronautVersion = resolveMicronautVersion(project)
+//            if (project.configurations.findByName('developmentOnly')) {
+//                project.dependencies.add(
+//                        'developmentOnly',
+//                        "io.micronaut:micronaut-inject-groovy:${micronautVersion}")
+//            }
+//        }
     }
 
     protected void registerFindMainClassTask(Project project) {
