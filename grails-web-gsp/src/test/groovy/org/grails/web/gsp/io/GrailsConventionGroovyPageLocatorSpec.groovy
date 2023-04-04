@@ -1,5 +1,7 @@
 package org.grails.web.gsp.io
 
+import groovy.xml.XmlSlurper
+
 import grails.core.DefaultGrailsApplication
 import grails.plugins.DefaultGrailsPluginManager
 import grails.plugins.metadata.GrailsPlugin

@@ -1,5 +1,7 @@
 package org.grails.web.taglib
 
+import groovy.xml.XmlSlurper
+
 import grails.gorm.annotation.Entity
 import grails.testing.gorm.DataTest
 import grails.testing.web.taglib.TagLibUnitTest
