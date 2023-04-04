@@ -1,7 +1,7 @@
 [versions]
 ant = "1.10.12"
 asciidoctorj = "2.5.6"
-aspectj = "1.9.8"
+aspectj = "1.9.19"
 assertj = "3.22.0"
 caffeine = "3.1.5"
 cglib = "3.3.0"
