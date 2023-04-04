@@ -6,7 +6,9 @@ dependencies {
     api project(":grails-util")
 
     api libs.commons.lang3
-    api libs.grails.datastore.core
+    api libs.grails.datastore.core, {
+        exclude group: "org.codehaus.groovy", module: "groovy"
+    }
     api libs.spring.boot.autoconfigure
 
     testImplementation project(":grails-test")
