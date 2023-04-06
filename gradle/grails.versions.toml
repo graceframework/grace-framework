@@ -1,13 +1,13 @@
 [plugins]
-cache = "5.0.1"
-fields = "5.0.0-SNAPSHOT"
+cache = "6.0.0-SNAPSHOT"
+fields = "6.0.0-SNAPSHOT"
 geb = "3.0.0"
 hibernate5 = "2022.1.0-SNAPSHOT"
 mongodb = "7.2.1"
 neo4j = "7.2.1"
 rxjava = "1.1.1"
 rxjava2 = "2.0.0"
-scaffolding = "5.0.0-SNAPSHOT"
+scaffolding = "6.0.0-SNAPSHOT"
 
 [profiles]
 angular = "8.0.1"
