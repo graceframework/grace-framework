@@ -226,11 +226,12 @@ class GrailsCli {
         }
 
         if (mainCommandLine.hasOption(CommandLine.VERSION_ARGUMENT) || mainCommandLine.hasOption('v')) {
+            String grailsName = System.getenv('GRAILS_NAME') ?: 'Grails'
             GrailsVersion currentVersion = GrailsVersion.current()
             GrailsDependenciesDependencyManagement grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
-            sb.append('%n------------------------------------------------------------%nGoBoots ')
-            sb.append(currentVersion.getVersion())
+            sb.append('%n------------------------------------------------------------%n')
+            sb.append(String.format(' %s %s', grailsName, currentVersion.getVersion()))
             sb.append('%n------------------------------------------------------------%n%nBuild time:   ')
             sb.append(currentVersion.getBuildTimestamp())
             sb.append('%nRevision:     ')
