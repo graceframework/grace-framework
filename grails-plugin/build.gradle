@@ -20,8 +20,10 @@ dependencies {
     documentation ("org.grails:grails-spring:$grailsVersion")
     documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
 
+    compileOnly("org.grails:grails-boot:$grailsVersion")
     compileOnly("org.grails:grails-bootstrap:$grailsVersion")
     compileOnly("org.grails:grails-core:$grailsVersion")
+    compileOnly("org.grails:grails-cli:$grailsVersion")
     compileOnly "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
