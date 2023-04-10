@@ -171,7 +171,7 @@ class SomeEntity {}
 
 @jakarta.persistence.Entity
 class SomeJpaEntity {
-    @javax.persistence.Id
+    @jakarta.persistence.Id
     Long id
 }
 
