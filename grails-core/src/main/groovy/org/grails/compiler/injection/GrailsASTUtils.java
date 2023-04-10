@@ -88,6 +88,7 @@ import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.codehaus.groovy.transform.sc.StaticCompileTransformation;
 import org.codehaus.groovy.transform.trait.Traits;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import grails.artefact.Enhanced;
@@ -143,6 +144,28 @@ public final class GrailsASTUtils {
     public static final Parameter[] ZERO_PARAMETERS = new Parameter[0];
 
     public static final ArgumentListExpression ZERO_ARGUMENTS = new ArgumentListExpression();
+
+    @SuppressWarnings("rawtypes")
+    private static final Set<Class> ENTITY_ANNOTATIONS = new HashSet<>();
+
+    static {
+        ENTITY_ANNOTATIONS.add(grails.persistence.Entity.class);
+        ClassLoader classLoader = GrailsASTUtils.class.getClassLoader();
+        if (ClassUtils.isPresent("org.grails.datastore.gorm.AbstractDatastoreApi", classLoader)) {
+            try {
+                ENTITY_ANNOTATIONS.add(classLoader.loadClass("grails.gorm.annotation.Entity"));
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+        if (ClassUtils.isPresent("javax.persistence.EntityManagerFactory", classLoader)) {
+            try {
+                ENTITY_ANNOTATIONS.add(classLoader.loadClass("javax.persistence.Entity"));
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+    }
 
     private GrailsASTUtils() {
     }
@@ -833,9 +856,9 @@ public final class GrailsASTUtils {
                 declaredMethod.getParameters()[0].getType().equals(AbstractGrailsArtefactTransformer.OBJECT_CLASS);
     }
 
+    @SuppressWarnings("unchecked")
     public static boolean isDomainClass(ClassNode classNode, SourceUnit sourceNode) {
-        boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode,
-                grails.persistence.Entity.class, javax.persistence.Entity.class);
+        boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]));
 
         if (!isDomainClass && sourceNode != null) {
             String sourcePath = sourceNode.getName();

@@ -16,6 +16,8 @@ dependencies {
     testImplementation project(":grails-test")
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test
+    testImplementation libs.javax.persistence
+    testImplementation libs.grails.datastore.gorm
 }
 
 eclipse {
