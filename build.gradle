@@ -7,7 +7,6 @@ buildscript {
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$gradleExtraConfigurationsPluginVersion"
-        classpath "gradle.plugin.io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
         classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPlugin"
         classpath "org.codenarc:CodeNarc:$codenarcVersion"
     }
@@ -467,15 +466,4 @@ project.afterEvaluate {
             }
         }
     }
-}
-
-apply plugin: "io.sdkman.vendors"
-sdkman {
-    api = "https://vendors.sdkman.io"
-    consumerKey = System.getenv("GVM_SDKVENDOR_KEY") ?: project.hasProperty("gvmSdkvendorKey") ? project.gvmSdkvendorKey : ''
-    consumerToken = System.getenv("GVM_SDKVENDOR_TOKEN") ?: project.hasProperty("gvmSdkvendorToken") ? project.gvmSdkvendorToken : ''
-    candidate = "grails"
-    version = project.version
-    url = "https://github.com/grails/grails-core/releases/download/v${project.version}/grails-${project.version}.zip"
-    hashtag = "#grailsfw"
 }
