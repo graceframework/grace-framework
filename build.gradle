@@ -195,7 +195,7 @@ subprojects { project ->
     apply plugin: 'codenarc'
     apply plugin: 'jacoco'
     apply plugin: 'project-report'
-    apply plugin: 'nebula.optional-base'
+    apply plugin: 'com.netflix.nebula.optional-base'
     apply plugin: "org.gradle.test-retry"
 
     java {
