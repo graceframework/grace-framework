@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
+import org.gradle.api.model.ObjectFactory
+
+import javax.inject.Inject
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -71,7 +74,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     String serverpath
 
     @Nested
-    GspCompileOptions compileOptions = new GspCompileOptions()
+    GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
 
     @Override
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -166,6 +169,11 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     @Input
     String getFileExtension() {
         'gsp'
+    }
+
+    @Inject
+    protected ObjectFactory getObjectFactory() {
+        throw new UnsupportedOperationException();
     }
 
 }
