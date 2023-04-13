@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 the original author or authors.
+ * Copyright 2020-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.compile.AbstractOptions
 import org.gradle.api.tasks.compile.GroovyForkOptions
+
+import javax.inject.Inject
 
 /**
  * Presents the Compile Options used by the {@llink GroovyPageForkCompileTask}
@@ -25,14 +29,17 @@ import org.gradle.api.tasks.compile.GroovyForkOptions
  * @author David Estes
  * @since 4.0
  */
-class GspCompileOptions implements Serializable {
-
-    private static final long serialVersionUID = 0L
+class GspCompileOptions extends AbstractOptions {
 
     @Input
     String encoding = 'UTF-8'
 
     @Nested
-    GroovyForkOptions forkOptions = new GroovyForkOptions()
+    GroovyForkOptions forkOptions = getObjectFactory().newInstance(GroovyForkOptions.class)
+
+    @Inject
+    protected ObjectFactory getObjectFactory() {
+        throw new UnsupportedOperationException();
+    }
 
 }
