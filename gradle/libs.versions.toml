@@ -13,8 +13,8 @@ gradle-extra-configurations-plugin = "9.0.0"
 gradle-git-properties = "2.4.1"
 gradle-nexus-plugin = "2.3.1"
 gradle-nexus-publish-plugin = "1.3.0"
-grails-async = "5.1.2"
-grails-events = "5.1.2"
+grails-async = "5.2.0"
+grails-events = "5.2.0"
 grails-gdoc = "1.0.1"
 grails-gorm = "2022.2.0"
 grails-gorm-hibernate = "2022.2.0"
@@ -107,6 +107,7 @@ grails-plugin-async = { module = "org.grails.plugins:async", version.ref = "grai
 grails-plugin-events = { module = "org.grails.plugins:events", version.ref = "grails-events" }
 grails-scaffolding-core = { module = "org.grails:grails-scaffolding-core", version.ref = "grails-scaffolding" }
 grails-views-core = { module = "org.grails:views-core", version.ref = "grails-views" }
+grails-views-component = { module = "org.grails.plugins:views-component", version.ref = "grails-views" }
 grails-views-gradle = { module = "org.grails.plugins:views-gradle", version.ref = "grails-views" }
 grails-views-json = { module = "org.grails.plugins:views-json", version.ref = "grails-views" }
 grails-views-json-templates = { module = "org.grails.plugins:views-json-templates", version.ref = "grails-views" }
@@ -224,7 +225,7 @@ grails-devtools = ["methvin-directoryWatcher"]
 grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
 grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datastore-gorm", "grails-datastore-gorm-async", "grails-datastore-gorm-hibernate5", "grails-datastore-gorm-support", "grails-datastore-gorm-test", "grails-datastore-gorm-validation"]
 grails-scaffolding = ["grails-scaffolding-core"]
-grails-views = ["grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
+grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
 jakarta = ["jakarta-annotation-api"]
 javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet"]
