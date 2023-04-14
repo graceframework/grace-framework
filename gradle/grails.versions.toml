@@ -1,6 +1,6 @@
 [plugins]
 cache = "5.2.0"
-fields = "5.1.2"
+fields = "5.2.0"
 geb = "3.0.0"
 hibernate5 = "2022.2.0"
 mongodb = "7.2.1"
