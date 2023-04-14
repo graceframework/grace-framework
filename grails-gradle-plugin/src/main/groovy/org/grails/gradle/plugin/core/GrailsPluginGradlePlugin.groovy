@@ -174,7 +174,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         if (groovydocTask) {
             if (taskContainer.findByName('javadocJar') == null) {
                 taskContainer.create('javadocJar', Jar).configure {
-                    classifier = 'javadoc'
+                    archiveClassifier = 'javadoc'
                     from groovydocTask.outputs
                 }.dependsOn(javadocTask)
             }
