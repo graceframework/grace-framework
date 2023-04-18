@@ -165,7 +165,8 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         // don't inject if already an @Artefact annotation is applied
-        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
+        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty() ||
+                !classNode.getAnnotations(new ClassNode(org.springframework.stereotype.Controller.class)).isEmpty()) {
             return;
         }
 
