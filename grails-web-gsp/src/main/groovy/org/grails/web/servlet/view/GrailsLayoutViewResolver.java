@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     @Override
     public View resolveViewName(String viewName, Locale locale) throws Exception {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolving view for name {} and locale {}", viewName, locale);
+            LOG.debug("Resolving view for name [{}] and locale [{}]", viewName, locale);
         }
         View innerView = this.innerViewResolver.resolveViewName(viewName, locale);
         if (innerView == null) {
@@ -68,7 +68,7 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Creating layout view name {} and locale {}", viewName, locale);
+                LOG.debug("Creating layout view name [{}] and locale [{}]", viewName, locale);
             }
             return createLayoutView(innerView);
         }

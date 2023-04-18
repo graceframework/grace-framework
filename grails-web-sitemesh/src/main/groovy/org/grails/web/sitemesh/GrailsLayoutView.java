@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
                         SpringMVCViewDecorator decorator = (SpringMVCViewDecorator) this.groovyPageLayoutFinder.findLayout(request, content);
                         if (decorator != null) {
                             if (LOG.isDebugEnabled()) {
-                                LOG.debug("Found layout. Rendering content for layout and model {}", decorator.getPage(), model);
+                                LOG.debug(String.format("Found layout [%s], rendering content for model [%s]", decorator.getPage(), model));
                             }
 
                             decorator.render(content, model, request, response, webRequest.getServletContext());
@@ -145,7 +145,7 @@ public class GrailsLayoutView extends AbstractGrailsView {
             HttpServletResponse response,
             GrailsContentBufferingResponse contentBufferingResponse) throws Exception {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Rendering inner view for layout and model {}", model);
+            LOG.debug("Rendering inner view for layout and model [{}]", model);
         }
         this.innerView.render(model, request, contentBufferingResponse);
     }

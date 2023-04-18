@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,12 +43,12 @@ public class StaticResourceLoader implements ResourceLoader {
         Assert.state(this.baseResource != null, "Property [baseResource] not set!");
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Loading resource for path {} from base resource {}", location, this.baseResource);
+            logger.debug("Loading resource for path [{}] from base resource {}", location, this.baseResource);
         }
         try {
             Resource resource = this.baseResource.createRelative(location);
             if (logger.isDebugEnabled() && resource.exists()) {
-                logger.debug("Found resource for path {} from base resource {}", location, this.baseResource);
+                logger.debug("Found resource for path [{}] from base resource {}", location, this.baseResource);
             }
             return resource;
         }
