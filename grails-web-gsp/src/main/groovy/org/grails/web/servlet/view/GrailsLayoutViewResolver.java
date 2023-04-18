@@ -57,7 +57,7 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
     @Override
     public View resolveViewName(String viewName, Locale locale) throws Exception {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolving view for name {} and locale {}", viewName, locale);
+            LOG.debug("Resolving view for name [{}] and locale [{}]", viewName, locale);
         }
         View innerView = this.innerViewResolver.resolveViewName(viewName, locale);
         if (innerView == null) {
@@ -68,7 +68,7 @@ public class GrailsLayoutViewResolver implements LayoutViewResolver, Ordered, Se
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Creating layout view name {} and locale {}", viewName, locale);
+                LOG.debug("Creating layout view name [{}] and locale [{}]", viewName, locale);
             }
             return createLayoutView(innerView);
         }

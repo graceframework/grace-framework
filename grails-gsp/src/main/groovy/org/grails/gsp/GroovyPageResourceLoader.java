@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,11 +42,8 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
 
     private static final String PLUGINS_PATH = "/plugins/";
 
-    private Resource localBaseResource;
-
     @Override
     public void setBaseResource(Resource baseResource) {
-        this.localBaseResource = baseResource;
         super.setBaseResource(baseResource);
     }
 
@@ -57,8 +54,8 @@ public class GroovyPageResourceLoader extends StaticResourceLoader {
         Resource resource = super.getResource(location);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Resolved GSP location [" + location + "] to resource [" + resource +
-                    "] (exists? [" + resource.exists() + "]) using base resource [" + this.localBaseResource + "]");
+            logger.debug("Resolved GSP location [" + location + "] to resource " + resource +
+                    " (exists? [" + resource.exists() + "])");
         }
         return resource;
     }
