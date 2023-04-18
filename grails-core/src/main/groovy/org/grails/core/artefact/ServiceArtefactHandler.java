@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 package org.grails.core.artefact;
 
+import org.codehaus.groovy.ast.ClassNode;
+import org.springframework.stereotype.Service;
+
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsServiceClass;
 
@@ -22,6 +25,7 @@ import org.grails.core.DefaultGrailsServiceClass;
 
 /**
  * @author Marc Palmer (marc@anyware.co.uk)
+ * @author Michael Yan
  */
 public class ServiceArtefactHandler extends ArtefactHandlerAdapter {
 
@@ -37,6 +41,18 @@ public class ServiceArtefactHandler extends ArtefactHandlerAdapter {
     @Override
     public String getPluginName() {
         return PLUGIN_NAME;
+    }
+
+    @Override
+    public boolean isArtefact(ClassNode classNode) {
+        boolean isNotSpringService = classNode.getAnnotations(new ClassNode(Service.class)).isEmpty();
+        return isNotSpringService && super.isArtefact(classNode);
+    }
+
+    @Override
+    public boolean isArtefactClass(Class<?> clazz) {
+        boolean isNotSpringService = clazz.getAnnotation(Service.class) == null;
+        return isNotSpringService && super.isArtefactClass(clazz);
     }
 
 }
