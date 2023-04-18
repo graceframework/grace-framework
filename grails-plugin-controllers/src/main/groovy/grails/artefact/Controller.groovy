@@ -535,4 +535,10 @@ trait Controller implements ResponseRenderer, ResponseRedirector, RequestForward
         webRequest.setAttribute(GrailsApplicationAttributes.ERRORS, errors, 0)
     }
 
+    @Generated
+    @Override
+    String toString() {
+        getControllerClass()?.fullName
+    }
+
 }
