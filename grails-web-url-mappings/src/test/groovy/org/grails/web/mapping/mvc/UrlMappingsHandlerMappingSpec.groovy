@@ -81,7 +81,7 @@ class UrlMappingsHandlerMappingSpec extends AbstractUrlMappingsSpec {
         def result = handlerAdapter.handle(request, webRequest.response, handlerChain.handler)
 
         then:"The correct action was executed to handle the include"
-        result.viewName == 'bar'
+        result.viewName == 'foo/bar'
         result.model == [foo:'bar']
 
     }
@@ -115,7 +115,7 @@ class UrlMappingsHandlerMappingSpec extends AbstractUrlMappingsSpec {
             def result = handlerAdapter.handle(request, webRequest.response, handlerChain.handler)
 
         then:"The model and view is correct"
-            result.viewName == 'bar'
+            result.viewName == 'foo/bar'
             result.model == [foo:'bar']
 
         when:"A status is set on the response"
@@ -158,7 +158,7 @@ class UrlMappingsHandlerMappingSpec extends AbstractUrlMappingsSpec {
         def result = handlerAdapter.handle(request, webRequest.response, handlerChain.handler)
 
         then:"The model and view is correct"
-        result.viewName == 'fooBar'
+        result.viewName == 'foo/fooBar'
         !result.model
     }
 
@@ -190,7 +190,7 @@ class UrlMappingsHandlerMappingSpec extends AbstractUrlMappingsSpec {
         def result = handlerAdapter.handle(request, webRequest.response, handlerChain.handler)
 
         then:"The model and view is correct"
-        result.viewName == 'fooBar'
+        result.viewName == 'foo/fooBar'
         !result.model
     }
 

@@ -43,6 +43,7 @@ import org.grails.web.util.WebUtils
  * A {@link HandlerAdapter} that takes a matched {@link UrlMappingInfo} and executes the underlying controller producing an appropriate model
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -121,7 +122,7 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                     return (ModelAndView) modelAndView
                 }
                 else if (result instanceof Map) {
-                    String viewName = controllerClass.actionUriToViewName(action)
+                    String viewName = getControllerViewName(controllerClass, action)
                     Map<String, Object> finalModel = new HashMap<String, Object>()
                     FlashScope flashScope = webRequest.getFlashScope()
                     if (!flashScope.isEmpty()) {
@@ -138,7 +139,8 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
                     return (ModelAndView) result
                 }
                 else if (result == null && webRequest.renderView) {
-                    return new ModelAndView(controllerClass.actionUriToViewName(action))
+                    String viewName = getControllerViewName(controllerClass, action)
+                    return new ModelAndView(viewName)
                 }
             }
             else if (info.viewName) {
@@ -158,6 +160,17 @@ class UrlMappingsInfoHandlerAdapter implements HandlerAdapter, ApplicationContex
             }
         }
         null
+    }
+
+    private String getControllerViewName(GrailsControllerClass controllerClass, String action) {
+        String viewName = controllerClass.actionUriToViewName(action)
+        if (controllerClass.namespace) {
+            viewName = controllerClass.namespace + '/' + controllerClass.logicalPropertyName + '/' + viewName
+        }
+        else {
+            viewName = controllerClass.logicalPropertyName + '/' + viewName
+        }
+        viewName
     }
 
     @Override
