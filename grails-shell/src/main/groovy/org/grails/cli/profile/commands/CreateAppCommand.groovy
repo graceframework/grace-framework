@@ -466,12 +466,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
-            "apply plugin:\"$name\""
+            "apply plugin: \"$name\""
         }
 
         for (Feature f in features) {
             buildPlugins.addAll f.buildPlugins.collect { String name ->
-                "apply plugin:\"$name\""
+                "apply plugin: \"$name\""
             }
         }
 
