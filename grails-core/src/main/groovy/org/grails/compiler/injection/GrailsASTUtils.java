@@ -148,6 +148,8 @@ public final class GrailsASTUtils {
     @SuppressWarnings("rawtypes")
     private static final Set<Class> ENTITY_ANNOTATIONS = new HashSet<>();
 
+    private static Class<?> JPA_ENTITY_ANNOTATION;
+
     static {
         ENTITY_ANNOTATIONS.add(grails.persistence.Entity.class);
         ClassLoader classLoader = GrailsASTUtils.class.getClassLoader();
@@ -160,7 +162,7 @@ public final class GrailsASTUtils {
         }
         if (ClassUtils.isPresent("javax.persistence.EntityManagerFactory", classLoader)) {
             try {
-                ENTITY_ANNOTATIONS.add(classLoader.loadClass("javax.persistence.Entity"));
+                JPA_ENTITY_ANNOTATION = classLoader.loadClass("javax.persistence.Entity");
             }
             catch (ClassNotFoundException ignored) {
             }
@@ -858,6 +860,9 @@ public final class GrailsASTUtils {
 
     @SuppressWarnings("unchecked")
     public static boolean isDomainClass(ClassNode classNode, SourceUnit sourceNode) {
+        if (isJpaEntityClass(classNode)) {
+            return false;
+        }
         boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]));
 
         if (!isDomainClass && sourceNode != null) {
@@ -882,6 +887,11 @@ public final class GrailsASTUtils {
         }
 
         return isDomainClass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean isJpaEntityClass(ClassNode classNode) {
+        return JPA_ENTITY_ANNOTATION != null && GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) JPA_ENTITY_ANNOTATION);
     }
 
     public static void addDelegateInstanceMethods(ClassNode classNode, ClassNode delegateNode, Expression delegateInstance) {
