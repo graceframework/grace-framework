@@ -54,8 +54,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     private static final String GRAILS_PACKAGE_PREFIX = "grails.";
 
-    private static final String JAVAX_PERSISTENCE = "jakarta.persistence";
-
     public DomainClassArtefactHandler() {
         super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, true);
     }
@@ -99,7 +97,8 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
         URL url = GrailsASTUtils.getSourceUrl(classNode);
         if (url != null) {
-            return GrailsResourceUtils.isDomainClass(url);
+            boolean isDomainClass = GrailsResourceUtils.isDomainClass(url);
+            return isDomainClass && !GrailsASTUtils.isJpaEntityClass(classNode);
         }
         else {
             return super.isArtefact(classNode);
@@ -158,7 +157,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
                 String annName = annType.getSimpleName();
 
                 String pkgName = annType.getPackage().getName();
-                if (ENTITY_ANN_NAME.equals(annName) && pkgName.startsWith(GRAILS_PACKAGE_PREFIX) || pkgName.startsWith(JAVAX_PERSISTENCE)) {
+                if (ENTITY_ANN_NAME.equals(annName) && pkgName.startsWith(GRAILS_PACKAGE_PREFIX)) {
                     return true;
                 }
             }

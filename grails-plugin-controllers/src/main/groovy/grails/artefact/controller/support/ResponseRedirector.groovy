@@ -34,6 +34,7 @@ import grails.web.mapping.mvc.RedirectEventListener
 import grails.web.mapping.mvc.exceptions.CannotRedirectException
 import grails.web.mvc.FlashScope
 
+import org.grails.core.artefact.AnnotationDomainClassArtefactHandler
 import org.grails.core.artefact.ControllerArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.datastore.mapping.model.config.GormProperties
@@ -88,7 +89,8 @@ trait ResponseRedirector implements WebAttributes {
     void redirect(object) {
         if (object) {
             Class<?> objectClass = object.getClass()
-            boolean isDomain = DomainClassArtefactHandler.isDomainClass(objectClass) && object instanceof GroovyObject
+            boolean isDomain = (object instanceof GroovyObject) && (DomainClassArtefactHandler.isDomainClass(objectClass)
+                    || AnnotationDomainClassArtefactHandler.isJPADomainClass(objectClass))
             if (isDomain) {
                 def id = ((GroovyObject) object).getProperty(GormProperties.IDENTITY)
                 if (id != null) {

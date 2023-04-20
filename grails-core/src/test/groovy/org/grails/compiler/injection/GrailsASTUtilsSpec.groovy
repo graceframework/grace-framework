@@ -136,7 +136,8 @@ class GrailsASTUtilsSpec extends Specification {
         someEntitySourceUnit.getName() >> someEntityFile.absolutePath
 
         expect: 'SomeJpaEntity should be recognized as a domain because annotated with @grails.persistence.Entity'
-        GrailsASTUtils.isDomainClass(new ClassNode(SomeJpaEntity), someEntitySourceUnit)
+        GrailsASTUtils.isJpaEntityClass(new ClassNode(SomeJpaEntity))
+        !GrailsASTUtils.isDomainClass(new ClassNode(SomeJpaEntity), someEntitySourceUnit)
     }
 
     void 'test domain class annotated with @grails.gorm.annotation.Entity'() {

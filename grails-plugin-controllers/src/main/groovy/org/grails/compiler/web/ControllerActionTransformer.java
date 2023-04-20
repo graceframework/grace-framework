@@ -165,7 +165,8 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         // don't inject if already an @Artefact annotation is applied
-        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
+        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty() ||
+                !classNode.getAnnotations(new ClassNode(org.springframework.stereotype.Controller.class)).isEmpty()) {
             return;
         }
 
@@ -751,9 +752,9 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
         }
         else {
             initializeCommandObjectParameter(wrapper, commandObjectNode, paramName, source);
-
+            boolean isJpaEntity = GrailsASTUtils.isJpaEntityClass(commandObjectNode);
             boolean argumentIsValidateable = GrailsASTUtils.hasAnyAnnotations(
-                    commandObjectNode, grails.persistence.Entity.class, jakarta.persistence.Entity.class) ||
+                    commandObjectNode, grails.persistence.Entity.class) ||
                     commandObjectNode.implementsInterface(ClassHelper.make(Validateable.class));
 
             if (!argumentIsValidateable && commandObjectNode.isPrimaryClassNode()) {
@@ -767,7 +768,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                         if (doesModulePathIncludeSubstring(commandObjectModule, grailsControllerDir)) {
                             modulePathIncludeController = true;
                         }
-                        if (doesModulePathIncludeSubstring(commandObjectModule, grailsDomainDir)) {
+                        if (doesModulePathIncludeSubstring(commandObjectModule, grailsDomainDir) && !isJpaEntity) {
                             modulePathIncludeDomain = true;
                         }
                         if (modulePathIncludeController || modulePathIncludeDomain) {
@@ -821,12 +822,6 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                 Statement ifCommandObjectIsNotNullThenValidate = new IfStatement(new BooleanExpression(new VariableExpression(paramName)),
                         ifRespondsToValidateThenValidateStatement, new ExpressionStatement(new EmptyExpression()));
                 wrapper.addStatement(ifCommandObjectIsNotNullThenValidate);
-
-                String warningMessage = "The [" + actionName + "] action accepts a parameter of type [" +
-                        commandObjectNode.getName() +
-                        "] which does not implement grails.validation.Validateable.  Data binding will still be applied " +
-                        "to this command object but the instance will not be validateable.";
-                GrailsASTUtils.warning(source, actionNode, warningMessage);
             }
             if (GrailsASTUtils.isInnerClassNode(commandObjectNode)) {
                 String warningMessage = "The [" + actionName + "] action accepts a parameter of type [" +

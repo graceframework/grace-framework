@@ -15,10 +15,11 @@
  */
 package org.grails.core.artefact;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Entity;
+import org.springframework.util.ClassUtils;
 
 /**
  * Detects annotated domain classes for EJB3 style mappings.
@@ -26,9 +27,23 @@ import jakarta.persistence.Entity;
  * @author Graeme Rocher
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class AnnotationDomainClassArtefactHandler extends DomainClassArtefactHandler {
 
     private static final String JPA_MAPPING_STRATEGY = "JPA";
+
+    private static Class<Annotation> JPA_ENTITY_ANNOTATION;
+
+    static {
+        ClassLoader classLoader = AnnotationDomainClassArtefactHandler.class.getClassLoader();
+        if (ClassUtils.isPresent("jakarta.persistence.EntityManagerFactory", classLoader)) {
+            try {
+                JPA_ENTITY_ANNOTATION = (Class<Annotation>) classLoader.loadClass("jakarta.persistence.Entity");
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+    }
 
     private final Set<String> jpaClassNames = new HashSet<>();
 
@@ -46,7 +61,7 @@ public class AnnotationDomainClassArtefactHandler extends DomainClassArtefactHan
     }
 
     public static boolean isJPADomainClass(Class<?> clazz) {
-        return clazz != null && clazz.getAnnotation(Entity.class) != null;
+        return clazz != null && JPA_ENTITY_ANNOTATION != null && clazz.getAnnotation(JPA_ENTITY_ANNOTATION) != null;
     }
 
 }
