@@ -2,8 +2,3 @@
 org.springframework.boot.env.PropertySourceLoader=\
 org.grails.spring.boot.env.GroovyConfigPropertySourceLoader,\
 org.grails.spring.boot.env.YamlPropertySourceLoader
-
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.grails.plugins.core.CoreConfiguration,\
-org.grails.plugins.core.PropertyPlaceholderConfiguration

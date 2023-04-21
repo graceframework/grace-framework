@@ -16,10 +16,10 @@
 package org.grails.plugins.core;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import grails.config.ConfigProperties;
@@ -32,7 +32,7 @@ import grails.core.GrailsApplication;
  * @author Michael Yan
  * @since 4.0
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureOrder
 public class CoreConfiguration {
 

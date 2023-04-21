@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
 
 import grails.databinding.TypedStructuredBindingEditor;
@@ -34,7 +34,7 @@ import org.grails.plugins.databinding.DataBindingConfigurationProperties;
 /**
  * Default converters configuration.
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class DefaultConvertersConfiguration {
 
     private final DataBindingConfigurationProperties configurationProperties;

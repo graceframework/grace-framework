@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package grails.boot.config;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.context.annotation.Configuration
  * @see GrailsApplicationPostProcessor
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureOrder(10000)
 @Import(GrailsAutoConfiguration.GrailsRegistrar.class)
 public class GrailsAutoConfiguration {

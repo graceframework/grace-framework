@@ -16,12 +16,12 @@
 package org.grails.plugins.databinding;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import grails.core.GrailsApplication;
@@ -49,7 +49,7 @@ import org.grails.web.databinding.bindingsource.XmlDataBindingSourceCreator;
  *
  * @since 2022.0.0
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureOrder
 @EnableConfigurationProperties(DataBindingConfigurationProperties.class)
 @ImportAutoConfiguration(DefaultConvertersConfiguration.class)

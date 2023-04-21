@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import grails.config.Config;
@@ -44,7 +44,7 @@ import org.grails.web.mime.DefaultMimeUtility;
  * @author Michael Yan
  * @since 4.0
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureOrder
 public class MimeTypesConfiguration {
 

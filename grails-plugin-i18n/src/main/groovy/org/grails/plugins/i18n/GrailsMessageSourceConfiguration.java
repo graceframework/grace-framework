@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.grails.plugins.i18n;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
@@ -24,7 +24,6 @@ import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 
 import grails.config.Config;
@@ -40,8 +39,7 @@ import org.grails.spring.context.support.PluginAwareResourceBundleMessageSource;
  * @author Michael Yan
  * @since 2022.0.0
  */
-@Configuration(proxyBeanMethods = false)
-@AutoConfigureBefore(MessageSourceAutoConfiguration.class)
+@AutoConfiguration(before = MessageSourceAutoConfiguration.class)
 public class GrailsMessageSourceConfiguration {
 
     @Bean

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
 package org.grails.plugins.core;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import grails.config.Config;
@@ -40,9 +39,8 @@ import org.grails.spring.context.support.GrailsPlaceholderConfigurer;
  * @author Michael Yan
  * @since 2022.0.0
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration(before = PropertyPlaceholderAutoConfiguration.class)
 @AutoConfigureOrder(10010)
-@AutoConfigureBefore(PropertyPlaceholderAutoConfiguration.class)
 public class PropertyPlaceholderConfiguration {
 
     @Bean
