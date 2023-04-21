@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@ package org.grails.boot.actuate.autoconfigure;
 import org.springframework.boot.actuate.autoconfigure.info.ConditionalOnEnabledInfoContributor;
 import org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration;
 import org.springframework.boot.actuate.info.InfoContributor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
@@ -35,8 +34,7 @@ import org.grails.boot.actuate.endpoint.AppInfoContributor;
  * @author Michael Yan
  * @since 2022.0.0
  */
-@Configuration(proxyBeanMethods = false)
-@AutoConfigureAfter(InfoContributorAutoConfiguration.class)
+@AutoConfiguration(after = InfoContributorAutoConfiguration.class)
 public class AppInfoContributorAutoConfiguration {
 
     public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE;
