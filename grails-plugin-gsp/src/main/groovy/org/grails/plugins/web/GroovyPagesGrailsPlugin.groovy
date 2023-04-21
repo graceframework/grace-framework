@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.config.PropertiesFactoryBean
 import org.springframework.boot.web.servlet.ServletRegistrationBean
+import org.springframework.core.Ordered
 import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 import org.springframework.web.servlet.view.InternalResourceViewResolver
@@ -69,13 +70,15 @@ import org.grails.web.util.GrailsApplicationAttributes
  * @since 1.1
  */
 @Slf4j
-class GroovyPagesGrailsPlugin extends Plugin {
+class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
     public static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
     public static final String GSP_VIEWS_DIR = 'grails.gsp.view.dir'
     public static final String GSP_VIEW_LAYOUT_RESOLVER_ENABLED = 'grails.gsp.view.layoutViewResolver'
     public static final String SITEMESH_DEFAULT_LAYOUT = 'grails.sitemesh.default.layout'
     public static final String SITEMESH_ENABLE_NONGSP = 'grails.sitemesh.enable.nongsp'
+
+    int order = 600
 
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",
                             "file:./grails-app/taglib/**/*TagLib.groovy",
@@ -85,7 +88,6 @@ class GroovyPagesGrailsPlugin extends Plugin {
     def grailsVersion = "3.3.0 > *"
     def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
     def observe = ['controllers']
-    def loadAfter = ['filters']
 
     def providedArtefacts = [
             ApplicationTagLib,
