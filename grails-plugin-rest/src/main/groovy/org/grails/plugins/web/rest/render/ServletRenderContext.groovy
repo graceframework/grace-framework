@@ -129,6 +129,20 @@ class ServletRenderContext extends AbstractRenderContext {
         modelAndView ? modelAndView.viewName : null
     }
 
+    @Override
+    String getDefaultViewName() {
+        String namespace = getControllerNamespace()
+        String controller = getControllerName()
+        String viewName = getActionName()
+        if (namespace) {
+            viewName = namespace + '/' + controller + '/' + viewName
+        }
+        else {
+            viewName = controller + '/' + viewName
+        }
+        viewName
+    }
+
     protected ModelAndView getModelAndView() {
         HttpServletRequest request = this.webRequest.currentRequest
         ModelAndView modelAndView = (ModelAndView) request.getAttribute(GrailsApplicationAttributes.MODEL_AND_VIEW)

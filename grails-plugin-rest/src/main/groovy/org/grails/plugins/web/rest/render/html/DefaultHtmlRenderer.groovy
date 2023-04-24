@@ -68,7 +68,7 @@ class DefaultHtmlRenderer<T> implements Renderer<T> {
         }
 
         if (!context.viewName) {
-            context.setViewName(context.actionName)
+            context.setViewName(context.defaultViewName)
         }
 
         if (object instanceof Errors) {

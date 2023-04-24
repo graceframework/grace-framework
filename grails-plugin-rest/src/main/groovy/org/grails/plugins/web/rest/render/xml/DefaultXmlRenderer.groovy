@@ -77,7 +77,7 @@ class DefaultXmlRenderer<T> implements Renderer<T> {
         MimeType mimeType = context.acceptMimeType ?: MimeType.XML
         context.setContentType(GrailsWebUtil.getContentType(mimeType.name, encoding))
 
-        String viewName = context.viewName ?: context.actionName
+        String viewName = context.viewName ?: context.defaultViewName
         GroovyPageScriptSource view = groovyPageLocator?.findViewForFormat(context.controllerName, viewName, mimeType.extension)
         if (view) {
             // if a view is provided, we use the HTML renderer to return an appropriate model to the view
