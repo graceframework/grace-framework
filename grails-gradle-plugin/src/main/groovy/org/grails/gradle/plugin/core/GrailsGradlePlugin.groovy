@@ -560,7 +560,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 ]
 
                 task.from(project.relativePath('src/main/templates')) {
-                    into('META-INF/templates')
+                    into('templates')
+                    include '**/*.gsp'
                 }
 
                 if (!native2ascii) {
