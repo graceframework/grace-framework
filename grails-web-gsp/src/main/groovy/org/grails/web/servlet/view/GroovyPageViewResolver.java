@@ -196,14 +196,8 @@ public class GroovyPageViewResolver extends InternalResourceViewResolver impleme
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Locating GSP view for controller [%s] and path [%s]", controller, viewName));
             }
-            if (viewName.indexOf("/") > 0) {
-                String[] viewPaths = viewName.split("/");
-                String currentViewName = viewPaths[viewPaths.length - 1];
-                scriptSource = this.groovyPageLocator.findView(controller, currentViewName);
-            }
-            else {
-                scriptSource = this.groovyPageLocator.findView(controller, viewName);
-            }
+            String shortViewName = viewName.substring(viewName.lastIndexOf("/") + 1);
+            scriptSource = this.groovyPageLocator.findView(controller, shortViewName);
         }
         if (scriptSource != null) {
             return createGroovyPageView(scriptSource.getURI(), scriptSource);
