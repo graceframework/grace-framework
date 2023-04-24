@@ -598,8 +598,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         def projectClassName = GrailsNameUtils.getNameFromScript(appname)
 
         variables['grails.codegen.projectClassName'] = projectClassName
-        variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grails.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
+        variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
+        variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grails.profile'] = profileName
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appname
