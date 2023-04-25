@@ -42,7 +42,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
     public static final String CONFIG_SYSTEM_PROPERTY_NAME
     public static final boolean ENABLED
     static {
-        CONFIG_SYSTEM_PROPERTY_NAME = "grails.views.gsp.modelrecording"
+        CONFIG_SYSTEM_PROPERTY_NAME = 'grails.views.gsp.modelrecording'
         ENABLED = Boolean.getBoolean(CONFIG_SYSTEM_PROPERTY_NAME)
     }
     private static final ModelRecordingCache MODEL_RECORDING_CACHE = new ModelRecordingCache()
@@ -65,7 +65,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
         if (value != null) {
             modelEntry.taglibs.add(namespace)
         }
-        return value
+        value
     }
 
     @Override
@@ -74,7 +74,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
         if (value != null) {
             modelEntry.taglibs.add(jspTagLibName)
         }
-        return value
+        value
     }
 
     @Override
@@ -92,7 +92,7 @@ abstract class ModelRecordingGroovyPage extends GroovyPage {
                 modelEntry.model.put(property, valueClass.getName())
             }
         }
-        return value
+        value
     }
 
 }
@@ -112,9 +112,9 @@ class ModelRecordingCache {
     }
 
     private void initialize() {
-        System.err.println("Initialized model recording.")
+        System.err.println('Initialized model recording.')
         ShutdownOperations.addOperation {
-            System.err.println("Writing model recordings to disk...")
+            System.err.println('Writing model recordings to disk...')
             try {
                 close()
             }
@@ -122,7 +122,7 @@ class ModelRecordingCache {
                 e.printStackTrace(System.err)
             }
             finally {
-                System.err.println("Done.")
+                System.err.println('Done.')
             }
         }
     }
@@ -182,7 +182,7 @@ class ModelEntry {
     String getGspDeclaration() {
         if (model || hasTagLibs()) {
             def gspDeclaration = new StringBuilder()
-            gspDeclaration << "@{"
+            gspDeclaration << '@{'
             if (model) {
                 gspDeclaration << " model='''\n"
                 model.each { String fieldName, String fieldType ->
@@ -208,10 +208,10 @@ class ModelEntry {
             if (hasTagLibs()) {
                 gspDeclaration << " taglibs='${customTagLibs.join(', ')}' "
             }
-            gspDeclaration << "}\n"
+            gspDeclaration << '}\n'
             return gspDeclaration.toString()
         }
-        return null
+        null
     }
 
 }

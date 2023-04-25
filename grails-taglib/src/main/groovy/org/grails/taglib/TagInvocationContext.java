@@ -46,7 +46,7 @@ public class TagInvocationContext {
     }
 
     public String getNamespace() {
-        return namespace;
+        return this.namespace;
     }
 
     public void setNamespace(String namespace) {
@@ -54,7 +54,7 @@ public class TagInvocationContext {
     }
 
     public String getTagName() {
-        return tagName;
+        return this.tagName;
     }
 
     public void setTagName(String tagName) {
@@ -62,7 +62,7 @@ public class TagInvocationContext {
     }
 
     public Map getAttrs() {
-        return attrs;
+        return this.attrs;
     }
 
     public void setAttrs(Map attrs) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ class GroovyPageCompiler {
     Map compile() {
         if (srcFiles && targetDir && viewsDir) {
             if (!generatedGroovyPagesDirectory) {
-                generatedGroovyPagesDirectory = new File(System.getProperty("java.io.tmpdir"), "gspcompile")
+                generatedGroovyPagesDirectory = new File(System.getProperty('java.io.tmpdir'), 'gspcompile')
                 generatedGroovyPagesDirectory.mkdirs()
             }
             if (configs) {
@@ -127,7 +127,7 @@ class GroovyPageCompiler {
                                 throw ex
                             }
                         }
-                        return results
+                        results
                     } as Callable)
                 }
 
@@ -146,13 +146,13 @@ class GroovyPageCompiler {
                 }
 
                 // write the view registry to a properties file (this is read by GroovyPagesTemplateEngine at runtime)
-                File viewregistryFile = new File(targetDir, "gsp/views.properties")
+                File viewregistryFile = new File(targetDir, 'gsp/views.properties')
                 viewregistryFile.parentFile.mkdirs()
                 Properties views = new Properties()
                 if (viewregistryFile.exists()) {
                     // only changed files are added to the mapping, read the existing mapping file
                     viewregistryFile.withInputStream { stream ->
-                        views.load(new InputStreamReader(stream, "UTF-8"))
+                        views.load(new InputStreamReader(stream, 'UTF-8'))
                     }
                 }
                 views.putAll(compileGSPRegistry)
@@ -165,7 +165,7 @@ class GroovyPageCompiler {
                 threadPool.shutdown()
             }
         }
-        return compileGSPRegistry
+        compileGSPRegistry
     }
 
     /**
@@ -186,7 +186,7 @@ class GroovyPageCompiler {
         String packageDir = "gsp/${packagePrefix}"
         if (relPackagePath.length() > 0) {
             if (!packageDir.endsWith('/')) {
-                packageDir += "/"
+                packageDir += '/'
             }
             packageDir += generateJavaName(relPackagePath)
         }
@@ -207,7 +207,7 @@ class GroovyPageCompiler {
 
         // compile check
         if (gspfile.exists() && (!classFile.exists() || gspfile.lastModified() > classFile.lastModified())) {
-            File gspgroovyfile = new File(new File(generatedGroovyPagesDirectory, packageDir), className + ".groovy")
+            File gspgroovyfile = new File(new File(generatedGroovyPagesDirectory, packageDir), className + '.groovy')
             // gspgroovyfile.getParentFile().mkdirs()
 
             gspfile.withInputStream { InputStream gspinput ->
@@ -243,7 +243,7 @@ class GroovyPageCompiler {
             compileGSPResults[viewuri] = fullClassName
         }
 
-        return compileGSPResults
+        compileGSPResults
     }
 
     // find out the relative path from relbase to file
