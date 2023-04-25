@@ -59,11 +59,11 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
     private static final List<Integer> TRANSFORMED_INSTANCES = []
 
     static {
-        ClassLoader classLoader = GrailsASTUtils.class.getClassLoader();
-        if (ClassUtils.isPresent("org.grails.plugins.datasource.DataSourceConnectionSourcesFactoryBean", classLoader)) {
+        ClassLoader classLoader = GrailsASTUtils.getClassLoader()
+        if (ClassUtils.isPresent('org.grails.plugins.datasource.DataSourceConnectionSourcesFactoryBean', classLoader)) {
             EXCLUDED_AUTO_CONFIGURE_CLASSES.add('org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration')
         }
-        if (ClassUtils.isPresent("org.grails.orm.hibernate.HibernateDatastore", classLoader)) {
+        if (ClassUtils.isPresent('org.grails.orm.hibernate.HibernateDatastore', classLoader)) {
             EXCLUDED_AUTO_CONFIGURE_CLASSES.add('org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration')
         }
     }
