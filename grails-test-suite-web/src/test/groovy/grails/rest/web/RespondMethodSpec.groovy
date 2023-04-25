@@ -59,7 +59,7 @@ class RespondMethodSpec extends Specification implements ControllerUnitTest<Book
             modelAndView != null
             modelAndView instanceof ModelAndView
             modelAndView.model.book == book
-            modelAndView.viewName == 'show'
+            modelAndView.viewName == 'book/show'
     }
 
     void "Test that the respond method produces XML for a domain instance and a content type of XML"() {
@@ -162,7 +162,7 @@ class RespondMethodSpec extends Specification implements ControllerUnitTest<Book
         modelAndView != null
         modelAndView instanceof ModelAndView
         modelAndView.model == [book: book, extra: true]
-        modelAndView.viewName == 'showWithModel'
+        modelAndView.viewName == 'book/showWithModel'
     }
 
     void "Test that the respond method produces errors HTML for a domain instance that has errors and a content type of HTML"() {
@@ -179,7 +179,7 @@ class RespondMethodSpec extends Specification implements ControllerUnitTest<Book
         modelAndView != null
         modelAndView instanceof ModelAndView
         modelAndView.model == [book: book, extra: true]
-        modelAndView.viewName == 'showWithModel'
+        modelAndView.viewName == 'book/showWithModel'
     }
     
     void "Test that proxyHandler is used for unwrapping wrapped model"() {
@@ -196,7 +196,7 @@ class RespondMethodSpec extends Specification implements ControllerUnitTest<Book
         modelAndView != null
         modelAndView instanceof ModelAndView
         modelAndView.model == [book: book, extra: true]
-        modelAndView.viewName == 'showWithModel'
+        modelAndView.viewName == 'book/showWithModel'
     }
     
     void "Test that proxyHandler is used for unwrapping proxy collections"() {
@@ -217,7 +217,7 @@ class RespondMethodSpec extends Specification implements ControllerUnitTest<Book
         modelAndView instanceof ModelAndView
         modelAndView.model.containsKey('bookList')
         modelAndView.model.extra == true
-        modelAndView.viewName == 'showWithModel'
+        modelAndView.viewName == 'book/showWithModel'
     }
 
     @Issue(['grails/grails-core#610', 'grails/grails-core#611'])

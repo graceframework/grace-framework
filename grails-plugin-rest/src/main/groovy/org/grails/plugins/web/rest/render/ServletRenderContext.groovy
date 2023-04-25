@@ -134,10 +134,10 @@ class ServletRenderContext extends AbstractRenderContext {
         String namespace = getControllerNamespace()
         String controller = getControllerName()
         String viewName = getActionName()
-        if (namespace) {
+        if (namespace && controller) {
             viewName = namespace + '/' + controller + '/' + viewName
         }
-        else {
+        else if (controller) {
             viewName = controller + '/' + viewName
         }
         viewName
