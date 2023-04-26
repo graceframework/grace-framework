@@ -1,5 +1,5 @@
 [plugins]
-cache = "5.2.0"
+cache = "5.2.1"
 fields = "5.2.1"
 geb = "3.0.0"
 hibernate5 = "2022.2.1"
