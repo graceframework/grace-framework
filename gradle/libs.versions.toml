@@ -36,16 +36,9 @@ jakarta-servlet-jsp = "3.1.0"
 jakarta-servlet-jsp-jstl = "3.0.0"
 jakarta-transaction = "2.0.1"
 jakarta-validation = "3.0.2"
+jakarta-xml-bind = "4.0.0"
 javaparser = "3.15.14"
 javassist = "3.29.0-GA"
-javax-annotation = "1.3.2"
-javax-el = "3.0.1-b06"
-javax-inject = "1"
-javax-jaxb = "2.3.1"
-javax-jsp = "2.2"
-javax-jstl = "1.2"
-javax-persistence = "2.2"
-javax-servlet = "4.0.1"
 jline = "2.14.6"
 jna = "5.10.0"
 json-unit = "2.36.0"
@@ -150,17 +143,10 @@ jakarta-servlet-jsp = { module = "jakarta.servlet.jsp:jakarta.servlet.jsp-api", 
 jakarta-servlet-jsp-jstl = { module = "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api", version.ref = "jakarta-servlet-jsp-jstl" }
 jakarta-transaction = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction" }
 jakarta-validation = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
+jakarta-xml-bind-api = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-xml-bind" }
 jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
-javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation" }
-javax-el = { module = "javax.el:javax.el-api", version.ref = "javax-el" }
-javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
-javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
-javax-jsp = { module = "javax.servlet.jsp:jsp-api", version.ref = "javax-jsp" }
-javax-jstl = { module = "javax.servlet:jstl", version.ref = "javax-jstl" }
-javax-persistence = { module = "javax.persistence:javax.persistence-api", version.ref = "javax-persistence" }
-javax-servlet = { module = "javax.servlet:javax.servlet-api", version.ref = "javax-servlet" }
 jline = { module = "jline:jline", version.ref = "jline" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 json-unit = { module = "net.javacrumbs.json-unit:json-unit", version.ref = "json-unit" }
@@ -230,8 +216,7 @@ grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datast
 grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
-jakarta = ["jakarta-annotation-api"]
-javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet"]
+jakarta = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
 micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
 spock = ["spock-core", "spock-spring"]
 spring-boot = ["spring-boot-dependencies"]
