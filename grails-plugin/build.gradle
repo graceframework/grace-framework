@@ -25,7 +25,7 @@ dependencies {
     compileOnly("org.grails:grails-core:$grailsVersion")
     compileOnly("org.grails:grails-cli:$grailsVersion")
     api "org.springframework:spring-orm:$springVersion"
-    api "org.hibernate:hibernate-core:${hibernate5Version}"
+    api "org.hibernate:hibernate-core-jakarta:${hibernate5Version}"
     api "org.grails:grails-datastore-web:$gormVersion"
     api "org.grails:grails-datastore-gorm-support:$gormVersion"
     api project(":grails-datastore-gorm-hibernate5"), {
@@ -38,6 +38,9 @@ dependencies {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'javax.transaction', module:'jta'
     }
+
+    testImplementation "jakarta.servlet:jakarta.servlet-api:$jakartaServletVersion"
+    testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
