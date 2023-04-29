@@ -12,6 +12,7 @@ configurations.all {
             details.useVersion(springVersion)
         }
     }
+    exclude group: 'org.codehaus.groovy'
 }
 
 dependencies {
