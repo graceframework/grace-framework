@@ -49,7 +49,7 @@ class HibernateSpecSpec extends HibernateSpec {
     List<Class> getDomainClasses() { [Person, Player, Book] }
 }
 
-@Entity
+//@Entity
 class Person {
     String name
     Integer age
