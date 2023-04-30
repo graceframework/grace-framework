@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ package grails.rest.render
  * @author Graeme Rocher
  * @since 2.3
  */
-interface ContainerRenderer<C, T> extends Renderer<C> {
+interface ContainerRenderer<T, C> extends Renderer<T> {
 
     /**
      * @return The underlying type wrapped by the container. For example with List<Book>, this method would return Book
      */
-    Class<T> getComponentType()
+    Class<C> getComponentType()
 
 }
