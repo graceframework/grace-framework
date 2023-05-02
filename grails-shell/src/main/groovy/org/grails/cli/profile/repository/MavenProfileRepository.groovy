@@ -15,9 +15,7 @@
  */
 package org.grails.cli.profile.repository
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import groovy.xml.XmlSlurper
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
@@ -40,6 +38,8 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration(
             'grailsCentral', new URI('https://repo.grails.org/grails/core'), true)
 
+    public static final GrailsRepositoryConfiguration MAVEN_LOCAL_REPO = getMavenLocalRepoConfiguration()
+
     List<GrailsRepositoryConfiguration> repositoryConfigurations
     MavenResolverGrapeEngine grapeEngine
     GroovyClassLoader classLoader
@@ -57,7 +57,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     }
 
     MavenProfileRepository() {
-        this([DEFAULT_REPO])
+        this([MAVEN_LOCAL_REPO, DEFAULT_REPO])
     }
 
     @Override
@@ -87,31 +87,11 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         try {
             this.grapeEngine.grab(group: art.groupId, module: art.artifactId, version: art.version ?: null)
         }
-        catch (DependencyResolutionFailedException e) {
-            def localData = new File(System.getProperty('user.home'),
-                    "/.m2/repository/${art.groupId.replace('.', '/')}/$art.artifactId/maven-metadata-local.xml")
-            if (localData.exists()) {
-                def currentVersion = parseCurrentVersion(localData)
-                def profileFile = new File(localData.parentFile, "$currentVersion/${art.artifactId}-${currentVersion}.jar")
-                if (profileFile.exists()) {
-                    this.classLoader.addURL(profileFile.toURI().toURL())
-                }
-                else {
-                    throw e
-                }
-            }
-            else {
-                throw e
-            }
+        catch (DependencyResolutionFailedException ignore) {
         }
 
         processUrls()
         super.getProfile(art.artifactId)
-    }
-
-    @CompileDynamic
-    protected String parseCurrentVersion(File localData) {
-        new XmlSlurper().parse(localData).versioning.versions.version[0].text()
     }
 
     protected void processUrls() {
@@ -136,26 +116,19 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 this.grapeEngine.grab(profile)
             }
 
-            def localData = new File(System.getProperty('user.home'), '/.m2/repository/org/grails/profiles')
-            if (localData.exists()) {
-                localData.eachDir { File dir ->
-                    if (!dir.name.startsWith('.')) {
-                        def profileData = new File(dir, '/maven-metadata-local.xml')
-                        if (profileData.exists()) {
-                            def currentVersion = parseCurrentVersion(profileData)
-                            def profileFile = new File(dir, "$currentVersion/${dir.name}-${currentVersion}.jar")
-                            if (profileFile.exists()) {
-                                this.classLoader.addURL(profileFile.toURI().toURL())
-                            }
-                        }
-                    }
-                }
-            }
-
             processUrls()
             this.resolved = true
         }
         super.getAllProfiles()
+    }
+
+    private static GrailsRepositoryConfiguration getMavenLocalRepoConfiguration() {
+        String mavenRoot = System.getProperty('maven.home')
+        File defaultM2HomeDirectory = mavenRoot ? new File(mavenRoot)
+                : new File(System.getProperty('user.home'), '.m2')
+
+        File m2RepoDirectory = new File(defaultM2HomeDirectory, 'repository')
+        new GrailsRepositoryConfiguration('mavenLocal', m2RepoDirectory.toURI(), true)
     }
 
 }

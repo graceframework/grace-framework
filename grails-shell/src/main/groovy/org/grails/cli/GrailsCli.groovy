@@ -135,7 +135,10 @@ class GrailsCli {
     CodeGenConfig applicationConfig
     ProjectContext projectContext
     Profile profile = null
-    List<GrailsRepositoryConfiguration> profileRepositories = [MavenProfileRepository.DEFAULT_REPO]
+    List<GrailsRepositoryConfiguration> profileRepositories = [
+            MavenProfileRepository.MAVEN_LOCAL_REPO,
+            MavenProfileRepository.DEFAULT_REPO
+    ]
 
     /**
      * Obtains a value from USER_HOME/.grails/settings.yml
