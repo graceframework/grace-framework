@@ -18,7 +18,6 @@ package grails.ui.console
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
@@ -64,8 +63,12 @@ class GrailsSwingConsole extends Grails {
     }
 
     @Override
-    protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
-        startConsole(context)
+    ConfigurableApplicationContext run(String... args) {
+        ConfigurableApplicationContext applicationContext = super.run(args)
+
+        startConsole(applicationContext)
+
+        applicationContext
     }
 
     protected void startConsole(ConfigurableApplicationContext context) {
