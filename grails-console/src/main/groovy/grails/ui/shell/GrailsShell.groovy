@@ -19,8 +19,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.apache.groovy.groovysh.Groovysh
 import org.apache.groovy.groovysh.InteractiveShellRunner
+import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.shell.IO
-import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
@@ -70,8 +70,12 @@ class GrailsShell extends Grails {
     }
 
     @Override
-    protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
-        startConsole(context)
+    ConfigurableApplicationContext run(String... args) {
+        ConfigurableApplicationContext applicationContext = super.run(args)
+
+        startConsole(applicationContext)
+
+        applicationContext
     }
 
     protected void startConsole(ConfigurableApplicationContext context) {
@@ -86,6 +90,7 @@ class GrailsShell extends Grails {
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
         Groovysh groovysh = new Groovysh(binding, new IO()) {
+            CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
 
             @Override
             void displayWelcomeBanner(InteractiveShellRunner runner) {
