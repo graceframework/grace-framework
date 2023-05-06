@@ -38,7 +38,7 @@ jakarta-transaction = "2.0.1"
 jakarta-validation = "3.0.2"
 jakarta-xml-bind = "4.0.0"
 javaparser = "3.15.14"
-javassist = "3.29.0-GA"
+javassist = "3.29.2-GA"
 jline = "2.14.6"
 jna = "5.10.0"
 json-unit = "2.36.0"
@@ -49,7 +49,7 @@ junit-platform = "1.9.2"
 maven = "3.6.3"
 maven-resolver = "1.6.3"
 methvin-directory-watcher = "0.17.1"
-micronaut-core = "3.8.6"
+micronaut-core = "3.9.1"
 mockito = "4.5.1"
 mongodb-java-driver = "4.6.1"
 objenesis = "3.3"
@@ -84,11 +84,13 @@ grails-async = { module = "org.grails:grails-async", version.ref = "grails-async
 grails-async-gpars = { module = "org.grails:grails-async-gpars", version.ref = "grails-async" }
 grails-async-rxjava = { module = "org.grails:grails-async-rxjava", version.ref = "grails-async" }
 grails-async-rxjava2 = { module = "org.grails:grails-async-rxjava2", version.ref = "grails-async" }
+grails-async-rxjava3 = { module = "org.grails:grails-async-rxjava3", version.ref = "grails-async" }
 grails-events = { module = "org.grails:grails-events", version.ref = "grails-events" }
 grails-events-compat = { module = "org.grails:grails-events-compat", version.ref = "grails-events" }
 grails-events-gpars = { module = "org.grails:grails-events-gpars", version.ref = "grails-events" }
 grails-events-rxjava = { module = "org.grails:grails-events-rxjava", version.ref = "grails-events" }
 grails-events-rxjava2 = { module = "org.grails:grails-events-rxjava2", version.ref = "grails-events" }
+grails-events-rxjava3 = { module = "org.grails:grails-events-rxjava3", version.ref = "grails-events" }
 grails-events-spring = { module = "org.grails:grails-events-spring", version.ref = "grails-events" }
 grails-events-transform = { module = "org.grails:grails-events-transform", version.ref = "grails-events" }
 grails-datastore-core = { module = "org.grails:grails-datastore-core", version.ref = "grails-gorm" }
@@ -96,6 +98,7 @@ grails-datastore-async = { module = "org.grails:grails-datastore-async", version
 grails-datastore-gorm = { module = "org.grails:grails-datastore-gorm", version.ref = "grails-gorm" }
 grails-datastore-gorm-async = { module = "org.grails:grails-datastore-gorm-async", version.ref = "grails-gorm" }
 grails-datastore-gorm-hibernate5 = { module = "org.grails:grails-datastore-gorm-hibernate5", version.ref = "grails-gorm-hibernate" }
+grails-datastore-gorm-rx = { module = "org.grails:grails-datastore-gorm-rx", version.ref = "grails-gorm" }
 grails-datastore-gorm-support = { module = "org.grails:grails-datastore-gorm-support", version.ref = "grails-gorm" }
 grails-datastore-gorm-test = { module = "org.grails:grails-datastore-gorm-test", version.ref = "grails-gorm" }
 grails-datastore-gorm-validation = { module = "org.grails:grails-datastore-gorm-validation", version.ref = "grails-gorm" }
@@ -209,10 +212,10 @@ xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xht
 
 [bundles]
 bom = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
-grails-async = ["grails-async", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-plugin-async"]
+grails-async = ["grails-async", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-async-rxjava3", "grails-plugin-async"]
 grails-devtools = ["methvin-directoryWatcher"]
-grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
-grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datastore-gorm", "grails-datastore-gorm-async", "grails-datastore-gorm-hibernate5", "grails-datastore-gorm-support", "grails-datastore-gorm-test", "grails-datastore-gorm-validation"]
+grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-rxjava3", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
+grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datastore-gorm", "grails-datastore-gorm-async", "grails-datastore-gorm-rx", "grails-datastore-gorm-hibernate5", "grails-datastore-gorm-support", "grails-datastore-gorm-test", "grails-datastore-gorm-validation"]
 grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
