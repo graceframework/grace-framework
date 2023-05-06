@@ -88,7 +88,7 @@ class ProfileCompilerTask extends AbstractCompile {
 
         def options = new DumperOptions()
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK)
-        def yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(), options)
+        def yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(new DumperOptions()), options)
         Map<String, Object> profileData
         if (profileYmlExists) {
             profileData = (Map<String, Object>) config.withReader { BufferedReader r ->
