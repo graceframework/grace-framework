@@ -29,6 +29,7 @@ import org.springframework.util.ClassUtils
 import grails.binding.GroovyShellBindingCustomizer
 import grails.boot.Grails
 import grails.core.GrailsApplication
+import grails.persistence.support.PersistenceContextInterceptor
 import grails.ui.shell.support.GroovyshApplicationContext
 import grails.ui.shell.support.GroovyshWebApplicationContext
 
@@ -90,7 +91,10 @@ class GrailsShell extends Grails {
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
         Groovysh groovysh = new Groovysh(binding, new IO()) {
+
             CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
+            Closure beforeExecution
+            Closure afterExecution
 
             @Override
             void displayWelcomeBanner(InteractiveShellRunner runner) {
@@ -108,6 +112,33 @@ class GrailsShell extends Grails {
                 io.out.println('-' * (95 - 1))
             }
 
+            @Override
+            Object execute(String line) {
+                if (beforeExecution) {
+                    beforeExecution()
+                }
+
+                Object result = super.execute(line)
+
+                if (afterExecution) {
+                    afterExecution()
+                }
+
+                result
+            }
+
+        }
+
+        Collection<PersistenceContextInterceptor> interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
+        groovysh.beforeExecution = {
+            for (i in interceptors) {
+                i.init()
+            }
+        }
+        groovysh.afterExecution = {
+            for (i in interceptors) {
+                i.destroy()
+            }
         }
         groovysh.historyFull = true
         groovysh.imports.addAll(packageNames.collect({ it + '.*' }).toList())
