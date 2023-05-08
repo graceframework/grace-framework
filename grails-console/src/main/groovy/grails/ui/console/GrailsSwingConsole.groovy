@@ -15,6 +15,9 @@
  */
 package grails.ui.console
 
+import java.util.prefs.Preferences
+
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
@@ -29,6 +32,7 @@ import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
 import grails.ui.console.support.GroovyConsoleApplicationContext
 import grails.ui.console.support.GroovyConsoleWebApplicationContext
+import grails.util.GrailsVersion
 
 /**
  * The Grails console runs Grails embedded within a Swing console instead of within a container like Tomcat
@@ -71,6 +75,7 @@ class GrailsSwingConsole extends Grails {
         applicationContext
     }
 
+    @CompileDynamic
     protected void startConsole(ConfigurableApplicationContext context) {
         GrailsApplication grailsApplication = context.getBean(GrailsApplication)
         Collection<GroovyShellBindingCustomizer> bindingCustomizers = context.getBeansOfType(GroovyShellBindingCustomizer).values()
@@ -90,12 +95,75 @@ class GrailsSwingConsole extends Grails {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
         groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(classLoader, binding, baseConfig) {
 
+            static final TITLE = 'GrailsSwingConsole'
+            static prefs = Preferences.userNodeForPackage(GrailsSwingConsole)
+
+            @Override
+            def askToInterruptScript() {
+                if (!super.scriptRunning) {
+                    return true
+                }
+                def rc = javax.swing.JOptionPane.showConfirmDialog(super.frame,
+                        "Script executing. Press 'OK' to attempt to interrupt it before exiting.",
+                        TITLE, javax.swing.JOptionPane.OK_CANCEL_OPTION)
+                if (rc == javax.swing.JOptionPane.OK_OPTION) {
+                    super.doInterrupt()
+                    return true
+                }
+                false
+            }
+
+            @Override
+            boolean askToSaveFile() {
+                if (!super.dirty) {
+                    return true
+                }
+                switch (javax.swing.JOptionPane.showConfirmDialog(super.frame,
+                        'Save changes' + (super.scriptFile != null ? " to ${super.scriptFile.name}" : '') + '?',
+                        TITLE, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION)) {
+                    case javax.swing.JOptionPane.YES_OPTION:
+                        return fileSave()
+                    case javax.swing.JOptionPane.NO_OPTION:
+                        return true
+                    default:
+                        return false
+                }
+            }
+
             @Override
             boolean exit(EventObject evt) {
                 boolean exit = super.exit(evt)
                 self.close()
                 System.exit(0)
                 exit
+            }
+
+            @Override
+            void updateTitle() {
+                if (super.frame.title) {
+                    String title = TITLE
+                    if (super.indy) {
+                        title += ' (Indy)'
+                    }
+                    if (super.scriptFile != null) {
+                        super.frame.title = super.scriptFile.name + (super.dirty ? ' * ' : '') + ' - ' + title
+                    }
+                    else {
+                        super.frame.title = title
+                    }
+                }
+            }
+
+            @Override
+            void showAbout(EventObject evt = null) {
+                def grailsVersion = GrailsVersion.current().getVersion()
+                def groovyVersion = GroovySystem.getVersion()
+                def pane = super.swing.optionPane()
+                pane.setMessage('Welcome to the Grails Swing Console for evaluating Groovy scripts' +
+                        "\nGroovy: $groovyVersion" +
+                        "\nGrails: $grailsVersion")
+                def dialog = pane.createDialog(super.frame, 'About ' + TITLE)
+                dialog.setVisible(true)
             }
 
         }
@@ -115,7 +183,7 @@ class GrailsSwingConsole extends Grails {
         groovyConsole.run()
     }
 
-   /**
+    /**
      * Static helper that can be used to run a {@link Grails} from the
      * specified source using default settings.
      * @param source the source to load
