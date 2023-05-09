@@ -156,10 +156,13 @@ class MainClassFinder {
                 }
             }
             if (file.isDirectory()) {
-                Collection<File> files = file.listFiles()?.findAll { File f ->
-                    (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
-                            (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
-                }
+                File[] files = file.listFiles(new FileFilter() {
+                    @Override
+                    boolean accept(File f) {
+                        (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
+                                (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
+                    }
+                })
 
                 if (files) {
                     for (File sub in files) {
@@ -186,7 +189,7 @@ class MainClassFinder {
         boolean found = false
 
         MainMethodFinder() {
-            super(Opcodes.ASM7)
+            super(Opcodes.ASM9)
         }
 
         @Override
