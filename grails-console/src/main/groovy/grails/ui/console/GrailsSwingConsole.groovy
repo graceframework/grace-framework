@@ -157,11 +157,16 @@ class GrailsSwingConsole extends Grails {
             @Override
             void showAbout(EventObject evt = null) {
                 def grailsVersion = GrailsVersion.current().getVersion()
+                def javaVersion = String.format('%s (%s %s)', System.getProperty('java.version'),
+                        System.getProperty('java.vm.vendor'), System.getProperty('java.vm.version'))
+                def osVersion = String.format('%s %s %s', System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch'))
                 def groovyVersion = GroovySystem.getVersion()
                 def pane = super.swing.optionPane()
                 pane.setMessage('Welcome to the Grails Swing Console for evaluating Groovy scripts' +
+                        "\nGrails: $grailsVersion" +
                         "\nGroovy: $groovyVersion" +
-                        "\nGrails: $grailsVersion")
+                        "\nJVM: $javaVersion" +
+                        "\nOS: $osVersion")
                 def dialog = pane.createDialog(super.frame, 'About ' + TITLE)
                 dialog.setVisible(true)
             }
