@@ -506,7 +506,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
             classpath = project.sourceSets.main.runtimeClasspath + configuration
-            mainClass.set('grails.ui.console.GrailsSwingConsole')
+            mainClass.set('grails.ui.console.GrailsConsole')
         }
     }
 
