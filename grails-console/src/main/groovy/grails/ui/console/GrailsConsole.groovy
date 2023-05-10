@@ -171,6 +171,23 @@ class GrailsConsole extends Grails {
                 dialog.setVisible(true)
             }
 
+            @Override
+            void fileNewWindow(EventObject evt = null) {
+                super.frameConsoleDelegates['rootContainerDelegate'] = {
+                    frame(
+                            title: TITLE
+                    ) {
+                        try {
+                            current.locationByPlatform = true
+                        } catch (Exception e) {
+                            current.location = [100, 100]
+                        }
+                        containingWindows += current
+                    }
+                }
+                super.fileNewWindow(evt)
+            }
+
         }
 
         Collection<PersistenceContextInterceptor> interceptors = context.getBeansOfType(PersistenceContextInterceptor).values()
