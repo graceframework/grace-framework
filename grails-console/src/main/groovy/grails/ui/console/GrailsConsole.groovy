@@ -41,18 +41,18 @@ import grails.util.GrailsVersion
  * @since 3.0
  */
 @CompileStatic
-class GrailsSwingConsole extends Grails {
+class GrailsConsole extends Grails {
 
     static {
         System.setProperty('java.awt.headless', 'false')
     }
 
-    GrailsSwingConsole(Class<?>... sources) {
+    GrailsConsole(Class<?>... sources) {
         super(sources)
         configureApplicationContextClass()
     }
 
-    GrailsSwingConsole(ResourceLoader resourceLoader, Class<?>... sources) {
+    GrailsConsole(ResourceLoader resourceLoader, Class<?>... sources) {
         super(resourceLoader, sources)
         configureApplicationContextClass()
     }
@@ -95,8 +95,8 @@ class GrailsSwingConsole extends Grails {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
         groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(classLoader, binding, baseConfig) {
 
-            static final TITLE = 'GrailsSwingConsole'
-            static prefs = Preferences.userNodeForPackage(GrailsSwingConsole)
+            static final TITLE = 'GrailsConsole'
+            static prefs = Preferences.userNodeForPackage(GrailsConsole)
 
             @Override
             def askToInterruptScript() {
@@ -162,7 +162,7 @@ class GrailsSwingConsole extends Grails {
                 def osVersion = String.format('%s %s %s', System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch'))
                 def groovyVersion = GroovySystem.getVersion()
                 def pane = super.swing.optionPane()
-                pane.setMessage('Welcome to the Grails Swing Console for evaluating Groovy scripts' +
+                pane.setMessage('Welcome to the Grails Console for evaluating Groovy scripts' +
                         "\nGrails: $grailsVersion" +
                         "\nGroovy: $groovyVersion" +
                         "\nJVM: $javaVersion" +
@@ -207,7 +207,7 @@ class GrailsSwingConsole extends Grails {
      * @return the running {@link org.springframework.context.ApplicationContext}
      */
     static ConfigurableApplicationContext run(Class<?>[] sources, String[] args) {
-        new GrailsSwingConsole(sources).run(args)
+        new GrailsConsole(sources).run(args)
     }
 
     /**
@@ -218,7 +218,7 @@ class GrailsSwingConsole extends Grails {
     static void main(String[] args) {
         if (args) {
             Class<?> applicationClass = Thread.currentThread().contextClassLoader.loadClass(args[0])
-            new GrailsSwingConsole(applicationClass).run(args)
+            new GrailsConsole(applicationClass).run(args)
         }
         else {
             System.err.println('Missing application class name argument')
