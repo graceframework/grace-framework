@@ -142,9 +142,6 @@ class GrailsSwingConsole extends Grails {
             void updateTitle() {
                 if (super.frame.title) {
                     String title = TITLE
-                    if (super.indy) {
-                        title += ' (Indy)'
-                    }
                     if (super.scriptFile != null) {
                         super.frame.title = super.scriptFile.name + (super.dirty ? ' * ' : '') + ' - ' + title
                     }
