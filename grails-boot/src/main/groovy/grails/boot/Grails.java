@@ -34,10 +34,6 @@ public class Grails extends SpringApplication {
 
     private static final String GRAILS_BANNER = "grails-banner.txt";
 
-    private static final String SPRING_PROFILES = "spring.profiles.active";
-
-    protected ConfigurableEnvironment configuredEnvironment;
-
     /**
      * Create a new {@link Grails} instance. The application context will load
      * beans from the specified sources (see {@link SpringApplication class-level}
@@ -78,17 +74,9 @@ public class Grails extends SpringApplication {
     }
 
     @Override
-    protected void configureEnvironment(ConfigurableEnvironment environment, String[] args) {
-        configurePropertySources(environment, args);
-
-        String[] springProfile = environment.getProperty(SPRING_PROFILES, String[].class);
-        if (springProfile != null && springProfile.length > 0) {
-            environment.setActiveProfiles(springProfile);
-        }
-
+    protected void configureProfiles(ConfigurableEnvironment environment, String[] args) {
         Environment env = Environment.getCurrent();
         environment.addActiveProfile(env.getName());
-        this.configuredEnvironment = environment;
     }
 
     protected void configureBanner(Environment environment) {
