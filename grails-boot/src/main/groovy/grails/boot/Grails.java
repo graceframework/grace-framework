@@ -431,11 +431,13 @@ public class Grails extends SpringApplication {
                                 (ConfigurableApplicationContext) applicationContext.getParent())
                 );
             }
+            String applicationName = app.getConfig().getProperty("info.app.name", "");
+            String applicationVersion = app.getConfig().getProperty("info.app.version", "");
             String contextPath = app.getConfig().getProperty("server.servlet.context-path", "");
-            String hostName = app.getConfig().getProperty("server.address", "localhost");
-            int port = 8080;
+            String serverAddress = app.getConfig().getProperty("server.address", "localhost");
+            int serverPort = Integer.parseInt(app.getConfig().getProperty("server.port", "8080"));
             if (applicationContext instanceof WebServerApplicationContext) {
-                port = ((WebServerApplicationContext) applicationContext).getWebServer().getPort();
+                serverPort = ((WebServerApplicationContext) applicationContext).getWebServer().getPort();
             }
             String hostAddress = "localhost";
             try {
@@ -444,27 +446,29 @@ public class Grails extends SpringApplication {
             catch (UnknownHostException e) {
                 getApplicationLog().warn("The host name could not be determined, using `localhost` as fallback");
             }
-            StringBuilder sb = new StringBuilder();
-            sb.append("%n----------------------------------------------------------------------------------------------");
-            sb.append("%n        Application:   %s");
-            sb.append("%n        Version:       %s");
-            sb.append("%n        Environment:   %s");
-            sb.append("%n        Local:         %s://%s:%s%s");
-            sb.append("%n        External:      %s://%s:%s%s");
-            sb.append("%n----------------------------------------------------------------------------------------------");
-            sb.append("%n");
-            getApplicationLog().info(String.format(sb.toString(),
-                    app.getConfig().getProperty("info.app.name"),
-                    app.getConfig().getProperty("info.app.version"),
-                    Environment.getCurrent().getName(),
-                    protocol,
-                    hostName,
-                    port,
-                    contextPath,
-                    protocol,
-                    hostAddress,
-                    port,
-                    contextPath));
+            String sb =
+                    "%n----------------------------------------------------------------------------------------------" +
+                    "%n        Application:   %s" +
+                    "%n        Version:       %s" +
+                    "%n        Environment:   %s" +
+                    "%n        Local:         %s://%s:%s%s" +
+                    "%n        External:      %s://%s:%s%s" +
+                    "%n----------------------------------------------------------------------------------------------" +
+                    "%n";
+            getApplicationLog().info(
+                    String.format(sb,
+                        applicationName,
+                        applicationVersion,
+                        Environment.getCurrent().getName(),
+                        protocol,
+                        serverAddress,
+                        serverPort,
+                        contextPath,
+                        protocol,
+                        hostAddress,
+                        serverPort,
+                        contextPath)
+            );
         }
         catch (Exception ignored) {
         }
