@@ -40,7 +40,6 @@ javax-jstl = "1.2"
 javax-persistence = "2.2"
 javax-servlet = "4.0.1"
 jline = "2.14.6"
-jna = "5.10.0"
 json-unit = "2.36.0"
 jsoup = "1.15.3"
 jsr305 = "3.0.2"
@@ -156,7 +155,6 @@ javax-jstl = { module = "javax.servlet:jstl", version.ref = "javax-jstl" }
 javax-persistence = { module = "javax.persistence:javax.persistence-api", version.ref = "javax-persistence" }
 javax-servlet = { module = "javax.servlet:javax.servlet-api", version.ref = "javax-servlet" }
 jline = { module = "jline:jline", version.ref = "jline" }
-jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 json-unit = { module = "net.javacrumbs.json-unit:json-unit", version.ref = "json-unit" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
