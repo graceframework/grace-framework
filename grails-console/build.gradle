@@ -14,5 +14,4 @@ dependencies {
     api libs.spring.web, optional
     implementation libs.jansi
     implementation libs.jline
-    implementation libs.jna
 }
