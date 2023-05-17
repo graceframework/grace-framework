@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import com.opensymphony.sitemesh.Content;
 import groovy.lang.GroovyObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -41,7 +39,6 @@ import org.grails.core.artefact.ControllerArtefactHandler;
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.web.servlet.mvc.GrailsWebRequest;
 import org.grails.web.servlet.view.AbstractGrailsView;
-import org.grails.web.servlet.view.GrailsViewResolver;
 import org.grails.web.servlet.view.LayoutViewResolver;
 import org.grails.web.util.GrailsApplicationAttributes;
 
@@ -50,9 +47,10 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * the Sitemesh API.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
-public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefreshedEvent>, Ordered {
+public class GroovyPageLayoutFinder implements Ordered {
 
     public static final String LAYOUT_ATTRIBUTE = "org.grails.layout.name";
 
@@ -265,13 +263,6 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
 
     private Decorator createDecorator(String decoratorName, View view) {
         return new SpringMVCViewDecorator(decoratorName, view);
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (!(this.viewResolver instanceof GrailsViewResolver)) {
-            setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
-        }
     }
 
     private static class LayoutCacheKey {

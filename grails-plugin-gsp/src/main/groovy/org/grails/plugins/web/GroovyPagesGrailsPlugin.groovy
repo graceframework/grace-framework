@@ -32,7 +32,6 @@ import grails.web.pages.GroovyPagesUriService
 
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
 import org.grails.gsp.GroovyPagesTemplateEngine
-import org.grails.gsp.jsp.TagLibraryResolverImpl
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.plugins.web.taglib.CountryTagLib
 import org.grails.plugins.web.taglib.FormTagLib
@@ -43,14 +42,11 @@ import org.grails.plugins.web.taglib.RenderTagLib
 import org.grails.plugins.web.taglib.SitemeshTagLib
 import org.grails.plugins.web.taglib.UrlMappingTagLib
 import org.grails.plugins.web.taglib.ValidationTagLib
-import org.grails.spring.RuntimeSpringConfiguration
 import org.grails.taglib.TagLibraryLookup
 import org.grails.taglib.TagLibraryMetaUtils
 import org.grails.web.gsp.GroovyPagesTemplateRenderer
-import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
 import org.grails.web.servlet.view.GroovyPageViewResolver
-import org.grails.web.sitemesh.GroovyPageLayoutFinder
 import org.grails.web.util.GrailsApplicationAttributes
 
 /**
@@ -118,15 +114,6 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
             boolean enableCacheResources = !config.getProperty(GroovyPagesTemplateEngine.CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES, Boolean, false)
             def disableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
-            String defaultDecoratorNameSetting = config.getProperty(SITEMESH_DEFAULT_LAYOUT, '')
-            def sitemeshEnableNonGspViews = config.getProperty(SITEMESH_ENABLE_NONGSP, Boolean, false)
-
-            RuntimeSpringConfiguration spring = springConfig
-
-            // resolves JSP tag libraries
-            if (ClassUtils.isPresent("org.grails.gsp.jsp.TagLibraryResolverImpl", application.classLoader)) {
-                jspTagLibraryResolver(TagLibraryResolverImpl)
-            }
 
             // resolves GSP tag libraries
             gspTagLibraryLookup(TagLibraryLookup)
@@ -138,11 +125,11 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
                     reloadEnabled = enableReload
                 }
                 tagLibraryLookup = gspTagLibraryLookup
-                jspTagLibraryResolver = jspTagLibraryResolver
+                jspTagLibraryResolver = ref('jspTagLibraryResolver')
                 cacheResources = enableCacheResources
             }
 
-            spring.addAlias('groovyTemplateEngine', 'groovyPagesTemplateEngine')
+            springConfig.addAlias('groovyTemplateEngine', 'groovyPagesTemplateEngine')
 
             groovyPageRenderer(PageRenderer, ref("groovyPagesTemplateEngine")) { bean ->
                 bean.lazyInit = true
@@ -151,17 +138,6 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
             groovyPagesTemplateRenderer(GroovyPagesTemplateRenderer) { bean ->
                 bean.autowire = true
-            }
-
-            groovyPageLayoutFinder(GroovyPageLayoutFinder) {
-                gspReloadEnabled = enableReload
-                defaultDecoratorName = defaultDecoratorNameSetting ?: null
-                enableNonGspViews = sitemeshEnableNonGspViews
-            }
-
-            // Setup the GroovyPagesUriService
-            groovyPagesUriService(DefaultGroovyPagesUriService) { bean ->
-                bean.lazyInit = true
             }
 
             boolean jstlPresent = ClassUtils.isPresent(

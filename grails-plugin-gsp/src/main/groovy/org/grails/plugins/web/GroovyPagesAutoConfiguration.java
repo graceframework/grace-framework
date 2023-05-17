@@ -26,6 +26,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -35,6 +36,7 @@ import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.ViewResolver;
 
 import grails.config.Config;
 import grails.config.Settings;
@@ -46,8 +48,12 @@ import org.grails.gsp.GroovyPageResourceLoader;
 import org.grails.gsp.io.CachingGroovyPageStaticResourceLocator;
 import org.grails.web.errors.ErrorsViewStackTracePrinter;
 import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator;
+import org.grails.gsp.jsp.TagLibraryResolver;
+import org.grails.gsp.jsp.TagLibraryResolverImpl;
+import org.grails.web.pages.DefaultGroovyPagesUriService;
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.pages.GroovyPagesServlet;
+import org.grails.web.sitemesh.GroovyPageLayoutFinder;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Groovy Pages
@@ -187,6 +193,40 @@ public class GroovyPagesAutoConfiguration {
             servletRegistration.addInitParameter("showSource", "1");
         }
         return servletRegistration;
+    }
+
+    @Bean
+    @ConditionalOnClass(name = "org.grails.gsp.jsp.TagLibraryResolverImpl")
+    public TagLibraryResolver jspTagLibraryResolver(ObjectProvider<GrailsApplication> grailsApplication) {
+        TagLibraryResolverImpl tagLibraryResolver = new TagLibraryResolverImpl();
+        grailsApplication.ifAvailable(tagLibraryResolver::setGrailsApplication);
+        return tagLibraryResolver;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication, ObjectProvider<ViewResolver> viewResolver) {
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        String defaultDecoratorName = config.getProperty(SITEMESH_DEFAULT_LAYOUT, "application");
+        Boolean sitemeshEnableNonGspViews = config.getProperty(SITEMESH_ENABLE_NONGSP, Boolean.class, false);
+
+        GroovyPageLayoutFinder groovyPageLayoutFinder = new GroovyPageLayoutFinder();
+        groovyPageLayoutFinder.setGspReloadEnabled(enableReload);
+        groovyPageLayoutFinder.setDefaultDecoratorName(defaultDecoratorName);
+        groovyPageLayoutFinder.setEnableNonGspViews(sitemeshEnableNonGspViews);
+        viewResolver.ifAvailable(groovyPageLayoutFinder::setViewResolver);
+
+        return groovyPageLayoutFinder;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultGroovyPagesUriService groovyPagesUriService() {
+        return new DefaultGroovyPagesUriService();
     }
 
     private static String transformToValidLocation(String location) {
