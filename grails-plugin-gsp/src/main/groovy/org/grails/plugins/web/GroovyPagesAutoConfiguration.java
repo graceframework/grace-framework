@@ -15,20 +15,37 @@
  */
 package org.grails.plugins.web;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.Ordered;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
 
+import grails.config.Config;
+import grails.config.Settings;
 import grails.core.GrailsApplication;
+import grails.util.BuildSettings;
 import grails.util.Environment;
-
+import org.grails.core.io.ResourceLocator;
+import org.grails.gsp.GroovyPageResourceLoader;
+import org.grails.gsp.io.CachingGroovyPageStaticResourceLocator;
+import org.grails.web.errors.ErrorsViewStackTracePrinter;
+import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator;
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.pages.GroovyPagesServlet;
 
@@ -39,16 +56,123 @@ import org.grails.web.pages.GroovyPagesServlet;
  * @since 2022.2.3
  */
 @AutoConfiguration
-@AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE - 1000)
+@AutoConfigureOrder
 public class GroovyPagesAutoConfiguration {
 
+    private static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval";
+    private static final String GSP_VIEWS_DIR = "grails.gsp.view.dir";
+    private static final String SITEMESH_DEFAULT_LAYOUT = "grails.sitemesh.default.layout";
+    private static final String SITEMESH_ENABLE_NONGSP = "grails.sitemesh.enable.nongsp";
+
     @Bean
+    @ConditionalOnMissingBean
+    public GroovyPageResourceLoader groovyPageResourceLoader(ObjectProvider<GrailsApplication> grailsApplication) throws Exception {
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        String viewsDir = config.getProperty(GSP_VIEWS_DIR, "");
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        boolean warDeployed = Environment.isWarDeployed();
+        boolean warDeployedWithReload = warDeployed && enableReload;
+
+        GroovyPageResourceLoader groovyPageResourceLoader = new GroovyPageResourceLoader();
+        Resource baseResource;
+        if (StringUtils.hasText(viewsDir)) {
+            baseResource = new FileUrlResource(viewsDir);
+        }
+        else if (warDeployedWithReload && env.hasReloadLocation()) {
+            baseResource = new FileUrlResource(transformToValidLocation(env.getReloadLocation()));
+        }
+        else {
+            baseResource = new FileUrlResource(transformToValidLocation(BuildSettings.BASE_DIR.getAbsolutePath()));
+        }
+        groovyPageResourceLoader.setBaseResource(baseResource);
+
+        return groovyPageResourceLoader;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CachingGrailsConventionGroovyPageLocator groovyPageLocator(ObjectProvider<GrailsApplication> grailsApplication,
+                                                                      GroovyPageResourceLoader groovyPageResourceLoader) {
+
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+
+        ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+        CachingGrailsConventionGroovyPageLocator groovyPageLocator = new CachingGrailsConventionGroovyPageLocator();
+        groovyPageLocator.setResourceLoader(groovyPageResourceLoader);
+
+        if (!developmentMode) {
+            Resource defaultViews = resourceLoader.getResource("gsp/views.properties");
+            if (!defaultViews.exists()) {
+                defaultViews = resourceLoader.getResource("classpath:gsp/views.properties");
+            }
+            if (defaultViews.exists()) {
+                PropertiesFactoryBean pfb = new PropertiesFactoryBean();
+                pfb.setIgnoreResourceNotFound(true);
+                pfb.setLocation(defaultViews);
+                try {
+                    Map<String, String> precompiledGspMap = pfb.getObject().entrySet().stream().collect(
+                            Collectors.toMap(
+                                    e -> String.valueOf(e.getKey()),
+                                    e -> String.valueOf(e.getValue()),
+                                    (prev, next) -> next, HashMap::new
+                            ));
+                    groovyPageLocator.setPrecompiledGspMap(precompiledGspMap);
+                }
+                catch (IOException ignored) {
+                }
+            }
+        }
+        if (enableReload) {
+            groovyPageLocator.setCacheTimeout(gspCacheTimeout);
+        }
+        groovyPageLocator.setReloadEnabled(enableReload);
+
+        return groovyPageLocator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ResourceLocator grailsResourceLocator(ObjectProvider<GrailsApplication> grailsApplication) {
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+
+        CachingGroovyPageStaticResourceLocator groovyPageStaticResourceLocator = new CachingGroovyPageStaticResourceLocator();
+
+        if (enableReload) {
+            groovyPageStaticResourceLocator.setCacheTimeout(gspCacheTimeout);
+        }
+
+        return groovyPageStaticResourceLocator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(ResourceLocator grailsResourceLocator) {
+        return new ErrorsViewStackTracePrinter(grailsResourceLocator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public FilteringCodecsByContentTypeSettings filteringCodecsByContentTypeSettings(ObjectProvider<GrailsApplication> grailsApplication) {
 
         return new FilteringCodecsByContentTypeSettings(grailsApplication.getIfAvailable());
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public DefaultGrailsTagDateHelper grailsTagDateHelper() {
         return new DefaultGrailsTagDateHelper();
     }
@@ -63,6 +187,16 @@ public class GroovyPagesAutoConfiguration {
             servletRegistration.addInitParameter("showSource", "1");
         }
         return servletRegistration;
+    }
+
+    private static String transformToValidLocation(String location) {
+        if (location.equals(".")) {
+            return location;
+        }
+        if (!location.endsWith(java.io.File.separator)) {
+            return location + java.io.File.separator;
+        }
+        return location;
     }
 
 }

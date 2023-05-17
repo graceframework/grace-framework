@@ -17,9 +17,7 @@ package org.grails.plugins.web
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.springframework.beans.factory.config.PropertiesFactoryBean
 import org.springframework.core.Ordered
-import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 
@@ -27,16 +25,13 @@ import grails.config.Config
 import grails.core.gsp.GrailsTagLibClass
 import grails.gsp.PageRenderer
 import grails.plugins.Plugin
-import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsUtil
 import grails.util.Metadata
 import grails.web.pages.GroovyPagesUriService
 
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
-import org.grails.gsp.GroovyPageResourceLoader
 import org.grails.gsp.GroovyPagesTemplateEngine
-import org.grails.gsp.io.CachingGroovyPageStaticResourceLocator
 import org.grails.gsp.jsp.TagLibraryResolverImpl
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.plugins.web.taglib.CountryTagLib
@@ -51,9 +46,7 @@ import org.grails.plugins.web.taglib.ValidationTagLib
 import org.grails.spring.RuntimeSpringConfiguration
 import org.grails.taglib.TagLibraryLookup
 import org.grails.taglib.TagLibraryMetaUtils
-import org.grails.web.errors.ErrorsViewStackTracePrinter
 import org.grails.web.gsp.GroovyPagesTemplateRenderer
-import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator
 import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
 import org.grails.web.servlet.view.GroovyPageViewResolver
@@ -71,7 +64,6 @@ import org.grails.web.util.GrailsApplicationAttributes
 class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
     public static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
-    public static final String GSP_VIEWS_DIR = 'grails.gsp.view.dir'
     public static final String GSP_VIEW_LAYOUT_RESOLVER_ENABLED = 'grails.gsp.view.layoutViewResolver'
     public static final String SITEMESH_DEFAULT_LAYOUT = 'grails.sitemesh.default.layout'
     public static final String SITEMESH_ENABLE_NONGSP = 'grails.sitemesh.enable.nongsp'
@@ -123,12 +115,8 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
                     config.getProperty(GroovyPagesTemplateEngine.CONFIG_PROPERTY_GSP_ENABLE_RELOAD, Boolean, false) ||
                     (developmentMode && env == Environment.DEVELOPMENT)
 
-            boolean warDeployed = application.warDeployed
-            boolean warDeployedWithReload = warDeployed && enableReload
-
             long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
             boolean enableCacheResources = !config.getProperty(GroovyPagesTemplateEngine.CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES, Boolean, false)
-            String viewsDir = config.getProperty(GSP_VIEWS_DIR, '')
             def disableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
             String defaultDecoratorNameSetting = config.getProperty(SITEMESH_DEFAULT_LAYOUT, '')
             def sitemeshEnableNonGspViews = config.getProperty(SITEMESH_ENABLE_NONGSP, Boolean, false)
@@ -143,75 +131,9 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             // resolves GSP tag libraries
             gspTagLibraryLookup(TagLibraryLookup)
 
-            boolean customResourceLoader = false
-            // If the development environment is used we need to load GSP files relative to the base directory
-            // as oppose to in WAR deployment where views are loaded from /WEB-INF
-
-            if (viewsDir) {
-                log.info "Configuring GSP views directory as '${viewsDir}'"
-                customResourceLoader = true
-                groovyPageResourceLoader(GroovyPageResourceLoader) {
-                    baseResource = "file:${viewsDir}"
-                }
-            }
-            else {
-                if (developmentMode) {
-                    customResourceLoader = true
-                    groovyPageResourceLoader(GroovyPageResourceLoader) { bean ->
-                        bean.lazyInit = true
-                        def location = GroovyPagesGrailsPlugin.transformToValidLocation(BuildSettings.BASE_DIR.absolutePath)
-                        baseResource = "file:$location"
-                    }
-                }
-                else {
-                    if (warDeployedWithReload && env.hasReloadLocation()) {
-                        customResourceLoader = true
-                        groovyPageResourceLoader(GroovyPageResourceLoader) {
-                            def location = GroovyPagesGrailsPlugin.transformToValidLocation(env.reloadLocation)
-                            baseResource = "file:${location}"
-                        }
-                    }
-                }
-            }
-
-            def deployed = !Metadata.getCurrent().isDevelopmentEnvironmentAvailable()
-            groovyPageLocator(CachingGrailsConventionGroovyPageLocator) { bean ->
-                bean.lazyInit = true
-                if (customResourceLoader) {
-                    resourceLoader = groovyPageResourceLoader
-                }
-                if (deployed) {
-                    Resource defaultViews = applicationContext?.getResource('gsp/views.properties')
-
-                    if (defaultViews != null) {
-                        if (!defaultViews.exists()) {
-                            defaultViews = applicationContext?.getResource('classpath:gsp/views.properties')
-                        }
-                    }
-
-                    if (defaultViews?.exists()) {
-                        precompiledGspMap = { PropertiesFactoryBean pfb ->
-                            ignoreResourceNotFound = true
-                            locations = [defaultViews] as Resource[]
-                        }
-                    }
-                }
-                if (enableReload) {
-                    cacheTimeout = gspCacheTimeout
-                }
-                reloadEnabled = enableReload
-            }
-
-            grailsResourceLocator(CachingGroovyPageStaticResourceLocator) { bean ->
-                bean.parent = "abstractGrailsResourceLocator"
-                if (enableReload) {
-                    cacheTimeout = gspCacheTimeout
-                }
-            }
-
             // Setup the main templateEngine used to render GSPs
             groovyPagesTemplateEngine(GroovyPagesTemplateEngine) { bean ->
-                groovyPageLocator = groovyPageLocator
+                groovyPageLocator = ref('groovyPageLocator')
                 if (enableReload) {
                     reloadEnabled = enableReload
                 }
@@ -224,7 +146,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
             groovyPageRenderer(PageRenderer, ref("groovyPagesTemplateEngine")) { bean ->
                 bean.lazyInit = true
-                groovyPageLocator = groovyPageLocator
+                groovyPageLocator = ref('groovyPageLocator')
             }
 
             groovyPagesTemplateRenderer(GroovyPagesTemplateRenderer) { bean ->
@@ -249,7 +171,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
                 suffix = jstlPresent ? GroovyPageViewResolver.JSP_SUFFIX : GroovyPageViewResolver.GSP_SUFFIX
                 templateEngine = groovyPagesTemplateEngine
-                groovyPageLocator = groovyPageLocator
+                groovyPageLocator = ref('groovyPageLocator')
                 if (enableReload) {
                     cacheTimeout = gspCacheTimeout
                 }
@@ -281,7 +203,6 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
                 }
             }
 
-            errorsViewStackTracePrinter(ErrorsViewStackTracePrinter, ref('grailsResourceLocator'))
         }
     }
 
