@@ -23,11 +23,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 import grails.config.Config
 import grails.core.gsp.GrailsTagLibClass
-import grails.gsp.PageRenderer
 import grails.plugins.Plugin
 import grails.util.Environment
 import grails.util.GrailsUtil
-import grails.util.Metadata
 import grails.web.pages.GroovyPagesUriService
 
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
@@ -44,7 +42,6 @@ import org.grails.plugins.web.taglib.UrlMappingTagLib
 import org.grails.plugins.web.taglib.ValidationTagLib
 import org.grails.taglib.TagLibraryLookup
 import org.grails.taglib.TagLibraryMetaUtils
-import org.grails.web.gsp.GroovyPagesTemplateRenderer
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
 import org.grails.web.servlet.view.GroovyPageViewResolver
 import org.grails.web.util.GrailsApplicationAttributes
@@ -112,33 +109,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
                     (developmentMode && env == Environment.DEVELOPMENT)
 
             long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
-            boolean enableCacheResources = !config.getProperty(GroovyPagesTemplateEngine.CONFIG_PROPERTY_DISABLE_CACHING_RESOURCES, Boolean, false)
-            def disableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
-
-            // resolves GSP tag libraries
-            gspTagLibraryLookup(TagLibraryLookup)
-
-            // Setup the main templateEngine used to render GSPs
-            groovyPagesTemplateEngine(GroovyPagesTemplateEngine) { bean ->
-                groovyPageLocator = ref('groovyPageLocator')
-                if (enableReload) {
-                    reloadEnabled = enableReload
-                }
-                tagLibraryLookup = gspTagLibraryLookup
-                jspTagLibraryResolver = ref('jspTagLibraryResolver')
-                cacheResources = enableCacheResources
-            }
-
-            springConfig.addAlias('groovyTemplateEngine', 'groovyPagesTemplateEngine')
-
-            groovyPageRenderer(PageRenderer, ref("groovyPagesTemplateEngine")) { bean ->
-                bean.lazyInit = true
-                groovyPageLocator = ref('groovyPageLocator')
-            }
-
-            groovyPagesTemplateRenderer(GroovyPagesTemplateRenderer) { bean ->
-                bean.autowire = true
-            }
+            boolean enableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
 
             boolean jstlPresent = ClassUtils.isPresent(
                     "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
@@ -146,22 +117,16 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             abstractViewResolver {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
                 suffix = jstlPresent ? GroovyPageViewResolver.JSP_SUFFIX : GroovyPageViewResolver.GSP_SUFFIX
-                templateEngine = groovyPagesTemplateEngine
+                templateEngine = ref('groovyPagesTemplateEngine')
                 groovyPageLocator = ref('groovyPageLocator')
                 if (enableReload) {
                     cacheTimeout = gspCacheTimeout
                 }
             }
-            // Configure a Spring MVC view resolver
-            jspViewResolver(GroovyPageViewResolver) { bean ->
-                bean.lazyInit = true
-                bean.parent = "abstractViewResolver"
-            }
 
             // "grails.gsp.view.layoutViewResolver=false" can be used to disable GrailsLayoutViewResolver
             // containsKey check must be made to check existence of boolean false values in ConfigObject
-
-            if (disableLayoutViewResolver) {
+            if (enableLayoutViewResolver) {
                 grailsLayoutViewResolverPostProcessor(GrailsLayoutViewResolverPostProcessor)
             }
 
@@ -183,17 +148,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
     }
 
     protected boolean isDevelopmentMode() {
-        Metadata.getCurrent().isDevelopmentEnvironmentAvailable()
-    }
-
-    static String transformToValidLocation(String location) {
-        if (location == '.') {
-            return location
-        }
-        if (!location.endsWith(File.separator)) {
-            return "${location}${File.separator}"
-        }
-        return location
+        Environment.getCurrent().isDevelopmentEnvironmentAvailable()
     }
 
     @Override

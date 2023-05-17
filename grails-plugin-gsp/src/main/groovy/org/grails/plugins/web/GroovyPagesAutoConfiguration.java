@@ -35,25 +35,34 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ViewResolver;
 
 import grails.config.Config;
 import grails.config.Settings;
 import grails.core.GrailsApplication;
+import grails.gsp.PageRenderer;
 import grails.util.BuildSettings;
 import grails.util.Environment;
 import org.grails.core.io.ResourceLocator;
 import org.grails.gsp.GroovyPageResourceLoader;
+import org.grails.gsp.GroovyPagesTemplateEngine;
 import org.grails.gsp.io.CachingGroovyPageStaticResourceLocator;
-import org.grails.web.errors.ErrorsViewStackTracePrinter;
-import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator;
+import org.grails.gsp.io.GroovyPageLocator;
 import org.grails.gsp.jsp.TagLibraryResolver;
 import org.grails.gsp.jsp.TagLibraryResolverImpl;
+import org.grails.taglib.TagLibraryLookup;
+import org.grails.web.errors.ErrorsViewStackTracePrinter;
+import org.grails.web.gsp.GroovyPagesTemplateRenderer;
+import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator;
 import org.grails.web.pages.DefaultGroovyPagesUriService;
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings;
 import org.grails.web.pages.GroovyPagesServlet;
+import org.grails.web.pages.StandaloneTagLibraryLookup;
+import org.grails.web.servlet.view.GroovyPageViewResolver;
 import org.grails.web.sitemesh.GroovyPageLayoutFinder;
+import org.grails.web.util.GrailsApplicationAttributes;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Groovy Pages
@@ -201,6 +210,86 @@ public class GroovyPagesAutoConfiguration {
         TagLibraryResolverImpl tagLibraryResolver = new TagLibraryResolverImpl();
         grailsApplication.ifAvailable(tagLibraryResolver::setGrailsApplication);
         return tagLibraryResolver;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GroovyPageViewResolver jspViewResolver(ObjectProvider<GrailsApplication> grailsApplication,
+                                                  CachingGrailsConventionGroovyPageLocator groovyPageLocator,
+                                                  GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class,
+                (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+
+        boolean jstlPresent = ClassUtils.isPresent("javax.servlet.jsp.jstl.core.Config", getClass().getClassLoader());
+
+        GroovyPageViewResolver groovyPageViewResolver = new GroovyPageViewResolver();
+        groovyPageViewResolver.setGroovyPageLocator(groovyPageLocator);
+        groovyPageViewResolver.setTemplateEngine(groovyPagesTemplateEngine);
+        groovyPageViewResolver.setPrefix(GrailsApplicationAttributes.PATH_TO_VIEWS);
+        groovyPageViewResolver.setSuffix(jstlPresent ? GroovyPageViewResolver.JSP_SUFFIX : GroovyPageViewResolver.GSP_SUFFIX);
+
+        if (enableReload) {
+            groovyPageViewResolver.setCacheTimeout(gspCacheTimeout);
+        }
+
+        return groovyPageViewResolver;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StandaloneTagLibraryLookup gspTagLibraryLookup(ObjectProvider<GrailsApplication> grailsApplication) {
+        StandaloneTagLibraryLookup tagLibraryLookup = new StandaloneTagLibraryLookup();
+        grailsApplication.ifAvailable(tagLibraryLookup::setGrailsApplication);
+        return tagLibraryLookup;
+    }
+
+    @Bean({"groovyTemplateEngine", "groovyPagesTemplateEngine"})
+    @ConditionalOnMissingBean
+    public GroovyPagesTemplateEngine groovyPagesTemplateEngine(ObjectProvider<GrailsApplication> grailsApplication,
+                                                               ObjectProvider<TagLibraryLookup> gspTagLibraryLookup,
+                                                               ObjectProvider<TagLibraryResolver> jspTagLibraryResolver,
+                                                               ObjectProvider<GroovyPageLocator> groovyPageLocator) {
+        Config config = grailsApplication.getIfAvailable().getConfig();
+        Environment env = Environment.getCurrent();
+        boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
+        boolean enableCacheResources = !config.getProperty(Settings.GSP_DISABLE_CACHING_RESOURCES, Boolean.class, false);
+
+        GroovyPagesTemplateEngine groovyPagesTemplateEngine = new GroovyPagesTemplateEngine();
+
+        groovyPagesTemplateEngine.setReloadEnabled(enableReload);
+        groovyPagesTemplateEngine.setCacheResources(enableCacheResources);
+        groovyPageLocator.ifAvailable(groovyPagesTemplateEngine::setGroovyPageLocator);
+        gspTagLibraryLookup.ifAvailable(groovyPagesTemplateEngine::setTagLibraryLookup);
+        jspTagLibraryResolver.ifAvailable(groovyPagesTemplateEngine::setJspTagLibraryResolver);
+
+        return groovyPagesTemplateEngine;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GroovyPagesTemplateRenderer groovyPagesTemplateRenderer(CachingGrailsConventionGroovyPageLocator groovyPageLocator,
+                                                                   GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+        GroovyPagesTemplateRenderer groovyPagesTemplateRenderer = new GroovyPagesTemplateRenderer();
+        groovyPagesTemplateRenderer.setGroovyPageLocator(groovyPageLocator);
+        groovyPagesTemplateRenderer.setGroovyPagesTemplateEngine(groovyPagesTemplateEngine);
+        return groovyPagesTemplateRenderer;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PageRenderer groovyPageRenderer(CachingGrailsConventionGroovyPageLocator groovyPageLocator,
+                                           GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+        PageRenderer pageRenderer = new PageRenderer(groovyPagesTemplateEngine);
+        pageRenderer.setGroovyPageLocator(groovyPageLocator);
+        return pageRenderer;
     }
 
     @Bean
