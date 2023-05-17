@@ -15,8 +15,8 @@
  */
 package org.grails.plugins.web
 
+import grails.config.Settings
 import groovy.transform.CompileStatic
-import groovy.util.logging.Slf4j
 import org.springframework.core.Ordered
 import org.springframework.util.ClassUtils
 import org.springframework.web.servlet.view.InternalResourceViewResolver
@@ -53,24 +53,18 @@ import org.grails.web.util.GrailsApplicationAttributes
  * @author Michael Yan
  * @since 1.1
  */
-@Slf4j
 class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
-    public static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
-    public static final String GSP_VIEW_LAYOUT_RESOLVER_ENABLED = 'grails.gsp.view.layoutViewResolver'
-    public static final String SITEMESH_DEFAULT_LAYOUT = 'grails.sitemesh.default.layout'
-    public static final String SITEMESH_ENABLE_NONGSP = 'grails.sitemesh.enable.nongsp'
+    static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
+    static final String GSP_VIEW_LAYOUT_RESOLVER_ENABLED = 'grails.gsp.view.layoutViewResolver'
 
-    int order = 600
+    def grailsVersion = "3.3.0 > *"
+    def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
 
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",
                             "file:./grails-app/taglib/**/*TagLib.groovy",
                             "file:./plugins/*/app/taglib/**/*TagLib.groovy",
                             "file:./app/taglib/**/*TagLib.groovy"]
-
-    def grailsVersion = "3.3.0 > *"
-    def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
-    def observe = ['controllers']
 
     def providedArtefacts = [
             ApplicationTagLib,
@@ -85,14 +79,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             SitemeshTagLib
     ]
 
-    /**
-     * Clear the page cache with the ApplicationContext is loaded
-     */
-    @CompileStatic
-    @Override
-    void doWithApplicationContext() {
-        applicationContext.getBean("groovyPagesTemplateEngine", GroovyPagesTemplateEngine).clearPageCache()
-    }
+    int order = 600
 
     /**
      * Configures the various Spring beans required by GSP
@@ -101,18 +88,14 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
         { ->
             def application = grailsApplication
             Config config = application.config
-            boolean developmentMode = isDevelopmentMode()
             Environment env = Environment.current
-
-            boolean enableReload = env.isReloadEnabled() ||
-                    config.getProperty(GroovyPagesTemplateEngine.CONFIG_PROPERTY_GSP_ENABLE_RELOAD, Boolean, false) ||
-                    (developmentMode && env == Environment.DEVELOPMENT)
-
-            long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
+            boolean developmentMode = env.isDevelopmentEnvironmentAvailable()
+            boolean enableGspReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean, false)
+            boolean enableReload = env.isReloadEnabled() || enableGspReload || (developmentMode && env == Environment.DEVELOPMENT)
             boolean enableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
+            long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
 
-            boolean jstlPresent = ClassUtils.isPresent(
-                    "javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
+            boolean jstlPresent = ClassUtils.isPresent("javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
 
             abstractViewResolver {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
@@ -147,8 +130,13 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
         }
     }
 
-    protected boolean isDevelopmentMode() {
-        Environment.getCurrent().isDevelopmentEnvironmentAvailable()
+    /**
+     * Clear the page cache with the ApplicationContext is loaded
+     */
+    @CompileStatic
+    @Override
+    void doWithApplicationContext() {
+        applicationContext.getBean("groovyPagesTemplateEngine", GroovyPagesTemplateEngine).clearPageCache()
     }
 
     @Override
@@ -180,7 +168,8 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
     @CompileStatic
     void onConfigChange(Map<String, Object> event) {
-        applicationContext.getBean('filteringCodecsByContentTypeSettings', FilteringCodecsByContentTypeSettings).initialize(grailsApplication)
+        applicationContext.getBean('filteringCodecsByContentTypeSettings', FilteringCodecsByContentTypeSettings)
+                .initialize(grailsApplication)
     }
 
 }
