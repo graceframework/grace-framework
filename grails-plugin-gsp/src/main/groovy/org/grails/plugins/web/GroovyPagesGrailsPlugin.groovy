@@ -18,7 +18,6 @@ package org.grails.plugins.web
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.config.PropertiesFactoryBean
-import org.springframework.boot.web.servlet.ServletRegistrationBean
 import org.springframework.core.Ordered
 import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
@@ -57,7 +56,6 @@ import org.grails.web.gsp.GroovyPagesTemplateRenderer
 import org.grails.web.gsp.io.CachingGrailsConventionGroovyPageLocator
 import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
-import org.grails.web.pages.GroovyPagesServlet
 import org.grails.web.servlet.view.GroovyPageViewResolver
 import org.grails.web.sitemesh.GroovyPageLayoutFinder
 import org.grails.web.util.GrailsApplicationAttributes
@@ -284,15 +282,6 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             }
 
             errorsViewStackTracePrinter(ErrorsViewStackTracePrinter, ref('grailsResourceLocator'))
-            filteringCodecsByContentTypeSettings(FilteringCodecsByContentTypeSettings, application)
-
-            groovyPagesServlet(ServletRegistrationBean, new GroovyPagesServlet(), "*.gsp") {
-                if (Environment.isDevelopmentMode()) {
-                    initParameters = [showSource: "1"]
-                }
-            }
-
-            grailsTagDateHelper(DefaultGrailsTagDateHelper)
         }
     }
 

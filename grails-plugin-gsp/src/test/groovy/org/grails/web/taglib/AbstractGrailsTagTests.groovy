@@ -71,6 +71,7 @@ import org.grails.plugins.codecs.URLCodec
 import org.grails.plugins.core.CoreConfiguration
 import org.grails.plugins.databinding.DataBindingConfiguration
 import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor
+import org.grails.plugins.web.GroovyPagesAutoConfiguration
 import org.grails.plugins.web.controllers.ControllersPluginConfiguration
 import org.grails.plugins.web.mapping.UrlMappingsPluginConfiguration
 import org.grails.plugins.web.mime.MimeTypesConfiguration
@@ -102,6 +103,7 @@ abstract class AbstractGrailsTagTests {
             CodecsPluginConfiguration,
             ControllersPluginConfiguration,
             DataBindingConfiguration,
+            GroovyPagesAutoConfiguration,
             MimeTypesConfiguration,
             UrlMappingsPluginConfiguration]
 
