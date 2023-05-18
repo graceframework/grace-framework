@@ -32,10 +32,17 @@ task isolatedTestsTwo(type:Test) {
     ]
 }
 
+task isolatedTestsThree(type:Test) {
+    includes = [
+        "**/PageRendererSpec.class"
+    ]
+}
+
 test {
-    dependsOn isolatedTestsOne, isolatedTestsTwo
+    dependsOn isolatedTestsOne, isolatedTestsTwo, isolatedTestsThree
     excludes = [
         "**/FormTagLibResourceTests.class",
-        "**/RestfulReverseUrlRenderingTests.class"
+        "**/RestfulReverseUrlRenderingTests.class",
+        "**/PageRendererSpec.class"
     ]
 }
