@@ -15,19 +15,18 @@
  */
 package org.grails.plugins.web
 
-import grails.config.Settings
 import groovy.transform.CompileStatic
 import org.springframework.core.Ordered
 import org.springframework.util.ClassUtils
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 import grails.config.Config
+import grails.config.Settings
 import grails.core.gsp.GrailsTagLibClass
 import grails.plugins.Plugin
 import grails.util.Environment
 import grails.util.GrailsUtil
 import grails.web.pages.GroovyPagesUriService
-
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
 import org.grails.gsp.GroovyPagesTemplateEngine
 import org.grails.plugins.web.taglib.ApplicationTagLib
