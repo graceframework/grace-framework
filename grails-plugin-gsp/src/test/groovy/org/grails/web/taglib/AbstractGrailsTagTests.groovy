@@ -71,19 +71,19 @@ import org.grails.plugins.codecs.URLCodec
 import org.grails.plugins.core.CoreConfiguration
 import org.grails.plugins.databinding.DataBindingConfiguration
 import org.grails.plugins.support.PluginManagerAwareBeanPostProcessor
+import org.grails.plugins.web.GroovyPagesAutoConfiguration
 import org.grails.plugins.web.controllers.ControllersPluginConfiguration
 import org.grails.plugins.web.mapping.UrlMappingsPluginConfiguration
 import org.grails.plugins.web.mime.MimeTypesConfiguration
+import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.taglib.GroovyPageAttributes
 import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
 import org.grails.taglib.encoder.OutputEncodingStack
 import org.grails.taglib.encoder.WithCodecHelper
-import org.grails.web.context.ServletEnvironmentGrailsApplicationDiscoveryStrategy
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.pages.DefaultGroovyPagesUriService
 import org.grails.web.pages.GSPResponseWriter
-import org.grails.web.servlet.context.support.WebRuntimeSpringConfiguration
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.sitemesh.GSPSitemeshPage
 import org.grails.web.sitemesh.GrailsHTMLPageParser
@@ -102,6 +102,7 @@ abstract class AbstractGrailsTagTests {
             CodecsPluginConfiguration,
             ControllersPluginConfiguration,
             DataBindingConfiguration,
+            GroovyPagesAutoConfiguration,
             MimeTypesConfiguration,
             UrlMappingsPluginConfiguration]
 
@@ -299,12 +300,7 @@ info.app.name: ${getClass().name}
         ctx.beanFactory.registerSingleton("conversionService", new DefaultConversionService())
         ctx.beanFactory.registerSingleton(GroovyPagesUriService.BEAN_ID, new DefaultGroovyPagesUriService())
         ctx.register(DEFAULT_AUTO_CONFIGURATIONS)
-        ctx.refresh()
         ctx.servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, ctx)
-
-        grailsApplication.setApplicationContext(ctx)
-
-        messageSource = ctx.getBean("messageSource", MessageSource)
 
         onInitMockBeans()
 
@@ -325,7 +321,25 @@ info.app.name: ${getClass().name}
         mockManager.registerProvidedArtefacts(grailsApplication)
         mockManager.setApplicationContext(ctx)
 
-        def springConfig = new WebRuntimeSpringConfiguration(ctx)
+        def springConfig = new DefaultRuntimeSpringConfiguration()
+
+        springConfig.registerPostProcessor(new BeanFactoryPostProcessor() {
+
+            @Override
+            void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+                beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
+                beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(mockManager))
+            }
+        })
+
+        mockManager.doRuntimeConfiguration(springConfig)
+        springConfig.registerBeansWithRegistry(ctx)
+        ctx.refresh()
+
+        grailsApplication.setApplicationContext(ctx)
+        grailsApplication.mainContext = ctx
+        appCtx = ctx
+        messageSource = ctx.getBean("messageSource", MessageSource)
 
         webRequest = GrailsWebMockUtil.bindMockWebRequest(ctx)
         onInit()
@@ -336,31 +350,6 @@ info.app.name: ${getClass().name}
         }
 
         servletContext = webRequest.servletContext
-        Holders.servletContext = servletContext
-        Holders.addApplicationDiscoveryStrategy(new ServletEnvironmentGrailsApplicationDiscoveryStrategy(servletContext));
-
-        springConfig.servletContext = servletContext
-        springConfig.registerPostProcessor(new BeanFactoryPostProcessor() {
-
-            @Override
-            void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-                beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(grailsApplication))
-                beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(mockManager))
-            }
-        })
-
-        dependentPlugins*.doWithRuntimeConfiguration(springConfig)
-
-        grailsApplication.mainContext = springConfig.getUnrefreshedApplicationContext()
-        appCtx = springConfig.getApplicationContext()
-
-        ctx.servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, appCtx)
-
-        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, appCtx)
-        mockManager.applicationContext = appCtx
-
-        //GroovySystem.metaClassRegistry.removeMetaClass(String)
-        //GroovySystem.metaClassRegistry.removeMetaClass(Object)
 
         mockManager.doDynamicMethods()
         initRequestAndResponse()

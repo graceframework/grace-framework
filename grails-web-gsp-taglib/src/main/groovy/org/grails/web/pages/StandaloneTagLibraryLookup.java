@@ -15,19 +15,9 @@
  */
 package org.grails.web.pages;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import grails.core.gsp.GrailsTagLibClass;
-import grails.gsp.TagLib;
-
-import org.grails.core.gsp.DefaultGrailsTagLibClass;
 import org.grails.taglib.TagLibraryLookup;
 
 /**
@@ -38,51 +28,12 @@ import org.grails.taglib.TagLibraryLookup;
  */
 public final class StandaloneTagLibraryLookup extends TagLibraryLookup implements ApplicationListener<ContextRefreshedEvent> {
 
-    Set<Object> tagLibInstancesSet;
-
-    private StandaloneTagLibraryLookup() {
-
-    }
-
-    protected void registerTagLibraries() {
-        if (this.tagLibInstancesSet != null) {
-            for (Object tagLibInstance : this.tagLibInstancesSet) {
-                registerTagLib(new DefaultGrailsTagLibClass(tagLibInstance.getClass()));
-            }
-        }
-    }
-
-    @Override
-    protected void putTagLib(Map<String, Object> tags, String name, GrailsTagLibClass taglib) {
-        for (Object tagLibInstance : this.tagLibInstancesSet) {
-            if (tagLibInstance.getClass() == taglib.getClazz()) {
-                tags.put(name, tagLibInstance);
-                break;
-            }
-        }
-    }
-
-    public void setTagLibInstances(List<Object> tagLibInstances) {
-        this.tagLibInstancesSet = new LinkedHashSet<>();
-        this.tagLibInstancesSet.addAll(tagLibInstances);
+    public StandaloneTagLibraryLookup() {
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        detectAndRegisterTabLibBeans();
-    }
-
-    public void detectAndRegisterTabLibBeans() {
-        if (this.tagLibInstancesSet == null) {
-            this.tagLibInstancesSet = new LinkedHashSet<Object>();
-        }
-        Collection<Object> detectedInstances = applicationContext.getBeansWithAnnotation(TagLib.class).values();
-        for (Object instance : detectedInstances) {
-            if (!this.tagLibInstancesSet.contains(instance)) {
-                this.tagLibInstancesSet.add(instance);
-                registerTagLib(new DefaultGrailsTagLibClass(instance.getClass()));
-            }
-        }
+        super.afterSingletonsInstantiated();
     }
 
 }

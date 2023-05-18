@@ -7,6 +7,7 @@ dependencies {
     api project(":grails-plugin-url-mappings")
     api project(":grails-web-gsp-taglib")
     runtimeOnly(project(":grails-web-jsp"))
+    api libs.spring.boot.autoconfigure
 
     testImplementation project(":grails-plugin-codecs")
     testImplementation project(":grails-plugin-domain-class")
@@ -31,10 +32,17 @@ task isolatedTestsTwo(type:Test) {
     ]
 }
 
+task isolatedTestsThree(type:Test) {
+    includes = [
+        "**/PageRendererSpec.class"
+    ]
+}
+
 test {
-    dependsOn isolatedTestsOne, isolatedTestsTwo
+    dependsOn isolatedTestsOne, isolatedTestsTwo, isolatedTestsThree
     excludes = [
         "**/FormTagLibResourceTests.class",
-        "**/RestfulReverseUrlRenderingTests.class"
+        "**/RestfulReverseUrlRenderingTests.class",
+        "**/PageRendererSpec.class"
     ]
 }
