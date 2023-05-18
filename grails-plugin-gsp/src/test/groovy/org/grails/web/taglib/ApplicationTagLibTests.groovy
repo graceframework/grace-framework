@@ -1,20 +1,21 @@
 package org.grails.web.taglib
 
+import javax.servlet.http.Cookie
+
+import groovy.test.NotYetImplemented
+import spock.lang.Specification
+
 import grails.testing.web.taglib.TagLibUnitTest
 import grails.util.GrailsUtil
 import grails.util.Holders
 import grails.util.Metadata
 import grails.util.MockRequestDataValueProcessor
-import groovy.transform.NotYetImplemented
 import org.grails.gsp.GroovyPageBinding
 import org.grails.plugins.web.taglib.ApplicationTagLib
 import org.grails.plugins.web.taglib.FormTagLib
 import org.grails.taglib.GrailsTagException
 import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.util.WebUtils
-import spock.lang.Specification
-
-import javax.servlet.http.Cookie
 
 class ApplicationTagLibTests extends Specification implements TagLibUnitTest<ApplicationTagLib> {
 
@@ -59,7 +60,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         def result = applyTemplate(template)
 
         expect:
-        result ==  "/plugin/one/images/foo.jpg"
+        result == "/plugin/one/images/foo.jpg"
     }
 
     @NotYetImplemented
@@ -108,7 +109,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
         expect:
         applyTemplate('${resource(file:"images/foo.jpg", plugin:"none")}') ==
-            "/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue"
+                "/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue"
     }
 
     void testResourceTag() {
@@ -134,11 +135,11 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         request.contextPath = '/test'
 
         expect:
-        applyTemplate( '${resource(file:"images/foo.jpg")}')  ==
+        applyTemplate('${resource(file:"images/foo.jpg")}') ==
                 '/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue'
 
         applyTemplate('${resource(dir:"images",file:"foo.jpg")}') ==
-            '/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue'
+                '/test/static/images/foo.jpg?requestDataValueProcessorParamName=paramValue'
     }
 
     void testResourceTagDirOnly() {
@@ -148,7 +149,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
         expect:
         applyTemplate('${resource(dir:"jquery")}') ==
-            '/test/static/jquery'
+                '/test/static/jquery'
     }
 
     void testResourceTagDirOnlyAndRequestDataValueProcessor() {
@@ -157,7 +158,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
         expect:
         applyTemplate('${resource(dir:"jquery")}') ==
-            '/test/static/jquery?requestDataValueProcessorParamName=paramValue'
+                '/test/static/jquery?requestDataValueProcessorParamName=paramValue'
     }
 
     @NotYetImplemented
@@ -165,16 +166,16 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         given:
         unRegisterRequestDataValueProcessor()
         def response = new JsessionIdMockHttpServletResponse()
-        ApplicationTagLib.metaClass.getResponse = {-> response}
-        ga.config.grails.views.enable.jsessionid=true
+        ApplicationTagLib.metaClass.getResponse = { -> response }
+        ga.config.grails.views.enable.jsessionid = true
         tagLibBean.afterPropertiesSet()
         assertTrue(tagLibBean.@useJsessionId)
 
         def template = '<g:createLink controller="foo" action="test" />'
         assertOutputEquals "/foo/test;jsessionid=test", template
 
-        ga.config.grails.views.enable.jsessionid=false
-        ga.config['grails.views.enable.jsessionid']=false
+        ga.config.grails.views.enable.jsessionid = false
+        ga.config['grails.views.enable.jsessionid'] = false
         tagLibBean.afterPropertiesSet()
         assertFalse(tagLibBean.@useJsessionId)
         assertOutputEquals "/foo/test", template
@@ -184,17 +185,17 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
     void testUseJessionIdWithCreateLinkAndRequestDataValueProcessor() {
 
         def response = new JsessionIdMockHttpServletResponse()
-        ApplicationTagLib.metaClass.getResponse = {-> response}
+        ApplicationTagLib.metaClass.getResponse = { -> response }
         def tagLibBean = appCtx.getBean(ApplicationTagLib.name)
-        ga.config.grails.views.enable.jsessionid=true
+        ga.config.grails.views.enable.jsessionid = true
         tagLibBean.afterPropertiesSet()
         assertTrue(tagLibBean.@useJsessionId)
 
         def template = '<g:createLink controller="foo" action="test" />'
         assertOutputEquals "/foo/test?requestDataValueProcessorParamName=paramValue;jsessionid=test", template
 
-        ga.config.grails.views.enable.jsessionid=false
-        ga.config['grails.views.enable.jsessionid']=false
+        ga.config.grails.views.enable.jsessionid = false
+        ga.config['grails.views.enable.jsessionid'] = false
         tagLibBean.afterPropertiesSet()
         assertFalse(tagLibBean.@useJsessionId)
         assertOutputEquals "/foo/test?requestDataValueProcessorParamName=paramValue", template
@@ -224,8 +225,8 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         unRegisterRequestDataValueProcessor()
 
         expect:
-        applyTemplate( '''<g:set var="urlMap" value="${[controller: 'test', action: 'justdoit']}"/>${urlMap.controller},${urlMap.action}<g:link url="${urlMap}">test</g:link>${urlMap.controller},${urlMap.action}''' ) ==
-            'test,justdoit<a href="/test/test/justdoit">test</a>test,justdoit'
+        applyTemplate('''<g:set var="urlMap" value="${[controller: 'test', action: 'justdoit']}"/>${urlMap.controller},${urlMap.action}<g:link url="${urlMap}">test</g:link>${urlMap.controller},${urlMap.action}''') ==
+                'test,justdoit<a href="/test/test/justdoit">test</a>test,justdoit'
     }
 
     void testLinkWithMultipleParameters() {
@@ -235,7 +236,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         def template = '<g:link controller="foo" action="action" params="[test: \'test\', test2: \'test2\']">test</g:link>'
         expect:
         applyTemplate(template) ==
-            '<a href="/test/foo/action?test=test&amp;test2=test2">test</a>'
+                '<a href="/test/foo/action?test=test&amp;test2=test2">test</a>'
         // test caching too
         applyTemplate(template) ==
                 '<a href="/test/foo/action?test=test&amp;test2=test2">test</a>'
@@ -259,7 +260,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
         expect:
         applyTemplate(template) ==
-            '<a href="/test/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>'
+                '<a href="/test/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>'
         // test caching too
         applyTemplate(template) ==
                 '<a href="/test/foo/action?test=test-a&amp;test=test-b&amp;test2=test2-a&amp;test2=test2-b">test</a>'
@@ -294,6 +295,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         // test caching too
         assertOutputEquals('<a href="/foo/action?letter=a">test</a>', template)
     }
+
     void testLinkWithCharCollectionParameterAndRequestDataValueProcessor() {
         def template = '<g:link controller="foo" action="action" params="[letter: [\'a\' as char]]">test</g:link>'
         assertOutputEquals('<a href="/foo/action?letter=a&amp;requestDataValueProcessorParamName=paramValue">test</a>', template)
@@ -346,7 +348,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
         }
     }
 
-   void testLinkWithFragmentAndRequestDataValueProcessor() {
+    void testLinkWithFragmentAndRequestDataValueProcessor() {
         def template = '<g:link controller="foo" action="bar" fragment="test">link</g:link>'
         profile("link rendering") {
             assertOutputEquals('<a href="/foo/bar?requestDataValueProcessorParamName=paramValue#test">link</a>', template)
@@ -355,7 +357,7 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
     void testCreateLinkWithFlowExecutionKeyAndEvent() {
         unRegisterRequestDataValueProcessor()
-      
+
         def template = '<g:createLink controller="foo" action="bar" event="boo" />'
         assertOutputEquals('/foo/bar?_eventId=boo', template)
     }
@@ -390,8 +392,8 @@ class ApplicationTagLibTests extends Specification implements TagLibUnitTest<App
 
     void testSetTagWithMap() {
         def template = '<g:set var="e" value="${c.a}"/>${e?.b}'
-        assertOutputEquals('', template, [c:[:]])
-        assertOutputEquals('foo', template, [c:[a:[b:'foo']]])
+        assertOutputEquals('', template, [c: [:]])
+        assertOutputEquals('foo', template, [c: [a: [b: 'foo']]])
     }
 
     void testSetTagWithScope() {
@@ -516,12 +518,12 @@ app:
     void testCreateLinkWithZeroId() {
         unRegisterRequestDataValueProcessor()
         def template = '<g:createLink action="testAction" controller="testController" id="${id}"  />'
-        assertOutputEquals '/testController/testAction/0', template, [id:0]
+        assertOutputEquals '/testController/testAction/0', template, [id: 0]
     }
 
     void testCreateLinkWithZeroIdAndRequestDataValueProcessor() {
         def template = '<g:createLink action="testAction" controller="testController" id="${id}"  />'
-        assertOutputEquals '/testController/testAction/0?requestDataValueProcessorParamName=paramValue', template, [id:0]
+        assertOutputEquals '/testController/testAction/0?requestDataValueProcessorParamName=paramValue', template, [id: 0]
     }
 
     void testCreateLinkURLEncoding() {
@@ -538,12 +540,12 @@ app:
     void testCreateLinkURLEncodingWithHTMLChars() {
         unRegisterRequestDataValueProcessor()
         def template = '<g:createLink action="testAction" controller="testController" params="[email:email]" />'
-        assertOutputEquals '/testController/testAction?email=%3Cmarc%40anyware.co.uk%3E', template, [email:'<marc@anyware.co.uk>']
+        assertOutputEquals '/testController/testAction?email=%3Cmarc%40anyware.co.uk%3E', template, [email: '<marc@anyware.co.uk>']
     }
 
     void testCreateLinkURLEncodingWithHTMLCharsAndRequestDataValueProcessor() {
         def template = '<g:createLink action="testAction" controller="testController" params="[email:email]" />'
-        assertOutputEquals '/testController/testAction?email=%3Cmarc%40anyware.co.uk%3E&requestDataValueProcessorParamName=paramValue', template, [email:'<marc@anyware.co.uk>']
+        assertOutputEquals '/testController/testAction?email=%3Cmarc%40anyware.co.uk%3E&requestDataValueProcessorParamName=paramValue', template, [email: '<marc@anyware.co.uk>']
     }
 
     void testCreateLinkWithBase() {
@@ -595,13 +597,13 @@ app:
         def template = '<g:createLink action="testAction" controller="testController" absolute="true" />'
 
         def linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals 'http://www.mysite.com/testController/testAction', template
 
         template = '<g:createLink action="testAction" controller="testController" absolute="${true}" />'
 
         linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals 'http://www.mysite.com/testController/testAction', template
     }
 
@@ -610,13 +612,13 @@ app:
         def template = '<g:createLink action="testAction" controller="testController" absolute="true" />'
 
         def linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals 'http://www.mysite.com/testController/testAction?requestDataValueProcessorParamName=paramValue', template
 
         template = '<g:createLink action="testAction" controller="testController" absolute="${true}" />'
 
         linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals 'http://www.mysite.com/testController/testAction?requestDataValueProcessorParamName=paramValue', template
     }
 
@@ -626,13 +628,13 @@ app:
         def template = '<g:createLink action="testAction" controller="testController" absolute="false" />'
 
         def linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals '/foo/testController/testAction', template
 
         template = '<g:createLink action="testAction" controller="testController" absolute="${false}" />'
 
         linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals '/foo/testController/testAction', template
     }
 
@@ -641,13 +643,13 @@ app:
         def template = '<g:createLink action="testAction" controller="testController" absolute="false" />'
 
         def linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals '/foo/testController/testAction?requestDataValueProcessorParamName=paramValue', template
 
         template = '<g:createLink action="testAction" controller="testController" absolute="${false}" />'
 
         linkGenerator = appCtx.getBean("grailsLinkGenerator")
-        linkGenerator.configuredServerBaseURL="http://www.mysite.com"
+        linkGenerator.configuredServerBaseURL = "http://www.mysite.com"
         assertOutputEquals '/foo/testController/testAction?requestDataValueProcessorParamName=paramValue', template
     }
 
@@ -859,13 +861,13 @@ app:
             appCtx.getBean(FormTagLib.name).requestDataValueProcessor = null
         }
     }
-    
+
     void testCreateLinkWithUriAndParams() {
         unRegisterRequestDataValueProcessor()
         def template = '''<g:createLink uri="/some/path" params="[width:21, height:12]"/>'''
         assertOutputEquals '/some/path?width=21&height=12', template
     }
-    
+
     void testCreateLinkWithParamsAndUriContainsRequestParams() {
         unRegisterRequestDataValueProcessor()
         def template = '''<g:createLink uri="/some/path?name=JSB" params="[width:21, height:12]"/>'''
