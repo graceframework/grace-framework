@@ -77,7 +77,7 @@ public class HibernatePersistenceContextInterceptor implements PersistenceContex
 
         // single session mode
         SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.unbindResource(getSessionFactory());
-        LOG.debug("Closing single Hibernate session in GrailsDispatcherServlet");
+        LOG.debug("Closing single Hibernate session in HibernatePersistenceContextInterceptor");
         try {
             disconnected.clear();
             SessionFactoryUtils.closeSession(holder.getSession());
