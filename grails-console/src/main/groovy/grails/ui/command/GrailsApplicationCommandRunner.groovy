@@ -23,7 +23,7 @@ import grails.config.Settings
 import grails.dev.commands.ApplicationCommand
 import grails.dev.commands.ApplicationContextCommandRegistry
 import grails.dev.commands.ExecutionContext
-import grails.ui.support.DevelopmentGrailsApplication
+import grails.ui.support.DevelopmentGrails
 
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
@@ -33,11 +33,11 @@ import org.grails.build.parsing.CommandLineParser
  * @since 3.0
  */
 @CompileStatic
-class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication {
+class GrailsApplicationCommandRunner extends DevelopmentGrails {
 
     String commandName
 
-    protected GrailsApplicationContextCommandRunner(String commandName, Class<?>... sources) {
+    protected GrailsApplicationCommandRunner(String commandName, Class<?>... sources) {
         super(sources)
         this.commandName = commandName
     }
@@ -102,7 +102,7 @@ class GrailsApplicationContextCommandRunner extends DevelopmentGrailsApplication
                 System.exit(1)
             }
 
-            GrailsApplicationContextCommandRunner runner = new GrailsApplicationContextCommandRunner(args[0], applicationClass)
+            GrailsApplicationCommandRunner runner = new GrailsApplicationCommandRunner(args[0], applicationClass)
             runner.run(args.init() as String[])
         }
         else {
