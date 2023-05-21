@@ -63,7 +63,7 @@ spring-boot = "2.7.12"
 spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.27"
 standard-taglib = "1.2.5"
-tomcat = "9.0.72"
+tomcat = "9.0.75"
 xhtmlrenderer = "8.0"
 
 [libraries]
