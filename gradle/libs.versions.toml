@@ -58,11 +58,11 @@ objenesis = "3.2"
 slf4j = "1.7.36"
 snakeyaml = "1.33"
 spock = "2.3-groovy-3.0"
-spring-boot = "2.7.11"
+spring-boot = "2.7.12"
 spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.27"
 standard-taglib = "1.2.5"
-tomcat = "9.0.74"
+tomcat = "9.0.75"
 xhtmlrenderer = "8.0"
 
 [libraries]
