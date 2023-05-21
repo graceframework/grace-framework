@@ -90,6 +90,8 @@ class GrailsShell extends Grails {
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
+        IO io = new IO()
+        io.verbosity = IO.Verbosity.VERBOSE
         Groovysh groovysh = new Groovysh(binding, new IO()) {
 
             CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
