@@ -116,13 +116,13 @@ class GrailsShell extends Grails {
 
             @Override
             Object execute(String line) {
-                if (beforeExecution) {
+                if (!isExecutable(line) && beforeExecution) {
                     beforeExecution()
                 }
 
                 Object result = super.execute(line)
 
-                if (afterExecution) {
+                if (!isExecutable(line) && afterExecution) {
                     afterExecution()
                 }
 
