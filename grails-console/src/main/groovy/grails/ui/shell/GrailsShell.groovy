@@ -21,17 +21,13 @@ import org.apache.groovy.groovysh.Groovysh
 import org.apache.groovy.groovysh.InteractiveShellRunner
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.shell.IO
-import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
-import org.springframework.util.ClassUtils
 
 import grails.binding.GroovyShellBindingCustomizer
 import grails.boot.Grails
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
-import grails.ui.shell.support.GroovyshApplicationContext
-import grails.ui.shell.support.GroovyshWebApplicationContext
 
 /**
  * A Shell
@@ -53,21 +49,10 @@ class GrailsShell extends Grails {
 
     GrailsShell(Class<?>... sources) {
         super(sources)
-        configureApplicationContextClass()
     }
 
     GrailsShell(ResourceLoader resourceLoader, Class<?>... sources) {
         super(resourceLoader, sources)
-        configureApplicationContextClass()
-    }
-
-    private void configureApplicationContextClass() {
-        if (ClassUtils.isPresent('javax.servlet.ServletContext', Thread.currentThread().contextClassLoader)) {
-            setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyshWebApplicationContext))
-        }
-        else {
-            setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyshApplicationContext))
-        }
     }
 
     @Override
