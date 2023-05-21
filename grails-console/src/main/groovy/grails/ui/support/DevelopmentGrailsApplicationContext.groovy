@@ -26,6 +26,6 @@ import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebSe
  * @since
  */
 @InheritConstructors
-class DevelopmentWebApplicationContext extends AnnotationConfigServletWebServerApplicationContext {
+class DevelopmentGrailsApplicationContext extends AnnotationConfigServletWebServerApplicationContext {
 
 }

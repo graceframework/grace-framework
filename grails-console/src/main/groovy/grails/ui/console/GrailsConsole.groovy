@@ -21,17 +21,13 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.springframework.boot.ApplicationContextFactory
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.io.ResourceLoader
-import org.springframework.util.ClassUtils
 
 import grails.binding.GroovyShellBindingCustomizer
 import grails.boot.Grails
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
-import grails.ui.console.support.GroovyConsoleApplicationContext
-import grails.ui.console.support.GroovyConsoleWebApplicationContext
 import grails.util.GrailsVersion
 
 /**
@@ -49,21 +45,10 @@ class GrailsConsole extends Grails {
 
     GrailsConsole(Class<?>... sources) {
         super(sources)
-        configureApplicationContextClass()
     }
 
     GrailsConsole(ResourceLoader resourceLoader, Class<?>... sources) {
         super(resourceLoader, sources)
-        configureApplicationContextClass()
-    }
-
-    void configureApplicationContextClass() {
-        if (ClassUtils.isPresent('jakarta.servlet.ServletContext', Thread.currentThread().contextClassLoader)) {
-            setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleWebApplicationContext))
-        }
-        else {
-            setApplicationContextFactory(ApplicationContextFactory.ofContextClass(GroovyConsoleApplicationContext))
-        }
     }
 
     @Override

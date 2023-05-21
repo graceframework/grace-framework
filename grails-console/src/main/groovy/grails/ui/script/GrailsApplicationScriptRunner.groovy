@@ -23,7 +23,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import grails.config.Config
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
-import grails.ui.support.DevelopmentGrailsApplication
+import grails.ui.support.DevelopmentGrails
 
 /**
  * Used to run Grails scripts within the context of a Grails application
@@ -32,7 +32,7 @@ import grails.ui.support.DevelopmentGrailsApplication
  * @since 3.0
  */
 @CompileStatic
-class GrailsApplicationScriptRunner extends DevelopmentGrailsApplication {
+class GrailsApplicationScriptRunner extends DevelopmentGrails {
 
     List<File> scripts
 
