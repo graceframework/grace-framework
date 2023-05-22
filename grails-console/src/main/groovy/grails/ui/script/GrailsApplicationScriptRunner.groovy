@@ -20,6 +20,7 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.springframework.context.ConfigurableApplicationContext
 
+import grails.build.logging.GrailsConsole
 import grails.config.Config
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
@@ -34,6 +35,8 @@ import grails.util.BuildSettings
  */
 @CompileStatic
 class GrailsApplicationScriptRunner extends DevelopmentGrails {
+
+    static GrailsConsole console = GrailsConsole.getInstance()
 
     List<File> scripts
 
@@ -64,19 +67,20 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
         Collection<PersistenceContextInterceptor> interceptors = ctx.getBeansOfType(PersistenceContextInterceptor).values()
 
         try {
-            scripts.each {
+            for (File script in scripts) {
                 try {
+                    console.addStatus("Script :$script.name")
                     for (i in interceptors) {
                         i.init()
                     }
-                    sh.evaluate(it)
+                    sh.evaluate(script)
                     for (i in interceptors) {
                         i.destroy()
                     }
+                    console.updateStatus('EXECUTE SUCCESSFUL')
                 }
                 catch (Throwable e) {
-                    System.err.println("Script execution error: $e.message")
-                    System.exit(1)
+                    console.error("Script execution error: $e.message")
                 }
             }
         }
@@ -106,8 +110,8 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
             }
             catch (Throwable ignored) {
-                System.err.println('Application class not found')
-                System.exit(1)
+                console.error('Application class not found')
+                System.exit(0)
             }
             String[] scriptNames = args.init() as String[]
             List<File> scripts = []
@@ -117,16 +121,16 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
                     scripts.add(script)
                 }
                 else {
-                    System.err.println("Specified script [${scriptName}] not found")
-                    System.exit(1)
+                    console.error("Specified script [${scriptName}] not found")
+                    System.exit(0)
                 }
             }
 
             new GrailsApplicationScriptRunner(scripts, applicationClass).run(args)
         }
         else {
-            System.err.println('Missing application class name and script name arguments')
-            System.exit(1)
+            console.error('Missing application class name and script name arguments')
+            System.exit(0)
         }
     }
 

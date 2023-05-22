@@ -15,6 +15,7 @@
  */
 package grails.ui.command
 
+import grails.build.logging.GrailsConsole
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.context.ConfigurableApplicationContext
@@ -35,6 +36,8 @@ import org.grails.build.parsing.CommandLineParser
 @CompileStatic
 class GrailsApplicationCommandRunner extends DevelopmentGrails {
 
+    static GrailsConsole console = GrailsConsole.getInstance()
+
     String commandName
 
     protected GrailsApplicationCommandRunner(String commandName, Class<?>... sources) {
@@ -44,6 +47,7 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
 
     @Override
     ConfigurableApplicationContext run(String... args) {
+        ConfigurableApplicationContext ctx = null
         ApplicationCommand command = ApplicationContextCommandRegistry.findCommand(commandName)
         if (command) {
             Object skipBootstrap = command.hasProperty('skipBootstrap')?.getProperty(command)
@@ -51,25 +55,23 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
                 System.setProperty(Settings.SETTING_SKIP_BOOTSTRAP, skipBootstrap.toString())
             }
 
-            ConfigurableApplicationContext ctx = null
             try {
                 ctx = super.run(args)
             }
             catch (Throwable e) {
-                System.err.println("Context failed to load: $e.message")
-                System.exit(1)
+                console.error("Context failed to load: $e.message")
             }
 
             try {
+                console.addStatus("Command :$command.name")
                 CommandLine commandLine = new CommandLineParser().parse(args)
                 ctx.autowireCapableBeanFactory.autowireBeanProperties(command, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false)
                 command.applicationContext = ctx
                 boolean result = command.handle(new ExecutionContext(commandLine))
-                result ? System.exit(0) : System.exit(1)
+                result ? console.addStatus('EXECUTE SUCCESSFUL') : console.error('EXECUTE FAILED', '')
             }
             catch (Throwable e) {
-                System.err.println("Command execution error: $e.message")
-                System.exit(1)
+                console.error("Command execution error: $e.message")
             }
             finally {
                 try {
@@ -80,10 +82,9 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
             }
         }
         else {
-            System.err.println("Command not found for name: $commandName")
-            System.exit(1)
+            console.error("Command not found for name: $commandName")
         }
-        null
+        ctx
     }
 
     /**
@@ -98,16 +99,15 @@ class GrailsApplicationCommandRunner extends DevelopmentGrails {
                 applicationClass = Thread.currentThread().contextClassLoader.loadClass(args.last())
             }
             catch (Throwable e) {
-                System.err.println('Application class not found')
-                System.exit(1)
+                console.error('Application class not found')
+                System.exit(0)
             }
 
             GrailsApplicationCommandRunner runner = new GrailsApplicationCommandRunner(args[0], applicationClass)
             runner.run(args.init() as String[])
         }
         else {
-            System.err.println('Missing application class name and script name arguments')
-            System.exit(1)
+            console.error('Missing application class name and script name arguments')
         }
     }
 
