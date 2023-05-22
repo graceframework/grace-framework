@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2022 the original author or authors.
+ * Copyright 2008-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,6 +195,11 @@ class BuildSettings {
     public static final File BASE_DIR
 
     /**
+     * The Grails app directory of the project
+     */
+    public static final File GRAILS_APP_DIR
+
+    /**
      * Whether the application is running inside the development environment or deployed
      */
     public static final boolean GRAILS_APP_DIR_PRESENT
@@ -268,7 +273,8 @@ class BuildSettings {
         }
         BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR))
                 : (IOUtils.findApplicationDirectoryFile() ?: new File('.'))
-        GRAILS_APP_DIR_PRESENT = ['grails-app', 'app', 'Application.groovy'].find { new File(BASE_DIR, it).exists() } != null
+        GRAILS_APP_DIR = new File(BASE_DIR, 'app').exists() ? new File(BASE_DIR, 'app') : new File(BASE_DIR, 'grails-app')
+        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR.exists()
         TARGET_DIR = new File(BASE_DIR, 'build')
         RESOURCES_DIR = !GRAILS_APP_DIR_PRESENT ? null :
                 (System.getProperty(PROJECT_RESOURCES_DIR) ? new File(System.getProperty(PROJECT_RESOURCES_DIR)) :
