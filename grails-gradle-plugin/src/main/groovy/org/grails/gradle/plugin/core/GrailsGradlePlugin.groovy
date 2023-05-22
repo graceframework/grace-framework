@@ -96,8 +96,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected static final List<String> CORE_GORM_PLUGINS = ['hibernate4', 'hibernate5']
 
     List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
-    List<String> excludedGrailsAppSourceDirs = ['migrations', 'assets']
-    List<String> grailsAppResourceDirs = ['views', 'i18n', 'conf']
+    List<String> excludedGrailsAppSourceDirs = ['assets', 'migrations', 'scripts']
+    List<String> grailsAppResourceDirs = ['conf', 'i18n', 'views']
     private final ToolingModelBuilderRegistry registry
     String grailsAppDir
     String grailsVersion
@@ -645,6 +645,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                systemProperty 'base.dir', project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
@@ -659,6 +660,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                systemProperty 'base.dir', project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
