@@ -24,6 +24,7 @@ import grails.config.Config
 import grails.core.GrailsApplication
 import grails.persistence.support.PersistenceContextInterceptor
 import grails.ui.support.DevelopmentGrails
+import grails.util.BuildSettings
 
 /**
  * Used to run Grails scripts within the context of a Grails application
@@ -43,25 +44,19 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
 
     @Override
     ConfigurableApplicationContext run(String... args) {
-        ConfigurableApplicationContext ctx
-        try {
-            ctx = super.run(args)
-        }
-        catch (Throwable e) {
-            System.err.println("Context failed to load: $e.message")
-            System.exit(1)
-        }
+        ConfigurableApplicationContext ctx = super.run(args)
 
         Binding binding = new Binding()
         binding.setVariable('ctx', ctx)
 
         Config config = ctx.getBean('grailsApplication', GrailsApplication).config
         String defaultPackageKey = 'grails.codegen.defaultPackage'
+        String defaultPackageName = config.getProperty(defaultPackageKey, String)
         GroovyShell sh
-        CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
-        if (config.containsProperty(defaultPackageKey)) {
+        CompilerConfiguration configuration = new CompilerConfiguration()
+        if (defaultPackageName) {
             ImportCustomizer importCustomizer = new ImportCustomizer()
-            importCustomizer.addStarImports config.getProperty(defaultPackageKey, String)
+            importCustomizer.addStarImports(defaultPackageName)
             configuration.addCompilationCustomizers(importCustomizer)
         }
         sh = new GroovyShell(binding, configuration)
@@ -117,7 +112,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
             String[] scriptNames = args.init() as String[]
             List<File> scripts = []
             scriptNames.each { String scriptName ->
-                File script = new File(scriptName)
+                File script = new File(BuildSettings.BASE_DIR, "src/main/scripts/${scriptName}.groovy")
                 if (script.exists()) {
                     scripts.add(script)
                 }
