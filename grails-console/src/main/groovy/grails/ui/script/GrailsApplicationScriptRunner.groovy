@@ -112,7 +112,7 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
             String[] scriptNames = args.init() as String[]
             List<File> scripts = []
             scriptNames.each { String scriptName ->
-                File script = new File(BuildSettings.BASE_DIR, "src/main/scripts/${scriptName}.groovy")
+                File script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
                 if (script.exists()) {
                     scripts.add(script)
                 }
