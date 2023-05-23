@@ -107,6 +107,11 @@ class BuildSettings {
     public static final String APP_BASE_DIR = 'base.dir'
 
     /**
+     * The app directory of the application
+     */
+    public static final String APP_DIR = 'grails.app.dir'
+
+    /**
      * The name of the system property for the Grails work directory.
      */
     public static final String WORK_DIR = 'grails.work.dir'
@@ -149,12 +154,14 @@ class BuildSettings {
     public static final String PROJECT_DOCS_OUTPUT_DIR = 'grails.project.docs.output.dir'
 
     /**
-     * The name of the property specification test locations, must be set of the directory is changed from src/test/groovy
+     * The name of the property specification test locations.
+     * Must be set of the directory is changed from src/test/groovy
      */
     public static final String PROJECT_TEST_SOURCE_DIR = 'grails.project.test.source.dir'
 
     /**
-     * The name of the system property for the the project target directory. Must be set if Gradle build location is changed.
+     * The name of the system property for the the project target directory.
+     * Must be set if Gradle build location is changed.
      */
     public static final String PROJECT_TARGET_DIR = 'grails.project.target.dir'
 
@@ -247,38 +254,64 @@ class BuildSettings {
     }
 
     static {
-        boolean grailsAppDirPresent = ['grails-app', 'app', 'Application.groovy'].find { new File(it).exists() } != null
-
-        if (grailsAppDirPresent) {
-            String fromSystem = System.getProperty(PROJECT_CLASSES_DIR)
-            if (fromSystem) {
-                CLASSES_DIR = new File(fromSystem)
-                BUILD_CLASSES_PATH = fromSystem
-            }
-            else {
-                File groovyDir = new File('build/classes/groovy/main')
-                if (groovyDir.exists()) {
-                    BUILD_CLASSES_PATH = 'build/classes/groovy/main'
-                    CLASSES_DIR = groovyDir
-                }
-                else {
-                    BUILD_CLASSES_PATH = 'build/classes/main'
-                    CLASSES_DIR = new File('build/classes/main')
-                }
-            }
+        String appBaseDir = System.getProperty(APP_BASE_DIR)
+        if (appBaseDir) {
+            BASE_DIR = new File(appBaseDir)
         }
         else {
-            CLASSES_DIR = null
-            BUILD_CLASSES_PATH = 'build/classes/main'
+            File foundAppDir = IOUtils.findApplicationDirectoryFile()
+            BASE_DIR = foundAppDir ?: new File('.')
         }
-        BASE_DIR = System.getProperty(APP_BASE_DIR) ? new File(System.getProperty(APP_BASE_DIR))
-                : (IOUtils.findApplicationDirectoryFile() ?: new File('.'))
-        GRAILS_APP_DIR = new File(BASE_DIR, 'app').exists() ? new File(BASE_DIR, 'app') : new File(BASE_DIR, 'grails-app')
-        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR.exists()
-        TARGET_DIR = new File(BASE_DIR, 'build')
-        RESOURCES_DIR = !GRAILS_APP_DIR_PRESENT ? null :
-                (System.getProperty(PROJECT_RESOURCES_DIR) ? new File(System.getProperty(PROJECT_RESOURCES_DIR)) :
-                        new File(TARGET_DIR, 'resources/main'))
+
+        String appDir = System.getProperty(APP_DIR)
+        if (appDir) {
+            GRAILS_APP_DIR = new File(appDir)
+        }
+        else {
+            if (new File(BASE_DIR, 'app').exists()) {
+                GRAILS_APP_DIR = new File(BASE_DIR, 'app')
+            }
+            else if (new File(BASE_DIR, 'grails-app').exists()) {
+                GRAILS_APP_DIR = new File(BASE_DIR, 'grails-app')
+            }
+            else {
+                GRAILS_APP_DIR = null
+            }
+        }
+        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR?.exists()
+
+        String projectTargetDir = System.getProperty(PROJECT_TARGET_DIR)
+        if (projectTargetDir) {
+            TARGET_DIR = new File(projectTargetDir)
+        }
+        else {
+            TARGET_DIR = new File(BASE_DIR, 'build')
+        }
+
+        String projectResourceDir = System.getProperty(PROJECT_RESOURCES_DIR)
+        if (projectResourceDir) {
+            RESOURCES_DIR = new File(projectResourceDir)
+        }
+        else {
+            RESOURCES_DIR = new File(TARGET_DIR, 'resources/main')
+        }
+
+        String projectClassDir = System.getProperty(PROJECT_CLASSES_DIR)
+        if (projectClassDir) {
+            CLASSES_DIR = new File(projectClassDir)
+            BUILD_CLASSES_PATH = projectClassDir
+        }
+        else {
+            File groovyDir = new File(TARGET_DIR, 'classes/groovy/main')
+            if (groovyDir.exists()) {
+                CLASSES_DIR = groovyDir
+                BUILD_CLASSES_PATH = 'build/classes/groovy/main'
+            }
+            else {
+                CLASSES_DIR = new File(TARGET_DIR, 'classes/main')
+                BUILD_CLASSES_PATH = 'build/classes/main'
+            }
+        }
     }
 
 }
