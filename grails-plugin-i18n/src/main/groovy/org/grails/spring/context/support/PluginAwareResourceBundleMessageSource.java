@@ -18,7 +18,6 @@ package org.grails.spring.context.support;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -113,13 +112,9 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         Resource[] resources;
         if (Environment.isDevelopmentEnvironmentAvailable()) {
             File[] propertiesFiles = null;
-            for (String app : Arrays.asList("grails-app", "app")) {
-                if (new File(BuildSettings.BASE_DIR, app + File.separator + "i18n").exists()) {
-                    propertiesFiles = new File(BuildSettings.BASE_DIR, app + File.separator + "i18n")
-                            .listFiles((dir, name) -> name.endsWith(".properties"));
-
-                    break;
-                }
+            if (new File(BuildSettings.GRAILS_APP_DIR, "i18n").exists()) {
+                propertiesFiles = new File(BuildSettings.GRAILS_APP_DIR, "i18n")
+                        .listFiles((dir, name) -> name.endsWith(".properties"));
             }
 
             if (propertiesFiles != null && propertiesFiles.length > 0) {
@@ -174,7 +169,6 @@ public class PluginAwareResourceBundleMessageSource extends ReloadableResourceBu
         }
 
         setBasenames(basenames.toArray(new String[0]));
-
     }
 
     @Override
