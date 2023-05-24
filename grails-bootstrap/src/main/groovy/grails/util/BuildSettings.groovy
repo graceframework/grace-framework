@@ -290,22 +290,22 @@ class BuildSettings {
             RESOURCES_DIR = new File(projectResourceDir)
         }
         else {
-            RESOURCES_DIR = new File(TARGET_DIR, 'resources/main')
+            RESOURCES_DIR = new File(BASE_DIR, 'build/resources/main')
         }
 
         String projectClassDir = System.getProperty(PROJECT_CLASSES_DIR)
         if (projectClassDir) {
             CLASSES_DIR = new File(projectClassDir)
-            BUILD_CLASSES_PATH = projectClassDir
+            BUILD_CLASSES_PATH = 'build/classes/groovy/main'
         }
         else {
-            File groovyDir = new File(TARGET_DIR, 'classes/groovy/main')
+            File groovyDir = new File(BASE_DIR, 'build/classes/groovy/main')
             if (groovyDir.exists()) {
                 CLASSES_DIR = groovyDir
                 BUILD_CLASSES_PATH = 'build/classes/groovy/main'
             }
             else {
-                CLASSES_DIR = new File(TARGET_DIR, 'classes/main')
+                CLASSES_DIR = new File(BASE_DIR, 'build/classes/main')
                 BUILD_CLASSES_PATH = 'build/classes/main'
             }
         }
