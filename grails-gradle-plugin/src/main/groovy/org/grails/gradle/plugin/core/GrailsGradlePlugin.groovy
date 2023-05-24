@@ -49,8 +49,8 @@ import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import org.springframework.boot.gradle.tasks.run.BootRun
 
-import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsNameUtils
 import grails.util.Metadata
@@ -61,6 +61,7 @@ import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
 import org.grails.gradle.plugin.run.FindMainClassTask
+import org.grails.gradle.plugin.util.BuildSettings
 import org.grails.gradle.plugin.util.SourceSets
 import org.grails.io.support.FactoriesLoaderSupport
 
@@ -108,15 +109,18 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     void apply(Project project) {
+        grailsAppDir = SourceSets.resolveGrailsAppDir(project)
+        grailsVersion = resolveGrailsVersion(project)
+
+        // Keep configure system properties First
+        configureGrailsBuildSettings(project)
+
         // reset the environment to ensure it is resolved again for each invocation
         Environment.reset()
 
         if (project.tasks.findByName('compileGroovy') == null) {
             super.apply(project)
         }
-
-        grailsVersion = resolveGrailsVersion(project)
-        grailsAppDir = SourceSets.resolveGrailsAppDir(project)
 
         excludeDependencies(project)
 
@@ -135,8 +139,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         applyBasePlugins(project)
 
         registerFindMainClassTask(project)
-
-        configureGrailsBuildSettings(project)
 
         configureFileWatch(project)
 
@@ -275,6 +277,13 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileStatic
     protected void configureSpringBootExtension(Project project) {
+        project.getTasks().withType(BootRun, {
+            systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
+            systemProperty(BuildSettings.APP_DIR, project.file(grailsAppDir).absolutePath)
+            systemProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
+            systemProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
+            systemProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+        })
     }
 
     @CompileStatic
@@ -304,6 +313,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileStatic
     protected String configureGrailsBuildSettings(Project project) {
         System.setProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
+        System.setProperty(BuildSettings.APP_DIR, project.file(grailsAppDir).absolutePath)
+        System.setProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
+        System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
+        System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
     }
 
     @CompileDynamic
@@ -319,6 +332,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     project.tasks.create(taskName, ApplicationContextCommandTask) {
                         classpath = fileCollection
                         command = commandName
+                        systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
                         systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                         if (project.hasProperty('args')) {
                             args(CommandLineParser.translateCommandline(project.args))
@@ -375,11 +389,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         grailsVersion = grailsVersion ?: new GrailsDependenciesDependencyManagement().getGrailsVersion()
 
-        if (!grailsVersion) {
-            Properties grailsBuildProperties = new Properties()
-            grailsBuildProperties.load(BuildSettings.getResourceAsStream('/grails-build.properties'))
-            grailsVersion = grailsBuildProperties.getProperty('grails.version')
-        }
         grailsVersion
     }
 
@@ -493,6 +502,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
+            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.console.GrailsConsole')
         }
@@ -501,6 +511,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
+            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
@@ -634,7 +645,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty 'base.dir', project.projectDir
+                systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
@@ -649,7 +660,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty 'base.dir', project.projectDir
+                systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))

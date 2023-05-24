@@ -268,7 +268,7 @@ class GrailsCli {
             Environment.reset()
         }
 
-        boolean grailsAppDirPresent = new File('grails-app').exists() || new File('app').exists()
+        boolean grailsAppDirPresent = BuildSettings.GRAILS_APP_DIR_PRESENT
         File applicationGroovy = new File('Application.groovy')
         File profileYml = new File('profile.yml')
         if (!grailsAppDirPresent && !applicationGroovy.exists() && !profileYml.exists()) {
@@ -629,15 +629,13 @@ class GrailsCli {
 
     private CodeGenConfig loadApplicationConfig() {
         CodeGenConfig config = new CodeGenConfig()
-        ['grails-app', 'app'].each { String dir ->
-            File applicationYml = new File(dir + '/conf/application.yml')
-            File applicationGroovy = new File(dir + '/conf/application.groovy')
-            if (applicationYml.exists()) {
-                config.loadYml(applicationYml)
-            }
-            if (applicationGroovy.exists()) {
-                config.loadGroovy(applicationGroovy)
-            }
+        File applicationYml = new File(BuildSettings.GRAILS_APP_DIR, 'conf/application.yml')
+        File applicationGroovy = new File(BuildSettings.GRAILS_APP_DIR, 'conf/application.groovy')
+        if (applicationYml.exists()) {
+            config.loadYml(applicationYml)
+        }
+        if (applicationGroovy.exists()) {
+            config.loadGroovy(applicationGroovy)
         }
         config
     }
