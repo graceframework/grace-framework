@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,7 @@ import org.grails.io.support.Resource
 class DomainClassCompleter extends ClassNameCompleter {
 
     DomainClassCompleter() {
-        super(new File(BuildSettings.BASE_DIR, 'grails-app').exists()
-                ? new File(BuildSettings.BASE_DIR, 'grails-app/domain')
-                : new File(BuildSettings.BASE_DIR, 'app/domain'))
+        super(new File(BuildSettings.GRAILS_APP_DIR, 'domain'))
     }
 
     @Override
