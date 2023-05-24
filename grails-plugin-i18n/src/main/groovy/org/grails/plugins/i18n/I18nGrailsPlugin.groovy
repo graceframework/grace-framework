@@ -17,6 +17,7 @@ package org.grails.plugins.i18n
 
 import java.nio.file.Files
 
+import groovy.ant.AntBuilder
 import groovy.util.logging.Slf4j
 import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
@@ -38,7 +39,7 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = ['file:./grails-app/i18n/**/*.properties',
+    def watchedResources = ['file:./grails-app/i18n/**/*.properties',
                                'file:./app/i18n/**/*.properties']
 
     @Override
@@ -77,31 +78,16 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
         boolean nativeascii = application.config.getProperty('grails.enable.native2ascii', Boolean, true)
         def resourcesDir = BuildSettings.RESOURCES_DIR
         def classesDir = BuildSettings.CLASSES_DIR
+        def i18nDir = new File(BuildSettings.GRAILS_APP_DIR, 'i18n')
 
         if (resourcesDir.exists() && event.source instanceof Resource) {
             File eventFile = event.source.file.canonicalFile
-            File i18nDir = eventFile.parentFile
             if (isChildOfFile(eventFile, i18nDir)) {
-                if (i18nDir.name == 'i18n' && i18nDir.parentFile.name in ['grails-app', 'app']) {
-                    def appDir = i18nDir.parentFile.parentFile
-                    resourcesDir = new File(appDir, BuildSettings.BUILD_RESOURCES_PATH)
-                    classesDir = new File(appDir, BuildSettings.BUILD_CLASSES_PATH)
-                }
-
                 if (nativeascii) {
-                    // if native2ascii is enabled then read the properties and write them out again
-                    // so that unicode escaping is applied
-                    def properties = new Properties()
-                    eventFile.withReader {
-                        properties.load(it)
-                    }
-                    // by using an OutputStream the unicode characters will be escaped
-                    new File(resourcesDir, eventFile.name).withOutputStream {
-                        properties.store(it, '')
-                    }
-                    new File(classesDir, eventFile.name).withOutputStream {
-                        properties.store(it, '')
-                    }
+                    // if native2ascii is enabled then converts files from native encodings to ASCII
+                    def ant = new AntBuilder()
+                    ant.native2ascii(src: i18nDir, dest: resourcesDir,
+                            includes: eventFile.name, encoding: 'UTF-8')
                 }
                 else {
                     // otherwise just copy the file as is
