@@ -66,6 +66,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
 
     private static final Log logger = LogFactory.getLog(GrailsDevelopmentModeWatchApplicationContextInitializer.class);
 
+    private static final List<String> FILE_EXTENSIONS = List.of("groovy", "java", "properties");
     private static final String SOURCE_MAIN_JAVA = "src/main/java";
     private static final String SOURCE_MAIN_GROOVY = "src/main/groovy";
 
@@ -123,7 +124,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
             Queue<File> changedFiles = new ConcurrentLinkedQueue<>();
             Queue<File> newFiles = new ConcurrentLinkedQueue<>();
 
-            this.directoryWatcher.addListener(new FileExtensionFileChangeListener(Arrays.asList("groovy", "java")) {
+            this.directoryWatcher.addListener(new FileExtensionFileChangeListener(FILE_EXTENSIONS) {
 
                 @Override
                 public void onChange(File file, List<String> extensions) throws IOException {
@@ -241,11 +242,16 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
                             changedFile = changedFile.getCanonicalFile();
                             // Groovy files within the 'conf' directory are not compiled
                             boolean configFileChanged = false;
+                            boolean i18nFileChanged = false;
                             String confPath = new File(BuildSettings.GRAILS_APP_DIR, "conf").getAbsolutePath();
+                            String i18nPath = new File(BuildSettings.GRAILS_APP_DIR, "i18n").getAbsolutePath();
                             if (changedFile.getPath().contains(confPath)) {
                                 configFileChanged = true;
                             }
-                            if (configFileChanged) {
+                            if (changedFile.getPath().contains(i18nPath)) {
+                                i18nFileChanged = true;
+                            }
+                            if (configFileChanged || i18nFileChanged) {
                                 pluginManager.informOfFileChange(changedFile);
                             }
                             else {
@@ -370,7 +376,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         String grailsAppFullPath = BuildSettings.GRAILS_APP_DIR.getAbsolutePath();
         String grailsAppPath = grailsAppFullPath.substring(grailsAppFullPath.lastIndexOf(File.separator) + 1);
         for (String dir : Arrays.asList(grailsAppPath, SOURCE_MAIN_JAVA, SOURCE_MAIN_GROOVY)) {
-            directoryWatcher.addWatchDirectory(new File(location, dir), Arrays.asList("groovy", "java"));
+            directoryWatcher.addWatchDirectory(new File(location, dir), FILE_EXTENSIONS);
         }
     }
 
