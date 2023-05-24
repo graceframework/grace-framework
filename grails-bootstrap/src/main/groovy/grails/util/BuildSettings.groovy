@@ -19,8 +19,6 @@ import java.util.regex.Pattern
 
 import groovy.transform.CompileStatic
 
-import grails.io.IOUtils
-
 /**
  * Build time settings and configuration
  *
@@ -259,8 +257,7 @@ class BuildSettings {
             BASE_DIR = new File(appBaseDir)
         }
         else {
-            File foundAppDir = IOUtils.findApplicationDirectoryFile()
-            BASE_DIR = foundAppDir ?: new File('.')
+            BASE_DIR = new File('.')
         }
 
         String appDir = System.getProperty(APP_DIR)
