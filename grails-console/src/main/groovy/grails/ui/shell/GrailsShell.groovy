@@ -77,7 +77,7 @@ class GrailsShell extends Grails {
 
         IO io = new IO()
         io.verbosity = IO.Verbosity.VERBOSE
-        Groovysh groovysh = new Groovysh(binding, new IO()) {
+        Groovysh groovysh = new Groovysh(binding, io) {
 
             CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
             Closure beforeExecution
