@@ -49,6 +49,7 @@ import grails.util.Environment;
 import org.grails.boot.internal.JavaCompiler;
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
 import org.grails.compiler.injection.GrailsAwareInjectionOperation;
+import org.grails.io.support.GrailsResourceUtils;
 import org.grails.io.watch.DirectoryWatcher;
 import org.grails.io.watch.FileExtensionFileChangeListener;
 import org.grails.plugins.BinaryGrailsPlugin;
@@ -98,7 +99,8 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
 
             if (environment.isReloadEnabled()) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug(String.format("Application reloading status: %s, base directory is [%s]", environment.isReloadEnabled(), BuildSettings.BASE_DIR));
+                    logger.debug(String.format("Application reloading status: %s, base directory is [%s]",
+                            environment.isReloadEnabled(), BuildSettings.BASE_DIR));
                 }
                 try {
                     enableDevelopmentModeWatch(environment, applicationContext);
@@ -225,7 +227,8 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
                         if (count > 0) {
                             changedFiles.clear();
                             for (File changedFile : uniqueChangedFiles) {
-                                logger.debug(String.format("WatchService found file changed [%s]", changedFile));
+                                logger.debug(String.format("WatchService found file changed [%s]",
+                                        GrailsResourceUtils.getPathFromBaseDir(changedFile.getAbsolutePath())));
 
                                 changedFile = changedFile.getCanonicalFile();
                                 // Groovy files within the 'conf' and 'i18n' directory are not compiled
@@ -282,8 +285,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
     private void recompile(File changedFile, CompilerConfiguration compilerConfig, String location) {
         String changedPath = changedFile.getPath();
 
-        String grailsAppFullPath = BuildSettings.GRAILS_APP_DIR.getAbsolutePath();
-        String grailsAppPath = grailsAppFullPath.substring(grailsAppFullPath.lastIndexOf(File.separator) + 1);
+        String grailsAppPath = BuildSettings.GRAILS_APP_PATH;
 
         File appDir = null;
         boolean sourceFileChanged = false;
@@ -303,7 +305,8 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         String baseFileLocation = appDir.getAbsolutePath();
         compilerConfig.setTargetDirectory(new File(baseFileLocation, BuildSettings.BUILD_CLASSES_PATH));
 
-        logger.debug(String.format("Recompiling changed file... [%s]%n", changedFile));
+        logger.debug(String.format("Recompiling changed file... [%s]",
+                GrailsResourceUtils.getPathFromBaseDir(changedFile.getAbsolutePath())));
 
         if (changedFile.getName().endsWith(".java")) {
             if (JavaCompiler.isAvailable()) {
@@ -362,8 +365,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
     }
 
     private void configureDirectoryWatcher(DirectoryWatcher directoryWatcher, String location) {
-        String grailsAppFullPath = BuildSettings.GRAILS_APP_DIR.getAbsolutePath();
-        String grailsAppPath = grailsAppFullPath.substring(grailsAppFullPath.lastIndexOf(File.separator) + 1);
+        String grailsAppPath = BuildSettings.GRAILS_APP_PATH;
         for (String dir : Arrays.asList(grailsAppPath, SOURCE_MAIN_JAVA, SOURCE_MAIN_GROOVY)) {
             directoryWatcher.addWatchDirectory(new File(location, dir), FILE_EXTENSIONS);
         }
