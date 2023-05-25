@@ -220,44 +220,33 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
                     // Workaround for some IDE / OS combos - 2 events (new + update) for the same file
                     Set<File> uniqueChangedFiles = new HashSet<>(Arrays.asList(changedFiles.toArray(new File[0])));
 
-                    int i = uniqueChangedFiles.size();
+                    int count = uniqueChangedFiles.size();
                     try {
-                        if (i > 1) {
+                        if (count > 0) {
                             changedFiles.clear();
-                            for (File f : uniqueChangedFiles) {
-                                recompile(f, compilerConfig, location);
-                                newFiles.remove(f);
-                                pluginManager.informOfFileChange(f);
-                                try {
-                                    Thread.sleep(1000);
+                            for (File changedFile : uniqueChangedFiles) {
+                                logger.debug(String.format("WatchService found file changed [%s]", changedFile));
+
+                                changedFile = changedFile.getCanonicalFile();
+                                // Groovy files within the 'conf' and 'i18n' directory are not compiled
+                                boolean configFileChanged = false;
+                                boolean i18nFileChanged = false;
+                                String confPath = new File(BuildSettings.GRAILS_APP_DIR, "conf").getAbsolutePath();
+                                String i18nPath = new File(BuildSettings.GRAILS_APP_DIR, "i18n").getAbsolutePath();
+                                if (changedFile.getPath().contains(confPath)) {
+                                    configFileChanged = true;
                                 }
-                                catch (InterruptedException ignored) {
-                                    Thread.currentThread().interrupt();
+                                if (changedFile.getPath().contains(i18nPath)) {
+                                    i18nFileChanged = true;
                                 }
-                            }
-                        }
-                        else if (i == 1) {
-                            changedFiles.clear();
-                            File changedFile = uniqueChangedFiles.iterator().next();
-                            changedFile = changedFile.getCanonicalFile();
-                            // Groovy files within the 'conf' directory are not compiled
-                            boolean configFileChanged = false;
-                            boolean i18nFileChanged = false;
-                            String confPath = new File(BuildSettings.GRAILS_APP_DIR, "conf").getAbsolutePath();
-                            String i18nPath = new File(BuildSettings.GRAILS_APP_DIR, "i18n").getAbsolutePath();
-                            if (changedFile.getPath().contains(confPath)) {
-                                configFileChanged = true;
-                            }
-                            if (changedFile.getPath().contains(i18nPath)) {
-                                i18nFileChanged = true;
-                            }
-                            if (configFileChanged || i18nFileChanged) {
-                                pluginManager.informOfFileChange(changedFile);
-                            }
-                            else {
-                                recompile(changedFile, compilerConfig, location);
-                                newFiles.remove(changedFile);
-                                pluginManager.informOfFileChange(changedFile);
+                                if (configFileChanged || i18nFileChanged) {
+                                    pluginManager.informOfFileChange(changedFile);
+                                }
+                                else {
+                                    recompile(changedFile, compilerConfig, location);
+                                    newFiles.remove(changedFile);
+                                    pluginManager.informOfFileChange(changedFile);
+                                }
                             }
                         }
 
@@ -314,7 +303,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         String baseFileLocation = appDir.getAbsolutePath();
         compilerConfig.setTargetDirectory(new File(baseFileLocation, BuildSettings.BUILD_CLASSES_PATH));
 
-        logger.debug(String.format("WatchService found file changed%nRecompiling... [%s]%n", changedFile));
+        logger.debug(String.format("Recompiling changed file... [%s]%n", changedFile));
 
         if (changedFile.getName().endsWith(".java")) {
             if (JavaCompiler.isAvailable()) {
