@@ -205,6 +205,11 @@ class BuildSettings {
     public static final File GRAILS_APP_DIR
 
     /**
+     * The Path of the Grails app directory
+     */
+    public static final String GRAILS_APP_PATH
+
+    /**
      * Whether the application is running inside the development environment or deployed
      */
     public static final boolean GRAILS_APP_DIR_PRESENT
@@ -268,14 +273,12 @@ class BuildSettings {
             if (new File(BASE_DIR, 'app').exists()) {
                 GRAILS_APP_DIR = new File(BASE_DIR, 'app')
             }
-            else if (new File(BASE_DIR, 'grails-app').exists()) {
+            else {
                 GRAILS_APP_DIR = new File(BASE_DIR, 'grails-app')
             }
-            else {
-                GRAILS_APP_DIR = null
-            }
         }
-        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR?.exists()
+        GRAILS_APP_PATH = GRAILS_APP_DIR.absolutePath.substring(GRAILS_APP_DIR.absolutePath.lastIndexOf(File.separator) + 1)
+        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR.exists()
 
         String projectTargetDir = System.getProperty(PROJECT_TARGET_DIR)
         if (projectTargetDir) {

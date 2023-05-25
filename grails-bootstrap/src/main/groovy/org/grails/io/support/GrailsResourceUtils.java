@@ -934,12 +934,6 @@ public final class GrailsResourceUtils {
      * @return The path relative to the base directory or null if it can't be established
      */
     public static String getPathFromBaseDir(String path) {
-        for (String dir : Arrays.asList("grails-app/", "app/")) {
-            if (path.contains(dir)) {
-                return path.substring(path.indexOf(dir) + dir.length());
-            }
-        }
-
         try {
             File baseDir = BuildSettings.BASE_DIR;
             String basePath = baseDir != null ? baseDir.getCanonicalPath() : null;
