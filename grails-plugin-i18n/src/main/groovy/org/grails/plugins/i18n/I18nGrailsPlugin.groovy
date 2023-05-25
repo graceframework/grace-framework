@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.grails.plugins.i18n
 
 import java.nio.file.Files
 
-import groovy.ant.AntBuilder
 import groovy.util.logging.Slf4j
 import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
@@ -40,7 +39,7 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
     def watchedResources = ['file:./grails-app/i18n/**/*.properties',
-                               'file:./app/i18n/**/*.properties']
+                            'file:./app/i18n/**/*.properties']
 
     @Override
     Closure doWithSpring() {
@@ -84,10 +83,19 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
             File eventFile = event.source.file.canonicalFile
             if (isChildOfFile(eventFile, i18nDir)) {
                 if (nativeascii) {
-                    // if native2ascii is enabled then converts files from native encodings to ASCII
-                    def ant = new AntBuilder()
-                    ant.native2ascii(src: i18nDir, dest: resourcesDir,
-                            includes: eventFile.name, encoding: 'UTF-8')
+                    // if native2ascii is enabled then read the properties and write them out again
+                    // so that unicode escaping is applied
+                    def properties = new Properties()
+                    eventFile.withReader {
+                        properties.load(it)
+                    }
+                    // by using an OutputStream the unicode characters will be escaped
+                    new File(resourcesDir, eventFile.name).withOutputStream {
+                        properties.store(it, '')
+                    }
+                    new File(classesDir, eventFile.name).withOutputStream {
+                        properties.store(it, '')
+                    }
                 }
                 else {
                     // otherwise just copy the file as is
