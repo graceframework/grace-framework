@@ -25,7 +25,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -223,7 +222,7 @@ public final class GrailsResourceUtils {
 
         GRAILS_RESOURCE_PATTERN_FIFTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
 
-        fs = "/";
+        fs = FOLDER_SEPARATOR;
         GRAILS_RESOURCE_PATTERN_SECOND_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "conf" + fs + "spring"));
         GRAILS_RESOURCE_PATTERN_FOURTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "[\\w-]+"));
         GRAILS_RESOURCE_PATTERN_SIXTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
@@ -391,7 +390,7 @@ public final class GrailsResourceUtils {
      * @return The class name or null if it doesn't exist
      */
     public static String getClassNameForClassFile(String rootDir, String path) {
-        path = path.replace("/", ".");
+        path = path.replace(FOLDER_SEPARATOR, ".");
         path = path.replace('\\', '.');
         path = path.substring(0, path.length() - CLASS_EXTENSION.length());
         if (rootDir != null) {
@@ -734,8 +733,8 @@ public final class GrailsResourceUtils {
             catch (MalformedURLException ex) {
                 // Probably no protocol in original jar URL, like "jar:C:/mypath/myjar.jar".
                 // This usually indicates that the jar file resides in the file system.
-                if (!jarFile.startsWith("/")) {
-                    jarFile = "/" + jarFile;
+                if (!jarFile.startsWith(FOLDER_SEPARATOR)) {
+                    jarFile = FOLDER_SEPARATOR + jarFile;
                 }
                 return new URL(FILE_URL_PREFIX + jarFile);
             }
@@ -760,7 +759,6 @@ public final class GrailsResourceUtils {
      * @param path The path to check
      * @return true if it is a Grails path
      */
-
     public static boolean isGrailsPath(String path) {
         if (KNOWN_PATHS.containsKey(path)) {
             return KNOWN_PATHS.get(path);
@@ -894,7 +892,7 @@ public final class GrailsResourceUtils {
 
             i = url.lastIndexOf(GRAILS_APP_DIR);
             if (i > -1) {
-                return WEB_INF + "/" + url.substring(i);
+                return WEB_INF + FOLDER_SEPARATOR + url.substring(i);
             }
         }
         catch (IOException ignored) {
@@ -906,7 +904,7 @@ public final class GrailsResourceUtils {
      * Retrieves the static resource path for the given Grails resource artifact (controller/taglib etc.)
      *
      * @param resource The Resource
-     * @param contextPath The additonal context path to prefix
+     * @param contextPath The additional context path to prefix
      * @return The resource path
      */
     public static String getStaticResourcePathForResource(Resource resource, String contextPath) {
@@ -928,7 +926,7 @@ public final class GrailsResourceUtils {
 
         Matcher m = PLUGIN_RESOURCE_PATTERN.matcher(url);
         if (m.find()) {
-            return (contextPath.length() > 0 ? contextPath + "/" : "") + m.group(1);
+            return (contextPath.length() > 0 ? contextPath + FOLDER_SEPARATOR : "") + m.group(1);
         }
 
         return contextPath;
