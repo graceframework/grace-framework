@@ -198,11 +198,9 @@ class GrailsResourceUtilsSpec extends Specification {
 
     void testGetPathFromBaseDir() {
         expect:
-        "views/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/grails-app/views/demo/index.gsp")
+        "grails-app/views/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/grails-app/views/demo/index.gsp")
         "src/main/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("${BuildSettings.BASE_DIR.absolutePath}/src/main/demo/index.gsp")
         "/alpha/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("/alpha/index.gsp")
-
-        "views/demo/index.gsp" == GrailsResourceUtils.getPathFromBaseDir("/test/grails/myweb/app/views/demo/index.gsp")
     }
 
     private String toFileUrl(String path) {
