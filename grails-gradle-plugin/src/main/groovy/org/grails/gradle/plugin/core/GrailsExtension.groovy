@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.grails.gradle.plugin.core
 import groovy.transform.CompileStatic
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.Project
-import org.gradle.util.ConfigureUtil
 
 /**
  * A extension to the Gradle plugin to configure Grails settings
@@ -65,7 +64,7 @@ class GrailsExtension {
      */
     void plugins(Closure pluginDefinitions) {
         def definer = new PluginDefiner(project, exploded)
-        ConfigureUtil.configureSelf(pluginDefinitions, definer)
+        project.configure(definer, pluginDefinitions)
     }
 
 }
