@@ -139,6 +139,14 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
                     applicationContext.registerBeanDefinition(beanName, xmlBeans.getBeanDefinition(beanName))
                 }
             }
+            if (res.filename.endsWith('.groovy')) {
+                Map<String, Object> variables = [
+                        application: grailsApplication,
+                        grailsApplication: grailsApplication] as Map<String, Object>
+                RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration()
+                RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, variables, res)
+                springConfig.registerBeansWithContext(applicationContext)
+            }
         }
         else if (event.source instanceof Class) {
             def clazz = (Class) event.source
