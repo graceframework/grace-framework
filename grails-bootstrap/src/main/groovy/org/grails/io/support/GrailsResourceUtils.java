@@ -25,7 +25,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -63,31 +62,49 @@ public final class GrailsResourceUtils {
 
     public static final String JAR_URL_SEPARATOR = "!/";
 
-    /** Pseudo URL prefix for loading from the class path: "classpath:" */
+    /**
+     * Pseudo URL prefix for loading from the class path: "classpath:"
+     */
     public static final String CLASSPATH_URL_PREFIX = "classpath:";
 
-    /** URL prefix for loading from the file system: "file:" */
+    /**
+     * URL prefix for loading from the file system: "file:"
+     */
     public static final String FILE_URL_PREFIX = "file:";
 
-    /** URL protocol for a file in the file system: "file" */
+    /**
+     * URL protocol for a file in the file system: "file"
+     */
     public static final String URL_PROTOCOL_FILE = "file";
 
-    /** URL protocol for an entry from a jar file: "jar" */
+    /**
+     * URL protocol for an entry from a jar file: "jar"
+     */
     public static final String URL_PROTOCOL_JAR = "jar";
 
-    /** URL protocol for an entry from a zip file: "zip" */
+    /**
+     * URL protocol for an entry from a zip file: "zip"
+     */
     public static final String URL_PROTOCOL_ZIP = "zip";
 
-    /** URL protocol for an entry from a JBoss jar file: "vfszip" */
+    /**
+     * URL protocol for an entry from a JBoss jar file: "vfszip"
+     */
     public static final String URL_PROTOCOL_VFSZIP = "vfszip";
 
-    /** URL protocol for a JBoss VFS resource: "vfs" */
+    /**
+     * URL protocol for a JBoss VFS resource: "vfs"
+     */
     public static final String URL_PROTOCOL_VFS = "vfs";
 
-    /** URL protocol for an entry from a WebSphere jar file: "wsjar" */
+    /**
+     * URL protocol for an entry from a WebSphere jar file: "wsjar"
+     */
     public static final String URL_PROTOCOL_WSJAR = "wsjar";
 
-    /** URL protocol for an entry from an OC4J jar file: "code-source" */
+    /**
+     * URL protocol for an entry from an OC4J jar file: "code-source"
+     */
     public static final String URL_PROTOCOL_CODE_SOURCE = "code-source";
 
     /**
@@ -117,11 +134,14 @@ public final class GrailsResourceUtils {
 
     public static final String DOMAIN_DIR_PATH = GRAILS_APP_DIR + "/domain/";
 
-    public static final String REGEX_FILE_SEPARATOR = "[\\\\/]"; // backslashes need escaping in regexes
+    /**
+     * backslashes need escaping in regexes
+     */
+    public static final String REGEX_FILE_SEPARATOR = "[\\\\/]";
 
-    /*
-     Domain path is always matched against the normalized File representation of an URL and
-     can therefore work with slashes as separators.
+    /**
+     * Domain path is always matched against the normalized File representation of the URL and
+     * can therefore work with slashes as separators.
      */
     public static Pattern DOMAIN_PATH_PATTERN = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
             REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
@@ -129,8 +149,8 @@ public final class GrailsResourceUtils {
     public static Pattern DOMAIN_PATH_PATTERN_NEW = Pattern.compile(".+" + REGEX_FILE_SEPARATOR + "app" +
             REGEX_FILE_SEPARATOR + "domain" + REGEX_FILE_SEPARATOR + "(.+)\\.(groovy|java)");
 
-    /*
-     This pattern will match any resource within a given directory inside grails-app
+    /**
+     * This pattern will match any resource within a given directory inside grails-app
      */
     public static Pattern RESOURCE_PATH_PATTERN = Pattern.compile(".+?" + REGEX_FILE_SEPARATOR + GRAILS_APP_DIR +
             REGEX_FILE_SEPARATOR + "(.+?)" + REGEX_FILE_SEPARATOR + "(.+?\\.(groovy|java))");
@@ -151,9 +171,9 @@ public final class GrailsResourceUtils {
             SPRING_SCRIPTS_PATH_PATTERN_NEW
     };
 
-    /*
-    Resources are resolved against the platform specific path and must therefore obey the
-    specific File.separator.
+    /**
+     * Resources are resolved against the platform specific path and must therefore obey the
+     * specific File.separator.
      */
     public static final Pattern GRAILS_RESOURCE_PATTERN_FIRST_MATCH;
 
@@ -202,7 +222,7 @@ public final class GrailsResourceUtils {
 
         GRAILS_RESOURCE_PATTERN_FIFTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
 
-        fs = "/";
+        fs = FOLDER_SEPARATOR;
         GRAILS_RESOURCE_PATTERN_SECOND_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "conf" + fs + "spring"));
         GRAILS_RESOURCE_PATTERN_FOURTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, GRAILS_APP_DIR + fs + "[\\w-]+"));
         GRAILS_RESOURCE_PATTERN_SIXTH_MATCH = Pattern.compile(createGrailsResourcePattern(fs, "grails-tests"));
@@ -239,6 +259,10 @@ public final class GrailsResourceUtils {
             GRAILS_RESOURCE_PATTERN_FOURTEENTH_MATCH,
             GRAILS_RESOURCE_PATTERN_FIFTEENTH_MATCH
     };
+
+    private static final Pattern PLUGIN_PATTERN = Pattern.compile(".+?(/plugins/.+?/" + GRAILS_APP_DIR + "/.+)");
+
+    private static final Pattern PLUGIN_RESOURCE_PATTERN = Pattern.compile(".+?/(plugins/.+?)/" + GRAILS_APP_DIR + "/.+");
 
     private static final Map<String, Boolean> KNOWN_PATHS = new LinkedHashMap<String, Boolean>() {
         @Override
@@ -366,7 +390,7 @@ public final class GrailsResourceUtils {
      * @return The class name or null if it doesn't exist
      */
     public static String getClassNameForClassFile(String rootDir, String path) {
-        path = path.replace("/", ".");
+        path = path.replace(FOLDER_SEPARATOR, ".");
         path = path.replace('\\', '.');
         path = path.substring(0, path.length() - CLASS_EXTENSION.length());
         if (rootDir != null) {
@@ -378,6 +402,7 @@ public final class GrailsResourceUtils {
     /**
      * Resolve the given resource URL to a <code>java.io.File</code>,
      * i.e. to a file in the file system.
+     *
      * @param resourceUrl the resource URL to resolve
      * @param description a description of the original resource that
      * the URL was created for (for example, a class path location)
@@ -406,6 +431,7 @@ public final class GrailsResourceUtils {
      * <p>"zip" and "wsjar" are used by BEA WebLogic Server and IBM WebSphere, respectively,
      * but can be treated like jar files. The same applies to "code-source" URLs on Oracle
      * OC4J, provided that the path contains a jar separator.
+     *
      * @param url the URL to check
      * @return whether the URL has been identified as a JAR URL
      */
@@ -420,6 +446,7 @@ public final class GrailsResourceUtils {
     /**
      * Resolve the given resource URI to a <code>java.io.File</code>,
      * i.e. to a file in the file system.
+     *
      * @param resourceUri the resource URI to resolve
      * @param description a description of the original resource that
      * the URI was created for (for example, a class path location)
@@ -439,6 +466,7 @@ public final class GrailsResourceUtils {
     /**
      * Resolve the given resource URI to a <code>java.io.File</code>,
      * i.e. to a file in the file system.
+     *
      * @param resourceUri the resource URI to resolve
      * @return a corresponding File object
      * @throws FileNotFoundException if the URL cannot be resolved to
@@ -453,6 +481,7 @@ public final class GrailsResourceUtils {
      * replacing spaces with "%20" quotes first.
      * <p>Furthermore, this method works on JDK 1.4 as well,
      * in contrast to the <code>URL.toURI()</code> method.
+     *
      * @param url the URL to convert into a URI instance
      * @return the URI instance
      * @throws URISyntaxException if the URL wasn't a valid URI
@@ -465,6 +494,7 @@ public final class GrailsResourceUtils {
     /**
      * Determine whether the given URL points to a resource in the file system,
      * that is, has protocol "file" or "vfs".
+     *
      * @param url the URL to check
      * @return whether the URL has been identified as a file system URL
      */
@@ -476,6 +506,7 @@ public final class GrailsResourceUtils {
     /**
      * Apply the given relative path to the given path,
      * assuming standard Java folder separation (i.e. "/" separators).
+     *
      * @param path the path to start from (usually a full file path)
      * @param relativePath the relative path to apply
      * (relative to the full file path above)
@@ -498,6 +529,7 @@ public final class GrailsResourceUtils {
      * inner simple dots.
      * <p>The result is convenient for path comparison. For other uses,
      * notice that Windows separators ("\") are replaced by simple slashes.
+     *
      * @param path the original path
      * @return the normalized path
      */
@@ -576,9 +608,10 @@ public final class GrailsResourceUtils {
 
     /**
      * Take a String which is a delimited list and convert it to a String array.
-     * <p>A single delimiter can consists of more than one character: It will still
-     * be considered as single delimiter string, rather than as bunch of potential
+     * <p>A single delimiter can consist of more than one character: It will still
+     * be considered as single delimiter string, rather than as brunch of potential
      * delimiter characters - in contrast to <code>tokenizeToStringArray</code>.
+     *
      * @param str the input String
      * @param delimiter the delimiter between elements (this is a single delimiter,
      * rather than a bunch individual delimiter characters)
@@ -590,9 +623,10 @@ public final class GrailsResourceUtils {
 
     /**
      * Take a String which is a delimited list and convert it to a String array.
-     * <p>A single delimiter can consists of more than one character: It will still
-     * be considered as single delimiter string, rather than as bunch of potential
+     * <p>A single delimiter can consist of more than one character: It will still
+     * be considered as single delimiter string, rather than a bunch of potential
      * delimiter characters - in contrast to <code>tokenizeToStringArray</code>.
+     *
      * @param str the input String
      * @param delimiter the delimiter between elements (this is a single delimiter,
      * rather than a bunch individual delimiter characters)
@@ -650,7 +684,7 @@ public final class GrailsResourceUtils {
     }
 
     /**
-     * Replace all occurences of a substring within a string with
+     * Replace all occurrences of a substring within a string with
      * another string.
      * @param inString String to examine
      * @param oldPattern String to replace
@@ -699,8 +733,8 @@ public final class GrailsResourceUtils {
             catch (MalformedURLException ex) {
                 // Probably no protocol in original jar URL, like "jar:C:/mypath/myjar.jar".
                 // This usually indicates that the jar file resides in the file system.
-                if (!jarFile.startsWith("/")) {
-                    jarFile = "/" + jarFile;
+                if (!jarFile.startsWith(FOLDER_SEPARATOR)) {
+                    jarFile = FOLDER_SEPARATOR + jarFile;
                 }
                 return new URL(FILE_URL_PREFIX + jarFile);
             }
@@ -725,7 +759,6 @@ public final class GrailsResourceUtils {
      * @param path The path to check
      * @return true if it is a Grails path
      */
-
     public static boolean isGrailsPath(String path) {
         if (KNOWN_PATHS.containsKey(path)) {
             return KNOWN_PATHS.get(path);
@@ -760,7 +793,7 @@ public final class GrailsResourceUtils {
     /**
      * Checks whether the specified path is a Grails path.
      *
-     * @param r The resoruce to check
+     * @param r The resource to check
      * @return true if it is a Grails path
      */
     public static boolean isProjectSource(Resource r) {
@@ -774,7 +807,8 @@ public final class GrailsResourceUtils {
     }
 
     /**
-     * Checks whether the specific resources is a Grails resource. A Grails resource is a Groovy or Java class under the grails-app directory
+     * Checks whether the specific resources is a Grails resource.
+     * A Grails resource is a Groovy or Java class under the grails-app directory
      *
      * @param r The resource to check
      * @return True if it is a Grails resource
@@ -832,8 +866,6 @@ public final class GrailsResourceUtils {
         return null;
     }
 
-    private static final Pattern PLUGIN_PATTERN = Pattern.compile(".+?(/plugins/.+?/" + GRAILS_APP_DIR + "/.+)");
-
     /**
      * Takes a Grails resource (one located inside the grails-app dir) and gets its relative path inside the WEB-INF directory
      * when deployed.
@@ -860,7 +892,7 @@ public final class GrailsResourceUtils {
 
             i = url.lastIndexOf(GRAILS_APP_DIR);
             if (i > -1) {
-                return WEB_INF + "/" + url.substring(i);
+                return WEB_INF + FOLDER_SEPARATOR + url.substring(i);
             }
         }
         catch (IOException ignored) {
@@ -868,13 +900,11 @@ public final class GrailsResourceUtils {
         return null;
     }
 
-    private static final Pattern PLUGIN_RESOURCE_PATTERN = Pattern.compile(".+?/(plugins/.+?)/" + GRAILS_APP_DIR + "/.+");
-
     /**
      * Retrieves the static resource path for the given Grails resource artifact (controller/taglib etc.)
      *
      * @param resource The Resource
-     * @param contextPath The additonal context path to prefix
+     * @param contextPath The additional context path to prefix
      * @return The resource path
      */
     public static String getStaticResourcePathForResource(Resource resource, String contextPath) {
@@ -896,7 +926,7 @@ public final class GrailsResourceUtils {
 
         Matcher m = PLUGIN_RESOURCE_PATTERN.matcher(url);
         if (m.find()) {
-            return (contextPath.length() > 0 ? contextPath + "/" : "") + m.group(1);
+            return (contextPath.length() > 0 ? contextPath + FOLDER_SEPARATOR : "") + m.group(1);
         }
 
         return contextPath;
@@ -904,12 +934,13 @@ public final class GrailsResourceUtils {
 
     /**
      * Get the path relative to an artefact folder under grails-app i.e:
-     *
+     * <pre>
      * Input: /usr/joe/project/grails-app/conf/BootStrap.groovy
      * Output: BootStrap.groovy
      *
      * Input: /usr/joe/project/grails-app/domain/com/mystartup/Book.groovy
      * Output: com/mystartup/Book.groovy
+     * </pre>
      *
      * @param path The path to evaluate
      * @return The path relative to the root folder grails-app
@@ -926,9 +957,10 @@ public final class GrailsResourceUtils {
 
     /**
      * Gets the path relative to the project base directory.
-     *
+     * <pre>
      * Input: /usr/joe/project/grails-app/conf/BootStrap.groovy
      * Output: grails-app/conf/BootStrap.groovy
+     * </pre>
      *
      * @param path The path
      * @return The path relative to the base directory or null if it can't be established
@@ -949,9 +981,10 @@ public final class GrailsResourceUtils {
 
     /**
      * Takes a file path and returns the name of the folder under grails-app i.e:
-     *
+     * <pre>
      * Input: /usr/joe/project/grails-app/domain/com/mystartup/Book.groovy
      * Output: domain
+     * </pre>
      *
      * @param path The path
      * @return The domain or null if not known

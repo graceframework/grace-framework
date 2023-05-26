@@ -277,8 +277,13 @@ class BuildSettings {
                 GRAILS_APP_DIR = new File(BASE_DIR, 'grails-app')
             }
         }
-        GRAILS_APP_PATH = GRAILS_APP_DIR.absolutePath.substring(GRAILS_APP_DIR.absolutePath.lastIndexOf(File.separator) + 1)
-        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR.exists()
+        GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR?.exists()
+        if (GRAILS_APP_DIR_PRESENT) {
+            GRAILS_APP_PATH = GRAILS_APP_DIR.absolutePath.substring(GRAILS_APP_DIR.absolutePath.lastIndexOf(File.separator) + 1)
+        }
+        else {
+            GRAILS_APP_PATH = ''
+        }
 
         String projectTargetDir = System.getProperty(PROJECT_TARGET_DIR)
         if (projectTargetDir) {
