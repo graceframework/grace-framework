@@ -17,7 +17,6 @@ package org.grails.boot.context;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +66,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
 
     private static final Log logger = LogFactory.getLog(GrailsDevelopmentModeWatchApplicationContextInitializer.class);
 
-    private static final List<String> FILE_EXTENSIONS = List.of("groovy", "java", "properties");
+    private static final List<String> FILE_EXTENSIONS = List.of("groovy", "java", "properties", "xml");
     private static final String SOURCE_MAIN_JAVA = "src/main/java";
     private static final String SOURCE_MAIN_GROOVY = "src/main/groovy";
 
