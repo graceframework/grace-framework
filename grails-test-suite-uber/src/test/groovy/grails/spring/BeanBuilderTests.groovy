@@ -155,7 +155,7 @@ class BeanBuilderTests {
                 xmlns util:"http://www.springframework.org/schema/util"
                 scopedList(ArrayList) { bean ->
                     bean.scope = "test"
-                    aop.'scoped-proxy'()
+                    aop.'scoped-proxy'("proxy-target-class": false)
                 }
 
                 util.list(id:"foo") {
@@ -185,7 +185,7 @@ class BeanBuilderTests {
                       util:"http://www.springframework.org/schema/util"
                 scopedList(ArrayList) { bean ->
                     bean.scope = "test"
-                    aop.'scoped-proxy'()
+                    aop.'scoped-proxy'("proxy-target-class": false)
                 }
 
                 util.list(id:"foo") {
@@ -247,7 +247,7 @@ class BeanBuilderTests {
             xmlns aop:"http://www.springframework.org/schema/aop"
             scopedList(ArrayList) { bean ->
                 bean.scope = "test"
-                aop.'scoped-proxy'()
+                aop.'scoped-proxy'("proxy-target-class": false)
             }
         }
 
