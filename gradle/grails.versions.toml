@@ -7,7 +7,7 @@ mongodb = "7.2.1"
 neo4j = "7.2.1"
 rxjava = "1.1.1"
 rxjava2 = "2.0.0"
-scaffolding = "5.2.3"
+scaffolding = "5.2.4"
 
 [profiles]
 angular = "8.0.1"
