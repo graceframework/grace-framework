@@ -39,12 +39,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.lang.NonNull;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.StringUtils;
 
 import grails.compiler.ast.ClassInjector;
-import grails.config.Config;
-import grails.core.GrailsApplication;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.util.BuildSettings;
@@ -73,23 +69,9 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
     private static final List<String> FILE_EXTENSIONS = List.of("groovy", "java", "properties", "xml");
     private static final String SOURCE_MAIN_JAVA = "src/main/java";
     private static final String SOURCE_MAIN_GROOVY = "src/main/groovy";
-    private static final String[] DEFAULT_RESTART_EXCLUDES = new String[] {
-            "META-INF/maven/**",
-            "META-INF/resources/**",
-            "resources/**",
-            "static/**",
-            "public/**",
-            "templates/**",
-            "**/*Test.class",
-            "**/*Tests.class",
-            "git.properties",
-            "META-INF/build-info.properties"
-    };
 
     private boolean developmentModeActive = false;
     private DirectoryWatcher directoryWatcher;
-
-    private final AntPathMatcher matcher = new AntPathMatcher();
 
     private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
@@ -113,7 +95,6 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         if (event instanceof ApplicationStartedEvent) {
             ApplicationStartedEvent springApplicationEvent = (ApplicationStartedEvent) event;
             ConfigurableApplicationContext applicationContext = springApplicationEvent.getApplicationContext();
-            GrailsApplication grailsApplication = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
 
             if (environment.isReloadEnabled()) {
                 if (logger.isDebugEnabled()) {
@@ -121,7 +102,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
                             environment.isReloadEnabled(), BuildSettings.BASE_DIR));
                 }
                 try {
-                    enableDevelopmentModeWatch(environment, grailsApplication, applicationContext);
+                    enableDevelopmentModeWatch(environment, applicationContext);
                 }
                 catch (IOException e) {
                     logger.error("Enable development mode watch fail", e);
@@ -134,10 +115,8 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
     }
 
     private void enableDevelopmentModeWatch(Environment environment,
-                                            GrailsApplication grailsApplication,
                                             ConfigurableApplicationContext applicationContext) throws IOException {
 
-        List<String> allExclude = getRestartExcludes(grailsApplication);
         String location = environment.getReloadLocation();
 
         if (location != null && location.length() > 0) {
@@ -251,14 +230,23 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
                                         GrailsResourceUtils.getPathFromBaseDir(changedFile.getAbsolutePath())));
 
                                 changedFile = changedFile.getCanonicalFile();
-
-                                String relativeName = getRelativeName(BuildSettings.BASE_DIR, changedFile);
-                                if (isRestartRequired(relativeName, allExclude)) {
-                                    recompile(changedFile, compilerConfig, location);
-                                    newFiles.remove(changedFile);
+                                // Groovy files within the 'conf' and 'i18n' directory are not compiled
+                                boolean configFileChanged = false;
+                                boolean i18nFileChanged = false;
+                                String confPath = new File(BuildSettings.GRAILS_APP_DIR, "conf").getAbsolutePath();
+                                String i18nPath = new File(BuildSettings.GRAILS_APP_DIR, "i18n").getAbsolutePath();
+                                if (changedFile.getPath().contains(confPath)) {
+                                    configFileChanged = true;
+                                }
+                                if (changedFile.getPath().contains(i18nPath)) {
+                                    i18nFileChanged = true;
+                                }
+                                if (configFileChanged || i18nFileChanged) {
                                     pluginManager.informOfFileChange(changedFile);
                                 }
                                 else {
+                                    recompile(changedFile, compilerConfig, location);
+                                    newFiles.remove(changedFile);
                                     pluginManager.informOfFileChange(changedFile);
                                 }
                             }
@@ -294,12 +282,9 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
     }
 
     private void recompile(File changedFile, CompilerConfiguration compilerConfig, String location) {
-        if (!(changedFile.getName().endsWith(".java") || changedFile.getName().endsWith(".groovy"))) {
-            return;
-        }
+        String changedPath = changedFile.getPath();
 
         String grailsAppPath = BuildSettings.GRAILS_APP_PATH;
-        String changedPath = changedFile.getPath();
 
         File appDir = null;
         boolean sourceFileChanged = false;
@@ -383,38 +368,6 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         for (String dir : Arrays.asList(grailsAppPath, SOURCE_MAIN_JAVA, SOURCE_MAIN_GROOVY)) {
             directoryWatcher.addWatchDirectory(new File(location, dir), FILE_EXTENSIONS);
         }
-    }
-
-    private List<String> getRestartExcludes(GrailsApplication grailsApplication) {
-        List<String> allExclude = new ArrayList<>();
-        Config config = grailsApplication.getConfig();
-        String[] exclude = config.getProperty("spring.devtools.restart.exclude", String[].class);
-        if (exclude != null) {
-            allExclude.addAll(Arrays.asList(exclude));
-        }
-        else {
-            allExclude.addAll(Arrays.asList(DEFAULT_RESTART_EXCLUDES));
-        }
-        String[] additionalExclude = config.getProperty("spring.devtools.restart.additional-exclude", String[].class);
-        allExclude.addAll(Arrays.asList(additionalExclude));
-        return allExclude;
-    }
-
-    private boolean isRestartRequired(String relativeName, List<String> allExclude) {
-        for (String pattern : allExclude) {
-            if (this.matcher.match(pattern, relativeName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private String getRelativeName(File baseDir, File changedFile) {
-        File directory = baseDir.getAbsoluteFile();
-        File file = changedFile.getAbsoluteFile();
-        String directoryName = StringUtils.cleanPath(directory.getPath());
-        String fileName = StringUtils.cleanPath(file.getPath());
-        return fileName.substring(directoryName.length() + 1);
     }
 
 }
