@@ -162,7 +162,7 @@ class ModelEntry {
                                                 controllerName: 'CharSequence']
 
     Map<String, String> model = Collections.synchronizedMap([:])
-    Set<String> taglibs = Collections.synchronizedSet(new HashSet<>())
+    Set<String> taglibs = Collections.synchronizedSet(new HashSet<String>())
     Set<String> defaultTagLibs = new HashSet(GroovyPageParser.DEFAULT_TAGLIB_NAMESPACES)
     int initialSize
 
