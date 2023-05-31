@@ -8,6 +8,7 @@ cglib = "3.3.0"
 commons-codec = "1.15"
 commons-lang = "2.6"
 commons-lang3 = "3.12.0"
+glassfish-web-jsp-jstl = "3.0.1"
 gradle = "7.6.1"
 gradle-extra-configurations-plugin = "9.0.0"
 gradle-git-properties = "2.4.1"
@@ -59,7 +60,6 @@ spock = "2.3-groovy-4.0"
 spring-boot = "3.0.7"
 spring-dependency-management = "1.1.0"
 spring-framework = "6.0.9"
-standard-taglib = "1.2.5"
 tomcat = "10.1.8"
 xhtmlrenderer = "8.0"
 
@@ -75,6 +75,7 @@ cglib = { module = "cglib:cglib-nodep", version.ref = "cglib" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
 gradle-extra-configurations-plugin = { module = "com.netflix.nebula:gradle-extra-configurations-plugin", version.ref = "gradle-extra-configurations-plugin" }
 gradle-nexus-plugin = { module = "com.bmuschko:gradle-nexus-plugin", version.ref = "gradle-nexus-plugin" }
 gradle-nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
@@ -202,7 +203,6 @@ spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-fr
 spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring-framework" }
 spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "spring-framework" }
-standard-taglib = { module = "org.apache.taglibs:taglibs-standard-impl", version.ref = "standard-taglib" }
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
 tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
 tomcat-embed-el = { module = "org.apache.tomcat.embed:tomcat-embed-el", version.ref = "tomcat" }

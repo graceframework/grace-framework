@@ -32,7 +32,7 @@ dependencies {
     testImplementation libs.jakarta.servlet.jsp
     testImplementation libs.jakarta.servlet.jsp.jstl
     testImplementation libs.jakarta.servlet.jsp.jstl
-    testImplementation libs.standard.taglib
+    testImplementation libs.glassfish.web.jsp.jstl
 
     testImplementation libs.grails.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'

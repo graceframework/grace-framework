@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ class TagLibraryResolverTests {
         def resolver = new TagLibraryResolverImpl()
         resolver.servletContext = new MockServletContext()
         resolver.grailsApplication= new DefaultGrailsApplication()
-        resolver.tldScanPatterns = ['classpath*:/META-INF/fmt.tld', 'classpath*:/META-INF/c-1_0-rt.tld'] as String[]
+        resolver.tldScanPatterns = ['classpath*:/META-INF/fmt.tld', 'classpath*:/META-INF/c.tld'] as String[]
         resolver.resourceLoader = new DefaultResourceLoader(this.class.classLoader)
         
-        JspTagLib tagLib = resolver.resolveTagLibrary("http://java.sun.com/jsp/jstl/fmt")
+        JspTagLib tagLib = resolver.resolveTagLibrary("jakarta.tags.fmt")
 
         assert tagLib
 
@@ -43,7 +43,7 @@ class TagLibraryResolverTests {
         // when resolving second time the code will take a different branch
         // because certain locations have been cached. This test tests that
 
-        tagLib = resolver.resolveTagLibrary("http://java.sun.com/jstl/core_rt")
+        tagLib = resolver.resolveTagLibrary("jakarta.tags.core")
 
         assert tagLib
 
@@ -76,13 +76,13 @@ class MockWebXmlTagLibraryResolver extends TagLibraryResolverImpl {
         assert "/WEB-INF/tld/grails.tld" == loc
 
         new ByteArrayResource('''<?xml version="1.0" encoding="UTF-8"?>
-<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-            http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
-        version="2.0">
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+    version="3.0">
+
     <description>The Grails (Groovy on Rails) custom tag library</description>
-    <tlib-version>0.2</tlib-version>
+    <tlib-version>3.0</tlib-version>
     <short-name>grails</short-name>
     <uri>http://grails.codehaus.org/tags</uri>
 

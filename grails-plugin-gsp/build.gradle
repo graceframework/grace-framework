@@ -15,7 +15,7 @@ dependencies {
 
     testImplementation libs.jakarta.servlet.jsp
     testImplementation libs.jakarta.servlet.jsp.jstl
-//    testImplementation libs.standard.taglib
+    testImplementation libs.glassfish.web.jsp.jstl
     testImplementation libs.tomcat.embed.el
     testImplementation libs.spring.test
 }

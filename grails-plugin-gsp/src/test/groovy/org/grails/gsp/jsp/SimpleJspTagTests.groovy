@@ -40,7 +40,7 @@ class SimpleJspTagTests {
         resolver.tldScanPatterns = ['classpath*:/META-INF/fmt.tld'] as String[]
         resolver.resourceLoader = new DefaultResourceLoader(this.class.classLoader)
         
-        JspTagLib tagLib = resolver.resolveTagLibrary("http://java.sun.com/jsp/jstl/fmt")
+        JspTagLib tagLib = resolver.resolveTagLibrary("jakarta.tags.fmt")
 
         assert tagLib
 
