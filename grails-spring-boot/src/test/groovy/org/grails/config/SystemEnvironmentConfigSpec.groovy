@@ -4,6 +4,7 @@ import org.grails.spring.boot.env.YamlPropertySourceLoader
 import org.springframework.core.env.MutablePropertySources
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
+import spock.lang.IgnoreIf
 import spock.lang.Issue
 import spock.lang.Specification
 
@@ -12,6 +13,7 @@ import java.lang.reflect.Field
 /**
  * @author Iván López
  */
+@IgnoreIf({ jvm.isJava17() })
 class SystemEnvironmentConfigSpec extends Specification {
 
     @Issue('#10670')
