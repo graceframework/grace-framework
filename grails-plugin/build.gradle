@@ -29,6 +29,7 @@ dependencies {
     api "org.hibernate:hibernate-core-jakarta:${hibernate5Version}"
     api "org.grails:grails-datastore-web:$gormVersion"
     api "org.grails:grails-datastore-gorm-support:$gormVersion"
+    api("jakarta.persistence:jakarta.persistence-api:$jpaVersion")
     api project(":grails-datastore-gorm-hibernate5"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
