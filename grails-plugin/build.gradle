@@ -31,6 +31,7 @@ dependencies {
     api "org.grails:grails-datastore-gorm-support:$gormVersion"
     api("jakarta.persistence:jakarta.persistence-api:$jpaVersion")
     api("jakarta.transaction:jakarta.transaction-api:$jtaVersion")
+    api("jakarta.validation:jakarta.validation-api:$jakartaValidationVersion")
     api project(":grails-datastore-gorm-hibernate5"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
@@ -41,8 +42,14 @@ dependencies {
         exclude group:'org.grails', module:'grails-core'
         exclude group:'javax.transaction', module:'jta'
     }
-
+    api("org.hibernate:hibernate-validator:$hibernateValidatorVersion") {
+        exclude group:'commons-logging', module:'commons-logging'
+        exclude group:'commons-collections', module:'commons-collections'
+        exclude group:'org.slf4j', module:'slf4j-api'
+    }
+    api("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
     testImplementation "jakarta.servlet:jakarta.servlet-api:$jakartaServletVersion"
+    testImplementation("jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion")
     testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
