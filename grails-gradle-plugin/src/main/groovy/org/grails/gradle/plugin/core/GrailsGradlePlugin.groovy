@@ -163,6 +163,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
         configureRunCommand(project)
 
         configurePathingJar(project)
+
+        configureGroovyASTMetadata(project)
     }
 
     protected void excludeDependencies(Project project) {
@@ -737,6 +739,48 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
+    @CompileDynamic
+    protected void configureGroovyASTMetadata(Project project) {
+        def configScriptTask = project.tasks.create('configScript')
+
+        def configFile = project.file("$project.buildDir/config.groovy")
+        configScriptTask.outputs.file(configFile)
+
+        def projectName = project.name
+        def projectVersion = project.version
+        def projectDir = project.projectDir.absolutePath
+        def projectType = getGrailsProjectType()
+        def isPlugin = projectType == GrailsProjectType.PLUGIN
+        def grailsAppDir = new File(project.projectDir, grailsAppDir).absolutePath
+        configScriptTask.inputs.property('name', projectName)
+        configScriptTask.inputs.property('version', projectVersion)
+        configScriptTask.doLast {
+            configFile.parentFile.mkdirs()
+            configFile.text = """
+withConfig(configuration) {
+    inline(phase: 'CONVERSION') { source, context, classNode ->
+        source.ast.putNodeMetaData('GRAILS_APP_DIR', '$grailsAppDir')
+        source.ast.putNodeMetaData('PROJECT_DIR', '$projectDir')
+        source.ast.putNodeMetaData('PROJECT_NAME', '$projectName')
+        source.ast.putNodeMetaData('PROJECT_TYPE', '$projectType')
+        source.ast.putNodeMetaData('PROJECT_VERSION', '$projectVersion')
+        classNode.putNodeMetaData('projectVersion', '$projectVersion')
+        classNode.putNodeMetaData('projectName', '$projectName')
+        classNode.putNodeMetaData('isPlugin', '$isPlugin')
+    }
+}
+"""
+        }
+        project.tasks.getByName('compileGroovy').dependsOn(configScriptTask)
+        project.compileGroovy {
+            groovyOptions.configurationScript = configFile
+        }
+    }
+
+    protected GrailsProjectType getGrailsProjectType() {
+        GrailsProjectType.NONE
+    }
+
     protected FileCollection buildClasspath(Project project, Configuration... configurations) {
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
         SourceSetOutput output = mainSourceSet?.output
@@ -747,6 +791,16 @@ class GrailsGradlePlugin extends GroovyPlugin {
             fileCollection = fileCollection + it.filter({ File file -> !file.name.startsWith('spring-boot-devtools') })
         }
         fileCollection
+    }
+
+    enum GrailsProjectType {
+        NONE,
+
+        WEB_APP,
+
+        PLUGIN,
+
+        PROFILE
     }
 
 }
