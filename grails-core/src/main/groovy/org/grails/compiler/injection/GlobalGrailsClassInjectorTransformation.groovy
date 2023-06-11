@@ -36,8 +36,6 @@ import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
 
 import org.grails.core.io.support.GrailsFactoriesLoader
-import org.grails.io.support.GrailsResourceUtils
-import org.grails.io.support.UrlResource
 
 /**
  * A global transformation that applies Grails' transformations to classes within a Grails project
@@ -61,9 +59,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
     void visit(ASTNode[] nodes, SourceUnit source) {
         ModuleNode ast = source.getAST()
 
-        URL url = GrailsASTUtils.getSourceUrl(source)
-
-        if (!url || !GrailsResourceUtils.isProjectSource(new UrlResource(url))) {
+        if (!GrailsASTUtils.isProjectSource(source)) {
             return
         }
 
@@ -91,7 +87,7 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
 
-            if (!GrailsResourceUtils.isGrailsResource(new UrlResource(url))) {
+            if (!GrailsASTUtils.isGrailsSource(classNode)) {
                 continue
             }
 
