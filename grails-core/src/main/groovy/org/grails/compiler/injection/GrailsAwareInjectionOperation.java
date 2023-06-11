@@ -58,7 +58,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     private static final String INJECTOR_SCAN_PACKAGE = "org.grails.compiler";
 
-    private static final String INJECTOR_CODEHAUS_SCAN_PACKAGE = "org.codehaus.groovy.grails.compiler";
+    private static final String INJECTOR_GSP_SCAN_PACKAGE = "org.grails.gsp.compiler";
 
     private static ClassInjector[] classInjectors;
 
@@ -103,7 +103,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         }
 
         String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                ClassUtils.convertClassNameToResourcePath(INJECTOR_CODEHAUS_SCAN_PACKAGE) + "/**/*.class";
+                ClassUtils.convertClassNameToResourcePath(INJECTOR_GSP_SCAN_PACKAGE) + "/**/*.class";
 
         String pattern2 = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
                 ClassUtils.convertClassNameToResourcePath(INJECTOR_SCAN_PACKAGE) + "/**/*.class";
