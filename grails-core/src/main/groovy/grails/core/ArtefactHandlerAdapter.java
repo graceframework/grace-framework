@@ -15,30 +15,30 @@
  */
 package grails.core;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
+import java.util.List;
 
 import groovy.lang.Closure;
+import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
-import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.ast.expr.ConstantExpression;
+import org.codehaus.groovy.ast.expr.Expression;
 
+import grails.artefact.Artefact;
 import grails.util.GrailsNameUtils;
 
+import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.exceptions.GrailsRuntimeException;
-import org.grails.io.support.FileSystemResource;
-import org.grails.io.support.GrailsResourceUtils;
-import org.grails.io.support.Resource;
-import org.grails.io.support.UrlResource;
 
 /**
  * Adapter for the {@link grails.core.ArtefactHandler} interface
  *
  * @author Marc Palmer (marc@anyware.co.uk)
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 public class ArtefactHandlerAdapter implements ArtefactHandler {
@@ -49,23 +49,29 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     protected final Class<?> grailsClassImpl;
 
-    protected boolean allowAbstract;
+    protected final boolean allowAbstract;
+
+    protected final String artefactPath;
 
     protected final String artefactSuffix;
 
-    public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl, String artefactSuffix) {
-        this.artefactSuffix = artefactSuffix;
-        this.type = type;
-        this.grailsClassType = grailsClassType;
-        this.grailsClassImpl = grailsClassImpl;
+    public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
+                                  String artefactSuffix) {
+        this(type, grailsClassType, grailsClassImpl, artefactSuffix, null, false);
     }
 
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
-            String artefactSuffix, boolean allowAbstract) {
-        this.artefactSuffix = artefactSuffix;
+                                  String artefactSuffix, String artefactPath) {
+        this(type, grailsClassType, grailsClassImpl, artefactSuffix, artefactPath, false);
+    }
+
+    public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
+                                  String artefactSuffix, String artefactPath, boolean allowAbstract) {
         this.type = type;
         this.grailsClassType = grailsClassType;
         this.grailsClassImpl = grailsClassImpl;
+        this.artefactSuffix = artefactSuffix;
+        this.artefactPath = artefactPath;
         this.allowAbstract = allowAbstract;
     }
 
@@ -79,7 +85,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     /**
      * Default implementation of {@link grails.core.ArtefactHandler#isArtefact(org.codehaus.groovy.ast.ClassNode)}
-     * which returns true if the ClassNode passes the {@link #isArtefactResource(org.grails.io.support.Resource)} method
+     * which returns true if the ClassNode is Grails resource
      * and the name of the ClassNode ends with the {@link #artefactSuffix}
      *
      * @param classNode The ClassNode instance
@@ -87,40 +93,18 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      */
     @Override
     public boolean isArtefact(ClassNode classNode) {
-        SourceUnit source = classNode.getModule().getContext();
-        String filename = source.getName();
-        if (filename == null) {
+        if (classNode == null) {
             return false;
         }
 
-        URL url = null;
-        Resource resource = new FileSystemResource(filename);
-        if (resource.exists()) {
-            try {
-                url = resource.getURL();
-            }
-            catch (IOException ignored) {
-            }
-        }
-
-        if (url == null) {
-            return false;
-        }
-
-        try {
-            UrlResource urlResource = new UrlResource(url);
-            if (!isArtefactResource(urlResource)) {
-                return false;
-            }
-        }
-        catch (IOException e) {
+        if (!isArtefactClass(classNode)) {
             return false;
         }
 
         int modifiers = classNode.getModifiers();
         String name = classNode.getName();
         if (isValidArtefactClassNode(classNode, modifiers)) {
-            return name != null && this.artefactSuffix != null && name.endsWith(this.artefactSuffix);
+            return this.artefactSuffix == null || (name != null && name.endsWith(this.artefactSuffix));
         }
         return false;
     }
@@ -133,28 +117,36 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      * Subclasses can override to narrow down whether the given resource is an artefact of this type.
      * The default is to consider all files under "grails-app" to be a resource
      *
-     * @param resource The resource
+     * @param classNode The ClassNode to check
      * @return True if it is a Grails artefact
      */
-    protected boolean isArtefactResource(Resource resource) throws IOException {
-        return GrailsResourceUtils.isGrailsResource(resource);
-    }
-
-    public final boolean isArtefact(Class<?> aClass) {
-        if (aClass == null) {
+    protected boolean isArtefactClass(ClassNode classNode) {
+        if (classNode == null) {
             return false;
         }
 
-        try {
-            if (isArtefactClass(aClass)) {
-                return true;
-            }
-        }
-        catch (Throwable t) {
-            throw new GrailsRuntimeException("Failed to introspect class: " + aClass, t);
+        if (hasArtefactAnnotation(classNode, this.type)) {
+            return true;
         }
 
-        return false;
+        if (this.artefactPath != null) {
+            return GrailsASTUtils.isGrailsSource(classNode, this.artefactPath);
+        }
+        return GrailsASTUtils.isGrailsSource(classNode);
+    }
+
+    public boolean isArtefact(Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+
+        if (!isArtefactClass(clazz)) {
+            return false;
+        }
+
+        return  (this.artefactSuffix == null || clazz.getName().endsWith(this.artefactSuffix))
+                && !Closure.class.isAssignableFrom(clazz)
+                && (this.allowAbstract || !Modifier.isAbstract(clazz.getModifiers()));
     }
 
     /**
@@ -168,11 +160,38 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
             return false;
         }
 
-        boolean ok = clazz.getName().endsWith(this.artefactSuffix) && !Closure.class.isAssignableFrom(clazz);
-        if (ok && !this.allowAbstract) {
-            ok = !Modifier.isAbstract(clazz.getModifiers());
+        return hasArtefactAnnotation(clazz, this.type);
+    }
+
+    protected boolean hasArtefactAnnotation(Class<?> clazz) {
+        Artefact annotation = clazz.getAnnotation(Artefact.class);
+        return annotation != null;
+    }
+
+    protected boolean hasArtefactAnnotation(Class<?> clazz, String value) {
+        Artefact annotation = clazz.getAnnotation(Artefact.class);
+        return annotation != null && annotation.value().equals(value);
+    }
+
+    protected boolean hasArtefactAnnotation(ClassNode classNode) {
+        List<AnnotationNode> annotationNodes = classNode.getAnnotations(new ClassNode(Artefact.class));
+
+        return annotationNodes != null && annotationNodes.size() > 0;
+    }
+
+    protected boolean hasArtefactAnnotation(ClassNode classNode, String value) {
+        List<AnnotationNode> annotationNodes = classNode.getAnnotations(new ClassNode(Artefact.class));
+
+        for (AnnotationNode node : annotationNodes) {
+            Expression artefactValue = node.getMember("value");
+            if (artefactValue instanceof ConstantExpression) {
+                Object artefactType = ((ConstantExpression) artefactValue).getValue();
+                if (artefactType != null && artefactType.equals(value)) {
+                    return true;
+                }
+            }
         }
-        return ok;
+        return false;
     }
 
     /**
@@ -198,7 +217,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     /**
      * Sets up the relationships between the domain classes, this has to be done after
-     * the intial creation to avoid looping.
+     * the initial creation to avoid looping.
      */
     public void initialize(ArtefactInfo artefacts) {
         // do nothing
