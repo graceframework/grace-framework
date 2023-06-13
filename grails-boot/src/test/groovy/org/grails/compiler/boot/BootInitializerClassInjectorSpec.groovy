@@ -14,6 +14,8 @@ class BootInitializerClassInjectorSpec extends Specification {
         def gcl = new GrailsAwareClassLoader()
         Class applicationClass = gcl.parseClass('''
 import grails.boot.Grails
+
+@grails.artefact.Artefact("Application")
 class Application {
     static void main(String[] args) {
         println "foo"
