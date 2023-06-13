@@ -22,6 +22,7 @@ class BookController {
     def list() { }
 }
 
+@Artefact('UrlMappings')
 class UrlMappings {
 
     static mappings = {

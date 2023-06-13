@@ -32,7 +32,7 @@ public class TagLibArtefactHandlerTests {
     public void testIsTagLibClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> c = gcl.parseClass("class TestTagLib { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('TagLib')\nclass TestTagLib { }");
 
         ArtefactHandler handler = new TagLibArtefactHandler();
         assertTrue(handler.isArtefact(c));

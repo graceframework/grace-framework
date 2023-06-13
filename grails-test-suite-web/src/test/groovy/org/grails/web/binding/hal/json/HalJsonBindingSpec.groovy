@@ -1,5 +1,6 @@
 package org.grails.web.binding.hal.json
 
+import grails.artefact.Artefact
 import grails.persistence.Entity
 import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
@@ -38,6 +39,7 @@ class HalJsonBindingSpec extends Specification implements ControllerUnitTest<Bin
     }
 }
 
+@Artefact("Controller")
 @Controller
 class BindingController {
     def createPerson() {

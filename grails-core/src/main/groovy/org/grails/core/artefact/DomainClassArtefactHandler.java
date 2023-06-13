@@ -15,9 +15,7 @@
  */
 package org.grails.core.artefact;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.net.URL;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
@@ -34,19 +32,21 @@ import grails.core.support.GrailsApplicationAware;
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.DefaultGrailsDomainClass;
 import org.grails.datastore.mapping.model.MappingContext;
-import org.grails.io.support.GrailsResourceUtils;
-import org.grails.io.support.Resource;
 
 /**
  * Evaluates the conventions that define a domain class in Grails.
  *
  * @author Graeme Rocher
  * @author Marc Palmer (marc@anyware.co.uk)
+ * @author Michael Yan
+ * @since 0.5
  */
 @SuppressWarnings("deprecation")
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements GrailsApplicationAware, Ordered {
 
     public static final String TYPE = "Domain";
+
+    public static final String PATH = "domain";
 
     public static final String PLUGIN_NAME = "domainClass";
 
@@ -55,7 +55,7 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     private static final String GRAILS_PACKAGE_PREFIX = "grails.";
 
     public DomainClassArtefactHandler() {
-        super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, true);
+        super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, PATH, true);
     }
 
     public void setGrailsApplication(GrailsApplication grailsApplication) {
@@ -77,32 +77,13 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     @Override
-    protected boolean isArtefactResource(Resource resource) throws IOException {
-        return super.isArtefactResource(resource) && GrailsResourceUtils.isDomainClass(resource.getURL());
-    }
-
-    @Override
     protected boolean isValidArtefactClassNode(ClassNode classNode, int modifiers) {
         return !classNode.isEnum() && !(classNode instanceof InnerClassNode);
     }
 
     @Override
-    public boolean isArtefact(ClassNode classNode) {
-        if (classNode == null) {
-            return false;
-        }
-        if (!isValidArtefactClassNode(classNode, classNode.getModifiers())) {
-            return false;
-        }
-
-        URL url = GrailsASTUtils.getSourceUrl(classNode);
-        if (url != null) {
-            boolean isDomainClass = GrailsResourceUtils.isDomainClass(url);
-            return isDomainClass && !GrailsASTUtils.isJpaEntityClass(classNode);
-        }
-        else {
-            return super.isArtefact(classNode);
-        }
+    public boolean isArtefactClass(ClassNode classNode) {
+        return !GrailsASTUtils.isJpaEntityClass(classNode) && super.isArtefactClass(classNode);
     }
 
     @Override

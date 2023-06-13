@@ -30,7 +30,7 @@ public class ServiceArtefactHandlerTests {
     public void testIsServiceClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> c = gcl.parseClass("class TestService { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Service')\nclass TestService { }\n");
 
         ArtefactHandler handler = new ServiceArtefactHandler();
         assertTrue(handler.isArtefact(c));

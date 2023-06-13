@@ -29,7 +29,7 @@ public class ControllerArtefactHandlerTests {
     @Test
     public void testIsControllerClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
-        Class<?> c = gcl.parseClass("class TestController { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Controller')\nclass TestController { }\n");
 
         ArtefactHandler handler = new ControllerArtefactHandler();
         assertTrue(handler.isArtefact(c));

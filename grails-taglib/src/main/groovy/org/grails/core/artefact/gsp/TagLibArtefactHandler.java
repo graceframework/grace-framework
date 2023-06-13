@@ -15,10 +15,12 @@
  */
 package org.grails.core.artefact.gsp;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ClassUtils;
 
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.ArtefactInfo;
@@ -42,17 +44,48 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "TagLib";
 
+    public static final String PATH = "taglib";
+
+    private static final String TAGLIB_CLASS_NAME = "grails.gsp.TagLib";
+
     private Map<String, GrailsTagLibClass> tag2libMap = new HashMap<>();
 
     private final Map<String, GrailsTagLibClass> namespace2tagLibMap = new HashMap<>();
 
+    private static Class<?> TAGLIB_ANNOTATION;
+
+    static {
+        ClassLoader classLoader = TagLibArtefactHandler.class.getClassLoader();
+        if (ClassUtils.isPresent(TAGLIB_CLASS_NAME, classLoader)) {
+            try {
+                TAGLIB_ANNOTATION = classLoader.loadClass(TAGLIB_CLASS_NAME);
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+    }
+
     public TagLibArtefactHandler() {
-        super(TYPE, GrailsTagLibClass.class, DefaultGrailsTagLibClass.class, TYPE);
+        super(TYPE, GrailsTagLibClass.class, DefaultGrailsTagLibClass.class, TYPE, PATH);
     }
 
     @Override
     public String getPluginName() {
         return PLUGIN_NAME;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean isArtefactClass(Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+
+        if (TAGLIB_ANNOTATION != null && clazz.getAnnotation((Class<? extends Annotation>) TAGLIB_ANNOTATION) != null) {
+            return true;
+        }
+
+        return hasArtefactAnnotation(clazz, this.type) || hasArtefactAnnotation(clazz, "TagLibrary");
     }
 
     /**

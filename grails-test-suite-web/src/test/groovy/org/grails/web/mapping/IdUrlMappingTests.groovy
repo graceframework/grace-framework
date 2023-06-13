@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
@@ -63,6 +64,7 @@ class IdUrlMappingTests extends Specification implements UrlMappingsUnitTest<Url
         "my/foo" == c.params.id
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/emailConfirmation/$id?" {
@@ -76,12 +78,15 @@ class IdUrlMappingTests extends Specification implements UrlMappingsUnitTest<Url
         }
     }
 }
-@grails.artefact.Artefact('Controller')
+
+@Artefact('Controller')
 class EmailConfirmationController {
     def index() {
         [result: "ID = " + params.id]
     }
 }
+
+@Artefact('Controller')
 class ContentController {
     def index() {}
 }

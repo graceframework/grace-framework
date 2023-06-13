@@ -529,6 +529,7 @@ class ControllerUnitTestMixinTests extends Specification implements ControllerUn
     }
 }
 
+@Artefact("Controller")
 @Controller
 class TestController  {
 

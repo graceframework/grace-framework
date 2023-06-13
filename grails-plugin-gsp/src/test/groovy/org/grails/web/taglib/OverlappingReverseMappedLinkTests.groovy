@@ -1,5 +1,6 @@
 package org.grails.web.taglib
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
@@ -33,7 +34,7 @@ class OverlappingReverseMappedLinkTests extends Specification implements UrlMapp
     }
 }
 
-
+@Artefact('UrlMappings')
 class OverLappingReverseMappedLinkUrlMappings {
     static mappings = {
         "/authors" {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import groovy.transform.CompileDynamic
 import org.springframework.context.ApplicationContext
 import org.springframework.core.PriorityOrdered
 
+import grails.artefact.Artefact
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 import grails.web.mapping.LinkGenerator
@@ -74,6 +75,7 @@ class UrlMappingsGrailsPlugin extends Plugin implements PriorityOrdered {
         70
     }
 
+    @Artefact('UrlMappings')
     @CompileDynamic
     static class DefaultUrlMappings {
 

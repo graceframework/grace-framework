@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import org.springframework.core.io.*
 import spock.lang.Specification
@@ -72,6 +73,7 @@ class UrlMappingTests extends Specification implements UrlMappingsUnitTest<UrlMa
         "10" == info.id
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/competition/$action?"{
