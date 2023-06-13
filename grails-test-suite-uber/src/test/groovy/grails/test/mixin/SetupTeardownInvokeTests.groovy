@@ -16,6 +16,7 @@
 
 package grails.test.mixin
 
+import grails.artefact.Artefact
 import grails.testing.web.controllers.ControllerUnitTest
 import org.junit.FixMethodOrder
 import org.junit.runners.MethodSorters
@@ -48,6 +49,7 @@ class SetupTeardownInvokeTests extends Specification implements ControllerUnitTe
     }
 }
 
+@Artefact('Controller')
 class SetupTeardownController {
     String value
     static int counter = 0
