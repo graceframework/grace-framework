@@ -33,18 +33,21 @@ public class CodecArtefactHandlerTests {
         ArtefactHandler handler = new CodecArtefactHandler();
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> fullCodecClass = gcl.parseClass("class FullCodec {\n" +
+        Class<?> fullCodecClass = gcl.parseClass("@grails.artefact.Artefact(\"Codec\")\n" +
+                "class FullCodec {\n" +
                 "static def encode = { str -> }\n" +
                 "static def decode = { str -> }\n" +
                 "}\n");
         assertTrue(handler.isArtefact(fullCodecClass), "class was an encoder/decoder");
 
-        Class<?> decodeOnlyCodecClass = gcl.parseClass("class DecodeOnlyCodec {\n" +
+        Class<?> decodeOnlyCodecClass = gcl.parseClass("@grails.artefact.Artefact(\"Codec\")\n" +
+                "class DecodeOnlyCodec {\n" +
                 "static def decode = { str -> }\n" +
                 "}\n");
         assertTrue(handler.isArtefact(decodeOnlyCodecClass), "class was a decoder");
 
-        Class<?> encodeOnlyCodecClass = gcl.parseClass("class EncodeOnlyCodec {\n" +
+        Class<?> encodeOnlyCodecClass = gcl.parseClass("@grails.artefact.Artefact(\"Codec\")\n" +
+                "class EncodeOnlyCodec {\n" +
                 "static def encode = { str -> }\n" +
                 "}\n");
         assertTrue(handler.isArtefact(encodeOnlyCodecClass), "class was an encoder");

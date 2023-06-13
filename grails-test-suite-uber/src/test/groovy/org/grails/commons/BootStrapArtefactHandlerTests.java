@@ -30,7 +30,7 @@ public class BootStrapArtefactHandlerTests {
     public void testIsBootStrapClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> c = gcl.parseClass("class TestBootStrap { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Bootstrap')\nclass TestBootStrap { }\n");
 
         ArtefactHandler handler = new BootstrapArtefactHandler();
         assertTrue(handler.isArtefact(c));
