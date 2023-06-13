@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
@@ -122,6 +123,7 @@ class RestfulMappingTests extends Specification implements UrlMappingsUnitTest<U
         "handleLogin" == info.actionName
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/books" {

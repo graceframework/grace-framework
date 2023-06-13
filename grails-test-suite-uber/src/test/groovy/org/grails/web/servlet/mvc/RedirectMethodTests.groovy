@@ -254,6 +254,7 @@ class RedirectMethodTests extends Specification implements UrlMappingsUnitTest<U
         "/little-brown-bottle/thankyou" ==  response.redirectedUrl
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/"(controller:'default')

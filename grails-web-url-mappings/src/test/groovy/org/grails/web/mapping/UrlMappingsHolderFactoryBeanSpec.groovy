@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.plugins.DefaultGrailsPluginManager
@@ -34,6 +35,8 @@ class UrlMappingsHolderFactoryBeanSpec extends Specification {
         holder.matchAll("/stomp/foo").size() == 0
     }
 }
+
+@Artefact('UrlMappings')
 class ExcludeUrlMappings {
 
     static excludes = ["/stomp/", "/stomp/*", "/topic/*"]

@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import org.springframework.core.io.ByteArrayResource
 import spock.lang.Specification
@@ -44,6 +45,7 @@ class DynamicParameterValuesTests extends Specification implements UrlMappingsUn
         "2" == info.id
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/book/the_stand" {

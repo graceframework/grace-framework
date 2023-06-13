@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import grails.util.GrailsWebMockUtil
 
@@ -32,6 +33,7 @@ class OverlappingUrlMappingTests extends Specification implements UrlMappingsUni
         "/contact/fred" == reverse.createURL(params, "utf-8")
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/$id?" {
