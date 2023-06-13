@@ -1738,8 +1738,14 @@ public final class GrailsASTUtils {
      * @since 2022.2.5
      */
     public static boolean isProjectSource(SourceUnit source) {
-        String filename = source.getName();
+        if (source == null) {
+            return false;
+        }
         ModuleNode ast = source.getAST();
+        if (ast == null) {
+            return false;
+        }
+        String filename = source.getName();
         String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
         return filename != null && projectDir != null && filename.startsWith(projectDir);
     }
@@ -1766,8 +1772,14 @@ public final class GrailsASTUtils {
      * @since 2022.2.5
      */
     public static boolean isGrailsSource(SourceUnit source, String artefactPath) {
-        String filename = source.getName();
+        if (source == null) {
+            return false;
+        }
         ModuleNode ast = source.getAST();
+        if (ast == null) {
+            return false;
+        }
+        String filename = source.getName();
         String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
         String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
         if (filename == null || projectDir == null || grailsAppDir == null) {
@@ -1813,9 +1825,13 @@ public final class GrailsASTUtils {
      * @since 2022.2.5
      */
     public static boolean isGrailsSource(ClassNode classNode, String artefactPath, String artefactSuffix) {
-        if (classNode.isEnum() || classNode.isInterface()
+        if (classNode == null || classNode.isEnum() || classNode.isInterface()
                 || Modifier.isAbstract(classNode.getModifiers())
                 || (classNode instanceof InnerClassNode)) {
+            return false;
+        }
+
+        if (classNode.getModule() == null || classNode.getModule().getContext() == null) {
             return false;
         }
 
