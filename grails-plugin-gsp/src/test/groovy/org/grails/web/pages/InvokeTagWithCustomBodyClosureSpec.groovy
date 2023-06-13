@@ -26,7 +26,7 @@ class InvokeTagWithCustomBodyClosureSpec extends AbstractGrailsEnvChangingSpec i
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class CustomApplicationTagLib {
     static namespace = "a"
     def myLink = { attrs, body ->

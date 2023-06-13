@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
 
     @Override
     public String[] getArtefactTypes() {
-        return new String[] { getArtefactType(), "TagLibrary" };
+        return new String[] { getArtefactType() };
     }
 
     protected String getArtefactType() {

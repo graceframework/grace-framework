@@ -18,7 +18,7 @@ class OptionalTagBodySpec extends AbstractGrailsEnvChangingSpec implements TagLi
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class CustomTagLib {
 
     static namespace = "a"

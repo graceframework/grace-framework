@@ -19,7 +19,7 @@ class ControllerTagLibMethodInheritanceSpec extends Specification implements Gra
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class FirstTagLib {
 
     static namespace = 'first'
@@ -33,7 +33,7 @@ class FirstTagLib {
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class SecondTagLib extends FirstTagLib {
 
     static namespace = 'second'

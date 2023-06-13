@@ -33,7 +33,7 @@ class TagLibMethodMissingSpec extends AbstractGrailsEnvChangingSpec implements T
             ])
     }
 }
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class TagLibMethodMissingTagLib {
     static namespace = "a"
 
