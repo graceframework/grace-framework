@@ -99,7 +99,7 @@ class GroovyPageUnitTestMixinTests extends Specification implements GrailsWebUni
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class FooTagLib {
     static namespace = "foo"
 

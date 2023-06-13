@@ -85,7 +85,7 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
             return true;
         }
 
-        return hasArtefactAnnotation(clazz, this.type) || hasArtefactAnnotation(clazz, "TagLibrary");
+        return hasArtefactAnnotation(clazz, this.type);
     }
 
     /**
