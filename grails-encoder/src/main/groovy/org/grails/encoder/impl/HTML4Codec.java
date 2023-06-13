@@ -15,6 +15,7 @@
  */
 package org.grails.encoder.impl;
 
+import grails.artefact.Artefact;
 import org.grails.encoder.CodecFactory;
 import org.grails.encoder.Decoder;
 import org.grails.encoder.Encoder;
@@ -27,6 +28,7 @@ import org.grails.encoder.Encoder;
  * @author Lari Hotari
  * @since 2.3
  */
+@Artefact("Codec")
 public class HTML4Codec implements CodecFactory {
 
     static final String CODEC_NAME = "HTML4";
