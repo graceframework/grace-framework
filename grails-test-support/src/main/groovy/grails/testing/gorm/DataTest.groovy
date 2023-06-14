@@ -93,7 +93,7 @@ trait DataTest extends GrailsUnitTest {
      *
      * @param serviceClass The data service abstract class or interface
      */
-    void mockDataService(Class<?> serviceClass) {
+    void mockDataService(Class<? extends Service> serviceClass) {
         Service service = (Service) datastore.getService(serviceClass)
         String serviceName = Introspector.decapitalize(serviceClass.simpleName)
         if (!applicationContext.containsBean(serviceName)) {
