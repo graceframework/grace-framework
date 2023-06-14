@@ -16,11 +16,14 @@
 package org.grails.core.artefact;
 
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.springframework.core.Ordered;
+import org.springframework.util.ClassUtils;
 
 import grails.artefact.Artefact;
 import grails.core.ArtefactHandlerAdapter;
@@ -39,7 +42,7 @@ import org.grails.datastore.mapping.model.MappingContext;
  * @author Michael Yan
  * @since 0.5
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "unchecked"})
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
     public static final String TYPE = "Domain";
@@ -48,9 +51,19 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     public static final String PLUGIN_NAME = "domainClass";
 
-    private static final String ENTITY_ANN_NAME = "Entity";
+    private static final Set<Class<? extends Annotation>> ENTITY_ANNOTATIONS = new HashSet<>();
 
-    private static final String GRAILS_PACKAGE_PREFIX = "grails.";
+    static {
+        ENTITY_ANNOTATIONS.add(grails.persistence.Entity.class);
+        ClassLoader classLoader = DomainClassArtefactHandler.class.getClassLoader();
+        if (ClassUtils.isPresent("org.grails.datastore.gorm.AbstractDatastoreApi", classLoader)) {
+            try {
+                ENTITY_ANNOTATIONS.add((Class<? extends Annotation>) classLoader.loadClass("grails.gorm.annotation.Entity"));
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+    }
 
     public DomainClassArtefactHandler() {
         super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, PATH, true);
@@ -98,45 +111,31 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     private static boolean doIsDomainClassCheck(Class<?> clazz) {
-        // it's not a closure
-        if (Closure.class.isAssignableFrom(clazz)) {
+        if (Closure.class.isAssignableFrom(clazz) || clazz.isEnum()) {
             return false;
         }
 
-        if (clazz.isEnum()) {
-            return false;
-        }
-        Artefact artefactAnn = null;
         try {
-            artefactAnn = clazz.getAnnotation(Artefact.class);
+            Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
+            if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
+                return true;
+            }
         }
-        catch (ArrayStoreException ignored) {
-            // happens if a reference to a class that no longer exists is there
-        }
-
-        if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
-            return true;
+        catch (Exception ignored) {
         }
 
-        Annotation[] annotations = null;
         try {
-            annotations = clazz.getAnnotations();
-        }
-        catch (ArrayStoreException ignored) {
-            // happens if a reference to a class that no longer exists is there
-        }
-
-        if (annotations != null) {
+            Annotation[] annotations = clazz.getAnnotations();
             for (Annotation annotation : annotations) {
                 Class<? extends Annotation> annType = annotation.annotationType();
-                String annName = annType.getSimpleName();
-
-                String pkgName = annType.getPackage().getName();
-                if (ENTITY_ANN_NAME.equals(annName) && pkgName.startsWith(GRAILS_PACKAGE_PREFIX)) {
+                if (ENTITY_ANNOTATIONS.contains(annType)) {
                     return true;
                 }
             }
         }
+        catch (Exception ignored) {
+        }
+
         return false;
     }
 
