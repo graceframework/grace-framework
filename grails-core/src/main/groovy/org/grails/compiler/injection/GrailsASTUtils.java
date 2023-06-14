@@ -878,24 +878,7 @@ public final class GrailsASTUtils {
         boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]));
 
         if (!isDomainClass && sourceNode != null) {
-            String sourcePath = sourceNode.getName();
-            String className = classNode.getName();
-            String relativePathToDomainSourceFile = className.replace('.', File.separatorChar) + ".groovy";
-
-            for (String dir : Arrays.asList(GRAILS_APP_DIR, "app")) {
-                String grailsAppDirToLookFor = File.separator + dir + File.separator;
-                int indexOfGrailsAppDir = sourcePath.lastIndexOf(grailsAppDirToLookFor);
-
-                if (indexOfGrailsAppDir >= 0) {
-                    String pathToGrailsAppDir = sourcePath.substring(0, indexOfGrailsAppDir + grailsAppDirToLookFor.length());
-                    String pathToDomainDir = pathToGrailsAppDir + DOMAIN_DIR + File.separator;
-                    String pathToDomainSourceFile = pathToDomainDir + relativePathToDomainSourceFile;
-
-                    isDomainClass = new File(pathToDomainSourceFile).exists();
-
-                    break;
-                }
-            }
+            return isGrailsSource(sourceNode, "domain");
         }
 
         return isDomainClass;
