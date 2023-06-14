@@ -758,7 +758,9 @@ public final class GrailsResourceUtils {
      *
      * @param path The path to check
      * @return true if it is a Grails path
+     * @deprecated since 2022.3.0, in favor of GrailsASTUtils#isGrailsSource(ClassNode)
      */
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static boolean isGrailsPath(String path) {
         if (KNOWN_PATHS.containsKey(path)) {
             return KNOWN_PATHS.get(path);
@@ -779,7 +781,9 @@ public final class GrailsResourceUtils {
      *
      * @param path The path to check
      * @return true if it is a Grails path
+     * @deprecated since 2022.3.0, in favor of GrailsASTUtils#isProjectSource(ClassNode)
      */
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static boolean isProjectSource(String path) {
         for (Pattern grailsAppResourcePattern : patterns) {
             Matcher m = grailsAppResourcePattern.matcher(path);
@@ -795,7 +799,9 @@ public final class GrailsResourceUtils {
      *
      * @param r The resource to check
      * @return true if it is a Grails path
+     * @deprecated since 2022.3.0, in favor of GrailsASTUtils#isProjectSource(ClassNode)
      */
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static boolean isProjectSource(Resource r) {
         try {
             String file = r.getURL().getFile();
@@ -812,7 +818,9 @@ public final class GrailsResourceUtils {
      *
      * @param r The resource to check
      * @return True if it is a Grails resource
+     * @deprecated since 2022.3.0, in favor of GrailsASTUtils#isProjectSource(ClassNode)
      */
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static boolean isGrailsResource(Resource r) {
         try {
             String file = r.getURL().getFile();
