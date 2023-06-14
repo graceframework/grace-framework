@@ -1,6 +1,7 @@
 package org.grails.compiler.injection
 
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Issue
 import spock.lang.Specification
@@ -37,11 +38,22 @@ class GrailsASTUtilsSpec extends Specification {
         File controllerClassFile = new File(controllerPackageDir,
                                             'SomethingController.groovy')
 
+        SourceUnit domainSourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(domainSourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        domainSourceUnit.getAST() >> ast
+        domainSourceUnit.getName() >> domainClassFile.absolutePath
+
         SourceUnit controllerSourceUnit = Mock()
+        ModuleNode controllerAst = new ModuleNode(controllerSourceUnit)
+        controllerAst.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        controllerAst.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        controllerSourceUnit.getAST() >> controllerAst
         controllerSourceUnit.getName() >> controllerClassFile.absolutePath
 
         expect: 'Something should be recognized as a domain because grails-app/domain/org/grails/compiler/injection/Something.groovy exists'
-        GrailsASTUtils.isDomainClass(new ClassNode(Something), controllerSourceUnit)
+        GrailsASTUtils.isDomainClass(new ClassNode(Something), domainSourceUnit)
 
         and: 'SomethingElse should NOT be recognized as a domain because grails-app/domain/org/grails/compiler/injection/SomethingElse.groovy does NOT exist'
         !GrailsASTUtils.isDomainClass(new ClassNode(SomethingElse), controllerSourceUnit)
@@ -64,6 +76,10 @@ class GrailsASTUtilsSpec extends Specification {
         File domainSomethingFile = new File(domainPackageDir, 'Something.groovy')
         domainSomethingFile.createNewFile()
         SourceUnit domainSomethingSourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(domainSomethingSourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        domainSomethingSourceUnit.getAST() >> ast
         domainSomethingSourceUnit.getName() >> domainSomethingFile.absolutePath
 
         expect: 'Something should be recognized as a domain because app/domain/org/grails/compiler/injection/Something.groovy exists'
@@ -87,6 +103,10 @@ class GrailsASTUtilsSpec extends Specification {
         File domainSomethingFile = new File(domainPackageDir, 'Something.groovy')
         domainSomethingFile.createNewFile()
         SourceUnit domainSomethingSourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(domainSomethingSourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        domainSomethingSourceUnit.getAST() >> ast
         domainSomethingSourceUnit.getName() >> domainSomethingFile.absolutePath
 
         expect: 'Something should not be recognized as a domain because it in app/models/'
@@ -110,6 +130,10 @@ class GrailsASTUtilsSpec extends Specification {
         File someEntityFile = new File(modelsPackageDir, 'SomethingElse.groovy')
         someEntityFile.createNewFile()
         SourceUnit someEntitySourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(someEntitySourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        someEntitySourceUnit.getAST() >> ast
         someEntitySourceUnit.getName() >> someEntityFile.absolutePath
 
         expect: 'SomeEntity should be recognized as a domain because annotated with @grails.persistence.Entity'
@@ -133,6 +157,10 @@ class GrailsASTUtilsSpec extends Specification {
         File someEntityFile = new File(modelsPackageDir, 'SomeJpaEntity.groovy')
         someEntityFile.createNewFile()
         SourceUnit someEntitySourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(someEntitySourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        someEntitySourceUnit.getAST() >> ast
         someEntitySourceUnit.getName() >> someEntityFile.absolutePath
 
         expect: 'SomeJpaEntity should be recognized as a domain because annotated with @grails.persistence.Entity'
@@ -157,6 +185,10 @@ class GrailsASTUtilsSpec extends Specification {
         File someEntityFile = new File(modelsPackageDir, 'SomeGormEntity.groovy')
         someEntityFile.createNewFile()
         SourceUnit someEntitySourceUnit = Mock()
+        ModuleNode ast = new ModuleNode(someEntitySourceUnit)
+        ast.putNodeMetaData('PROJECT_DIR', projectDir.absolutePath)
+        ast.putNodeMetaData('GRAILS_APP_DIR', grailsAppDir.absolutePath)
+        someEntitySourceUnit.getAST() >> ast
         someEntitySourceUnit.getName() >> someEntityFile.absolutePath
 
         expect: 'SomeGormEntity should be recognized as a domain because annotated with @grails.gorm.annotation.Entity'
