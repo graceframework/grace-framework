@@ -24,10 +24,8 @@ import org.springframework.core.Ordered;
 
 import grails.artefact.Artefact;
 import grails.core.ArtefactHandlerAdapter;
-import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.core.GrailsDomainClass;
-import grails.core.support.GrailsApplicationAware;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.DefaultGrailsDomainClass;
@@ -42,7 +40,7 @@ import org.grails.datastore.mapping.model.MappingContext;
  * @since 0.5
  */
 @SuppressWarnings("deprecation")
-public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements GrailsApplicationAware, Ordered {
+public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
     public static final String TYPE = "Domain";
 
@@ -56,10 +54,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     public DomainClassArtefactHandler() {
         super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, PATH, true);
-    }
-
-    public void setGrailsApplication(GrailsApplication grailsApplication) {
-        // no-op
     }
 
     @Override
