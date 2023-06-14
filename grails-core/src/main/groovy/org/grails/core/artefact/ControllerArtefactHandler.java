@@ -54,13 +54,11 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean isArtefactClass(ClassNode classNode) {
         return super.isArtefactClass(classNode) && classNode.getAnnotations(new ClassNode(Controller.class)).isEmpty();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean isArtefactClass(Class<?> clazz) {
         return super.isArtefactClass(clazz) && clazz.getAnnotation(Controller.class) == null;
     }
