@@ -90,6 +90,9 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     @Override
     public boolean isArtefactClass(ClassNode classNode) {
+        if (GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]))) {
+            return true;
+        }
         return !GrailsASTUtils.isJpaEntityClass(classNode) && super.isArtefactClass(classNode);
     }
 
