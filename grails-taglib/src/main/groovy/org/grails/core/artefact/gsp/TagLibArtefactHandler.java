@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.groovy.ast.ClassNode;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
@@ -27,6 +28,7 @@ import grails.core.ArtefactInfo;
 import grails.core.GrailsClass;
 import grails.core.gsp.GrailsTagLibClass;
 
+import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.gsp.DefaultGrailsTagLibClass;
 
 /**
@@ -72,6 +74,15 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
     @Override
     public String getPluginName() {
         return PLUGIN_NAME;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected boolean isArtefactClass(ClassNode classNode) {
+        if (GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) TAGLIB_ANNOTATION)) {
+            return true;
+        }
+        return super.isArtefactClass(classNode);
     }
 
     @Override
