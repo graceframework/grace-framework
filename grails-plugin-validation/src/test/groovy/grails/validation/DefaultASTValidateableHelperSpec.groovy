@@ -40,7 +40,7 @@ class DefaultASTValidateableHelperSpec extends Specification {
             void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
                 new DefaultASTValidateableHelper().injectValidateableCode(classNode, false)
             }
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer]as ClassInjector[]
         widgetClass = gcl.parseClass('''

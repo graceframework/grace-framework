@@ -192,7 +192,7 @@ class TestTransformer extends AbstractGrailsArtefactTransformer {
 
     Class getStaticImplementation() {}
 
-    boolean shouldInject(URL arg0) { true }
+    boolean shouldInject(ClassNode classNode) { true }
 
     protected boolean requiresAutowiring() { false }
 

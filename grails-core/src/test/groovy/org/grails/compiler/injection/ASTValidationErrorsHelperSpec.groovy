@@ -4,9 +4,7 @@ import groovy.transform.Generated
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.SourceUnit
-import org.grails.compiler.injection.ASTValidationErrorsHelper
 import grails.compiler.ast.ClassInjector
-import org.grails.compiler.injection.GrailsAwareClassLoader
 import org.springframework.validation.Errors
 
 import spock.lang.Specification
@@ -35,7 +33,7 @@ class ASTValidationErrorsHelperSpec extends Specification {
                 new ASTValidationErrorsHelper().injectErrorsCode(classNode)
             }
             @Override
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer] as ClassInjector[]
     }

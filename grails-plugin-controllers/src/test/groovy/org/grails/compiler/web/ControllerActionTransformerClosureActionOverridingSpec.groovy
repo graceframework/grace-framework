@@ -1,12 +1,11 @@
 package org.grails.compiler.web
 
+import org.codehaus.groovy.ast.ClassNode
+
 import grails.compiler.ast.ClassInjector
-import grails.compiler.traits.ControllerTraitInjector
-import grails.compiler.traits.TraitInjector
 import grails.util.GrailsWebMockUtil
 
 import org.grails.compiler.injection.GrailsAwareClassLoader
-import org.grails.compiler.web.ControllerActionTransformer
 import org.springframework.web.context.request.RequestContextHolder
 
 import spock.lang.Specification
@@ -19,7 +18,7 @@ class ControllerActionTransformerClosureActionOverridingSpec extends Specificati
         def gcl = new GrailsAwareClassLoader()
         def transformer = new ControllerActionTransformer() {
             @Override
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer] as ClassInjector[]
 

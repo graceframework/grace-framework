@@ -1,10 +1,11 @@
 package org.grails.compiler.web
 
+import org.codehaus.groovy.ast.ClassNode
+
 import grails.compiler.ast.ClassInjector
 
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
 import org.grails.compiler.injection.GrailsAwareClassLoader
-import org.grails.compiler.web.ControllerActionTransformer
 
 import spock.lang.Specification
 
@@ -16,7 +17,7 @@ class ControllerActionTransformerCompilationErrorsSpec extends Specification {
         gcl = new GrailsAwareClassLoader()
         def transformer = new ControllerActionTransformer() {
             @Override
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer]as ClassInjector[]
     }

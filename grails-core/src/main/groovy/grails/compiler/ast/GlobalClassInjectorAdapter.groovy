@@ -53,7 +53,7 @@ abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
     abstract void performInjectionInternal(SourceUnit source, ClassNode classNode)
 
     @Override
-    boolean shouldInject(URL url) {
+    boolean shouldInject(ClassNode classNode) {
         true
     }
 

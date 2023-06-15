@@ -1,5 +1,7 @@
 package org.grails.compiler.web.taglib
 
+import org.codehaus.groovy.ast.ClassNode
+
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 
@@ -40,7 +42,7 @@ class TagLibraryTransformerSpec extends Specification {
         def gcl = new GrailsAwareClassLoader()
         def transformer = new TagLibraryTransformer() {
             @Override
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer] as ClassInjector[]
 
