@@ -17,11 +17,15 @@ package org.grails.plugins;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 import groovy.lang.Closure;
+import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.ast.ModuleNode;
+import org.codehaus.groovy.ast.expr.ConstantExpression;
+import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.control.SourceUnit;
 
 import grails.artefact.Artefact;
@@ -38,6 +42,11 @@ import grails.core.GrailsClass;
 public class GrailsPluginArtefactHandler implements ArtefactHandler {
 
     public static final String TYPE = "GrailsPlugin";
+
+    public static final String META_DATA_KEY_GRAILS_APP_DIR = "GRAILS_APP_DIR";
+
+    public static final String META_DATA_KEY_PROJECT_DIR = "PROJECT_DIR";
+
     private static final GrailsPluginArtefactHandler INSTANCE = new GrailsPluginArtefactHandler();
 
     public GrailsPluginArtefactHandler() {
@@ -56,22 +65,16 @@ public class GrailsPluginArtefactHandler implements ArtefactHandler {
 
     @Override
     public boolean isArtefact(ClassNode classNode) {
-        SourceUnit source = classNode.getModule().getContext();
-        String filename = source.getName();
-        ModuleNode ast = source.getAST();
-        String projectDir = ast.getNodeMetaData("PROJECT_DIR");
-        String grailsAppDir = ast.getNodeMetaData("GRAILS_APP_DIR");
-        if (filename == null || projectDir == null || grailsAppDir == null) {
+        if (classNode == null || classNode.isEnum() || classNode.isInterface() || (classNode instanceof InnerClassNode) || classNode.isAbstract()) {
             return false;
         }
 
-        if (classNode.isEnum() || classNode.isInterface() || (classNode instanceof InnerClassNode)) {
+        if (!isArtefactClass(classNode)) {
             return false;
         }
 
-        return (filename.startsWith(grailsAppDir + File.separatorChar + "plugins")
-                    || filename.startsWith(projectDir + File.separatorChar + "src" + File.separatorChar + "main"))
-                && filename.endsWith("GrailsPlugin.groovy");
+        String className = classNode.getName();
+        return className.endsWith(TYPE);
     }
 
     @Override
@@ -85,12 +88,9 @@ public class GrailsPluginArtefactHandler implements ArtefactHandler {
             return false;
         }
 
-        boolean ok = clazz.getName().endsWith(TYPE) && !Closure.class.isAssignableFrom(clazz);
-        if (ok) {
-            ok = !Modifier.isAbstract(clazz.getModifiers());
-        }
-
-        return ok;
+        return  clazz.getName().endsWith(TYPE)
+                && !Closure.class.isAssignableFrom(clazz)
+                && !Modifier.isAbstract(clazz.getModifiers());
     }
 
     @Override
@@ -115,6 +115,46 @@ public class GrailsPluginArtefactHandler implements ArtefactHandler {
 
     public static boolean isGrailsPlugin(Class<?> clazz) {
         return INSTANCE.isArtefact(clazz);
+    }
+
+    private boolean isArtefactClass(ClassNode classNode) {
+        if (classNode == null) {
+            return false;
+        }
+
+        if (hasArtefactAnnotation(classNode, TYPE)) {
+            return true;
+        }
+        if (classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return false;
+        }
+
+        SourceUnit source = classNode.getModule().getContext();
+        String filename = source.getName();
+        ModuleNode ast = source.getAST();
+        String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
+        String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
+        if (filename == null || projectDir == null || grailsAppDir == null) {
+            return false;
+        }
+
+        return filename.startsWith(grailsAppDir + File.separatorChar + "plugins") ||
+                (filename.startsWith(projectDir + File.separatorChar + "src") && filename.endsWith("GrailsPlugin.groovy"));
+    }
+
+    private boolean hasArtefactAnnotation(ClassNode classNode, String value) {
+        List<AnnotationNode> annotationNodes = classNode.getAnnotations(new ClassNode(Artefact.class));
+
+        for (AnnotationNode node : annotationNodes) {
+            Expression artefactValue = node.getMember("value");
+            if (artefactValue instanceof ConstantExpression) {
+                Object artefactType = ((ConstantExpression) artefactValue).getValue();
+                if (artefactType != null && artefactType.equals(value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
