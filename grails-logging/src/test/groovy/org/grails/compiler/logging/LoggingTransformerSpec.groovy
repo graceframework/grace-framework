@@ -106,7 +106,7 @@ class LoggingController {
 
     }
 
-    def "Test log field is not added to Application classes"() {
+    def "Test log field is added to Application classes"() {
         given:
             def gcl = new GrailsAwareClassLoader()
         when:
