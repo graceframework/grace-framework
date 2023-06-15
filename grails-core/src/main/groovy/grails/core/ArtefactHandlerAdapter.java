@@ -90,7 +90,7 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
      * @param grailsClassImpl The Class that GrailsClass to be implements
      * @param artefactSuffix The suffix of Artefact
      * @param allowAbstract weather allow abstract or not
-     * @deprecated as 2022.3.0 in favor of {@link #(String, Class, Class, String, String, boolean)}
+     * @deprecated as 2022.3.0 in favor of {@link ArtefactHandlerAdapter(String, Class, Class, String, String, boolean)}
      */
     @Deprecated(forRemoval = true, since = "2023.0.0")
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
