@@ -52,7 +52,7 @@ class TestEntity {
         ArtefactHandler handler = new DomainClassArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
-@javax.persistence.Entity
+@jakarta.persistence.Entity
 class TestEntity {
 }
 ''')
