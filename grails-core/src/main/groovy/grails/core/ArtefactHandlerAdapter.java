@@ -55,16 +55,59 @@ public class ArtefactHandlerAdapter implements ArtefactHandler {
 
     protected final String artefactSuffix;
 
+    /**
+     * Adapter for the {@link grails.core.ArtefactHandler} interface
+     *
+     * @param type The type of Artefact, e.g. Application, Controller
+     * @param grailsClassType The Class Interface
+     * @param grailsClassImpl The Class that GrailsClass to be implements
+     * @param artefactSuffix The suffix of Artefact
+     */
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
                                   String artefactSuffix) {
         this(type, grailsClassType, grailsClassImpl, artefactSuffix, null, false);
     }
 
+    /**
+     * Adapter for the {@link grails.core.ArtefactHandler} interface
+     *
+     * @param type The type of Artefact, e.g. Application, Controller
+     * @param grailsClassType The Class Interface
+     * @param grailsClassImpl The Class that GrailsClass to be implements
+     * @param artefactSuffix The suffix of Artefact
+     * @param artefactPath The path of Artefact within
+     */
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
                                   String artefactSuffix, String artefactPath) {
         this(type, grailsClassType, grailsClassImpl, artefactSuffix, artefactPath, false);
     }
 
+    /**
+     * Adapter for the {@link grails.core.ArtefactHandler} interface
+     *
+     * @param type The type of Artefact, e.g. Application, Controller
+     * @param grailsClassType The Class Interface
+     * @param grailsClassImpl The Class that GrailsClass to be implements
+     * @param artefactSuffix The suffix of Artefact
+     * @param allowAbstract weather allow abstract or not
+     * @deprecated as 2022.3.0 in favor of {@link #(String, Class, Class, String, String, boolean)}
+     */
+    @Deprecated(forRemoval = true, since = "2023.0.0")
+    public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
+                                  String artefactSuffix, boolean allowAbstract) {
+        this(type, grailsClassType, grailsClassImpl, artefactSuffix, null, allowAbstract);
+    }
+
+    /**
+     * Adapter for the {@link grails.core.ArtefactHandler} interface
+     *
+     * @param type The type of Artefact, e.g. Application, Controller
+     * @param grailsClassType The Class Interface
+     * @param grailsClassImpl The Class that GrailsClass to be implements
+     * @param artefactSuffix The suffix of Artefact
+     * @param artefactPath The path of Artefact within
+     * @param allowAbstract weather allow abstract or not
+     */
     public ArtefactHandlerAdapter(String type, Class<? extends GrailsClass> grailsClassType, Class<?> grailsClassImpl,
                                   String artefactSuffix, String artefactPath, boolean allowAbstract) {
         this.type = type;
