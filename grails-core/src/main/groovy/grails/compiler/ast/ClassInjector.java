@@ -70,7 +70,9 @@ public interface ClassInjector {
      * @deprecated since 2022.3.0, in favor of {@link #shouldInject(ClassNode)}
      */
     @Deprecated(forRemoval = true, since = "2023.0.0")
-    boolean shouldInject(URL url);
+    default boolean shouldInject(URL url) {
+        return true;
+    }
 
     /**
      * Returns whether this injector should inject
