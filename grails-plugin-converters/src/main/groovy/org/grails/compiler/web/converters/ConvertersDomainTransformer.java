@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,20 @@
  */
 package org.grails.compiler.web.converters;
 
-import java.net.URL;
+import org.codehaus.groovy.ast.ClassNode;
 
 import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
+import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.converters.api.ConvertersApi;
 
 /**
  * Adds the asType method to domain classes.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
@@ -53,8 +54,9 @@ public class ConvertersDomainTransformer extends AbstractGrailsArtefactTransform
         return false;
     }
 
-    public boolean shouldInject(URL url) {
-        return GrailsResourceUtils.isDomainClass(url);
+    @Override
+    public boolean shouldInject(ClassNode classNode) {
+        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
     }
 
 }
