@@ -15,8 +15,6 @@
  */
 package org.grails.compiler.web;
 
-import java.net.URL;
-
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
@@ -25,8 +23,8 @@ import org.codehaus.groovy.control.SourceUnit;
 import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
+import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
 
@@ -34,6 +32,7 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
  * Adds binding methods to domain classes.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
@@ -64,8 +63,9 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
         return false;
     }
 
-    public boolean shouldInject(URL url) {
-        return GrailsResourceUtils.isDomainClass(url);
+    @Override
+    public boolean shouldInject(ClassNode classNode) {
+        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
     }
 
     @Override
