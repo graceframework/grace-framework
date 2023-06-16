@@ -16,7 +16,6 @@
 package org.grails.compiler.injection;
 
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,13 +50,13 @@ import grails.compiler.ast.GrailsDomainClassInjector;
 
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.io.support.GrailsResourceUtils;
 
 /**
  * Default implementation of domain class injector interface that adds the 'id'
  * and 'version' properties and other previously boilerplate code.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.2
  */
 @AstTransformer
@@ -74,6 +73,7 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
         }
     }
 
+    @Override
     public void performInjectionOnAnnotatedEntity(ClassNode classNode) {
         injectIdProperty(classNode);
         injectVersionProperty(classNode);
@@ -81,8 +81,9 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
         injectAssociations(classNode);
     }
 
-    public boolean shouldInject(URL url) {
-        return GrailsResourceUtils.isDomainClass(url);
+    @Override
+    public boolean shouldInject(ClassNode classNode) {
+        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
     }
 
     protected boolean shouldInjectClass(ClassNode classNode) {
@@ -107,7 +108,6 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
     }
 
     private void injectAssociations(ClassNode classNode) {
-
         List<PropertyNode> propertiesToAdd = new ArrayList<>();
         for (PropertyNode propertyNode : classNode.getProperties()) {
             String name = propertyNode.getName();
