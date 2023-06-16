@@ -1,21 +1,36 @@
+/*
+ * Copyright 2022-2023 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.compiler.web
+
+import java.lang.reflect.Constructor
+import java.lang.reflect.Modifier
+
+import groovy.transform.Generated
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.control.CompilationUnit
+import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.context.request.RequestContextHolder
+import spock.lang.Specification
 
 import grails.compiler.ast.ClassInjector
 import grails.util.BuildSettings
 import grails.util.GrailsWebMockUtil
 import grails.web.Action
 import grails.web.servlet.context.GrailsWebApplicationContext
-import groovy.transform.Generated
-import org.codehaus.groovy.control.CompilationUnit
-
-import java.lang.reflect.Constructor
-import java.lang.reflect.Modifier
-
 import org.grails.compiler.injection.GrailsAwareClassLoader
-import org.springframework.web.context.WebApplicationContext
-import org.springframework.web.context.request.RequestContextHolder
-
-import spock.lang.Specification
 
 class ControllerActionTransformerSpec extends Specification {
 
@@ -26,7 +41,7 @@ class ControllerActionTransformerSpec extends Specification {
         gcl = new GrailsAwareClassLoader()
         def transformer = new ControllerActionTransformer() {
             @Override
-            boolean shouldInject(URL url) {
+            boolean shouldInject(ClassNode classNode) {
                 true
             }
         }
@@ -39,34 +54,32 @@ class ControllerActionTransformerSpec extends Specification {
     }
 
     void "Test that a closure action has changed to method"() {
-
         when:
-            def cls = gcl.parseClass('''
-            class TestTransformedToController {
+        def cls = gcl.parseClass('''
+class TestTransformedToController {
 
-                def action = {
-                }
+    def action = {
+    }
 
-                }
-            ''')
-            def controller = cls.newInstance()
+}''')
+        def controller = cls.newInstance()
 
         then:
-          controller
-          controller.getClass().getMethod("action", [] as Class[]) != null
+        controller
+        controller.getClass().getMethod("action", [] as Class[]) != null
 
         and: 'its not marked as Generated'
-            false == controller.getClass().getMethod("action", [] as Class[]).isAnnotationPresent(Generated)
+        !controller.getClass().getMethod("action", [] as Class[]).isAnnotationPresent(Generated)
     }
 
     void 'Test that user applied annotations are applied to generated action methods'() {
         given:
         def cls = gcl.parseClass('''
-        class SomeController {
-            @Deprecated
-            def action1(){}
-            @Deprecated
-            def action2(String paramName){}
+class SomeController {
+    @Deprecated
+    def action1(){}
+    @Deprecated
+    def action2(String paramName){}
 }
 ''')
 
@@ -91,110 +104,112 @@ class ControllerActionTransformerSpec extends Specification {
         action2NoArgMethod.getAnnotation(Action)
         action2NoArgMethod.getAnnotation(Deprecated)
     }
-    
+
     void 'Test that a controller may have an abstract method - GRAILS-10509'() {
         given:
         def controllerClass = gcl.parseClass('''
-            @grails.artefact.Artefact('Controller')
-            abstract class SomeController {
-                def someAction() {}
-                abstract someAbstractMethod()
-            }
+@grails.artefact.Artefact('Controller')
+abstract class SomeController {
+    def someAction() {}
+    abstract someAbstractMethod()
+}
 ''')
         when:
         def method = controllerClass.getMethod('someAbstractMethod')
-        
+
         then:
         Modifier.isAbstract(method.modifiers)
-        
+
         when:
         method = controllerClass.getMethod('someAction')
-        
+
         then:
         !Modifier.isAbstract(method.modifiers)
     }
 
     void 'Test action overiding'() {
         given:
-            def superControllerClass = gcl.parseClass('''
-            @grails.artefact.Artefact('Controller')
-            class SuperController {
-                def methodAction() {
-                    [ actionInvoked: 'SuperController.methodAction' ]
-                }
-                def methodActionWithParam(String s) {
-                    [ paramValue: s ]
-                }
-            }
+        def superControllerClass = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
+class SuperController {
+    def methodAction() {
+        [ actionInvoked: 'SuperController.methodAction' ]
+    }
+    def methodActionWithParam(String s) {
+        [ paramValue: s ]
+    }
+}
 ''')
-            def superController = superControllerClass.newInstance()
-            def subControllerClass = gcl.parseClass('''
-            class SubController extends SuperController {
-                def methodAction() {
-                    [ actionInvoked: 'SubController.methodAction' ]
-                }
-                def methodActionWithParam(Integer i) {
-                    [ paramValue: i ]
-                }
-            }
+        def superController = superControllerClass.newInstance()
+        def subControllerClass = gcl.parseClass('''
+class SubController extends SuperController {
+    def methodAction() {
+        [ actionInvoked: 'SubController.methodAction' ]
+    }
+    def methodActionWithParam(Integer i) {
+        [ paramValue: i ]
+    }
+}
 ''')
-            def subController = subControllerClass.newInstance()
+        def subController = subControllerClass.newInstance()
 
         when:
-            def model = superController.methodAction()
+        def model = superController.methodAction()
 
         then:
-            'SuperController.methodAction' == model.actionInvoked
+        'SuperController.methodAction' == model.actionInvoked
 
         when:
-            superController.params.s = 'Super Controller Param'
-            model = superController.methodActionWithParam()
+        superController.params.s = 'Super Controller Param'
+        model = superController.methodActionWithParam()
 
         then:
-            'Super Controller Param' == model.paramValue
+        'Super Controller Param' == model.paramValue
 
         when:
-            model = subController.methodAction()
+        model = subController.methodAction()
 
         then:
-            'SubController.methodAction' == model.actionInvoked
+        'SubController.methodAction' == model.actionInvoked
 
         when:
-            subController.params.s = 'Super Controller Param'
-            model = subController.methodActionWithParam()
+        subController.params.s = 'Super Controller Param'
+        model = subController.methodActionWithParam()
 
         then:
-            null == model.paramValue
+        null == model.paramValue
 
         when:
-            subController.params.i = 42
-            model = subController.methodActionWithParam()
+        subController.params.i = 42
+        model = subController.methodActionWithParam()
 
         then:
-            42 == model.paramValue
+        42 == model.paramValue
     }
 
 
     void "test controller with trait action with command params"() {
         given:
         def cls = gcl.parseClass('''
-            @grails.artefact.Artefact('Controller')
-            class TestTraitActionToController implements ShowMethod {
+@grails.artefact.Artefact('Controller')
+class TestTraitActionToController implements ShowMethod {
 
 
-            }
-            class MyCommandWithArg implements grails.validation.Validateable {
+}
 
-            }
-            trait ShowMethod {
+class MyCommandWithArg implements grails.validation.Validateable {
 
-                @grails.web.Action
-                def show(MyCommandWithArg myCommandWithArg) {
-                    !myCommandWithArg.hasErrors()
-                }
+}
 
-            }
-            ''')
+trait ShowMethod {
+
+    @grails.web.Action
+    def show(MyCommandWithArg myCommandWithArg) {
+        !myCommandWithArg.hasErrors()
+    }
+
+}
+''')
         def controller = cls.newInstance()
 
         when:
@@ -206,24 +221,23 @@ class ControllerActionTransformerSpec extends Specification {
 
 
     void "Test command object gets Validateable injected"() {
-
         when:
         def cls = gcl.parseClass('''
-            class TestMyCommandObjController {
+class TestMyCommandObjController {
 
-                def action(MyCommand myCommand) {
-                }
+    def action(MyCommand myCommand) {
+    }
 
-                def $test() {
-                    new MyCommand(name: "Sally")
-                }
+    def $test() {
+        new MyCommand(name: "Sally")
+    }
 
-            }
+}
 
-            class MyCommand {
-                String name
-            }
-            ''')
+class MyCommand {
+    String name
+}
+''')
         def controller = cls.newInstance()
         def myCommand = controller.$test()
 
@@ -234,23 +248,22 @@ class ControllerActionTransformerSpec extends Specification {
     }
 
     void "Test command object injected constructor will be marked as Generated"() {
-
         when:
         def cls = gcl.parseClass('''
-            class TestMyCommandObjController {
-                def action(MyCommand myCommand) {
-                }
+class TestMyCommandObjController {
+    def action(MyCommand myCommand) {
+    }
 
-                def $test() {
-                    new MyCommand(name: "Sally")
-                }
+    def $test() {
+        new MyCommand(name: "Sally")
+    }
 
-            }
+}
 
-            class MyCommand {
-                String name
-            }
-            ''')
+class MyCommand {
+    String name
+}
+''')
         def controller = cls.newInstance()
         def myCommand = controller.$test()
 
@@ -264,6 +277,7 @@ class ControllerActionTransformerSpec extends Specification {
         RequestContextHolder.resetRequestAttributes()
         System.properties[BuildSettings.CONVERT_CLOSURES_KEY] = 'false'
     }
+
 }
 
 
