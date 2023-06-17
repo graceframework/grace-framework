@@ -194,6 +194,23 @@ class GrailsASTUtilsSpec extends Specification {
         expect: 'SomeGormEntity should be recognized as a domain because annotated with @grails.gorm.annotation.Entity'
         GrailsASTUtils.isDomainClass(new ClassNode(SomeGormEntity), someEntitySourceUnit)
     }
+
+    void 'Test domain class artefact path'() {
+        given:
+        SourceUnit sourceUnit = Mock()
+        ModuleNode moduleNode = new ModuleNode(sourceUnit)
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        sourceUnit.getAST() >> moduleNode
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy'
+
+        ClassNode classNode = Mock(ClassNode)
+        classNode.getModule() >> moduleNode
+
+        expect:
+        GrailsASTUtils.getGrailsArtefactPath(classNode) == 'domain'
+    }
+
 }
 
 class Something {}

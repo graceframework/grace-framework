@@ -872,20 +872,28 @@ public final class GrailsASTUtils {
 
     @SuppressWarnings("unchecked")
     public static boolean isDomainClass(ClassNode classNode, SourceUnit sourceNode) {
+        if (classNode == null || sourceNode == null) {
+            return false;
+        }
         if (isJpaEntityClass(classNode)) {
             return false;
         }
-        boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]));
+        return GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]))
+                || isGrailsSource(sourceNode, "domain");
+    }
 
-        if (!isDomainClass && sourceNode != null) {
-            return isGrailsSource(sourceNode, "domain");
+    public static boolean isDomainClass(ClassNode classNode) {
+        if (classNode == null || classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return false;
         }
-
-        return isDomainClass;
+        return isDomainClass(classNode, classNode.getModule().getContext());
     }
 
     @SuppressWarnings("unchecked")
     public static boolean isJpaEntityClass(ClassNode classNode) {
+        if (classNode == null) {
+            return false;
+        }
         return JPA_ENTITY_ANNOTATION != null && GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) JPA_ENTITY_ANNOTATION);
     }
 
@@ -1831,6 +1839,41 @@ public final class GrailsASTUtils {
             return name.endsWith(artefactSuffix);
         }
         return true;
+    }
+
+    /**
+     * Get the path of Artefact
+     *
+     * @param classNode The ClassNode of Artefact
+     * @return the path of Artefact
+     */
+    public static String getGrailsArtefactPath(ClassNode classNode) {
+        if (classNode == null || classNode.isEnum() || classNode.isInterface()
+                || Modifier.isAbstract(classNode.getModifiers())
+                || (classNode instanceof InnerClassNode)) {
+            return null;
+        }
+
+        if (classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return null;
+        }
+        SourceUnit source = classNode.getModule().getContext();
+        ModuleNode ast = source.getAST();
+        if (ast == null) {
+            return null;
+        }
+        String filename = source.getName();
+        String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
+        if (filename == null || grailsAppDir == null || !filename.startsWith(grailsAppDir)) {
+            return null;
+        }
+
+        String relativePath = filename.substring(grailsAppDir.length());
+        String[] paths = relativePath.split(File.separator);
+        if (paths.length < 2) {
+            return null;
+        }
+        return paths[1];
     }
 
     public static boolean hasParameters(MethodNode methodNode) {
