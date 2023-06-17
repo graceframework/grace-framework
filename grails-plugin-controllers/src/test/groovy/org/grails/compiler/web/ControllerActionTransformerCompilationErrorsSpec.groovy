@@ -32,7 +32,7 @@ class ControllerActionTransformerCompilationErrorsSpec extends Specification {
 ''')
         then:
             MultipleCompilationErrorsException e = thrown()
-            e.message.contains 'Controller actions may not be overloaded.  The [methodAction] action has been overloaded in [TestController].'
+            e.message.contains 'Controller actions may not be overloaded. The [methodAction] action has been overloaded in [TestController].'
     }
 
     void "Test default parameter values"() {
@@ -45,6 +45,6 @@ class ControllerActionTransformerCompilationErrorsSpec extends Specification {
 
             then:
             MultipleCompilationErrorsException e = thrown()
-            e.message.contains 'Parameter [i] to method [methodAction] has default value [42].  Default parameter values are not allowed in controller action methods.'
+            e.message.contains 'Parameter [i] to method [methodAction] has default value [42]. Default parameter values are not allowed in controller action methods.'
     }
 }

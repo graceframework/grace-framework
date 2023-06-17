@@ -31,6 +31,6 @@ class ControllerExceptionHandlerCompilationErrorsSpec extends Specification {
 ''')
         then: 'compilation fails'
             MultipleCompilationErrorsException e = thrown()
-            e.message.contains 'A controller may not define more than 1 exception handler for a particular exception type.  [TestController] defines the [methodOne] and [methodTwo] exception handlers which each accept a [java.lang.NumberFormatException] which is not allowed.'
+            e.message.contains 'A controller may not define more than 1 exception handler for a particular exception type. [TestController] defines the [methodOne] and [methodTwo] exception handlers which each accept a [java.lang.NumberFormatException] which is not allowed.'
     }
 }

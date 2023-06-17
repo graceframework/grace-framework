@@ -208,11 +208,9 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                             }).intValue();
 
                     if (numberOfNonExceptionHandlerMethodsWithThisName > 1) {
-                        String message = "Controller actions may not be overloaded.  The [" +
-                                method.getName() +
-                                "] action has been overloaded in [" +
-                                classNode.getName() +
-                                "].";
+                        String message = "Controller actions may not be overloaded. The [" +
+                                method.getName() + "] action has been overloaded in [" +
+                                classNode.getName() + "].";
                         GrailsASTUtils.error(source, method, message);
                     }
                 }
