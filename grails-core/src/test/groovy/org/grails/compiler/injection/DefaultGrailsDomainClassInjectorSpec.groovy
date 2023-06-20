@@ -15,9 +15,6 @@
  */
 package org.grails.compiler.injection
 
-import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.ModuleNode
-import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
 import grails.compiler.ast.ClassInjector
@@ -26,33 +23,7 @@ import grails.compiler.ast.ClassInjector
  * @author Michael Yan
  * @since 2022.3.0
  */
-class GrailsDomainClassInjectorSpec extends Specification {
-
-    def "Test Domain class should be injected"() {
-        given:
-        def gcl = new GrailsAwareClassLoader()
-        def classInjector = new DefaultGrailsDomainClassInjector()
-        gcl.classInjectors = [classInjector] as ClassInjector[]
-
-        def domainClass = gcl.parseClass('''
-@grails.artefact.Artefact("Domain")
-class Post {
-}
-''', "grails-demo-project/grails-app/domain/org/demo/Post.groovy")
-
-        SourceUnit sourceUnit = Mock()
-        ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-        sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy'
-
-        ClassNode classNode = new ClassNode(domainClass)
-        classNode.setModule(moduleNode)
-
-        expect:
-        classInjector.shouldInject(classNode)
-    }
+class DefaultGrailsDomainClassInjectorSpec extends Specification {
 
     def "Test Domain class was injected Id, Version"() {
         given:

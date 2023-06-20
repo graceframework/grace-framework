@@ -81,11 +81,6 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
         injectAssociations(classNode);
     }
 
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
-    }
-
     protected boolean shouldInjectClass(ClassNode classNode) {
         String fullName = GrailsASTUtils.getFullName(classNode);
         String mappingFile = getMappingFileName(fullName);
