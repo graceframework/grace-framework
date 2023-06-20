@@ -92,6 +92,7 @@ import org.codehaus.groovy.transform.trait.Traits;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import grails.artefact.Artefact;
 import grails.artefact.Enhanced;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
@@ -1031,8 +1032,8 @@ public final class GrailsASTUtils {
 
     /**
      * Add the grails.artefact.Enhanced annotation to classNode if it does not already exist and ensure that
-     * all of the features in the enhancedFor array are represented in the enhancedFor attribute of the
-     * Enhanced annnotation
+     * all the features in the enhancedFor array are represented in the enhancedFor attribute of the
+     * Enhanced annotation
      * @param classNode the class to add the Enhanced annotation to
      * @param enhancedFor an array of feature names to include in the enhancedFor attribute of the annotation
      * @return the AnnotationNode associated with the Enhanced annotation for classNode
@@ -1874,6 +1875,24 @@ public final class GrailsASTUtils {
             return null;
         }
         return paths[1];
+    }
+
+    public static String getGrailsArtefactType(ClassNode classNode) {
+        if (classNode == null) {
+            return null;
+        }
+        List<AnnotationNode> annotationNodes = classNode.getAnnotations(new ClassNode(Artefact.class));
+
+        for (AnnotationNode node : annotationNodes) {
+            Expression artefactValue = node.getMember("value");
+            if (artefactValue instanceof ConstantExpression) {
+                Object artefactType = ((ConstantExpression) artefactValue).getValue();
+                if (artefactType != null) {
+                    return String.valueOf(artefactType);
+                }
+            }
+        }
+        return null;
     }
 
     public static boolean hasParameters(MethodNode methodNode) {
