@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors) {
         try {
             for (ClassInjector injector : injectors) {
-                if (!GrailsASTUtils.isApplied(cNode, injector.getClass())) {
+                if (!GrailsASTUtils.isApplied(cNode, injector.getClass()) && injector.shouldInject(cNode)) {
                     GrailsASTUtils.markApplied(cNode, injector.getClass());
                     injector.performInjectionOnAnnotatedClass(sourceUnit, cNode);
                 }
