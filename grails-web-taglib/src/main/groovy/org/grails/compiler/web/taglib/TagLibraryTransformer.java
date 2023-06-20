@@ -17,12 +17,14 @@ package org.grails.compiler.web.taglib;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.ast.Parameter;
 import org.codehaus.groovy.ast.PropertyNode;
@@ -47,6 +49,7 @@ import grails.artefact.TagLibrary;
 import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
+import grails.gsp.TagLib;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.gsp.TagLibArtefactHandler;
@@ -57,6 +60,7 @@ import org.grails.taglib.encoder.OutputContextLookupHelper;
  * Enhances tag library classes with the appropriate API at compile time.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
@@ -258,7 +262,14 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
 
     @Override
     public boolean shouldInject(ClassNode classNode) {
-        return GrailsASTUtils.isGrailsSource(classNode, "taglib", "TagLib");
+        if (classNode.isEnum() || classNode instanceof InnerClassNode || classNode.getName().contains("$")) {
+            return false;
+        }
+        if (GrailsASTUtils.hasAnnotation(classNode, TagLib.class)) {
+            return true;
+        }
+        String artefactType = GrailsASTUtils.getGrailsArtefactType(classNode);
+        return artefactType != null && (Arrays.asList(getArtefactTypes()).contains(artefactType) || Arrays.asList(getArtefactTypes()).contains("*"));
     }
 
 }

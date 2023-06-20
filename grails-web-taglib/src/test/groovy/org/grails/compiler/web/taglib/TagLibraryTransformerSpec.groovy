@@ -61,10 +61,7 @@ class TagLibraryTransformerSpec extends Specification {
     void 'Test that a tag library can be marked with @CompileStatic without generating compile errors'() {
         given:
         def gcl = new GrailsAwareClassLoader()
-        def transformer = new TagLibraryTransformer() {
-            @Override
-            boolean shouldInject(ClassNode classNode) { true }
-        }
+        def transformer = new TagLibraryTransformer()
         gcl.classInjectors = [transformer] as ClassInjector[]
 
         expect:
@@ -80,12 +77,10 @@ class TagLibraryTransformerSpec extends Specification {
 
     void 'Test that a tag library injected method "$getTagLibNamespace", "tagOne"'() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def transformer = new TagLibraryTransformer()
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration, [transformer] as ClassInjector[])
+        def gcl = new GroovyClassLoader()
 
         def taglibClass = gcl.parseClass('''
+@grails.artefact.Artefact('TagLib')
 class DemoTagLib {
     static namespace = 'demo'
     def tagOne = { attrs -> }
@@ -93,14 +88,8 @@ class DemoTagLib {
 ''', '/Users/grails/grails-demo-project/grails-app/taglib/org/demo/DemoTagLib.groovy')
 
         def taglibMethodNames = taglibClass.getDeclaredMethods()*.name
-        def classNode = gcl.getClassNode('DemoTagLib')
 
         expect:
-        classNode
-        classNode.getModule().getNodeMetaData('PROJECT_DIR')
-        classNode.getModule().getNodeMetaData('GRAILS_APP_DIR')
-        classNode.getAnnotations(new ClassNode(Artefact)).isEmpty()
-        transformer.shouldInject(classNode)
         taglibMethodNames.containsAll('setNamespace', 'getNamespace', '$getTagLibNamespace', 'getTagOne', 'setTagOne', 'tagOne')
     }
 
@@ -113,6 +102,30 @@ class ClosureMethodTestTagLib {
     def closureTagWithTwoArgs = { attrs, body -> }
     def closureTagWithThreeArgs = { attrs, body, extra -> }
     def closureTagWithFourArgs = { attrs, body, extra, anotherExtra -> }
+}
+
+class TestGroovyClassLoader extends GroovyClassLoader {
+    CompilationUnit compilationUnit
+
+    @Override
+    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
+        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
+
+            @Override
+            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
+                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+            }
+
+        }, Phases.CANONICALIZATION)
+        this.compilationUnit = compilationUnit
+    }
+
+    ClassNode getClassNode(String name) {
+        this.compilationUnit.getClassNode(name)
+    }
+
 }
 
 class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
