@@ -78,7 +78,7 @@ class BootInitializerClassInjector extends GlobalClassInjectorAdapter {
             return
         }
         // don't generate for plugins
-        if (classNode.getNodeMetaData('isPlugin')) {
+        if (source.getAST().getNodeMetaData('PROJECT_TYPE') == 'PLUGIN') {
             return
         }
 
