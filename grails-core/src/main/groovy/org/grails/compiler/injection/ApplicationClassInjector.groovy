@@ -53,8 +53,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
     public static final String EXCLUDE_MEMBER = 'exclude'
     public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = new ArrayList<>()
 
-    ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
-
     private static final List<Integer> TRANSFORMED_INSTANCES = []
 
     static {
@@ -109,11 +107,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                 }
             }
         }
-    }
-
-    @Override
-    boolean shouldInject(ClassNode classNode) {
-        applicationArtefactHandler.isArtefact(classNode)
     }
 
 }
