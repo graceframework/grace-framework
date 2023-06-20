@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,20 @@
  */
 package grails.compiler.ast;
 
+import org.codehaus.groovy.ast.ClassNode;
+
 /**
  * Extended marker interface that indicates this ClassInjector applies to all types of artefacts (but not all classes).
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public interface AllArtefactClassInjector extends ClassInjector {
-    // marker interface
+
+    @Override
+    default boolean shouldInject(ClassNode classNode) {
+        return true;
+    }
+
 }

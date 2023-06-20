@@ -36,10 +36,13 @@ import grails.compiler.ast.AstTransformer;
  * Adds a log field to all artifacts.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
 public class LoggingTransformer implements AllArtefactClassInjector {
+
+    private static final ClassNode SLF4J = ClassHelper.make(Slf4j.class);
 
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
@@ -56,13 +59,10 @@ public class LoggingTransformer implements AllArtefactClassInjector {
         if (classNode.getNodeMetaData(Slf4j.class) != null) {
             return;
         }
-        String packageName = Slf4j.class.getPackage().getName();
 
         // if already annotated skip
-        for (AnnotationNode annotationNode : classNode.getAnnotations()) {
-            if (annotationNode.getClassNode().getPackageName().equals(packageName)) {
-                return;
-            }
+        if (!classNode.getAnnotations(SLF4J).isEmpty()) {
+            return;
         }
 
         FieldNode logField = classNode.getField("log");
@@ -72,17 +72,11 @@ public class LoggingTransformer implements AllArtefactClassInjector {
             }
         }
 
-        AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Slf4j.class));
+        AnnotationNode annotationNode = new AnnotationNode(SLF4J);
         LogASTTransformation logASTTransformation = new LogASTTransformation();
         logASTTransformation.setCompilationUnit(new CompilationUnit(new GroovyClassLoader(getClass().getClassLoader())));
         logASTTransformation.visit(new ASTNode[] { annotationNode, classNode }, source);
         classNode.putNodeMetaData(Slf4j.class, annotationNode);
-    }
-
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        // Add log property to all artifact types
-        return true;
     }
 
 }
