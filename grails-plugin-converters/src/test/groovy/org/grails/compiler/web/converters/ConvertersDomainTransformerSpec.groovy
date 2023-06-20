@@ -15,15 +15,19 @@
  */
 package org.grails.compiler.web.converters
 
+import java.security.CodeSource
+
 import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.ModuleNode
+import org.codehaus.groovy.classgen.GeneratorContext
+import org.codehaus.groovy.control.CompilationFailedException
+import org.codehaus.groovy.control.CompilationUnit
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.Phases
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
-import grails.compiler.ast.ClassInjector
 import grails.converters.XML
 import grails.persistence.Entity
-import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
  * @author Graeme Rocher
@@ -34,26 +38,15 @@ class ConvertersDomainTransformerSpec extends Specification {
 
     def "Test Domain class was injected asType"() {
         given:
-        def gcl = new GrailsAwareClassLoader()
-        def classInjector = new ConvertersDomainTransformer()
-        gcl.classInjectors = [classInjector] as ClassInjector[]
+        def gcl = new TestGroovyClassLoader()
 
         def domainClass = gcl.parseClass('''
 @grails.artefact.Artefact("Domain")
 class Post {
 }
-''', "grails-demo-project/grails-app/domain/org/demo/Post.groovy")
+''')
 
-        SourceUnit sourceUnit = Mock()
-        ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-        sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy'
-
-        ClassNode classNode = new ClassNode(domainClass)
-        classNode.setModule(moduleNode)
-
+        def classNode = gcl.getClassNode('Post')
         def domainMethodNames = domainClass.getMethods()*.name
 
         and:
@@ -62,10 +55,7 @@ class Post {
         ]
 
         expect: 'injected methods as expect'
-        classInjector.artefactType == 'Domain'
-        classInjector.shouldInject(classNode)
         classNode.getField('instanceConvertersApi') != null
-
         injectedMethodNames.each { methodName ->
             assert methodName in domainMethodNames
         }
@@ -86,3 +76,27 @@ class ConvertMe {
     String name
 }
 
+
+class TestGroovyClassLoader extends GroovyClassLoader {
+    CompilationUnit compilationUnit
+
+    @Override
+    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
+        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
+
+            @Override
+            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
+                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+            }
+
+        }, Phases.CANONICALIZATION)
+        this.compilationUnit = compilationUnit
+    }
+
+    ClassNode getClassNode(String name) {
+        this.compilationUnit.getClassNode(name)
+    }
+
+}

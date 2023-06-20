@@ -15,12 +15,9 @@
  */
 package org.grails.compiler.web.converters;
 
-import org.codehaus.groovy.ast.ClassNode;
-
 import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
-import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.plugins.converters.api.ConvertersApi;
 
@@ -52,11 +49,6 @@ public class ConvertersDomainTransformer extends AbstractGrailsArtefactTransform
     @Override
     protected boolean requiresAutowiring() {
         return false;
-    }
-
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
     }
 
 }
