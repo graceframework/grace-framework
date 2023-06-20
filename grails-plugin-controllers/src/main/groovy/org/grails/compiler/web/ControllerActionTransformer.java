@@ -100,6 +100,10 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
 /**
  * Enhances controller classes by converting closures actions to method actions and binding
  * request parameters to action arguments.
+ *
+ * @author Stephane Maldini
+ * @author Michael Yan
+ * @since 1.4
  */
 @AstTransformer
 public class ControllerActionTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector, CompilationUnitAware {
@@ -167,11 +171,8 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     @Override
     public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        String className = classNode.getName();
-        if (className.endsWith(ControllerArtefactHandler.TYPE)) {
-            processMethods(classNode, source, context);
-            processClosures(classNode, source, context);
-        }
+        processMethods(classNode, source, context);
+        processClosures(classNode, source, context);
     }
 
     @Override
@@ -943,11 +944,6 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
 
     public void performInjection(SourceUnit source, ClassNode classNode) {
         performInjection(source, null, classNode);
-    }
-
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        return GrailsASTUtils.isGrailsSource(classNode, "controllers");
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Modifier
 
 import groovy.transform.Generated
-import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.control.CompilationUnit
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
@@ -32,6 +31,11 @@ import grails.web.Action
 import grails.web.servlet.context.GrailsWebApplicationContext
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
+/**
+ * @author Stephane Maldini
+ * @author Michael Yan
+ * @since 2.0
+ */
 class ControllerActionTransformerSpec extends Specification {
 
     def gcl
@@ -39,12 +43,7 @@ class ControllerActionTransformerSpec extends Specification {
     void setup() {
         System.properties[BuildSettings.CONVERT_CLOSURES_KEY] = 'true'
         gcl = new GrailsAwareClassLoader()
-        def transformer = new ControllerActionTransformer() {
-            @Override
-            boolean shouldInject(ClassNode classNode) {
-                true
-            }
-        }
+        def transformer = new ControllerActionTransformer()
         transformer.setCompilationUnit(new CompilationUnit())
         gcl.classInjectors = [transformer] as ClassInjector[]
         def webRequest = GrailsWebMockUtil.bindMockWebRequest()
@@ -56,6 +55,7 @@ class ControllerActionTransformerSpec extends Specification {
     void "Test that a closure action has changed to method"() {
         when:
         def cls = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class TestTransformedToController {
 
     def action = {
@@ -75,6 +75,7 @@ class TestTransformedToController {
     void 'Test that user applied annotations are applied to generated action methods'() {
         given:
         def cls = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class SomeController {
     @Deprecated
     def action1(){}
@@ -142,6 +143,7 @@ class SuperController {
 ''')
         def superController = superControllerClass.newInstance()
         def subControllerClass = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class SubController extends SuperController {
     def methodAction() {
         [ actionInvoked: 'SubController.methodAction' ]
@@ -223,6 +225,7 @@ trait ShowMethod {
     void "Test command object gets Validateable injected"() {
         when:
         def cls = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class TestMyCommandObjController {
 
     def action(MyCommand myCommand) {
@@ -250,6 +253,7 @@ class MyCommand {
     void "Test command object injected constructor will be marked as Generated"() {
         when:
         def cls = gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class TestMyCommandObjController {
     def action(MyCommand myCommand) {
     }

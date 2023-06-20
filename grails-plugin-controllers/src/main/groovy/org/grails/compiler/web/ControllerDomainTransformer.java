@@ -23,7 +23,6 @@ import org.codehaus.groovy.control.SourceUnit;
 import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
-import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
@@ -61,11 +60,6 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
     @Override
     protected boolean requiresAutowiring() {
         return false;
-    }
-
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        return GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext());
     }
 
     @Override
