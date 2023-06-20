@@ -17,8 +17,12 @@ package org.grails.compiler.injection
 
 import java.security.CodeSource
 
+import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ModuleNode
+import org.codehaus.groovy.ast.expr.ClassExpression
+import org.codehaus.groovy.ast.expr.PropertyExpression
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.CompilationUnit
@@ -29,7 +33,9 @@ import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.TempDir
 
+import grails.artefact.Artefact
 import grails.persistence.Entity
+import org.grails.core.artefact.ControllerArtefactHandler
 
 /**
  * @author Jeff Scott Brown
@@ -309,6 +315,21 @@ class Post {
 
         expect:
         !GrailsASTUtils.getGrailsArtefactType(classNode)
+    }
+
+    void 'Test Controller class artefact type from ClassNode'() {
+        given:
+        ClassNode classNode = ClassHelper.make(Object)
+        AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Artefact))
+        annotationNode.addMember("value", new PropertyExpression(
+                new ClassExpression(ClassHelper.make(ControllerArtefactHandler)), "TYPE"))
+        classNode.addAnnotation(annotationNode)
+
+        when:
+        String artefactType = GrailsASTUtils.getGrailsArtefactType(classNode)
+
+        then:
+        artefactType == "Controller"
     }
 
 }
