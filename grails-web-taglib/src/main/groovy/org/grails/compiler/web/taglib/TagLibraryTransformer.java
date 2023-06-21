@@ -45,6 +45,7 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
+import grails.artefact.Artefact;
 import grails.artefact.TagLibrary;
 import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.AstTransformer;
@@ -118,6 +119,9 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
 
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
+            return;
+        }
         performInjectionOnAnnotatedClass(source, classNode);
     }
 
