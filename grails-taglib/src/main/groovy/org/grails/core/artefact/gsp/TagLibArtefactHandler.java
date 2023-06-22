@@ -37,6 +37,7 @@ import org.grails.core.gsp.DefaultGrailsTagLibClass;
  * @author Marc Palmer (marc@anyware.co.uk)
  * @author Graeme Rocher
  * @author a.shneyderman
+ * @author Michael Yan
  *
  * @since 3.3
  */
@@ -79,9 +80,14 @@ public class TagLibArtefactHandler extends ArtefactHandlerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     protected boolean isArtefactClass(ClassNode classNode) {
-        if (GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) TAGLIB_ANNOTATION)) {
+        if (classNode == null) {
+            return false;
+        }
+
+        if (TAGLIB_ANNOTATION != null && GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) TAGLIB_ANNOTATION)) {
             return true;
         }
+
         return super.isArtefactClass(classNode);
     }
 

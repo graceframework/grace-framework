@@ -22,6 +22,12 @@ import java.lang.annotation.Target;
 
 import org.codehaus.groovy.transform.GroovyASTTransformationClass;
 
+/**
+ * Meta Annotation to applied to a TagLib class
+ *
+ * @author Lari Hotari
+ * @see grails.gsp.taglib.compiler.TagLibArtefactTypeAstTransformation
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 @GroovyASTTransformationClass("grails.gsp.taglib.compiler.TagLibArtefactTypeAstTransformation")
