@@ -17,6 +17,7 @@ package org.grails.compiler.injection;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -82,21 +83,20 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         String artefactType = resolveArtefactType(sourceUnit, node, cNode);
         if (artefactType != null) {
             AbstractGrailsArtefactTransformer.addToTransformedClasses(cNode.getName());
+
+            addArtefactAnnotation(sourceUnit, node, cNode, artefactType);
         }
+
         performInjectionOnArtefactType(sourceUnit, cNode, artefactType);
 
         performTraitInjectionOnArtefactType(sourceUnit, cNode, artefactType);
-
-        postProcess(sourceUnit, node, cNode, artefactType);
 
         markApplied(cNode);
     }
 
     protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
             ClassNode cNode, String artefactType) {
-        if (this.compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
-        }
+        TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
     }
 
     protected boolean isApplied(ClassNode cNode) {
@@ -111,11 +111,11 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         return getClass();
     }
 
-    protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
-        if (!getAnnotationType().equals(annotationNode.getClassNode())) {
+    protected void addArtefactAnnotation(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
+        if (!MY_TYPE.equals(annotationNode.getClassNode()) && classNode.getAnnotations(MY_TYPE).isEmpty()) {
             // add @Artefact annotation to resulting class so that "shortcut" annotations like @TagLib
             // also produce an @Artefact annotation in the resulting class file
-            AnnotationNode annotation = new AnnotationNode(getAnnotationType());
+            AnnotationNode annotation = new AnnotationNode(MY_TYPE);
             annotation.addMember("value", new ConstantExpression(artefactType));
             classNode.addAnnotation(annotation);
         }
@@ -162,18 +162,12 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     }
 
     public void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
-        List<ClassInjector> injectors = findInjectors(artefactType, GrailsAwareInjectionOperation.getClassInjectors());
+        List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
         for (ClassInjector injector : injectors) {
             if (injector instanceof CompilationUnitAware) {
                 ((CompilationUnitAware) injector).setCompilationUnit(this.compilationUnit);
             }
         }
-        performInjection(sourceUnit, cNode, injectors);
-    }
-
-    @Deprecated
-    public static void doPerformInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
-        List<ClassInjector> injectors = findInjectors(artefactType, GrailsAwareInjectionOperation.getClassInjectors());
         performInjection(sourceUnit, cNode, injectors);
     }
 
