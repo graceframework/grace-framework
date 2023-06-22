@@ -1,6 +1,5 @@
 package org.grails.web.mime
 
-import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.converters.XML
 import grails.persistence.Entity
@@ -214,7 +213,6 @@ class ContentFormatControllerTests extends Specification implements ControllerUn
 
 }
 
-@Artefact("Controller")
 @Controller
 class ContentController {
     def testFormat() {

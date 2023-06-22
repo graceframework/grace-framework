@@ -45,6 +45,8 @@ class FooController {
         clazz.getAnnotationsByType(Artefact)
         classNode.getAnnotations(ClassHelper.make(Artefact))
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerArtefactTypeTransformation')
+        classNode.getNodeMetaData('APPLIED_org.grails.compiler.boot.BootInitializerClassInjector')
+        classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerActionTransformer')
     }
 
 }

@@ -1,6 +1,5 @@
 package grails.test.mixin
 
-import grails.artefact.Artefact
 import grails.converters.JSON
 import grails.converters.XML
 import grails.web.Controller
@@ -28,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile
 /**
  * @author graemerocher
  */
-@Artefact('Controller')
 @Controller
 class AnotherController  {
 
