@@ -45,10 +45,5 @@ public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransfo
         return Controller.class;
     }
 
-    @Override
-    protected Class<?> getAstAppliedMarkerClass() {
-        return ControllerArtefactTypeTransformation.class;
-    }
-
 }
 

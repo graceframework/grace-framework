@@ -45,9 +45,4 @@ public class TagLibArtefactTypeAstTransformation extends ArtefactTypeAstTransfor
         return TagLib.class;
     }
 
-    @Override
-    protected Class<?> getAstAppliedMarkerClass() {
-        return TagLibArtefactTypeAstTransformation.class;
-    }
-
 }

@@ -108,7 +108,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     }
 
     protected Class<?> getAstAppliedMarkerClass() {
-        return ArtefactTypeAstTransformation.class;
+        return getClass();
     }
 
     protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
