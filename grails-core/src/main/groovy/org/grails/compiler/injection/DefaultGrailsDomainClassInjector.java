@@ -43,7 +43,6 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
-import grails.artefact.Artefact;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.compiler.ast.GrailsDomainClassInjector;
@@ -65,12 +64,7 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
     private final List<ClassNode> classesWithInjectedToString = new ArrayList<>();
 
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        if (GrailsASTUtils.isDomainClass(classNode, source) && shouldInjectClass(classNode)) {
-            if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
-                return;
-            }
-            performInjectionOnAnnotatedEntity(classNode);
-        }
+        performInjectionOnAnnotatedEntity(classNode);
     }
 
     @Override

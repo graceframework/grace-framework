@@ -15,6 +15,7 @@
  */
 package org.grails.compiler.injection
 
+import groovy.transform.Generated
 import spock.lang.Specification
 
 import grails.compiler.ast.ClassInjector
@@ -35,7 +36,7 @@ class DefaultGrailsDomainClassInjectorSpec extends Specification {
 @grails.artefact.Artefact("Domain")
 class Post {
 }
-''', "grails-demo-project/grails-app/domain/org/demo/Post.groovy")
+''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -54,6 +55,83 @@ class Post {
         }
     }
 
+    def "Test Domain class annotated '@grails.persistence.Entity' with default ToString"() {
+        given:
+        def gcl = new GrailsAwareClassLoader()
+        def classInjector = new DefaultGrailsDomainClassInjector()
+        gcl.classInjectors = [classInjector] as ClassInjector[]
+
+        def domainClass = gcl.parseClass('''
+@grails.persistence.Entity
+class Post {
+}
+''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+
+        def domainMethodNames = domainClass.getMethods()*.name
+
+        when:
+        List<String> injectedMethodNames = [
+                "setId",
+                "getId",
+                "setVersion",
+                "getVersion",
+                "toString"
+        ]
+
+        then: 'injected methods as expect'
+        injectedMethodNames.each { methodName ->
+            assert methodName in domainMethodNames
+        }
+
+        when:
+        def post = domainClass.newInstance([id: 1])
+
+        then: 'toString as default'
+        post.toString().endsWith("Post : (unsaved)")
+
+        and: 'toString is marked as Generated'
+        post.class.getMethod('toString').isAnnotationPresent(Generated)
+    }
+
+    def "Test Domain class annotated '@grails.persistence.Entity' with '@groovy.transform.ToString'"() {
+        given:
+        def gcl = new GrailsAwareClassLoader()
+        def classInjector = new DefaultGrailsDomainClassInjector()
+        gcl.classInjectors = [classInjector] as ClassInjector[]
+
+        def domainClass = gcl.parseClass('''
+@grails.persistence.Entity
+@groovy.transform.ToString(includes = ["id"])
+class Post {
+}
+''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+
+        def domainMethodNames = domainClass.getMethods()*.name
+
+        when:
+        List<String> injectedMethodNames = [
+                "setId",
+                "getId",
+                "setVersion",
+                "getVersion",
+                "toString"
+        ]
+
+        then: 'injected methods as expect'
+        injectedMethodNames.each { methodName ->
+            assert methodName in domainMethodNames
+        }
+
+        when:
+        def post = domainClass.newInstance([id: 1])
+
+        then: 'toString as expect'
+        post.toString().endsWith("Post(null)")
+
+        and: 'toString is marked as Generated'
+        post.class.getMethod('toString').isAnnotationPresent(Generated)
+    }
+
     def "Test Domain class was injected Associations"() {
         given:
         def gcl = new GrailsAwareClassLoader()
@@ -69,7 +147,7 @@ class Post {
 class Comment {
     static belongsTo = [post : Post]
 }
-''', "grails-demo-project/grails-app/domain/org/demo/Post.groovy")
+''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
 
         Class[] loadedClasses = gcl.getLoadedClasses()
         def postClass = loadedClasses.find { it.name == 'Post' }

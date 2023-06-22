@@ -15,15 +15,10 @@
  */
 package org.grails.core.artefact;
 
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.Set;
-
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.springframework.core.Ordered;
-import org.springframework.util.ClassUtils;
 
 import grails.artefact.Artefact;
 import grails.core.ArtefactHandlerAdapter;
@@ -42,7 +37,7 @@ import org.grails.datastore.mapping.model.MappingContext;
  * @author Michael Yan
  * @since 0.5
  */
-@SuppressWarnings({"deprecation", "unchecked"})
+@SuppressWarnings({"deprecation"})
 public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
     public static final String TYPE = "Domain";
@@ -50,20 +45,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     public static final String PATH = "domain";
 
     public static final String PLUGIN_NAME = "domainClass";
-
-    private static final Set<Class<? extends Annotation>> ENTITY_ANNOTATIONS = new HashSet<>();
-
-    static {
-        ENTITY_ANNOTATIONS.add(grails.persistence.Entity.class);
-        ClassLoader classLoader = DomainClassArtefactHandler.class.getClassLoader();
-        if (ClassUtils.isPresent("org.grails.datastore.gorm.AbstractDatastoreApi", classLoader)) {
-            try {
-                ENTITY_ANNOTATIONS.add((Class<? extends Annotation>) classLoader.loadClass("grails.gorm.annotation.Entity"));
-            }
-            catch (ClassNotFoundException ignored) {
-            }
-        }
-    }
 
     public DomainClassArtefactHandler() {
         super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, PATH, true);
@@ -90,9 +71,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
 
     @Override
     public boolean isArtefactClass(ClassNode classNode) {
-        if (GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]))) {
-            return true;
-        }
         return !GrailsASTUtils.isJpaEntityClass(classNode) && super.isArtefactClass(classNode);
     }
 
@@ -122,18 +100,6 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
             Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
             if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
                 return true;
-            }
-        }
-        catch (Exception ignored) {
-        }
-
-        try {
-            Annotation[] annotations = clazz.getAnnotations();
-            for (Annotation annotation : annotations) {
-                Class<? extends Annotation> annType = annotation.annotationType();
-                if (ENTITY_ANNOTATIONS.contains(annType)) {
-                    return true;
-                }
             }
         }
         catch (Exception ignored) {
