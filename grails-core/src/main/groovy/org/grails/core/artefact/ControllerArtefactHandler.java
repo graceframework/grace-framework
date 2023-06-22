@@ -15,12 +15,16 @@
  */
 package org.grails.core.artefact;
 
+import java.lang.annotation.Annotation;
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
 
 import grails.core.ArtefactHandlerAdapter;
 import grails.core.GrailsControllerClass;
 
+import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.DefaultGrailsControllerClass;
 
 /**
@@ -43,6 +47,21 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String PLUGIN_NAME = "controllers";
 
+    private static final String CONTROLLER_CLASS_NAME = "grails.web.Controller";
+
+    private static Class<?> CONTROLLER_ANNOTATION;
+
+    static {
+        ClassLoader classLoader = ControllerArtefactHandler.class.getClassLoader();
+        if (ClassUtils.isPresent(CONTROLLER_CLASS_NAME, classLoader)) {
+            try {
+                CONTROLLER_ANNOTATION = classLoader.loadClass(CONTROLLER_CLASS_NAME);
+            }
+            catch (ClassNotFoundException ignored) {
+            }
+        }
+    }
+
     public ControllerArtefactHandler() {
         super(TYPE, GrailsControllerClass.class, DefaultGrailsControllerClass.class,
                 DefaultGrailsControllerClass.CONTROLLER, PATH);
@@ -54,12 +73,30 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isArtefactClass(ClassNode classNode) {
+        if (classNode == null) {
+            return false;
+        }
+
+        if (CONTROLLER_ANNOTATION != null && GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) CONTROLLER_ANNOTATION)) {
+            return true;
+        }
+
         return super.isArtefactClass(classNode) && classNode.getAnnotations(new ClassNode(Controller.class)).isEmpty();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isArtefactClass(Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+
+        if (CONTROLLER_ANNOTATION != null && clazz.getAnnotation((Class<? extends Annotation>) CONTROLLER_ANNOTATION) != null) {
+            return true;
+        }
+
         return super.isArtefactClass(clazz) && clazz.getAnnotation(Controller.class) == null;
     }
 

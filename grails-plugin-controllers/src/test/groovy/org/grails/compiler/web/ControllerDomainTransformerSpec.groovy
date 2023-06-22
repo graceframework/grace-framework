@@ -62,7 +62,7 @@ class Post {
 class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
     CompilationUnit compilationUnit
 
-    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors) {
+    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors = []) {
         super(parent, configuration)
         setClassInjectors(classInjectors)
     }

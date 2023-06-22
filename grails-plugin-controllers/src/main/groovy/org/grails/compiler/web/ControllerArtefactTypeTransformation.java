@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.grails.core.artefact.ControllerArtefactHandler;
  * A transformation that makes an Artefact a controller
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @GroovyASTTransformation
@@ -42,6 +43,11 @@ public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransfo
     @Override
     protected Class<?> getAnnotationTypeClass() {
         return Controller.class;
+    }
+
+    @Override
+    protected Class<?> getAstAppliedMarkerClass() {
+        return ControllerArtefactTypeTransformation.class;
     }
 
 }
