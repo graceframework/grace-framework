@@ -207,7 +207,7 @@ trait ShowMethod {
 
     @grails.web.Action
     def show(MyCommandWithArg myCommandWithArg) {
-        !myCommandWithArg.hasErrors()
+        !myCommandWithArg?.hasErrors()
     }
 
 }
