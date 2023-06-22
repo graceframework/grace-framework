@@ -47,6 +47,7 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
  * &#064;Artefact("Controller") to make it into a controller no matter what the location.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @GroovyASTTransformation
@@ -112,7 +113,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
 
     protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
         if (!getAnnotationType().equals(annotationNode.getClassNode())) {
-            // add @Artefact annotation to resulting class so that "short cut" annotations like @TagLib
+            // add @Artefact annotation to resulting class so that "shortcut" annotations like @TagLib
             // also produce an @Artefact annotation in the resulting class file
             AnnotationNode annotation = new AnnotationNode(getAnnotationType());
             annotation.addMember("value", new ConstantExpression(artefactType));
