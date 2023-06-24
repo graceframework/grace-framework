@@ -32,11 +32,6 @@ class DefaultASTValidateableHelperSpec extends Specification {
                 performInjection(source, null, classNode)
             }
 
-            @Override
-            void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
             void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
                 new DefaultASTValidateableHelper().injectValidateableCode(classNode, false)
             }
