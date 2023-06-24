@@ -15,7 +15,6 @@
  */
 package org.grails.compiler.injection
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.AnnotationNode
 import org.codehaus.groovy.ast.ClassHelper
@@ -77,12 +76,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode)
-    }
-
-    @Override
-    @CompileDynamic
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
         if (!TRANSFORMED_INSTANCES.contains(objectId)) {
             TRANSFORMED_INSTANCES << objectId
