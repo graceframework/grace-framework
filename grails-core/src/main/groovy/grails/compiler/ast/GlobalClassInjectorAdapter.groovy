@@ -27,6 +27,7 @@ import org.codehaus.groovy.control.SourceUnit
  * @author Michael Yan
  * @since 3.0
  */
+@Deprecated(forRemoval = true, since = "2023.0.0")
 @CompileStatic
 abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
 

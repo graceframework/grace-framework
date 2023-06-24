@@ -24,6 +24,7 @@ import org.codehaus.groovy.ast.ClassNode
  * @author Michael Yan
  * @since 3.0
  */
+@Deprecated(forRemoval = true, since = "2023.0.0")
 interface GlobalClassInjector extends ClassInjector {
 
     @Override
