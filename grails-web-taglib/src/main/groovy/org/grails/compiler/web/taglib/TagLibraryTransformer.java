@@ -17,14 +17,12 @@ package org.grails.compiler.web.taglib;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.ast.Parameter;
 import org.codehaus.groovy.ast.PropertyNode;
@@ -47,10 +45,8 @@ import org.codehaus.groovy.control.SourceUnit;
 
 import grails.artefact.Artefact;
 import grails.artefact.TagLibrary;
-import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
-import grails.gsp.TagLib;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.gsp.TagLibArtefactHandler;
@@ -65,7 +61,7 @@ import org.grails.taglib.encoder.OutputContextLookupHelper;
  * @since 2.0
  */
 @AstTransformer
-public class TagLibraryTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector {
+public class TagLibraryTransformer implements GrailsArtefactClassInjector {
 
     protected static final String GET_TAG_LIB_NAMESPACE_METHOD_NAME = "$getTagLibNamespace";
 
@@ -113,25 +109,15 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
     }
 
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
             return;
         }
-        performInjectionOnAnnotatedClass(source, classNode);
+        performInjection(source, classNode);
     }
 
     @Override
     public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         List<PropertyNode> tags = findTags(classNode);
 
         PropertyNode namespaceProperty = classNode.getProperty(NAMESPACE_PROPERTY);
@@ -262,18 +248,6 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
             }
         }
         return tags;
-    }
-
-    @Override
-    public boolean shouldInject(ClassNode classNode) {
-        if (classNode.isEnum() || classNode instanceof InnerClassNode || classNode.getName().contains("$")) {
-            return false;
-        }
-        if (GrailsASTUtils.hasAnnotation(classNode, TagLib.class)) {
-            return true;
-        }
-        String artefactType = GrailsASTUtils.getGrailsArtefactType(classNode);
-        return artefactType != null && (Arrays.asList(getArtefactTypes()).contains(artefactType) || Arrays.asList(getArtefactTypes()).contains("*"));
     }
 
 }
