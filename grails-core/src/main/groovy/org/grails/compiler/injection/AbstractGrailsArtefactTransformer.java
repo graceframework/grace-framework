@@ -54,7 +54,6 @@ import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 
 /**
@@ -67,7 +66,7 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
  * @since 2.0
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector, Comparable {
+public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefactClassInjector, Comparable {
 
     private static final Set<String> KNOWN_TRANSFORMED_CLASSES = new HashSet<>();
 
@@ -118,13 +117,14 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
         return 0; // treat all as the same by default for ordering
     }
 
+    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         performInjectionOnAnnotatedClass(source, context, classNode);
     }
 
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, null, classNode);
+    public void performInjection(SourceUnit source, ClassNode classNode) {
+        performInjection(source, null, classNode);
     }
 
     public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
@@ -383,10 +383,6 @@ public abstract class AbstractGrailsArtefactTransformer implements GrailsArtefac
      * @return A class or null if non is provided
      */
     public abstract Class getStaticImplementation();
-
-    public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
-    }
 
     /**
      * A marker annotation to be applied to added methods, defaults to null
