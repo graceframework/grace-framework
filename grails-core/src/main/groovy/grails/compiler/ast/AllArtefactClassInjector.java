@@ -24,6 +24,7 @@ import org.codehaus.groovy.ast.ClassNode;
  * @author Michael Yan
  * @since 2.0
  */
+@Deprecated(forRemoval = true, since = "2023.0.0")
 public interface AllArtefactClassInjector extends ClassInjector {
 
     @Override
