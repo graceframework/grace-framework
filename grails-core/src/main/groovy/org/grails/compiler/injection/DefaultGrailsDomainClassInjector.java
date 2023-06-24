@@ -45,7 +45,6 @@ import org.codehaus.groovy.control.SourceUnit;
 
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
-import grails.compiler.ast.GrailsDomainClassInjector;
 
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.mapping.model.config.GormProperties;
@@ -59,31 +58,21 @@ import org.grails.datastore.mapping.model.config.GormProperties;
  * @since 0.2
  */
 @AstTransformer
-public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInjector, GrailsArtefactClassInjector {
+public class DefaultGrailsDomainClassInjector implements GrailsArtefactClassInjector {
 
     private final List<ClassNode> classesWithInjectedToString = new ArrayList<>();
 
+    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedEntity(classNode);
+        performInjection(source, classNode);
     }
 
     @Override
-    public void performInjectionOnAnnotatedEntity(ClassNode classNode) {
+    public void performInjection(SourceUnit source, ClassNode classNode) {
         injectIdProperty(classNode);
         injectVersionProperty(classNode);
         injectToStringMethod(classNode);
         injectAssociations(classNode);
-    }
-
-    protected boolean shouldInjectClass(ClassNode classNode) {
-        String fullName = GrailsASTUtils.getFullName(classNode);
-        String mappingFile = getMappingFileName(fullName);
-
-        if (getClass().getResource(mappingFile) != null) {
-            return false;
-        }
-
-        return !isEnum(classNode);
     }
 
     /**
@@ -238,14 +227,6 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
             parent.addProperty(GormProperties.IDENTITY, Modifier.PUBLIC, new ClassNode(Long.class),
                     null, null, null);
         }
-    }
-
-    public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
-    }
-
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedEntity(classNode);
     }
 
     public String[] getArtefactTypes() {
