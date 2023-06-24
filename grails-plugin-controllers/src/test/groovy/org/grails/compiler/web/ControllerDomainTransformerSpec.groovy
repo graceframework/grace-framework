@@ -17,6 +17,7 @@ package org.grails.compiler.web
 
 import java.security.CodeSource
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.CompilationFailedException
@@ -26,6 +27,8 @@ import org.codehaus.groovy.control.Phases
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
+import grails.artefact.Artefact
+import grails.artefact.Enhanced
 import grails.compiler.ast.ClassInjector
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
@@ -50,10 +53,11 @@ class Post {
 
         def classNode = gcl.getClassNode('Post')
 
-        and:
         expect: 'injected methods as expect'
         transformer.artefactType == 'Domain'
-        classNode.getField('instanceControllersDomainBindingApi') != null
+        classNode.getField('instanceControllersDomainBindingApi')
+        classNode.getAnnotations(ClassHelper.make(Artefact))
+        classNode.getAnnotations(ClassHelper.make(Enhanced))
     }
 
 }

@@ -69,9 +69,8 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
     }
 
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        super.performInjectionOnAnnotatedClass(source, classNode);
-        new DefaultASTDatabindingHelper().injectDatabindingCode(source, null, classNode);
+    public void performInjection(SourceUnit source, ClassNode classNode) {
+        performInjection(source, null, classNode);
     }
 
 }
