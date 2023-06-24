@@ -104,9 +104,12 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 GrailsASTUtils.addAnnotationOrGetExisting(classNode, GrailsPlugin, members)
             }
 
-            for (ArtefactHandler handler in artefactHandlers) {
-                if (handler.isArtefact(classNode)) {
-                    transformedClasses.add classNodeName
+            if (isPlugin) {
+                for (ArtefactHandler handler in artefactHandlers) {
+                    if (handler.isArtefact(classNode)) {
+                        transformedClasses.add classNodeName
+                        break
+                    }
                 }
             }
         }
