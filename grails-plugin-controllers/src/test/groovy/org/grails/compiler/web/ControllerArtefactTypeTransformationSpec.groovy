@@ -20,6 +20,7 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Specification
 
 import grails.artefact.Artefact
+import grails.artefact.Enhanced
 
 /**
  * @author Michael Yan
@@ -30,12 +31,16 @@ class ControllerArtefactTypeTransformationSpec extends Specification {
     def "Test Controller class was applied by ControllerArtefactTypeTransformation"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation',
+                                                           'org.grails.compiler.injection.GlobalGrailsPluginTransformation'] as Set<String>)
+        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        gcl.enableInjectTraits = false
 
         when:
         def clazz = gcl.parseClass('''
 @grails.web.Controller
 class FooController {
+  def index() {}
 }
 ''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/FooController.groovy')
 
@@ -44,8 +49,8 @@ class FooController {
         then:
         clazz.getAnnotationsByType(Artefact)
         classNode.getAnnotations(ClassHelper.make(Artefact))
+        classNode.getAnnotations(ClassHelper.make(Enhanced))
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerArtefactTypeTransformation')
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.boot.BootInitializerClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerActionTransformer')
     }
 
