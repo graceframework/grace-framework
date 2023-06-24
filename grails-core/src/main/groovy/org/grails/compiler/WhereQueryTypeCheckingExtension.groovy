@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,10 +61,10 @@ class WhereQueryTypeCheckingExtension extends TypeCheckingDSL {
     }
 
     protected boolean isWhereQueryCall(MethodCall call) {
-        call instanceof MethodCallExpression &&
-                call.objectExpression instanceof ClassExpression &&
-                GrailsASTUtils.isDomainClass(call.objectExpression.type, null) &&
-                call.method.value == 'where'
+        (call instanceof MethodCallExpression) &&
+                (call.objectExpression instanceof ClassExpression) &&
+                GrailsASTUtils.isDomainClass(call.objectExpression.type, call.objectExpression.type?.module?.context) &&
+                (call.method.value == 'where')
     }
 
 }

@@ -22,6 +22,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ import org.codehaus.groovy.transform.trait.Traits;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import grails.artefact.Artefact;
 import grails.artefact.Enhanced;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.GrailsNameUtils;
@@ -872,20 +874,28 @@ public final class GrailsASTUtils {
 
     @SuppressWarnings("unchecked")
     public static boolean isDomainClass(ClassNode classNode, SourceUnit sourceNode) {
+        if (classNode == null || sourceNode == null) {
+            return false;
+        }
         if (isJpaEntityClass(classNode)) {
             return false;
         }
-        boolean isDomainClass = GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]));
+        return GrailsASTUtils.hasAnyAnnotations(classNode, ENTITY_ANNOTATIONS.toArray(new Class[0]))
+                || isGrailsSource(sourceNode, "domain");
+    }
 
-        if (!isDomainClass && sourceNode != null) {
-            return isGrailsSource(sourceNode, "domain");
+    public static boolean isDomainClass(ClassNode classNode) {
+        if (classNode == null || classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return false;
         }
-
-        return isDomainClass;
+        return isDomainClass(classNode, classNode.getModule().getContext());
     }
 
     @SuppressWarnings("unchecked")
     public static boolean isJpaEntityClass(ClassNode classNode) {
+        if (classNode == null) {
+            return false;
+        }
         return JPA_ENTITY_ANNOTATION != null && GrailsASTUtils.hasAnnotation(classNode, (Class<? extends Annotation>) JPA_ENTITY_ANNOTATION);
     }
 
@@ -1023,8 +1033,8 @@ public final class GrailsASTUtils {
 
     /**
      * Add the grails.artefact.Enhanced annotation to classNode if it does not already exist and ensure that
-     * all of the features in the enhancedFor array are represented in the enhancedFor attribute of the
-     * Enhanced annnotation
+     * all the features in the enhancedFor array are represented in the enhancedFor attribute of the
+     * Enhanced annotation
      * @param classNode the class to add the Enhanced annotation to
      * @param enhancedFor an array of feature names to include in the enhancedFor attribute of the annotation
      * @return the AnnotationNode associated with the Enhanced annotation for classNode
@@ -1831,6 +1841,73 @@ public final class GrailsASTUtils {
             return name.endsWith(artefactSuffix);
         }
         return true;
+    }
+
+    /**
+     * Get the path of Artefact
+     *
+     * @param classNode The ClassNode of Artefact
+     * @return the path of Artefact
+     */
+    public static String getGrailsArtefactPath(ClassNode classNode) {
+        if (classNode == null || classNode.isEnum() || classNode.isInterface()
+                || Modifier.isAbstract(classNode.getModifiers())
+                || (classNode instanceof InnerClassNode)) {
+            return null;
+        }
+
+        if (classNode.getModule() == null || classNode.getModule().getContext() == null) {
+            return null;
+        }
+        SourceUnit source = classNode.getModule().getContext();
+        ModuleNode ast = source.getAST();
+        if (ast == null) {
+            return null;
+        }
+        String filename = source.getName();
+        String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
+        if (filename == null || grailsAppDir == null || !filename.startsWith(grailsAppDir)) {
+            return null;
+        }
+
+        String relativePath = filename.substring(grailsAppDir.length());
+        String[] paths = relativePath.split(File.separator);
+        if (paths.length < 2) {
+            return null;
+        }
+        return paths[1];
+    }
+
+    public static String getGrailsArtefactType(ClassNode classNode) {
+        if (classNode == null) {
+            return null;
+        }
+        List<AnnotationNode> annotationNodes = classNode.getAnnotations(new ClassNode(Artefact.class));
+
+        for (AnnotationNode node : annotationNodes) {
+            Expression artefactValue = node.getMember("value");
+            if (artefactValue instanceof ConstantExpression) {
+                Object artefactType = ((ConstantExpression) artefactValue).getValue();
+                if (artefactType != null) {
+                    return String.valueOf(artefactType);
+                }
+            }
+            else if (artefactValue instanceof PropertyExpression) {
+                PropertyExpression pe = (PropertyExpression) artefactValue;
+
+                Expression objectExpression = pe.getObjectExpression();
+                if (objectExpression instanceof ClassExpression) {
+                    ClassExpression ce = (ClassExpression) objectExpression;
+                    try {
+                        Field field = ce.getType().getTypeClass().getDeclaredField(pe.getPropertyAsString());
+                        return (String) field.get(null);
+                    }
+                    catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public static boolean hasParameters(MethodNode methodNode) {

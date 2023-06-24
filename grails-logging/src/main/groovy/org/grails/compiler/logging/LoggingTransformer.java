@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.grails.compiler.logging;
 
 import java.lang.reflect.Modifier;
-import java.net.URL;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.util.logging.Slf4j;
@@ -30,40 +29,35 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.LogASTTransformation;
 
-import grails.compiler.ast.AllArtefactClassInjector;
 import grails.compiler.ast.AstTransformer;
+import grails.compiler.ast.ClassInjector;
 
 /**
  * Adds a log field to all artifacts.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
-public class LoggingTransformer implements AllArtefactClassInjector {
+public class LoggingTransformer implements ClassInjector {
+
+    private static final ClassNode SLF4J = ClassHelper.make(Slf4j.class);
 
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
+        performInjection(source, classNode);
     }
 
     @Override
     public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         if (classNode.getNodeMetaData(Slf4j.class) != null) {
             return;
         }
-        String packageName = Slf4j.class.getPackage().getName();
 
         // if already annotated skip
-        for (AnnotationNode annotationNode : classNode.getAnnotations()) {
-            if (annotationNode.getClassNode().getPackageName().equals(packageName)) {
-                return;
-            }
+        if (!classNode.getAnnotations(SLF4J).isEmpty()) {
+            return;
         }
 
         FieldNode logField = classNode.getField("log");
@@ -73,15 +67,15 @@ public class LoggingTransformer implements AllArtefactClassInjector {
             }
         }
 
-        AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Slf4j.class));
+        AnnotationNode annotationNode = new AnnotationNode(SLF4J);
         LogASTTransformation logASTTransformation = new LogASTTransformation();
         logASTTransformation.setCompilationUnit(new CompilationUnit(new GroovyClassLoader(getClass().getClassLoader())));
         logASTTransformation.visit(new ASTNode[] { annotationNode, classNode }, source);
         classNode.putNodeMetaData(Slf4j.class, annotationNode);
     }
 
-    public boolean shouldInject(URL url) {
-        // Add log property to all artifact types
+    @Override
+    public boolean shouldInject(ClassNode classNode) {
         return true;
     }
 

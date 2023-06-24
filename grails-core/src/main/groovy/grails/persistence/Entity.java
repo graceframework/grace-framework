@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,11 @@ import org.codehaus.groovy.transform.GroovyASTTransformationClass;
  *
  * @author Graeme Rocher
  * @since 1.1
+ * @see org.grails.compiler.injection.EntityASTTransformation
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 @GroovyASTTransformationClass("org.grails.compiler.injection.EntityASTTransformation")
 public @interface Entity {
-    // no attributes
+
 }

@@ -1,11 +1,43 @@
+/*
+ * Copyright 2011-2023 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.compiler.logging
 
+import java.security.CodeSource
+
+import groovy.util.logging.Slf4j
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.classgen.GeneratorContext
+import org.codehaus.groovy.control.CompilationFailedException
+import org.codehaus.groovy.control.CompilationUnit
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.Phases
+import org.codehaus.groovy.control.SourceUnit
 import org.slf4j.Logger
-import grails.compiler.ast.ClassInjector
-import org.grails.compiler.injection.GrailsAwareClassLoader
 import spock.lang.Specification
 
+import grails.compiler.ast.ClassInjector
+import org.grails.compiler.injection.GrailsAwareClassLoader
+
+/**
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 2.0
+ */
 class LoggingTransformerSpec extends Specification {
+
     def "Test log field with inheritance and base class with log property"() {
         given:
         def gcl = new GrailsAwareClassLoader()
@@ -39,15 +71,15 @@ class LoggingController extends BaseController{
 
     def "Test log field with inheritance"() {
         given:
-            def gcl = new GrailsAwareClassLoader()
-            def transformer = new LoggingTransformer()
-            gcl.classInjectors = [transformer] as ClassInjector[]
+        def gcl = new GrailsAwareClassLoader()
+        def transformer = new LoggingTransformer()
+        gcl.classInjectors = [transformer] as ClassInjector[]
 
         when:
-            gcl.parseClass('''
+        gcl.parseClass('''
 class BaseController {}
 ''')
-            def cls = gcl.parseClass('''
+        def cls = gcl.parseClass('''
 
 class LoggingController extends BaseController{
     def index() {
@@ -56,20 +88,21 @@ class LoggingController extends BaseController{
     }
 }
 ''', "foo/grails-app/controllers/LoggingController.groovy")
-            def controller = cls.newInstance()
-            Logger log = controller.index()
+        def controller = cls.newInstance()
+        Logger log = controller.index()
 
         then:
-            log instanceof Logger
+        log instanceof Logger
     }
+
     def "Test added log field"() {
         given:
-            def gcl = new GrailsAwareClassLoader()
-            def transformer = new LoggingTransformer()
-            gcl.classInjectors = [transformer] as ClassInjector[]
+        def gcl = new GrailsAwareClassLoader()
+        def transformer = new LoggingTransformer()
+        gcl.classInjectors = [transformer] as ClassInjector[]
 
         when:
-            def cls = gcl.parseClass('''
+        def cls = gcl.parseClass('''
 class LoggingController {
     def index() {
         log.debug "message"
@@ -77,19 +110,18 @@ class LoggingController {
     }
 }
 ''', "foo/grails-app/controllers/LoggingController.groovy")
-            def controller = cls.newInstance()
-            Logger log = controller.index()
+        def controller = cls.newInstance()
+        Logger log = controller.index()
 
         then:
-            log instanceof Logger
-
+        log instanceof Logger
     }
 
     def "Test adding log field via Artefact annotation"() {
         given:
-            def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader()
         when:
-            def cls = gcl.parseClass('''
+        def cls = gcl.parseClass('''
 @grails.artefact.Artefact("Controller")
 class LoggingController {
     def index() {
@@ -98,30 +130,103 @@ class LoggingController {
     }
 }
 ''', "foo/grails-app/controllers/LoggingController.groovy")
-            def controller = cls.newInstance()
-            Logger log = controller.index()
+        def controller = cls.newInstance()
+        Logger log = controller.index()
 
         then:
-            log instanceof Logger
-
+        log instanceof Logger
     }
 
-    def "Test log field is not added to Application classes"() {
+    def "Test log field is added to Application classes"() {
         given:
-            def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader()
         when:
-            def cls = gcl.parseClass('''
+        def cls = gcl.parseClass('''
 class Application {
     def index() {
         return log
     }
 }
 ''', "foo/src/main/groovy/LoggingController.groovy")
-            def controller = cls.newInstance()
-            Logger log = controller.index()
+        def controller = cls.newInstance()
+        Logger log = controller.index()
 
         then:
-            log instanceof Logger
-
+        log instanceof Logger
     }
+
+    def "Test Controller class was injected on '@Slf4j'"() {
+        given:
+        CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
+        def transformer = new LoggingTransformer()
+        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration, [transformer] as ClassInjector[])
+
+        when:
+        def clazz = gcl.parseClass('''
+class PostController {
+}
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostController.groovy')
+
+        def classNode = gcl.getClassNode('PostController')
+
+        then:
+        !classNode.getAnnotations(new ClassNode(Slf4j))
+        classNode.getField("log")
+        classNode.getNodeMetaData(Slf4j.class)
+    }
+
+    def "Test Controller class was already annotated '@Slf4j'"() {
+        given:
+        CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
+        def transformer = new LoggingTransformer()
+        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration, [transformer] as ClassInjector[])
+
+        when:
+        def clazz = gcl.parseClass('''
+@groovy.util.logging.Slf4j
+class PostController {
+}
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostController.groovy')
+
+        def classNode = gcl.getClassNode('PostController')
+
+        then:
+        classNode.getAnnotations(new ClassNode(Slf4j))
+        classNode.getField("log")
+        !classNode.getNodeMetaData(Slf4j.class)
+    }
+
+}
+
+
+class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
+    CompilationUnit compilationUnit
+
+    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors) {
+        super(parent, configuration)
+        setClassInjectors(classInjectors)
+    }
+
+    @Override
+    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
+        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
+
+            @Override
+            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
+                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+            }
+
+        }, Phases.CANONICALIZATION)
+
+        this.compilationUnit = compilationUnit
+    }
+
+    ClassNode getClassNode(String name) {
+        this.compilationUnit.getClassNode(name)
+    }
+
 }

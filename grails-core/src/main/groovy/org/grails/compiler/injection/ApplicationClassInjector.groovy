@@ -15,7 +15,6 @@
  */
 package org.grails.compiler.injection
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.AnnotationNode
 import org.codehaus.groovy.ast.ClassHelper
@@ -31,7 +30,6 @@ import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.util.BuildSettings
 
 import org.grails.core.artefact.ApplicationArtefactHandler
-import org.grails.io.support.UrlResource
 
 import static org.codehaus.groovy.ast.tools.GeneralUtils.args
 import static org.codehaus.groovy.ast.tools.GeneralUtils.callX
@@ -53,8 +51,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     public static final String EXCLUDE_MEMBER = 'exclude'
     public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = new ArrayList<>()
-
-    ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
     private static final List<Integer> TRANSFORMED_INSTANCES = []
 
@@ -80,47 +76,30 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode)
-    }
+        Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
+        if (!TRANSFORMED_INSTANCES.contains(objectId)) {
+            TRANSFORMED_INSTANCES << objectId
 
-    @Override
-    @CompileDynamic
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        if (applicationArtefactHandler.isArtefact(classNode)) {
-            Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
-            if (!TRANSFORMED_INSTANCES.contains(objectId)) {
-                TRANSFORMED_INSTANCES << objectId
+            List<Statement> statements = [
+                    stmt(callX(classX(System), 'setProperty', args(propX(classX(BuildSettings), 'MAIN_CLASS_NAME'),
+                            constX(classNode.name))))
+            ]
+            classNode.addStaticInitializerStatements(statements, true)
 
-                List<Statement> statements = [
-                        stmt(callX(classX(System), 'setProperty', args(propX(classX(BuildSettings), 'MAIN_CLASS_NAME'),
-                                constX(classNode.name))))
-                ]
-                classNode.addStaticInitializerStatements(statements, true)
+            ClassLoader classLoader = getClass().classLoader
+            if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
+                AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
+                        ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
 
-                ClassLoader classLoader = getClass().classLoader
-                if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
-                    AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
-                            ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
-
-                    for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
-                        if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
-                            ClassExpression autoConfigClassExpression =
-                                    new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
-                            GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
-                        }
+                for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
+                    if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
+                        ClassExpression autoConfigClassExpression =
+                                new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
+                        GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                     }
                 }
             }
         }
-    }
-
-    @Override
-    boolean shouldInject(URL url) {
-        if (url == null) {
-            return false
-        }
-        UrlResource res = new UrlResource(url)
-        res.filename.endsWith('Application.groovy')
     }
 
 }

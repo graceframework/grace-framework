@@ -44,7 +44,8 @@ public interface ClassInjector {
      * @param context The generator context
      * @param classNode The ClassNode instance
      */
-    void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode);
+    default void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+    }
 
     /**
      * Handles injection of properties, methods etc. into a class.
@@ -52,15 +53,19 @@ public interface ClassInjector {
      * @param source The source unit
      * @param classNode The ClassNode instance
      */
-    void performInjection(SourceUnit source, ClassNode classNode);
+    default void performInjection(SourceUnit source, ClassNode classNode) {
+    }
 
     /**
      * Handles injection of properties, methods etc. into a class.
      *
      * @param source The source unit
      * @param classNode The ClassNode instance
+     * @deprecated since 2022.3.0, in favor of {@link #performInjection(SourceUnit, ClassNode)}
      */
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode);
+    @Deprecated(forRemoval = true, since = "2023.0.0")
+    default void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
+    }
 
     /**
      * Returns whether this injector should inject

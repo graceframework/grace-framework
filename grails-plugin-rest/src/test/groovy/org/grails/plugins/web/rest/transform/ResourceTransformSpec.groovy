@@ -1,6 +1,16 @@
 package org.grails.plugins.web.rest.transform
 
+import java.security.CodeSource
+
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.classgen.GeneratorContext
+import org.codehaus.groovy.control.CompilationFailedException
+import org.codehaus.groovy.control.CompilationUnit
+import org.codehaus.groovy.control.Phases
+import org.codehaus.groovy.control.SourceUnit
+
 import grails.artefact.Artefact
+import grails.compiler.ast.ClassInjector
 import grails.gorm.transactions.Transactional
 import grails.rest.RestfulController
 import grails.web.Action
@@ -13,12 +23,14 @@ import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import org.grails.compiler.injection.GrailsAwareClassLoader
+
 /**
  * @author Graeme Rocher
  */
 class ResourceTransformSpec extends Specification {
     protected GroovyClassLoader createGroovyClassLoader() {
-        new GroovyClassLoader(Thread.currentThread().getContextClassLoader(), createCompilerConfiguration())
+        new TestGrailsAwareClassLoader(Thread.currentThread().getContextClassLoader(), createCompilerConfiguration())
     }
 
     protected CompilerConfiguration createCompilerConfiguration() {
@@ -55,7 +67,6 @@ class Book {
             ctrl != null
             getMethod(ctrl, "index", Integer.class)
             getMethod(ctrl, "index")
-            getMethod(ctrl, "index").getAnnotation(Action)
             getMethod(ctrl, "show")
             getMethod(ctrl, "edit")
             getMethod(ctrl, "create")
@@ -203,4 +214,35 @@ class SubclassRestfulController<T> extends RestfulController<T> {
     SubclassRestfulController(Class<T> resource, boolean readOnly) {
         super(resource, readOnly)
     }
+}
+
+
+class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
+    CompilationUnit compilationUnit
+
+    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors = []) {
+        super(parent, configuration)
+        setClassInjectors(classInjectors)
+    }
+
+    @Override
+    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
+        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
+
+            @Override
+            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
+                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+            }
+
+        }, Phases.CANONICALIZATION)
+
+        this.compilationUnit = compilationUnit
+    }
+
+    ClassNode getClassNode(String name) {
+        this.compilationUnit.getClassNode(name)
+    }
+
 }

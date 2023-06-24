@@ -45,7 +45,6 @@ import grails.util.GrailsNameUtils
 import grails.validation.DeferredBindingActions
 import grails.validation.ValidationErrors
 
-import org.grails.core.artefact.AnnotationDomainClassArtefactHandler
 import org.grails.core.artefact.DomainClassArtefactHandler
 import org.grails.core.exceptions.GrailsConfigurationException
 import org.grails.databinding.IndexedPropertyReferenceDescriptor
@@ -242,7 +241,7 @@ class GrailsWebDataBinder extends SimpleDataBinder {
     }
 
     protected boolean isDomainClass(final Class<?> clazz) {
-        DomainClassArtefactHandler.isDomainClass(clazz) || AnnotationDomainClassArtefactHandler.isJPADomainClass(clazz)
+        DomainClassArtefactHandler.isDomainClass(clazz)
     }
 
     protected Object getIdentifierValueFrom(source) {

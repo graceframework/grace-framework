@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.compiler.injection;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import grails.compiler.ast.GrailsArtefactClassInjector;
  * &#064;Artefact("Controller") to make it into a controller no matter what the location.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @GroovyASTTransformation
@@ -81,21 +83,20 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         String artefactType = resolveArtefactType(sourceUnit, node, cNode);
         if (artefactType != null) {
             AbstractGrailsArtefactTransformer.addToTransformedClasses(cNode.getName());
+
+            addArtefactAnnotation(sourceUnit, node, cNode, artefactType);
         }
+
         performInjectionOnArtefactType(sourceUnit, cNode, artefactType);
 
         performTraitInjectionOnArtefactType(sourceUnit, cNode, artefactType);
-
-        postProcess(sourceUnit, node, cNode, artefactType);
 
         markApplied(cNode);
     }
 
     protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
             ClassNode cNode, String artefactType) {
-        if (this.compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
-        }
+        TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
     }
 
     protected boolean isApplied(ClassNode cNode) {
@@ -107,14 +108,14 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     }
 
     protected Class<?> getAstAppliedMarkerClass() {
-        return ArtefactTypeAstTransformation.class;
+        return getClass();
     }
 
-    protected void postProcess(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
-        if (!getAnnotationType().equals(annotationNode.getClassNode())) {
-            // add @Artefact annotation to resulting class so that "short cut" annotations like @TagLib
+    protected void addArtefactAnnotation(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
+        if (!MY_TYPE.equals(annotationNode.getClassNode()) && classNode.getAnnotations(MY_TYPE).isEmpty()) {
+            // add @Artefact annotation to resulting class so that "shortcut" annotations like @TagLib
             // also produce an @Artefact annotation in the resulting class file
-            AnnotationNode annotation = new AnnotationNode(getAnnotationType());
+            AnnotationNode annotation = new AnnotationNode(MY_TYPE);
             annotation.addMember("value", new ConstantExpression(artefactType));
             classNode.addAnnotation(annotation);
         }
@@ -160,8 +161,9 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         return MY_TYPE.getTypeClass();
     }
 
+    @Override
     public void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
-        List<ClassInjector> injectors = findInjectors(artefactType, GrailsAwareInjectionOperation.getClassInjectors());
+        List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
         for (ClassInjector injector : injectors) {
             if (injector instanceof CompilationUnitAware) {
                 ((CompilationUnitAware) injector).setCompilationUnit(this.compilationUnit);
@@ -170,18 +172,22 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         performInjection(sourceUnit, cNode, injectors);
     }
 
-    @Deprecated
-    public static void doPerformInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
-        List<ClassInjector> injectors = findInjectors(artefactType, GrailsAwareInjectionOperation.getClassInjectors());
+    public static void performInjectionOnNode(SourceUnit sourceUnit, ClassNode cNode, String artefactType, CompilationUnit compilationUnit) {
+        List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
+        for (ClassInjector injector : injectors) {
+            if (injector instanceof CompilationUnitAware) {
+                ((CompilationUnitAware) injector).setCompilationUnit(compilationUnit);
+            }
+        }
         performInjection(sourceUnit, cNode, injectors);
     }
 
     public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors) {
         try {
             for (ClassInjector injector : injectors) {
-                if (!GrailsASTUtils.isApplied(cNode, injector.getClass())) {
+                if (!GrailsASTUtils.isApplied(cNode, injector.getClass()) && injector.shouldInject(cNode)) {
+                    injector.performInjection(sourceUnit, cNode);
                     GrailsASTUtils.markApplied(cNode, injector.getClass());
-                    injector.performInjectionOnAnnotatedClass(sourceUnit, cNode);
                 }
             }
         }

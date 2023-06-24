@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.compiler.web.converters
+package grails.gsp.taglib.compiler
 
 import java.security.CodeSource
 
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.CompilationFailedException
@@ -26,59 +27,46 @@ import org.codehaus.groovy.control.Phases
 import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
-import grails.converters.XML
-import grails.persistence.Entity
+import grails.artefact.Artefact
+import grails.compiler.ast.ClassInjector
+import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
- * @author Graeme Rocher
  * @author Michael Yan
  * @since 2022.3.0
  */
-class ConvertersDomainTransformerSpec extends Specification {
+class TagLibArtefactTypeAstTransformationSpec extends Specification {
 
-    def "Test Domain class was injected asType"() {
+    def "Test TagLib class was applied by TagLibArtefactTypeAstTransformation"() {
         given:
-        def gcl = new TestGroovyClassLoader()
+        CompilerConfiguration configuration = new CompilerConfiguration()
+        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
 
-        def domainClass = gcl.parseClass('''
-@grails.artefact.Artefact("Domain")
-class Post {
-}
-''')
-
-        def classNode = gcl.getClassNode('Post')
-        def domainMethodNames = domainClass.getMethods()*.name
-
-        and:
-        List<String> injectedMethodNames = [
-                "asType"
-        ]
-
-        expect: 'injected methods as expect'
-        classNode.getField('instanceConvertersApi') != null
-        injectedMethodNames.each { methodName ->
-            assert methodName in domainMethodNames
-        }
-    }
-
-    void "Test domain type conversion methods added at compile time"() {
         when:
-        def xml = new ConvertMe(name: "Bob") as XML
+        def clazz = gcl.parseClass('''
+@grails.gsp.TagLib
+class FooTagLib {
+}
+''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/FooTagLib.groovy')
+
+        def classNode = gcl.getClassNode('FooTagLib')
 
         then:
-        xml instanceof XML
+        clazz.getAnnotationsByType(Artefact).size() == 1
+        classNode.getAnnotations(ClassHelper.make(Artefact))
+        classNode.getNodeMetaData('APPLIED_grails.gsp.taglib.compiler.TagLibArtefactTypeAstTransformation')
     }
 
 }
 
-@Entity
-class ConvertMe {
-    String name
-}
 
-
-class TestGroovyClassLoader extends GroovyClassLoader {
+class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
     CompilationUnit compilationUnit
+
+    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors = []) {
+        super(parent, configuration)
+        setClassInjectors(classInjectors)
+    }
 
     @Override
     protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
@@ -92,6 +80,7 @@ class TestGroovyClassLoader extends GroovyClassLoader {
             }
 
         }, Phases.CANONICALIZATION)
+
         this.compilationUnit = compilationUnit
     }
 

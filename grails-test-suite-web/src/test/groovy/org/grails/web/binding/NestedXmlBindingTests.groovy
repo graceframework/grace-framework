@@ -1,6 +1,5 @@
 package org.grails.web.binding
 
-import grails.artefact.Artefact
 import grails.persistence.Entity
 import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
@@ -134,7 +133,6 @@ class NestedXmlBindingTests extends Specification implements ControllerUnitTest<
     }
 }
 
-@Artefact("Controller")
 @Controller
 class NestedXmlController {
     def bind() {

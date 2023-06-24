@@ -24,8 +24,10 @@ import org.codehaus.groovy.control.SourceUnit
  * Helper super class to ease the creation of {@link AllArtefactClassInjector} implementations
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
+@Deprecated(forRemoval = true, since = "2023.0.0")
 @CompileStatic
 abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
 
@@ -51,10 +53,5 @@ abstract class GlobalClassInjectorAdapter implements GlobalClassInjector {
     }
 
     abstract void performInjectionInternal(SourceUnit source, ClassNode classNode)
-
-    @Override
-    boolean shouldInject(URL url) {
-        true
-    }
 
 }

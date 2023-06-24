@@ -18,7 +18,6 @@ package org.grails.compiler.injection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +42,6 @@ import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.ClassInjector;
 import grails.compiler.ast.GlobalClassInjector;
 
-import org.grails.io.support.FileSystemResource;
 import org.grails.io.support.PathMatchingResourcePatternResolver;
 import org.grails.io.support.Resource;
 
@@ -52,6 +50,7 @@ import org.grails.io.support.Resource;
  * ClassInjector instances to attempt AST injection.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.6
  */
 public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryClassNodeOperation {
@@ -82,6 +81,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         return classInjectors;
     }
 
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static ClassInjector[] getGlobalClassInjectors() {
         if (classInjectors == null) {
             initializeState();
@@ -185,24 +185,12 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     @Override
     public void call(SourceUnit source, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-
-        URL url = null;
-        String filename = source.getName();
-        Resource resource = new FileSystemResource(filename);
-        if (resource.exists()) {
-            try {
-                url = resource.getURL();
-            }
-            catch (IOException ignored) {
-            }
+        ClassInjector[] classInjectors = getLocalClassInjectors();
+        if (classInjectors == null || classInjectors.length == 0) {
+            classInjectors = getClassInjectors();
         }
-
-        ClassInjector[] classInjectors1 = getLocalClassInjectors();
-        if (classInjectors1 == null || classInjectors1.length == 0) {
-            classInjectors1 = getClassInjectors();
-        }
-        for (ClassInjector classInjector : classInjectors1) {
-            if (classInjector.shouldInject(url)) {
+        for (ClassInjector classInjector : classInjectors) {
+            if (classInjector.shouldInject(classNode)) {
                 classInjector.performInjection(source, context, classNode);
             }
         }

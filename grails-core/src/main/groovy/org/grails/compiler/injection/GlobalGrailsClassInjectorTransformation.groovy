@@ -32,7 +32,6 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import grails.artefact.Artefact
-import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
 
 import org.grails.core.io.support.GrailsFactoriesLoader
@@ -64,19 +63,11 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         }
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        Map<String, List<ClassInjector>> injectorsCache = new HashMap<String, List<ClassInjector>>().withDefault { String key ->
-            ArtefactTypeAstTransformation.findInjectors(key, classInjectors)
-        }
 
         File compilationTargetDirectory = resolveCompilationTargetDirectory(source)
 
-        Set<String> transformedClasses = []
-        List<ClassNode> classes = new ArrayList<>(ast.getClasses())
-        for (ClassNode classNode : classes) {
-            String classNodeName = classNode.name
-
+        List<ClassNode> classNodes = new ArrayList<>(ast.getClasses())
+        for (ClassNode classNode : classNodes) {
             if (updateGrailsFactoriesWithType(classNode, ARTEFACT_HANDLER_CLASS, compilationTargetDirectory)) {
                 continue
             }
@@ -97,28 +88,13 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
             for (ArtefactHandler handler in artefactHandlers) {
                 if (handler.isArtefact(classNode)) {
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
-                        transformedClasses.add classNodeName
                         AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Artefact))
                         annotationNode.addMember('value', new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
-                        List<ClassInjector> injectors = injectorsCache[handler.type]
-                        for (ClassInjector injector : injectors) {
-                            if (injector instanceof CompilationUnitAware) {
-                                ((CompilationUnitAware) injector).compilationUnit = compilationUnit
-                            }
-                        }
-                        ArtefactTypeAstTransformation.performInjection(source, classNode, injectors)
+                        ArtefactTypeAstTransformation.performInjectionOnNode(source, classNode, handler.type, compilationUnit)
                         TraitInjectionUtils.processTraitsForNode(source, classNode, handler.type, compilationUnit)
                     }
-                }
-            }
-
-            if (!transformedClasses.contains(classNodeName)) {
-                ClassInjector[] globalClassInjectors = GrailsAwareInjectionOperation.globalClassInjectors
-
-                for (ClassInjector injector in globalClassInjectors) {
-                    injector.performInjection(source, classNode)
                 }
             }
         }
