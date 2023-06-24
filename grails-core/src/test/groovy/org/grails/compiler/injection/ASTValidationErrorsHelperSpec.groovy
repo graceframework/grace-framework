@@ -20,12 +20,7 @@ class ASTValidationErrorsHelperSpec extends Specification {
         def transformer = new ClassInjector() {
             @Override
             void performInjection(SourceUnit source, ClassNode classNode) {
-                performInject(source, null, classNode)
-            }
-
-            @Override
-            void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                performInjection(source, null, classNode)
             }
 
             @Override
