@@ -29,8 +29,8 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.LogASTTransformation;
 
-import grails.compiler.ast.AllArtefactClassInjector;
 import grails.compiler.ast.AstTransformer;
+import grails.compiler.ast.ClassInjector;
 
 /**
  * Adds a log field to all artifacts.
@@ -40,22 +40,17 @@ import grails.compiler.ast.AstTransformer;
  * @since 2.0
  */
 @AstTransformer
-public class LoggingTransformer implements AllArtefactClassInjector {
+public class LoggingTransformer implements ClassInjector {
 
     private static final ClassNode SLF4J = ClassHelper.make(Slf4j.class);
 
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
+        performInjection(source, classNode);
     }
 
     @Override
     public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         if (classNode.getNodeMetaData(Slf4j.class) != null) {
             return;
         }
@@ -77,6 +72,11 @@ public class LoggingTransformer implements AllArtefactClassInjector {
         logASTTransformation.setCompilationUnit(new CompilationUnit(new GroovyClassLoader(getClass().getClassLoader())));
         logASTTransformation.visit(new ASTNode[] { annotationNode, classNode }, source);
         classNode.putNodeMetaData(Slf4j.class, annotationNode);
+    }
+
+    @Override
+    public boolean shouldInject(ClassNode classNode) {
+        return true;
     }
 
 }
