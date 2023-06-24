@@ -77,10 +77,8 @@ import org.codehaus.groovy.transform.trait.Traits;
 import org.springframework.validation.Errors;
 import org.springframework.validation.MapBindingResult;
 
-import grails.artefact.Artefact;
 import grails.artefact.controller.support.AllowedMethodsHelper;
 import grails.compiler.DelegatingMethod;
-import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 import grails.util.CollectionUtils;
@@ -106,7 +104,7 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
  * @since 1.4
  */
 @AstTransformer
-public class ControllerActionTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector, CompilationUnitAware {
+public class ControllerActionTransformer implements GrailsArtefactClassInjector, CompilationUnitAware {
 
     public static final AnnotationNode DELEGATING_METHOD_ANNOTATION = new AnnotationNode(ClassHelper.make(DelegatingMethod.class));
 
@@ -159,25 +157,14 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
         return new String[] { ControllerArtefactHandler.TYPE };
     }
 
-    public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        // don't inject if already an @Artefact annotation is applied
-        if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty() ||
-                !classNode.getAnnotations(new ClassNode(org.springframework.stereotype.Controller.class)).isEmpty()) {
-            return;
-        }
-
-        performInjectionOnAnnotatedClass(source, context, classNode);
+    @Override
+    public void performInjection(SourceUnit source, ClassNode classNode) {
+        performInjection(source, null, classNode);
     }
 
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+    public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         processMethods(classNode, source, context);
         processClosures(classNode, source, context);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, null, classNode);
     }
 
     private boolean isExceptionHandlingMethod(MethodNode methodNode) {
@@ -239,7 +226,7 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
                         new ClassNode(DefaultControllerExceptionHandlerMetaData.class), defaultControllerExceptionHandlerMetaDataCtorArgs));
             }
             classNode.addField(EXCEPTION_HANDLER_META_DATA_FIELD_NAME,
-                    Modifier.STATIC | Modifier.PRIVATE | Modifier.FINAL, new ClassNode(List.class),
+                    Modifier.STATIC | Modifier.PUBLIC | Modifier.FINAL, new ClassNode(List.class),
                     listOfExceptionHandlerMetaData);
         }
 
@@ -740,7 +727,6 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
         }
         else {
             initializeCommandObjectParameter(wrapper, commandObjectNode, paramName, source);
-            boolean isJpaEntity = GrailsASTUtils.isJpaEntityClass(commandObjectNode);
             boolean argumentIsValidateable = GrailsASTUtils.hasAnyAnnotations(
                     commandObjectNode, grails.persistence.Entity.class) ||
                     commandObjectNode.implementsInterface(ClassHelper.make(Validateable.class));
@@ -940,10 +926,6 @@ public class ControllerActionTransformer implements GrailsArtefactClassInjector,
         Expression rejectValueMethodCallExpression = GrailsASTUtils.applyDefaultMethodTarget(new MethodCallExpression(
                 getErrorsExpression, "rejectValue", rejectValueArgs), Errors.class);
         return rejectValueMethodCallExpression;
-    }
-
-    public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
     }
 
     @Override
