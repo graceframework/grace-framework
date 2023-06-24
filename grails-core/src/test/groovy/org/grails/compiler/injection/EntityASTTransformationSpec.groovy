@@ -27,7 +27,6 @@ class Message {
         classNode.getAnnotations(ClassHelper.make(Artefact))
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.EntityASTTransformation')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.injection.DefaultGrailsDomainClassInjector')
-        classNode.getNodeMetaData('APPLIED_org.grails.compiler.boot.BootInitializerClassInjector')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.converters.ConvertersDomainTransformer')
         classNode.getNodeMetaData('APPLIED_org.grails.compiler.web.ControllerDomainTransformer')
     }
