@@ -32,7 +32,6 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import grails.artefact.Artefact
-import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
 
 import org.grails.core.io.support.GrailsFactoriesLoader
@@ -64,12 +63,6 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
         }
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
-        List<ClassInjector> classInjectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors())
-        for (ClassInjector injector : classInjectors) {
-            if (injector instanceof CompilationUnitAware) {
-                ((CompilationUnitAware) injector).compilationUnit = compilationUnit
-            }
-        }
 
         File compilationTargetDirectory = resolveCompilationTargetDirectory(source)
 
@@ -99,12 +92,11 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                         annotationNode.addMember('value', new ConstantExpression(handler.type))
                         classNode.addAnnotation(annotationNode)
 
+                        ArtefactTypeAstTransformation.performInjectionOnNode(source, classNode, handler.type, compilationUnit)
                         TraitInjectionUtils.processTraitsForNode(source, classNode, handler.type, compilationUnit)
                     }
                 }
             }
-
-            ArtefactTypeAstTransformation.performInjection(source, classNode, classInjectors)
         }
     }
 

@@ -29,11 +29,7 @@ import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.compiler.ast.SupportsClassNode
 import grails.compiler.traits.TraitInjector
-import org.grails.core.artefact.ApplicationArtefactHandler
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.core.artefact.DomainClassArtefactHandler
-import org.grails.core.artefact.gsp.TagLibArtefactHandler
-import org.grails.web.servlet.boostrap.BootstrapArtefactHandler
 
 /**
  * @author James Kleeh
@@ -156,98 +152,19 @@ class ArtefactTypeAstTransformationSpec extends Specification {
 
     }
 
-    void "ArtefactTypeAstTransformation found 2 class injectors for Application artefact"() {
-        given:
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        and:
-        ClassInjector[] applicationClassInjectors = ArtefactTypeAstTransformation.findInjectors(ApplicationArtefactHandler.TYPE, classInjectors)
-        def expectInjectors = [
-                'org.grails.compiler.injection.ApplicationClassInjector',
-                'org.grails.compiler.boot.BootInitializerClassInjector'
-        ]
-
-        expect:
-        applicationClassInjectors.length == 2
-        applicationClassInjectors*.class.name.containsAll(expectInjectors)
-    }
-
-    void "ArtefactTypeAstTransformation found 1 class injectors for Bootstrap artefact"() {
-        given:
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        and:
-        ClassInjector[] bootstrapClassInjectors = ArtefactTypeAstTransformation.findInjectors(BootstrapArtefactHandler.TYPE, classInjectors)
-        def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector'
-        ]
-
-        expect:
-        bootstrapClassInjectors.length == 1
-        bootstrapClassInjectors*.class.name.containsAll(expectInjectors)
-    }
-
-    void "ArtefactTypeAstTransformation found 2 class injectors for Controller artefact"() {
-        given:
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        and:
-        ClassInjector[] controllerClassInjectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE, classInjectors)
-        def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
-                'org.grails.compiler.web.ControllerActionTransformer'
-        ]
-
-        expect:
-        controllerClassInjectors.length == 2
-        controllerClassInjectors*.class.name.containsAll(expectInjectors)
-    }
-
-    void "ArtefactTypeAstTransformation found 4 class injectors for Domain artefact"() {
-        given:
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        and:
-        ClassInjector[] domainClassInjectors = ArtefactTypeAstTransformation.findInjectors(DomainClassArtefactHandler.TYPE, classInjectors)
-        def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
-                'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
-                'org.grails.compiler.web.converters.ConvertersDomainTransformer',
-                'org.grails.compiler.web.ControllerDomainTransformer'
-        ]
-
-        expect:
-        domainClassInjectors.length == 4
-        domainClassInjectors*.class.name.containsAll(expectInjectors)
-    }
-
-    void "ArtefactTypeAstTransformation found 2 class injectors for TagLib artefact"() {
-        given:
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
-
-        and:
-        ClassInjector[] taglibClassInjectors = ArtefactTypeAstTransformation.findInjectors(TagLibArtefactHandler.TYPE, classInjectors)
-        def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
-                'org.grails.compiler.web.taglib.TagLibraryTransformer'
-        ]
-
-        expect:
-        taglibClassInjectors.length == 2
-        taglibClassInjectors*.class.name.containsAll(expectInjectors)
-    }
-
     void "Application artefact should be injected by 2 class injectors"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
         def clazz = gcl.parseClass('''
+@grails.artefact.Artefact("Application")
 class Application {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''')
 
         def classNode = gcl.getClassNode('Application')
 
@@ -263,108 +180,109 @@ class Application {
         applicationClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
-    void "Bootstrap artefact should be injected by 1 class injectors"() {
+    void "Bootstrap artefact should be injected by 0 class injectors"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
         def clazz = gcl.parseClass('''
+@grails.artefact.Artefact("Bootstrap")
 class BootStrap {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/BootStrap.groovy')
+''')
 
         def classNode = gcl.getClassNode('BootStrap')
 
         then:
         ClassInjector[] bootstrapClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
-        def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector'
-        ]
 
         expect:
-        bootstrapClassInjectors.length == 1
-        bootstrapClassInjectors*.class.name.containsAll(expectInjectors)
+        !bootstrapClassInjectors
     }
 
-    void "Controller artefact should be injected by 2 class injectors"() {
+    void "Controller artefact should be injected by 1 class injectors"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
         def clazz = gcl.parseClass('''
+@grails.artefact.Artefact("Controller")
 class PostController {
 }
-''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/PostController.groovy')
+''')
 
         def classNode = gcl.getClassNode('PostController')
 
         then:
         ClassInjector[] controllerClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
         def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
                 'org.grails.compiler.web.ControllerActionTransformer'
         ]
 
         expect:
-        controllerClassInjectors.length == 2
+        controllerClassInjectors.length == 1
         controllerClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
-    void "Domain artefact should be injected by 4 class injectors"() {
+    void "Domain artefact should be injected by 3 class injectors"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
         def clazz = gcl.parseClass('''
+@grails.artefact.Artefact("Domain")
 class Post {
 }
-''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
+''')
 
         def classNode = gcl.getClassNode('Post')
 
         then:
         ClassInjector[] domainClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
         def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
                 'org.grails.compiler.injection.DefaultGrailsDomainClassInjector',
                 'org.grails.compiler.web.converters.ConvertersDomainTransformer',
                 'org.grails.compiler.web.ControllerDomainTransformer'
         ]
 
         expect:
-        domainClassInjectors.length == 4
+        domainClassInjectors.length == 3
         domainClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
-    void "TagLib artefact should be injected by 2 class injectors"() {
+    void "TagLib artefact should be injected by 1 class injectors"() {
         given:
         CompilerConfiguration configuration = new CompilerConfiguration()
+        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
         def clazz = gcl.parseClass('''
+@grails.artefact.Artefact("TagLib")
 class PostTagLib {
 }
-''', '/Users/grails/grails-demo-project/grails-app/taglib/org/demo/PostTagLib.groovy')
+''')
 
         def classNode = gcl.getClassNode('PostTagLib')
 
         then:
-        ClassInjector[] taglibClassInjectors = ArtefactTypeAstTransformation.findInjectors(TagLibArtefactHandler.TYPE, classInjectors)
+        ClassInjector[] taglibClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }
         def expectInjectors = [
-                'org.grails.compiler.boot.BootInitializerClassInjector',
                 'org.grails.compiler.web.taglib.TagLibraryTransformer'
         ]
 
         expect:
-        taglibClassInjectors.length == 2
+        taglibClassInjectors.length == 1
         taglibClassInjectors*.class.name.containsAll(expectInjectors)
     }
 
