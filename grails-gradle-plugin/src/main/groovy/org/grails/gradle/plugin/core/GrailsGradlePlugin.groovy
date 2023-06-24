@@ -734,11 +734,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def configFile = project.file("$project.buildDir/config.groovy")
         configScriptTask.outputs.file(configFile)
 
-        def projectName = project.name
+        def projectName = getGrailsProjectName(project)
         def projectVersion = project.version
         def projectDir = project.projectDir.absolutePath
         def projectType = getGrailsProjectType()
-        def isPlugin = projectType == GrailsProjectType.PLUGIN
         def grailsAppDir = new File(project.projectDir, grailsAppDir).absolutePath
         configScriptTask.inputs.property('name', projectName)
         configScriptTask.inputs.property('version', projectVersion)
@@ -752,9 +751,6 @@ withConfig(configuration) {
         source.ast.putNodeMetaData('PROJECT_NAME', '$projectName')
         source.ast.putNodeMetaData('PROJECT_TYPE', '$projectType')
         source.ast.putNodeMetaData('PROJECT_VERSION', '$projectVersion')
-        classNode.putNodeMetaData('projectVersion', '$projectVersion')
-        classNode.putNodeMetaData('projectName', '$projectName')
-        classNode.putNodeMetaData('isPlugin', '$isPlugin')
     }
 }
 """
@@ -767,6 +763,10 @@ withConfig(configuration) {
 
     protected GrailsProjectType getGrailsProjectType() {
         GrailsProjectType.NONE
+    }
+
+    protected String getGrailsProjectName(Project project) {
+        return project.name
     }
 
     protected FileCollection buildClasspath(Project project, Configuration... configurations) {
