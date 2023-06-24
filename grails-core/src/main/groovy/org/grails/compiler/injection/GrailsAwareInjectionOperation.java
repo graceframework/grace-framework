@@ -81,6 +81,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         return classInjectors;
     }
 
+    @Deprecated(forRemoval = true, since = "2023.0.0")
     public static ClassInjector[] getGlobalClassInjectors() {
         if (classInjectors == null) {
             initializeState();
@@ -184,11 +185,11 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     @Override
     public void call(SourceUnit source, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-        ClassInjector[] classInjectors1 = getLocalClassInjectors();
-        if (classInjectors1 == null || classInjectors1.length == 0) {
-            classInjectors1 = getClassInjectors();
+        ClassInjector[] classInjectors = getLocalClassInjectors();
+        if (classInjectors == null || classInjectors.length == 0) {
+            classInjectors = getClassInjectors();
         }
-        for (ClassInjector classInjector : classInjectors1) {
+        for (ClassInjector classInjector : classInjectors) {
             if (classInjector.shouldInject(classNode)) {
                 classInjector.performInjection(source, context, classNode);
             }

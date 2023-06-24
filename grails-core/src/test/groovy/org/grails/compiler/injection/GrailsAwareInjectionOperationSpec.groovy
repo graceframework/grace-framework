@@ -25,12 +25,6 @@ import grails.compiler.ast.ClassInjector
  */
 class GrailsAwareInjectionOperationSpec extends Specification {
 
-    def "Test only one global class injector BootInitializerClassInjector"() {
-        expect:
-        GrailsAwareInjectionOperation.globalClassInjectors.length == 1
-        GrailsAwareInjectionOperation.globalClassInjectors[0].class.name == 'org.grails.compiler.boot.BootInitializerClassInjector'
-    }
-
     def "Test Grails have 8 class injectors"() {
         given:
         def classInjectors = [
