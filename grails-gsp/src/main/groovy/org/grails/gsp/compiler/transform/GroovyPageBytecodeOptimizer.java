@@ -30,9 +30,9 @@ public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
 
     private static final String RUN_METHOD = "run";
 
+    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-
-        // search run method in GSP script and get codeblock
+        // search run method in GSP script and get code block
         MethodNode runMethod = classNode.getMethod(RUN_METHOD, new Parameter[0]);
         if (runMethod != null && runMethod.getCode() instanceof BlockStatement) {
             BlockStatement block = (BlockStatement) runMethod.getCode();
@@ -43,12 +43,8 @@ public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
         }
     }
 
-    public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
-    }
-
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
+    public void performInjection(SourceUnit source, ClassNode classNode) {
         performInjection(source, null, classNode);
     }
 
