@@ -22,15 +22,16 @@ import grails.web.databinding.WebDataBinding
 import org.grails.core.artefact.DomainClassArtefactHandler
 
 /**
+ * A {@link TraitInjector} that injects controllers with the {@link grails.web.databinding.WebDataBinding} trait
  *
  * @author Jeff Brown
  * @since 3.0
- *
  */
 @CompileStatic
-class WebDataBindingTraitInjector implements TraitInjector {
+class WebDataBindingTraitInjector extends TraitInjectorAdapter {
 
-    Class getTrait() {
+    @Override
+    Class<?> getTrait() {
         WebDataBinding
     }
 
