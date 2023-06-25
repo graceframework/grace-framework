@@ -15,8 +15,6 @@
  */
 package org.grails.compiler.injection;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -26,10 +24,7 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.expr.ClassExpression;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
-import org.codehaus.groovy.ast.expr.Expression;
-import org.codehaus.groovy.ast.expr.PropertyExpression;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
@@ -37,10 +32,7 @@ import org.springframework.util.ClassUtils;
 
 import grails.artefact.Artefact;
 import grails.build.logging.GrailsConsole;
-import grails.compiler.ast.AllArtefactClassInjector;
 import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GlobalClassInjector;
-import grails.compiler.ast.GrailsArtefactClassInjector;
 
 /**
  * A transformation used to apply transformers to classes not located in Grails
@@ -94,75 +86,7 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         markApplied(cNode);
     }
 
-    protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
-            ClassNode cNode, String artefactType) {
-        TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
-    }
-
-    protected boolean isApplied(ClassNode cNode) {
-        return GrailsASTUtils.isApplied(cNode, getAstAppliedMarkerClass());
-    }
-
-    protected void markApplied(ClassNode classNode) {
-        GrailsASTUtils.markApplied(classNode, getAstAppliedMarkerClass());
-    }
-
-    protected Class<?> getAstAppliedMarkerClass() {
-        return getClass();
-    }
-
-    protected void addArtefactAnnotation(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
-        if (!MY_TYPE.equals(annotationNode.getClassNode()) && classNode.getAnnotations(MY_TYPE).isEmpty()) {
-            // add @Artefact annotation to resulting class so that "shortcut" annotations like @TagLib
-            // also produce an @Artefact annotation in the resulting class file
-            AnnotationNode annotation = new AnnotationNode(MY_TYPE);
-            annotation.addMember("value", new ConstantExpression(artefactType));
-            classNode.addAnnotation(annotation);
-        }
-    }
-
-    protected String resolveArtefactType(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode) {
-        Expression value = annotationNode.getMember("value");
-
-        if (value != null) {
-            if (value instanceof ConstantExpression) {
-                ConstantExpression ce = (ConstantExpression) value;
-                return ce.getText();
-            }
-            if (value instanceof PropertyExpression) {
-                PropertyExpression pe = (PropertyExpression) value;
-
-                Expression objectExpression = pe.getObjectExpression();
-                if (objectExpression instanceof ClassExpression) {
-                    ClassExpression ce = (ClassExpression) objectExpression;
-                    try {
-                        Field field = ce.getType().getTypeClass().getDeclaredField(pe.getPropertyAsString());
-                        return (String) field.get(null);
-                    }
-                    catch (Exception ignored) {
-                    }
-                }
-            }
-        }
-
-        throw new RuntimeException("Class [" + classNode.getName() +
-                "] contains an invalid @Artefact annotation. No artefact found for value specified.");
-    }
-
-    protected boolean isArtefactAnnotationNode(AnnotationNode annotationNode) {
-        return getAnnotationType().equals(annotationNode.getClassNode());
-    }
-
-    protected ClassNode getAnnotationType() {
-        return new ClassNode(getAnnotationTypeClass());
-    }
-
-    protected Class<?> getAnnotationTypeClass() {
-        return MY_TYPE.getTypeClass();
-    }
-
-    @Override
-    public void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
+    protected void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
         List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
         for (ClassInjector injector : injectors) {
             if (injector instanceof CompilationUnitAware) {
@@ -202,36 +126,31 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         }
     }
 
-    public static List<ClassInjector> findInjectors(String artefactType, ClassInjector[] classInjectors) {
-        List<ClassInjector> injectors = new ArrayList<>();
-        for (ClassInjector classInjector : classInjectors) {
-            if (classInjector instanceof AllArtefactClassInjector) {
-                injectors.add(classInjector);
-            }
-            else if (classInjector instanceof GlobalClassInjector) {
-                injectors.add(classInjector);
-            }
-            else if (classInjector instanceof GrailsArtefactClassInjector) {
-                GrailsArtefactClassInjector gace = (GrailsArtefactClassInjector) classInjector;
-
-                if (hasArtefactType(artefactType, gace)) {
-                    injectors.add(gace);
-                }
-            }
-        }
-        return injectors;
+    protected void performTraitInjectionOnArtefactType(SourceUnit sourceUnit,
+            ClassNode cNode, String artefactType) {
+        TraitInjectionUtils.processTraitsForNode(sourceUnit, cNode, artefactType, this.compilationUnit);
     }
 
-    public static boolean hasArtefactType(String artefactType, GrailsArtefactClassInjector gace) {
-        for (String _artefactType : gace.getArtefactTypes()) {
-            if (_artefactType.equals("*")) {
-                return true;
-            }
-            if (_artefactType.equals(artefactType)) {
-                return true;
-            }
+    protected void addArtefactAnnotation(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode, String artefactType) {
+        if (!MY_TYPE.equals(annotationNode.getClassNode()) && classNode.getAnnotations(MY_TYPE).isEmpty()) {
+            // add @Artefact annotation to resulting class so that "shortcut" annotations like @TagLib
+            // also produce an @Artefact annotation in the resulting class file
+            AnnotationNode annotation = new AnnotationNode(MY_TYPE);
+            annotation.addMember("value", new ConstantExpression(artefactType));
+            classNode.addAnnotation(annotation);
         }
-        return false;
+    }
+
+    protected boolean isArtefactAnnotationNode(AnnotationNode annotationNode) {
+        return getAnnotationType().equals(annotationNode.getClassNode());
+    }
+
+    protected ClassNode getAnnotationType() {
+        return new ClassNode(getAnnotationTypeClass());
+    }
+
+    protected Class<?> getAnnotationTypeClass() {
+        return MY_TYPE.getTypeClass();
     }
 
     @Override
