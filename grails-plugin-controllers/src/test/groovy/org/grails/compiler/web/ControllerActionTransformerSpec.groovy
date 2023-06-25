@@ -20,7 +20,10 @@ import java.lang.reflect.Modifier
 import java.security.CodeSource
 
 import groovy.transform.Generated
+import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.CompilationUnit
@@ -31,12 +34,14 @@ import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
 import spock.lang.Specification
 
+import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import grails.core.ArtefactHandler
 import grails.util.BuildSettings
 import grails.util.GrailsWebMockUtil
 import grails.web.Action
 import grails.web.servlet.context.GrailsWebApplicationContext
+import org.grails.compiler.injection.ArtefactTypeAstTransformation
 import org.grails.compiler.injection.TraitInjectionUtils
 import org.grails.core.io.support.GrailsFactoriesLoader
 
@@ -336,7 +341,7 @@ class TestGroovyClassLoader extends GroovyClassLoader {
     }
 
     ClassInjector[] getClassInjectors() {
-        return classInjectors
+        return classInjectors ?: new ClassInjector[0]
     }
 
     void setClassInjectors(ClassInjector[] classInjectors) {
@@ -369,14 +374,19 @@ class TestGroovyClassLoader extends GroovyClassLoader {
                 sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
                 sourceUnit.getAST().putNodeMetaData('PROJECT_TYPE', 'WEB_APP')
 
-                for (ClassInjector classInjector : getClassInjectors()) {
-                    if (classInjector.shouldInject(classNode)) {
-                        classInjector.performInjection(sourceUnit, context, classNode)
+                String artefactType = getArtefactType(classNode)
+                if (artefactType) {
+                    if (!classNode.getAnnotations(ClassHelper.make(Artefact))) {
+                        AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Artefact))
+                        annotationNode.addMember('value', new ConstantExpression(artefactType))
+                        classNode.addAnnotation(annotationNode)
                     }
-                }
 
-                if (enableInjectTraits && getArtefactType(classNode)) {
-                    TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, getArtefactType(classNode), compilationUnit)
+                    ArtefactTypeAstTransformation.performInjection(sourceUnit, classNode, Arrays.asList(getClassInjectors()))
+
+                    if (enableInjectTraits) {
+                        TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, getArtefactType(classNode), compilationUnit)
+                    }
                 }
             }
 
