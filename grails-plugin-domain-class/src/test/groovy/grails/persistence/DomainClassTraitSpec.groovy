@@ -1,6 +1,5 @@
 package grails.persistence
 
-import grails.artefact.DomainClass
 import grails.core.DefaultGrailsApplication
 import grails.util.Holders
 import groovy.transform.Generated
@@ -11,8 +10,6 @@ import org.grails.datastore.mapping.model.MappingContext
 import org.springframework.context.ApplicationContext
 import spock.lang.Issue
 import spock.lang.Specification
-
-import java.lang.reflect.Method
 
 /**
  * @author James Kleeh
@@ -44,13 +41,13 @@ class DomainClassTraitSpec extends Specification {
         Person.class.getMethod('getConstrainedProperties').isAnnotationPresent(Generated)
     }
 
-    @Entity
-    class Person {
-        String name
-        
-        static constraints = {
-            name blank: false, inList: ['Joe']
-        }
-    }
+}
 
+@Entity
+class Person {
+    String name
+
+    static constraints = {
+        name blank: false, inList: ['Joe']
+    }
 }
