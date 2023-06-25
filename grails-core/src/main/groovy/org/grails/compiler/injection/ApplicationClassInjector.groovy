@@ -49,10 +49,8 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.stmt
 @AstTransformer
 class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
-    public static final String EXCLUDE_MEMBER = 'exclude'
-    public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = new ArrayList<>()
-
-    private static final List<Integer> TRANSFORMED_INSTANCES = []
+    private static final String EXCLUDE_MEMBER = 'exclude'
+    private static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = new ArrayList<>()
 
     static {
         ClassLoader classLoader = GrailsASTUtils.getClassLoader()
