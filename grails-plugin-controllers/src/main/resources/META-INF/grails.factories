@@ -1,1 +1,6 @@
-grails.compiler.traits.TraitInjector=grails.compiler.traits.ControllerTraitInjector
+grails.compiler.traits.TraitInjector=\
+grails.compiler.traits.ControllerTraitInjector
+
+grails.compiler.ast.ClassInjector=\
+org.grails.compiler.web.ControllerActionTransformer,\
+org.grails.compiler.web.ControllerDomainTransformer

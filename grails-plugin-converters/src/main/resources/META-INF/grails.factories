@@ -1,0 +1,2 @@
+grails.compiler.ast.ClassInjector=\
+org.grails.compiler.web.converters.ConvertersDomainTransformer
