@@ -27,7 +27,6 @@ import spock.lang.Specification
 
 import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
-import grails.compiler.ast.SupportsClassNode
 import grails.compiler.traits.TraitInjector
 import org.grails.core.artefact.ControllerArtefactHandler
 
@@ -309,7 +308,7 @@ class PostTagLib {
         }
     }
 
-    class TestTraitInjectorForSupportsClassNode implements TraitInjector, SupportsClassNode {
+    class TestTraitInjectorForSupportsClassNode implements TraitInjector {
         boolean shouldSupport
 
         TestTraitInjectorForSupportsClassNode(boolean support) {
@@ -317,13 +316,13 @@ class PostTagLib {
         }
 
         @Override
-        Class getTrait() {
-            return Test10531Trait
+        Class<?> getTrait() {
+            Test10531Trait
         }
 
         @Override
         String[] getArtefactTypes() {
-            return ["Controller"]
+            ["Controller"]
         }
 
         @Override
