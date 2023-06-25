@@ -76,27 +76,22 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
-        if (!TRANSFORMED_INSTANCES.contains(objectId)) {
-            TRANSFORMED_INSTANCES << objectId
+        List<Statement> statements = [
+                stmt(callX(classX(System), 'setProperty', args(propX(classX(BuildSettings), 'MAIN_CLASS_NAME'),
+                        constX(classNode.name))))
+        ]
+        classNode.addStaticInitializerStatements(statements, true)
 
-            List<Statement> statements = [
-                    stmt(callX(classX(System), 'setProperty', args(propX(classX(BuildSettings), 'MAIN_CLASS_NAME'),
-                            constX(classNode.name))))
-            ]
-            classNode.addStaticInitializerStatements(statements, true)
+        ClassLoader classLoader = getClass().classLoader
+        if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
+            AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
+                    ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
 
-            ClassLoader classLoader = getClass().classLoader
-            if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
-                AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
-                        ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
-
-                for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
-                    if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
-                        ClassExpression autoConfigClassExpression =
-                                new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
-                        GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
-                    }
+            for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
+                if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
+                    ClassExpression autoConfigClassExpression =
+                            new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
+                    GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
                 }
             }
         }
