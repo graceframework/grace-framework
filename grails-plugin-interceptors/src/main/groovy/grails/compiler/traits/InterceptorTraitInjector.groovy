@@ -26,7 +26,7 @@ import grails.artefact.Interceptor
  * @since 3.0
  */
 @CompileStatic
-class InterceptorTraitInjector implements TraitInjector {
+class InterceptorTraitInjector extends TraitInjectorAdapter {
 
     @Override
     Class<?> getTrait() {

@@ -28,7 +28,7 @@ import grails.artefact.Controller
  * @since 3.0
  */
 @CompileStatic
-class ControllerTraitInjector implements TraitInjector {
+class ControllerTraitInjector extends TraitInjectorAdapter {
 
     @Override
     Class<?> getTrait() {

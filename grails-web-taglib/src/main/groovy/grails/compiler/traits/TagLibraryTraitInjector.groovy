@@ -26,7 +26,7 @@ import grails.artefact.TagLibrary
  * @author Jeff Brown
  */
 @CompileStatic
-class TagLibraryTraitInjector implements TraitInjector {
+class TagLibraryTraitInjector extends TraitInjectorAdapter {
 
     @Override
     Class<?> getTrait() {

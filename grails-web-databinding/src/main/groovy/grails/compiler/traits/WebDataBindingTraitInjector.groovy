@@ -28,7 +28,7 @@ import org.grails.core.artefact.DomainClassArtefactHandler
  * @since 3.0
  */
 @CompileStatic
-class WebDataBindingTraitInjector implements TraitInjector {
+class WebDataBindingTraitInjector extends TraitInjectorAdapter {
 
     @Override
     Class<?> getTrait() {
