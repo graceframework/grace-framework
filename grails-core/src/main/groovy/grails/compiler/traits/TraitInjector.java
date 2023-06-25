@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,15 @@
  */
 package grails.compiler.traits;
 
+import org.codehaus.groovy.ast.ClassNode;
+
 /**
+ * Functional interface to support injecting {@link grails.artefact.Artefact}
+ * with {@link groovy.transform.Trait}
  *
  * @author Jeff Brown
+ * @author Michael Yan
  * @since 3.0
- *
  */
 public interface TraitInjector {
 
@@ -27,5 +31,15 @@ public interface TraitInjector {
 
     String[] getArtefactTypes();
 
-}
+    /**
+     * Check TraitInjector supports classNode to inject
+     *
+     * @param classNode The classNode to check
+     * @return True if classNode supports
+     * @since 2022.3.0
+     */
+    default boolean supports(ClassNode classNode) {
+        return true;
+    }
 
+}
