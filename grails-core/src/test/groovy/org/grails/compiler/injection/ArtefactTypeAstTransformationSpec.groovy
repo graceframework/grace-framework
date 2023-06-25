@@ -299,13 +299,13 @@ class PostTagLib {
     class TestTraitInjector implements TraitInjector {
 
         @Override
-        Class getTrait() {
-            return Test10531Trait
+        Class<?> getTrait() {
+            Test10531Trait
         }
 
         @Override
         String[] getArtefactTypes() {
-            return ["Controller"]
+            ["Controller"]
         }
     }
 

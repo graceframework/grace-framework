@@ -27,7 +27,7 @@ import org.codehaus.groovy.ast.ClassNode;
  */
 public interface TraitInjector {
 
-    Class getTrait();
+    Class<?> getTrait();
 
     String[] getArtefactTypes();
 

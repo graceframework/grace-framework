@@ -15,18 +15,21 @@
  */
 package grails.compiler.traits
 
+import groovy.transform.CompileStatic
+
 import grails.artefact.TagLibrary
 
 /**
+ * A {@link TraitInjector} that injects controllers with the {@link grails.artefact.TagLibrary} trait
  *
  * @since 3.0
  * @author Jeff Brown
- *
  */
+@CompileStatic
 class TagLibraryTraitInjector implements TraitInjector {
 
     @Override
-    Class getTrait() {
+    Class<?> getTrait() {
         TagLibrary
     }
 
