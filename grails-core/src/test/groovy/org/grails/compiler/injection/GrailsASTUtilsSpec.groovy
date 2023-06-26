@@ -246,9 +246,9 @@ class GrailsASTUtilsSpec extends Specification {
 
     void 'Test Domain class artefact type'() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         def clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Domain")
 class Post {
@@ -263,9 +263,9 @@ class Post {
 
     void 'Test Controller class and UrlMappings artefact type'() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         def clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Controller")
 class PostController {
@@ -286,9 +286,9 @@ class UrlMappings {
 
     void 'Test TagLib class artefact type'() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         def clazz = gcl.parseClass('''
 @grails.artefact.Artefact("TagLib")
 class PostTagLib {
@@ -303,9 +303,9 @@ class PostTagLib {
 
     void 'Test not annotated class with NULL artefact type'() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         def clazz = gcl.parseClass('''
 class Post {
 }
@@ -348,37 +348,4 @@ class SomeJpaEntity {
 
 @grails.gorm.annotation.Entity
 class SomeGormEntity {
-}
-
-
-class TestGroovyClassLoader extends GroovyClassLoader {
-    CompilationUnit compilationUnit
-
-    TestGroovyClassLoader() {
-    }
-
-    TestGroovyClassLoader(ClassLoader loader, CompilerConfiguration config) {
-        super(loader, config)
-    }
-
-    @Override
-    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
-        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
-
-            @Override
-            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-            }
-
-        }, Phases.CANONICALIZATION)
-
-        this.compilationUnit = compilationUnit
-    }
-
-    ClassNode getClassNode(String name) {
-        this.compilationUnit.getClassNode(name)
-    }
-
 }

@@ -34,15 +34,17 @@ class GrailsArtefactTransformerSpec extends Specification {
     static gcl
 
     void setupSpec() {
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
         def transformer = new TestTransformer()
-        gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration, [transformer] as ClassInjector[])
+        gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        GrailsAwareInjectionOperation.@classInjectors = [transformer] as ClassInjector[]
         System.setProperty("grails.version", "3.0.0")
     }
 
     void cleanupSpec() {
         System.setProperty("grails.version", "")
+        GrailsAwareInjectionOperation.@classInjectors = [] as ClassInjector[]
     }
 
     void "Test that a marker annotation can be added to weaved methods"() {

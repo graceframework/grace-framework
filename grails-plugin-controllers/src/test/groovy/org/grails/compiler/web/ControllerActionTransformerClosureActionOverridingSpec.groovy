@@ -12,8 +12,9 @@ class ControllerActionTransformerClosureActionOverridingSpec extends Specificati
     static subclassControllerClass
 
     void setupSpec() {
-        def gcl = new GrailsAwareClassLoader()
         def transformer = new ControllerActionTransformer()
+        def gcl = new GrailsAwareClassLoader()
+        gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
 
         // Make sure this parent controller is compiled before the subclass.  This is relevant to GRAILS-8268

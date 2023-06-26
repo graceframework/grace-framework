@@ -17,13 +17,19 @@ package org.grails.compiler.injection;
 
 import java.util.List;
 
+import groovy.transform.CompilationUnitAware;
+import org.codehaus.groovy.ast.AnnotationNode;
+import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 
+import grails.artefact.Artefact;
 import grails.compiler.ast.ClassInjector;
+import grails.core.ArtefactHandler;
 
 import org.grails.core.io.support.GrailsFactoriesLoader;
 
@@ -37,6 +43,12 @@ import org.grails.core.io.support.GrailsFactoriesLoader;
  */
 public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryClassNodeOperation {
 
+    static final ClassNode ARTEFACT_CLASS_NODE = ClassHelper.make(Artefact.class);
+
+    private CompilationUnit compilationUnit;
+
+    private static List<ArtefactHandler> artefactHandlers;
+
     private static ClassInjector[] classInjectors;
 
     private static ClassInjector[] globalClassInjectors;
@@ -47,9 +59,18 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         initializeState();
     }
 
+    public GrailsAwareInjectionOperation(CompilationUnit compilationUnit) {
+        this(compilationUnit, null);
+    }
+
     public GrailsAwareInjectionOperation(ClassInjector[] classInjectors) {
-        this();
+        this(null, classInjectors);
+    }
+
+    public GrailsAwareInjectionOperation(CompilationUnit compilationUnit, ClassInjector[] classInjectors) {
+        this.compilationUnit = compilationUnit;
         this.localClassInjectors = classInjectors;
+        initializeState();
     }
 
     public static ClassInjector[] getClassInjectors() {
@@ -59,7 +80,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         return classInjectors;
     }
 
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(forRemoval = true, since = "2022.3.0")
     public static ClassInjector[] getGlobalClassInjectors() {
         if (classInjectors == null) {
             initializeState();
@@ -76,19 +97,21 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     @SuppressWarnings("unchecked")
     private static void initializeState() {
-        if (classInjectors != null) {
-            return;
+        if (artefactHandlers == null) {
+            artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler.class);
         }
 
-        List<ClassInjector> loadedInjectors = GrailsFactoriesLoader.loadFactories(ClassInjector.class);
-        loadedInjectors.sort((classInjectorA, classInjectorB) -> {
-            if (classInjectorA instanceof Comparable) {
-                return ((Comparable<ClassInjector>) classInjectorA).compareTo(classInjectorB);
-            }
-            return 0;
-        });
-        classInjectors = loadedInjectors.toArray(new ClassInjector[0]);
-        globalClassInjectors = new ClassInjector[0];
+        if (classInjectors == null) {
+            List<ClassInjector> loadedInjectors = GrailsFactoriesLoader.loadFactories(ClassInjector.class);
+            loadedInjectors.sort((classInjectorA, classInjectorB) -> {
+                if (classInjectorA instanceof Comparable) {
+                    return ((Comparable<ClassInjector>) classInjectorA).compareTo(classInjectorB);
+                }
+                return 0;
+            });
+            classInjectors = loadedInjectors.toArray(new ClassInjector[0]);
+            globalClassInjectors = new ClassInjector[0];
+        }
     }
 
     @Override
@@ -97,9 +120,26 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         if (classInjectors == null || classInjectors.length == 0) {
             classInjectors = getClassInjectors();
         }
-        for (ClassInjector classInjector : classInjectors) {
-            if (classInjector.shouldInject(classNode)) {
-                classInjector.performInjection(source, context, classNode);
+
+        for (ArtefactHandler handler : artefactHandlers) {
+            if (handler.isArtefact(classNode)) {
+                if (classNode.getAnnotations(ARTEFACT_CLASS_NODE).isEmpty()) {
+                    AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Artefact.class));
+                    annotationNode.addMember("value", new ConstantExpression(handler.getType()));
+                    classNode.addAnnotation(annotationNode);
+
+                    for (ClassInjector classInjector : classInjectors) {
+                        if (classInjector instanceof CompilationUnitAware) {
+                            ((CompilationUnitAware) classInjector).setCompilationUnit(this.compilationUnit);
+                        }
+                        if (classInjector.shouldInject(classNode)) {
+                            classInjector.performInjection(source, context, classNode);
+                        }
+                    }
+
+                    TraitInjectionUtils.processTraitsForNode(source, classNode, handler.getType(), this.compilationUnit);
+                }
+                break;
             }
         }
     }

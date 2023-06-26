@@ -21,7 +21,6 @@ import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.expr.ClassExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.PropertyExpression
-import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Issue
 import spock.lang.Specification
 
@@ -153,9 +152,9 @@ class ArtefactTypeAstTransformationSpec extends Specification {
 
     void "Application artefact should be injected by 2 class injectors"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
@@ -181,9 +180,9 @@ class Application {
 
     void "Bootstrap artefact should be injected by 0 class injectors"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
@@ -204,9 +203,9 @@ class BootStrap {
 
     void "Controller artefact should be injected by 1 class injectors"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
@@ -231,9 +230,9 @@ class PostController {
 
     void "Domain artefact should be injected by 3 class injectors"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:
@@ -260,9 +259,9 @@ class Post {
 
     void "TagLib artefact should be injected by 1 class injectors"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
         ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors()
 
         when:

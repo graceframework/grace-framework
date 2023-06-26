@@ -28,15 +28,19 @@ class DefaultGrailsDomainClassInjectorSpec extends Specification {
 
     def "Test Domain class was injected Id, Version"() {
         given:
-        def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
-
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
         def domainClass = gcl.parseClass('''
-@grails.artefact.Artefact("Domain")
 class Post {
 }
-''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -55,17 +59,22 @@ class Post {
         }
     }
 
-    def "Test Domain class annotated '@grails.persistence.Entity' with default ToString"() {
+    def "Test Domain class with default ToString"() {
         given:
-        def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         def domainClass = gcl.parseClass('''
-@grails.persistence.Entity
 class Post {
 }
-''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -87,24 +96,30 @@ class Post {
         def post = domainClass.newInstance([id: 1])
 
         then: 'toString as default'
-        post.toString().endsWith("Post : (unsaved)")
+        post.toString() == "Post : 1"
 
         and: 'toString is marked as Generated'
         post.class.getMethod('toString').isAnnotationPresent(Generated)
     }
 
-    def "Test Domain class annotated '@grails.persistence.Entity' with '@groovy.transform.ToString'"() {
+    def "Test Domain class annotated with '@groovy.transform.ToString'"() {
         given:
-        def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         def domainClass = gcl.parseClass('''
 @grails.persistence.Entity
 @groovy.transform.ToString(includes = ["id"])
 class Post {
 }
-''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
 
         def domainMethodNames = domainClass.getMethods()*.name
 
@@ -134,20 +149,24 @@ class Post {
 
     def "Test Domain class was injected Associations"() {
         given:
-        def gcl = new GrailsAwareClassLoader()
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         def classInjector = new DefaultGrailsDomainClassInjector()
         gcl.classInjectors = [classInjector] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         gcl.parseClass('''
-@grails.artefact.Artefact("Domain")
 class Post {
     static hasMany = [comments: Comment]
 }
-@grails.artefact.Artefact("Domain")
 class Comment {
     static belongsTo = [post : Post]
 }
-''', "grails-demo-project/grails-app/src/main/groovy/org/demo/Post.groovy")
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Post.groovy')
 
         Class[] loadedClasses = gcl.getLoadedClasses()
         def postClass = loadedClasses.find { it.name == 'Post' }

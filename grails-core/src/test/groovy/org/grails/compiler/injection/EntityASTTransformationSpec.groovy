@@ -1,7 +1,6 @@
 package org.grails.compiler.injection
 
 import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Specification
 
 import grails.artefact.Artefact
@@ -10,8 +9,9 @@ class EntityASTTransformationSpec extends Specification {
 
     def "Test Entity class was applied by EntityASTTransformation"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
 
         when:
         def clazz = gcl.parseClass('''
