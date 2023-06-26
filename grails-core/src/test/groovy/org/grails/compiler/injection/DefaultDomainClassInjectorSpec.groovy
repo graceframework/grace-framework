@@ -9,8 +9,10 @@ import spock.lang.Specification
 
 /**
  * @author James Kleeh
+ * @deprecated in favor of {@link DefaultGrailsDomainClassInjectorSpec}
  */
 @Ignore
+@Deprecated(forRemoval = true)
 class DefaultDomainClassInjectorSpec extends Specification {
 
     void "test default toString"() {
