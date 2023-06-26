@@ -16,7 +16,6 @@
 package org.grails.compiler.injection
 
 import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Specification
 
 import grails.artefact.Artefact
@@ -29,8 +28,14 @@ class GlobalGrailsClassInjectorTransformationSpec extends Specification {
 
     def "Test Application class was applied"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -49,8 +54,14 @@ class Application {
 
     def "Test Bootstrap class was applied"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -67,8 +78,14 @@ class BootStrap {
 
     def "Test Controller class was applied"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -86,8 +103,14 @@ class PostController {
 
     def "Test Controller class was annotated on '@grails.web.Controller'"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -106,8 +129,14 @@ class PostController {
 
     def "Test Domain class was applied"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -127,9 +156,14 @@ class Post {
 
     def "Test Domain class was not annotated on '@Artefact' as GlobalGrailsClassInjectorTransformation disabled"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -149,8 +183,9 @@ class Post {
 
     def "Test Domain class was annotated on '@grails.persistence.Entity'"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
 
         when:
         def clazz = gcl.parseClass('''
@@ -171,8 +206,14 @@ class Post {
 
     def "Test TagLib class was applied"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = false
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -190,8 +231,9 @@ class PostTagLib {
 
     def "Test TagLib class was annotated on '@grails.gsp.TagLib'"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
 
         when:
         def clazz = gcl.parseClass('''

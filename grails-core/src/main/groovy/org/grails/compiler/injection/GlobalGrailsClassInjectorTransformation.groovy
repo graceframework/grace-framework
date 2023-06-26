@@ -82,9 +82,6 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
 
-            classNode.getModule().addImport('Autowired',
-                    ClassHelper.make('org.springframework.beans.factory.annotation.Autowired'))
-
             for (ArtefactHandler handler in artefactHandlers) {
                 if (handler.isArtefact(classNode)) {
                     if (!classNode.getAnnotations(ARTEFACT_CLASS_NODE)) {
