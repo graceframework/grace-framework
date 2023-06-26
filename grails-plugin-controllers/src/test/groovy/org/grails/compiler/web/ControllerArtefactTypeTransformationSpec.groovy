@@ -16,11 +16,11 @@
 package org.grails.compiler.web
 
 import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Specification
 
 import grails.artefact.Artefact
 import grails.artefact.Enhanced
+import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
  * @author Michael Yan
@@ -30,11 +30,14 @@ class ControllerArtefactTypeTransformationSpec extends Specification {
 
     def "Test Controller class was applied by ControllerArtefactTypeTransformation"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation',
-                                                           'org.grails.compiler.injection.GlobalGrailsPluginTransformation'] as Set<String>)
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
-        gcl.enableInjectTraits = false
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''

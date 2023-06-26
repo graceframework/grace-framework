@@ -17,33 +17,19 @@ package org.grails.compiler.web
 
 import java.lang.reflect.Constructor
 import java.lang.reflect.Modifier
-import java.security.CodeSource
 
 import groovy.transform.Generated
-import org.codehaus.groovy.ast.AnnotationNode
-import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.expr.ConstantExpression
-import org.codehaus.groovy.classgen.GeneratorContext
-import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.CompilationUnit
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.control.Phases
-import org.codehaus.groovy.control.SourceUnit
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.request.RequestContextHolder
 import spock.lang.Specification
 
-import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
-import grails.core.ArtefactHandler
 import grails.util.BuildSettings
 import grails.util.GrailsWebMockUtil
 import grails.web.Action
 import grails.web.servlet.context.GrailsWebApplicationContext
-import org.grails.compiler.injection.ArtefactTypeAstTransformation
-import org.grails.compiler.injection.TraitInjectionUtils
-import org.grails.core.io.support.GrailsFactoriesLoader
+import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
  * @author Stephane Maldini
@@ -66,19 +52,17 @@ class ControllerActionTransformerSpec extends Specification {
     }
 
     def createClassLoader() {
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        configuration.setDisabledGlobalASTTransformations(['org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation',
-                                                           'org.grails.compiler.injection.GlobalGrailsPluginTransformation'] as Set<String>)
-        def transformer = new ControllerActionTransformer() {
-            @Override
-            boolean shouldInject(ClassNode classNode) {
-                true
-            }
-        }
+        def transformer = new ControllerActionTransformer()
         transformer.setCompilationUnit(new CompilationUnit())
-        def gcl = new TestGroovyClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
-        return gcl
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
+        gcl
     }
 
     void "Test that a closure action has changed to method"() {
@@ -91,7 +75,7 @@ class TestTransformedToController {
     }
 
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestTransformedToController.groovy')
 
         def classNode = gcl.getClassNode('TestTransformedToController')
         def controller = cls.newInstance()
@@ -115,7 +99,7 @@ class SomeController {
     @Deprecated
     def action2(String paramName){}
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SomeController.groovy')
 
         when:
         def action1NoArgMethod = cls.getMethod('action1')
@@ -147,7 +131,7 @@ abstract class SomeController {
     def someAction() {}
     abstract someAbstractMethod()
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SomeController.groovy')
 
         when:
         def method = controllerClass.getMethod('someAbstractMethod')
@@ -182,7 +166,7 @@ class SubController extends SuperController {
         [ paramValue: i ]
     }
 }
-''', "grails-demo-project/grails-app/controllers/org/demo/SuperController.groovy")
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/SuperController.groovy')
 
         def subControllerClass = gcl.loadClass('SubController')
         def superController = superControllerClass.newInstance()
@@ -243,7 +227,7 @@ trait ShowMethod {
     }
 
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestTraitActionToController.groovy')
 
         def controller = cls.newInstance()
 
@@ -273,7 +257,7 @@ class TestMyCommandObjController {
 class MyCommand {
     String name
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestMyCommandObjController.groovy')
 
         def controller = cls.newInstance()
         def myCommand = controller.$test()
@@ -301,7 +285,7 @@ class TestMyCommandObjController {
 class MyCommand {
     String name
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestMyCommandObjController.groovy')
 
         def controller = cls.newInstance()
         def myCommand = controller.$test()
@@ -313,93 +297,3 @@ class MyCommand {
     }
 
 }
-
-
-class TestGroovyClassLoader extends GroovyClassLoader {
-    private static final List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
-
-    CompilationUnit compilationUnit
-
-    private ClassInjector[] classInjectors
-    private String artefactType
-    boolean enableInjectTraits = true
-
-    TestGroovyClassLoader() {
-        // default
-    }
-
-    TestGroovyClassLoader(ClassLoader loader) {
-        super(loader)
-    }
-
-    TestGroovyClassLoader(ClassLoader parent, CompilerConfiguration config, boolean useConfigurationClasspath) {
-        super(parent, config, useConfigurationClasspath);
-    }
-
-    TestGroovyClassLoader(ClassLoader loader, CompilerConfiguration config) {
-        super(loader, config)
-    }
-
-    ClassInjector[] getClassInjectors() {
-        return classInjectors ?: new ClassInjector[0]
-    }
-
-    void setClassInjectors(ClassInjector[] classInjectors) {
-        this.classInjectors = classInjectors
-    }
-
-    String getArtefactType(ClassNode classNode) {
-        if (this.artefactType) {
-            return this.artefactType
-        }
-        String type = null
-        if (classNode.name.endsWith('Controller')) {
-            type = 'Controller'
-        }
-        return type
-    }
-
-    void setArtefactType(String artefactType) {
-        this.artefactType = artefactType
-    }
-
-    @Override
-    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
-        compilationUnit.addPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
-
-            @Override
-            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-                sourceUnit.getAST().putNodeMetaData('PROJECT_TYPE', 'WEB_APP')
-
-                String artefactType = getArtefactType(classNode)
-                if (artefactType) {
-                    if (!classNode.getAnnotations(ClassHelper.make(Artefact))) {
-                        AnnotationNode annotationNode = new AnnotationNode(ClassHelper.make(Artefact))
-                        annotationNode.addMember('value', new ConstantExpression(artefactType))
-                        classNode.addAnnotation(annotationNode)
-                    }
-
-                    ArtefactTypeAstTransformation.performInjection(sourceUnit, classNode, Arrays.asList(getClassInjectors()))
-
-                    if (enableInjectTraits) {
-                        TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, getArtefactType(classNode), compilationUnit)
-                    }
-                }
-            }
-
-        }, Phases.CANONICALIZATION)
-
-        this.compilationUnit = compilationUnit
-
-        return compilationUnit
-    }
-
-    ClassNode getClassNode(String name) {
-        this.compilationUnit.getClassNode(name)
-    }
-
-}
-

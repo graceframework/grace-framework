@@ -11,20 +11,28 @@ class ControllerActionTransformerCompilationErrorsSpec extends Specification {
     static gcl
 
     void setupSpec() {
-        gcl = new GrailsAwareClassLoader()
         def transformer = new ControllerActionTransformer()
+        gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
     }
 
     void 'Test overloaded method actions'() {
         when: 'A controller overloads a method action'
         gcl.parseClass('''
-@grails.artefact.Artefact('Controller')
 class TestController {
-    def methodAction(String s){}
-    def methodAction(Integer i){}
+    def methodAction(String s) {
+    }
+
+    def methodAction(Integer i) {
+    }
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestController.groovy')
         then:
         MultipleCompilationErrorsException e = thrown()
         e.message.contains 'Controller actions may not be overloaded. The [methodAction] action has been overloaded in [TestController].'
@@ -33,11 +41,11 @@ class TestController {
     void "Test default parameter values"() {
         when: 'A method action has default parameter values'
         gcl.parseClass('''
-@grails.artefact.Artefact('Controller')
 class TestController {
-    def methodAction(int i = 42){}
+    def methodAction(int i = 42) {
+    }
 }
-''')
+''', '/Users/grails/grails-demo-project/grails-app/controllers/org/demo/TestController.groovy')
 
         then:
         MultipleCompilationErrorsException e = thrown()
