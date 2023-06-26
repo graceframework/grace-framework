@@ -15,20 +15,10 @@
  */
 package grails.gsp.taglib.compiler
 
-import java.security.CodeSource
-
 import org.codehaus.groovy.ast.ClassHelper
-import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.classgen.GeneratorContext
-import org.codehaus.groovy.control.CompilationFailedException
-import org.codehaus.groovy.control.CompilationUnit
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.control.Phases
-import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Specification
 
 import grails.artefact.Artefact
-import grails.compiler.ast.ClassInjector
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
 /**
@@ -39,8 +29,14 @@ class TagLibArtefactTypeAstTransformationSpec extends Specification {
 
     def "Test TagLib class was applied by TagLibArtefactTypeAstTransformation"() {
         given:
-        CompilerConfiguration configuration = new CompilerConfiguration()
-        def gcl = new TestGrailsAwareClassLoader(getClass().getClassLoader(), configuration)
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         when:
         def clazz = gcl.parseClass('''
@@ -57,35 +53,76 @@ class FooTagLib {
         classNode.getNodeMetaData('APPLIED_grails.gsp.taglib.compiler.TagLibArtefactTypeAstTransformation')
     }
 
+    def "Test tag methods are created for properties which are tags"() {
+        given:
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
+
+        when:
+        def clazz = gcl.parseClass('''
+@grails.artefact.Artefact('TagLib')
+class ClosureMethodTestTagLib {
+    def closureTagWithNoExplicitArgs = {}
+    def closureTagWithOneArg = { attrs -> }
+    def closureTagWithTwoArgs = { attrs, body -> }
+    def closureTagWithThreeArgs = { attrs, body, extra -> }
+    def closureTagWithFourArgs = { attrs, body, extra, anotherExtra -> }
 }
+''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/ClosureMethodTestTagLib.groovy')
 
+        def classNode = gcl.getClassNode('ClosureMethodTestTagLib')
 
-class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
-    CompilationUnit compilationUnit
+        then:
+        /*
+         * Tag methods are overloaded with these argument combinations:
+         *    tagName()
+         *    tagName(Map)
+         *    tagName(Closure)
+         *    tagName(Map, Closure)
+         *    tagName(Map, CharSequence)
+         */
+        5 == classNode.methods.findAll { methodName == it.name }.size()
 
-    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors = []) {
-        super(parent, configuration)
-        setClassInjectors(classInjectors)
+        where:
+        methodName << ['closureTagWithNoExplicitArgs', 'closureTagWithOneArg', 'closureTagWithTwoArgs']
     }
 
-    @Override
-    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
-        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
+    def "Test tag methods are not created for properties which are not tags"() {
+        given:
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.disabledGrailsAwareInjectionOperation = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
-            @Override
-            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-            }
+        when:
+        def clazz = gcl.parseClass('''
+@grails.artefact.Artefact('TagLib')
+class ClosureMethodTestTagLib {
+    def closureTagWithNoExplicitArgs = {}
+    def closureTagWithOneArg = { attrs -> }
+    def closureTagWithTwoArgs = { attrs, body -> }
+    def closureTagWithThreeArgs = { attrs, body, extra -> }
+    def closureTagWithFourArgs = { attrs, body, extra, anotherExtra -> }
+}
+''', '/Users/grails/grails-demo-project/grails-app/src/main/groovy/org/demo/ClosureMethodTestTagLib.groovy')
 
-        }, Phases.CANONICALIZATION)
+        def classNode = gcl.getClassNode('ClosureMethodTestTagLib')
 
-        this.compilationUnit = compilationUnit
-    }
+        then:
+        0 == classNode.methods.findAll { methodName == it.name }.size()
 
-    ClassNode getClassNode(String name) {
-        this.compilationUnit.getClassNode(name)
+        where:
+        methodName << ['closureTagWithThreeArgs', 'closureTagWithFourArgs']
     }
 
 }

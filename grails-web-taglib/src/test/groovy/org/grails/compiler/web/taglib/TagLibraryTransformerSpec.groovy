@@ -15,72 +15,51 @@
  */
 package org.grails.compiler.web.taglib
 
-import java.security.CodeSource
-
-import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.classgen.GeneratorContext
-import org.codehaus.groovy.control.CompilationFailedException
-import org.codehaus.groovy.control.CompilationUnit
-import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.control.Phases
-import org.codehaus.groovy.control.SourceUnit
 import spock.lang.Issue
 import spock.lang.Specification
 
-import grails.artefact.Artefact
 import grails.compiler.ast.ClassInjector
 import org.grails.compiler.injection.GrailsAwareClassLoader
 
 class TagLibraryTransformerSpec extends Specification {
 
-    void 'Test tag methods are created for properties which are tags'() {
-        expect:
-        /*
-         * Tag methods are overloaded with these argument combinations:
-         *    tagName()
-         *    tagName(Map)
-         *    tagName(Closure)
-         *    tagName(Map, Closure)
-         *    tagName(Map, CharSequence)
-         */
-        5 == ClosureMethodTestTagLib.methods.findAll { methodName == it.name }.size()
-
-        where:
-        methodName << ['closureTagWithNoExplicitArgs', 'closureTagWithOneArg', 'closureTagWithTwoArgs']
-    }
-
-    void 'Test tag methods are not created for properties which are not tags'() {
-        expect:
-        0 == ClosureMethodTestTagLib.methods.findAll { methodName == it.name }.size()
-
-        where:
-        methodName << ['closureTagWithThreeArgs', 'closureTagWithFourArgs']
-    }
-
     @Issue('GRAILS-11241')
     void 'Test that a tag library can be marked with @CompileStatic without generating compile errors'() {
         given:
-        def gcl = new GrailsAwareClassLoader()
         def transformer = new TagLibraryTransformer()
+        def gcl = new GrailsAwareClassLoader()
+        gcl.disabledGlobalASTTransformations = true
         gcl.classInjectors = [transformer] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         expect:
         gcl.parseClass('''
-        @groovy.transform.CompileStatic
-        class StaticallyCompiledTagLib implements grails.artefact.TagLibrary {
-            def closureTagWithNoExplicitArgs = { }
-            def closureTagWithOneArg = { attrs -> }
-            def closureTagWithTwoArgs = { attrs, body -> }
-        }
-        ''')
+@groovy.transform.CompileStatic
+class StaticallyCompiledTagLib implements grails.artefact.TagLibrary {
+    def closureTagWithNoExplicitArgs = { }
+    def closureTagWithOneArg = { attrs -> }
+    def closureTagWithTwoArgs = { attrs, body -> }
+}
+''', '/Users/grails/grails-demo-project/grails-app/taglib/org/demo/StaticallyCompiledTagLib.groovy')
     }
 
     void 'Test that a tag library injected method "$getTagLibNamespace", "tagOne"'() {
         given:
-        def gcl = new GroovyClassLoader()
+        def transformer = new TagLibraryTransformer()
+        def gcl = new GrailsAwareClassLoader()
+        gcl.disabledGlobalASTTransformations = true
+        gcl.classInjectors = [transformer] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
         def taglibClass = gcl.parseClass('''
-@grails.artefact.Artefact('TagLib')
 class DemoTagLib {
     static namespace = 'demo'
     def tagOne = { attrs -> }
@@ -91,69 +70,6 @@ class DemoTagLib {
 
         expect:
         taglibMethodNames.containsAll('setNamespace', 'getNamespace', '$getTagLibNamespace', 'getTagOne', 'setTagOne', 'tagOne')
-    }
-
-}
-
-@Artefact('TagLib')
-class ClosureMethodTestTagLib {
-    def closureTagWithNoExplicitArgs = {}
-    def closureTagWithOneArg = { attrs -> }
-    def closureTagWithTwoArgs = { attrs, body -> }
-    def closureTagWithThreeArgs = { attrs, body, extra -> }
-    def closureTagWithFourArgs = { attrs, body, extra, anotherExtra -> }
-}
-
-class TestGroovyClassLoader extends GroovyClassLoader {
-    CompilationUnit compilationUnit
-
-    @Override
-    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
-        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
-
-            @Override
-            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-            }
-
-        }, Phases.CANONICALIZATION)
-        this.compilationUnit = compilationUnit
-    }
-
-    ClassNode getClassNode(String name) {
-        this.compilationUnit.getClassNode(name)
-    }
-
-}
-
-class TestGrailsAwareClassLoader extends GrailsAwareClassLoader {
-    CompilationUnit compilationUnit
-
-    TestGrailsAwareClassLoader(ClassLoader parent, CompilerConfiguration configuration, ClassInjector[] classInjectors) {
-        super(parent, configuration)
-        setClassInjectors(classInjectors)
-    }
-
-    @Override
-    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
-        CompilationUnit compilationUnit = super.createCompilationUnit(config, source)
-        compilationUnit.addFirstPhaseOperation(new CompilationUnit.IPrimaryClassNodeOperation() {
-
-            @Override
-            void call(SourceUnit sourceUnit, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-                sourceUnit.getAST().putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-                sourceUnit.getAST().putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
-            }
-
-        }, Phases.CANONICALIZATION)
-
-        this.compilationUnit = compilationUnit
-    }
-
-    ClassNode getClassNode(String name) {
-        this.compilationUnit.getClassNode(name)
     }
 
 }
