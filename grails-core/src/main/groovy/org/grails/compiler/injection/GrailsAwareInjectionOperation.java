@@ -55,6 +55,8 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     private ClassInjector[] localClassInjectors;
 
+    private ArtefactHandler[] localArtefactHandlers;
+
     public GrailsAwareInjectionOperation() {
         initializeState();
     }
@@ -68,8 +70,13 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
     }
 
     public GrailsAwareInjectionOperation(CompilationUnit compilationUnit, ClassInjector[] classInjectors) {
+        this(compilationUnit, classInjectors, null);
+    }
+
+    public GrailsAwareInjectionOperation(CompilationUnit compilationUnit, ClassInjector[] classInjectors, ArtefactHandler[] artefactHandlers) {
         this.compilationUnit = compilationUnit;
         this.localClassInjectors = classInjectors;
+        this.localArtefactHandlers = artefactHandlers;
         initializeState();
     }
 
@@ -95,6 +102,20 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
         return this.localClassInjectors;
     }
 
+    public static ArtefactHandler[] getArtefactHandlers() {
+        if (artefactHandlers == null) {
+            initializeState();
+        }
+        return artefactHandlers.toArray(new ArtefactHandler[0]);
+    }
+
+    public ArtefactHandler[] getLocalArtefactHandlers() {
+        if (this.localArtefactHandlers == null) {
+            return getArtefactHandlers();
+        }
+        return this.localArtefactHandlers;
+    }
+
     @SuppressWarnings("unchecked")
     private static void initializeState() {
         if (artefactHandlers == null) {
@@ -116,19 +137,14 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
 
     @Override
     public void call(SourceUnit source, GeneratorContext context, ClassNode classNode) throws CompilationFailedException {
-        ClassInjector[] classInjectors = getLocalClassInjectors();
-        if (classInjectors == null || classInjectors.length == 0) {
-            classInjectors = getClassInjectors();
-        }
-
-        for (ArtefactHandler handler : artefactHandlers) {
+        for (ArtefactHandler handler : getLocalArtefactHandlers()) {
             if (handler.isArtefact(classNode)) {
                 if (classNode.getAnnotations(ARTEFACT_CLASS_NODE).isEmpty()) {
                     AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Artefact.class));
                     annotationNode.addMember("value", new ConstantExpression(handler.getType()));
                     classNode.addAnnotation(annotationNode);
 
-                    for (ClassInjector classInjector : classInjectors) {
+                    for (ClassInjector classInjector : getLocalClassInjectors()) {
                         if (classInjector instanceof CompilationUnitAware) {
                             ((CompilationUnitAware) classInjector).setCompilationUnit(this.compilationUnit);
                         }
