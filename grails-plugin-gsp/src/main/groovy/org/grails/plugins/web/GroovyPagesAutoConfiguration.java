@@ -37,7 +37,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.ViewResolver;
 
 import grails.config.Config;
 import grails.config.Settings;
@@ -290,7 +289,8 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication, ObjectProvider<ViewResolver> viewResolver) {
+    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication,
+                                                         ObjectProvider<GroovyPageViewResolver> jspViewResolver) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
@@ -303,7 +303,7 @@ public class GroovyPagesAutoConfiguration {
         groovyPageLayoutFinder.setGspReloadEnabled(enableReload);
         groovyPageLayoutFinder.setDefaultDecoratorName(defaultDecoratorName);
         groovyPageLayoutFinder.setEnableNonGspViews(sitemeshEnableNonGspViews);
-        viewResolver.ifAvailable(groovyPageLayoutFinder::setViewResolver);
+        jspViewResolver.ifAvailable(groovyPageLayoutFinder::setViewResolver);
 
         return groovyPageLayoutFinder;
     }
