@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -36,6 +35,7 @@ import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -134,12 +134,8 @@ public class GroovyPagesAutoConfiguration {
                 pfb.setIgnoreResourceNotFound(true);
                 pfb.setLocation(defaultViews);
                 try {
-                    Map<String, String> precompiledGspMap = pfb.getObject().entrySet().stream().collect(
-                            Collectors.toMap(
-                                    e -> String.valueOf(e.getKey()),
-                                    e -> String.valueOf(e.getValue()),
-                                    (prev, next) -> next, HashMap::new
-                            ));
+                    Map<String, String> precompiledGspMap = new HashMap<>();
+                    CollectionUtils.mergePropertiesIntoMap(pfb.getObject(), precompiledGspMap);
                     groovyPageLocator.setPrecompiledGspMap(precompiledGspMap);
                 }
                 catch (IOException ignored) {
