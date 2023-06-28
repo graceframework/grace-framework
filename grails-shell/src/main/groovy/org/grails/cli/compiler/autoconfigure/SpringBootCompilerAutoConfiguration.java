@@ -44,12 +44,8 @@ public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfigurati
 
     @Override
     public void applyImports(ImportCustomizer imports) {
-        imports.addImports("javax.annotation.PostConstruct", "javax.annotation.PreDestroy", "groovy.util.logging.Log",
-                "org.springframework.stereotype.Controller", "org.springframework.stereotype.Service",
-                "org.springframework.stereotype.Component", "org.springframework.beans.factory.annotation.Autowired",
-                "org.springframework.beans.factory.annotation.Value", "org.springframework.context.annotation.Import",
-                "org.springframework.context.annotation.ImportResource",
-                "org.springframework.context.annotation.Profile", "org.springframework.context.annotation.Scope",
+        imports.addImports("groovy.util.logging.Log",
+                "org.springframework.beans.factory.annotation.Autowired",
                 "org.springframework.context.annotation.Configuration",
                 "org.springframework.context.annotation.ComponentScan", "org.springframework.context.annotation.Bean",
                 "org.springframework.context.ApplicationContext", "org.springframework.context.MessageSource",
@@ -62,7 +58,6 @@ public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfigurati
                 "org.springframework.boot.autoconfigure.SpringBootApplication",
                 "org.springframework.boot.context.properties.ConfigurationProperties",
                 "org.springframework.boot.context.properties.EnableConfigurationProperties");
-        imports.addStarImports("org.springframework.stereotype", "org.springframework.scheduling.annotation");
     }
 
     @Override

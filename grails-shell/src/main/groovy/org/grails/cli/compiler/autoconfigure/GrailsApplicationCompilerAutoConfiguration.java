@@ -30,10 +30,8 @@ import org.grails.cli.compiler.DependencyCustomizer;
 public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
     public static final String[] DEFAULT_IMPORTS = new String[] {
-            "grails.persistence",
-            "grails.gorm",
-            "grails.rest",
-            "grails.web"
+            "grails.boot.annotation",
+            "grails.gorm"
     };
 
     @Override
@@ -43,23 +41,35 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
 
     @Override
     public void applyDependencies(DependencyCustomizer dependencies) {
-        dependencies.add("spring-boot-starter-actuator");
-        dependencies.add("spring-boot-starter-logging");
-        dependencies.add("spring-boot-starter-validation");
-        dependencies.add("spring-boot-starter-web");
-        dependencies.add("grails-boot");
-        dependencies.add("grails-core");
-        dependencies.add("grails-web");
-        dependencies.add("grails-plugin-i18n", "grails-plugin-codecs", "grails-plugin-controllers",
-                "grails-plugin-converters", "grails-plugin-databinding", "grails-plugin-domain-class",
-                "grails-plugin-interceptors", "grails-plugin-mimetypes",
-                "grails-plugin-rest", "grails-plugin-services", "grails-plugin-url-mappings");
-        dependencies.add("fields", "gsp", "scaffolding");
+        dependencies.add("spring-boot-starter-actuator",
+                "spring-boot-starter-logging",
+                "spring-boot-starter-validation",
+                "spring-boot-starter-web");
+        dependencies.add("grails-boot", "grails-core");
+        dependencies.add(
+                "grails-plugin-core",
+                "grails-plugin-codecs",
+                "grails-plugin-controllers",
+                "grails-plugin-converters",
+                "grails-plugin-databinding",
+                "grails-plugin-domain-class",
+                "grails-plugin-gsp",
+                "grails-plugin-i18n",
+                "grails-plugin-interceptors",
+                "grails-plugin-mimetypes",
+                "grails-plugin-rest",
+                "grails-plugin-services",
+                "grails-plugin-url-mappings");
     }
 
     @Override
     public void applyImports(ImportCustomizer imports) {
-        imports.addImports("groovy.transform.CompileStatic");
+        imports.addImports("groovy.transform.CompileStatic",
+                "grails.artefact.Artefact",
+                "grails.web.Controller",
+                "grails.persistence.Entity",
+                "grails.core.GrailsApplication",
+                "grails.config.Config");
         imports.addStarImports(DEFAULT_IMPORTS);
     }
 
