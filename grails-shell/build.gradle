@@ -19,6 +19,7 @@ dependencies {
     api project(":grails-api")
     api project(":grails-bootstrap")
     api project(":grails-cli")
+    api project(":grails-core")
     api project(":grails-gradle-model")
     api project(":grails-util")
 
@@ -50,6 +51,9 @@ dependencies {
         exclude group: "org.sonatype.sisu", module: "sisu-inject-bean"
     }
     runtimeOnly libs.slf4j.simple
+    runtimeOnly project(":grails-plugin-controllers")
+    runtimeOnly project(":grails-plugin-gsp")
+    runtimeOnly project(":grails-plugin-url-mappings")
 }
 
 task syncGrailsDependenciesBom(type: Sync) {

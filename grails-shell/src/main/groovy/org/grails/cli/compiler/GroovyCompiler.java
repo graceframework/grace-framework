@@ -101,6 +101,7 @@ public class GroovyCompiler {
 
         GrapeEngineInstaller.install(grapeEngine);
 
+        this.loader.setDisabledGlobalASTTransformations(true);
         this.loader.getConfiguration().addCompilationCustomizers(new CompilerAutoConfigureCustomizer());
         if (configuration.isAutoconfigure()) {
             this.compilerAutoConfigurations = ServiceLoader.load(CompilerAutoConfiguration.class);
@@ -194,6 +195,7 @@ public class GroovyCompiler {
         }
 
         addAstTransformations(compilationUnit);
+        addGrailsAwareInjectionOperation(compilationUnit);
         compilationUnit.compile(Phases.CLASS_GENERATION);
         for (Object loadedClass : collector.getLoadedClasses()) {
             classes.add((Class<?>) loadedClass);
@@ -244,6 +246,10 @@ public class GroovyCompiler {
                 }
             }
         });
+    }
+
+    private void addGrailsAwareInjectionOperation(CompilationUnit compilationUnit) {
+        compilationUnit.addPhaseOperation(ExtendedGroovyClassLoader.getGrailsAwareInjectionOperation(compilationUnit), Phases.CANONICALIZATION);
     }
 
     private int getIndexOfASTTransformationVisitor(List<?> conversionOperations) {

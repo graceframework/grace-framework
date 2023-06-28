@@ -79,7 +79,7 @@ public class GrailsRunningStatusApplicationContextInitializer implements
                                 (ConfigurableApplicationContext) applicationContext.getParent())
                 );
             }
-            String applicationName = app.getConfig().getProperty("info.app.name", "");
+            String applicationName = app.getConfig().getProperty("info.app.name", System.getProperty("spring.application.name", ""));
             String applicationVersion = app.getConfig().getProperty("info.app.version", "");
             String contextPath = app.getConfig().getProperty("server.servlet.context-path", "");
             String serverAddress = app.getConfig().getProperty("server.address", "localhost");
