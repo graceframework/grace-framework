@@ -81,15 +81,11 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
             ClassNode[] interfaces = [ClassHelper.make(TraitInjector)] as ClassNode[]
 
             String traitClassName = cNode.name
-            String transformerClassName = cNode.name
-            if (transformerClassName.endsWith('$Trait$Helper')) {
-                transformerClassName = transformerClassName[0..-14]
-            }
-            if (transformerClassName.endsWith('Trait')) {
-                transformerClassName = transformerClassName[0..-6]
+            if (traitClassName.endsWith('$Trait$Helper')) {
+                traitClassName = traitClassName[0..-14]
             }
 
-            ClassNode transformerNode = new ClassNode("${transformerClassName}TraitInjector", Modifier.PUBLIC,
+            ClassNode transformerNode = new ClassNode("${traitClassName}TraitInjector", Modifier.PUBLIC,
                     superClass, interfaces, MixinNode.EMPTY_ARRAY)
             transformerNode.setModule(cNode.getModule())
 
