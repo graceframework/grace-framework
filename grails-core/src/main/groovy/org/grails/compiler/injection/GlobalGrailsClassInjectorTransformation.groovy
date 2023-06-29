@@ -32,6 +32,8 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 
 import grails.artefact.Artefact
+import grails.compiler.ast.ClassInjector
+import grails.compiler.traits.TraitInjector
 import grails.core.ArtefactHandler
 
 import org.grails.core.io.support.GrailsFactoriesLoader
@@ -47,9 +49,10 @@ import org.grails.core.io.support.GrailsFactoriesLoader
 @CompileStatic
 class GlobalGrailsClassInjectorTransformation implements ASTTransformation, CompilationUnitAware {
 
-    static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make('grails.core.ArtefactHandler')
+    static final ClassNode ARTEFACT_HANDLER_CLASS = ClassHelper.make(ArtefactHandler)
     static final ClassNode ARTEFACT_CLASS_NODE = ClassHelper.make(Artefact)
-    static final ClassNode TRAIT_INJECTOR_CLASS = ClassHelper.make('grails.compiler.traits.TraitInjector')
+    static final ClassNode CLASS_INJECTOR_CLASS = ClassHelper.make(ClassInjector)
+    static final ClassNode TRAIT_INJECTOR_CLASS = ClassHelper.make(TraitInjector)
     static final ClassNode APPLICATION_CONTEXT_COMMAND_CLASS = ClassHelper.make('grails.dev.commands.ApplicationCommand')
 
     CompilationUnit compilationUnit
@@ -75,6 +78,9 @@ class GlobalGrailsClassInjectorTransformation implements ASTTransformation, Comp
                 continue
             }
             if (updateGrailsFactoriesWithType(classNode, TRAIT_INJECTOR_CLASS, compilationTargetDirectory)) {
+                continue
+            }
+            if (updateGrailsFactoriesWithType(classNode, CLASS_INJECTOR_CLASS, compilationTargetDirectory)) {
                 continue
             }
 
