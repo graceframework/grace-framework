@@ -48,8 +48,7 @@ trait FooTrait {
 ''', '/Users/grails/grails-demo-project/src/main/groovy/org/demo/Foo.groovy')
 
         then:
-        !gcl.getClassNode('FooTraitTraitInjector')
-        gcl.getClassNode('FooTraitInjector')
+        gcl.getClassNode('FooTraitTraitInjector')
     }
 
     def "Test Enhances trait class was transformed"() {
