@@ -16,6 +16,7 @@
 package grails.compiler.traits;
 
 import org.codehaus.groovy.ast.ClassNode;
+import org.springframework.core.Ordered;
 
 /**
  * Functional interface to support injecting {@link grails.artefact.Artefact}
@@ -25,7 +26,7 @@ import org.codehaus.groovy.ast.ClassNode;
  * @author Michael Yan
  * @since 3.0
  */
-public interface TraitInjector {
+public interface TraitInjector extends Ordered {
 
     Class<?> getTrait();
 
@@ -40,6 +41,11 @@ public interface TraitInjector {
      */
     default boolean supports(ClassNode classNode) {
         return true;
+    }
+
+    @Override
+    default int getOrder() {
+        return 0;
     }
 
 }

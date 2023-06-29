@@ -22,6 +22,8 @@ import java.net.URL;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
+import org.springframework.core.Ordered;
+
 import org.grails.io.support.FileSystemResource;
 import org.grails.io.support.Resource;
 
@@ -33,7 +35,7 @@ import org.grails.io.support.Resource;
  * @author Michael Yan
  * @since 0.2
  */
-public interface ClassInjector {
+public interface ClassInjector extends Ordered {
 
     int PRIVATE_STATIC_MODIFIER = Modifier.PRIVATE | Modifier.STATIC;
 
@@ -100,6 +102,11 @@ public interface ClassInjector {
             }
         }
         return false;
+    }
+
+    @Override
+    default int getOrder() {
+        return 0;
     }
 
 }
