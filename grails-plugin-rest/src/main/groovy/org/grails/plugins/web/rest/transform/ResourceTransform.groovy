@@ -155,7 +155,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors())
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
-                    injectors.findAll { !(it instanceof ControllerActionTransformer) })
+                    injectors.findAll { !(it instanceof ControllerActionTransformer) }, unit)
 
             if (unit) {
                 TraitInjectionUtils.processTraitsForNode(source, newControllerClassNode, 'Controller', unit)
@@ -271,7 +271,7 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     new ClassNode(List).getPlainNodeReference(), responseFormatsExpression, null, null)
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
-                    injectors.findAll { it instanceof ControllerActionTransformer })
+                    injectors.findAll { it instanceof ControllerActionTransformer }, unit)
             new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
             newControllerClassNode.setModule(ast)
 

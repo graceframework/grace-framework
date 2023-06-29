@@ -15,6 +15,7 @@
  */
 package org.grails.compiler.injection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
+import org.springframework.core.OrderComparator;
 import org.springframework.util.ClassUtils;
 
 import grails.artefact.Artefact;
@@ -87,28 +89,22 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
     }
 
     protected void performInjectionOnArtefactType(SourceUnit sourceUnit, ClassNode cNode, String artefactType) {
-        List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
-        for (ClassInjector injector : injectors) {
-            if (injector instanceof CompilationUnitAware) {
-                ((CompilationUnitAware) injector).setCompilationUnit(this.compilationUnit);
-            }
-        }
-        performInjection(sourceUnit, cNode, injectors);
+        performInjectionOnNode(sourceUnit, cNode, artefactType, this.compilationUnit);
     }
 
     public static void performInjectionOnNode(SourceUnit sourceUnit, ClassNode cNode, String artefactType, CompilationUnit compilationUnit) {
         List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors());
-        for (ClassInjector injector : injectors) {
-            if (injector instanceof CompilationUnitAware) {
-                ((CompilationUnitAware) injector).setCompilationUnit(compilationUnit);
-            }
-        }
-        performInjection(sourceUnit, cNode, injectors);
+        performInjection(sourceUnit, cNode, injectors, compilationUnit);
     }
 
-    public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors) {
+    public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors, CompilationUnit compilationUnit) {
+        List<ClassInjector> classInjectors = new ArrayList<>(injectors);
+        OrderComparator.sort(classInjectors);
         try {
-            for (ClassInjector injector : injectors) {
+            for (ClassInjector injector : classInjectors) {
+                if (injector instanceof CompilationUnitAware) {
+                    ((CompilationUnitAware) injector).setCompilationUnit(compilationUnit);
+                }
                 if (!GrailsASTUtils.isApplied(cNode, injector.getClass()) && injector.shouldInject(cNode)) {
                     injector.performInjection(sourceUnit, cNode);
                     GrailsASTUtils.markApplied(cNode, injector.getClass());

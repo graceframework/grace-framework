@@ -15,9 +15,9 @@
  */
 package org.grails.compiler.injection;
 
+import java.util.Arrays;
 import java.util.List;
 
-import groovy.transform.CompilationUnitAware;
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
@@ -144,15 +144,7 @@ public class GrailsAwareInjectionOperation implements CompilationUnit.IPrimaryCl
                     annotationNode.addMember("value", new ConstantExpression(handler.getType()));
                     classNode.addAnnotation(annotationNode);
 
-                    for (ClassInjector classInjector : getLocalClassInjectors()) {
-                        if (classInjector instanceof CompilationUnitAware) {
-                            ((CompilationUnitAware) classInjector).setCompilationUnit(this.compilationUnit);
-                        }
-                        if (classInjector.shouldInject(classNode)) {
-                            classInjector.performInjection(source, context, classNode);
-                        }
-                    }
-
+                    ArtefactTypeAstTransformation.performInjection(source, classNode, Arrays.asList(getLocalClassInjectors()), this.compilationUnit);
                     TraitInjectionUtils.processTraitsForNode(source, classNode, handler.getType(), this.compilationUnit);
                 }
                 break;

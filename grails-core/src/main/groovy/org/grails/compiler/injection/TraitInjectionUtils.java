@@ -29,6 +29,7 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.trait.TraitComposer;
+import org.springframework.core.OrderComparator;
 
 import grails.compiler.traits.TraitInjector;
 
@@ -67,6 +68,7 @@ public final class TraitInjectionUtils {
         }
         try {
             if (injectorsToUse.size() > 0) {
+                OrderComparator.sort(injectorsToUse);
                 doInjectionInternal(compilationUnit, sourceUnit, cNode, injectorsToUse);
             }
         }
