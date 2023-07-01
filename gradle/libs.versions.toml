@@ -232,6 +232,7 @@ grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datast
 grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
+h2 = ["h2"]
 jakarta = ["jakarta-annotation-api"]
 javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet", "javax-transaction"]
 micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
