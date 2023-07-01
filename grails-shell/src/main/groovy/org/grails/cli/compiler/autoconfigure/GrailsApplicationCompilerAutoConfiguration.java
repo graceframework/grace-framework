@@ -29,11 +29,6 @@ import org.grails.cli.compiler.DependencyCustomizer;
  */
 public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConfiguration {
 
-    public static final String[] DEFAULT_IMPORTS = new String[] {
-            "grails.boot.annotation",
-            "grails.gorm"
-    };
-
     @Override
     public boolean matches(ClassNode classNode) {
         return true;
@@ -41,25 +36,25 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
 
     @Override
     public void applyDependencies(DependencyCustomizer dependencies) {
-        dependencies.add("spring-boot-starter-actuator",
-                "spring-boot-starter-logging",
-                "spring-boot-starter-validation",
-                "spring-boot-starter-web");
-        dependencies.add("grails-boot", "grails-core");
-        dependencies.add(
-                "grails-plugin-core",
-                "grails-plugin-codecs",
-                "grails-plugin-controllers",
-                "grails-plugin-converters",
-                "grails-plugin-databinding",
-                "grails-plugin-domain-class",
-                "grails-plugin-gsp",
-                "grails-plugin-i18n",
-                "grails-plugin-interceptors",
-                "grails-plugin-mimetypes",
-                "grails-plugin-rest",
-                "grails-plugin-services",
-                "grails-plugin-url-mappings");
+        dependencies.add("spring-boot-starter-actuator");
+        dependencies.add("spring-boot-starter-logging");
+        dependencies.add("spring-boot-starter-validation");
+        dependencies.ifAnyMissingClasses("org.springframework.web.servlet.mvc.Controller").add("spring-boot-starter-web");
+        dependencies.ifAnyMissingClasses("grails.boot.Grails").add("grails-boot");
+        dependencies.ifAnyMissingClasses("grails.core.DefaultGrailsApplication").add("grails-core");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.core.CoreGrailsPlugin").add("grails-plugin-core");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.codecs.CodecsGrailsPlugin").add("grails-plugin-codecs");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.controllers.ControllersGrailsPlugin").add("grails-plugin-controllers");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.converters.ConvertersGrailsPlugin").add("grails-plugin-converters");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.databinding.DataBindingConfiguration").add("grails-plugin-databinding");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.domain.DomainClassGrailsPlugin").add("grails-plugin-domain-class");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.GroovyPagesAutoConfiguration").add("grails-plugin-gsp");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.i18n.I18nGrailsPlugin").add("grails-plugin-i18n");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.interceptors.InterceptorsGrailsPlugin").add("grails-plugin-interceptors");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.mime.MimeTypesConfiguration").add("grails-plugin-mimetypes");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.rest.plugin.RestResponderGrailsPlugin").add("grails-plugin-rest");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.services.ServicesGrailsPlugin").add("grails-plugin-services");
+        dependencies.ifAnyMissingClasses("org.grails.plugins.web.mapping.UrlMappingsGrailsPlugin").add("grails-plugin-url-mappings");
     }
 
     @Override
@@ -67,10 +62,9 @@ public class GrailsApplicationCompilerAutoConfiguration extends CompilerAutoConf
         imports.addImports("groovy.transform.CompileStatic",
                 "grails.artefact.Artefact",
                 "grails.web.Controller",
-                "grails.persistence.Entity",
                 "grails.core.GrailsApplication",
                 "grails.config.Config");
-        imports.addStarImports(DEFAULT_IMPORTS);
+        imports.addStarImports("grails.boot.annotation");
     }
 
 }
