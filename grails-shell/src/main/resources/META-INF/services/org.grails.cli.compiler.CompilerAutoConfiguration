@@ -1,4 +1,5 @@
 org.grails.cli.compiler.autoconfigure.GrailsApplicationCompilerAutoConfiguration
+org.grails.cli.compiler.autoconfigure.GrailsGormCompilerAutoConfiguration
 org.grails.cli.compiler.autoconfigure.SpringBootCompilerAutoConfiguration
 org.grails.cli.compiler.autoconfigure.GroovyTemplatesCompilerAutoConfiguration
 org.grails.cli.compiler.autoconfigure.SpringMvcCompilerAutoConfiguration
