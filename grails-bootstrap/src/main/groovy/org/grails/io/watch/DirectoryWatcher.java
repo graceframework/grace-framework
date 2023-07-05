@@ -29,7 +29,9 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Graeme Rocher
  * @since 2.0
+ * @deprecated since 2022.3.0, in favor of Spring DevTools
  */
+@Deprecated(since = "2022.3.0", forRemoval = true)
 public class DirectoryWatcher extends Thread {
 
     private static final Logger logger = LoggerFactory.getLogger(DirectoryWatcher.class);
