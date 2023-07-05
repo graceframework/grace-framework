@@ -373,22 +373,29 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         boolean warDeployed = env.isWarDeployed();
         boolean reloadEnabled = env.isReloadEnabled();
 
-        if (!((reloadEnabled || !warDeployed))) {
+        if (!(reloadEnabled || !warDeployed)) {
             return;
         }
 
-        Object referencedResources = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, WATCHED_RESOURCES);
-
         try {
-            List resourceList = null;
-            if (referencedResources instanceof String) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
-                }
-                resourceList = Collections.singletonList(referencedResources.toString());
+            String pluginConfigKey = "grails.plugins." + this.getName() + ".watchedResources";
+            List resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
+            if (resourceList == null) {
+                pluginConfigKey = "grails.plugins." + this.getName() + ".watched-resources";
+                resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
             }
-            else if (referencedResources instanceof List) {
-                resourceList = (List) referencedResources;
+            if (resourceList == null) {
+                Object referencedResources = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, WATCHED_RESOURCES);
+
+                if (referencedResources instanceof String) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
+                    }
+                    resourceList = Collections.singletonList(referencedResources.toString());
+                }
+                else if (referencedResources instanceof List) {
+                    resourceList = (List) referencedResources;
+                }
             }
 
             if (resourceList == null) {

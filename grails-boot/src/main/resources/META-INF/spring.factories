@@ -1,7 +1,6 @@
 # Application Context Initializers
 org.springframework.context.ApplicationContextInitializer=\
 org.grails.boot.context.GrailsConfigurationWarningsApplicationContextInitializer,\
-org.grails.boot.context.GrailsDevelopmentModeWatchApplicationContextInitializer,\
 org.grails.boot.context.GrailsRunningStatusApplicationContextInitializer
 
 # Application Listener
