@@ -60,7 +60,9 @@ import org.grails.plugins.support.WatchPattern;
  * @author Michael Yan
  * @see ApplicationContextInitializer
  * @since 2022.1.6
+ * @deprecated since 2022.3.0, in favor of Spring DevTools
  */
+@Deprecated(since = "2022.3.0", forRemoval = true)
 public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         ApplicationContextInitializer<ConfigurableApplicationContext>, ApplicationListener<ApplicationEvent>, Ordered {
 
