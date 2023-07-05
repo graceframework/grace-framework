@@ -49,8 +49,8 @@ import org.grails.gradle.plugin.util.SourceSets
  * A Gradle plugin for Grails plugins
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
- *
  */
 @CompileStatic
 class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
@@ -103,6 +103,8 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
 
             runtimeConfiguration.artifacts.add(new ExplodedDir(groovyCompile.destinationDirectory.get().asFile, groovyCompile, processResources))
             explodedConfig.artifacts.add(new ExplodedDir(processResources.destinationDir, groovyCompile, processResources))
+            explodedConfig.artifacts.add(new ExplodedDir(project.file(grailsAppDir + File.separator + "conf")))
+            explodedConfig.artifacts.add(new ExplodedDir(project.file(grailsAppDir + File.separator + "i18n")))
         }
     }
 

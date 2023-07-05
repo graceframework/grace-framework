@@ -24,10 +24,12 @@ import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.context.ApplicationListener;
 
+import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
 import grails.util.BuildSettings;
 import org.grails.io.support.GrailsResourceUtils;
+import org.grails.plugins.BinaryGrailsPlugin;
 
 /**
  * {@link ApplicationListener} to handle {@link org.springframework.boot.devtools.classpath.ClassPathChangedEvent}.
@@ -46,28 +48,50 @@ public class GrailsClassPathChangedEventListener implements PluginManagerAware, 
 
     @Override
     public void onApplicationEvent(ClassPathChangedEvent event) {
-        if (!event.isRestartRequired()) {
-            String confPath = new File(BuildSettings.GRAILS_APP_DIR, "conf").getAbsolutePath();
-            String i18nPath = new File(BuildSettings.GRAILS_APP_DIR, "i18n").getAbsolutePath();
+        if (event.isRestartRequired()) {
+            return;
+        }
 
-            for (ChangedFiles changedFiles : event.getChangeSet()) {
-                for (ChangedFile changedFile : changedFiles) {
-                    String changedFilePath = changedFile.getFile().getAbsolutePath();
-                    ChangedFile.Type type = changedFile.getType();
+        for (ChangedFiles changedFiles : event.getChangeSet()) {
+            for (ChangedFile changedFile : changedFiles) {
+                String changedFilePath = changedFile.getFile().getAbsolutePath();
+                ChangedFile.Type type = changedFile.getType();
 
-                    if (type == ChangedFile.Type.MODIFY && (changedFilePath.startsWith(confPath) || changedFilePath.startsWith(i18nPath))) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(String.format("DevTools found file changed [%s]",
-                                    GrailsResourceUtils.getPathFromBaseDir(changedFile.getFile().getAbsolutePath())));
-                        }
-                        this.pluginManager.informOfFileChange(changedFile.getFile());
+                if ((type == ChangedFile.Type.MODIFY) && (isInGrailsAppDir(BuildSettings.BASE_DIR, changedFilePath)
+                        || isInGrailsPluginDir(changedFilePath))) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(String.format("DevTools found file changed [%s]",
+                                GrailsResourceUtils.getPathFromBaseDir(changedFile.getFile().getAbsolutePath())));
                     }
-                    else {
-                        this.grailsSourceCompiler.compile(changedFile.getFile());
-                    }
+                    this.pluginManager.informOfFileChange(changedFile.getFile());
+                }
+                else {
+                    this.grailsSourceCompiler.compile(changedFile.getFile());
                 }
             }
         }
+    }
+
+    private boolean isInGrailsPluginDir(String changedFilePath) {
+        for (GrailsPlugin plugin : this.pluginManager.getAllPlugins()) {
+            if (plugin instanceof BinaryGrailsPlugin) {
+                BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin) plugin;
+                File pluginDirectory = binaryGrailsPlugin.getProjectDirectory();
+                if (isInGrailsAppDir(pluginDirectory, changedFilePath)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isInGrailsAppDir(File baseDir, String changedFilePath) {
+        if (baseDir != null) {
+            String confPath = new File(baseDir, BuildSettings.GRAILS_APP_PATH + File.separator + "conf").getAbsolutePath();
+            String i18nPath = new File(baseDir, BuildSettings.GRAILS_APP_PATH + File.separator + "i18n").getAbsolutePath();
+            return changedFilePath.startsWith(confPath) || changedFilePath.startsWith(i18nPath);
+        }
+        return false;
     }
 
     @Override
