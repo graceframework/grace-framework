@@ -21,6 +21,7 @@ dependencies {
     compileOnly libs.micronaut.spring
     compileOnly libs.micronaut.spring.context
     compileOnly libs.jsr305
+    compileOnly libs.spring.boot.devtools
 
     testImplementation project(":grails-plugin-controllers")
     testImplementation project(":grails-test")
