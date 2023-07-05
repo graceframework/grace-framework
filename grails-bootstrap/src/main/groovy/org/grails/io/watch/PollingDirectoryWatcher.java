@@ -31,7 +31,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 2.4
  * @see WatchServiceDirectoryWatcher
  * @see DirectoryWatcher
+ * @deprecated since 2022.3.0, in favor of Spring DevTools
  */
+@Deprecated(since = "2022.3.0", forRemoval = true)
 class PollingDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private Collection<String> extensions = new ConcurrentLinkedQueue<>();

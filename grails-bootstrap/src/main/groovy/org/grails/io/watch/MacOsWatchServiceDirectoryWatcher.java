@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
  * @author David Estes
  * @since 3.2
  * @see DirectoryWatcher
+ * @deprecated since 2022.3.0, in favor of Spring DevTools
  */
+@Deprecated(since = "2022.3.0", forRemoval = true)
 public class MacOsWatchServiceDirectoryWatcher extends AbstractDirectoryWatcher {
 
     private static final Logger logger = LoggerFactory.getLogger(MacOsWatchServiceDirectoryWatcher.class);
