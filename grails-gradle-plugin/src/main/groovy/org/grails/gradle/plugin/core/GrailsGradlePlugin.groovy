@@ -130,8 +130,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureGroovy(project)
 
-        configureMicronaut(project)
-
         registerToolingModelBuilder(project, registry)
 
         registerGrailsExtension(project)
@@ -270,24 +268,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileStatic
-    protected void configureMicronaut(Project project) {
-        String micronautVersion = resolveMicronautVersion(project)
-
-        project.configurations.all({ Configuration configuration ->
-            configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
-                String dependencyName = details.requested.name
-                String group = details.requested.group
-                if (group == 'io.micronaut' && dependencyName.startsWith('micronaut')) {
-                    details.useVersion(micronautVersion)
-                }
-                if (group == 'jakarta.annotation' && dependencyName == 'jakarta.annotation-api') {
-                    details.useVersion('2.1.1')
-                }
-            } as Action<DependencyResolveDetails>)
-        } as Action<Configuration>)
-    }
-
-    @CompileStatic
     protected void configureSpringBootExtension(Project project) {
         project.getTasks().withType(BootRun, {
             systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
@@ -413,14 +393,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
 
         springBootVersion
-    }
-
-    protected String resolveMicronautVersion(Project project) {
-        def micronautVersion = project.findProperty('micronautVersion')
-
-        micronautVersion = micronautVersion ?: new GrailsDependenciesDependencyManagement().getMicronautVersion()
-
-        micronautVersion
     }
 
     @CompileDynamic
