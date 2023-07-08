@@ -517,6 +517,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
             systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
+            systemProperty "spring.devtools.restart.enabled", false
+            systemProperty "spring.output.ansi.enabled", "ALWAYS"
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.console.GrailsConsole')
         }
@@ -526,6 +528,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
             systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
+            systemProperty "spring.devtools.restart.enabled", false
+            systemProperty "spring.output.ansi.enabled", "ALWAYS"
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
@@ -661,6 +665,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
+                systemProperty "spring.output.ansi.enabled", "ALWAYS"
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }
@@ -676,6 +681,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty "spring.devtools.restart.enabled", false
+                systemProperty "spring.output.ansi.enabled", "ALWAYS"
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }
