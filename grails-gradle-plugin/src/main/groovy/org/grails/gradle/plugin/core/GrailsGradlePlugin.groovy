@@ -130,8 +130,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureGroovy(project)
 
-        configureMicronaut(project)
-
         registerToolingModelBuilder(project, registry)
 
         registerGrailsExtension(project)
@@ -139,8 +137,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         applyBasePlugins(project)
 
         registerFindMainClassTask(project)
-
-        configureFileWatch(project)
 
         enableNative2Ascii(project, grailsVersion)
 
@@ -272,12 +268,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileStatic
-    protected void configureMicronaut(Project project) {
-        String micronautVersion = resolveMicronautVersion(project)
-
-    }
-
-    @CompileStatic
     protected void configureSpringBootExtension(Project project) {
         project.getTasks().withType(BootRun, {
             systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
@@ -304,12 +294,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if (project.extensions.findByName('grails') == null) {
             project.extensions.add('grails', new GrailsExtension(project))
         }
-    }
-
-    @CompileStatic
-    protected void configureFileWatch(Project project) {
-        def environment = Environment.current
-        enableFileWatch(environment, project)
     }
 
     @CompileStatic
@@ -409,14 +393,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
 
         springBootVersion
-    }
-
-    protected String resolveMicronautVersion(Project project) {
-        def micronautVersion = project.findProperty('micronautVersion')
-
-        micronautVersion = micronautVersion ?: new GrailsDependenciesDependencyManagement().getMicronautVersion()
-
-        micronautVersion
     }
 
     @CompileDynamic
@@ -525,18 +501,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
         }
-    }
-
-    @CompileDynamic
-    protected void enableFileWatch(Environment environment, Project project) {
-//        if (environment.isReloadEnabled()) {
-//            String micronautVersion = resolveMicronautVersion(project)
-//            if (project.configurations.findByName('developmentOnly')) {
-//                project.dependencies.add(
-//                        'developmentOnly',
-//                        "io.micronaut:micronaut-inject-groovy:${micronautVersion}")
-//            }
-//        }
     }
 
     protected void registerFindMainClassTask(Project project) {
