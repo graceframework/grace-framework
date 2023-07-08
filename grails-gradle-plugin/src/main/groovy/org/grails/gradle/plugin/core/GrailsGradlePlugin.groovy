@@ -493,6 +493,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
             def consoleTask = createConsoleTask(project, tasks, consoleConfiguration)
             def shellTask = createShellTask(project, tasks, consoleConfiguration)
 
+            consoleConfiguration.defaultDependencies(dependencies ->
+                    dependencies.add(project.getDependencies().create("org.grails:grails-console:" + getGrailsVersion()))
+            )
             findMainClass.doLast {
                 ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
                 def mainClassName = extraProperties.get('mainClassName')
