@@ -107,7 +107,7 @@ public class GrailsAwareClassLoader extends GroovyClassLoader {
 
         cu.addPhaseOperation((sourceUnit, context, classNode) -> sourceUnit.getAST().setMetaDataMap(getMetaDataMap()), Phases.SEMANTIC_ANALYSIS);
 
-        if (!disabledGrailsAwareInjectionOperation) {
+        if (!this.disabledGrailsAwareInjectionOperation) {
             cu.addPhaseOperation(getGrailsAwareInjectionOperation(cu), Phases.CANONICALIZATION);
         }
 

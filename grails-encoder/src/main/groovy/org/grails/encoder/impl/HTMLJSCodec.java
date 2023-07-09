@@ -16,6 +16,7 @@
 package org.grails.encoder.impl;
 
 import grails.artefact.Artefact;
+
 import org.grails.encoder.ChainedDecoder;
 import org.grails.encoder.ChainedEncoder;
 import org.grails.encoder.CodecFactory;

@@ -97,7 +97,8 @@ public class ArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransf
         performInjection(sourceUnit, cNode, injectors, compilationUnit);
     }
 
-    public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors, CompilationUnit compilationUnit) {
+    public static void performInjection(SourceUnit sourceUnit, ClassNode cNode, Collection<ClassInjector> injectors,
+            CompilationUnit compilationUnit) {
         List<ClassInjector> classInjectors = new ArrayList<>(injectors);
         OrderComparator.sort(classInjectors);
         try {

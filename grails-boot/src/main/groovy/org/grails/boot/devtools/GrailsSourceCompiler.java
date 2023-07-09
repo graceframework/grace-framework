@@ -26,6 +26,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import grails.compiler.ast.ClassInjector;
 import grails.util.BuildSettings;
 import grails.util.Environment;
+
 import org.grails.boot.internal.JavaCompiler;
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
 import org.grails.compiler.injection.GrailsAwareInjectionOperation;

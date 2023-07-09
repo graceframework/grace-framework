@@ -49,6 +49,7 @@ import grails.artefact.Artefact;
 import grails.core.ArtefactHandler;
 import grails.core.ArtefactInfo;
 import grails.core.GrailsClass;
+
 import org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation;
 import org.grails.compiler.injection.GlobalGrailsPluginTransformation;
 import org.grails.compiler.injection.GrailsASTUtils;
@@ -294,7 +295,7 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 
         private final ArtefactHandler delegate;
 
-        public DelegatedArtefactHandler(ArtefactHandler artefactHandler) {
+        DelegatedArtefactHandler(ArtefactHandler artefactHandler) {
             this.delegate = artefactHandler;
         }
 
