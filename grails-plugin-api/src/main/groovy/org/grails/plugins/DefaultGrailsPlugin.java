@@ -379,10 +379,13 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
 
         try {
             String pluginConfigKey = "grails.plugins." + this.getName() + ".watchedResources";
-            List resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
-            if (resourceList == null) {
-                pluginConfigKey = "grails.plugins." + this.getName() + ".watched-resources";
+            List resourceList = null;
+            if (this.grailsApplication != null && this.grailsApplication.getConfig() != null) {
                 resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
+                if (resourceList == null) {
+                    pluginConfigKey = "grails.plugins." + this.getName() + ".watched-resources";
+                    resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
+                }
             }
             if (resourceList == null) {
                 Object referencedResources = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, WATCHED_RESOURCES);
