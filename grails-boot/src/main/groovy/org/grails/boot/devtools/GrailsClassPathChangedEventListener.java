@@ -28,6 +28,7 @@ import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
 import grails.util.BuildSettings;
+
 import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.BinaryGrailsPlugin;
 

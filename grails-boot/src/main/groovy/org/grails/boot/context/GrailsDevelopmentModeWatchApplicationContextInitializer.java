@@ -45,6 +45,7 @@ import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.util.BuildSettings;
 import grails.util.Environment;
+
 import org.grails.boot.internal.JavaCompiler;
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
 import org.grails.compiler.injection.GrailsAwareInjectionOperation;

@@ -18,6 +18,7 @@ package org.grails.encoder.impl;
 import java.io.IOException;
 
 import grails.artefact.Artefact;
+
 import org.grails.encoder.CodecFactory;
 import org.grails.encoder.CodecIdentifier;
 import org.grails.encoder.Decoder;
