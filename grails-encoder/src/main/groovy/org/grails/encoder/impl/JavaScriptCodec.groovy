@@ -31,7 +31,7 @@ import org.grails.encoder.Decoder
  * @author Graeme Rocher
  * @since 0.5
  */
-@Artefact("Codec")
+@Artefact('Codec')
 @CompileStatic
 class JavaScriptCodec implements CodecFactory {
 

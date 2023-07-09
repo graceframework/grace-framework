@@ -110,8 +110,8 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
         if (baseDir == null || changedFile == null) {
             return false
         }
-        String i18nPath = new File(baseDir, BuildSettings.GRAILS_APP_PATH + File.separator + "i18n").getAbsolutePath()
-        return changedFile.absolutePath.startsWith(i18nPath)
+        String i18nPath = new File(baseDir, BuildSettings.GRAILS_APP_PATH + File.separator + 'i18n').getAbsolutePath()
+        changedFile.absolutePath.startsWith(i18nPath)
     }
 
     private void reloadChangedI18nFile(File resourcesDir, File eventFile, boolean nativeascii) {

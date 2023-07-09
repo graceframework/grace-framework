@@ -157,11 +157,13 @@ class MainClassFinder {
             }
             if (file.isDirectory()) {
                 File[] files = file.listFiles(new FileFilter() {
+
                     @Override
                     boolean accept(File f) {
                         (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
                                 (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
                     }
+
                 })
 
                 if (files) {

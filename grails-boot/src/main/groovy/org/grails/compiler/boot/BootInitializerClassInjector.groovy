@@ -147,7 +147,7 @@ class BootInitializerClassInjector implements GrailsArtefactClassInjector {
             return false
         }
 
-        return this.applicationArtefactHandler.isArtefact(classNode)
+        this.applicationArtefactHandler.isArtefact(classNode)
                 && !GrailsASTUtils.isSubclassOfOrImplementsInterface(classNode, GrailsPluginApplication.name)
     }
 

@@ -26,7 +26,7 @@ import org.grails.encoder.impl.URLCodecFactory
  * @author Marc Palmer
  * @since 0.5
  */
-@Artefact("Codec")
+@Artefact('Codec')
 class URLCodec extends URLCodecFactory {
 
     protected String resolveEncoding() {
