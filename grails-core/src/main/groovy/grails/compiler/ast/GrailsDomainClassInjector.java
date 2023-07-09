@@ -24,7 +24,7 @@ import org.codehaus.groovy.ast.ClassNode;
  * @since 0.2
  * @deprecated since 2022.3.0, in favor of {@link grails.compiler.ast.ClassInjector}
  */
-@Deprecated(forRemoval = true, since = "2023.0.0")
+@Deprecated(since = "2022.3.0", forRemoval = true)
 public interface GrailsDomainClassInjector extends ClassInjector {
 
     /**
@@ -34,7 +34,7 @@ public interface GrailsDomainClassInjector extends ClassInjector {
      * @param classNode The ClassNode
      * @since 1.1
      */
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(since = "2022.3.0", forRemoval = true)
     void performInjectionOnAnnotatedEntity(ClassNode classNode);
 
 }

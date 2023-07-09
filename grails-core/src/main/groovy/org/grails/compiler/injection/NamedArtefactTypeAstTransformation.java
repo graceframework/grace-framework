@@ -29,7 +29,7 @@ import grails.compiler.ast.ClassInjector;
  * @since 2.0
  * @deprecated since 2022.3.0, in favor of {@link ArtefactTypeAstTransformation}
  */
-@Deprecated(forRemoval = true, since = "2023.0.0")
+@Deprecated(since = "2022.3.0", forRemoval = true)
 @GroovyASTTransformation
 public class NamedArtefactTypeAstTransformation extends AbstractArtefactTypeAstTransformation {
 

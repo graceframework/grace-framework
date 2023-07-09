@@ -27,7 +27,7 @@ import grails.compiler.traits.TraitInjector
  * @deprecated since 2022.3.0
  */
 @CompileStatic
-@Deprecated(since = "2022.3.0", forRemoval = true)
+@Deprecated(since = '2022.3.0', forRemoval = true)
 class TraitInjectionSupport {
 
     static List<TraitInjector> resolveTraitInjectors(List<TraitInjector> injectors) {

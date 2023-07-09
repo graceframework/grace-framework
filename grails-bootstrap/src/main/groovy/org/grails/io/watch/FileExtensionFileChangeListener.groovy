@@ -24,7 +24,7 @@ import groovy.transform.CompileStatic
  * @since 3.0
  * @deprecated since 2022.3.0, in favor of Spring DevTools
  */
-@Deprecated(since = "2022.3.0", forRemoval = true)
+@Deprecated(since = '2022.3.0', forRemoval = true)
 @CompileStatic
 abstract class FileExtensionFileChangeListener implements DirectoryWatcher.FileChangeListener {
 

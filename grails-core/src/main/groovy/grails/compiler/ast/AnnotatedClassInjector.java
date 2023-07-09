@@ -26,7 +26,7 @@ import org.codehaus.groovy.control.SourceUnit;
  * @since 2.2.3
  * @deprecated since 2022.3.0, in favor of ${@link grails.compiler.ast.ClassInjector}
  */
-@Deprecated(forRemoval = true, since = "2023.0.0")
+@Deprecated(since = "2022.3.0", forRemoval = true)
 public interface AnnotatedClassInjector {
 
     /**
@@ -34,7 +34,7 @@ public interface AnnotatedClassInjector {
      * @param source The source unit
      * @param classNode The class node
      */
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(since = "2022.3.0", forRemoval = true)
     void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode);
 
 }
