@@ -65,7 +65,7 @@ public interface ClassInjector extends Ordered {
      * @param classNode The ClassNode instance
      * @deprecated since 2022.3.0, in favor of {@link #performInjection(SourceUnit, ClassNode)}
      */
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(since = "2022.3.0", forRemoval = true)
     default void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
     }
 
@@ -76,7 +76,7 @@ public interface ClassInjector extends Ordered {
      * @return true if injection should occur
      * @deprecated since 2022.3.0, in favor of {@link #shouldInject(ClassNode)}
      */
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(since = "2022.3.0", forRemoval = true)
     default boolean shouldInject(URL url) {
         return true;
     }
