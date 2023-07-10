@@ -427,7 +427,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
 
-        String repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
+        String repositories = profile.repositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
         List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
@@ -458,7 +458,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
-        String buildRepositoriesString = buildRepositories.collect(repositoryUrl.curry(8)).unique().join(ln)
+        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
