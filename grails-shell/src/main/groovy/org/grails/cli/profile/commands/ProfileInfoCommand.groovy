@@ -70,24 +70,24 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
         }
         else {
             console.log("Profile: ${profile.name}")
-            console.log('--------------------')
+            console.log('-' * 80)
             console.log(profile.description)
             console.log('')
             console.log('Provided Commands:')
-            console.log('--------------------')
-            Iterable<Command> commands = findCommands(profile, console).toUnique { Command c -> c.name }
+            console.log('-' * 80)
+            Iterable<Command> commands = findCommands(profile, console).sort { Command c -> c.name }.toUnique { Command c -> c.name }
 
             for (cmd in commands) {
                 CommandDescription description = cmd.description
-                console.log("* ${description.name} - ${description.description}")
+                console.log("* ${description.name.padRight(30)} ${description.description}")
             }
             console.log('')
             console.log('Provided Features:')
-            console.log('--------------------')
-            Iterable<Feature> features = profile.features
+            console.log('-' * 80)
+            Iterable<Feature> features = profile.features.sort { Feature f -> f.name }
 
             for (feature in features) {
-                console.log("* ${feature.name} - ${feature.description}")
+                console.log("* ${feature.name.padRight(30)} ${feature.description}")
             }
         }
 
