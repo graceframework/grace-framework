@@ -28,6 +28,7 @@ import grails.util.Environment
 
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.core.GrailsGradlePlugin
+import org.grails.gradle.plugin.util.BuildSettings
 
 /**
  * Adds web specific extensions
@@ -53,8 +54,11 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console)
             taskContainer.create('urlMappingsReport', ApplicationContextCommandTask) {
                 classpath = fileCollection
-                systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
                 command = 'url-mappings-report'
+                systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
+                systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
+                systemProperty "spring.devtools.restart.enabled", false
+                systemProperty "spring.output.ansi.enabled", "ALWAYS"
             }
         }
     }
