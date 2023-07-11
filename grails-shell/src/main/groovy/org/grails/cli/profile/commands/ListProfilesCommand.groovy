@@ -42,12 +42,13 @@ class ListProfilesCommand implements Command, ProfileRepositoryAware {
 
     @Override
     boolean handle(ExecutionContext executionContext) {
-        List<Profile> allProfiles = profileRepository.allProfiles
+        List<Profile> allProfiles = profileRepository.allProfiles.sort { Profile p -> p.name}
         GrailsConsole console = executionContext.console
-        console.addStatus('Available Profiles')
-        console.log('--------------------')
+        console.log('-' * 100)
+        console.log('Available Profiles')
+        console.log('-' * 100)
         for (Profile p in allProfiles) {
-            console.log("* $p.name - ${p.description}")
+            console.log("* ${p.name.padRight(30)} ${p.version.padRight(20)}  ${p.description}")
         }
 
         true
