@@ -18,7 +18,6 @@ package org.grails.cli.profile.commands
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
-import grails.config.ConfigMap
 
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
@@ -28,7 +27,7 @@ import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.ProjectContext
-import org.grails.config.CodeGenConfig
+import org.grails.cli.profile.ProjectContextAware
 
 /**
  * A command to find out information about the given profile
@@ -37,13 +36,14 @@ import org.grails.config.CodeGenConfig
  * @since 3.1
  */
 @CompileStatic
-class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRepositoryAware {
+class ProfileInfoCommand extends ArgumentCompletingCommand implements ProjectContextAware, ProfileRepositoryAware {
 
     public static final String NAME = 'profile-info'
 
     final String name = NAME
     final CommandDescription description = new CommandDescription(name, 'Display information about a given profile')
 
+    ProjectContext projectContext
     ProfileRepository profileRepository
 
     ProfileInfoCommand() {
@@ -69,13 +69,14 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             console.error("Profile not found for name [$profileName]")
         }
         else {
-            console.log("Profile: ${profile.name}")
-            console.log('-' * 80)
+            console.log('-' * 100)
+            console.log("Profile: ${profile.name} v${profile.version}")
+            console.log('-' * 100)
             console.log(profile.description)
             console.log('')
             console.log('Provided Commands:')
-            console.log('-' * 80)
-            Iterable<Command> commands = findCommands(profile, console).sort { Command c -> c.name }.toUnique { Command c -> c.name }
+            console.log('-' * 18)
+            Iterable<Command> commands = profile.getCommands(projectContext).sort { Command c -> c.name }.toUnique { Command c -> c.name }
 
             for (cmd in commands) {
                 CommandDescription description = cmd.description
@@ -83,7 +84,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             }
             console.log('')
             console.log('Provided Features:')
-            console.log('-' * 80)
+            console.log('-' * 18)
             Iterable<Feature> features = profile.features.sort { Feature f -> f.name }
 
             for (feature in features) {
@@ -92,38 +93,6 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
         }
 
         true
-    }
-
-    protected Iterable<Command> findCommands(Profile profile, GrailsConsole console) {
-        Iterable<Command> commands = profile.getCommands(new ProjectContext() {
-
-            @Override
-            GrailsConsole getConsole() {
-                console
-            }
-
-            @Override
-            File getBaseDir() {
-                new File('.')
-            }
-
-            @Override
-            ConfigMap getConfig() {
-                new CodeGenConfig()
-            }
-
-            @Override
-            String navigateConfig(String... path) {
-                config.navigate(path)
-            }
-
-            @Override
-            <T> T navigateConfigForType(Class<T> requiredType, String... path) {
-                (T) config.navigate(path)
-            }
-
-        })
-        commands
     }
 
 }
