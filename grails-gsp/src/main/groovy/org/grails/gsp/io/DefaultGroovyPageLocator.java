@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import org.springframework.core.io.ResourceLoader;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
+import grails.util.BuildSettings;
 import grails.util.CollectionUtils;
 import grails.util.Environment;
 
@@ -131,7 +132,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin) grailsPlugin;
                 File projectDirectory = binaryGrailsPlugin.getProjectDirectory();
                 if (projectDirectory != null) {
-                    File f = new File(projectDirectory, GrailsResourceUtils.VIEWS_DIR_PATH + uri);
+                    File f = new File(projectDirectory, BuildSettings.GRAILS_APP_PATH + "/views" + uri);
                     if (f.exists()) {
                         scriptSource = new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
                     }
@@ -213,21 +214,16 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
     }
 
     protected GroovyPageScriptSource resolveViewInBinaryPlugin(BinaryGrailsPlugin binaryPlugin, String uri) {
-        for (String dir : Arrays.asList("grails-app", "app")) {
-            GroovyPageScriptSource scriptSource = null;
-            String fullUri = removeViewLocationPrefixes(uri);
-            fullUri = GrailsResourceUtils.appendPiecesForUri("/WEB-INF/" + dir + "/views", fullUri);
-            Class<?> viewClass = binaryPlugin.resolveView(fullUri);
-            if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
-                scriptSource = createGroovyPageCompiledScriptSource(uri, fullUri, viewClass);
-                // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
-                ((GroovyPageCompiledScriptSource) scriptSource).setResourceCallable(null);
-            }
-            if (scriptSource != null) {
-                return scriptSource;
-            }
+        GroovyPageCompiledScriptSource scriptSource = null;
+        String fullUri = removeViewLocationPrefixes(uri);
+        fullUri = GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, fullUri);
+        Class<?> viewClass = binaryPlugin.resolveView(fullUri);
+        if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
+            scriptSource = createGroovyPageCompiledScriptSource(uri, fullUri, viewClass);
+            // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
+            scriptSource.setResourceCallable(null);
         }
-        return null;
+        return scriptSource;
     }
 
     protected GroovyPageCompiledScriptSource createGroovyPageCompiledScriptSource(final String uri, String fullPath, Class<?> viewClass) {
@@ -279,11 +275,10 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     private GroovyPageScriptSource resolveViewInPluginProjectDirectory(BinaryGrailsPlugin binaryPlugin, String uri) {
         File projectDirectory = binaryPlugin.getProjectDirectory();
-        for (String dir : Arrays.asList("grails-app", "app")) {
-            File f = new File(projectDirectory, dir + File.separator + "views" + uri);
-            if (f.exists()) {
-                return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
-            }
+
+        File f = new File(projectDirectory, BuildSettings.GRAILS_APP_PATH + "/views" + uri);
+        if (f.exists()) {
+            return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
         }
 
         return null;
@@ -318,7 +313,8 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 continue;
             }
 
-            Resource resource = findResource(resolvePluginViewPath(uri, plugin));
+            String pluginViewPath = resolvePluginViewPath(uri, plugin);
+            Resource resource = findResource(pluginViewPath);
             if (resource != null) {
                 return resource;
             }
@@ -336,7 +332,6 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         uri = removePrefix(uri, GrailsResourceUtils.WEB_INF);
         uri = removePrefix(uri, SLASHED_VIEWS_DIR_PATH);
         uri = removePrefix(uri, GrailsResourceUtils.VIEWS_DIR_PATH);
-        uri = removePrefix(uri, "app/views/");
         return uri;
     }
 
@@ -364,24 +359,19 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
                                 pathInfo.pluginName, GrailsResourceUtils.VIEWS_DIR_PATH, pathInfo.path),
-                        GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
-                                pathInfo.pluginName, "app/views/", pathInfo.path),
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, uri),
                         uri);
             }
             else {
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
-                        GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                         uri);
             }
         }
         else {
             searchPaths = CollectionUtils.newList(
-                    GrailsResourceUtils.appendPiecesForUri(SLASHED_VIEWS_DIR_PATH, uri),
+                    GrailsResourceUtils.appendPiecesForUri(BuildSettings.GRAILS_APP_PATH + "/views", uri),
                     GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
-                    GrailsResourceUtils.appendPiecesForUri("/app/views/", uri),
-                    GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                     uri);
         }
         return searchPaths;

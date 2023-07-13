@@ -65,6 +65,7 @@ import grails.plugins.Plugin;
 import grails.plugins.PluginFilter;
 import grails.plugins.exceptions.PluginException;
 import grails.plugins.module.ModuleType;
+import grails.util.BuildSettings;
 import grails.util.Environment;
 import grails.util.GrailsNameUtils;
 
@@ -704,7 +705,7 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
         if (theClass != null) {
             String path = getPluginPathForClass(theClass);
             if (StringUtils.isNotBlank(path)) {
-                return path + '/' + GrailsResourceUtils.GRAILS_APP_DIR + "/views";
+                return path + "/" + BuildSettings.GRAILS_APP_PATH + "/" + "views";
             }
         }
         return null;
