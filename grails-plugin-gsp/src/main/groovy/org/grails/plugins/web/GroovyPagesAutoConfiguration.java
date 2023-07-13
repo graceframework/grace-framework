@@ -129,10 +129,11 @@ public class GroovyPagesAutoConfiguration {
                 defaultViews = resourceLoader.getResource("classpath:gsp/views.properties");
             }
             if (defaultViews.exists()) {
-                PropertiesFactoryBean pfb = new PropertiesFactoryBean();
-                pfb.setIgnoreResourceNotFound(true);
-                pfb.setLocation(defaultViews);
                 try {
+                    PropertiesFactoryBean pfb = new PropertiesFactoryBean();
+                    pfb.setIgnoreResourceNotFound(true);
+                    pfb.setLocation(defaultViews);
+                    pfb.afterPropertiesSet();
                     Map<String, String> precompiledGspMap = new HashMap<>();
                     CollectionUtils.mergePropertiesIntoMap(pfb.getObject(), precompiledGspMap);
                     groovyPageLocator.setPrecompiledGspMap(precompiledGspMap);
