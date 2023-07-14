@@ -8,5 +8,6 @@ dependencies {
 
     testImplementation libs.spring.test
     testImplementation project(":grails-test")
+    testImplementation project(":grails-plugin-i18n")
     testRuntimeOnly project(":grails-spring")
 }
