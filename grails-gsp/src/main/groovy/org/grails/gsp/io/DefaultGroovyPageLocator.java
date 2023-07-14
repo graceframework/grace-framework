@@ -66,6 +66,8 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     private static final String PLUGINS_PATH = "/plugins/";
 
+    private static final String GRAILS_VIEWS_PATH = "/" + BuildSettings.GRAILS_APP_PATH + "/" + "views";
+
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Collection<ResourceLoader> resourceLoaders = new ConcurrentLinkedQueue<>();
@@ -370,7 +372,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         }
         else {
             searchPaths = CollectionUtils.newList(
-                    GrailsResourceUtils.appendPiecesForUri(BuildSettings.GRAILS_APP_PATH + File.separator + "views", uri),
+                    GrailsResourceUtils.appendPiecesForUri(GRAILS_VIEWS_PATH, uri),
                     GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
                     uri);
         }
