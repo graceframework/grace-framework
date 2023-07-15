@@ -208,7 +208,7 @@ public class GroovyPagesAutoConfiguration {
         return tagLibraryResolver;
     }
 
-    @Bean
+    @Bean(name = {"jspViewResolver", "defaultViewResolver"})
     @ConditionalOnMissingBean
     public GroovyPageViewResolver jspViewResolver(ObjectProvider<GrailsApplication> grailsApplication,
                                                   CachingGrailsConventionGroovyPageLocator groovyPageLocator,
