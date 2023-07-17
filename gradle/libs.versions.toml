@@ -49,7 +49,6 @@ junit-jupiter = "5.9.2"
 junit-platform = "1.9.2"
 maven = "3.6.3"
 maven-resolver = "1.6.3"
-methvin-directory-watcher = "0.18.0"
 micronaut-core = "4.0.0"
 mockito = "4.5.1"
 mongodb-java-driver = "4.6.1"
@@ -166,7 +165,6 @@ maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider",
 maven-resolver-impl = { module = "org.apache.maven.resolver:maven-resolver-impl", version.ref = "maven-resolver" }
 maven-resolver-transportFile = { module = "org.apache.maven.resolver:maven-resolver-transport-file", version.ref = "maven-resolver" }
 maven-resolver-transportHttp = { module = "org.apache.maven.resolver:maven-resolver-transport-http", version.ref = "maven-resolver" }
-methvin-directoryWatcher = { module = "io.methvin:directory-watcher", version.ref = "methvin-directory-watcher" }
 micronaut-aop = { module = "io.micronaut:micronaut-aop", version.ref = "micronaut-core" }
 micronaut-bom = { module = "io.micronaut:micronaut-bom", version.ref = "micronaut-core" }
 micronaut-context = { module = "io.micronaut:micronaut-context", version.ref = "micronaut-core" }
@@ -214,7 +212,6 @@ xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xht
 [bundles]
 bom = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
 grails-async = ["grails-async", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-async-rxjava3", "grails-plugin-async"]
-grails-devtools = ["methvin-directoryWatcher"]
 grails-events = ["grails-events", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-rxjava3", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
 grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datastore-gorm", "grails-datastore-gorm-async", "grails-datastore-gorm-rx", "grails-datastore-gorm-hibernate5", "grails-datastore-gorm-support", "grails-datastore-gorm-test", "grails-datastore-gorm-validation"]
 grails-scaffolding = ["grails-scaffolding-core"]
