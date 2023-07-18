@@ -3,7 +3,6 @@ package org.grails.web.converters
 import spock.lang.Specification
 
 import org.codehaus.groovy.runtime.NullObject
-import org.grails.web.converters.ConverterUtil;
 
 class ConverterUtilSpec extends Specification {
 
@@ -25,7 +24,7 @@ class ConverterUtilSpec extends Specification {
 
         when:
 
-            def result = converterUtil.invokeOriginalAsTypeMethod(new NullObject(), Long)
+            def result = converterUtil.invokeOriginalAsTypeMethod(NullObject.getNullObject(), Long)
 
         then:
             result == null
