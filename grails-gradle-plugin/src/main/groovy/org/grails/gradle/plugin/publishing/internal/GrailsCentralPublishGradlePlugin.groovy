@@ -349,7 +349,7 @@ BINTRAY_KEY=key
     protected Map<String, String> getDefaultExtraArtifact(Project project) {
         def directory
         try {
-            directory = project.sourceSets.main.groovy.outputDir
+            directory = project.sourceSets.main.groovy.classesDirectory
         }
         catch (Exception e) {
             directory = project.sourceSets.main.output.classesDirs
