@@ -192,6 +192,9 @@ subprojects { project ->
     apply plugin: "org.gradle.test-retry"
 
     java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
         withJavadocJar()
         withSourcesJar()
     }
@@ -260,9 +263,6 @@ subprojects { project ->
     }
 
     if (project.name in ['grails-bom', 'grails-dependencies']) return
-
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 
     jar {
         manifest.mainAttributes(
