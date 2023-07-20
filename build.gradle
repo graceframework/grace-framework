@@ -23,10 +23,11 @@ ext {
     // directories created during the build which are related
     // to turning the workspace root into a GRAILS_HOME
     distInstallDir = file("$buildDir/dist-tmp")
-    homeDistDir = file("dist")
     homeBinDir = file("bin")
     homeConfDir = file("conf")
+    homeDistDir = file("dist")
     homeLibDir = file("lib")
+    homeRepoDir = file("repo")
     homeSrcDir = file("src")
 }
 
@@ -218,10 +219,17 @@ subprojects { project ->
                 }
             }
 
+            repositories {
+                maven {
+                    name = 'grailsLocal'
+                    url = homeRepoDir
+                }
+            }
+
             if (project.name in ['grails-bom', 'grails-dependencies', 'grails-gradle-plugin']) return
 
             publications {
-                mavenJava(MavenPublication) {
+                maven(MavenPublication) {
                     from components.java
 
                     pom.withXml {
@@ -233,13 +241,13 @@ subprojects { project ->
             }
         }
 
-        // signing {
-        //     required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-        //     sign publishing.publications.mavenJava
-        // }
-
-        tasks.withType(Sign) {
-            onlyIf { isReleaseVersion }
+        afterEvaluate {
+            if (project.name != 'grails-gradle-plugin') {
+                signing {
+                    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                    sign publishing.publications.maven
+                }
+            }
         }
 
         javadoc {
@@ -408,7 +416,6 @@ subprojects { project ->
     }
 
     if (!isTestSuite) {
-
         task installToHomeDist(type: org.grails.gradle.Upload) {
             configuration = configurations.archives
             repositories {
@@ -433,6 +440,7 @@ task clean(type: Delete, group: 'build') {
            homeConfDir,
            homeDistDir,
            homeLibDir,
+           homeRepoDir,
            homeSrcDir
 }
 
