@@ -1,7 +1,7 @@
 [plugins]
 cache = "5.3.0"
 fields = "5.2.5"
-geb = "3.0.0"
+geb = "5.3.0"
 hibernate5 = "2022.3.0"
 mongodb = "7.2.1"
 neo4j = "7.2.1"
