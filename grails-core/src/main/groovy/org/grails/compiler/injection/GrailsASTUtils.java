@@ -1778,8 +1778,12 @@ public final class GrailsASTUtils {
         if (filename == null || projectDir == null || grailsAppDir == null) {
             return false;
         }
-        return filename.startsWith(grailsAppDir + File.separatorChar + artefactPath) ||
-                (filename.startsWith(projectDir + File.separatorChar + "src") && filename.endsWith("GrailsPlugin.groovy"));
+        if (artefactPath != null) {
+            return filename.startsWith(grailsAppDir + File.separatorChar + artefactPath);
+        }
+        else {
+            return filename.startsWith(projectDir + File.separatorChar + "src") && filename.endsWith("GrailsPlugin.groovy");
+        }
     }
 
     /**

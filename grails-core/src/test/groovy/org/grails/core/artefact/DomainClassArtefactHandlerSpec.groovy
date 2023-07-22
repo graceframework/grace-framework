@@ -244,4 +244,27 @@ abstract class TestEntity {
         handler.isArtefact(clazz)
     }
 
+    void "Check FooGrailsPlugin within 'src/groovy' is not a Domain Class"() {
+        given:
+        ArtefactHandler handler = new DomainClassArtefactHandler()
+        GroovyClassLoader gcl = new GroovyClassLoader()
+        Class<?> clazz = gcl.parseClass('''
+class FooGrailsPlugin {
+}
+''')
+
+        SourceUnit sourceUnit = Mock()
+        ModuleNode moduleNode = new ModuleNode(sourceUnit)
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
+        sourceUnit.getAST() >> moduleNode
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/src/main/groovy/org/grails/demo/FooGrailsPlugin.groovy'
+
+        ClassNode classNode = new ClassNode(clazz)
+        classNode.setModule(moduleNode)
+
+        expect:
+        !handler.isArtefact(classNode)
+    }
+
 }
