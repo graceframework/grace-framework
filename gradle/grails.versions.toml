@@ -2,7 +2,7 @@
 cache = "5.2.5"
 fields = "5.2.5"
 geb = "3.0.0"
-hibernate5 = "2022.3.0-SNAPSHOT"
+hibernate5 = "2022.3.0"
 mongodb = "7.2.1"
 neo4j = "7.2.1"
 rxjava = "1.1.1"
