@@ -93,66 +93,6 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /**
-     * @see jakarta.servlet.http.HttpSession#getSessionContext()
-     * @deprecated
-     */
-//    @Deprecated
-//    public jakarta.servlet.http.HttpSessionContext getSessionContext() {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getSessionContext();
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#getValue(java.lang.String)
-     * @deprecated
-     */
-//    @Deprecated
-//    public Object getValue(String name) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getAttribute(name);
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#getValueNames()
-     * @deprecated
-     */
-//    @Deprecated
-//    public String[] getValueNames() {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getValueNames();
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#putValue(java.lang.String, java.lang.Object)
-     * @deprecated
-     */
-//    @Deprecated
-//    public void putValue(String name, Object value) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            this.adaptee.setAttribute(name, value);
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#removeValue(java.lang.String)
-     * @deprecated
-     */
-//    @Deprecated
-//    public void removeValue(String name) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            this.adaptee.removeAttribute(name);
-//        }
-//    }
-
     @Override
     public void invalidate() {
         createSessionIfNecessary();
