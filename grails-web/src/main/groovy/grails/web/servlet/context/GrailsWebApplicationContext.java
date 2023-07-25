@@ -49,6 +49,7 @@ import org.grails.spring.GrailsApplicationContext;
  * @author Graeme
  * @since 0.3
  */
+@SuppressWarnings("deprecation")
 public class GrailsWebApplicationContext extends GrailsApplicationContext
         implements ConfigurableWebApplicationContext, ThemeSource {
 
