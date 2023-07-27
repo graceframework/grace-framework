@@ -10,7 +10,7 @@ import spock.lang.Specification
 class InheritanceWithValidationTests extends Specification implements DataTest {
 
     void setupSpec() {
-        mockDomains AbstractCustomPropertyValue, CustomProperty, StringPropertyValue
+        mockDomains AbstractCustomPropertyValue, CustomProperty //, StringPropertyValue
     }
 
     void testNewStringValue () {
@@ -52,7 +52,7 @@ class CustomProperty {
     }
 }
 
-@Entity
+// @Entity
 class StringPropertyValue extends AbstractCustomPropertyValue {
 
     String stringValue
