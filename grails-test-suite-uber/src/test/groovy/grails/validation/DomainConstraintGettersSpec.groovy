@@ -559,17 +559,17 @@ class DomainWithTransients {
 
     void setMethodProperty(String value) {}
 
-    transient String getTransientMethodProperty() {}
+    String getTransientMethodProperty() {}
 
-    transient void setTransientMethodProperty(String value) {}
+    void setTransientMethodProperty(String value) {}
 
     Boolean isBoolMethodProperty() {}
 
     void setBoolMethodProperty(Boolean value) {}
 
-    transient Boolean isTransientBoolMethodProperty() {}
+    Boolean isTransientBoolMethodProperty() {}
 
-    transient void setTransientBoolMethodProperty(Boolean value) {}
+    void setTransientBoolMethodProperty(Boolean value) {}
 }
 
 trait TraitWithTransients {
@@ -581,17 +581,17 @@ trait TraitWithTransients {
 
     void setMethodProperty(String value) {}
 
-    transient String getTransientMethodProperty() {}
+    String getTransientMethodProperty() {}
 
-    transient void setTransientMethodProperty(String value) {}
+    void setTransientMethodProperty(String value) {}
 
     Boolean isBoolMethodProperty() {}
 
     void setBoolMethodProperty(Boolean value) {}
 
-    transient Boolean isTransientBoolMethodProperty() {}
+    Boolean isTransientBoolMethodProperty() {}
 
-    transient void setTransientBoolMethodProperty(Boolean value) {}
+    void setTransientBoolMethodProperty(Boolean value) {}
 }
 
 //@Entity
