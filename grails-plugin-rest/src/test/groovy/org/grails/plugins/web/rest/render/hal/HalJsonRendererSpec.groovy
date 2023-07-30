@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import grails.config.Config
 import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import grails.persistence.Entity
+import grails.rest.Resource
 import grails.rest.render.Renderer
 import grails.rest.render.hal.HalJsonCollectionRenderer
 import grails.rest.render.hal.HalJsonRenderer
@@ -88,7 +89,7 @@ class HalJsonRendererSpec extends Specification{
 
         then:"The resulting HAL is correct"
             response.contentType == GrailsWebUtil.getContentType(HalJsonRenderer.MIME_TYPE.name, GrailsWebUtil.DEFAULT_ENCODING)
-        response.contentAsString == '''{
+            response.contentAsString == '''{
     "_links": {
         "self": {
             "href": "http://localhost/products",
@@ -708,7 +709,6 @@ class HalJsonRendererSpec extends Specification{
 
     }
 
-
     @Issue('GRAILS-11100')
     void "Test that the HAL renderer ignores null values for embedded single ended domain objects" () {
         given:"A HAL renderer"
@@ -797,6 +797,32 @@ class HalJsonRendererSpec extends Specification{
 }'''
     }
 
+    void "Test that the HAL renderer renders domain objects with appropriate links"() {
+        given:"A HAL renderer"
+        HalJsonRenderer renderer = getBookRenderer()
+
+        when:"A domain object is rendered"
+        def webRequest = boundMimeTypeRequest()
+        webRequest.request.addHeader("ACCEPT", "application/hal+json")
+        def response = webRequest.response
+        def renderContext = new ServletRenderContext(webRequest)
+        final author = new Author(name: "Stephen King")
+        author.id = 2L
+        def book = new Book(title:"The Stand", author: author)
+        book.authors = []
+        book.authors << author
+        book.link(href:"/publisher", rel:"The Publisher")
+        final author2 = new Author(name: "King Stephen")
+        author2.id = 3L
+        book.authors << author2
+        book.id = 1L
+        renderer.render(book, renderContext)
+
+        then:"The resulting HAL is correct"
+        response.contentType == GrailsWebUtil.getContentType(HalJsonRenderer.MIME_TYPE.name, GrailsWebUtil.DEFAULT_ENCODING)
+        response.contentAsString == '{"_links":{"self":{"href":"http://localhost/books/1","hreflang":"en","type":"application/hal+json"},"The Publisher":{"href":"/publisher","hreflang":"en"},"author":{"href":"http://localhost/authors/2","hreflang":"en"}},"title":"The Stand","_embedded":{"author":{"_links":{"self":{"href":"http://localhost/authors/2","hreflang":"en"}},"name":"Stephen King"},"authors":[{"_links":{"self":{"href":"http://localhost/authors/2","hreflang":"en"}},"name":"Stephen King"},{"_links":{"self":{"href":"http://localhost/authors/3","hreflang":"en"}},"name":"King Stephen"}]}}'
+    }
+
     protected configureMembersWebRequest() {
         def webRequest = boundMimeTypeRequest()
         webRequest.request.addHeader("ACCEPT", "application/hal+json")
@@ -868,6 +894,17 @@ class HalJsonRendererSpec extends Specification{
         renderer
     }
 
+    protected HalJsonRenderer getBookRenderer() {
+        def renderer = new HalJsonRenderer(Product)
+        renderer.mappingContext = mappingContext
+        renderer.messageSource = new StaticMessageSource()
+        renderer.linkGenerator = getLinkGenerator {
+            "/books"(resources: "book")
+            "/authors"(resources: "author")
+        }
+        renderer
+    }
+
     MappingContext getMappingContextForSpecialEvent() {
         final context = new KeyValueMappingContext("")
         def specialEventEntity = context.addPersistentEntity(SpecialEvent)
@@ -892,6 +929,8 @@ class HalJsonRendererSpec extends Specification{
         context.addPersistentEntity(Project)
         context.addPersistentEntities(Team)
         context.addPersistentEntities(Member)
+        context.addPersistentEntities(Book)
+        context.addPersistentEntities(Author)
         return context
     }
     LinkGenerator getLinkGenerator(Closure mappings) {
@@ -1073,3 +1112,22 @@ class SimpleCategory {
 class SpecialType {
 }
 
+@Entity
+@Resource
+class Book {
+    Date dateCreated
+    Date lastUpdated
+
+    String title
+    Author author
+
+    static hasMany = [authors:Author]
+}
+
+@Entity
+class Author {
+    Date dateCreated
+    Date lastUpdated
+
+    String name
+}
