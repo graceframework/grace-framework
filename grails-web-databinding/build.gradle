@@ -1,4 +1,0 @@
-dependencies {
-    api project(":grails-databinding")
-    api project(":grails-web-common")
-}

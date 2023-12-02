@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-databinding")
+    api project(":grace-web-common")
+}

@@ -1,0 +1,6 @@
+dependencies {
+    api project(":grace-core")
+    // HtmlUtils is used from spring-web
+    api "org.codehaus.groovy:groovy-json:$groovyVersion"
+    api "org.springframework:spring-web:${springVersion}"
+}

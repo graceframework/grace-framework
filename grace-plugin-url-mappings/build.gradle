@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-web"), project(":grace-plugin-controllers")
+    api "junit:junit:${junitVersion}"
+}

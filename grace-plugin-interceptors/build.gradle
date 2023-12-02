@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-plugin-controllers")
+    api project(":grace-plugin-url-mappings")
+}

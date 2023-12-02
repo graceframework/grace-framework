@@ -1,79 +1,79 @@
-plugins {
-    id "com.gradle.enterprise" version "3.8.1"
-    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.6.3'
-}
+// plugins {
+//     id "com.gradle.enterprise" version "3.8.1"
+//     id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.6.3'
+// }
 
-gradleEnterprise {
-    server = 'https://ge.grails.org'
-    buildScan {
-        publishAlways()
-        publishIfAuthenticated()
-        uploadInBackground = System.getenv("CI") == null
-        capture {
-            taskInputFiles = true
-        }
-    }
+// gradleEnterprise {
+//     server = 'https://ge.grails.org'
+//     buildScan {
+//         publishAlways()
+//         publishIfAuthenticated()
+//         uploadInBackground = System.getenv("CI") == null
+//         capture {
+//             taskInputFiles = true
+//         }
+//     }
 
-}
+// }
 
-buildCache {
-    local { enabled = System.getenv('CI') != 'true' }
-    remote(HttpBuildCache) {
-        push = System.getenv('CI') == 'true'
-        enabled = true
-        url = 'https://ge.grails.org/cache/'
-        credentials {
-            username = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER')
-            password = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY')
-        }
-    }}
+// buildCache {
+//     local { enabled = System.getenv('CI') != 'true' }
+//     remote(HttpBuildCache) {
+//         push = System.getenv('CI') == 'true'
+//         enabled = true
+//         url = 'https://ge.grails.org/cache/'
+//         credentials {
+//             username = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER')
+//             password = System.getenv('GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY')
+//         }
+//     }}
 
-rootProject.name = "grails.core.ROOT"
+rootProject.name = "grace.core.ROOT"
 
 include (
-        'grails-bootstrap',
-        'grails-codecs',
-        'grails-console',
-        'grails-core',
-        'grails-databinding',
-        'grails-docs',
-        'grails-encoder',
-        'grails-logging',
-        'grails-shell',
-        'grails-spring',
-        'grails-test',
-        'grails-web',
-        'grails-web-common',
-        'grails-web-boot',
-        'grails-web-databinding',
-        'grails-web-fileupload',
-        'grails-web-mvc',
-        'grails-web-url-mappings',
+        'grace-bootstrap',
+        'grace-codecs',
+        'grace-console',
+        'grace-core',
+        'grace-databinding',
+        'grace-docs',
+        'grace-encoder',
+        'grace-logging',
+        'grace-shell',
+        'grace-spring',
+        'grace-test',
+        'grace-web',
+        'grace-web-common',
+        'grace-web-boot',
+        'grace-web-databinding',
+        'grace-web-fileupload',
+        'grace-web-mvc',
+        'grace-web-url-mappings',
 
         // POM / BOMs
-        'grails-dependencies',
-        'grails-bom',
+        'grace-dependencies',
+        'grace-bom',
 
         // Plugins
-        'grails-plugin-codecs',
-        'grails-plugin-controllers',
-        'grails-plugin-databinding',
-        'grails-plugin-datasource',
-        'grails-plugin-domain-class',
-        'grails-plugin-interceptors',
-        'grails-plugin-i18n',
-        'grails-plugin-mimetypes',
-        'grails-plugin-rest',
-        'grails-plugin-services',
-        'grails-plugin-url-mappings',
-        'grails-plugin-validation',
+        'grace-plugin-codecs',
+        'grace-plugin-controllers',
+        'grace-plugin-databinding',
+        'grace-plugin-datasource',
+        'grace-plugin-domain-class',
+        'grace-plugin-interceptors',
+        'grace-plugin-i18n',
+        'grace-plugin-mimetypes',
+        'grace-plugin-rest',
+        'grace-plugin-services',
+        'grace-plugin-url-mappings',
+        'grace-plugin-validation',
 
         // Test Suite
-        'grails-test-suite-base',
-        'grails-test-suite-persistence',
-        'grails-test-suite-uber',
-        'grails-test-suite-web',
+        'grace-test-suite-base',
+        'grace-test-suite-persistence',
+        'grace-test-suite-uber',
+        'grace-test-suite-web',
 
         // Gradle Plugin
-        'grails-gradle-model'
+        'grace-gradle-model'
 )

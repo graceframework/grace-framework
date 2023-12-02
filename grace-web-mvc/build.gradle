@@ -1,0 +1,8 @@
+dependencies {
+    api project(":grace-web-common"),
+            project(":grace-web-url-mappings")
+
+    api "org.grails:grails-web-sitemesh:$gspVersion", {
+        exclude group:'org.grails', module:'grails-web-common'
+    }
+}

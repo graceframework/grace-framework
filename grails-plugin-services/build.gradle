@@ -1,5 +1,0 @@
-dependencies {
-    api "org.springframework:spring-tx:${springVersion}"
-
-    api project(":grails-core"), project(":grails-plugin-datasource")
-}

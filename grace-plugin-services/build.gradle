@@ -1,0 +1,5 @@
+dependencies {
+    api "org.springframework:spring-tx:${springVersion}"
+
+    api project(":grace-core"), project(":grace-plugin-datasource")
+}

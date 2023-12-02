@@ -1,4 +1,0 @@
-dependencies {
-    api project(":grails-plugin-controllers")
-    api project(":grails-plugin-url-mappings")
-}

@@ -1,0 +1,19 @@
+dependencies {
+    api project(":grace-web-common")
+    api project(":grace-web-databinding")
+    api project(":grace-web-fileupload"), optional
+    api project(":grace-web-url-mappings")
+    api project(":grace-web-mvc")
+
+
+    api "org.grails:grails-web-gsp:$gspVersion", {
+        exclude group:'org.grails', module:'grails-core'
+        exclude group:'org.grails', module:'grails-encoder'
+        exclude group:'org.grails', module:'grails-web-common'
+    }
+    api "org.grails:grails-web-sitemesh:$gspVersion", {
+        exclude group:'org.grails', module:'grails-core'
+        exclude group:'org.grails', module:'grails-encoder'
+        exclude group:'org.grails', module:'grails-web-common'
+    }
+}

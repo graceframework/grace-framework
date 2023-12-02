@@ -1,0 +1,10 @@
+dependencies {
+    api project(':grace-bootstrap'),
+            project(':grace-core'),
+            project(':grace-spring'),
+            project(':grace-web'),
+            project(':grace-test'),
+            project(':grace-plugin-domain-class')
+
+    api "org.grails.plugins:converters:$legacyConvertersVersion"
+}

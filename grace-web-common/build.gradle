@@ -1,0 +1,17 @@
+dependencies {
+    api project(":grace-core"), {
+        exclude group:'org.grails', module:'grails-spring'
+    }
+    api project(":grace-databinding")
+    api project(":grace-encoder")
+    api "org.grails:grails-gsp:$gspVersion", {
+        exclude group:'org.grails', module:'grails-core'
+        exclude group:'org.grails', module:'grails-encoder'
+    }
+
+    api "org.codehaus.groovy:groovy-templates:$groovyVersion"
+
+    api "org.springframework:spring-webmvc:${springVersion}"
+    api "org.springframework:spring-context-support:${springVersion}"
+    implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+}

@@ -1,0 +1,4 @@
+dependencies {
+    api project(":grace-web-common")
+    api('commons-fileupload:commons-fileupload:1.4')
+}

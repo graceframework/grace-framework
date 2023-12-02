@@ -1,0 +1,5 @@
+dependencies {
+    api project(":grace-web")
+
+    api "org.codehaus.groovy:groovy-ant:$groovyVersion"
+}

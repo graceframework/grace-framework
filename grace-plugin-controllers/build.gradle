@@ -1,0 +1,13 @@
+dependencies {
+    api project(":grace-core"),
+            project(":grace-web"),
+            project(':grace-plugin-mimetypes'),
+            project(':grace-plugin-validation'),
+            project(':grace-plugin-domain-class')
+
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    runtimeOnly project(':grace-plugin-i18n')
+
+    testRuntimeOnly "jline:jline:$jlineVersion"
+    testRuntimeOnly "org.fusesource.jansi:jansi:$jansiVersion"
+}
