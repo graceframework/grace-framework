@@ -2,19 +2,23 @@ name: Release
 on:
   release:
     types: [published]
+permissions: {}
 jobs:
   release:
+    permissions:
+      contents: write  #  to create release
+      issues: write  #  to modify milestones
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['8']
     env:
-      GIT_USER_NAME: puneetbehl
-      GIT_USER_EMAIL: behlp@objectcomputing.com
-      GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
+      GIT_USER_NAME: rainboyan
+      GIT_USER_EMAIL: rain@rainboyan.com
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
       - uses: gradle/wrapper-validation-action@v1
@@ -32,7 +36,7 @@ jobs:
           echo ::set-output name=value::${TARGET_BRANCH}
       - name: Set the current release version
         id: release_version
-        run: echo ::set-output name=release_version::${GITHUB_REF:11}
+        run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
       - name: Run pre-release
         uses: ./.github/actions/pre-release
         with:
@@ -42,6 +46,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: assemble
+        env:
+          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
@@ -51,6 +59,9 @@ jobs:
         if: steps.assemble.outcome == 'success'
         uses: gradle/gradle-build-action@v2
         env:
+          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_NEXUS_URL: ${{ secrets.SONATYPE_NEXUS_URL }}
@@ -60,8 +71,6 @@ jobs:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         with:
           arguments: -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
-      - name: Export Gradle Properties
-        uses: micronaut-projects/github-actions/export-gradle-properties@master
       - name: Run post-release
         if: steps.publish.outcome == 'success'
         uses: ./.github/actions/post-release
@@ -74,49 +83,6 @@ jobs:
         if: steps.publish.outcome == 'success'
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
-          args: build/distributions/grails-${{ steps.release_version.outputs.release_version }}.zip
+          args: build/distributions/grace-${{ steps.release_version.outputs.release_version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Message for the Grails Documentation Release
-        if: steps.publish.outcome == 'success'
-        id: grails_docs_release_message
-        run: |
-          echo ::set-output name=value::{\"grails_version\":\"$RELEASE_VERSION\"}
-        env:
-          RELEASE_VERSION: ${{ steps.release_version.outputs.release_version }}
-      - name: Invoke grails-doc release workflow
-        if: steps.publish.outcome == 'success'
-        id: grails_doc
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-doc
-          ref: ${{ steps.extract_branch.outputs.value }}
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Invoke grails-static-website release workflow
-        if: steps.publish.outcome == 'success'
-        id: grails_static_website
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-static-website
-          ref: master
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Grails SDK Minor Release
-        if: steps.upload_artifact.outcome == 'success' && contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMinorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
-      - name: Grails SDK Major Release
-        if: steps.upload_artifact.outcome == 'success' && !contains(steps.release_version.outputs.release_version, 'M') && !contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMajorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
