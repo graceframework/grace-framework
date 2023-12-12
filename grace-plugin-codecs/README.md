@@ -1,2 +1,2 @@
-## grails-plugin-codecs
+## grace-plugin-codecs
 

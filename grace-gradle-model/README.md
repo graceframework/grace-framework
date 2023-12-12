@@ -1,2 +1,2 @@
-## grails-gradle-model
+## grace-gradle-model
 

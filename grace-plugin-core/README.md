@@ -1,2 +1,2 @@
-## grails-plugin-core
+## grace-plugin-core
 

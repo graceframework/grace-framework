@@ -1,3 +1,3 @@
-## grails-util
+## grace-util
 
 Grails Utilities

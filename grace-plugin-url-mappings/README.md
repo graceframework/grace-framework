@@ -1,2 +1,2 @@
-## grails-plugin-url-mappings
+## grace-plugin-url-mappings
 

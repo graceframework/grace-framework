@@ -1,2 +1,2 @@
-## grails-test-suite-base
+## grace-test-suite-base
 

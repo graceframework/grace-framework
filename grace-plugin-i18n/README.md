@@ -1,2 +1,2 @@
-## grails-plugin-i18n
+## grace-plugin-i18n
 

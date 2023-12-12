@@ -1,2 +1,2 @@
-## grails-plugin-services
+## grace-plugin-services
 

@@ -1,2 +1,2 @@
-## grails-plugin-datasource
+## grace-plugin-datasource
 

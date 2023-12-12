@@ -1,2 +1,2 @@
-## grails-dependencies
+## grace-dependencies
 

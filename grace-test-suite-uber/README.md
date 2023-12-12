@@ -1,2 +1,2 @@
-## grails-test-suite-uber
+## grace-test-suite-uber
 
