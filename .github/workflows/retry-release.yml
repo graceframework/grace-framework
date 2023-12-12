@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: The Grails Release (e.g. 5.0.3)
+        description: The Grace Release (e.g. 5.0.3)
         required: true
       target_branch:
         description: The Target Branch (e.g. 5.0.x)
@@ -15,15 +15,15 @@ jobs:
       matrix:
         java: ['8']
     env:
-      GIT_USER_NAME: puneetbehl
-      GIT_USER_EMAIL: behlp@objectcomputing.com
+      GIT_USER_NAME: rainboyan
+      GIT_USER_EMAIL: rain@rainboyan.com
       GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: "v${{ github.event.inputs.release }}"
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: gradle/wrapper-validation-action@v1
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -55,58 +55,6 @@ jobs:
         uses: Roang-zero1/github-upload-release-artifacts-action@master
         with:
           created_tag: v${{ github.event.inputs.release }}
-          args: build/distributions/grails-${{ steps.release_version.outputs.release_version }}.zip
+          args: build/distributions/grace-${{ steps.release_version.outputs.release_version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Message for the Grails Documentation Release
-        if: steps.assemble.outcome == 'success'
-        id: grails_docs_release_message
-        run: |
-          echo ::set-output name=value::{\"grails_version\":\"$RELEASE_VERSION\"}
-        env:
-          RELEASE_VERSION: ${{ steps.release_version.outputs.release_version }}
-      - name: Invoke grails-doc release workflow
-        if: steps.assemble.outcome == 'success'
-        id: grails_doc
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-doc
-          ref: ${{ steps.extract_branch.outputs.value }}
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Invoke grails-static-website release workflow
-        if: steps.assemble.outcome == 'success'
-        id: grails_static_website
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-static-website
-          ref: master
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Grails SDK Minor Release
-        if: steps.upload_artifact.outcome == 'success' && contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMinorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
-      - name: Grails SDK Major Release
-        if: steps.upload_artifact.outcome == 'success' && !contains(steps.release_version.outputs.release_version, 'M') && !contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMajorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
-      - name: Run post-release
-        if: steps.assemble.outcome == 'success'
-        uses: ./.github/actions/post-release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          SNAPSHOT_SUFFIX: -SNAPSHOT
-          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
-          RELEASE_VERSION: ${{ github.event.inputs.release }}
