@@ -264,9 +264,11 @@ subprojects { project ->
     ext.isTestSuite = project.name.startsWith("grace-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
-        delegate.name 'Grace'
-        delegate.description 'Grace Web Application Framework'
-        delegate.url 'https://graceframework.org/'
+        if (project.name != 'grace-gradle-plugin') {
+            delegate.name 'Grace'
+            delegate.description 'Grace Web Application Framework'
+        }
+        delegate.url 'https://github.com/graceframework/grace-framework'
 
         delegate.licenses {
             delegate.license {
@@ -330,27 +332,27 @@ subprojects { project ->
     if (!isTestSuite) {
 
         publishing {
-            if(project.name == 'grace-dependencies') return
-            if(project.name == 'grace-bom') return
-
             publications {
                 maven(MavenPublication) {
                     from components.java
 
-                    pom.withXml {
-                        def xml = asNode()
+                    if (project.name != 'grace-gradle-plugin') {
+                        pom.withXml {
+                            def xml = asNode()
 
-                        xml.children().last() + pomInfo
+                            xml.children().last() + pomInfo
+                        }
                     }
-
                 }
             }
         }
 
         afterEvaluate {
-            signing {
-                required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-                sign publishing.publications.maven
+            if (project.name != 'grace-gradle-plugin') {
+                signing {
+                    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                    sign publishing.publications.maven
+                }
             }
         }
 
@@ -535,7 +537,7 @@ subprojects { project ->
     configurations {
         meta
         published.extendsFrom archives, meta
-        all {
+        testRuntimeOnly {
             exclude group: 'commons-logging', module: 'commons-logging'
             exclude group: 'org.grails', module: 'grails-bootstrap'
             exclude group: 'org.grails', module: 'grails-core'

@@ -11,11 +11,25 @@ repositories {
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
+ext.isSnapshot = version.endsWith("-SNAPSHOT")
+ext.isReleaseVersion = !ext.isSnapshot
+ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
+ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
+
 apply plugin: 'java-gradle-plugin'
+apply plugin: 'maven-publish'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 configurations {
     documentation
-    all*.exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    compileClasspath {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    }
 }
 
 dependencies {
@@ -93,7 +107,7 @@ jar {
     manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grails",
+            "Implementation-Title": "Grace",
             "Implementation-Version": projectVersion,
             "Implementation-Vendor": 'graceframework.org')
 }
@@ -119,4 +133,51 @@ configure([javadoc]) {
     options.docEncoding "UTF-8"
     options.charSet "UTF-8"
     options.jFlags "-Xms64M", "-Xmx512M"
+}
+
+tasks.withType(Copy) {
+    configure {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+if (isReleaseVersion) {
+    afterEvaluate {
+        signing {
+            required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+            Publication[] publications = new Publication[publishing.publications.size()]
+            publishing.publications.findAll().toArray(publications)
+            sign(publications)
+        }
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { isReleaseVersion }
+    }
+}
+
+tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
+    shouldRunAfter(tasks.withType(Sign))
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            pom {
+                name = "Grace Gradle Plugin"
+                description = "A Gradle plugin for Grace which provides a bunch of useful plugins"
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    project.publishing.publications.each { MavenPublication publication->
+        if (publication.name != "pluginMaven" || publication.name != "maven") {
+            publication.pom.withXml {
+                def xml = asNode()
+                xml.children().last() + pomInfo
+            }
+        }
+    }
 }

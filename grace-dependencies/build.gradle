@@ -7,8 +7,6 @@ publishing {
             pom.withXml {
                 def xml = asNode()
 
-                xml.children().last() + pomInfo
-
                 xml.children().last() + {
                     delegate.dependencies {
                         delegate.dependency {
