@@ -186,33 +186,31 @@ if (jointBuildGroovyJarProperty) {
     }
 }
 
-if (isReleaseVersion) {
-    apply plugin: 'maven-publish'
-    apply plugin: "io.github.gradle-nexus.publish-plugin"
+apply plugin: 'maven-publish'
+apply plugin: "io.github.gradle-nexus.publish-plugin"
 
-    nexusPublishing {
-        repositories {
-            sonatype {
-                def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-                def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-                def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
-                nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
-                username = ossUser
-                password = ossPass
-                stagingProfileId = ossStagingProfileId
-            }
+nexusPublishing {
+    repositories {
+        sonatype {
+            def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+            def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+            def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
+            nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            username = ossUser
+            password = ossPass
+            stagingProfileId = ossStagingProfileId
         }
+    }
 
-        transitionCheckOptions {
-            maxRetries.set(40)
-            delayBetween.set(java.time.Duration.ofMillis(2000))
-        }
+    transitionCheckOptions {
+        maxRetries.set(40)
+        delayBetween.set(java.time.Duration.ofMillis(2000))
     }
 }
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
@@ -332,20 +330,6 @@ subprojects { project ->
     if (!isTestSuite) {
 
         publishing {
-            if (isBuildSnapshot) {
-                repositories {
-                    maven {
-                        credentials {
-                            def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
-                            def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
-                            username = u
-                            password = p
-                        }
-                        url "https://repo.grails.org/grails/libs-snapshots-local"
-                    }
-                }
-            }
-
             if(project.name == 'grace-dependencies') return
             if(project.name == 'grace-bom') return
 
@@ -363,10 +347,12 @@ subprojects { project ->
             }
         }
 
-        // signing {
-        //     required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-        //     sign publishing.publications.mavenJava
-        // }
+        afterEvaluate {
+            signing {
+                required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                sign publishing.publications.mavenJava
+            }
+        }
 
         tasks.withType(Sign) {
             onlyIf { isReleaseVersion }
