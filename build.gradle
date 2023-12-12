@@ -334,7 +334,7 @@ subprojects { project ->
             if(project.name == 'grace-bom') return
 
             publications {
-                mavenJava(MavenPublication) {
+                maven(MavenPublication) {
                     from components.java
 
                     pom.withXml {
@@ -350,7 +350,7 @@ subprojects { project ->
         afterEvaluate {
             signing {
                 required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-                sign publishing.publications.mavenJava
+                sign publishing.publications.maven
             }
         }
 
@@ -535,7 +535,11 @@ subprojects { project ->
     configurations {
         meta
         published.extendsFrom archives, meta
-        all*.exclude group:'commons-logging', module: 'commons-logging'
+        all {
+            exclude group: 'commons-logging', module: 'commons-logging'
+            exclude group: 'org.grails', module: 'grails-bootstrap'
+            exclude group: 'org.grails', module: 'grails-core'
+        }
     }
 
     if(!isTestSuite) {
