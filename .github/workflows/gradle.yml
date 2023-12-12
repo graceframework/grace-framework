@@ -11,7 +11,7 @@ jobs:
   build:
     permissions:
       contents: read  #  to fetch code (actions/checkout)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         java: ['11', '14']
@@ -39,7 +39,7 @@ jobs:
     permissions:
       contents: read  #  to fetch code (actions/checkout)
       checks: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

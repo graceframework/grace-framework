@@ -1,15 +1,30 @@
 name: Release
-on:
-  release:
-    types: [published]
-permissions: {}
-jobs:
-  release:
-    permissions:
-      contents: write  #  to create release
-      issues: write  #  to modify milestones
 
-    runs-on: ubuntu-latest
+on:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: write
+
+jobs:
+  create_draft_release:
+    runs-on: ubuntu-22.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Create draft release
+        run: |
+          gh release create \
+            --repo ${{ github.repository }} \
+            --title ${{ github.ref_name }}
+            --notes '' \
+            --draft \
+            ${{ github.ref_name }}
+  release_and_publish:
+    needs: create_draft_release
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         java: ['11']
@@ -70,8 +85,8 @@ jobs:
       - name: Upload artifacts to the Github release
         id: upload_artifact
         if: steps.publish.outcome == 'success'
-        uses: Roang-zero1/github-upload-release-artifacts-action@master
-        with:
-          args: build/distributions/grace-${{ steps.release_version.outputs.release_version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --clobber "${{ github.ref_name }}" \
+            build/distributions/grace-${{ steps.release_version.outputs.release_version }}.zip
