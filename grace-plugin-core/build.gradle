@@ -1,8 +1,8 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-plugin-api")
-    api project(":grails-spring")
-    api project(":grails-spring-boot")
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-spring")
+    api project(":grace-spring-boot")
 
     api libs.groovy.core
     api libs.spring.beans
@@ -10,7 +10,7 @@ dependencies {
     api libs.spring.context
     api libs.spring.core
 
-    testImplementation project(":grails-test")
+    testImplementation project(":grace-test")
     testImplementation libs.spring.test
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt

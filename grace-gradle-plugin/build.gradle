@@ -19,9 +19,9 @@ configurations {
 }
 
 dependencies {
-    api project(":grails-bootstrap")
-    api project(":grails-gradle-model")
-    api project(":grails-shell"), {
+    api project(":grace-bootstrap")
+    api project(":grace-gradle-model")
+    api project(":grace-shell"), {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
     api gradleApi()
@@ -39,51 +39,51 @@ dependencies {
 gradlePlugin {
     plugins {
         grailsCore {
-            displayName = "Grails Core Gradle Plugin"
-            description = 'The main Grails gradle plugin implementation'
-            id = 'org.grails.grails-core'
+            displayName = "Grace Core Gradle Plugin"
+            description = 'The main Grace gradle plugin implementation'
+            id = 'org.graceframework.grace-core'
             implementationClass = 'org.grails.gradle.plugin.core.GrailsGradlePlugin'
         }
         grailsDoc {
-            displayName = "Grails Doc Gradle Plugin"
-            description = 'Adds Grails doc publishing support'
-            id = 'org.grails.grails-doc'
+            displayName = "Grace Doc Gradle Plugin"
+            description = 'Adds Grace doc publishing support'
+            id = 'org.graceframework.grace-doc'
             implementationClass = 'org.grails.gradle.plugin.doc.GrailsDocGradlePlugin'
         }
         grailsGsp {
-            displayName = "Grails GSP Gradle Plugin"
+            displayName = "Grace GSP Gradle Plugin"
             description = 'A plugin that adds support for compiling Groovy Server Pages (GSP)'
-            id = 'org.grails.grails-gsp'
+            id = 'org.graceframework.grace-gsp'
             implementationClass = 'org.grails.gradle.plugin.web.gsp.GroovyPagePlugin'
         }
         grailsPlugin {
-            displayName = "Grails-Plugin Gradle Plugin"
-            description = 'A Gradle plugin for Grails plugins'
-            id = 'org.grails.grails-plugin'
+            displayName = "Grace-Plugin Gradle Plugin"
+            description = 'A Gradle plugin for Grace plugins'
+            id = 'org.graceframework.grace-plugin'
             implementationClass = 'org.grails.gradle.plugin.core.GrailsPluginGradlePlugin'
         }
         grailsProfile {
-            displayName = "Grails Profile Gradle Plugin"
-            description = 'A plugin that is capable of compiling a Grails profile into a JAR file for distribution'
-            id = 'org.grails.grails-profile'
+            displayName = "Grace Profile Gradle Plugin"
+            description = 'A plugin that is capable of compiling a Grace profile into a JAR file for distribution'
+            id = 'org.graceframework.grace-profile'
             implementationClass = 'org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin'
         }
         grailsWeb {
-            displayName = "Grails Web Gradle Plugin"
+            displayName = "Grace Web Gradle Plugin"
             description = 'Adds web specific extensions'
-            id = 'org.grails.grails-web'
+            id = 'org.graceframework.grace-web'
             implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
         }
         grailsPluginPublish {
-            displayName = "Grails Publish Gradle Plugin"
-            description = 'A plugin to setup publishing to Grails central repo'
-            id = 'org.grails.internal.grails-plugin-publish'
+            displayName = "Grace Publish Gradle Plugin"
+            description = 'A plugin to setup publishing to Grace central repo'
+            id = 'org.graceframework.internal.grace-plugin-publish'
             implementationClass = 'org.grails.gradle.plugin.publishing.internal.GrailsCentralPublishGradlePlugin'
         }
         grailsProfilePublish {
-            displayName = "Grails Profile Publish Plugin"
+            displayName = "Grace Profile Publish Plugin"
             description = 'A plugin for publishing profiles'
-            id = 'org.grails.internal.grails-profile-publish'
+            id = 'org.graceframework.internal.grace-profile-publish'
             implementationClass = 'org.grails.gradle.plugin.profiles.internal.GrailsProfilePublishGradlePlugin'
         }
     }
@@ -95,7 +95,7 @@ jar {
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
             "Implementation-Title": "Grails",
             "Implementation-Version": projectVersion,
-            "Implementation-Vendor": 'grails.org')
+            "Implementation-Vendor": 'graceframework.org')
 }
 
 configure([compileGroovy, compileTestGroovy]) {

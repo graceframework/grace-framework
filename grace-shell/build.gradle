@@ -16,10 +16,10 @@ configurations {
 }
 
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-gradle-model")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-gradle-model")
+    api project(":grace-util")
 
     api libs.ant
     api libs.gradle.tooling.api
@@ -31,7 +31,7 @@ dependencies {
     api libs.spring.boot.cli, {
         exclude group: "org.codehaus.groovy", module: "groovy"
     }
-    dependenciesBom project(path: ":grails-bom", configuration: 'effectiveBom')
+    dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
     implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
     }

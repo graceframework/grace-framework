@@ -1,11 +1,11 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-core")
-    api project(":grails-plugin-api")
-    api project(":grails-encoder")
-    runtimeOnly project(":grails-codecs")
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-encoder")
+    runtimeOnly project(":grace-codecs")
 
     api(libs.spring.boot.autoconfigure)
 
-    testImplementation project(":grails-web-common")
+    testImplementation project(":grace-web-common")
 }

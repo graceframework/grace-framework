@@ -1,11 +1,11 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-core")
-    api project(":grails-plugin-api")
-    runtimeOnly project(":grails-plugin-controllers")
-    api project(":grails-util")
-    api project(":grails-web-common")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    runtimeOnly project(":grace-plugin-controllers")
+    api project(":grace-util")
+    api project(":grace-web-common")
 
     api libs.commons.lang3
     compileOnly(libs.gorm.datastore.core) {

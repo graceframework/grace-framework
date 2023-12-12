@@ -1,12 +1,12 @@
 dependencies {
-    api project(":grails-plugin-codecs")
-    api project(":grails-plugin-core")
-    api project(":grails-plugin-databinding")
-    api project(":grails-plugin-domain-class")
-    api project(":grails-plugin-i18n")
-    api project(":grails-plugin-interceptors")
-    api project(":grails-plugin-rest")
-    api project(":grails-test")
+    api project(":grace-plugin-codecs")
+    api project(":grace-plugin-core")
+    api project(":grace-plugin-databinding")
+    api project(":grace-plugin-domain-class")
+    api project(":grace-plugin-i18n")
+    api project(":grace-plugin-interceptors")
+    api project(":grace-plugin-rest")
+    api project(":grace-test")
 
     api libs.grails.async, {
         exclude module: 'grails-plugin-controllers'

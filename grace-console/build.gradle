@@ -1,7 +1,7 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-core")
-    api project(":grails-boot")
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-boot")
 
     api libs.javax.servlet, optional
     api libs.groovy.console

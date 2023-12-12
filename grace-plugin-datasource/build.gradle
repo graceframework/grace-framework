@@ -1,7 +1,7 @@
 dependencies {
-    api project(":grails-core")
-    api project(':grails-plugin-api')
-    api project(":grails-spring-boot")
+    api project(":grace-core")
+    api project(':grace-plugin-api')
+    api project(":grace-spring-boot")
 
     api libs.gorm.datastore.core
     api libs.gorm.datastore.gorm

@@ -3,25 +3,25 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-    api project(":grails-api")
-    api project(":grails-util")
-    api project(":grails-test-suite-base")
-    api project(":grails-plugin-interceptors")
-    api project(":grails-plugin-controllers")
+    api project(":grace-api")
+    api project(":grace-util")
+    api project(":grace-test-suite-base")
+    api project(":grace-plugin-interceptors")
+    api project(":grace-plugin-controllers")
 
     api libs.tomcat.jdbc
 
-    testImplementation project(":grails-boot")
-    testImplementation project(":grails-plugin-codecs")
-    testImplementation project(":grails-plugin-domain-class")
-    testImplementation project(":grails-plugin-url-mappings")
-    testImplementation project(":grails-plugin-datasource")
-    testImplementation project(":grails-plugin-services")
-    testImplementation project(":grails-plugin-rest")
-    testImplementation project(":grails-plugin-i18n")
-    testImplementation project(":grails-plugin-databinding")
-    testImplementation project(":grails-spring")
-    testImplementation project(":grails-test-support")
+    testImplementation project(":grace-boot")
+    testImplementation project(":grace-plugin-codecs")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-rest")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-spring")
+    testImplementation project(":grace-test-support")
     testImplementation libs.micronaut.spring.context
     testImplementation libs.gorm.datastore.gorm.hibernate5, {
         exclude group: 'org.grails', module:'grails-datastore-gorm'

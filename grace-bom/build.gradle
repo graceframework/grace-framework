@@ -36,17 +36,17 @@ publishing {
                     mkp.dependencyManagement {
                         mkp.dependencies {
                             for (sub in project.parent.subprojects) {
-                                if (sub.name == 'grails-bom') continue
+                                if (sub.name == 'grace-bom') continue
 
                                 mkp.dependency {
                                     mkp.groupId sub.group
                                     mkp.artifactId sub.name
                                     mkp.version sub.version
-                                    if (sub.name == 'grails-dependencies') {
+                                    if (sub.name == 'grace-dependencies') {
                                         mkp.type 'pom'
                                     }
 
-                                    if (sub.name == 'grails-bootstrap') {
+                                    if (sub.name == 'grace-bootstrap') {
                                         mkp.exclusions {
                                             mkp.exclusion {
                                                 mkp.groupId 'jline'

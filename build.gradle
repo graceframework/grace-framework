@@ -80,7 +80,7 @@ ext {
         'scaffolding-core': [
                 version: libs.versions.grails.scaffolding.get(),
                 group  : 'org.grails',
-                names  : ['grails-scaffolding'],
+                names  : ['scaffolding'],
                 modules: ['core']
         ],
         'groovy': [
@@ -148,7 +148,7 @@ ext {
 }
 
 version = grailsVersion
-group = "org.grails"
+group = "org.graceframework"
 
 // directories created during the build which are related
 // to turning the workspace root into a GRAILS_HOME
@@ -257,18 +257,18 @@ apply from: "gradle/idea.gradle"
 
 subprojects { project ->
     version = grailsVersion
-    group = "org.grails"
+    group = "org.graceframework"
 
     configurations {
         documentation
     }
 
-    ext.isTestSuite = project.name.startsWith("grails-test-suite")
+    ext.isTestSuite = project.name.startsWith("grace-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
-        delegate.name 'Grails'
-        delegate.description 'Grails Web Application Framework'
-        delegate.url 'https://grails.org/'
+        delegate.name 'Grace'
+        delegate.description 'Grace Web Application Framework'
+        delegate.url 'https://graceframework.org/'
 
         delegate.licenses {
             delegate.license {
@@ -279,9 +279,9 @@ subprojects { project ->
         }
 
         delegate.scm {
-            delegate.url 'scm:git@github.com:grails/grails-core.git'
-            delegate.connection 'scm:git@github.com:grails/grails-core.git'
-            delegate.developerConnection 'scm:git@github.com:grails/grails-core.git'
+            delegate.url 'scm:git@github.com:graceframework/grace-framework.git'
+            delegate.connection 'scm:git@github.com:graceframework/grace-framework.git'
+            delegate.developerConnection 'scm:git@github.com:graceframework/grace-framework.git'
         }
 
         delegate.developers {
@@ -296,6 +296,10 @@ subprojects { project ->
             delegate.developer {
                 delegate.id 'lhotari'
                 delegate.name 'Lari Hotari'
+            }
+            delegate.developer {
+                delegate.id 'rainboyan'
+                delegate.name 'Michael Yan'
             }
         }
 
@@ -342,8 +346,8 @@ subprojects { project ->
                 }
             }
 
-            if(project.name == 'grails-dependencies') return
-            if(project.name == 'grails-bom') return
+            if(project.name == 'grace-dependencies') return
+            if(project.name == 'grace-bom') return
 
             publications {
                 mavenJava(MavenPublication) {
@@ -384,13 +388,13 @@ subprojects { project ->
 
     }
 
-    if(project.name == 'grails-dependencies') return
-    if(project.name == 'grails-bom') return
+    if(project.name == 'grace-dependencies') return
+    if(project.name == 'grace-bom') return
 
     sourceCompatibility = 11
     targetCompatibility = 11
 
-    if(project.name =~ /^(grails-web|grails-plugin-|grails-test-suite|grails-test)/) {
+    if(project.name =~ /^(grace-web|grace-plugin-|grace-test-suite|grace-test)/) {
         dependencies {
             api libs.javax.servlet
             // MockHttpServletRequest/Response/Context used in many classes
@@ -400,7 +404,7 @@ subprojects { project ->
         }
     }
 
-    if(project.name =~ /^(grails-plugin-datasource|grails-test-suite)/) {
+    if(project.name =~ /^(grace-plugin-datasource|grace-test-suite)/) {
         dependencies {
             testImplementation libs.hsqldb
             testImplementation libs.h2
@@ -411,9 +415,9 @@ subprojects { project ->
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grails",
+            "Implementation-Title": "Grace",
             "Implementation-Version": grailsVersion,
-            "Implementation-Vendor": 'grails.org')
+            "Implementation-Vendor": 'graceframework.org')
     }
 
     checkstyle {
@@ -479,7 +483,7 @@ subprojects { project ->
         testImplementation libs.junit.platform.runner
         testRuntimeOnly libs.junit.jupiter.engine
 
-        if (project.name != "grails-docs") {
+        if (project.name != "grace-docs") {
             // Logging
             api libs.slf4j
             api libs.slf4j.jcl
@@ -610,8 +614,8 @@ sdkman {
     api = "https://vendors.sdkman.io"
     consumerKey = System.getenv("GVM_SDKVENDOR_KEY") ?: project.hasProperty("gvmSdkvendorKey") ? project.gvmSdkvendorKey : ''
     consumerToken = System.getenv("GVM_SDKVENDOR_TOKEN") ?: project.hasProperty("gvmSdkvendorToken") ? project.gvmSdkvendorToken : ''
-    candidate = "grails"
+    candidate = "grace"
     version = project.version
-    url = "https://github.com/grails/grails-core/releases/download/v${project.version}/grails-${project.version}.zip"
+    url = "https://github.com/graceframework/grace-framework/releases/download/v${project.version}/grace-${project.version}.zip"
     hashtag = "#grailsfw"
 }

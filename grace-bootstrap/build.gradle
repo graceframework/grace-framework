@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 dependencies {
-    api project(":grails-util")
+    api project(":grace-util")
 
     api libs.groovy.templates
     api libs.groovy.xml

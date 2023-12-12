@@ -32,7 +32,7 @@ sourceSets {
 tasks.register("docFilesJar", Jar) {
     description = 'Package up files used for generating documentation.'
     archiveVersion = null
-    archiveFileName = "grails-doc-files.jar"
+    archiveFileName = "grace-doc-files.jar"
     from "src/main/template"
 }
 

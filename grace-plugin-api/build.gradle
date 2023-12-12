@@ -1,13 +1,13 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-spring")
-    api project(":grails-spring-boot")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-spring")
+    api project(":grace-spring-boot")
+    api project(":grace-util")
 
     api libs.gorm.datastore.core
 
-    testImplementation project(":grails-test")
+    testImplementation project(":grace-test")
     testImplementation(libs.spring.jdbc) {
         exclude group: 'commons-logging', module:'commons-logging'
     }

@@ -1,8 +1,8 @@
 dependencies {
-    api project(":grails-boot")
-    api project(":grails-plugin-converters")
-    api project(":grails-plugin-mimetypes")
-    api project(":grails-web")
+    api project(":grace-boot")
+    api project(":grace-plugin-converters")
+    api project(":grace-plugin-mimetypes")
+    api project(":grace-web")
 
     api libs.ant
     api libs.ant.junit

@@ -1,7 +1,7 @@
 dependencies {
-    api project(":grails-databinding")
-    api project(":grails-util")
-    api project(":grails-web-common")
+    api project(":grace-databinding")
+    api project(":grace-util")
+    api project(":grace-web-common")
 
     api libs.gorm.datastore.core, {
         transitive = false
