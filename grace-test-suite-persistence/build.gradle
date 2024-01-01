@@ -1,0 +1,80 @@
+configurations.testCompileClasspath {
+    exclude module: "grails-plugin-testing"
+}
+
+dependencies {
+    testImplementation project(":grace-boot")
+    testImplementation project(":grace-bootstrap")
+    testImplementation project(":grace-plugin-controllers")
+    testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-spring")
+    testImplementation project(":grace-test-suite-base")
+    testImplementation project(":grace-test-support")
+
+    testImplementation libs.grails.plugin.async, {
+        exclude module:'grails-plugin-codecs'
+        exclude module:'grails-plugin-controllers'
+        exclude module:'grails-core'
+        exclude module:'grails-plugin-domain-class'
+    }
+    testImplementation libs.grails.datastore.gorm.validation
+    testImplementation libs.grails.datastore.gorm.hibernate5, {
+        exclude group: 'org.grails', module:'grails-datastore-gorm'
+        exclude group: 'org.grails', module:'grails-datastore-core'
+        exclude group: 'org.springframework', module:'spring-core'
+        exclude group: 'org.springframework', module:'spring-context'
+        exclude group: 'org.springframework', module:'spring-web'
+        exclude group: 'org.springframework', module:'spring-beans'
+        exclude group: 'org.springframework', module:'spring-tx'
+        exclude group: 'org.slf4j', module:'jcl-over-slf4j'
+        exclude group: 'org.slf4j', module:'jul-to-slf4j'
+        exclude group: 'org.slf4j', module:'slf4j-api'
+        exclude group: 'org.slf4j', module:'slf4j-simple'
+        exclude group: 'org.grails', module:'grails-bootstrap'
+        exclude group: 'org.grails', module:'grails-plugin-domain-class'
+        exclude group: 'org.grails', module:'grails-core'
+        exclude group: 'org.grails', module:'grails-web'
+        exclude group: 'org.grails', module:'grails-test'
+        exclude group: 'org.grails', module:'grails-async'
+        exclude group: 'org.grails', module:'grails-spring'
+        exclude group: 'commons-collections', module:'commons-collections'
+        exclude group: 'commons-lang', module:'commons-lang'
+        exclude group: 'javassit', module:'javassist'
+        exclude group: 'java-persistence', module:'persistence-api'
+        exclude group: 'javassist', module: 'javassist'
+    }
+
+    api libs.tomcat.jdbc
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+    testRuntimeOnly libs.spring.aspects
+}
+
+test {
+    maxParallelForks = 2
+    forkEvery = isCiBuild ? 25 : 100
+    if(!isCiBuild) {
+        maxHeapSize = '2048m'
+    }
+    excludes = ['**/GrailsDomainBinderTests.class',
+                '**/ComponentValidationTests.class',
+                '**/HibernateMappingUniqueConstraintTests.class']
+}
+
+task testGrailsDomainBinder(type: Test) { includes = [
+        '**/GrailsDomainBinderTests.class'
+    ]
+}
+
+task testIsolatedPersistentOne(type: Test) {
+    includes = ['**/ComponentValidationTests.class']
+    includes = ['**/HibernateMappingUniqueConstraintTests.class']
+}
+
+test.dependsOn testGrailsDomainBinder, testIsolatedPersistentOne

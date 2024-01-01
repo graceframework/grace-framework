@@ -1,0 +1,11 @@
+dependencies {
+    api project(":grace-web-common")
+    api project(":grace-web-url-mappings")
+
+    api libs.grails.web.sitemesh, {
+        exclude group:'org.grails', module:'grails-web-common'
+    }
+    api libs.javax.servlet
+
+    testImplementation libs.spring.test
+}
