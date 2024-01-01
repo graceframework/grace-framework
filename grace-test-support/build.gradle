@@ -1,5 +1,3 @@
-apply plugin: 'groovy'
-
 dependencies {
     api project(":grace-plugin-codecs")
     api project(":grace-plugin-core")
@@ -10,10 +8,7 @@ dependencies {
     api project(":grace-plugin-rest")
     api project(":grace-test")
 
-    api libs.grails.plugin.async, {
-        exclude module: 'grails-plugin-controllers'
-        exclude module: 'grails-core'
-    }
+    api libs.grails.async
     api libs.grails.plugin.gsp
     api libs.groovy.test.junit5
     api libs.grails.datastore.gorm
