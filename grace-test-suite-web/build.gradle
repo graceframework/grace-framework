@@ -68,7 +68,7 @@ dependencies {
         exclude module:'grails-web-common'
         exclude module:'grails-encoder'
     }
-    testImplementation libs.grails.plugin.async, {
+    testImplementation libs.grails.async, {
         exclude module:'grails-plugin-codecs'
         exclude module:'grails-plugin-controllers'
         exclude module:'grails-core'
