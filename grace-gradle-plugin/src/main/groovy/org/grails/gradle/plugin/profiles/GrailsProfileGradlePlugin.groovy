@@ -20,7 +20,7 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ConfigurablePublishArtifact
-import org.gradle.api.artifacts.DependencyResolveDetails
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.CopySpec
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.plugins.GroovyPlugin
@@ -28,10 +28,10 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.GroovySourceDirectorySet
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.bundling.Jar
 
 import grails.io.IOUtils
-import grails.util.BuildSettings
 
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.gradle.plugin.profiles.tasks.ProfileCompilerTask
@@ -55,21 +55,25 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.getPluginManager().apply(GroovyPlugin)
         project.configurations.create(CONFIGURATION_NAME)
-        def profileConfiguration = project.configurations.create(RUNTIME_CONFIGURATION)
-
-        profileConfiguration.resolutionStrategy.eachDependency {
-            DependencyResolveDetails details = (DependencyResolveDetails) it
-            def requested = details.requested
-            def group = requested.group
-            def version = requested.version
-
-            if (!group || !version) {
-                group = group ?: 'org.grails.profiles'
-                version = version ?: BuildSettings.grailsVersion
-
-                details.useTarget(group: group, name: requested.name, version: version)
+        Configuration profileConfiguration = project.configurations.create(RUNTIME_CONFIGURATION)
+        profileConfiguration.setCanBeConsumed(false)
+        profileConfiguration.setCanBeResolved(true)
+        profileConfiguration.setVisible(false)
+        project.getPlugins().withType(GroovyPlugin, { javaPlugin ->
+            SourceSetContainer sourceSets = project.getExtensions()
+                    .getByType(JavaPluginExtension).getSourceSets()
+            sourceSets.configureEach { SourceSet sourceSet ->
+                project.getConfigurations()
+                        .getByName(sourceSet.getCompileClasspathConfigurationName())
+                        .extendsFrom(profileConfiguration)
+                project.getConfigurations()
+                        .getByName(sourceSet.getImplementationConfigurationName())
+                        .extendsFrom(profileConfiguration)
+                project.getConfigurations()
+                        .getByName(sourceSet.getRuntimeClasspathConfigurationName())
+                        .extendsFrom(profileConfiguration)
             }
-        }
+        })
 
         def profileYml = project.file('profile.yml')
 
