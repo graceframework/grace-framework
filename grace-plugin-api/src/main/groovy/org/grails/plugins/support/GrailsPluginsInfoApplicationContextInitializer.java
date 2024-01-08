@@ -76,8 +76,8 @@ public class GrailsPluginsInfoApplicationContextInitializer implements
         }
         sb.append("%n----------------------------------------------------------------------------------------------%n");
 
-        if (logger.isInfoEnabled()) {
-            logger.info(String.format(sb.toString()));
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format(sb.toString()));
         }
     }
 
