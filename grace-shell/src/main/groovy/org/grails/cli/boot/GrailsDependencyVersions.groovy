@@ -47,7 +47,7 @@ class GrailsDependencyVersions implements DependencyManagement {
     }
 
     GrailsDependencyVersions(GrapeEngine grape) {
-        this(grape, [group: 'org.grails', module: 'grails-bom', version: GrailsDependencyVersions.package.implementationVersion, type: 'pom'])
+        this(grape, [group: 'org.graceframework', module: 'grace-bom', version: GrailsDependencyVersions.package.implementationVersion, type: 'pom'])
     }
 
     GrailsDependencyVersions(GrapeEngine grape, Map<String, String> bomCoords) {
@@ -61,16 +61,21 @@ class GrailsDependencyVersions implements DependencyManagement {
 
     static GrapeEngine getDefaultEngine() {
         def grape = Grape.getInstance()
-        grape.addResolver([name: 'grailsCentral', root: 'https://repo.grails.org/grails/core'] as Map<String, Object>)
+        grape.addResolver([name: 'mavenCentral', root: 'https://repo.maven.apache.org/maven2/'] as Map<String, Object>)
         grape
     }
 
     @CompileDynamic
     void addDependencyManagement(GPathResult pom) {
-        pom.dependencyManagement.dependencies.dependency.each { dep ->
-            addDependency(dep.groupId.text(), dep.artifactId.text(), dep.version.text())
-        }
         versionProperties = pom.properties.'*'.collectEntries { [(it.name()): it.text()] }
+        pom.dependencyManagement.dependencies.dependency.each { dep ->
+            String version = dep.version.text()
+            if (version.startsWith('$')) {
+                String key = version.substring(2, version.length() - 1)
+                version = versionProperties[key]
+            }
+            addDependency(dep.groupId.text(), dep.artifactId.text(), version)
+        }
     }
 
     protected void addDependency(String group, String artifactId, String version) {
