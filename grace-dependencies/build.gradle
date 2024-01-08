@@ -10,7 +10,7 @@ publishing {
                 xml.children().last() + {
                     delegate.dependencies {
                         delegate.dependency {
-                            delegate.groupId "org.grails"
+                            delegate.groupId "org.graceframework"
                             delegate.artifactId "grace-bootstrap"
                             delegate.version( project.version )
                             delegate.scope "api"
@@ -36,16 +36,16 @@ publishing {
                         }
                         for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
                             delegate.dependency {
-                                delegate.groupId "org.grails"
+                                delegate.groupId "org.graceframework"
                                 delegate.artifactId "grace-plugin-${sub}"
                                 delegate.version( project.version )
                                 delegate.scope "api"
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
+                            delegate.groupId "org.graceframework.plugins"
                             delegate.artifactId "async"
-                            delegate.version libs.versions.grails.async.get()
+                            delegate.version libs.versions.grace.async.get()
                             delegate.scope "api"
                             delegate.exclusions {
                                 delegate.exclusion {
@@ -55,9 +55,9 @@ publishing {
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
+                            delegate.groupId "org.graceframework.plugins"
                             delegate.artifactId "gsp"
-                            delegate.version libs.versions.grails.gsp.get()
+                            delegate.version libs.versions.grace.gsp.get()
                             delegate.scope "api"
                             delegate.exclusions {
                                 delegate.exclusion {

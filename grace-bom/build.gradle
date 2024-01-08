@@ -11,6 +11,7 @@ apply plugin: 'maven-publish'
 
 def toml = new groovy.toml.TomlSlurper()
 def grails = toml.parse(rootProject.file('gradle/grails.versions.toml'))
+def grace = toml.parse(rootProject.file('gradle/grace.versions.toml'))
 def libs = toml.parse(rootProject.file('gradle/libs.versions.toml'))
 
 def tokens = [:]
@@ -28,6 +29,24 @@ publishing {
                     def mkp = delegate
 
                     mkp.properties {
+                        for (dep in grace.plugins) {
+                            String version = dep.value
+                            tokens["grace-plugin-${dep.key}.version"] = version
+                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
+                                throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
+                            }
+                            mkp."grace-plugin-${dep.key}.version"(version)
+                        }
+
+                        for (dep in grace.profiles) {
+                            String version = dep.value
+                            tokens["grace-profile-${dep.key}.version"] = version
+                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
+                                throw new RuntimeException("Cannot have a snapshot dependency on a profile [$dep.key] for a release!")
+                            }
+                            mkp."grace-profile-${dep.key}.version"(version)
+                        }
+
                         for (dep in grails.plugins) {
                             String version = dep.value
                             tokens["grails-plugin-${dep.key}.version"] = version
@@ -88,9 +107,9 @@ publishing {
                                 }
                             }
 
-                            for (plugin in grails.plugins) {
+                            for (plugin in grace.plugins) {
                                 String artifactId = plugin.key
-                                String version = "\${grails-plugin-${plugin.key}.version}"
+                                String version = "\${grace-plugin-${plugin.key}.version}"
                                 mkp.dependency {
                                     mkp.groupId 'org.graceframework.plugins'
                                     mkp.artifactId artifactId
@@ -99,9 +118,29 @@ publishing {
                                 }
                             }
 
-                            for (profile in grails.profiles) {
+                            for (profile in grace.profiles) {
                                 mkp.dependency {
                                     mkp.groupId 'org.graceframework.profiles'
+                                    mkp.artifactId profile.key
+                                    String version = profile.value
+                                    mkp.version("\${grace-profile-${profile.key}.version}")
+                                }
+                            }
+
+                            for (plugin in grails.plugins) {
+                                String artifactId = plugin.key
+                                String version = "\${grails-plugin-${plugin.key}.version}"
+                                mkp.dependency {
+                                    mkp.groupId 'org.grails.plugins'
+                                    mkp.artifactId artifactId
+                                    String versionValue = plugin.value
+                                    mkp.version version
+                                }
+                            }
+
+                            for (profile in grails.profiles) {
+                                mkp.dependency {
+                                    mkp.groupId 'org.grails.profiles'
                                     mkp.artifactId profile.key
                                     String version = profile.value
                                     mkp.version("\${grails-profile-${profile.key}.version}")
