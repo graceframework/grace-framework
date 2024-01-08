@@ -6,7 +6,7 @@ def libsConfigurations = []
 subprojects { subproject ->
     if(subproject.name == 'grace-dependencies') return
     if(subproject.name == 'grace-bom') return
-    if(subproject.name == 'grace-shell' || subproject.name == 'grace-core') {
+    if(subproject.name == 'grace-shell') {
 
         configurations {
             libsConfigurations << libs {
@@ -84,26 +84,6 @@ task configurePopulateDependencies {
                 if (!projectNames.contains(dependency.name)) {
                     populateDependencies.into("$dependency.group/$dependency.name/jars") {
                         from artifact.file // this will trigger the actual download if necessary
-                        def sourceJar = sourceArtifacts[dependency]
-                        if (sourceJar) {
-                            from sourceJar.file
-                        }
-                        def javadocJar = javadocArtifacts[dependency]
-                        if (javadocJar) {
-                            from javadocJar.file
-                        }
-                    }
-
-                    populateDependencies.into("$dependency.group/$dependency.name/jars") {
-                        from artifact.file // this will trigger the actual download if necessary
-                        def sourceJar = sourceArtifacts[dependency]
-                        if (sourceJar) {
-                            from sourceJar.file
-                        }
-                        def javadocJar = javadocArtifacts[dependency]
-                        if (javadocJar) {
-                            from javadocJar.file
-                        }
                     }
 
                     populateDependencies.into("$dependency.group/$dependency.name") {
