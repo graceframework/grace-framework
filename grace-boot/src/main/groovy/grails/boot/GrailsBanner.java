@@ -35,18 +35,18 @@ public class GrailsBanner implements Banner {
 
     private static final String[] BANNER = {
             "",
-            "           _____           _ _",
-            "          / ____|         (_) |    __ _ _",
-            "   ===o  | |  __ _ __ __ _ _| |___ \\ \\ \\ \\",
-            "====== ==| | |_ | '__/ _` | | / __| \\ \\ \\ \\",
-            " =  = := | |__| | | | (_| | | \\__ \\  ) ) ) )",
-            "   ===    \\_____|_|  \\__,_|_|_|___/ / / / /",
-            "  =================================/_/_/_/"
+            "               _____",
+            "              / ____|",
+            "             | |  __ _ __ __ _  ___ ___ ",
+            " o  o   o  o | | |_ | '__/ _` |/ __/ _ \\",
+            "  \\/ \\^/ \\/  | |__| | | | (_| | (_|  __/",
+            "   \\_____/    \\_____|_|  \\__,_|\\___\\___|",
+            "    ===================================="
     };
 
-    private static final String GRAILS = "  :: Grails ::  ";
+    private static final String GRAILS = "    :: Grace ::";
 
-    private static final int STRAP_LINE_SIZE = 44;
+    private static final int STRAP_LINE_SIZE = 40;
 
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream printStream) {
