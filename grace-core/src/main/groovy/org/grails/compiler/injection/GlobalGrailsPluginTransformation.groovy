@@ -179,7 +179,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 Map<String, Object> pluginProperties = info.getProperties()
                 String pluginVersion = pluginProperties['version'] ?: projectVersion
                 String grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
-                String excludes = pluginProperties['pluginExcludes']
+                Object excludes = pluginProperties['pluginExcludes']
                 if (excludes instanceof List) {
                     pluginExcludes.clear()
                     pluginExcludes.addAll(excludes)
