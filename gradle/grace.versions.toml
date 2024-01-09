@@ -1,5 +1,6 @@
 [plugins]
 cache = "5.0.0-SNAPSHOT"
+geb = "5.0.0"
 fields = "5.0.0"
 hibernate5 = "2022.0.0"
 scaffolding = "5.0.0"
