@@ -657,6 +657,16 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void configureRunCommand(Project project) {
         if (project.tasks.findByName('runCommand') == null) {
+            def findMainClass = project.tasks.findByName('findMainClass')
+            findMainClass.doLast {
+                ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
+                def mainClassName = extraProperties.get('mainClassName')
+                if (mainClassName) {
+                    project.tasks.withType(ApplicationContextCommandTask) { ApplicationContextCommandTask task ->
+                        task.args mainClassName
+                    }
+                }
+            }
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
