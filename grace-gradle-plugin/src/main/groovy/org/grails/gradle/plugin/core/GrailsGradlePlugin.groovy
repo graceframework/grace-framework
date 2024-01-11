@@ -216,7 +216,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
-        project.dependencies.add(PROFILE_CONFIGURATION, "org.grails.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
+        project.dependencies.add(PROFILE_CONFIGURATION, "org.graceframework.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
     }
 
     @CompileDynamic
