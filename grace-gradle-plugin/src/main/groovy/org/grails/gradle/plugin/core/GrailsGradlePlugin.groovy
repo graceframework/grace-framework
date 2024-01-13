@@ -384,7 +384,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String resolveGrailsVersion(Project project) {
-        def grailsVersion = project.findProperty('grailsVersion')
+        def grailsVersion = project.findProperty('grailsVersion') ?: project.findProperty('graceVersion')
 
         grailsVersion = grailsVersion ?: new GrailsDependenciesDependencyManagement().getGrailsVersion()
 
