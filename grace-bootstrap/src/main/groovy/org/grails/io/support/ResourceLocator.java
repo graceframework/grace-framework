@@ -85,6 +85,14 @@ public class ResourceLocator {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
+            File[] appDirectories = new File(searchLocationPlusSlash + "app")
+                    .listFiles(file -> file.isDirectory() && !file.isHidden());
+
+            if (appDirectories != null) {
+                for (File directory : appDirectories) {
+                    this.classSearchDirectories.add(directory.getCanonicalPath());
+                }
+            }
         }
         catch (IOException ignored) {
         }
