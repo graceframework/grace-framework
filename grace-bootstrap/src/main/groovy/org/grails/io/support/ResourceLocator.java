@@ -180,6 +180,11 @@ public class ResourceLocator {
                         this.classNameToResourceCache.put(className, resource);
                         break;
                     }
+                    resource = resolveExceptionSafe("app/domain/**/" + className + ext);
+                    if (resource != null && resource.exists()) {
+                        this.classNameToResourceCache.put(className, resource);
+                        break;
+                    }
                 }
             }
         }
