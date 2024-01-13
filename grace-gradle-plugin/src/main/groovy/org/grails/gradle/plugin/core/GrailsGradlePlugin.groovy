@@ -203,6 +203,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     private void applyBomImport(DependencyManagementExtension dme, Project project) {
+        String grailsVersion = resolveGrailsVersion(project)
         String springBootVersion = resolveSpringBootVersion(project)
         dme.imports({
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
