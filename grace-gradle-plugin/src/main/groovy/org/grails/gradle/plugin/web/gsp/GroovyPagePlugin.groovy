@@ -42,13 +42,9 @@ class GroovyPagePlugin implements Plugin<Project> {
     @CompileDynamic
     @Override
     void apply(Project project) {
-        project.configurations {
-            gspCompile
-        }
+        project.configurations.create('gspCompile')
 
-        project.dependencies {
-            gspCompile 'javax.servlet:javax.servlet-api:4.0.1'
-        }
+        project.dependencies.add('gspCompile', 'javax.servlet:javax.servlet-api:4.0.1')
 
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
 
@@ -86,7 +82,7 @@ class GroovyPagePlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
-            if (grailsExt.pathingJar && Os.isFamily(Os.FAMILY_WINDOWS)) {
+            if (grailsExt.isPathingJar() && Os.isFamily(Os.FAMILY_WINDOWS)) {
                 Jar pathingJar = (Jar) allTasks.findByName('pathingJar')
                 allClasspath = project.files("${project.buildDir}/classes/groovy/main",
                         "${project.buildDir}/resources/main", pathingJar.archiveFile.get().getAsFile())

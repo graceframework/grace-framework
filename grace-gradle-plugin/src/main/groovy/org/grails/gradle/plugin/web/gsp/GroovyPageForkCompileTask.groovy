@@ -18,11 +18,13 @@ package org.grails.gradle.plugin.web.gsp
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.inject.Inject
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.gradle.api.Action
 import org.gradle.api.file.FileTree
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Internal
@@ -71,7 +73,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     String serverpath
 
     @Nested
-    GspCompileOptions compileOptions = new GspCompileOptions()
+    GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
 
     @Override
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -166,6 +168,11 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     @Input
     String getFileExtension() {
         'gsp'
+    }
+
+    @Inject
+    protected ObjectFactory getObjectFactory() {
+        throw new UnsupportedOperationException()
     }
 
 }
