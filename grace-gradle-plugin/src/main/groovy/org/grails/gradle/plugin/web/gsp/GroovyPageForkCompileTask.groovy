@@ -73,7 +73,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
     String serverpath
 
     @Nested
-    GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
+    GspCompileOptions compileOptions = new GspCompileOptions()
 
     @Override
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -114,21 +114,21 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         javaExecSpec.getMainClass().set(getCompilerName())
                         javaExecSpec.setClasspath(getClasspath())
 
-                        def jvmArgs = compileOptions.forkOptions.jvmArgs
+                        def jvmArgs = getCompileOptions().getForkOptions().getJvmArgs()
                         if (jvmArgs) {
                             javaExecSpec.jvmArgs(jvmArgs)
                         }
-                        javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
-                        javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
+                        javaExecSpec.setMaxHeapSize(getCompileOptions().getForkOptions().getMemoryMaximumSize())
+                        javaExecSpec.setMinHeapSize(getCompileOptions().getForkOptions().getMemoryInitialSize())
 
                         //This is the OLD Style and seems kinda silly to be hard coded this way. but restores functionality
                         //for now
                         def configFiles = [
-                                project.file('grails-app/conf/application.yml').canonicalPath,
-                                project.file('grails-app/conf/application.groovy').canonicalPath
+                                getProject().file('grails-app/conf/application.yml').getCanonicalPath(),
+                                getProject().file('grails-app/conf/application.groovy').getCanonicalPath()
                         ].join(',')
 
-                        Path path = Paths.get(tmpDirPath)
+                        Path path = Paths.get(getTmpDirPath())
                         File tmp
                         if (Files.exists(path)) {
                             tmp = path.toFile()
@@ -137,14 +137,14 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                             tmp = Files.createDirectories(path).toFile()
                         }
                         def arguments = [
-                                srcDir.canonicalPath,
-                                destinationDirectory.getAsFile().getOrNull()?.canonicalPath,
-                                tmp.canonicalPath,
-                                targetCompatibility,
-                                packageName,
-                                serverpath,
+                                getSrcDir().getCanonicalPath(),
+                                getDestinationDirectory().getAsFile().getOrNull()?.getCanonicalPath(),
+                                tmp.getCanonicalPath(),
+                                getTargetCompatibility(),
+                                getPackageName(),
+                                getServerpath(),
                                 configFiles,
-                                compileOptions.encoding
+                                getCompileOptions().getEncoding()
                         ]
 
                         prepareArguments(arguments)

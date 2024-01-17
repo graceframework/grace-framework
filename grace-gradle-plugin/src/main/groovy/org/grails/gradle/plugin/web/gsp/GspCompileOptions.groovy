@@ -15,9 +15,6 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
-import javax.inject.Inject
-
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.compile.AbstractOptions
@@ -35,11 +32,6 @@ class GspCompileOptions extends AbstractOptions {
     String encoding = 'UTF-8'
 
     @Nested
-    GroovyForkOptions forkOptions = getObjectFactory().newInstance(GroovyForkOptions.class)
-
-    @Inject
-    protected ObjectFactory getObjectFactory() {
-        throw new UnsupportedOperationException();
-    }
+    GroovyForkOptions forkOptions = new GroovyForkOptions()
 
 }
