@@ -1,0 +1,20 @@
+dependencies {
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-validation")
+    api project(":grace-spring")
+
+    api libs.javax.persistence
+    api(libs.grails.datastore.core) {
+        transitive = false
+    }
+    api(libs.grails.datastore.gorm) {
+        transitive = false
+    }
+    api(libs.grails.datastore.gorm.support) {
+        transitive = false
+    }
+    api(libs.grails.datastore.gorm.validation) {
+        transitive = false
+    }
+}

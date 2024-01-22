@@ -1,0 +1,12 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-encoder")
+    runtimeOnly project(":grace-codecs")
+
+    api(libs.spring.boot.autoconfigure)
+
+    testImplementation project(":grace-test")
+    testImplementation project(":grace-web-common")
+}
