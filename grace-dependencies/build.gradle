@@ -1,0 +1,82 @@
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom.withXml {
+                def xml = asNode()
+
+                xml.children().last() + {
+                    delegate.dependencies {
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-bootstrap"
+                            delegate.version( project.version )
+                            delegate.scope "api"
+
+                            delegate.exclusions {
+                                delegate.exclusion {
+                                    delegate.groupId 'jline'
+                                    delegate.artifactId 'jline'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'org.fusesource.jansi'
+                                    delegate.artifactId 'jansi'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'net.java.dev.jna'
+                                    delegate.artifactId 'jna'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'org.codehaus.groovy'
+                                    delegate.artifactId 'groovy-ant'
+                                }
+                            }
+                        }
+                        for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
+                            delegate.dependency {
+                                delegate.groupId "org.graceframework"
+                                delegate.artifactId "grace-plugin-${sub}"
+                                delegate.version( project.version )
+                                delegate.scope "api"
+                            }
+                        }
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework.plugins"
+                            delegate.artifactId "async"
+                            delegate.version libs.versions.grace.async.get()
+                            delegate.scope "api"
+                            delegate.exclusions {
+                                delegate.exclusion {
+                                    delegate.groupId 'javax'
+                                    delegate.artifactId 'javaee-web-api'
+                                }
+                            }
+                        }
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework.plugins"
+                            delegate.artifactId "gsp"
+                            delegate.version libs.versions.grace.gsp.get()
+                            delegate.scope "api"
+                            delegate.exclusions {
+                                delegate.exclusion {
+                                    delegate.groupId 'javax'
+                                    delegate.artifactId 'javaee-web-api'
+                                }
+                            }
+                        }
+                        delegate.dependency {
+                            delegate.groupId "com.h2database"
+                            delegate.artifactId "h2"
+                            delegate.version libs.versions.h2.get()
+                            delegate.scope "runtimeOnly"
+                        }
+
+                    }
+                }
+            }
+
+        }
+    }
+}

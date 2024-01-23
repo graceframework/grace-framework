@@ -1,2 +1,0 @@
-## grails-test-suite-web
-
