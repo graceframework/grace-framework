@@ -1,7 +1,7 @@
 [plugins]
 cache = "5.0.2"
 database-migration = "5.0.2"
-geb = "5.0.1"
+geb = "5.0.2"
 fields = "5.0.2"
 hibernate5 = "2022.0.2"
 scaffolding = "5.0.1"
