@@ -1,14 +1,14 @@
 Grace Framework
 ===
 
-[Grace](https://graceframework.org/) is a framework used to build web applications with the [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [plugins](https://plugins.graceframework.org/) available that provide easy integration of add-on features.
+[Grace](https://github.com/graceframework/grace-framework) is a forked of Grails 5.1.x that started development in early 2022, it's an open-source and powerful One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerfull [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
 
 Getting Started
 ---
 
 You need a Java Development Kit (JDK) installed, but it is not necessary to install Groovy because it's bundled with the Grace distribution.
 
-To install Grace, visit https://graceframework.org/download.html and download the version you would like to use. Set a `GRACE_HOME` environment variable to point to the root of the extracted download and add `GRACE_HOME/bin` to your executable `PATH`. Then in a shell, type the following:
+To install Grace, visit https://github.com/graceframework/grace-framework/release and download the version you would like to use. Set a `GRACE_HOME` environment variable to point to the root of the extracted download and add `GRACE_HOME/bin` to your executable `PATH`. Then in a shell, type the following:
 
 	grace create-app sampleapp
 	cd sampleapp
