@@ -1,0 +1,9 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-util")
+
+    api libs.groovy.json
+    api libs.spring.context
+    api libs.spring.web
+}
