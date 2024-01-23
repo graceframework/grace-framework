@@ -29,7 +29,7 @@ public class GrailsUtilTests {
 
     @Test
     public void testGrailsVersion() {
-        assertEquals("2022.0.2", GrailsUtil.getGrailsVersion());
+        assertEquals("2022.0.3-SNAPSHOT", GrailsUtil.getGrailsVersion());
     }
 
     @AfterEach
