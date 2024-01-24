@@ -40,7 +40,7 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
 
     protected final List<Profile> allProfiles = []
     protected final Map<String, Profile> profilesByName = [:]
-    protected static final String DEFAULT_PROFILE_GROUPID = 'org.grails.profiles'
+    protected static final String DEFAULT_PROFILE_GROUPID = 'org.graceframework.profiles'
 
     private final Set<URL> registeredUrls = []
 
