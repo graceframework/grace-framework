@@ -36,18 +36,19 @@ import org.grails.cli.profile.ProfileRepositoryAware
 class ListProfilesCommand implements Command, ProfileRepositoryAware {
 
     final String name = 'list-profiles'
-    final CommandDescription description = new CommandDescription(name, 'Lists the available profiles', 'grails list-profiles')
+    final CommandDescription description = new CommandDescription(name, 'Lists the available profiles', 'grace list-profiles')
 
     ProfileRepository profileRepository
 
     @Override
     boolean handle(ExecutionContext executionContext) {
-        List<Profile> allProfiles = profileRepository.allProfiles
+        List<Profile> allProfiles = profileRepository.allProfiles.sort { Profile p -> p.name}
         GrailsConsole console = executionContext.console
-        console.addStatus('Available Profiles')
-        console.log('--------------------')
+        console.log('-' * 100)
+        console.log('Available Profiles')
+        console.log('-' * 100)
         for (Profile p in allProfiles) {
-            console.log("* $p.name - ${p.description}")
+            console.log("* ${p.name.padRight(30)} ${p.version.padRight(20)}  ${p.description}")
         }
 
         true
