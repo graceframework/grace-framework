@@ -110,7 +110,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val
+                    String valStr = val.toString()
 
                     List<String> candidateProfiles = profileNames.findAll { String pn ->
                         pn.startsWith(valStr)
@@ -131,7 +131,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val
+                    String valStr = val.toString()
                     if (valStr.endsWith(',')) {
                         String[] specified = valStr.split(',')
                         candidates.addAll(featureNames.findAll { String f ->
@@ -405,7 +405,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected File unzipProfile(AntBuilder ant, Resource location) {
-        URI url = location.URL
+        URL url = location.URL
         File tmpDir = unzippedDirectories.get(url)
 
         if (tmpDir == null) {
@@ -427,7 +427,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
 
-        String repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
+        String repositories = profile.repositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
         List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
@@ -448,7 +448,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies)
 
-        String dependencyString = gradleDependencies
+        String dependenciesString = gradleDependencies
                 .sort({ GradleDependency dep -> dep.scope })
                 .collect({ GradleDependency dep -> dep.toString(4) })
                 .unique()
@@ -458,9 +458,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
-        buildRepositories = buildRepositories.collect(repositoryUrl.curry(8)).unique().join(ln)
+        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(8)).unique().join(ln)
 
-        buildDependencies = buildDependencies.collect { Dependency dep ->
+        String buildDependenciesString = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
             "        classpath \"${artifactStr}\"".toString()
         }.unique().join(ln)
@@ -475,24 +475,24 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        buildPlugins = buildPlugins.unique().join(ln)
+        String buildPluginsString = buildPlugins.unique().join(ln)
 
         ant.replace(dir: targetDirectory) {
             replacefilter {
                 replacetoken('@buildPlugins@')
-                replacevalue(buildPlugins)
+                replacevalue(buildPluginsString)
             }
             replacefilter {
                 replacetoken('@dependencies@')
-                replacevalue(dependencyString)
+                replacevalue(dependenciesString)
             }
             replacefilter {
                 replacetoken('@buildDependencies@')
-                replacevalue(buildDependencies)
+                replacevalue(buildDependenciesString)
             }
             replacefilter {
                 replacetoken('@buildRepositories@')
-                replacevalue(buildRepositories)
+                replacevalue(buildRepositoriesString)
             }
             replacefilter {
                 replacetoken('@repositories@')

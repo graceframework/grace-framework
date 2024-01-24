@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 public final class GrailsVersion {
 
-    private static final Pattern VERSION_PATTERN = Pattern.compile("((\\d+)(\\.\\d+)+)(-(\\p{Alpha}+)-(\\w+))?(-(SNAPSHOT|\\d{14}([-+]\\d{4})?))?");
+    private static final Pattern VERSION_PATTERN = Pattern.compile("((\\d+)(\\.\\d+)+)(-(\\p{Alpha}+)(\\w+))?(-(SNAPSHOT|\\d{14}([-+]\\d{4})?))?");
 
     private final String version;
 

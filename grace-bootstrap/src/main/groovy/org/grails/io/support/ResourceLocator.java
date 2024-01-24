@@ -85,6 +85,14 @@ public class ResourceLocator {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
+            File[] appDirectories = new File(searchLocationPlusSlash + "app")
+                    .listFiles(file -> file.isDirectory() && !file.isHidden());
+
+            if (appDirectories != null) {
+                for (File directory : appDirectories) {
+                    this.classSearchDirectories.add(directory.getCanonicalPath());
+                }
+            }
         }
         catch (IOException ignored) {
         }
@@ -176,6 +184,11 @@ public class ResourceLocator {
             if (resource == null || !resource.exists()) {
                 for (String ext : new String[] {".groovy", ".java"}) {
                     resource = resolveExceptionSafe(GrailsResourceUtils.DOMAIN_DIR_PATH + "**/" + className + ext);
+                    if (resource != null && resource.exists()) {
+                        this.classNameToResourceCache.put(className, resource);
+                        break;
+                    }
+                    resource = resolveExceptionSafe("app/domain/**/" + className + ext);
                     if (resource != null && resource.exists()) {
                         this.classNameToResourceCache.put(className, resource);
                         break;
