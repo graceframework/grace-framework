@@ -8,21 +8,27 @@ Getting Started
 
 You need a Java Development Kit (JDK) installed, but it is not necessary to install Groovy because it's bundled with the Grace distribution.
 
-To install Grace, visit https://github.com/graceframework/grace-framework/release and download the version you would like to use. Set a `GRACE_HOME` environment variable to point to the root of the extracted download and add `GRACE_HOME/bin` to your executable `PATH`. Then in a shell, type the following:
+To install Grace, visit https://github.com/graceframework/grace-framework/releases and download the version you would like to use. Set a `GRACE_HOME` environment variable to point to the root of the extracted download and add `GRACE_HOME/bin` to your executable `PATH`. Then in a shell, type the following:
 
+```bash
 	grace create-app sampleapp
 	cd sampleapp
 	grace run-app
+```
 
 To build Grace, clone this GitHub repository and execute the install Gradle target:
 
+```bash
     git clone https://github.com/graceframework/grace-framework.git
     cd grace-framework
     ./gradlew pTML zipDist
+```
 
 If you encounter out of memory errors when trying to run the install target, try adjusting Gradle build settings. For example:
 
+```bash
     export GRADLE_OPTS="-Xmx2G -Xms2G -XX:NewSize=512m -XX:MaxNewSize=512m"
+```
 
 Performing a Release
 ---
