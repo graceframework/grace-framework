@@ -1,9 +1,9 @@
 dependencies {
-    api project(":grails-web-common")
+    api project(":grace-web-common")
 
     api libs.javax.servlet
-    testImplementation project(":grails-plugin-controllers")
+    testImplementation project(":grace-plugin-controllers")
     testImplementation libs.tomcat.embed.core
-    testRuntimeOnly project(":grails-plugin-i18n")
-    testRuntimeOnly project(":grails-plugin-url-mappings")
+    testRuntimeOnly project(":grace-plugin-i18n")
+    testRuntimeOnly project(":grace-plugin-url-mappings")
 }

@@ -3,29 +3,29 @@ configurations.testCompileClasspath {
 }
 
 dependencies {
-    testImplementation project(":grails-boot")
-    testImplementation project(":grails-bootstrap")
-    testImplementation project(":grails-plugin-controllers")
-    testImplementation project(":grails-plugin-databinding")
-    testImplementation project(":grails-plugin-datasource")
-    testImplementation project(":grails-plugin-domain-class")
-    testImplementation project(":grails-plugin-i18n")
-    testImplementation project(":grails-plugin-services")
-    testImplementation project(":grails-plugin-url-mappings")
-    testImplementation project(":grails-spring")
-    testImplementation project(":grails-test-suite-base")
-    testImplementation project(":grails-test-support")
+    testImplementation project(":grace-boot")
+    testImplementation project(":grace-bootstrap")
+    testImplementation project(":grace-plugin-controllers")
+    testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-spring")
+    testImplementation project(":grace-test-suite-base")
+    testImplementation project(":grace-test-support")
 
     testImplementation libs.grails.plugin.async, {
-        exclude module:'grails-plugin-codecs'
-        exclude module:'grails-plugin-controllers'
-        exclude module:'grails-core'
-        exclude module:'grails-plugin-domain-class'
+        exclude module:'grace-plugin-codecs'
+        exclude module:'grace-plugin-controllers'
+        exclude module:'grace-core'
+        exclude module:'grace-plugin-domain-class'
     }
     testImplementation libs.grails.datastore.gorm.validation
     testImplementation libs.grails.datastore.gorm.hibernate5, {
-        exclude group: 'org.grails', module:'grails-datastore-gorm'
-        exclude group: 'org.grails', module:'grails-datastore-core'
+        exclude group: 'org.graceframework', module:'grace-datastore-gorm'
+        exclude group: 'org.graceframework', module:'grace-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
         exclude group: 'org.springframework', module:'spring-context'
         exclude group: 'org.springframework', module:'spring-web'
@@ -35,13 +35,13 @@ dependencies {
         exclude group: 'org.slf4j', module:'jul-to-slf4j'
         exclude group: 'org.slf4j', module:'slf4j-api'
         exclude group: 'org.slf4j', module:'slf4j-simple'
-        exclude group: 'org.grails', module:'grails-bootstrap'
-        exclude group: 'org.grails', module:'grails-plugin-domain-class'
-        exclude group: 'org.grails', module:'grails-core'
-        exclude group: 'org.grails', module:'grails-web'
-        exclude group: 'org.grails', module:'grails-test'
-        exclude group: 'org.grails', module:'grails-async'
-        exclude group: 'org.grails', module:'grails-spring'
+        exclude group: 'org.graceframework', module:'grace-bootstrap'
+        exclude group: 'org.graceframework', module:'grace-plugin-domain-class'
+        exclude group: 'org.graceframework', module:'grace-core'
+        exclude group: 'org.graceframework', module:'grace-web'
+        exclude group: 'org.graceframework', module:'grace-test'
+        exclude group: 'org.graceframework', module:'grace-async'
+        exclude group: 'org.graceframework', module:'grace-spring'
         exclude group: 'commons-collections', module:'commons-collections'
         exclude group: 'commons-lang', module:'commons-lang'
         exclude group: 'javassit', module:'javassist'

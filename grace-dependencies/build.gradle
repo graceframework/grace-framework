@@ -7,28 +7,45 @@ publishing {
             pom.withXml {
                 def xml = asNode()
 
-                xml.children().last() + pomInfo
-
                 xml.children().last() + {
                     delegate.dependencies {
                         delegate.dependency {
-                            delegate.groupId "org.grails"
-                            delegate.artifactId "grails-bootstrap"
+                            delegate.groupId "org.graceframework"
+                            delegate.artifactId "grace-bootstrap"
                             delegate.version( project.version )
                             delegate.scope "compile"
+
+                            delegate.exclusions {
+                                delegate.exclusion {
+                                    delegate.groupId 'jline'
+                                    delegate.artifactId 'jline'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'org.fusesource.jansi'
+                                    delegate.artifactId 'jansi'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'net.java.dev.jna'
+                                    delegate.artifactId 'jna'
+                                }
+                                delegate.exclusion {
+                                    delegate.groupId 'org.codehaus.groovy'
+                                    delegate.artifactId 'groovy-ant'
+                                }
+                            }
                         }
-                        for(sub in ['converters', 'databinding', 'i18n', 'interceptors', 'rest', 'services', 'url-mappings']) {
+                        for(sub in ['converters', 'rest', 'databinding', 'i18n', 'services', 'url-mappings', 'interceptors']) {
                             delegate.dependency {
-                                delegate.groupId "org.grails"
-                                delegate.artifactId "grails-plugin-${sub}"
+                                delegate.groupId "org.graceframework"
+                                delegate.artifactId "grace-plugin-${sub}"
                                 delegate.version( project.version )
                                 delegate.scope "compile"
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
+                            delegate.groupId "org.graceframework.plugins"
                             delegate.artifactId "async"
-                            delegate.version libs.versions.grails.async.get()
+                            delegate.version libs.versions.grace.async.get()
                             delegate.scope "compile"
                             delegate.exclusions {
                                 delegate.exclusion {
@@ -38,9 +55,9 @@ publishing {
                             }
                         }
                         delegate.dependency {
-                            delegate.groupId "org.grails.plugins"
+                            delegate.groupId "org.graceframework.plugins"
                             delegate.artifactId "gsp"
-                            delegate.version libs.versions.grails.gsp.get()
+                            delegate.version libs.versions.grace.gsp.get()
                             delegate.scope "compile"
                             delegate.exclusions {
                                 delegate.exclusion {
@@ -55,9 +72,11 @@ publishing {
                             delegate.version libs.versions.h2.get()
                             delegate.scope "test"
                         }
+
                     }
                 }
             }
+
         }
     }
 }

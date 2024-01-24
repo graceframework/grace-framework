@@ -1,10 +1,10 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-core")
-    api project(":grails-plugin-controllers")
-    api project(":grails-util")
-    api project(":grails-web-url-mappings")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-controllers")
+    api project(":grace-util")
+    api project(":grace-web-url-mappings")
 
     annotationProcessor libs.spring.boot.configurationProcessor
     api libs.spring.boot.autoconfigure

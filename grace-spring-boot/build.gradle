@@ -1,7 +1,7 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-util")
 
     api libs.spring.beans
     api libs.spring.boot
@@ -9,5 +9,5 @@ dependencies {
     api libs.spring.core
     api libs.spring.tx
 
-    testImplementation project(":grails-test-support")
+    testImplementation project(":grace-test-support")
 }

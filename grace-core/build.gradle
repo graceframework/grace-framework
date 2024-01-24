@@ -1,9 +1,9 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-plugin-api")
-    api project(":grails-spring")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-plugin-api")
+    api project(":grace-spring")
+    api project(":grace-util")
 
     api libs.grails.datastore.core
     api libs.spring.beans
@@ -13,7 +13,7 @@ dependencies {
     api libs.spring.tx
     compileOnly libs.micronaut.spring.context
 
-    testImplementation project(":grails-test")
+    testImplementation project(":grace-test")
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test
 }

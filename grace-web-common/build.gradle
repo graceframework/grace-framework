@@ -1,13 +1,13 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-core")
-    api project(":grails-databinding")
-    api project(":grails-encoder")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-databinding")
+    api project(":grace-encoder")
+    api project(":grace-util")
 
     api libs.grails.gsp, {
-        exclude group:'org.grails', module:'grails-core'
-        exclude group:'org.grails', module:'grails-encoder'
+        exclude group:'org.graceframework', module:'grace-core'
+        exclude group:'org.graceframework', module:'grace-encoder'
     }
 
     api libs.javax.servlet
@@ -17,5 +17,5 @@ dependencies {
     compileOnly libs.jsr305
     implementation libs.caffeine
 
-    testImplementation project(":grails-test")
+    testImplementation project(":grace-test")
 }
