@@ -13,6 +13,33 @@ ext {
 
 configurations {
 	dependenciesBom
+    runtimeClasspath {
+        exclude group: 'commons-codec', module: 'commons-codec'
+        exclude group: 'com.github.ben-manes.caffeine', module: 'caffeine'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+        exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
+        exclude group: 'jakarta.inject', module: 'jakarta.inject-api'
+        exclude group: 'javax.annotation', module: 'javax.annotation-api'
+        exclude group: 'javax.inject', module: 'javax.inject'
+        exclude group: 'javax.persistence', module: 'javax.persistence-api'
+        exclude group: 'javax.transaction', module: 'javax.transaction-api'
+        exclude group: 'org.checkerframework', module: 'checker-qual'
+        exclude group: 'org.apache.ant', module: 'ant-antlr'
+        exclude group: 'org.apache.ant', module: 'ant-junit'
+        exclude group: 'org.apache.commons', module: 'commons-compress'
+        exclude group: 'org.codehaus.groovy', module: 'groovy-groovydoc'
+        exclude group: 'org.codehaus.groovy', module: 'groovy-jmx'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-classworlds'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-component-annotations'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-sec-dispatcher'
+        exclude group: 'org.javassist', module: 'javassist'
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-expression'
+        exclude group: 'org.springframework', module: 'spring-jcl'
+        exclude group: 'org.springframework', module: 'spring-tx'
+        exclude group: 'org.springframework', module: 'spring-web'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-autoconfigure'
+    }
 }
 
 dependencies {
