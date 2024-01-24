@@ -68,7 +68,7 @@ dependencies {
         exclude module:'grace-web-common'
         exclude module:'grace-encoder'
     }
-    testImplementation libs.grails.plugin.async, {
+    testImplementation libs.grails.async, {
         exclude module:'grace-plugin-codecs'
         exclude module:'grace-plugin-controllers'
         exclude module:'grace-core'
