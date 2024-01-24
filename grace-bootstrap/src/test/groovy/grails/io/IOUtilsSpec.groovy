@@ -9,7 +9,7 @@ class IOUtilsSpec extends Specification{
     void "Test findClassResource finds a class resource"() {
         expect:
         IOUtils.findClassResource(BuildSettings)
-        IOUtils.findClassResource(BuildSettings).path.contains('grails-bootstrap')
+        IOUtils.findClassResource(BuildSettings).path.contains('grace-bootstrap')
     }
 
     void "Test findJarResource finds a the JAR resource"() {
