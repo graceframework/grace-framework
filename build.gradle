@@ -160,18 +160,6 @@ subprojects { project ->
 
         delegate.developers {
             delegate.developer {
-                delegate.id 'graemerocher'
-                delegate.name 'Graeme Rocher'
-            }
-            delegate.developer {
-                delegate.id 'jeffscottbrown'
-                delegate.name 'Jeff Brown'
-            }
-            delegate.developer {
-                delegate.id 'lhotari'
-                delegate.name 'Lari Hotari'
-            }
-            delegate.developer {
                 delegate.id 'rainboyan'
                 delegate.name 'Michael Yan'
             }
