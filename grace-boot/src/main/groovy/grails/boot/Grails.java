@@ -65,7 +65,7 @@ import org.grails.plugins.support.WatchPattern;
  */
 public class Grails extends SpringApplication {
 
-    private static final String GRAILS_BANNER = "grails-banner.txt";
+    private static final String GRAILS_BANNER = "grace-banner.txt";
 
     private static final String SPRING_PROFILES = "spring.profiles.active";
 
