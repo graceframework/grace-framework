@@ -38,7 +38,7 @@ import org.grails.cli.profile.Profile
 class MavenProfileRepository extends AbstractJarProfileRepository {
 
     public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration(
-            'grailsCentral', new URI('https://repo.grails.org/grails/core'), true)
+            'mavenCentral', new URI('https://repo1.maven.org/maven2/'), false)
 
     List<GrailsRepositoryConfiguration> repositoryConfigurations
     MavenResolverGrapeEngine grapeEngine
@@ -126,7 +126,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         if (!this.resolved) {
             List<Map> profiles = []
             this.resolutionContext.managedDependencies.each { Dependency dep ->
-                if (dep.artifact.groupId == 'org.grails.profiles') {
+                if (dep.artifact.groupId == 'org.graceframework.profiles') {
                     profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId])
                 }
             }
@@ -136,7 +136,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 this.grapeEngine.grab(profile)
             }
 
-            def localData = new File(System.getProperty('user.home'), '/.m2/repository/org/grails/profiles')
+            def localData = new File(System.getProperty('user.home'), '/.m2/repository/org/graceframework/profiles')
             if (localData.exists()) {
                 localData.eachDir { File dir ->
                     if (!dir.name.startsWith('.')) {
