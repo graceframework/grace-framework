@@ -1,9 +1,9 @@
   dependencies {
-    api project(":grails-api")
-    api project(":grails-plugin-api")
-    api project(":grails-web-databinding")
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-web-databinding")
 
     api libs.spring.boot.autoconfigure
 
-    testImplementation project(":grails-test-support")
+    testImplementation project(":grace-test-support")
 }

@@ -11,18 +11,26 @@ repositories {
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
 }
 
-apply plugin: 'java-library'
+ext.isSnapshot = version.endsWith("-SNAPSHOT")
+ext.isReleaseVersion = !ext.isSnapshot
+ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
+ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
+
 apply plugin: 'java-gradle-plugin'
+apply plugin: 'maven-publish'
 
 configurations {
     documentation
-    all*.exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    compileClasspath {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+    }
 }
 
 dependencies {
-    api project(":grails-bootstrap")
-    api project(":grails-gradle-model")
-    api project(":grails-shell"), {
+    api project(":grace-bootstrap")
+    api project(":grace-gradle-model")
+    api project(":grace-shell"), {
         exclude group: "org.slf4j", module: "slf4j-simple"
         exclude group: "org.apache.maven.resolver", module: "maven-resolver-connector-basic"
         exclude group: "org.apache.maven.resolver", module: "maven-resolver-impl"
@@ -43,52 +51,52 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        grailsCore {
-            displayName = "Grails Core Gradle Plugin"
-            description = 'The main Grails gradle plugin implementation'
-            id = 'org.grails.grails-core'
+        graceCore {
+            displayName = "Grace Core Gradle Plugin"
+            description = 'The main Grace gradle plugin implementation'
+            id = 'org.graceframework.grace-core'
             implementationClass = 'org.grails.gradle.plugin.core.GrailsGradlePlugin'
         }
-        grailsDoc {
-            displayName = "Grails Doc Gradle Plugin"
-            description = 'Adds Grails doc publishing support'
-            id = 'org.grails.grails-doc'
+        graceDoc {
+            displayName = "Grace Doc Gradle Plugin"
+            description = 'Adds Grace doc publishing support'
+            id = 'org.graceframework.grace-doc'
             implementationClass = 'org.grails.gradle.plugin.doc.GrailsDocGradlePlugin'
         }
-        grailsGsp {
-            displayName = "Grails GSP Gradle Plugin"
+        graceGsp {
+            displayName = "Grace GSP Gradle Plugin"
             description = 'A plugin that adds support for compiling Groovy Server Pages (GSP)'
-            id = 'org.grails.grails-gsp'
+            id = 'org.graceframework.grace-gsp'
             implementationClass = 'org.grails.gradle.plugin.web.gsp.GroovyPagePlugin'
         }
-        grailsPlugin {
-            displayName = "Grails-Plugin Gradle Plugin"
-            description = 'A Gradle plugin for Grails plugins'
-            id = 'org.grails.grails-plugin'
+        gracePlugin {
+            displayName = "Grace-Plugin Gradle Plugin"
+            description = 'A Gradle plugin for Grace plugins'
+            id = 'org.graceframework.grace-plugin'
             implementationClass = 'org.grails.gradle.plugin.core.GrailsPluginGradlePlugin'
         }
-        grailsProfile {
-            displayName = "Grails Profile Gradle Plugin"
-            description = 'A plugin that is capable of compiling a Grails profile into a JAR file for distribution'
-            id = 'org.grails.grails-profile'
+        graceProfile {
+            displayName = "Grace Profile Gradle Plugin"
+            description = 'A plugin that is capable of compiling a Grace profile into a JAR file for distribution'
+            id = 'org.graceframework.grace-profile'
             implementationClass = 'org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin'
         }
-        grailsWeb {
-            displayName = "Grails Web Gradle Plugin"
+        graceWeb {
+            displayName = "Grace Web Gradle Plugin"
             description = 'Adds web specific extensions'
-            id = 'org.grails.grails-web'
+            id = 'org.graceframework.grace-web'
             implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
         }
-        grailsPluginPublish {
-            displayName = "Grails Publish Gradle Plugin"
-            description = 'A plugin to setup publishing to Grails central repo'
-            id = 'org.grails.internal.grails-plugin-publish'
+        gracePluginPublish {
+            displayName = "Grace Publish Gradle Plugin"
+            description = 'A plugin to setup publishing to Grace central repo'
+            id = 'org.graceframework.internal.grace-plugin-publish'
             implementationClass = 'org.grails.gradle.plugin.publishing.internal.GrailsCentralPublishGradlePlugin'
         }
-        grailsProfilePublish {
-            displayName = "Grails Profile Publish Plugin"
+        graceProfilePublish {
+            displayName = "Grace Profile Publish Plugin"
             description = 'A plugin for publishing profiles'
-            id = 'org.grails.internal.grails-profile-publish'
+            id = 'org.graceframework.internal.grace-profile-publish'
             implementationClass = 'org.grails.gradle.plugin.profiles.internal.GrailsProfilePublishGradlePlugin'
         }
     }
@@ -97,13 +105,18 @@ gradlePlugin {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 jar {
     manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grails",
+            "Implementation-Title": "Grace",
             "Implementation-Version": projectVersion,
-            "Implementation-Vendor": 'grails.org')
+            "Implementation-Vendor": 'graceframework.org')
 }
 
 configure([compileGroovy, compileTestGroovy]) {
@@ -127,4 +140,51 @@ configure([javadoc]) {
     options.docEncoding "UTF-8"
     options.charSet "UTF-8"
     options.jFlags "-Xms64M", "-Xmx512M"
+}
+
+tasks.withType(Copy) {
+    configure {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+if (isReleaseVersion) {
+    afterEvaluate {
+        signing {
+            required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+            Publication[] publications = new Publication[publishing.publications.size()]
+            publishing.publications.findAll().toArray(publications)
+            sign(publications)
+        }
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { isReleaseVersion }
+    }
+}
+
+tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
+    shouldRunAfter(tasks.withType(Sign))
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            pom {
+                name = "Grace Gradle Plugin"
+                description = "A Gradle plugin for Grace which provides a bunch of useful plugins"
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    project.publishing.publications.each { MavenPublication publication->
+        if (publication.name != "pluginMaven" || publication.name != "maven") {
+            publication.pom.withXml {
+                def xml = asNode()
+                xml.children().last() + pomInfo
+            }
+        }
+    }
 }

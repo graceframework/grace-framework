@@ -1,3 +1,3 @@
 dependencies {
-    api project(":grails-core")
+    api project(":grace-core")
 }

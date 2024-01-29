@@ -1,10 +1,10 @@
 dependencies {
-    api project(":grails-core")
-    api project(":grails-util")
+    api project(":grace-core")
+    api project(":grace-util")
     api(libs.grails.datastore.gorm.validation) {
         transitive = false
     }
 
-    testImplementation project(":grails-web-common")
+    testImplementation project(":grace-web-common")
     testImplementation libs.spring.test
 }

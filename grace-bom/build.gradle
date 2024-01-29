@@ -24,27 +24,26 @@ publishing {
             pom.withXml {
                 def xml = asNode()
 
-                xml.children().last() + pomInfo
                 xml.children().last() + {
                     def mkp = delegate
 
                     mkp.properties {
                         for (dep in grails.plugins) {
                             String version = dep.value
-                            tokens["grails-plugin-${dep.key}.version"] = version
+                            tokens["grace-plugin-${dep.key}.version"] = version
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a plugin [$dep.key] for a release!")
                             }
-                            mkp."grails-plugin-${dep.key}.version"(version)
+                            mkp."grace-plugin-${dep.key}.version"(version)
                         }
 
                         for (dep in grails.profiles) {
                             String version = dep.value
-                            tokens["grails-profile-${dep.key}.version"] = version
+                            tokens["grace-profile-${dep.key}.version"] = version
                             if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a profile [$dep.key] for a release!")
                             }
-                            mkp."grails-profile-${dep.key}.version"(version)
+                            mkp."grace-profile-${dep.key}.version"(version)
                         }
 
                         for (ver in libraryVersions) {
@@ -60,13 +59,13 @@ publishing {
                     mkp.dependencyManagement {
                         mkp.dependencies {
                             for (sub in project.parent.subprojects) {
-                                if (sub.name == 'grails-bom') continue
+                                if (sub.name == 'grace-bom') continue
 
                                 mkp.dependency {
                                     mkp.groupId sub.group
                                     mkp.artifactId sub.name
                                     mkp.version sub.version
-                                    if (sub.name == 'grails-dependencies') {
+                                    if (sub.name == 'grace-dependencies') {
                                         mkp.type 'pom'
                                         mkp.scope 'import'
                                     }
@@ -91,9 +90,9 @@ publishing {
 
                             for (plugin in grails.plugins) {
                                 String artifactId = plugin.key
-                                String version = "\${grails-plugin-${plugin.key}.version}"
+                                String version = "\${grace-plugin-${plugin.key}.version}"
                                 mkp.dependency {
-                                    mkp.groupId 'org.grails.plugins'
+                                    mkp.groupId 'org.graceframework.plugins'
                                     mkp.artifactId artifactId
                                     String versionValue = plugin.value
                                     mkp.version version
@@ -102,10 +101,10 @@ publishing {
 
                             for (profile in grails.profiles) {
                                 mkp.dependency {
-                                    mkp.groupId 'org.grails.profiles'
+                                    mkp.groupId 'org.graceframework.profiles'
                                     mkp.artifactId profile.key
                                     String version = profile.value
-                                    mkp.version("\${grails-profile-${profile.key}.version}")
+                                    mkp.version("\${grace-profile-${profile.key}.version}")
                                 }
                             }
                         }

@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    api project(":grails-util")
+    api project(":grace-util")
 
     api libs.groovy.templates
     api libs.groovy.xml

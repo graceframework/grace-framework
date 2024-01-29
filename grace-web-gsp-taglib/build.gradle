@@ -1,4 +1,4 @@
 dependencies {
     compileOnly libs.jakarta.servlet
-    api project(':grails-web-jsp')
+    api project(':grace-web-jsp')
 }

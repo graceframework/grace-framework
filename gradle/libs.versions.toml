@@ -13,20 +13,20 @@ gradle-extra-configurations-plugin = "7.0.0"
 gradle-git-properties = "2.4.1"
 gradle-nexus-plugin = "2.3.1"
 gradle-nexus-publish-plugin = "1.1.0"
-grails-async = "5.0.0-SNAPSHOT"
-grails-events = "5.0.0-SNAPSHOT"
+grace-async = "5.0.2"
+grace-events = "5.0.2"
 grails-gdoc = "1.0.1"
-grails-gorm = "2022.1.0-SNAPSHOT"
-grails-gorm-hibernate = "2022.1.0-SNAPSHOT"
-grails-scaffolding = "5.0.0-SNAPSHOT"
-grails-views = "5.0.0-SNAPSHOT"
+grace-gorm = "2022.0.2"
+grace-gorm-hibernate = "2022.0.2"
+grace-scaffolding = "5.0.2"
+grace-views = "5.0.2"
 groovy = "3.0.16"
 gson = "2.9.1"
 h2 = "2.1.214"
 hsqldb = "2.7.1"
 itext = "2.0.8"
 jackson-databind = "2.13.4"
-jansi = "2.4.0"
+jansi = "1.18"
 jakarta-annotation = "2.1.1"
 jakarta-el = "4.0.0"
 jakarta-inject = "2.0.0"
@@ -87,36 +87,36 @@ gradle-extra-configurations-plugin = { module = "com.netflix.nebula:gradle-extra
 gradle-nexus-plugin = { module = "com.bmuschko:gradle-nexus-plugin", version.ref = "gradle-nexus-plugin" }
 gradle-nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
-grails-async = { module = "org.grails:grails-async", version.ref = "grails-async" }
-grails-async-gpars = { module = "org.grails:grails-async-gpars", version.ref = "grails-async" }
-grails-async-rxjava = { module = "org.grails:grails-async-rxjava", version.ref = "grails-async" }
-grails-async-rxjava2 = { module = "org.grails:grails-async-rxjava2", version.ref = "grails-async" }
-grails-events = { module = "org.grails:grails-events", version.ref = "grails-events" }
-grails-events-compat = { module = "org.grails:grails-events-compat", version.ref = "grails-events" }
-grails-events-gpars = { module = "org.grails:grails-events-gpars", version.ref = "grails-events" }
-grails-events-rxjava = { module = "org.grails:grails-events-rxjava", version.ref = "grails-events" }
-grails-events-rxjava2 = { module = "org.grails:grails-events-rxjava2", version.ref = "grails-events" }
-grails-events-spring = { module = "org.grails:grails-events-spring", version.ref = "grails-events" }
-grails-events-transform = { module = "org.grails:grails-events-transform", version.ref = "grails-events" }
-grails-datastore-core = { module = "org.grails:grails-datastore-core", version.ref = "grails-gorm" }
-grails-datastore-async = { module = "org.grails:grails-datastore-async", version.ref = "grails-gorm" }
-grails-datastore-gorm = { module = "org.grails:grails-datastore-gorm", version.ref = "grails-gorm" }
-grails-datastore-gorm-async = { module = "org.grails:grails-datastore-gorm-async", version.ref = "grails-gorm" }
-grails-datastore-gorm-hibernate5 = { module = "org.grails:grails-datastore-gorm-hibernate5", version.ref = "grails-gorm-hibernate" }
-grails-datastore-gorm-support = { module = "org.grails:grails-datastore-gorm-support", version.ref = "grails-gorm" }
-grails-datastore-gorm-test = { module = "org.grails:grails-datastore-gorm-test", version.ref = "grails-gorm" }
-grails-datastore-gorm-validation = { module = "org.grails:grails-datastore-gorm-validation", version.ref = "grails-gorm" }
-grails-datastore-web = { module = "org.grails:grails-datastore-web", version.ref = "grails-gorm" }
+grails-async = { module = "org.graceframework:grace-async", version.ref = "grace-async" }
+grails-async-gpars = { module = "org.graceframework:grace-async-gpars", version.ref = "grace-async" }
+grails-async-rxjava = { module = "org.graceframework:grace-async-rxjava", version.ref = "grace-async" }
+grails-async-rxjava2 = { module = "org.graceframework:grace-async-rxjava2", version.ref = "grace-async" }
+grails-events = { module = "org.graceframework:grace-events", version.ref = "grace-events" }
+grails-events-compat = { module = "org.graceframework:grace-events-compat", version.ref = "grace-events" }
+grails-events-gpars = { module = "org.graceframework:grace-events-gpars", version.ref = "grace-events" }
+grails-events-rxjava = { module = "org.graceframework:grace-events-rxjava", version.ref = "grace-events" }
+grails-events-rxjava2 = { module = "org.graceframework:grace-events-rxjava2", version.ref = "grace-events" }
+grails-events-spring = { module = "org.graceframework:grace-events-spring", version.ref = "grace-events" }
+grails-events-transform = { module = "org.graceframework:grace-events-transform", version.ref = "grace-events" }
+grails-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-gorm" }
+grails-datastore-async = { module = "org.graceframework:grace-datastore-async", version.ref = "grace-gorm" }
+grails-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-gorm" }
+grails-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-gorm" }
+grails-datastore-gorm-hibernate5 = { module = "org.graceframework:grace-datastore-gorm-hibernate5", version.ref = "grace-gorm-hibernate" }
+grails-datastore-gorm-support = { module = "org.graceframework:grace-datastore-gorm-support", version.ref = "grace-gorm" }
+grails-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-test", version.ref = "grace-gorm" }
+grails-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-gorm" }
+grails-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-gorm" }
 grails-gdoc-engine = { module = "org.grails:grails-gdoc-engine", version.ref = "grails-gdoc" }
-grails-plugin-async = { module = "org.grails.plugins:async", version.ref = "grails-async" }
-grails-plugin-events = { module = "org.grails.plugins:events", version.ref = "grails-events" }
-grails-scaffolding-core = { module = "org.grails:grails-scaffolding-core", version.ref = "grails-scaffolding" }
-grails-views-core = { module = "org.grails:views-core", version.ref = "grails-views" }
-grails-views-gradle = { module = "org.grails.plugins:views-gradle", version.ref = "grails-views" }
-grails-views-json = { module = "org.grails.plugins:views-json", version.ref = "grails-views" }
-grails-views-json-templates = { module = "org.grails.plugins:views-json-templates", version.ref = "grails-views" }
-grails-views-json-testing-support = { module = "org.grails:views-json-testing-support", version.ref = "grails-views" }
-grails-views-markup = { module = "org.grails.plugins:views-markup", version.ref = "grails-views" }
+grails-plugin-async = { module = "org.graceframework.plugins:async", version.ref = "grace-async" }
+grails-plugin-events = { module = "org.graceframework.plugins:events", version.ref = "grace-events" }
+grails-scaffolding-core = { module = "org.graceframework:grace-scaffolding-core", version.ref = "grace-scaffolding" }
+grails-views-core = { module = "org.graceframework:views-core", version.ref = "grace-views" }
+grails-views-gradle = { module = "org.graceframework.plugins:views-gradle", version.ref = "grace-views" }
+grails-views-json = { module = "org.graceframework.plugins:views-json", version.ref = "grace-views" }
+grails-views-json-templates = { module = "org.graceframework.plugins:views-json-templates", version.ref = "grace-views" }
+grails-views-json-testing-support = { module = "org.graceframework:views-json-testing-support", version.ref = "grace-views" }
+grails-views-markup = { module = "org.graceframework.plugins:views-markup", version.ref = "grace-views" }
 groovy-ant = { module = "org.codehaus.groovy:groovy-ant", version.ref = "groovy" }
 groovy-bom = { module = "org.codehaus.groovy:groovy-bom", version.ref = "groovy" }
 groovy-console = { module = "org.codehaus.groovy:groovy-console", version.ref = "groovy" }

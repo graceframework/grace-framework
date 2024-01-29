@@ -1,8 +1,8 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-cli")
-    api project(":grails-util")
-    api project(":grails-web-common")
+    api project(":grace-api")
+    api project(":grace-cli")
+    api project(":grace-util")
+    api project(":grace-web-common")
 
     api(libs.grails.datastore.gorm.validation) {
         transitive = false
@@ -13,7 +13,7 @@ dependencies {
     compileOnly libs.jansi
     compileOnly libs.jline
 
-    testImplementation project(":grails-test-suite-base")
+    testImplementation project(":grace-test-suite-base")
 }
 
 tasks.withType(Test) {

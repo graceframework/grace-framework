@@ -1,5 +1,5 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-plugin-api")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-plugin-api")
 }

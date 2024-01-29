@@ -1,5 +1,5 @@
 dependencies {
-    api project(":grails-core")
-    api project(":grails-taglib")
+    api project(":grace-core")
+    api project(":grace-taglib")
     api libs.groovy.templates
 }

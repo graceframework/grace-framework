@@ -1,16 +1,16 @@
 dependencies {
     compileOnly libs.jakarta.servlet
     api libs.commons.lang
-    api project(":grails-core")
-    api project(":grails-plugin-api")
-    api project(":grails-plugin-codecs")
-    api project(":grails-plugin-url-mappings")
-    api project(":grails-web-gsp-taglib")
-    runtimeOnly(project(":grails-web-jsp"))
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-codecs")
+    api project(":grace-plugin-url-mappings")
+    api project(":grace-web-gsp-taglib")
+    runtimeOnly(project(":grace-web-jsp"))
 
-    testImplementation project(":grails-plugin-codecs")
-    testImplementation project(":grails-plugin-domain-class")
-    testImplementation project(":grails-test-support")
+    testImplementation project(":grace-plugin-codecs")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-test-support")
 
     testImplementation libs.jakarta.servlet.jsp
     testImplementation libs.jakarta.servlet.jsp.jstl
