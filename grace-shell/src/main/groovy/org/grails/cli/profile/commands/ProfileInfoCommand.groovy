@@ -69,12 +69,12 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             console.error("Profile not found for name [$profileName]")
         }
         else {
-            console.log("Profile: ${profile.name}")
-            console.log('--------------------')
+            console.log("Profile: ${profile.name} v${profile.version}")
+            console.log('-' * 40)
             console.log(profile.description)
             console.log('')
             console.log('Provided Commands:')
-            console.log('--------------------')
+            console.log('-' * 40)
             Iterable<Command> commands = findCommands(profile, console).toUnique { Command c -> c.name }
 
             for (cmd in commands) {
@@ -83,7 +83,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             }
             console.log('')
             console.log('Provided Features:')
-            console.log('--------------------')
+            console.log('-' * 40)
             Iterable<Feature> features = profile.features
 
             for (feature in features) {

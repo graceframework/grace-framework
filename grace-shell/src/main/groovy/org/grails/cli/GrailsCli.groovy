@@ -183,7 +183,7 @@ class GrailsCli {
         }
         catch (Throwable e) {
             e = ExceptionUtils.getRootCause(e)
-            GrailsConsole.instance.error("Error occurred running Grails CLI: $e.message", e)
+            GrailsConsole.instance.error("Error occurred running Grace CLI: $e.message", e)
             exit(1)
         }
     }
@@ -203,7 +203,7 @@ class GrailsCli {
     private int getBaseUsage() {
         System.out.println "Usage: \n\t $USAGE_MESSAGE \n\t $PLUGIN_USAGE_MESSAGE \n\n"
         this.execute 'list-profiles'
-        System.out.println "\nType 'grails help' or 'grails -h' for more information."
+        System.out.println "\nType 'grace help' or 'grace -h' for more information."
 
         1
     }
@@ -229,7 +229,7 @@ class GrailsCli {
             GrailsVersion currentVersion = GrailsVersion.current()
             GrailsDependenciesDependencyManagement grailsDependencies = new GrailsDependenciesDependencyManagement()
             StringBuilder sb = new StringBuilder()
-            sb.append('%n------------------------------------------------------------%nGoBoots ')
+            sb.append('%n------------------------------------------------------------%nGrace ')
             sb.append(currentVersion.getVersion())
             sb.append('%n------------------------------------------------------------%n%nBuild time:   ')
             sb.append(currentVersion.getBuildTimestamp())
