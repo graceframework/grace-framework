@@ -38,8 +38,8 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = ['file:./grails-app/i18n/**/*.properties',
-                               'file:./app/i18n/**/*.properties']
+    def watchedResources = ['file:./grails-app/i18n/**/*.properties',
+                            'file:./app/i18n/**/*.properties']
 
     @Override
     Closure doWithSpring() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,6 +82,14 @@ public class ResourceLocator {
 
             if (directories != null) {
                 for (File directory : directories) {
+                    this.classSearchDirectories.add(directory.getCanonicalPath());
+                }
+            }
+            File[] appDirectories = new File(searchLocationPlusSlash + "app")
+                    .listFiles(file -> file.isDirectory() && !file.isHidden());
+
+            if (appDirectories != null) {
+                for (File directory : appDirectories) {
                     this.classSearchDirectories.add(directory.getCanonicalPath());
                 }
             }
@@ -176,6 +184,11 @@ public class ResourceLocator {
             if (resource == null || !resource.exists()) {
                 for (String ext : new String[] {".groovy", ".java"}) {
                     resource = resolveExceptionSafe(GrailsResourceUtils.DOMAIN_DIR_PATH + "**/" + className + ext);
+                    if (resource != null && resource.exists()) {
+                        this.classNameToResourceCache.put(className, resource);
+                        break;
+                    }
+                    resource = resolveExceptionSafe("app/domain/**/" + className + ext);
                     if (resource != null && resource.exists()) {
                         this.classNameToResourceCache.put(className, resource);
                         break;
