@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$gradleExtraConfigurationsPluginVersion"
-        classpath "gradle.plugin.io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
+        classpath "io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
         classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPlugin"
         classpath "org.codenarc:CodeNarc:$codenarcVersion"
     }
@@ -466,11 +466,21 @@ project.afterEvaluate {
 
 apply plugin: "io.sdkman.vendors"
 sdkman {
-    api = "https://vendors.sdkman.io"
-    consumerKey = System.getenv("GVM_SDKVENDOR_KEY") ?: project.hasProperty("gvmSdkvendorKey") ? project.gvmSdkvendorKey : ''
-    consumerToken = System.getenv("GVM_SDKVENDOR_TOKEN") ?: project.hasProperty("gvmSdkvendorToken") ? project.gvmSdkvendorToken : ''
     candidate = "grace"
     version = project.version
     url = "https://github.com/graceframework/grace-framework/releases/download/v${project.version}/grace-${project.version}.zip"
-    hashtag = "#graceframework"
+    hashtag = "graceframework"
+}
+
+task sdkManRelease {
+    group 'SDKMAN! Release'
+    description 'Performs a Major or Minor Release depend on project version'
+    if (project.projectVersion.endsWith("SNAPSHOT")) {
+        // Do nothing
+    } else if (project.projectVersion.contains("M") || project.projectVersion.contains("RC")) {
+        dependsOn 'sdkMinorRelease'
+    }
+    else {
+        dependsOn 'sdkMajorRelease'
+    }
 }
