@@ -1,0 +1,9 @@
+  dependencies {
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-web-databinding")
+
+    api libs.spring.boot.autoconfigure
+
+    testImplementation project(":grace-test-support")
+}
