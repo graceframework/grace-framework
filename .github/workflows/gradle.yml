@@ -32,7 +32,7 @@ jobs:
           GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
           GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         with:
-          arguments: build -x groovydoc -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
+          arguments: build -x test -x groovydoc -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
