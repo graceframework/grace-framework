@@ -1,2 +1,2 @@
-## grails-spring
+## grace-spring
 

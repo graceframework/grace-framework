@@ -1,18 +1,18 @@
-## Grails GSP
+## Grace GSP
 
-This subproject is required for all Grails 3 applications and plugins that require GSP processing.  If your project includes GSPs you should add the following to your `build.gradle` which is provided by the [Grails Gradle Plugin](https://github.com/grails/grails-core/tree/master/grails-gradle-plugin).
+This subproject is required for all Grace applications and plugins that require GSP processing.
 
 ``` gradle
-apply plugin: "org.grails.grails-gsp"
+apply plugin: "org.graceframework.grace-gsp"
 ```
 
-It is typical of standard Grails 3 application to use this in conjunction with `grails-web` as in the following example:
+It is typical of standard Grace application to use this in conjunction with `grace-web` as in the following example:
 
 ``` gradle
-apply plugin: "org.grails.grails-web"
-apply plugin: "org.grails.grails-gsp"
+apply plugin: "org.graceframework.grace-web"
+apply plugin: "org.graceframework.grace-gsp"
 ```
 
 Dependencies
 -----
-To see what additional subprojects will be included with this, you can view this project's [build.gradle](https://github.com/grails/grails-core/blob/master/grails-gsp/build.gradle)
+To see what additional subprojects will be included with this, you can view this project's [build.gradle](https://github.com/graceframework/grace-framework/blob/2022.2.x/grace-gsp/build.gradle)

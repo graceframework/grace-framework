@@ -1,2 +1,2 @@
-## grails-plugin-mimetypes
+## grace-plugin-mimetypes
 

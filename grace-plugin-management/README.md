@@ -1,2 +1,2 @@
-## grails-plugin-management
+## grace-plugin-management
 

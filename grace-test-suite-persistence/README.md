@@ -1,2 +1,2 @@
-## grails-test-suite-persistence
+## grace-test-suite-persistence
 

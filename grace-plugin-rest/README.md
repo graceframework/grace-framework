@@ -1,2 +1,2 @@
-## grails-plugin-rest
+## grace-plugin-rest
 

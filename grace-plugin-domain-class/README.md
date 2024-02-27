@@ -1,2 +1,2 @@
-## grails-plugin-domain-class
+## grace-plugin-domain-class
 

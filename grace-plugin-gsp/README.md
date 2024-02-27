@@ -1,2 +1,2 @@
-## grails-plugin-gsp
+## grace-plugin-gsp
 

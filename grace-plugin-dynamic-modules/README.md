@@ -1,2 +1,2 @@
-## grails-plugin-dynamic-modules
+## grace-plugin-dynamic-modules
 

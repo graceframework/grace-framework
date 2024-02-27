@@ -1,2 +1,2 @@
-## grails-test-suite-web
+## grace-test-suite-web
 
