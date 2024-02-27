@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 Map<String, Object> pluginProperties = info.getProperties()
                 String pluginVersion = pluginProperties['version'] ?: projectVersion
                 String grailsVersion = pluginProperties['grailsVersion'] ?: getClass().getPackage().getImplementationVersion() + ' > *'
-                String excludes = pluginProperties['pluginExcludes']
+                Object excludes = pluginProperties['pluginExcludes']
                 if (excludes instanceof List) {
                     pluginExcludes.clear()
                     pluginExcludes.addAll(excludes)

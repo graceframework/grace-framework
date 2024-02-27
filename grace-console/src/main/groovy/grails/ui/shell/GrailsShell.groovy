@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 import org.apache.groovy.groovysh.Groovysh
 import org.apache.groovy.groovysh.InteractiveShellRunner
+import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.shell.IO
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationContextFactory
@@ -86,6 +87,7 @@ class GrailsShell extends Grails {
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
         Groovysh groovysh = new Groovysh(binding, new IO()) {
+            CompilerConfiguration configuration = CompilerConfiguration.DEFAULT
 
             @Override
             void displayWelcomeBanner(InteractiveShellRunner runner) {

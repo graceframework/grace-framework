@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -421,50 +421,53 @@ public class Grails extends SpringApplication {
 
     protected void printRunStatus(ConfigurableApplicationContext applicationContext) {
         try {
-            GrailsApplication app = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
-            String protocol = app.getConfig().getProperty("server.ssl.key-store") != null ? "https" : "http";
-            if (applicationContext.getParent() != null) {
-                applicationContext.publishEvent(
-                        new ApplicationPreparedEvent(
-                                this,
-                                new String[0],
-                                (ConfigurableApplicationContext) applicationContext.getParent())
-                );
+            Log log = getApplicationLog();
+            if (log.isDebugEnabled()) {
+                GrailsApplication app = applicationContext.getBean(GrailsApplication.APPLICATION_ID, GrailsApplication.class);
+                String protocol = app.getConfig().getProperty("server.ssl.key-store") != null ? "https" : "http";
+                if (applicationContext.getParent() != null) {
+                    applicationContext.publishEvent(
+                            new ApplicationPreparedEvent(
+                                    this,
+                                    new String[0],
+                                    (ConfigurableApplicationContext) applicationContext.getParent())
+                    );
+                }
+                String contextPath = app.getConfig().getProperty("server.servlet.context-path", "");
+                String hostName = app.getConfig().getProperty("server.address", "localhost");
+                int port = 8080;
+                if (applicationContext instanceof WebServerApplicationContext) {
+                    port = ((WebServerApplicationContext) applicationContext).getWebServer().getPort();
+                }
+                String hostAddress = "localhost";
+                try {
+                    hostAddress = InetAddress.getLocalHost().getHostAddress();
+                }
+                catch (UnknownHostException e) {
+                    log.warn("The host name could not be determined, using `localhost` as fallback");
+                }
+                StringBuilder sb = new StringBuilder();
+                sb.append("%n----------------------------------------------------------------------------------------------");
+                sb.append("%n        Application:   %s");
+                sb.append("%n        Version:       %s");
+                sb.append("%n        Environment:   %s");
+                sb.append("%n        Local:         %s://%s:%s%s");
+                sb.append("%n        External:      %s://%s:%s%s");
+                sb.append("%n----------------------------------------------------------------------------------------------");
+                sb.append("%n");
+                log.debug(String.format(sb.toString(),
+                        app.getConfig().getProperty("info.app.name"),
+                        app.getConfig().getProperty("info.app.version"),
+                        Environment.getCurrent().getName(),
+                        protocol,
+                        hostName,
+                        port,
+                        contextPath,
+                        protocol,
+                        hostAddress,
+                        port,
+                        contextPath));
             }
-            String contextPath = app.getConfig().getProperty("server.servlet.context-path", "");
-            String hostName = app.getConfig().getProperty("server.address", "localhost");
-            int port = 8080;
-            if (applicationContext instanceof WebServerApplicationContext) {
-                port = ((WebServerApplicationContext) applicationContext).getWebServer().getPort();
-            }
-            String hostAddress = "localhost";
-            try {
-                hostAddress = InetAddress.getLocalHost().getHostAddress();
-            }
-            catch (UnknownHostException e) {
-                getApplicationLog().warn("The host name could not be determined, using `localhost` as fallback");
-            }
-            StringBuilder sb = new StringBuilder();
-            sb.append("%n----------------------------------------------------------------------------------------------");
-            sb.append("%n        Application:   %s");
-            sb.append("%n        Version:       %s");
-            sb.append("%n        Environment:   %s");
-            sb.append("%n        Local:         %s://%s:%s%s");
-            sb.append("%n        External:      %s://%s:%s%s");
-            sb.append("%n----------------------------------------------------------------------------------------------");
-            sb.append("%n");
-            getApplicationLog().info(String.format(sb.toString(),
-                    app.getConfig().getProperty("info.app.name"),
-                    app.getConfig().getProperty("info.app.version"),
-                    Environment.getCurrent().getName(),
-                    protocol,
-                    hostName,
-                    port,
-                    contextPath,
-                    protocol,
-                    hostAddress,
-                    port,
-                    contextPath));
         }
         catch (Exception ignored) {
         }

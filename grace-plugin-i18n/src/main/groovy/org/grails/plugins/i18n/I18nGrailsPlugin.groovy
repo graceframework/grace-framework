@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
-    String watchedResources = ['file:./grails-app/i18n/**/*.properties',
-                               'file:./app/i18n/**/*.properties']
+    def watchedResources = ['file:./grails-app/i18n/**/*.properties',
+                            'file:./app/i18n/**/*.properties']
 
     @Override
     Closure doWithSpring() {

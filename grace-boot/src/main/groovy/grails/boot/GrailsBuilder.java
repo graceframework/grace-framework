@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,24 @@
  */
 package grails.boot;
 
-import io.micronaut.spring.context.MicronautApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * Fluent API for constructing Grails instances.
  * Simple extension of {@link SpringApplicationBuilder}.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0.6
  */
 public class GrailsBuilder extends SpringApplicationBuilder {
 
-    private MicronautApplicationContext micronautContext;
+    private ConfigurableApplicationContext micronautContext;
 
     public GrailsBuilder(Class<?>... sources) {
         super(sources);
@@ -43,7 +45,14 @@ public class GrailsBuilder extends SpringApplicationBuilder {
 
     public GrailsBuilder enableMicronaut() {
         if (ClassUtils.isPresent("io.micronaut.spring.context.MicronautApplicationContext", getClass().getClassLoader())) {
-            this.micronautContext = new MicronautApplicationContext();
+            try {
+                Class<?> clazz = getClass().getClassLoader().loadClass("io.micronaut.spring.context.MicronautApplicationContext");
+                this.micronautContext = (ConfigurableApplicationContext) ReflectionUtils.accessibleConstructor(clazz).newInstance();
+            }
+            catch (Exception e) {
+                throw new IllegalStateException(
+                        "Can't enable Micronaut as the parent application context of Grails", e);
+            }
         }
         else {
             throw new IllegalStateException(

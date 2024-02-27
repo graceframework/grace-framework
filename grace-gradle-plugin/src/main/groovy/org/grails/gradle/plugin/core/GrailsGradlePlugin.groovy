@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,8 +118,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         grailsVersion = resolveGrailsVersion(project)
         grailsAppDir = SourceSets.resolveGrailsAppDir(project)
 
-        excludeDependencies(project)
-
         configureProfile(project)
 
         applyDefaultPlugins(project)
@@ -163,12 +161,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         configurePathingJar(project)
     }
 
-    protected void excludeDependencies(Project project) {
-        project.configurations.all({ Configuration configuration ->
-            configuration.exclude group: 'org.slf4j', module: 'slf4j-simple'
-        })
-    }
-
     protected void configureProfile(Project project) {
         if (project.configurations.findByName(PROFILE_CONFIGURATION) == null) {
             def profileConfiguration = project.configurations.create(PROFILE_CONFIGURATION)
@@ -202,10 +194,11 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     private void applyBomImport(DependencyManagementExtension dme, Project project) {
+        String grailsVersion = resolveGrailsVersion(project)
         String springBootVersion = resolveSpringBootVersion(project)
         dme.imports({
-            mavenBom("org.grails:grails-bom:${grailsVersion}")
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+            mavenBom("org.graceframework:grace-bom:${grailsVersion}")
         })
         dme.setApplyMavenExclusions(false)
     }
@@ -215,7 +208,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     void addDefaultProfile(Project project, Configuration profileConfig) {
-        project.dependencies.add(PROFILE_CONFIGURATION, "org.grails.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
+        project.dependencies.add(PROFILE_CONFIGURATION, "org.graceframework.profiles:${System.getProperty('grails.profile') ?: defaultProfile}:")
     }
 
     @CompileDynamic
@@ -383,7 +376,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected String resolveGrailsVersion(Project project) {
-        def grailsVersion = project.findProperty('grailsVersion')
+        def grailsVersion = project.findProperty('graceVersion') ?: project.findProperty('grailsVersion')
 
         grailsVersion = grailsVersion ?: new GrailsDependenciesDependencyManagement().getGrailsVersion()
 
@@ -655,6 +648,16 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void configureRunCommand(Project project) {
         if (project.tasks.findByName('runCommand') == null) {
+            def findMainClass = project.tasks.findByName('findMainClass')
+            findMainClass.doLast {
+                ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
+                def mainClassName = extraProperties.get('mainClassName')
+                if (mainClassName) {
+                    project.tasks.withType(ApplicationContextCommandTask) { ApplicationContextCommandTask task ->
+                        task.args mainClassName
+                    }
+                }
+            }
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
@@ -699,7 +702,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
                 GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
 
-                if (grailsExt.getPathingJar() && Os.isFamily(Os.FAMILY_WINDOWS)) {
+                if (grailsExt.isPathingJar() && Os.isFamily(Os.FAMILY_WINDOWS)) {
                     project.tasks.withType(JavaExec) { JavaExec task ->
                         if (task.name in ['console', 'shell']
                                 || task instanceof ApplicationContextCommandTask

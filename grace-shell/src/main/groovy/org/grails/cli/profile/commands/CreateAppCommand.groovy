@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val
+                    String valStr = val.toString()
 
                     List<String> candidateProfiles = profileNames.findAll { String pn ->
                         pn.startsWith(valStr)
@@ -131,7 +131,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     return cursor
                 }
                 else if (!profileNames.contains(val)) {
-                    String valStr = val
+                    String valStr = val.toString()
                     if (valStr.endsWith(',')) {
                         String[] specified = valStr.split(',')
                         candidates.addAll(featureNames.findAll { String f ->
@@ -427,7 +427,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
 
-        String repositories = profile.repositories.collect(repositoryUrl.curry(4)).unique().join(ln)
+        String repositories = profile.repositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
         List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
@@ -458,7 +458,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
-        String buildRepositoriesString = buildRepositories.collect(repositoryUrl.curry(8)).unique().join(ln)
+        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
