@@ -1,2 +1,0 @@
-## grails-plugin-dynamic-modules
-

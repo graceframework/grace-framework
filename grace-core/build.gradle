@@ -1,0 +1,34 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-plugin-api")
+    api project(":grace-spring")
+    api project(":grace-util")
+
+    api libs.jakarta.persistence.api
+    api libs.grails.datastore.core, {
+        exclude group: "org.codehaus.groovy", module: "groovy"
+    }
+    api libs.spring.beans
+    api libs.spring.boot
+    api libs.spring.context
+    api libs.spring.core
+    api libs.spring.tx
+
+    testImplementation project(":grace-test")
+    testImplementation libs.spring.jdbc
+    testImplementation libs.spring.test
+    testImplementation libs.javax.persistence
+    testImplementation libs.grails.datastore.gorm
+}
+
+eclipse {
+    classpath {
+       file {
+           whenMerged { classpath ->
+                // don't add global ASTs since the source code is in this project and that causes greclipse compilation to fail
+                classpath.entries.find { entry -> entry.kind == 'src' && entry.path == "src/main/resources" }?.excludes=["META-INF/services/org.codehaus.groovy.transform.ASTTransformation"]
+           }
+       }
+    }
+}

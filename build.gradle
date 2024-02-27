@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$gradleExtraConfigurationsPluginVersion"
+        classpath "io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
         classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPlugin"
         classpath "org.codenarc:CodeNarc:$codenarcVersion"
     }
@@ -30,16 +31,16 @@ ext {
     homeSrcDir = file("src")
 }
 
-ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
-ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
-ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
-
 // Groovy is added as a dependency to both the 'groovy' and 'compile'
 // configurations, so place the dependency in a shared variable. The
 // 'compile' is required so that Groovy appears as a dependency in the
 // artifacts' POMs.
 ext.jointBuildGroovyJarProperty = System.getProperty('groovy.jar')
 ext.groovyDependency = null
+
+ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
+ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
 
 if (jointBuildGroovyJarProperty) {
     def jointBuildGroovyJar = file(jointBuildGroovyJarProperty)
@@ -56,41 +57,40 @@ if (jointBuildGroovyJarProperty) {
 }
 
 version = grailsVersion
-group = "org.grails"
+group = "org.graceframework"
 
 apply plugin: 'idea'
+apply plugin: 'maven-publish'
+apply plugin: "io.github.gradle-nexus.publish-plugin"
 
-if (isReleaseVersion) {
-    apply plugin: 'maven-publish'
-    apply plugin: "io.github.gradle-nexus.publish-plugin"
-
-    nexusPublishing {
-        repositories {
-            sonatype {
-                def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-                def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-                def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
-                nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
-                username = ossUser
-                password = ossPass
-                stagingProfileId = ossStagingProfileId
-            }
+nexusPublishing {
+    repositories {
+        sonatype {
+            def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+            def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+            def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
+            nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
+            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            username = ossUser
+            password = ossPass
+            stagingProfileId = ossStagingProfileId
         }
+    }
 
-        transitionCheckOptions {
-            maxRetries.set(40)
-            delayBetween.set(java.time.Duration.ofMillis(2000))
-        }
+    transitionCheckOptions {
+        maxRetries.set(40)
+        delayBetween.set(java.time.Duration.ofMillis(2000))
     }
 }
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        if (project.projectVersion.endsWith('-SNAPSHOT')) {
+            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        }
     }
 
     configurations {
@@ -135,18 +135,21 @@ apply from: "gradle/idea.gradle"
 
 subprojects { project ->
     version = grailsVersion
-    group = "org.grails"
+    group = "org.graceframework"
 
     configurations {
         documentation
     }
 
-    ext.isTestSuite = project.name.startsWith("grails-test-suite")
+    ext.isTestSuite = project.name.startsWith("grace-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
-        delegate.name 'Grails Framework'
-        delegate.description 'Grails Web Application Framework'
-        delegate.url 'https://grails.org/'
+        if (project.name != 'grace-gradle-plugin') {
+            def projectName = project.name.split('-')*.capitalize().join(' ')
+            delegate.name projectName
+            delegate.description "Grace Framework : $projectName"
+        }
+        delegate.url 'https://github.com/graceframework/grace-framework'
 
         delegate.licenses {
             delegate.license {
@@ -157,26 +160,15 @@ subprojects { project ->
         }
 
         delegate.scm {
-            delegate.url 'scm:git@github.com:rainboyan/grails-framework.git'
-            delegate.connection 'scm:git@github.com:rainboyan/grails-framework.git'
-            delegate.developerConnection 'scm:git@github.com:rainboyan/grails-framework.git'
+            delegate.url 'scm:git@github.com:graceframework/grace-framework.git'
+            delegate.connection 'scm:git@github.com:graceframework/grace-framework.git'
+            delegate.developerConnection 'scm:git@github.com:graceframework/grace-framework.git'
         }
 
         delegate.developers {
             delegate.developer {
-                delegate.id 'graemerocher'
-                delegate.name 'Graeme Rocher'
-            }
-            delegate.developer {
-                delegate.id 'jeffscottbrown'
-                delegate.name 'Jeff Brown'
-            }
-            delegate.developer {
-                delegate.id 'lhotari'
-                delegate.name 'Lari Hotari'
-            }
-            delegate.developer {
                 delegate.id 'rainboyan'
+                delegate.email 'rain@rainboyan.com'
                 delegate.name 'Michael Yan'
             }
         }
@@ -207,40 +199,31 @@ subprojects { project ->
     }
 
     if (!isTestSuite) {
+
         publishing {
-            if (isBuildSnapshot) {
-                repositories {
-                    maven {
-                        credentials {
-                            def u = System.getenv("ARTIFACTORY_USERNAME") ?: project.hasProperty("artifactoryPublishUsername") ? project.artifactoryPublishUsername : ''
-                            def p = System.getenv("ARTIFACTORY_PASSWORD") ?: project.hasProperty("artifactoryPublishPassword") ? project.artifactoryPublishPassword : ''
-                            username = u
-                            password = p
-                        }
-                        url "https://repo.grails.org/grails/libs-snapshots-local"
-                    }
-                }
-            }
-
-            if (project.name in ['grails-bom', 'grails-dependencies', 'grails-gradle-plugin']) return
-
             publications {
-                mavenJava(MavenPublication) {
+                maven(MavenPublication) {
                     from components.java
 
-                    pom.withXml {
-                        def xml = asNode()
+                    if (project.name != 'grace-gradle-plugin') {
+                        pom.withXml {
+                            def xml = asNode()
 
-                        xml.children().last() + pomInfo
+                            xml.children().last() + pomInfo
+                        }
                     }
                 }
             }
         }
 
-        // signing {
-        //     required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-        //     sign publishing.publications.mavenJava
-        // }
+        afterEvaluate {
+            if (project.name != 'grace-gradle-plugin') {
+                signing {
+                    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                    sign publishing.publications.maven
+                }
+            }
+        }
 
         tasks.withType(Sign) {
             onlyIf { isReleaseVersion }
@@ -262,18 +245,36 @@ subprojects { project ->
 
     }
 
-    if (project.name in ['grails-bom', 'grails-dependencies']) return
+    if (project.name == 'grace-dependencies') return
+    if (project.name == 'grace-bom') return
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
-    jar {
+    if (project.name =~ /^(grace-web|grace-plugin-|grace-test-suite|grace-test)/) {
+        dependencies {
+            api libs.javax.servlet
+            // MockHttpServletRequest/Response/Context used in many classes
+            api libs.spring.test, {
+                exclude group: 'commons-logging', module:'commons-logging'
+            }
+        }
+    }
+
+    if (project.name =~ /^(grace-plugin-datasource|grace-test-suite)/) {
+        dependencies {
+            testImplementation libs.hsqldb
+            testImplementation libs.h2
+        }
+    }
+
+    jar{
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grails Framework",
+            "Implementation-Title": "Grace Framework",
             "Implementation-Version": grailsVersion,
-            "Implementation-Vendor": 'grails.org')
+            "Implementation-Vendor": 'graceframework.org')
     }
 
     checkstyle {
@@ -301,14 +302,11 @@ subprojects { project ->
         groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
         groovyOptions.encoding = "UTF-8"
         options.encoding = "UTF-8"
-        options.deprecation = true
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
     configure([compileJava, compileTestJava]) {
         options.deprecation = true
-        options.debug = true
-        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        options.debug = false
     }
 
     configure([groovydoc]) {
@@ -342,7 +340,7 @@ subprojects { project ->
         testImplementation libs.junit.platform.runner
         testRuntimeOnly libs.junit.jupiter.engine
 
-        if (project.name != "grails-docs") {
+        if (project.name != "grace-docs") {
             // Logging
             api libs.slf4j.api
             api libs.slf4j.jcl
@@ -408,7 +406,11 @@ subprojects { project ->
     configurations {
         meta
         published.extendsFrom archives, meta
-        all*.exclude group:'commons-logging', module: 'commons-logging'
+        testRuntimeOnly {
+            exclude group: 'commons-logging', module: 'commons-logging'
+            exclude group: 'org.grails', module: 'grails-bootstrap'
+            exclude group: 'org.grails', module: 'grails-core'
+        }
     }
 
     if (!isTestSuite) {
@@ -465,5 +467,26 @@ project.afterEvaluate {
                 throw new RuntimeException("Build should not define insecure HTTP-based Maven repostories")
             }
         }
+    }
+}
+
+apply plugin: "io.sdkman.vendors"
+sdkman {
+    candidate = "grace"
+    version = project.version
+    url = "https://github.com/graceframework/grace-framework/releases/download/v${project.version}/grace-${project.version}.zip"
+    hashtag = "graceframework"
+}
+
+task sdkManRelease {
+    group 'SDKMAN! Release'
+    description 'Performs a Major or Minor Release depend on project version'
+    if (project.projectVersion.endsWith("SNAPSHOT")) {
+        // Do nothing
+    } else if (project.projectVersion.contains("M") || project.projectVersion.contains("RC")) {
+        dependsOn 'sdkMinorRelease'
+    }
+    else {
+        dependsOn 'sdkMajorRelease'
     }
 }

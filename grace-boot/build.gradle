@@ -1,0 +1,32 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-core")
+    api project(":grace-spring")
+    api project(":grace-spring-boot")
+
+    api libs.jakarta.annotation.api
+    api libs.jakarta.inject
+    api libs.jakarta.servlet
+    api libs.spring.beans
+    api libs.spring.boot
+    api libs.spring.boot.autoconfigure
+    api libs.spring.context
+    api libs.spring.core
+    api libs.spring.web
+
+    compileOnly libs.jsr305
+
+    testImplementation project(":grace-plugin-controllers")
+    testImplementation project(":grace-test")
+
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.junit
+    testImplementation libs.spring.boot.test
+    testImplementation libs.tomcat.embed.core
+    testRuntimeOnly project(":grace-plugin-i18n")
+    testRuntimeOnly project(":grace-plugin-url-mappings")
+}

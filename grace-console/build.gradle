@@ -1,0 +1,18 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-boot")
+    api project(":grace-bootstrap")
+    api project(":grace-cli")
+    api project(":grace-core")
+
+    api libs.jakarta.servlet, optional
+    api libs.groovy.console
+    api libs.groovy.groovysh
+    api libs.groovy.swing
+    api libs.spring.boot
+    api libs.spring.test
+    api libs.spring.web, optional
+    implementation libs.jansi
+    implementation libs.jline
+    implementation libs.jna
+}

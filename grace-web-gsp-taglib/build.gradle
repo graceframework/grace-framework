@@ -1,0 +1,4 @@
+dependencies {
+    compileOnly libs.jakarta.servlet
+    api project(':grace-web-jsp')
+}
