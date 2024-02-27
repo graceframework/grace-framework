@@ -58,7 +58,7 @@ public class RunCommand implements Command {
     public CommandDescription getDescription() {
         CommandDescription description = new CommandDescription();
         description.setName(NAME);
-        description.setDescription("Run a grails groovy script");
+        description.setDescription("Run a groovy script");
         description.setUsage("run [SCRIPT NAME]");
         return description;
     }
