@@ -28,7 +28,7 @@ java {
 configurations {
     documentation
     compileClasspath {
-        exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
+        exclude group: 'org.apache.groovy', module: 'groovy-xml'
     }
 }
 
