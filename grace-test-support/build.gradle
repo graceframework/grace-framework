@@ -8,10 +8,7 @@ dependencies {
     api project(":grace-plugin-rest")
     api project(":grace-test")
 
-    api libs.grails.plugin.async, {
-        exclude module: 'grace-plugin-controllers'
-        exclude module: 'grace-core'
-    }
+    api libs.grails.async
     api project(":grace-plugin-gsp")
     api libs.groovy.test.junit5
     api libs.grails.datastore.gorm

@@ -48,12 +48,7 @@ dependencies {
         exclude group: 'java-persistence', module:'persistence-api'
         exclude group: 'javassist', module: 'javassist'
     }
-    testImplementation libs.grails.plugin.async, {
-        exclude module:'grace-plugin-codecs'
-        exclude module:'grace-plugin-controllers'
-        exclude module:'grace-core'
-        exclude module:'grace-plugin-domain-class'
-    }
+    testImplementation libs.grails.async
     testImplementation project(":grace-plugin-gsp"), {
         exclude module:'grace-plugin-codecs'
         exclude module:'grace-plugin-controllers'

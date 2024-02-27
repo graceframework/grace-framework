@@ -68,12 +68,7 @@ dependencies {
         exclude module:'grace-web-common'
         exclude module:'grace-encoder'
     }
-    testImplementation libs.grails.plugin.async, {
-        exclude module:'grace-plugin-codecs'
-        exclude module:'grace-plugin-controllers'
-        exclude module:'grace-core'
-        exclude module:'grace-plugin-domain-class'
-    }
+    testImplementation libs.grails.async
 
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt
