@@ -1,7 +1,7 @@
 dependencies {
     api libs.javax.servlet
     api libs.sitemesh
-    api project(":grails-web-common")
+    api project(":grace-web-common")
 
     testImplementation libs.spring.test
 }

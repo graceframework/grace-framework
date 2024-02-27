@@ -1,11 +1,11 @@
 dependencies {
-    api project(":grails-api")
-    api project(":grails-core")
-    api project(":grails-databinding")
-    api project(":grails-encoder")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-databinding")
+    api project(":grace-encoder")
+    api project(":grace-util")
 
-    api project(":grails-gsp")
+    api project(":grace-gsp")
 
     api libs.javax.servlet
     api libs.groovy.templates
@@ -14,5 +14,5 @@ dependencies {
     compileOnly libs.jsr305
     implementation libs.caffeine
 
-    testImplementation project(":grails-test")
+    testImplementation project(":grace-test")
 }

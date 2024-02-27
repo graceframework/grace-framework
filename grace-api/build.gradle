@@ -1,6 +1,6 @@
 dependencies {
-    api project(":grails-bootstrap")
-    api project(":grails-util")
+    api project(":grace-bootstrap")
+    api project(":grace-util")
 
     api(libs.grails.datastore.core) {
         transitive = false

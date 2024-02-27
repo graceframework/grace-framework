@@ -1,4 +1,4 @@
 dependencies {
     compileOnly libs.javax.servlet
-    api project(':grails-web-jsp')
+    api project(':grace-web-jsp')
 }

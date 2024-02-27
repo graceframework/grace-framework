@@ -16,11 +16,11 @@ configurations {
 }
 
 dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-cli")
-    api project(":grails-gradle-model")
-    api project(":grails-util")
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-cli")
+    api project(":grace-gradle-model")
+    api project(":grace-util")
 
     api libs.ant
     api libs.gradle.tooling.api
@@ -31,7 +31,7 @@ dependencies {
     compileOnly libs.spring.web
     api libs.jansi
     api libs.jline
-    dependenciesBom project(path: ":grails-bom", configuration: 'effectiveBom')
+    dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
     implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
     }
