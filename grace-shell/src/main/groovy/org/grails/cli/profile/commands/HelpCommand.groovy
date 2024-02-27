@@ -96,14 +96,14 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
 
         console.log '''
 Usage (optionals marked with *):'
-grails [environment]* [target] [arguments]*'
+grace [environment]* [target] [arguments]*'
 
 '''
         console.addStatus('Examples:')
-        console.log('$ grails dev run-app')
-        console.log('$ grails create-app books')
+        console.log('$ grace create-app blog')
+        console.log('$ grace dev run-app')
         console.log ''
-        console.addStatus('Available Commands (type grails help \'command-name\' for more info):')
+        console.addStatus('Available Commands (type grace help \'command-name\' for more info):')
         console.addStatus("${'Command Name'.padRight(37)} Command Description")
         console.println('-' * 100)
         for (CommandDescription desc : allCommands) {

@@ -70,7 +70,7 @@ public class GrailsConsole implements ConsoleLogger {
 
     public static final String CATEGORY_SEPARATOR = "|";
 
-    public static final String PROMPT = "grails> ";
+    public static final String PROMPT = "grace> ";
 
     public static final String SPACE = " ";
 
