@@ -1,4 +1,4 @@
-## grails-sitemesh
+## grace-sitemesh
 
 SiteMesh is a web-page layout system that can be used to abstract common look
 and feel from the functionality of a web-application and to assemble large
