@@ -178,7 +178,7 @@ task zipDist(type: Zip, dependsOn: [sourcesJars, install]) {
 
     into("grace-$grailsVersion") {
         from(projectDir) {
-            include 'bin/grace', 'bin/grace.bat', 'lib/', 'media/', 'samples/', 'scripts/', 'LICENSE', 'INSTALL', "src/"
+            include 'bin/grace', 'bin/grace.bat', 'lib/', 'media/', 'samples/', 'scripts/', 'LICENSE.txt', 'INSTALL.txt', "src/"
             exclude 'ant/bin', 'src/grace', 'src/war'
         }
         from(docs.destinationDir) {
