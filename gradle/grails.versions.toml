@@ -9,7 +9,7 @@ scaffolding = "5.2.0"
 
 [profiles]
 base = "2022.2.0"
-plugin = "2022.2.0-SNAPSHOT"
+plugin = "2022.2.0"
 profile = "2022.2.0-SNAPSHOT"
 rest-api = "2022.2.0-SNAPSHOT"
 web = "2022.2.0-SNAPSHOT"
