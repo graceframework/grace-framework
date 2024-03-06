@@ -13,29 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: "Grails Joint Validation Build"
-#  GROOVY_2_5_X == Grails 4.0.x
-#  GROOVY_3_0_X == grails master
+name: "Grace Joint Validation Build"
+#  GROOVY_3_0_X == Grace 2022.0.x
+#  GROOVY_4_0_X == Grace 2023.0.x
 #  Groovy master branch does not map to any due to changed package names.
 on:
   push:
     branches:
       - master
-      - '[4-9]+.[0-9]+.x'
+      - '[2020-2024]+.[0-9]+.x'
   pull_request:
     branches:
       - master
-      - '[4-9]+.[0-9]+.x'
+      - '[2020-2024]+.[0-9]+.x'
 jobs:
   build:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-18.04]
+        os: [ubuntu-22.04]
         java: [11.0.6]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -45,13 +45,13 @@ jobs:
         run: env
 
       # Select correct Groovy branch for this build:
-      - name: Checkout Groovy 3_0_X (Grails 4.1.x)
+      - name: Checkout Groovy 3_0_X (Grace 2022.1.x)
         run: cd .. && git clone --depth 1 https://github.com/apache/groovy.git -b GROOVY_3_0_X --single-branch
-        if: github.ref == 'refs/heads/5.2.x' || github.base_ref == '5.2.x' || github.ref == 'refs/heads/5.1.x' || github.base_ref == '5.1.x' || github.ref == 'refs/heads/5.0.x' || github.base_ref == '5.0.x' || github.ref == 'refs/heads/master' || github.base_ref == 'master'
-      - name: Checkout Groovy 2_5_X (Grails 4.0.x)
-        run: cd .. && git clone --depth 1 https://github.com/grails/grails-core.git -b GROOVY_2_5_X --single-branch
-        if: github.ref == 'refs/heads/4.0.x' || github.base_ref == '4.0.x'
-      - name: Set CI_GROOVY_VERSION for Grails
+        if: github.ref == 'refs/heads/2022.2.x' || github.base_ref == '2022.2.x' || github.ref == 'refs/heads/2022.1.x' || github.base_ref == '2022.1.x' || github.ref == 'refs/heads/2022.0.x' || github.base_ref == '2022.0.x' || github.ref == 'refs/heads/master' || github.base_ref == 'master'
+      - name: Checkout Groovy 4_0_X (Grace 2023.0.x)
+        run: cd .. && git clone --depth 1 https://github.com/graceframework/grace-framework.git -b GROOVY_4_0_X --single-branch
+        if: github.ref == 'refs/heads/2023.0.x' || github.base_ref == '2023.0.x'
+      - name: Set CI_GROOVY_VERSION for Grace
         run: |
           cd ../groovy
           echo 'CI_GROOVY_VERSION<<EOF' >> $GITHUB_ENV
@@ -61,9 +61,9 @@ jobs:
         run: echo $CI_GROOVY_VERSION
 
       - name: Build and install groovy (no docs)
-        run: cd ../groovy && ./gradlew clean install -x groovydoc -x javadoc -x javadocAll -x groovydocAll -x asciidoc -x docGDK --no-build-cache --no-scan --no-daemon
+        run: cd ../groovy && ./gradlew clean install -x groovydoc -x javadoc -x javadocAll -x groovydocAll -x asciidoc -x docGDK -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest --no-build-cache --no-scan --no-daemon
         timeout-minutes: 60
 
-      - name: Build Grails
-        run: ./gradlew clean build test -x groovydoc --no-build-cache --no-scan --no-daemon
+      - name: Build Grace
+        run: ./gradlew clean build test -x groovydoc -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest --no-build-cache --no-scan --no-daemon
         timeout-minutes: 60
