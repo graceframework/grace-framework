@@ -2,10 +2,10 @@ name: Grace CI
 on:
   push:
     branches:
-      - 'release/[2020-2024]+.[0-9]+.0'
+      - 'release/2022.2.1'
   pull_request:
     branches:
-      - 'release/[2020-2024]+.[0-9]+.0'
+      - 'release/2022.2.1'
   workflow_dispatch:
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
