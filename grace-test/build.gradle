@@ -1,0 +1,19 @@
+dependencies {
+    api project(":grace-boot")
+    api project(":grace-plugin-converters")
+    api project(":grace-plugin-mimetypes")
+    api project(":grace-web")
+
+    api libs.ant
+    api libs.ant.junit
+    api libs.jansi
+    api libs.jline
+    api libs.junit.platform.runner
+    api libs.groovy.test
+    api libs.groovy.test.junit5
+    api libs.objenesis
+    api libs.spring.test
+    api libs.spring.tx
+    api libs.spring.boot.test
+    api libs.spock.core, { transitive = false }
+}
