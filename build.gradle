@@ -484,7 +484,7 @@ task sdkManRelease {
     if (project.projectVersion.endsWith("SNAPSHOT")) {
         // Do nothing
     } else if (project.projectVersion.contains("M") || project.projectVersion.contains("RC")) {
-        dependsOn 'sdkMinorRelease'
+        // dependsOn 'sdkMinorRelease'
     }
     else {
         dependsOn 'sdkMajorRelease'
