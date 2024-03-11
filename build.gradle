@@ -1,8 +1,8 @@
 buildscript {
     repositories {
         mavenCentral()
+        gradlePluginPortal()
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
@@ -87,7 +87,6 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://repo.grails.org/grails/core" }
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
             maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
         }
@@ -160,16 +159,16 @@ subprojects { project ->
         }
 
         delegate.scm {
-            delegate.url 'scm:git@github.com:graceframework/grace-framework.git'
-            delegate.connection 'scm:git@github.com:graceframework/grace-framework.git'
-            delegate.developerConnection 'scm:git@github.com:graceframework/grace-framework.git'
+            delegate.url 'https://github.com/graceframework/grace-framework'
+            delegate.connection 'scm:git:git://github.com/graceframework/grace-framework.git'
+            delegate.developerConnection 'scm:git:ssh://git@github.com/graceframework/grace-framework.git'
         }
 
         delegate.developers {
             delegate.developer {
                 delegate.id 'rainboyan'
-                delegate.email 'rain@rainboyan.com'
                 delegate.name 'Michael Yan'
+                delegate.email 'rain@rainboyan.com'
             }
         }
     }
@@ -408,8 +407,6 @@ subprojects { project ->
         published.extendsFrom archives, meta
         testRuntimeOnly {
             exclude group: 'commons-logging', module: 'commons-logging'
-            exclude group: 'org.grails', module: 'grails-bootstrap'
-            exclude group: 'org.grails', module: 'grails-core'
         }
     }
 
