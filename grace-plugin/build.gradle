@@ -1,8 +1,8 @@
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.grails' &&
-                details.requested.name.startsWith('grails-datastore') &&
-                details.requested.name != 'grails-datastore-gorm-hibernate5') {
+        if(details.requested.group == 'org.graceframework' &&
+                details.requested.name.startsWith('grace-datastore') &&
+                details.requested.name != 'grace-datastore-gorm-hibernate5') {
             details.useVersion(gormVersion)
         }
         if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
@@ -15,31 +15,40 @@ configurations.all {
 }
 
 dependencies {
-    documentation ("org.grails:grails-core:$grailsVersion")
-    documentation ("org.grails:grails-bootstrap:$grailsVersion")
-    documentation ("org.grails:grails-spring:$grailsVersion")
+    documentation ("org.graceframework:grace-core:$graceVersion")
+    documentation ("org.graceframework:grace-bootstrap:$graceVersion")
+    documentation ("org.graceframework:grace-spring:$graceVersion")
     documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
 
-    compileOnly("org.grails:grails-boot:$grailsVersion")
-    compileOnly("org.grails:grails-bootstrap:$grailsVersion")
-    compileOnly("org.grails:grails-core:$grailsVersion")
-    compileOnly("org.grails:grails-cli:$grailsVersion")
+    compileOnly("org.graceframework:grace-boot:$graceVersion")
+    compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
+    compileOnly("org.graceframework:grace-core:$graceVersion")
+    compileOnly("org.graceframework:grace-cli:$graceVersion")
     api "org.springframework:spring-orm:$springVersion"
+    api "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
     api "org.hibernate:hibernate-core-jakarta:${hibernate5Version}"
-    api "org.grails:grails-datastore-web:$gormVersion"
-    api "org.grails:grails-datastore-gorm-support:$gormVersion"
-    api project(":grails-datastore-gorm-hibernate5"), {
+    api "org.graceframework:grace-datastore-web:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
+    api project(":grace-datastore-gorm-hibernate5"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
         exclude group:'org.springframework', module:'spring-beans'
         exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.grails', module:'grails-bootstrap'
+        exclude group:'org.graceframework', module:'grace-bootstrap'
         exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.grails', module:'grails-core'
+        exclude group:'org.graceframework', module:'grace-core'
         exclude group:'javax.transaction', module:'jta'
     }
 
     testImplementation "jakarta.servlet:jakarta.servlet-api:$jakartaServletVersion"
+    testImplementation "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
+    testImplementation "jakarta.transaction:jakarta.transaction-api:$jtaVersion"
+    testImplementation "jakarta.validation:jakarta.validation-api:$jakartaValidationVersion"
+    testRuntimeOnly "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion", {
+        exclude group: "jakarta.validation", module: "jakarta.validation-api"
+    }
+    testRuntimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    testRuntimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
     testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
@@ -47,7 +56,7 @@ dependencies {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }
     testRuntimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
-    testImplementation "org.grails:grails-test-support"
+    testImplementation "org.graceframework:grace-test-support"
     testRuntimeOnly "com.h2database:h2:$h2Version"
     testRuntimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
     testRuntimeOnly "org.springframework:spring-aop:$springVersion"
