@@ -1,0 +1,5 @@
+dependencies {
+    api "org.grails:grails-core:$grailsVersion"
+    api project(":grails-events"), project(":grails-events-transform")
+    api project(":grails-events-compat")
+}
