@@ -252,7 +252,7 @@ subprojects { project ->
 
     if (project.name =~ /^(grace-web|grace-plugin-|grace-test-suite|grace-test)/) {
         dependencies {
-            api libs.javax.servlet
+            api libs.jakarta.servlet
             // MockHttpServletRequest/Response/Context used in many classes
             api libs.spring.test, {
                 exclude group: 'commons-logging', module:'commons-logging'
