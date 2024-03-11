@@ -1,10 +1,10 @@
 dependencies {
     compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    implementation "org.grails:grails-plugin-controllers:$grailsVersion"
-    api project(':grails-plugin-events')
-    api project(':grails-async')
+    implementation "org.graceframework:grace-plugin-controllers:$graceVersion"
+    api project(':grace-plugin-events')
+    api project(':grace-async')
 
     testImplementation "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    testImplementation "org.grails:grails-test:$grailsVersion"
+    testImplementation "org.grace:grace-test:$graceVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
 }
