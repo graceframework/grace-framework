@@ -1,0 +1,131 @@
+configurations.testCompileClasspath {
+    exclude module: "grails-plugin-testing"
+}
+
+dependencies {
+    api project(":grace-api")
+    api project(":grace-util")
+    api project(":grace-test-suite-base")
+    api project(":grace-plugin-interceptors")
+    api project(":grace-plugin-controllers")
+
+    api libs.tomcat.jdbc
+
+    testImplementation project(":grace-boot")
+    testImplementation project(":grace-plugin-codecs")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-rest")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-spring")
+    testImplementation project(":grace-test-support")
+    testImplementation libs.grails.datastore.gorm.hibernate5, {
+        exclude group: 'org.graceframework', module:'grace-datastore-gorm'
+        exclude group: 'org.graceframework', module:'grace-datastore-core'
+        exclude group: 'org.springframework', module:'spring-core'
+        exclude group: 'org.springframework', module:'spring-context'
+        exclude group: 'org.springframework', module:'spring-web'
+        exclude group: 'org.springframework', module:'spring-beans'
+        exclude group: 'org.springframework', module:'spring-tx'
+        exclude group: 'org.slf4j', module:'jcl-over-slf4j'
+        exclude group: 'org.slf4j', module:'jul-to-slf4j'
+        exclude group: 'org.slf4j', module:'slf4j-api'
+        exclude group: 'org.slf4j', module:'slf4j-simple'
+        exclude group: 'org.graceframework', module:'grace-bootstrap'
+        exclude group: 'org.graceframework', module:'grace-plugin-domain-class'
+        exclude group: 'org.graceframework', module:'grace-core'
+        exclude group: 'org.graceframework', module:'grace-web'
+        exclude group: 'org.graceframework', module:'grace-test'
+        exclude group: 'org.graceframework', module:'grace-async'
+        exclude group: 'org.graceframework', module:'grace-spring'
+        exclude group: 'commons-collections', module:'commons-collections'
+        exclude group: 'commons-lang', module:'commons-lang'
+        exclude group: 'javassit', module:'javassist'
+        exclude group: 'java-persistence', module:'persistence-api'
+        exclude group: 'javassist', module: 'javassist'
+    }
+    testImplementation libs.grails.async
+    testImplementation project(":grace-plugin-gsp"), {
+        exclude module:'grace-plugin-codecs'
+        exclude module:'grace-plugin-controllers'
+        exclude module:'grace-core'
+        exclude module:'grace-plugin-domain-class'
+        exclude module:'grace-web-common'
+        exclude module:'grace-encoder'
+    }
+
+    testRuntimeOnly libs.h2
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+    testRuntimeOnly libs.jakarta.servlet.jsp
+    testRuntimeOnly libs.jakarta.servlet.jsp.jstl
+    testRuntimeOnly libs.jakarta.el
+    testRuntimeOnly libs.spring.aspects
+}
+
+test {
+     maxParallelForks = isCiBuild ? 2 : 4
+     forkEvery = isCiBuild ? 25 : 100
+     if(!isCiBuild) {
+         maxHeapSize = '1024m'
+     }
+     excludes = [
+         "**/grails/test/PersonTests.class",
+         "**/rest/render/**/*Spec.class",
+         "**/*TestCase.class",
+         "**/DataSourceGrailsPluginTests",
+         "**/DefaultGrailsControllerClassTests.class",
+         "**/GrailsUnitTestCaseTests.class",
+         "**/SetupTeardownInvokeTests.class",
+         "**/TestMixinSetupTeardownInvokeTests.class",
+         "**/UrlMappingsTestMixinTests.class",
+         "**/WebUtilsTests.class",
+         "**/RestfulControllerSpec.class",
+         "**/ResourceAnnotationRestfulControllerSpec.class",
+         "**/TestingValidationSpec.class",
+         "**/CascadingErrorCountSpec"
+     ]
+}
+
+task isolatedTestsOne(type:Test) {
+    includes = [
+        "**/DataSourceGrailsPluginTests.class",
+        "**/GrailsUnitTestCaseTests.class",
+        "**/WebUtilsTests.class"
+    ]
+}
+
+task isolatedTestsTwo(type:Test) {
+    maxParallelForks = 1
+    forkEvery = 100
+    includes = [
+        "**/UrlMappingsTestMixinTests.class",
+        "**/SetupTeardownInvokeTests.class",
+        "**/TestMixinSetupTeardownInvokeTests.class"
+    ]
+}
+
+task isolatedRestRendererTests(type:Test) {
+    includes = ['**/rest/render/**/*Spec.class']
+}
+
+task isolatedDefaultGrailsControllerClassTests(type: Test) {
+    includes = ['**/DefaultGrailsControllerClassTests.class']
+}
+
+task isolatedPersonTests(type: Test) {
+    includes = ['**/grails/test/PersonTests.class',
+                "**/TestingValidationSpec.class",
+                "**/CascadingErrorCountSpec"
+                ]
+}
+
+task isolatedRestfulControllerTests(type:Test) {
+    includes = ["**/RestfulControllerSpec.class",
+        "**/ResourceAnnotationRestfulControllerSpec.class"]
+}
+
+test.dependsOn isolatedPersonTests, isolatedTestsOne, isolatedTestsTwo, isolatedRestRendererTests, isolatedDefaultGrailsControllerClassTests, isolatedRestfulControllerTests

@@ -1,0 +1,7 @@
+dependencies {
+    api libs.jakarta.servlet
+    api project(":grace-sitemesh")
+    api project(":grace-web-common")
+
+    testImplementation libs.spring.test
+}
