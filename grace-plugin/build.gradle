@@ -1,20 +1,3 @@
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.graceframework' &&
-                details.requested.name.startsWith('grace-datastore') &&
-                details.requested.name != 'grace-datastore-gorm-hibernate5') {
-            details.useVersion(gormVersion)
-        }
-        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
-            details.useVersion(groovyVersion)   
-        }
-        if(details.requested.group == 'org.springframework') {
-            details.useVersion(springVersion)
-        }
-    }
-    exclude group: 'org.codehaus.groovy'
-}
-
 dependencies {
     documentation ("org.graceframework:grace-core:$graceVersion")
     documentation ("org.graceframework:grace-bootstrap:$graceVersion")
@@ -23,12 +6,20 @@ dependencies {
 
     compileOnly("org.graceframework:grace-boot:$graceVersion")
     compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
-    compileOnly("org.graceframework:grace-core:$graceVersion")
+    compileOnly "org.graceframework:grace-core:$graceVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+    }
     compileOnly("org.graceframework:grace-cli:$graceVersion")
     api "org.springframework:spring-orm:$springVersion"
     api "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
     api "org.hibernate:hibernate-core-jakarta:${hibernate5Version}"
-    api "org.graceframework:grace-datastore-web:$gormVersion"
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-web:$gormVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+    }
+    api "org.graceframework:grace-datastore-gorm:$gormVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
+    }
     api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
     api project(":grace-datastore-gorm-hibernate5"), {
         exclude group:'org.springframework', module:'spring-context'
