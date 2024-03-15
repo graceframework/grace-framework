@@ -1,0 +1,58 @@
+dependencies {
+    documentation ("org.graceframework:grace-core:$graceVersion")
+    documentation ("org.graceframework:grace-bootstrap:$graceVersion")
+    documentation ("org.graceframework:grace-spring:$graceVersion")
+    documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
+
+    compileOnly("org.graceframework:grace-boot:$graceVersion")
+    compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
+    compileOnly "org.graceframework:grace-core:$graceVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+    }
+    compileOnly("org.graceframework:grace-cli:$graceVersion")
+    api "org.springframework:spring-orm:$springVersion"
+    api "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
+    api "org.hibernate:hibernate-core-jakarta:${hibernate5Version}"
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-web:$gormVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-core'
+    }
+    api "org.graceframework:grace-datastore-gorm:$gormVersion", {
+        exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
+    }
+    api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
+    api project(":grace-datastore-gorm-hibernate5"), {
+        exclude group:'org.springframework', module:'spring-context'
+        exclude group:'org.springframework', module:'spring-core'
+        exclude group:'org.springframework', module:'spring-beans'
+        exclude group:'org.springframework', module:'spring-tx'
+        exclude group:'org.graceframework', module:'grace-bootstrap'
+        exclude group:'org.codehaus.groovy', module:'groovy-all'
+        exclude group:'org.graceframework', module:'grace-core'
+        exclude group:'javax.transaction', module:'jta'
+    }
+
+    testImplementation "jakarta.servlet:jakarta.servlet-api:$jakartaServletVersion"
+    testImplementation "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
+    testImplementation "jakarta.transaction:jakarta.transaction-api:$jtaVersion"
+    testImplementation "jakarta.validation:jakarta.validation-api:$jakartaValidationVersion"
+    testRuntimeOnly "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion", {
+        exclude group: "jakarta.validation", module: "jakarta.validation-api"
+    }
+    testRuntimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    testRuntimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
+    testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
+    testImplementation "org.spockframework:spock-core:$spockVersion", {
+        exclude group: "junit", module: "junit-dep"
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
+    testRuntimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
+    testImplementation "org.graceframework:grace-test-support"
+    testRuntimeOnly "com.h2database:h2:$h2Version"
+    testRuntimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
+    testRuntimeOnly "org.springframework:spring-aop:$springVersion"
+    testRuntimeOnly "org.springframework:spring-expression:$springVersion"
+}
+
+groovydoc.classpath += configurations.documentation
