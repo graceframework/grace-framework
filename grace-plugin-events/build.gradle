@@ -1,6 +1,6 @@
 dependencies {
     api "org.graceframework:grace-core:$graceVersion"
-    api project(":grace-events"), project(":grace-events-transform")
+    api project(":grace-events-core"), project(":grace-events-transform")
     api project(":grace-events-compat")
 }
 
