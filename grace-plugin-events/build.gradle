@@ -5,3 +5,9 @@ dependencies {
     api project(":grace-events"), project(":grace-events-transform")
     api project(":grace-events-compat")
 }
+
+jar {
+    enabled = true
+    archiveClassifier.set('')
+    includeEmptyDirs = false
+}
