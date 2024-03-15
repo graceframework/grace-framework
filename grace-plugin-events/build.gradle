@@ -1,7 +1,5 @@
 dependencies {
-    api "org.graceframework:grace-core:$graceVersion", {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
+    api "org.graceframework:grace-core:$graceVersion"
     api project(":grace-events"), project(":grace-events-transform")
     api project(":grace-events-compat")
 }
