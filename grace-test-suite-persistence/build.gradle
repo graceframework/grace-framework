@@ -16,7 +16,7 @@ dependencies {
     testImplementation project(":grace-test-suite-base")
     testImplementation project(":grace-test-support")
 
-    testImplementation libs.grails.async
+    testImplementation libs.grails.async.core
     testImplementation libs.grails.datastore.gorm.validation
     testImplementation libs.grails.datastore.gorm.hibernate5, {
         exclude group: 'org.graceframework', module:'grace-datastore-gorm'
