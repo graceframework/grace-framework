@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Role
  * @since 2.0
  */
 class ControllersAsyncGrailsPlugin extends Plugin {
-    def grailsVersion = "3.3.0 > *"
+    def grailsVersion = "2023.0.0 > *"
     def loadAfter = ['controllers']
     Closure doWithSpring() {{->
         asyncPromiseResponseActionResultTransformer(AsyncActionResultTransformer)
