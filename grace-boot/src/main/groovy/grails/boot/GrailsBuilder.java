@@ -17,10 +17,7 @@ package grails.boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Fluent API for constructing Grails instances.
@@ -32,8 +29,6 @@ import org.springframework.util.ReflectionUtils;
  */
 public class GrailsBuilder extends SpringApplicationBuilder {
 
-    private ConfigurableApplicationContext micronautContext;
-
     public GrailsBuilder(Class<?>... sources) {
         super(sources);
     }
@@ -41,24 +36,6 @@ public class GrailsBuilder extends SpringApplicationBuilder {
     @Override
     protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class<?>... sources) {
         return new Grails(resourceLoader, sources);
-    }
-
-    public GrailsBuilder enableMicronaut() {
-        if (ClassUtils.isPresent("io.micronaut.spring.context.MicronautApplicationContext", getClass().getClassLoader())) {
-            try {
-                Class<?> clazz = getClass().getClassLoader().loadClass("io.micronaut.spring.context.MicronautApplicationContext");
-                this.micronautContext = (ConfigurableApplicationContext) ReflectionUtils.accessibleConstructor(clazz).newInstance();
-            }
-            catch (Exception e) {
-                throw new IllegalStateException(
-                        "Can't enable Micronaut as the parent application context of Grails", e);
-            }
-        }
-        else {
-            throw new IllegalStateException(
-                    "Class 'MicronautApplicationContext' not found (please add dependency 'micronaut-spring-context')");
-        }
-        return this;
     }
 
     @Override
