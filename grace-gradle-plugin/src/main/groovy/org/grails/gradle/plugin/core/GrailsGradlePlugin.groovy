@@ -50,6 +50,7 @@ import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+import grails.dev.commands.ApplicationCommand
 import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsNameUtils
@@ -57,12 +58,12 @@ import grails.util.Metadata
 
 import org.grails.build.parsing.CommandLineParser
 import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
+import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
 import org.grails.gradle.plugin.run.FindMainClassTask
 import org.grails.gradle.plugin.util.SourceSets
-import org.grails.io.support.FactoriesLoaderSupport
 
 /**
  * The main Grails gradle plugin implementation
@@ -73,7 +74,6 @@ import org.grails.io.support.FactoriesLoaderSupport
 @CompileStatic
 class GrailsGradlePlugin extends GroovyPlugin {
 
-    public static final String APPLICATION_CONTEXT_COMMAND_CLASS = 'grails.dev.commands.ApplicationCommand'
     public static final String PROFILE_CONFIGURATION = 'profile'
 
     protected static final List<String> CORE_GORM_LIBRARIES = [
@@ -301,23 +301,24 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     protected void configureApplicationCommands(Project project) {
-        def applicationContextCommands = FactoriesLoaderSupport.loadFactoryNames(APPLICATION_CONTEXT_COMMAND_CLASS)
+        List<ApplicationCommand> applicationContextCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand)
         project.afterEvaluate {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                     project.configurations.profile)
-            for (ctxCommand in applicationContextCommands) {
-                String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand, 'Command')
-                String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand, 'Command'))
-                if (project.tasks.findByName(taskName) == null) {
-                    project.tasks.create(taskName, ApplicationContextCommandTask) {
-                        classpath = fileCollection
-                        command = commandName
-                        systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                        if (project.hasProperty('args')) {
-                            args(CommandLineParser.translateCommandline(project.args))
-                        }
+            for (ApplicationCommand ctxCommand in applicationContextCommands) {
+                String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand.class.name, 'Command')
+                String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand.class.name, 'Command'))
+                String commandDescription = ctxCommand.description
+                project.tasks.register(taskName, ApplicationContextCommandTask, { commandTask ->
+                    commandTask.setGroup("Command")
+                    commandTask.setDescription(commandDescription)
+                    commandTask.classpath = fileCollection
+                    commandTask.command = commandName
+                    systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                    if (project.hasProperty('args')) {
+                        commandTask.args(CommandLineParser.translateCommandline(project.args))
                     }
-                }
+                })
             }
         }
     }
