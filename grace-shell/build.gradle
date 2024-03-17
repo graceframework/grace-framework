@@ -19,8 +19,6 @@ configurations {
         exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
         exclude group: 'com.vaadin.external.google', module: 'android-json'
         exclude group: 'io.micrometer'
-        exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
-        exclude group: 'jakarta.inject', module: 'jakarta.inject-api'
         exclude group: 'javax.inject', module: 'javax.inject'
         exclude group: 'net.sf.jopt-simple', module: 'jopt-simple'
         exclude group: 'org.checkerframework', module: 'checker-qual'
