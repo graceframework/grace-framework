@@ -24,13 +24,11 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.artifacts.DependencyResolveDetails
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
@@ -121,8 +119,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         configureProfile(project)
 
         applyDefaultPlugins(project)
-
-        configureGroovy(project)
 
         registerToolingModelBuilder(project, registry)
 
@@ -240,23 +236,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileStatic
-    protected void configureGroovy(Project project) {
-        String groovyVersion = resolveGroovyVersion(project)
-        if (groovyVersion) {
-            project.configurations.all({ Configuration configuration ->
-                configuration.resolutionStrategy.eachDependency({ DependencyResolveDetails details ->
-                    String dependencyName = details.requested.name
-                    String group = details.requested.group
-                    if (group == 'org.apache.groovy' && dependencyName.startsWith('groovy')) {
-                        details.useVersion(groovyVersion)
-                        return
-                    }
-                } as Action<DependencyResolveDetails>)
-            } as Action<Configuration>)
-        }
-    }
-
-    @CompileStatic
     protected void configureSpringBootExtension(Project project) {
     }
 
@@ -359,15 +338,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
             grailsVersion = grailsBuildProperties.getProperty('grails.version')
         }
         grailsVersion
-    }
-
-    protected String resolveGroovyVersion(Project project) {
-        def groovyVersion = project.findProperty('groovyVersion')
-
-        groovyVersion = groovyVersion ?: new GrailsDependenciesDependencyManagement().getGroovyVersion()
-        groovyVersion = groovyVersion ?: GroovySystem.getVersion()
-
-        groovyVersion
     }
 
     protected String resolveSpringBootVersion(Project project) {
