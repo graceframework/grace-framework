@@ -124,8 +124,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureGroovy(project)
 
-        configureMicronaut(project)
-
         registerToolingModelBuilder(project, registry)
 
         registerGrailsExtension(project)
@@ -135,8 +133,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         registerFindMainClassTask(project)
 
         configureGrailsBuildSettings(project)
-
-        configureFileWatch(project)
 
         enableNative2Ascii(project, grailsVersion)
 
@@ -261,12 +257,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileStatic
-    protected void configureMicronaut(Project project) {
-        String micronautVersion = resolveMicronautVersion(project)
-
-    }
-
-    @CompileStatic
     protected void configureSpringBootExtension(Project project) {
     }
 
@@ -286,12 +276,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if (project.extensions.findByName('grails') == null) {
             project.extensions.add('grails', new GrailsExtension(project))
         }
-    }
-
-    @CompileStatic
-    protected void configureFileWatch(Project project) {
-        def environment = Environment.current
-        enableFileWatch(environment, project)
     }
 
     @CompileStatic
@@ -394,14 +378,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         springBootVersion
     }
 
-    protected String resolveMicronautVersion(Project project) {
-        def micronautVersion = project.findProperty('micronautVersion')
-
-        micronautVersion = micronautVersion ?: new GrailsDependenciesDependencyManagement().getMicronautVersion()
-
-        micronautVersion
-    }
-
     @CompileDynamic
     protected void configureAssetCompilation(Project project) {
         if (project.extensions.findByName('assets')) {
@@ -499,18 +475,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
         }
-    }
-
-    @CompileDynamic
-    protected void enableFileWatch(Environment environment, Project project) {
-//        if (environment.isReloadEnabled()) {
-//            String micronautVersion = resolveMicronautVersion(project)
-//            if (project.configurations.findByName('developmentOnly')) {
-//                project.dependencies.add(
-//                        'developmentOnly',
-//                        "io.micronaut:micronaut-inject-groovy:${micronautVersion}")
-//            }
-//        }
     }
 
     protected void registerFindMainClassTask(Project project) {
