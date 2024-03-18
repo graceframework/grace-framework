@@ -245,7 +245,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     protected void configureApplicationCommands(Project project) {
-        List<ApplicationCommand> applicationContextCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand)
+        URL[] urls = [new File(project.buildDir, 'classes/groovy/main').toURI().toURL()]
+        ClassLoader classLoader = new URLClassLoader(urls, GrailsFactoriesLoader.classLoader)
+        List<ApplicationCommand> applicationContextCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand, classLoader)
         project.afterEvaluate {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                     project.configurations.profile)
@@ -258,6 +260,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     commandTask.setDescription(commandDescription)
                     commandTask.classpath = fileCollection
                     commandTask.command = commandName
+                    systemProperty 'spring.main.banner-mode', 'OFF'
+                    systemProperty 'logging.level.ROOT', 'OFF'
                     systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                     if (project.hasProperty('args')) {
                         commandTask.args(CommandLineParser.translateCommandline(project.args))
@@ -574,7 +578,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/main'))
+        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/groovy/main'))
     }
 
     @CompileDynamic
