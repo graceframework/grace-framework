@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import groovyjarjarasm.asm.ClassReader
 import groovyjarjarasm.asm.ClassVisitor
 import groovyjarjarasm.asm.MethodVisitor
 import groovyjarjarasm.asm.Opcodes
-import org.springframework.asm.SpringAsmInfo
 import groovyjarjarasm.asm.Type
 
 import grails.util.BuildSettings
@@ -157,10 +156,15 @@ class MainClassFinder {
                 }
             }
             if (file.isDirectory()) {
-                Collection<File> files = file.listFiles()?.findAll { File f ->
-                    (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
-                            (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
-                }
+                File[] files = file.listFiles(new FileFilter() {
+
+                    @Override
+                    boolean accept(File f) {
+                        (f.isDirectory() && !f.name.startsWith('.') && !f.hidden) ||
+                                (f.isFile() && f.name.endsWith(GrailsResourceUtils.CLASS_EXTENSION))
+                    }
+
+                })
 
                 if (files) {
                     for (File sub in files) {
@@ -187,7 +191,7 @@ class MainClassFinder {
         boolean found = false
 
         MainMethodFinder() {
-            super(SpringAsmInfo.ASM_VERSION)
+            super(Opcodes.ASM9)
         }
 
         @Override
