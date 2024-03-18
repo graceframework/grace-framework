@@ -1,0 +1,38 @@
+GRACE CLI - INSTALLATION
+========================
+
+Thank you for downloading the Grace CLI. Please follow these instructions
+in order to complete your installation.
+
+
+Prerequisites
+-------------
+Grace CLI requires Java JDK v17.0 or above in order to run. Groovy v4.0.x
+is packaged as part of this distribution, and therefore does not need to be installed (any
+existing Groovy installation is ignored).
+
+Grace CLI will use whatever JDK it finds on your path, to check that you have an appropriate
+version you should run:
+
+	java -version
+
+Alternatively, you can set the JAVA_HOME environment variable to point a suitable JDK.
+
+
+Environment Variables
+---------------------
+No specific environment variables are required to run the CLI, however, you may want to
+set GRACE_HOME to point to a specific installation. You should also add GRACE_HOME/bin
+to your PATH environment variable.
+
+
+
+Checking Your Installation
+--------------------------
+To test if you have successfully installed the CLI you can run the following command:
+
+	grace -v
+
+
+
+For installation instructions see the manual in the docs subdirectory or online at <https://github.com/graceframework/grace-framework/wiki/Installation>.

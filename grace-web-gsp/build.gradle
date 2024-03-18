@@ -1,0 +1,12 @@
+dependencies {
+    compileOnly libs.ant
+    api libs.jakarta.servlet
+    api project(":grace-gsp")
+    api project(":grace-web-common")
+    api project(":grace-web-taglib")
+    api project(":grace-web-sitemesh")
+
+    testImplementation libs.spring.test
+    testImplementation project(":grace-test")
+    testRuntimeOnly project(":grace-spring")
+}
