@@ -50,6 +50,7 @@ import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+import grails.dev.commands.ApplicationCommand
 import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsNameUtils
@@ -57,6 +58,7 @@ import grails.util.Metadata
 
 import org.grails.build.parsing.CommandLineParser
 import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
+import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.commands.ApplicationContextScriptTask
 import org.grails.gradle.plugin.model.GrailsClasspathToolingModelBuilder
@@ -313,23 +315,28 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileDynamic
     protected void configureApplicationCommands(Project project) {
-        def applicationContextCommands = FactoriesLoaderSupport.loadFactoryNames(APPLICATION_CONTEXT_COMMAND_CLASS)
+        URL[] urls = [new File(project.buildDir, 'classes/groovy/main').toURI().toURL()]
+        ClassLoader classLoader = new URLClassLoader(urls, GrailsFactoriesLoader.classLoader)
+        List<ApplicationCommand> applicationContextCommands = GrailsFactoriesLoader.loadFactories(ApplicationCommand, classLoader)
         project.afterEvaluate {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                     project.configurations.profile)
-            for (ctxCommand in applicationContextCommands) {
-                String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand, 'Command')
-                String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand, 'Command'))
-                if (project.tasks.findByName(taskName) == null) {
-                    project.tasks.create(taskName, ApplicationContextCommandTask) {
-                        classpath = fileCollection
-                        command = commandName
-                        systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                        if (project.hasProperty('args')) {
-                            args(CommandLineParser.translateCommandline(project.args))
-                        }
+            for (ApplicationCommand ctxCommand in applicationContextCommands) {
+                String taskName = GrailsNameUtils.getLogicalPropertyName(ctxCommand.class.name, 'Command')
+                String commandName = GrailsNameUtils.getScriptName(GrailsNameUtils.getLogicalName(ctxCommand.class.name, 'Command'))
+                String commandDescription = ctxCommand.description
+                project.tasks.register(taskName, ApplicationContextCommandTask, { commandTask ->
+                    commandTask.setGroup("Command")
+                    commandTask.setDescription(commandDescription)
+                    commandTask.classpath = fileCollection
+                    commandTask.command = commandName
+                    systemProperty 'spring.main.banner-mode', 'OFF'
+                    systemProperty 'logging.level.ROOT', 'OFF'
+                    systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                    if (project.hasProperty('args')) {
+                        commandTask.args(CommandLineParser.translateCommandline(project.args))
                     }
-                }
+                })
             }
         }
     }
@@ -670,7 +677,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/main'))
+        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/groovy/main'))
     }
 
     @CompileDynamic
