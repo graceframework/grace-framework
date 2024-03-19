@@ -1,0 +1,14 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-mimetypes")
+    api project(":grace-plugin-validation")
+    api project(":grace-util")
+    api project(":grace-web")
+
+    api(libs.spring.boot.autoconfigure)
+
+    testImplementation project(":grace-test")
+}
