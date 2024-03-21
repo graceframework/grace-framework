@@ -1,0 +1,11 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-converters")
+    api project(":grace-plugin-core")
+    api project(":grace-plugin-domain-class")
+    api project(":grace-spring")
+    api project(":grace-web")
+    api project(":grace-test")
+}
