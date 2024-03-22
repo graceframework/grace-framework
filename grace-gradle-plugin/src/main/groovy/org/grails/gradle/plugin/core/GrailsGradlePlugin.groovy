@@ -638,7 +638,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty "spring.devtools.restart.enabled", false
+                systemProperty 'spring.devtools.restart.enabled', false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }
@@ -662,7 +662,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
                 classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty "spring.devtools.restart.enabled", false
+                systemProperty 'spring.devtools.restart.enabled', false
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }
