@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -31,13 +31,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.ViewResolver;
 
 import grails.config.Config;
 import grails.config.Settings;
@@ -45,6 +47,7 @@ import grails.core.GrailsApplication;
 import grails.gsp.PageRenderer;
 import grails.util.BuildSettings;
 import grails.util.Environment;
+
 import org.grails.core.io.ResourceLocator;
 import org.grails.gsp.GroovyPageResourceLoader;
 import org.grails.gsp.GroovyPagesTemplateEngine;
@@ -110,7 +113,7 @@ public class GroovyPagesAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public CachingGrailsConventionGroovyPageLocator groovyPageLocator(ObjectProvider<GrailsApplication> grailsApplication,
-                                                                      GroovyPageResourceLoader groovyPageResourceLoader) {
+            GroovyPageResourceLoader groovyPageResourceLoader) {
 
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
@@ -130,16 +133,13 @@ public class GroovyPagesAutoConfiguration {
                 defaultViews = resourceLoader.getResource("classpath:gsp/views.properties");
             }
             if (defaultViews.exists()) {
-                PropertiesFactoryBean pfb = new PropertiesFactoryBean();
-                pfb.setIgnoreResourceNotFound(true);
-                pfb.setLocation(defaultViews);
                 try {
-                    Map<String, String> precompiledGspMap = pfb.getObject().entrySet().stream().collect(
-                            Collectors.toMap(
-                                    e -> String.valueOf(e.getKey()),
-                                    e -> String.valueOf(e.getValue()),
-                                    (prev, next) -> next, HashMap::new
-                            ));
+                    PropertiesFactoryBean pfb = new PropertiesFactoryBean();
+                    pfb.setIgnoreResourceNotFound(true);
+                    pfb.setLocation(defaultViews);
+                    pfb.afterPropertiesSet();
+                    Map<String, String> precompiledGspMap = new HashMap<>();
+                    CollectionUtils.mergePropertiesIntoMap(pfb.getObject(), precompiledGspMap);
                     groovyPageLocator.setPrecompiledGspMap(precompiledGspMap);
                 }
                 catch (IOException ignored) {
@@ -155,6 +155,7 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public ResourceLocator grailsResourceLocator(ObjectProvider<GrailsApplication> grailsApplication) {
         Config config = grailsApplication.getIfAvailable().getConfig();
@@ -175,7 +176,7 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(ResourceLocator grailsResourceLocator) {
+    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(@Qualifier("grailsResourceLocator") ResourceLocator grailsResourceLocator) {
         return new ErrorsViewStackTracePrinter(grailsResourceLocator);
     }
 
@@ -213,10 +214,11 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
+    @Order(0)
     @ConditionalOnMissingBean
     public GroovyPageViewResolver jspViewResolver(ObjectProvider<GrailsApplication> grailsApplication,
-                                                  CachingGrailsConventionGroovyPageLocator groovyPageLocator,
-                                                  GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+            CachingGrailsConventionGroovyPageLocator groovyPageLocator,
+            GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
 
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
@@ -252,9 +254,9 @@ public class GroovyPagesAutoConfiguration {
     @Bean({"groovyTemplateEngine", "groovyPagesTemplateEngine"})
     @ConditionalOnMissingBean
     public GroovyPagesTemplateEngine groovyPagesTemplateEngine(ObjectProvider<GrailsApplication> grailsApplication,
-                                                               ObjectProvider<TagLibraryLookup> gspTagLibraryLookup,
-                                                               ObjectProvider<TagLibraryResolver> jspTagLibraryResolver,
-                                                               ObjectProvider<GroovyPageLocator> groovyPageLocator) {
+            ObjectProvider<TagLibraryLookup> gspTagLibraryLookup,
+            ObjectProvider<TagLibraryResolver> jspTagLibraryResolver,
+            ObjectProvider<GroovyPageLocator> groovyPageLocator) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
@@ -276,7 +278,7 @@ public class GroovyPagesAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GroovyPagesTemplateRenderer groovyPagesTemplateRenderer(CachingGrailsConventionGroovyPageLocator groovyPageLocator,
-                                                                   GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+            GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
         GroovyPagesTemplateRenderer groovyPagesTemplateRenderer = new GroovyPagesTemplateRenderer();
         groovyPagesTemplateRenderer.setGroovyPageLocator(groovyPageLocator);
         groovyPagesTemplateRenderer.setGroovyPagesTemplateEngine(groovyPagesTemplateEngine);
@@ -286,7 +288,7 @@ public class GroovyPagesAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PageRenderer groovyPageRenderer(CachingGrailsConventionGroovyPageLocator groovyPageLocator,
-                                           GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
+            GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
         PageRenderer pageRenderer = new PageRenderer(groovyPagesTemplateEngine);
         pageRenderer.setGroovyPageLocator(groovyPageLocator);
         return pageRenderer;
@@ -294,7 +296,8 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication, ObjectProvider<ViewResolver> viewResolver) {
+    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication,
+            ObjectProvider<GroovyPageViewResolver> jspViewResolver) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
@@ -307,7 +310,7 @@ public class GroovyPagesAutoConfiguration {
         groovyPageLayoutFinder.setGspReloadEnabled(enableReload);
         groovyPageLayoutFinder.setDefaultDecoratorName(defaultDecoratorName);
         groovyPageLayoutFinder.setEnableNonGspViews(sitemeshEnableNonGspViews);
-        viewResolver.ifAvailable(groovyPageLayoutFinder::setViewResolver);
+        jspViewResolver.ifAvailable(groovyPageLayoutFinder::setViewResolver);
 
         return groovyPageLayoutFinder;
     }
