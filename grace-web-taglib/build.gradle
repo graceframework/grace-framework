@@ -1,0 +1,8 @@
+dependencies {
+    compileOnly libs.javax.servlet
+    api project(":grace-web-common")
+    api project(":grace-taglib")
+
+    testRuntimeOnly project(":grace-spring")
+    testImplementation libs.spring.test
+}

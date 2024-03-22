@@ -1,0 +1,25 @@
+dependencies {
+    api project(":grace-plugin-codecs")
+    api project(":grace-plugin-core")
+    api project(":grace-plugin-databinding")
+    api project(":grace-plugin-domain-class")
+    api project(":grace-plugin-i18n")
+    api project(":grace-plugin-interceptors")
+    api project(":grace-plugin-rest")
+    api project(":grace-test")
+
+    api libs.grails.async
+    api project(":grace-plugin-gsp")
+    api libs.groovy.test.junit5
+    api libs.grails.datastore.gorm
+    api libs.grails.datastore.gorm.test
+    api libs.junit.jupiter.api
+    api libs.junit.platform.runner
+    api libs.javassist
+    api libs.javax.servlet
+    api libs.spring.test
+    api libs.spring.boot.test
+    api libs.spock.core, { transitive = false }
+    api libs.spock.spring, { transitive = false }
+    runtimeOnly libs.junit.jupiter.engine
+}
