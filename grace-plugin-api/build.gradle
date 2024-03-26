@@ -1,0 +1,18 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-spring")
+    api project(":grace-spring-boot")
+    api project(":grace-util")
+
+    api libs.commons.lang3
+    api libs.grails.datastore.core, {
+        exclude group: "org.codehaus.groovy", module: "groovy"
+    }
+    api libs.spring.boot.autoconfigure
+
+    testImplementation project(":grace-test")
+    testImplementation(libs.spring.jdbc) {
+        exclude group: 'commons-logging', module:'commons-logging'
+    }
+}
