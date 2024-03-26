@@ -41,7 +41,6 @@ import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.testing.Test
@@ -486,44 +485,41 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
                 def mainClassName = extraProperties.get('mainClassName')
                 if (mainClassName) {
-                    consoleTask.configure {
-                        it.dependsOn(tasks.named('classes'), findMainClass)
-                        it.args(mainClassName)
-                    }
-                    shellTask.configure {
-                        it.dependsOn(tasks.named('classes'), findMainClass)
-                        it.args(mainClassName)
-                    }
-                    project.tasks.withType(ApplicationContextCommandTask).configureEach { ApplicationContextCommandTask task ->
-                        task.args mainClassName
-                    }
-                    project.tasks.withType(ApplicationContextScriptTask).configureEach { ApplicationContextScriptTask task ->
+                    consoleTask.args mainClassName
+                    shellTask.args mainClassName
+                    project.tasks.withType(ApplicationContextCommandTask) { ApplicationContextCommandTask task ->
                         task.args mainClassName
                     }
                 }
+                project.tasks.withType(ApplicationContextScriptTask) { ApplicationContextScriptTask task ->
+                    task.args mainClassName
+                }
             }
+
+            consoleTask.dependsOn(tasks.findByName('classes'), findMainClass)
+            shellTask.dependsOn(tasks.findByName('classes'), findMainClass)
         }
     }
 
     @CompileDynamic
-    protected TaskProvider<JavaExec> createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
-        tasks.register('console', JavaExec, {
-            it.group = 'Console'
-            it.description = 'Runs the Grace interactive console'
-            it.classpath = project.sourceSets.main.runtimeClasspath + configuration
-            it.mainClass.set('grails.ui.console.GrailsConsole')
-        })
+    protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
+        tasks.create('console', JavaExec) {
+            group = 'Console'
+            description = 'Runs the Grace interactive console'
+            classpath = project.sourceSets.main.runtimeClasspath + configuration
+            mainClass.set('grails.ui.console.GrailsConsole')
+        }
     }
 
     @CompileDynamic
-    protected TaskProvider<JavaExec> createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
-        tasks.register('shell', JavaExec, {
-            it.group = 'Console'
-            it.description = 'Runs the Grace interactive shell'
-            it.classpath = project.sourceSets.main.runtimeClasspath + configuration
-            it.mainClass.set('grails.ui.shell.GrailsShell')
-            it.standardInput = System.in
-        })
+    protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
+        tasks.create('shell', JavaExec) {
+            group = 'Console'
+            description = 'Runs the Grace interactive shell'
+            classpath = project.sourceSets.main.runtimeClasspath + configuration
+            mainClass.set('grails.ui.shell.GrailsShell')
+            standardInput = System.in
+        }
     }
 
     @CompileDynamic
