@@ -39,9 +39,6 @@ dependencies {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
     api gradleApi()
-    api libs.gradle.extra.configurations.plugin
-    api libs.gradle.nexus.publish.plugin
-    api libs.gradle.nexus.plugin
     api libs.maven.model
     api libs.spring.boot.gradle.plugin
     api libs.spring.dependency.management.plugin
@@ -87,18 +84,6 @@ gradlePlugin {
             description = 'Adds web specific extensions'
             id = 'org.graceframework.grace-web'
             implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
-        }
-        gracePluginPublish {
-            displayName = "Grace Publish Gradle Plugin"
-            description = 'A plugin to setup publishing to Grace central repo'
-            id = 'org.graceframework.internal.grace-plugin-publish'
-            implementationClass = 'org.grails.gradle.plugin.publishing.internal.GrailsCentralPublishGradlePlugin'
-        }
-        graceProfilePublish {
-            displayName = "Grace Profile Publish Plugin"
-            description = 'A plugin for publishing profiles'
-            id = 'org.graceframework.internal.grace-profile-publish'
-            implementationClass = 'org.grails.gradle.plugin.profiles.internal.GrailsProfilePublishGradlePlugin'
         }
     }
 }

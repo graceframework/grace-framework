@@ -9,10 +9,7 @@ commons-codec = "1.15"
 commons-lang = "2.6"
 commons-lang3 = "3.12.0"
 gradle = "7.6.1"
-gradle-extra-configurations-plugin = "9.0.0"
 gradle-git-properties = "2.4.1"
-gradle-nexus-plugin = "2.3.1"
-gradle-nexus-publish-plugin = "1.3.0"
 grace-async = "6.0.0-M2"
 grace-events = "6.0.0-M2"
 grails-gdoc = "1.0.1"
@@ -75,9 +72,6 @@ cglib = { module = "cglib:cglib-nodep", version.ref = "cglib" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
-gradle-extra-configurations-plugin = { module = "com.netflix.nebula:gradle-extra-configurations-plugin", version.ref = "gradle-extra-configurations-plugin" }
-gradle-nexus-plugin = { module = "com.bmuschko:gradle-nexus-plugin", version.ref = "gradle-nexus-plugin" }
-gradle-nexus-publish-plugin = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "gradle-nexus-publish-plugin" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 grails-async-core = { module = "org.graceframework:grace-async-core", version.ref = "grace-async" }
 grails-async-gpars = { module = "org.graceframework:grace-async-gpars", version.ref = "grace-async" }
