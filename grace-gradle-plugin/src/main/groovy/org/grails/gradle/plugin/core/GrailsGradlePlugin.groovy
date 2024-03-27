@@ -418,6 +418,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
+            group = 'Console'
+            description = 'Runs the Grace interactive console'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.console.GrailsConsole')
         }
@@ -426,6 +428,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
+            group = 'Console'
+            description = 'Runs the Grace interactive shell'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
