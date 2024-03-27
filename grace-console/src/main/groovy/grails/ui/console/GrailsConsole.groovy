@@ -95,7 +95,7 @@ class GrailsConsole extends Grails {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
         groovy.console.ui.Console groovyConsole = new groovy.console.ui.Console(classLoader, binding, baseConfig) {
 
-            static final TITLE = 'GrailsConsole'
+            static final TITLE = 'Grace Console'
             static prefs = Preferences.userNodeForPackage(GrailsConsole)
 
             @Override
@@ -159,8 +159,8 @@ class GrailsConsole extends Grails {
                 def osVersion = String.format('%s %s %s', System.getProperty('os.name'), System.getProperty('os.version'), System.getProperty('os.arch'))
                 def groovyVersion = GroovySystem.getVersion()
                 def pane = super.swing.optionPane()
-                pane.setMessage('Welcome to the Grails Console for evaluating Groovy scripts' +
-                        "\nGrails: $grailsVersion" +
+                pane.setMessage('Welcome to the Grace Console for evaluating Groovy scripts' +
+                        "\nGrace: $grailsVersion" +
                         "\nGroovy: $groovyVersion" +
                         "\nJVM: $javaVersion" +
                         "\nOS: $osVersion")
