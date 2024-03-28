@@ -267,6 +267,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 if (grailsGradlePluginVersion != null) {
                     variables['grails-gradle-plugin.version'] = grailsGradlePluginVersion
                 }
+                mpr.profileDependencyVersions.getProperties().each {
+                    variables[it.key.toString()] = it.value.toString()
+                }
             }
 
             Path appFullDirectory = Paths.get(cmd.baseDir.path, appname)

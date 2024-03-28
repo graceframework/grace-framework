@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.grails.cli.compiler.dependencies;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * An encapsulation of dependency management information.
@@ -24,6 +25,13 @@ import java.util.List;
  * @since 2022.1.0
  */
 public interface DependencyManagement {
+
+    /**
+     * Returns the managed properties.
+     *
+     * @return the managed properties
+     */
+    Properties getProperties();
 
     /**
      * Returns the managed dependencies.

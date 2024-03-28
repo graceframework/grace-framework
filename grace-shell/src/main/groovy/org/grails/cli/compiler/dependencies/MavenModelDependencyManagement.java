@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.maven.model.Model;
 
@@ -32,11 +33,14 @@ import org.grails.cli.compiler.dependencies.Dependency.Exclusion;
  */
 public class MavenModelDependencyManagement implements DependencyManagement {
 
+    private final Properties properties;
+
     private final List<Dependency> dependencies;
 
     private final Map<String, Dependency> byArtifactId = new LinkedHashMap<>();
 
     public MavenModelDependencyManagement(Model model) {
+        this.properties = model.getProperties();
         this.dependencies = extractDependenciesFromModel(model);
         for (Dependency dependency : this.dependencies) {
             this.byArtifactId.put(dependency.getArtifactId(), dependency);
@@ -55,6 +59,11 @@ public class MavenModelDependencyManagement implements DependencyManagement {
             dependencies.add(dependency);
         }
         return dependencies;
+    }
+
+    @Override
+    public Properties getProperties() {
+        return this.properties;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.cli.compiler.dependencies;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * {@link DependencyManagement} that delegates to one or more {@link DependencyManagement}
@@ -28,6 +29,8 @@ import java.util.List;
  */
 public class CompositeDependencyManagement implements DependencyManagement {
 
+    private final Properties properties = new Properties();
+
     private final List<DependencyManagement> delegates;
 
     private final List<Dependency> dependencies = new ArrayList<>();
@@ -35,8 +38,14 @@ public class CompositeDependencyManagement implements DependencyManagement {
     public CompositeDependencyManagement(DependencyManagement... delegates) {
         this.delegates = Arrays.asList(delegates);
         for (DependencyManagement delegate : delegates) {
+            this.properties.putAll(delegate.getProperties());
             this.dependencies.addAll(delegate.getDependencies());
         }
+    }
+
+    @Override
+    public Properties getProperties() {
+        return this.properties;
     }
 
     @Override
