@@ -60,7 +60,7 @@ import org.grails.io.support.Resource
 @CompileStatic
 class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepositoryAware {
 
-    private static final String GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS = '4.0.0.BUILD-SNAPSHOT'
+    private static final String GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS = '2023.0.0-SNAPSHOT'
     public static final String NAME = 'create-app'
     public static final String PROFILE_FLAG = 'profile'
     public static final String FEATURES_FLAG = 'features'
@@ -461,20 +461,20 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
-        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(8)).unique().join(ln)
+        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
-            "        classpath \"${artifactStr}\"".toString()
+            "    implementation \"${artifactStr}\"".toString()
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
-            "apply plugin: \"$name\""
+            "    id \"$name\""
         }
 
         for (Feature f in features) {
             buildPlugins.addAll f.buildPlugins.collect { String name ->
-                "apply plugin: \"$name\""
+                "    id \"$name\""
             }
         }
 
@@ -597,6 +597,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         variables['grails.codegen.defaultPackage'] = defaultpackagename
         variables['grails.codegen.defaultPackage.path'] = defaultpackagename.replace('.', '/')
+        variables['grace.codegen.defaultPackage'] = defaultpackagename
+        variables['grace.codegen.defaultPackage.path'] = defaultpackagename.replace('.', '/')
 
         def projectClassName = GrailsNameUtils.getNameFromScript(appname)
 
@@ -608,6 +610,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appname
         variables['grails.app.group'] = groupname
+        variables['grace.codegen.projectClassName'] = projectClassName
+        variables['grace.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
+        variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
+        variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
+        variables['grace.profile'] = profileName
+        variables['grace.version'] = grailsVersion
+        variables['grace.app.name'] = appname
+        variables['grace.app.group'] = groupname
     }
 
     private String establishGroupAndAppName(String groupAndAppName) {
