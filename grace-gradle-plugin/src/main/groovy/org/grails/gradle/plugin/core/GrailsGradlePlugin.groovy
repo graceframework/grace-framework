@@ -75,7 +75,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     public static final String PROFILE_CONFIGURATION = 'profile'
 
     List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
-    List<String> excludedGrailsAppSourceDirs = ['migrations', 'assets']
+    List<String> excludedGrailsAppSourceDirs = ['assets']
     List<String> grailsAppResourceDirs = ['i18n', 'conf']
     private final ToolingModelBuilderRegistry registry
     String grailsAppDir
