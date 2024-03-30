@@ -1,3 +1,0 @@
-## grails-util
-
-Grails Utilities

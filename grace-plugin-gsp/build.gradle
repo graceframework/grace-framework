@@ -1,0 +1,50 @@
+dependencies {
+    compileOnly libs.jakarta.servlet
+    api libs.commons.lang
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-plugin-codecs")
+    compileOnly project(":grace-plugin-controllers")
+    api project(":grace-web-mvc")
+    api project(":grace-web-url-mappings")
+    api project(":grace-web-gsp-taglib")
+    runtimeOnly(project(":grace-web-jsp"))
+    api libs.spring.boot.autoconfigure
+
+    testImplementation project(":grace-plugin-codecs")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-test-support")
+
+    testImplementation libs.jakarta.servlet.jsp
+    testImplementation libs.jakarta.servlet.jsp.jstl
+    testImplementation libs.glassfish.web.jsp.jstl
+    testImplementation libs.tomcat.embed.el
+    testImplementation libs.spring.test
+}
+
+task isolatedTestsOne(type:Test) {
+    includes = [
+        "**/FormTagLibResourceTests.class"
+    ]
+}
+
+task isolatedTestsTwo(type:Test) {
+    includes = [
+        "**/RestfulReverseUrlRenderingTests.class"
+    ]
+}
+
+task isolatedTestsThree(type:Test) {
+    includes = [
+        "**/PageRendererSpec.class"
+    ]
+}
+
+test {
+    dependsOn isolatedTestsOne, isolatedTestsTwo, isolatedTestsThree
+    excludes = [
+        "**/FormTagLibResourceTests.class",
+        "**/RestfulReverseUrlRenderingTests.class",
+        "**/PageRendererSpec.class"
+    ]
+}
