@@ -239,23 +239,6 @@ subprojects { project ->
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 
-    if (project.name =~ /^(grace-web|grace-plugin-|grace-test-suite|grace-test)/) {
-        dependencies {
-            api libs.jakarta.servlet
-            // MockHttpServletRequest/Response/Context used in many classes
-            api libs.spring.test, {
-                exclude group: 'commons-logging', module:'commons-logging'
-            }
-        }
-    }
-
-    if (project.name =~ /^(grace-plugin-datasource|grace-test-suite)/) {
-        dependencies {
-            testImplementation libs.hsqldb
-            testImplementation libs.h2
-        }
-    }
-
     jar{
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
