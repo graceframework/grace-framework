@@ -29,6 +29,7 @@ import org.grails.encoder.CodecLookup
 import org.grails.encoder.Encoder
 import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.ForwardUrlMappingInfo
 import org.grails.web.mapping.UrlMappingUtils
 import org.grails.web.util.GrailsApplicationAttributes
@@ -45,8 +46,8 @@ class UrlMappingTagLib implements TagLibrary {
 
     CodecLookup codecLookup
 
-    @Autowired
-    LinkGenerator linkGenerator
+    @Autowired(required = false)
+    LinkGenerator linkGenerator = new DefaultLinkGenerator('')
 
     /**
      * Includes another controller/action within the current response.<br/>

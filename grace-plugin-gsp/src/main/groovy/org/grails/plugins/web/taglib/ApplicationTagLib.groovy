@@ -36,7 +36,7 @@ import grails.util.GrailsStringUtils
 import grails.util.GrailsUtil
 import grails.util.Metadata
 import grails.web.mapping.LinkGenerator
-
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
@@ -55,8 +55,8 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
     GrailsPluginManager pluginManager
     GrailsApplication grailsApplication
 
-    @Autowired
-    LinkGenerator linkGenerator
+    @Autowired(required = false)
+    LinkGenerator linkGenerator = new DefaultLinkGenerator('')
 
     RequestDataValueProcessor requestDataValueProcessor
 
