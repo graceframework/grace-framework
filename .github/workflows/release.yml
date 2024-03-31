@@ -1,25 +1,44 @@
-name: Release
+name: Grace Release
+
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: write
+
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  create_draft_release:
+    runs-on: ubuntu-22.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Create draft release
+        run: |
+          gh release create \
+            --repo ${{ github.repository }} \
+            --title ${{ github.ref_name }} \
+            --notes '' \
+            --draft \
+            ${{ github.ref_name }}
+  release_and_publish:
+    needs: create_draft_release
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        java: ['8']
+        java: ['11']
     env:
-      GIT_USER_NAME: puneetbehl
-      GIT_USER_EMAIL: behlp@objectcomputing.com
-      GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
+      GIT_USER_NAME: rainboyan
+      GIT_USER_EMAIL: rain@rainboyan.com
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}
-      - uses: gradle/wrapper-validation-action@v1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: gradle/wrapper-validation-action@v2
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
@@ -32,16 +51,20 @@ jobs:
           echo ::set-output name=value::${TARGET_BRANCH}
       - name: Set the current release version
         id: release_version
-        run: echo ::set-output name=release_version::${GITHUB_REF:11}
-      - name: Run pre-release
-        uses: ./.github/actions/pre-release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
       - name: Run Assemble
         id: assemble
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: assemble
+      - name: Upload artifacts to the Github release
+        id: upload_artifact
+        if: steps.assemble.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --clobber "${{ github.ref_name }}" \
+            build/distributions/grace-${{ steps.release_version.outputs.release_version }}.zip
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
@@ -49,7 +72,7 @@ jobs:
       - name: Publish to Sonatype OSSRH
         id: publish
         if: steps.assemble.outcome == 'success'
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -60,63 +83,3 @@ jobs:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         with:
           arguments: -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
-      - name: Export Gradle Properties
-        uses: micronaut-projects/github-actions/export-gradle-properties@master
-      - name: Run post-release
-        if: steps.publish.outcome == 'success'
-        uses: ./.github/actions/post-release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          SNAPSHOT_SUFFIX: -SNAPSHOT
-      - name: Upload artifacts to the Github release
-        id: upload_artifact
-        if: steps.publish.outcome == 'success'
-        uses: Roang-zero1/github-upload-release-artifacts-action@master
-        with:
-          args: build/distributions/grails-${{ steps.release_version.outputs.release_version }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Message for the Grails Documentation Release
-        if: steps.publish.outcome == 'success'
-        id: grails_docs_release_message
-        run: |
-          echo ::set-output name=value::{\"grails_version\":\"$RELEASE_VERSION\"}
-        env:
-          RELEASE_VERSION: ${{ steps.release_version.outputs.release_version }}
-      - name: Invoke grails-doc release workflow
-        if: steps.publish.outcome == 'success'
-        id: grails_doc
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-doc
-          ref: ${{ steps.extract_branch.outputs.value }}
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Invoke grails-static-website release workflow
-        if: steps.publish.outcome == 'success'
-        id: grails_static_website
-        uses: benc-uk/workflow-dispatch@v1.1
-        with:
-          workflow: Release
-          repo: grails/grails-static-website
-          ref: master
-          token: ${{ secrets.GH_TOKEN }}
-          inputs: ${{ steps.grails_docs_release_message.outputs.value }}
-      - name: Grails SDK Minor Release
-        if: steps.upload_artifact.outcome == 'success' && contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMinorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
-      - name: Grails SDK Major Release
-        if: steps.upload_artifact.outcome == 'success' && !contains(steps.release_version.outputs.release_version, 'M') && !contains(steps.release_version.outputs.release_version, 'RC')
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: sdkMajorRelease
-        env:
-          GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
-          GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
