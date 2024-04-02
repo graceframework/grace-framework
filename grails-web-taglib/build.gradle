@@ -1,8 +1,0 @@
-dependencies {
-    compileOnly libs.javax.servlet
-    api project(":grails-web-common")
-    api project(":grails-taglib")
-
-    testRuntimeOnly project(":grails-spring")
-    testImplementation libs.spring.test
-}

@@ -1,0 +1,28 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-cli")
+    api project(":grace-util")
+    api project(":grace-web-common")
+
+    api(libs.grails.datastore.gorm.validation) {
+        transitive = false
+    }
+
+    api libs.javax.servlet
+    implementation libs.caffeine
+    compileOnly libs.jansi
+    compileOnly libs.jline
+
+    testImplementation project(":grace-test-suite-base")
+}
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat = 'full'
+//        showStandardStreams = true
+    }
+    afterSuite {
+        System.out.print(".")
+        System.out.flush()
+    }
+}
