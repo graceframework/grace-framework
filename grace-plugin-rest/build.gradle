@@ -8,7 +8,7 @@ dependencies {
     api project(":grace-web-url-mappings")
     api project(":grace-util")
 
-    api libs.javax.jaxb.api
+    api libs.jakarta.jaxb.api
     api libs.spring.boot.autoconfigure
     compileOnly(libs.grails.datastore.core) {
         transitive = false
