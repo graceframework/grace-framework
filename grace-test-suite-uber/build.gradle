@@ -63,7 +63,7 @@ dependencies {
     testRuntimeOnly libs.aspectj.weaver
     testRuntimeOnly libs.javax.jsp
     testRuntimeOnly libs.javax.jstl
-    testRuntimeOnly libs.javax.el
+    testRuntimeOnly libs.jakarta.el.api
     testRuntimeOnly libs.spring.aspects
 }
 

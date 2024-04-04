@@ -28,6 +28,7 @@ itext = "2.0.8"
 jackson-databind = "2.13.5"
 jansi = "1.18"
 jakarta-annotation = "2.1.1"
+jakarta-el = "3.0.3"
 jakarta-jaxb = "2.3.3"
 javaparser = "3.15.14"
 javassist = "3.29.2-GA"
@@ -142,6 +143,7 @@ itext = { module = "com.lowagie:itext", version.ref = "itext" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
 jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
 jakarta-jaxb-api = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-jaxb" }
+jakarta-el-api = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
 jansi = { module = "org.fusesource.jansi:jansi", version.ref = "jansi" }
 javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
 javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
@@ -236,7 +238,7 @@ grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datast
 grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
-jakarta = ["jakarta-annotation-api", "jakarta-jaxb-api"]
+jakarta = ["jakarta-annotation-api", "jakarta-jaxb-api", "jakarta-el-api"]
 javax = ["javax-annotation", "javax-el", "javax-jaxb-api", "javax-inject", "javax-jsp", "javax-jstl", "javax-persistence", "javax-servlet", "javax-transaction"]
 micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
 micronaut-cache = ["micronaut-cache-bom"]

@@ -5,5 +5,5 @@ dependencies {
     compileOnly libs.javax.servlet
     // Required for JSP support
     compileOnly libs.javax.jsp
-    compileOnly libs.javax.el
+    compileOnly libs.jakarta.el.api
 }
