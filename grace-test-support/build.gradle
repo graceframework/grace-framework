@@ -11,7 +11,10 @@ dependencies {
     api libs.grails.async
     api project(":grace-plugin-gsp")
     api libs.groovy.test.junit5
-    api libs.grails.datastore.gorm
+    api libs.grails.datastore.gorm, {
+        exclude group: 'javax.el', module: 'javax.el-api'
+        exclude group: 'org.glassfish', module: 'javax.el'
+    }
     api libs.grails.datastore.gorm.test
     api libs.junit.jupiter.api
     api libs.junit.platform.runner
