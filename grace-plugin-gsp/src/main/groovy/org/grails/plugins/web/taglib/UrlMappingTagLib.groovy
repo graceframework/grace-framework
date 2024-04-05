@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.grails.encoder.CodecLookup
 import org.grails.encoder.Encoder
 import org.grails.taglib.TagOutput
 import org.grails.taglib.encoder.OutputContextLookupHelper
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.ForwardUrlMappingInfo
 import org.grails.web.mapping.UrlMappingUtils
 import org.grails.web.util.GrailsApplicationAttributes
@@ -45,8 +46,8 @@ class UrlMappingTagLib implements TagLibrary {
 
     CodecLookup codecLookup
 
-    @Autowired
-    LinkGenerator linkGenerator
+    @Autowired(required = false)
+    LinkGenerator linkGenerator = new DefaultLinkGenerator('')
 
     /**
      * Includes another controller/action within the current response.<br/>

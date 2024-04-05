@@ -4,7 +4,9 @@ dependencies {
     api project(":grace-core")
     api project(":grace-plugin-api")
     api project(":grace-plugin-codecs")
-    api project(":grace-plugin-url-mappings")
+    compileOnly project(":grace-plugin-controllers")
+    api project(":grace-web-mvc")
+    api project(":grace-web-url-mappings")
     api project(":grace-web-gsp-taglib")
     runtimeOnly(project(":grace-web-jsp"))
     api libs.spring.boot.autoconfigure

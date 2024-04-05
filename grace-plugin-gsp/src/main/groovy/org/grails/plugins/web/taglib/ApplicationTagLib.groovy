@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import grails.util.GrailsUtil
 import grails.util.Metadata
 import grails.web.mapping.LinkGenerator
 
+import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
@@ -55,8 +56,8 @@ class ApplicationTagLib implements ApplicationContextAware, InitializingBean, Gr
     GrailsPluginManager pluginManager
     GrailsApplication grailsApplication
 
-    @Autowired
-    LinkGenerator linkGenerator
+    @Autowired(required = false)
+    LinkGenerator linkGenerator = new DefaultLinkGenerator('')
 
     RequestDataValueProcessor requestDataValueProcessor
 
