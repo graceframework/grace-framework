@@ -289,7 +289,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         File appDir = null;
         boolean sourceFileChanged = false;
         for (String dir : Arrays.asList(grailsAppPath, SOURCE_MAIN_JAVA, SOURCE_MAIN_GROOVY)) {
-            String changedDir = File.separator + dir;
+            String changedDir = new File(BuildSettings.BASE_DIR, dir).getAbsolutePath();
             if (changedPath.contains(changedDir)) {
                 appDir = new File(changedPath.substring(0, changedPath.indexOf(changedDir)));
                 sourceFileChanged = true;
