@@ -246,24 +246,7 @@ subprojects { project ->
     sourceCompatibility = 11
     targetCompatibility = 11
 
-    if (project.name =~ /^(grace-web|grace-plugin-|grace-test-suite|grace-test)/) {
-        dependencies {
-            api libs.javax.servlet
-            // MockHttpServletRequest/Response/Context used in many classes
-            api libs.spring.test, {
-                exclude group: 'commons-logging', module:'commons-logging'
-            }
-        }
-    }
-
-    if (project.name =~ /^(grace-plugin-datasource|grace-test-suite)/) {
-        dependencies {
-            testImplementation libs.hsqldb
-            testImplementation libs.h2
-        }
-    }
-
-    jar{
+    jar {
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
