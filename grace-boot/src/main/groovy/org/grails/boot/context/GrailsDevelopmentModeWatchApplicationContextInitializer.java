@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -289,7 +289,7 @@ public class GrailsDevelopmentModeWatchApplicationContextInitializer implements
         File appDir = null;
         boolean sourceFileChanged = false;
         for (String dir : Arrays.asList(grailsAppPath, SOURCE_MAIN_JAVA, SOURCE_MAIN_GROOVY)) {
-            String changedDir = File.separator + dir;
+            String changedDir = new File(BuildSettings.BASE_DIR, dir).getAbsolutePath();
             if (changedPath.contains(changedDir)) {
                 appDir = new File(changedPath.substring(0, changedPath.indexOf(changedDir)));
                 sourceFileChanged = true;
