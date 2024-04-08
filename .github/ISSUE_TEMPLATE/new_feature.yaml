@@ -1,14 +1,18 @@
-name: Feature request
-description: Create a new feature request
+name: Feature request / Enhancement
+description: Request or propose a new feature/enhancement
+labels: ["status: waiting-for-triage", "type: feature"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please describe the feature you want for Grails® framework to implement, before that check if there is already an existing issue to add it.
   - type: textarea
-    attributes:
-      label: Feature description
-      placeholder: Tell us more about the feature you would like for Grails® framework to have and what problem is it going to solve
+    id: description
     validations:
       required: true
-
+    attributes:
+      label: Description
+      description: >-
+        Describe the feature here.
+  - type: textarea
+    id: impl_ideas
+    attributes:
+      label: Implementation ideas
+      description: >-
+        If you have any implementation ideas, they can go here.
