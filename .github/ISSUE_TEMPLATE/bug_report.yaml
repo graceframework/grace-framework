@@ -1,6 +1,8 @@
 name: Bug Report
 description: Create a report to help us improve
 labels: ["status: waiting-for-triage", "type: bug"]
+assignees:
+  - rainboyan
 body:
   - type: markdown
     attributes:
@@ -47,10 +49,10 @@ body:
     attributes:
       value: |
         ## Environment
-  - type: input
+  - type: textarea
     id: grace_version
     attributes:
-      label:  Grace version(`grace -v`)
+      label:  Grace version (ie. output of `grace -v`)
   - type: textarea
     id: additional_info
     attributes:

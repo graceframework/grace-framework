@@ -1,6 +1,8 @@
 name: Feature request / Enhancement
 description: Request or propose a new feature/enhancement
 labels: ["status: waiting-for-triage", "type: feature"]
+assignees:
+  - rainboyan
 body:
   - type: textarea
     id: description
