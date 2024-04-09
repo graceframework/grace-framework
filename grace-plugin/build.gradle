@@ -40,7 +40,6 @@ dependencies {
         exclude group: "jakarta.validation", module: "jakarta.validation-api"
     }
     testRuntimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
-    testRuntimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
     testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
