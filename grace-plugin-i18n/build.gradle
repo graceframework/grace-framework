@@ -1,0 +1,12 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    api project(":grace-util")
+    compileOnly project(":grace-web-common")
+
+    api libs.groovy.ant
+    api libs.spring.boot.autoconfigure
+    annotationProcessor(libs.spring.boot.configurationProcessor)
+}
