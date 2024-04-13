@@ -280,6 +280,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     commandTask.command = commandName
                     systemProperty 'spring.main.banner-mode', 'OFF'
                     systemProperty 'logging.level.ROOT', 'OFF'
+                    systemProperty 'spring.output.ansi.enabled', 'always'
                     systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                     if (project.hasProperty('args')) {
                         commandTask.args(CommandLineParser.translateCommandline(project.args))
@@ -592,10 +593,13 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
             }
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
-                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
+                classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
+                        project.configurations.profile)
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
-                systemProperty "spring.devtools.restart.enabled", false
+                systemProperty 'spring.main.banner-mode', 'OFF'
+                systemProperty 'logging.level.ROOT', 'OFF'
+                systemProperty 'spring.output.ansi.enabled', 'always'
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }
