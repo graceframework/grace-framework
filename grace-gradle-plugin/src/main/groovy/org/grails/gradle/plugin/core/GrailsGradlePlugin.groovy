@@ -50,7 +50,6 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 import grails.dev.commands.ApplicationCommand
-import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsNameUtils
 import grails.util.Metadata
@@ -77,7 +76,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     public static final String PROFILE_CONFIGURATION = 'profile'
 
     List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
-    List<String> excludedGrailsAppSourceDirs = ['assets']
+    List<String> excludedGrailsAppSourceDirs = ['assets', 'scripts']
     List<String> grailsAppResourceDirs = ['i18n', 'conf']
     private final ToolingModelBuilderRegistry registry
     String grailsAppDir
@@ -565,10 +564,13 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureRunScript(Project project) {
         if (project.tasks.findByName('runScript') == null) {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
-                classpath = project.sourceSets.main.runtimeClasspath + project.configurations.console + project.configurations.profile
+                classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
+                        project.configurations.profile)
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
-                systemProperty "spring.devtools.restart.enabled", false
+                systemProperty 'spring.main.banner-mode', 'OFF'
+                systemProperty 'logging.level.ROOT', 'OFF'
+                systemProperty 'spring.output.ansi.enabled', 'always'
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
                 }

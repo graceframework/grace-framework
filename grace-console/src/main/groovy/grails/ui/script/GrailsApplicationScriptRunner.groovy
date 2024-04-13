@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,13 +116,29 @@ class GrailsApplicationScriptRunner extends DevelopmentGrails {
             String[] scriptNames = args.init() as String[]
             List<File> scripts = []
             scriptNames.each { String scriptName ->
-                File script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
-                if (script.exists()) {
-                    scripts.add(script)
+                File script
+                if (scriptName.endsWith('.groovy')) {
+                    scriptName = scriptName - '.groovy'
+                }
+                if (scriptName.startsWith('/')) {
+                    script = new File(BuildSettings.BASE_DIR, "${scriptName}.groovy")
+                    if (script.exists()) {
+                        scripts.add(script)
+                    }
                 }
                 else {
-                    console.error("Specified script [${scriptName}] not found")
-                    System.exit(0)
+                    script = new File(BuildSettings.GRAILS_APP_DIR, "scripts/${scriptName}.groovy")
+                    if (script.exists()) {
+                        scripts.add(script)
+                    } else {
+                        script = new File(BuildSettings.BASE_DIR, "scripts/${scriptName}.groovy")
+                        if (script.exists()) {
+                            scripts.add(script)
+                        } else {
+                            console.error("Specified script [${scriptName}] not found")
+                            System.exit(0)
+                        }
+                    }
                 }
             }
 
