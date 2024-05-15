@@ -62,6 +62,7 @@ public class DefaultGrailsPluginTests {
     private Class<?> camelCased;
     private Class<?> versioned2;
     private Class<?> versioned3;
+    private Class<?> versioned4;
 
     @BeforeEach
     @SuppressWarnings("unchecked")
@@ -130,6 +131,17 @@ public class DefaultGrailsPluginTests {
                 "classEditor(org.springframework.beans.propertyeditors.ClassEditor,application.classLoader)" +
                 "}}\n" +
                 "}");
+        versioned4 = gcl.parseClass("class MyFourthGrailsPlugin {\n" +
+                "def version = 1.1;" +
+                "Closure doWithSpring() { {->\n" +
+                "Properties properties = loadProperties()\n" +
+                "classEditor(org.springframework.beans.propertyeditors.ClassEditor,application.classLoader)\n" +
+                "}}\n" +
+                "def loadProperties() {\n" +
+                "Properties properties = new Properties()\n" +
+                "properties['foo'] = 'Foo'\n" +
+                "properties\n" +
+                "}}");
     }
 
     @Test
@@ -217,6 +229,16 @@ public class DefaultGrailsPluginTests {
         ApplicationContext ctx3 = springConfig3.getApplicationContext();
 
         assertTrue(ctx3.containsBean("classEditor"));
+
+        // Version 4
+        GrailsPlugin versionPlugin4 = new DefaultGrailsPlugin(versioned4, ga);
+
+        RuntimeSpringConfiguration springConfig4 = new DefaultRuntimeSpringConfiguration();
+        versionPlugin4.doWithRuntimeConfiguration(springConfig4);
+
+        ApplicationContext ctx4 = springConfig4.getApplicationContext();
+
+        assertTrue(ctx4.containsBean("classEditor"));
     }
 
     @Test
