@@ -80,7 +80,7 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
         def i18nDir = new File(BuildSettings.GRAILS_APP_DIR, 'i18n')
 
         if (resourcesDir.exists() && event.source instanceof Resource) {
-            File eventFile = event.source.file.canonicalFile
+            File eventFile = event.source.getFile().canonicalFile
             if (isChildOfFile(eventFile, i18nDir)) {
                 if (nativeascii) {
                     // if native2ascii is enabled then read the properties and write them out again
