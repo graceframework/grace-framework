@@ -46,7 +46,6 @@ junit-platform = "1.9.2"
 maven = "3.6.3"
 maven-resolver = "1.6.3"
 methvin-directory-watcher = "0.18.0"
-micronaut-core = "4.0.7"
 mockito = "4.5.1"
 mongodb-java-driver = "4.6.1"
 objenesis = "3.3"
@@ -158,12 +157,6 @@ maven-resolver-impl = { module = "org.apache.maven.resolver:maven-resolver-impl"
 maven-resolver-transportFile = { module = "org.apache.maven.resolver:maven-resolver-transport-file", version.ref = "maven-resolver" }
 maven-resolver-transportHttp = { module = "org.apache.maven.resolver:maven-resolver-transport-http", version.ref = "maven-resolver" }
 methvin-directoryWatcher = { module = "io.methvin:directory-watcher", version.ref = "methvin-directory-watcher" }
-micronaut-aop = { module = "io.micronaut:micronaut-aop", version.ref = "micronaut-core" }
-micronaut-bom = { module = "io.micronaut:micronaut-bom", version.ref = "micronaut-core" }
-micronaut-context = { module = "io.micronaut:micronaut-context", version.ref = "micronaut-core" }
-micronaut-core = { module = "io.micronaut:micronaut-core", version.ref = "micronaut-core" }
-micronaut-inject = { module = "io.micronaut:micronaut-inject", version.ref = "micronaut-core" }
-micronaut-inject-groovy = { module = "io.micronaut:micronaut-inject-groovy", version.ref = "micronaut-core" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
@@ -211,7 +204,6 @@ grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
 jakarta = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
-micronaut = ["micronaut-context", "micronaut-core", "micronaut-inject", "micronaut-inject-groovy"]
 spock = ["spock-core", "spock-spring"]
 spring-boot = ["spring-boot-dependencies"]
 spring-framework = ["spring-framework-bom"]

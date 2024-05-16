@@ -61,10 +61,6 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
         return find("grace-datastore-core").getVersion();
     }
 
-    public String getMicronautVersion() {
-        return find("micronaut-core").getVersion();
-    }
-
     @Override
     public String getSpringBootVersion() {
         return find("spring-boot-dependencies").getVersion();
