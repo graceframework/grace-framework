@@ -101,9 +101,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
             super.apply(project)
         }
 
-        grailsVersion = resolveGrailsVersion(project)
-        grailsAppDir = SourceSets.resolveGrailsAppDir(project)
-
         configureProfile(project)
 
         applyDefaultPlugins(project)
