@@ -352,7 +352,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if (project.extensions.findByName('assets')) {
             project.assets {
                 assetsPath = "${grailsAppDir}/assets"
-                compileDir = 'build/assetCompile/assets'
             }
         }
     }
