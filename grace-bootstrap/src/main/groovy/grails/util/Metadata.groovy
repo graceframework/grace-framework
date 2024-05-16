@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,96 +19,58 @@ import java.lang.ref.Reference
 import java.lang.ref.SoftReference
 
 import groovy.transform.CompileStatic
-import io.micronaut.context.env.PropertiesPropertySourceLoader
-import io.micronaut.context.env.PropertySource
-import io.micronaut.context.env.PropertySourcePropertyResolver
-import io.micronaut.context.env.SystemPropertiesPropertySource
-import io.micronaut.context.env.yaml.YamlPropertySourceLoader
-import io.micronaut.core.value.PropertyResolver
+import org.springframework.boot.context.properties.source.ConfigurationPropertySources
+import org.springframework.boot.env.PropertiesPropertySourceLoader
+import org.springframework.boot.env.YamlPropertySourceLoader
+import org.springframework.core.env.ConfigurablePropertyResolver
+import org.springframework.core.env.MapPropertySource
+import org.springframework.core.env.MutablePropertySources
+import org.springframework.core.env.StandardEnvironment
+import org.springframework.core.env.SystemEnvironmentPropertySource
+import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.UrlResource
 
 import grails.io.IOUtils
-
-import org.grails.io.support.FileSystemResource
-import org.grails.io.support.Resource
-import org.grails.io.support.UrlResource
 
 /**
  * Represents the application Metadata and loading mechanics.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.1
+ * @see PropertiesPropertySourceLoader
+ * @see YamlPropertySourceLoader
  */
 @CompileStatic
-class Metadata extends PropertySourcePropertyResolver {
+class Metadata {
 
-    private static final long serialVersionUID = -582452926111226898L
     public static final String FILE = 'application.yml'
     public static final String APPLICATION_VERSION = 'info.app.version'
     public static final String APPLICATION_NAME = 'info.app.name'
     public static final String DEFAULT_APPLICATION_NAME = 'grailsApplication'
     public static final String APPLICATION_GRAILS_VERSION = 'info.app.grailsVersion'
     public static final String SERVLET_VERSION = 'info.app.servletVersion'
-    public static final String WAR_DEPLOYED = 'info.app.warDeployed'
     public static final String DEFAULT_SERVLET_VERSION = '4.0'
 
     private static final Holder<Reference<Metadata>> HOLDER = new Holder<Reference<Metadata>>('Metadata')
     private static final String BUILD_INFO_FILE = 'META-INF/grails.build.info'
 
-    private Resource metadataFile
-    private boolean warDeployed
-    private String servletVersion = DEFAULT_SERVLET_VERSION
-    private Map<String, Object> props = null
+    private final MutablePropertySources propertySources = new MutablePropertySources()
+    private final ConfigurablePropertyResolver propertyResolver
 
     private Metadata() {
         loadFromDefault()
+        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
     }
 
-    private Metadata(Resource res) {
-        metadataFile = res
-        loadFromFile(res)
-    }
-
-    private Metadata(File f) {
-        metadataFile = new FileSystemResource(f)
-        loadFromFile(metadataFile)
+    private Metadata(Map<String, Object> properties) {
+        this.propertySources.addFirst(new MapPropertySource("default", properties))
+        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
     }
 
     private Metadata(InputStream inputStream) {
         loadFromInputStream(inputStream)
-    }
-
-    private Metadata(Map<String, String> properties) {
-        props = new LinkedHashMap<String, Object>(properties)
-        addPropertySource(PropertySource.of(props))
-        afterLoading()
-    }
-
-    Resource getMetadataFile() {
-        metadataFile
-    }
-
-    /**
-     * Resets the current state of the Metadata so it is re-read.
-     */
-    static void reset() {
-        Metadata m = getFromMap()
-        if (m != null) {
-            m.clear()
-            m.afterLoading()
-        }
-    }
-
-    private void afterLoading() {
-        // allow override via system properties
-        PropertySource systemPropertiesPropertySource = new SystemPropertiesPropertySource()
-        addPropertySource(systemPropertiesPropertySource)
-
-        if (!containsProperty(APPLICATION_NAME)) {
-            Map<String, Object> m = [(APPLICATION_NAME): (Object) DEFAULT_APPLICATION_NAME]
-            addPropertySource('appName', m)
-            resetCaches()
-        }
-        warDeployed = ((PropertyResolver) this).getProperty(WAR_DEPLOYED, Boolean).orElse(false)
+        this.propertyResolver = ConfigurationPropertySources.createPropertyResolver(propertySources)
     }
 
     /**
@@ -123,6 +85,21 @@ class Metadata extends PropertySourcePropertyResolver {
         m
     }
 
+    static Metadata getInstance(InputStream inputStream) {
+        Metadata m = new Metadata(inputStream)
+        HOLDER.set(new FinalReference<Metadata>(m))
+        m
+    }
+
+    static void reset() {
+
+    }
+
+    private static Metadata getFromMap() {
+        Reference<Metadata> metadata = HOLDER.get()
+        metadata == null ? null : metadata.get()
+    }
+
     private void loadFromDefault() {
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader()
@@ -131,19 +108,15 @@ class Metadata extends PropertySourcePropertyResolver {
                 url = getClass().getClassLoader().getResource(FILE)
             }
             if (url != null) {
-                url.withInputStream { InputStream input ->
-                    addPropertySource(PropertySource.of('application', new YamlPropertySourceLoader().read('application', input)))
-                }
-                this.metadataFile = new UrlResource(url)
+                YamlPropertySourceLoader yamlPropertySourceLoader = new YamlPropertySourceLoader()
+                yamlPropertySourceLoader.load('application', new UrlResource(url)).forEach(this.propertySources::addFirst)
             }
 
             url = classLoader.getResource(BUILD_INFO_FILE)
             if (url != null) {
                 if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
-                    url.withInputStream { InputStream input ->
-                        Map<String, Object> buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
-                        addPropertySource(PropertySource.of('build.info', buildInfo))
-                    }
+                    PropertiesPropertySourceLoader propertiesPropertySourceLoader = new PropertiesPropertySourceLoader()
+                    propertiesPropertySourceLoader.load('build.info', new UrlResource(url)).forEach(this.propertySources::addFirst)
                 }
             }
             else {
@@ -151,14 +124,16 @@ class Metadata extends PropertySourcePropertyResolver {
                 url = classLoader.getResource('../../' + BUILD_INFO_FILE)
                 if (url != null) {
                     if (IOUtils.isWithinBinary(url) || !Environment.isDevelopmentEnvironmentAvailable()) {
-                        url.withInputStream { InputStream input ->
-                            Map<String, Object> buildInfo = new PropertiesPropertySourceLoader().read('build.info', input)
-                            addPropertySource(PropertySource.of('build.info', buildInfo))
-                        }
+                        PropertiesPropertySourceLoader propertiesPropertySourceLoader = new PropertiesPropertySourceLoader()
+                        propertiesPropertySourceLoader.load('build.info', new UrlResource(url)).forEach(this.propertySources::addFirst)
                     }
                 }
             }
-            afterLoading()
+            StandardEnvironment standardEnvironment = new StandardEnvironment()
+            this.propertySources.addFirst(
+                    new MapPropertySource(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, standardEnvironment.getSystemProperties()))
+            this.propertySources.addFirst(
+                    new SystemEnvironmentPropertySource(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, standardEnvironment.getSystemEnvironment()))
         }
         catch (Exception e) {
             throw new RuntimeException("Cannot load application metadata: ${e.getMessage()}", e)
@@ -166,197 +141,76 @@ class Metadata extends PropertySourcePropertyResolver {
     }
 
     private void loadYml(InputStream input) {
-        addPropertySource(PropertySource.of(new YamlPropertySourceLoader().read('metadata', input)))
+        new YamlPropertySourceLoader().load('metadata', new InputStreamResource(input)).forEach(this.propertySources::addLast)
     }
 
     private void loadFromInputStream(InputStream inputStream) {
         loadYml(inputStream)
-        afterLoading()
-    }
-
-    private void loadFromFile(Resource file) {
-        if (file?.exists()) {
-            InputStream input = null
-            try {
-                input = file.getInputStream()
-                loadYml(input)
-                afterLoading()
-            }
-            catch (Exception e) {
-                throw new RuntimeException('Cannot load application metadata:' + e.getMessage(), e)
-            }
-            finally {
-                closeQuietly(input)
-            }
-        }
-    }
-
-    /**
-     * Loads a Metadata instance from a Reader
-     * @param inputStream The InputStream
-     * @return a Metadata instance
-     */
-    static Metadata getInstance(InputStream inputStream) {
-        Metadata m = new Metadata(inputStream)
-        HOLDER.set(new FinalReference<Metadata>(m))
-        m
-    }
-
-    /**
-     * Loads and returns a new Metadata object for the given File.
-     * @param file The File
-     * @return A Metadata object
-     */
-    static Metadata getInstance(File file) {
-        getInstance(new FileSystemResource(file))
-    }
-
-    /**
-     * Loads and returns a new Metadata object for the given File.
-     * @param file The File
-     * @return A Metadata object
-     */
-    static Metadata getInstance(Resource file) {
-        Reference<Metadata> ref = HOLDER.get()
-        if (ref != null) {
-            Metadata metadata = ref.get()
-            if (metadata != null && metadata.getMetadataFile() != null && metadata.getMetadataFile() == file) {
-                return metadata
-            }
-            createAndBindNew(file)
-        }
-        createAndBindNew(file)
-    }
-
-    private static Metadata createAndBindNew(Resource file) {
-        Metadata m = new Metadata(file)
-        HOLDER.set(new FinalReference<Metadata>(m))
-        m
-    }
-
-    /**
-     * Reloads the application metadata.
-     * @return The metadata object
-     */
-    static Metadata reload() {
-        Resource f = getCurrent().getMetadataFile()
-        if (f?.exists()) {
-            return getInstance(f)
-        }
-
-        f == null ? new Metadata() : new Metadata(f)
     }
 
     /**
      * @return The application version
      */
     String getApplicationVersion() {
-        ((PropertyResolver) this).getProperty(APPLICATION_VERSION, String).orElse(null)
+        getProperty(APPLICATION_VERSION, String, null)
     }
 
     /**
      * @return The Grails version used to build the application
      */
     String getGrailsVersion() {
-        ((PropertyResolver) this).getProperty(APPLICATION_GRAILS_VERSION, String)
-                .orElse(getClass().getPackage().getImplementationVersion())
+        getProperty(APPLICATION_GRAILS_VERSION, String, getClass().getPackage().getImplementationVersion())
     }
 
     /**
      * @return The environment the application expects to run in
      */
     String getEnvironment() {
-        ((PropertyResolver) this).getProperty(Environment.KEY, String).orElse(null)
+        getProperty(Environment.KEY, String, null)
     }
 
     /**
      * @return The application name
      */
     String getApplicationName() {
-        ((PropertyResolver) this).getProperty(APPLICATION_NAME, String).orElse(DEFAULT_APPLICATION_NAME)
+        getProperty(APPLICATION_NAME, String, DEFAULT_APPLICATION_NAME)
     }
 
     /**
      * @return The version of the servlet spec the application was created for
      */
     String getServletVersion() {
-        Optional<String> servletVersion = ((PropertyResolver) this).getProperty(SERVLET_VERSION, String)
-        if (!servletVersion.isPresent()) {
-            servletVersion = Optional.ofNullable(System.getProperty(SERVLET_VERSION))
-        }
-        servletVersion.orElse(DEFAULT_SERVLET_VERSION)
-    }
-
-    void setServletVersion(String servletVersion) {
-        this.servletVersion = servletVersion
-    }
-
-    /**
-     * @return true if this application is deployed as a WAR
-     */
-    boolean isWarDeployed() {
-        Environment.isWarDeployed()
-    }
-
-    /**
-     * @return True if the development sources are present
-     */
-    boolean isDevelopmentEnvironmentAvailable() {
-        Environment.isDevelopmentEnvironmentAvailable()
-    }
-
-    private static void closeQuietly(Closeable c) {
-        if (c != null) {
-            try {
-                c.close()
-            }
-            catch (Exception ignored) {
-            }
-        }
-    }
-
-    private static Metadata getFromMap() {
-        Reference<Metadata> metadata = HOLDER.get()
-        metadata == null ? null : metadata.get()
+        String servletVersion = getProperty(SERVLET_VERSION, String, System.getProperty(SERVLET_VERSION))
+        servletVersion ?: DEFAULT_SERVLET_VERSION
     }
 
     boolean containsKey(Object key) {
-        containsProperty(key.toString())
+        this.propertyResolver.containsProperty((String) key)
     }
 
     @Deprecated
     Object get(Object key) {
-        ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(null)
+        getProperty(key.toString(), Object, null)
     }
 
-    void clear() {
-        propertySources.clear()
-        clearCatalog(rawCatalog)
-        clearCatalog(nonGenerated)
-        clearCatalog(catalog)
-        resetCaches()
-        if (metadataFile != null) {
-            loadFromFile(metadataFile)
-        }
-        else if (props != null) {
-            addPropertySource(PropertySource.of(props))
-            afterLoading()
-        }
-        else {
-            loadFromDefault()
-        }
+    @Deprecated
+    Object getProperty(String propertyName) {
+        get(propertyName)
     }
 
-    private void clearCatalog(Map<String, Object>[] catalog) {
-        synchronized (catalog) {
-            for (int i = 0; i < catalog.length; i++) {
-                catalog[i] = null
-            }
+    <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
+        this.propertyResolver.getProperty(key, targetType, defaultValue)
+    }
+
+    <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
+        T value = getProperty(key, targetType, null)
+        if (!value) {
+            throw new IllegalStateException("Value for key [$key] cannot be resolved")
         }
     }
 
-    Object getOrDefault(Object key, Object defaultValue) {
-        ((PropertyResolver) this).getProperty(key.toString(), Object).orElse(defaultValue)
+    Object navigate(String... path) {
+        this.propertyResolver.getProperty(path.join('.').toString(), Object, null)
     }
 
     static class FinalReference<T> extends SoftReference<T> {
@@ -373,28 +227,6 @@ class Metadata extends PropertySourcePropertyResolver {
             ref
         }
 
-    }
-
-    @Override
-    <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
-        ((PropertyResolver) this).getProperty(key, targetType).orElse(defaultValue)
-    }
-
-    @Override
-    <T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException {
-        ((PropertyResolver) this).getProperty(key, Object)
-                .map(value -> value.asType(targetType))
-                .orElseThrow(() -> new IllegalStateException("Value for key [$key] cannot be resolved"))
-    }
-
-    @Deprecated
-    Object navigate(String... path) {
-        ((Optional<Object>) ((PropertyResolver) this).getProperty(path.join('.').toString(), Object)).orElse(null)
-    }
-
-    @Deprecated
-    Object getProperty(String propertyName) {
-        get(propertyName)
     }
 
 }

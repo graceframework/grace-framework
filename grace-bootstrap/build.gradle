@@ -11,9 +11,7 @@ dependencies {
     api libs.groovy.templates
     api libs.groovy.xml
     api libs.snakeyaml
-    api libs.micronaut.inject, {
-        exclude group: "javax.annotation", module: "javax.annotation-api"
-    }
+    api libs.spring.boot
     api libs.spring.core
     compileOnly libs.groovy.ant
     compileOnly libs.jansi
