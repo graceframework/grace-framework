@@ -273,6 +273,7 @@ subprojects { project ->
         groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
         groovyOptions.encoding = "UTF-8"
         options.encoding = "UTF-8"
+        options.compilerArgs << '-parameters'
     }
 
     configure([compileJava, compileTestJava]) {
