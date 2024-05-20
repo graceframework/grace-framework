@@ -321,7 +321,7 @@ subprojects { project ->
             testImplementation libs.slf4j.simple
             testImplementation libs.spock.core, { transitive = false }
             // Required by Spock's Mocking
-            testImplementation libs.cglib
+            testImplementation libs.bytebuddy
             testImplementation libs.objenesis
         }
     }
