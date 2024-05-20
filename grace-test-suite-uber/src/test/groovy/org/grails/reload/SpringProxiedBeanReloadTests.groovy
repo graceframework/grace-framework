@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 @Ignore //TODO Ignore for JDK 11
 class SpringProxiedBeanReloadTests {
 
-    @Test
+    // @Test
     void testReloadCGLibProxiedBean() {
         def gcl = new GroovyClassLoader()
         def cls = gcl.parseClass("class Book { String title = 'The Stand'; String author }")

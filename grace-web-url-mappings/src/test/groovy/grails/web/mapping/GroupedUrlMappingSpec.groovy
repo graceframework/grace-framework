@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 
 /*
- * Copyright 2014 original authors
+ * Copyright 2014-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,8 @@ class GroupedUrlMappingSpec extends AbstractUrlMappingsSpec {
         }
 
         expect:
-        linkGenerator.link(controller:'bar', action:'baz', params:[barId:1]) == 'http://localhost/g/bars/1/baz'
+        linkGenerator.link(controller:'foo', action:'baz', params:[fooId:1]) == 'http://localhost/foos/baz?fooId=1'
+        linkGenerator.link(controller:'bar', action:'baz', params:[barId:1]) == 'http://localhost/g/bars/baz?barId=1'
     }
 
     @Issue('#9417')

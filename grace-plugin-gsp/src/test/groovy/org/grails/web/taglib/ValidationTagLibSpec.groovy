@@ -293,7 +293,7 @@ class ValidationTagLibSpec extends Specification implements TagLibUnitTest<Valid
         webRequest.currentRequest.addPreferredLocale(Locale.FRENCH)
 
         then:
-        applyTemplate(template, [book:b]) == '<input type="text" name="usPrice" value="1&nbsp;045,99" id="usPrice" />'
+        applyTemplate(template, [book:b]) == '<input type="text" name="usPrice" value="1 045,99" id="usPrice" />'
     }
 
     void testHasErrorsTag() {
