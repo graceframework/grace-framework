@@ -25,7 +25,7 @@ class ConverterUtilSpec extends Specification {
 
         when:
 
-            def result = converterUtil.invokeOriginalAsTypeMethod(new NullObject(), Long)
+            def result = converterUtil.invokeOriginalAsTypeMethod(NullObject.getNullObject(), Long)
 
         then:
             result == null
