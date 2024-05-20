@@ -28,7 +28,7 @@ jobs:
         id: build
         uses: gradle/gradle-build-action@v3
         with:
-          arguments: build -x test -x groovydoc -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
+          arguments: build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
