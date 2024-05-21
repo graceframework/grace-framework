@@ -1,0 +1,17 @@
+dependencies {
+    api project(":grace-core")
+    api project(':grace-plugin-api')
+    api project(":grace-spring-boot")
+
+    api libs.grails.datastore.core
+    api libs.grails.datastore.gorm, {
+        exclude group: 'javax.el', module: 'javax.el-api'
+        exclude group: 'org.glassfish', module: 'javax.el'
+    }
+    api libs.groovy.sql
+    api libs.spring.context
+    api libs.spring.jdbc
+    compileOnly libs.tomcat.jdbc
+
+    testImplementation libs.h2
+}
