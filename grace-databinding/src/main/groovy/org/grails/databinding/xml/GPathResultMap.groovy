@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ class GPathResultMap implements Map {
 
     GPathResultMap(GPathResult gpath) {
         this.gpath = gpath
-        this.@id = gpath.@id.text() ?: null
+        this.@id = gpath['@id'].text() ?: null
     }
 
     @Override
@@ -98,8 +98,8 @@ class GPathResultMap implements Map {
             return list
         }
         if (value.children().size() == 0) {
-            if (value.@id.text()) {
-                return [id: value.@id.text()]
+            if (value['@id'].text()) {
+                return [id: value['@id'].text()]
             }
             return value.text()
         }
