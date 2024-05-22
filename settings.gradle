@@ -14,7 +14,7 @@ include (
         'grace-gsp',
         'grace-logging',
         'grace-shell',
-        'grace-sitemesh',
+        // 'grace-sitemesh',
         'grace-spring',
         'grace-spring-boot',
         'grace-taglib',

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,53 +15,17 @@
  */
 package org.grails.web.sitemesh;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.Iterator;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import com.opensymphony.module.sitemesh.Decorator;
-import com.opensymphony.sitemesh.Content;
-import com.opensymphony.sitemesh.webapp.SiteMeshWebAppContext;
-import com.opensymphony.sitemesh.webapp.decorator.BaseWebAppDecorator;
+import com.opensymphony.sitemesh.webapp.decorator.NoDecorator;
 
 /**
  * Grails version of Sitemesh's NoDecorator
  *
- * original version always calls response.setContentLength which would require the calculation of
- * resulting bytes. Calculation would be extra overhead.
- *
- * bug exists for OutputStream / byte version: http://jira.opensymphony.com/browse/SIM-196
- * skip setting ContentLength because of that bug.
- *
  * @author Lari Hotari, Sagire Software Oy
  */
-public class GrailsNoDecorator extends BaseWebAppDecorator implements Decorator {
-
-    @Override
-    protected void render(Content content, HttpServletRequest request, HttpServletResponse response,
-            ServletContext servletContext, SiteMeshWebAppContext webAppContext)
-            throws IOException, ServletException {
-
-        if (webAppContext.isUsingStream()) {
-            // http://jira.opensymphony.com/browse/SIM-196 , skip setting setContentLength
-            //response.setContentLength(content.originalLength());
-            OutputStream output = response.getOutputStream();
-            PrintWriter writer = new PrintWriter(output);
-            content.writeOriginal(writer);
-            writer.flush();
-        }
-        else {
-            PrintWriter writer = response.getWriter();
-            content.writeOriginal(writer);
-            writer.flush();
-        }
-    }
+public class GrailsNoDecorator extends NoDecorator implements Decorator {
 
     public String getPage() {
         return null;
