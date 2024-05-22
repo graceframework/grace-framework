@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,16 @@
  */
 package org.grails.web.servlet.view;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
 import com.opensymphony.module.sitemesh.Config;
 import com.opensymphony.module.sitemesh.Factory;
+import com.opensymphony.module.sitemesh.factory.DefaultFactory;
 import com.opensymphony.sitemesh.ContentProcessor;
 import com.opensymphony.sitemesh.compatability.PageParser2ContentProcessor;
 import org.springframework.beans.factory.DisposableBean;
@@ -36,7 +38,6 @@ import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 
 import org.grails.web.sitemesh.FactoryHolder;
-import org.grails.web.sitemesh.Grails5535Factory;
 import org.grails.web.sitemesh.GroovyPageLayoutFinder;
 import org.grails.web.sitemesh.SitemeshLayoutView;
 
@@ -80,6 +81,10 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
 
     protected Factory loadSitemeshConfig() {
         FilterConfig filterConfig = new FilterConfig() {
+            private final Map<String, String> customConfig =
+                    Collections.singletonMap("configFile",
+                            "classpath:org/grails/web/sitemesh/sitemesh-default.xml");
+
             @Override
             public ServletContext getServletContext() {
                 return servletContext;
@@ -87,22 +92,12 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
 
             @Override
             public Enumeration<String> getInitParameterNames() {
-                return new Enumeration<String>() {
-                    @Override
-                    public boolean hasMoreElements() {
-                        return false;
-                    }
-
-                    @Override
-                    public String nextElement() {
-                        throw new NoSuchElementException();
-                    }
-                };
+                return Collections.enumeration(this.customConfig.keySet());
             }
 
             @Override
             public String getInitParameter(String name) {
-                return null;
+                return this.customConfig.get(name);
             }
 
             @Override
@@ -110,8 +105,9 @@ public class SitemeshLayoutViewResolver extends GrailsLayoutViewResolver
                 return null;
             }
         };
+
         Config config = new Config(filterConfig);
-        Grails5535Factory sitemeshFactory = new Grails5535Factory(config);
+        DefaultFactory sitemeshFactory = new DefaultFactory(config);
         if (servletContext != null) {
             servletContext.setAttribute(FACTORY_SERVLET_CONTEXT_ATTRIBUTE, sitemeshFactory);
         }

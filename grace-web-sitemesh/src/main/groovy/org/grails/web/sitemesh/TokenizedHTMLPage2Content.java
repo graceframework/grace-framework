@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,20 @@ package org.grails.web.sitemesh;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage;
 import com.opensymphony.sitemesh.Content;
 
 final class TokenizedHTMLPage2Content implements Content {
 
-    private final GrailsTokenizedHTMLPage page;
+    private final TokenizedHTMLPage page;
 
-    TokenizedHTMLPage2Content(GrailsTokenizedHTMLPage page) {
+    TokenizedHTMLPage2Content(TokenizedHTMLPage page) {
         this.page = page;
     }
 
     @Override
     public void writeOriginal(Writer out) throws IOException {
-        out.write(this.page.getData());
+        this.page.writePage(out);
     }
 
     @Override
@@ -68,7 +69,7 @@ final class TokenizedHTMLPage2Content implements Content {
         this.page.addProperty(name, value);
     }
 
-    public GrailsTokenizedHTMLPage getPage() {
+    public TokenizedHTMLPage getPage() {
         return this.page;
     }
 
