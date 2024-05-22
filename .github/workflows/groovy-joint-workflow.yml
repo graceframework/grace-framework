@@ -28,6 +28,7 @@ on:
       - '[2020-2024]+.[0-9]+.x'
 jobs:
   build:
+    if: ${{ github.repository == 'graceframework/grace-framework' }}
     strategy:
       fail-fast: true
       matrix:

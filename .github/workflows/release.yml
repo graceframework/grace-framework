@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   create_draft_release:
+    if: ${{ github.repository == 'graceframework/grace-framework' }}
     runs-on: ubuntu-22.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

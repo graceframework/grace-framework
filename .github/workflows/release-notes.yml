@@ -9,6 +9,7 @@ on:
   workflow_dispatch:
 jobs:
   release_notes:
+    if: ${{ github.repository == 'graceframework/grace-framework' }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
