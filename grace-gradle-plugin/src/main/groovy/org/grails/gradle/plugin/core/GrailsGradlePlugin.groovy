@@ -765,6 +765,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def projectType = getGrailsProjectType()
         def isPlugin = projectType == GrailsProjectType.PLUGIN
         def grailsAppDir = new File(project.projectDir, grailsAppDir).absolutePath
+        if (System.getProperty('os.name').startsWith('Windows')) {
+            projectDir = projectDir.replace('\\', '\\\\')
+            grailsAppDir = grailsAppDir.replace('\\', '\\\\')
+        }
         configScriptTask.inputs.property('name', projectName)
         configScriptTask.inputs.property('version', projectVersion)
         configScriptTask.doLast {
