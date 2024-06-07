@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import org.springframework.core.io.ResourceLoader;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
+import grails.util.BuildSettings;
 import grails.util.CollectionUtils;
 import grails.util.Environment;
 
@@ -59,19 +60,21 @@ import org.grails.taglib.TemplateVariableBinding;
  */
 public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoaderAware, ApplicationContextAware, PluginManagerAware {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultGroovyPageLocator.class);
-
     public static final String PATH_TO_WEB_INF_VIEWS = "/WEB-INF/grails-app/views";
 
     private static final String SLASHED_VIEWS_DIR_PATH = "/" + GrailsResourceUtils.VIEWS_DIR_PATH;
 
     private static final String PLUGINS_PATH = "/plugins/";
 
-    private static final String BLANK = "";
+    private static final String GRAILS_VIEWS_PATH = "/" + BuildSettings.GRAILS_APP_PATH + "/" + "views";
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Collection<ResourceLoader> resourceLoaders = new ConcurrentLinkedQueue<>();
 
     protected GrailsPluginManager pluginManager;
+
+    private static final String BLANK = "";
 
     private ConcurrentMap<String, String> precompiledGspMap;
 
@@ -131,7 +134,7 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin) grailsPlugin;
                 File projectDirectory = binaryGrailsPlugin.getProjectDirectory();
                 if (projectDirectory != null) {
-                    File f = new File(projectDirectory, GrailsResourceUtils.VIEWS_DIR_PATH + uri);
+                    File f = new File(projectDirectory, BuildSettings.GRAILS_APP_PATH + "/views" + uri);
                     if (f.exists()) {
                         scriptSource = new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
                     }
@@ -213,21 +216,16 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
     }
 
     protected GroovyPageScriptSource resolveViewInBinaryPlugin(BinaryGrailsPlugin binaryPlugin, String uri) {
-        for (String dir : Arrays.asList("grails-app", "app")) {
-            GroovyPageScriptSource scriptSource = null;
-            String fullUri = removeViewLocationPrefixes(uri);
-            fullUri = GrailsResourceUtils.appendPiecesForUri("/WEB-INF/" + dir + "/views", fullUri);
-            Class<?> viewClass = binaryPlugin.resolveView(fullUri);
-            if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
-                scriptSource = createGroovyPageCompiledScriptSource(uri, fullUri, viewClass);
-                // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
-                ((GroovyPageCompiledScriptSource) scriptSource).setResourceCallable(null);
-            }
-            if (scriptSource != null) {
-                return scriptSource;
-            }
+        GroovyPageCompiledScriptSource scriptSource = null;
+        String fullUri = removeViewLocationPrefixes(uri);
+        fullUri = GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, fullUri);
+        Class<?> viewClass = binaryPlugin.resolveView(fullUri);
+        if (viewClass != null && !this.reloadedPrecompiledGspClassNames.contains(viewClass.getName())) {
+            scriptSource = createGroovyPageCompiledScriptSource(uri, fullUri, viewClass);
+            // we know we have binary plugin, sp setting to null in the resourceCallable to skip reloading.
+            scriptSource.setResourceCallable(null);
         }
-        return null;
+        return scriptSource;
     }
 
     protected GroovyPageCompiledScriptSource createGroovyPageCompiledScriptSource(final String uri, String fullPath, Class<?> viewClass) {
@@ -256,13 +254,13 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
             }
 
             BinaryGrailsPlugin binaryPlugin = (BinaryGrailsPlugin) plugin;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Searching plugin [{}] for GSP view [{}]", plugin.getName(), uri);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Searching plugin [{}] for GSP view [{}]", plugin.getName(), uri);
             }
             GroovyPageScriptSource scriptSource = resolveViewInBinaryPlugin(binaryPlugin, uri);
             if (scriptSource != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Found GSP view [{}] in plugin [{}]", uri, plugin.getName());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Found GSP view [{}] in plugin [{}]", uri, plugin.getName());
                 }
                 return scriptSource;
             }
@@ -279,11 +277,10 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
 
     private GroovyPageScriptSource resolveViewInPluginProjectDirectory(BinaryGrailsPlugin binaryPlugin, String uri) {
         File projectDirectory = binaryPlugin.getProjectDirectory();
-        for (String dir : Arrays.asList("grails-app", "app")) {
-            File f = new File(projectDirectory, dir + File.separator + "views" + uri);
-            if (f.exists()) {
-                return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
-            }
+
+        File f = new File(projectDirectory, BuildSettings.GRAILS_APP_PATH + "/views" + uri);
+        if (f.exists()) {
+            return new GroovyPageResourceScriptSource(uri, new FileSystemResource(f));
         }
 
         return null;
@@ -318,7 +315,8 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 continue;
             }
 
-            Resource resource = findResource(resolvePluginViewPath(uri, plugin));
+            String pluginViewPath = resolvePluginViewPath(uri, plugin);
+            Resource resource = findResource(pluginViewPath);
             if (resource != null) {
                 return resource;
             }
@@ -336,7 +334,6 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
         uri = removePrefix(uri, GrailsResourceUtils.WEB_INF);
         uri = removePrefix(uri, SLASHED_VIEWS_DIR_PATH);
         uri = removePrefix(uri, GrailsResourceUtils.VIEWS_DIR_PATH);
-        uri = removePrefix(uri, "app/views/");
         return uri;
     }
 
@@ -364,24 +361,19 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
                                 pathInfo.pluginName, GrailsResourceUtils.VIEWS_DIR_PATH, pathInfo.path),
-                        GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, PLUGINS_PATH,
-                                pathInfo.pluginName, "app/views/", pathInfo.path),
                         GrailsResourceUtils.appendPiecesForUri(GrailsResourceUtils.WEB_INF, uri),
                         uri);
             }
             else {
                 searchPaths = CollectionUtils.newList(
                         GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
-                        GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                         uri);
             }
         }
         else {
             searchPaths = CollectionUtils.newList(
-                    GrailsResourceUtils.appendPiecesForUri(SLASHED_VIEWS_DIR_PATH, uri),
+                    GrailsResourceUtils.appendPiecesForUri(GRAILS_VIEWS_PATH, uri),
                     GrailsResourceUtils.appendPiecesForUri(PATH_TO_WEB_INF_VIEWS, uri),
-                    GrailsResourceUtils.appendPiecesForUri("/app/views/", uri),
-                    GrailsResourceUtils.appendPiecesForUri("/WEB-INF/app/views", uri),
                     uri);
         }
         return searchPaths;
@@ -393,24 +385,24 @@ public class DefaultGroovyPageLocator implements GroovyPageLocator, ResourceLoad
             for (String searchPath : searchPaths) {
                 String gspClassName = this.precompiledGspMap.get(searchPath);
                 if (gspClassName != null && !this.reloadedPrecompiledGspClassNames.contains(gspClassName)) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Found pre-compiled GSP template [{}] for path [{}]", gspClassName, searchPath);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Found pre-compiled GSP template [{}] for path [{}]", gspClassName, searchPath);
                     }
                     Class<GroovyPage> gspClass = null;
                     try {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Loading GSP template [{}]", gspClassName);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Loading GSP template [{}]", gspClassName);
                         }
                         gspClass = (Class<GroovyPage>) Class.forName(gspClassName, true, Thread.currentThread().getContextClassLoader());
                     }
                     catch (ClassNotFoundException e) {
-                        LOG.warn("Cannot load class " + gspClassName + ". Resuming on non-precompiled implementation.", e);
+                        logger.warn("Cannot load class " + gspClassName + ". Resuming on non-precompiled implementation.", e);
                     }
                     if (gspClass != null) {
                         GroovyPageCompiledScriptSource groovyPageCompiledScriptSource =
                                 createGroovyPageCompiledScriptSource(uri, searchPath, gspClass);
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Returning new GSP script source for class [{}]", gspClassName);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Returning new GSP script source for class [{}]", gspClassName);
                         }
                         return groovyPageCompiledScriptSource;
                     }

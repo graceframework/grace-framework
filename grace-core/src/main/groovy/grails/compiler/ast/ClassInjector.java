@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,22 @@
  */
 package grails.compiler.ast;
 
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
+import org.grails.io.support.FileSystemResource;
+import org.grails.io.support.Resource;
 
 /**
  * When implemented allows additional properties to be injected into Grails
  * classes at compile time (ie when they are loaded by the GroovyClassLoader).
  *
  * @author Graeme Rocher
- *
+ * @author Michael Yan
  * @since 0.2
  */
 public interface ClassInjector {
@@ -64,7 +67,34 @@ public interface ClassInjector {
      *
      * @param url The URL of the source file
      * @return true if injection should occur
+     * @deprecated since 2022.3.0, in favor of {@link #shouldInject(ClassNode)}
      */
-    boolean shouldInject(URL url);
+    @Deprecated(forRemoval = true, since = "2023.0.0")
+    default boolean shouldInject(URL url) {
+        return true;
+    }
+
+    /**
+     * Returns whether this injector should inject
+     *
+     * @param classNode The classNode of the Groovy source
+     * @return true if injection should occur
+     */
+    default boolean shouldInject(ClassNode classNode) {
+        String filename = classNode.getModule().getContext().getName();
+        if (filename == null) {
+            return false;
+        }
+        Resource resource = new FileSystemResource(filename);
+        if (resource.exists()) {
+            try {
+                URL url = resource.getURL();
+                return shouldInject(url);
+            }
+            catch (IOException ignored) {
+            }
+        }
+        return false;
+    }
 
 }

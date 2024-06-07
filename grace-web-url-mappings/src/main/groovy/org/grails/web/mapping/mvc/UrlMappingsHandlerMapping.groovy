@@ -39,6 +39,7 @@ import grails.web.mime.MimeType
 import grails.web.mime.MimeTypeResolver
 
 import org.grails.exceptions.ExceptionUtils
+import org.grails.web.mapping.DefaultUrlMappingInfo
 import org.grails.web.servlet.mvc.GrailsWebRequest
 import org.grails.web.util.GrailsApplicationAttributes
 import org.grails.web.util.WebUtils
@@ -150,7 +151,15 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
             else {
                 info = urlMappingsHolder.matchStatusCode(errorStatus.toString().toInteger())
             }
-
+            if (!(info instanceof GrailsControllerUrlMappingInfo)) {
+                request.removeAttribute(GrailsApplicationAttributes.CONTROLLER)
+                request.removeAttribute(GrailsApplicationAttributes.GRAILS_CONTROLLER_CLASS)
+            }
+            if (info instanceof DefaultUrlMappingInfo) {
+                DefaultUrlMappingInfo defaultUrlMappingInfo = (DefaultUrlMappingInfo) info
+                request.setAttribute(GrailsApplicationAttributes.CONTROLLER_NAME_ATTRIBUTE, defaultUrlMappingInfo.controllerName)
+                request.setAttribute(GrailsApplicationAttributes.ACTION_NAME_ATTRIBUTE, defaultUrlMappingInfo.actionName)
+            }
             request.setAttribute(MATCHED_REQUEST, info)
             return info
         }

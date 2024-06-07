@@ -3,7 +3,6 @@ package org.grails.web.converters
 import spock.lang.Specification
 
 import org.codehaus.groovy.runtime.NullObject
-import org.grails.web.converters.ConverterUtil;
 
 class ConverterUtilSpec extends Specification {
 

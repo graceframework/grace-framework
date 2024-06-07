@@ -52,6 +52,7 @@ import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.ast.GenericsType;
 import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.ast.MethodNode;
+import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.ast.Parameter;
 import org.codehaus.groovy.ast.PropertyNode;
 import org.codehaus.groovy.ast.expr.ArgumentListExpression;
@@ -103,9 +104,20 @@ import org.grails.io.support.Resource;
  * Helper methods for working with Groovy AST trees.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.3
  */
 public final class GrailsASTUtils {
+
+    public static final String META_DATA_KEY_GRAILS_APP_DIR = "GRAILS_APP_DIR";
+
+    public static final String META_DATA_KEY_PROJECT_DIR = "PROJECT_DIR";
+
+    public static final String META_DATA_KEY_PROJECT_NAME = "PROJECT_NAME";
+
+    public static final String META_DATA_KEY_PROJECT_TYPE = "PROJECT_TYPE";
+
+    public static final String META_DATA_KEY_PROJECT_VERSION = "PROJECT_VERSION";
 
     public static final String DOMAIN_DIR = "domain";
 
@@ -1715,6 +1727,111 @@ public final class GrailsASTUtils {
 
     public static URL getSourceUrl(ClassNode classNode) {
         return getSourceUrl(classNode.getModule().getContext());
+    }
+
+    /**
+     * Checks whether the specified source is a Grails project source.
+     * A Grails project source is a Groovy or Java class under the project directory
+     *
+     * @param source The SourceUnit
+     * @return true if it is a project source
+     * @since 2022.2.5
+     */
+    public static boolean isProjectSource(SourceUnit source) {
+        String filename = source.getName();
+        ModuleNode ast = source.getAST();
+        String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
+        return filename != null && projectDir != null && filename.startsWith(projectDir);
+    }
+
+    /**
+     * Checks whether the specified class node is a Grails project source.
+     * A Grails project source is a Groovy or Java class under the project directory
+     *
+     * @param classNode The ClassNode instance
+     * @return true if it is a Grails source
+     * @since 2022.2.5
+     */
+    public static boolean isProjectSource(ClassNode classNode) {
+        return isProjectSource(classNode.getModule().getContext());
+    }
+
+    /**
+     * Checks whether the specific source is a Grails source.
+     * A Grails source is a Groovy plugin class or Groovy source under the grails-app directory
+     *
+     * @param source The SourceUnit to check
+     * @param artefactPath The artefact path
+     * @return True if it is a Grails source
+     * @since 2022.2.5
+     */
+    public static boolean isGrailsSource(SourceUnit source, String artefactPath) {
+        String filename = source.getName();
+        ModuleNode ast = source.getAST();
+        String projectDir = ast.getNodeMetaData(META_DATA_KEY_PROJECT_DIR);
+        String grailsAppDir = ast.getNodeMetaData(META_DATA_KEY_GRAILS_APP_DIR);
+        if (filename == null || projectDir == null || grailsAppDir == null) {
+            return false;
+        }
+        return filename.startsWith(grailsAppDir + File.separatorChar + artefactPath) ||
+                (filename.startsWith(projectDir + File.separatorChar + "src") && filename.endsWith("GrailsPlugin.groovy"));
+    }
+
+    /**
+     * Checks whether the specific class node is a Grails source.
+     * A Grails source is a Groovy plugin class or Groovy source under the grails-app directory
+     *
+     * @param classNode The classNode to check
+     * @return True if it is a Grails source
+     * @since 2022.2.5
+     */
+    public static boolean isGrailsSource(ClassNode classNode) {
+        return isGrailsSource(classNode, "");
+    }
+
+    /**
+     * Checks whether the specific class node is a Grails source.
+     * A Grails source is a Groovy plugin class or Groovy source under the grails-app directory
+     *
+     * @param classNode The classNode to check
+     * @param artefactPath The artefact path
+     * @return True if it is a Grails source
+     * @since 2022.2.5
+     */
+    public static boolean isGrailsSource(ClassNode classNode, String artefactPath) {
+        return isGrailsSource(classNode, artefactPath, null);
+    }
+
+    /**
+     * Checks whether the specific class node is a Grails source.
+     * A Grails source is a Groovy plugin class or Groovy source under the grails-app directory
+     *
+     * @param classNode The classNode to check
+     * @param artefactPath The artefact path
+     * @param artefactSuffix The artefact suffix
+     * @return True if it is a Grails source
+     * @since 2022.2.5
+     */
+    public static boolean isGrailsSource(ClassNode classNode, String artefactPath, String artefactSuffix) {
+        if (classNode.isEnum() || classNode.isInterface()
+                || Modifier.isAbstract(classNode.getModifiers())
+                || (classNode instanceof InnerClassNode)) {
+            return false;
+        }
+
+        if (!isGrailsSource(classNode.getModule().getContext(), artefactPath)) {
+            return false;
+        }
+
+        String name = classNode.getName();
+        if (name == null) {
+            return false;
+        }
+
+        if (artefactSuffix != null) {
+            return name.endsWith(artefactSuffix);
+        }
+        return true;
     }
 
     public static boolean hasParameters(MethodNode methodNode) {

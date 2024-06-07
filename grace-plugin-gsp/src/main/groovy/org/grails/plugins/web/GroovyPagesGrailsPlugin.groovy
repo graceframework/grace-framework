@@ -57,7 +57,8 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
     static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval"
     static final String GSP_VIEW_LAYOUT_RESOLVER_ENABLED = 'grails.gsp.view.layoutViewResolver'
 
-    def grailsVersion = "3.3.0 > *"
+    def grailsVersion = "2022.0.0 > *"
+    def version = GrailsUtil.getGrailsVersion()
     def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
 
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",

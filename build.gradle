@@ -24,10 +24,11 @@ ext {
     // directories created during the build which are related
     // to turning the workspace root into a GRAILS_HOME
     distInstallDir = file("$buildDir/dist-tmp")
-    homeDistDir = file("dist")
     homeBinDir = file("bin")
     homeConfDir = file("conf")
+    homeDistDir = file("dist")
     homeLibDir = file("lib")
+    homeRepoDir = file("repo")
     homeSrcDir = file("src")
 }
 
@@ -98,6 +99,14 @@ allprojects {
                 eachDependency { DependencyResolveDetails details ->
                     if (details.requested.group == "org.spockframework") {
                         details.useVersion(spockVersion)
+                    }
+                }
+            }
+            resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
+                if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "org.graceframework") {
+                    def targetProject = findProject(":${dependency.requested.module}")
+                    if (targetProject != null) {
+                        dependency.useTarget targetProject
                     }
                 }
             }
@@ -384,7 +393,6 @@ subprojects { project ->
     }
 
     if (!isTestSuite) {
-
         task installToHomeDist(type: org.grails.gradle.Upload) {
             configuration = configurations.archives
             repositories {
@@ -409,6 +417,7 @@ task clean(type: Delete, group: 'build') {
            homeConfDir,
            homeDistDir,
            homeLibDir,
+           homeRepoDir,
            homeSrcDir
 }
 
