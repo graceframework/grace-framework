@@ -21,7 +21,7 @@ dependencies {
         exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
     }
     api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
-    api project(":grace-datastore-gorm-hibernate5"), {
+    api project(":grace-datastore-gorm-hibernate"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
         exclude group:'org.springframework', module:'spring-beans'
@@ -55,3 +55,9 @@ dependencies {
 }
 
 groovydoc.classpath += configurations.documentation
+
+jar {
+    enabled = true
+    archiveClassifier.set('plugin')
+    includeEmptyDirs = false
+}
