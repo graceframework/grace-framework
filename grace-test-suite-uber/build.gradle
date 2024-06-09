@@ -22,7 +22,7 @@ dependencies {
     testImplementation project(":grace-plugin-databinding")
     testImplementation project(":grace-spring")
     testImplementation project(":grace-test-support")
-    testImplementation libs.grails.datastore.gorm.hibernate5, {
+    testImplementation libs.grails.datastore.gorm.hibernate, {
         exclude group: 'org.graceframework', module:'grace-datastore-gorm'
         exclude group: 'org.graceframework', module:'grace-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'

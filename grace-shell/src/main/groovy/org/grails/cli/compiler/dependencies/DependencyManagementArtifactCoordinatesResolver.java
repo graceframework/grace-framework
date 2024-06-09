@@ -30,7 +30,7 @@ import org.springframework.util.StringUtils;
  */
 public class DependencyManagementArtifactCoordinatesResolver implements ArtifactCoordinatesResolver {
 
-    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate5", "gsp", "scaffolding");
+    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate", "hibernate5", "gsp", "scaffolding");
 
     private final DependencyManagement dependencyManagement;
 
