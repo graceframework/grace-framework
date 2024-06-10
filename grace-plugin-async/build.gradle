@@ -5,7 +5,7 @@ dependencies {
     api project(':grace-async-core')
 
     testImplementation "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    testImplementation "org.grace:grace-test:$graceVersion"
+    testImplementation "org.graceframework:grace-test:$graceVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
 }
 
