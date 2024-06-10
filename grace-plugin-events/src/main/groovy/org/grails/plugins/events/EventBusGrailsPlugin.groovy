@@ -24,8 +24,6 @@ import org.grails.events.gorm.GormDispatcherRegistrar
 import org.grails.events.spring.SpringEventTranslator
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.annotation.Role
-import reactor.bus.EventBus
-
 
 /**
  * A plugin that integrates Reactor into Grails
@@ -51,10 +49,6 @@ class EventBusGrailsPlugin extends Plugin {
                 bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
             }
             gormDispatchEventRegistrar(GormDispatcherRegistrar, ref("grailsEventBus"))
-
-            // the legacy reactor EventBus, here for backwards compatibility
-            eventBus(EventBus, ref('grailsEventBus'))
-
 
             // make it possible to disable reactor events
             if(config.getProperty(TRANSLATE_SPRING_EVENTS, Boolean.class, false)) {
