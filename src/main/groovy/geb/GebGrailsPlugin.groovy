@@ -7,7 +7,7 @@ import groovy.transform.CompileStatic
 @PluginSource
 @CompileStatic
 class GebGrailsPlugin extends Plugin {
-    def grailsVersion = "2022.0.0 > *"
+    def grailsVersion = "2023.0.0 > *"
     def pluginExcludes = [
             "grails-app/views/error.gsp"
     ]
