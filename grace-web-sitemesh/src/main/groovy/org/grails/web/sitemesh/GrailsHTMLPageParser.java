@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.opensymphony.module.sitemesh.html.rules.ParameterExtractingRule;
 import com.opensymphony.module.sitemesh.html.rules.TitleExtractingRule;
 import com.opensymphony.module.sitemesh.html.util.CharArray;
 import com.opensymphony.module.sitemesh.parser.HTMLPageParser;
+import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage;
 import com.opensymphony.sitemesh.Content;
 
 public class GrailsHTMLPageParser extends HTMLPageParser {
@@ -41,7 +42,7 @@ public class GrailsHTMLPageParser extends HTMLPageParser {
     public Page parse(char[] data) throws IOException {
         CharArray head = new CharArray(64);
         CharArray body = new CharArray(4096);
-        GrailsTokenizedHTMLPage page = new GrailsTokenizedHTMLPage(data, body, head);
+        TokenizedHTMLPage page = new TokenizedHTMLPage(data, body, head);
         HTMLProcessor processor = new HTMLProcessor(data, body);
         State html = processor.defaultState();
 
@@ -59,7 +60,7 @@ public class GrailsHTMLPageParser extends HTMLPageParser {
     }
 
     public Content parseContent(char[] data) throws IOException {
-        return new TokenizedHTMLPage2Content((GrailsTokenizedHTMLPage) parse(data));
+        return new TokenizedHTMLPage2Content((TokenizedHTMLPage) parse(data));
     }
 
     @Override
