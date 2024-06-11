@@ -9,7 +9,7 @@ scaffolding = "6.0.0-M3"
 
 [profiles]
 base = "2023.0.0-M5"
-plugin = "2023.0.0-M3"
+plugin = "2023.0.0-M4"
 profile = "2023.0.0-M3"
 rest-api = "2023.0.0-M3"
 web = "2023.0.0-M3"
