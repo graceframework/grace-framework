@@ -84,6 +84,11 @@ publishing {
 
             from components.java
 
+            afterEvaluate {
+                artifact source: "${project.sourceSets.main.groovy.outputDir}/META-INF/grails-plugin.xml",
+                        classifier: "plugin",
+                        extension: 'xml'
+            }
             pom {
                 name = "Grace Geb Plugin"
                 description = "Provides Integration with Geb for Functional Testing"
