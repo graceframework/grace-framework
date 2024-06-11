@@ -21,6 +21,7 @@ import org.grails.core.artefact.DomainClassArtefactHandler
  * Plugin that integrates Hibernate into a Grails application
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -28,22 +29,22 @@ class HibernateGrailsPlugin extends Plugin {
 
     public static final String DEFAULT_DATA_SOURCE_NAME = HibernateDatastoreSpringInitializer.DEFAULT_DATA_SOURCE_NAME
 
-    def grailsVersion = '3.1.0 > *'
+    def grailsVersion = '2023.0.0 > *'
 
-    def author = 'Grails Core Team'
-    def title = 'Hibernate 5 for Grails'
-    def description = 'Provides integration between Grails and Hibernate 5 through GORM'
-    def documentation = 'http://grails.github.io/grails-data-mapping/latest/'
+    def author = 'Grace Framework'
+    def title = 'Grace Data Hibernate'
+    def description = 'Provides integration between Grace and Hibernate through GORM'
+    def documentation = 'https://github.com/graceframework/grace-data-hibernate'
 
     def observe = ['domainClass']
     def loadAfter = ['controllers', 'domainClass']
-    def watchedResources = ['file:./grails-app/conf/hibernate/**.xml']
+    def watchedResources = ['file:./grails-app/conf/hibernate/**.xml', 'file:./app/conf/hibernate/**.xml']
     def pluginExcludes = ['src/templates/**']
 
     def license = 'APACHE'
-    def organization = [name: 'Grails', url: 'http://grails.org']
-    def issueManagement = [system: 'Github', url: 'https://github.com/grails/grails-data-mapping/issues']
-    def scm = [url: 'https://github.com/grails/grails-data-mapping']
+    def organization = [name: 'Grace Framework', url: 'https://graceframework.org']
+    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-data-hibernate/issues']
+    def scm = [url: 'https://github.com/graceframework/grace-data-hibernate']
 
     Set<String> dataSourceNames
 
