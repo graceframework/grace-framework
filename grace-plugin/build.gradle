@@ -21,16 +21,7 @@ dependencies {
         exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
     }
     api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
-    api project(":grace-datastore-gorm-hibernate"), {
-        exclude group:'org.springframework', module:'spring-context'
-        exclude group:'org.springframework', module:'spring-core'
-        exclude group:'org.springframework', module:'spring-beans'
-        exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.graceframework', module:'grace-bootstrap'
-        exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.graceframework', module:'grace-core'
-        exclude group:'javax.transaction', module:'jta'
-    }
+    api project(":grace-datastore-gorm-hibernate")
 
     testImplementation "jakarta.servlet:jakarta.servlet-api:$jakartaServletVersion"
     testImplementation "jakarta.persistence:jakarta.persistence-api:$jpaVersion"
