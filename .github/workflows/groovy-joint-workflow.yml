@@ -20,12 +20,10 @@ name: "Grace Joint Validation Build"
 on:
   push:
     branches:
-      - master
-      - '[2020-2024]+.[0-9]+.x'
+      - 2022.2.x
   pull_request:
     branches:
-      - master
-      - '[2020-2024]+.[0-9]+.x'
+      - 2022.2.x
 jobs:
   build:
     strategy:
