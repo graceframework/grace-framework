@@ -1,0 +1,11 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-plugin-api")
+
+    api libs.spring.boot.actuator.autoconfigure
+    api libs.spring.boot.autoconfigure
+    compileOnly libs.jackson.databind
+
+    testImplementation project(":grace-test")
+}
