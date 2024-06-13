@@ -1,0 +1,9 @@
+dependencies {
+    api project(":grace-web-common")
+    api project(":grace-web-gsp")
+
+    compileOnly libs.javax.servlet
+    // Required for JSP support
+    compileOnly libs.javax.jsp
+    compileOnly libs.jakarta.el.api
+}

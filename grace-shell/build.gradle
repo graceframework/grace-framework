@@ -1,0 +1,111 @@
+apply plugin:'application'
+
+mainClassName = "org.grails.cli.GrailsCli"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+}
+
+ext {
+    gradleToolingApiVersion = gradle.gradleVersion
+}
+
+configurations {
+	dependenciesBom
+    runtimeClasspath {
+        exclude group: 'commons-codec', module: 'commons-codec'
+        exclude group: 'com.github.ben-manes.caffeine', module: 'caffeine'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+        exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
+        exclude group: 'jakarta.inject', module: 'jakarta.inject-api'
+        exclude group: 'javax.annotation', module: 'javax.annotation-api'
+        exclude group: 'javax.inject', module: 'javax.inject'
+        exclude group: 'javax.persistence', module: 'javax.persistence-api'
+        exclude group: 'javax.transaction', module: 'javax.transaction-api'
+        exclude group: 'org.checkerframework', module: 'checker-qual'
+        exclude group: 'org.apache.ant', module: 'ant-antlr'
+        exclude group: 'org.apache.ant', module: 'ant-junit'
+        exclude group: 'org.apache.commons', module: 'commons-compress'
+        exclude group: 'org.codehaus.groovy', module: 'groovy-groovydoc'
+        exclude group: 'org.codehaus.groovy', module: 'groovy-jmx'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-classworlds'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-component-annotations'
+        exclude group: 'org.codehaus.plexus', module: 'plexus-sec-dispatcher'
+        exclude group: 'org.javassist', module: 'javassist'
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-expression'
+        exclude group: 'org.springframework', module: 'spring-jcl'
+        exclude group: 'org.springframework', module: 'spring-tx'
+        exclude group: 'org.springframework', module: 'spring-web'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-autoconfigure'
+    }
+}
+
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-cli")
+    api project(":grace-gradle-model")
+    api project(":grace-util")
+
+    api libs.ant
+    api libs.gradle.tooling.api
+    api libs.groovy.ant
+    api libs.groovy.json
+    api libs.groovy.jmx
+    compileOnly libs.javax.servlet
+    compileOnly libs.spring.web
+    api libs.jansi
+    api libs.jline
+    dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
+    implementation(libs.maven.resolver.provider) {
+        exclude group: "com.google.guava", module: "guava"
+    }
+    implementation(libs.maven.resolver.connectorBasic)
+    implementation(libs.maven.resolver.impl)
+    implementation(libs.maven.resolver.transportFile)
+    implementation(libs.maven.resolver.transportHttp) {
+        exclude group: "org.slf4j", module:"jcl-over-slf4j"
+    }
+    implementation("org.apache.maven:maven-settings-builder:3.6.3") {
+        exclude group: "javax.inject", module: "javax.inject"
+    }
+    implementation("org.sonatype.plexus:plexus-sec-dispatcher:1.4")
+    implementation("org.sonatype.sisu:sisu-inject-plexus:2.6.0") {
+        exclude group: "javax.enterprise", module: "cdi-api"
+        exclude group: "org.sonatype.sisu", module: "sisu-inject-bean"
+    }
+    runtimeOnly libs.slf4j.simple
+}
+
+task syncGrailsDependenciesBom(type: Sync) {
+	destinationDir = file("${buildDir}/generated-resources/org/grails/cli/compiler/dependencies")
+	from configurations.dependenciesBom
+}
+
+sourceSets {
+	main {
+		output.dir("${buildDir}/generated-resources", builtBy: "syncGrailsDependenciesBom")
+	}
+}
+
+eclipse {
+    classpath {
+       file {
+           whenMerged { classpath ->
+                classpath.entries.find { entry -> entry.kind == 'src' && entry.path == "src/test/resources" }?.excludes=["profiles-repository/**", "gradle-sample/**"]
+           }
+       }
+    }
+}
+
+apply from: "../gradle/integration-test.gradle"
+
+integrationTest {
+    // jline doesn't use jline.terminal system property when TERM is dumb so use different TERM value for tests
+    // https://github.com/jline/jline2/blob/6a1b6bf/src/main/java/jline/TerminalFactory.java#L54-L57
+    environment 'TERM', 'xterm'
+    // execute in single thread
+    maxParallelForks = 1
+}

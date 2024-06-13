@@ -1,0 +1,28 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(':grace-plugin-api')
+    api project(":grace-plugin-controllers")
+    api project(":grace-plugin-converters")
+    api project(":grace-web-url-mappings")
+    api project(":grace-util")
+
+    api libs.jakarta.jaxb.api
+    api libs.spring.boot.autoconfigure
+    compileOnly(libs.grails.datastore.core) {
+        transitive = false
+    }
+    compileOnly(libs.grails.datastore.gorm) {
+        transitive = false
+    }
+    compileOnly(project(":grace-web-gsp")) {
+        exclude group:'org.graceframework', module:'grace-core'
+        exclude group:'org.graceframework', module:'grace-encoder'
+        exclude group:'org.graceframework', module:'grace-web-common'
+    }
+    implementation libs.caffeine
+
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-test-suite-base")
+}

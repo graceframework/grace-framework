@@ -1,0 +1,18 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-core")
+    api project(":grace-databinding")
+    api project(":grace-encoder")
+    api project(":grace-util")
+
+    api project(":grace-gsp")
+
+    api libs.javax.servlet
+    api libs.groovy.templates
+    api libs.spring.contextSupport
+    api libs.spring.webmvc
+    compileOnly libs.jsr305
+    implementation libs.caffeine
+
+    testImplementation project(":grace-test")
+}

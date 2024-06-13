@@ -1,9 +1,0 @@
-dependencies {
-    api project(":grails-api")
-    api project(":grails-bootstrap")
-    api project(":grails-util")
-
-    api libs.groovy.json
-    api libs.spring.context
-    api libs.spring.web
-}

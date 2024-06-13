@@ -1,0 +1,22 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-web-common")
+    api project(":grace-web-databinding")
+    api project(":grace-web-mvc")
+    api project(":grace-web-url-mappings")
+
+    api project(":grace-web-gsp"), {
+        exclude group:'org.graceframework', module:'grace-core'
+        exclude group:'org.graceframework', module:'grace-encoder'
+        exclude group:'org.graceframework', module:'grace-web-common'
+    }
+    api project(":grace-web-sitemesh"), {
+        exclude group:'org.graceframework', module:'grace-core'
+        exclude group:'org.graceframework', module:'grace-encoder'
+        exclude group:'org.graceframework', module:'grace-web-common'
+    }
+
+    api libs.javax.servlet
+    testImplementation project(":grace-test")
+}

@@ -1,0 +1,128 @@
+configurations.all {
+    resolutionStrategy {
+        preferProjectModules()
+    }
+}
+
+configurations.testCompileClasspath {
+    exclude module: "grails-plugin-testing"
+}
+
+dependencies {
+    testImplementation project(":grace-boot")
+    testImplementation project(":grace-test-suite-base")
+    testImplementation project(":grace-plugin-domain-class")
+    testImplementation project(":grace-plugin-codecs")
+    testImplementation project(":grace-plugin-converters")
+    testImplementation project(":grace-plugin-datasource")
+    testImplementation project(":grace-plugin-i18n")
+    testImplementation project(":grace-plugin-url-mappings")
+    testImplementation project(":grace-plugin-databinding")
+    testImplementation project(":grace-plugin-services")
+    testImplementation project(":grace-plugin-interceptors")
+    testImplementation project(":grace-plugin-controllers")
+    testImplementation project(":grace-plugin-rest")
+    testImplementation project(":grace-web")
+    testImplementation project(":grace-web-databinding")
+    testImplementation project(":grace-spring")
+    testImplementation project(":grace-test-support")
+
+    api libs.javax.servlet
+    testImplementation libs.jakarta.el.api
+    testImplementation libs.javax.jsp
+    testImplementation libs.javax.jstl
+    testImplementation libs.javax.jstl
+    testImplementation libs.standard.taglib
+
+    testImplementation libs.grails.datastore.gorm.hibernate5, {
+        exclude group: 'org.graceframework', module:'grace-datastore-gorm'
+        exclude group: 'org.graceframework', module:'grace-datastore-core'
+        exclude group: 'org.springframework', module:'spring-core'
+        exclude group: 'org.springframework', module:'spring-context'
+        exclude group: 'org.springframework', module:'spring-web'
+        exclude group: 'org.springframework', module:'spring-beans'
+        exclude group: 'org.springframework', module:'spring-tx'
+        exclude group: 'org.slf4j', module:'jcl-over-slf4j'
+        exclude group: 'org.slf4j', module:'jul-to-slf4j'
+        exclude group: 'org.slf4j', module:'slf4j-api'
+        exclude group: 'org.slf4j', module:'slf4j-simple'
+        exclude group: 'org.graceframework', module:'grace-bootstrap'
+        exclude group: 'org.graceframework', module:'grace-plugin-domain-class'
+        exclude group: 'org.graceframework', module:'grace-core'
+        exclude group: 'org.graceframework', module:'grace-web'
+        exclude group: 'org.graceframework', module:'grace-test'
+        exclude group: 'org.graceframework', module:'grace-async'
+        exclude group: 'org.graceframework', module:'grace-spring'
+        exclude group: 'commons-collections', module:'commons-collections'
+        exclude group: 'commons-lang', module:'commons-lang'
+        exclude group: 'javassit', module:'javassist'
+        exclude group: 'java-persistence', module:'persistence-api'
+        exclude group: 'javassist', module: 'javassist'
+    }
+
+    testImplementation project(":grace-plugin-gsp"), {
+        exclude module:'grace-plugin-codecs'
+        exclude module:'grace-plugin-controllers'
+        exclude module:'grace-core'
+        exclude module:'grace-plugin-domain-class'
+        exclude module:'grace-web-common'
+        exclude module:'grace-encoder'
+    }
+    testImplementation libs.grails.async
+
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+}
+
+// javaee-web-api has a bad versions of classes we need to compile against
+// Just remove it fromt the compile classpath here
+configurations {
+    testCompileClasspath {
+        exclude module: "javaee-web-api"
+    }
+}
+
+compileTestGroovy {
+    // groovyOptions.listFiles = true
+}
+
+def defaultTestConfig = {
+    maxParallelForks = isCiBuild ? 2 : 4
+    forkEvery = isCiBuild ? 10 : 100
+    excludes = ["**/*TestCase.class",
+                "**/*\$*.class"]
+}
+
+def isolatedTests = ["**/ContentFormatControllerTests.class",
+                "**/JSONBindingTests.class",
+                "**/AutoParams*MarshallingTests.class",
+                "**/JSONBindingToNullTests.class",
+                "**/ControllerWithXmlConvertersTests.class",
+                "**/GroovyPageAttributesTests.class",
+                "**/BindingExcludeTests.class",
+                "**/NestedXmlBindingTests.class",
+		"**/GSPResponseWriterSpec.class",
+		"**/RespondMethodSpec.class",
+        "**/ContentNegotiationSpec.class",
+        "**/pages/ext/jsp/*.class",
+        "**/WithFormatContentTypeSpec.class",
+        "**/CommandObjectNoDataSpec.class"]
+
+task execIsolatedTests(type: Test) {
+    configure defaultTestConfig
+    forkEvery = 1
+    includes = isolatedTests
+}
+
+task createCombinedReport(type: TestReport) {
+    destinationDirectory.set(file("$buildDir/reports/allTests"))
+    testResults.builtBy(execIsolatedTests, test)
+}
+
+test {
+    configure defaultTestConfig
+    excludes += isolatedTests
+}
+
+test.dependsOn execIsolatedTests
