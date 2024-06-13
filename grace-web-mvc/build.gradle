@@ -1,0 +1,9 @@
+dependencies {
+    api project(":grace-web-common")
+    api project(":grace-web-url-mappings")
+
+    api project(":grace-web-sitemesh")
+    api libs.javax.servlet
+
+    testImplementation libs.spring.test
+}
