@@ -4,8 +4,7 @@ on:
     types: [closed,reopened]
   push:
     branches:
-      - master
-      - '[2020-2024]+.[0-9]+.x'
+      - 2022.0.x
   workflow_dispatch:
 jobs:
   release_notes:
@@ -21,7 +20,7 @@ jobs:
         id: extract_branch
         run: echo ::set-output name=value::${GITHUB_REF:11}
       # If it has release drafter:
-      - uses: release-drafter/release-drafter@v5.20.0
+      - uses: release-drafter/release-drafter@v6
         if: steps.check_release_drafter.outputs.has_release_drafter == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

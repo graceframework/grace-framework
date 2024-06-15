@@ -2,10 +2,10 @@ name: Grace CI
 on:
   push:
     branches:
-      - '[2020-2024]+.[0-9]+.x'
+      - 2022.0.x
   pull_request:
     branches:
-      - '[2020-2024]+.[0-9]+.x'
+      - 2022.0.x
   workflow_dispatch:
 jobs:
   build:
@@ -20,17 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Run Build
         id: build
-        uses: gradle/gradle-build-action@v2
-        env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: build -x groovydoc -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
   publish:
@@ -48,7 +44,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: 11
@@ -58,11 +54,8 @@ jobs:
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: Publish to Sonatype OSSRH
         id: publish
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
-          GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_NEXUS_URL: ${{ secrets.SONATYPE_NEXUS_URL }}
