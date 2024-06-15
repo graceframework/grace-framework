@@ -8,12 +8,37 @@ import spock.lang.Specification
 
 class GrailsCompileStaticCompilationErrorsSpec extends Specification {
 
+    void 'Test compiling valid static finder calls'() {
+        given:
+        def gcl = new GroovyClassLoader()
+
+        when: 'a class marked with @GrailsCompileStatic invokes valid finders'
+        def c = gcl.parseClass('''
+package grails.compiler
+
+@GrailsCompileStatic
+class SomeClass {
+
+    def someMethod() {
+        List<Person> people = Person.findAll()
+        people = Person.list()
+        int number = Person.count()
+        Person person = Person.findWhere([name: 'William'])
+        person = Person.findOrCreateWhere([name: 'William'])
+        person = Person.findOrSaveWhere([name: 'William'])
+    }
+}
+''')
+        then: 'no errors are thrown'
+        c
+    }
+
     @Issue('GRAILS-11056')
     void 'Test compiling valid dynamic finder calls'() {
         given:
         def gcl = new GroovyClassLoader()
 
-        when: 'a class marked with @GrailsCompileStatic invokes valid dynamic finders'
+        when: 'a class marked with @GrailsCompileStatic invokes invalid dynamic finders'
         def c = gcl.parseClass('''
 package grails.compiler
 
@@ -30,8 +55,9 @@ class SomeClass {
     }
 }
 ''')
-        then: 'no errors are thrown'
-        c
+        then: 'an error is thrown'
+        MultipleCompilationErrorsException e = thrown()
+        e.message.contains '[Static type checking] - Non-static method grails.compiler.Person'
     }
 
     @Issue('GRAILS-9996')
@@ -83,7 +109,7 @@ class SomeOtherNewClass {
 
     @Ignore
     @Issue(['GRAILS-11056', 'GRAILS-11057'])
-    void 'Test comping a dynmaic finder call with the wrong number of arguments'() {
+    void 'Test comping a dynamic finder call with the wrong number of arguments'() {
         given:
         def gcl = new GroovyClassLoader()
 
@@ -616,6 +642,7 @@ class SomeOtherValidateableClass implements Validateable {
 }
 
 @Entity
+@GrailsCompileStatic
 class Person {
     String name
     static hasMany = [towns: String]

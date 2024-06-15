@@ -1,14 +1,38 @@
 package grails.compiler
+
 import grails.persistence.Entity
 
 import org.codehaus.groovy.control.MultipleCompilationErrorsException
 
-import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Specification
 
-
 class GrailsTypeCheckedCompilationErrorsSpec extends Specification {
+
+    void 'Test compiling valid static finder calls'() {
+        given:
+        def gcl = new GroovyClassLoader()
+
+        when: 'a class marked with @GrailsTypeChecked invokes valid dynamic finders'
+        def c = gcl.parseClass('''
+package grails.compiler
+
+@GrailsTypeChecked
+class SomeClass {
+
+    def someMethod() {
+        List<Company> people = Company.findAll()
+        people = Company.list()
+        int number = Company.count()
+        Company company = Company.findWhere([name: 'William'])
+        company = Company.findOrCreateWhere([name: 'William'])
+        company = Company.findOrSaveWhere([name: 'William'])
+    }
+}
+''')
+        then: 'no errors are thrown'
+        c
+    }
 
     @Issue(['GRAILS-11056', 'GRAILS-11204'])
     void 'Test compiling valid dynamic finder calls'() {
@@ -32,8 +56,9 @@ class SomeClass {
     }
 }
 ''')
-        then: 'no errors are thrown'
-        c
+        then: 'an error is thrown'
+        MultipleCompilationErrorsException e = thrown()
+        e.message.contains '[Static type checking] - Non-static method grails.compiler.Company'
     }
 
     @Issue(['GRAILS-11056', 'GRAILS-11204'])
@@ -376,6 +401,7 @@ class SomeClass {
     }
 }
 
+@GrailsCompileStatic
 @Entity
 class Company {
     String name
