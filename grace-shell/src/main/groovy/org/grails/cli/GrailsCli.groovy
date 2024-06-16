@@ -454,7 +454,7 @@ class GrailsCli {
                 new RegexCompletor('!\\w+'), new EscapingFileNameCompletor())
         )
 
-        completers.addAll((profile.getCompleters(projectContext) ?: []) as Collection)
+        completers.addAll((profile.getCompleters(projectContext) ?: []) as Collection<Completer>)
         consoleReader.addCompleter(aggregateCompleter)
         console
     }
