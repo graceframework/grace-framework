@@ -7,7 +7,7 @@ in order to complete your installation.
 
 Prerequisites
 -------------
-Grace CLI requires Java JDK v17.0 or above in order to run. Groovy v4.0.x
+Grace CLI requires Java JDK v11.0 or above in order to run. Groovy v3.0.x
 is packaged as part of this distribution, and therefore does not need to be installed (any
 existing Groovy installation is ignored).
 
