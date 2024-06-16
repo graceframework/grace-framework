@@ -44,7 +44,6 @@ Grace is first and foremost a web application framework, but it is also a platfo
 
 [Grace Plugins](https://github.com/grace-plugins/) repository contains several plugins to develop applications more easier and productive.
 
-* [Grace Admin](https://github.com/grace-plugins/grace-admin) is a powerful and flexible, extensible administration framework and management console for Grace, which use [Grace Dynamic Modules](/grace-plugin-dynamic-modules/README.md).
 * [Grace Htmx](https://github.com/grace-plugins/grace-htmx) is a plugin provide helpers to easy use [HTMX](https://htmx.org).
 * [Grace Hotwire](https://github.com/grace-plugins/grace-hotwire) is a plugin for using [Hotwire](https://hotwired.dev) Stimulus and Turbo.
 * [Grace Unpoly](https://github.com/grace-plugins/grace-unpoly) is a plugin for using [Unpoly](https://unpoly.com).
@@ -71,6 +70,7 @@ Guides
 
 * [Spring Boot Application with Grace Plugins](https://github.com/grace-guides/gs-spring-boot) is an introductory guide that shows you how to use Grace Plugins in your Spring Boot application.
 * [Spring Boot Application with GSP](https://github.com/grace-guides/gs-spring-boot-gsp) is an introductory guide that shows you how to use GSP as view templates in your Spring Boot application.
+* [Spring Boot Application with GORM](https://github.com/grace-guides/gs-spring-boot-gorm) is an introductory guide that shows you how to use GORM in your Spring Boot application.
 * [Build Admin Console with Grace Admin Plugin](https://github.com/grace-guides/gs-admin-console) is an introductory guide that shows you how to use Grace Admin plugin to build flexible, extensible management console in your application.
 
 License
