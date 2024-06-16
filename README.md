@@ -35,7 +35,7 @@ If you encounter out of memory errors when trying to run the install target, try
     export GRADLE_OPTS="-Xmx2G -Xms2G -XX:NewSize=512m -XX:MaxNewSize=512m"
 ```
 
-For installation instructions see [INSTALL.txt](INSTALL.txt).
+For installation instructions see [INSTALL](INSTALL).
 
 Plugins
 ---
