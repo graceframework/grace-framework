@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$gradleExtraConfigurationsPluginVersion"
-        classpath "gradle.plugin.io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
+        classpath "io.sdkman:gradle-sdkvendor-plugin:$gradleSdkVendorVersion"
         classpath "org.gradle:test-retry-gradle-plugin:$gradleTestRetryPlugin"
         classpath "org.codenarc:CodeNarc:$codenarcVersion"
     }
