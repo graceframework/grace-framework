@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: gradle/wrapper-validation-action@v2
+      - uses: gradle/actions/wrapper-validation@v3
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -54,9 +54,8 @@ jobs:
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
       - name: Run Assemble
         id: assemble
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: assemble
+        uses: gradle/actions/setup-gradle@v3
+        run: ./gradlew assemble
       - name: Upload artifacts to the Github release
         id: upload_artifact
         if: steps.assemble.outcome == 'success'
@@ -72,7 +71,7 @@ jobs:
       - name: Publish to Sonatype OSSRH
         id: publish
         if: steps.assemble.outcome == 'success'
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -81,5 +80,4 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
-        with:
-          arguments: -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository

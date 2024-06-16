@@ -23,9 +23,8 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: SDKMan release
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: sdkManRelease
+        uses: gradle/actions/setup-gradle@v3
         env:
           SDKMAN_KEY: ${{ secrets.SDKMAN_KEY }}
           SDKMAN_TOKEN: ${{ secrets.SDKMAN_TOKEN }}
+        run: ./gradlew sdkManRelease
