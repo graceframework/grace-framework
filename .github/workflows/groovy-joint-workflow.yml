@@ -20,17 +20,17 @@ name: "Grace Joint Validation Build"
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 jobs:
   build:
     strategy:
       fail-fast: true
       matrix:
         os: [ubuntu-22.04]
-        java: [17]
+        java: [11.0.6]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4

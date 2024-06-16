@@ -24,7 +24,8 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: SDKMan release
         uses: gradle/actions/setup-gradle@v3
+        with:
+          arguments: sdkManRelease
         env:
           SDKMAN_KEY: ${{ secrets.SDKMAN_KEY }}
           SDKMAN_TOKEN: ${{ secrets.SDKMAN_TOKEN }}
-        run: ./gradlew sdkManRelease
