@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,14 +49,14 @@ class PluginDefiner {
             if (argArray[0] instanceof Map) {
                 Map notation = (Map) argArray[0]
                 if (!notation.containsKey('group')) {
-                    notation.put('group', 'org.grails.plugins')
+                    notation.put('group', 'org.graceframework.plugins')
                 }
             }
             else if (argArray[0] instanceof CharSequence) {
                 String str = argArray[0]
 
                 if (str.startsWith(':')) {
-                    argArray[0] = "org.grails.plugins$str".toString()
+                    argArray[0] = "org.graceframework.plugins$str".toString()
                 }
             }
             else if (Environment.isDevelopmentRun() && (argArray[0] instanceof ProjectDependency)) {
