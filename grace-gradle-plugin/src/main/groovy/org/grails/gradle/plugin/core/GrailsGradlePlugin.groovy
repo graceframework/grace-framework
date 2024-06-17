@@ -202,6 +202,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
     private void applyBomImport(DependencyManagementExtension dme, Project project) {
         String grailsVersion = resolveGrailsVersion(project)
         String springBootVersion = resolveSpringBootVersion(project)
+        String springFrameworkVersion = resolveSpringFrameworkVersion(project)
+        if (!project.ext.has('spring-framework.version')) {
+            project.ext['spring-framework.version'] = springFrameworkVersion
+        }
         dme.imports({
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
             mavenBom("org.graceframework:grace-bom:${grailsVersion}")
@@ -420,6 +424,14 @@ class GrailsGradlePlugin extends GroovyPlugin {
         springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
 
         springBootVersion
+    }
+
+    protected String resolveSpringFrameworkVersion(Project project) {
+        def springFrameworkVersion = project.findProperty('springFrameworkVersion') ?: project.findProperty('springVersion')
+
+        springFrameworkVersion = springFrameworkVersion ?: new GrailsDependenciesDependencyManagement().find('spring-framework-bom').getVersion()
+
+        springFrameworkVersion
     }
 
     protected String resolveMicronautVersion(Project project) {
