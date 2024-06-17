@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.work.InputChanges
+
+import org.grails.gradle.plugin.util.SourceSets
 
 /**
  * A task for compiling GSPs
@@ -66,6 +68,7 @@ class GroovyPageCompileTask extends AbstractCompile {
         def compileTask = this
         Project gradleProject = project
         def antBuilder = gradleProject.services.get(IsolatedAntBuilder)
+        String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
         String packagename = packagename ?: project.name
         String serverpath = serverpath ?: '/'
 
@@ -81,8 +84,8 @@ class GroovyPageCompileTask extends AbstractCompile {
                     serverpath: serverpath,
                     tmpdir: tmpdir) {
                 delegate.configs {
-                    pathelement(path: gradleProject.file('grails-app/conf/application.yml').absolutePath)
-                    pathelement(path: gradleProject.file('grails-app/conf/application.groovy').absolutePath)
+                    pathelement(path: gradleProject.file("$grailsAppDir/conf/application.yml").absolutePath)
+                    pathelement(path: gradleProject.file("$grailsAppDir/conf/application.groovy").absolutePath)
                 }
                 delegate.classpath {
                     pathelement(path: dest.absolutePath)

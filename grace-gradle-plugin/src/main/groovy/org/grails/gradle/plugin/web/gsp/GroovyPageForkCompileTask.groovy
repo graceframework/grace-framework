@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.gradle.work.InputChanges
+
+import org.grails.gradle.plugin.util.SourceSets
 
 /**
  * Abstract Gradle task for compiling templates, using GroovyPageCompilerForkTask
@@ -106,6 +108,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
             packageName = project.name ?: project.projectDir.canonicalFile.name
         }
 
+        String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
         ExecResult result = project.javaexec(
                 new Action<JavaExecSpec>() {
 
@@ -125,8 +128,8 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         //This is the OLD Style and seems kinda silly to be hard coded this way. but restores functionality
                         //for now
                         def configFiles = [
-                                project.file('grails-app/conf/application.yml').canonicalPath,
-                                project.file('grails-app/conf/application.groovy').canonicalPath
+                                project.file("$grailsAppDir/conf/application.yml").canonicalPath,
+                                project.file("$grailsAppDir/conf/application.groovy").canonicalPath
                         ].join(',')
 
                         Path path = Paths.get(tmpDirPath)
@@ -173,7 +176,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Inject
     protected ObjectFactory getObjectFactory() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException()
     }
 
 }
