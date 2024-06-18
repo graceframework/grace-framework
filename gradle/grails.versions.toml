@@ -4,7 +4,7 @@ cache = "5.2.5"
 database-migration = "5.2.5"
 fields = "5.2.5"
 geb = "5.2.5"
-hibernate5 = "2022.2.5"
+hibernate5 = "2022.2.6"
 scaffolding = "5.2.5"
 
 [profiles]
