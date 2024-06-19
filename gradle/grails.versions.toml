@@ -1,5 +1,5 @@
 [plugins]
-asset-pipeline = "5.2.5"
+asset-pipeline = "5.2.6"
 cache = "5.2.5"
 database-migration = "5.2.5"
 fields = "5.2.5"
