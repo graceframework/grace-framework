@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import java.util.regex.Matcher
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovy.xml.slurpersupport.GPathResult
+import org.codehaus.groovy.reflection.CachedMethod
 
 import grails.databinding.converters.FormattedValueConverter
 import grails.databinding.converters.ValueConverter
@@ -273,14 +274,14 @@ class SimpleDataBinder implements DataBinder {
 
     protected boolean isOkToBind(String propName, List whiteList, List blackList) {
         'class' != propName && 'classLoader' != propName && 'protectionDomain' != propName && 'metaClass' != propName
-                && !blackList?.contains(propName)
+                && 'metaPropertyValues' != propName && 'properties' != propName && !blackList?.contains(propName)
                 && (!whiteList || whiteList.contains(propName) || whiteList.find { it -> it?.toString()?.startsWith(propName + '.') })
     }
 
     protected boolean isOkToBind(MetaProperty property, List whitelist, List blacklist) {
-        isOkToBind(property.name, whitelist, blacklist)
-                && (property.type != null && !(ClassLoader.isAssignableFrom(property.type)
-                || ProtectionDomain.isAssignableFrom(property.type)))
+        isOkToBind(property.name, whitelist, blacklist) && (property.type != null) && !Modifier.isStatic(property.modifiers)
+                && !(ClassLoader.isAssignableFrom(property.type) || ProtectionDomain.isAssignableFrom(property.type)
+                || MetaProperty.isAssignableFrom(property.type) || CachedMethod.isAssignableFrom(property.type))
     }
 
     protected IndexedPropertyReferenceDescriptor getIndexedPropertyReferenceDescriptor(String propName) {
