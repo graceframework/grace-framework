@@ -57,7 +57,7 @@ spock = "2.3-groovy-4.0"
 spring-boot = "3.0.13"
 spring-dependency-management = "1.1.0"
 spring-framework = "6.0.22"
-tomcat = "10.1.16"
+tomcat = "10.1.25"
 xhtmlrenderer = "8.0"
 
 [libraries]
@@ -191,9 +191,13 @@ spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-fr
 spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
 spring-webmvc = { module = "org.springframework:spring-webmvc", version.ref = "spring-framework" }
 spring-websocket = { module = "org.springframework:spring-websocket", version.ref = "spring-framework" }
+tomcat-annotations-api = { module = "org.apache.tomcat:tomcat-annotations-api", version.ref = "tomcat" }
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
+tomcat-jsp-api = { module = "org.apache.tomcat:tomcat-jsp-api", version.ref = "tomcat" }
 tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "tomcat" }
 tomcat-embed-el = { module = "org.apache.tomcat.embed:tomcat-embed-el", version.ref = "tomcat" }
+tomcat-embed-jasper = { module = "org.apache.tomcat.embed:tomcat-embed-jasper", version.ref = "tomcat" }
+tomcat-embed-websocket = { module = "org.apache.tomcat.embed:tomcat-embed-websocket", version.ref = "tomcat" }
 xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xhtmlrenderer" }
 
 [bundles]
@@ -210,3 +214,4 @@ spock = ["spock-core", "spock-spring"]
 spring-boot = ["spring-boot-dependencies"]
 spring-framework = ["spring-framework-bom"]
 snakeyaml = ["snakeyaml"]
+tomcat = ["tomcat-annotations-api", "tomcat-jdbc", "tomcat-jsp-api", "tomcat-embed-core", "tomcat-embed-el", "tomcat-embed-jasper", "tomcat-embed-websocket"]

@@ -176,8 +176,12 @@ class GrailsGradlePlugin extends GroovyPlugin {
         String grailsVersion = resolveGrailsVersion(project)
         String springBootVersion = resolveSpringBootVersion(project)
         String springFrameworkVersion = resolveSpringFrameworkVersion(project)
+        String tomcatVersion = resolveTomcatVersion(project)
         if (!project.ext.has('spring-framework.version')) {
             project.ext['spring-framework.version'] = springFrameworkVersion
+        }
+        if (!project.ext.has('tomcat.version')) {
+            project.ext['tomcat.version'] = tomcatVersion
         }
         dme.imports({
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
@@ -356,6 +360,14 @@ class GrailsGradlePlugin extends GroovyPlugin {
         springFrameworkVersion = springFrameworkVersion ?: new GrailsDependenciesDependencyManagement().find('spring-framework-bom').getVersion()
 
         springFrameworkVersion
+    }
+
+    protected String resolveTomcatVersion(Project project) {
+        def tomcatVersion = project.findProperty('tomcatVersion')
+
+        tomcatVersion = tomcatVersion ?: new GrailsDependenciesDependencyManagement().find('tomcat-embed-core').getVersion()
+
+        tomcatVersion
     }
 
     @CompileDynamic
