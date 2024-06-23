@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,10 @@ public class LocalEntityResolver implements EntityResolver {
 
     @SuppressWarnings("unchecked")
     private static final Map<String, String> ENTITIES = CollectionUtils.<String, String>newMap(
+            // JSP taglib 3.1
+            "https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_1.xsd", "web-jsptaglibrary_3_1.xsd",
+            // JSP taglib 3.0
+            "https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd", "web-jsptaglibrary_3_0.xsd",
             // JSP taglib 2.1
             "http://java.sun.com/xml/ns/jee/web-jsptaglibrary_2_1.xsd", "web-jsptaglibrary_2_1.xsd",
             // JSP taglib 2.0
@@ -45,6 +49,14 @@ public class LocalEntityResolver implements EntityResolver {
             // JSP taglib 1.1
             "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN", "web-jsptaglibrary_1_1.dtd",
             "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd", "web-jsptaglibrary_1_1.dtd",
+            // Servlet 6.0
+            "https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd", "web-app_6_0.xsd",
+            // Servlet 5.0
+            "https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd", "web-app_5_0.xsd",
+            // Servlet 4.0
+            "http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd", "web-app_4_0.xsd",
+            // Servlet 3.0
+            "http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd", "web-app_3_0.xsd",
             // Servlet 2.5
             "http://java.sun.com/xml/ns/jee/web-app_2_5.xsd", "web-app_2_5.xsd",
             // Servlet 2.4
