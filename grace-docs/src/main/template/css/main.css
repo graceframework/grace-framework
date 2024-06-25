@@ -86,7 +86,7 @@ strong {
 }
 
 #main.reference h1 {
-    color: #feb672;
+    color: #f49b06;
 }
 
 .local {
@@ -189,7 +189,7 @@ strong {
 
 #table-of-content a:hover {
     text-decoration: none;
-    border-right: 2px solid #feb672;
+    border-right: 2px solid #f49b06;
 }
 
 /*
@@ -376,7 +376,7 @@ strong {
  }
  
  #main h1:hover .anchor, #main h2:hover .anchor, #main h3:hover .anchor, #main h4:hover .anchor, #main h5:hover .anchor, #main h6:hover .anchor {
-    color: #feb672;
+    color: #f49b06;
     color: var(--color-brand-primary);
     visibility: visible;
  }

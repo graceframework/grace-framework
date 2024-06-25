@@ -26,7 +26,7 @@ a:hover,
 #navigation #nav-summary-childs a:hover,
 #main h1,
 #main h2 {
-    color: #feb672;
+    color: #f49b06;
     font-weight: bold;
 }
 
@@ -119,7 +119,7 @@ a:hover,
 
 .navTitle {
     color:#fff;
-    background: url(../img/grails.svg) no-repeat 0 center;
+    background: url(../img/grace.svg) no-repeat 0 center;
     background-size: 80px;
     padding-left: 90px;
     width: 180px;
