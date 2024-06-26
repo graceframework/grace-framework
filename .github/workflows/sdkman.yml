@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: SDKMan release
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: sdkManRelease
         env:
