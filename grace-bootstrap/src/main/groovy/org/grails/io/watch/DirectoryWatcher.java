@@ -52,8 +52,8 @@ public class DirectoryWatcher extends Thread {
                     jnaAvailable = true;
                 }
                 catch (ClassNotFoundException e) {
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Error Initializing Native OS X File Event Watcher. Add JNA to classpath for Faster File Watching performance.");
                     }
                 }
                 if (jnaAvailable) {
