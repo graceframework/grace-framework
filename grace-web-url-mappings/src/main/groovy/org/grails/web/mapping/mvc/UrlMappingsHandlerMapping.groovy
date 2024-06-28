@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,11 +122,7 @@ class UrlMappingsHandlerMapping extends AbstractHandlerMapping {
 
     @Override
     protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-        Object matchedInfo = request.getAttribute(MATCHED_REQUEST)
         Object errorStatus = request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE)
-        if (matchedInfo != null && errorStatus == null) {
-            return matchedInfo
-        }
 
         String uri = urlHelper.getPathWithinApplication(request)
         GrailsWebRequest webRequest = GrailsWebRequest.lookup(request)
