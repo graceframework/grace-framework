@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.grails.gradle.plugin.util
 import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 
@@ -51,7 +51,7 @@ class SourceSets {
     }
 
     static SourceSetContainer findSourceSets(Project project) {
-        JavaPluginConvention plugin = project.getConvention().getPlugin(JavaPluginConvention)
+        JavaPluginExtension plugin = project.getExtensions().getByType(JavaPluginExtension)
         SourceSetContainer sourceSets = plugin?.sourceSets
         sourceSets
     }
