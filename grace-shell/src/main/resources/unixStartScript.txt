@@ -66,6 +66,11 @@ esac
 
 CLASSPATH=$classpath
 
+for f in "\$APP_HOME"/lib/ext/*; do
+	[[ "\$cygwin" == "true" ]] && LIBFILE=\$(cygpath "\$f") || LIBFILE=\$f
+	CLASSPATH=\$CLASSPATH:\$LIBFILE
+done
+
 # Determine the Java command to use to start the JVM.
 if [ -n "\$JAVA_HOME" ] ; then
     if [ -x "\$JAVA_HOME/jre/sh/java" ] ; then
