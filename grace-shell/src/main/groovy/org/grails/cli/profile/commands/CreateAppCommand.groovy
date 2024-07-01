@@ -35,7 +35,7 @@ import grails.build.logging.GrailsConsole
 import grails.io.IOUtils
 import grails.util.Environment
 import grails.util.GrailsNameUtils
-
+import grails.util.GrailsVersion
 import org.grails.build.logging.GrailsConsoleAntBuilder
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
@@ -423,14 +423,18 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected void replaceBuildTokens(String profileCoords, Profile profile, List<Feature> features, File targetDirectory) {
+        boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
         AntBuilder ant = new GrailsConsoleAntBuilder()
         String ln = System.getProperty('line.separator')
 
         Closure repositoryUrl = { int spaces, String repo ->
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
-
-        String repositories = profile.repositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
+        List<String> repositoryUrls = profile.repositories.sort().reverse()
+        if (isSnapshotVersion) {
+            repositoryUrls.add(0, 'mavenLocal()')
+        }
+        String repositories = repositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
 
         List<Dependency> profileDependencies = profile.dependencies
         List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
@@ -461,7 +465,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         for (Feature f in features) {
             buildRepositories.addAll(f.getBuildRepositories())
         }
-        String buildRepositoriesString = buildRepositories.sort().reverse().collect(repositoryUrl.curry(4)).unique().join(ln)
+
+        List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
+
+        if (isSnapshotVersion) {
+            buildRepositoryUrls.add(0, 'mavenLocal()')
+        }
+        String buildRepositoriesString = buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
             String artifactStr = resolveArtifactString(dep)
