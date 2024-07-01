@@ -107,7 +107,7 @@ public final class GrailsVersion {
         }
 
         this.commitId = setOrParseCommitId(commitId, matcher);
-        this.snapshot = parseSnapshot(matcher);
+        this.snapshot = version.endsWith("SNAPSHOT") ? 0L : parseSnapshot(matcher);
     }
 
     private Long parseSnapshot(Matcher matcher) {
