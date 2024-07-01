@@ -92,6 +92,8 @@ task grailsCreateStartScripts(type: GrailsCreateStartScripts) {
     classpath = rootProject.childProjects['grace-shell'].configurations.runtimeClasspath
     projectArtifacts = rootProject.childProjects['grace-shell'].tasks['jar'].outputs.files.collect { "dist/${it.name}" }
     doLast {
+        ant.replace(file: file('bin/grace'), token: 'APP_HOME', value: 'GRACE_HOME')
+        ant.replace(file: file('bin/grace.bat'), token: 'APP_HOME', value: 'GRACE_HOME')
         ant.replace(file: file('bin/grace'), token: 'media/gradle.icns', value: 'media/icons/grace.icns')
         ant.chmod(file: file('bin/grace'), perm: 'ugo+rx')
     }
