@@ -50,6 +50,9 @@ import org.grails.cli.profile.repository.MavenProfileRepository
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
+import static org.grails.build.parsing.CommandLine.STACKTRACE_ARGUMENT
+import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
+
 /**
  * Command for creating Grails applications
  *
@@ -86,6 +89,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: INPLACE_FLAG, description: 'Used to create an application using the current directory')
         description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
+        description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
+        description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
     }
 
     protected void populateDescription() {
@@ -365,7 +370,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = evaluateProfileName(commandLine)
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG]
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
         commandLine.undeclaredOptions.each { String key, Object value ->
             if (!validFlags.contains(key)) {
                 List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
@@ -390,6 +395,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 grailsVersion: Environment.getPackage().getImplementationVersion() ?: GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS,
                 features: features,
                 inplace: inPlace,
+                stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
+                verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
                 console: executionContext.console
         )
 
@@ -814,6 +821,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String grailsVersion
         List<String> features
         boolean inplace = false
+        boolean stacktrace = false
+        boolean verbose = false
         GrailsConsole console
 
     }
