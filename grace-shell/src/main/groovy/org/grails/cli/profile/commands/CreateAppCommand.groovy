@@ -15,7 +15,6 @@
  */
 package org.grails.cli.profile.commands
 
-import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileVisitResult
 import java.nio.file.Files
 import java.nio.file.Path
@@ -279,7 +278,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
 
             if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
-                GrailsConsole.getInstance().error(new DirectoryNotEmptyException(projectTargetDirectory.absolutePath))
+                GrailsConsole.getInstance().error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
                 return false
             }
 
