@@ -27,6 +27,14 @@ import groovy.ant.AntBuilder
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
+import org.apache.tools.ant.BuildLogger
+import org.apache.tools.ant.DefaultLogger
+import org.apache.tools.ant.Location
+import org.apache.tools.ant.MagicNames
+import org.apache.tools.ant.Project
+import org.apache.tools.ant.ProjectHelper
+import org.apache.tools.ant.Target
+import org.codehaus.groovy.ant.Groovy
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
 
@@ -67,6 +75,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String NAME = 'create-app'
     public static final String PROFILE_FLAG = 'profile'
     public static final String FEATURES_FLAG = 'features'
+    public static final String TEMPLATE_FLAG = 'template'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
 
@@ -89,6 +98,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: INPLACE_FLAG, description: 'Used to create an application using the current directory')
         description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
+        description.flag(name: TEMPLATE_FLAG, description: 'The application template to use', required: false)
         description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
     }
@@ -292,6 +302,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             cmd.console.println("     Package name:".padRight(24) + defaultpackagename)
             cmd.console.println("     Profile:".padRight(24) + profileName)
             cmd.console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
+            if (cmd.template) {
+                cmd.console.println("     App template:".padRight(24) + cmd.template)
+            }
             cmd.console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
             cmd.console.println()
 
@@ -350,6 +363,37 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
 
             replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+
+            if (cmd.template) {
+                Project project = new Project()
+                project.setBaseDir(projectTargetDirectory)
+                project.setName(cmd.appName)
+                ProjectHelper helper = ProjectHelper.getProjectHelper()
+                project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
+                BuildLogger logger = new DefaultLogger()
+                if (cmd.verbose) {
+                    logger.setMessageOutputLevel(Project.MSG_DEBUG)
+                }
+                else {
+                    logger.setMessageOutputLevel(Project.MSG_INFO)
+                }
+                logger.setErrorPrintStream(cmd.console.err)
+                logger.setOutputPrintStream(cmd.console.out)
+                project.addBuildListener(logger)
+                helper.getImportStack().addElement("AntBuilder")
+                project.init()
+                Target target = new Target()
+                target.setProject(project)
+                target.setName('CreateApp')
+                target.setLocation(new Location(projectTargetDirectory.absolutePath))
+                Groovy groovy = new Groovy()
+                groovy.src = new File(cmd.template)
+                groovy.setProject(project)
+                groovy.setOwningTarget(target)
+                groovy.execute()
+                cmd.console.println()
+            }
+
             String grailsVersion = GrailsVersion.current().version
             cmd.console.addStatus(
                     "${name == 'create-plugin' ? 'Plugin' : 'Application'} created by Grace ${grailsVersion}."
@@ -380,7 +424,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = evaluateProfileName(commandLine)
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
         commandLine.undeclaredOptions.each { String key, Object value ->
             if (!validFlags.contains(key)) {
                 List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
@@ -404,6 +448,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 profileName: profileName,
                 grailsVersion: Environment.getPackage().getImplementationVersion() ?: GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS,
                 features: features,
+                template: commandLine.optionValue('template'),
                 inplace: inPlace,
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
@@ -830,6 +875,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String profileName
         String grailsVersion
         List<String> features
+        String template
         boolean inplace = false
         boolean stacktrace = false
         boolean verbose = false
