@@ -34,6 +34,9 @@ import org.apache.tools.ant.MagicNames
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.ProjectHelper
 import org.apache.tools.ant.Target
+import org.apache.tools.ant.types.ResourceCollection
+import org.apache.tools.ant.types.resources.FileResource
+import org.apache.tools.ant.types.resources.URLResource
 import org.codehaus.groovy.ant.Groovy
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
@@ -365,33 +368,47 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
 
             if (cmd.template) {
-                Project project = new Project()
-                project.setBaseDir(projectTargetDirectory)
-                project.setName(cmd.appName)
-                ProjectHelper helper = ProjectHelper.getProjectHelper()
-                project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
-                BuildLogger logger = new DefaultLogger()
-                if (cmd.verbose) {
-                    logger.setMessageOutputLevel(Project.MSG_DEBUG)
+                ResourceCollection resource
+                if (cmd.template.startsWith('http://') || cmd.template.startsWith('https://') || cmd.template.startsWith('file://')) {
+                    resource = new URLResource(cmd.template)
                 }
                 else {
-                    logger.setMessageOutputLevel(Project.MSG_INFO)
+                    File file = new File(cmd.template)
+                    resource = new FileResource(file)
                 }
-                logger.setErrorPrintStream(cmd.console.err)
-                logger.setOutputPrintStream(cmd.console.out)
-                project.addBuildListener(logger)
-                helper.getImportStack().addElement("AntBuilder")
-                project.init()
-                Target target = new Target()
-                target.setProject(project)
-                target.setName('CreateApp')
-                target.setLocation(new Location(projectTargetDirectory.absolutePath))
-                Groovy groovy = new Groovy()
-                groovy.src = new File(cmd.template)
-                groovy.setProject(project)
-                groovy.setOwningTarget(target)
-                groovy.execute()
-                cmd.console.println()
+                if (resource != null && resource.isExists()) {
+                    Location location = new Location(projectTargetDirectory.absolutePath)
+                    Project project = new Project()
+                    project.setBaseDir(projectTargetDirectory)
+                    project.setName(cmd.appName)
+                    ProjectHelper helper = ProjectHelper.getProjectHelper()
+                    project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
+                    BuildLogger logger = new DefaultLogger()
+                    if (cmd.verbose) {
+                        logger.setMessageOutputLevel(Project.MSG_DEBUG)
+                    } else {
+                        logger.setMessageOutputLevel(Project.MSG_INFO)
+                    }
+                    logger.setErrorPrintStream(cmd.console.err)
+                    logger.setOutputPrintStream(cmd.console.out)
+                    project.addBuildListener(logger)
+                    helper.getImportStack().addElement("AntBuilder")
+                    project.init()
+                    Target target = new Target()
+                    target.setProject(project)
+                    target.setName('CreateApp')
+                    target.setLocation(location)
+                    Groovy groovy = new Groovy()
+                    groovy.addConfigured(resource)
+                    groovy.setProject(project)
+                    groovy.setLocation(location)
+                    groovy.setOwningTarget(target)
+                    groovy.execute()
+                    cmd.console.println()
+                }
+                else {
+                    GrailsConsole.getInstance().error("Template `${cmd.template}` does not exist!")
+                }
             }
 
             String grailsVersion = GrailsVersion.current().version
