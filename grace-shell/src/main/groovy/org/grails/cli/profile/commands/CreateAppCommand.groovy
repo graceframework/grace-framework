@@ -24,6 +24,9 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.stream.Stream
 
 import groovy.ant.AntBuilder
+import groovy.text.GStringTemplateEngine
+import groovy.text.Template
+import groovy.text.TemplateEngine
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
@@ -40,6 +43,9 @@ import org.apache.tools.ant.types.resources.URLResource
 import org.codehaus.groovy.ant.Groovy
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
+import org.yaml.snakeyaml.LoaderOptions
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.SafeConstructor
 
 import grails.build.logging.GrailsConsole
 import grails.io.IOUtils
@@ -85,7 +91,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected static final String APPLICATION_YML = 'application.yml'
     protected static final String BUILD_GRADLE = 'build.gradle'
     protected static final String GRADLE_PROPERTIES = 'gradle.properties'
-    public static final String UNZIP_PROFILE_TEMP_DIR = 'tempgrailsapp'
+    public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
+
+    private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
 
     ProfileRepository profileRepository
     Map<String, String> variables = [:]
@@ -212,7 +220,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 destFile.createNewFile()
             }
             destFile.append(srcFile.getText(ENCODING))
-//            destFile.text = destFile.getText(ENCODING) + srcFile.getText(ENCODING)
         }
     }
 
@@ -239,7 +246,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 @Override
                 FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
                         throws IOException {
-                    if (path.fileName.toString() == fileName) {
+                    if (path.fileName.toString().endsWith(fileName)) {
                         files.add(path.toFile())
                     }
                     FileVisitResult.CONTINUE
@@ -258,11 +265,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String profileName = cmd.profileName
 
         Profile profileInstance = profileRepository.getProfile(profileName)
-        if (!validateProfile(profileInstance, profileName)) {
+        if (!validateProfile(profileInstance, profileName, cmd.console)) {
             return false
         }
-
-        List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
 
         if (profileInstance) {
             if (!initializeGroupAndName(cmd.appName, cmd.inplace)) {
@@ -295,9 +300,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
 
             if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
-                GrailsConsole.getInstance().error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
+                cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
                 return false
             }
+
+            List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
+
+            variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
+            variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
 
             cmd.console.addStatus("Creating a new ${name == 'create-plugin' ? 'plugin' : 'application'}")
             cmd.console.println()
@@ -359,22 +369,39 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 if (skeletonDir.exists()) {
                     copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions)
                 }
-
-                // Cleanup temporal directories
-                deleteDirectory(tmpDir)
-                deleteDirectory(skeletonDir)
             }
 
-            replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+            // Cleanup temporal directories
+            unzippedDirectories.values().each { File tmpDir ->
+                deleteDirectory(tmpDir)
+            }
 
             if (cmd.template) {
                 ResourceCollection resource
-                if (cmd.template.startsWith('http://') || cmd.template.startsWith('https://') || cmd.template.startsWith('file://')) {
+                if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git')) {
+                    resource = null
+                    Map<String, Object> model = new HashMap<>()
+                    model.put('features', features*.name.sort())
+                    copyTemplate(ant, profileInstance, model, cmd.template, cmd.console)
+                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                }
+                else if (cmd.template.startsWith('http://') || cmd.template.startsWith('https://') || cmd.template.startsWith('file://')) {
                     resource = new URLResource(cmd.template)
+                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
                 }
                 else {
                     File file = new File(cmd.template)
-                    resource = new FileResource(file)
+                    if (file.exists() && file.isDirectory()) {
+                        resource = null
+                        Map<String, Object> model = new HashMap<>()
+                        model.put('features', features*.name.sort())
+                        copyTemplate(ant, profileInstance, model, cmd.template, cmd.console)
+                        replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                    }
+                    else {
+                        resource = new FileResource(file)
+                        replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                    }
                 }
                 if (resource != null && resource.isExists()) {
                     Location location = new Location(projectTargetDirectory.absolutePath)
@@ -406,9 +433,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     groovy.execute()
                     cmd.console.println()
                 }
-                else {
-                    GrailsConsole.getInstance().error("Template `${cmd.template}` does not exist!")
-                }
+            }
+            else {
+                replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
             }
 
             String grailsVersion = GrailsVersion.current().version
@@ -475,27 +502,29 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         this.handle(cmd)
     }
 
-    protected boolean validateProfile(Profile profileInstance, String profileName) {
+    protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
         if (profileInstance == null) {
-            GrailsConsole.instance.error("Profile not found for name [$profileName]")
+            console.error("Profile not found for name [$profileName]")
             return false
         }
         true
     }
 
-    private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
-
     @CompileDynamic
     protected File unzipProfile(AntBuilder ant, Resource location) {
+        File tmpDir = null
         URL url = location.URL
-        File tmpDir = unzippedDirectories.get(url)
+        if (url && url.protocol == 'jar') {
+            String absolutePath = url.path
+            URL jarUrl = new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!')))
+            tmpDir = unzippedDirectories.get(jarUrl)
 
-        if (tmpDir == null) {
-            def jarFile = IOUtils.findJarFile(url)
-            tmpDir = Files.createTempDirectory(UNZIP_PROFILE_TEMP_DIR).toFile()
-            tmpDir.deleteOnExit()
-            ant.unzip(src: jarFile, dest: tmpDir)
-            unzippedDirectories.put(url, tmpDir)
+            if (tmpDir == null) {
+                File jarFile = IOUtils.findJarFile(url)
+                tmpDir = Files.createTempDirectory(UNZIP_PROFILE_TEMP_DIR).toFile()
+                ant.unzip(src: jarFile, dest: tmpDir)
+                unzippedDirectories.put(jarUrl, tmpDir)
+            }
         }
         tmpDir
     }
@@ -741,7 +770,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileStatic(TypeCheckingMode.SKIP)
     private void copySkeleton(Profile profile, Profile participatingProfile) {
-        def buildMergeProfileNames = profile.buildMergeProfileNames
+        List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
             excludes = []
@@ -810,10 +839,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         ant.chmod(dir: targetDirectory, includes: profile.executablePatterns.join(' '), perm: 'u+x')
-
-        // Cleanup temporal directories
-        deleteDirectory(tmpDir)
-        deleteDirectory(skeletonDir)
     }
 
     @CompileDynamic
@@ -860,6 +885,147 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                 }
             }
+        }
+    }
+
+    @CompileDynamic
+    protected void copyTemplate(GrailsConsoleAntBuilder ant, Profile profile, Map<String, Object> model, String templateUrl, GrailsConsole console) {
+        File tempZipFile = null
+        File tempDir = null
+        File projectDir = null
+        try {
+            if (templateUrl.endsWith('.zip')) {
+                tempZipFile = Files.createTempFile('grails-template-', '.zip').toFile()
+                ant.get(src: templateUrl, dest: tempZipFile)
+
+                tempDir = Files.createTempDirectory('grails-template-').toFile()
+                ant.unzip(src: tempZipFile, dest: tempDir)
+
+                Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
+
+                    @Override
+                    FileVisitResult visitFile(Path path, BasicFileAttributes attributes)
+                            throws IOException {
+                        if (path.fileName.toString() == 'project.yml') {
+                            projectDir = path.parent.toFile()
+
+                            FileVisitResult.TERMINATE
+                        } else {
+                            FileVisitResult.CONTINUE
+                        }
+                    }
+
+                })
+            } else if (templateUrl.endsWith('.git')) {
+                tempDir = Files.createTempDirectory('grails-template-').toFile()
+                ant.exec(executable: 'git') {
+                    arg value: 'clone'
+                    arg value: templateUrl
+                    arg value: tempDir
+                }
+
+                Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
+
+                    @Override
+                    FileVisitResult visitFile(Path path, BasicFileAttributes attributes)
+                            throws IOException {
+                        if (path.fileName.toString() == 'project.yml') {
+                            projectDir = path.parent.toFile()
+
+                            FileVisitResult.TERMINATE
+                        } else {
+                            FileVisitResult.CONTINUE
+                        }
+                    }
+
+                })
+            } else {
+                projectDir = new File(templateUrl)
+            }
+
+            if (projectDir == null || !projectDir.isDirectory() || !projectDir.exists()) {
+                console.error("`${templateUrl}` is not a valid template!")
+                return
+            }
+
+            File projectYml = new File(projectDir, 'project.yml')
+            File templateDir = new File(projectDir, 'template')
+
+            if (!projectYml.exists() || !templateDir.exists() || !templateDir.isDirectory()) {
+                console.error("`${templateUrl}` is not a valid template!")
+                return
+            }
+
+            Map<String, Object> binding = new HashMap<>()
+            binding.putAll(variables)
+            binding.putAll(model)
+            Set<File> groovyTemplateFiles = findAllFilesByName(templateDir, '.tpl')
+            groovyTemplateFiles.each { File srcFile ->
+                File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
+                TemplateEngine templateEngine = new GStringTemplateEngine()
+                Template template = templateEngine.createTemplate(srcFile)
+                destFile.withWriter('UTF-8') { Writer w ->
+                    template.make(binding).writeTo(w)
+                    w.flush()
+                }
+            }
+
+            Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()))
+            Map<String, Object> templateConfig = yaml.<Map<String, Object>> load(new FileInputStream(projectYml))
+            List<String> excludes = ['**/*.tpl']
+            Set<String> binaryFileExtensions = (profile.binaryExtensions + (Set<String>) templateConfig.getOrDefault('template.binaryExtensions', [])).unique()
+            Set<String> executablePatterns = (profile.executablePatterns + (Set<String>) templateConfig.getOrDefault('template.executablePatterns', [])).unique()
+
+            ant.copy(todir: targetDirectory, overwrite: true, encoding: 'UTF-8') {
+                fileSet(dir: templateDir, casesensitive: false) {
+                    exclude(name: '**/.gitkeep')
+                    for (exc in excludes) {
+                        exclude name: exc
+                    }
+                    binaryFileExtensions.each { ext ->
+                        exclude(name: "**/*.${ext}")
+                    }
+                }
+                filterset {
+                    variables.each { k, v ->
+                        filter(token: k, value: v)
+                    }
+                }
+                mapper {
+                    filtermapper {
+                        variables.each { k, v ->
+                            replacestring(from: "@${k}@".toString(), to: v)
+                        }
+                    }
+                }
+            }
+            ant.copy(todir: targetDirectory, overwrite: true) {
+                fileSet(dir: templateDir, casesensitive: false) {
+                    binaryFileExtensions.each { ext ->
+                        include(name: "**/*.${ext}")
+                    }
+                    for (exc in excludes) {
+                        exclude name: exc
+                    }
+                }
+                mapper {
+                    filtermapper {
+                        variables.each { k, v ->
+                            replacestring(from: "@${k}@".toString(), to: v)
+                        }
+                    }
+                }
+            }
+
+            ant.chmod(dir: targetDirectory, includes: executablePatterns.join(' '), perm: 'u+x')
+        }
+        catch (Exception ex) {
+            console.error("Can not apply template `${templateUrl}`!", ex)
+        }
+        finally {
+            // Cleanup temporal directories
+            tempZipFile?.deleteOnExit()
+            deleteDirectory(tempDir)
         }
     }
 
