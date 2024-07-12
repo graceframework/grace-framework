@@ -276,25 +276,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             initializeVariables(profileName, cmd.grailsVersion)
 
-            if (profileRepository instanceof MavenProfileRepository) {
-                MavenProfileRepository mpr = (MavenProfileRepository) profileRepository
-                String gormDep = mpr.profileDependencyVersions.getGormVersion()
-                if (gormDep != null) {
-                    variables['gorm.version'] = gormDep
-                }
-                String groovyDep = mpr.profileDependencyVersions.getGroovyVersion()
-                if (groovyDep != null) {
-                    variables['groovy.version'] = groovyDep
-                }
-                String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
-                if (grailsGradlePluginVersion != null) {
-                    variables['grails-gradle-plugin.version'] = grailsGradlePluginVersion
-                }
-                mpr.profileDependencyVersions.getProperties().each {
-                    variables[it.key.toString()] = it.value.toString()
-                }
-            }
-
             Path appFullDirectory = Paths.get(cmd.baseDir.path, appname)
 
             File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
@@ -311,7 +292,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             cmd.console.addStatus("Creating a new ${name == 'create-plugin' ? 'plugin' : 'application'}")
             cmd.console.println()
-            cmd.console.println("     App name:".padRight(24) + appname)
+            cmd.console.println("     ${name == 'create-plugin' ? 'Plugin' : 'App'} name:".padRight(24) + appname)
             cmd.console.println("     Package name:".padRight(24) + defaultpackagename)
             cmd.console.println("     Profile:".padRight(24) + profileName)
             cmd.console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
@@ -382,9 +363,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     applyApplicationTemplate(cmd.template, cmd.appName, projectTargetDirectory, cmd.console, cmd.verbose)
                 }
                 else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                    Map<String, Object> model = new HashMap<>()
-                    model.put('features', features*.name.sort())
-                    copyApplicationTemplate(ant, profileInstance, model, cmd.template, cmd.console)
+                    copyApplicationTemplate(ant, profileInstance, features, cmd.template, cmd.console)
                     replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
                 }
             }
@@ -665,31 +644,65 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private void initializeVariables(String profileName, String grailsVersion) {
-        variables.APPNAME = appname
+        Map<String, String> codegenVariables = getCodegenVariables(appname, groupname, defaultpackagename, profileName, grailsVersion)
+        Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
+        variables.putAll(codegenVariables)
+        variables.putAll(dependencyVersions)
+    }
 
-        variables['grails.codegen.defaultPackage'] = defaultpackagename
-        variables['grails.codegen.defaultPackage.path'] = defaultpackagename.replace('.', '/')
-        variables['grace.codegen.defaultPackage'] = defaultpackagename
-        variables['grace.codegen.defaultPackage.path'] = defaultpackagename.replace('.', '/')
+    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, String grailsVersion) {
+        String projectClassName = GrailsNameUtils.getNameFromScript(appName)
+        Map<String, String> variables = new HashMap<>()
+        variables.APPNAME = appName
 
-        def projectClassName = GrailsNameUtils.getNameFromScript(appname)
-
+        variables['grails.codegen.defaultPackage'] = packageName
+        variables['grails.codegen.defaultPackage.path'] = packageName.replace('.', '/')
         variables['grails.codegen.projectClassName'] = projectClassName
         variables['grails.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
         variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grails.profile'] = profileName
         variables['grails.version'] = grailsVersion
-        variables['grails.app.name'] = appname
-        variables['grails.app.group'] = groupname
+        variables['grails.app.name'] = appName
+        variables['grails.app.group'] = groupName
+
+        variables['grace.codegen.defaultPackage'] = packageName
+        variables['grace.codegen.defaultPackage.path'] = packageName.replace('.', '/')
         variables['grace.codegen.projectClassName'] = projectClassName
         variables['grace.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
         variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grace.profile'] = profileName
         variables['grace.version'] = grailsVersion
-        variables['grace.app.name'] = appname
-        variables['grace.app.group'] = groupname
+        variables['grace.app.name'] = appName
+        variables['grace.app.group'] = groupName
+
+        variables
+    }
+
+    private Map<String, String> getDependencyVersions(ProfileRepository profileRepository, String grailsVersion) {
+        Map<String, String> versions = new HashMap<>()
+        versions['grails.version'] = grailsVersion
+        versions['grace.version'] = grailsVersion
+        if (profileRepository instanceof MavenProfileRepository) {
+            MavenProfileRepository mpr = (MavenProfileRepository) profileRepository
+            String gormDep = mpr.profileDependencyVersions.getGormVersion()
+            if (gormDep != null) {
+                versions['gorm.version'] = gormDep
+            }
+            String groovyDep = mpr.profileDependencyVersions.getGroovyVersion()
+            if (groovyDep != null) {
+                versions['groovy.version'] = groovyDep
+            }
+            String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
+            if (grailsGradlePluginVersion != null) {
+                versions['grails-gradle-plugin.version'] = grailsGradlePluginVersion
+            }
+            mpr.profileDependencyVersions.getProperties().each {
+                versions[it.key.toString()] = it.value.toString()
+            }
+        }
+        versions
     }
 
     private String establishGroupAndAppName(String groupAndAppName) {
@@ -841,7 +854,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, Profile profile, Map<String, Object> model, String templateUrl, GrailsConsole console) {
+    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, Profile profile, List<Feature> features, String templateUrl, GrailsConsole console) {
         File tempZipFile = null
         File tempDir = null
         File projectDir = null
@@ -910,9 +923,22 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return
             }
 
+            String grailsVersion = GrailsVersion.current().version
+            Map<String, String> codegenVariables = getCodegenVariables(appname, groupname, defaultpackagename, profile.name, grailsVersion)
+            Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
+            Map<String, Object> project = new HashMap<>()
+            project.put('appName', appname)
+            project.put('packageName', defaultpackagename)
+            project.put('profile', profile.name)
+            project.put('features', features*.name.sort())
+            project.put('template', templateUrl)
+            project.put('graceVersion', grailsVersion)
+            project.put('grailsVersion', grailsVersion)
+            project.putAll(codegenVariables)
             Map<String, Object> binding = new HashMap<>()
-            binding.putAll(variables)
-            binding.putAll(model)
+            binding.put("project", project)
+            binding.put("versions", dependencyVersions)
+
             Set<File> groovyTemplateFiles = findAllFilesByName(templateDir, '.tpl')
             groovyTemplateFiles.each { File srcFile ->
                 File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
