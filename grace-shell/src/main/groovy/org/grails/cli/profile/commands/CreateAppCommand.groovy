@@ -408,7 +408,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     Project project = new Project()
                     project.setBaseDir(projectTargetDirectory)
                     project.setName(cmd.appName)
+                    variables.each { k, v ->
+                        project.setProperty(k, v)
+                    }
                     ProjectHelper helper = ProjectHelper.getProjectHelper()
+                    helper.getImportStack().addElement("AntBuilder")
                     project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
                     BuildLogger logger = new DefaultLogger()
                     if (cmd.verbose) {
@@ -419,7 +423,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     logger.setErrorPrintStream(cmd.console.err)
                     logger.setOutputPrintStream(cmd.console.out)
                     project.addBuildListener(logger)
-                    helper.getImportStack().addElement("AntBuilder")
                     project.init()
                     Target target = new Target()
                     target.setProject(project)
