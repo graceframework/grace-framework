@@ -752,7 +752,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File destDir = getDestinationDirectory(srcFile)
             File destFile = new File(destDir, BUILD_GRADLE)
 
-            ant.copy(file: "${srcDir}/.gitignore", todir: destDir, failonerror: false)
+            if (new File(srcDir, '.gitattributes').exists()) {
+                ant.copy(file: "${srcDir}/.gitattributes", todir: destDir, failonerror: false)
+            }
+            if (new File(srcDir, '.gitignore').exists()) {
+                ant.copy(file: "${srcDir}/.gitignore", todir: destDir, failonerror: false)
+            }
 
             if (!destFile.exists()) {
                 ant.copy file: srcFile, tofile: destFile
