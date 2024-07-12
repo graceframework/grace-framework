@@ -377,64 +377,15 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
 
             if (cmd.template) {
-                ResourceCollection resource
-                if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git')) {
-                    resource = null
+                if (cmd.template.endsWith('.groovy')) {
+                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                    applyApplicationTemplate(cmd.template, cmd.appName, projectTargetDirectory, cmd.console, cmd.verbose)
+                }
+                else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                     Map<String, Object> model = new HashMap<>()
                     model.put('features', features*.name.sort())
-                    copyTemplate(ant, profileInstance, model, cmd.template, cmd.console)
+                    copyApplicationTemplate(ant, profileInstance, model, cmd.template, cmd.console)
                     replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-                }
-                else if (cmd.template.startsWith('http://') || cmd.template.startsWith('https://') || cmd.template.startsWith('file://')) {
-                    resource = new URLResource(cmd.template)
-                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-                }
-                else {
-                    File file = new File(cmd.template)
-                    if (file.exists() && file.isDirectory()) {
-                        resource = null
-                        Map<String, Object> model = new HashMap<>()
-                        model.put('features', features*.name.sort())
-                        copyTemplate(ant, profileInstance, model, cmd.template, cmd.console)
-                        replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-                    }
-                    else {
-                        resource = new FileResource(file)
-                        replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-                    }
-                }
-                if (resource != null && resource.isExists()) {
-                    Location location = new Location(projectTargetDirectory.absolutePath)
-                    Project project = new Project()
-                    project.setBaseDir(projectTargetDirectory)
-                    project.setName(cmd.appName)
-                    variables.each { k, v ->
-                        project.setProperty(k, v)
-                    }
-                    ProjectHelper helper = ProjectHelper.getProjectHelper()
-                    helper.getImportStack().addElement("AntBuilder")
-                    project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
-                    BuildLogger logger = new DefaultLogger()
-                    if (cmd.verbose) {
-                        logger.setMessageOutputLevel(Project.MSG_DEBUG)
-                    } else {
-                        logger.setMessageOutputLevel(Project.MSG_INFO)
-                    }
-                    logger.setErrorPrintStream(cmd.console.err)
-                    logger.setOutputPrintStream(cmd.console.out)
-                    project.addBuildListener(logger)
-                    project.init()
-                    Target target = new Target()
-                    target.setProject(project)
-                    target.setName('CreateApp')
-                    target.setLocation(location)
-                    Groovy groovy = new Groovy()
-                    groovy.addConfigured(resource)
-                    groovy.setProject(project)
-                    groovy.setLocation(location)
-                    groovy.setOwningTarget(target)
-                    groovy.execute()
-                    cmd.console.println()
                 }
             }
             else {
@@ -892,7 +843,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void copyTemplate(GrailsConsoleAntBuilder ant, Profile profile, Map<String, Object> model, String templateUrl, GrailsConsole console) {
+    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, Profile profile, Map<String, Object> model, String templateUrl, GrailsConsole console) {
         File tempZipFile = null
         File tempDir = null
         File projectDir = null
@@ -948,6 +899,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             if (projectDir == null || !projectDir.isDirectory() || !projectDir.exists()) {
                 console.error("`${templateUrl}` is not a valid template!")
+                console.println()
                 return
             }
 
@@ -956,6 +908,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             if (!projectYml.exists() || !templateDir.exists() || !templateDir.isDirectory()) {
                 console.error("`${templateUrl}` is not a valid template!")
+                console.println()
                 return
             }
 
@@ -1030,6 +983,48 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             tempZipFile?.deleteOnExit()
             deleteDirectory(tempDir)
         }
+    }
+
+    protected void applyApplicationTemplate(String template, String appName, File projectTargetDirectory, GrailsConsole console, boolean verbose) {
+        ResourceCollection resource
+        if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
+            resource = new URLResource(template)
+        }
+        else {
+            File file = new File(template)
+            resource = new FileResource(file)
+        }
+        Location location = new Location(projectTargetDirectory.absolutePath)
+        Project project = new Project()
+        project.setBaseDir(projectTargetDirectory)
+        project.setName(appName)
+        variables.each { k, v ->
+            project.setProperty(k, v)
+        }
+        ProjectHelper helper = ProjectHelper.getProjectHelper()
+        helper.getImportStack().addElement("AntBuilder")
+        project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
+        BuildLogger logger = new DefaultLogger()
+        if (verbose) {
+            logger.setMessageOutputLevel(Project.MSG_DEBUG)
+        } else {
+            logger.setMessageOutputLevel(Project.MSG_INFO)
+        }
+        logger.setErrorPrintStream(console.err)
+        logger.setOutputPrintStream(console.out)
+        project.addBuildListener(logger)
+        project.init()
+        Target target = new Target()
+        target.setProject(project)
+        target.setName('CreateApp')
+        target.setLocation(location)
+        Groovy groovy = new Groovy()
+        groovy.addConfigured(resource)
+        groovy.setProject(project)
+        groovy.setLocation(location)
+        groovy.setOwningTarget(target)
+        groovy.execute()
+        console.println()
     }
 
     protected String resolveArtifactString(Dependency dep) {
