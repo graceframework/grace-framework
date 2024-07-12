@@ -837,13 +837,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
                 exclude name: '**/' + BUILD_GRADLE
             }
-            mapper {
-                filtermapper {
-                    variables.each { k, v ->
-                        replacestring(from: "@${k}@".toString(), to: v)
-                    }
-                }
-            }
         }
     }
 
@@ -967,13 +960,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                     for (exc in excludes) {
                         exclude name: exc
-                    }
-                }
-                mapper {
-                    filtermapper {
-                        variables.each { k, v ->
-                            replacestring(from: "@${k}@".toString(), to: v)
-                        }
                     }
                 }
             }
