@@ -317,14 +317,18 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
 
-        console.addStatus("Creating a new ${name == 'create-app' ? 'application' : 'plugin'}")
+        String projectType = getName().substring(7).capitalize()
+
+        console.addStatus("Creating a new ${projectType}")
         console.println()
-        console.println("     ${name == 'create-app' ? 'App' : 'Plugin'} name:".padRight(24) + appName)
+        console.println("     ${projectType} name:".padRight(24) + appName)
         console.println("     Package name:".padRight(24) + defaultPackageName)
         console.println("     Profile:".padRight(24) + profileName)
-        console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
+        if (features) {
+            console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
+        }
         if (cmd.template) {
-            console.println("     App template:".padRight(24) + cmd.template)
+            console.println("     ${projectType} template:".padRight(24) + cmd.template)
         }
         console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
         console.println()
@@ -387,7 +391,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
                 replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-                applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, console, cmd.verbose)
+                applyApplicationTemplate(ant, console, cmd.template, cmd.appName, projectTargetDirectory, cmd.verbose)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion, variables, projectTargetDirectory)
@@ -685,8 +689,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, String template, String appName,
-                                            File projectTargetDirectory, GrailsConsole console, boolean verbose) {
+    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console, String template, String appName,
+                                            File projectTargetDirectory, boolean verbose) {
         ResourceCollection resource
         if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
             resource = new URLResource(template)
@@ -813,6 +817,21 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
         }
+    }
+
+    protected File getDestinationDirectory(File srcFile, File targetDirectory) {
+        String searchDir = 'skeleton'
+        File srcDir = srcFile.parentFile
+        File destDir
+        if (srcDir.absolutePath.endsWith(searchDir)) {
+            destDir = targetDirectory
+        }
+        else {
+            int index = srcDir.absolutePath.lastIndexOf(searchDir) + searchDir.size() + 1
+            String relativePath = (srcDir.absolutePath - srcDir.absolutePath.substring(0, index))
+            destDir = new File(targetDirectory, relativePath)
+        }
+        destDir
     }
 
     private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
@@ -1004,23 +1023,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         versions
     }
 
-    private File getDestinationDirectory(File srcFile, File targetDirectory) {
-        String searchDir = 'skeleton'
-        File srcDir = srcFile.parentFile
-        File destDir
-        if (srcDir.absolutePath.endsWith(searchDir)) {
-            destDir = targetDirectory
-        }
-        else {
-            int index = srcDir.absolutePath.lastIndexOf(searchDir) + searchDir.size() + 1
-            String relativePath = (srcDir.absolutePath - srcDir.absolutePath.substring(0, index))
-            destDir = new File(targetDirectory, relativePath)
-        }
-        destDir
-    }
-
     private Set<File> findAllFilesByName(File projectDir, String fileName) {
-        Set<File> files = (Set) []
+        Set<File> files = new HashSet<>()
         if (projectDir.exists()) {
             Files.walkFileTree(projectDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
