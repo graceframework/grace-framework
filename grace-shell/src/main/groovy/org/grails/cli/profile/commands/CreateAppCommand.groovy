@@ -284,6 +284,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
                 return false
             }
+            else {
+                boolean result = projectTargetDirectory.mkdir()
+                if (!result) {
+                    cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` created faild!")
+                }
+            }
+
+            GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, cmd.console, cmd.verbose))
 
             List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
 
@@ -320,7 +328,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                 }
 
-                copySkeleton(profileInstance, p)
+                copySkeleton(ant, profileInstance, p)
 
                 ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
                     if (applicationYmlFile.exists()) {
@@ -328,7 +336,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
                 }
             }
-            def ant = new GrailsConsoleAntBuilder()
 
             for (Feature f in features) {
                 Resource location = f.location
@@ -359,16 +366,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             if (cmd.template) {
                 if (cmd.template.endsWith('.groovy')) {
-                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-                    applyApplicationTemplate(cmd.template, cmd.appName, projectTargetDirectory, cmd.console, cmd.verbose)
+                    replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+                    applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, cmd.console, cmd.verbose)
                 }
                 else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                     copyApplicationTemplate(ant, profileInstance, features, cmd.template, cmd.console)
-                    replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                    replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
                 }
             }
             else {
-                replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
+                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
             }
 
             String grailsVersion = GrailsVersion.current().version
@@ -463,9 +470,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void replaceBuildTokens(String profileCoords, Profile profile, List<Feature> features, File targetDirectory) {
+    protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileCoords, Profile profile, List<Feature> features, File targetDirectory) {
         boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
-        AntBuilder ant = new GrailsConsoleAntBuilder()
         String ln = System.getProperty('line.separator')
 
         Closure repositoryUrl = { int spaces, String repo ->
@@ -736,14 +742,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void copySkeleton(Profile profile, Profile participatingProfile) {
+    private void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
             excludes = []
         }
-
-        AntBuilder ant = new GrailsConsoleAntBuilder()
 
         Resource skeletonResource = participatingProfile.profileDir.createRelative('skeleton')
         File skeletonDir
@@ -1002,7 +1006,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected void applyApplicationTemplate(String template, String appName, File projectTargetDirectory, GrailsConsole console, boolean verbose) {
+    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, String template, String appName, File projectTargetDirectory, GrailsConsole console, boolean verbose) {
         ResourceCollection resource
         if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
             resource = new URLResource(template)
@@ -1011,29 +1015,18 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File file = new File(template)
             resource = new FileResource(file)
         }
+        if (!resource.isExists()) {
+            console.error("Template resource `${template}` is not exists!\n")
+            return
+        }
         Location location = new Location(projectTargetDirectory.absolutePath)
-        Project project = new Project()
-        project.setBaseDir(projectTargetDirectory)
-        project.setName(appName)
-        variables.each { k, v ->
-            project.setProperty(k, v)
+        Project project = ant.getProject()
+        if (!verbose) {
+            ant.setLoggerLevel(Project.MSG_INFO)
         }
-        ProjectHelper helper = ProjectHelper.getProjectHelper()
-        helper.getImportStack().addElement("AntBuilder")
-        project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
-        BuildLogger logger = new DefaultLogger()
-        if (verbose) {
-            logger.setMessageOutputLevel(Project.MSG_DEBUG)
-        } else {
-            logger.setMessageOutputLevel(Project.MSG_INFO)
-        }
-        logger.setErrorPrintStream(console.err)
-        logger.setOutputPrintStream(console.out)
-        project.addBuildListener(logger)
-        project.init()
         Target target = new Target()
         target.setProject(project)
-        target.setName('CreateApp')
+        target.setName(appName)
         target.setLocation(location)
         Groovy groovy = new Groovy()
         groovy.addConfigured(resource)
@@ -1042,6 +1035,32 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         groovy.setOwningTarget(target)
         groovy.execute()
         console.println()
+    }
+
+    protected Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties, GrailsConsole console, boolean verbose = false) {
+        Project project = new Project()
+        project.setBaseDir(projectTargetDirectory)
+        project.setName(appName)
+        properties.each { k, v ->
+            project.setProperty(k, v)
+        }
+        ProjectHelper helper = ProjectHelper.getProjectHelper()
+        helper.getImportStack().addElement("AntBuilder")
+        project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
+        BuildLogger logger = new DefaultLogger()
+        if (verbose) {
+            logger.setMessageOutputLevel(Project.MSG_DEBUG)
+        }
+        else {
+            logger.setMessageOutputLevel(Project.MSG_ERR)
+        }
+        logger.setErrorPrintStream(console.err)
+        logger.setOutputPrintStream(console.out)
+        project.addBuildListener(logger)
+        project.init()
+        project.getBaseDir()
+
+        project
     }
 
     protected String resolveArtifactString(Dependency dep) {

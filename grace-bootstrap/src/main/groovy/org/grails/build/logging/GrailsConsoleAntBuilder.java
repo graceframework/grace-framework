@@ -59,6 +59,14 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
         return project;
     }
 
+    public void setLoggerLevel(int level) {
+        for (Object buildListener : getProject().getBuildListeners()) {
+            if (buildListener instanceof BuildLogger) {
+                ((BuildLogger) buildListener).setMessageOutputLevel(level);
+            }
+        }
+    }
+
     public static void addGrailsConsoleBuildListener(Project project) {
         BuildLogger logger = new GrailsConsoleLogger();
 
