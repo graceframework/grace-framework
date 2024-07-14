@@ -92,8 +92,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected static final String BUILD_GRADLE = 'build.gradle'
     protected static final String GRADLE_PROPERTIES = 'gradle.properties'
 
-    private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
-
     ProfileRepository profileRepository
 
     CommandDescription description = new CommandDescription(name, 'Creates an application', 'create-app [NAME] --profile=web')
@@ -117,12 +115,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         NAME
     }
 
+    protected String getDefaultProfile() {
+        ProfileRepository.DEFAULT_PROFILE_NAME
+    }
+
     @Override
     protected int complete(CommandLine commandLine, CommandDescription desc, List<CharSequence> candidates, int cursor) {
         Map.Entry<String, Object> lastOption = commandLine.lastOption()
         if (lastOption != null) {
             // if value == true it means no profile is specified and only the flag is present
-            List<String> profileNames = profileRepository.allProfiles*.name
+            List<String> profileNames = this.profileRepository.allProfiles*.name
             if (lastOption.key == PROFILE_FLAG) {
                 def val = lastOption.value
                 if (val == true) {
@@ -143,7 +145,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             else if (lastOption.key == FEATURES_FLAG) {
                 Object val = lastOption.value
-                Profile profile = profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
+                Profile profile = this.profileRepository.getProfile(commandLine.hasOption(PROFILE_FLAG) ?
                         commandLine.optionValue(PROFILE_FLAG).toString() : getDefaultProfile())
                 List<String> featureNames = profile.features*.name
                 if (val == true) {
@@ -173,86 +175,49 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         super.complete(commandLine, desc, candidates, cursor)
     }
 
-    protected File getDestinationDirectory(File srcFile, File targetDirectory) {
-        String searchDir = 'skeleton'
-        File srcDir = srcFile.parentFile
-        File destDir
-        if (srcDir.absolutePath.endsWith(searchDir)) {
-            destDir = targetDirectory
-        }
-        else {
-            int index = srcDir.absolutePath.lastIndexOf(searchDir) + searchDir.size() + 1
-            String relativePath = (srcDir.absolutePath - srcDir.absolutePath.substring(0, index))
-            destDir = new File(targetDirectory, relativePath)
-        }
-        destDir
-    }
+    @Override
+    boolean handle(ExecutionContext executionContext) {
+        CommandLine commandLine = executionContext.commandLine
 
-    protected void appendFeatureFiles(File skeletonDir, File targetDirectory) {
-        Set<File> ymlFiles = findAllFilesByName(skeletonDir, APPLICATION_YML)
-        Set<File> buildGradleFiles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
-        Set<File> gradlePropertiesFiles = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
+        String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
-        ymlFiles.each { File newYml ->
-            File oldYml = new File(getDestinationDirectory(newYml, targetDirectory), APPLICATION_YML)
-            String oldText = (oldYml.isFile()) ? oldYml.getText(ENCODING) : null
-            if (oldText) {
-                appendToYmlSubDocument(newYml, oldText, oldYml)
-            }
-            else {
-                oldYml.text = newYml.getText(ENCODING)
-            }
-        }
-        buildGradleFiles.each { File srcFile ->
-            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), BUILD_GRADLE)
-            destFile.text = destFile.getText(ENCODING) + System.lineSeparator() + srcFile.getText(ENCODING)
-        }
-
-        gradlePropertiesFiles.each { File srcFile ->
-            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), GRADLE_PROPERTIES)
-            if (!destFile.exists()) {
-                destFile.createNewFile()
-            }
-            destFile.append(srcFile.getText(ENCODING))
-        }
-    }
-
-    protected void buildTargetFolders(Profile profile, Map<Profile, File> targetDir, File projectDir) {
-        if (!targetDir.containsKey(profile)) {
-            targetDir[profile] = projectDir
-        }
-        profile.extends.each { Profile p ->
-            if (profile.parentSkeletonDir) {
-                targetDir[p] = profile.getParentSkeletonDir(projectDir)
-            }
-            else {
-                targetDir[p] = targetDir[profile]
-            }
-            buildTargetFolders(p, targetDir, projectDir)
-        }
-    }
-
-    Set<File> findAllFilesByName(File projectDir, String fileName) {
-        Set<File> files = (Set) []
-        if (projectDir.exists()) {
-            Files.walkFileTree(projectDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
-
-                @Override
-                FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
-                        throws IOException {
-                    if (path.fileName.toString().endsWith(fileName)) {
-                        files.add(path.toFile())
-                    }
-                    FileVisitResult.CONTINUE
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+        commandLine.undeclaredOptions.each { String key, Object value ->
+            if (!validFlags.contains(key)) {
+                List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
+                StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
+                if (possibleSolutions) {
+                    warning.append(' Possible solutions: ')
+                    warning.append(possibleSolutions.join(', '))
                 }
-
-            })
+                executionContext.console.warn(warning.toString())
+            }
         }
-        files
+
+        String grailsVersion = GrailsVersion.current().version
+        boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
+        String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
+
+        List<String> features = commandLine.optionValue('features')?.toString()?.split(',')?.toList()
+
+        CreateAppCommandObject cmd = new CreateAppCommandObject(
+                appName: appName,
+                baseDir: executionContext.baseDir,
+                profileName: profileName,
+                grailsVersion: grailsVersion,
+                features: features,
+                template: commandLine.optionValue('template'),
+                inplace: inPlace,
+                stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
+                verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
+                console: executionContext.console
+        )
+
+        this.handle(cmd)
     }
 
     boolean handle(CreateAppCommandObject cmd) {
-        if (profileRepository == null) {
+        if (this.profileRepository == null) {
             throw new IllegalStateException("Property 'profileRepository' must be set")
         }
 
@@ -260,7 +225,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         GrailsConsole console = cmd.console
         String profileName = cmd.profileName
 
-        Profile profileInstance = profileRepository.getProfile(profileName)
+        Profile profileInstance = this.profileRepository.getProfile(profileName)
         if (!validateProfile(profileInstance, profileName, console)) {
             return false
         }
@@ -325,7 +290,28 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, console).toList()
+        List<Feature> features
+        List<String> requestedFeatures = new ArrayList<>(cmd.features ?: [])
+        if (requestedFeatures) {
+            List<String> allFeatureNames = profileInstance.features*.name
+            Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
+            requestedFeatures.removeAll(allFeatureNames)
+            requestedFeatures.each { String invalidFeature ->
+                List<String> possibleSolutions = allFeatureNames.findAll {
+                    it.substring(0, 2) == invalidFeature.substring(0, 2)
+                }
+                StringBuilder warning = new StringBuilder("Feature ${invalidFeature} does not exist in the profile ${profileInstance.name}!")
+                if (possibleSolutions) {
+                    warning.append(' Possible solutions: ')
+                    warning.append(possibleSolutions.join(', '))
+                }
+                console.warn(warning.toString())
+            }
+            features = (profileInstance.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profileInstance.requiredFeatures).unique()
+        }
+        else {
+            features = (profileInstance.defaultFeatures + profileInstance.requiredFeatures).toList().unique()
+        }
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.grailsVersion)
 
@@ -343,8 +329,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
         console.println()
 
-        List<Profile> profiles = profileRepository.getProfileAndDependencies(profileInstance)
+        List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
+        final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
         Map<Profile, File> targetDirs = [:]
         buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
 
@@ -361,7 +348,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
 
-            copySkeleton(ant, profileInstance, p, variables, targetDirectory)
+            copySkeleton(ant, profileInstance, p, variables, targetDirectory, unzippedDirectories)
 
             ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
                 if (applicationYmlFile.exists()) {
@@ -379,7 +366,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 skeletonDir = location.createRelative('skeleton').file
             }
             else {
-                tmpDir = unzipProfile(ant, location)
+                tmpDir = unzipProfile(ant, unzippedDirectories, location)
                 skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
             }
 
@@ -394,7 +381,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         // Cleanup temporal directories
         unzippedDirectories.values().each { File tmpDir ->
-            deleteDirectory(tmpDir)
+            deleteDirectoryOrFile(tmpDir)
         }
 
         if (cmd.template) {
@@ -421,56 +408,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         true
     }
 
-    private boolean isDirectoryEmpty(File target) {
-        if (target.isDirectory()) {
-            try (Stream<Path> entries = Files.list(Paths.get(target.toURI()))) {
-                return !entries.findFirst().isPresent()
-            }
-        }
-        false
-    }
-
-    @Override
-    boolean handle(ExecutionContext executionContext) {
-        CommandLine commandLine = executionContext.commandLine
-
-        String profileName = evaluateProfileName(commandLine)
-
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
-        commandLine.undeclaredOptions.each { String key, Object value ->
-            if (!validFlags.contains(key)) {
-                List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
-                StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
-                if (possibleSolutions) {
-                    warning.append(' Possible solutions: ')
-                    warning.append(possibleSolutions.join(', '))
-                }
-                executionContext.console.warn(warning.toString())
-            }
-        }
-
-        String grailsVersion = GrailsVersion.current().version
-        boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
-        String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
-
-        List<String> features = commandLine.optionValue('features')?.toString()?.split(',')?.toList()
-
-        CreateAppCommandObject cmd = new CreateAppCommandObject(
-                appName: appName,
-                baseDir: executionContext.baseDir,
-                profileName: profileName,
-                grailsVersion: grailsVersion,
-                features: features,
-                template: commandLine.optionValue('template'),
-                inplace: inPlace,
-                stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
-                verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
-                console: executionContext.console
-        )
-
-        this.handle(cmd)
-    }
-
     protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
         if (profileInstance == null) {
             console.error("Profile not found for name [$profileName]")
@@ -479,248 +416,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         true
     }
 
-    @CompileDynamic
-    protected File unzipProfile(AntBuilder ant, Resource location) {
-        File tmpDir = null
-        URL url = location.URL
-        if (url && url.protocol == 'jar') {
-            String absolutePath = url.path
-            URL jarUrl = new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!')))
-            tmpDir = unzippedDirectories.get(jarUrl)
-
-            if (tmpDir == null) {
-                File jarFile = IOUtils.findJarFile(url)
-                tmpDir = Files.createTempDirectory(UNZIP_PROFILE_TEMP_DIR).toFile()
-                ant.unzip(src: jarFile, dest: tmpDir)
-                unzippedDirectories.put(jarUrl, tmpDir)
-            }
-        }
-        tmpDir
-    }
-
-    @CompileDynamic
-    protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileCoords, Profile profile,
-                                      List<Feature> features, Map<String, String> variables, File targetDirectory) {
-        boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
-        String ln = System.getProperty('line.separator')
-
-        Closure repositoryUrl = { int spaces, String repo ->
-            repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
-        }
-        List<String> repositoryUrls = profile.repositories.sort().reverse()
-        if (isSnapshotVersion) {
-            repositoryUrls.add(0, 'mavenLocal()')
-        }
-        String repositories = repositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
-
-        List<Dependency> profileDependencies = profile.dependencies
-        List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
-            dep.scope != 'build'
-        }
-        List<Dependency> buildDependencies = profileDependencies.findAll { Dependency dep ->
-            dep.scope == 'build'
-        }
-
-        for (Feature f in features) {
-            dependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope != 'build' }
-            buildDependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope == 'build' }
-        }
-
-        dependencies.add(new Dependency(profileRepository.getProfileArtifact(profileCoords), 'profile'))
-
-        dependencies = dependencies.unique()
-
-        List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies)
-
-        String dependenciesString = gradleDependencies
-                .sort({ GradleDependency dep -> dep.scope })
-                .collect({ GradleDependency dep -> dep.toString(4) })
-                .unique()
-                .join(ln)
-
-        List<String> buildRepositories = profile.buildRepositories
-        for (Feature f in features) {
-            buildRepositories.addAll(f.getBuildRepositories())
-        }
-
-        List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
-
-        if (isSnapshotVersion) {
-            buildRepositoryUrls.add(0, 'mavenLocal()')
-        }
-        String buildRepositoriesString = buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
-
-        String buildDependenciesString = buildDependencies.collect { Dependency dep ->
-            "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
-        }.unique().join(ln)
-
-        List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
-            "    id \"$name\""
-        }
-
-        for (Feature f in features) {
-            buildPlugins.addAll f.buildPlugins.collect { String name ->
-                "    id \"$name\""
-            }
-        }
-
-        String buildPluginsString = buildPlugins.unique().join(ln)
-
-        ant.replace(dir: targetDirectory) {
-            replacefilter {
-                replacetoken('@buildPlugins@')
-                replacevalue(buildPluginsString)
-            }
-            replacefilter {
-                replacetoken('@dependencies@')
-                replacevalue(dependenciesString)
-            }
-            replacefilter {
-                replacetoken('@buildDependencies@')
-                replacevalue(buildDependenciesString)
-            }
-            replacefilter {
-                replacetoken('@buildRepositories@')
-                replacevalue(buildRepositoriesString)
-            }
-            replacefilter {
-                replacetoken('@repositories@')
-                replacevalue(repositories)
-            }
-            variables.each { String k, String v ->
-                replacefilter {
-                    replacetoken("@${k}@".toString())
-                    replacevalue(v)
-                }
-            }
-        }
-    }
-
-    protected String evaluateProfileName(CommandLine mainCommandLine) {
-        mainCommandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
-    }
-
-    protected Iterable<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, GrailsConsole console) {
-        if (requestedFeatures) {
-            List<String> allFeatureNames = profile.features*.name
-            Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
-            requestedFeatures.removeAll(allFeatureNames)
-            requestedFeatures.each { String invalidFeature ->
-                List possibleSolutions = allFeatureNames.findAll {
-                    it.substring(0, 2) == invalidFeature.substring(0, 2)
-                }
-                StringBuilder warning = new StringBuilder("Feature ${invalidFeature} does not exist in the profile ${profile.name}!")
-                if (possibleSolutions) {
-                    warning.append(' Possible solutions: ')
-                    warning.append(possibleSolutions.join(', '))
-                }
-                console.warn(warning.toString())
-            }
-            return (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
-        }
-
-        (profile.defaultFeatures + profile.requiredFeatures).unique()
-    }
-
-    protected String getDefaultProfile() {
-        ProfileRepository.DEFAULT_PROFILE_NAME
-    }
-
-    protected String createNewApplicationYml(String previousYml, String newYml) {
-        String ln = System.getProperty('line.separator')
-        if (newYml != previousYml) {
-            StringBuilder appended = new StringBuilder(previousYml.length() + newYml.length() + 30)
-            if (!previousYml.startsWith('---')) {
-                appended.append('---' + ln)
-            }
-            appended.append(previousYml).append(ln + '---' + ln)
-            appended.append(newYml)
-            appended.toString()
-        }
-        else {
-            newYml
-        }
-    }
-
-    private void appendToYmlSubDocument(File applicationYmlFile, String previousApplicationYml) {
-        appendToYmlSubDocument(applicationYmlFile, previousApplicationYml, applicationYmlFile)
-    }
-
-    private void appendToYmlSubDocument(File applicationYmlFile, String previousApplicationYml, File setTo) {
-        String newApplicationYml = applicationYmlFile.text
-        if (previousApplicationYml && newApplicationYml != previousApplicationYml) {
-            setTo.text = createNewApplicationYml(previousApplicationYml, newApplicationYml)
-        }
-    }
-
-    private Map<String, String> initializeVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
-        Map<String, String> variables = new HashMap<>()
-        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profileName, features, grailsVersion)
-        Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
-        variables.putAll(codegenVariables)
-        variables.putAll(dependencyVersions)
-        variables
-    }
-
-    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
-        String projectClassName = GrailsNameUtils.getNameFromScript(appName)
-        Map<String, String> variables = new HashMap<>()
-        variables.APPNAME = appName
-
-        variables['grails.codegen.defaultPackage'] = packageName
-        variables['grails.codegen.defaultPackage.path'] = packageName.replace('.', '/')
-        variables['grails.codegen.projectClassName'] = projectClassName
-        variables['grails.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
-        variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
-        variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
-        variables['grails.profile'] = profileName
-        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
-        variables['grails.version'] = grailsVersion
-        variables['grails.app.name'] = appName
-        variables['grails.app.group'] = groupName
-
-        variables['grace.codegen.defaultPackage'] = packageName
-        variables['grace.codegen.defaultPackage.path'] = packageName.replace('.', '/')
-        variables['grace.codegen.projectClassName'] = projectClassName
-        variables['grace.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
-        variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
-        variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
-        variables['grace.profile'] = profileName
-        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
-        variables['grace.version'] = grailsVersion
-        variables['grace.app.name'] = appName
-        variables['grace.app.group'] = groupName
-
-        variables
-    }
-
-    private Map<String, String> getDependencyVersions(ProfileRepository profileRepository, String grailsVersion) {
-        Map<String, String> versions = new HashMap<>()
-        versions['grails.version'] = grailsVersion
-        versions['grace.version'] = grailsVersion
-        if (profileRepository instanceof MavenProfileRepository) {
-            MavenProfileRepository mpr = (MavenProfileRepository) profileRepository
-            String gormDep = mpr.profileDependencyVersions.getGormVersion()
-            if (gormDep != null) {
-                versions['gorm.version'] = gormDep
-            }
-            String groovyDep = mpr.profileDependencyVersions.getGroovyVersion()
-            if (groovyDep != null) {
-                versions['groovy.version'] = groovyDep
-            }
-            String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
-            if (grailsGradlePluginVersion != null) {
-                versions['grails-gradle-plugin.version'] = grailsGradlePluginVersion
-            }
-            mpr.profileDependencyVersions.getProperties().each {
-                versions[it.key.toString()] = it.value.toString()
-            }
-        }
-        versions
-    }
-
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile, Map<String, String> variables, File targetDirectory) {
+    protected void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile,
+                              Map<String, String> variables, File targetDirectory, Map<URL, File> unzippedDirectories) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
@@ -735,7 +433,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
         else {
             // establish the JAR file name and extract
-            tmpDir = unzipProfile(ant, skeletonResource)
+            tmpDir = unzipProfile(ant, unzippedDirectories, skeletonResource)
             skeletonDir = new File(tmpDir, 'META-INF/grails-profile/skeleton')
         }
         copySrcToTarget(ant, skeletonDir, excludes, profile.binaryExtensions, variables, targetDirectory)
@@ -910,7 +608,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
 
             Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profile.name, features, grailsVersion)
-            Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
+            Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
             Map<String, Object> project = new HashMap<>()
             project.put('appName', appName)
             project.put('packageName', packageName)
@@ -982,12 +680,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
         finally {
             // Cleanup temporal directories
-            tempZipFile?.deleteOnExit()
-            deleteDirectory(tempDir)
+            deleteDirectoryOrFile(tempZipFile)
+            deleteDirectoryOrFile(tempDir)
         }
     }
 
-    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, String template, String appName, File projectTargetDirectory, GrailsConsole console, boolean verbose) {
+    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, String template, String appName,
+                                            File projectTargetDirectory, GrailsConsole console, boolean verbose) {
         ResourceCollection resource
         if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
             resource = new URLResource(template)
@@ -1018,7 +717,106 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println()
     }
 
-    protected Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties, GrailsConsole console, boolean verbose = false) {
+    @CompileDynamic
+    protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileName, Profile profile,
+                                      List<Feature> features, Map<String, String> variables, File targetDirectory) {
+        boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
+        String ln = System.getProperty('line.separator')
+
+        Closure repositoryUrl = { int spaces, String repo ->
+            repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
+        }
+        List<String> repositoryUrls = profile.repositories.sort().reverse()
+        if (isSnapshotVersion) {
+            repositoryUrls.add(0, 'mavenLocal()')
+        }
+        String repositories = repositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
+
+        List<Dependency> profileDependencies = profile.dependencies
+        List<Dependency> dependencies = profileDependencies.findAll { Dependency dep ->
+            dep.scope != 'build'
+        }
+        List<Dependency> buildDependencies = profileDependencies.findAll { Dependency dep ->
+            dep.scope == 'build'
+        }
+
+        for (Feature f in features) {
+            dependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope != 'build' }
+            buildDependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope == 'build' }
+        }
+
+        dependencies.add(new Dependency(this.profileRepository.getProfileArtifact(profileName), 'profile'))
+
+        dependencies = dependencies.unique()
+
+        List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies)
+
+        String dependenciesString = gradleDependencies
+                .sort({ GradleDependency dep -> dep.scope })
+                .collect({ GradleDependency dep -> dep.toString(4) })
+                .unique()
+                .join(ln)
+
+        List<String> buildRepositories = profile.buildRepositories
+        for (Feature f in features) {
+            buildRepositories.addAll(f.getBuildRepositories())
+        }
+
+        List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
+
+        if (isSnapshotVersion) {
+            buildRepositoryUrls.add(0, 'mavenLocal()')
+        }
+        String buildRepositoriesString = buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
+
+        String buildDependenciesString = buildDependencies.collect { Dependency dep ->
+            "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
+        }.unique().join(ln)
+
+        List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
+            "    id \"$name\""
+        }
+
+        for (Feature f in features) {
+            buildPlugins.addAll f.buildPlugins.collect { String name ->
+                "    id \"$name\""
+            }
+        }
+
+        String buildPluginsString = buildPlugins.unique().join(ln)
+
+        ant.replace(dir: targetDirectory) {
+            replacefilter {
+                replacetoken('@buildPlugins@')
+                replacevalue(buildPluginsString)
+            }
+            replacefilter {
+                replacetoken('@dependencies@')
+                replacevalue(dependenciesString)
+            }
+            replacefilter {
+                replacetoken('@buildDependencies@')
+                replacevalue(buildDependenciesString)
+            }
+            replacefilter {
+                replacetoken('@buildRepositories@')
+                replacevalue(buildRepositoriesString)
+            }
+            replacefilter {
+                replacetoken('@repositories@')
+                replacevalue(repositories)
+            }
+            variables.each { String k, String v ->
+                replacefilter {
+                    replacetoken("@${k}@".toString())
+                    replacevalue(v)
+                }
+            }
+        }
+    }
+
+    private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
+                                       GrailsConsole console, boolean verbose = false) {
         Project project = new Project()
         project.setBaseDir(projectTargetDirectory)
         project.setName(appName)
@@ -1044,19 +842,223 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         project
     }
 
-    private void deleteDirectory(File directory) {
+    @CompileDynamic
+    private File unzipProfile(AntBuilder ant, Map<URL, File> unzippedDirectories, Resource location) {
+        File tmpDir = null
+        URL url = location.URL
+        if (url && url.protocol == 'jar') {
+            String absolutePath = url.path
+            URL jarUrl = new URL(absolutePath.substring(0, absolutePath.lastIndexOf('!')))
+            tmpDir = unzippedDirectories.get(jarUrl)
+
+            if (tmpDir == null) {
+                File jarFile = IOUtils.findJarFile(url)
+                tmpDir = Files.createTempDirectory(UNZIP_PROFILE_TEMP_DIR).toFile()
+                ant.unzip(src: jarFile, dest: tmpDir)
+                unzippedDirectories.put(jarUrl, tmpDir)
+            }
+        }
+        tmpDir
+    }
+
+    private List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies) {
+        List<GradleDependency> gradleDependencies = []
+        gradleDependencies.addAll(dependencies.collect { new GradleDependency(it) })
+        gradleDependencies
+    }
+
+    private void buildTargetFolders(Profile profile, Map<Profile, File> targetDirs, File projectDir) {
+        if (!targetDirs.containsKey(profile)) {
+            targetDirs[profile] = projectDir
+        }
+        profile.extends.each { Profile p ->
+            if (profile.parentSkeletonDir) {
+                targetDirs[p] = profile.getParentSkeletonDir(projectDir)
+            }
+            else {
+                targetDirs[p] = targetDirs[profile]
+            }
+            buildTargetFolders(p, targetDirs, projectDir)
+        }
+    }
+
+    private String createNewApplicationYml(String previousYml, String newYml) {
+        String ln = System.getProperty('line.separator')
+        if (newYml != previousYml) {
+            StringBuilder appended = new StringBuilder(previousYml.length() + newYml.length() + 30)
+            if (!previousYml.startsWith('---')) {
+                appended.append('---' + ln)
+            }
+            appended.append(previousYml).append(ln + '---' + ln)
+            appended.append(newYml)
+            appended.toString()
+        }
+        else {
+            newYml
+        }
+    }
+
+    private void appendFeatureFiles(File skeletonDir, File targetDirectory) {
+        Set<File> ymlFiles = findAllFilesByName(skeletonDir, APPLICATION_YML)
+        Set<File> buildGradleFiles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
+        Set<File> gradlePropertiesFiles = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
+
+        ymlFiles.each { File newYml ->
+            File oldYml = new File(getDestinationDirectory(newYml, targetDirectory), APPLICATION_YML)
+            String oldText = (oldYml.isFile()) ? oldYml.getText(ENCODING) : null
+            if (oldText) {
+                appendToYmlSubDocument(newYml, oldText, oldYml)
+            }
+            else {
+                oldYml.text = newYml.getText(ENCODING)
+            }
+        }
+        buildGradleFiles.each { File srcFile ->
+            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), BUILD_GRADLE)
+            destFile.text = destFile.getText(ENCODING) + System.lineSeparator() + srcFile.getText(ENCODING)
+        }
+
+        gradlePropertiesFiles.each { File srcFile ->
+            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), GRADLE_PROPERTIES)
+            if (!destFile.exists()) {
+                destFile.createNewFile()
+            }
+            destFile.append(srcFile.getText(ENCODING))
+        }
+    }
+
+    private void appendToYmlSubDocument(File applicationYmlFile, String previousApplicationYml) {
+        appendToYmlSubDocument(applicationYmlFile, previousApplicationYml, applicationYmlFile)
+    }
+
+    private void appendToYmlSubDocument(File applicationYmlFile, String previousApplicationYml, File setTo) {
+        String newApplicationYml = applicationYmlFile.text
+        if (previousApplicationYml && newApplicationYml != previousApplicationYml) {
+            setTo.text = createNewApplicationYml(previousApplicationYml, newApplicationYml)
+        }
+    }
+
+    private Map<String, String> initializeVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
+        Map<String, String> variables = new HashMap<>()
+        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profileName, features, grailsVersion)
+        Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
+        variables.putAll(codegenVariables)
+        variables.putAll(dependencyVersions)
+        variables
+    }
+
+    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
+        String projectClassName = GrailsNameUtils.getNameFromScript(appName)
+        Map<String, String> variables = new HashMap<>()
+        variables.APPNAME = appName
+
+        variables['grails.codegen.defaultPackage'] = packageName
+        variables['grails.codegen.defaultPackage.path'] = packageName.replace('.', '/')
+        variables['grails.codegen.projectClassName'] = projectClassName
+        variables['grails.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
+        variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
+        variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
+        variables['grails.profile'] = profileName
+        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
+        variables['grails.version'] = grailsVersion
+        variables['grails.app.name'] = appName
+        variables['grails.app.group'] = groupName
+
+        variables['grace.codegen.defaultPackage'] = packageName
+        variables['grace.codegen.defaultPackage.path'] = packageName.replace('.', '/')
+        variables['grace.codegen.projectClassName'] = projectClassName
+        variables['grace.codegen.projectName'] = GrailsNameUtils.getScriptName(projectClassName)
+        variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
+        variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
+        variables['grace.profile'] = profileName
+        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
+        variables['grace.version'] = grailsVersion
+        variables['grace.app.name'] = appName
+        variables['grace.app.group'] = groupName
+
+        variables
+    }
+
+    private Map<String, String> getDependencyVersions(String grailsVersion) {
+        Map<String, String> versions = new HashMap<>()
+        versions['grails.version'] = grailsVersion
+        versions['grace.version'] = grailsVersion
+        if (this.profileRepository instanceof MavenProfileRepository) {
+            MavenProfileRepository mpr = (MavenProfileRepository) this.profileRepository
+            String gormDep = mpr.profileDependencyVersions.getGormVersion()
+            if (gormDep != null) {
+                versions['gorm.version'] = gormDep
+            }
+            String groovyDep = mpr.profileDependencyVersions.getGroovyVersion()
+            if (groovyDep != null) {
+                versions['groovy.version'] = groovyDep
+            }
+            String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
+            if (grailsGradlePluginVersion != null) {
+                versions['grails-gradle-plugin.version'] = grailsGradlePluginVersion
+            }
+            mpr.profileDependencyVersions.getProperties().each {
+                versions[it.key.toString()] = it.value.toString()
+            }
+        }
+        versions
+    }
+
+    private File getDestinationDirectory(File srcFile, File targetDirectory) {
+        String searchDir = 'skeleton'
+        File srcDir = srcFile.parentFile
+        File destDir
+        if (srcDir.absolutePath.endsWith(searchDir)) {
+            destDir = targetDirectory
+        }
+        else {
+            int index = srcDir.absolutePath.lastIndexOf(searchDir) + searchDir.size() + 1
+            String relativePath = (srcDir.absolutePath - srcDir.absolutePath.substring(0, index))
+            destDir = new File(targetDirectory, relativePath)
+        }
+        destDir
+    }
+
+    private Set<File> findAllFilesByName(File projectDir, String fileName) {
+        Set<File> files = (Set) []
+        if (projectDir.exists()) {
+            Files.walkFileTree(projectDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
+
+                @Override
+                FileVisitResult visitFile(Path path, BasicFileAttributes mainAtts)
+                        throws IOException {
+                    if (path.fileName.toString().endsWith(fileName)) {
+                        files.add(path.toFile())
+                    }
+                    FileVisitResult.CONTINUE
+                }
+
+            })
+        }
+        files
+    }
+
+    private boolean isDirectoryEmpty(File target) {
+        if (target.isDirectory()) {
+            try (Stream<Path> entries = Files.list(Paths.get(target.toURI()))) {
+                return !entries.findFirst().isPresent()
+            }
+        }
+        false
+    }
+
+    private void deleteDirectoryOrFile(File file) {
         try {
-            directory?.deleteDir()
+            if (file.isDirectory()) {
+                file?.deleteDir()
+            }
+            else if (file.isFile()) {
+                file.delete()
+            }
         }
         catch (Throwable ignored) {
             // Ignore error deleting temporal directory
         }
-    }
-
-    protected List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies) {
-        List<GradleDependency> gradleDependencies = []
-        gradleDependencies.addAll(dependencies.collect { new GradleDependency(it) })
-        gradleDependencies
     }
 
     static class CreateAppCommandObject {
