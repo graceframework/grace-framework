@@ -41,7 +41,6 @@ import org.apache.tools.ant.types.ResourceCollection
 import org.apache.tools.ant.types.resources.FileResource
 import org.apache.tools.ant.types.resources.URLResource
 import org.codehaus.groovy.ant.Groovy
-import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.graph.Dependency
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -96,11 +95,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
 
     ProfileRepository profileRepository
-    Map<String, String> variables = [:]
-    String appname
-    String groupname
-    String defaultpackagename
-    File targetDirectory
 
     CommandDescription description = new CommandDescription(name, 'Creates an application', 'create-app [NAME] --profile=web')
 
@@ -179,7 +173,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         super.complete(commandLine, desc, candidates, cursor)
     }
 
-    protected File getDestinationDirectory(File srcFile) {
+    protected File getDestinationDirectory(File srcFile, File targetDirectory) {
         String searchDir = 'skeleton'
         File srcDir = srcFile.parentFile
         File destDir
@@ -194,13 +188,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         destDir
     }
 
-    protected void appendFeatureFiles(File skeletonDir) {
+    protected void appendFeatureFiles(File skeletonDir, File targetDirectory) {
         Set<File> ymlFiles = findAllFilesByName(skeletonDir, APPLICATION_YML)
         Set<File> buildGradleFiles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
         Set<File> gradlePropertiesFiles = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
 
         ymlFiles.each { File newYml ->
-            File oldYml = new File(getDestinationDirectory(newYml), APPLICATION_YML)
+            File oldYml = new File(getDestinationDirectory(newYml, targetDirectory), APPLICATION_YML)
             String oldText = (oldYml.isFile()) ? oldYml.getText(ENCODING) : null
             if (oldText) {
                 appendToYmlSubDocument(newYml, oldText, oldYml)
@@ -210,12 +204,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
         buildGradleFiles.each { File srcFile ->
-            File destFile = new File(getDestinationDirectory(srcFile), BUILD_GRADLE)
+            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), BUILD_GRADLE)
             destFile.text = destFile.getText(ENCODING) + System.lineSeparator() + srcFile.getText(ENCODING)
         }
 
         gradlePropertiesFiles.each { File srcFile ->
-            File destFile = new File(getDestinationDirectory(srcFile), GRADLE_PROPERTIES)
+            File destFile = new File(getDestinationDirectory(srcFile, targetDirectory), GRADLE_PROPERTIES)
             if (!destFile.exists()) {
                 destFile.createNewFile()
             }
@@ -271,11 +265,54 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             return false
         }
 
-        if (!initializeGroupAndName(console, cmd.appName, cmd.inplace)) {
+        if (!cmd.appName && !cmd.inplace) {
+            console.error('Specify an application name or use --inplace to create an application in the current directory')
             return false
         }
 
-        Path appFullDirectory = Paths.get(cmd.baseDir.path, appname)
+        String appName
+        String groupName
+        String defaultPackageName
+        String groupAndAppName = cmd.appName
+        if (cmd.inplace) {
+            appName = new File('.').canonicalFile.name
+            groupAndAppName = groupAndAppName ?: appName
+        }
+
+        if (!groupAndAppName) {
+            console.error('Specify an application name or use --inplace to create an application in the current directory')
+            return false
+        }
+
+        try {
+            List<String> parts = groupAndAppName.split(/\./) as List
+            if (parts.size() == 1) {
+                appName = parts[0]
+                defaultPackageName = appName.split(/[-]+/).collect { String token ->
+                    (token.toLowerCase().toCharArray().findAll { char ch ->
+                        Character.isJavaIdentifierPart(ch)
+                    } as char[]) as String
+                }.join('.')
+
+                if (!GrailsNameUtils.isValidJavaPackage(defaultPackageName)) {
+                    console.error("Cannot create a valid package name for [$appName]. " +
+                            'Please specify a name that is also a valid Java package.')
+                    return false
+                }
+                groupName = defaultPackageName
+            }
+            else {
+                appName = parts[-1]
+                groupName = parts[0..-2].join('.')
+                defaultPackageName = groupName
+            }
+        }
+        catch (IllegalArgumentException e) {
+            console.error(e.message)
+            return false
+        }
+
+        Path appFullDirectory = Paths.get(cmd.baseDir.path, appName)
         File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
         if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
             console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
@@ -288,19 +325,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        initializeVariables(profileName, cmd.grailsVersion)
+        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, console).toList()
+
+        Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.grailsVersion)
 
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
 
-        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, console).toList()
-
-        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
-        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
-
-        console.addStatus("Creating a new ${name == 'create-plugin' ? 'plugin' : 'application'}")
+        console.addStatus("Creating a new ${name == 'create-app' ? 'application' : 'plugin'}")
         console.println()
-        console.println("     ${name == 'create-plugin' ? 'Plugin' : 'App'} name:".padRight(24) + appname)
-        console.println("     Package name:".padRight(24) + defaultpackagename)
+        console.println("     ${name == 'create-app' ? 'App' : 'Plugin'} name:".padRight(24) + appName)
+        console.println("     Package name:".padRight(24) + defaultPackageName)
         console.println("     Profile:".padRight(24) + profileName)
         console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
         if (cmd.template) {
@@ -318,7 +352,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             Set<File> ymlFiles = findAllFilesByName(projectTargetDirectory, APPLICATION_YML)
             Map<File, String> ymlCache = [:]
 
-            targetDirectory = targetDirs[p]
+            File targetDirectory = targetDirs[p]
 
             ymlFiles.each { File applicationYmlFile ->
                 String previousApplicationYml = (applicationYmlFile.isFile()) ? applicationYmlFile.getText(ENCODING) : null
@@ -327,7 +361,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
 
-            copySkeleton(ant, profileInstance, p)
+            copySkeleton(ant, profileInstance, p, variables, targetDirectory)
 
             ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
                 if (applicationYmlFile.exists()) {
@@ -349,12 +383,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
             }
 
-            targetDirectory = targetDirs[f.profile]
+            File targetDirectory = targetDirs[f.profile]
 
-            appendFeatureFiles(skeletonDir)
+            appendFeatureFiles(skeletonDir, targetDirectory)
 
             if (skeletonDir.exists()) {
-                copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions)
+                copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions, variables, targetDirectory)
             }
         }
 
@@ -365,16 +399,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
-                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
                 applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, console, cmd.verbose)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                copyApplicationTemplate(ant, console, profileInstance, features, cmd.template, grailsVersion)
-                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+                copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion, variables, projectTargetDirectory)
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
             }
         }
         else {
-            replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+            replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
         }
 
         console.addStatus("${name == 'create-app' ? 'Application' : 'Plugin'} created by Grace ${grailsVersion}.")
@@ -465,7 +499,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileCoords, Profile profile, List<Feature> features, File targetDirectory) {
+    protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileCoords, Profile profile,
+                                      List<Feature> features, Map<String, String> variables, File targetDirectory) {
         boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
         String ln = System.getProperty('line.separator')
 
@@ -618,39 +653,16 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected boolean initializeGroupAndName(GrailsConsole console, String appName, boolean inplace) {
-        if (!appName && !inplace) {
-            console.error('Specify an application name or use --inplace to create an application in the current directory')
-            return false
-        }
-        String groupAndAppName = appName
-        if (inplace) {
-            appname = new File('.').canonicalFile.name
-            groupAndAppName = groupAndAppName ?: appname
-        }
-
-        if (!groupAndAppName) {
-            console.error('Specify an application name or use --inplace to create an application in the current directory')
-            return false
-        }
-
-        try {
-            defaultpackagename = establishGroupAndAppName(groupAndAppName)
-        }
-        catch (IllegalArgumentException e) {
-            console.error(e.message)
-            return false
-        }
-    }
-
-    private void initializeVariables(String profileName, String grailsVersion) {
-        Map<String, String> codegenVariables = getCodegenVariables(appname, groupname, defaultpackagename, profileName, grailsVersion)
+    private Map<String, String> initializeVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
+        Map<String, String> variables = new HashMap<>()
+        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profileName, features, grailsVersion)
         Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
         variables.putAll(codegenVariables)
         variables.putAll(dependencyVersions)
+        variables
     }
 
-    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, String grailsVersion) {
+    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
         String projectClassName = GrailsNameUtils.getNameFromScript(appName)
         Map<String, String> variables = new HashMap<>()
         variables.APPNAME = appName
@@ -662,6 +674,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grails.profile'] = profileName
+        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appName
         variables['grails.app.group'] = groupName
@@ -673,6 +686,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grace.profile'] = profileName
+        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
         variables['grace.version'] = grailsVersion
         variables['grace.app.name'] = appName
         variables['grace.app.group'] = groupName
@@ -705,38 +719,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         versions
     }
 
-    private String establishGroupAndAppName(String groupAndAppName) {
-        String defaultPackage
-        List<String> parts = groupAndAppName.split(/\./) as List
-        if (parts.size() == 1) {
-            appname = parts[0]
-            defaultPackage = createValidPackageName()
-            groupname = defaultPackage
-        }
-        else {
-            appname = parts[-1]
-            groupname = parts[0..-2].join('.')
-            defaultPackage = groupname
-        }
-        defaultPackage
-    }
-
-    private String createValidPackageName() {
-        String defaultPackage = appname.split(/[-]+/).collect { String token ->
-            (token.toLowerCase().toCharArray().findAll { char ch ->
-                Character.isJavaIdentifierPart(ch)
-            } as char[]) as String
-        }.join('.')
-
-        if (!GrailsNameUtils.isValidJavaPackage(defaultPackage)) {
-            throw new IllegalArgumentException("Cannot create a valid package name for [$appname]. " +
-                    'Please specify a name that is also a valid Java package.')
-        }
-        defaultPackage
-    }
-
     @CompileStatic(TypeCheckingMode.SKIP)
-    private void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile) {
+    private void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile, Map<String, String> variables, File targetDirectory) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
@@ -754,13 +738,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             tmpDir = unzipProfile(ant, skeletonResource)
             skeletonDir = new File(tmpDir, 'META-INF/grails-profile/skeleton')
         }
-        copySrcToTarget(ant, skeletonDir, excludes, profile.binaryExtensions)
+        copySrcToTarget(ant, skeletonDir, excludes, profile.binaryExtensions, variables, targetDirectory)
 
         Set<File> sourceBuildGradles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
 
         sourceBuildGradles.each { File srcFile ->
             File srcDir = srcFile.parentFile
-            File destDir = getDestinationDirectory(srcFile)
+            File destDir = getDestinationDirectory(srcFile, targetDirectory)
             File destFile = new File(destDir, BUILD_GRADLE)
 
             if (new File(srcDir, '.gitattributes').exists()) {
@@ -789,7 +773,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         Set<File> sourceGradleProperties = findAllFilesByName(skeletonDir, GRADLE_PROPERTIES)
 
         sourceGradleProperties.each { File srcFile ->
-            File destDir = getDestinationDirectory(srcFile)
+            File destDir = getDestinationDirectory(srcFile, targetDirectory)
             File destFile = new File(destDir, GRADLE_PROPERTIES)
 
             if (destFile.exists()) {
@@ -812,7 +796,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void copySrcToTarget(GrailsConsoleAntBuilder ant, File srcDir, List excludes, Set<String> binaryFileExtensions) {
+    protected void copySrcToTarget(GrailsConsoleAntBuilder ant, File srcDir, List excludes, Set<String> binaryFileExtensions,
+                                   Map<String, String> variables, File targetDirectory) {
         ant.copy(todir: targetDirectory, overwrite: true, encoding: 'UTF-8') {
             fileSet(dir: srcDir, casesensitive: false) {
                 exclude(name: '**/.gitkeep')
@@ -852,8 +837,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console, Profile profile,
-                                           List<Feature> features, String templateUrl, String grailsVersion) {
+    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
+                                           String appName, String groupName, String packageName, Profile profile,
+                                           List<Feature> features, String templateUrl, String grailsVersion,
+                                           Map<String, String> variables, File targetDirectory) {
         File tempZipFile = null
         File tempDir = null
         File projectDir = null
@@ -922,11 +909,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return
             }
 
-            Map<String, String> codegenVariables = getCodegenVariables(appname, groupname, defaultpackagename, profile.name, grailsVersion)
+            Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profile.name, features, grailsVersion)
             Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
             Map<String, Object> project = new HashMap<>()
-            project.put('appName', appname)
-            project.put('packageName', defaultpackagename)
+            project.put('appName', appName)
+            project.put('packageName', packageName)
             project.put('profile', profile.name)
             project.put('features', features*.name.sort())
             project.put('template', templateUrl)
