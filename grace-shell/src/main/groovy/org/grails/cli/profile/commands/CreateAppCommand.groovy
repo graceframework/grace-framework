@@ -516,8 +516,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String buildRepositoriesString = buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
-            String artifactStr = resolveArtifactString(dep)
-            "    implementation \"${artifactStr}\"".toString()
+            "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
@@ -1056,13 +1055,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         project.getBaseDir()
 
         project
-    }
-
-    protected String resolveArtifactString(Dependency dep) {
-        Artifact artifact = dep.artifact
-        String v = artifact.version.replace('BOM', '')
-
-        v ? "${artifact.groupId}:${artifact.artifactId}:${v}" : "${artifact.groupId}:${artifact.artifactId}"
     }
 
     private void deleteDirectory(File directory) {
