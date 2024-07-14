@@ -49,7 +49,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 
 import grails.build.logging.GrailsConsole
 import grails.io.IOUtils
-import grails.util.Environment
 import grails.util.GrailsNameUtils
 import grails.util.GrailsVersion
 import org.grails.build.logging.GrailsConsoleAntBuilder
@@ -80,7 +79,6 @@ import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
 @CompileStatic
 class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepositoryAware {
 
-    private static final String GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS = '2023.0.0-SNAPSHOT'
     public static final String NAME = 'create-app'
     public static final String PROFILE_FLAG = 'profile'
     public static final String FEATURES_FLAG = 'features'
@@ -262,6 +260,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             throw new IllegalStateException("Property 'profileRepository' must be set")
         }
 
+        String grailsVersion = cmd.grailsVersion
         GrailsConsole console = cmd.console
         String profileName = cmd.profileName
 
@@ -270,7 +269,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             return false
         }
 
-        if (!initializeGroupAndName(cmd.appName, cmd.inplace)) {
+        if (!initializeGroupAndName(console, cmd.appName, cmd.inplace)) {
             return false
         }
 
@@ -291,7 +290,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
 
-        List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
+        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, console).toList()
 
         variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
         variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
@@ -368,7 +367,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, console, cmd.verbose)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                copyApplicationTemplate(ant, profileInstance, features, cmd.template, console)
+                copyApplicationTemplate(ant, console, profileInstance, features, cmd.template, grailsVersion)
                 replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
             }
         }
@@ -376,10 +375,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
         }
 
-        String grailsVersion = GrailsVersion.current().version
-        console.addStatus(
-                "${name == 'create-plugin' ? 'Plugin' : 'Application'} created by Grace ${grailsVersion}."
-        )
+        console.addStatus("${name == 'create-app' ? 'Application' : 'Plugin'} created by Grace ${grailsVersion}.")
+
         if (profileInstance.instructions) {
             console.addStatus(profileInstance.instructions)
         }
@@ -416,6 +413,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
+        String grailsVersion = GrailsVersion.current().version
         boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
         String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
 
@@ -425,7 +423,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 appName: appName,
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
-                grailsVersion: Environment.getPackage().getImplementationVersion() ?: GRAILS_VERSION_FALLBACK_IN_IDE_ENVIRONMENTS_FOR_RUNNING_TESTS,
+                grailsVersion: grailsVersion,
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
@@ -566,7 +564,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         mainCommandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
     }
 
-    protected Iterable<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures) {
+    protected Iterable<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, GrailsConsole console) {
         if (requestedFeatures) {
             List<String> allFeatureNames = profile.features*.name
             Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
@@ -580,7 +578,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     warning.append(' Possible solutions: ')
                     warning.append(possibleSolutions.join(', '))
                 }
-                GrailsConsole.getInstance().warn(warning.toString())
+                console.warn(warning.toString())
             }
             return (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
         }
@@ -619,9 +617,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected boolean initializeGroupAndName(String appName, boolean inplace) {
+    protected boolean initializeGroupAndName(GrailsConsole console, String appName, boolean inplace) {
         if (!appName && !inplace) {
-            GrailsConsole.getInstance().error('Specify an application name or use --inplace to create an application in the current directory')
+            console.error('Specify an application name or use --inplace to create an application in the current directory')
             return false
         }
         String groupAndAppName = appName
@@ -631,7 +629,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         if (!groupAndAppName) {
-            GrailsConsole.getInstance().error('Specify an application name or use --inplace to create an application in the current directory')
+            console.error('Specify an application name or use --inplace to create an application in the current directory')
             return false
         }
 
@@ -639,7 +637,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             defaultpackagename = establishGroupAndAppName(groupAndAppName)
         }
         catch (IllegalArgumentException e) {
-            GrailsConsole.instance.error(e.message)
+            console.error(e.message)
             return false
         }
     }
@@ -853,7 +851,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     @CompileDynamic
-    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, Profile profile, List<Feature> features, String templateUrl, GrailsConsole console) {
+    protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console, Profile profile,
+                                           List<Feature> features, String templateUrl, String grailsVersion) {
         File tempZipFile = null
         File tempDir = null
         File projectDir = null
@@ -922,7 +921,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return
             }
 
-            String grailsVersion = GrailsVersion.current().version
             Map<String, String> codegenVariables = getCodegenVariables(appname, groupname, defaultpackagename, profile.name, grailsVersion)
             Map<String, String> dependencyVersions = getDependencyVersions(profileRepository, grailsVersion)
             Map<String, Object> project = new HashMap<>()
