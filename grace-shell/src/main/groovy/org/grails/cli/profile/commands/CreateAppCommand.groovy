@@ -262,135 +262,130 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             throw new IllegalStateException("Property 'profileRepository' must be set")
         }
 
+        GrailsConsole console = cmd.console
         String profileName = cmd.profileName
 
         Profile profileInstance = profileRepository.getProfile(profileName)
-        if (!validateProfile(profileInstance, profileName, cmd.console)) {
+        if (!validateProfile(profileInstance, profileName, console)) {
             return false
         }
 
-        if (profileInstance) {
-            if (!initializeGroupAndName(cmd.appName, cmd.inplace)) {
-                return false
-            }
-
-            initializeVariables(profileName, cmd.grailsVersion)
-
-            Path appFullDirectory = Paths.get(cmd.baseDir.path, appname)
-
-            File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
-
-            if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
-                cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
-                return false
-            }
-            else {
-                boolean result = projectTargetDirectory.mkdir()
-                if (!result) {
-                    cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` created faild!")
-                }
-            }
-
-            GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, cmd.console, cmd.verbose))
-
-            List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
-
-            variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
-            variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
-
-            cmd.console.addStatus("Creating a new ${name == 'create-plugin' ? 'plugin' : 'application'}")
-            cmd.console.println()
-            cmd.console.println("     ${name == 'create-plugin' ? 'Plugin' : 'App'} name:".padRight(24) + appname)
-            cmd.console.println("     Package name:".padRight(24) + defaultpackagename)
-            cmd.console.println("     Profile:".padRight(24) + profileName)
-            cmd.console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
-            if (cmd.template) {
-                cmd.console.println("     App template:".padRight(24) + cmd.template)
-            }
-            cmd.console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
-            cmd.console.println()
-
-            List<Profile> profiles = profileRepository.getProfileAndDependencies(profileInstance)
-
-            Map<Profile, File> targetDirs = [:]
-            buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
-
-            for (Profile p : profiles) {
-                Set<File> ymlFiles = findAllFilesByName(projectTargetDirectory, APPLICATION_YML)
-                Map<File, String> ymlCache = [:]
-
-                targetDirectory = targetDirs[p]
-
-                ymlFiles.each { File applicationYmlFile ->
-                    String previousApplicationYml = (applicationYmlFile.isFile()) ? applicationYmlFile.getText(ENCODING) : null
-                    if (previousApplicationYml) {
-                        ymlCache[applicationYmlFile] = previousApplicationYml
-                    }
-                }
-
-                copySkeleton(ant, profileInstance, p)
-
-                ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
-                    if (applicationYmlFile.exists()) {
-                        appendToYmlSubDocument(applicationYmlFile, previousApplicationYml)
-                    }
-                }
-            }
-
-            for (Feature f in features) {
-                Resource location = f.location
-
-                File skeletonDir
-                File tmpDir
-                if (location instanceof FileSystemResource) {
-                    skeletonDir = location.createRelative('skeleton').file
-                }
-                else {
-                    tmpDir = unzipProfile(ant, location)
-                    skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
-                }
-
-                targetDirectory = targetDirs[f.profile]
-
-                appendFeatureFiles(skeletonDir)
-
-                if (skeletonDir.exists()) {
-                    copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions)
-                }
-            }
-
-            // Cleanup temporal directories
-            unzippedDirectories.values().each { File tmpDir ->
-                deleteDirectory(tmpDir)
-            }
-
-            if (cmd.template) {
-                if (cmd.template.endsWith('.groovy')) {
-                    replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
-                    applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, cmd.console, cmd.verbose)
-                }
-                else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                    copyApplicationTemplate(ant, profileInstance, features, cmd.template, cmd.console)
-                    replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
-                }
-            }
-            else {
-                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
-            }
-
-            String grailsVersion = GrailsVersion.current().version
-            cmd.console.addStatus(
-                    "${name == 'create-plugin' ? 'Plugin' : 'Application'} created by Grace ${grailsVersion}."
-            )
-            if (profileInstance.instructions) {
-                cmd.console.addStatus(profileInstance.instructions)
-            }
-            GrailsCli.triggerAppLoad()
-            return true
+        if (!initializeGroupAndName(cmd.appName, cmd.inplace)) {
+            return false
         }
 
-        System.err.println "Cannot find profile $profileName"
-        false
+        Path appFullDirectory = Paths.get(cmd.baseDir.path, appname)
+        File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
+        if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
+            console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
+            return false
+        }
+        else {
+            boolean result = projectTargetDirectory.mkdir()
+            if (!result) {
+                console.error("Directory `${projectTargetDirectory.absolutePath}` created faild!")
+            }
+        }
+
+        initializeVariables(profileName, cmd.grailsVersion)
+
+        GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
+
+        List<Feature> features = evaluateFeatures(profileInstance, cmd.features).toList()
+
+        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
+        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
+
+        console.addStatus("Creating a new ${name == 'create-plugin' ? 'plugin' : 'application'}")
+        console.println()
+        console.println("     ${name == 'create-plugin' ? 'Plugin' : 'App'} name:".padRight(24) + appname)
+        console.println("     Package name:".padRight(24) + defaultpackagename)
+        console.println("     Profile:".padRight(24) + profileName)
+        console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
+        if (cmd.template) {
+            console.println("     App template:".padRight(24) + cmd.template)
+        }
+        console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
+        console.println()
+
+        List<Profile> profiles = profileRepository.getProfileAndDependencies(profileInstance)
+
+        Map<Profile, File> targetDirs = [:]
+        buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
+
+        for (Profile p : profiles) {
+            Set<File> ymlFiles = findAllFilesByName(projectTargetDirectory, APPLICATION_YML)
+            Map<File, String> ymlCache = [:]
+
+            targetDirectory = targetDirs[p]
+
+            ymlFiles.each { File applicationYmlFile ->
+                String previousApplicationYml = (applicationYmlFile.isFile()) ? applicationYmlFile.getText(ENCODING) : null
+                if (previousApplicationYml) {
+                    ymlCache[applicationYmlFile] = previousApplicationYml
+                }
+            }
+
+            copySkeleton(ant, profileInstance, p)
+
+            ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
+                if (applicationYmlFile.exists()) {
+                    appendToYmlSubDocument(applicationYmlFile, previousApplicationYml)
+                }
+            }
+        }
+
+        for (Feature f in features) {
+            Resource location = f.location
+
+            File skeletonDir
+            File tmpDir
+            if (location instanceof FileSystemResource) {
+                skeletonDir = location.createRelative('skeleton').file
+            }
+            else {
+                tmpDir = unzipProfile(ant, location)
+                skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
+            }
+
+            targetDirectory = targetDirs[f.profile]
+
+            appendFeatureFiles(skeletonDir)
+
+            if (skeletonDir.exists()) {
+                copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions)
+            }
+        }
+
+        // Cleanup temporal directories
+        unzippedDirectories.values().each { File tmpDir ->
+            deleteDirectory(tmpDir)
+        }
+
+        if (cmd.template) {
+            if (cmd.template.endsWith('.groovy')) {
+                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+                applyApplicationTemplate(ant, cmd.template, cmd.appName, projectTargetDirectory, console, cmd.verbose)
+            }
+            else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
+                copyApplicationTemplate(ant, profileInstance, features, cmd.template, console)
+                replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+            }
+        }
+        else {
+            replaceBuildTokens(ant, profileName, profileInstance, features, projectTargetDirectory)
+        }
+
+        String grailsVersion = GrailsVersion.current().version
+        console.addStatus(
+                "${name == 'create-plugin' ? 'Plugin' : 'Application'} created by Grace ${grailsVersion}."
+        )
+        if (profileInstance.instructions) {
+            console.addStatus(profileInstance.instructions)
+        }
+
+        GrailsCli.triggerAppLoad()
+        true
     }
 
     private boolean isDirectoryEmpty(File target) {
