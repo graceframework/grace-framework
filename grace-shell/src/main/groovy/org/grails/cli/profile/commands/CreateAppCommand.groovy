@@ -86,10 +86,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
 
+    public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
+    public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
+
     protected static final String APPLICATION_YML = 'application.yml'
     protected static final String BUILD_GRADLE = 'build.gradle'
     protected static final String GRADLE_PROPERTIES = 'gradle.properties'
-    public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
 
     private final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
 
@@ -858,10 +860,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File projectDir = null
         try {
             if (templateUrl.endsWith('.zip')) {
-                tempZipFile = Files.createTempFile('grails-template-', '.zip').toFile()
+                tempZipFile = Files.createTempFile(UNZIP_TEMPLATE_TEMP_DIR, '.zip').toFile()
                 ant.get(src: templateUrl, dest: tempZipFile)
 
-                tempDir = Files.createTempDirectory('grails-template-').toFile()
+                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.unzip(src: tempZipFile, dest: tempDir)
 
                 Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
@@ -880,7 +882,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                 })
             } else if (templateUrl.endsWith('.git')) {
-                tempDir = Files.createTempDirectory('grails-template-').toFile()
+                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.exec(executable: 'git') {
                     arg value: 'clone'
                     arg value: templateUrl
