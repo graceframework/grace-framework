@@ -31,7 +31,6 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.apache.tools.ant.BuildLogger
-import org.apache.tools.ant.DefaultLogger
 import org.apache.tools.ant.Location
 import org.apache.tools.ant.MagicNames
 import org.apache.tools.ant.Project
@@ -51,6 +50,7 @@ import grails.io.IOUtils
 import grails.util.GrailsNameUtils
 import grails.util.GrailsVersion
 import org.grails.build.logging.GrailsConsoleAntBuilder
+import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
 import org.grails.cli.profile.CommandDescription
@@ -845,7 +845,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         ProjectHelper helper = ProjectHelper.getProjectHelper()
         helper.getImportStack().addElement("AntBuilder")
         project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
-        BuildLogger logger = new DefaultLogger()
+        BuildLogger logger = new GrailsConsoleLogger(console)
         if (verbose) {
             logger.setMessageOutputLevel(Project.MSG_DEBUG)
         }
