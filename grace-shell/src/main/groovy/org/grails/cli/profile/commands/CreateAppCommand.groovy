@@ -83,6 +83,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String PROFILE_FLAG = 'profile'
     public static final String FEATURES_FLAG = 'features'
     public static final String TEMPLATE_FLAG = 'template'
+    public static final String CSS_FLAG = 'css'
+    public static final String JS_FLAG = 'js'
+    public static final String DB_FLAG = 'db'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
 
@@ -318,20 +321,20 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
 
-        String projectType = getName().substring(7).capitalize()
+        String projectType = getName().substring(7)
 
-        console.addStatus("Creating a new ${projectType}")
+        console.addStatus("Creating a new ${projectType == 'app' ? 'application' : projectType}")
         console.println()
-        console.println("     ${projectType} name:".padRight(24) + appName)
-        console.println("     Package name:".padRight(24) + defaultPackageName)
-        console.println("     Profile:".padRight(24) + profileName)
+        console.println("     Name:".padRight(20) + appName)
+        console.println("     Package:".padRight(20) + defaultPackageName)
+        console.println("     Profile:".padRight(20) + profileName)
         if (features) {
-            console.println("     Features:".padRight(24) + features*.name?.sort()?.join(', '))
+            console.println("     Features:".padRight(20) + features*.name?.sort()?.join(', '))
         }
         if (cmd.template) {
-            console.println("     ${projectType} template:".padRight(24) + cmd.template)
+            console.println("     Template:".padRight(20) + cmd.template)
         }
-        console.println("     Project location:".padRight(24) + projectTargetDirectory.absolutePath)
+        console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
         console.println()
 
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
@@ -404,7 +407,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
         }
 
-        console.addStatus("${name == 'create-app' ? 'Application' : 'Plugin'} created by Grace ${grailsVersion}.")
+        console.addStatus("${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}.")
 
         if (profileInstance.instructions) {
             console.addStatus(profileInstance.instructions)
