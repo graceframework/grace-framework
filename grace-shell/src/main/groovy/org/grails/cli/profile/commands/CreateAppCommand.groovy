@@ -1003,7 +1003,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.app.name'] = appName
         variables['grails.app.group'] = groupName
         variables['grails.app.features'] = features*.name?.sort()?.join(', ')
-        variables['grails.app.template'] = template
+        variables['grails.app.template'] = template ?: ''
 
         variables['grace.codegen.defaultPackage'] = packageName
         variables['grace.codegen.defaultPackage.path'] = packageName.replace('.', '/')
@@ -1016,7 +1016,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grace.app.name'] = appName
         variables['grace.app.group'] = groupName
         variables['grace.app.features'] = features*.name?.sort()?.join(', ')
-        variables['grace.app.template'] = template
+        variables['grace.app.template'] = template ?: ''
 
         variables
     }
