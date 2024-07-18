@@ -39,7 +39,6 @@ import org.apache.tools.ant.Target
 import org.apache.tools.ant.types.ResourceCollection
 import org.apache.tools.ant.types.resources.FileResource
 import org.apache.tools.ant.types.resources.URLResource
-import org.codehaus.groovy.ant.Groovy
 import org.eclipse.aether.graph.Dependency
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -50,6 +49,7 @@ import grails.io.IOUtils
 import grails.util.GrailsNameUtils
 import grails.util.GrailsVersion
 import org.grails.build.logging.GrailsConsoleAntBuilder
+import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
@@ -61,6 +61,7 @@ import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.commands.io.GradleDependency
 import org.grails.cli.profile.repository.MavenProfileRepository
+import org.grails.cli.profile.tasks.Groovy
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
@@ -313,7 +314,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             features = (profileInstance.defaultFeatures + profileInstance.requiredFeatures).toList().unique()
         }
 
-        Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.grailsVersion)
+        Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
 
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
 
@@ -391,10 +392,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
                 replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-                applyApplicationTemplate(ant, console, cmd.template, cmd.appName, projectTargetDirectory, cmd.verbose)
+                applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion, variables, projectTargetDirectory)
+                copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
+                        features, cmd.template, grailsVersion, variables, projectTargetDirectory)
                 replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
             }
         }
@@ -422,7 +424,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile,
-                              Map<String, String> variables, File targetDirectory, Map<URL, File> unzippedDirectories) {
+                                Map<String, String> variables, File targetDirectory, Map<URL, File> unzippedDirectories) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
@@ -611,21 +613,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return
             }
 
-            Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profile.name, features, grailsVersion)
-            Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
-            Map<String, Object> project = new HashMap<>()
-            project.put('appName', appName)
-            project.put('packageName', packageName)
-            project.put('profile', profile.name)
-            project.put('features', features*.name.sort())
-            project.put('template', templateUrl)
-            project.put('graceVersion', grailsVersion)
-            project.put('grailsVersion', grailsVersion)
-            project.putAll(codegenVariables)
-            Map<String, Object> binding = new HashMap<>()
-            binding.put("project", project)
-            binding.put("versions", dependencyVersions)
-
+            Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profile, features, grailsVersion, templateUrl)
             Set<File> groovyTemplateFiles = findAllFilesByName(templateDir, '.tpl')
             groovyTemplateFiles.each { File srcFile ->
                 File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
@@ -689,8 +677,15 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console, String template, String appName,
+    @CompileDynamic
+    protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
+                                            String appName, String template,
                                             File projectTargetDirectory, boolean verbose) {
+        console.addStatus('Applying Template')
+        console.println()
+
+        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+
         ResourceCollection resource
         if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
             resource = new URLResource(template)
@@ -714,6 +709,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         target.setLocation(location)
         Groovy groovy = new Groovy()
         groovy.addConfigured(resource)
+        groovy.setAntBuilder(ant)
         groovy.setProject(project)
         groovy.setLocation(location)
         groovy.setOwningTarget(target)
@@ -835,8 +831,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
-                                       GrailsConsole console, boolean verbose = false) {
-        Project project = new Project()
+                                     GrailsConsole console, boolean verbose = false) {
+        GrailsConsoleAntProject project = new GrailsConsoleAntProject()
         project.setBaseDir(projectTargetDirectory)
         project.setName(appName)
         properties.each { k, v ->
@@ -957,16 +953,38 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    private Map<String, String> initializeVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
+    private Map<String, String> initializeVariables(String appName, String groupName, String packageName, String profileName,
+                                                    List<Feature> features, String template, String grailsVersion) {
         Map<String, String> variables = new HashMap<>()
-        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profileName, features, grailsVersion)
+        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profileName, features, template, grailsVersion)
         Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
         variables.putAll(codegenVariables)
         variables.putAll(dependencyVersions)
         variables
     }
 
-    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName, List<Feature> features, String grailsVersion) {
+    private Map<String, Object> getApplicationTemplateBinding(String appName, String groupName, String packageName, Profile profile,
+                                             List<Feature> features, String grailsVersion, String template) {
+        ProjectContext projectContext = getProjectContext(appName, groupName, packageName, profile, features, grailsVersion, template)
+        Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
+        Map<String, Object> binding = new HashMap<>()
+        binding.put("project", projectContext)
+        binding.put("versions", dependencyVersions)
+        binding
+    }
+
+    private ProjectContext getProjectContext(String appName, String groupName, String packageName, Profile profile,
+                                             List<Feature> features, String grailsVersion, String template) {
+        Map<String, String> codegenVariables = getCodegenVariables(appName, groupName, packageName, profile.name, features, template, grailsVersion)
+        ProjectContext projectContext = new ProjectContext()
+        projectContext.put('graceVersion', grailsVersion)
+        projectContext.put('grailsVersion', grailsVersion)
+        projectContext.putAll(codegenVariables)
+        projectContext
+    }
+
+    private Map<String, String> getCodegenVariables(String appName, String groupName, String packageName, String profileName,
+                                                    List<Feature> features, String template, String grailsVersion) {
         String projectClassName = GrailsNameUtils.getNameFromScript(appName)
         Map<String, String> variables = new HashMap<>()
         variables.APPNAME = appName
@@ -978,10 +996,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grails.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grails.profile'] = profileName
-        variables['grails.profile.features'] = features*.name?.sort()?.join(', ')
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appName
         variables['grails.app.group'] = groupName
+        variables['grails.app.features'] = features*.name?.sort()?.join(', ')
+        variables['grails.app.template'] = template
 
         variables['grace.codegen.defaultPackage'] = packageName
         variables['grace.codegen.defaultPackage.path'] = packageName.replace('.', '/')
@@ -990,10 +1009,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grace.codegen.projectNaturalName'] = GrailsNameUtils.getNaturalName(projectClassName)
         variables['grace.codegen.projectSnakeCaseName'] = GrailsNameUtils.getSnakeCaseName(projectClassName)
         variables['grace.profile'] = profileName
-        variables['grace.profile.features'] = features*.name?.sort()?.join(', ')
         variables['grace.version'] = grailsVersion
         variables['grace.app.name'] = appName
         variables['grace.app.group'] = groupName
+        variables['grace.app.features'] = features*.name?.sort()?.join(', ')
+        variables['grace.app.template'] = template
 
         variables
     }
@@ -1077,6 +1097,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean stacktrace = false
         boolean verbose = false
         GrailsConsole console
+
+    }
+
+    static class ProjectContext extends HashMap<String, Object> {
+
+        boolean hasFeature(String feature) {
+            ((List<String>) get('grails.app.features'))?.contains(feature)
+        }
 
     }
 

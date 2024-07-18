@@ -20,6 +20,7 @@ import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.MagicNames;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.LogLevel;
 
 import grails.build.logging.GrailsConsole;
@@ -51,6 +52,11 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
     public GrailsConsoleAntBuilder(GrailsConsole console, Project project) {
         super(project);
         this.console = console;
+    }
+
+    public GrailsConsoleAntBuilder(Task parentTask) {
+        super(parentTask);
+        this.console = GrailsConsole.getInstance();
     }
 
     /**
