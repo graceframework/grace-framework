@@ -1002,7 +1002,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appName
         variables['grails.app.group'] = groupName
-        variables['grails.app.features'] = features*.name?.sort()?.join(', ')
+        variables['grails.app.features'] = features*.name?.sort()?.join(',')
         variables['grails.app.template'] = template ?: ''
 
         variables['grace.codegen.defaultPackage'] = packageName
@@ -1015,7 +1015,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grace.version'] = grailsVersion
         variables['grace.app.name'] = appName
         variables['grace.app.group'] = groupName
-        variables['grace.app.features'] = features*.name?.sort()?.join(', ')
+        variables['grace.app.features'] = features*.name?.sort()?.join(',')
         variables['grace.app.template'] = template ?: ''
 
         variables
@@ -1106,7 +1106,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     static class ProjectContext extends HashMap<String, Object> {
 
         boolean hasFeature(String feature) {
-            ((List<String>) get('grails.app.features'))?.contains(feature)
+            String features = get('grails.app.features')
+            if (features.contains(',')) {
+                return features.split(',')?.contains(feature)
+            }
+            else {
+                return features == feature
+            }
         }
 
     }

@@ -15,13 +15,20 @@
  */
 package org.grails.build.logging;
 
+import java.util.Arrays;
+
 import org.apache.tools.ant.Project;
 
 public class GrailsConsoleAntProject extends Project {
 
     public boolean hasFeature(String feature) {
         String features = getProperty("grails.app.features");
-        return features != null && features.contains(feature);
+        if (features != null && features.contains(",")) {
+            return Arrays.asList(features.split(",")).contains(feature);
+        }
+        else {
+            return features != null && features.equals(feature);
+        }
     }
 
     public String getGrailsVersion() {
