@@ -292,28 +292,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        List<Feature> features
-        List<String> requestedFeatures = new ArrayList<>(cmd.features ?: [])
-        if (requestedFeatures) {
-            List<String> allFeatureNames = profileInstance.features*.name
-            Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
-            requestedFeatures.removeAll(allFeatureNames)
-            requestedFeatures.each { String invalidFeature ->
-                List<String> possibleSolutions = allFeatureNames.findAll {
-                    it.substring(0, 2) == invalidFeature.substring(0, 2)
-                }
-                StringBuilder warning = new StringBuilder("Feature ${invalidFeature} does not exist in the profile ${profileInstance.name}!")
-                if (possibleSolutions) {
-                    warning.append(' Possible solutions: ')
-                    warning.append(possibleSolutions.join(', '))
-                }
-                console.warn(warning.toString())
-            }
-            features = (profileInstance.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profileInstance.requiredFeatures).unique()
-        }
-        else {
-            features = (profileInstance.defaultFeatures + profileInstance.requiredFeatures).toList().unique()
-        }
+        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, cmd.console)
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
 
@@ -367,6 +346,31 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             return false
         }
         true
+    }
+
+    protected List<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, GrailsConsole console) {
+        List<Feature> features
+        if (requestedFeatures) {
+            List<String> allFeatureNames = profile.features*.name
+            Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
+            requestedFeatures.removeAll(allFeatureNames)
+            requestedFeatures.each { String invalidFeature ->
+                List<String> possibleSolutions = allFeatureNames.findAll {
+                    it.substring(0, 2) == invalidFeature.substring(0, 2)
+                }
+                StringBuilder warning = new StringBuilder("Feature ${invalidFeature} does not exist in the profile ${profile.name}!")
+                if (possibleSolutions) {
+                    warning.append(' Possible solutions: ')
+                    warning.append(possibleSolutions.join(', '))
+                }
+                console.warn(warning.toString())
+            }
+            features = (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
+        }
+        else {
+            features = (profile.defaultFeatures + profile.requiredFeatures).toList().unique()
+        }
+        features
     }
 
     protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,

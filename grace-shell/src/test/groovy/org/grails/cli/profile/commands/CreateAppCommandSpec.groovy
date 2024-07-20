@@ -40,7 +40,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'])
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], GrailsConsole.instance)
 
         then:
         features.size() == 1
@@ -63,7 +63,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'])
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], GrailsConsole.instance)
 
         then:
         features.size() == 2
@@ -84,7 +84,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['mongo'])
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['mongo'], GrailsConsole.instance)
 
         then:
         features.size() == 0
