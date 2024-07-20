@@ -359,7 +359,7 @@ public class Groovy extends Java {
      */
     @Override
     public void execute() throws BuildException {
-        log.debug("execute()");
+        log.info("execute script: " + this.src);
 
         command = command.trim();
 

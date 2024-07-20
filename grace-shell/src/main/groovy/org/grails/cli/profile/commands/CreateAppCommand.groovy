@@ -61,7 +61,6 @@ import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.commands.io.GradleDependency
 import org.grails.cli.profile.repository.MavenProfileRepository
-import org.grails.cli.profile.tasks.Groovy
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
@@ -689,34 +688,34 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
 
+        if (!verbose) {
+            ant.setLoggerLevel(Project.MSG_INFO)
+        }
         ResourceCollection resource
         if (template.startsWith('http://') || template.startsWith('https://') || template.startsWith('file://')) {
             resource = new URLResource(template)
+            if (!resource.isExists()) {
+                console.error("Template resource `${template}` is not exists!\n")
+                return
+            }
+            ant.groovy {
+                url url: template
+            }
         }
         else {
             File file = new File(template)
             resource = new FileResource(file)
+            if (!resource.isExists()) {
+                console.error("Template resource `${template}` is not exists!\n")
+                return
+            }
+            ant.groovy {
+                file file: template
+            }
         }
-        if (!resource.isExists()) {
-            console.error("Template resource `${template}` is not exists!\n")
-            return
-        }
-        Location location = new Location(projectTargetDirectory.absolutePath)
-        Project project = ant.getProject()
         if (!verbose) {
-            ant.setLoggerLevel(Project.MSG_INFO)
+            ant.setLoggerLevel(Project.MSG_ERR)
         }
-        Target target = new Target()
-        target.setProject(project)
-        target.setName(appName)
-        target.setLocation(location)
-        Groovy groovy = new Groovy()
-        groovy.addConfigured(resource)
-        groovy.setAntBuilder(ant)
-        groovy.setProject(project)
-        groovy.setLocation(location)
-        groovy.setOwningTarget(target)
-        groovy.execute()
         console.println()
     }
 
