@@ -345,7 +345,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
                         features, cmd.template, grailsVersion, variables, projectTargetDirectory, cmd.verbose)
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
             }
         }
         else {
@@ -563,11 +562,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File projectDir = null
         try {
             if (templateUrl.endsWith('.zip')) {
+                console.println("    [unzip] src: " + templateUrl)
                 tempZipFile = Files.createTempFile(UNZIP_TEMPLATE_TEMP_DIR, '.zip').toFile()
                 ant.get(src: templateUrl, dest: tempZipFile)
 
                 tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.unzip(src: tempZipFile, dest: tempDir)
+                console.println()
 
                 Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
@@ -585,12 +586,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                 })
             } else if (templateUrl.endsWith('.git')) {
+                console.println("      [git] clone: " + templateUrl)
                 tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.exec(executable: 'git') {
                     arg value: 'clone'
                     arg value: templateUrl
                     arg value: tempDir
                 }
+                console.println()
 
                 Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
@@ -703,6 +706,22 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             if (postApplyTemplateScript.exists()) {
                 ant.groovy(src: postApplyTemplateScript)
+                console.println()
+            }
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_ERR)
+            }
+
+            replaceBuildTokens(ant, profile.name, profile, features, variables, targetDirectory)
+
+            String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
+            File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
+
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_INFO)
+            }
+            if (postGenerateProjectScript.exists()) {
+                ant.groovy(src: postGenerateProjectScript)
                 console.println()
             }
             if (!verbose) {
