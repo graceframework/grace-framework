@@ -335,6 +335,44 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
         console.println()
 
+        generateProjectSkeleton(ant, profileInstance, features, variables, projectTargetDirectory, cmd.verbose)
+
+        if (cmd.template) {
+            if (cmd.template.endsWith('.groovy')) {
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
+                applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose)
+            }
+            else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
+                copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
+                        features, cmd.template, grailsVersion, variables, projectTargetDirectory, cmd.verbose)
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
+            }
+        }
+        else {
+            replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
+        }
+
+        console.addStatus("${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}.")
+
+        if (profileInstance.instructions) {
+            console.addStatus(profileInstance.instructions)
+        }
+
+        GrailsCli.triggerAppLoad()
+        true
+    }
+
+    protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
+        if (profileInstance == null) {
+            console.error("Profile not found for name [$profileName]")
+            return false
+        }
+        true
+    }
+
+    protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,
+                                         List<Feature> features, Map<String, String> variables,
+                                         File projectTargetDirectory, boolean verbose = false) {
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
         final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
@@ -389,38 +427,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         unzippedDirectories.values().each { File tmpDir ->
             deleteDirectoryOrFile(tmpDir)
         }
-
-        if (cmd.template) {
-            if (cmd.template.endsWith('.groovy')) {
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-                applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose)
-            }
-            else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
-                copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
-                        features, cmd.template, grailsVersion, variables, projectTargetDirectory, cmd.verbose)
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-            }
-        }
-        else {
-            replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-        }
-
-        console.addStatus("${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}.")
-
-        if (profileInstance.instructions) {
-            console.addStatus(profileInstance.instructions)
-        }
-
-        GrailsCli.triggerAppLoad()
-        true
-    }
-
-    protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
-        if (profileInstance == null) {
-            console.error("Profile not found for name [$profileName]")
-            return false
-        }
-        true
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
