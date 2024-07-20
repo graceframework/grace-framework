@@ -58,7 +58,7 @@ spring-boot = "3.0.13"
 spring-dependency-management = "1.1.0"
 spring-framework = "6.0.22"
 tomcat = "10.1.25"
-xhtmlrenderer = "8.0"
+xhtmlrenderer = "R8"
 
 [libraries]
 ant = { module = "org.apache.ant:ant", version.ref = "ant" }
