@@ -19,7 +19,7 @@ grace-gorm = "2023.0.0-M5"
 grace-gorm-hibernate = "2023.0.0-M5"
 grace-scaffolding = "6.0.0-M3"
 grace-views = "6.0.0-M4"
-groovy = "4.0.21"
+groovy = "4.0.22"
 gson = "2.9.1"
 h2 = "2.1.214"
 hsqldb = "2.7.1"
@@ -125,6 +125,7 @@ groovy-swing = { module = "org.apache.groovy:groovy-swing", version.ref = "groov
 groovy-templates = { module = "org.apache.groovy:groovy-templates", version.ref = "groovy" }
 groovy-test = { module = "org.apache.groovy:groovy-test", version.ref = "groovy" }
 groovy-test-junit5 = { module = "org.apache.groovy:groovy-test-junit5", version.ref = "groovy" }
+groovy-toml = { module = "org.apache.groovy:groovy-toml", version.ref = "groovy" }
 groovy-xml = { module = "org.apache.groovy:groovy-xml", version.ref = "groovy" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
