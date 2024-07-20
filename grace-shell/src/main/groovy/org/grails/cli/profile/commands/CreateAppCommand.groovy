@@ -31,11 +31,9 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import org.apache.tools.ant.BuildLogger
-import org.apache.tools.ant.Location
 import org.apache.tools.ant.MagicNames
 import org.apache.tools.ant.Project
 import org.apache.tools.ant.ProjectHelper
-import org.apache.tools.ant.Target
 import org.apache.tools.ant.types.ResourceCollection
 import org.apache.tools.ant.types.resources.FileResource
 import org.apache.tools.ant.types.resources.URLResource
@@ -61,6 +59,7 @@ import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.commands.io.GradleDependency
 import org.grails.cli.profile.repository.MavenProfileRepository
+import org.grails.config.NavigableMap
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
@@ -398,7 +397,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
-                        features, cmd.template, grailsVersion, variables, projectTargetDirectory)
+                        features, cmd.template, grailsVersion, variables, projectTargetDirectory, cmd.verbose)
                 replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
             }
         }
@@ -546,7 +545,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
                                            String appName, String groupName, String packageName, Profile profile,
                                            List<Feature> features, String templateUrl, String grailsVersion,
-                                           Map<String, String> variables, File targetDirectory) {
+                                           Map<String, String> variables, File targetDirectory, boolean verbose) {
+        console.addStatus('Applying Template')
+        console.println()
+
+        // Define Ant tasks
+        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+
         File tempZipFile = null
         File tempDir = null
         File projectDir = null
@@ -615,6 +620,26 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return
             }
 
+            Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()))
+            Map<String, Object> templateConfig = yaml.<Map<String, Object>> load(new FileInputStream(projectYml))
+            NavigableMap navigableConfig = new NavigableMap()
+            navigableConfig.merge(templateConfig)
+
+            String preApplyTemplateFile = navigableConfig.get('scripts.preApplyTemplate', 'scripts/pre_apply_template.groovy')
+            String postApplyTemplateFile = navigableConfig.get('scripts.postApplyTemplate', 'scripts/post_apply_template.groovy')
+            File preApplyTemplateScript = new File(projectDir, preApplyTemplateFile)
+            File postApplyTemplateScript = new File(projectDir, postApplyTemplateFile)
+
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_INFO)
+            }
+            if (preApplyTemplateScript.exists()) {
+                ant.groovy(src: preApplyTemplateScript)
+                console.println()
+            }
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_ERR)
+            }
             Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profile, features, grailsVersion, templateUrl)
             Set<File> groovyTemplateFiles = findAllFilesByName(templateDir, '.tpl')
             groovyTemplateFiles.each { File srcFile ->
@@ -627,8 +652,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
 
-            Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()))
-            Map<String, Object> templateConfig = yaml.<Map<String, Object>> load(new FileInputStream(projectYml))
             List<String> excludes = ['**/*.tpl']
             Set<String> binaryFileExtensions = (profile.binaryExtensions + (Set<String>) templateConfig.getOrDefault('template.binaryExtensions', [])).unique()
             Set<String> executablePatterns = (profile.executablePatterns + (Set<String>) templateConfig.getOrDefault('template.executablePatterns', [])).unique()
@@ -668,6 +691,17 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
 
             ant.chmod(dir: targetDirectory, includes: executablePatterns.join(' '), perm: 'u+x')
+
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_INFO)
+            }
+            if (postApplyTemplateScript.exists()) {
+                ant.groovy(src: postApplyTemplateScript)
+                console.println()
+            }
+            if (!verbose) {
+                ant.setLoggerLevel(Project.MSG_ERR)
+            }
         }
         catch (Exception ex) {
             console.error("Can not apply template `${templateUrl}`!", ex)
