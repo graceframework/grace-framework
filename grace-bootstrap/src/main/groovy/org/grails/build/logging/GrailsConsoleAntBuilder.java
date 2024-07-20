@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 package org.grails.build.logging;
 
 import groovy.ant.AntBuilder;
-import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildLogger;
-import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.MagicNames;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.LogLevel;
 
 import grails.build.logging.GrailsConsole;
@@ -34,12 +33,30 @@ import grails.build.logging.GrailsConsole;
  */
 public class GrailsConsoleAntBuilder extends AntBuilder {
 
-    public GrailsConsoleAntBuilder(Project project) {
-        super(project);
-    }
+    private final GrailsConsole console;
 
     public GrailsConsoleAntBuilder() {
+        this(createAntProject());
+    }
+
+    public GrailsConsoleAntBuilder(GrailsConsole console) {
         super(createAntProject());
+        this.console = console;
+    }
+
+    public GrailsConsoleAntBuilder(Project project) {
+        super(project);
+        this.console = GrailsConsole.getInstance();
+    }
+
+    public GrailsConsoleAntBuilder(GrailsConsole console, Project project) {
+        super(project);
+        this.console = console;
+    }
+
+    public GrailsConsoleAntBuilder(Task parentTask) {
+        super(parentTask);
+        this.console = GrailsConsole.getInstance();
     }
 
     /**
@@ -57,6 +74,14 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
         project.init();
         project.getBaseDir();
         return project;
+    }
+
+    public void setLoggerLevel(int level) {
+        for (Object buildListener : getProject().getBuildListeners()) {
+            if (buildListener instanceof BuildLogger) {
+                ((BuildLogger) buildListener).setMessageOutputLevel(level);
+            }
+        }
     }
 
     public static void addGrailsConsoleBuildListener(Project project) {
@@ -78,66 +103,6 @@ public class GrailsConsoleAntBuilder extends AntBuilder {
                 }
             }
         }
-    }
-
-    private static class GrailsConsoleLogger extends DefaultLogger {
-
-        /**
-         * Name of the current target, if it should
-         * be displayed on the next message. This is
-         * set when a target starts building, and reset
-         * to <code>null</code> after the first message for
-         * the target is logged.
-         */
-        protected String targetName;
-
-        protected GrailsConsole console = GrailsConsole.getInstance();
-
-        /**
-         * Notes the name of the target so it can be logged
-         * if it generates any messages.
-         *
-         * @param event A BuildEvent containing target information.
-         *              Must not be <code>null</code>.
-         */
-        @Override
-        public void targetStarted(BuildEvent event) {
-            this.targetName = event.getTarget().getName();
-        }
-
-        /**
-         * Resets the current target name to <code>null</code>.
-         *
-         * @param event Ignored in this implementation.
-         */
-        @Override
-        public void targetFinished(BuildEvent event) {
-            this.targetName = null;
-        }
-
-        /**
-         * Logs a message for a target if it is of an appropriate
-         * priority, also logging the name of the target if this
-         * is the first message which needs to be logged for the
-         * target.
-         *
-         * @param event A BuildEvent containing message information.
-         *              Must not be <code>null</code>.
-         */
-        @Override
-        public void messageLogged(BuildEvent event) {
-            if (event.getPriority() > this.msgOutputLevel ||
-                    null == event.getMessage() ||
-                    "".equals(event.getMessage().trim())) {
-                return;
-            }
-
-            if (this.targetName != null) {
-                this.console.verbose(System.lineSeparator() + this.targetName + ":");
-                this.targetName = null;
-            }
-        }
-
     }
 
 }

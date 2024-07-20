@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.grails.cli.profile.commands
 
 import groovy.transform.CompileStatic
 
-import org.grails.cli.profile.ExecutionContext
+import grails.build.logging.GrailsConsole
 import org.grails.cli.profile.Profile
 
 /**
@@ -48,14 +48,20 @@ class CreatePluginCommand extends CreateAppCommand {
     @Override
     protected String getDefaultProfile() { 'web-plugin' }
 
-    protected boolean validateProfile(Profile profileInstance, String profileName, ExecutionContext executionContext) {
-        def pluginProfile = profileInstance.extends.find { Profile parent -> parent.name == 'plugin' }
-        if (profileName != 'plugin' && pluginProfile == null) {
-            executionContext.console.error("No valid plugin profile found for name [$profileName]")
+    @Override
+    protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
+        if (profileInstance == null) {
+            console.error("Profile not found for name [$profileName]")
             return false
         }
 
-        super.validateProfile(profileInstance, profileName)
+        def pluginProfile = profileInstance.extends.find { Profile parent -> parent.name == 'plugin' }
+        if (pluginProfile == null) {
+            console.error("No valid plugin profile found for name [$profileName]")
+            return false
+        }
+
+        true
     }
 
 }
