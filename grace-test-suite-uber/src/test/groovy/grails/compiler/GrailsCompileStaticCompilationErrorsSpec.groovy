@@ -154,12 +154,12 @@ class SomeClass {
 ''')
         then: 'errors are thrown'
         MultipleCompilationErrorsException e = thrown()
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#findAllByName'
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#listOrderByName'
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#countByName'
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#findByName'
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#findOrCreateByName'
-        e.message.contains 'Cannot find matching method grails.compiler.SomeClass#findOrSaveByName'
+        e.message.contains 'Cannot find matching method java.lang.Class#findAllByName(java.lang.String) or static method grails.compiler.SomeClass#findAllByName(java.lang.String)'
+        e.message.contains 'Cannot find matching method java.lang.Class#listOrderByName(java.lang.String) or static method grails.compiler.SomeClass#listOrderByName(java.lang.String)'
+        e.message.contains 'Cannot find matching method java.lang.Class#countByName(java.lang.String) or static method grails.compiler.SomeClass#countByName(java.lang.String)'
+        e.message.contains 'Cannot find matching method java.lang.Class#findByName(java.lang.String) or static method grails.compiler.SomeClass#findByName(java.lang.String)'
+        e.message.contains 'Cannot find matching method java.lang.Class#findOrCreateByName(java.lang.String) or static method grails.compiler.SomeClass#findOrCreateByName(java.lang.String)'
+        e.message.contains 'Cannot find matching method java.lang.Class#findOrSaveByName(java.lang.String) or static method grails.compiler.SomeClass#findOrSaveByName(java.lang.String)'
     }
 
     @Issue('GRAILS-11056')
