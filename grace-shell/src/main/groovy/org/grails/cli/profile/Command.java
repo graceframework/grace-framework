@@ -75,4 +75,14 @@ public interface Command extends Named {
         return true;
     }
 
+    /**
+     * Returns true if this command is deprecated.
+     * The default value is {@code false}.
+     *
+     * @return true if this command is deprecated.
+     */
+    default boolean isDeprecated() {
+        return false;
+    }
+
 }

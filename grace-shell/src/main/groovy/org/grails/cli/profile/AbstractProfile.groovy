@@ -374,7 +374,7 @@ abstract class AbstractProfile implements Profile {
 
         for (Command cmd in commands) {
             CommandDescription description = cmd.description
-            StringsCompleter commandNameCompleter = new StringsCompleter(cmd.name)
+            StringsCompleter commandNameCompleter = new StringsCompleter(cmd.fullName)
 
             if (cmd instanceof Completer) {
                 completers << new ArgumentCompleter(commandNameCompleter, (Completer) cmd)
@@ -483,6 +483,9 @@ abstract class AbstractProfile implements Profile {
                 context.console.error "Command [$commandName] missing required arguments: ${requiredArguments*.name}. " +
                         "Type 'grace help $commandName' for more info."
                 return false
+            }
+            if (cmd.isDeprecated()) {
+                context.console.warning("Command [$commandName] is deprecated, and will be removed in the future release.")
             }
 
             return cmd.handle(context)

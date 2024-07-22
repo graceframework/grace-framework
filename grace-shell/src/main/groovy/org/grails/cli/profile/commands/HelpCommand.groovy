@@ -74,7 +74,10 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
             String helpCommandName = remainingArgsCommand.getCommandName()
             for (Command command : allCommands) {
                 if (command.fullName == helpCommandName) {
-                    console.addStatus("Command: $command.fullName")
+                    StringBuilder name = new StringBuilder()
+                    name.append(command.fullName)
+                    appendMessage(name, command.isDeprecated(), '[deprecated]')
+                    console.addStatus("Command: $name")
                     console.addStatus('Description:')
                     console.println "${command.description.description ?: ''}"
                     if (command.description.usage) {
@@ -118,7 +121,10 @@ grace [environment]* [target] [arguments]*'
         console.addStatus("${'Command Name'.padRight(37)} Command Description")
         console.println('-' * 100)
         for (Command command : allCommands) {
-            console.println "${command.fullName.padRight(40)}${command.description.description}"
+            StringBuilder description = new StringBuilder()
+            description.append("${command.fullName.padRight(40)}${command.description.description}")
+            appendMessage(description, command.isDeprecated(), '[deprecated]')
+            console.println description
         }
         console.println()
         console.addStatus('Detailed usage with help [command]')
@@ -161,6 +167,15 @@ grace [environment]* [target] [arguments]*'
             return commands.findAll { Command command -> command.visible }
                     .unique { Command cmd -> cmd.fullName }
                     .sort(false) { Command cmd -> cmd.fullName }
+        }
+    }
+
+    private void appendMessage(StringBuilder result, boolean append, String message) {
+        if (append) {
+            if (result.length() > 0) {
+                result.append(' ');
+            }
+            result.append(message);
         }
     }
 
