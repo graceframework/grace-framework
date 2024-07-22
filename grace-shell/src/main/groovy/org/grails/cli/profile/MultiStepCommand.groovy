@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,14 @@ import org.grails.cli.profile.commands.events.CommandEvents
  * A command that executes multiple steps
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 abstract class MultiStepCommand implements ProfileCommand, CommandEvents {
 
     String name
     Profile profile
+    boolean visible = true
     int minArguments = 1
 
     MultiStepCommand(String name, Profile profile) {
