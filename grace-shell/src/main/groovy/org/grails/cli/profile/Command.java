@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.grails.cli.profile
+package org.grails.cli.profile;
 
-import grails.util.Named
+import grails.util.Named;
 
 /**
  * An interface that represents a command to be executed by the Grails command line. Commands are by default global,
  * however a command can be made specific to a particular {@link Profile} by implementation the {@link ProfileCommand} interface.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
-interface Command extends Named {
+public interface Command extends Named {
 
     /**
      * @return The description of the command
      */
-    CommandDescription getDescription()
+    CommandDescription getDescription();
 
     /**
      * run the command
@@ -38,6 +39,16 @@ interface Command extends Named {
      *
      * @return Whether the command should continue
      */
-    boolean handle(ExecutionContext executionContext)
+    boolean handle(ExecutionContext executionContext);
+
+    /**
+     * Returns true if this is a visible command. A visible command will be listed in {@code 'help'} command.
+     * The default value is {@code true}.
+     *
+     * @return true if this is a visible command.
+     */
+    default boolean isVisible() {
+        return true;
+    }
 
 }

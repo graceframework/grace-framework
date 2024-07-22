@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import org.grails.cli.profile.steps.StepRegistry
  *
  * @author Lari Hotari
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 class DefaultMultiStepCommand extends MultiStepCommand {
@@ -44,6 +45,7 @@ class DefaultMultiStepCommand extends MultiStepCommand {
     DefaultMultiStepCommand(String name, Profile profile, Map<String, Object> data) {
         super(name, profile)
         this.data = data
+        this.visible = data?.visible?.toString() != 'false'
 
         def description = data?.description
         if (description instanceof List) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,13 +33,17 @@ import org.grails.cli.profile.ProjectContext
 import org.grails.cli.profile.ProjectContextAware
 
 /**
+ * {@code 'help'} command.
+ *
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
 class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, ProfileRepositoryAware {
 
     public static final String NAME = 'help'
 
-    final CommandDescription description = new CommandDescription(NAME,
+    CommandDescription description = new CommandDescription(NAME,
             'Prints help information for a specific command',
             'help [COMMAND NAME]')
 
@@ -47,7 +51,11 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
     ProfileRepository profileRepository
     ProjectContext projectContext
 
-    CommandLineParser cliParser = new CommandLineParser()
+    private CommandLineParser cliParser = new CommandLineParser()
+
+    HelpCommand() {
+        this.description.flag(name: 'all', description: 'Show all commands', required: false)
+    }
 
     @Override
     String getName() {
@@ -58,32 +66,33 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
     boolean handle(ExecutionContext executionContext) {
         GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
-        Collection<CommandDescription> allCommands = findAllCommands()
+        Collection<Command> allCommands
         String remainingArgs = commandLine.getRemainingArgsString()
         if (remainingArgs?.trim()) {
+            allCommands = findCommands(true)
             CommandLine remainingArgsCommand = cliParser.parseString(remainingArgs)
             String helpCommandName = remainingArgsCommand.getCommandName()
-            for (CommandDescription desc : allCommands) {
-                if (desc.name == helpCommandName) {
-                    console.addStatus("Command: $desc.name")
+            for (Command command : allCommands) {
+                if (command.name == helpCommandName) {
+                    console.addStatus("Command: $command.name")
                     console.addStatus('Description:')
-                    console.println "${desc.description ?: ''}"
-                    if (desc.usage) {
+                    console.println "${command.description.description ?: ''}"
+                    if (command.description.usage) {
                         console.println()
                         console.addStatus('Usage:')
-                        console.println "${desc.usage}"
+                        console.println "${command.description.usage}"
                     }
-                    if (desc.arguments) {
+                    if (command.description.arguments) {
                         console.println()
                         console.addStatus('Arguments:')
-                        for (arg in desc.arguments) {
+                        for (arg in command.description.arguments) {
                             console.println "* ${arg.name} - ${arg.description ?: ''} (${arg.required ? 'REQUIRED' : 'OPTIONAL'})"
                         }
                     }
-                    if (desc.flags) {
+                    if (command.description.flags) {
                         console.println()
                         console.addStatus('Flags:')
-                        for (arg in desc.flags) {
+                        for (arg in command.description.flags) {
                             console.println "* ${arg.name} - ${arg.description ?: ''}"
                         }
                     }
@@ -94,6 +103,8 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
             return false
         }
 
+        boolean showAll = commandLine.hasOption('all')
+        allCommands = findCommands(showAll)
         console.log '''
 Usage (optionals marked with *):'
 grace [environment]* [target] [arguments]*'
@@ -106,8 +117,8 @@ grace [environment]* [target] [arguments]*'
         console.addStatus('Available Commands (type grace help \'command-name\' for more info):')
         console.addStatus("${'Command Name'.padRight(37)} Command Description")
         console.println('-' * 100)
-        for (CommandDescription desc : allCommands) {
-            console.println "${desc.name.padRight(40)}${desc.description}"
+        for (Command command : allCommands) {
+            console.println "${command.name.padRight(40)}${command.description.description}"
         }
         console.println()
         console.addStatus('Detailed usage with help [command]')
@@ -116,22 +127,22 @@ grace [environment]* [target] [arguments]*'
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        List<String> allCommands = findAllCommands()*.name
+        List<Command> allCommands = findCommands(true)
 
-        for (cmd in allCommands) {
+        for (Command cmd in allCommands) {
             if (buffer) {
-                if (cmd.startsWith(buffer)) {
-                    candidates << cmd.substring(buffer.size())
+                if (cmd.name.startsWith(buffer)) {
+                    candidates << cmd.name.substring(buffer.size())
                 }
             }
             else {
-                candidates << cmd
+                candidates << cmd.name
             }
         }
         cursor
     }
 
-    protected Collection<CommandDescription> findAllCommands() {
+    private Collection<Command> findCommands(boolean showAll) {
         Iterable<Command> commands
         if (profile) {
             commands = profile.getCommands(projectContext)
@@ -141,9 +152,16 @@ grace [environment]* [target] [arguments]*'
                 !(cmd instanceof ProjectCommand)
             }
         }
-        commands.collect { Command cmd -> cmd.description }
-                .unique { CommandDescription cmd -> cmd.name }
-                .sort(false) { CommandDescription itDesc -> itDesc.name }
+        if (showAll) {
+            return commands.findAll()
+                    .unique { Command cmd -> cmd.name }
+                    .sort(false) { Command cmd -> cmd.name }
+        }
+        else {
+            return commands.findAll { Command command -> command.visible }
+                    .unique { Command cmd -> cmd.name }
+                    .sort(false) { Command cmd -> cmd.name }
+        }
     }
 
 }
