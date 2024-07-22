@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import grails.util.BuildSettings
 import grails.util.CosineSimilarity
 
 import org.grails.build.parsing.CommandLine
-import org.grails.build.parsing.ScriptNameResolver
 import org.grails.cli.interactive.completers.StringsCompleter
 import org.grails.cli.profile.commands.CommandRegistry
 import org.grails.cli.profile.commands.DefaultMultiStepCommand
@@ -49,6 +48,7 @@ import static org.grails.cli.profile.ProfileUtil.createDependency
  * Abstract implementation of the profile class
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
@@ -419,7 +419,7 @@ abstract class AbstractProfile implements Profile {
             commandsByName = new LinkedHashMap<String, Command>()
             List excludes = []
             Closure<AbstractProfile> registerCommand = { Command command ->
-                String name = command.name
+                String name = command.fullName
                 if (!commandsByName.containsKey(name) && !excludes.contains(name)) {
                     if (command instanceof ProfileRepositoryAware) {
                         ((ProfileRepositoryAware) command).setProfileRepository(profileRepository)
@@ -485,14 +485,6 @@ abstract class AbstractProfile implements Profile {
                 return false
             }
 
-            return cmd.handle(context)
-        }
-
-        // Apply command name expansion (rA for run-app, tA for test-app etc.)
-        cmd = commandsByName.values().find { Command c ->
-            ScriptNameResolver.resolvesTo(commandName, c.name)
-        }
-        if (cmd) {
             return cmd.handle(context)
         }
 
