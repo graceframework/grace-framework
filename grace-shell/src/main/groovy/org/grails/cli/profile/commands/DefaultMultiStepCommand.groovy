@@ -46,6 +46,7 @@ class DefaultMultiStepCommand extends MultiStepCommand {
         super(name, profile)
         this.data = data
         this.visible = data?.visible?.toString() != 'false'
+        this.deprecated = data?.deprecated?.toString() == 'true'
 
         def description = data?.description
         if (description instanceof List) {

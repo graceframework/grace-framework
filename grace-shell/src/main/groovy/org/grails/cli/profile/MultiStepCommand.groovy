@@ -29,6 +29,7 @@ abstract class MultiStepCommand implements ProfileCommand, CommandEvents {
     String name
     Profile profile
     boolean visible = true
+    boolean deprecated = false
     int minArguments = 1
 
     MultiStepCommand(String name, Profile profile) {
