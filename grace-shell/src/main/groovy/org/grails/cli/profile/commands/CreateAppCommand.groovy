@@ -772,9 +772,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 console.error("Template resource `${template}` is not exists!\n")
                 return
             }
-            ant.groovy {
-                file file: template
-            }
+            ant.groovy(src: template)
         }
         if (!verbose) {
             ant.setLoggerLevel(Project.MSG_ERR)
