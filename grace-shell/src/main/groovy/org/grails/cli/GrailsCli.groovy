@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,7 @@ import org.grails.gradle.plugin.model.GrailsClasspath
  *
  * @author Lari Hotari
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 3.0
  */
@@ -316,6 +317,9 @@ class GrailsCli {
         if (mainCommandLine.remainingArgs.size() < requiredArgs) {
             outputMissingArgumentsMessage cmd
             return false
+        }
+        if (cmd.isDeprecated()) {
+            GrailsConsole.getInstance().warning("Command [$cmd.fullName] is deprecated, and will be removed in the future release.")
         }
         cmd.handle(createExecutionContext(mainCommandLine))
     }
