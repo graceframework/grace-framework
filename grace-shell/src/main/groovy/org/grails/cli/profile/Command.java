@@ -42,6 +42,30 @@ public interface Command extends Named {
     boolean handle(ExecutionContext executionContext);
 
     /**
+     * Return the namespace of the command.
+     *
+     * @return empty if the command don't have a namespace.
+     */
+    default String getNamespace() {
+        return "";
+    }
+
+    /**
+     * Return the full name of a command.
+     * If the command have a namespace, the full name will be {@code namespace:name}.
+     *
+     * @return the full name of a command.
+     */
+    default String getFullName() {
+        if (getNamespace() != null && !getNamespace().isBlank()) {
+            return String.format("%s:%s", getNamespace(), getName());
+        }
+        else {
+            return getName();
+        }
+    }
+
+    /**
      * Returns true if this is a visible command. A visible command will be listed in {@code 'help'} command.
      * The default value is {@code true}.
      *

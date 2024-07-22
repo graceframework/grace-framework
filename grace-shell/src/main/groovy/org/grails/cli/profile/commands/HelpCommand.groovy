@@ -73,8 +73,8 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
             CommandLine remainingArgsCommand = cliParser.parseString(remainingArgs)
             String helpCommandName = remainingArgsCommand.getCommandName()
             for (Command command : allCommands) {
-                if (command.name == helpCommandName) {
-                    console.addStatus("Command: $command.name")
+                if (command.fullName == helpCommandName) {
+                    console.addStatus("Command: $command.fullName")
                     console.addStatus('Description:')
                     console.println "${command.description.description ?: ''}"
                     if (command.description.usage) {
@@ -118,7 +118,7 @@ grace [environment]* [target] [arguments]*'
         console.addStatus("${'Command Name'.padRight(37)} Command Description")
         console.println('-' * 100)
         for (Command command : allCommands) {
-            console.println "${command.name.padRight(40)}${command.description.description}"
+            console.println "${command.fullName.padRight(40)}${command.description.description}"
         }
         console.println()
         console.addStatus('Detailed usage with help [command]')
@@ -127,16 +127,16 @@ grace [environment]* [target] [arguments]*'
 
     @Override
     int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        List<Command> allCommands = findCommands(true)
+        List<Command> allCommands = findCommands(false)
 
         for (Command cmd in allCommands) {
             if (buffer) {
-                if (cmd.name.startsWith(buffer)) {
+                if (cmd.fullName.startsWith(buffer)) {
                     candidates << cmd.name.substring(buffer.size())
                 }
             }
             else {
-                candidates << cmd.name
+                candidates << cmd.fullName
             }
         }
         cursor
@@ -154,13 +154,13 @@ grace [environment]* [target] [arguments]*'
         }
         if (showAll) {
             return commands.findAll()
-                    .unique { Command cmd -> cmd.name }
-                    .sort(false) { Command cmd -> cmd.name }
+                    .unique { Command cmd -> cmd.fullName }
+                    .sort(false) { Command cmd -> cmd.fullName }
         }
         else {
             return commands.findAll { Command command -> command.visible }
-                    .unique { Command cmd -> cmd.name }
-                    .sort(false) { Command cmd -> cmd.name }
+                    .unique { Command cmd -> cmd.fullName }
+                    .sort(false) { Command cmd -> cmd.fullName }
         }
     }
 

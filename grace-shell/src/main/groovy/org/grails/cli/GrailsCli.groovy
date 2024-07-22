@@ -277,7 +277,7 @@ class GrailsCli {
                 GrailsConsole console = GrailsConsole.getInstance()
                 // force resolve of all profiles
                 profileRepository.getAllProfiles()
-                List<String> commandNames = CommandRegistry.findCommands(profileRepository)*.name
+                List<String> commandNames = CommandRegistry.findCommands(profileRepository)*.fullName
                 console.reader.addCompleter(new StringsCompleter(commandNames))
                 console.reader.addCompleter(new CommandCompleter(CommandRegistry.findCommands(profileRepository)))
                 profile = [handleCommand: { ExecutionContext context ->
