@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import org.grails.cli.profile.commands.templates.TemplateRendererImpl
  * A base class for Groovy scripts that implement commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -55,6 +56,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     ProfileRepository profileRepository
     String name = getClass().name.contains('-') ? getClass().name : GrailsNameUtils.getScriptName(getClass().name)
     CommandDescription description = new CommandDescription(name)
+    String namespace = ''
 
     @Delegate
     ExecutionContext executionContext
@@ -87,6 +89,15 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * The version of Grails being used
      */
     String grailsVersion = getClass().getPackage()?.getImplementationVersion()
+
+    /**
+     * Provides a namespace for the command
+     *
+     * @param namespace The namespace
+     */
+    void namespace(String namespace) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
 
     /**
      * Provides a description for the command
