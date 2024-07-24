@@ -15,8 +15,9 @@
  */
 package org.grails.cli.profile.commands.script
 
-import groovy.ant.AntBuilder
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.Project
 
 import grails.build.logging.ConsoleLogger
 import grails.build.logging.GrailsConsole
@@ -80,7 +81,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     /**
      * Access to Ant via AntBuilder
      */
-    AntBuilder ant = new GrailsConsoleAntBuilder()
+    GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder()
 
     /**
      * The location of the user.home directory
@@ -184,6 +185,29 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * @return The {@link GrailsConsole} instance
      */
     GrailsConsole getGrailsConsole() { executionContext.console }
+
+    /**
+     * Use {@link groovy.ant.AntBuilder} to apply application templates in script commands
+     *
+     * @param template The application template to apply
+     * @param config The config options
+     * @since 2023.0
+     */
+    @CompileDynamic
+    boolean apply(Object template, Map<String, Object> config = [:]) {
+        if (template == null) {
+            consoleLogger.error("Application template is required!")
+            return false
+        }
+        consoleLogger.addStatus('Applying Template')
+        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.setLoggerLevel(Project.MSG_INFO)
+        ant.groovy {
+            url url: template
+        }
+        ant.setLoggerLevel(Project.MSG_ERR)
+        true
+    }
 
     /**
      * Implementation of the handle method that runs the script
