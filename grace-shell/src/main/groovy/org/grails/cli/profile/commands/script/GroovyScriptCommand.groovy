@@ -57,6 +57,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     String name = getClass().name.contains('-') ? getClass().name : GrailsNameUtils.getScriptName(getClass().name)
     CommandDescription description = new CommandDescription(name)
     String namespace = ''
+    boolean visible = true
 
     @Delegate
     ExecutionContext executionContext
@@ -132,6 +133,15 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
 
         def value = commandLine?.undeclaredOptions?.get(name)
         value ?: null
+    }
+
+    /**
+     * Show or hide the command
+     *
+     * @param visible True if this is a visible command
+     */
+    void visible(boolean visible) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
     }
 
     /**

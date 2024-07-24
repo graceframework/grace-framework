@@ -137,6 +137,11 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                         new VariableExpression('this'), 'setNamespace', call.arguments)
                 constructorBody.addStatement(new ExpressionStatement(setNamespace))
             }
+            else if (call.methodAsString == 'visible') {
+                MethodCallExpression setVisible = new MethodCallExpression(
+                        new VariableExpression('this'), 'setVisible', call.arguments)
+                constructorBody.addStatement(new ExpressionStatement(setVisible))
+            }
             else {
                 super.visitMethodCallExpression(call)
             }
