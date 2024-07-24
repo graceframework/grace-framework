@@ -58,6 +58,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     CommandDescription description = new CommandDescription(name)
     String namespace = ''
     boolean visible = true
+    boolean deprecated = false
 
     @Delegate
     ExecutionContext executionContext
@@ -133,6 +134,22 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
 
         def value = commandLine?.undeclaredOptions?.get(name)
         value ?: null
+    }
+
+    /**
+     * Deprecate the command
+     */
+    void deprecated() {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
+
+    /**
+     * Deprecate the command with some reasons
+     *
+     * @param reason The reason to deprecate this command
+     */
+    void deprecated(String reason) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
     }
 
     /**

@@ -25,6 +25,7 @@ import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ConstructorNode
 import org.codehaus.groovy.ast.expr.ArgumentListExpression
 import org.codehaus.groovy.ast.expr.ClosureExpression
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.ConstructorCallExpression
 import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
@@ -141,6 +142,11 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                 MethodCallExpression setVisible = new MethodCallExpression(
                         new VariableExpression('this'), 'setVisible', call.arguments)
                 constructorBody.addStatement(new ExpressionStatement(setVisible))
+            }
+            else if (call.methodAsString == 'deprecated') {
+                MethodCallExpression setDeprecated = new MethodCallExpression(
+                        new VariableExpression('this'), 'setDeprecated', ConstantExpression.TRUE)
+                constructorBody.addStatement(new ExpressionStatement(setDeprecated))
             }
             else {
                 super.visitMethodCallExpression(call)
