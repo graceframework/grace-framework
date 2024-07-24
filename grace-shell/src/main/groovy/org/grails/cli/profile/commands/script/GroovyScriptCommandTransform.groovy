@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ConstructorNode
 import org.codehaus.groovy.ast.expr.ArgumentListExpression
 import org.codehaus.groovy.ast.expr.ClosureExpression
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.ConstructorCallExpression
 import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
@@ -43,6 +44,7 @@ import org.grails.cli.profile.CommandDescription
  * Transformation applied to command scripts
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
@@ -70,18 +72,18 @@ class GroovyScriptCommandTransform implements ASTTransformation {
 
         @Override
         void visitMethodCallExpression(MethodCallExpression call) {
-            if (call.methodAsString == 'description' && (call.arguments instanceof ArgumentListExpression)) {
-                BlockStatement constructorBody = new BlockStatement()
-                ConstructorNode defaultConstructor = getDefaultConstructor(classNode)
-                if (defaultConstructor == null) {
-                    defaultConstructor = new ConstructorNode(Modifier.PUBLIC, constructorBody)
-                    classNode.addConstructor(defaultConstructor)
-                }
-                else {
-                    constructorBody.addStatement(defaultConstructor.getCode())
-                    defaultConstructor.setCode(constructorBody)
-                }
+            BlockStatement constructorBody = new BlockStatement()
+            ConstructorNode defaultConstructor = getDefaultConstructor(classNode)
+            if (defaultConstructor == null) {
+                defaultConstructor = new ConstructorNode(Modifier.PUBLIC, constructorBody)
+                classNode.addConstructor(defaultConstructor)
+            }
+            else {
+                constructorBody.addStatement(defaultConstructor.getCode())
+                defaultConstructor.setCode(constructorBody)
+            }
 
+            if (call.methodAsString == 'description' && (call.arguments instanceof ArgumentListExpression)) {
                 ArgumentListExpression existing = (ArgumentListExpression) call.arguments
 
                 List<Expression> arguments = existing.expressions
@@ -126,10 +128,25 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                         constructorArgs.expressions.addAll(arguments)
                     }
 
-                    MethodCallExpression assignDescription = new MethodCallExpression(new VariableExpression('this'),
-                            'setDescription', constructDescription)
+                    MethodCallExpression assignDescription = new MethodCallExpression(
+                            new VariableExpression('this'), 'setDescription', constructDescription)
                     constructorBody.addStatement(new ExpressionStatement(assignDescription))
                 }
+            }
+            else if (call.methodAsString == 'namespace') {
+                MethodCallExpression setNamespace = new MethodCallExpression(
+                        new VariableExpression('this'), 'setNamespace', call.arguments)
+                constructorBody.addStatement(new ExpressionStatement(setNamespace))
+            }
+            else if (call.methodAsString == 'visible') {
+                MethodCallExpression setVisible = new MethodCallExpression(
+                        new VariableExpression('this'), 'setVisible', call.arguments)
+                constructorBody.addStatement(new ExpressionStatement(setVisible))
+            }
+            else if (call.methodAsString == 'deprecated') {
+                MethodCallExpression setDeprecated = new MethodCallExpression(
+                        new VariableExpression('this'), 'setDeprecated', ConstantExpression.TRUE)
+                constructorBody.addStatement(new ExpressionStatement(setDeprecated))
             }
             else {
                 super.visitMethodCallExpression(call)

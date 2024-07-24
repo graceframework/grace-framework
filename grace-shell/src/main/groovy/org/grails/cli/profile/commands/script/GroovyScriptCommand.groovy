@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
  */
 package org.grails.cli.profile.commands.script
 
-import groovy.ant.AntBuilder
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.apache.tools.ant.Project
 
 import grails.build.logging.ConsoleLogger
 import grails.build.logging.GrailsConsole
@@ -45,6 +46,7 @@ import org.grails.cli.profile.commands.templates.TemplateRendererImpl
  * A base class for Groovy scripts that implement commands
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -55,6 +57,9 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     ProfileRepository profileRepository
     String name = getClass().name.contains('-') ? getClass().name : GrailsNameUtils.getScriptName(getClass().name)
     CommandDescription description = new CommandDescription(name)
+    String namespace = ''
+    boolean visible = true
+    boolean deprecated = false
 
     @Delegate
     ExecutionContext executionContext
@@ -76,7 +81,7 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     /**
      * Access to Ant via AntBuilder
      */
-    AntBuilder ant = new GrailsConsoleAntBuilder()
+    GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder()
 
     /**
      * The location of the user.home directory
@@ -87,6 +92,15 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * The version of Grails being used
      */
     String grailsVersion = getClass().getPackage()?.getImplementationVersion()
+
+    /**
+     * Provides a namespace for the command
+     *
+     * @param namespace The namespace
+     */
+    void namespace(String namespace) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
 
     /**
      * Provides a description for the command
@@ -124,6 +138,31 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     }
 
     /**
+     * Deprecate the command
+     */
+    void deprecated() {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
+
+    /**
+     * Deprecate the command with some reasons
+     *
+     * @param reason The reason to deprecate this command
+     */
+    void deprecated(String reason) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
+
+    /**
+     * Show or hide the command
+     *
+     * @param visible True if this is a visible command
+     */
+    void visible(boolean visible) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
+
+    /**
      * @return The undeclared command line arguments
      */
     Map<String, Object> getArgsMap() {
@@ -146,6 +185,29 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
      * @return The {@link GrailsConsole} instance
      */
     GrailsConsole getGrailsConsole() { executionContext.console }
+
+    /**
+     * Use {@link groovy.ant.AntBuilder} to apply application templates in script commands
+     *
+     * @param template The application template to apply
+     * @param config The config options
+     * @since 2023.0
+     */
+    @CompileDynamic
+    boolean apply(Object template, Map<String, Object> config = [:]) {
+        if (template == null) {
+            consoleLogger.error("Application template is required!")
+            return false
+        }
+        consoleLogger.addStatus('Applying Template')
+        ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
+        ant.setLoggerLevel(Project.MSG_INFO)
+        ant.groovy {
+            url url: template
+        }
+        ant.setLoggerLevel(Project.MSG_ERR)
+        true
+    }
 
     /**
      * Implementation of the handle method that runs the script
