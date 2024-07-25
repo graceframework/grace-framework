@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,14 +139,6 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
 
         GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
                 defaultUrlMappingsHolder, this.grailsUrlConverter);
-
-        ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(
-                (ApplicationListener<ArtefactAdditionEvent>) event -> {
-                    GrailsClass artefact = event.getArtefact();
-                    if (artefact instanceof GrailsControllerClass) {
-                        grailsControllerUrlMappings.registerController((GrailsControllerClass) artefact);
-                    }
-                });
 
         this.urlMappingsHolder = grailsControllerUrlMappings;
     }
