@@ -66,7 +66,7 @@ spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.37"
 standard-taglib = "1.2.5"
 tomcat = "9.0.89"
-xhtmlrenderer = "8.0"
+xhtmlrenderer = "R8"
 
 [libraries]
 ant = { module = "org.apache.ant:ant", version.ref = "ant" }
