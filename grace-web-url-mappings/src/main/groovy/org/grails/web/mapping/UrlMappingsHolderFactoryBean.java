@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,12 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
 
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
-import grails.core.GrailsControllerClass;
 import grails.core.GrailsUrlMappingsClass;
-import grails.core.events.ArtefactAdditionEvent;
 import grails.core.support.GrailsApplicationAware;
 import grails.plugins.GrailsPluginManager;
 import grails.plugins.PluginManagerAware;
@@ -139,14 +135,6 @@ public class UrlMappingsHolderFactoryBean implements FactoryBean<UrlMappings>, I
 
         GrailsControllerUrlMappings grailsControllerUrlMappings = new GrailsControllerUrlMappings(this.grailsApplication,
                 defaultUrlMappingsHolder, this.grailsUrlConverter);
-
-        ((ConfigurableApplicationContext) this.applicationContext).addApplicationListener(
-                (ApplicationListener<ArtefactAdditionEvent>) event -> {
-                    GrailsClass artefact = event.getArtefact();
-                    if (artefact instanceof GrailsControllerClass) {
-                        grailsControllerUrlMappings.registerController((GrailsControllerClass) artefact);
-                    }
-                });
 
         this.urlMappingsHolder = grailsControllerUrlMappings;
     }
