@@ -57,6 +57,7 @@ import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
  *
  * @author Graeme Rocher
  * @author Lari Hotari
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -282,6 +283,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 return false
             }
 
+            String projectType = getName().substring(7)
+
+            cmd.console.addStatus("Creating a new ${projectType == 'app' ? 'application' : projectType}")
+            cmd.console.println()
+            cmd.console.println("     Name:".padRight(20) + appname)
+            cmd.console.println("     Package:".padRight(20) + defaultpackagename)
+            cmd.console.println("     Profile:".padRight(20) + profileName)
+            if (features) {
+                cmd.console.println("     Features:".padRight(20) + features*.name?.sort()?.join(', '))
+            }
+            cmd.console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
+            cmd.console.println()
+
             List<Profile> profiles = profileRepository.getProfileAndDependencies(profileInstance)
 
             Map<Profile, File> targetDirs = [:]
@@ -337,9 +351,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
 
             replaceBuildTokens(profileName, profileInstance, features, projectTargetDirectory)
-            cmd.console.addStatus(
-                    "${name == 'create-plugin' ? 'Plugin' : 'Application'} created at ${projectTargetDirectory.absolutePath}"
-            )
+
+            cmd.console.addStatus("${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${cmd.grailsVersion}.")
+
             if (profileInstance.instructions) {
                 cmd.console.addStatus(profileInstance.instructions)
             }
