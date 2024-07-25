@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -185,6 +185,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
 
     protected void configurePluginJarTask(Project project) {
         Jar jarTask = (Jar) project.tasks.findByName('jar')
+        jarTask.archiveClassifier.set('plugin')
         // re-enable, since Boot disable this
         project.getTasks().getByName(JavaPlugin.JAR_TASK_NAME).setEnabled(true)
         jarTask.exclude 'application.yml'
