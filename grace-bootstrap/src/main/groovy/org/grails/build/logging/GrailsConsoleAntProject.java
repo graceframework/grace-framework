@@ -16,10 +16,32 @@
 package org.grails.build.logging;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.tools.ant.Project;
 
+/**
+ * Extended {@link Project} with Options
+ *
+ * @author Michael Yan
+ * @since 2023.0
+ */
 public class GrailsConsoleAntProject extends Project {
+
+    private final Map<String, String> options = new HashMap<>();
+
+    public void addOption(String option, String value) {
+        this.options.put(option, value);
+    }
+
+    public void setOptions(Map<String, String> options) {
+        this.options.putAll(options);
+    }
+
+    public Map<String, String> getOptions() {
+        return this.options;
+    }
 
     public boolean hasFeature(String feature) {
         String features = getProperty("grails.app.features");

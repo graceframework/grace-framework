@@ -65,6 +65,8 @@ import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Vector;
 
+import org.grails.build.logging.GrailsConsoleAntProject;
+
 /**
  * Groovy Ant task to execute a series of Groovy statements.
  * <p>
@@ -632,6 +634,9 @@ public class Groovy extends Java {
             script.setProperty("properties", new AntProjectPropertiesDelegate(project));
             script.setProperty("target", getOwningTarget());
             script.setProperty("task", this);
+            if (project instanceof GrailsConsoleAntProject) {
+                script.setProperty("options", ((GrailsConsoleAntProject) project).getOptions());
+            }
             script.setProperty("args", cmdline.getCommandline());
             if (mavenPom != null) {
                 script.setProperty("pom", mavenPom);

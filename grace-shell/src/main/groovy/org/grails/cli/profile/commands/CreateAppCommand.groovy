@@ -82,8 +82,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String FEATURES_FLAG = 'features'
     public static final String TEMPLATE_FLAG = 'template'
     public static final String CSS_FLAG = 'css'
-    public static final String JS_FLAG = 'js'
-    public static final String DB_FLAG = 'db'
+    public static final String JAVASCRIPT_FLAG = 'javascript'
+    public static final String DATABASE_FLAG = 'database'
+    public static final String ENABLE_PREVIEW_FLAG = 'enable-preview'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
 
@@ -104,8 +105,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
         description.flag(name: TEMPLATE_FLAG, description: 'The application template to use', required: false)
+        description.flag(name: CSS_FLAG, description: 'The CSS framework to use', required: false)
+        description.flag(name: JAVASCRIPT_FLAG, description: 'The JavaScript approach', required: false)
+        description.flag(name: DATABASE_FLAG, description: 'The Database type', required: false)
         description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
+        description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
     }
 
     protected void populateDescription() {
@@ -183,16 +188,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
-        commandLine.undeclaredOptions.each { String key, Object value ->
-            if (!validFlags.contains(key)) {
-                List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
-                StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
-                if (possibleSolutions) {
-                    warning.append(' Possible solutions: ')
-                    warning.append(possibleSolutions.join(', '))
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+        if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
+            commandLine.undeclaredOptions.each { String key, Object value ->
+                if (!validFlags.contains(key)) {
+                    List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
+                    StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
+                    if (possibleSolutions) {
+                        warning.append(' Possible solutions: ')
+                        warning.append(possibleSolutions.join(', '))
+                    }
+                    executionContext.console.warn(warning.toString())
                 }
-                executionContext.console.warn(warning.toString())
             }
         }
 
@@ -201,6 +209,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
 
         List<String> features = commandLine.optionValue('features')?.toString()?.split(',')?.toList()
+        Map<String, String> args = getCommandArguments(commandLine)
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
                 appName: appName,
@@ -212,7 +221,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 inplace: inPlace,
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
-                console: executionContext.console
+                console: executionContext.console,
+                args: args
         )
 
         this.handle(cmd)
@@ -295,8 +305,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<Feature> features = evaluateFeatures(profileInstance, cmd.features, cmd.console)
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
+        Map<String, String> args = new HashMap<>()
+        args.putAll(cmd.args)
+        args.put(FEATURES_FLAG, features*.name?.sort()?.join(','))
 
-        GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(cmd.appName, projectTargetDirectory, variables, console, cmd.verbose))
+        Project project = createAntProject(cmd.appName, projectTargetDirectory, variables, args, console, cmd.verbose)
+        GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
 
         String projectType = getName().substring(7)
 
@@ -323,7 +337,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
-                        features, cmd.template, grailsVersion, variables, projectTargetDirectory, cmd.verbose)
+                        features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, cmd.verbose)
             }
         }
         else {
@@ -374,8 +388,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,
-                                         List<Feature> features, Map<String, String> variables,
-                                         File projectTargetDirectory, boolean verbose = false) {
+                                           List<Feature> features, Map<String, String> variables,
+                                           File projectTargetDirectory, boolean verbose = false) {
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
         final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
@@ -554,7 +568,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
                                            String appName, String groupName, String packageName, Profile profile,
                                            List<Feature> features, String templateUrl, String grailsVersion,
-                                           Map<String, String> variables, File targetDirectory, boolean verbose) {
+                                           Map<String, String> variables, Map<String, String> args, File targetDirectory, boolean verbose) {
         console.addStatus('Applying Template')
         console.println()
 
@@ -653,7 +667,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (!verbose) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
-            Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profile, features, grailsVersion, templateUrl)
+            Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profile, features, args, grailsVersion, templateUrl)
             Set<File> groovyTemplateFiles = findAllFilesByName(templateDir, '.tpl')
             groovyTemplateFiles.each { File srcFile ->
                 File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
@@ -894,13 +908,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
-                                     GrailsConsole console, boolean verbose = false) {
+                                     Map<String, String> args, GrailsConsole console, boolean verbose = false) {
         GrailsConsoleAntProject project = new GrailsConsoleAntProject()
         project.setBaseDir(projectTargetDirectory)
         project.setName(appName)
         properties.each { k, v ->
             project.setProperty(k, v)
         }
+        project.setOptions(args)
         ProjectHelper helper = ProjectHelper.getProjectHelper()
         helper.getImportStack().addElement("AntBuilder")
         project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
@@ -1027,12 +1042,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private Map<String, Object> getApplicationTemplateBinding(String appName, String groupName, String packageName, Profile profile,
-                                             List<Feature> features, String grailsVersion, String template) {
+                                                              List<Feature> features, Map<String, String> args, String grailsVersion, String template) {
         ProjectContext projectContext = getProjectContext(appName, groupName, packageName, profile, features, grailsVersion, template)
         Map<String, String> dependencyVersions = getDependencyVersions(grailsVersion)
         Map<String, Object> binding = new HashMap<>()
         binding.put("project", projectContext)
         binding.put("versions", dependencyVersions)
+        binding.put("options", args)
         binding
     }
 
@@ -1106,6 +1122,26 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         versions
     }
 
+    private Map<String, String> getCommandArguments(CommandLine commandLine) {
+        Map<String, String> commandArguments = new HashMap<>()
+        commandLine.declaredOptions.each { name, value ->
+            commandArguments.put(name, value.toString())
+        }
+        commandLine.undeclaredOptions.each { name, value ->
+            commandArguments.put(name, value.toString())
+        }
+        if (!commandLine.hasOption(PROFILE_FLAG)) {
+            commandArguments.put(PROFILE_FLAG, getDefaultProfile())
+        }
+        if (!commandLine.hasOption(STACKTRACE_ARGUMENT)) {
+            commandArguments.put(STACKTRACE_ARGUMENT, 'false')
+        }
+        if (!commandLine.hasOption(VERBOSE_ARGUMENT)) {
+            commandArguments.put(VERBOSE_ARGUMENT, 'false')
+        }
+        commandArguments
+    }
+
     private Set<File> findAllFilesByName(File projectDir, String fileName) {
         Set<File> files = new HashSet<>()
         if (projectDir.exists()) {
@@ -1160,6 +1196,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean stacktrace = false
         boolean verbose = false
         GrailsConsole console
+        Map<String, String> args
 
     }
 

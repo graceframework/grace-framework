@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import grails.util.Environment;
  * Implementation of the {@link CommandLine} interface.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class DefaultCommandLine implements CommandLine {
@@ -199,6 +200,15 @@ public class DefaultCommandLine implements CommandLine {
             sep = separator;
         }
         return sb.toString();
+    }
+
+    public Map<String, Object> getDeclaredOptions() {
+        Map<String, Object> declaredOptions = new LinkedHashMap<>();
+
+        for (Map.Entry<String, SpecifiedOption> entry : this.declaredOptions.entrySet()) {
+            declaredOptions.put(entry.getKey(), entry.getValue().getValue());
+        }
+        return declaredOptions;
     }
 
     public Map<String, Object> getUndeclaredOptions() {
