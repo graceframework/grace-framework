@@ -82,8 +82,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String FEATURES_FLAG = 'features'
     public static final String TEMPLATE_FLAG = 'template'
     public static final String CSS_FLAG = 'css'
-    public static final String JS_FLAG = 'js'
-    public static final String DB_FLAG = 'db'
+    public static final String JAVASCRIPT_FLAG = 'javascript'
+    public static final String DATABASE_FLAG = 'database'
+    public static final String ENABLE_PREVIEW_FLAG = 'enable-preview'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
 
@@ -104,8 +105,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
         description.flag(name: TEMPLATE_FLAG, description: 'The application template to use', required: false)
+        description.flag(name: CSS_FLAG, description: 'The CSS framework to use', required: false)
+        description.flag(name: JAVASCRIPT_FLAG, description: 'The JavaScript approach', required: false)
+        description.flag(name: DATABASE_FLAG, description: 'The Database type', required: false)
         description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
+        description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
     }
 
     protected void populateDescription() {
@@ -183,16 +188,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
-        commandLine.undeclaredOptions.each { String key, Object value ->
-            if (!validFlags.contains(key)) {
-                List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
-                StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
-                if (possibleSolutions) {
-                    warning.append(' Possible solutions: ')
-                    warning.append(possibleSolutions.join(', '))
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+        if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
+            commandLine.undeclaredOptions.each { String key, Object value ->
+                if (!validFlags.contains(key)) {
+                    List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
+                    StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
+                    if (possibleSolutions) {
+                        warning.append(' Possible solutions: ')
+                        warning.append(possibleSolutions.join(', '))
+                    }
+                    executionContext.console.warn(warning.toString())
                 }
-                executionContext.console.warn(warning.toString())
             }
         }
 
