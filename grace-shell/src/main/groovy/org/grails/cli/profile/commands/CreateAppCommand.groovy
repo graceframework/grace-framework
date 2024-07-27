@@ -629,7 +629,11 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                 })
             } else {
-                projectDir = new File(templateUrl)
+                tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
+                ant.copy(todir: tempDir) {
+                    fileSet(dir: templateUrl)
+                }
+                projectDir = tempDir
             }
 
             if (projectDir == null || !projectDir.isDirectory() || !projectDir.exists()) {
