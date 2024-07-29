@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,8 @@ import org.codehaus.groovy.transform.LogASTTransformation;
 
 import grails.compiler.ast.AllArtefactClassInjector;
 import grails.compiler.ast.AstTransformer;
+import org.grails.compiler.injection.GrailsASTUtils;
+import org.grails.io.support.GrailsResourceUtils;
 
 /**
  * Adds a log field to all artifacts.
@@ -54,7 +56,8 @@ public class LoggingTransformer implements AllArtefactClassInjector {
 
     @Override
     public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        if (classNode.getNodeMetaData(Slf4j.class) != null) {
+        if (classNode.getNodeMetaData(Slf4j.class) != null ||
+                GrailsASTUtils.isDomainClass(classNode, classNode.getModule().getContext())) {
             return;
         }
         String packageName = Slf4j.class.getPackage().getName();
@@ -80,9 +83,10 @@ public class LoggingTransformer implements AllArtefactClassInjector {
         classNode.putNodeMetaData(Slf4j.class, annotationNode);
     }
 
+    @Override
     public boolean shouldInject(URL url) {
-        // Add log property to all artifact types
-        return true;
+        // Add log property to all artifact types except Domain Classes
+        return !GrailsResourceUtils.isDomainClass(url);
     }
 
 }
