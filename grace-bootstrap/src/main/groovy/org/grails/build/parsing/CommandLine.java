@@ -36,6 +36,8 @@ public interface CommandLine {
 
     String STACKTRACE_ARGUMENT = "stacktrace";
 
+    String QUIET_ARGUMENT = "quiet";
+
     String AGENT_ARGUMENT = "reloading";
 
     String VERSION_ARGUMENT = "version";

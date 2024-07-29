@@ -63,6 +63,7 @@ import org.grails.config.NavigableMap
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
+import static org.grails.build.parsing.CommandLine.QUIET_ARGUMENT
 import static org.grails.build.parsing.CommandLine.STACKTRACE_ARGUMENT
 import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
 
@@ -110,6 +111,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: DATABASE_FLAG, description: 'The Database type', required: false)
         description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
+        description.flag(name: QUIET_ARGUMENT, description: 'Suppress status output', required: false)
         description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
     }
 
@@ -189,7 +191,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
-                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
@@ -221,6 +223,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 inplace: inPlace,
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
+                quiet: commandLine.hasOption(QUIET_ARGUMENT),
                 console: executionContext.console,
                 args: args
         )
@@ -309,7 +312,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         args.putAll(cmd.args)
         args.put(FEATURES_FLAG, features*.name?.sort()?.join(','))
 
-        Project project = createAntProject(cmd.appName, projectTargetDirectory, variables, args, console, cmd.verbose)
+        Project project = createAntProject(cmd.appName, projectTargetDirectory, variables, args, console, cmd.verbose, cmd.quiet)
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
 
         String projectType = getName().substring(7)
@@ -328,23 +331,29 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
         console.println()
 
-        generateProjectSkeleton(ant, profileInstance, features, variables, projectTargetDirectory, cmd.verbose)
+        generateProjectSkeleton(ant, profileInstance, features, variables, projectTargetDirectory, cmd.verbose, cmd.quiet)
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
                 replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
-                applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose)
+                applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
                 copyApplicationTemplate(ant, console, appName, groupName, defaultPackageName, profileInstance,
-                        features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, cmd.verbose)
+                        features, cmd.template, grailsVersion, variables, args, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
         }
         else {
             replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
         }
 
-        console.addStatus("${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}.")
+        String result = "${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}."
+        if (cmd.quiet) {
+            console.updateStatus(result)
+        }
+        else {
+            console.addStatus(result)
+        }
 
         if (profileInstance.instructions) {
             console.addStatus(profileInstance.instructions)
@@ -389,7 +398,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,
                                            List<Feature> features, Map<String, String> variables,
-                                           File projectTargetDirectory, boolean verbose = false) {
+                                           File projectTargetDirectory, boolean verbose, boolean quiet = false) {
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
         final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
@@ -568,9 +577,15 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected void copyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
                                            String appName, String groupName, String packageName, Profile profile,
                                            List<Feature> features, String templateUrl, String grailsVersion,
-                                           Map<String, String> variables, Map<String, String> args, File targetDirectory, boolean verbose) {
-        console.addStatus('Applying Template')
-        console.println()
+                                           Map<String, String> variables, Map<String, String> args, File targetDirectory,
+                                           boolean verbose, boolean quiet = false) {
+        if (quiet) {
+            console.updateStatus('Applying Template')
+        }
+        else {
+            console.addStatus('Applying Template')
+            console.println()
+        }
 
         // Define Ant tasks
         ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
@@ -580,13 +595,20 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File projectDir = null
         try {
             if (templateUrl.endsWith('.zip')) {
-                console.println("    [unzip] src: " + templateUrl)
+                if (!quiet) {
+                    console.println("    [unzip] src: " + templateUrl)
+                }
                 tempZipFile = Files.createTempFile(UNZIP_TEMPLATE_TEMP_DIR, '.zip').toFile()
                 ant.get(src: templateUrl, dest: tempZipFile)
 
                 tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.unzip(src: tempZipFile, dest: tempDir)
-                console.println()
+                if (quiet) {
+                    console.updateStatus('Unzip template: ' + templateUrl)
+                }
+                else {
+                    console.println()
+                }
 
                 Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
@@ -604,14 +626,21 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
                 })
             } else if (templateUrl.endsWith('.git')) {
-                console.println("      [git] clone: " + templateUrl)
+                if (!quiet) {
+                    console.println("      [git] clone: " + templateUrl)
+                }
                 tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.exec(executable: 'git') {
                     arg value: 'clone'
                     arg value: templateUrl
                     arg value: tempDir
                 }
-                console.println()
+                if (quiet) {
+                    console.updateStatus('Clone repository: ' + templateUrl)
+                }
+                else {
+                    console.println()
+                }
 
                 Files.walkFileTree(tempDir.absoluteFile.toPath(), new SimpleFileVisitor<Path>() {
 
@@ -628,7 +657,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                     }
 
                 })
-            } else {
+            }
+            else {
                 tempDir = Files.createTempDirectory(UNZIP_TEMPLATE_TEMP_DIR).toFile()
                 ant.copy(todir: tempDir) {
                     fileSet(dir: templateUrl)
@@ -661,14 +691,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File preApplyTemplateScript = new File(projectDir, preApplyTemplateFile)
             File postApplyTemplateScript = new File(projectDir, postApplyTemplateFile)
 
-            if (!verbose) {
+            if (!verbose && !quiet) {
                 ant.setLoggerLevel(Project.MSG_INFO)
             }
             if (preApplyTemplateScript.exists()) {
                 ant.groovy(src: preApplyTemplateScript)
-                console.println()
+                if (quiet) {
+                    console.updateStatus('Apply template: ' + preApplyTemplateScript.canonicalPath)
+                }
+                else {
+                    console.println()
+                }
             }
-            if (!verbose) {
+            if (!verbose || quiet) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
             Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profile, features, args, grailsVersion, templateUrl)
@@ -723,14 +758,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             ant.chmod(dir: targetDirectory, includes: executablePatterns.join(' '), perm: 'u+x')
 
-            if (!verbose) {
+            if (!verbose && !quiet) {
                 ant.setLoggerLevel(Project.MSG_INFO)
             }
             if (postApplyTemplateScript.exists()) {
                 ant.groovy(src: postApplyTemplateScript)
-                console.println()
+                if (quiet) {
+                    console.updateStatus('Apply template: ' + postApplyTemplateScript.canonicalPath)
+                }
+                else {
+                    console.println()
+                }
             }
-            if (!verbose) {
+            if (!verbose || quiet) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
 
@@ -739,14 +779,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
             File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
 
-            if (!verbose) {
+            if (!verbose && !quiet) {
                 ant.setLoggerLevel(Project.MSG_INFO)
             }
             if (postGenerateProjectScript.exists()) {
                 ant.groovy(src: postGenerateProjectScript)
-                console.println()
+                if (quiet) {
+                    console.updateStatus('Apply template: ' + postGenerateProjectScript.canonicalPath)
+                }
+                else {
+                    console.println()
+                }
             }
-            if (!verbose) {
+            if (!verbose || quiet) {
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
         }
@@ -763,13 +808,15 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     @CompileDynamic
     protected void applyApplicationTemplate(GrailsConsoleAntBuilder ant, GrailsConsole console,
                                             String appName, String template,
-                                            File projectTargetDirectory, boolean verbose) {
-        console.addStatus('Applying Template')
-        console.println()
+                                            File projectTargetDirectory, boolean verbose, boolean quiet = false) {
+        if (!quiet) {
+            console.addStatus('Applying Template')
+            console.println()
+        }
 
         ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
 
-        if (!verbose) {
+        if (!verbose && !quiet) {
             ant.setLoggerLevel(Project.MSG_INFO)
         }
         ResourceCollection resource
@@ -778,6 +825,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (!resource.isExists()) {
                 console.error("Template resource `${template}` is not exists!\n")
                 return
+            }
+            if (quiet) {
+                console.updateStatus('Apply template: ' + template)
             }
             ant.groovy {
                 url url: template
@@ -790,12 +840,17 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 console.error("Template resource `${template}` is not exists!\n")
                 return
             }
+            if (quiet) {
+                console.updateStatus('Apply template: ' + template)
+            }
             ant.groovy(src: template)
         }
-        if (!verbose) {
+        if (!verbose || quiet) {
             ant.setLoggerLevel(Project.MSG_ERR)
         }
-        console.println()
+        if (!quiet) {
+            console.println()
+        }
     }
 
     @CompileDynamic
@@ -912,7 +967,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
-                                     Map<String, String> args, GrailsConsole console, boolean verbose = false) {
+                                     Map<String, String> args, GrailsConsole console, boolean verbose, boolean quiet = false) {
         GrailsConsoleAntProject project = new GrailsConsoleAntProject()
         project.setBaseDir(projectTargetDirectory)
         project.setName(appName)
@@ -1199,6 +1254,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean inplace = false
         boolean stacktrace = false
         boolean verbose = false
+        boolean quiet = false
         GrailsConsole console
         Map<String, String> args
 
