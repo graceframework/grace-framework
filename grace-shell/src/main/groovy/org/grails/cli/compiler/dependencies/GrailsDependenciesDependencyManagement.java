@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.grails.cli.compiler.dependencies;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.DefaultModelProcessor;
@@ -31,18 +33,31 @@ import org.apache.maven.model.locator.DefaultModelLocator;
  */
 public class GrailsDependenciesDependencyManagement extends MavenModelDependencyManagement {
 
+    private static final String GRACE_BOM_URL = "https://repo1.maven.org/maven2/org/graceframework/grace-bom/%s/grace-bom-%s.pom";
+
     public GrailsDependenciesDependencyManagement() {
-        super(readModel());
+        this(null);
     }
 
-    private static Model readModel() {
+    public GrailsDependenciesDependencyManagement(String grailsVersion) {
+        super(readModel(grailsVersion));
+    }
+
+    private static Model readModel(String grailsVersion) {
         DefaultModelProcessor modelProcessor = new DefaultModelProcessor();
         modelProcessor.setModelLocator(new DefaultModelLocator());
         modelProcessor.setModelReader(new DefaultModelReader());
 
         try {
-            return modelProcessor.read(GrailsDependenciesDependencyManagement.class
-                    .getResourceAsStream("grace-bom-effective.xml"), null);
+            InputStream is;
+            if (grailsVersion != null) {
+                URL url = new URL(String.format(GRACE_BOM_URL, grailsVersion, grailsVersion));
+                is = url.openStream();
+            }
+            else {
+                is = GrailsDependenciesDependencyManagement.class.getResourceAsStream("grace-bom-effective.xml");
+            }
+            return modelProcessor.read(is, null);
         }
         catch (IOException ex) {
             throw new IllegalStateException("Failed to build model from effective pom", ex);
