@@ -125,6 +125,10 @@ public final class GrailsVersion {
         return isGrace2023(graceVersion) || isGrace2022(graceVersion);
     }
 
+    public static boolean isGraceSnapshotVersion(String graceVersion) {
+        return (isGrace2023(graceVersion) || isGrace2022(graceVersion)) && graceVersion.endsWith("-SNAPSHOT");
+    }
+
     private GrailsVersion(String version, String buildTime, String commitId) {
         this.version = version;
         this.buildTime = buildTime;

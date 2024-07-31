@@ -15,11 +15,14 @@
  */
 package org.grails.cli.profile.repository
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import groovy.xml.XmlSlurper
 import org.eclipse.aether.artifact.Artifact
 import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
 
+import grails.util.GrailsVersion
 import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.compiler.grape.DependencyResolutionContext
 import org.grails.cli.compiler.grape.DependencyResolutionFailedException
@@ -37,7 +40,10 @@ import org.grails.cli.profile.Profile
 class MavenProfileRepository extends AbstractJarProfileRepository {
 
     public static final GrailsRepositoryConfiguration DEFAULT_REPO = new GrailsRepositoryConfiguration(
-            'mavenCentral', new URI('https://repo1.maven.org/maven2/'), false)
+            'mavenCentral', new URI(GrailsDependenciesDependencyManagement.MAVEN_CENTRAL), false)
+
+    public static final GrailsRepositoryConfiguration SONATYPE_SNAPSHOT_REPO = new GrailsRepositoryConfiguration(
+            'SonatypeSnapshot', new URI(GrailsDependenciesDependencyManagement.SONATYPE_REPO_SNAPSHOT), true)
 
     public static final GrailsRepositoryConfiguration MAVEN_LOCAL_REPO = getMavenLocalRepoConfiguration()
 
@@ -53,7 +59,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     }
 
     MavenProfileRepository(String grailsVersion) {
-        this([MAVEN_LOCAL_REPO, DEFAULT_REPO], grailsVersion)
+        this(getGrailsRepositoryConfigurations(grailsVersion), grailsVersion)
     }
 
     MavenProfileRepository(List<GrailsRepositoryConfiguration> repositoryConfigurations) {
@@ -127,10 +133,40 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 this.grapeEngine.grab(profile)
             }
 
+            File localData = new File(System.getProperty('user.home'), '/.m2/repository/org/graceframework/profiles')
+            if (GrailsVersion.current().isSnapshot() && localData.exists()) {
+                localData.eachDir { File dir ->
+                    if (!dir.name.startsWith('.')) {
+                        File profileData = new File(dir, '/maven-metadata-local.xml')
+                        if (profileData.exists()) {
+                            String currentVersion = parseCurrentVersion(profileData)
+                            File profileFile = new File(dir, "$currentVersion/${dir.name}-${currentVersion}.jar")
+                            if (profileFile.exists()) {
+                                this.classLoader.addURL(profileFile.toURI().toURL())
+                            }
+                        }
+                    }
+                }
+            }
+
             processUrls()
             this.resolved = true
         }
         super.getAllProfiles()
+    }
+
+    @CompileDynamic
+    protected static String parseCurrentVersion(File localData) {
+        new XmlSlurper().parse(localData).versioning.versions.version[0].text()
+    }
+
+    private static List<GrailsRepositoryConfiguration> getGrailsRepositoryConfigurations(String graceVersion) {
+        if (GrailsVersion.isGraceSnapshotVersion(graceVersion)) {
+            return [MAVEN_LOCAL_REPO, SONATYPE_SNAPSHOT_REPO]
+        }
+        else {
+            return [MAVEN_LOCAL_REPO, DEFAULT_REPO]
+        }
     }
 
     private static GrailsRepositoryConfiguration getMavenLocalRepoConfiguration() {

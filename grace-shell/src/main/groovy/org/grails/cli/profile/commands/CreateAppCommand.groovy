@@ -91,11 +91,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String GRACE_VERSION_FLAG = 'grace-version'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = [
+        '2023.0.0-SNAPSHOT',
         '2023.0.0-M7',
         '2023.0.0-M6',
         '2023.0.0-M5',
         '2023.0.0-M4',
         '2023.0.0-M3',
+        '2022.2.7-SNAPSHOT',
         '2022.2.6',
         '2022.2.5',
         '2022.2.4',
@@ -103,6 +105,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         '2022.2.2',
         '2022.2.1',
         '2022.2.0',
+        '2022.1.10-SNAPSHOT',
         '2022.1.9',
         '2022.1.8',
         '2022.1.7',
@@ -113,6 +116,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         '2022.1.2',
         '2022.1.1',
         '2022.1.0',
+        '2022.0.7-SNAPSHOT',
         '2022.0.6',
         '2022.0.5',
         '2022.0.4',
@@ -910,6 +914,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             repo.startsWith('http') ? "${' ' * spaces}maven { url \"${repo}\" }" : "${' ' * spaces}${repo}"
         }
         List<String> repositoryUrls = profile.repositories.sort().reverse()
+        if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
+            repositoryUrls.add(0, 'maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }')
+        }
         if (isSnapshotVersion) {
             repositoryUrls.add(0, 'mavenLocal()')
         }
@@ -947,6 +954,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         List<String> buildRepositoryUrls = buildRepositories.sort().reverse()
 
+        if (GrailsVersion.isGraceSnapshotVersion(grailsVersion)) {
+            buildRepositoryUrls.add(0, 'maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }')
+        }
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
         }
