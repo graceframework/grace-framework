@@ -90,7 +90,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String INPLACE_FLAG = 'inplace'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
 
-    public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5']
+    public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -906,7 +906,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         dependencies = dependencies.unique()
 
-        List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies)
+        List<GradleDependency> gradleDependencies = convertToGradleDependencies(dependencies, grailsVersion)
 
         String dependenciesString = gradleDependencies
                 .sort({ GradleDependency dep -> dep.scope })
@@ -1045,9 +1045,13 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         tmpDir
     }
 
-    private List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies) {
+    private List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies, String grailsVersion) {
         List<GradleDependency> gradleDependencies = []
-        gradleDependencies.addAll(dependencies.collect { new GradleDependency(it) })
+        gradleDependencies.addAll(dependencies.collect {
+            GrailsVersion.isGrails4(grailsVersion) || GrailsVersion.isGrails3(grailsVersion) ?
+                    new GradleDependency(it, false) :
+                    new GradleDependency(it)
+        })
         gradleDependencies
     }
 

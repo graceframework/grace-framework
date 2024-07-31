@@ -62,6 +62,10 @@ public final class GrailsVersion {
 
     public static final String GRAILS_5 = "5";
 
+    public static final String GRAILS_4 = "4";
+
+    public static final String GRAILS_3 = "3";
+
     static {
         URL resource = GrailsVersion.class.getResource(RESOURCE_NAME);
         if (resource == null) {
@@ -141,8 +145,16 @@ public final class GrailsVersion {
         return grailsVersion != null && grailsVersion.startsWith(GRAILS_5);
     }
 
+    public static boolean isGrails4(String grailsVersion) {
+        return grailsVersion != null && grailsVersion.startsWith(GRAILS_4);
+    }
+
+    public static boolean isGrails3(String grailsVersion) {
+        return grailsVersion != null && grailsVersion.startsWith(GRAILS_3);
+    }
+
     public static boolean isGrails(String grailsVersion) {
-        return isGrails6(grailsVersion) || isGrails5(grailsVersion);
+        return isGrails6(grailsVersion) || isGrails5(grailsVersion) || isGrails4(grailsVersion) || isGrails3(grailsVersion);
     }
 
     private GrailsVersion(String version, String buildTime, String commitId) {
