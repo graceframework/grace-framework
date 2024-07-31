@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import static org.grails.cli.profile.ProfileUtil.createDependency
  * Default implementation of the {@link Feature} interface
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @EqualsAndHashCode(includes = ['name'])
@@ -66,7 +67,17 @@ class DefaultFeature implements Feature {
                     }
                     String coords = (String) entry.coords
                     Dependency dependency = createDependency(coords, scope, entry)
-                    dependencies.add(dependency)
+                    this.@dependencies.add(dependency)
+                }
+            }
+        }
+        else if (dependenciesConfig instanceof Map) {
+            for (entry in dependenciesConfig.entrySet()) {
+                if (entry.value instanceof List) {
+                    ((List) entry.value).each { coords ->
+                        Dependency dependency = createDependency(coords.toString(), entry.key.toString(), [:])
+                        this.@dependencies.add(dependency)
+                    }
                 }
             }
         }
