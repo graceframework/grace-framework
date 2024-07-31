@@ -29,6 +29,7 @@ import org.grails.cli.compiler.dependencies.Dependency.Exclusion;
  * {@link DependencyManagement} derived from a Maven {@link Model}.
  *
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public class MavenModelDependencyManagement implements DependencyManagement {
@@ -48,14 +49,20 @@ public class MavenModelDependencyManagement implements DependencyManagement {
     }
 
     private static List<Dependency> extractDependenciesFromModel(Model model) {
+        Properties properties = model.getProperties();
         List<Dependency> dependencies = new ArrayList<>();
         for (org.apache.maven.model.Dependency mavenDependency : model.getDependencyManagement().getDependencies()) {
             List<Exclusion> exclusions = new ArrayList<>();
             for (org.apache.maven.model.Exclusion mavenExclusion : mavenDependency.getExclusions()) {
                 exclusions.add(new Exclusion(mavenExclusion.getGroupId(), mavenExclusion.getArtifactId()));
             }
-            Dependency dependency = new Dependency(mavenDependency.getGroupId(), mavenDependency.getArtifactId(),
-                    mavenDependency.getVersion(), exclusions);
+            String groupId = mavenDependency.getGroupId();
+            String artifactId = mavenDependency.getArtifactId();
+            String version = mavenDependency.getVersion();
+            if (version.startsWith("${") && version.endsWith("}")) {
+                version = properties.getProperty(version.substring(2, version.length() - 1));
+            }
+            Dependency dependency = new Dependency(groupId, artifactId, version, exclusions);
             dependencies.add(dependency);
         }
         return dependencies;

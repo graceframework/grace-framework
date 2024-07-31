@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.grails.cli.profile.Profile
  *  Resolves profiles from a configured list of repositories using Aether
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
@@ -47,17 +48,27 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     GrailsDependenciesDependencyManagement profileDependencyVersions
     private boolean resolved = false
 
+    MavenProfileRepository() {
+        this([MAVEN_LOCAL_REPO, DEFAULT_REPO])
+    }
+
+    MavenProfileRepository(String grailsVersion) {
+        this([MAVEN_LOCAL_REPO, DEFAULT_REPO], grailsVersion)
+    }
+
     MavenProfileRepository(List<GrailsRepositoryConfiguration> repositoryConfigurations) {
+        this(repositoryConfigurations, null)
+    }
+
+    MavenProfileRepository(List<GrailsRepositoryConfiguration> repositoryConfigurations, String grailsVersion) {
         this.repositoryConfigurations = repositoryConfigurations
         this.classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader)
         this.resolutionContext = new DependencyResolutionContext()
         this.grapeEngine = GrailsMavenGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
-        this.profileDependencyVersions = new GrailsDependenciesDependencyManagement()
+        this.profileDependencyVersions = grailsVersion != null ?
+                new GrailsDependenciesDependencyManagement(grailsVersion) :
+                new GrailsDependenciesDependencyManagement()
         this.resolutionContext.addDependencyManagement(profileDependencyVersions)
-    }
-
-    MavenProfileRepository() {
-        this([MAVEN_LOCAL_REPO, DEFAULT_REPO])
     }
 
     @Override

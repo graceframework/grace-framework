@@ -54,6 +54,10 @@ public final class GrailsVersion {
 
     public static final String GIT_COMMIT_ID_PROPERTY = "git.commit.id";
 
+    public static final String GRACE_2023 = "2023";
+
+    public static final String GRACE_2022 = "2022";
+
     static {
         URL resource = GrailsVersion.class.getResource(RESOURCE_NAME);
         if (resource == null) {
@@ -95,6 +99,30 @@ public final class GrailsVersion {
 
     public static GrailsVersion version(String version) throws IllegalArgumentException {
         return new GrailsVersion(version, null, null);
+    }
+
+    public static boolean isGrace2023() {
+        return current().getVersion().startsWith(GRACE_2023);
+    }
+
+    public static boolean isGrace2022() {
+        return current().getVersion().startsWith(GRACE_2022);
+    }
+
+    public static boolean isGrace() {
+        return isGrace2023() || isGrace2022();
+    }
+
+    public static boolean isGrace2023(String graceVersion) {
+        return graceVersion != null && graceVersion.startsWith(GRACE_2023);
+    }
+
+    public static boolean isGrace2022(String graceVersion) {
+        return graceVersion != null && graceVersion.startsWith(GRACE_2022);
+    }
+
+    public static boolean isGrace(String graceVersion) {
+        return isGrace2023(graceVersion) || isGrace2022(graceVersion);
     }
 
     private GrailsVersion(String version, String buildTime, String commitId) {

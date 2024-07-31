@@ -88,6 +88,39 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String ENABLE_PREVIEW_FLAG = 'enable-preview'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
+    public static final String GRACE_VERSION_FLAG = 'grace-version'
+
+    public static final String[] SUPPORT_GRACE_VERSIONS = [
+        '2023.0.0-M7',
+        '2023.0.0-M6',
+        '2023.0.0-M5',
+        '2023.0.0-M4',
+        '2023.0.0-M3',
+        '2022.2.6',
+        '2022.2.5',
+        '2022.2.4',
+        '2022.2.3',
+        '2022.2.2',
+        '2022.2.1',
+        '2022.2.0',
+        '2022.1.9',
+        '2022.1.8',
+        '2022.1.7',
+        '2022.1.6',
+        '2022.1.5',
+        '2022.1.4',
+        '2022.1.3',
+        '2022.1.2',
+        '2022.1.1',
+        '2022.1.0',
+        '2022.0.6',
+        '2022.0.5',
+        '2022.0.4',
+        '2022.0.3',
+        '2022.0.2',
+        '2022.0.1',
+        '2022.0.0',
+    ]
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -113,6 +146,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
         description.flag(name: QUIET_ARGUMENT, description: 'Suppress status output', required: false)
         description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
+        description.flag(name: GRACE_VERSION_FLAG, description: 'Specific Grace Version', required: false)
     }
 
     protected void populateDescription() {
@@ -186,12 +220,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @Override
     boolean handle(ExecutionContext executionContext) {
+        GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
 
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
-                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT]
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
+                                   STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT, GRACE_VERSION_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
@@ -201,7 +237,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                         warning.append(' Possible solutions: ')
                         warning.append(possibleSolutions.join(', '))
                     }
-                    executionContext.console.warn(warning.toString())
+                    console.warn(warning.toString())
                 }
             }
         }
@@ -217,17 +253,28 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 appName: appName,
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
-                grailsVersion: grailsVersion,
+                grailsVersion: commandLine.optionValue(GRACE_VERSION_FLAG).toString() ?: grailsVersion,
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
                 quiet: commandLine.hasOption(QUIET_ARGUMENT),
-                console: executionContext.console,
+                console: console,
                 args: args
         )
 
+        String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG).toString()
+        if (commandLine.hasOption(GRACE_VERSION_FLAG) && specificGraceVersion != grailsVersion) {
+            if (validateSpecificGraceVersion(specificGraceVersion)) {
+                this.profileRepository = new MavenProfileRepository(specificGraceVersion)
+            }
+            else {
+                console.error("Specific version `$specificGraceVersion` not supported!")
+                console.println('Please checkout https://github.com/graceframework/grace-framework/releases')
+                return false
+            }
+        }
         this.handle(cmd)
     }
 
@@ -335,7 +382,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
                 applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
@@ -344,7 +391,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
         else {
-            replaceBuildTokens(ant, profileName, profileInstance, features, variables, projectTargetDirectory)
+            replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
         }
 
         String result = "${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}."
@@ -855,7 +902,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileName, Profile profile,
-                                      List<Feature> features, Map<String, String> variables, File targetDirectory) {
+                                      List<Feature> features, Map<String, String> variables, String grailsVersion, File targetDirectory) {
         boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
         String ln = System.getProperty('line.separator')
 
@@ -903,19 +950,27 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
         }
-        String buildRepositoriesString = buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln)
+        String buildRepositoriesString = GrailsVersion.isGrace2023(grailsVersion) ?
+                buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln) :
+                buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
-            "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
+            GrailsVersion.isGrace2023(grailsVersion) ?
+                    "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\"" :
+                    "        classpath \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
-            "    id \"$name\""
+            GrailsVersion.isGrace2023(grailsVersion) ?
+                    "    id \"$name\"" :
+                    "apply plugin: \"$name\""
         }
 
         for (Feature f in features) {
             buildPlugins.addAll f.buildPlugins.collect { String name ->
-                "    id \"$name\""
+                GrailsVersion.isGrace2023(grailsVersion) ?
+                        "    id \"$name\"" :
+                        "apply plugin: \"$name\""
             }
         }
 
@@ -1241,6 +1296,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         catch (Throwable ignored) {
             // Ignore error deleting temporal directory
         }
+    }
+
+    private static boolean validateSpecificGraceVersion(String specificGraceVersion) {
+        specificGraceVersion in SUPPORT_GRACE_VERSIONS
     }
 
     static class CreateAppCommandObject {
