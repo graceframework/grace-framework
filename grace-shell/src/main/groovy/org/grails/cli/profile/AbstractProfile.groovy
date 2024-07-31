@@ -194,10 +194,20 @@ abstract class AbstractProfile implements Profile {
                     }
                     else {
                         Dependency dependency = createDependency(coords, scope, entry)
-                        dependencies.add(dependency)
+                        this.@dependencies.add(dependency)
                     }
                 }
                 exclusionDependencySelector = new ExclusionDependencySelector(exclusions)
+            }
+        }
+        else if (dependenciesConfig instanceof Map) {
+            for (entry in dependenciesConfig.entrySet()) {
+                if (entry.value instanceof List) {
+                    ((List) entry.value).each { coords ->
+                        Dependency dependency = createDependency(coords.toString(), entry.key.toString(), [:])
+                        this.@dependencies.add(dependency)
+                    }
+                }
             }
         }
 
@@ -329,7 +339,7 @@ abstract class AbstractProfile implements Profile {
                 }
             }
         }
-        calculatedDependencies.addAll(dependencies)
+        calculatedDependencies.addAll(this.@dependencies)
         calculatedDependencies
     }
 
