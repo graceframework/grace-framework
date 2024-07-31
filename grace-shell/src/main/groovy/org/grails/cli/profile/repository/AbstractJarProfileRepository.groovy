@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.grails.io.support.Resource
  * A repository that loads profiles from JAR files
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
@@ -41,6 +42,7 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
     protected final List<Profile> allProfiles = []
     protected final Map<String, Profile> profilesByName = [:]
     protected static final String DEFAULT_PROFILE_GROUPID = 'org.graceframework.profiles'
+    protected static final String GRAILS_PROFILE_GROUPID = 'org.grails.profiles'
 
     private final Set<URL> registeredUrls = []
 
@@ -71,12 +73,16 @@ abstract class AbstractJarProfileRepository implements ProfileRepository {
         sortedProfiles
     }
 
+    String getDefaultGroupId() {
+        DEFAULT_PROFILE_GROUPID
+    }
+
     Artifact getProfileArtifact(String profileName) {
         if (profileName.contains(':')) {
             return new DefaultArtifact(profileName)
         }
 
-        String groupId = DEFAULT_PROFILE_GROUPID
+        String groupId = getDefaultGroupId()
         String version = null
 
         Map<String, Map> defaultValues = GrailsCli.getSetting('grails.profiles', Map, [:])

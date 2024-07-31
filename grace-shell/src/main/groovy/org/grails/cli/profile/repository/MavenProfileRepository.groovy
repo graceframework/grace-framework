@@ -52,6 +52,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
     GroovyClassLoader classLoader
     DependencyResolutionContext resolutionContext
     GrailsDependenciesDependencyManagement profileDependencyVersions
+    private String grailsVersion = GrailsVersion.current().version
     private boolean resolved = false
 
     MavenProfileRepository() {
@@ -75,6 +76,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
                 new GrailsDependenciesDependencyManagement(grailsVersion) :
                 new GrailsDependenciesDependencyManagement()
         this.resolutionContext.addDependencyManagement(profileDependencyVersions)
+        this.grailsVersion = grailsVersion != null ? grailsVersion : GrailsVersion.current().version
     }
 
     @Override
@@ -91,6 +93,11 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
             return resolveProfile(profileName)
         }
         super.getProfile(profileShortName)
+    }
+
+    @Override
+    String getDefaultGroupId() {
+        GrailsVersion.isGrace(this.grailsVersion) ? DEFAULT_PROFILE_GROUPID : GRAILS_PROFILE_GROUPID
     }
 
     @Override
@@ -123,7 +130,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         if (!this.resolved) {
             List<Map> profiles = []
             this.resolutionContext.managedDependencies.each { Dependency dep ->
-                if (dep.artifact.groupId == 'org.graceframework.profiles') {
+                if (dep.artifact.groupId == defaultGroupId) {
                     profiles.add([group: dep.artifact.groupId, module: dep.artifact.artifactId])
                 }
             }

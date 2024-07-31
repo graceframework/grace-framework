@@ -90,41 +90,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String INPLACE_FLAG = 'inplace'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
 
-    public static final String[] SUPPORT_GRACE_VERSIONS = [
-        '2023.0.0-SNAPSHOT',
-        '2023.0.0-M7',
-        '2023.0.0-M6',
-        '2023.0.0-M5',
-        '2023.0.0-M4',
-        '2023.0.0-M3',
-        '2022.2.7-SNAPSHOT',
-        '2022.2.6',
-        '2022.2.5',
-        '2022.2.4',
-        '2022.2.3',
-        '2022.2.2',
-        '2022.2.1',
-        '2022.2.0',
-        '2022.1.10-SNAPSHOT',
-        '2022.1.9',
-        '2022.1.8',
-        '2022.1.7',
-        '2022.1.6',
-        '2022.1.5',
-        '2022.1.4',
-        '2022.1.3',
-        '2022.1.2',
-        '2022.1.1',
-        '2022.1.0',
-        '2022.0.7-SNAPSHOT',
-        '2022.0.6',
-        '2022.0.5',
-        '2022.0.4',
-        '2022.0.3',
-        '2022.0.2',
-        '2022.0.1',
-        '2022.0.0',
-    ]
+    public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -274,8 +240,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 this.profileRepository = new MavenProfileRepository(specificGraceVersion)
             }
             else {
-                console.error("Specific version `$specificGraceVersion` not supported!")
-                console.println('Please checkout https://github.com/graceframework/grace-framework/releases')
+                console.error("Specific Grace version `$specificGraceVersion` is not supported!")
                 return false
             }
         }
@@ -398,7 +363,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
         }
 
-        String result = "${projectType == 'app' ? 'Application' : projectType.capitalize()} created by Grace ${grailsVersion}."
+        String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
+                GrailsVersion.isGrace(grailsVersion) ? 'Grace' : 'Grails', grailsVersion)
+
         if (cmd.quiet) {
             console.updateStatus(result)
         }
@@ -1309,7 +1276,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     }
 
     private static boolean validateSpecificGraceVersion(String specificGraceVersion) {
-        specificGraceVersion in SUPPORT_GRACE_VERSIONS
+        specificGraceVersion != null && specificGraceVersion.substring(0, specificGraceVersion.indexOf('.')) in SUPPORT_GRACE_VERSIONS
     }
 
     static class CreateAppCommandObject {
