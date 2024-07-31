@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2023 the original author or authors.
+ * Copyright 2017-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,14 @@ import org.eclipse.aether.graph.Dependency
 class GradleDependency {
 
     static final Map<String, String> SCOPE_MAP = [
+            console: 'console',
             compile: 'implementation',
+            compileOnly: 'compileOnly',
             runtime: 'runtimeOnly',
             testRuntime: 'testRuntimeOnly',
             testCompile: 'testImplementation',
-//        provided: 'developmentOnly'
+            provided: 'developmentOnly',
+            profile: 'profile'
     ]
 
     private final String scope
@@ -37,8 +40,11 @@ class GradleDependency {
     }
 
     GradleDependency(Dependency dependency) {
-//        this(dependency.scope, dependency)
-        this(SCOPE_MAP.get(dependency.scope) ?: dependency.scope, dependency)
+        this(dependency, true)
+    }
+
+    GradleDependency(Dependency dependency, boolean compatible) {
+        this(compatible ? SCOPE_MAP.get(dependency.scope) : dependency.scope, dependency)
     }
 
     GradleDependency(String scope, Dependency dependency) {
