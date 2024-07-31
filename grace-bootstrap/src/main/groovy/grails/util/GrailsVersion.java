@@ -58,6 +58,10 @@ public final class GrailsVersion {
 
     public static final String GRACE_2022 = "2022";
 
+    public static final String GRAILS_6 = "6";
+
+    public static final String GRAILS_5 = "5";
+
     static {
         URL resource = GrailsVersion.class.getResource(RESOURCE_NAME);
         if (resource == null) {
@@ -127,6 +131,18 @@ public final class GrailsVersion {
 
     public static boolean isGraceSnapshotVersion(String graceVersion) {
         return (isGrace2023(graceVersion) || isGrace2022(graceVersion)) && graceVersion.endsWith("-SNAPSHOT");
+    }
+
+    public static boolean isGrails6(String grailsVersion) {
+        return grailsVersion != null && grailsVersion.startsWith(GRAILS_6);
+    }
+
+    public static boolean isGrails5(String grailsVersion) {
+        return grailsVersion != null && grailsVersion.startsWith(GRAILS_5);
+    }
+
+    public static boolean isGrails(String grailsVersion) {
+        return isGrails6(grailsVersion) || isGrails5(grailsVersion);
     }
 
     private GrailsVersion(String version, String buildTime, String commitId) {
