@@ -94,6 +94,12 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
         return find(artifactId).getVersion();
     }
 
+    public String getGrailsGradlePluginVersion() {
+        String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
+                "grace-core" : "grails-gradle-plugin";
+        return find(artifactId).getVersion();
+    }
+
     public String getGroovyVersion() {
         String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
                 "groovy-bom" : "groovy";

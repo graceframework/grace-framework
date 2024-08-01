@@ -1206,7 +1206,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             if (groovyDep != null) {
                 versions['groovy.version'] = groovyDep
             }
-            String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsVersion()
+            String grailsGradlePluginVersion = mpr.profileDependencyVersions.getGrailsGradlePluginVersion()
             if (grailsGradlePluginVersion != null) {
                 versions['grails-gradle-plugin.version'] = grailsGradlePluginVersion
             }
