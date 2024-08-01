@@ -213,6 +213,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         String grailsVersion = GrailsVersion.current().version
+        String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG)
         boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
         String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
 
@@ -223,7 +224,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 appName: appName,
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
-                grailsVersion: commandLine.optionValue(GRACE_VERSION_FLAG).toString() ?: grailsVersion,
+                grailsVersion: specificGraceVersion ?: grailsVersion,
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
@@ -234,7 +235,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 args: args
         )
 
-        String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG).toString()
         if (commandLine.hasOption(GRACE_VERSION_FLAG) && specificGraceVersion != grailsVersion) {
             if (validateSpecificGraceVersion(specificGraceVersion)) {
                 this.profileRepository = new MavenProfileRepository(specificGraceVersion)
