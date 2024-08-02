@@ -88,6 +88,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String ENABLE_PREVIEW_FLAG = 'enable-preview'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
+    public static final String FORCE_FLAG = 'force'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
@@ -117,6 +118,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: QUIET_ARGUMENT, description: 'Suppress status output', required: false)
         description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
         description.flag(name: GRACE_VERSION_FLAG, description: 'Specific Grace Version', required: false)
+        description.flag(name: FORCE_FLAG, description: 'Force overwrite of existing files', required: false)
     }
 
     protected void populateDescription() {
@@ -197,7 +199,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
                                    CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
-                                   STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT, GRACE_VERSION_FLAG]
+                                   STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT, GRACE_VERSION_FLAG, FORCE_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
@@ -231,6 +233,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
                 quiet: commandLine.hasOption(QUIET_ARGUMENT),
+                force: commandLine.hasOption(FORCE_FLAG),
                 console: console,
                 args: args
         )
@@ -311,8 +314,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         Path appFullDirectory = Paths.get(cmd.baseDir.path, appName)
         File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
         if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
-            console.error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
-            return false
+            if (cmd.force) {
+                cleanDirectory(projectTargetDirectory)
+            }
+            else {
+                console.error("Directory `${projectTargetDirectory.absolutePath}` already exists!" +
+                        ' Use --force if you want to overwrite or specify an alternate location.')
+                return false
+            }
         }
         else {
             boolean result = projectTargetDirectory.mkdir()
@@ -1279,6 +1288,31 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
+    private static void cleanDirectory(File directory) throws IOException {
+        FileFilter fileFilter = new FileFilter() {
+            @Override
+            boolean accept(File file) {
+                // keep git directory to show changes between the versions
+                if (file.isDirectory() && file.name == ".git") {
+                    return false
+                }
+                return true
+            }
+        }
+        File[] files = directory.listFiles(fileFilter)
+        for (File file : files) {
+            try {
+                if (file.isDirectory()) {
+                    file.deleteDir()
+                }
+                else {
+                    file.delete()
+                }
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
     private static boolean validateSpecificGraceVersion(String specificGraceVersion) {
         specificGraceVersion != null && specificGraceVersion.substring(0, specificGraceVersion.indexOf('.')) in SUPPORT_GRACE_VERSIONS
     }
@@ -1295,6 +1329,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean stacktrace = false
         boolean verbose = false
         boolean quiet = false
+        boolean force = false
         GrailsConsole console
         Map<String, String> args
 
