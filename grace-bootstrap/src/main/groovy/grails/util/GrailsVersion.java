@@ -110,11 +110,11 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace2023() {
-        return current().getVersion().startsWith(GRACE_2023);
+        return getMajorVersion(current().getVersion()).equals(GRACE_2023);
     }
 
     public static boolean isGrace2022() {
-        return current().getVersion().startsWith(GRACE_2022);
+        return getMajorVersion(current().getVersion()).equals(GRACE_2022);
     }
 
     public static boolean isGrace() {
@@ -122,11 +122,11 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace2023(String graceVersion) {
-        return graceVersion != null && graceVersion.startsWith(GRACE_2023);
+        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2023);
     }
 
     public static boolean isGrace2022(String graceVersion) {
-        return graceVersion != null && graceVersion.startsWith(GRACE_2022);
+        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2022);
     }
 
     public static boolean isGrace(String graceVersion) {
@@ -138,19 +138,19 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrails6(String grailsVersion) {
-        return grailsVersion != null && grailsVersion.startsWith(GRAILS_6);
+        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_6);
     }
 
     public static boolean isGrails5(String grailsVersion) {
-        return grailsVersion != null && grailsVersion.startsWith(GRAILS_5);
+        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_5);
     }
 
     public static boolean isGrails4(String grailsVersion) {
-        return grailsVersion != null && grailsVersion.startsWith(GRAILS_4);
+        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_4);
     }
 
     public static boolean isGrails3(String grailsVersion) {
-        return grailsVersion != null && grailsVersion.startsWith(GRAILS_3);
+        return grailsVersion != null && getMajorVersion(grailsVersion).equals(GRAILS_3);
     }
 
     public static boolean isGrails(String grailsVersion) {
@@ -208,6 +208,11 @@ public final class GrailsVersion {
         else {
             return matcher.group(6);
         }
+    }
+
+    private static String getMajorVersion(String grailsVersion) {
+        return grailsVersion != null && grailsVersion.contains(".") ?
+                grailsVersion.substring(0, grailsVersion.indexOf('.')) : grailsVersion;
     }
 
     @Override
