@@ -35,10 +35,9 @@ import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
-import org.grails.cli.profile.Profile
-import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
+import org.grails.cli.profile.ProjectCommand
 import org.grails.cli.profile.ProjectContext
 import org.grails.cli.profile.ProjectContextAware
 import org.grails.cli.profile.repository.MavenProfileRepository
@@ -59,7 +58,7 @@ import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
  * @since 2023.0
  */
 @CompileStatic
-class ApplicationTemplateCommand implements ProfileCommand, ProjectContextAware, ProfileRepositoryAware {
+class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware, ProfileRepositoryAware {
 
     public static final String NAME = 'template'
     public static final String LOCATION_FLAG = 'location'
@@ -68,7 +67,6 @@ class ApplicationTemplateCommand implements ProfileCommand, ProjectContextAware,
             'grace app:template --location=http://example.com/template.groovy')
 
     String namespace = 'app'
-    Profile profile
     ProfileRepository profileRepository
     ProjectContext projectContext
 
@@ -109,7 +107,7 @@ class ApplicationTemplateCommand implements ProfileCommand, ProjectContextAware,
         String appName = applicationConfig.get('info.app.name')
         String defaultPackageName = applicationConfig.get('grails.codegen.defaultPackage')
         String groupName = defaultPackageName
-        String profileName = this.profile.name
+        String profileName = applicationConfig.get('grails.profile', 'web')
         File targetDirectory = BuildSettings.BASE_DIR
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, template, grailsVersion)
