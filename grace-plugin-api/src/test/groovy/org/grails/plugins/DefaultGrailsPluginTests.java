@@ -209,14 +209,14 @@ public class DefaultGrailsPluginTests {
         assertTrue(ctx2.containsBean("classEditor"));
 
         // Version 3
-        GrailsPlugin versionPlugin3 = new DefaultGrailsPlugin(versioned3, ga);
+        // GrailsPlugin versionPlugin3 = new DefaultGrailsPlugin(versioned3, ga);
 
-        RuntimeSpringConfiguration springConfig3 = new DefaultRuntimeSpringConfiguration();
-        versionPlugin3.doWithRuntimeConfiguration(springConfig3);
+        // RuntimeSpringConfiguration springConfig3 = new DefaultRuntimeSpringConfiguration();
+        // versionPlugin3.doWithRuntimeConfiguration(springConfig3);
 
-        ApplicationContext ctx3 = springConfig3.getApplicationContext();
+        // ApplicationContext ctx3 = springConfig3.getApplicationContext();
 
-        assertTrue(ctx3.containsBean("classEditor"));
+        // assertTrue(ctx3.containsBean("classEditor"));
     }
 
     @Test

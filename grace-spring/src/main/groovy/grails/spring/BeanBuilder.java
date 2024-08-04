@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -656,7 +656,7 @@ public class BeanBuilder extends GroovyObjectSupport {
      */
     protected BeanBuilder invokeBeanDefiningClosure(Closure<?> callable) {
         callable.setDelegate(this);
-//        callable.setResolveStrategy(Closure.DELEGATE_FIRST);
+        callable.setResolveStrategy(Closure.OWNER_FIRST);
         callable.call();
         finalizeDeferredProperties();
 
