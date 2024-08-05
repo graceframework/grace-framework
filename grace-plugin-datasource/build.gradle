@@ -12,7 +12,7 @@ dependencies {
     api libs.groovy.sql
     api libs.spring.context
     api libs.spring.jdbc
-    compileOnly libs.tomcat.jdbc
+    implementation libs.tomcat.jdbc
 
     testImplementation libs.h2
 }
