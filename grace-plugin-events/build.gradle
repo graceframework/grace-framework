@@ -1,7 +1,7 @@
 dependencies {
     api "org.graceframework:grace-core:$graceVersion"
     api project(":grace-events-core"), project(":grace-events-transform")
-    api project(":grace-events-compat")
+    compileOnly project(":grace-events-compat")
 }
 
 jar {
