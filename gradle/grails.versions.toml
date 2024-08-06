@@ -8,7 +8,7 @@ hibernate = "2023.0.0-RC1"
 scaffolding = "6.0.0-RC1"
 
 [profiles]
-base = "2023.0.0-RC1"
+base = "2023.0.0-RC2"
 plugin = "2023.0.0-RC1"
 profile = "2023.0.0-RC1"
 rest-api = "2023.0.0-RC1"
