@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.grails.config.CodeGenConfig
  * A command to find out information about the given profile
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
@@ -70,6 +71,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
         }
         else {
             console.log("Profile: ${profile.name}")
+            console.log("Version: ${profile.version}")
             console.log('-' * 80)
             console.log(profile.description)
             console.log('')
@@ -78,8 +80,10 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
             Iterable<Command> commands = findCommands(profile, console).sort { Command c -> c.name }.toUnique { Command c -> c.name }
 
             for (cmd in commands) {
-                CommandDescription description = cmd.description
-                console.log("* ${description.name.padRight(30)} ${description.description}")
+                StringBuilder description = new StringBuilder()
+                description.append("* ${cmd.description.name.padRight(30)} ${cmd.description.description}")
+                appendMessage(description, cmd.isDeprecated(), '[deprecated]')
+                console.log(description.toString())
             }
             console.log('')
             console.log('Provided Features:')
@@ -92,6 +96,15 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRep
         }
 
         true
+    }
+
+    private void appendMessage(StringBuilder result, boolean append, String message) {
+        if (append) {
+            if (result.length() > 0) {
+                result.append(' ')
+            }
+            result.append(message)
+        }
     }
 
     protected Iterable<Command> findCommands(Profile profile, GrailsConsole console) {
