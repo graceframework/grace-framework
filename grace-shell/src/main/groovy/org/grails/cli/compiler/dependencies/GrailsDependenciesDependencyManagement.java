@@ -37,9 +37,8 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
 
     public static final String MAVEN_CENTRAL = "https://repo1.maven.org/maven2/";
     public static final String SONATYPE_REPO_SNAPSHOT = "https://s01.oss.sonatype.org/content/repositories/snapshots/";
-    public static final String GRAILS_REPO = "https://repo.grails.org/grails/core/";
 
-    private static final String GRAILS_BOM_URL = GRAILS_REPO + "org/grails/grails-bom/%s/grails-bom-%s.pom";
+    private static final String GRAILS_BOM_URL = MAVEN_CENTRAL + "org/grails/grails-bom/%s/grails-bom-%s.pom";
     private static final String GRACE_BOM_URL = MAVEN_CENTRAL + "org/graceframework/grace-bom/%s/grace-bom-%s.pom";
     private static final String GRACE_BOM_SNAPSHOT_URL = SONATYPE_REPO_SNAPSHOT + "org/graceframework/grace-bom/%s/grace-bom-%s.pom";
     private static final String GRACE_BOM_SNAPSHOT_MAVEN_METADATA = SONATYPE_REPO_SNAPSHOT + "org/graceframework/grace-bom/%s/maven-metadata.xml";
@@ -97,7 +96,12 @@ public class GrailsDependenciesDependencyManagement extends MavenModelDependency
     public String getGrailsGradlePluginVersion() {
         String artifactId = this.grailsVersion == null || GrailsVersion.isGrace(this.grailsVersion) ?
                 "grace-core" : "grails-gradle-plugin";
-        return find(artifactId).getVersion();
+        Dependency dependency = find(artifactId);
+        if (dependency == null && GrailsVersion.isGrails(this.grailsVersion)) {
+            // Workaround for Grails 4.1.x
+            dependency = find("grails-core");
+        }
+        return dependency.getVersion();
     }
 
     public String getGroovyVersion() {
