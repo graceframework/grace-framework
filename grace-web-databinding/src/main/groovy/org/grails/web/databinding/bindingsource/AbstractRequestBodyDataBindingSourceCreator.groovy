@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ abstract class AbstractRequestBodyDataBindingSourceCreator extends DefaultDataBi
         try {
             if (bindingSource instanceof HttpServletRequest) {
                 HttpServletRequest req = (HttpServletRequest) bindingSource
-                HttpMethod method = HttpMethod.resolve(req.method)
+                HttpMethod method = HttpMethod.valueOf(req.method)
                 if (req.contentLength != 0 && !ignoredRequestBodyMethods.contains(method)) {
                     ServletInputStream is = req.getInputStream()
                     return createBindingSource(is, req.getCharacterEncoding())
