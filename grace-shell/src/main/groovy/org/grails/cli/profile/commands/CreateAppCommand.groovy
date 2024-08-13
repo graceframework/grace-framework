@@ -69,6 +69,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String FEATURES_FLAG = 'features'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
     public static final String INPLACE_FLAG = 'inplace'
+    public static final String FORCE_FLAG = 'force'
 
     protected static final String APPLICATION_YML = 'application.yml'
     protected static final String BUILD_GRADLE = 'build.gradle'
@@ -91,6 +92,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
         description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
         description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
+        description.flag(name: FORCE_FLAG, description: 'Force overwrite of existing files', required: false)
     }
 
     protected void populateDescription() {
@@ -279,8 +281,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             File projectTargetDirectory = cmd.inplace ? new File('.').canonicalFile : appFullDirectory.toAbsolutePath().normalize().toFile()
 
             if (projectTargetDirectory.exists() && !isDirectoryEmpty(projectTargetDirectory)) {
-                GrailsConsole.getInstance().error("Directory `${projectTargetDirectory.absolutePath}` is not empty!")
-                return false
+                if (cmd.force) {
+                    cleanDirectory(projectTargetDirectory)
+                }
+                else {
+                    cmd.console.error("Directory `${projectTargetDirectory.absolutePath}` already exists!" +
+                            ' Use --force if you want to overwrite or specify an alternate location.')
+                    return false
+                }
             }
 
             String projectType = getName().substring(7)
@@ -380,7 +388,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = evaluateProfileName(commandLine)
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT]
+        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, FORCE_FLAG]
         commandLine.undeclaredOptions.each { String key, Object value ->
             if (!validFlags.contains(key)) {
                 List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
@@ -407,6 +415,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 inplace: inPlace,
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
+                force: commandLine.hasOption(FORCE_FLAG),
                 console: executionContext.console
         )
 
@@ -808,6 +817,31 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
+    private static void cleanDirectory(File directory) throws IOException {
+        FileFilter fileFilter = new FileFilter() {
+            @Override
+            boolean accept(File file) {
+                // keep git directory to show changes between the versions
+                if (file.isDirectory() && file.name == ".git") {
+                    return false
+                }
+                return true
+            }
+        }
+        File[] files = directory.listFiles(fileFilter)
+        for (File file : files) {
+            try {
+                if (file.isDirectory()) {
+                    file.deleteDir()
+                }
+                else {
+                    file.delete()
+                }
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
     protected List<GradleDependency> convertToGradleDependencies(List<Dependency> dependencies) {
         List<GradleDependency> gradleDependencies = []
         gradleDependencies.addAll(dependencies.collect { new GradleDependency(it) })
@@ -824,6 +858,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean inplace = false
         boolean stacktrace = false
         boolean verbose = false
+        boolean force = false
         GrailsConsole console
 
     }
