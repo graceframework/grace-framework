@@ -65,7 +65,7 @@ spring-boot = "2.7.18"
 spring-dependency-management = "1.0.15.RELEASE"
 spring-framework = "5.3.39"
 standard-taglib = "1.2.5"
-tomcat = "9.0.89"
+tomcat = "9.0.93"
 xhtmlrenderer = "R8"
 
 [libraries]
