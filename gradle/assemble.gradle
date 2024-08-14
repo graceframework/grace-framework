@@ -152,7 +152,8 @@ task zipDist(type: Zip, dependsOn: [sourcesJars, install]) {
         }
         from(homeDistDir) {
             into "dist"
-            exclude "*.zip"
+            exclude "*.zip*"
+            exclude "*.tar*"
         }
     }
 }
