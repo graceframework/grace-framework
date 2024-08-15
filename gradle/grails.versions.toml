@@ -5,7 +5,7 @@ database-migration = "5.2.6"
 fields = "5.2.6"
 geb = "5.2.7"
 hibernate5 = "2022.2.7"
-scaffolding = "5.2.6"
+scaffolding = "5.2.7"
 
 [profiles]
 base = "2022.2.6"
