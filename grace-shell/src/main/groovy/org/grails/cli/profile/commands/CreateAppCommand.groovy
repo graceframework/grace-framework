@@ -570,7 +570,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             return (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
         }
 
-        (profile.defaultFeatures + profile.requiredFeatures).unique()
+        (profile.defaultFeatures + profile.requiredFeatures).unique().sort()
     }
 
     protected String getDefaultProfile() {
