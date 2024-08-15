@@ -51,10 +51,7 @@ if (jointBuildGroovyJarProperty) {
         throw new GradleException("The groovy.jar system property points to ${jointBuildGroovyJar.absolutePath} which does not exist.")
     }
 } else {
-    groovyDependency = dependencies.create("org.codehaus.groovy:groovy:${groovyVersion}") {
-        exclude module:"commons-cli"
-        exclude module:"ant"
-    }
+    groovyDependency = dependencies.create("org.codehaus.groovy:groovy:${groovyVersion}")
 }
 
 version = grailsVersion
@@ -320,10 +317,6 @@ subprojects { project ->
         testRuntimeOnly libs.junit.jupiter.engine
 
         if (project.name != "grace-docs") {
-            // Logging
-            api libs.slf4j.api
-            api libs.slf4j.jcl
-
             // Testing
             testImplementation libs.slf4j.simple
             testImplementation libs.spock.core, { transitive = false }

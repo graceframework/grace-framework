@@ -58,6 +58,8 @@ dependencies {
     compileOnly libs.spring.web
     api libs.jansi
     api libs.jline
+    api libs.slf4j.api
+    api libs.slf4j.jcl
     dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
     implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
