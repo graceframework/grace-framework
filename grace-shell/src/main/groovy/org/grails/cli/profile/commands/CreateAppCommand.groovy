@@ -564,7 +564,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                                    Map<String, String> variables, File targetDirectory) {
         ant.copy(todir: targetDirectory, overwrite: true, encoding: 'UTF-8') {
             fileSet(dir: srcDir, casesensitive: false) {
-                exclude(name: '**/.gitkeep')
                 for (exc in excludes) {
                     exclude name: exc
                 }
@@ -751,7 +750,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
             ant.copy(todir: targetDirectory, overwrite: true, encoding: 'UTF-8') {
                 fileSet(dir: templateDir, casesensitive: false) {
-                    exclude(name: '**/.gitkeep')
                     for (exc in excludes) {
                         exclude name: exc
                     }
