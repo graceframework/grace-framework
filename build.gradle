@@ -322,10 +322,6 @@ subprojects { project ->
         testRuntimeOnly libs.junit.jupiter.engine
 
         if (project.name != "grace-docs") {
-            // Logging
-            api libs.slf4j.api
-            api libs.slf4j.jcl
-
             // Testing
             testImplementation libs.slf4j.simple
             testImplementation libs.spock.core, { transitive = false }

@@ -6,6 +6,7 @@ dependencies {
         transitive = false
     }
 
+    api(libs.slf4j.api)
     api(libs.spring.beans)
     api(libs.spring.boot)
     api(libs.spring.context)
