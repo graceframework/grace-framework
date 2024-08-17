@@ -14,30 +14,11 @@ ext {
 configurations {
     dependenciesBom
     runtimeClasspath {
-        exclude group: 'commons-codec', module: 'commons-codec'
-        exclude group: 'com.github.ben-manes.caffeine', module: 'caffeine'
-        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-        exclude group: 'com.vaadin.external.google', module: 'android-json'
-        exclude group: 'io.micrometer'
-        exclude group: 'javax.inject', module: 'javax.inject'
-        exclude group: 'net.sf.jopt-simple', module: 'jopt-simple'
-        exclude group: 'org.checkerframework', module: 'checker-qual'
-        exclude group: 'org.apache.ant', module: 'ant-antlr'
-        exclude group: 'org.apache.ant', module: 'ant-junit'
-        exclude group: 'org.apache.commons', module: 'commons-compress'
-        exclude group: 'org.apache.groovy', module: 'groovy-groovydoc'
-        exclude group: 'org.apache.groovy', module: 'groovy-jmx'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-classworlds'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-component-annotations'
-        exclude group: 'org.codehaus.plexus', module: 'plexus-sec-dispatcher'
-        exclude group: 'org.javassist', module: 'javassist'
         exclude group: 'org.springframework', module: 'spring-aop'
         exclude group: 'org.springframework', module: 'spring-expression'
         exclude group: 'org.springframework', module: 'spring-jcl'
         exclude group: 'org.springframework', module: 'spring-tx'
         exclude group: 'org.springframework', module: 'spring-web'
-        exclude group: 'org.springframework.boot', module: 'spring-boot-autoconfigure'
-        exclude group: 'org.springframework.security', module: 'spring-security-crypto'
     }
 }
 
@@ -50,11 +31,17 @@ dependencies {
 
     api libs.ant
     api libs.gradle.tooling.api
-    api libs.groovy.ant
+    api libs.groovy.ant, {
+        exclude group: "org.apache.ant", module: "ant-antlr"
+        exclude group: "org.apache.ant", module: "ant-junit"
+        exclude group: "org.apache.groovy", module: "groovy-groovydoc"
+    }
     api libs.groovy.json
-    api libs.groovy.jmx
     compileOnly libs.jakarta.servlet
-    compileOnly libs.spring.web
+    implementation libs.spring.boot
+    compileOnly libs.spring.web, {
+        exclude group: "io.micrometer"
+    }
     api libs.jansi
     api libs.jline
     api libs.slf4j.api
@@ -62,11 +49,13 @@ dependencies {
     dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
     implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
+        exclude group: "javax.inject", module: "javax.inject"
     }
     implementation(libs.maven.resolver.connectorBasic)
     implementation(libs.maven.resolver.impl)
     implementation(libs.maven.resolver.transportFile)
     implementation(libs.maven.resolver.transportHttp) {
+        exclude group: "commons-codec", module: "commons-codec"
         exclude group: "org.slf4j", module:"jcl-over-slf4j"
     }
     implementation("org.apache.maven:maven-settings-builder:3.6.3") {
@@ -76,6 +65,8 @@ dependencies {
     implementation("org.sonatype.sisu:sisu-inject-plexus:2.6.0") {
         exclude group: "javax.enterprise", module: "cdi-api"
         exclude group: "org.sonatype.sisu", module: "sisu-inject-bean"
+        exclude group: "org.codehaus.plexus", module: "plexus-classworlds"
+        exclude group: "org.codehaus.plexus", module: "plexus-component-annotations"
     }
     runtimeOnly libs.slf4j.simple
 }
