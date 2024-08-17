@@ -36,7 +36,7 @@ public class StaticResourceLoaderTests {
     @Test
     public void testGetResource() throws Exception {
         StaticResourceLoader srl = new StaticResourceLoader();
-        srl.setBaseResource(new UrlResource("http://grails.org"));
+        srl.setBaseResource(new UrlResource("http://grails.org/"));
 
         Resource r = srl.getResource("/Home");
         assertEquals("http://grails.org/Home", r.getURL().toString());
