@@ -51,10 +51,10 @@ class CreateAppCommandSpec extends Specification {
     void "test evaluateFeatures - multiple, all valid"() {
         given:
         Feature foo = Mock(Feature) {
-            2 * getName() >> "foo"
+            3 * getName() >> "foo"
         }
         Feature bar = Mock(Feature) {
-            2 * getName() >> "bar"
+            3 * getName() >> "bar"
         }
         Profile profile = Mock(Profile) {
             0 * getName()
@@ -67,8 +67,8 @@ class CreateAppCommandSpec extends Specification {
 
         then:
         features.size() == 2
-        features[0] == foo
-        features[1] == bar
+        features[0] == bar
+        features[1] == foo
         sps.toString() == ""
     }
 

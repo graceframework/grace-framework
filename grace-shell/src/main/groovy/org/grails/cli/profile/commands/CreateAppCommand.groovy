@@ -335,7 +335,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
         Map<String, String> args = new HashMap<>()
         args.putAll(cmd.args)
-        args.put(FEATURES_FLAG, features*.name?.sort()?.join(','))
+        args.put(FEATURES_FLAG, features*.name?.join(','))
 
         Project project = createAntProject(cmd.appName, projectTargetDirectory, variables, args, console, cmd.verbose, cmd.quiet)
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
@@ -348,7 +348,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Package:".padRight(20) + defaultPackageName)
         console.println("     Profile:".padRight(20) + profileName)
         if (features) {
-            console.println("     Features:".padRight(20) + features*.name?.sort()?.join(', '))
+            console.println("     Features:".padRight(20) + features*.name?.join(', '))
         }
         if (cmd.template) {
             console.println("     Template:".padRight(20) + cmd.template)
@@ -420,7 +420,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         else {
             features = (profile.defaultFeatures + profile.requiredFeatures).toList().unique()
         }
-        features
+        features?.sort {
+            it.name
+        }
     }
 
     protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,
@@ -1180,7 +1182,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grails.version'] = grailsVersion
         variables['grails.app.name'] = appName
         variables['grails.app.group'] = groupName
-        variables['grails.app.features'] = features*.name?.sort()?.join(',')
+        variables['grails.app.features'] = features*.name?.join(',')
         variables['grails.app.template'] = template ?: ''
 
         variables['grace.codegen.defaultPackage'] = packageName
@@ -1193,7 +1195,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         variables['grace.version'] = grailsVersion
         variables['grace.app.name'] = appName
         variables['grace.app.group'] = groupName
-        variables['grace.app.features'] = features*.name?.sort()?.join(',')
+        variables['grace.app.features'] = features*.name?.join(',')
         variables['grace.app.template'] = template ?: ''
 
         variables
