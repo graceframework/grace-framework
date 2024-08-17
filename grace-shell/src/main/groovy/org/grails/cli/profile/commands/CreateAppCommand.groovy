@@ -801,7 +801,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
 
-            replaceBuildTokens(ant, profile.name, profile, features, variables, targetDirectory)
+            replaceBuildTokens(ant, profile.name, profile, features, variables, grailsVersion, targetDirectory)
 
             String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
             File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
