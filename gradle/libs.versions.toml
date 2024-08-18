@@ -159,6 +159,7 @@ maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider",
 maven-resolver-impl = { module = "org.apache.maven.resolver:maven-resolver-impl", version.ref = "maven-resolver" }
 maven-resolver-transportFile = { module = "org.apache.maven.resolver:maven-resolver-transport-file", version.ref = "maven-resolver" }
 maven-resolver-transportHttp = { module = "org.apache.maven.resolver:maven-resolver-transport-http", version.ref = "maven-resolver" }
+maven-settings-builder = { module = "org.apache.maven:maven-settings-builder", version.ref = "maven" }
 methvin-directoryWatcher = { module = "io.methvin:directory-watcher", version.ref = "methvin-directory-watcher" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }

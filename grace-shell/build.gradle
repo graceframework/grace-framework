@@ -58,15 +58,8 @@ dependencies {
         exclude group: "commons-codec", module: "commons-codec"
         exclude group: "org.slf4j", module:"jcl-over-slf4j"
     }
-    implementation("org.apache.maven:maven-settings-builder:3.6.3") {
+    implementation(libs.maven.settings.builder) {
         exclude group: "javax.inject", module: "javax.inject"
-    }
-    implementation("org.sonatype.plexus:plexus-sec-dispatcher:1.4")
-    implementation("org.sonatype.sisu:sisu-inject-plexus:2.6.0") {
-        exclude group: "javax.enterprise", module: "cdi-api"
-        exclude group: "org.sonatype.sisu", module: "sisu-inject-bean"
-        exclude group: "org.codehaus.plexus", module: "plexus-classworlds"
-        exclude group: "org.codehaus.plexus", module: "plexus-component-annotations"
     }
     runtimeOnly libs.slf4j.simple
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
 import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 import org.sonatype.plexus.components.cipher.DefaultPlexusCipher;
-import org.sonatype.plexus.components.cipher.PlexusCipherException;
 import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
 
 import org.grails.cli.util.Log;
@@ -37,6 +36,7 @@ import org.grails.cli.util.Log;
  * decrypting them if necessary using settings-security.xml.
  *
  * @author Andy Wilkinson
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public class MavenSettingsReader {
@@ -89,14 +89,9 @@ public class MavenSettingsReader {
         private static final String SECURITY_XML = ".m2/settings-security.xml";
 
         SpringBootSecDispatcher() {
+            super(new DefaultPlexusCipher());
             File file = new File(MavenSettingsReader.this.homeDir, SECURITY_XML);
-            this._configurationFile = file.getAbsolutePath();
-            try {
-                this._cipher = new DefaultPlexusCipher();
-            }
-            catch (PlexusCipherException ex) {
-                throw new IllegalStateException(ex);
-            }
+            setConfigurationFile(file.getAbsolutePath());
         }
 
     }
