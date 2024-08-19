@@ -11,4 +11,5 @@ dependencies {
     compileOnly(libs.spring.boot)
     api(libs.spring.context)
     api(libs.spring.core)
+    testImplementation(libs.spring.boot)
 }
