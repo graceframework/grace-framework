@@ -92,16 +92,17 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
     public void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure) {
         try {
             ModuleDescriptor<?> moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
-            moduleDescriptor.init(this, args);
-            if (closure != null) {
-                closure.setDelegate(moduleDescriptor);
-                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-                closure.call();
+            if (moduleDescriptor != null) {
+                moduleDescriptor.init(this, args);
+                if (closure != null) {
+                    closure.setDelegate(moduleDescriptor);
+                    closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+                    closure.call();
+                }
+                this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);
             }
-            this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);
         }
-        catch (ClassNotFoundException e) {
-            logger.error("Unable to get module description of '" + type + "'", e);
+        catch (ClassNotFoundException ignore) {
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +41,8 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
 
     private ApplicationContext applicationContext;
 
+    protected static final Log logger = LogFactory.getLog(DefaultModuleDescriptorFactory.class);
+
     public DefaultModuleDescriptorFactory() {
     }
 
@@ -54,7 +58,9 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
         Class<? extends ModuleDescriptor> moduleDescriptorClazz = getModuleDescriptorClass(type);
 
         if (moduleDescriptorClazz == null) {
-            throw new PluginException("Cannot find ModuleDescriptor class for plugin of type '" + type + "'.");
+            String message = "ModuleDescriptor class for module type '" + type + "' not found in dynamic plugins";
+            logger.warn(message);
+            return null;
         }
 
         return (ModuleDescriptor<M>) create(moduleDescriptorClazz);
