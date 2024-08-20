@@ -10,7 +10,9 @@ import org.springframework.context.support.GenericApplicationContext;
 import grails.core.GrailsApplication;
 
 import org.grails.plugins.IncludingPluginFilter;
+import org.grails.plugins.MenuModuleDescriptor;
 import org.grails.plugins.MockGrailsApplication;
+import org.grails.support.MockApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -110,6 +112,31 @@ public class DefaultGrailsPluginManagerTests {
         manager.loadPlugins();
 
         assertEquals(1, manager.getUserPlugins().length);
+    }
+
+    @Test
+    public void testDynamicPlugins() {
+        GroovyClassLoader gcl = new GroovyClassLoader();
+
+        Class<?> menuPlugin = gcl.parseClass("class MenuGrailsPlugin extends grails.plugins.DynamicPlugin {\n" +
+                "def version = '1.0'\n" +
+                "def providedModules = [org.grails.plugins.MenuModuleDescriptor]\n" +
+                "Closure doWithDynamicModules() { {->\n" +
+                "menu(key: \"menu.about\", name: \"About Menu\", i18nNameKey: \"menu.about\")\n" +
+                "}}\n" +
+                "}");
+
+        MockApplicationContext context = new MockApplicationContext();
+        GrailsApplication app = new MockGrailsApplication(new Class[] {}, gcl);
+        DefaultGrailsPluginManager manager = new DefaultGrailsPluginManager(new Class[] { menuPlugin }, app);
+        manager.setApplicationContext(context);
+        manager.loadPlugins();
+        manager.registerProvidedModules();
+        manager.doDynamicModules();
+
+        List<MenuModuleDescriptor> menuModuleDescriptorList = manager.getEnabledModuleDescriptorsByClass(MenuModuleDescriptor.class);
+
+        assertEquals(1, menuModuleDescriptorList.size());
     }
 
 }

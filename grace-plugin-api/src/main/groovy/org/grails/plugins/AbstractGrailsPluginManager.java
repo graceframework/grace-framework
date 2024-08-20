@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * Abstract implementation of the GrailsPluginManager interface
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public abstract class AbstractGrailsPluginManager implements GrailsPluginManager {
@@ -320,6 +321,21 @@ public abstract class AbstractGrailsPluginManager implements GrailsPluginManager
                     continue;
                 }
                 plugin.doWithDynamicMethods(ctx);
+            }
+        }
+    }
+
+    public void doDynamicModules() {
+        checkInitialised();
+
+        ApplicationContext ctx = this.applicationContext;
+        for (GrailsPlugin plugin : this.loadedPlugins) {
+            if (!plugin.isEnabled(ctx.getEnvironment().getActiveProfiles())) {
+                continue;
+            }
+            if (plugin instanceof DynamicGrailsPlugin) {
+                DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
+                dynamicPlugin.doWithDynamicModules();
             }
         }
     }

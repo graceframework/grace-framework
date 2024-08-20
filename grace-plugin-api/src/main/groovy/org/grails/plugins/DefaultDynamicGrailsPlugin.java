@@ -75,9 +75,11 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
         if (getInstance() instanceof DynamicPlugin) {
             DynamicPlugin dynamicPlugin = (DynamicPlugin) getInstance();
             Closure dynamicModules = dynamicPlugin.doWithDynamicModules();
-            dynamicModules.setResolveStrategy(Closure.DELEGATE_FIRST);
-            dynamicModules.setDelegate(this);
-            dynamicModules.call();
+            if (dynamicModules != null) {
+                dynamicModules.setResolveStrategy(Closure.DELEGATE_FIRST);
+                dynamicModules.setDelegate(this);
+                dynamicModules.call();
+            }
         }
     }
 
@@ -90,16 +92,17 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
     public void addModuleDescriptor(String type, Map<String, Object> args, Closure<?> closure) {
         try {
             ModuleDescriptor<?> moduleDescriptor = this.moduleDescriptorFactory.getModuleDescriptor(type);
-            moduleDescriptor.init(this, args);
-            if (closure != null) {
-                closure.setDelegate(moduleDescriptor);
-                closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-                closure.call();
+            if (moduleDescriptor != null) {
+                moduleDescriptor.init(this, args);
+                if (closure != null) {
+                    closure.setDelegate(moduleDescriptor);
+                    closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+                    closure.call();
+                }
+                this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);
             }
-            this.modules.put(moduleDescriptor.getKey(), moduleDescriptor);
         }
-        catch (ClassNotFoundException e) {
-            logger.error("Unable to get module description of '" + type + "'", e);
+        catch (ClassNotFoundException ignore) {
         }
     }
 

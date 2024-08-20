@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.Ordered;
 
-import grails.plugins.DynamicGrailsPlugin;
-import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 
+/**
+ * Use {@link BeanDefinitionRegistryPostProcessor} to load dynamic modules in all Plugins.
+ *
+ * @author Michael Yan
+ * @since 2022.0.0
+ */
 public class GrailsDynamicPluginRegistryPostProcessor
         implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, Ordered {
 
@@ -48,12 +52,7 @@ public class GrailsDynamicPluginRegistryPostProcessor
         }
 
         GrailsPluginManager pluginManager = beanFactory.getBean(GrailsPluginManager.BEAN_NAME, GrailsPluginManager.class);
-        for (GrailsPlugin plugin : pluginManager.getAllPlugins()) {
-            if (plugin instanceof DynamicGrailsPlugin) {
-                DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin;
-                dynamicPlugin.doWithDynamicModules();
-            }
-        }
+        pluginManager.doDynamicModules();
     }
 
     @Override

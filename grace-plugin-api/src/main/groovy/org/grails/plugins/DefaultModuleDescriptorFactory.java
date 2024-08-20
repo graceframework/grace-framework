@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -35,9 +37,11 @@ import grails.plugins.exceptions.PluginException;
  */
 public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
 
-    private final Map<String, Class<? extends ModuleDescriptor>> moduleDescriptorClasses = new ConcurrentHashMap<>();
-
     private ApplicationContext applicationContext;
+
+    protected static final Log logger = LogFactory.getLog(DefaultModuleDescriptorFactory.class);
+
+    protected final Map<String, Class<? extends ModuleDescriptor<?>>> moduleDescriptorClasses = new ConcurrentHashMap<>();
 
     public DefaultModuleDescriptorFactory() {
     }
@@ -51,10 +55,12 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
     @Override
     @SuppressWarnings("unchecked")
     public <M> ModuleDescriptor<M> getModuleDescriptor(String type) throws PluginException, ClassNotFoundException {
-        Class<? extends ModuleDescriptor> moduleDescriptorClazz = getModuleDescriptorClass(type);
+        Class<? extends ModuleDescriptor<?>> moduleDescriptorClazz = getModuleDescriptorClass(type);
 
         if (moduleDescriptorClazz == null) {
-            throw new PluginException("Cannot find ModuleDescriptor class for plugin of type '" + type + "'.");
+            String message = "ModuleDescriptor class for module type '" + type + "' not found in dynamic plugins";
+            logger.warn(message);
+            return null;
         }
 
         return (ModuleDescriptor<M>) create(moduleDescriptorClazz);
@@ -66,7 +72,7 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
     }
 
     @Override
-    public void addModuleDescriptor(String type, Class<? extends ModuleDescriptor> moduleDescriptorClass) {
+    public void addModuleDescriptor(String type, Class<? extends ModuleDescriptor<?>> moduleDescriptorClass) {
         this.moduleDescriptorClasses.put(type, moduleDescriptorClass);
     }
 
@@ -74,11 +80,11 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
         this.moduleDescriptorClasses.remove(type);
     }
 
-    protected Map<String, Class<? extends ModuleDescriptor>> getDescriptorClassesMap() {
+    protected Map<String, Class<? extends ModuleDescriptor<?>>> getDescriptorClassesMap() {
         return Collections.unmodifiableMap(this.moduleDescriptorClasses);
     }
 
-    public <T> T create(Class<T> moduleClass) throws IllegalArgumentException {
+    protected <T> T create(Class<T> moduleClass) throws IllegalArgumentException {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
         Object object = beanFactory.createBean(moduleClass, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
         return moduleClass.cast(object);
