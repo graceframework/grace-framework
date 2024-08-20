@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,7 +131,7 @@ public class DefaultGrailsPluginTests {
                 "classEditor(org.springframework.beans.propertyeditors.ClassEditor,application.classLoader)" +
                 "}}\n" +
                 "}");
-        versioned4 = gcl.parseClass("class MyFourthGrailsPlugin {\n" +
+        versioned4 = gcl.parseClass("class MyFourthGrailsPlugin extends grails.plugins.Plugin {\n" +
                 "def version = 1.1;" +
                 "Closure doWithSpring() { {->\n" +
                 "Properties properties = loadProperties()\n" +
@@ -221,24 +221,24 @@ public class DefaultGrailsPluginTests {
         assertTrue(ctx2.containsBean("classEditor"));
 
         // Version 3
-        // GrailsPlugin versionPlugin3 = new DefaultGrailsPlugin(versioned3, ga);
+        GrailsPlugin versionPlugin3 = new DefaultGrailsPlugin(versioned3, ga);
 
-        // RuntimeSpringConfiguration springConfig3 = new DefaultRuntimeSpringConfiguration();
-        // versionPlugin3.doWithRuntimeConfiguration(springConfig3);
+        RuntimeSpringConfiguration springConfig3 = new DefaultRuntimeSpringConfiguration();
+        versionPlugin3.doWithRuntimeConfiguration(springConfig3);
 
-        // ApplicationContext ctx3 = springConfig3.getApplicationContext();
+        ApplicationContext ctx3 = springConfig3.getApplicationContext();
 
-        // assertTrue(ctx3.containsBean("classEditor"));
+        assertTrue(ctx3.containsBean("classEditor"));
 
         // Version 4
-        // GrailsPlugin versionPlugin4 = new DefaultGrailsPlugin(versioned4, ga);
+        GrailsPlugin versionPlugin4 = new DefaultGrailsPlugin(versioned4, ga);
 
-        // RuntimeSpringConfiguration springConfig4 = new DefaultRuntimeSpringConfiguration();
-        // versionPlugin4.doWithRuntimeConfiguration(springConfig4);
+        RuntimeSpringConfiguration springConfig4 = new DefaultRuntimeSpringConfiguration();
+        versionPlugin4.doWithRuntimeConfiguration(springConfig4);
 
-        // ApplicationContext ctx4 = springConfig4.getApplicationContext();
+        ApplicationContext ctx4 = springConfig4.getApplicationContext();
 
-        // assertTrue(ctx4.containsBean("classEditor"));
+        assertTrue(ctx4.containsBean("classEditor"));
     }
 
     @Test
