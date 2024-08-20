@@ -211,6 +211,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     'info.app.version': project.version instanceof Serializable ? project.version : project.version.toString(),
                     'info.app.grailsVersion': grailsVersion]
 
+            buildPropertiesTask.group = 'build'
+            buildPropertiesTask.description = "Build properties into 'META-INF/grails.build.info'."
             buildPropertiesTask.inputs.properties(buildPropertiesContents)
             buildPropertiesTask.outputs.file(buildInfoFile)
             buildPropertiesTask.doLast {
