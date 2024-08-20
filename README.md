@@ -42,6 +42,17 @@ Plugins
 
 Grace is first and foremost a web application framework, but it is also a platform. Grace provide [Plugin API](/grace-plugin-api/README.md) to expose a number of extension points that let you extend anything from the command line interface to the runtime configuration engine.
 
+[Grace Framework](https://github.com/graceframework/) repository contains core plugins and most commonly used plugins, which are provided by default when creating a project.
+
+* [Grace Asset Pipeline Plugin](https://github.com/grace-plugins/grace-asset-pipeline) is a plugin used for managing and processing static assets in Grace applications.
+* [Grace Async and Events](https://github.com/graceframework/grace-async) provides asynchronous, parallel programming, Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
+* [Grace Cache](https://github.com/graceframework/grace-cache) provides powerful and easy to use caching functionality to Grace applications and plugins.
+* [Grace Database Migration](https://github.com/graceframework/grace-database-migration) helps you manage database changes uses the Liquibase library.
+* [Grace Scaffolding](https://github.com/graceframework/grace-scaffolding) is a plugin to generate scaffolded controllers and views for your Grace application.
+* [Grace Fields](https://github.com/graceframework/grace-fields) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
+* [Grace Geb](https://github.com/graceframework/grace-geb) provides the Geb dependencies and a `create-functional-test` command for generating Geb tests.
+* [Grace Views](https://github.com/graceframework/grace-views) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
+
 [Grace Plugins](https://github.com/grace-plugins/) repository contains several plugins to develop applications more easier and productive.
 
 * [Grace Admin](https://github.com/grace-plugins/grace-admin) is a powerful and flexible, extensible administration framework and management console for Grace, which use [Grace Dynamic Modules](/grace-plugin-dynamic-modules/README.md).
@@ -61,6 +72,7 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 * `plugin` - a profie to create a plugin
 * `profile` - a profie to create a custom profile
 * `rest-api` - a profie for REST API applications
+* `starter` - A profile for getting start to create anything you like
 * `web-plugin` - a profile for Web plugin that contains web resources `css` `js` `images`
 * `web` - default profile to creae a web app
 
@@ -69,9 +81,10 @@ Guides
 
 [Grace Guides](https://github.com/grace-guides) repository contains several guides that show how to use Grace.
 
-* [Spring Boot Application with Grace Plugins](https://github.com/grace-guides/gs-spring-boot) is an introductory guide that shows you how to use Grace Plugins in your Spring Boot application.
-* [Spring Boot Application with GSP](https://github.com/grace-guides/gs-spring-boot-gsp) is an introductory guide that shows you how to use GSP as view templates in your Spring Boot application.
-* [Build Admin Console with Grace Admin Plugin](https://github.com/grace-guides/gs-admin-console) is an introductory guide that shows you how to use Grace Admin plugin to build flexible, extensible management console in your application.
+* [Spring Boot Application with Plugins](https://github.com/grace-guides/gs-spring-boot) is a how-to guide that shows you how to use Grace Plugins in your Spring Boot application.
+* [Spring Boot Application with GSP](https://github.com/grace-guides/gs-spring-boot-gsp) is a how-to guide that shows you how to use GSP as view templates in your Spring Boot application.
+* [Spring Boot Application with GORM](https://github.com/grace-guides/gs-spring-boot-gorm) is a how-to guide that shows you how to use GORM as data persistence layer in your Spring Boot application.
+* [Build Admin Console with Grace Admin Plugin](https://github.com/grace-guides/gs-admin-console) is a how-to guide that shows you how to use Grace Admin plugin to build flexible, extensible management console in your application.
 
 License
 ---
