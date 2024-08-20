@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 the original author or authors.
+ * Copyright 2015-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.grails.gradle.plugin.core.GrailsGradlePlugin
  * Adds web specific extensions
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -52,6 +53,8 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
         if (taskContainer.findByName('urlMappingsReport') == null) {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console)
             taskContainer.create('urlMappingsReport', ApplicationContextCommandTask) {
+                group = 'grace'
+                description = "Prints out a report of the project's URL mappings"
                 classpath = fileCollection
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
                 systemProperty 'spring.main.banner-mode', 'OFF'
