@@ -75,9 +75,11 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
         if (getInstance() instanceof DynamicPlugin) {
             DynamicPlugin dynamicPlugin = (DynamicPlugin) getInstance();
             Closure dynamicModules = dynamicPlugin.doWithDynamicModules();
-            dynamicModules.setResolveStrategy(Closure.DELEGATE_FIRST);
-            dynamicModules.setDelegate(this);
-            dynamicModules.call();
+            if (dynamicModules != null) {
+                dynamicModules.setResolveStrategy(Closure.DELEGATE_FIRST);
+                dynamicModules.setDelegate(this);
+                dynamicModules.call();
+            }
         }
     }
 
