@@ -67,8 +67,9 @@ import org.grails.gradle.plugin.util.SourceSets
 /**
  * The main Grails gradle plugin implementation
  *
- * @since 3.0
  * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
 @CompileStatic
 class GrailsGradlePlugin extends GroovyPlugin {
@@ -591,6 +592,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureRunScript(Project project) {
         if (project.tasks.findByName('runScript') == null) {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
+                group = 'command'
+                description = "Executes the Grace Application Scripts."
                 classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                         project.configurations.profile)
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
@@ -619,6 +622,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
             }
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
+                group = 'command'
+                description = "Executes the Grace Application Commands."
                 classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                         project.configurations.profile)
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
