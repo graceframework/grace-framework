@@ -1,6 +1,6 @@
 [plugins]
 asset-pipeline = "6.0.0"
-cache = "6.0.0-RC1"
+cache = "6.0.0"
 database-migration = "6.0.0-RC1"
 fields = "6.0.0-SNAPSHOT"
 geb = "6.0.0-RC1"
