@@ -430,6 +430,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if (project.configurations.findByName('console') == null) {
             def consoleConfiguration = project.configurations.create('console')
             def findMainClass = tasks.findByName('findMainClass')
+            findMainClass.group = 'build'
+            findMainClass.description = 'Finds the main class of the application.'
             def consoleTask = createConsoleTask(project, tasks, consoleConfiguration)
             def shellTask = createShellTask(project, tasks, consoleConfiguration)
 
