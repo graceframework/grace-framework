@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,27 +31,9 @@ abstract class DynamicPlugin extends Plugin {
      * Invoked in a phase where plugins can add dynamic modules.
      * Subclasses should override
      */
-    void doWithDynamicModules() {
+    Closure doWithDynamicModules() {
         // TODO Implement registering dynamic modules to application (optional)
-    }
-
-    @Override
-    Object invokeMethod(String name, Object args) {
-        if (plugin !instanceof DynamicGrailsPlugin) {
-            return false
-        }
-
-        DynamicGrailsPlugin dynamicPlugin = (DynamicGrailsPlugin) plugin
-        Object[] array = (Object[]) args
-        if (array.length > 0) {
-            if (array.length > 1) {
-                dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>, array[1] as Closure)
-            }
-            else {
-                dynamicPlugin.addModuleDescriptor(name, array[0] as Map<String, Object>)
-            }
-        }
-        true
+        null
     }
 
 }

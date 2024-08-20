@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,12 @@ import org.grails.plugins.web.model.WebLink
  *
  * @author Michael Yan
  * @since 2022.1.0
+ * @deprecated since 2023.0.0, in favor of org.graceframework.plugins:dynamic-modules
  */
 @ToString(includeNames=true)
 @TupleConstructor
 @CompileStatic
+@Deprecated(since = "2023.0.0")
 class WebItemModuleDescriptor extends AbstractModuleDescriptor {
 
     String section

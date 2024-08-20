@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,10 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
     public void doWithDynamicModules() {
         if (getInstance() instanceof DynamicPlugin) {
             DynamicPlugin dynamicPlugin = (DynamicPlugin) getInstance();
-            dynamicPlugin.doWithDynamicModules();
+            Closure dynamicModules = dynamicPlugin.doWithDynamicModules();
+            dynamicModules.setResolveStrategy(Closure.DELEGATE_FIRST);
+            dynamicModules.setDelegate(this);
+            dynamicModules.call();
         }
     }
 
@@ -122,6 +125,20 @@ public class DefaultDynamicGrailsPlugin extends DefaultGrailsPlugin implements D
             }
         }
         return result;
+    }
+
+    @Override
+    public Object invokeMethod(String name, Object args) {
+        Object[] array = (Object[]) args;
+        if (array.length > 0) {
+            if (array.length > 1) {
+                addModuleDescriptor(name, (Map<String, Object>) array[0], (Closure) array[1]);
+            }
+            else {
+                addModuleDescriptor(name, (Map<String, Object>) array[0]);
+            }
+        }
+        return true;
     }
 
 }
