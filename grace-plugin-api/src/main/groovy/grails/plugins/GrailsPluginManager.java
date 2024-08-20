@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,8 +118,14 @@ public interface GrailsPluginManager extends ApplicationContextAware, Applicatio
 
     /**
      * Called on all plugins so that they can add new methods/properties/constructors etc.
+     * @since 2023.0
      */
     void doDynamicMethods();
+
+    /**
+     * Called on all plugins so that they can register new modules.
+     */
+    void doDynamicModules();
 
     /**
      * Executes the {@link Plugin#onStartup(Map)} hook for all plugins
