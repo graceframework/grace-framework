@@ -54,6 +54,9 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
             taskContainer.create('urlMappingsReport', ApplicationContextCommandTask) {
                 classpath = fileCollection
                 systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
+                systemProperty 'spring.main.banner-mode', 'OFF'
+                systemProperty 'logging.level.ROOT', 'OFF'
+                systemProperty 'spring.output.ansi.enabled', 'always'
                 command = 'url-mappings-report'
             }
         }
