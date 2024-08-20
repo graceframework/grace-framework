@@ -37,11 +37,11 @@ import grails.plugins.exceptions.PluginException;
  */
 public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
 
-    private final Map<String, Class<? extends ModuleDescriptor>> moduleDescriptorClasses = new ConcurrentHashMap<>();
-
     private ApplicationContext applicationContext;
 
     protected static final Log logger = LogFactory.getLog(DefaultModuleDescriptorFactory.class);
+
+    protected final Map<String, Class<? extends ModuleDescriptor<?>>> moduleDescriptorClasses = new ConcurrentHashMap<>();
 
     public DefaultModuleDescriptorFactory() {
     }
@@ -55,7 +55,7 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
     @Override
     @SuppressWarnings("unchecked")
     public <M> ModuleDescriptor<M> getModuleDescriptor(String type) throws PluginException, ClassNotFoundException {
-        Class<? extends ModuleDescriptor> moduleDescriptorClazz = getModuleDescriptorClass(type);
+        Class<? extends ModuleDescriptor<?>> moduleDescriptorClazz = getModuleDescriptorClass(type);
 
         if (moduleDescriptorClazz == null) {
             String message = "ModuleDescriptor class for module type '" + type + "' not found in dynamic plugins";
@@ -72,7 +72,7 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
     }
 
     @Override
-    public void addModuleDescriptor(String type, Class<? extends ModuleDescriptor> moduleDescriptorClass) {
+    public void addModuleDescriptor(String type, Class<? extends ModuleDescriptor<?>> moduleDescriptorClass) {
         this.moduleDescriptorClasses.put(type, moduleDescriptorClass);
     }
 
@@ -80,11 +80,11 @@ public class DefaultModuleDescriptorFactory implements ModuleDescriptorFactory {
         this.moduleDescriptorClasses.remove(type);
     }
 
-    protected Map<String, Class<? extends ModuleDescriptor>> getDescriptorClassesMap() {
+    protected Map<String, Class<? extends ModuleDescriptor<?>>> getDescriptorClassesMap() {
         return Collections.unmodifiableMap(this.moduleDescriptorClasses);
     }
 
-    public <T> T create(Class<T> moduleClass) throws IllegalArgumentException {
+    protected <T> T create(Class<T> moduleClass) throws IllegalArgumentException {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
         Object object = beanFactory.createBean(moduleClass, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
         return moduleClass.cast(object);
