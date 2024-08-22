@@ -89,16 +89,17 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
     boolean handle(ExecutionContext executionContext) {
         GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
+        Map<String, String> args = getCommandArguments(commandLine)
         String template = commandLine.optionValue(LOCATION_FLAG)
         boolean verbose = commandLine.hasOption(VERBOSE_ARGUMENT)
 
-        applyApplicationTemplate(console, template, verbose)
+        applyApplicationTemplate(console, template, args, verbose)
 
         return true
     }
 
     @CompileDynamic
-    private void applyApplicationTemplate(GrailsConsole console, String template, boolean verbose) {
+    private void applyApplicationTemplate(GrailsConsole console, String template, Map<String, String> args, boolean verbose) {
         console.addStatus('Applying Template')
         console.println()
 
@@ -112,7 +113,8 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, template, grailsVersion)
 
-        GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(createAntProject(appName, targetDirectory, variables, console, verbose))
+        Project project = createAntProject(appName, targetDirectory, variables, args, console, verbose)
+        GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
 
         ant.taskdef(resource: 'org/grails/cli/profile/tasks/antlib.xml')
 
@@ -159,13 +161,14 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
     }
 
     private Project createAntProject(String appName, File projectTargetDirectory, Map<String, String> properties,
-                                     GrailsConsole console, boolean verbose = false) {
+                                     Map<String, String> args, GrailsConsole console, boolean verbose = false) {
         GrailsConsoleAntProject project = new GrailsConsoleAntProject()
         project.setBaseDir(projectTargetDirectory)
         project.setName(appName)
         properties.each { k, v ->
             project.setProperty(k, v)
         }
+        project.setOptions(args)
         ProjectHelper helper = ProjectHelper.getProjectHelper()
         helper.getImportStack().addElement("AntBuilder")
         project.addReference(MagicNames.REFID_PROJECT_HELPER, helper)
@@ -251,6 +254,23 @@ class ApplicationTemplateCommand implements ProjectCommand, ProjectContextAware,
             }
         }
         versions
+    }
+
+    private Map<String, String> getCommandArguments(CommandLine commandLine) {
+        Map<String, String> commandArguments = new HashMap<>()
+        commandLine.declaredOptions.each { name, value ->
+            commandArguments.put(name, value.toString())
+        }
+        commandLine.undeclaredOptions.each { name, value ->
+            commandArguments.put(name, value.toString())
+        }
+        if (!commandLine.hasOption(STACKTRACE_ARGUMENT)) {
+            commandArguments.put(STACKTRACE_ARGUMENT, 'false')
+        }
+        if (!commandLine.hasOption(VERBOSE_ARGUMENT)) {
+            commandArguments.put(VERBOSE_ARGUMENT, 'false')
+        }
+        commandArguments
     }
 
 }
