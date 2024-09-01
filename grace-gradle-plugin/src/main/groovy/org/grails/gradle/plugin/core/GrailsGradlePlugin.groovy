@@ -699,6 +699,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void configureGroovyASTMetadata(Project project) {
         def configScriptTask = project.tasks.create('configScript')
+        configScriptTask.group = 'Build Setup'
         configScriptTask.description = 'Generates Groovy configuration script.'
 
         def configFile = project.file("$project.buildDir/config.groovy")
