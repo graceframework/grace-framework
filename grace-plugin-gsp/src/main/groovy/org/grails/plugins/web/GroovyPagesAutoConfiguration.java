@@ -39,6 +39,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 import grails.config.Config;
@@ -97,13 +98,13 @@ public class GroovyPagesAutoConfiguration {
         GroovyPageResourceLoader groovyPageResourceLoader = new GroovyPageResourceLoader();
         Resource baseResource;
         if (StringUtils.hasText(viewsDir)) {
-            baseResource = new FileUrlResource(viewsDir);
+            baseResource = new FileUrlResource(ResourceUtils.getURL(viewsDir));
         }
         else if (warDeployedWithReload && env.hasReloadLocation()) {
-            baseResource = new FileUrlResource(transformToValidLocation(env.getReloadLocation()));
+            baseResource = new FileUrlResource(ResourceUtils.getURL(env.getReloadLocation()));
         }
         else {
-            baseResource = new FileUrlResource(transformToValidLocation(BuildSettings.BASE_DIR.getAbsolutePath()));
+            baseResource = new FileUrlResource(ResourceUtils.getURL(BuildSettings.BASE_DIR.getCanonicalPath()));
         }
         groovyPageResourceLoader.setBaseResource(baseResource);
 
@@ -319,16 +320,6 @@ public class GroovyPagesAutoConfiguration {
     @ConditionalOnMissingBean
     public DefaultGroovyPagesUriService groovyPagesUriService() {
         return new DefaultGroovyPagesUriService();
-    }
-
-    private static String transformToValidLocation(String location) {
-        if (location.equals(".")) {
-            return location;
-        }
-        if (!location.endsWith(java.io.File.separator)) {
-            return location + java.io.File.separator;
-        }
-        return location;
     }
 
 }
