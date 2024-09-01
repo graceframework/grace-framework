@@ -594,7 +594,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
     protected void configureRunScript(Project project) {
         if (project.tasks.findByName('runScript') == null) {
             project.tasks.create('runScript', ApplicationContextScriptTask) {
-                group = 'command'
+                group = 'Grace'
                 description = "Executes the Grace Application Scripts."
                 classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                         project.configurations.profile)
@@ -624,7 +624,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
             }
             project.tasks.create('runCommand', ApplicationContextCommandTask) {
-                group = 'command'
+                group = 'Grace'
                 description = "Executes the Grace Application Commands."
                 classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
                         project.configurations.profile)
