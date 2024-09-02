@@ -6,9 +6,7 @@ dependencies {
     api project(":grace-util")
 
     api libs.commons.lang3
-    api libs.grails.datastore.core, {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
+    api libs.grails.datastore.core
     api libs.spring.boot.autoconfigure
 
     testImplementation project(":grace-test")

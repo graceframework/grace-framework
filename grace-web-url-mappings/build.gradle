@@ -4,9 +4,7 @@ dependencies {
     api project(":grace-util")
     api project(":grace-web-common")
 
-    api(libs.grails.datastore.gorm.validation) {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
+    api(libs.grails.datastore.gorm.validation)
 
     api libs.jakarta.servlet
     implementation libs.caffeine

@@ -5,16 +5,8 @@ dependencies {
     api project(":grace-spring")
 
     api libs.jakarta.persistence.api
-    api(libs.grails.datastore.core) {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
-    api(libs.grails.datastore.gorm) {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
-    api(libs.grails.datastore.gorm.support) {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
-    api(libs.grails.datastore.gorm.validation) {
-        exclude group: "org.codehaus.groovy", module: "groovy"
-    }
+    api(libs.grails.datastore.core)
+    api(libs.grails.datastore.gorm)
+    api(libs.grails.datastore.gorm.support)
+    api(libs.grails.datastore.gorm.validation)
 }
