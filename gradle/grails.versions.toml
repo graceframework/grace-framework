@@ -9,7 +9,7 @@ scaffolding = "6.0.1"
 
 [profiles]
 base = "2023.0.1"
-plugin = "2023.0.0"
+plugin = "2023.0.1"
 profile = "2023.0.0"
 rest-api = "2023.0.0"
 starter = "2023.0.0"
