@@ -81,6 +81,7 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
             tasks.findByName('check')?.dependsOn(integrationTestTask)
 
             TestReport testReportTask = tasks.create('mergeTestReports', TestReport)
+            testReportTask.dependsOn('test')
 
             if ((gradleVersion <=> GradleVersion.version('7.4')) >= 0) {
                 testReportTask.getDestinationDirectory().set(project.file("$project.buildDir/reports/tests"))
