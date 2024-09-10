@@ -14,6 +14,17 @@ Geb Functional Testing for Grace framework
 This plugin just provides the Geb dependencies and a `create-functional-test` command for generating Geb tests in a Grace app. For further reference please see the [Geb documentation](http://www.gebish.org)
 
 
+## Versions
+
+To make it easier for users to use and upgrade, Plugin adopts a version policy consistent with the [Grace Framework](https://github.com/graceframework/grace-framework).
+
+| Plugin Version | Grace Version |
+|----------------|---------------|
+| 6.0.x          | 2023.0.x      |
+| 5.2.x          | 2022.2.x      |
+| 5.1.x          | 2022.1.x      |
+| 5.0.x          | 2022.0.x      |
+
 ## License
 
 This plugin is available as open source under the terms of the [APACHE LICENSE, VERSION 2.0](http://apache.org/Licenses/LICENSE-2.0)
