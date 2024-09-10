@@ -20,6 +20,7 @@ To make it easier for users to use and upgrade, Plugin adopts a version policy c
 
 | Plugin Version | Grace Version |
 |----------------|---------------|
+| 6.1.x          | 2023.1.x      |
 | 6.0.x          | 2023.0.x      |
 | 5.2.x          | 2022.2.x      |
 | 5.1.x          | 2022.1.x      |
