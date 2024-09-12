@@ -56,7 +56,7 @@ class CreatePluginCommand extends CreateAppCommand {
         }
 
         def pluginProfile = profileInstance.extends.find { Profile parent -> parent.name == 'plugin' }
-        if (pluginProfile == null) {
+        if (profileName != 'plugin' && pluginProfile == null) {
             console.error("No valid plugin profile found for name [$profileName]")
             return false
         }
