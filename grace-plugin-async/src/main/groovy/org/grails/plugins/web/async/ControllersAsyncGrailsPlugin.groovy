@@ -20,9 +20,7 @@ import grails.util.GrailsUtil
 import org.grails.async.factory.PromiseFactoryBuilder
 import org.grails.plugins.web.async.mvc.AsyncActionResultTransformer
 import org.grails.plugins.web.async.spring.PromiseFactoryBean
-import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
-import org.springframework.context.annotation.Role
 
 /**
  * Async support for the Grails 2.0. Doesn't do much right now, most logic handled
@@ -36,8 +34,6 @@ class ControllersAsyncGrailsPlugin extends Plugin {
     def loadAfter = ['controllers']
     Closure doWithSpring() {{->
         asyncPromiseResponseActionResultTransformer(AsyncActionResultTransformer)
-        grailsPromiseFactory(PromiseFactoryBean) { bean ->
-            bean.role = BeanDefinition.ROLE_INFRASTRUCTURE
-        }
+        grailsPromiseFactory(PromiseFactoryBean)
     }}
 }
