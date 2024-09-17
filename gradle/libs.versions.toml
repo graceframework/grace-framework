@@ -1,5 +1,5 @@
 [versions]
-ant = "1.10.14"
+ant = "1.10.15"
 asciidoctorj = "2.5.8"
 aspectj = "1.9.19"
 assertj = "3.22.0"
