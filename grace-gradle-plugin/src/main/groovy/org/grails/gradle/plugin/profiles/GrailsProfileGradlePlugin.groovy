@@ -19,9 +19,9 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ConfigurablePublishArtifact
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.CopySpec
-import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
@@ -40,6 +40,7 @@ import static org.gradle.api.plugins.BasePlugin.BUILD_GROUP
  * A plugin that is capable of compiling a Grails profile into a JAR file for distribution
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 @CompileStatic
@@ -106,9 +107,10 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
 
         def classesDir = new File(project.buildDir, 'classes/profile')
         def compileProfileTask = project.tasks.create('compileProfile', ProfileCompilerTask, (Action) { ProfileCompilerTask task ->
-            task.destinationDir = classesDir
+            task.destinationDirectory.set(classesDir)
             task.source = commandsDir
             task.config = profileYml
+            task.profileFile = new File(classesDir, 'META-INF/grails-profile/profile.yml')
             if (templatesDir.exists()) {
                 task.templatesDir = templatesDir
             }
@@ -131,9 +133,6 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             jarTask.destinationDirectory.set(new File(project.buildDir, 'libs'))
             jarTask.setDescription('Assembles a jar archive containing the profile classes.')
             jarTask.setGroup(BUILD_GROUP)
-
-            ArchivePublishArtifact jarArtifact = new ArchivePublishArtifact(jarTask)
-            project.artifacts.add(CONFIGURATION_NAME, jarArtifact)
         }
         else {
             // Create jar task
@@ -145,11 +144,11 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
                 jar.destinationDirectory.set(new File(project.buildDir, 'libs'))
                 jar.setDescription('Assembles a jar archive containing the profile classes.')
                 jar.setGroup(BUILD_GROUP)
-
-                ArchivePublishArtifact jarArtifact = new ArchivePublishArtifact(jar)
-                project.artifacts.add(CONFIGURATION_NAME, jarArtifact)
             })
         }
+
+        project.artifacts.add(CONFIGURATION_NAME, jarTask.getArchiveFile(),
+                { ConfigurablePublishArtifact artifact -> artifact.builtBy(jarTask) })
 
         project.tasks.create('sourcesJar', Jar, (Action) { Jar jar ->
             jar.from(commandsDir)
