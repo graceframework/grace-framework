@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -156,6 +155,7 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
+    @Order(-20)
     @Primary
     @ConditionalOnMissingBean
     public ResourceLocator grailsResourceLocator(ObjectProvider<GrailsApplication> grailsApplication) {
@@ -177,8 +177,8 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(@Qualifier("grailsResourceLocator") ResourceLocator grailsResourceLocator) {
-        return new ErrorsViewStackTracePrinter(grailsResourceLocator);
+    public ErrorsViewStackTracePrinter errorsViewStackTracePrinter(ObjectProvider<ResourceLocator> grailsResourceLocator) {
+        return new ErrorsViewStackTracePrinter(grailsResourceLocator.getObject());
     }
 
     @Bean

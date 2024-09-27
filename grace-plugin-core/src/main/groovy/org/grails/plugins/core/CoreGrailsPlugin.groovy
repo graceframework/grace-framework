@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import grails.util.Environment
 import grails.util.GrailsUtil
 
 import org.grails.beans.support.PropertiesEditor
-import org.grails.core.io.DefaultResourceLocator
 import org.grails.core.support.ClassEditor
 import org.grails.dev.support.DevelopmentShutdownHook
 import org.grails.spring.DefaultRuntimeSpringConfiguration
@@ -112,9 +111,6 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
             }
             abstractGrailsResourceLocator {
                 searchLocations = [BuildSettings.BASE_DIR.absolutePath]
-            }
-            grailsResourceLocator(DefaultResourceLocator) { bean ->
-                bean.parent = 'abstractGrailsResourceLocator'
             }
 
             customEditors(CustomEditorConfigurer) {
