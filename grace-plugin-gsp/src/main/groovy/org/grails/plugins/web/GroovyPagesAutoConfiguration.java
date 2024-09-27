@@ -229,7 +229,7 @@ public class GroovyPagesAutoConfiguration {
         long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class,
                 (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
 
-        boolean jstlPresent = ClassUtils.isPresent("javax.servlet.jsp.jstl.core.Config", getClass().getClassLoader());
+        boolean jstlPresent = ClassUtils.isPresent("jakarta.servlet.jsp.jstl.core.Config", getClass().getClassLoader());
 
         GroovyPageViewResolver groovyPageViewResolver = new GroovyPageViewResolver();
         groovyPageViewResolver.setGroovyPageLocator(groovyPageLocator);
