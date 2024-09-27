@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
             boolean enableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
             long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
 
-            boolean jstlPresent = ClassUtils.isPresent("javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
+            boolean jstlPresent = ClassUtils.isPresent("jakarta.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
 
             abstractViewResolver {
                 prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
