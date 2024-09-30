@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.ConstructorNode
 import org.codehaus.groovy.ast.FieldNode
+import org.codehaus.groovy.ast.GenericsType
 import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.ast.Parameter
@@ -48,6 +49,7 @@ import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.EmptyStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
 import org.codehaus.groovy.ast.stmt.IfStatement
+import org.codehaus.groovy.ast.tools.GenericsUtils
 import org.codehaus.groovy.control.CompilationUnit
 import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
@@ -78,7 +80,6 @@ import static org.grails.compiler.injection.GrailsASTUtils.VOID_CLASS_NODE
 import static org.grails.compiler.injection.GrailsASTUtils.ZERO_PARAMETERS
 import static org.grails.compiler.injection.GrailsASTUtils.applyDefaultMethodTarget
 import static org.grails.compiler.injection.GrailsASTUtils.buildThisExpression
-import static org.grails.compiler.injection.GrailsASTUtils.nonGeneric
 import static org.grails.compiler.injection.GrailsASTUtils.processVariableScopes
 
 /**
@@ -131,13 +132,17 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             Expression superClassAttribute = annotationNode.getMember(ATTR_SUPER_CLASS)
             if (superClassAttribute instanceof ClassExpression) {
                 superClassNode = ((ClassExpression) superClassAttribute).getType()
+                if (superClassNode.isUsingGenerics()) {
+                    superClassNode.setGenericsTypes(new GenericsType(parent))
+                }
             }
             else {
-                superClassNode = ClassHelper.make(RestfulController)
+                superClassNode = GenericsUtils.makeClassSafe(RestfulController)
+                superClassNode.setGenericsTypes(new GenericsType(parent))
             }
 
             ModuleNode ast = source.getAST()
-            ClassNode newControllerClassNode = new ClassNode(className, Modifier.PUBLIC, nonGeneric(superClassNode, parent))
+            ClassNode newControllerClassNode = new ClassNode(className, Modifier.PUBLIC, superClassNode)
 
             AnnotationNode transactionalAnn = new AnnotationNode(TransactionalTransform.MY_TYPE)
             transactionalAnn.addMember(ATTR_READY_ONLY, ConstantExpression.PRIM_TRUE)
