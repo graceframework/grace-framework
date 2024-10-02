@@ -66,14 +66,6 @@ public class Grails extends SpringApplication {
     }
 
     @Override
-    protected ConfigurableApplicationContext createApplicationContext() {
-        setAllowBeanDefinitionOverriding(true);
-        setAllowCircularReferences(true);
-
-        return super.createApplicationContext();
-    }
-
-    @Override
     protected void configureProfiles(ConfigurableEnvironment environment, String[] args) {
         Environment env = Environment.getCurrent();
         environment.addActiveProfile(env.getName());
