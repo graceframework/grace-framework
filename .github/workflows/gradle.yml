@@ -2,10 +2,10 @@ name: Grace CI
 on:
   push:
     branches:
-      - 2023.1.x
+      - groovy5
   pull_request:
     branches:
-      - 2023.1.x
+      - groovy5
   workflow_dispatch:
 jobs:
   build:
