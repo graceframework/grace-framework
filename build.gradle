@@ -280,6 +280,7 @@ subprojects { project ->
         groovyOptions.encoding = "UTF-8"
         options.encoding = "UTF-8"
         options.compilerArgs << '-parameters'
+        options.forkOptions.jvmArgs += ["-Dspock.iKnowWhatImDoing.disableGroovyVersionCheck=true"]
     }
 
     configure([compileJava, compileTestJava]) {
@@ -333,6 +334,7 @@ subprojects { project ->
 
     tasks.withType(Test) {
         useJUnitPlatform()
+        systemProperty 'spock.iKnowWhatImDoing.disableGroovyVersionCheck', 'true'
     }
 
     test {
