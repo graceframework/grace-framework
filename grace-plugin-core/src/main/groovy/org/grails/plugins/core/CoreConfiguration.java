@@ -28,6 +28,8 @@ import org.springframework.core.annotation.Order;
 
 import grails.config.ConfigProperties;
 import grails.core.GrailsApplication;
+import grails.core.support.proxy.DefaultProxyHandler;
+import grails.core.support.proxy.ProxyHandler;
 import grails.util.BuildSettings;
 import org.grails.core.io.DefaultResourceLocator;
 
@@ -39,7 +41,7 @@ import org.grails.core.io.DefaultResourceLocator;
  * @since 4.0
  */
 @AutoConfiguration
-@AutoConfigureOrder
+@AutoConfigureOrder(300)
 public class CoreConfiguration {
 
     @Bean
@@ -64,6 +66,13 @@ public class CoreConfiguration {
         defaultResourceLocator.setSearchLocations(List.of(BuildSettings.BASE_DIR.getCanonicalPath()));
 
         return defaultResourceLocator;
+    }
+
+    @Bean
+    @Order(100)
+    @ConditionalOnMissingBean
+    public ProxyHandler proxyHandler() {
+        return new DefaultProxyHandler();
     }
 
 }

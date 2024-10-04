@@ -28,7 +28,6 @@ import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 
 import grails.config.Settings
-import grails.core.support.proxy.DefaultProxyHandler
 import grails.plugins.Plugin
 import grails.util.BuildSettings
 import grails.util.Environment
@@ -118,7 +117,6 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
                                  (Properties): PropertiesEditor]
             }
 
-            proxyHandler(DefaultProxyHandler)
         }
     }
 
