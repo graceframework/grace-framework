@@ -4,6 +4,8 @@ dependencies {
     api project(":grace-spring")
     api project(":grace-spring-boot")
 
+    compileOnly libs.aspectj.rt
+    api libs.spring.aop
     api libs.spring.beans
     api libs.spring.boot.autoconfigure
     api libs.spring.context

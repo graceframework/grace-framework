@@ -27,7 +27,6 @@ import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 
-import grails.config.Settings
 import grails.plugins.Plugin
 import grails.util.BuildSettings
 import grails.util.Environment
@@ -46,6 +45,7 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  * Configures the core shared beans within the Grails application context.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
@@ -60,16 +60,12 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
                             'file:./app/conf/application.groovy',
                             'file:./app/conf/application.yml']
 
-    private static final String SPRING_PROXY_TARGET_CLASS_CONFIG = 'spring.aop.proxy-target-class'
     private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
 
     @Override
     Closure doWithSpring() {
         { ->
             def application = grailsApplication
-
-            // Grails config as properties
-            def config = application.config
 
             try {
                 // patch AopConfigUtils if possible
@@ -83,23 +79,6 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
                 }
             }
             catch (Throwable ignored) {
-            }
-
-            Class proxyCreatorClazz = null
-            // replace AutoProxy advisor with Groovy aware one
-            if (ClassUtils.isPresent('org.aspectj.lang.annotation.Around', application.classLoader) &&
-                    !config.getProperty(Settings.SPRING_DISABLE_ASPECTJ, Boolean)) {
-                proxyCreatorClazz = GroovyAwareAspectJAwareAdvisorAutoProxyCreator
-            }
-            else {
-                proxyCreatorClazz = GroovyAwareInfrastructureAdvisorAutoProxyCreator
-            }
-
-            Boolean isProxyTargetClass = config.getProperty(SPRING_PROXY_TARGET_CLASS_CONFIG, Boolean)
-            'org.springframework.aop.config.internalAutoProxyCreator'(proxyCreatorClazz) {
-                if (isProxyTargetClass != null) {
-                    proxyTargetClass = isProxyTargetClass
-                }
             }
 
             // add shutdown hook if not running in war deployed mode

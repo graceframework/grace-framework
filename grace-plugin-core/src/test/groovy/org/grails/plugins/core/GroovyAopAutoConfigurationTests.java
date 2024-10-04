@@ -18,22 +18,24 @@ package org.grails.plugins.core;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext;
 import org.springframework.mock.web.MockServletContext;
 
 import grails.core.DefaultGrailsApplication;
-import grails.core.support.proxy.ProxyHandler;
-import org.grails.core.io.ResourceLocator;
+
+import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator;
+import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link CoreConfiguration}.
+ * Tests for {@link GroovyAopAutoConfiguration}.
  *
  * @author Michael Yan
  */
-public class CoreConfigurationTests {
+public class GroovyAopAutoConfigurationTests {
 
     private final AnnotationConfigServletWebApplicationContext context = new AnnotationConfigServletWebApplicationContext();
 
@@ -50,14 +52,22 @@ public class CoreConfigurationTests {
     @Test
     void defaultConfiguration() {
         registerAndRefreshContext();
-        assertThat(this.context.getBean(ResourceLocator.class)).isNotNull();
-        assertThat(this.context.getBean(ProxyHandler.class)).isNotNull();
+        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isNotNull();
+        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isInstanceOf(GroovyAwareAspectJAwareAdvisorAutoProxyCreator.class);
+    }
+
+    @Test
+    void disableAspectjAutoweave() {
+        TestPropertyValues.of("grails.spring.disable.aspectj.autoweaving:true").applyTo(this.context);
+        registerAndRefreshContext();
+        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isNotNull();
+        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isInstanceOf(GroovyAwareInfrastructureAdvisorAutoProxyCreator.class);
     }
 
     private void registerAndRefreshContext(String... env) {
         TestPropertyValues.of(env).applyTo(this.context);
         this.context.registerBean("grailsApplication", DefaultGrailsApplication.class);
-        this.context.register(CoreConfiguration.class);
+        this.context.register(GroovyAopAutoConfiguration.class);
         this.context.refresh();
     }
 

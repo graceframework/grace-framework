@@ -4,8 +4,6 @@ import grails.core.DefaultGrailsApplication
 import grails.core.GrailsApplication
 import org.grails.config.PropertySourcesConfig
 import org.grails.plugins.DefaultGrailsPlugin
-import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
-import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
 import org.grails.support.MockApplicationContext
 import org.grails.web.servlet.context.support.WebRuntimeSpringConfiguration
 import org.junit.jupiter.api.AfterEach
@@ -60,7 +58,6 @@ class CoreGrailsPluginTests {
 
         assert appCtx.containsBean("classLoader")
         assert appCtx.containsBean("customEditors")
-        assert appCtx.getBean("org.springframework.aop.config.internalAutoProxyCreator") instanceof GroovyAwareAspectJAwareAdvisorAutoProxyCreator
     }
 
     @Test
@@ -79,7 +76,6 @@ class CoreGrailsPluginTests {
 
         assert appCtx.containsBean("classLoader")
         assert appCtx.containsBean("customEditors")
-        assert appCtx.getBean("org.springframework.aop.config.internalAutoProxyCreator") instanceof GroovyAwareInfrastructureAdvisorAutoProxyCreator
     }
 
     protected void onSetUp() {
