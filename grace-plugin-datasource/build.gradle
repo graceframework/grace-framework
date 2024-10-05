@@ -6,9 +6,13 @@ dependencies {
     api libs.grails.datastore.core
     api libs.grails.datastore.gorm
     api libs.groovy.sql
+    api libs.spring.boot.autoconfigure
     api libs.spring.context
     api libs.spring.jdbc
     implementation libs.tomcat.jdbc
 
+    testImplementation libs.assertj.core
     testImplementation libs.h2
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.test
 }

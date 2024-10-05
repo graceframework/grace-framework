@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2023 the original author or authors.
+ * Copyright 2017-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.grails.datastore.gorm.jdbc.connections.DataSourceConnectionSourceFactory
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
 import org.grails.datastore.mapping.core.connections.ConnectionSource
-import org.grails.datastore.mapping.core.connections.ConnectionSourceSettings
 import org.grails.datastore.mapping.core.connections.ConnectionSources
 import org.grails.datastore.mapping.core.connections.ConnectionSourcesInitializer
 
@@ -37,6 +36,7 @@ import org.grails.datastore.mapping.core.connections.ConnectionSourcesInitialize
  * A factory bean for creating the data sources
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.3
  */
 @CompileStatic
@@ -45,15 +45,19 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
 
     final PropertyResolver configuration
     ApplicationContext applicationContext
-    private ConnectionSources<DataSource, ? extends ConnectionSourceSettings> connectionSources
+    private ConnectionSources<DataSource, DataSourceSettings> connectionSources
 
     DataSourceConnectionSourcesFactoryBean(PropertyResolver configuration) {
         this.configuration = configuration
     }
 
     @Override
-    ConnectionSources<DataSource, ? extends ConnectionSourceSettings> getObject() throws Exception {
-        connectionSources
+    ConnectionSources<DataSource, DataSourceSettings> getObject() throws Exception {
+        if (this.connectionSources == null) {
+            DataSourceConnectionSourceFactory factory = new DataSourceConnectionSourceFactory()
+            this.connectionSources = ConnectionSourcesInitializer.create(factory, configuration)
+        }
+        return this.connectionSources
     }
 
     @Override
@@ -68,23 +72,21 @@ class DataSourceConnectionSourcesFactoryBean implements InitializingBean, Factor
 
     @Override
     void afterPropertiesSet() throws Exception {
-        DataSourceConnectionSourceFactory factory = new DataSourceConnectionSourceFactory()
-        this.connectionSources = ConnectionSourcesInitializer.create(factory, configuration)
-        if (applicationContext instanceof ConfigurableApplicationContext) {
-            ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext
-            for (ConnectionSource<DataSource, ConnectionSourceSettings> connectionSource in connectionSources.allConnectionSources) {
+        if (this.applicationContext instanceof ConfigurableApplicationContext) {
+            ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) this.applicationContext
+            for (ConnectionSource<DataSource, DataSourceSettings> connectionSource in this.connectionSources.allConnectionSources) {
                 if (connectionSource.name != ConnectionSource.DEFAULT) {
                     String suffix = "_${connectionSource.name}"
                     String dsName = "dataSource${suffix}"
                     String tmName = "transactionManager${suffix}"
-                    if (!applicationContext.containsBean(dsName)) {
+                    if (!this.applicationContext.containsBean(dsName)) {
                         DataSource dataSource = connectionSource.source
                         configurableApplicationContext.beanFactory.registerSingleton(
                                 dsName,
                                 dataSource
                         )
                     }
-                    if (!applicationContext.containsBean(tmName)) {
+                    if (!this.applicationContext.containsBean(tmName)) {
                         DataSource dataSource = connectionSource.source
                         configurableApplicationContext.beanFactory.registerSingleton(
                                 tmName,

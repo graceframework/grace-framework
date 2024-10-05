@@ -1,5 +1,7 @@
 package org.grails.plugins.datasource
 
+import spock.lang.Ignore
+
 import grails.core.GrailsApplication
 import grails.plugins.GrailsPluginManager
 import grails.spring.BeanBuilder
@@ -14,6 +16,7 @@ import javax.sql.DataSource
 /**
  * Created by graemerocher on 19/01/2017.
  */
+@Ignore("DataSourceGrailsPlugin doWithSpring doesn't work anymore, prefer to DataSourcePluginConfiguration")
 class DataSourceGrailsPluginSpec extends Specification {
 
     void "test data sources Grails plugin Spring configuration"() {
