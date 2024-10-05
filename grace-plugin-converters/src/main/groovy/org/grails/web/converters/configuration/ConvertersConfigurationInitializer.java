@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     private ApplicationContext applicationContext;
 
     private GrailsApplication grailsApplication;
+
+    private ProxyHandler proxyHandler;
 
     public ApplicationContext getApplicationContext() {
         return this.applicationContext;
@@ -231,14 +233,20 @@ public class ConvertersConfigurationInitializer implements ApplicationContextAwa
     }
 
     private ProxyHandler getProxyHandler() {
-        ProxyHandler proxyHandler;
-        if (this.applicationContext != null) {
-            proxyHandler = this.applicationContext.getBean(ProxyHandler.class);
+        if (this.proxyHandler != null) {
+            return this.proxyHandler;
+        }
+        else if (this.applicationContext != null) {
+            return this.applicationContext.getBean(ProxyHandler.class);
         }
         else {
-            proxyHandler = new DefaultProxyHandler();
+            this.proxyHandler = new DefaultProxyHandler();
         }
-        return proxyHandler;
+        return this.proxyHandler;
+    }
+
+    public void setProxyHandler(ProxyHandler proxyHandler) {
+        this.proxyHandler = proxyHandler;
     }
 
     private void initDeepXMLConfiguration() {

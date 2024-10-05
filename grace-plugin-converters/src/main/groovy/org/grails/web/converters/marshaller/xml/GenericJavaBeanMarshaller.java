@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.grails.web.converters.marshaller.ObjectMarshaller;
 
 /**
  * @author Siegfried Puchbauer
+ * @author Michael Yan
  * @since 1.1
  */
 public class GenericJavaBeanMarshaller implements ObjectMarshaller<XML> {
@@ -43,7 +44,7 @@ public class GenericJavaBeanMarshaller implements ObjectMarshaller<XML> {
             for (PropertyDescriptor property : BeanUtils.getPropertyDescriptors(o.getClass())) {
                 String name = property.getName();
                 Method readMethod = property.getReadMethod();
-                if (readMethod != null) {
+                if (readMethod != null && readMethod.canAccess(o)) {
                     Object value = readMethod.invoke(o, (Object[]) null);
                     xml.startNode(name);
                     xml.convertAnother(value);

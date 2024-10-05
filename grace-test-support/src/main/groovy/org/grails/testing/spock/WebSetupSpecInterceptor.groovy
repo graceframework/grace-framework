@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 the original author or authors.
+ * Copyright 2016-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import org.grails.gsp.GroovyPagesTemplateEngine
 import org.grails.gsp.jsp.TagLibraryResolverImpl
 import org.grails.plugins.codecs.CodecsGrailsPlugin
 import org.grails.plugins.codecs.DefaultCodecLookup
-import org.grails.plugins.converters.ConvertersGrailsPlugin
 import org.grails.plugins.web.rest.render.DefaultRendererRegistry
 import org.grails.testing.runtime.support.GroovyPageUnitTestResourceLoader
 import org.grails.testing.runtime.support.LazyTagLibraryLookup
@@ -67,8 +66,6 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
     protected void setup(GrailsWebUnitTest test) {
         GrailsApplication grailsApplication = test.grailsApplication
         Map<String, String> groovyPages = test.views
-
-        test.defineBeans(new ConvertersGrailsPlugin())
 
         Config config = grailsApplication.config
         test.defineBeans {

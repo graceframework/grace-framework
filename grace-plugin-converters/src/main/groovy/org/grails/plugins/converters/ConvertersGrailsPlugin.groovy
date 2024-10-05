@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,11 @@ package org.grails.plugins.converters
 
 import org.springframework.core.PriorityOrdered
 
-import grails.converters.JSON
-import grails.converters.XML
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 import org.grails.plugins.codecs.JSONCodec
 import org.grails.plugins.codecs.XMLCodec
-import org.grails.web.converters.configuration.ConvertersConfigurationInitializer
-import org.grails.web.converters.configuration.ObjectMarshallerRegisterer
-import org.grails.web.converters.marshaller.json.ValidationErrorsMarshaller as JsonErrorsMarshaller
-import org.grails.web.converters.marshaller.xml.ValidationErrorsMarshaller as XmlErrorsMarshaller
 
 /**
  * Allows the "obj as XML" and "obj as JSON" syntax.
@@ -46,27 +40,6 @@ class ConvertersGrailsPlugin extends Plugin implements PriorityOrdered {
             JSONCodec,
             XMLCodec
     ]
-
-    @Override
-    Closure doWithSpring() {
-        { ->
-            jsonErrorsMarshaller(JsonErrorsMarshaller)
-
-            xmlErrorsMarshaller(XmlErrorsMarshaller)
-
-            convertersConfigurationInitializer(ConvertersConfigurationInitializer)
-
-            errorsXmlMarshallerRegisterer(ObjectMarshallerRegisterer) {
-                marshaller = { XmlErrorsMarshaller om -> }
-                converterClass = XML
-            }
-
-            errorsJsonMarshallerRegisterer(ObjectMarshallerRegisterer) {
-                marshaller = { JsonErrorsMarshaller om -> }
-                converterClass = JSON
-            }
-        }
-    }
 
     @Override
     int getOrder() {
