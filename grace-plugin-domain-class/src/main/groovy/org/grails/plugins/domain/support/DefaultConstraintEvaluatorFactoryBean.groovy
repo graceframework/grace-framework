@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 the original author or authors.
+ * Copyright 2017-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
  */
 package org.grails.plugins.domain.support
 
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.FactoryBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.MessageSource
-import org.springframework.context.annotation.Lazy
 
 import grails.core.GrailsApplication
 
@@ -30,25 +28,34 @@ import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstrai
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.validation.ConstraintEvalUtils
 
+/**
+ * A factory bean for creating the default ConstraintsEvaluator where an implementation of GORM is not present
+ *
+ * @author James Kleeh
+ * @author Michael Yan
+ * @since 3.3
+ */
+@CompileStatic
 class DefaultConstraintEvaluatorFactoryBean implements FactoryBean<ConstraintsEvaluator> {
 
-    @Lazy
-    @Autowired
-    MessageSource messageSource
+    private final GrailsApplication grailsApplication
+    private final MappingContext grailsDomainClassMappingContext
+    private final MessageSource messageSource
 
-    @Lazy
-    @Autowired
-    @Qualifier('grailsDomainClassMappingContext')
-    MappingContext grailsDomainClassMappingContext
-
-    @Autowired
-    GrailsApplication grailsApplication
+    DefaultConstraintEvaluatorFactoryBean(GrailsApplication grailsApplication,
+                                          MappingContext grailsDomainClassMappingContext,
+                                          MessageSource messageSource) {
+        this.grailsApplication = grailsApplication
+        this.grailsDomainClassMappingContext = grailsDomainClassMappingContext
+        this.messageSource = messageSource
+    }
 
     @Override
     ConstraintsEvaluator getObject() throws Exception {
-        ConstraintRegistry registry = new DefaultConstraintRegistry(messageSource)
+        ConstraintRegistry registry = new DefaultConstraintRegistry(this.messageSource)
 
-        new DefaultConstraintEvaluator(registry, grailsDomainClassMappingContext, ConstraintEvalUtils.getDefaultConstraints(grailsApplication.config))
+        new DefaultConstraintEvaluator(registry, this.grailsDomainClassMappingContext,
+                ConstraintEvalUtils.getDefaultConstraints(this.grailsApplication.config))
     }
 
     @Override

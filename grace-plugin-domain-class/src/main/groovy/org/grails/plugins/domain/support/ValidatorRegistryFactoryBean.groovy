@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 the original author or authors.
+ * Copyright 2017-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@ package org.grails.plugins.domain.support
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.FactoryBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.annotation.Lazy
 
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.validation.ValidatorRegistry
@@ -33,14 +30,15 @@ import org.grails.datastore.mapping.validation.ValidatorRegistry
 @CompileStatic
 class ValidatorRegistryFactoryBean implements FactoryBean<ValidatorRegistry> {
 
-    @Lazy
-    @Autowired
-    @Qualifier('grailsDomainClassMappingContext')
-    MappingContext mappingContext
+    private final MappingContext mappingContext
+
+    ValidatorRegistryFactoryBean(MappingContext mappingContext) {
+        this.mappingContext = mappingContext
+    }
 
     @Override
     ValidatorRegistry getObject() throws Exception {
-        mappingContext.validatorRegistry
+        this.mappingContext.validatorRegistry
     }
 
     @Override

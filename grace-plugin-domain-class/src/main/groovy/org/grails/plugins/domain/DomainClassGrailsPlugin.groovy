@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,10 @@
  */
 package org.grails.plugins.domain
 
-import groovy.util.logging.Slf4j
 import org.springframework.core.PriorityOrdered
 
-import grails.core.GrailsApplication
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
-import grails.validation.ConstraintsEvaluator
-
-import org.grails.plugins.domain.support.ConstraintEvaluatorAdapter
-import org.grails.plugins.domain.support.DefaultConstraintEvaluatorFactoryBean
-import org.grails.plugins.domain.support.DefaultMappingContextFactoryBean
-import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
 
 /**
  * Configures the domain classes in the spring context.
@@ -35,7 +27,6 @@ import org.grails.plugins.domain.support.ValidatorRegistryFactoryBean
  * @author Michael Yan
  * @since 0.4
  */
-@Slf4j
 class DomainClassGrailsPlugin extends Plugin implements PriorityOrdered {
 
     def watchedResources = ['file:./grails-app/domain/**/*.groovy',
@@ -48,20 +39,7 @@ class DomainClassGrailsPlugin extends Plugin implements PriorityOrdered {
 
     Closure doWithSpring() {
         { ->
-            GrailsApplication application = grailsApplication
-            validateableConstraintsEvaluator(DefaultConstraintEvaluatorFactoryBean) { bean ->
-                bean.lazyInit = true
-                bean.role = 'infrastructure'
-            }
-            "${ConstraintsEvaluator.BEAN_NAME}"(ConstraintEvaluatorAdapter, ref('validateableConstraintsEvaluator')) { bean ->
-                bean.lazyInit = true
-            }
-            grailsDomainClassMappingContext(DefaultMappingContextFactoryBean, application, applicationContext) { bean ->
-                bean.lazyInit = true
-            }
-            gormValidatorRegistry(ValidatorRegistryFactoryBean) { bean ->
-                bean.lazyInit = true
-            }
+
         }
     }
 

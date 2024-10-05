@@ -9,4 +9,7 @@ dependencies {
     api(libs.grails.datastore.gorm)
     api(libs.grails.datastore.gorm.support)
     api(libs.grails.datastore.gorm.validation)
+
+    testImplementation libs.assertj.core
+    testImplementation libs.spring.boot.test
 }
