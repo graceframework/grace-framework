@@ -28,7 +28,6 @@ import org.springframework.core.io.Resource
 import org.springframework.util.ClassUtils
 
 import grails.plugins.Plugin
-import grails.util.BuildSettings
 import grails.util.Environment
 import grails.util.GrailsUtil
 
@@ -86,9 +85,6 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
             boolean devMode = !warDeployed && environment == Environment.DEVELOPMENT
             if (devMode && ClassUtils.isPresent('jline.Terminal', application.classLoader)) {
                 shutdownHook(DevelopmentShutdownHook)
-            }
-            abstractGrailsResourceLocator {
-                searchLocations = [BuildSettings.BASE_DIR.absolutePath]
             }
 
             customEditors(CustomEditorConfigurer) {
