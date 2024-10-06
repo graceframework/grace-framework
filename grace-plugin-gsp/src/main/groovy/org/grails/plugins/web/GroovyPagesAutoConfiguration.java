@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -320,6 +321,12 @@ public class GroovyPagesAutoConfiguration {
     @ConditionalOnMissingBean
     public DefaultGroovyPagesUriService groovyPagesUriService() {
         return new DefaultGroovyPagesUriService();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "grails.gsp.view.layoutViewResolver", havingValue = "true", matchIfMissing = true)
+    public GrailsLayoutViewResolverPostProcessor grailsLayoutViewResolverPostProcessor() {
+        return new GrailsLayoutViewResolverPostProcessor();
     }
 
 }

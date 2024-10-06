@@ -18,7 +18,6 @@ package org.grails.plugins.web
 import groovy.transform.CompileStatic
 import org.springframework.core.Ordered
 
-import grails.config.Config
 import grails.core.gsp.GrailsTagLibClass
 import grails.plugins.Plugin
 import grails.util.GrailsUtil
@@ -81,14 +80,6 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
     Closure doWithSpring() {
         { ->
             def application = grailsApplication
-            Config config = application.config
-            boolean enableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
-
-            // "grails.gsp.view.layoutViewResolver=false" can be used to disable GrailsLayoutViewResolver
-            // containsKey check must be made to check existence of boolean false values in ConfigObject
-            if (enableLayoutViewResolver) {
-                grailsLayoutViewResolverPostProcessor(GrailsLayoutViewResolverPostProcessor)
-            }
 
             // Now go through tag libraries and configure them in Spring too. With AOP proxies and so on
             def taglibs = application.getArtefacts(TagLibArtefactHandler.TYPE)
