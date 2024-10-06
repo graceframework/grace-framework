@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.grails.plugins.web
 
+import groovy.transform.CompileStatic
 import org.springframework.beans.BeansException
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.beans.factory.config.BeanDefinition
@@ -37,10 +38,11 @@ import org.grails.web.servlet.view.SitemeshLayoutViewResolver
  * the inner view resolver.
  *
  * @author Lari Hotari
+ * @author Michael Yan
  * @since 2.4.0
  * @see org.grails.web.servlet.view.GrailsLayoutViewResolver
- *
  */
+@CompileStatic
 class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPostProcessor, Ordered {
 
     private static final String GRAILS_VIEW_RESOLVER_BEAN_NAME = "jspViewResolver"
@@ -60,22 +62,19 @@ class GrailsLayoutViewResolverPostProcessor implements BeanDefinitionRegistryPos
     void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         if (enabled && registry.containsBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)) {
             BeanDefinition previousViewResolver = registry.getBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)
-            registry.removeBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME)
 
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition()
             beanDefinition.beanClass = layoutViewResolverClass
             if (layoutViewResolverBeanParentName) {
                 beanDefinition.parentName = layoutViewResolverBeanParentName
             }
-            if (markBeanPrimary) {
-                beanDefinition.primary = true
-            }
-            beanDefinition.setResource(new DescriptiveResource("org.grails.plugins.web.GroovyPagesGrailsPlugin"))
-            final MutablePropertyValues propertyValues = beanDefinition.getPropertyValues()
+            beanDefinition.primary = markBeanPrimary
+            beanDefinition.resource = new DescriptiveResource(GroovyPagesGrailsPlugin.name)
+            MutablePropertyValues propertyValues = beanDefinition.getPropertyValues()
             propertyValues.addPropertyValue('innerViewResolver', previousViewResolver)
             propertyValues.addPropertyValue('groovyPageLayoutFinder',
-                    new RuntimeBeanReference((String) GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
-            registry.registerBeanDefinition(GRAILS_VIEW_RESOLVER_BEAN_NAME, beanDefinition)
+                    new RuntimeBeanReference(GROOVY_PAGE_LAYOUT_FINDER_BEAN_NAME, false))
+            registry.registerBeanDefinition('sitemeshLayoutViewResolver', beanDefinition)
         }
     }
 
