@@ -17,14 +17,10 @@ package org.grails.plugins.web
 
 import groovy.transform.CompileStatic
 import org.springframework.core.Ordered
-import org.springframework.util.ClassUtils
-import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 import grails.config.Config
-import grails.config.Settings
 import grails.core.gsp.GrailsTagLibClass
 import grails.plugins.Plugin
-import grails.util.Environment
 import grails.util.GrailsUtil
 import grails.web.pages.GroovyPagesUriService
 import org.grails.core.artefact.gsp.TagLibArtefactHandler
@@ -42,8 +38,6 @@ import org.grails.plugins.web.taglib.ValidationTagLib
 import org.grails.taglib.TagLibraryLookup
 import org.grails.taglib.TagLibraryMetaUtils
 import org.grails.web.pages.FilteringCodecsByContentTypeSettings
-import org.grails.web.servlet.view.GroovyPageViewResolver
-import org.grails.web.util.GrailsApplicationAttributes
 
 /**
  * Sets up and configures the GSP and GSP tag library support in Grails.
@@ -88,24 +82,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
         { ->
             def application = grailsApplication
             Config config = application.config
-            Environment env = Environment.current
-            boolean developmentMode = env.isDevelopmentEnvironmentAvailable()
-            boolean enableGspReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean, false)
-            boolean enableReload = env.isReloadEnabled() || enableGspReload || (developmentMode && env == Environment.DEVELOPMENT)
             boolean enableLayoutViewResolver = config.getProperty(GSP_VIEW_LAYOUT_RESOLVER_ENABLED, Boolean, true)
-            long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L)
-
-            boolean jstlPresent = ClassUtils.isPresent("jakarta.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.getClassLoader())
-
-            abstractViewResolver {
-                prefix = GrailsApplicationAttributes.PATH_TO_VIEWS
-                suffix = jstlPresent ? GroovyPageViewResolver.JSP_SUFFIX : GroovyPageViewResolver.GSP_SUFFIX
-                templateEngine = ref('groovyPagesTemplateEngine')
-                groovyPageLocator = ref('groovyPageLocator')
-                if (enableReload) {
-                    cacheTimeout = gspCacheTimeout
-                }
-            }
 
             // "grails.gsp.view.layoutViewResolver=false" can be used to disable GrailsLayoutViewResolver
             // containsKey check must be made to check existence of boolean false values in ConfigObject
