@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@ package org.grails.compiler.injection
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.codehaus.groovy.ast.AnnotationNode
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
-import org.codehaus.groovy.ast.expr.ClassExpression
 import org.codehaus.groovy.ast.stmt.Statement
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.SourceUnit
@@ -52,21 +50,10 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.stmt
 class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     public static final String EXCLUDE_MEMBER = 'exclude'
-    public static final List<String> EXCLUDED_AUTO_CONFIGURE_CLASSES = new ArrayList<>()
 
     ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
     private static final List<Integer> TRANSFORMED_INSTANCES = []
-
-    static {
-        ClassLoader classLoader = GrailsASTUtils.getClassLoader()
-        if (ClassUtils.isPresent('org.grails.plugins.datasource.DataSourceConnectionSourcesFactoryBean', classLoader)) {
-            EXCLUDED_AUTO_CONFIGURE_CLASSES.add('org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration')
-        }
-        if (ClassUtils.isPresent('org.grails.orm.hibernate.HibernateDatastore', classLoader)) {
-            EXCLUDED_AUTO_CONFIGURE_CLASSES.add('org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration')
-        }
-    }
 
     @Override
     String[] getArtefactTypes() {
@@ -99,16 +86,8 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
                 ClassLoader classLoader = getClass().classLoader
                 if (ClassUtils.isPresent('org.springframework.boot.autoconfigure.SpringBootApplication', classLoader)) {
-                    AnnotationNode springBootApplicationAnnotation = GrailsASTUtils.addAnnotationOrGetExisting(classNode,
+                    GrailsASTUtils.addAnnotationOrGetExisting(classNode,
                             ClassHelper.make(classLoader.loadClass('org.springframework.boot.autoconfigure.SpringBootApplication')))
-
-                    for (autoConfigureClassName in EXCLUDED_AUTO_CONFIGURE_CLASSES) {
-                        if (ClassUtils.isPresent(autoConfigureClassName, classLoader)) {
-                            ClassExpression autoConfigClassExpression =
-                                    new ClassExpression(ClassHelper.make(classLoader.loadClass(autoConfigureClassName)))
-                            GrailsASTUtils.addExpressionToAnnotationMember(springBootApplicationAnnotation, EXCLUDE_MEMBER, autoConfigClassExpression)
-                        }
-                    }
                 }
             }
         }
