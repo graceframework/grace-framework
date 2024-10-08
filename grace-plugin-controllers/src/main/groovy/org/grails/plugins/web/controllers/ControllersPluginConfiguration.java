@@ -132,7 +132,7 @@ public class ControllersPluginConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(HiddenHttpMethodFilter.class)
-    @ConditionalOnProperty(prefix = "grails.web.hiddenmethod.filter", name = "enabled", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "grails.web.hiddenmethod.filter", name = "enabled", havingValue = "true", matchIfMissing = true)
     public OrderedHiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new OrderedHiddenHttpMethodFilter();
     }
