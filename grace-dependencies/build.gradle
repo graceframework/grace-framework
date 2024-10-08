@@ -28,12 +28,12 @@ publishing {
                             delegate.artifactId "async"
                             delegate.version libs.versions.grace.async.get()
                             delegate.scope "compile"
-                            delegate.exclusions {
-                                delegate.exclusion {
-                                    delegate.groupId 'javax'
-                                    delegate.artifactId 'javaee-web-api'
-                                }
-                            }
+                        }
+                        delegate.dependency {
+                            delegate.groupId "org.graceframework.plugins"
+                            delegate.artifactId "events"
+                            delegate.version libs.versions.grace.async.get()
+                            delegate.scope "compile"
                         }
                         delegate.dependency {
                             delegate.groupId "com.h2database"
