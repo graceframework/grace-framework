@@ -17,6 +17,7 @@ class HibernateSpecSpec extends HibernateSpec {
     void "test hibernate spec"() {
         expect:
         hibernateDatastore.connectionSources.defaultConnectionSource.settings.dataSource.dbCreate == 'create-drop'
+        hibernateDatastore.connectionSources.defaultConnectionSource.settings.dataSource.url == 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000'
         hibernateDatastore.connectionSources.defaultConnectionSource.settings.dataSource.logSql == true
         Book.count() == 1
         !new Book().validate()

@@ -23,7 +23,6 @@ import grails.config.Config
 
 import org.grails.config.PropertySourcesConfig
 import org.grails.orm.hibernate.HibernateDatastore
-import org.grails.orm.hibernate.cfg.Settings
 
 /**
  * Specification for Hibernate tests
@@ -94,7 +93,7 @@ abstract class HibernateSpec extends Specification {
      * @return The configuration
      */
     Map getConfiguration() {
-        Collections.singletonMap(Settings.SETTING_DB_CREATE, "create-drop")
+        Map.of('dataSource.dbCreate', "create-drop", 'dataSource.url', 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000')
     }
 
     /**

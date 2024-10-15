@@ -6,7 +6,7 @@ import org.grails.datastore.mapping.config.Settings
 class HibernateSpecOverrideSpec extends HibernateSpec {
     @Override
     Map getConfiguration() {
-        [(Settings.SETTING_FAIL_ON_ERROR): true]
+        [(Settings.SETTING_FAIL_ON_ERROR): true, 'dataSource.url': 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000']
     }
 
     void "Configuration Overrides values in application.yml/groovy"() {
