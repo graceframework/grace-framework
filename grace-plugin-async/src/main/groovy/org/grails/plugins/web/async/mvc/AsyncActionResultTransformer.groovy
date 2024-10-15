@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,23 +37,27 @@ import jakarta.servlet.http.HttpServletResponse
  * Handles an Async response from a controller
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
 class AsyncActionResultTransformer implements ActionResultTransformer {
 
-
     private GrailsExceptionResolver exceptionResolver
 
+    void setExceptionResolver(GrailsExceptionResolver exceptionResolver) {
+        this.exceptionResolver = exceptionResolver
+    }
+
+    @Override
     Object transformActionResult(GrailsWebRequest webRequest, String viewName, Object actionResult) {
         if (actionResult instanceof Promise) {
-
-            final request = webRequest.getCurrentRequest()
+            HttpServletRequest request = webRequest.getCurrentRequest()
             WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request)
-            final response = webRequest.getResponse()
+            HttpServletResponse response = webRequest.getResponse()
 
             AsyncGrailsWebRequest asyncWebRequest
-            if(asyncManager.isConcurrentHandlingStarted()) {
+            if (asyncManager.isConcurrentHandlingStarted()) {
                 asyncWebRequest = AsyncGrailsWebRequest.lookup(request)
                 if(asyncWebRequest == null) {
                     throw new IllegalStateException("Concurrency handling already started by another process")
