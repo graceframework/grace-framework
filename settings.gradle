@@ -23,7 +23,6 @@ include (
         'grace-util',
         'grace-web',
         'grace-web-common',
-        'grace-web-boot',
         'grace-web-databinding',
         'grace-web-gsp',
         'grace-web-gsp-taglib',
