@@ -38,7 +38,7 @@ configurations {
 }
 
 dependencies {
-	api "org.graceframework:grace-core"
+	compileOnly "org.graceframework:grace-core"
     api "org.gebish:geb-spock:$gebSpock", {
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
     }
