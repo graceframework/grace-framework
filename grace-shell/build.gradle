@@ -12,8 +12,13 @@ ext {
 }
 
 configurations {
+    shellOnly
     dependenciesBom
+    compileClasspath {
+        extendsFrom shellOnly
+    }
     runtimeClasspath {
+        extendsFrom shellOnly
         exclude group: 'org.springframework', module: 'spring-aop'
         exclude group: 'org.springframework', module: 'spring-expression'
         exclude group: 'org.springframework', module: 'spring-jcl'
@@ -30,7 +35,7 @@ dependencies {
     api project(":grace-util")
 
     api libs.ant
-    api libs.gradle.tooling.api
+    shellOnly libs.gradle.tooling.api
     api libs.groovy.ant, {
         exclude group: "org.apache.ant", module: "ant-antlr"
         exclude group: "org.apache.ant", module: "ant-junit"
