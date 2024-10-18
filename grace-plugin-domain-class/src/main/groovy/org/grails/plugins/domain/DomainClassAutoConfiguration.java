@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 import grails.core.GrailsApplication;
 import org.grails.datastore.gorm.validation.constraints.eval.ConstraintsEvaluator;
@@ -57,6 +58,7 @@ public class DomainClassAutoConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public ConstraintsEvaluator validateableConstraintsEvaluator(
             ObjectProvider<GrailsApplication> grailsApplication,
