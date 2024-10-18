@@ -51,6 +51,7 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
+import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Feature
@@ -90,8 +91,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String INPLACE_FLAG = 'inplace'
     public static final String FORCE_FLAG = 'force'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
+    public static final String BOOT_VERSION_FLAG = 'boot-version'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
+    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.1', '3.2', '3.3', '3.4']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -118,6 +121,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: QUIET_ARGUMENT, description: 'Suppress status output', required: false)
         description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
         description.flag(name: GRACE_VERSION_FLAG, description: 'Specific Grace Version', required: false)
+        description.flag(name: BOOT_VERSION_FLAG, description: 'Specific Spring Boot Version', required: false)
         description.flag(name: FORCE_FLAG, description: 'Force overwrite of existing files', required: false)
     }
 
@@ -199,7 +203,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
                                    CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
-                                   STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT, GRACE_VERSION_FLAG, FORCE_FLAG]
+                                   STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT,
+                                   GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, FORCE_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
@@ -214,8 +219,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
+        String springBootVersion = new GrailsDependenciesDependencyManagement().springBootVersion
         String grailsVersion = GrailsVersion.current().version
         String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG)
+        String specificBootVersion = commandLine.optionValue(BOOT_VERSION_FLAG)
         boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
         String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
 
@@ -227,6 +234,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
                 grailsVersion: specificGraceVersion ?: grailsVersion,
+                springBootVersion: specificBootVersion ?: springBootVersion,
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
@@ -370,6 +378,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
         else {
             replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
+        }
+
+        if (cmd.springBootVersion) {
+            updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
         }
 
         String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
@@ -992,6 +1004,75 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
+    @CompileDynamic
+    protected void updateSpringDependencies(GrailsConsoleAntBuilder ant, String grailsVersion, String springBootVersion, File targetDirectory) {
+        if (!grailsVersion.startsWith('2023') ||
+                !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
+            // Currently already upgraded to Spring Boot 3.1.12
+            return
+        }
+
+        String currentSpringBootVersion = new GrailsDependenciesDependencyManagement().springBootVersion
+        boolean isCurrentSpringBootVersion = springBootVersion == currentSpringBootVersion
+        boolean isMilestoneVersion = springBootVersion.contains('M') || springBootVersion.contains('RC')
+        boolean isSnapshotVersion = springBootVersion.contains('SNAPSHOT')
+
+        if (isCurrentSpringBootVersion) {
+            ant.sequential {
+                replace(file: 'build.gradle') {
+                    replacetoken 'group '
+                    replacevalue """ext['spring-framework.version'] = '6.0.23'
+
+group """
+                }
+            }
+            return
+        }
+
+        ant.sequential {
+            replace(file: 'buildSrc/build.gradle') {
+                replacetoken 'dependencies {'
+                replacevalue """dependencies {
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion\""""
+            }
+
+            replace(file: 'build.gradle') {
+                replacetoken 'group '
+                replacevalue """ext['spring-boot.version'] = '$springBootVersion'
+
+group """
+            }
+
+            if (isMilestoneVersion) {
+                replace(file: 'buildSrc/build.gradle') {
+                    replacetoken 'mavenCentral()'
+                    replacevalue '''mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }'''
+                }
+                replace(file: 'build.gradle') {
+                    replacetoken 'mavenCentral()'
+                    replacevalue '''mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }'''
+                }
+            }
+            else if (isSnapshotVersion) {
+                replace(file: 'buildSrc/build.gradle') {
+                    replacetoken 'mavenCentral()'
+                    replacevalue '''mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }'''
+                }
+                replace(file: 'build.gradle') {
+                    replacetoken 'mavenCentral()'
+                    replacevalue '''mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }'''
+                }
+            }
+        }
+
+    }
+
     protected File getDestinationDirectory(File srcFile, File targetDirectory) {
         String searchDir = 'skeleton'
         File srcDir = srcFile.parentFile
@@ -1323,6 +1404,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         File baseDir
         String profileName
         String grailsVersion
+        String springBootVersion
         List<String> features
         String template
         boolean inplace = false
