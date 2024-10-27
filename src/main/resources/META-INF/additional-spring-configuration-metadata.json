@@ -1,0 +1,12 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.plugin.fields.widgetPrefix",
+      "type": "java.lang.String",
+      "description": "The default prefix of attributes.",
+      "defaultValue": "widget-"
+    }
+  ],
+  "hints": []
+}

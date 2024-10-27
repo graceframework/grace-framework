@@ -53,6 +53,9 @@ dependencies {
 	compileOnly "org.graceframework:grace-boot"
 	compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
 
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
 	documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
@@ -87,6 +90,10 @@ java {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.named('compileJava') {
+    inputs.files(tasks.named('processResources'))
 }
 
 publishing {
