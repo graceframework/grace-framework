@@ -35,6 +35,9 @@ dependencies {
     compileOnly "org.graceframework:grace-boot:$graceVersion"
     api project(":views-core")
 
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     api "org.graceframework:grace-datastore-gorm:$gormVersion"
     testImplementation "org.graceframework:grace-test-support:$graceVersion"
     testImplementation project(":views-json-testing-support")
