@@ -64,8 +64,9 @@ dependencies {
 	api "org.graceframework:grace-core:$graceVersion"
 	api "org.graceframework:grace-web-gsp:$graceVersion"
     api 'com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2'
-    implementation("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+    api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
     compileOnly "org.graceframework:grace-boot:$graceVersion"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"

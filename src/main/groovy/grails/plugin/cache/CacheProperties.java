@@ -37,7 +37,7 @@ public class CacheProperties {
     private Map<String, CacheConfig> caches = new HashMap<>();
 
     public Boolean getEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     public void setEnabled(Boolean enabled) {
@@ -45,7 +45,7 @@ public class CacheProperties {
     }
 
     public Boolean getClearAtStartup() {
-        return clearAtStartup;
+        return this.clearAtStartup;
     }
 
     public void setClearAtStartup(Boolean clearAtStartup) {
@@ -53,7 +53,7 @@ public class CacheProperties {
     }
 
     public String getCacheManager() {
-        return cacheManager;
+        return this.cacheManager;
     }
 
     public void setCacheManager(String cacheManager) {
@@ -61,7 +61,7 @@ public class CacheProperties {
     }
 
     public Map<String, CacheConfig> getCaches() {
-        return caches;
+        return this.caches;
     }
 
     public void setCaches(Map<String, CacheConfig> caches) {
@@ -76,7 +76,7 @@ public class CacheProperties {
         private Integer maxCapacity;
 
         public Integer getMaxCapacity() {
-            return maxCapacity;
+            return this.maxCapacity;
         }
 
         public void setMaxCapacity(Integer maxCapacity) {
