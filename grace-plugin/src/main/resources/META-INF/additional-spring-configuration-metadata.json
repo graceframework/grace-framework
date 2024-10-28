@@ -1,0 +1,47 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.hibernate.cache.queries",
+      "type": "java.lang.Boolean",
+      "description": "Wheather to enable caching queries.",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.hibernate.osiv.readonly",
+      "type": "java.lang.Boolean",
+      "description": "",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.hibernate.pass.readonly",
+      "type": "java.lang.Boolean",
+      "description": "",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.blacklistPattern",
+      "type": "java.lang.String",
+      "description": "The pattern of transaction manager bean names to deny to register."
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.whitelistPattern",
+      "type": "java.lang.String",
+      "description": "The pattern of transaction manager bean names to allow to register.",
+      "defaultValue": "(?i).*transactionManager(_.+)?"
+    },
+    {
+      "name": "grails.transaction.chainedTransactionManager.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Wheather to enable chained transaction management.",
+      "defaultValue": false
+    },
+    {
+      "name": "hibernate.osiv.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Register OpenSessionInViewInterceptor that binds a Hibernate Session to the thread for the entire processing of the request.",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}

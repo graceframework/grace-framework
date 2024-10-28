@@ -4,7 +4,9 @@ dependencies {
     documentation ("org.graceframework:grace-spring:$graceVersion")
     documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
 
-    implementation("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
     compileOnly("org.graceframework:grace-boot:$graceVersion")
     compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
     compileOnly "org.graceframework:grace-core:$graceVersion", {
