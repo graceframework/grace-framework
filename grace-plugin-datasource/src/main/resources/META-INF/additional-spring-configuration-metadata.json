@@ -1,0 +1,201 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "environments.development.dataSource.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.development.dataSource.driverClassName",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.development.dataSource.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.development.dataSource.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.development.dataSource.logSql",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "environments.development.dataSource.dbCreate",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.development.dataSource.pooled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.development.dataSource.jmxExport",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.development.dataSource.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "name": "environments.test.dataSource.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.test.dataSource.driverClassName",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.test.dataSource.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.test.dataSource.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.test.dataSource.logSql",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "environments.test.dataSource.dbCreate",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.test.dataSource.pooled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.test.dataSource.jmxExport",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.test.dataSource.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "name": "environments.production.dataSource.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.production.dataSource.driverClassName",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.production.dataSource.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.production.dataSource.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.production.dataSource.logSql",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "environments.production.dataSource.dbCreate",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "environments.production.dataSource.pooled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.production.dataSource.jmxExport",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "environments.production.dataSource.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "name": "dataSources.default.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSources.default.driverClassName",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSources.default.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSources.default.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSources.default.logSql",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "dataSources.default.dbCreate",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSources.default.pooled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "dataSources.default.jmxExport",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "dataSources.default.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    },
+    {
+      "name": "dataSource.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSource.driverClassName",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSource.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSource.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSource.logSql",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "dataSource.dbCreate",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "dataSource.pooled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "dataSource.jmxExport",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "dataSource.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>"
+    }
+  ],
+  "hints": []
+}

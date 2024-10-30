@@ -10,6 +10,8 @@ dependencies {
     api libs.spring.context
     api libs.spring.jdbc
     implementation libs.tomcat.jdbc
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation libs.assertj.core
     testImplementation libs.h2
