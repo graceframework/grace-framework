@@ -10,6 +10,8 @@ dependencies {
     api libs.spring.boot.autoconfigure
     api libs.spring.context
     api libs.spring.core
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-test")
     testImplementation libs.assertj.core

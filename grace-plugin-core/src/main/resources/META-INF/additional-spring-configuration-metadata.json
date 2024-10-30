@@ -1,0 +1,21 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.spring.disable.aspectj.autoweaving",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.spring.placeholder.prefix",
+      "type": "java.lang.String",
+      "defaultValue": ""
+    },
+    {
+      "name": "grails.spring.transactionManagement.proxies",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

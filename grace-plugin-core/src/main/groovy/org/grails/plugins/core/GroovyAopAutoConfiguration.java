@@ -19,7 +19,6 @@ import org.aopalliance.aop.Advice;
 import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -40,7 +39,6 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  * @since 2023.1
  */
 @AutoConfiguration(before = AopAutoConfiguration.class)
-@AutoConfigureOrder
 public class GroovyAopAutoConfiguration {
 
     private static final String SPRING_PROXY_TARGET_CLASS_CONFIG = "spring.aop.proxy-target-class";
