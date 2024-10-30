@@ -23,12 +23,12 @@ import java.util.Map;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -75,7 +75,7 @@ import org.grails.web.util.GrailsApplicationAttributes;
  * @since 2022.2.3
  */
 @AutoConfiguration
-@AutoConfigureOrder
+@EnableConfigurationProperties(GroovyPagesProperties.class)
 public class GroovyPagesAutoConfiguration {
 
     private static final String GSP_RELOAD_INTERVAL = "grails.gsp.reload.interval";
@@ -85,12 +85,13 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GroovyPageResourceLoader groovyPageResourceLoader(ObjectProvider<GrailsApplication> grailsApplication) throws Exception {
+    public GroovyPageResourceLoader groovyPageResourceLoader(GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication) throws Exception {
         Config config = grailsApplication.getIfAvailable().getConfig();
-        String viewsDir = config.getProperty(GSP_VIEWS_DIR, "");
+        String viewsDir = config.getProperty(GSP_VIEWS_DIR, groovyPagesProperties.getDir());
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
         boolean warDeployed = Environment.isWarDeployed();
         boolean warDeployedWithReload = warDeployed && enableReload;
@@ -113,15 +114,17 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CachingGrailsConventionGroovyPageLocator groovyPageLocator(ObjectProvider<GrailsApplication> grailsApplication,
+    public CachingGrailsConventionGroovyPageLocator groovyPageLocator(GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication,
             GroovyPageResourceLoader groovyPageResourceLoader) {
 
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
-        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class,
+                (developmentMode && env == Environment.DEVELOPMENT) ? 0L : groovyPagesProperties.getReload().getInterval());
 
         ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -159,13 +162,14 @@ public class GroovyPagesAutoConfiguration {
     @Order(-20)
     @Primary
     @ConditionalOnMissingBean
-    public ResourceLocator grailsResourceLocator(ObjectProvider<GrailsApplication> grailsApplication) {
+    public ResourceLocator grailsResourceLocator(GroovyPagesProperties groovyPagesProperties, ObjectProvider<GrailsApplication> grailsApplication) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
-        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class, (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+        long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class,
+                (developmentMode && env == Environment.DEVELOPMENT) ? 0L : groovyPagesProperties.getReload().getInterval());
 
         CachingGroovyPageStaticResourceLocator groovyPageStaticResourceLocator = new CachingGroovyPageStaticResourceLocator();
 
@@ -209,26 +213,30 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(name = "org.grails.gsp.jsp.TagLibraryResolverImpl")
-    public TagLibraryResolver jspTagLibraryResolver(ObjectProvider<GrailsApplication> grailsApplication) {
+    public TagLibraryResolver jspTagLibraryResolver(GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication) {
         TagLibraryResolverImpl tagLibraryResolver = new TagLibraryResolverImpl();
         grailsApplication.ifAvailable(tagLibraryResolver::setGrailsApplication);
+        tagLibraryResolver.setTldScanPatterns(grailsApplication.getObject().getConfig().getProperty("grails.gsp.tldScanPattern", String[].class,
+                groovyPagesProperties.getTldScanPatterns().toArray(new String[0])));
         return tagLibraryResolver;
     }
 
     @Bean
     @Order(0)
     @ConditionalOnMissingBean
-    public GroovyPageViewResolver jspViewResolver(ObjectProvider<GrailsApplication> grailsApplication,
+    public GroovyPageViewResolver jspViewResolver(GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication,
             CachingGrailsConventionGroovyPageLocator groovyPageLocator,
             GroovyPagesTemplateEngine groovyPagesTemplateEngine) {
 
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
         long gspCacheTimeout = config.getProperty(GSP_RELOAD_INTERVAL, Long.class,
-                (developmentMode && env == Environment.DEVELOPMENT) ? 0L : 5000L);
+                (developmentMode && env == Environment.DEVELOPMENT) ? 0L : groovyPagesProperties.getReload().getInterval());
 
         boolean jstlPresent = ClassUtils.isPresent("jakarta.servlet.jsp.jstl.core.Config", getClass().getClassLoader());
 
@@ -255,16 +263,18 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean({"groovyTemplateEngine", "groovyPagesTemplateEngine"})
     @ConditionalOnMissingBean
-    public GroovyPagesTemplateEngine groovyPagesTemplateEngine(ObjectProvider<GrailsApplication> grailsApplication,
+    public GroovyPagesTemplateEngine groovyPagesTemplateEngine(
+            GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication,
             ObjectProvider<TagLibraryLookup> gspTagLibraryLookup,
             ObjectProvider<TagLibraryResolver> jspTagLibraryResolver,
             ObjectProvider<GroovyPageLocator> groovyPageLocator) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
-        boolean enableCacheResources = !config.getProperty(Settings.GSP_DISABLE_CACHING_RESOURCES, Boolean.class, false);
+        boolean enableCacheResources = config.getProperty(Settings.GSP_DISABLE_CACHING_RESOURCES, Boolean.class, groovyPagesProperties.getCache().isEnabled());
 
         GroovyPagesTemplateEngine groovyPagesTemplateEngine = new GroovyPagesTemplateEngine();
 
@@ -298,12 +308,13 @@ public class GroovyPagesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GroovyPageLayoutFinder groovyPageLayoutFinder(ObjectProvider<GrailsApplication> grailsApplication,
+    public GroovyPageLayoutFinder groovyPageLayoutFinder(GroovyPagesProperties groovyPagesProperties,
+            ObjectProvider<GrailsApplication> grailsApplication,
             ObjectProvider<GroovyPageViewResolver> jspViewResolver) {
         Config config = grailsApplication.getIfAvailable().getConfig();
         Environment env = Environment.getCurrent();
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
-        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, false);
+        boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
         String defaultDecoratorName = config.getProperty(SITEMESH_DEFAULT_LAYOUT, "application");
         Boolean sitemeshEnableNonGspViews = config.getProperty(SITEMESH_ENABLE_NONGSP, Boolean.class, false);
@@ -324,7 +335,7 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "grails.gsp.view.layoutViewResolver", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "grails.views.gsp.layout", name = "enabled", havingValue = "true", matchIfMissing = true)
     public GrailsLayoutViewResolverPostProcessor grailsLayoutViewResolverPostProcessor() {
         return new GrailsLayoutViewResolverPostProcessor();
     }

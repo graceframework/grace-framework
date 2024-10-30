@@ -10,6 +10,8 @@ dependencies {
     api project(":grace-web-gsp-taglib")
     runtimeOnly(project(":grace-web-jsp"))
     api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-plugin-codecs")
     testImplementation project(":grace-plugin-domain-class")
