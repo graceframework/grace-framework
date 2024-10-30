@@ -8,6 +8,8 @@ dependencies {
     api libs.commons.lang3
     api libs.grails.datastore.core
     api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-test")
     testImplementation(libs.spring.jdbc) {
