@@ -15,6 +15,10 @@ dependencies {
         transitive = false
     }
 
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
     testImplementation libs.json.unit
     testRuntimeOnly libs.gson
 }
