@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import grails.core.GrailsApplication;
@@ -50,7 +51,7 @@ import org.grails.web.databinding.bindingsource.XmlDataBindingSourceCreator;
  * @since 2022.0.0
  */
 @AutoConfiguration
-@AutoConfigureOrder
+@AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
 @EnableConfigurationProperties(DataBindingConfigurationProperties.class)
 @ImportAutoConfiguration(DefaultConvertersConfiguration.class)
 public class DataBindingConfiguration {
