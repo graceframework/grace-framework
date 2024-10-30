@@ -8,5 +8,6 @@ dependencies {
 
     api libs.groovy.ant
     api libs.spring.boot.autoconfigure
-    annotationProcessor(libs.spring.boot.configurationProcessor)
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 }
