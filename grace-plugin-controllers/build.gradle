@@ -9,6 +9,8 @@ dependencies {
     api project(":grace-web")
 
     api(libs.spring.boot.autoconfigure)
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-test")
 }

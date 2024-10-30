@@ -1,0 +1,42 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.controllers.defaultScope",
+      "type": "java.lang.String",
+      "defaultValue": "singleton"
+    },
+    {
+      "name": "grails.controllers.upload.fileSizeThreshold",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "grails.controllers.upload.location",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "grails.controllers.upload.maxFileSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "grails.controllers.upload.maxRequestSize",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "grails.resources.cachePeriod",
+      "type": "java.lang.Integer",
+      "defaultValue": 0
+    },
+    {
+      "name": "grails.resources.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "grails.resources.pattern",
+      "type": "java.lang.String",
+      "defaultValue": "\/static\/**"
+    }
+  ],
+  "hints": []
+}
