@@ -124,7 +124,11 @@ class WebSetupSpecInterceptor implements IMethodInterceptor {
                 def lazyBean = { bean ->
                     bean.lazyInit = true
                 }
-                jspTagLibraryResolver(TagLibraryResolverImpl, lazyBean)
+                jspTagLibraryResolver(TagLibraryResolverImpl) { bean ->
+                    bean.lazyInit = true
+                    grailsApplication = application
+                    tldScanPatterns = config.getProperty('grails.gsp.tldScanPattern', String[]) ?: (config.getProperty('grails.views.gsp.tldScanPatterns', String[]) ?: config.getProperty('grails.views.gsp.tld-scan-patterns', String[]))
+                }
                 gspTagLibraryLookup(LazyTagLibraryLookup, lazyBean)
                 groovyPageUnitTestResourceLoader(GroovyPageUnitTestResourceLoader, groovyPages)
                 groovyPageLocator(GrailsConventionGroovyPageLocator) {

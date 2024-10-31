@@ -214,11 +214,14 @@ public class GroovyPagesAutoConfiguration {
     @Bean
     @ConditionalOnClass(name = "org.grails.gsp.jsp.TagLibraryResolverImpl")
     public TagLibraryResolver jspTagLibraryResolver(GroovyPagesProperties groovyPagesProperties,
-            ObjectProvider<GrailsApplication> grailsApplication) {
+            ObjectProvider<GrailsApplication> grailsApplicationObjectProvider) {
         TagLibraryResolverImpl tagLibraryResolver = new TagLibraryResolverImpl();
-        grailsApplication.ifAvailable(tagLibraryResolver::setGrailsApplication);
-        tagLibraryResolver.setTldScanPatterns(grailsApplication.getObject().getConfig().getProperty("grails.gsp.tldScanPattern", String[].class,
-                groovyPagesProperties.getTldScanPatterns().toArray(new String[0])));
+        grailsApplicationObjectProvider.ifAvailable(grailsApplication -> {
+            tagLibraryResolver.setGrailsApplication(grailsApplication);
+            tagLibraryResolver.setTldScanPatterns(grailsApplication.getConfig().getProperty("grails.gsp.tldScanPattern", String[].class,
+                    groovyPagesProperties.getTldScanPatterns().toArray(new String[0])));
+        });
+
         return tagLibraryResolver;
     }
 
