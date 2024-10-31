@@ -15,6 +15,7 @@ dependencies {
 
     testImplementation project(":grace-test")
     testImplementation libs.assertj.core
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt

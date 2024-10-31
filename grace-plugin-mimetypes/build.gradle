@@ -4,9 +4,11 @@ dependencies {
     api project(":grace-plugin-api")
     api project(":grace-web")
 
+    compileOnly libs.jakarta.servlet
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")
 }

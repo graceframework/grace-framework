@@ -6,11 +6,12 @@ dependencies {
 
     api(libs.grails.datastore.gorm.validation)
 
-    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet
     implementation libs.caffeine
     compileOnly libs.jansi
     compileOnly libs.jline
 
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test-suite-base")
 }
 

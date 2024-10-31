@@ -7,7 +7,8 @@ dependencies {
         transitive = false
     }
 
-    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet
 
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
 }

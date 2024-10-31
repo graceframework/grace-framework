@@ -9,7 +9,7 @@ dependencies {
 
     api libs.jakarta.annotation.api
     api libs.jakarta.inject
-    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.boot.autoconfigure

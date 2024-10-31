@@ -7,12 +7,13 @@ dependencies {
 
     api project(":grace-gsp")
 
-    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet
     api libs.groovy.templates
     api libs.spring.contextSupport
     api libs.spring.webmvc
     compileOnly libs.jsr305
     implementation libs.caffeine
 
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")
 }

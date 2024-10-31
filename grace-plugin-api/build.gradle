@@ -11,6 +11,7 @@ dependencies {
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")
     testImplementation(libs.spring.jdbc) {
         exclude group: 'commons-logging', module:'commons-logging'

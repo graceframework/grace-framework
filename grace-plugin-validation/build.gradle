@@ -6,5 +6,6 @@ dependencies {
     }
 
     testImplementation project(":grace-web-common")
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
 }

@@ -14,6 +14,7 @@ dependencies {
     api libs.spring.tx
 
     testImplementation project(":grace-test")
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test
     testImplementation libs.jakarta.persistence.api

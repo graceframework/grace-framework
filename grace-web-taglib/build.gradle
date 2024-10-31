@@ -3,6 +3,7 @@ dependencies {
     api project(":grace-web-common")
     api project(":grace-taglib")
 
-    testRuntimeOnly project(":grace-spring")
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
+    testRuntimeOnly project(":grace-spring")
 }

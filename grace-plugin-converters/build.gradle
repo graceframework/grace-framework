@@ -8,6 +8,7 @@ dependencies {
     api project(":grace-web-common")
 
     api libs.commons.lang3
+    compileOnly libs.jakarta.servlet
     compileOnly(libs.grails.datastore.core) {
         transitive = false
     }
@@ -19,6 +20,7 @@ dependencies {
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
 
+    testImplementation libs.jakarta.servlet
     testImplementation libs.json.unit
     testRuntimeOnly libs.gson
 }

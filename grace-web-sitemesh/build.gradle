@@ -1,7 +1,10 @@
 dependencies {
-    api libs.jakarta.servlet
-    api libs.sitemesh
+    compileOnly libs.jakarta.servlet
+    api libs.sitemesh, {
+        exclude module: 'jakarta.servlet-api'
+    }
     api project(":grace-web-common")
 
+    testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
 }

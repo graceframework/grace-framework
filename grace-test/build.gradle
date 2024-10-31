@@ -6,6 +6,7 @@ dependencies {
 
     api libs.ant
     api libs.ant.junit
+    compileOnly libs.jakarta.servlet
     api libs.jansi
     api libs.jline
     api libs.junit.platform.runner

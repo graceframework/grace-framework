@@ -5,7 +5,7 @@ dependencies {
     api project(":grace-cli")
     api project(":grace-core")
 
-    api libs.jakarta.servlet, optional
+    compileOnly libs.jakarta.servlet
     api libs.groovy.console
     api libs.groovy.groovysh
     api libs.groovy.swing

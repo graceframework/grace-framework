@@ -8,6 +8,7 @@ dependencies {
     api project(":grace-web-url-mappings")
     api project(":grace-util")
 
+    compileOnly libs.jakarta.servlet
     api libs.jakarta.xml.bind.api
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
@@ -25,6 +26,7 @@ dependencies {
     }
     implementation libs.caffeine
 
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-plugin-url-mappings")
     testImplementation project(":grace-test-suite-base")
 }

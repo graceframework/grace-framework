@@ -17,6 +17,8 @@ dependencies {
         exclude group:'org.graceframework', module:'grace-web-common'
     }
 
-    api libs.jakarta.servlet
+    compileOnly libs.jakarta.servlet
+
+    testImplementation libs.jakarta.servlet
     testImplementation project(":grace-test")
 }
