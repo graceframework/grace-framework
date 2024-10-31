@@ -3,10 +3,8 @@ dependencies {
     api project(":grace-util")
     api project(":grace-web-common")
 
-    api libs.grails.datastore.core, {
-        transitive = false
-    }
-
+    compileOnly libs.grails.datastore.core
+    compileOnly libs.jakarta.annotation.api
     compileOnly libs.jakarta.servlet
 
     testImplementation libs.jakarta.servlet

@@ -1,4 +1,5 @@
 dependencies {
+    compileOnly libs.jakarta.annotation.api
     compileOnly libs.jakarta.servlet
     api project(":grace-web-common")
     api project(":grace-taglib")

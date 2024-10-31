@@ -5,8 +5,10 @@ dependencies {
     api project(":grace-spring")
     api project(":grace-util")
 
-    api libs.jakarta.persistence.api
-    api libs.grails.datastore.core
+    compileOnly libs.jakarta.persistence.api
+    api libs.grails.datastore.core, {
+        transitive = false
+    }
     api libs.spring.beans
     api libs.spring.boot
     api libs.spring.context
