@@ -1,0 +1,15 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.mime.disable.accept.header.userAgents",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "name": "grails.mime.disable.accept.header.userAgentsXhr",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

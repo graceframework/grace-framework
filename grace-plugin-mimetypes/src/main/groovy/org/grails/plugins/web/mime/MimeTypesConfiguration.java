@@ -25,6 +25,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 
 import grails.config.Config;
 import grails.config.Settings;
@@ -45,7 +46,7 @@ import org.grails.web.mime.DefaultMimeUtility;
  * @since 4.0
  */
 @AutoConfiguration
-@AutoConfigureOrder
+@AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
 public class MimeTypesConfiguration {
 
     private final GrailsApplication grailsApplication;
