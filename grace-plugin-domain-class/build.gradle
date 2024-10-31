@@ -9,6 +9,9 @@ dependencies {
     api(libs.grails.datastore.gorm)
     api(libs.grails.datastore.gorm.support)
     api(libs.grails.datastore.gorm.validation)
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation libs.assertj.core
     testImplementation libs.spring.boot.test
