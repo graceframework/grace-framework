@@ -51,7 +51,6 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
-import org.grails.cli.compiler.dependencies.GrailsDependenciesDependencyManagement
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Feature
@@ -219,7 +218,6 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        String springBootVersion = new GrailsDependenciesDependencyManagement().springBootVersion
         String grailsVersion = GrailsVersion.current().version
         String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG)
         String specificBootVersion = commandLine.optionValue(BOOT_VERSION_FLAG)
@@ -234,7 +232,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
                 grailsVersion: specificGraceVersion ?: grailsVersion,
-                springBootVersion: specificBootVersion ?: springBootVersion,
+                springBootVersion: specificBootVersion,
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
@@ -380,9 +378,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
         }
 
-        if (cmd.springBootVersion) {
-            updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
-        }
+        updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
 
         String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
                 GrailsVersion.isGrace(grailsVersion) ? 'Grace' : 'Grails', grailsVersion)
@@ -1006,18 +1002,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected void updateSpringDependencies(GrailsConsoleAntBuilder ant, String grailsVersion, String springBootVersion, File targetDirectory) {
-        if (!grailsVersion.startsWith('2023') ||
-                !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
-            // Currently already upgraded to Spring Boot 3.1.12
-            return
-        }
-
-        String currentSpringBootVersion = new GrailsDependenciesDependencyManagement().springBootVersion
-        boolean isCurrentSpringBootVersion = springBootVersion == currentSpringBootVersion
-        boolean isMilestoneVersion = springBootVersion.contains('M') || springBootVersion.contains('RC')
-        boolean isSnapshotVersion = springBootVersion.contains('SNAPSHOT')
-
-        if (isCurrentSpringBootVersion) {
+        if (grailsVersion.startsWith('2023.1') && !springBootVersion) {
             ant.sequential {
                 replace(file: 'build.gradle') {
                     replacetoken 'group '
@@ -1028,6 +1013,15 @@ group """
             }
             return
         }
+
+        if (!grailsVersion.startsWith('2023.1') ||
+                !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
+            // Currently already upgraded to Spring Boot 3.1.12
+            return
+        }
+
+        boolean isMilestoneVersion = springBootVersion.contains('M') || springBootVersion.contains('RC')
+        boolean isSnapshotVersion = springBootVersion.contains('SNAPSHOT')
 
         ant.sequential {
             replace(file: 'buildSrc/build.gradle') {
@@ -1067,6 +1061,14 @@ group """
                     replacevalue '''mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
     maven { url 'https://repo.spring.io/snapshot' }'''
+                }
+            }
+
+            // This is a workaround for logback 1.5.7+
+            if (springBootVersion.startsWith('3.3') || springBootVersion.startsWith('3.4')) {
+                replace(file: 'app/conf/logback.xml') {
+                    replacetoken 'converterClass'
+                    replacevalue 'class'
                 }
             }
         }
