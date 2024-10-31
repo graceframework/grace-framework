@@ -5,7 +5,9 @@ dependencies {
     api project(":grace-encoder")
     runtimeOnly project(":grace-codecs")
 
-    api(libs.spring.boot.autoconfigure)
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 
     testImplementation project(":grace-test")
     testImplementation project(":grace-web-common")
