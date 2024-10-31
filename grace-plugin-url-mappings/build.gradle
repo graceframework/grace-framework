@@ -6,6 +6,7 @@ dependencies {
     api project(":grace-util")
     api project(":grace-web-url-mappings")
 
-    annotationProcessor libs.spring.boot.configurationProcessor
     api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
 }
