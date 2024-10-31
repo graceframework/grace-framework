@@ -10,6 +10,8 @@ dependencies {
 
     api libs.jakarta.xml.bind.api
     api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
     compileOnly(libs.grails.datastore.core) {
         transitive = false
     }
