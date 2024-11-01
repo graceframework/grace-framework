@@ -87,6 +87,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String DATABASE_FLAG = 'database'
     public static final String ENABLE_PREVIEW_FLAG = 'enable-preview'
     public static final String ENCODING = System.getProperty('file.encoding') ?: 'UTF-8'
+    public static final String MINIMAL_FLAG = 'minimal'
     public static final String INPLACE_FLAG = 'inplace'
     public static final String FORCE_FLAG = 'force'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
@@ -121,6 +122,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
         description.flag(name: GRACE_VERSION_FLAG, description: 'Specific Grace Version', required: false)
         description.flag(name: BOOT_VERSION_FLAG, description: 'Specific Spring Boot Version', required: false)
+        description.flag(name: MINIMAL_FLAG, description: 'Used to create a minimal application', required: false)
         description.flag(name: FORCE_FLAG, description: 'Force overwrite of existing files', required: false)
     }
 
@@ -203,7 +205,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
                                    CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
                                    STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT,
-                                   GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, FORCE_FLAG]
+                                   GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, MINIMAL_FLAG, FORCE_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
@@ -236,6 +238,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 features: features,
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
+                minimal: commandLine.hasOption(MINIMAL_FLAG),
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
                 verbose: commandLine.hasOption(VERBOSE_ARGUMENT),
                 quiet: commandLine.hasOption(QUIET_ARGUMENT),
@@ -336,7 +339,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        List<Feature> features = evaluateFeatures(profileInstance, cmd.features, cmd.console)
+        List<Feature> features = cmd.minimal ? [] : evaluateFeatures(profileInstance, cmd.features, cmd.console)
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
         Map<String, String> args = new HashMap<>()
@@ -379,6 +382,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
+
+        if (cmd.minimal) {
+            generateMinimalProject(ant, grailsVersion, projectTargetDirectory)
+        }
 
         String result = String.format("%s created by %s %s.", projectType == 'app' ? 'Application' : projectType.capitalize(),
                 GrailsVersion.isGrace(grailsVersion) ? 'Grace' : 'Grails', grailsVersion)
@@ -1075,6 +1082,56 @@ group """
 
     }
 
+    @CompileDynamic
+    protected void generateMinimalProject(GrailsConsoleAntBuilder ant, String grailsVersion, File targetDirectory) {
+        ant.sequential {
+            delete dir: "app/assets"
+            delete dir: "app/controllers"
+            delete dir: "app/domain"
+            delete dir: "app/i18n"
+            delete dir: "app/services"
+            delete dir: "app/taglib"
+            delete dir: "app/utils"
+            delete dir: "app/views"
+            delete dir: "db"
+            delete dir: "src/integration-test"
+            replace(file: 'build.gradle') {
+                replacetoken '    implementation "org.springframework.boot:spring-boot-starter-actuator"\n'
+                replacevalue ''
+            }
+            replace(file: 'build.gradle') {
+                replacetoken '    implementation "org.springframework.boot:spring-boot-starter-validation"\n'
+                replacevalue ''
+            }
+            replace(file: 'build.gradle') {
+                replacetoken '    implementation "org.graceframework:grace-logging"\n'
+                replacevalue ''
+            }
+            replace(file: 'build.gradle') {
+                replacetoken '    implementation "org.graceframework:grace-core"\n'
+                replacevalue ''
+            }
+            replaceregexp(match: '\\s+implementation "org.graceframework:grace-plugin-(.+)', replace: "", flags: "g") {
+                fileset(dir: ".", includes: 'build.gradle')
+            }
+            replaceregexp(match: '\\s+implementation "org.graceframework.plugins:(.+)', replace: "", flags: "g") {
+                fileset(dir: ".", includes: 'build.gradle')
+            }
+            replaceregexp(match: '^tasks((.)*\\n)*', replace: "", flags: "gm") {
+                fileset(dir: ".", includes: 'build.gradle')
+            }
+            replaceregexp(match: '^spring((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
+                fileset(dir: "app/conf", includes: 'application.yml')
+            }
+            replaceregexp(match: '^environments((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
+                fileset(dir: "app/conf", includes: 'application.yml')
+            }
+            replaceregexp(match: '^grails(.\\n\\s+)mime:((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
+                fileset(dir: "app/conf", includes: 'application.yml')
+            }
+        }
+    }
+
     protected File getDestinationDirectory(File srcFile, File targetDirectory) {
         String searchDir = 'skeleton'
         File srcDir = srcFile.parentFile
@@ -1409,6 +1466,7 @@ group """
         String springBootVersion
         List<String> features
         String template
+        boolean minimal = false
         boolean inplace = false
         boolean stacktrace = false
         boolean verbose = false
