@@ -19,11 +19,11 @@ configurations {
     }
     runtimeClasspath {
         extendsFrom shellOnly
+        // Excludes from spring-boot, not needed for Shell
         exclude group: 'org.springframework', module: 'spring-aop'
         exclude group: 'org.springframework', module: 'spring-expression'
         exclude group: 'org.springframework', module: 'spring-jcl'
         exclude group: 'org.springframework', module: 'spring-tx'
-        exclude group: 'org.springframework', module: 'spring-web'
     }
 }
 
