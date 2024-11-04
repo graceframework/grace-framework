@@ -29,6 +29,7 @@ dependencyManagement {
 }
 
 dependencies {
+    api "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
     api "org.graceframework:grace-core:$graceVersion", {
         exclude group: 'org.graceframework', module: 'grace-datastore-core'
     }
