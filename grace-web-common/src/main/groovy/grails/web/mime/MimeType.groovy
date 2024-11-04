@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.grails.web.servlet.mvc.GrailsWebRequest
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 @CompileStatic
@@ -41,6 +42,9 @@ class MimeType {
     public static final MimeType XHTML = new MimeType('application/xhtml+xml', 'html')
     public static final MimeType XML = new MimeType('application/xml', 'xml')
     public static final MimeType JSON = new MimeType('application/json', 'json')
+    public static final MimeType TEXT_PLAIN = new MimeType('text/plain', 'txt')
+    public static final MimeType TEXT_CSS = new MimeType('text/css', 'css')
+    public static final MimeType TEXT_JS = new MimeType('text/javascript', 'js')
     public static final MimeType TEXT_XML = new MimeType('text/xml', 'xml')
     public static final MimeType TEXT_JSON = new MimeType('text/json', 'json')
     public static final MimeType HAL_JSON = new MimeType('application/hal+json', 'json')
@@ -150,12 +154,18 @@ class MimeType {
      */
     static MimeType[] createDefaults() {
         def mimes = []
+        mimes << ALL
         mimes << XHTML
         mimes << HTML
         mimes << XML
         mimes << TEXT_XML
         mimes << JSON
         mimes << TEXT_JSON
+        mimes << TEXT_PLAIN
+        mimes << TEXT_CSS
+        mimes << TEXT_JS
+        mimes << FORM
+        mimes << MULTIPART_FORM
         mimes as MimeType[]
     }
 
