@@ -15,22 +15,18 @@
  */
 package org.grails.plugins.core;
 
-import org.aopalliance.aop.Advice;
+import java.lang.reflect.Field;
+import java.util.List;
+
 import org.springframework.aop.config.AopConfigUtils;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import grails.config.Config;
-import grails.core.GrailsApplication;
 import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator;
 import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator;
+import org.grails.spring.aop.autoproxy.GroovyAwareAutoProxyCreatorPostProcessor;
 
 /**
  * {@link EnableAutoConfiguration Auto-configure} for Groovy-aware AutoProxy
@@ -38,48 +34,29 @@ import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxy
  * @author Michael Yan
  * @since 2023.1
  */
-@AutoConfiguration(before = AopAutoConfiguration.class)
+@AutoConfiguration(after = AopAutoConfiguration.class)
 public class GroovyAopAutoConfiguration {
 
-    private static final String SPRING_PROXY_TARGET_CLASS_CONFIG = "spring.aop.proxy-target-class";
+    private static final String APC_PRIORITY_LIST_FIELD = "APC_PRIORITY_LIST";
 
-    @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass(Advice.class)
-    static class AspectJAutoProxyingConfiguration {
-
-        @Configuration(proxyBeanMethods = false)
-        @ConditionalOnClass(org.aspectj.lang.annotation.Around.class)
-        @ConditionalOnProperty(name = "grails.spring.disable.aspectj.autoweaving", havingValue = "false", matchIfMissing = true)
-        static class AspectJAutoProxyConfiguration {
-
-            @Bean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)
-            @ConditionalOnMissingBean(name = AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)
-            public GroovyAwareAspectJAwareAdvisorAutoProxyCreator groovyAwareAutoProxyCreator(ObjectProvider<GrailsApplication> grailsApplication) {
-                Config config = grailsApplication.getObject().getConfig();
-                Boolean isProxyTargetClass = config.getProperty(SPRING_PROXY_TARGET_CLASS_CONFIG, Boolean.class, false);
-                GroovyAwareAspectJAwareAdvisorAutoProxyCreator autoProxyCreator = new GroovyAwareAspectJAwareAdvisorAutoProxyCreator();
-                autoProxyCreator.setProxyTargetClass(isProxyTargetClass);
-                return autoProxyCreator;
+    static {
+        try {
+            // patch AopConfigUtils if possible
+            Field field = AopConfigUtils.class.getDeclaredField(APC_PRIORITY_LIST_FIELD);
+            if (field != null) {
+                field.setAccessible(true);
+                Object obj = field.get(null);
+                List<Class<?>> list = (List<Class<?>>) obj;
+                list.add(GroovyAwareInfrastructureAdvisorAutoProxyCreator.class);
+                list.add(GroovyAwareAspectJAwareAdvisorAutoProxyCreator.class);
             }
-
+        } catch (Throwable ignore) {
         }
+    }
 
-        @Configuration(proxyBeanMethods = false)
-        @ConditionalOnProperty(name = "grails.spring.disable.aspectj.autoweaving", havingValue = "true")
-        static class InfrastructureAdvisorAutoProxyConfiguration {
-
-            @Bean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)
-            @ConditionalOnMissingBean(name = AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)
-            public GroovyAwareInfrastructureAdvisorAutoProxyCreator groovyAwareAutoProxyCreator(ObjectProvider<GrailsApplication> grailsApplication) {
-                Config config = grailsApplication.getObject().getConfig();
-                Boolean isProxyTargetClass = config.getProperty(SPRING_PROXY_TARGET_CLASS_CONFIG, Boolean.class, false);
-                GroovyAwareInfrastructureAdvisorAutoProxyCreator autoProxyCreator = new GroovyAwareInfrastructureAdvisorAutoProxyCreator();
-                autoProxyCreator.setProxyTargetClass(isProxyTargetClass);
-                return autoProxyCreator;
-            }
-
-        }
-
+    @Bean
+    public static GroovyAwareAutoProxyCreatorPostProcessor groovyAwareAutoProxyCreatorPostProcessor() {
+        return new GroovyAwareAutoProxyCreatorPostProcessor();
     }
 
 }

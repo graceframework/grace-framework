@@ -25,9 +25,6 @@ import org.springframework.mock.web.MockServletContext;
 
 import grails.core.DefaultGrailsApplication;
 
-import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator;
-import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -52,16 +49,7 @@ public class GroovyAopAutoConfigurationTests {
     @Test
     void defaultConfiguration() {
         registerAndRefreshContext();
-        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isNotNull();
-        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isInstanceOf(GroovyAwareAspectJAwareAdvisorAutoProxyCreator.class);
-    }
-
-    @Test
-    void disableAspectjAutoweave() {
-        TestPropertyValues.of("grails.spring.disable.aspectj.autoweaving:true").applyTo(this.context);
-        registerAndRefreshContext();
-        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isNotNull();
-        assertThat(this.context.getBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isInstanceOf(GroovyAwareInfrastructureAdvisorAutoProxyCreator.class);
+        assertThat(this.context.containsBean(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME)).isFalse();
     }
 
     private void registerAndRefreshContext(String... env) {

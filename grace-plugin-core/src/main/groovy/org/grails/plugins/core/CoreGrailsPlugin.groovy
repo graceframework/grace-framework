@@ -15,10 +15,7 @@
  */
 package org.grails.plugins.core
 
-import java.lang.reflect.Field
-
 import groovy.transform.CompileStatic
-import org.springframework.aop.config.AopConfigUtils
 import org.springframework.beans.factory.config.CustomEditorConfigurer
 import org.springframework.beans.factory.support.DefaultListableBeanFactory
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
@@ -37,8 +34,6 @@ import org.grails.dev.support.DevelopmentShutdownHook
 import org.grails.spring.DefaultRuntimeSpringConfiguration
 import org.grails.spring.RuntimeSpringConfigUtilities
 import org.grails.spring.RuntimeSpringConfiguration
-import org.grails.spring.aop.autoproxy.GroovyAwareAspectJAwareAdvisorAutoProxyCreator
-import org.grails.spring.aop.autoproxy.GroovyAwareInfrastructureAdvisorAutoProxyCreator
 
 /**
  * Configures the core shared beans within the Grails application context.
@@ -59,26 +54,10 @@ class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
                             'file:./app/conf/application.groovy',
                             'file:./app/conf/application.yml']
 
-    private static final String APC_PRIORITY_LIST_FIELD = 'APC_PRIORITY_LIST'
-
     @Override
     Closure doWithSpring() {
         { ->
             def application = grailsApplication
-
-            try {
-                // patch AopConfigUtils if possible
-                Field field = AopConfigUtils.getDeclaredField(APC_PRIORITY_LIST_FIELD)
-                if (field != null) {
-                    field.setAccessible(true)
-                    Object obj = field.get(null)
-                    List<Class<?>> list = (List<Class<?>>) obj
-                    list.add(GroovyAwareInfrastructureAdvisorAutoProxyCreator)
-                    list.add(GroovyAwareAspectJAwareAdvisorAutoProxyCreator)
-                }
-            }
-            catch (Throwable ignored) {
-            }
 
             // add shutdown hook if not running in war deployed mode
             boolean warDeployed = Environment.isWarDeployed()
