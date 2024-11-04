@@ -1,8 +1,8 @@
 dependencies {
     api libs.groovy.xml
     api libs.spring.context
-    api libs.spring.tx
-    api libs.spring.web
+    compileOnly libs.spring.tx
+    compileOnly libs.spring.web
 
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt

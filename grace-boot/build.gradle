@@ -8,7 +8,6 @@ dependencies {
     api project(":grace-spring-boot")
 
     api libs.jakarta.annotation.api
-    api libs.jakarta.inject
     compileOnly libs.jakarta.servlet
     api libs.spring.beans
     api libs.spring.boot

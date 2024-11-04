@@ -10,10 +10,9 @@ dependencies {
         transitive = false
     }
     api libs.spring.beans
-    api libs.spring.boot
     api libs.spring.context
     api libs.spring.core
-    api libs.spring.tx
+    compileOnly libs.spring.tx
 
     testImplementation project(":grace-test")
     testImplementation libs.jakarta.servlet
