@@ -42,16 +42,15 @@ configurations {
 }
 
 dependencies {
-	implementation "org.graceframework:grace-web"
-	implementation "org.graceframework:grace-web-databinding"
-	implementation "org.graceframework:grace-web-gsp"
-	implementation "org.graceframework:grace-plugin-validation"
-	implementation "org.graceframework:grace-datastore-core:$gormVersion"
-	implementation "org.graceframework:grace-datastore-gorm:$gormVersion"
-	implementation "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
-	implementation "commons-lang:commons-lang:2.6"
+	api "org.graceframework:grace-web-databinding"
+	api "org.graceframework:grace-web-gsp"
+	api "org.graceframework:grace-plugin-validation"
+	api "org.graceframework:grace-datastore-core:$gormVersion"
+	api "org.graceframework:grace-datastore-gorm:$gormVersion"
+	api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
+	api "commons-lang:commons-lang:2.6"
 	compileOnly "org.graceframework:grace-boot"
-	compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
+	compileOnly "jakarta.servlet:jakarta.servlet-api"
 
     api "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
