@@ -38,7 +38,7 @@ publishing {
 
             afterEvaluate {
                 if (project.name.startsWith('grace-plugin')) {
-                    artifact source: "${project.sourceSets.main.groovy.outputDir}/META-INF/grails-plugin.xml",
+                    artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
                         classifier: "plugin",
                         extension: 'xml'
                 }
