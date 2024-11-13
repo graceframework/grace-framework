@@ -33,6 +33,7 @@ import grails.persistence.support.PersistenceContextInterceptor
  * A Shell
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -72,6 +73,7 @@ class GrailsShell extends Grails {
         Binding binding = new Binding()
         binding.setVariable('app', this)
         binding.setVariable('ctx', context)
+        binding.setVariable('config', grailsApplication.getConfig())
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 

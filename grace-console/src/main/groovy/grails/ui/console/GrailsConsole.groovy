@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import grails.util.GrailsVersion
  * The Grails console runs Grails embedded within a Swing console instead of within a container like Tomcat
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -70,6 +71,7 @@ class GrailsConsole extends Grails {
         Binding binding = new Binding()
         binding.setVariable('app', this)
         binding.setVariable('ctx', context)
+        binding.setVariable('config', grailsApplication.getConfig())
         binding.setVariable(GrailsApplication.APPLICATION_ID, grailsApplication)
         bindingCustomizers?.each { customizer -> customizer.customize(binding) }
 
