@@ -1,17 +1,16 @@
 buildscript {
-	repositories {
-		mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
             maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
         }
-	}
-	dependencies {
-		classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
         classpath "com.github.erdi:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
-	}
+    }
 }
 
 ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
@@ -33,8 +32,7 @@ apply plugin: "maven-publish"
 apply plugin: "signing"
 
 repositories {
-	mavenCentral()
-    maven { url "https://repo.grails.org/grails/core" }
+    mavenCentral()
     if (project.projectVersion.endsWith('-SNAPSHOT')) {
         maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
     }
@@ -57,12 +55,12 @@ configurations {
 }
 
 dependencies {
-	api "org.graceframework:grace-datastore-core:$gormVersion"
-	api "org.graceframework:grace-datastore-gorm:$gormVersion", {
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm:$gormVersion", {
         exclude group: 'org.graceframework', module: 'grace-datastore-gorm-validation'
     }
-	api "org.graceframework:grace-core:$graceVersion"
-	api "org.graceframework:grace-web-gsp:$graceVersion"
+    api "org.graceframework:grace-core:$graceVersion"
+    api "org.graceframework:grace-web-gsp:$graceVersion"
     api 'com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2'
     api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
@@ -71,18 +69,18 @@ dependencies {
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-	testImplementation "org.graceframework:grace-test-support:$graceVersion"
+    testImplementation "org.graceframework:grace-test-support:$graceVersion"
     testImplementation 'org.codehaus.gpars:gpars:1.2.1', {
         exclude group:'org.multiverse', module:'multiverse-core'
         exclude group:'org.codehaus.groovy', module: 'groovy-all'
     }
-	testImplementation "org.javassist:javassist:$javassistVersion"
-	testImplementation "org.apache.groovy:groovy-dateutil:$groovyVersion"
-	testImplementation "cglib:cglib-nodep:$cglibNodepVersion"
-	testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
-		exclude module: 'slf4j-api'
-		exclude module: 'asm'
-	}
+    testImplementation "org.javassist:javassist:$javassistVersion"
+    testImplementation "org.apache.groovy:groovy-dateutil:$groovyVersion"
+    testImplementation "cglib:cglib-nodep:$cglibNodepVersion"
+    testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
+        exclude module: 'slf4j-api'
+        exclude module: 'asm'
+    }
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
