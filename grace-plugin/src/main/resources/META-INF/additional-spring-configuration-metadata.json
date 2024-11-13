@@ -2,6 +2,34 @@
   "groups": [],
   "properties": [
     {
+      "name": "grails.gorm.flushMode",
+      "type": "java.lang.String",
+      "description": "The flush mode to use.",
+      "defaultValue": "COMMIT"
+    },
+    {
+      "name": "grails.gorm.failOnError",
+      "type": "java.lang.Boolean",
+      "description": "Whether to throw an exception on validation error.",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.gorm.default.mapping",
+      "type": "java.lang.String",
+      "description": "The default mapping to apply to all classes."
+    },
+    {
+      "name": "grails.gorm.default.constraints",
+      "type": "java.lang.String",
+      "description": "The default constraints to apply to all classes."
+    },
+    {
+      "name": "grails.gorm.multiTenancy.mode",
+      "type": "java.lang.String",
+      "description": "The multi tenancy mode.",
+      "defaultValue": "NONE"
+    },
+    {
       "name": "grails.hibernate.cache.queries",
       "type": "java.lang.Boolean",
       "description": "Wheather to enable caching queries.",
@@ -41,6 +69,57 @@
       "type": "java.lang.Boolean",
       "description": "Register OpenSessionInViewInterceptor that binds a Hibernate Session to the thread for the entire processing of the request.",
       "defaultValue": true
+    },
+    {
+      "name": "hibernate.dialect",
+      "type": "java.lang.String",
+      "description": "The hibernate dialect to use."
+    },
+    {
+      "name": "hibernate.readOnly",
+      "type": "java.lang.Boolean",
+      "description": "Whether Hibernate should be read-only.",
+      "defaultValue": false
+    },
+    {
+      "name": "hibernate.configClass",
+      "type": "java.lang.String",
+      "description": "The configuration class to use.",
+      "defaultValue": "org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration"
+    },
+    {
+      "name": "hibernate.hbm2ddl.auto",
+      "type": "java.lang.String",
+      "description": "Whether to create the tables on startup.",
+      "defaultValue": "none"
+    },
+    {
+      "name": "hibernate.use_second_level_cache",
+      "type": "java.lang.Boolean",
+      "description": "Whether to use the second level cache.",
+      "defaultValue": true
+    },
+    {
+      "name": "hibernate.cache.queries",
+      "type": "java.lang.Boolean",
+      "description": "Whether to cache queries.",
+      "defaultValue": false
+    },
+    {
+      "name": "hibernate.cache.use_query_cache",
+      "type": "java.lang.Boolean",
+      "description": "Enables the query cache.",
+      "defaultValue": false
+    },
+    {
+      "name": "hibernate.configLocations",
+      "type": "java.lang.String",
+      "description": "Location of additional Hibernate XML configuration files."
+    },
+    {
+      "name": "hibernate.packagesToScan",
+      "type": "java.lang.String",
+      "description": "Specify packages to search for autodetection of your entity classes in the classpath."
     }
   ],
   "hints": []
