@@ -1,7 +1,10 @@
 package grails.views.gradle.component
 
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.tasks.Input
+import org.gradle.process.ExecOperations
 
 import grails.views.gradle.AbstractGroovyTemplateCompileTask
 
@@ -13,6 +16,11 @@ import grails.views.gradle.AbstractGroovyTemplateCompileTask
  */
 @CompileStatic
 class ComponentViewCompilerTask extends AbstractGroovyTemplateCompileTask {
+
+    @Inject
+    ComponentViewCompilerTask(ExecOperations execOperations) {
+        super(execOperations)
+    }
 
     @Input
     @Override

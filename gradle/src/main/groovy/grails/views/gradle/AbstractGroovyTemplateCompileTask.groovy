@@ -13,6 +13,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.process.ExecResult
+import org.gradle.process.ExecOperations
 import org.gradle.process.JavaExecSpec
 import org.gradle.work.InputChanges
 
@@ -27,6 +28,8 @@ import grails.views.gradle.util.SourceSets
 @CompileStatic
 abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
 
+    protected ExecOperations execOperations
+
     @Input
     @Optional
     String packageName
@@ -40,6 +43,11 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
 
     @Nested
     ViewCompileOptions compileOptions = getObjectFactory().newInstance(ViewCompileOptions)
+
+    @Inject
+    AbstractGroovyTemplateCompileTask(ExecOperations execOperations) {
+        this.execOperations = execOperations
+    }
 
     @Inject
     protected ObjectFactory getObjectFactory() {
@@ -75,7 +83,7 @@ abstract class AbstractGroovyTemplateCompileTask extends AbstractCompile {
             }
         }
 
-        ExecResult result = project.javaexec(
+        ExecResult result = this.execOperations.javaexec(
                 new Action<JavaExecSpec>() {
                     @Override
                     @CompileDynamic

@@ -1,8 +1,12 @@
 package grails.views.gradle.markup
 
-import grails.views.gradle.AbstractGroovyTemplateCompileTask
+import javax.inject.Inject
+
 import groovy.transform.CompileStatic
 import org.gradle.api.tasks.Input
+import org.gradle.process.ExecOperations
+
+import grails.views.gradle.AbstractGroovyTemplateCompileTask
 
 /**
  * MarkupView compiler task for Gradle
@@ -12,6 +16,11 @@ import org.gradle.api.tasks.Input
  */
 @CompileStatic
 class MarkupViewCompilerTask extends AbstractGroovyTemplateCompileTask {
+
+    @Inject
+    MarkupViewCompilerTask(ExecOperations execOperations) {
+        super(execOperations)
+    }
 
     @Input
     @Override
