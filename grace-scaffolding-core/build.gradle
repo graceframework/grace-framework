@@ -5,6 +5,8 @@ dependencies {
     implementation "org.graceframework:grace-datastore-gorm-validation:$gormVersion"
     implementation "org.graceframework:grace-web-url-mappings:$graceVersion"
     compileOnly "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
 
     testImplementation "org.spockframework:spock-core:$spockVersion"
     testImplementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
