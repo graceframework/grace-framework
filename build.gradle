@@ -65,6 +65,7 @@ dependencies {
     api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
     compileOnly "org.graceframework:grace-boot:$graceVersion"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
