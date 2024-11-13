@@ -74,8 +74,6 @@ dependencies {
     runtimeOnly project(":views-json-templates")
 
     testImplementation project(":views-json-testing-support")
-
-    testImplementation "io.micronaut:micronaut-http-client:$micronautVersion"
 }
 
 integrationTest {
