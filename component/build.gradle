@@ -33,6 +33,7 @@ dependencies {
     api "org.graceframework:grace-core:$graceVersion", {
         exclude group: 'org.graceframework', module: 'grace-datastore-core'
     }
+    compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
     compileOnly "org.graceframework:grace-boot:$graceVersion"
     api project(":views-core")
 
