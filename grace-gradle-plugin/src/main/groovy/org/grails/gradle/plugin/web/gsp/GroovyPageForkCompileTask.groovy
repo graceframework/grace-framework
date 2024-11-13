@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.gradle.process.ExecOperations
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.gradle.work.InputChanges
@@ -50,6 +51,8 @@ import org.gradle.work.InputChanges
  */
 @CompileStatic
 class GroovyPageForkCompileTask extends AbstractCompile {
+
+    private ExecOperations execOperations
 
     @Input
     @Optional
@@ -75,6 +78,11 @@ class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Nested
     GspCompileOptions compileOptions = getObjectFactory().newInstance(GspCompileOptions.class)
+
+    @Inject
+    GroovyPageForkCompileTask(ExecOperations execOperations) {
+        this.execOperations = execOperations
+    }
 
     @Override
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -106,7 +114,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
             packageName = project.name ?: project.projectDir.canonicalFile.name
         }
 
-        ExecResult result = project.javaexec(
+        ExecResult result = this.execOperations.javaexec(
                 new Action<JavaExecSpec>() {
 
                     @Override
