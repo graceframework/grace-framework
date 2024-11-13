@@ -1,14 +1,13 @@
 buildscript {
-	repositories {
-		// mavenLocal()
-		mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
-	}
-	dependencies {
-		classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+    repositories {
+        // mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
-	}
+    }
 }
 
 ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
@@ -28,9 +27,8 @@ apply plugin: "maven-publish"
 apply plugin: "signing"
 
 repositories {
-	// mavenLocal()
-	mavenCentral()
-    maven { url "https://plugins.gradle.org/m2/" }
+    // mavenLocal()
+    mavenCentral()
 }
 
 configurations {
@@ -38,11 +36,11 @@ configurations {
 }
 
 dependencies {
-	compileOnly "org.graceframework:grace-core"
+    compileOnly "org.graceframework:grace-core"
     api "org.gebish:geb-spock:$gebSpock", {
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
     }
-	compileOnly "org.graceframework:grace-boot"
+    compileOnly "org.graceframework:grace-boot"
     documentation "org.fusesource.jansi:jansi:1.18"
     documentation "org.apache.groovy:groovy:$groovyVersion"
     documentation "org.apache.groovy:groovy-ant:$groovyVersion"
