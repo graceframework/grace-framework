@@ -12,6 +12,12 @@
       "type": "java.lang.Boolean",
       "description": "Whether to disable caching templates.",
       "defaultValue": false
+    },
+    {
+      "name": "grails.plugin.fields.localizeNumbers",
+      "type": "java.lang.Boolean",
+      "description": "Whether to localize number fields.",
+      "defaultValue": true
     }
   ],
   "hints": []
