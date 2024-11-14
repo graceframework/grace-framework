@@ -68,9 +68,6 @@ subprojects { project->
         apply plugin: 'org.graceframework.grace-plugin'
     }
 
-    sourceCompatibility = 17
-    targetCompatibility = 17
-
     repositories {
         // mavenLocal()
         mavenCentral()
@@ -115,6 +112,9 @@ subprojects { project->
         }
 
         java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(17)
+            }
             withJavadocJar()
             withSourcesJar()
         }
