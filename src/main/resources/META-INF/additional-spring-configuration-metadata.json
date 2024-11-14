@@ -6,6 +6,12 @@
       "type": "java.lang.String",
       "description": "The default prefix of attributes.",
       "defaultValue": "widget-"
+    },
+    {
+      "name": "grails.plugin.fields.disableLookupCache",
+      "type": "java.lang.Boolean",
+      "description": "Whether to disable caching templates.",
+      "defaultValue": false
     }
   ],
   "hints": []
