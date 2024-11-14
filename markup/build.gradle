@@ -33,7 +33,6 @@ dependencies {
     api "org.graceframework:grace-core:$graceVersion"
     compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
     compileOnly "org.graceframework:grace-boot:$graceVersion"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
     api project(":views-core")
 
     api "org.springframework.boot:spring-boot-autoconfigure"
