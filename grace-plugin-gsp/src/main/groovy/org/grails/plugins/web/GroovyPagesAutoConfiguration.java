@@ -277,7 +277,7 @@ public class GroovyPagesAutoConfiguration {
         boolean developmentMode = Environment.isDevelopmentEnvironmentAvailable();
         boolean gspEnableReload = config.getProperty(Settings.GSP_ENABLE_RELOAD, Boolean.class, groovyPagesProperties.getReload().isEnabled());
         boolean enableReload = env.isReloadEnabled() || gspEnableReload || (developmentMode && env == Environment.DEVELOPMENT);
-        boolean enableCacheResources = config.getProperty(Settings.GSP_DISABLE_CACHING_RESOURCES, Boolean.class, groovyPagesProperties.getCache().isEnabled());
+        boolean enableCacheResources = !config.getProperty(Settings.GSP_DISABLE_CACHING_RESOURCES, Boolean.class, !groovyPagesProperties.getCache().isEnabled());
 
         GroovyPagesTemplateEngine groovyPagesTemplateEngine = new GroovyPagesTemplateEngine();
 
