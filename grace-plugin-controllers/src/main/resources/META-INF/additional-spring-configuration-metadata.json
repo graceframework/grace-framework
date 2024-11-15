@@ -36,6 +36,23 @@
       "name": "grails.resources.pattern",
       "type": "java.lang.String",
       "defaultValue": "\/static\/**"
+    },
+    {
+      "name": "grails.exceptionresolver.logRequestParameters",
+      "description": "Whether to log request parameters in the console.",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "grails.exceptionresolver.params.exclude",
+      "description": "The parameters to exclude from logging.",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "name": "grails.logging.stackTraceFiltererClass",
+      "description": "The class to use for stacktrace filtering.",
+      "type": "java.lang.Class",
+      "defaultValue": "org.grails.exceptions.reporting.DefaultStackTraceFilterer"
     }
   ],
   "hints": []
