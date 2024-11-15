@@ -133,6 +133,11 @@ publishing {
 
             from components.java
 
+            afterEvaluate {
+                artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
+                        classifier: "plugin",
+                        extension: 'xml'
+            }
             pom {
                 name = "Grace Database Migration Plugin"
                 description = "Grace Database Migration"
