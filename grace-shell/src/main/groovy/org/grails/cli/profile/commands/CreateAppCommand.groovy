@@ -1086,15 +1086,20 @@ group """
     protected void generateMinimalProject(GrailsConsoleAntBuilder ant, String grailsVersion, File targetDirectory) {
         ant.sequential {
             delete dir: "app/assets"
+            delete dir: "app/conf/spring"
             delete dir: "app/controllers"
             delete dir: "app/domain"
             delete dir: "app/i18n"
+            delete {
+                fileset dir: "app/init", includes: "**/BootStrap.groovy"
+            }
             delete dir: "app/services"
             delete dir: "app/taglib"
             delete dir: "app/utils"
             delete dir: "app/views"
             delete dir: "db"
             delete dir: "src/integration-test"
+            delete dir: "src/main/webapp"
             replace(file: 'build.gradle') {
                 replacetoken '    implementation "org.springframework.boot:spring-boot-starter-actuator"\n'
                 replacevalue ''
@@ -1124,6 +1129,9 @@ group """
                 fileset(dir: "app/conf", includes: 'application.yml')
             }
             replaceregexp(match: '^environments((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
+                fileset(dir: "app/conf", includes: 'application.yml')
+            }
+            replaceregexp(match: '^management((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
                 fileset(dir: "app/conf", includes: 'application.yml')
             }
             replaceregexp(match: '^grails(.\\n\\s+)mime:((.)*\\n\\s+.*)*', replace: "", flags: "gm") {
