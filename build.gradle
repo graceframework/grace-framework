@@ -94,11 +94,6 @@ java {
     withSourcesJar()
 }
 
-jar {
-    enabled = true
-    archiveClassifier.set('')
-}
-
 tasks.withType(Groovydoc) {
     configure {
         docTitle = "Grace Database Migration Plugin ${version}"
