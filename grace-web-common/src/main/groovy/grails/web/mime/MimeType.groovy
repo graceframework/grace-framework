@@ -154,6 +154,7 @@ class MimeType {
      */
     static MimeType[] createDefaults() {
         def mimes = []
+        mimes << ALL
         mimes << XHTML
         mimes << HTML
         mimes << XML
