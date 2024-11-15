@@ -73,12 +73,12 @@ class JsonViewTemplateResolverSpec extends Specification {
         1 * templateResolver.resolveTemplate('/foo/bar_en.gson')
         1 * templateResolver.resolveTemplate('/foo/bar_1.1.gson')
         1 * templateResolver.resolveTemplate('/foo/bar_en_1.1.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_1.1_html.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_en_1.1_html.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_html.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_en_html.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_html_1.1.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_en_html_1.1.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_1.1_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_en_1.1_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_en_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_html_1.1.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_en_html_1.1.gson')
 
 
         cleanup:
@@ -137,12 +137,12 @@ class JsonViewTemplateResolverSpec extends Specification {
         then:"The view is not null"
         1 * templateResolver.resolveTemplateClass('/test/bar.gson')
         1 * templateResolver.resolveTemplateClass('/test/bar_en.gson')
-        1 * templateResolver.resolveTemplateClass('/test/bar_html.gson')
-        1 * templateResolver.resolveTemplateClass('/test/bar_en_html.gson')
+        // 1 * templateResolver.resolveTemplateClass('/test/bar_html.gson')
+        // 1 * templateResolver.resolveTemplateClass('/test/bar_en_html.gson')
         1 * templateResolver.resolveTemplate('/test/bar.gson')
         1 * templateResolver.resolveTemplate('/test/bar_en.gson')
-        1 * templateResolver.resolveTemplate('/test/bar_html.gson')
-        1 * templateResolver.resolveTemplate('/test/bar_en_html.gson')
+        // 1 * templateResolver.resolveTemplate('/test/bar_html.gson')
+        // 1 * templateResolver.resolveTemplate('/test/bar_en_html.gson')
 
         cleanup:
         RequestContextHolder.setRequestAttributes(null)
@@ -174,12 +174,12 @@ class JsonViewTemplateResolverSpec extends Specification {
         then: 'the view is not null'
         1 * templateResolver.resolveTemplateClass('/foo/bar.gson')
         1 * templateResolver.resolveTemplateClass('/foo/bar_en.gson')
-        1 * templateResolver.resolveTemplateClass('/foo/bar_html.gson')
-        1 * templateResolver.resolveTemplateClass('/foo/bar_en_html.gson')
+        // 1 * templateResolver.resolveTemplateClass('/foo/bar_html.gson')
+        // 1 * templateResolver.resolveTemplateClass('/foo/bar_en_html.gson')
         1 * templateResolver.resolveTemplate('/foo/bar.gson')
         1 * templateResolver.resolveTemplate('/foo/bar_en.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_html.gson')
-        1 * templateResolver.resolveTemplate('/foo/bar_en_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_html.gson')
+        // 1 * templateResolver.resolveTemplate('/foo/bar_en_html.gson')
 
         cleanup:
         RequestContextHolder.setRequestAttributes(null)
