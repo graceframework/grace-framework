@@ -1,8 +1,7 @@
 buildscript {
 	repositories {
 		mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+        gradlePluginPortal()
 	}
 	dependencies {
 		classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
@@ -33,7 +32,6 @@ apply plugin: "org.asciidoctor.jvm.convert"
 
 repositories {
 	mavenCentral()
-    maven { url "https://repo.gradle.org/gradle/libs-releases" }
 }
 
 configurations {
