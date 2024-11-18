@@ -94,7 +94,7 @@
       "defaultValue": "none"
     },
     {
-      "name": "hibernate.use_second_level_cache",
+      "name": "hibernate.cache.use_second_level_cache",
       "type": "java.lang.Boolean",
       "description": "Whether to use the second level cache.",
       "defaultValue": true
