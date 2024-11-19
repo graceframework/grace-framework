@@ -52,7 +52,7 @@ class GroovyPagesGrailsPlugin extends Plugin implements Ordered {
 
     def grailsVersion = "2022.0.0 > *"
     def version = GrailsUtil.getGrailsVersion()
-    def dependsOn = [core: GrailsUtil.getGrailsVersion(), i18n: GrailsUtil.getGrailsVersion()]
+    def dependsOn = [core: GrailsUtil.getGrailsVersion()]
 
     def watchedResources = ["file:./plugins/*/grails-app/taglib/**/*TagLib.groovy",
                             "file:./grails-app/taglib/**/*TagLib.groovy",
