@@ -31,7 +31,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileUrlResource;
@@ -159,8 +158,6 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
-    @Order(-20)
-    @Primary
     @ConditionalOnMissingBean
     public ResourceLocator grailsResourceLocator(GroovyPagesProperties groovyPagesProperties, ObjectProvider<GrailsApplication> grailsApplication) {
         Config config = grailsApplication.getIfAvailable().getConfig();

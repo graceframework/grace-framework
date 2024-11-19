@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import grails.config.ConfigProperties;
@@ -32,6 +33,7 @@ import grails.core.support.proxy.DefaultProxyHandler;
 import grails.core.support.proxy.ProxyHandler;
 import grails.util.BuildSettings;
 import org.grails.core.io.DefaultResourceLocator;
+import org.grails.core.io.ResourceLocator;
 
 /**
  * Core Auto-Configuration.
@@ -41,7 +43,7 @@ import org.grails.core.io.DefaultResourceLocator;
  * @since 4.0
  */
 @AutoConfiguration
-@AutoConfigureOrder(300)
+@AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
 public class CoreConfiguration {
 
     @Bean
@@ -59,9 +61,8 @@ public class CoreConfiguration {
     }
 
     @Bean
-    @Order(0)
     @ConditionalOnMissingBean
-    public DefaultResourceLocator grailsResourceLocator() throws IOException {
+    public ResourceLocator grailsResourceLocator() throws IOException {
         DefaultResourceLocator defaultResourceLocator = new DefaultResourceLocator();
         defaultResourceLocator.setSearchLocations(List.of(BuildSettings.BASE_DIR.getCanonicalPath()));
 
