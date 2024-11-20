@@ -40,6 +40,7 @@ import org.springframework.core.annotation.Order;
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
+import grails.core.support.proxy.ProxyHandler;
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.gorm.events.ConfigurableApplicationContextEventPublisher;
 import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter;
@@ -149,7 +150,7 @@ public class HibernateGormAutoConfiguration {
     @Bean
     @Order(10)
     @ConditionalOnMissingBean
-    public ProxyHandlerAdapter proxyHandler(HibernateProxyHandler hibernateProxyHandler) {
+    public ProxyHandler proxyHandler(HibernateProxyHandler hibernateProxyHandler) {
         return new ProxyHandlerAdapter(hibernateProxyHandler);
     }
 
