@@ -16,6 +16,7 @@
 package grails.plugin.hibernate;
 
 import java.beans.Introspector;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +38,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
+import grails.boot.config.GrailsComponentScanner;
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
@@ -85,6 +87,17 @@ public class HibernateGormAutoConfiguration {
                 domainClasses.add(grailsClass.getClazz());
             }
         }
+
+        GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext);
+        Set<Class<?>> entityClasses;
+        try {
+            entityClasses = scanner.scan(grails.gorm.annotation.Entity.class, grails.persistence.Entity.class);
+        }
+        catch (ClassNotFoundException ignored) {
+            entityClasses = Collections.emptySet();
+        }
+
+        domainClasses.addAll(entityClasses);
 
         HibernateDatastore datastore;
         if (dataSource.getIfAvailable() != null) {
