@@ -126,10 +126,10 @@ groovydoc.doFirst {
 
 bootJar.enabled = false
 
-sourceCompatibility = 17
-targetCompatibility = 17
-
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
     withJavadocJar()
     withSourcesJar()
 }
