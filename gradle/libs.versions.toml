@@ -56,7 +56,7 @@ snakeyaml = "2.2"
 spock = "2.3-groovy-4.0"
 spring-boot = "3.2.12"
 spring-dependency-management = "1.1.6"
-spring-framework = "6.1.14"
+spring-framework = "6.1.15"
 tomcat = "10.1.33"
 xhtmlrenderer = "R8"
 
