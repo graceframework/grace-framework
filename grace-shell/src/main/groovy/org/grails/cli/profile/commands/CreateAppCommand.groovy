@@ -94,7 +94,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String BOOT_VERSION_FLAG = 'boot-version'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
-    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.1', '3.2', '3.3', '3.4']
+    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.2', '3.3', '3.4']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
@@ -1009,21 +1009,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected void updateSpringDependencies(GrailsConsoleAntBuilder ant, String grailsVersion, String springBootVersion, File targetDirectory) {
-        if (grailsVersion.startsWith('2023.1') && !springBootVersion) {
-            ant.sequential {
-                replace(file: 'build.gradle') {
-                    replacetoken 'group '
-                    replacevalue """ext['spring-framework.version'] = '6.0.23'
-
-group """
-                }
-            }
-            return
-        }
-
-        if (!grailsVersion.startsWith('2023.1') ||
-                !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
-            // Currently already upgraded to Spring Boot 3.1.12
+        if (!springBootVersion || !(springBootVersion.substring(0, springBootVersion.lastIndexOf('.')) in SUPPORT_SPRING_BOOT_VERSIONS)) {
+            // Currently already upgraded to Spring Boot 3.2
             return
         }
 
