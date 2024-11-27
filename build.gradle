@@ -64,7 +64,7 @@ dependencies {
 	testImplementation "org.objenesis:objenesis:$objenesisVersion"
 	testImplementation "org.apache.groovy:groovy-test-junit5:$groovyVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testImplementation "org.junit.platform:junit-platform-runner:$junitJupiterPlatformVersion"
+    testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
         exclude module: 'slf4j-api'
