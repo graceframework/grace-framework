@@ -85,7 +85,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testImplementation "org.junit.platform:junit-platform-runner:$junitJupiterPlatformVersion"
+    testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     testImplementation "org.graceframework.plugins:geb"
     testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
