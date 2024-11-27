@@ -74,7 +74,7 @@ dependencies {
 
     testImplementation "org.graceframework:grace-test-support"
     testImplementation "org.mockito:mockito-core"
-    testImplementation 'com.h2database:h2:1.4.200'
+    testImplementation "com.h2database:h2:$h2Version"
 
     documentation "org.fusesource.jansi:jansi:1.18"
     documentation "com.github.javaparser:javaparser-core:3.15.14"
