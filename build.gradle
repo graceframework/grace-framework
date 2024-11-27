@@ -107,7 +107,7 @@ subprojects { project->
                 exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
             }
             testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-            testImplementation "org.junit.platform:junit-platform-runner:$junitJupiterPlatformVersion"
+            testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
             testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
         }
 
