@@ -256,7 +256,7 @@ class GrailsCli {
             exit(0)
         }
 
-        if (mainCommandLine.hasOption(CommandLine.HELP_ARGUMENT) || mainCommandLine.hasOption('h')) {
+        if (!mainCommandLine.commandName && (mainCommandLine.hasOption(CommandLine.HELP_ARGUMENT) || mainCommandLine.hasOption('h'))) {
             profileRepository = createMavenProfileRepository()
             Command cmd = CommandRegistry.getCommand('help', profileRepository)
             cmd.handle(createExecutionContext(mainCommandLine))
