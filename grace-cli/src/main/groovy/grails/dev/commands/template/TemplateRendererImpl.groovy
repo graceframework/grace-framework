@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import groovy.text.Template
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 
+import grails.build.logging.GrailsConsole
 import grails.codegen.model.Model
 import grails.dev.commands.io.FileSystemInteraction
 import grails.dev.commands.io.FileSystemInteractionImpl
@@ -34,6 +35,7 @@ import org.grails.io.support.ResourceLoader
  * API for locating and rendering templates in the code generation layer
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.2
  */
 @CompileStatic
@@ -43,6 +45,8 @@ class TemplateRendererImpl implements TemplateRenderer {
     FileSystemInteraction fileSystemInteraction
 
     protected Map<String, Template> templateCache = [:]
+
+    GrailsConsole console = GrailsConsole.getInstance()
 
     TemplateRendererImpl(File baseDir, ResourceLoader resourceLoader = new DefaultResourceLoader()) {
         this.fileSystemInteraction = new FileSystemInteractionImpl(baseDir, resourceLoader)
@@ -123,7 +127,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(File template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                println("Warning | Destination file ${projectPath(destination)} already exists, skipping...")
+                this.console.addStatus('skip '.padLeft(13), projectPath(destination), "YELLOW")
             }
             else {
                 Template t = templateCache[template.absolutePath]
@@ -138,8 +142,13 @@ class TemplateRendererImpl implements TemplateRenderer {
                     }
                 }
                 try {
+                    if (destination.exists() && overwrite) {
+                        this.console.addStatus('force '.padLeft(13), projectPath(destination), "YELLOW")
+                    }
+                    else {
+                        this.console.addStatus('create '.padLeft(13), projectPath(destination), "GREEN")
+                    }
                     writeTemplateToDestination(t, model, destination)
-                    println("Rendered template ${template.name} to destination ${projectPath(destination)}")
                 }
                 catch (Throwable e) {
                     destination.delete()
@@ -171,7 +180,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(Resource template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                println("Warning | Destination file ${projectPath(destination)} already exists, skipping...")
+                this.console.addStatus('skip '.padLeft(13), projectPath(destination), "YELLOW")
             }
             else if (!template?.exists()) {
                 throw new TemplateException("Template [$template.filename] not found.")
@@ -200,8 +209,13 @@ class TemplateRendererImpl implements TemplateRenderer {
                 }
                 if (t != null) {
                     try {
+                        if (destination.exists() && overwrite) {
+                            this.console.addStatus('force '.padLeft(13), projectPath(destination), "YELLOW")
+                        }
+                        else {
+                            this.console.addStatus('create '.padLeft(13), projectPath(destination), "GREEN")
+                        }
                         writeTemplateToDestination(t, model, destination)
-                        println("Rendered template ${template.filename} to destination ${projectPath(destination)}")
                     }
                     catch (Throwable e) {
                         destination.delete()
@@ -229,15 +243,26 @@ class TemplateRendererImpl implements TemplateRenderer {
     /**
      * Find a template at the given location
      *
+     * @param templateRoot The template root
+     * @param location The location
+     * @return The resource or null if it doesn't exist
+     */
+    Resource template(String templateRoot, Object location) {
+        Resource f = resource(file("src/main/$templateRoot/$location"))
+        if (!f?.exists()) {
+            return resource("classpath*:META-INF/$templateRoot/$location")
+        }
+        resource(f)
+    }
+
+    /**
+     * Find a template at the given location
+     *
      * @param location The location
      * @return The resource or null if it doesn't exist
      */
     Resource template(Object location) {
-        Resource f = resource(file("src/main/templates/$location"))
-        if (!f?.exists()) {
-            return resource("classpath*:META-INF/templates/$location")
-        }
-        resource(f)
+        template('templates', location)
     }
 
     protected static void writeTemplateToDestination(Template template, Map model, File destination) {

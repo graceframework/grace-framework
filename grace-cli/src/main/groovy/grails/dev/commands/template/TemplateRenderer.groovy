@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.grails.io.support.Resource
  * API for locating and rendering templates in the code generation layer
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 interface TemplateRenderer {
@@ -161,6 +162,15 @@ interface TemplateRenderer {
      * @return The available templates
      */
     Iterable<Resource> templates(String pattern)
+
+    /**
+     * Find a template at the given location
+     *
+     * @param templateRoot The template root
+     * @param location The location
+     * @return The resource or null if it doesn't exist
+     */
+    Resource template(String templateRoot, Object location)
 
     /**
      * Find a template at the given location
