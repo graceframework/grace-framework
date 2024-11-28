@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ import org.grails.build.logging.GrailsConsolePrintStream;
  * Utility class for delivering console output in a nicely formatted way.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class GrailsConsole implements ConsoleLogger {
@@ -618,6 +619,14 @@ public class GrailsConsole implements ConsoleLogger {
     }
 
     private void outputMessage(String msg, int replaceCount) {
+        outputMessage(CATEGORY_SEPARATOR, msg, replaceCount);
+    }
+
+    private void outputMessage(String category, String msg, int replaceCount) {
+        outputMessage(category, msg, Color.YELLOW, replaceCount);
+    }
+
+    private void outputMessage(String category, String msg, Color color, int replaceCount) {
         verifySystemOut();
         if (msg == null || msg.trim().length() == 0) {
             return;
@@ -625,9 +634,9 @@ public class GrailsConsole implements ConsoleLogger {
         try {
             if (isAnsiEnabled()) {
                 if (replaceCount > 0) {
-                    this.out.print(erasePreviousLine(CATEGORY_SEPARATOR));
+                    this.out.print(erasePreviousLine(category));
                 }
-                this.lastStatus = outputCategory(Ansi.ansi(), CATEGORY_SEPARATOR)
+                this.lastStatus = outputCategory(Ansi.ansi(), color, category)
                         .fg(Color.DEFAULT).a(msg).reset();
                 this.out.println(this.lastStatus);
                 if (!this.userInputActive) {
@@ -643,7 +652,7 @@ public class GrailsConsole implements ConsoleLogger {
                     this.out.println();
                 }
 
-                this.out.print(CATEGORY_SEPARATOR);
+                this.out.print(category);
                 this.out.println(msg);
             }
             this.lastMessage = msg;
@@ -674,7 +683,29 @@ public class GrailsConsole implements ConsoleLogger {
      */
     @Override
     public void addStatus(String msg) {
-        outputMessage(msg, 0);
+        addStatus(CATEGORY_SEPARATOR, msg);
+    }
+
+    /**
+     * Keeps doesn't replace the status message
+     *
+     * @param category The category
+     * @param msg The message
+     */
+    public void addStatus(String category, String msg) {
+        outputMessage(category, msg, 0);
+        this.lastMessage = "";
+    }
+
+    /**
+     * Keeps doesn't replace the status message
+     *
+     * @param category The category
+     * @param msg The message
+     * @param color The color
+     */
+    public void addStatus(String category, String msg, String color) {
+        outputMessage(category, msg, Color.valueOf(color), 0);
         this.lastMessage = "";
     }
 
@@ -998,6 +1029,15 @@ public class GrailsConsole implements ConsoleLogger {
         return ansi
                 .a(Ansi.Attribute.INTENSITY_BOLD)
                 .fg(Color.YELLOW)
+                .a(categoryName)
+                .a(SPACE)
+                .a(Ansi.Attribute.INTENSITY_BOLD_OFF);
+    }
+
+    private Ansi outputCategory(Ansi ansi, Color color, String categoryName) {
+        return ansi
+                .a(Ansi.Attribute.INTENSITY_BOLD)
+                .fg(color)
                 .a(categoryName)
                 .a(SPACE)
                 .a(Ansi.Attribute.INTENSITY_BOLD_OFF);
