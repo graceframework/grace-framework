@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ import groovy.transform.CompileStatic
  * Represents argument to a command
  *
  * @author Graeme Rocher
- * @since
+ * @author Michael Yan
+ * @since 4.0
  */
 @CompileStatic
 class CommandArgument {
@@ -32,9 +33,24 @@ class CommandArgument {
     String name
 
     /**
+     * The type of the argument
+     */
+    String type
+
+    /**
      * The description of the argument
      */
     String description
+
+    /**
+     * The aliases of the argument
+     */
+    String aliases
+
+    /**
+     * The banner of the argument
+     */
+    String banner
 
     /**
      * Whether the argument is required or not
