@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,9 @@ class GroovyPagePlugin implements Plugin<Project> {
     @CompileDynamic
     @Override
     void apply(Project project) {
-        project.configurations.create('gspCompile')
+        registerGrailsExtension(project)
 
+        project.configurations.create('gspCompile')
         project.dependencies.add('gspCompile', 'jakarta.servlet:jakarta.servlet-api:6.0.0')
 
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
@@ -122,6 +123,12 @@ class GroovyPagePlugin implements Plugin<Project> {
                     jar.from destDir
                 }
             }
+        }
+    }
+
+    protected GrailsExtension registerGrailsExtension(Project project) {
+        if (project.extensions.findByName('grails') == null) {
+            project.extensions.add('grails', new GrailsExtension(project))
         }
     }
 
