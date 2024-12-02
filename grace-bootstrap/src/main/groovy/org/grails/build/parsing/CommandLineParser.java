@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -268,7 +268,7 @@ public class CommandLineParser {
             String[] split = arg.split("=");
             String name = split[0].trim();
             validateOptionName(name);
-            String value = split[1].trim();
+            String value = split.length > 1 ? split[1].trim() : null;
             if (this.declaredOptions.containsKey(name)) {
                 cl.addDeclaredOption(name, this.declaredOptions.get(name), value);
             }
