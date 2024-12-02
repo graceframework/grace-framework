@@ -226,7 +226,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         boolean inPlace = commandLine.hasOption('inplace') || GrailsCli.isInteractiveModeActive()
         String appName = commandLine.remainingArgs ? commandLine.remainingArgs[0] : ''
 
-        List<String> features = commandLine.optionValue('features')?.toString()?.split(',')?.toList()
+        List<String> features = commandLine.hasOption('features') ?
+                ((commandLine.optionValue('features') && !(commandLine.optionValue('features') instanceof Boolean)) ?
+                        commandLine.optionValue('features').toString()?.split(',')?.toList() : []) : null
         Map<String, String> args = getCommandArguments(commandLine)
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
@@ -356,9 +358,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Name:".padRight(20) + appName)
         console.println("     Package:".padRight(20) + defaultPackageName)
         console.println("     Profile:".padRight(20) + profileName)
-        if (features) {
-            console.println("     Features:".padRight(20) + features*.name?.join(', '))
-        }
+        console.println("     Features:".padRight(20) + features*.name?.join(', '))
         if (cmd.template) {
             console.println("     Template:".padRight(20) + cmd.template)
         }
@@ -415,7 +415,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     protected List<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, GrailsConsole console) {
         List<Feature> features
-        if (requestedFeatures) {
+        if (requestedFeatures != null && requestedFeatures.size() > 0) {
             List<String> allFeatureNames = profile.features*.name
             Collection<String> validFeatureNames = requestedFeatures.intersect(allFeatureNames)
             requestedFeatures.removeAll(allFeatureNames)
@@ -431,6 +431,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 console.warn(warning.toString())
             }
             features = (profile.features.findAll { Feature f -> validFeatureNames.contains(f.name) } + profile.requiredFeatures).unique()
+        }
+        else if (requestedFeatures != null && requestedFeatures.size() == 0) {
+            features = Collections.emptyList()
         }
         else {
             features = (profile.defaultFeatures + profile.requiredFeatures).toList().unique()
