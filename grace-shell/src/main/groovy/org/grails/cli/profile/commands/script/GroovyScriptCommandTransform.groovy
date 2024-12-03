@@ -133,6 +133,11 @@ class GroovyScriptCommandTransform implements ASTTransformation {
                     constructorBody.addStatement(new ExpressionStatement(assignDescription))
                 }
             }
+            else if (call.methodAsString == 'name') {
+                MethodCallExpression setName = new MethodCallExpression(
+                        new VariableExpression('this'), 'setName', call.arguments)
+                constructorBody.addStatement(new ExpressionStatement(setName))
+            }
             else if (call.methodAsString == 'namespace') {
                 MethodCallExpression setNamespace = new MethodCallExpression(
                         new VariableExpression('this'), 'setNamespace', call.arguments)

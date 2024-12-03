@@ -94,6 +94,15 @@ abstract class GroovyScriptCommand extends Script implements ProfileCommand, Pro
     String grailsVersion = getClass().getPackage()?.getImplementationVersion()
 
     /**
+     * Provides a name for the command
+     *
+     * @param name The name of the command
+     */
+    void name(String name) {
+        // ignore, just a stub for documentation purposes, populated by CommandScriptTransform
+    }
+
+    /**
      * Provides a namespace for the command
      *
      * @param namespace The namespace
