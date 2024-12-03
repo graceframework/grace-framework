@@ -1,0 +1,5 @@
+org.grails.cli.generator.ControllerGenerator
+org.grails.cli.generator.DomainGenerator
+org.grails.cli.generator.InterceptorGenerator
+org.grails.cli.generator.ServiceGenerator
+org.grails.cli.generator.TaglibGenerator
