@@ -122,21 +122,11 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureAssetCompilation(project)
 
-        configureConsoleTask(project)
-
         configureForkSettings(project, grailsVersion)
 
         configureGrailsSourceDirs(project)
 
-        configureApplicationCommands(project)
-
         createBuildPropertiesTask(project)
-
-        configureRunScript(project)
-
-        configureRunCommand(project)
-
-        configurePathingJar(project)
 
         configureGroovyASTMetadata(project)
     }

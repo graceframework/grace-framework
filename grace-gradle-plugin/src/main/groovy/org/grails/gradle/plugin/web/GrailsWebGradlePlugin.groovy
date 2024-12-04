@@ -49,6 +49,16 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
     void apply(Project project) {
         super.apply(project)
 
+        configureConsoleTask(project)
+
+        configureApplicationCommands(project)
+
+        configureRunScript(project)
+
+        configureRunCommand(project)
+
+        configurePathingJar(project)
+
         TaskContainer taskContainer = project.tasks
         if (taskContainer.findByName('urlMappingsReport') == null) {
             FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console)
