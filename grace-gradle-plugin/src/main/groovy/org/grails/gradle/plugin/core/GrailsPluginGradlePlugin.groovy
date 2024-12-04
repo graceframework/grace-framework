@@ -37,6 +37,7 @@ import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 import grails.util.Environment
 
@@ -46,8 +47,8 @@ import org.grails.gradle.plugin.util.SourceSets
  * A Gradle plugin for Grails plugins
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
- *
  */
 @CompileStatic
 class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
@@ -126,8 +127,11 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
     @Override
     protected void applySpringBootPlugin(Project project) {
         super.applySpringBootPlugin(project)
-        project.tasks.withType(BootJar) { BootJar bootJar ->
+        project.tasks.withType(BootJar).configureEach { BootJar bootJar ->
             bootJar.enabled = false
+        }
+        project.tasks.withType(BootRun).configureEach { BootRun bootRun ->
+            bootRun.enabled = false
         }
     }
 
