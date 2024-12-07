@@ -9,7 +9,9 @@ dependencies {
     api(libs.slf4j.api)
     api(libs.spring.beans)
     compileOnly(libs.spring.boot)
-    api(libs.spring.context)
+    api libs.spring.context, {
+        exclude group: 'io.micrometer', module: 'micrometer-observation'
+    }
     api(libs.spring.core)
     testImplementation(libs.spring.boot)
 }

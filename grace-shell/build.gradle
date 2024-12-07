@@ -43,7 +43,9 @@ dependencies {
     }
     api libs.groovy.json
     compileOnly libs.jakarta.servlet
-    implementation libs.spring.boot
+    implementation libs.spring.boot, {
+        exclude group: "io.micrometer"
+    }
     compileOnly libs.spring.web, {
         exclude group: "io.micrometer"
     }
