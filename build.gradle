@@ -176,6 +176,7 @@ subprojects { project ->
     apply plugin: 'groovy'
     if (!isTestSuite) {
         apply plugin: 'maven-publish'
+        apply plugin: 'ivy-publish'
         apply plugin: 'signing'
     }
     apply plugin: 'eclipse'
@@ -195,17 +196,28 @@ subprojects { project ->
     if (!isTestSuite) {
 
         publishing {
+            repositories {
+                ivy {
+                    name = 'graceDist'
+                    url = homeDistDir
+                    patternLayout {
+                        artifact '[artifact]-[revision](-[classifier])(.[ext])'
+                    }
+                }
+            }
             publications {
                 maven(MavenPublication) {
                     from components.java
 
-                    if (project.name != 'grace-gradle-plugin') {
-                        pom.withXml {
-                            def xml = asNode()
+                    pom.withXml {
+                        def xml = asNode()
 
-                            xml.children().last() + pomInfo
-                        }
+                        xml.children().last() + pomInfo
                     }
+                }
+
+                ivy(IvyPublication) {
+                    from components.java
                 }
             }
         }
@@ -258,7 +270,7 @@ subprojects { project ->
         toolVersion = checkstyleVersion
         configDirectory.set(rootProject.file("gradle/checkstyle"))
     }
- 
+
     codenarc {
         toolVersion = codenarcVersion
         setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))
@@ -382,24 +394,6 @@ subprojects { project ->
         published.extendsFrom archives, meta
         testRuntimeOnly {
             exclude group: 'commons-logging', module: 'commons-logging'
-        }
-    }
-
-    if (!isTestSuite) {
-        task installToHomeDist(type: org.grails.gradle.Upload) {
-            configuration = configurations.archives
-            repositories {
-                flatDir name: 'libs', dirs: distInstallDir
-            }
-        }
-
-        project.tasks.withType(org.gradle.api.publish.maven.tasks.PublishToMavenLocal) { org.gradle.api.publish.maven.tasks.PublishToMavenLocal t ->
-            t.dependsOn installToHomeDist
-            t.doLast {
-                ant.copy(todir: homeDistDir, flatten: true, includeEmptyDirs: false) {
-                    fileset dir: distInstallDir
-                }
-            }
         }
     }
 }

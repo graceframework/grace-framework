@@ -41,6 +41,7 @@ dependencies {
     api gradleApi()
     api libs.maven.model
     api libs.spring.boot.gradle.plugin
+    api libs.spring.boot.loader.tools
     api libs.spring.dependency.management.plugin
 
     documentation libs.jansi
@@ -151,17 +152,12 @@ publishing {
             pom {
                 name = "Grace Gradle Plugin"
                 description = "A Gradle plugin for Grace which provides a bunch of useful plugins"
-            }
-        }
-    }
-}
 
-project.afterEvaluate {
-    project.publishing.publications.each { MavenPublication publication->
-        if (publication.name != "pluginMaven" || publication.name != "maven") {
-            publication.pom.withXml {
-                def xml = asNode()
-                xml.children().last() + pomInfo
+                withXml {
+                    def xml = asNode()
+
+                    xml.children().last() + pomInfo
+                }
             }
         }
     }

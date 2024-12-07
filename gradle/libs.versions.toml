@@ -182,6 +182,7 @@ spring-boot-cli = { module = "org.springframework.boot:spring-boot-cli", version
 spring-boot-configurationProcessor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
+spring-boot-loader-tools = { module = "org.springframework.boot:spring-boot-loader-tools", version.ref = "spring-boot" }
 spring-boot-test = { module = "org.springframework.boot:spring-boot-test", version.ref = "spring-boot" }
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring-framework" }
 spring-contextSupport = { module = "org.springframework:spring-context-support", version.ref = "spring-framework" }
