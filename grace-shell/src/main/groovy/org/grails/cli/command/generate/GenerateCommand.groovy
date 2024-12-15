@@ -18,6 +18,7 @@ package org.grails.cli.command.generate
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
+import grails.cli.generator.GenerationContext
 import grails.cli.generator.Generator
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.profile.CommandDescription
@@ -53,13 +54,15 @@ class GenerateCommand implements ProjectCommand {
     @Override
     boolean handle(ExecutionContext executionContext) {
         CommandLine commandLine = executionContext.commandLine
+        GenerationContext generationContext = new GenerationContext()
+        generationContext.commandLine = commandLine
 
         if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
             if (commandLine.remainingArgs) {
                 String generatorName = commandLine.remainingArgs[0]
                 Generator generator = loadedGenerators().find { it.name == generatorName }
                 if (generator) {
-                    return generator.help(commandLine)
+                    return generator.help(generationContext)
                 }
                 else {
                     noGenerator(generatorName, executionContext.console)
@@ -80,7 +83,7 @@ class GenerateCommand implements ProjectCommand {
         String generatorName = commandLine.remainingArgs[0]
         Generator generator = loadedGenerators().find { it.name == generatorName }
         if (generator) {
-            return generator.generate(commandLine)
+            return generator.generate(generationContext)
         }
         else {
             noGenerator(generatorName, executionContext.console)

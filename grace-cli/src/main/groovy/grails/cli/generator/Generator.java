@@ -16,7 +16,6 @@
 package grails.cli.generator;
 
 import grails.util.GrailsNameUtils;
-import org.grails.build.parsing.CommandLine;
 
 /**
  * @author Michael Yan
@@ -32,11 +31,11 @@ public interface Generator {
         return getName();
     }
 
-    default boolean generate(CommandLine commandLine) {
+    default boolean generate(GenerationContext generationContext) {
         return true;
     }
 
-    default boolean help(CommandLine commandLine) {
+    default boolean help(GenerationContext generationContext) {
         return true;
     }
 
