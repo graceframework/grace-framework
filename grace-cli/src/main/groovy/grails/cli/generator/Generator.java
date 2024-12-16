@@ -39,4 +39,8 @@ public interface Generator {
         return true;
     }
 
+    default boolean revoke(GenerationContext generationContext) {
+        return true;
+    }
+
 }

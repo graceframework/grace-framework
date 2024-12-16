@@ -57,4 +57,26 @@ class InterceptorGenerator extends AbstractGenerator {
         true
     }
 
+    @Override
+    boolean revoke(GenerationContext generationContext) {
+        CommandLine commandLine = generationContext.commandLine
+        String[] args = commandLine.remainingArgs.toArray(new String[0])
+        if (args.size() < 2) {
+            return
+        }
+
+        CodeGenConfig config = loadApplicationConfig()
+        String className = args[1].capitalize()
+        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
+        String packagePath = defaultPackage.replace('.', '/')
+
+        String interceptorClassFile = 'app/controllers/' + packagePath + '/' + className + 'Interceptor.groovy'
+        String interceptorClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'InterceptorSpec.groovy'
+
+        removeFile(interceptorClassFile)
+        removeFile(interceptorClassSpecFile)
+
+        true
+    }
+
 }

@@ -96,6 +96,14 @@ class AbstractGenerator implements Generator {
         SpringIOUtils.copy(templateRenderer.template(getTemplateRoot(), source), file(destination))
     }
 
+    void removeFile(String destination) {
+        this.console.addStatus('remove '.padLeft(13), destination, 'YELLOW')
+        File file = new File(getBaseDir(), destination)
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+
     File file(Object path) {
         if (path instanceof File) {
             return (File) path

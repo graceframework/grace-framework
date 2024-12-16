@@ -66,4 +66,31 @@ class ControllerGenerator extends AbstractGenerator {
         true
     }
 
+    @Override
+    boolean revoke(GenerationContext generationContext) {
+        CommandLine commandLine = generationContext.commandLine
+        String[] args = commandLine.remainingArgs.toArray(new String[0])
+        if (args.size() < 2) {
+            return
+        }
+
+        CodeGenConfig config = loadApplicationConfig()
+        String className = args[1].capitalize()
+        String propertyName = className.uncapitalize()
+        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
+        String packagePath = defaultPackage.replace('.', '/')
+
+        String controllerFile = 'app/controllers/' + packagePath + '/' + className + 'Controller.groovy'
+        String controllerSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'ControllerSpec.groovy'
+        removeFile(controllerFile)
+        removeFile(controllerSpecFile)
+
+        String gspViewDir = 'app/views/' + propertyName
+        new File(gspViewDir).list().each {
+            removeFile(gspViewDir + '/' + it)
+        }
+
+        true
+    }
+
 }
