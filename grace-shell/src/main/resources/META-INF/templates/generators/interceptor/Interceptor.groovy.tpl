@@ -1,6 +1,6 @@
 package $packageName
 
-class $className {
+class ${className}Interceptor {
 
     boolean before() { true }
 
