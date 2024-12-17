@@ -55,6 +55,8 @@ class GenerateCommand implements ProjectCommand {
     boolean handle(ExecutionContext executionContext) {
         CommandLine commandLine = executionContext.commandLine
         GenerationContext generationContext = new GenerationContext()
+        generationContext.baseDir = executionContext.baseDir
+        generationContext.console = executionContext.console
         generationContext.commandLine = commandLine
 
         if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
@@ -62,7 +64,8 @@ class GenerateCommand implements ProjectCommand {
                 String generatorName = commandLine.remainingArgs[0]
                 Generator generator = loadedGenerators().find { it.name == generatorName }
                 if (generator) {
-                    return generator.help(generationContext)
+                    generator.init(generationContext)
+                    return generator.help()
                 }
                 else {
                     noGenerator(generatorName, executionContext.console)
@@ -83,7 +86,8 @@ class GenerateCommand implements ProjectCommand {
         String generatorName = commandLine.remainingArgs[0]
         Generator generator = loadedGenerators().find { it.name == generatorName }
         if (generator) {
-            return generator.generate(generationContext)
+            generator.init(generationContext)
+            return generator.generate()
         }
         else {
             noGenerator(generatorName, executionContext.console)

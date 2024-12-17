@@ -23,7 +23,7 @@ import grails.dev.commands.io.FileSystemInteraction
 import grails.dev.commands.io.FileSystemInteractionImpl
 import grails.dev.commands.template.TemplateRenderer
 import grails.dev.commands.template.TemplateRendererImpl
-import grails.util.BuildSettings
+import org.grails.build.parsing.CommandLine
 import org.grails.config.CodeGenConfig
 import org.grails.io.support.DefaultResourceLoader
 import org.grails.io.support.Resource
@@ -35,9 +35,24 @@ import org.grails.io.support.SpringIOUtils
  */
 class AbstractGenerator implements Generator {
 
-    protected GrailsConsole console = GrailsConsole.getInstance()
+    protected GenerationContext generationContext
+    protected GrailsConsole console
+    protected CommandLine commandLine
 
     protected File baseDir
+
+    protected TemplateRenderer templateRenderer
+    protected FileSystemInteraction fileSystemInteraction
+
+    @Override
+    void init(GenerationContext generationContext) {
+        this.generationContext = generationContext
+        this.console = generationContext.console
+        this.commandLine = generationContext.commandLine
+        this.baseDir = generationContext.baseDir
+        this.templateRenderer = new TemplateRendererImpl(this.baseDir)
+        this.fileSystemInteraction = new FileSystemInteractionImpl(this.baseDir, new DefaultResourceLoader())
+    }
 
     protected CodeGenConfig loadApplicationConfig() {
         CodeGenConfig config = new CodeGenConfig()
@@ -53,11 +68,7 @@ class AbstractGenerator implements Generator {
     }
 
     protected File getBaseDir() {
-        this.baseDir ?: BuildSettings.BASE_DIR
-    }
-
-    protected void setBaseDir(File baseDir) {
-        this.baseDir = baseDir
+        this.baseDir
     }
 
     protected String getTemplateRoot() {
@@ -65,17 +76,15 @@ class AbstractGenerator implements Generator {
     }
 
     protected TemplateRenderer getTemplateRenderer() {
-        TemplateRenderer templateRenderer = new TemplateRendererImpl(getBaseDir())
-        templateRenderer
+        this.templateRenderer
     }
 
     protected FileSystemInteraction getFileSystemInteraction() {
-        FileSystemInteraction fileSystemInteraction = new FileSystemInteractionImpl(getBaseDir(), new DefaultResourceLoader())
-        fileSystemInteraction
+        this.fileSystemInteraction
     }
 
     protected void createFile(String source, String destination, Map<String, Object> model, boolean overwrite) {
-        templateRenderer.render(templateRenderer.template(getTemplateRoot(), source),
+        this.templateRenderer.render(this.templateRenderer.template(getTemplateRoot(), source),
                 fileSystemInteraction.file(destination), model, overwrite)
     }
 
@@ -84,16 +93,16 @@ class AbstractGenerator implements Generator {
     }
 
     void template(String source, String destination, Map<String, Object> model) {
-        templateRenderer.render(templateRenderer.template(getTemplateRoot(), source), file(destination), model, true)
+        this.templateRenderer.render(this.templateRenderer.template(getTemplateRoot(), source), file(destination), model, true)
     }
 
     void template(String source, String destination, Map<String, Object> model, boolean overwrite) {
-        templateRenderer.render(templateRenderer.template(getTemplateRoot(), source), file(destination), model, overwrite)
+        this.templateRenderer.render(this.templateRenderer.template(getTemplateRoot(), source), file(destination), model, overwrite)
     }
 
     void copyFile(String source, String destination) {
         this.console.addStatus('create '.padLeft(13), destination, 'GREEN')
-        SpringIOUtils.copy(templateRenderer.template(getTemplateRoot(), source), file(destination))
+        SpringIOUtils.copy(this.templateRenderer.template(getTemplateRoot(), source), file(destination))
     }
 
     void removeFile(String destination) {
@@ -162,7 +171,7 @@ class AbstractGenerator implements Generator {
      * @return the created directory
      */
     File dir(String name) {
-        console.addStatus('create '.padLeft(13), name, 'GREEN')
+        this.console.addStatus('create '.padLeft(13), name, 'GREEN')
         def file = new File(getBaseDir(), name)
         file.mkdirs()
         file

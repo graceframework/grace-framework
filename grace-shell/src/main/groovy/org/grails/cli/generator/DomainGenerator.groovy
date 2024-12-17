@@ -18,8 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import grails.cli.generator.GenerationContext
-import org.grails.build.parsing.CommandLine
 import org.grails.config.CodeGenConfig
 
 /**
@@ -48,8 +46,7 @@ class DomainGenerator extends AbstractGenerator {
     ]
 
     @Override
-    boolean generate(GenerationContext generationContext) {
-        CommandLine commandLine = generationContext.commandLine
+    boolean generate() {
         String[] args = commandLine.remainingArgs.toArray(new String[0])
         if (args.size() < 2) {
             return
@@ -83,8 +80,7 @@ class DomainGenerator extends AbstractGenerator {
     }
 
     @Override
-    boolean revoke(GenerationContext generationContext) {
-        CommandLine commandLine = generationContext.commandLine
+    boolean revoke() {
         String[] args = commandLine.remainingArgs.toArray(new String[0])
         if (args.size() < 2) {
             return

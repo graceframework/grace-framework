@@ -31,15 +31,18 @@ public interface Generator {
         return getName();
     }
 
-    default boolean generate(GenerationContext generationContext) {
+    default void init(GenerationContext generationContext) {
+    }
+
+    default boolean generate() {
         return true;
     }
 
-    default boolean help(GenerationContext generationContext) {
+    default boolean help() {
         return true;
     }
 
-    default boolean revoke(GenerationContext generationContext) {
+    default boolean revoke() {
         return true;
     }
 
