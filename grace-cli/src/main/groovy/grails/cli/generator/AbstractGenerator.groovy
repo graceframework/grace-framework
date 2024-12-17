@@ -83,6 +83,14 @@ class AbstractGenerator implements Generator {
         this.fileSystemInteraction
     }
 
+    protected String getDefaultPackageName() {
+        loadApplicationConfig().getProperty('grails.codegen.defaultPackage')
+    }
+
+    protected String getDefaultPackagePath() {
+        getDefaultPackageName()?.replace('.', '/')
+    }
+
     protected void createFile(String source, String destination, Map<String, Object> model, boolean overwrite) {
         this.templateRenderer.render(this.templateRenderer.template(getTemplateRoot(), source),
                 fileSystemInteraction.file(destination), model, overwrite)

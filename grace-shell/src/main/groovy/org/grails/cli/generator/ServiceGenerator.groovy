@@ -18,7 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import org.grails.config.CodeGenConfig
 
 /**
  * @author Michael Yan
@@ -35,21 +34,18 @@ class ServiceGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
         String[] methodNames = (args.size() >= 3 ? args[2..-1] : ['serviceMethod']) as String[]
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
         Map<String, Object> model = new HashMap<>()
-        model['packageName'] = defaultPackage
+        model['packageName'] = defaultPackageName
         model['className'] = className
         model['propertyName'] = propertyName
         model['methods'] = methodNames
 
-        String serviceClassFile = 'app/services/' + packagePath + '/' + className + 'Service.groovy'
-        String serviceClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'ServiceSpec.groovy'
+        String serviceClassFile = 'app/services/' + defaultPackagePath + '/' + className + 'Service.groovy'
+        String serviceClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
         createFile('Service.groovy.tpl', serviceClassFile, model, overwrite)
         createFile('ServiceSpec.groovy.tpl', serviceClassSpecFile, model, overwrite)
 
@@ -63,13 +59,10 @@ class ServiceGenerator extends AbstractGenerator {
             return
         }
 
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
-        String serviceClassFile = 'app/services/' + packagePath + '/' + className + 'Service.groovy'
-        String serviceClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'ServiceSpec.groovy'
+        String serviceClassFile = 'app/services/' + defaultPackagePath + '/' + className + 'Service.groovy'
+        String serviceClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ServiceSpec.groovy'
         removeFile(serviceClassFile)
         removeFile(serviceClassSpecFile)
 

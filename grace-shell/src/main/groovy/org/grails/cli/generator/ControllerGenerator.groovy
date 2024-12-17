@@ -18,7 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import org.grails.config.CodeGenConfig
 
 /**
  * @author Michael Yan
@@ -35,21 +34,18 @@ class ControllerGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
         String[] actionNames = args.size() >= 3 ? args[2..-1] : ['index']
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
         Map<String, Object> model = new HashMap<>()
-        model['packageName'] = defaultPackage
+        model['packageName'] = defaultPackageName
         model['className'] = className
         model['propertyName'] = propertyName
         model['actions'] = actionNames
 
-        String controllerFile = 'app/controllers/' + packagePath + '/' + className + 'Controller.groovy'
-        String controllerSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'ControllerSpec.groovy'
+        String controllerFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Controller.groovy'
+        String controllerSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ControllerSpec.groovy'
         createFile('Controller.groovy.tpl', controllerFile, model, overwrite)
         createFile('ControllerSpec.groovy.tpl', controllerSpecFile, model, overwrite)
 
@@ -70,14 +66,11 @@ class ControllerGenerator extends AbstractGenerator {
             return
         }
 
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
-        String controllerFile = 'app/controllers/' + packagePath + '/' + className + 'Controller.groovy'
-        String controllerSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'ControllerSpec.groovy'
+        String controllerFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Controller.groovy'
+        String controllerSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'ControllerSpec.groovy'
         removeFile(controllerFile)
         removeFile(controllerSpecFile)
 

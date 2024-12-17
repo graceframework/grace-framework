@@ -18,7 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import org.grails.config.CodeGenConfig
 
 /**
  * @author Michael Yan
@@ -35,21 +34,18 @@ class TaglibGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
         String[] tagNames = (args.size() >= 3 ? args[2..-1] : ['tag']) as String[]
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
         Map<String, Object> model = new HashMap<>()
-        model['packageName'] = defaultPackage
+        model['packageName'] = defaultPackageName
         model['className'] = className
         model['propertyName'] = propertyName
         model['tags'] = tagNames
 
-        String taglibClassFile = 'app/taglib/' + packagePath + '/' + className + 'TagLib.groovy'
-        String taglibClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'TagLibSpec.groovy'
+        String taglibClassFile = 'app/taglib/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
+        String taglibClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'TagLibSpec.groovy'
         createFile('TagLib.groovy.tpl', taglibClassFile, model, overwrite)
         createFile('TagLibSpec.groovy.tpl', taglibClassSpecFile, model, overwrite)
         true
@@ -62,13 +58,10 @@ class TaglibGenerator extends AbstractGenerator {
             return
         }
 
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
-        String taglibClassFile = 'app/taglib/' + packagePath + '/' + className + 'TagLib.groovy'
-        String taglibClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'TagLibSpec.groovy'
+        String taglibClassFile = 'app/taglib/' + defaultPackagePath + '/' + className + 'TagLib.groovy'
+        String taglibClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'TagLibSpec.groovy'
         removeFile(taglibClassFile)
         removeFile(taglibClassSpecFile)
 

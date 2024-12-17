@@ -18,7 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import org.grails.config.CodeGenConfig
 
 /**
  * @author Michael Yan
@@ -53,7 +52,7 @@ class DomainGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        CodeGenConfig config = loadApplicationConfig()
+
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
         Map<String, String> classAttributes = new LinkedHashMap<>()
@@ -62,17 +61,15 @@ class DomainGenerator extends AbstractGenerator {
             String[] attr = (item.contains(':') ? item.split(':') : [item, 'String']) as String[]
             classAttributes[attr[0]] = TYPES[attr[1]] ?: attr[1]
         }
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
         Map<String, Object> model = new HashMap<>()
-        model['packageName'] = defaultPackage
+        model['packageName'] = defaultPackageName
         model['className'] = className
         model['propertyName'] = propertyName
         model['attributes'] = classAttributes
 
-        String domainClassFile = 'app/domain/' + packagePath + '/' + className + '.groovy'
-        String domainClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'Spec.groovy'
+        String domainClassFile = 'app/domain/' + defaultPackagePath + '/' + className + '.groovy'
+        String domainClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'Spec.groovy'
         createFile('DomainClass.groovy.tpl', domainClassFile, model, overwrite)
         createFile('DomainClassSpec.groovy.tpl', domainClassSpecFile, model, overwrite)
 
@@ -86,13 +83,10 @@ class DomainGenerator extends AbstractGenerator {
             return
         }
 
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
-        String domainClassFile = 'app/domain/' + packagePath + '/' + className + '.groovy'
-        String domainClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'Spec.groovy'
+        String domainClassFile = 'app/domain/' + defaultPackagePath + '/' + className + '.groovy'
+        String domainClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'Spec.groovy'
         removeFile(domainClassFile)
         removeFile(domainClassSpecFile)
 

@@ -18,7 +18,6 @@ package org.grails.cli.generator
 import groovy.transform.CompileStatic
 
 import grails.cli.generator.AbstractGenerator
-import org.grails.config.CodeGenConfig
 
 /**
  * @author Michael Yan
@@ -35,18 +34,15 @@ class InterceptorGenerator extends AbstractGenerator {
         }
 
         boolean overwrite = commandLine.hasOption('force') || commandLine.hasOption('f')
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
         String propertyName = className.uncapitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
         Map<String, Object> model = new HashMap<>()
-        model['packageName'] = defaultPackage
+        model['packageName'] = defaultPackageName
         model['className'] = className
         model['propertyName'] = propertyName
-        String interceptorClassFile = 'app/controllers/' + packagePath + '/' + className + 'Interceptor.groovy'
-        String interceptorClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'InterceptorSpec.groovy'
+        String interceptorClassFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Interceptor.groovy'
+        String interceptorClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'InterceptorSpec.groovy'
 
         createFile('Interceptor.groovy.tpl', interceptorClassFile, model, overwrite)
         createFile('InterceptorSpec.groovy.tpl', interceptorClassSpecFile, model, overwrite)
@@ -61,13 +57,10 @@ class InterceptorGenerator extends AbstractGenerator {
             return
         }
 
-        CodeGenConfig config = loadApplicationConfig()
         String className = args[1].capitalize()
-        String defaultPackage = config.getProperty('grails.codegen.defaultPackage')
-        String packagePath = defaultPackage.replace('.', '/')
 
-        String interceptorClassFile = 'app/controllers/' + packagePath + '/' + className + 'Interceptor.groovy'
-        String interceptorClassSpecFile = 'src/test/groovy/' + packagePath + '/' + className + 'InterceptorSpec.groovy'
+        String interceptorClassFile = 'app/controllers/' + defaultPackagePath + '/' + className + 'Interceptor.groovy'
+        String interceptorClassSpecFile = 'src/test/groovy/' + defaultPackagePath + '/' + className + 'InterceptorSpec.groovy'
 
         removeFile(interceptorClassFile)
         removeFile(interceptorClassSpecFile)
