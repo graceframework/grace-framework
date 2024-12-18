@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public UrlMappingsHandlerMapping urlMappingsHandlerMapping(ObjectProvider<GrailsApplication> grailsApplicationProvider,
             ObjectProvider<UrlMappingsHolder> urlMappingsHolderProvider,
             GrailsCorsConfiguration grailsCorsConfiguration) {
@@ -93,6 +94,7 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public UrlMappingsInfoHandlerAdapter urlMappingsInfoHandlerAdapter(
             ObjectProvider<ActionResultTransformer> actionResultTransformerProvider,
             LinkGenerator grailsLinkGenerator) {
@@ -107,6 +109,7 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public UrlMappingsHolderFactoryBean grailsUrlMappingsHolder(
             ObjectProvider<GrailsApplication> grailsApplication,
             ObjectProvider<GrailsPluginManager> pluginManager,
@@ -121,6 +124,7 @@ public class UrlMappingsPluginConfiguration {
     }
 
     @Bean({"linkGenerator", "grailsLinkGenerator"})
+    @ConditionalOnMissingBean
     public LinkGenerator grailsLinkGenerator(ObjectProvider<GrailsApplication> grailsApplicationProvider,
             ObjectProvider<UrlMappingsHolder> grailsUrlMappingsHolder) {
         Config config = grailsApplicationProvider.getIfAvailable().getConfig();
