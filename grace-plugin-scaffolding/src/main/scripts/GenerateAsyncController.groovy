@@ -1,6 +1,6 @@
 import org.grails.cli.interactive.completers.DomainClassCompleter
 
-description( "Generates an asynchronous controller that performs CRUD operations" ) {
+description( "Generates an asynchronous Controller that performs CRUD operations" ) {
   usage "grace generate-async-controller [DOMAIN CLASS]"
   completer DomainClassCompleter
   flag name:'force', description:"Whether to overwrite existing files"

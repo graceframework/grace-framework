@@ -1,6 +1,6 @@
 import org.grails.cli.interactive.completers.DomainClassCompleter
 
-description( "Generates a controller that performs CRUD operations" ) {
+description( "Generates a Controller that performs CRUD operations" ) {
   usage "grace generate-controller [DOMAIN CLASS]"
   completer DomainClassCompleter
   flag name:'force', description:"Whether to overwrite existing files"
