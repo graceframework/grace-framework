@@ -19,7 +19,7 @@ package grails.plugin.formfields
 import grails.core.GrailsApplication
 import groovy.transform.CompileStatic
 import groovy.xml.MarkupBuilder
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import org.grails.buffer.FastStringWriter
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity

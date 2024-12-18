@@ -47,7 +47,7 @@ dependencies {
 	api "org.graceframework:grace-datastore-core:$gormVersion"
 	api "org.graceframework:grace-datastore-gorm:$gormVersion"
 	api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
-	api "commons-lang:commons-lang:2.6"
+	api "org.apache.commons:commons-lang3:3.13.0"
 	compileOnly "org.graceframework:grace-boot"
 	compileOnly "jakarta.servlet:jakarta.servlet-api"
 

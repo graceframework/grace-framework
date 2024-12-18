@@ -22,7 +22,7 @@ import grails.util.GrailsNameUtils
 import grails.web.databinding.WebDataBinding
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
-import org.apache.commons.lang.ClassUtils
+import org.apache.commons.lang3.ClassUtils
 import grails.core.*
 import grails.plugins.VersionComparator
 import org.grails.datastore.gorm.GormEntity
@@ -125,7 +125,7 @@ class BeanPropertyAccessorImpl implements BeanPropertyAccessor {
 	@CompileStatic
 	private List<Class> getSuperclassesAndInterfaces(Class type) {
 		List<Class> superclasses = new ArrayList<>()
-		superclasses.addAll((List<Class>) ClassUtils.getAllSuperclasses(ClassUtils.primitiveToWrapper(type)))
+		superclasses.addAll(ClassUtils.getAllSuperclasses(ClassUtils.primitiveToWrapper(type)))
 		for(Object it in ClassUtils.getAllInterfaces(type)) {
 			Class interfaceCls = (Class)it
 			String name = interfaceCls.name

@@ -7,7 +7,7 @@ import grails.validation.Validateable
 import grails.web.databinding.WebDataBinding
 import groovy.transform.Canonical
 import groovy.transform.CompileStatic
-import org.apache.commons.lang.ClassUtils
+import org.apache.commons.lang3.ClassUtils
 import org.grails.datastore.gorm.GormEntity
 import org.grails.datastore.gorm.GormValidateable
 import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
@@ -143,7 +143,7 @@ class DelegatingBeanPropertyAccessorImpl implements BeanPropertyAccessor {
 
 	private List<Class> getSuperclassesAndInterfaces(Class type) {
 		List<Class> superclasses = new ArrayList<>()
-		superclasses.addAll((List<Class>) ClassUtils.getAllSuperclasses(ClassUtils.primitiveToWrapper(type)))
+		superclasses.addAll(ClassUtils.getAllSuperclasses(ClassUtils.primitiveToWrapper(type)))
 		for (Object it in ClassUtils.getAllInterfaces(type)) {
 			Class interfaceCls = (Class) it
 			String name = interfaceCls.name
