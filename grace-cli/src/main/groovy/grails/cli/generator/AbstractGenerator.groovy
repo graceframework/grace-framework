@@ -17,6 +17,7 @@ package grails.cli.generator
 
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FromString
+import org.springframework.util.FileSystemUtils
 
 import grails.build.logging.GrailsConsole
 import grails.dev.commands.io.FileSystemInteraction
@@ -118,6 +119,14 @@ class AbstractGenerator implements Generator {
         File file = new File(getBaseDir(), destination)
         if (file.exists()) {
             file.delete()
+        }
+    }
+
+    void prependToFile(String destination, String text, Map<String, Object> args = [:]) {
+        this.console.addStatus('append '.padLeft(13), destination, 'GREEN')
+        File file = new File(getBaseDir(), destination)
+        if (file.canWrite()) {
+            file.append(text)
         }
     }
 
