@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package grails.doc.internal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 public final class StringEscapeCategory {
     private StringEscapeCategory() {
@@ -45,6 +45,6 @@ public final class StringEscapeCategory {
     }
 
     public static String encodeAsHtml(String str) {
-        return StringEscapeUtils.escapeHtml(str);
+        return StringEscapeUtils.escapeHtml4(str);
     }
 }

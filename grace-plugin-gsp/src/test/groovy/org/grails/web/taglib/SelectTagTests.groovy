@@ -2,7 +2,7 @@ package org.grails.web.taglib
 
 import groovy.xml.XmlSlurper
 
-import org.apache.commons.lang.WordUtils
+import org.apache.commons.text.WordUtils
 import org.junit.jupiter.api.Test
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils as RCU

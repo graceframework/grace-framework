@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.text.DecimalFormatSymbols
 
 import groovy.transform.CompileStatic
 import groovy.xml.MarkupBuilder
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.text.StringEscapeUtils
 import org.springframework.beans.PropertyEditorRegistry
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceResolvable

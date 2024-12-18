@@ -7,7 +7,7 @@ dependencies {
     gradleConf gradleApi()
     api libs.asciidoctorj
     api libs.ant
-    api libs.commons.lang
+    api libs.commons.text
     api libs.grails.gdoc.engine
     api libs.groovy.ant
     api libs.jsoup

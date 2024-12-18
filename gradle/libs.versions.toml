@@ -9,6 +9,7 @@ cglib = "3.3.0"
 commons-codec = "1.16.1"
 commons-lang = "2.6"
 commons-lang3 = "3.13.0"
+commons-text = "1.13.0"
 glassfish-web-jsp-jstl = "3.0.1"
 gradle = "8.11.1"
 gradle-git-properties = "2.4.2"
@@ -73,6 +74,7 @@ cglib = { module = "cglib:cglib-nodep", version.ref = "cglib" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
 glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 grails-async-core = { module = "org.graceframework:grace-async-core", version.ref = "grace-async" }
