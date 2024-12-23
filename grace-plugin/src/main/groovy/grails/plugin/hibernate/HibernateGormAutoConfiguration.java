@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,6 +38,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import grails.boot.config.GrailsComponentScanner;
 import grails.config.Config;
@@ -60,6 +62,7 @@ import org.grails.transaction.ChainedTransactionManagerPostProcessor;
  * @author Michael Yan
  * @since 2023.1
  */
+@AutoConfigureOrder(200)
 @AutoConfiguration(after = DataSourceAutoConfiguration.class,
         before = { HibernateJpaAutoConfiguration.class, TransactionAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 @ConditionalOnClass(HibernateDatastore.class)
@@ -146,6 +149,12 @@ public class HibernateGormAutoConfiguration {
     @ConditionalOnMissingBean
     public MappingContext grailsDomainClassMappingContext(HibernateDatastore hibernateDatastore) {
         return hibernateDatastore.getMappingContext();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PlatformTransactionManager transactionManager(HibernateDatastore hibernateDatastore) {
+        return hibernateDatastore.getTransactionManager();
     }
 
     @Bean
