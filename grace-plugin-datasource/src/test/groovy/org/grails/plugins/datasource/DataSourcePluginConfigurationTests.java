@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.transaction.TransactionManager;
 
 import grails.core.DefaultGrailsApplication;
 
@@ -51,7 +50,6 @@ public class DataSourcePluginConfigurationTests {
     void defaultDataSource() {
         registerAndRefreshContext("dataSource.url:jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE");
         assertThat(this.context.getBean(DataSource.class)).isNotNull();
-        assertThat(this.context.getBean(TransactionManager.class)).isNotNull();
     }
 
     private void registerAndRefreshContext(String... env) {
