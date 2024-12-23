@@ -2,7 +2,7 @@
 asset-pipeline = "6.2.0-M2"
 cache = "6.2.0-M1"
 database-migration = "6.2.0-M1"
-fields = "6.1.0"
+fields = "6.2.0-M1"
 geb = "6.2.0-M1"
 hibernate = "2023.2.0-M1"
 scaffolding = "6.2.0-M1"
