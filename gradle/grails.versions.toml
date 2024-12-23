@@ -4,7 +4,7 @@ cache = "6.2.0-M1"
 database-migration = "6.1.0"
 fields = "6.1.0"
 geb = "6.2.0-M1"
-hibernate = "2023.2.0-SNAPSHOT"
+hibernate = "2023.2.0-M1"
 scaffolding = "6.2.0-M1"
 
 [profiles]
