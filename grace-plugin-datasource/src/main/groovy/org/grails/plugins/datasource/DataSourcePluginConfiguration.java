@@ -31,7 +31,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import grails.config.Config;
 import grails.core.GrailsApplication;
@@ -73,12 +72,6 @@ public class DataSourcePluginConfiguration {
     @ConditionalOnMissingBean
     public DataSource dataSource(ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources) {
         return dataSourceConnectionSources.getDefaultConnectionSource().getSource();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean
