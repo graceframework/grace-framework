@@ -31,25 +31,25 @@ abstract class AbstractFormFieldsTagLibSpec extends Specification implements Gra
 		applicationContext.getBean("groovyPagesTemplateEngine").clearPageCache()
 		applicationContext.getBean("groovyPagesTemplateRenderer").clearCache()
 
-		messageSource.@messages.clear() // bit of a hack but messages don't get torn down otherwise
+		messageSource.@messageMap.clear() // bit of a hack but messages don't get torn down otherwise
 	}
 
 	void setupSpec() {
 		defineBeans { ->
 			grailsTagDateHelper(DefaultGrailsTagDateHelper)
 			//constraintsEvaluator(DefaultConstraintEvaluator)
-			def dpf = new DomainPropertyFactoryImpl(grailsDomainClassMappingContext: applicationContext.getBean("grailsDomainClassMappingContext", MappingContext), trimStrings: true, convertEmptyStringsToNull: true)
+			def domainClassMappingContext = applicationContext.getBean("grailsDomainClassMappingContext", MappingContext)
+			def dpf = new DomainPropertyFactoryImpl(domainClassMappingContext)
 			domainPropertyFactory(InstanceFactoryBean, dpf, DomainPropertyFactory)
 
 			domainModelService(DomainModelServiceImpl) {
 				domainPropertyFactory = ref('domainPropertyFactory')
 			}
-			beanPropertyAccessorFactory(BeanPropertyAccessorFactory) {
-				constraintsEvaluator = ref(FieldsGrailsPlugin.CONSTRAINTS_EVALULATOR_BEAN_NAME)
-				proxyHandler = new DefaultProxyHandler()
-				grailsDomainClassMappingContext = ref("grailsDomainClassMappingContext")
-				domainPropertyFactory = ref('domainPropertyFactory')
-			}
+			beanPropertyAccessorFactory(BeanPropertyAccessorFactory,
+					grailsApplication,
+					domainClassMappingContext,
+					ref(FieldsGrailsPlugin.CONSTRAINTS_EVALULATOR_BEAN_NAME),
+					ref('domainPropertyFactory'), new DefaultProxyHandler())
 		}
 	}
 	

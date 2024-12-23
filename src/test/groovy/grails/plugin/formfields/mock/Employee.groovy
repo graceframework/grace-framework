@@ -3,7 +3,7 @@ package grails.plugin.formfields.mock
 import grails.persistence.Entity
 
 @Entity
-class Employee {
+class Employee extends Person {
 	Salutation salutation
 	String name
 	String password

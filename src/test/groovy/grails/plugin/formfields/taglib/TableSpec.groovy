@@ -30,7 +30,7 @@ class TableSpec extends AbstractFormFieldsTagLibSpec implements TagLibUnitTest<F
 		mockDomain(Person)
 
         //Alternative table template
-        alternativeTable = new File('grails-app/views/templates/_fields/_alternativeTable.gsp') << '<table><h1>Alternative Table Template</h1></table>'
+        alternativeTable = new File('app/views/templates/_fields/_alternativeTable.gsp') << '<table><h1>Alternative Table Template</h1></table>'
     }
 
 	def setup() {

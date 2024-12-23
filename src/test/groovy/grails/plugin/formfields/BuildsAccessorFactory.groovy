@@ -14,14 +14,14 @@ abstract class BuildsAccessorFactory extends Specification implements GrailsWebU
 
     void setupSpec() {
         defineBeans { ->
-            def dpf = new DomainPropertyFactoryImpl(grailsDomainClassMappingContext: applicationContext.getBean("grailsDomainClassMappingContext", MappingContext), trimStrings: true, convertEmptyStringsToNull: true)
+            def domainClassMappingContext = applicationContext.getBean("grailsDomainClassMappingContext", MappingContext)
+            def domainPropertyFactory = new DomainPropertyFactoryImpl(domainClassMappingContext)
 
-            beanPropertyAccessorFactory(BeanPropertyAccessorFactory) {
-                constraintsEvaluator = ref(FieldsGrailsPlugin.CONSTRAINTS_EVALULATOR_BEAN_NAME)
-                proxyHandler = new DefaultProxyHandler()
-                grailsDomainClassMappingContext = ref("grailsDomainClassMappingContext")
-                domainPropertyFactory = dpf
-            }
+            beanPropertyAccessorFactory(BeanPropertyAccessorFactory,
+                    grailsApplication,
+                    domainClassMappingContext,
+                    ref(FieldsGrailsPlugin.CONSTRAINTS_EVALULATOR_BEAN_NAME),
+                    domainPropertyFactory, new DefaultProxyHandler())
         }
     }
 
