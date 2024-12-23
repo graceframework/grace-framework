@@ -1,5 +1,8 @@
 package grails.plugin.formfields
 
+import java.lang.constant.Constable
+import java.lang.constant.ConstantDesc
+
 import grails.core.GrailsDomainClass
 import grails.gorm.Entity
 import grails.util.GrailsNameUtils
@@ -153,7 +156,7 @@ class DelegatingBeanPropertyAccessorImpl implements BeanPropertyAccessor {
 				}
 			}
 		}
-		superclasses.removeAll([Object, GroovyObject, Serializable, Cloneable, Comparable, WebDataBinding, DirtyCheckable, Entity])
+		superclasses.removeAll([Object, GroovyObject, Serializable, Cloneable, Comparable, Constable, ConstantDesc, WebDataBinding, DirtyCheckable, Entity])
 		return superclasses.unique()
 	}
 }

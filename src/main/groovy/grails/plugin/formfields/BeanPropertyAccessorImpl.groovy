@@ -16,6 +16,9 @@
 
 package grails.plugin.formfields
 
+import java.lang.constant.Constable
+import java.lang.constant.ConstantDesc
+
 import grails.gorm.Entity
 import grails.gorm.validation.ConstrainedProperty
 import grails.util.GrailsNameUtils
@@ -135,7 +138,7 @@ class BeanPropertyAccessorImpl implements BeanPropertyAccessor {
 				}
 			}
 		}
-		superclasses.removeAll([Object, GroovyObject, Serializable, Cloneable, Comparable, WebDataBinding, DirtyCheckable, Entity])
+		superclasses.removeAll([Object, GroovyObject, Serializable, Cloneable, Comparable, Constable, ConstantDesc, WebDataBinding, DirtyCheckable, Entity])
 		return superclasses.unique()
 	}
 }
