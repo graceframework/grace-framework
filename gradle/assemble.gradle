@@ -126,20 +126,10 @@ task install(dependsOn: populateDependencies) { task ->
 task publishToDist { task ->
     subprojects { Project project ->
         if (!project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
-            if (project.name == 'grace-gradle-plugin') {
-                project.tasks.named("generateMetadataFileForIvyPublication").configure {
-                    enabled = false
-                }
-                project.tasks.named("generateMetadataFileForPluginIvyPublication").configure {
-                    enabled = false
-                }
-                task.dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
-            } else {
-                project.tasks.named("generateMetadataFileForIvyPublication").configure {
-                    enabled = false
-                }
-                task.dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
+            project.tasks.named("generateMetadataFileForIvyPublication").configure {
+                enabled = false
             }
+            task.dependsOn("$project.name:publishAllPublicationsToGraceDistRepository")
         }
     }
 }

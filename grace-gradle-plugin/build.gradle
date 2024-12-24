@@ -49,6 +49,8 @@ dependencies {
 }
 
 gradlePlugin {
+    automatedPublishing = false
+
     plugins {
         graceCore {
             displayName = "Grace Core Gradle Plugin"
@@ -127,38 +129,6 @@ tasks.withType(Copy) {
     }
 }
 
-if (isReleaseVersion) {
-    afterEvaluate {
-        signing {
-            required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
-            Publication[] publications = new Publication[publishing.publications.size()]
-            publishing.publications.findAll().toArray(publications)
-            sign(publications)
-        }
-    }
-
-    tasks.withType(Sign) {
-        onlyIf { isReleaseVersion }
-    }
-}
-
 tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
     shouldRunAfter(tasks.withType(Sign))
-}
-
-publishing {
-    publications {
-        pluginMaven(MavenPublication) {
-            pom {
-                name = "Grace Gradle Plugin"
-                description = "A Gradle plugin for Grace which provides a bunch of useful plugins"
-
-                withXml {
-                    def xml = asNode()
-
-                    xml.children().last() + pomInfo
-                }
-            }
-        }
-    }
 }
