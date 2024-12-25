@@ -46,41 +46,50 @@ dependencies {
 }
 
 gradlePlugin {
+    website = 'https://github.com/graceframework/grace-framework'
+    vcsUrl = 'https://github.com/graceframework/grace-framework.git'
+
     plugins {
         graceCore {
             displayName = "Grace Core Gradle Plugin"
             description = 'The main Grace gradle plugin implementation'
             id = 'org.graceframework.grace-core'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.core.GrailsGradlePlugin'
         }
         graceDoc {
             displayName = "Grace Doc Gradle Plugin"
             description = 'Adds Grace doc publishing support'
             id = 'org.graceframework.grace-doc'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.doc.GrailsDocGradlePlugin'
         }
         graceGsp {
             displayName = "Grace GSP Gradle Plugin"
             description = 'A plugin that adds support for compiling Groovy Server Pages (GSP)'
             id = 'org.graceframework.grace-gsp'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.web.gsp.GroovyPagePlugin'
         }
         gracePlugin {
             displayName = "Grace-Plugin Gradle Plugin"
             description = 'A Gradle plugin for Grace plugins'
             id = 'org.graceframework.grace-plugin'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.core.GrailsPluginGradlePlugin'
         }
         graceProfile {
             displayName = "Grace Profile Gradle Plugin"
             description = 'A plugin that is capable of compiling a Grace profile into a JAR file for distribution'
             id = 'org.graceframework.grace-profile'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin'
         }
         graceWeb {
             displayName = "Grace Web Gradle Plugin"
             description = 'Adds web specific extensions'
             id = 'org.graceframework.grace-web'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
             implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
         }
     }
@@ -90,7 +99,7 @@ jar {
     manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
             "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-            "Implementation-Title": "Grace",
+            "Implementation-Title": "Grace Framework",
             "Implementation-Version": projectVersion,
             "Implementation-Vendor": 'graceframework.org')
 }
