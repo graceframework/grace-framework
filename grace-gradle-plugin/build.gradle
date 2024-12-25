@@ -49,8 +49,6 @@ dependencies {
 }
 
 gradlePlugin {
-    automatedPublishing = false
-
     plugins {
         graceCore {
             displayName = "Grace Core Gradle Plugin"
