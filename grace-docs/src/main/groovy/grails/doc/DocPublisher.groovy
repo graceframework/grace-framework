@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,8 +96,7 @@ class DocPublisher {
     /**
      * The AntBuilder instance to use
      */
-    @SuppressWarnings(['deprecation', 'UnnecessaryPackageReference'])
-    groovy.util.AntBuilder ant
+    groovy.ant.AntBuilder ant
 
     /**
      * The language we're generating for (gets its own sub-directory). Defaults to ''
