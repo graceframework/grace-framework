@@ -121,12 +121,6 @@ configure([javadoc]) {
     options.jFlags "-Xms64M", "-Xmx512M"
 }
 
-tasks.withType(Copy) {
-    configure {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
-}
-
 tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
     shouldRunAfter(tasks.withType(Sign))
 }
