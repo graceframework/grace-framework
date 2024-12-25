@@ -138,11 +138,7 @@ subprojects { project ->
     ext.isTestSuite = project.name.startsWith("grace-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
-        if (project.name == 'grace-gradle-plugin') {
-            delegate.name "Grace Gradle Plugin"
-            delegate.description "Grace Framework : A Gradle plugin for Grace which provides a bunch of useful plugins"
-        }
-        else {
+        if (project.name != 'grace-gradle-plugin') {
             def projectName = project.name.split('-')*.capitalize().join(' ')
             delegate.name projectName
             delegate.description "Grace Framework : $projectName"

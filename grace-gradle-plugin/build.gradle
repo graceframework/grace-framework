@@ -130,3 +130,38 @@ tasks.withType(Copy) {
 tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
     shouldRunAfter(tasks.withType(Sign))
 }
+
+if (isReleaseVersion) {
+    afterEvaluate {
+        signing {
+            required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+            Publication[] publications = new Publication[publishing.publications.size()]
+            publishing.publications.findAll().toArray(publications)
+            sign(publications)
+        }
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { isReleaseVersion }
+    }
+}
+
+project.afterEvaluate {
+    project.publishing.publications.each { publication->
+        if (publication instanceof MavenPublication) {
+            publication.pom {
+                if (publication.name == "maven" || publication.name == "pluginMaven") {
+                    name = "Grace Gradle Plugin"
+                    description = "Grace Framework : A Gradle plugin for Grace which provides a bunch of useful plugins"
+                }
+
+                if (publication.name == "pluginMaven" || publication.name.endsWith("PluginMarkerMaven")) {
+                    withXml {
+                        def xml = asNode()
+                        xml.children().last() + pomInfo
+                    }
+                }
+            }
+        }
+    }
+}
