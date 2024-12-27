@@ -16,7 +16,6 @@ group "org.graceframework"
 apply plugin: "io.spring.dependency-management"
 
 ext {
-    gradleWrapperVersion = project.gradleWrapperVersion
     userOrg = 'graceframework'
     repo = 'grace-views'
     isGrailsPlugin = false

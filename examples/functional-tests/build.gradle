@@ -29,10 +29,6 @@ apply plugin: "org.gradle.test-retry"
 //apply plugin: "org.grails.plugins.views-json"
 //apply plugin: "org.grails.plugins.views-markup"
 
-ext {
-    gradleWrapperVersion = project.gradleWrapperVersion
-}
-
 assets {
     minifyJs = true
     minifyCss = true

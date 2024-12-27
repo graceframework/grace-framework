@@ -25,10 +25,6 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "org.gradle.test-retry"
 //apply plugin: "org.grails.plugins.views-markup"
 
-ext {
-    gradleWrapperVersion = project.gradleWrapperVersion
-}
-
 sourceCompatibility = 11
 targetCompatibility = 11
 

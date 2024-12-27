@@ -1,7 +1,6 @@
 group "org.graceframework.plugins"
 
 ext {
-    gradleWrapperVersion = project.gradleWrapperVersion
     userOrg = 'graceframework'
     repo = 'grace-views'
     isGrailsPlugin = false
