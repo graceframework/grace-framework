@@ -45,8 +45,6 @@ dependencies {
     testImplementation project(":views-json-testing-support")
     testImplementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
     testRuntimeOnly "org.javassist:javassist:$javassistVersion"
-
-    console "org.graceframework:grace-console"
 }
 
 tasks.withType(GroovyPageCompileTask) {
