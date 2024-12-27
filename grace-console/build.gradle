@@ -11,7 +11,7 @@ dependencies {
     api libs.groovy.swing
     api libs.spring.boot
     testImplementation libs.spring.test
-    api libs.spring.web, optional
+    api libs.spring.web
     implementation libs.jansi
     implementation libs.jline
 }
