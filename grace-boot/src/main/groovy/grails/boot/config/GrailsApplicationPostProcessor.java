@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import groovy.lang.Closure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
@@ -57,7 +55,6 @@ import grails.config.Settings;
 import grails.core.DefaultGrailsApplication;
 import grails.core.GrailsApplication;
 import grails.core.GrailsApplicationLifeCycle;
-import grails.plugins.DefaultGrailsPluginManager;
 import grails.plugins.GrailsPlugin;
 import grails.plugins.GrailsPluginManager;
 import grails.spring.BeanBuilder;
@@ -95,9 +92,9 @@ public class GrailsApplicationPostProcessor
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    protected final GrailsApplication grailsApplication;
+    protected GrailsApplication grailsApplication;
 
-    protected final GrailsPluginManager pluginManager;
+    protected GrailsPluginManager pluginManager;
 
     protected final GrailsApplicationEventListener grailsApplicationEventListener;
 
@@ -115,9 +112,7 @@ public class GrailsApplicationPostProcessor
     private ApplicationStartup applicationStartup = ApplicationStartup.DEFAULT;
 
     public GrailsApplicationPostProcessor() {
-        this.grailsApplication = new DefaultGrailsApplication();
         this.grailsApplicationEventListener = new GrailsApplicationEventListener();
-        this.pluginManager = new DefaultGrailsPluginManager(this.grailsApplication);
     }
 
     public void setGrailsApplicationLifeCycle(GrailsApplicationLifeCycle lifeCycle) {
@@ -132,6 +127,8 @@ public class GrailsApplicationPostProcessor
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (this.applicationContext != applicationContext) {
             this.applicationContext = applicationContext;
+            this.grailsApplication = applicationContext.getBean(GrailsApplication.class);
+            this.pluginManager = applicationContext.getBean(GrailsPluginManager.class);
             initializeGrailsApplication(applicationContext);
             if (applicationContext instanceof ConfigurableApplicationContext) {
                 ConfigurableApplicationContext configurable = (ConfigurableApplicationContext) applicationContext;
@@ -253,7 +250,9 @@ public class GrailsApplicationPostProcessor
             if (conversionService != null) {
                 config.setConversionService(conversionService);
             }
-            ((DefaultGrailsApplication) this.grailsApplication).setConfig(config);
+            if (this.grailsApplication instanceof DefaultGrailsApplication) {
+                ((DefaultGrailsApplication) this.grailsApplication).setConfig(config);
+            }
         }
         configStep.end();
     }
@@ -334,17 +333,6 @@ public class GrailsApplicationPostProcessor
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        BeanFactory parentBeanFactory = beanFactory.getParentBeanFactory();
-        if (parentBeanFactory instanceof ConfigurableBeanFactory) {
-            ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) parentBeanFactory;
-            configurableBeanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, this.grailsApplication);
-            configurableBeanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, this.pluginManager);
-        }
-        else {
-            beanFactory.registerSingleton(GrailsApplication.APPLICATION_ID, this.grailsApplication);
-            beanFactory.registerSingleton(GrailsPluginManager.BEAN_NAME, this.pluginManager);
-        }
-
         beanFactory.addBeanPostProcessor(new GrailsApplicationAwareBeanPostProcessor(this.grailsApplication));
         beanFactory.addBeanPostProcessor(new PluginManagerAwareBeanPostProcessor(this.pluginManager));
     }
@@ -353,7 +341,6 @@ public class GrailsApplicationPostProcessor
     public void setApplicationStartup(ApplicationStartup applicationStartup) {
         Assert.notNull(applicationStartup, "applicationStartup should not be null");
         this.applicationStartup = applicationStartup;
-        this.pluginManager.setApplicationStartup(applicationStartup);
         this.grailsApplicationEventListener.setApplicationStartup(applicationStartup);
     }
 
