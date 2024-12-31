@@ -18,6 +18,7 @@ package grails.plugin.hibernate;
 import java.beans.Introspector;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,6 +39,8 @@ import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfigu
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -48,10 +52,14 @@ import grails.core.support.proxy.ProxyHandler;
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.gorm.events.ConfigurableApplicationContextEventPublisher;
 import org.grails.datastore.gorm.proxy.ProxyHandlerAdapter;
+import org.grails.datastore.mapping.config.Settings;
+import org.grails.datastore.mapping.core.connections.AbstractConnectionSources;
+import org.grails.datastore.mapping.core.connections.ConnectionSource;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.services.Service;
 import org.grails.orm.hibernate.HibernateDatastore;
 import org.grails.orm.hibernate.proxy.HibernateProxyHandler;
+import org.grails.orm.hibernate.support.HibernateDatastoreConnectionSourcesRegistrar;
 import org.grails.plugin.hibernate.support.AggregatePersistenceContextInterceptor;
 import org.grails.plugin.hibernate.support.GrailsOpenSessionInViewInterceptor;
 import org.grails.transaction.ChainedTransactionManagerPostProcessor;
@@ -81,6 +89,7 @@ public class HibernateGormAutoConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public HibernateDatastore hibernateDatastore(ObjectProvider<DataSource> dataSource) {
         GrailsClass[] grailsClasses = this.grailsApplication.getObject().getArtefacts(DomainClassArtefactHandler.TYPE);
@@ -140,18 +149,21 @@ public class HibernateGormAutoConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public SessionFactory sessionFactory(HibernateDatastore hibernateDatastore) {
         return hibernateDatastore.getSessionFactory();
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public MappingContext grailsDomainClassMappingContext(HibernateDatastore hibernateDatastore) {
         return hibernateDatastore.getMappingContext();
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
     public PlatformTransactionManager transactionManager(HibernateDatastore hibernateDatastore) {
         return hibernateDatastore.getTransactionManager();
@@ -192,6 +204,50 @@ public class HibernateGormAutoConfiguration {
         String whitelistPattern = config.getProperty(TRANSACTION_MANAGER_WHITE_LIST_PATTERN, "");
         String blacklistPattern = config.getProperty(TRANSACTION_MANAGER_BLACK_LIST_PATTERN, "");
         return new ChainedTransactionManagerPostProcessor(config, whitelistPattern, blacklistPattern);
+    }
+
+    @Bean
+    @Conditional(GrailsDataSourceCondition.class)
+    public static HibernateDatastoreConnectionSourcesRegistrar hibernateDatastoreConnectionSourcesRegistrar(ObjectProvider<GrailsApplication> grailsApplication) {
+        Iterable<String> dataSourceNames = getConfigureDataSources(grailsApplication.getObject().getConfig());
+        return new HibernateDatastoreConnectionSourcesRegistrar(dataSourceNames);
+    }
+
+    private static Set<String> getConfigureDataSources(Config config) {
+        Set<String> dataSourceNames = new HashSet<>();
+        if (config == null) {
+            dataSourceNames = Set.of(ConnectionSource.DEFAULT);
+        }
+        else {
+            Map dataSources = config.getProperty(Settings.SETTING_DATASOURCES, Map.class, Collections.emptyMap());
+
+            if (dataSources != null && !dataSources.isEmpty()) {
+                dataSourceNames.addAll(AbstractConnectionSources.toValidConnectionSourceNames(dataSources));
+            }
+            Map dataSource = config.getProperty(Settings.SETTING_DATASOURCE, Map.class, Collections.emptyMap());
+            if (dataSource != null && !dataSource.isEmpty()) {
+                dataSourceNames.add(ConnectionSource.DEFAULT);
+            }
+        }
+        return dataSourceNames;
+    }
+
+    static final class GrailsDataSourceCondition extends AnyNestedCondition {
+
+        GrailsDataSourceCondition() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnProperty(name = "dataSource")
+        private static final class DataSourceUrlCondition {
+
+        }
+
+        @ConditionalOnProperty(name = "dataSources")
+        private static final class DataSourcesCondition {
+
+        }
+
     }
 
 }
