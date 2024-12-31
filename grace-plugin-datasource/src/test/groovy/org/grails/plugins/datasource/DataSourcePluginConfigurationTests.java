@@ -52,6 +52,13 @@ public class DataSourcePluginConfigurationTests {
         assertThat(this.context.getBean(DataSource.class)).isNotNull();
     }
 
+    @Test
+    void multiDataSources() {
+        registerAndRefreshContext("dataSources=", "dataSources.moreBooks.url:jdbc:h2:mem:moreBooks;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE",
+                "dataSources.evenMoreBooks.url:jdbc:h2:mem:evenMoreBooks;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE");
+        assertThat(this.context.getBeansOfType(DataSource.class)).hasSize(2);
+    }
+
     private void registerAndRefreshContext(String... env) {
         TestPropertyValues.of(env).applyTo(this.context);
         this.context.registerBean("grailsApplication", TestGrailsApplication.class, this.context);

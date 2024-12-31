@@ -88,7 +88,7 @@ public class DataSourcePluginConfiguration {
     @Bean
     @Primary
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "dataSource", name = "url")
+    @ConditionalOnProperty(name = "dataSource.url")
     public DataSource dataSource(ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources) {
         return dataSourceConnectionSources.getDefaultConnectionSource().getSource();
     }
@@ -105,7 +105,7 @@ public class DataSourcePluginConfiguration {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
-        @ConditionalOnProperty(name = "dataSource")
+        @ConditionalOnProperty(name = "dataSource.url")
         private static final class DataSourceUrlCondition {
 
         }
