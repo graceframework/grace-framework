@@ -20,7 +20,15 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,10 +39,18 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.util.ClassUtils;
 
 import grails.config.Config;
 import grails.core.GrailsApplication;
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings;
+import org.grails.datastore.mapping.config.Settings;
+import org.grails.datastore.mapping.core.connections.ConnectionSource;
 import org.grails.datastore.mapping.core.connections.ConnectionSources;
 import org.grails.plugins.datasource.DataSourcePluginConfiguration.GrailsDataSourceCondition;
 
@@ -48,6 +64,7 @@ import org.grails.plugins.datasource.DataSourcePluginConfiguration.GrailsDataSou
         DataSourceAutoConfiguration.class, SqlInitializationAutoConfiguration.class
 })
 @AutoConfigureOrder(100)
+@Import(DataSourcePluginConfiguration.BeanPostProcessorsRegistrar.class)
 @Conditional(GrailsDataSourceCondition.class)
 public class DataSourcePluginConfiguration {
 
@@ -69,7 +86,9 @@ public class DataSourcePluginConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "dataSource", name = "url")
     public DataSource dataSource(ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources) {
         return dataSourceConnectionSources.getDefaultConnectionSource().getSource();
     }
@@ -86,16 +105,44 @@ public class DataSourcePluginConfiguration {
             super(ConfigurationPhase.REGISTER_BEAN);
         }
 
-        @ConditionalOnProperty(prefix = "dataSource", name = "url")
+        @ConditionalOnProperty(name = "dataSource")
         private static final class DataSourceUrlCondition {
 
         }
 
-        @ConditionalOnProperty(prefix = "dataSources", name = "default")
+        @ConditionalOnProperty(name = "dataSources")
         private static final class DataSourcesCondition {
 
         }
 
+    }
+
+    public static class BeanPostProcessorsRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
+
+        private ConfigurableListableBeanFactory beanFactory;
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            if (beanFactory instanceof ConfigurableListableBeanFactory listableBeanFactory) {
+                this.beanFactory = listableBeanFactory;
+            }
+        }
+
+        @Override
+        public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+            ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources = this.beanFactory.getBean("dataSourceConnectionSources", ConnectionSources.class);
+            dataSourceConnectionSources.getAllConnectionSources().forEach(dataSource -> {
+                if (!dataSource.getName().equals(ConnectionSource.DEFAULT)) {
+                    BeanDefinitionBuilder beanDefinitionBuilder =
+                            BeanDefinitionBuilder.genericBeanDefinition(DataSource.class, dataSource::getSource)
+                                    .setRole(BeanDefinition.ROLE_APPLICATION);
+                    AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+                    String resourcePath = ClassUtils.convertClassNameToResourcePath(DataSourcePluginConfiguration.class.getName()) + ClassUtils.CLASS_FILE_SUFFIX;
+                    beanDefinition.setResource(new ClassPathResource(resourcePath));
+                    registry.registerBeanDefinition(Settings.SETTING_DATASOURCE + "_" + dataSource.getName(), beanDefinition);
+                }
+            });
+        }
     }
 
 }
