@@ -138,7 +138,7 @@ jar {
     enabled = true
     archiveClassifier.set('plugin')
     includeEmptyDirs = false
-    exclude 'gsp_**', 'gsp/**'
+    exclude 'gsp_**', 'gsp/**', 'cache/Application.class', 'com/demo/*.class'
 }
 
 publishing {
