@@ -7,8 +7,6 @@ buildscript {
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.3.2"
-        classpath "org.liquibase:liquibase-core:$liquibaseVersion"
-        classpath "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
     }
 }
 
@@ -57,18 +55,11 @@ dependencies {
     api("org.apache.groovy:groovy-sql:$groovyVersion")
     api "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
 
-    compileOnly 'org.springframework.boot:spring-boot-starter-logging'
-    compileOnly "org.springframework.boot:spring-boot-starter-actuator"
-    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
-    compileOnly "org.springframework.boot:spring-boot-starter-tomcat"
-
     compileOnly "org.graceframework:grace-boot"
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation "org.graceframework:grace-datastore-gorm:$gormVersion"
     compileOnly "org.graceframework.plugins:hibernate:$hibernatePluginVersion"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-tomcat"
-    testImplementation "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
     testImplementation "org.graceframework:grace-shell"
     testImplementation "org.graceframework.plugins:hibernate:$hibernatePluginVersion"
 
@@ -83,8 +74,6 @@ dependencies {
     documentation "org.apache.groovy:groovy-templates:$groovyVersion"
     documentation "org.apache.groovy:groovy-xml:$groovyVersion"
 }
-
-bootJar.enabled = false
 
 java {
     toolchain {
