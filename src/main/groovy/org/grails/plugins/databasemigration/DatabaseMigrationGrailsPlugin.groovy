@@ -31,7 +31,8 @@ class DatabaseMigrationGrailsPlugin extends Plugin {
 
     def grailsVersion = "2023.0.0 > *"
     def pluginExcludes = [
-            "**/testapp/**",
+            'testapp/**',
+            'databasemigration/**',
             "grails-app/views/error.gsp"
     ]
 

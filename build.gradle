@@ -99,6 +99,13 @@ task docs(type:Copy, group: 'documentation')  {
     into "$buildDir/docs"
 }
 
+jar {
+    enabled = true
+    archiveClassifier.set('plugin')
+    includeEmptyDirs = false
+    exclude 'testapp/*.class', 'databasemigration/*.class'
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
