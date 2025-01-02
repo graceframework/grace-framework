@@ -150,6 +150,15 @@ publishing {
                     developerConnection = 'scm:git:ssh://github.com:graceframework/grace-database-migration.git'
                     url = 'https://github.com/graceframework/grace-database-migration'
                 }
+
+                withXml {
+                    def pomNode = asNode()
+
+                    try {
+                        pomNode.dependencyManagement.replaceNode {}
+                    } catch (Throwable ignore) {
+                    }
+                }
             }
         }
     }
