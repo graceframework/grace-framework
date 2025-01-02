@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2022 the original author or authors.
+ * Copyright 2016-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@ import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 import grails.util.BuildSettings;
 
-import org.grails.io.support.GrailsResourceUtils;
-
 /**
  * A {@link org.springframework.core.io.ResourceLoader} implementation
  * that loads GSP views relative to the project base directory for unit tests.
@@ -66,11 +64,6 @@ public class GroovyPageUnitTestResourceLoader extends DefaultResourceLoader impl
             return new ByteArrayResource(this.groovyPages.get(location).getBytes(StandardCharsets.UTF_8), location);
         }
 
-        if (this.basePath == null) {
-            String basedir = BuildSettings.BASE_DIR.getAbsolutePath();
-            this.basePath = basedir + File.separatorChar + GrailsResourceUtils.VIEWS_DIR_PATH;
-        }
-
         String path = this.basePath + location;
         path = makeCanonical(path);
         return new FileSystemResource(path);
@@ -98,6 +91,10 @@ public class GroovyPageUnitTestResourceLoader extends DefaultResourceLoader impl
             if (viewDir != null) {
                 this.basePath = viewDir;
             }
+        }
+        if (this.basePath == null) {
+            String appDir = BuildSettings.GRAILS_APP_DIR.getAbsolutePath();
+            this.basePath = appDir + File.separatorChar + "views";
         }
     }
 
