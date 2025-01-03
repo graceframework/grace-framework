@@ -33,7 +33,7 @@ jobs:
         id: build
         uses: gradle/gradle-build-action@v3
         with:
-          arguments: build -x test -x findMainClass
+          arguments: build
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
