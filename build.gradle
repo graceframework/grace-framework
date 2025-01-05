@@ -141,6 +141,10 @@ subprojects { project->
             inputs.files(tasks.named('processResources'))
         }
 
+        tasks.withType(GroovyCompile) {
+            options.compilerArgs << '-parameters'
+        }
+
         groovydoc.classpath = configurations.documentation
     }
 
