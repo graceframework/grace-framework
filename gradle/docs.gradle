@@ -1,6 +1,8 @@
 buildscript {
     repositories {
-        maven { url "https://repo.grails.org/grails/core" }
+        maven {
+            url = "https://repo.grails.org/grails/core"
+        }
     }
 }
 
@@ -78,7 +80,6 @@ task javadoc(type:Javadoc, group: 'documentation') {
         links("https://java.sun.com/j2ee/1.4/docs/api", "https://java.sun.com/j2se/1.5.0/docs/api", "https://static.springframework.org/spring/docs/2.5.x/api")
 //        tags("todo:a:To do")  todo fix the javadoc task to accept this option
     }
-    verbose = false
 }
 
 tasks.register('groovydoc', Groovydoc) {
@@ -117,7 +118,7 @@ task gdoc(type: GradleBuild, dependsOn: ["groovydoc", "fetchGrailsDocsSource"], 
     startParameter.setCurrentDir(new File("${buildDir}/grails-docs-src"));
     // startParameter.setSearchUpwards(false)
     startParameter.useEmptySettings()
-    buildFile = "${buildDir}/grails-docs-src/build.gradle"
+    dir = "${buildDir}/grails-docs-src/build.gradle"
     tasks = ["clean", "assemble"]
 
     doFirst {

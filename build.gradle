@@ -2,7 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:$gradleNexusPublishPluginVersion"
@@ -83,9 +85,13 @@ nexusPublishing {
 allprojects {
     repositories {
         mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
 
@@ -123,8 +129,6 @@ allprojects {
         }
     }
 }
-
-apply from: "gradle/idea.gradle"
 
 subprojects { project ->
     version = grailsVersion
@@ -187,6 +191,8 @@ subprojects { project ->
     apply plugin: "org.gradle.test-retry"
 
     java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         withJavadocJar()
         withSourcesJar()
     }
@@ -222,7 +228,7 @@ subprojects { project ->
 
         afterEvaluate {
             signing {
-                required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+                required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
                 sign publishing.publications.maven
             }
         }
@@ -255,9 +261,6 @@ subprojects { project ->
     if (project.name == 'grace-dependencies') return
     if (project.name == 'grace-bom') return
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
     jar{
         manifest.mainAttributes(
             "Built-By": System.properties['user.name'],
@@ -289,10 +292,11 @@ subprojects { project ->
     }
 
     configure([compileGroovy, compileTestGroovy]) {
-        groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
         groovyOptions.encoding = "UTF-8"
         options.encoding = "UTF-8"
         options.compilerArgs << '-parameters'
+        options.forkOptions.memoryInitialSize = '128M'
+        options.forkOptions.memoryMaximumSize = '1G'
     }
 
     configure([compileJava, compileTestJava]) {
@@ -357,10 +361,10 @@ subprojects { project ->
         testLogging {
             events "passed", "skipped", "failed"
 
-            showExceptions true
-            exceptionFormat "full"
-            showCauses true
-            showStackTraces true
+            showExceptions = true
+            exceptionFormat = "full"
+            showCauses = true
+            showStackTraces = true
         }
         excludes = ["**/*TestCase.class", "**/*\$*.class"]
         if (isCiBuild) {
@@ -446,8 +450,8 @@ sdkman {
 }
 
 task sdkManRelease {
-    group 'SDKMAN! Release'
-    description 'Performs a Major or Minor Release depend on project version'
+    group = 'SDKMAN! Release'
+    description = 'Performs a Major or Minor Release depend on project version'
     if (project.projectVersion.endsWith("SNAPSHOT")) {
         // Do nothing
     } else if (project.projectVersion.contains("M") || project.projectVersion.contains("RC")) {

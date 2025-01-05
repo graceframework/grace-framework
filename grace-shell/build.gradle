@@ -1,10 +1,14 @@
-apply plugin:'application'
+apply plugin: 'application'
 
-mainClassName = "org.grails.cli.GrailsCli"
+application {
+    mainClass.set('org.grails.cli.GrailsCli')
+}
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+    maven {
+        url = 'https://repo.gradle.org/gradle/libs-releases'
+    }
 }
 
 ext {

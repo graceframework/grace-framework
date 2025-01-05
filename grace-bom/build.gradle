@@ -128,7 +128,7 @@ task generateEffectiveBom(type: Copy) {
         include "pom-default.xml"
         filter(org.apache.tools.ant.filters.ReplaceTokens, beginToken: '${', endToken: '}', tokens: tokens)
     }
-    destinationDir file("$buildDir/generated/effective-bom")
+    destinationDir = file("$buildDir/generated/effective-bom")
     rename "pom-default.xml", "${project.name}-effective.xml"
 }
 

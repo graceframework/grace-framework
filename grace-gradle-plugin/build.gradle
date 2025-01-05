@@ -105,9 +105,10 @@ jar {
 }
 
 configure([compileGroovy, compileTestGroovy]) {
-    groovyOptions.fork(memoryInitialSize: '128M', memoryMaximumSize: '1G')
     groovyOptions.encoding = "UTF-8"
     options.encoding = "UTF-8"
+    options.forkOptions.memoryInitialSize = '128M'
+    options.forkOptions.memoryMaximumSize = '1G'
 }
 
 configure([compileJava, compileTestJava]) {
@@ -121,9 +122,9 @@ configure([groovydoc]) {
 }
 
 configure([javadoc]) {
-    options.encoding "UTF-8"
-    options.docEncoding "UTF-8"
-    options.charSet "UTF-8"
+    options.encoding = "UTF-8"
+    options.docEncoding = "UTF-8"
+    options.charSet = "UTF-8"
     options.jFlags "-Xms64M", "-Xmx512M"
 }
 
