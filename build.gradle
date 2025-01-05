@@ -3,7 +3,9 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
     dependencies {
@@ -18,8 +20,8 @@ ext."signing.password" = project.hasProperty("signing.password") ? project.getPr
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : ("${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg")
 ext.isReleaseVersion = !projectVersion.endsWith("SNAPSHOT")
 
-version project.projectVersion
-group "org.graceframework.plugins"
+version = project.projectVersion
+group = "org.graceframework.plugins"
 
 apply plugin: "eclipse"
 apply plugin: "idea"
@@ -34,7 +36,9 @@ apply plugin: "signing"
 repositories {
     mavenCentral()
     if (project.projectVersion.endsWith('-SNAPSHOT')) {
-        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        maven {
+            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
 }
 
@@ -96,8 +100,6 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0"
     testImplementation "net.sourceforge.htmlunit:htmlunit:2.18"
 }
-
-apply from: rootProject.file('gradle/testVerbose.gradle')
 
 webdriverBinaries {
     if (!System.getenv().containsKey('GITHUB_ACTIONS')) {
@@ -231,7 +233,7 @@ nexusPublishing {
 
 afterEvaluate {
     signing {
-        required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         sign publishing.publications.maven
     }
 }
