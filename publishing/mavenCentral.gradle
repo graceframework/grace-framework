@@ -29,10 +29,10 @@ publishing {
         maven(MavenPublication) {
             def projectName = project.name.split('-')*.capitalize().join(' ')
             if (project.name.startsWith('grace-plugin')) {
-                artifactId(project.name - 'grace-plugin-')
+                artifactId = project.name - 'grace-plugin-'
             }
             else {
-                artifactId project.name
+                artifactId = project.name
             }
             from components.java
 
@@ -85,7 +85,7 @@ jar {
 
 afterEvaluate {
     signing {
-        required { isReleaseVersion && gradle.taskGraph.hasTask("publish")  }
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         Publication[] publications = new Publication[project.publishing.publications.size()]
         project.publishing.publications.findAll().toArray(publications)
         sign(publications)

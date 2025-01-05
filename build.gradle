@@ -3,7 +3,9 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
     dependencies {
@@ -19,8 +21,8 @@ ext {
     userOrg = "graceframework"
 }
 
-group "org.graceframework"
-version project.projectVersion
+group = "org.graceframework"
+version = project.projectVersion
 
 apply plugin:'idea'
 
@@ -44,12 +46,12 @@ nexusPublishing {
 
 subprojects { project->
     if (project.name.startsWith('grace-plugin')) {
-        group "org.graceframework.plugins"
+        group = "org.graceframework.plugins"
     }
     else {
-        group "org.graceframework"
+        group = "org.graceframework"
     }
-    version project.projectVersion
+    version = project.projectVersion
 
     if (project.name.startsWith('examples') || project.name.endsWith('docs')) {
         return
@@ -72,7 +74,9 @@ subprojects { project->
         // mavenLocal()
         mavenCentral()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
 
