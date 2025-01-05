@@ -1,4 +1,4 @@
-group "org.graceframework.plugins"
+group = "org.graceframework.plugins"
 
 ext {
     userOrg = 'graceframework'
@@ -9,7 +9,9 @@ ext {
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.grails.org/grails/core" }
+    maven {
+        url = "https://repo.grails.org/grails/core"
+    }
 }
 
 dependencies {

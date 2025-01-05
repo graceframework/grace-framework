@@ -1,7 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+        maven {
+            url = 'https://repo.gradle.org/gradle/libs-releases'
+        }
     }
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:$springDependencyManagementPluginVersion"
@@ -18,11 +20,13 @@ ext {
     projectDesc = "Grace Views Gradle Plugin"
 }
 
-group "org.graceframework.plugins"
+group = "org.graceframework.plugins"
 
 repositories {
     mavenCentral()
-    maven { url "https://plugins.gradle.org/m2/" }
+    maven {
+        url = "https://plugins.gradle.org/m2/"
+    }
 }
 
 dependencyManagement {
@@ -66,7 +70,7 @@ gradlePlugin {
 
 afterEvaluate {
     signing {
-        required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         Publication[] publications = new Publication[publishing.publications.size() - 1]
         project.publishing.publications.findAll { it.name != 'pluginMaven' }.toArray(publications)
         sign(publications)

@@ -2,9 +2,13 @@ buildscript {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+        maven {
+            url = 'https://repo.gradle.org/gradle/libs-releases'
+        }
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
     dependencies {
@@ -17,7 +21,7 @@ ext {
     userOrg = 'graceframework'
 }
 
-group "org.graceframework.plugins"
+group = "org.graceframework.plugins"
 
 apply plugin: "org.graceframework.grace-plugin"
 

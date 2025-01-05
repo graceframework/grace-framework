@@ -28,7 +28,7 @@ publishing {
     publications {
         pluginMaven(MavenPublication) {
             def projectName = project.name.split('-')*.capitalize().join(' ')
-            artifactId project.name
+            artifactId = project.name
             if (project.name != "views-gradle") {
                 from components.java
             }
@@ -85,7 +85,7 @@ jar {
 
 afterEvaluate {
     signing {
-        required { isReleaseVersion && gradle.taskGraph.hasTask("publish")  }
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         Publication[] publications = new Publication[project.publishing.publications.size()]
         project.publishing.publications.findAll().toArray(publications)
         sign(publications)

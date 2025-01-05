@@ -2,7 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+        maven {
+            url = 'https://repo.gradle.org/gradle/libs-releases'
+        }
     }
     dependencies {
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
@@ -11,7 +13,7 @@ buildscript {
     }
 }
 
-group "org.graceframework"
+group = "org.graceframework"
 
 apply plugin: "io.spring.dependency-management"
 

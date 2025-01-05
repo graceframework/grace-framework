@@ -3,7 +3,9 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
     dependencies {
@@ -20,7 +22,7 @@ ext {
     userOrg = "graceframework"
 }
 
-version project.projectVersion
+version = project.projectVersion
 
 apply plugin:'idea'
 
@@ -43,7 +45,7 @@ nexusPublishing {
 }
 
 subprojects { project->
-    version project.projectVersion
+    version = project.projectVersion
 
     configurations.all {
         resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
@@ -59,7 +61,9 @@ subprojects { project->
     repositories {
         mavenCentral()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
         }
     }
 
