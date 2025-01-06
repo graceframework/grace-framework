@@ -33,8 +33,6 @@ dependencies {
     testRuntimeOnly "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion", {
         exclude group: "jakarta.validation", module: "jakarta.validation-api"
     }
-    testRuntimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
-    testImplementation "org.glassfish:jakarta.el:$jakartaElImplVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
