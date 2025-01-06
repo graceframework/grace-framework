@@ -5,7 +5,7 @@ dependencies {
 
     compileOnly libs.grails.datastore.core
     compileOnly libs.jakarta.annotation.api
-    compileOnly libs.jakarta.servlet
+    compileOnlyApi libs.jakarta.servlet
 
     testImplementation libs.jakarta.servlet
     testImplementation libs.spring.test
