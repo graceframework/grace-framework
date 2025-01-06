@@ -4,6 +4,8 @@ dependencies {
 
     compileOnlyApi libs.jakarta.servlet
     // Required for JSP support
-    compileOnly libs.jakarta.servlet.jsp
-    compileOnly libs.jakarta.el
+    implementation libs.jakarta.servlet.jsp
+    implementation libs.jakarta.servlet.jsp.jstl
+    implementation libs.jakarta.el
+    implementation libs.glassfish.web.jsp.jstl
 }
