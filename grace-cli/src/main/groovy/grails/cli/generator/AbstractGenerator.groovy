@@ -1,7 +1,7 @@
 /*
  * Copyright 2022-2024 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -17,7 +17,6 @@ package grails.cli.generator
 
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FromString
-import org.springframework.util.FileSystemUtils
 
 import grails.build.logging.GrailsConsole
 import grails.dev.commands.io.FileSystemInteraction
@@ -57,8 +56,8 @@ class AbstractGenerator implements Generator {
 
     protected CodeGenConfig loadApplicationConfig() {
         CodeGenConfig config = new CodeGenConfig()
-        File applicationYml = new File(getBaseDir(), "app/conf/application.yml")
-        File applicationGroovy = new File(getBaseDir(), "app/conf/application.groovy")
+        File applicationYml = new File(getBaseDir(), 'app/conf/application.yml')
+        File applicationGroovy = new File(getBaseDir(), 'app/conf/application.groovy')
         if (applicationYml.exists()) {
             config.loadYml(applicationYml)
         }
@@ -177,7 +176,8 @@ class AbstractGenerator implements Generator {
      * @param spec closure for generating the file contents
      * @return the created file
      */
-    File file(String name, @ClosureParams(value = FromString, options = 'File') @DelegatesTo(value = File, strategy = Closure.DELEGATE_FIRST) Closure spec) {
+    File file(String name, @ClosureParams(value = FromString, options = 'File')
+            @DelegatesTo(value = File, strategy = Closure.DELEGATE_FIRST) Closure spec) {
         def file = new File(getBaseDir(), name)
         file.tap(spec)
     }

@@ -127,7 +127,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(File template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                this.console.addStatus('skip '.padLeft(13), projectPath(destination), "YELLOW")
+                this.console.addStatus('skip '.padLeft(13), projectPath(destination), 'YELLOW')
             }
             else {
                 Template t = templateCache[template.absolutePath]
@@ -143,10 +143,10 @@ class TemplateRendererImpl implements TemplateRenderer {
                 }
                 try {
                     if (destination.exists() && overwrite) {
-                        this.console.addStatus('force '.padLeft(13), projectPath(destination), "YELLOW")
+                        this.console.addStatus('force '.padLeft(13), projectPath(destination), 'YELLOW')
                     }
                     else {
-                        this.console.addStatus('create '.padLeft(13), projectPath(destination), "GREEN")
+                        this.console.addStatus('create '.padLeft(13), projectPath(destination), 'GREEN')
                     }
                     writeTemplateToDestination(t, model, destination)
                 }
@@ -180,7 +180,7 @@ class TemplateRendererImpl implements TemplateRenderer {
     void render(Resource template, File destination, Map model = Collections.emptyMap(), boolean overwrite = false) {
         if (template && destination) {
             if (destination.exists() && !overwrite) {
-                this.console.addStatus('skip '.padLeft(13), projectPath(destination), "YELLOW")
+                this.console.addStatus('skip '.padLeft(13), projectPath(destination), 'YELLOW')
             }
             else if (!template?.exists()) {
                 throw new TemplateException("Template [$template.filename] not found.")
@@ -210,10 +210,10 @@ class TemplateRendererImpl implements TemplateRenderer {
                 if (t != null) {
                     try {
                         if (destination.exists() && overwrite) {
-                            this.console.addStatus('force '.padLeft(13), projectPath(destination), "YELLOW")
+                            this.console.addStatus('force '.padLeft(13), projectPath(destination), 'YELLOW')
                         }
                         else {
-                            this.console.addStatus('create '.padLeft(13), projectPath(destination), "GREEN")
+                            this.console.addStatus('create '.padLeft(13), projectPath(destination), 'GREEN')
                         }
                         writeTemplateToDestination(t, model, destination)
                     }
