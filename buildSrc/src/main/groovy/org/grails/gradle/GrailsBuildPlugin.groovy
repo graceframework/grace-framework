@@ -4,11 +4,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.ExternalDependency
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.attributes.Usage
 import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency
-import org.gradle.api.specs.Spec
 
 class GrailsBuildPlugin implements Plugin<Project> {
 
@@ -31,7 +29,7 @@ class GrailsBuildPlugin implements Plugin<Project> {
         }
 
         def addChildren
-        addChildren = { Collection deps, Set allDeps = new LinkedHashSet() ->
+        addChildren = { Collection deps, Set allDeps ->
             deps.each { ResolvedDependency resolvedDependency ->
                 def notSeenBefore = allDeps.add(resolvedDependency)
                 if (notSeenBefore) { // defend against circular dependencies
@@ -43,7 +41,7 @@ class GrailsBuildPlugin implements Plugin<Project> {
 
         def dependencies = new LinkedHashSet()
         for (configuration in configurations) {
-            addChildren(configuration.resolvedConfiguration.getFirstLevelModuleDependencies({ it instanceof ExternalDependency } as Spec), dependencies)
+            addChildren(configuration.resolvedConfiguration.getFirstLevelModuleDependencies(), dependencies)
         }
 
         def sourceDependencies = dependencies.collect { ResolvedDependency resolvedDependency ->
