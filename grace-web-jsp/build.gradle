@@ -4,8 +4,13 @@ dependencies {
 
     compileOnlyApi libs.jakarta.servlet
     // Required for JSP support
-    implementation libs.jakarta.servlet.jsp
-    implementation libs.jakarta.servlet.jsp.jstl
-    implementation libs.jakarta.el
-    implementation libs.glassfish.web.jsp.jstl
+    compileOnlyApi libs.jakarta.el
+    compileOnlyApi libs.jakarta.servlet.jsp, {
+        exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+    }
+    compileOnlyApi libs.jakarta.servlet.jsp.jstl, {
+        exclude group: 'jakarta.el', module: 'jakarta.el-api'
+        exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+    }
+    compileOnly libs.glassfish.web.jsp.jstl
 }

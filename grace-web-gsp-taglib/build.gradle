@@ -1,4 +1,10 @@
 dependencies {
     compileOnlyApi libs.jakarta.servlet
-    api project(':grace-web-jsp')
+    compileOnlyApi libs.sitemesh, {
+        exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+    }
+    api project(':grace-gsp')
+    api project(':grace-taglib')
+    api project(':grace-web-gsp')
+    api project(':grace-web-taglib')
 }
