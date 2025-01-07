@@ -209,7 +209,7 @@ public class GroovyPagesAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(name = "org.grails.gsp.jsp.TagLibraryResolverImpl")
+    @ConditionalOnClass(name = "jakarta.servlet.jsp.jstl.core.Config")
     public TagLibraryResolver jspTagLibraryResolver(GroovyPagesProperties groovyPagesProperties,
             ObjectProvider<GrailsApplication> grailsApplicationObjectProvider) {
         TagLibraryResolverImpl tagLibraryResolver = new TagLibraryResolverImpl();

@@ -8,7 +8,7 @@ dependencies {
     api project(":grace-web-mvc")
     api project(":grace-web-url-mappings")
     api project(":grace-web-gsp-taglib")
-    runtimeOnly(project(":grace-web-jsp"))
+    api project(":grace-web-jsp")
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
