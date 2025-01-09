@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   create_draft_release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -24,7 +24,7 @@ jobs:
             ${{ github.ref_name }}
   release_and_publish:
     needs: create_draft_release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['17']
