@@ -2,16 +2,16 @@ name: Grace CI
 on:
   push:
     branches:
-      - '[5-9]+.[0-9]+.x'
+      - 6.3.x
   pull_request:
     branches:
-      - '[5-9]+.[0-9]+.x'
+      - 6.3.x
   workflow_dispatch:
 jobs:
   build:
     permissions:
       contents: read  #  to fetch code (actions/checkout)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['17']
@@ -40,7 +40,7 @@ jobs:
     permissions:
       contents: read  #  to fetch code (actions/checkout)
       checks: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         env:
