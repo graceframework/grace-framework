@@ -1060,14 +1060,6 @@ group """
     maven { url = 'https://repo.spring.io/snapshot' }'''
                 }
             }
-
-            // This is a workaround for logback 1.5.7+
-            if (springBootVersion.startsWith('3.3') || springBootVersion.startsWith('3.4')) {
-                replace(file: 'app/conf/logback.xml') {
-                    replacetoken 'converterClass'
-                    replacevalue 'class'
-                }
-            }
         }
 
     }
