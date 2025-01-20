@@ -53,9 +53,9 @@ class GroovyDiffToChangeLogCommandStep extends DiffChangelogCommandStep {
         try {
             referenceDatabase.setObjectQuotingStrategy(ObjectQuotingStrategy.QUOTE_ALL_OBJECTS);
             if (StringUtil.trimToNull(changeLogFile) == null) {
-                createDiffToChangeLogObject(diffResult, diffOutputControl).print(outputStream, ChangeLogSerializerFactory.instance.getSerializer('groovy'))
+                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(outputStream, ChangeLogSerializerFactory.instance.getSerializer('groovy'))
             } else {
-                createDiffToChangeLogObject(diffResult, diffOutputControl).print(changeLogFile, ChangeLogSerializerFactory.instance.getSerializer(changeLogFile))
+                createDiffToChangeLogObject(diffResult, diffOutputControl, true).print(changeLogFile, ChangeLogSerializerFactory.instance.getSerializer(changeLogFile))
             }
         }
         finally {
