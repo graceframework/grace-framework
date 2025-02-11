@@ -44,6 +44,7 @@ dependencies {
     testRuntimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
     testRuntimeOnly "org.springframework:spring-aop:$springVersion"
     testRuntimeOnly "org.springframework:spring-expression:$springVersion"
+    testRuntimeOnly "org.glassfish:jakarta.el:$jakartaElVersion"
 }
 
 groovydoc.classpath += configurations.documentation
