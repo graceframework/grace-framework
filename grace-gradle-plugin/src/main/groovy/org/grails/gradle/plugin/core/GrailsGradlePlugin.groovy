@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -165,12 +165,13 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     private void applyBomImport(DependencyManagementExtension dme, Project project) {
         String grailsVersion = resolveGrailsVersion(project)
-        String springBootVersion = resolveSpringBootVersion(project)
         dme.imports({
-            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
             mavenBom("org.graceframework:grace-bom:${grailsVersion}")
         })
         dme.setApplyMavenExclusions(false)
+        dme.generatedPomCustomization {
+            enabled = false
+        }
     }
 
     protected String getDefaultProfile() {
@@ -329,30 +330,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         grailsVersion = grailsVersion ?: new GrailsDependenciesDependencyManagement().getGrailsVersion()
 
         grailsVersion
-    }
-
-    protected String resolveSpringBootVersion(Project project) {
-        def springBootVersion = project.findProperty('springBootVersion')
-
-        springBootVersion = springBootVersion ?: new GrailsDependenciesDependencyManagement().getSpringBootVersion()
-
-        springBootVersion
-    }
-
-    protected String resolveSpringFrameworkVersion(Project project) {
-        def springFrameworkVersion = project.findProperty('springFrameworkVersion') ?: project.findProperty('springVersion')
-
-        springFrameworkVersion = springFrameworkVersion ?: new GrailsDependenciesDependencyManagement().find('spring-framework-bom').getVersion()
-
-        springFrameworkVersion
-    }
-
-    protected String resolveTomcatVersion(Project project) {
-        def tomcatVersion = project.findProperty('tomcatVersion')
-
-        tomcatVersion = tomcatVersion ?: new GrailsDependenciesDependencyManagement().find('tomcat-embed-core').getVersion()
-
-        tomcatVersion
     }
 
     @CompileDynamic
