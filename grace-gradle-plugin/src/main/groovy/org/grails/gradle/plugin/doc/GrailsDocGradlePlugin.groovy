@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@
 package org.grails.gradle.plugin.doc
 
 import groovy.transform.CompileStatic
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.javadoc.Groovydoc
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.util.GradleVersion
 
 import grails.util.BuildSettings
 
@@ -40,6 +42,8 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        verifyGradleVersion()
+
         Configuration docConfiguration = project.configurations.create(DOC_CONFIGURATION)
         project.dependencies.add(DOC_CONFIGURATION, "org.graceframework:grace-docs:${BuildSettings.getPackage().getImplementationVersion()}")
 
@@ -63,6 +67,14 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
             docsTask.javadocDir = javadocTask.destinationDir
             docsTask.dependsOn(groovydocTask)
             docsTask.dependsOn(javadocTask)
+        }
+    }
+
+    private void verifyGradleVersion() {
+        GradleVersion currentVersion = GradleVersion.current()
+        if (currentVersion < GradleVersion.version('8.0')) {
+            throw new GradleException('Grace plugin requires Gradle 8.x (8.0 or later). '
+                    + 'The current version is ' + currentVersion)
         }
     }
 
