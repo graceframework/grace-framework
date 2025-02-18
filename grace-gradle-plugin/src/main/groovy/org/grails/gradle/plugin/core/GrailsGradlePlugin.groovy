@@ -24,6 +24,7 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -45,6 +46,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
+import org.gradle.util.GradleVersion
 import org.springframework.boot.gradle.dsl.SpringBootExtension
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -89,6 +91,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     void apply(Project project) {
+        verifyGradleVersion()
+
         grailsAppDir = SourceSets.resolveGrailsAppDir(project)
         grailsVersion = resolveGrailsVersion(project)
 
@@ -713,6 +717,15 @@ withConfig(configuration) {
             fileCollection = fileCollection + it.filter({ File file -> !file.name.startsWith('spring-boot-devtools') })
         }
         fileCollection
+    }
+
+    private void verifyGradleVersion() {
+        GradleVersion currentVersion = GradleVersion.current()
+        if (currentVersion < GradleVersion.version('7.6.4') ||
+                (currentVersion >= GradleVersion.version('8.0') && currentVersion < GradleVersion.version('8.3'))) {
+            throw new GradleException('Grace plugin requires Gradle 7.x (7.6.4 or later) or 8.x (8.3 or later). '
+                    + 'The current version is ' + currentVersion)
+        }
     }
 
     enum GrailsProjectType {
