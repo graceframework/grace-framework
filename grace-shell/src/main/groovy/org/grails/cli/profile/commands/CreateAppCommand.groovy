@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -365,11 +365,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.println("     Project root:".padRight(20) + projectTargetDirectory.absolutePath)
         console.println()
 
-        generateProjectSkeleton(ant, profileInstance, features, variables, projectTargetDirectory, cmd.verbose, cmd.quiet)
+        generateProjectSkeleton(ant, appName, groupName, defaultPackageName, profileInstance, features, cmd.template, grailsVersion,
+                variables, args, projectTargetDirectory, cmd.verbose, cmd.quiet)
 
         if (cmd.template) {
             if (cmd.template.endsWith('.groovy')) {
-                replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
+                replaceBuildTokens(ant, profileName, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
                 applyApplicationTemplate(ant, console, cmd.appName, cmd.template, projectTargetDirectory, cmd.verbose, cmd.quiet)
             }
             else if (cmd.template.endsWith('.zip') || cmd.template.endsWith('.git') || new File(cmd.template).isDirectory()) {
@@ -378,7 +379,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
         else {
-            replaceBuildTokens(ant, profileName, profileInstance, features, variables, grailsVersion, projectTargetDirectory)
+            replaceBuildTokens(ant, profileName, profileInstance, features, variables, args, grailsVersion, projectTargetDirectory)
         }
 
         updateSpringDependencies(ant, grailsVersion, cmd.springBootVersion, projectTargetDirectory)
@@ -443,14 +444,18 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
     }
 
-    protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, Profile profileInstance,
-                                           List<Feature> features, Map<String, String> variables,
+    protected void generateProjectSkeleton(GrailsConsoleAntBuilder ant, String appName, String groupName, String packageName,
+                                           Profile profileInstance, List<Feature> features, String templateUrl, String grailsVersion,
+                                           Map<String, String> variables, Map<String, String> args,
                                            File projectTargetDirectory, boolean verbose, boolean quiet = false) {
         List<Profile> profiles = this.profileRepository.getProfileAndDependencies(profileInstance)
 
         final Map<URL, File> unzippedDirectories = new LinkedHashMap<URL, File>()
         Map<Profile, File> targetDirs = [:]
         buildTargetFolders(profileInstance, targetDirs, projectTargetDirectory)
+
+        Map<String, Object> binding = getApplicationTemplateBinding(appName, groupName, packageName, profileInstance,
+                features, args, grailsVersion, templateUrl)
 
         for (Profile p : profiles) {
             Set<File> ymlFiles = findAllFilesByName(projectTargetDirectory, APPLICATION_YML)
@@ -465,7 +470,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 }
             }
 
-            copySkeleton(ant, profileInstance, p, variables, targetDirectory, unzippedDirectories)
+            copySkeleton(ant, profileInstance, p, variables, binding, targetDirectory, unzippedDirectories)
 
             ymlCache.each { File applicationYmlFile, String previousApplicationYml ->
                 if (applicationYmlFile.exists()) {
@@ -487,12 +492,24 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 skeletonDir = new File(tmpDir, "META-INF/grails-profile/features/$f.name/skeleton")
             }
 
+            Set<File> groovyTemplateFiles = findAllFilesByName(skeletonDir, '.tpl')
+            groovyTemplateFiles.each { File srcFile ->
+                File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
+                TemplateEngine templateEngine = new GStringTemplateEngine()
+                Template template = templateEngine.createTemplate(srcFile)
+                destFile.withWriter('UTF-8') { Writer w ->
+                    template.make(binding).writeTo(w)
+                    w.flush()
+                }
+            }
+
             File targetDirectory = targetDirs[f.profile]
 
             appendFeatureFiles(skeletonDir, targetDirectory)
 
             if (skeletonDir.exists()) {
-                copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML], profileInstance.binaryExtensions, variables, targetDirectory)
+                copySrcToTarget(ant, skeletonDir, ['**/' + APPLICATION_YML, '**/*.tpl'],
+                        profileInstance.binaryExtensions, variables, targetDirectory)
             }
         }
 
@@ -504,7 +521,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileStatic(TypeCheckingMode.SKIP)
     protected void copySkeleton(GrailsConsoleAntBuilder ant, Profile profile, Profile participatingProfile,
-                                Map<String, String> variables, File targetDirectory, Map<URL, File> unzippedDirectories) {
+                                Map<String, String> variables, Map<String, Object> binding,
+                                File targetDirectory, Map<URL, File> unzippedDirectories) {
         List<String> buildMergeProfileNames = profile.buildMergeProfileNames
         List<String> excludes = profile.skeletonExcludes
         if (profile == participatingProfile) {
@@ -522,6 +540,19 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             tmpDir = unzipProfile(ant, unzippedDirectories, skeletonResource)
             skeletonDir = new File(tmpDir, 'META-INF/grails-profile/skeleton')
         }
+
+        Set<File> groovyTemplateFiles = findAllFilesByName(skeletonDir, '.tpl')
+        groovyTemplateFiles.each { File srcFile ->
+            File destFile = new File(srcFile.parentFile, srcFile.name - '.tpl')
+            TemplateEngine templateEngine = new GStringTemplateEngine()
+            Template template = templateEngine.createTemplate(srcFile)
+            destFile.withWriter('UTF-8') { Writer w ->
+                template.make(binding).writeTo(w)
+                w.flush()
+            }
+        }
+
+        excludes.add('**/*.tpl')
         copySrcToTarget(ant, skeletonDir, excludes, profile.binaryExtensions, variables, targetDirectory)
 
         Set<File> sourceBuildGradles = findAllFilesByName(skeletonDir, BUILD_GRADLE)
@@ -819,7 +850,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 ant.setLoggerLevel(Project.MSG_ERR)
             }
 
-            replaceBuildTokens(ant, profile.name, profile, features, variables, grailsVersion, targetDirectory)
+            replaceBuildTokens(ant, profile.name, profile, features, variables, args, grailsVersion, targetDirectory)
 
             String postGenerateProjectFile = navigableConfig.get('scripts.postGenerateProject', 'scripts/post_generate_project.groovy')
             File postGenerateProjectScript = new File(projectDir, postGenerateProjectFile)
@@ -900,7 +931,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
     @CompileDynamic
     protected void replaceBuildTokens(GrailsConsoleAntBuilder ant, String profileName, Profile profile,
-                                      List<Feature> features, Map<String, String> variables, String grailsVersion, File targetDirectory) {
+                                      List<Feature> features, Map<String, String> variables, Map<String, String> args,
+                                      String grailsVersion, File targetDirectory) {
         boolean isSnapshotVersion = GrailsVersion.current().isSnapshot()
         String ln = System.getProperty('line.separator')
 
