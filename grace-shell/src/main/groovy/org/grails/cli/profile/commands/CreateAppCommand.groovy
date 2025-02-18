@@ -37,6 +37,8 @@ import org.apache.tools.ant.ProjectHelper
 import org.apache.tools.ant.types.ResourceCollection
 import org.apache.tools.ant.types.resources.FileResource
 import org.apache.tools.ant.types.resources.URLResource
+import org.eclipse.aether.artifact.Artifact
+import org.eclipse.aether.artifact.DefaultArtifact
 import org.eclipse.aether.graph.Dependency
 import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
@@ -238,6 +240,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 grailsVersion: specificGraceVersion ?: grailsVersion,
                 springBootVersion: specificBootVersion,
                 features: features,
+                database: commandLine.optionValue(DATABASE_FLAG) ?: 'h2',
                 template: commandLine.optionValue('template'),
                 inplace: inPlace,
                 minimal: commandLine.hasOption(MINIMAL_FLAG),
@@ -961,6 +964,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             buildDependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope == 'build' }
         }
 
+        dependencies.add(new Dependency(Databases.getDriverArtifact(args['database']), 'runtime'))
+
         dependencies.add(new Dependency(this.profileRepository.getProfileArtifact(profileName), 'profile'))
 
         dependencies = dependencies.unique()
@@ -1396,6 +1401,9 @@ group """
         commandLine.undeclaredOptions.each { name, value ->
             commandArguments.put(name, value.toString())
         }
+        if (!commandLine.hasOption(DATABASE_FLAG)) {
+            commandArguments.put(DATABASE_FLAG, 'h2')
+        }
         if (!commandLine.hasOption(PROFILE_FLAG)) {
             commandArguments.put(PROFILE_FLAG, getDefaultProfile())
         }
@@ -1487,6 +1495,7 @@ group """
         String grailsVersion
         String springBootVersion
         List<String> features
+        String database
         String template
         boolean minimal = false
         boolean inplace = false
@@ -1513,4 +1522,25 @@ group """
 
     }
 
+    static class Databases {
+
+        static Artifact getDriverArtifact(String databaseType) {
+            if (databaseType == 'mariadb') {
+                return new DefaultArtifact('org.mariadb.jdbc', 'mariadb-java-client', null, null)
+            }
+            else if (databaseType == 'mysql') {
+                return new DefaultArtifact('com.mysql', 'mysql-connector-j', null, null)
+            }
+            else if (databaseType == 'postgresql') {
+                return new DefaultArtifact('org.postgresql', 'postgresql', null, null)
+            }
+            else if (databaseType == 'sqlserver') {
+                return new DefaultArtifact('com.microsoft.sqlserver', 'mssql-jdbc', null, null)
+            }
+            else {
+                return new DefaultArtifact('com.h2database', 'h2', null, null)
+            }
+        }
+
+    }
 }
