@@ -1,7 +1,7 @@
 [plugins]
 asset-pipeline = "6.3.0-M1"
 cache = "6.2.0"
-database-migration = "6.2.0"
+database-migration = "6.3.0-SNAPSHOT"
 fields = "6.2.0"
 geb = "6.2.0"
 hibernate = "2023.3.0-SNAPSHOT"
