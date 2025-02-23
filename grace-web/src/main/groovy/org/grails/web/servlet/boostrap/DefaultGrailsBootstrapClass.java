@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.grails.web.servlet.boostrap;
 import jakarta.servlet.ServletContext;
 
 import groovy.lang.Closure;
+import org.codehaus.groovy.runtime.InvokerHelper;
 
 import grails.util.Environment;
 import grails.web.servlet.bootstrap.GrailsBootstrapClass;
@@ -33,14 +34,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
 
     private static final String DESTROY_CLOSURE = "destroy";
 
-    private static final Closure<?> BLANK_CLOSURE = new Closure<>(DefaultGrailsBootstrapClass.class) {
-
-        @Override
-        public Object call(Object... args) {
-            return null;
-        }
-
-    };
+    private static final Object[] NO_ARGS = new Object[0];
 
     private final Object instance;
 
@@ -59,7 +53,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
         if (obj instanceof Closure) {
             return (Closure<?>) obj;
         }
-        return BLANK_CLOSURE;
+        return null;
     }
 
     public Closure<?> getDestroyClosure() {
@@ -67,7 +61,7 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
         if (obj instanceof Closure) {
             return (Closure<?>) obj;
         }
-        return BLANK_CLOSURE;
+        return null;
     }
 
     public void callInit(ServletContext servletContext) {
@@ -79,12 +73,18 @@ public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements 
             }
             Environment.executeForCurrentEnvironment(init);
         }
+        else {
+            InvokerHelper.invokeMethod(this.instance, INIT_CLOSURE, NO_ARGS);
+        }
     }
 
     public void callDestroy() {
         Closure<?> destroy = getDestroyClosure();
         if (destroy != null) {
             Environment.executeForCurrentEnvironment(destroy);
+        }
+        else {
+            InvokerHelper.invokeMethod(this.instance, DESTROY_CLOSURE, NO_ARGS);
         }
     }
 
