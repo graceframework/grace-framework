@@ -124,8 +124,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         configureSpringBootExtension(project)
 
-        configureAssetCompilation(project)
-
         configureForkSettings(project, grailsVersion)
 
         configureGrailsSourceDirs(project)
@@ -334,15 +332,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         grailsVersion = grailsVersion ?: new GrailsDependenciesDependencyManagement().getGrailsVersion()
 
         grailsVersion
-    }
-
-    @CompileDynamic
-    protected void configureAssetCompilation(Project project) {
-        if (project.extensions.findByName('assets')) {
-            project.assets {
-                assetsPath = "${grailsAppDir}/assets"
-            }
-        }
     }
 
     protected void configureForkSettings(Project project, String grailsVersion) {
