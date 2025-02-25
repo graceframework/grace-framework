@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 the original author or authors.
+ * Copyright 2021-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,19 +62,19 @@ public class GrailsPluginsInfoApplicationContextInitializer implements
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("%n----------------------------------------------------------------------------------------------%n");
-        sb.append("Order      Plugin Name                              Plugin Version                     Enabled");
-        sb.append("%n----------------------------------------------------------------------------------------------");
+        sb.append("%n----------------------------------------------------------------------------------------------------------%n");
+        sb.append("Order      Plugin Name                        Plugin Version                                       Enabled");
+        sb.append("%n----------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < allPlugins.size(); i++) {
             GrailsPlugin plugin = allPlugins.get(i);
             boolean enabled = plugin.isEnabled() && (pluginManager.getFailedPlugin(plugin.getName()) == null);
             sb.append(String.format("%n%s      %s%s%s",
                     StringUtils.leftPad(String.valueOf(i + 1), 5),
-                    StringUtils.rightPad(StringUtils.capitalize(plugin.getName()), 41),
-                    StringUtils.rightPad(plugin.getVersion(), 41),
+                    StringUtils.rightPad(StringUtils.capitalize(plugin.getName()), 35),
+                    StringUtils.rightPad(plugin.getVersion(), 59),
                     enabled ? "Y" : "N"));
         }
-        sb.append("%n----------------------------------------------------------------------------------------------%n");
+        sb.append("%n----------------------------------------------------------------------------------------------------------%n");
 
         if (logger.isDebugEnabled()) {
             logger.debug(String.format(sb.toString()));
