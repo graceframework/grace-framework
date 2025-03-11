@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -175,7 +175,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
         project.tasks.named(JavaPlugin.JAR_TASK_NAME, Jar).configure { Jar jarTask ->
             jarTask.enabled = true
             jarTask.archiveClassifier.set('plugin')
-            jarTask.exclude('application.yml', 'application.groovy', 'logback.groovy', 'logback.xml')
+            jarTask.exclude('application.yml', 'application.groovy', 'logback.groovy', 'logback.xml', 'logback-spring.xml')
         }
     }
 
