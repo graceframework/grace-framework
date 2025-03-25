@@ -45,6 +45,7 @@ jsoup = "1.18.1"
 jsr305 = "3.0.2"
 junit-jupiter = "5.10.5"
 junit-platform = "1.10.5"
+liquibase = "4.27.0"
 maven = "3.9.9"
 maven-resolver = "1.9.22"
 methvin-directory-watcher = "0.18.0"
@@ -155,6 +156,9 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }
 junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
+liquibase-cdi = { module = "org.liquibase:liquibase-cdi", version.ref = "liquibase" }
+liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+liquibase-hibernate = { module = "org.liquibase.ext:liquibase-hibernate5", version.ref = "liquibase" }
 maven-model = { module = "org.apache.maven:maven-model", version.ref = "maven" }
 maven-resolver-connectorBasic = { module = "org.apache.maven.resolver:maven-resolver-connector-basic", version.ref = "maven-resolver" }
 maven-resolver-provider = { module = "org.apache.maven:maven-resolver-provider", version.ref = "maven" }
@@ -215,6 +219,7 @@ grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datast
 grails-scaffolding = ["grails-scaffolding-core"]
 grails-views = ["grails-views-component", "grails-views-core", "grails-views-gradle", "grails-views-json", "grails-views-json-templates", "grails-views-json-testing-support", "grails-views-markup"]
 groovy = ["groovy-bom"]
+liquibase = ["liquibase-cdi", "liquibase-core", "liquibase-hibernate"]
 jakarta = ["jakarta-annotation-api", "jakarta-el", "jakarta-inject", "jakarta-persistence-api", "jakarta-servlet", "jakarta-servlet-jsp", "jakarta-servlet-jsp-jstl", "jakarta-transaction", "jakarta-validation", "jakarta-xml-bind-api"]
 spock = ["spock-core", "spock-spring"]
 spring-boot = ["spring-boot-dependencies"]
