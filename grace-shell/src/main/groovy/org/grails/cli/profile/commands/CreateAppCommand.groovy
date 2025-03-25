@@ -94,6 +94,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String FORCE_FLAG = 'force'
     public static final String GRACE_VERSION_FLAG = 'grace-version'
     public static final String BOOT_VERSION_FLAG = 'boot-version'
+    public static final String PACKAGE_NAME_FLAG = 'package-name'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
     public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.3', '3.4']
@@ -112,6 +113,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     CreateAppCommand() {
         populateDescription()
         description.flag(name: INPLACE_FLAG, description: 'Used to create an application using the current directory')
+        description.flag(name: PACKAGE_NAME_FLAG, description: 'The Package name', required: false)
         description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
         description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
         description.flag(name: TEMPLATE_FLAG, description: 'The application template to use', required: false)
@@ -205,7 +207,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
         List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
-                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, PACKAGE_NAME_FLAG,
                                    STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT,
                                    GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, MINIMAL_FLAG, FORCE_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
@@ -235,6 +237,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
                 appName: appName,
+                packageName: commandLine.optionValue(PACKAGE_NAME_FLAG),
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
                 grailsVersion: specificGraceVersion ?: grailsVersion,
@@ -319,6 +322,8 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 groupName = parts[0..-2].join('.')
                 defaultPackageName = groupName
             }
+            groupName = cmd.packageName ?: groupName
+            defaultPackageName = cmd.packageName ?: defaultPackageName
         }
         catch (IllegalArgumentException e) {
             console.error(e.message)
@@ -1490,6 +1495,7 @@ group """
     static class CreateAppCommandObject {
 
         String appName
+        String packageName
         File baseDir
         String profileName
         String grailsVersion
