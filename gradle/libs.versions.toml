@@ -1,7 +1,7 @@
 [versions]
 ant = "1.10.15"
 asciidoctorj = "2.5.13"
-aspectj = "1.9.22.1"
+aspectj = "1.9.23"
 assertj = "3.25.3"
 bytebuddy = "1.14.19"
 caffeine = "3.1.8"
