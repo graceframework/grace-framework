@@ -42,7 +42,7 @@ class GenerateCommand implements ProjectCommand {
 '''
 
     final String name = 'generate'
-    final CommandDescription description = new CommandDescription(name, 'Generate all for you need', USAGE, ['g'])
+    final CommandDescription description = new CommandDescription(name, 'Generate all for you need', USAGE, EXAMPLES, ['g'])
 
     GenerateCommand() {
         this.description.flag([name: 'help', aliases: '-h', type: 'boolean', description: "Print generator's options and usage", required: false])
@@ -127,8 +127,8 @@ class GenerateCommand implements ProjectCommand {
             println '  ' + generator.name
         }
         console.out.println()
-        console.out.println('Example:')
-        console.out.println(EXAMPLES)
+        console.out.println('Examples:')
+        console.out.println(this.description.examples)
     }
 
     void noGenerator(String generatorName, GrailsConsole console) {

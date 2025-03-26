@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import jline.console.completer.Completer
  * Describes a {@link Command}
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -44,6 +45,11 @@ class CommandDescription {
      * The usage instructions for the command
      */
     String usage
+
+    /**
+     * The example for the command
+     */
+    String examples
 
     /**
      * Any names that should also map to this command
