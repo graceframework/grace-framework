@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,48 @@
  */
 package org.grails.cli.profile.commands
 
+import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
+import static org.grails.build.parsing.CommandLine.QUIET_ARGUMENT
+import static org.grails.build.parsing.CommandLine.STACKTRACE_ARGUMENT
+import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
+
 /**
  *  Creates a profile
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.1
  */
 class CreateProfileCommand extends CreateAppCommand {
 
     public static final String NAME = 'create-profile'
+    static final String USAGE = 'grace create-profile [NAME] [options]'
+    static final String EXAMPLES = '''
+    # Creates a profile
+        $ grace create-profile myprofile
+'''
 
     CreateProfileCommand() {
-        description.description = 'Creates a profile'
-        description.usage = 'create-profile [NAME]'
+        populateDescription()
+        description.flags.clear()
+        description.flag(name: PROFILE_FLAG, type: 'string', description: 'The profile to use: profile, starter, default: profile', banner: 'PROFILE', required: false)
+        description.flag(name: FEATURES_FLAG, type: 'string', description: 'The features provided by the profile to use\nYou can use profile-info [PROFILE] to show all the features of the profile', banner: 'FEATURES', required: false)
+        description.flag(name: TEMPLATE_FLAG, aliases: '-m', type: 'string', description: 'Path to some application template (can be a filesystem path or URL)\nFor example: https://github.com/grace-templates/helloworld.git', banner: 'TEMPLATE', required: false)
+        description.flag(name: GRACE_VERSION_FLAG, type: 'string', description: 'Specific Grace Version', banner: 'GRACE VERSION', required: false)
+        description.flag(name: HELP_ARGUMENT, aliases: '-h', type: 'boolean', description: 'Show the help message and quit', required: false)
+        description.flag(name: STACKTRACE_ARGUMENT, type: 'boolean', description: 'Show full stacktrace', required: false)
+        description.flag(name: VERBOSE_ARGUMENT, type: 'boolean', description: 'Show verbose output', required: false)
+        description.flag(name: QUIET_ARGUMENT, aliases: '-q', type: 'boolean', description: 'Suppress status output', required: false)
+        description.flag(name: FORCE_FLAG, aliases: '-f', type: 'boolean', description: 'Force overwrite of existing files', required: false)
+        description.flag(name: INPLACE_FLAG, type: 'boolean', description: 'Used to create a profile in the current directory')
     }
 
     @Override
     protected void populateDescription() {
-        description.argument(name: 'Profile Name', description: 'The name of the plugin to create.', required: false)
+        description.description = 'Creates a profile'
+        description.usage = USAGE
+        description.examples = EXAMPLES
+        description.argument(name: 'Profile Name', description: 'The name of the profile to create.', required: false)
     }
 
     @Override

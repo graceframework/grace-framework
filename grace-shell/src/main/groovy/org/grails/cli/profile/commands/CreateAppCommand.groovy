@@ -65,6 +65,7 @@ import org.grails.config.NavigableMap
 import org.grails.io.support.FileSystemResource
 import org.grails.io.support.Resource
 
+import static org.grails.build.parsing.CommandLine.HELP_ARGUMENT
 import static org.grails.build.parsing.CommandLine.QUIET_ARGUMENT
 import static org.grails.build.parsing.CommandLine.STACKTRACE_ARGUMENT
 import static org.grails.build.parsing.CommandLine.VERBOSE_ARGUMENT
@@ -105,33 +106,42 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     protected static final String APPLICATION_YML = 'application.yml'
     protected static final String BUILD_GRADLE = 'build.gradle'
     protected static final String GRADLE_PROPERTIES = 'gradle.properties'
+    static final String USAGE = 'grace create-app [NAME] [options]'
+    static final String EXAMPLES = '''
+    # Creates an application
+        $ grace create-app com.example.blog
+        $ grace create-app blog --package-name=com.example --profile=web
+        $ grace create-app blog --boot-version=3.4.0
+'''
 
     ProfileRepository profileRepository
 
-    CommandDescription description = new CommandDescription(name, 'Creates an application', 'create-app [NAME] --profile=web')
+    CommandDescription description = new CommandDescription(name, 'Creates an application', USAGE)
 
     CreateAppCommand() {
         populateDescription()
-        description.flag(name: INPLACE_FLAG, description: 'Used to create an application using the current directory')
-        description.flag(name: PACKAGE_NAME_FLAG, description: 'The Package name', required: false)
-        description.flag(name: PROFILE_FLAG, description: 'The profile to use', required: false)
-        description.flag(name: FEATURES_FLAG, description: 'The features to use', required: false)
-        description.flag(name: TEMPLATE_FLAG, description: 'The application template to use', required: false)
-        description.flag(name: CSS_FLAG, description: 'The CSS framework to use', required: false)
-        description.flag(name: JAVASCRIPT_FLAG, description: 'The JavaScript approach', required: false)
-        description.flag(name: DATABASE_FLAG, description: 'The Database type', required: false)
-        description.flag(name: STACKTRACE_ARGUMENT, description: 'Show full stacktrace', required: false)
-        description.flag(name: VERBOSE_ARGUMENT, description: 'Show verbose output', required: false)
-        description.flag(name: QUIET_ARGUMENT, description: 'Suppress status output', required: false)
-        description.flag(name: ENABLE_PREVIEW_FLAG, description: 'Enable preview features', required: false)
-        description.flag(name: GRACE_VERSION_FLAG, description: 'Specific Grace Version', required: false)
-        description.flag(name: BOOT_VERSION_FLAG, description: 'Specific Spring Boot Version', required: false)
-        description.flag(name: MINIMAL_FLAG, description: 'Used to create a minimal application', required: false)
-        description.flag(name: FORCE_FLAG, description: 'Force overwrite of existing files', required: false)
+        description.flag(name: PACKAGE_NAME_FLAG, aliases: '-p', type: 'string', description: 'The Package name, for example \'com.example\'', banner: 'PACKAGE NAME', required: false)
+        description.flag(name: PROFILE_FLAG, type: 'string', description: 'The profile to use: web, rest-api, starter, default: web', banner: 'PROFILE', required: false)
+        description.flag(name: FEATURES_FLAG, type: 'string', description: 'The features provided by the profile to use\nYou can use profile-info [PROFILE] to show all the features of the profile', banner: 'FEATURES', required: false)
+        description.flag(name: TEMPLATE_FLAG, aliases: '-m', type: 'string', description: 'Path to some application template (can be a filesystem path or URL)\nFor example: https://github.com/grace-templates/helloworld.git', banner: 'TEMPLATE', required: false)
+        description.flag(name: MINIMAL_FLAG, type: 'boolean', description: 'Used to create a minimal application', required: false)
+        description.flag(name: CSS_FLAG, aliases: '-c', type: 'string', description: 'The CSS framework to use', banner: 'CSS', required: false)
+        description.flag(name: JAVASCRIPT_FLAG, aliases: '-j', type: 'string', description: 'The JavaScript approach', banner: 'JAVASCRIPT', required: false)
+        description.flag(name: DATABASE_FLAG, aliases: '-d', type: 'string', description: 'The Database type: h2, mysql, mariadb, postgresql, sqlserver, default: h2', banner: 'DATABASE', required: false)
+        description.flag(name: GRACE_VERSION_FLAG, type: 'string', description: 'Specific Grace Version', banner: 'GRACE VERSION', required: false)
+        description.flag(name: BOOT_VERSION_FLAG, type: 'string', description: 'Specific Spring Boot Version', banner: 'BOOT VERSION', required: false)
+        description.flag(name: HELP_ARGUMENT, aliases: '-h', type: 'boolean', description: 'Show the help message and quit', required: false)
+        description.flag(name: STACKTRACE_ARGUMENT, type: 'boolean', description: 'Show full stacktrace', required: false)
+        description.flag(name: VERBOSE_ARGUMENT, type: 'boolean', description: 'Show verbose output', required: false)
+        description.flag(name: QUIET_ARGUMENT, aliases: '-q', type: 'boolean', description: 'Suppress status output', required: false)
+        description.flag(name: ENABLE_PREVIEW_FLAG, type: 'boolean', description: 'Enable preview features', required: false)
+        description.flag(name: FORCE_FLAG, aliases: '-f', type: 'boolean', description: 'Force overwrite of existing files', required: false)
+        description.flag(name: INPLACE_FLAG, type: 'boolean', description: 'Used to create an application in the current directory')
     }
 
     protected void populateDescription() {
         description.argument(name: 'Application Name', description: 'The name of the application to create.', required: false)
+        description.examples = EXAMPLES
     }
 
     @Override
@@ -204,16 +214,23 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         GrailsConsole console = executionContext.console
         CommandLine commandLine = executionContext.commandLine
 
+        if (commandLine.hasOption(CommandLine.HELP_ARGUMENT) || commandLine.hasOption('h')) {
+            printCommandHelp(executionContext.console)
+            return true
+        }
+
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
-        List<String> validFlags = [INPLACE_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
-                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG, PACKAGE_NAME_FLAG,
+        List<String> validFlags = [INPLACE_FLAG, PACKAGE_NAME_FLAG, 'p', PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, 'm',
+                                   CSS_FLAG, 'c', JAVASCRIPT_FLAG, 'j', DATABASE_FLAG, 'd',
                                    STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT,
                                    GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, MINIMAL_FLAG, FORCE_FLAG]
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
             commandLine.undeclaredOptions.each { String key, Object value ->
                 if (!validFlags.contains(key)) {
-                    List possibleSolutions = validFlags.findAll { it.substring(0, 2) == key.substring(0, 2) }
+                    List possibleSolutions = validFlags.findAll { String flag ->
+                        flag.substring(0, 2) == (key.length() > 1 ? key.substring(0, 2) : key.substring(0, 1))
+                    }
                     StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
                     if (possibleSolutions) {
                         warning.append(' Possible solutions: ')
@@ -237,14 +254,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
                 appName: appName,
-                packageName: commandLine.optionValue(PACKAGE_NAME_FLAG),
+                packageName: commandLine.optionValue(PACKAGE_NAME_FLAG) ?: commandLine.optionValue('p'),
                 baseDir: executionContext.baseDir,
                 profileName: profileName,
                 grailsVersion: specificGraceVersion ?: grailsVersion,
                 springBootVersion: specificBootVersion,
                 features: features,
-                database: commandLine.optionValue(DATABASE_FLAG) ?: 'h2',
-                template: commandLine.optionValue('template'),
+                database: commandLine.optionValue(DATABASE_FLAG) ?: (commandLine.optionValue('d') ?: 'h2'),
+                template: commandLine.optionValue('template') ?: commandLine.optionValue('m'),
                 inplace: inPlace,
                 minimal: commandLine.hasOption(MINIMAL_FLAG),
                 stacktrace: commandLine.hasOption(STACKTRACE_ARGUMENT),
@@ -364,9 +381,14 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         console.addStatus("Creating a new ${projectType == 'app' ? 'application' : projectType}")
         console.println()
         console.println("     Name:".padRight(20) + appName)
-        console.println("     Package:".padRight(20) + defaultPackageName)
+        if (projectType == 'app' || projectType == 'plugin') {
+            console.println("     Package:".padRight(20) + defaultPackageName)
+        }
         console.println("     Profile:".padRight(20) + profileName)
         console.println("     Features:".padRight(20) + features*.name?.join(', '))
+        if (projectType == 'app') {
+            console.println("     Database:".padRight(20) + cmd.database)
+        }
         if (cmd.template) {
             console.println("     Template:".padRight(20) + cmd.template)
         }
@@ -412,6 +434,42 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         GrailsCli.triggerAppLoad()
         true
+    }
+
+    protected void printCommandHelp(GrailsConsole console) {
+        console.out.println('Usage:')
+        console.out.println('  ' + this.description.usage)
+        console.out.println()
+
+        if (!this.description.getFlags().isEmpty()) {
+            console.out.println('Options:')
+        }
+        this.description.getFlags().each { f ->
+            def flag = new StringBuilder()
+            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+            if (f.type == 'boolean') {
+                flag << "[--${f.name}]".padRight(40)
+            } else {
+                flag << "[--${f.name}=${f.banner}]".padRight(40)
+            }
+            if (f.description.contains('\n')) {
+                f.description.split('\n').eachWithIndex { String d, int index ->
+                    index == 0 ? flag << '# ' + d + '\n' : flag << ('# '.padLeft(48) + d)
+                }
+            }
+            else {
+                flag << '# ' + f.description
+            }
+
+            console.out.println(flag)
+        }
+        if (!this.description.getFlags().isEmpty()) {
+            console.out.println()
+        }
+
+        console.out.println()
+        console.out.println('Examples:')
+        console.out.println(this.description.examples)
     }
 
     protected boolean validateProfile(Profile profileInstance, String profileName, GrailsConsole console) {
@@ -1407,7 +1465,7 @@ group """
             commandArguments.put(name, value.toString())
         }
         if (!commandLine.hasOption(DATABASE_FLAG)) {
-            commandArguments.put(DATABASE_FLAG, 'h2')
+            commandArguments.put(DATABASE_FLAG, commandLine.optionValue('d')?.toString() ?: 'h2')
         }
         if (!commandLine.hasOption(PROFILE_FLAG)) {
             commandArguments.put(PROFILE_FLAG, getDefaultProfile())
