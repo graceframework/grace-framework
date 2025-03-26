@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import grails.build.logging.GrailsConsole
 import org.grails.build.parsing.CommandLine
 import org.grails.build.parsing.CommandLineParser
 import org.grails.cli.profile.Command
+import org.grails.cli.profile.CommandArgument
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
@@ -94,11 +95,33 @@ class HelpCommand implements ProfileCommand, Completer, ProjectContextAware, Pro
                     }
                     if (command.description.flags) {
                         console.println()
-                        console.addStatus('Flags:')
-                        for (arg in command.description.flags) {
-                            console.println "* ${arg.name} - ${arg.description ?: ''}"
+                        console.addStatus('Options:')
+                        command.description.flags.each { CommandArgument f ->
+                            def flag = new StringBuilder()
+                            flag << '  ' << (f.aliases ? "$f.aliases, " : '    ')
+                            if (f.type == 'boolean') {
+                                flag << "[--${f.name}]".padRight(40)
+                            } else {
+                                flag << "[--${f.name}=${f.banner}]".padRight(40)
+                            }
+                            if (f.description.contains('\n')) {
+                                f.description.split('\n').eachWithIndex { String d, int index ->
+                                    index == 0 ? flag << '# ' + d + '\n' : flag << ('# '.padLeft(48) + d)
+                                }
+                            }
+                            else {
+                                flag << '# ' + f.description
+                            }
+
+                            console.println(flag)
                         }
                     }
+                    if (command.description.examples) {
+                        console.println()
+                        console.addStatus('Examples:')
+                        console.println(command.description.examples)
+                    }
+
                     return true
                 }
             }
@@ -173,9 +196,9 @@ grace [environment]* [target] [arguments]*'
     private void appendMessage(StringBuilder result, boolean append, String message) {
         if (append) {
             if (result.length() > 0) {
-                result.append(' ');
+                result.append(' ')
             }
-            result.append(message);
+            result.append(message)
         }
     }
 
