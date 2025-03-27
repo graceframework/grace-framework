@@ -53,6 +53,7 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
+import org.grails.cli.profile.CommandArgument
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Feature
@@ -221,15 +222,17 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
 
         String profileName = commandLine.optionValue('profile')?.toString() ?: getDefaultProfile()
 
-        List<String> validFlags = [INPLACE_FLAG, PACKAGE_NAME_FLAG, 'p', PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG, 'm',
-                                   CSS_FLAG, 'c', JAVASCRIPT_FLAG, 'j', DATABASE_FLAG, 'd',
+        List<String> validFlags = [INPLACE_FLAG, PACKAGE_NAME_FLAG, PROFILE_FLAG, FEATURES_FLAG, TEMPLATE_FLAG,
+                                   CSS_FLAG, JAVASCRIPT_FLAG, DATABASE_FLAG,
                                    STACKTRACE_ARGUMENT, VERBOSE_ARGUMENT, QUIET_ARGUMENT,
                                    GRACE_VERSION_FLAG, BOOT_VERSION_FLAG, MINIMAL_FLAG, FORCE_FLAG]
+
         if (!commandLine.hasOption(ENABLE_PREVIEW_FLAG)) {
+            List<String> validAliases = this.description.flags.collect {it.aliases }
             commandLine.undeclaredOptions.each { String key, Object value ->
-                if (!validFlags.contains(key)) {
+                if (!key.startsWith('skip-') && !validAliases.contains(key) && !validFlags.contains(key)) {
                     List possibleSolutions = validFlags.findAll { String flag ->
-                        flag.substring(0, 2) == (key.length() > 1 ? key.substring(0, 2) : key.substring(0, 1))
+                        flag.substring(0, 2) == key.substring(0, 2)
                     }
                     StringBuilder warning = new StringBuilder("Unrecognized flag: ${key}.")
                     if (possibleSolutions) {
@@ -241,6 +244,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
+        Map<String, String> args = getCommandArguments(commandLine)
         String grailsVersion = GrailsVersion.current().version
         String specificGraceVersion = commandLine.optionValue(GRACE_VERSION_FLAG)
         String specificBootVersion = commandLine.optionValue(BOOT_VERSION_FLAG)
@@ -250,7 +254,12 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         List<String> features = commandLine.hasOption('features') ?
                 ((commandLine.optionValue('features') && !(commandLine.optionValue('features') instanceof Boolean)) ?
                         commandLine.optionValue('features').toString()?.split(',')?.toList() : []) : null
-        Map<String, String> args = getCommandArguments(commandLine)
+
+        List<String> skippedFeatures = commandLine.undeclaredOptions.collect { String key, Object value ->
+            if (key.startsWith('skip-')) {
+                key.substring(5)
+            }
+        }
 
         CreateAppCommandObject cmd = new CreateAppCommandObject(
                 appName: appName,
@@ -260,6 +269,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 grailsVersion: specificGraceVersion ?: grailsVersion,
                 springBootVersion: specificBootVersion,
                 features: features,
+                skippedFeatures: skippedFeatures,
                 database: commandLine.optionValue(DATABASE_FLAG) ?: (commandLine.optionValue('d') ?: 'h2'),
                 template: commandLine.optionValue('template') ?: commandLine.optionValue('m'),
                 inplace: inPlace,
@@ -366,7 +376,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             }
         }
 
-        List<Feature> features = cmd.minimal ? [] : evaluateFeatures(profileInstance, cmd.features, cmd.console)
+        List<Feature> features = cmd.minimal ? [] : evaluateFeatures(profileInstance, cmd.features, cmd.skippedFeatures, cmd.console)
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
         Map<String, String> args = new HashMap<>()
@@ -480,7 +490,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         true
     }
 
-    protected List<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, GrailsConsole console) {
+    protected List<Feature> evaluateFeatures(Profile profile, List<String> requestedFeatures, List<String> skippedFeatures, GrailsConsole console) {
         List<Feature> features
         if (requestedFeatures != null && requestedFeatures.size() > 0) {
             List<String> allFeatureNames = profile.features*.name
@@ -505,7 +515,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         else {
             features = (profile.defaultFeatures + profile.requiredFeatures).toList().unique()
         }
-        features?.sort {
+        features.findAll {
+            !skippedFeatures.contains(it.name)
+        }.sort {
             it.name
         }
     }
@@ -1559,6 +1571,7 @@ group """
         String grailsVersion
         String springBootVersion
         List<String> features
+        List<String> skippedFeatures
         String database
         String template
         boolean minimal = false
