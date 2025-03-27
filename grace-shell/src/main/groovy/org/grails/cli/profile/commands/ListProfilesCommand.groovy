@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,17 @@ import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
+import org.grails.cli.profile.ProjectCommand
 
 /**
  * Lists the available {@link org.grails.cli.profile.Profile} instances
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
-class ListProfilesCommand implements Command, ProfileRepositoryAware {
+class ListProfilesCommand implements Command, ProjectCommand, ProfileRepositoryAware {
 
     final String name = 'list-profiles'
     final CommandDescription description = new CommandDescription(name, 'Lists the available profiles', 'grace list-profiles')

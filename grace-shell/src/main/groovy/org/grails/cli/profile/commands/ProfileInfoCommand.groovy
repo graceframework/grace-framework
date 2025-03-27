@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.grails.cli.profile.Feature
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
+import org.grails.cli.profile.ProjectCommand
 import org.grails.cli.profile.ProjectContext
 import org.grails.config.CodeGenConfig
 
@@ -38,7 +39,7 @@ import org.grails.config.CodeGenConfig
  * @since 3.1
  */
 @CompileStatic
-class ProfileInfoCommand extends ArgumentCompletingCommand implements ProfileRepositoryAware {
+class ProfileInfoCommand extends ArgumentCompletingCommand implements ProjectCommand, ProfileRepositoryAware {
 
     public static final String NAME = 'profile-info'
 
