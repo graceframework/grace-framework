@@ -31,7 +31,7 @@ class CreateAppCommandSpec extends Specification {
     void "test evaluateFeatures - multiple, some valid"() {
         given:
         Feature bar = Mock(Feature) {
-            2 * getName() >> "bar"
+            3 * getName() >> "bar"
         }
         Profile profile = Mock(Profile) {
             1 * getName() >> "web"
@@ -40,7 +40,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], GrailsConsole.instance)
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], [], GrailsConsole.instance)
 
         then:
         features.size() == 1
@@ -51,10 +51,10 @@ class CreateAppCommandSpec extends Specification {
     void "test evaluateFeatures - multiple, all valid"() {
         given:
         Feature foo = Mock(Feature) {
-            3 * getName() >> "foo"
+            4 * getName() >> "foo"
         }
         Feature bar = Mock(Feature) {
-            3 * getName() >> "bar"
+            4 * getName() >> "bar"
         }
         Profile profile = Mock(Profile) {
             0 * getName()
@@ -63,7 +63,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], GrailsConsole.instance)
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['foo', 'bar'], [], GrailsConsole.instance)
 
         then:
         features.size() == 2
@@ -84,7 +84,7 @@ class CreateAppCommandSpec extends Specification {
         }
 
         when:
-        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['mongo'], GrailsConsole.instance)
+        Iterable<Feature> features = new CreateAppCommand().evaluateFeatures(profile, ['mongo'], [], GrailsConsole.instance)
 
         then:
         features.size() == 0
