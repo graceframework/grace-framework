@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,13 +52,13 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
 
-import grails.boot.config.GrailsAutoConfiguration
 import grails.boot.test.GrailsApplicationContextLoader
 import grails.testing.mixin.integration.Integration
 
@@ -72,6 +72,7 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.propX
 
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -105,10 +106,10 @@ class IntegrationTestMixinTransformation implements ASTTransformation {
         ClassNode applicationClassNode
         if (applicationClassExpression) {
             applicationClassNode = applicationClassExpression.getType()
-            if (!applicationClassNode.isDerivedFrom(ClassHelper.make(GrailsAutoConfiguration))) {
+            if (!GrailsASTUtils.hasAnnotation(applicationClassNode, SpringBootApplication)) {
                 GrailsASTUtils.error(source, applicationClassExpression,
                         "Invalid applicationClass attribute value [${applicationClassNode.getName()}]. "
-                                + 'The applicationClass attribute must specify a class which extends grails.boot.config.GrailsAutoConfiguration.',
+                                + "The applicationClass attribute must specify a class annotated '@SpringBootApplication'.",
                         true)
             }
         }
