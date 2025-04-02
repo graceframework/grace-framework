@@ -1,4 +1,5 @@
 dependencies {
+    api project(":grace-scaffolding-core")
     compileOnly "jakarta.servlet:jakarta.servlet-api"
     compileOnly "org.graceframework:grace-boot"
     api "org.graceframework:grace-core", {
