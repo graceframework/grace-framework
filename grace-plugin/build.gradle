@@ -1,26 +1,3 @@
-sourceCompatibility = "17"
-targetCompatibility = "17"
-
-dependencyManagement {
-    imports {
-        mavenBom "org.graceframework:grace-bom:$graceVersion"
-    }
-    applyMavenExclusions false
-}
-// configurations.all {
-//     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//         if(details.requested.group == 'org.grails' && 
-//             details.requested.name.startsWith('grails-datastore') &&
-//             !details.requested.name.contains('mongodb') &&
-//             !details.requested.name.contains('bson')) {
-//             details.useVersion(datastoreVersion)
-//         } else if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
-//             details.useVersion(groovyVersion)   
-//         } else if(details.requested.group == 'org.springframework') {
-//             details.useVersion(springVersion)
-//         }
-//     }
-// }
 dependencies {
     compileOnly "org.graceframework:grace-core"
     compileOnly "org.graceframework:grace-bootstrap"
@@ -42,10 +19,10 @@ dependencies {
         exclude group:'org.graceframework', module:'grace-core'
         exclude group:'javax.transaction', module:'jta'
     }
-    api project(":grails-datastore-gorm-mongodb-ext"), {
+    api project(":grace-datastore-gorm-mongodb-ext"), {
         exclude group:'org.graceframework', module:'grace-datastore-gorm-mongodb'
     }    
-    api project(":grails-datastore-gorm-mongodb"), {
+    api project(":grace-datastore-gorm-mongodb"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
         exclude group:'org.springframework', module:'spring-beans'
@@ -55,8 +32,4 @@ dependencies {
         exclude group:'org.graceframework', module:'grace-core'
         exclude group:'javax.transaction', module:'jta'
     }
-}
-
-springBoot {
-    mainClass  = "grails.plugins.mongodb.Application"
 }
