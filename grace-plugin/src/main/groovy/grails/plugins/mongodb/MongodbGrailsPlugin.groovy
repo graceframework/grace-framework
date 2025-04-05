@@ -1,67 +1,48 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.plugins.mongodb
 
-import grails.core.GrailsClass
-import grails.mongodb.bootstrap.MongoDbDataStoreSpringInitializer
-import grails.plugins.GrailsPlugin
-import grails.plugins.Plugin
-import grails.util.Metadata
 import groovy.transform.CompileStatic
-import org.grails.core.artefact.DomainClassArtefactHandler
-import org.grails.datastore.gorm.plugin.support.ConfigSupport
-import org.grails.datastore.mapping.mongo.MongoDatastore
-import org.springframework.beans.factory.support.BeanDefinitionRegistry
-import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.core.env.PropertyResolver
-import org.springframework.transaction.PlatformTransactionManager
 
+import grails.plugins.Plugin
+
+/**
+ * Plugin that integrates Hibernate into a Grails application
+ *
+ * @author Graeme Rocher
+ * @author Puneet Behl
+ * @author Michael Yan
+ * @since 3.0
+ */
+@CompileStatic
 class MongodbGrailsPlugin extends Plugin {
-    def license = "Apache 2.0 License"
-    def organization = [name: "Grails", url: "https://grails.org/"]
-    def developers = [
-        [name: "Puneet Behl", email: "behlp@objectcomputing.com"]]
-    def issueManagement = [system: "Github", url: "https://github.com/grails/gorm-mongodb"]
-    def scm = [url: "https://github.com/grails/gorm-mongodb"]
 
-    def grailsVersion = "6.0.0 > *"
-    def observe = ['services', 'domainClass']
-    def loadAfter = ['domainClass', 'hibernate', 'hibernate4', 'services']
-    def author = "Puneet Behl"
-    def authorEmail = "behlp@objectcomputing.com"
-    def title = "GORM MongoDB"
-    def description = 'A plugin that integrates the MongoDB document datastore into the Grails framework, providing a GORM API onto it'
+    def grailsVersion = '2023.0.0 > *'
 
-    def documentation = "https://gorm.grails.org/latest/mongodb/manual/"
+    def author = 'Grace Framework'
+    def title = 'Grace Data MongoDB'
+    def description = 'Provides integration between Grace and MongoDB document datastore through GORM API'
+    def documentation = 'https://github.com/graceframework/grace-data-mongodb'
 
-    @Override
-    @CompileStatic
-    Closure doWithSpring() {
-        ConfigSupport.prepareConfig(config, (ConfigurableApplicationContext) applicationContext)
-        def initializer = new MongoDbDataStoreSpringInitializer((PropertyResolver) config, grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE).collect() { GrailsClass cls -> cls.clazz })
-        initializer.registerApplicationIfNotPresent = false
+    def observe = ['domainClass']
+    def loadAfter = ['domainClass']
 
-        def applicationName = Metadata.getCurrent().getApplicationName()
-        if(!applicationName.contains('@')) {
-            initializer.databaseName = applicationName
-        }
-        initializer.setSecondaryDatastore(hasHibernatePlugin())
+    def license = 'APACHE'
+    def organization = [name: 'Grace Framework', url: 'https://graceframework.org']
+    def issueManagement = [system: 'Github', url: 'https://github.com/graceframework/grace-data-mongodb/issues']
+    def scm = [url: 'https://github.com/graceframework/grace-data-mongodb']
 
-        return initializer.getBeanDefinitions((BeanDefinitionRegistry)applicationContext)
-    }
-
-    @CompileStatic
-    protected boolean hasHibernatePlugin() {
-        manager.allPlugins.any() { GrailsPlugin plugin -> plugin.name ==~ /hibernate\d*/}
-    }
-
-    @Override
-    @CompileStatic
-    void onChange(Map<String, Object> event) {
-
-        def ctx = applicationContext
-        event.application = grailsApplication
-        event.ctx = applicationContext
-
-        def mongoDatastore = ctx.getBean(MongoDatastore)
-        def mongoTransactionManager = ctx.getBean('mongoTransactionManager', PlatformTransactionManager)
-    }
 }

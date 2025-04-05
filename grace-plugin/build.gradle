@@ -8,28 +8,11 @@ dependencies {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }
 
+    api("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+    api "org.graceframework:grace-datastore-gorm-support:$datastoreVersion"
     api "org.graceframework:grace-datastore-web:$datastoreVersion"
-    api "org.graceframework:grace-datastore-gorm-support:$datastoreVersion", {
-        exclude group:'org.springframework', module:'spring-context'
-        exclude group:'org.springframework', module:'spring-core'
-        exclude group:'org.springframework', module:'spring-beans'
-        exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.graceframework', module:'grace-bootstrap'
-        // exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.graceframework', module:'grace-core'
-        exclude group:'javax.transaction', module:'jta'
-    }
-    api project(":grace-datastore-gorm-mongodb-ext"), {
-        exclude group:'org.graceframework', module:'grace-datastore-gorm-mongodb'
-    }    
-    api project(":grace-datastore-gorm-mongodb"), {
-        exclude group:'org.springframework', module:'spring-context'
-        exclude group:'org.springframework', module:'spring-core'
-        exclude group:'org.springframework', module:'spring-beans'
-        exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.graceframework', module:'grace-bootstrap'
-        exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.graceframework', module:'grace-core'
-        exclude group:'javax.transaction', module:'jta'
-    }
+    api project(":grace-datastore-gorm-mongodb-ext")
+    api project(":grace-datastore-gorm-mongodb")
 }
