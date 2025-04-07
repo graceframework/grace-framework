@@ -55,6 +55,7 @@ dependencies {
     api "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
 
     compileOnly "org.graceframework:grace-boot"
+    compileOnly "org.graceframework:grace-cli"
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation "org.graceframework:grace-datastore-gorm:$gormVersion"
     compileOnly "org.graceframework.plugins:hibernate:$hibernatePluginVersion"
