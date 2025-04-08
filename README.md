@@ -1,19 +1,17 @@
 [![Main branch build status](https://github.com/graceframework/grace-framework/workflows/Grace%20CI/badge.svg?style=flat)](https://github.com/graceframework/grace-framework/actions?query=workflow%3A%Grace+CI%22)
 [![Apache 2.0 license](https://img.shields.io/badge/License-APACHE%202.0-green.svg?logo=APACHE&style=flat)](https://opensource.org/licenses/Apache-2.0)
 [![Latest version on Maven Central](https://img.shields.io/maven-central/v/org.graceframework/grace-core.svg?label=Maven%20Central&logo=apache-maven&style=flat)](https://search.maven.org/search?q=g:org.graceframework)
-[![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://twitter.com/graceframework)
+[![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.25-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.9-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.9)
+[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.26-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.10-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.10)
 
-Grace Framework
-===
+# Grace Framework
 
 [Grace](https://github.com/graceframework/grace-framework) is a fork of Grails 5 that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
 
-Getting Started
----
+## Getting Started
 
 You need a Java Development Kit (JDK) installed, but it is not necessary to install Groovy because it's bundled with the Grace distribution.
 
@@ -41,8 +39,7 @@ If you encounter out of memory errors when trying to run the install target, try
 
 For installation instructions see [INSTALL.txt](INSTALL.txt).
 
-Plugins
----
+## Plugins
 
 Grace is first and foremost a web application framework, but it is also a platform. Grace provide [Plugin API](/grace-plugin-api/README.md) to expose a number of extension points that let you extend anything from the command line interface to the runtime configuration engine.
 
@@ -51,6 +48,8 @@ Grace is first and foremost a web application framework, but it is also a platfo
 * [Grace Asset Pipeline Plugin](https://github.com/grace-plugins/grace-asset-pipeline) is a plugin used for managing and processing static assets in Grace applications.
 * [Grace Async and Events](https://github.com/graceframework/grace-async) provides asynchronous, parallel programming, Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
 * [Grace Cache](https://github.com/graceframework/grace-cache) provides powerful and easy to use caching functionality to Grace applications and plugins.
+* [Grace Data Hibernate](https://github.com/graceframework/grace-data-hibernate) provides a GORM implementation for Hibernate ORM.
+* [Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the MongodB Document Database.
 * [Grace Database Migration](https://github.com/graceframework/grace-database-migration) helps you manage database changes uses the Liquibase library.
 * [Grace Scaffolding](https://github.com/graceframework/grace-scaffolding) is a plugin to generate scaffolded controllers and views for your Grace application.
 * [Grace Fields](https://github.com/graceframework/grace-fields) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
@@ -65,8 +64,7 @@ Grace is first and foremost a web application framework, but it is also a platfo
 * [Grace Unpoly](https://github.com/grace-plugins/grace-unpoly) is a plugin for using [Unpoly](https://unpoly.com).
 * [Grace View Components](https://github.com/grace-plugins/grace-view-components) is a plugin for creating reusable, testable and encapsulated view components.
 
-Profiles
----
+## Profiles
 
 Grace profile is a simple directory that contains a `profile.yml` file and directories containing the "commands", "skeleton" and "templates" defined by the profile.
 
@@ -80,17 +78,16 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 * `web-plugin` - a profile for Web plugin that contains web resources `css` `js` `images`
 * `web` - default profile to creae a web app
 
-Guides
----
+## Guides
 
 [Grace Guides](https://github.com/grace-guides) repository contains several guides that show how to use Grace.
 
 * [Spring Boot Application with Plugins](https://github.com/grace-guides/gs-spring-boot) is a how-to guide that shows you how to use Grace Plugins in your Spring Boot application.
 * [Spring Boot Application with GSP](https://github.com/grace-guides/gs-spring-boot-gsp) is a how-to guide that shows you how to use GSP as view templates in your Spring Boot application.
 * [Spring Boot Application with GORM](https://github.com/grace-guides/gs-spring-boot-gorm) is a how-to guide that shows you how to use GORM as data persistence layer in your Spring Boot application.
+* [Grace app and Spring Boot Test](https://github.com/grace-guides/gs-spring-boot-test) is a how-to guide that shows you how to use `@SpringBootTest` to test your Grace application.
 * [Build Admin Console with Grace Admin Plugin](https://github.com/grace-guides/gs-admin-console) is a how-to guide that shows you how to use Grace Admin plugin to build flexible, extensible management console in your application.
 
-License
----
+## License
 
 Grace framework is Open Source software released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
