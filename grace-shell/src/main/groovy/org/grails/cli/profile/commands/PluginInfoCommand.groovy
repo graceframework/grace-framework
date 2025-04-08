@@ -23,6 +23,7 @@ import org.grails.build.parsing.CommandLine
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.GlobalCommand
 import org.grails.cli.profile.ProjectCommand
 
 /**
@@ -31,7 +32,7 @@ import org.grails.cli.profile.ProjectCommand
  * @author Michael Yan
  * @since 2023.3.0
  */
-class PluginInfoCommand implements Command, ProjectCommand {
+class PluginInfoCommand implements Command, GlobalCommand, ProjectCommand {
 
     public static final String PLUGIN_REPO_URL = 'https://repo1.maven.org/maven2/org/graceframework/plugins'
     public static final String NAME = 'plugin-info'

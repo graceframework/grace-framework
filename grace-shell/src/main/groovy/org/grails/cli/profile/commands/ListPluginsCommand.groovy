@@ -21,6 +21,7 @@ import grails.build.logging.GrailsConsole
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.GlobalCommand
 import org.grails.cli.profile.ProjectCommand
 
 /**
@@ -30,7 +31,7 @@ import org.grails.cli.profile.ProjectCommand
  * @since 2023.3.0
  */
 @CompileStatic
-class ListPluginsCommand implements Command, ProjectCommand {
+class ListPluginsCommand implements Command, GlobalCommand, ProjectCommand {
 
     public static final String PLUGIN_REPO_URL = 'https://repo1.maven.org/maven2/org/graceframework/plugins'
     private static final List<String> EXCLUDES = ['asset-pipeline-core', 'asset-pipeline-gradle', 'views-gradle']

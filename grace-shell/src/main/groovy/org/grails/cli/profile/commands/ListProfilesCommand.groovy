@@ -18,10 +18,11 @@ package org.grails.cli.profile.commands
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
-
+import grails.util.BuildSettings
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.GlobalCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
@@ -35,7 +36,7 @@ import org.grails.cli.profile.ProjectCommand
  * @since 3.0
  */
 @CompileStatic
-class ListProfilesCommand implements Command, ProjectCommand, ProfileRepositoryAware {
+class ListProfilesCommand implements Command, GlobalCommand, ProjectCommand, ProfileRepositoryAware {
 
     final String name = 'list-profiles'
     final CommandDescription description = new CommandDescription(name, 'Lists the available profiles', 'grace list-profiles')
@@ -47,7 +48,7 @@ class ListProfilesCommand implements Command, ProjectCommand, ProfileRepositoryA
         List<Profile> allProfiles = profileRepository.allProfiles.sort { Profile p -> p.name}
         GrailsConsole console = executionContext.console
         console.log('-' * 100)
-        console.log('Available Profiles')
+        console.log(BuildSettings.GRAILS_APP_DIR_PRESENT ? 'Used Profiles' : 'Available Profiles')
         console.log('-' * 100)
         for (Profile p in allProfiles) {
             console.log("* ${p.name.padRight(30)} ${p.version.padRight(20)}  ${p.description}")

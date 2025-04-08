@@ -24,6 +24,7 @@ import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Feature
+import org.grails.cli.profile.GlobalCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
@@ -39,7 +40,7 @@ import org.grails.config.CodeGenConfig
  * @since 3.1
  */
 @CompileStatic
-class ProfileInfoCommand extends ArgumentCompletingCommand implements ProjectCommand, ProfileRepositoryAware {
+class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalCommand, ProjectCommand, ProfileRepositoryAware {
 
     public static final String NAME = 'profile-info'
 

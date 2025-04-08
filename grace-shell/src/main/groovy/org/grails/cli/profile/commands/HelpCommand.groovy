@@ -25,6 +25,7 @@ import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandArgument
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
+import org.grails.cli.profile.GlobalCommand
 import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileCommand
 import org.grails.cli.profile.ProfileRepository
@@ -178,7 +179,7 @@ grace [environment]* [target] [arguments]*'
         }
         else {
             commands = CommandRegistry.findCommands(profileRepository).findAll { Command cmd ->
-                !(cmd instanceof ProjectCommand)
+                (cmd instanceof GlobalCommand) || !(cmd instanceof ProjectCommand)
             }
         }
         if (showAll) {
