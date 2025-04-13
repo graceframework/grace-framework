@@ -5,6 +5,10 @@ dependencies {
     api project(':grace-async-core')
     compileOnly project(":grace-events-compat")
 
+    api("org.springframework.boot:spring-boot-autoconfigure")
+    annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     testImplementation "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
     testImplementation "org.graceframework:grace-test:$graceVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
