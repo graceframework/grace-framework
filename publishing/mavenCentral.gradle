@@ -32,10 +32,6 @@ publishing {
             if (project.name != "views-gradle") {
                 from components.java
             }
-            // afterEvaluate {
-            //     artifact source: sourcesJar, classifier: "sources"
-            //     artifact source: javadocJar, classifier: "javadoc"
-            // }
 
             if (isGrailsPlugin) {
                 artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
@@ -51,24 +47,6 @@ publishing {
             pom.withXml {
                 def pomNode = asNode()
                 pomNode.children().last() + pomInfo
-                try {
-                    pomNode.dependencyManagement.replaceNode {}
-                } catch (Throwable e) {
-                    // ignore
-                }
-
-                // simply remove dependencies without a version
-                // version-less dependencies are handled with dependencyManagement
-                // see https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/8 for more complete solutions
-                pomNode.dependencies.dependency.findAll {
-                    it.version.text().isEmpty()
-                }.each {
-                    try {
-                        it.replaceNode {}
-                    } catch (Throwable e) {
-                        // ignore
-                    }
-                }
             }
         }
     }
