@@ -1,18 +1,17 @@
 group = "org.graceframework.plugins"
 
 dependencies {
+    api project(":views-core")
     api "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
     api "org.graceframework:grace-core:$graceVersion", {
         exclude group: 'org.graceframework', module: 'grace-datastore-core'
     }
-    compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    compileOnly "org.graceframework:grace-boot:$graceVersion"
-    api project(":views-core")
+    api "org.graceframework:grace-datastore-gorm:$gormVersion"
 
     api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
-    api "org.graceframework:grace-datastore-gorm:$gormVersion"
+
     testImplementation "org.graceframework:grace-test-support:$graceVersion"
     testImplementation project(":views-json-testing-support")
     testImplementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
