@@ -1,7 +1,5 @@
 group = "org.graceframework.plugins"
 
-apply plugin: "org.graceframework.grace-plugin"
-
 dependencies {
     api "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
     api "org.graceframework:grace-core:$graceVersion"
@@ -13,10 +11,4 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
     testImplementation "org.graceframework:grace-test-support:$graceVersion"
-}
-
-jar {
-    enabled = true
-    archiveClassifier.set('plugin')
-    includeEmptyDirs = false
 }
