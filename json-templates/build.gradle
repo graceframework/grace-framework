@@ -1,16 +1,5 @@
 group = "org.graceframework.plugins"
 
-ext {
-    userOrg = 'graceframework'
-    repo = 'grace-views'
-    isGrailsPlugin = false
-    projectDesc = "Grace JSON Views Templates"
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     api project(':views-json')
     compileOnly "org.graceframework:grace-plugin-rest:$graceVersion"

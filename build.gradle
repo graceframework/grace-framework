@@ -12,7 +12,6 @@ buildscript {
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
-        classpath "io.spring.gradle:dependency-management-plugin:$springDependencyManagementPluginVersion"
     }
 }
 
@@ -80,7 +79,6 @@ subprojects { project->
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
     apply plugin: "org.gradle.test-retry"
-    apply plugin: "io.spring.dependency-management"
 
     if (ext.isGrailsPlugin) {
         apply plugin: "org.graceframework.grace-plugin"

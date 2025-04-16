@@ -1,36 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        maven {
-            url = 'https://repo.gradle.org/gradle/libs-releases'
-        }
-        if (project.projectVersion.endsWith('-SNAPSHOT')) {
-            maven {
-                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            }
-        }
-    }
-    dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
-        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-    }
-}
-
-ext {
-    userOrg = 'graceframework'
-}
-
 group = "org.graceframework.plugins"
 
 apply plugin: "org.graceframework.grace-plugin"
-
-dependencyManagement {
-    // imports {
-    //     mavenBom "org.graceframework:grace-bom:$graceVersion"
-    // }
-    applyMavenExclusions false
-}
 
 dependencies {
     api "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
@@ -43,10 +13,6 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation "org.graceframework:grace-test-support:$graceVersion"
-}
-
-springBoot {
-    mainClass.set('grails.plugin.markup.view.Application')
 }
 
 jar {

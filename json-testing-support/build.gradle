@@ -1,35 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        maven {
-            url = 'https://repo.gradle.org/gradle/libs-releases'
-        }
-    }
-    dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
-        classpath "io.spring.gradle:dependency-management-plugin:$springDependencyManagementPluginVersion"
-        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-    }
-}
-
 group = "org.graceframework"
-
-apply plugin: "io.spring.dependency-management"
-
-ext {
-    userOrg = 'graceframework'
-    repo = 'grace-views'
-    isGrailsPlugin = false
-    projectDesc = "Grace JSON Views Testing Support"
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        url = "https://repo.grails.org/grails/core"
-    }
-}
 
 dependencies {
     api "org.graceframework:grace-core:$graceVersion", {
