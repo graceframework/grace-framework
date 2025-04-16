@@ -1,7 +1,6 @@
 dependencies {
     compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
     implementation "org.graceframework:grace-plugin-controllers:$graceVersion"
-    compileOnly project(':grace-plugin-events')
     api project(':grace-async-core')
     compileOnly project(":grace-events-compat")
 
