@@ -6,7 +6,6 @@ dependencies {
     api "org.graceframework:grace-core:$graceVersion", {
         exclude group: 'org.graceframework', module: 'grace-datastore-core'
     }
-    api "org.graceframework:grace-datastore-gorm:$gormVersion"
 
     api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
