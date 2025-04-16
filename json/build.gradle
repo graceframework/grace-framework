@@ -18,3 +18,7 @@ dependencies {
     testImplementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
     testRuntimeOnly "org.javassist:javassist:$javassistVersion"
 }
+
+jar {
+    exclude "*.gson"
+}
