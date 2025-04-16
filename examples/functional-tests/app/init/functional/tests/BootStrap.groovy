@@ -1,15 +1,5 @@
-import functional.tests.Bus
-import functional.tests.Car
-import functional.tests.Circular
-import functional.tests.Customer
-import functional.tests.Employee
-import functional.tests.Garage
-import functional.tests.MyEnum
-import functional.tests.Player
-import functional.tests.Project
-import functional.tests.Site
-import functional.tests.Team
-import functional.tests.Proxy
+package functional.tests
+
 import grails.gorm.transactions.Transactional
 
 class BootStrap {

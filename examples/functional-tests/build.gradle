@@ -1,15 +1,13 @@
 buildscript {
     repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
-        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+        mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:$functionalTestViewsGradleVersion"
-        classpath "org.grails.plugins:asset-pipeline-gradle:$assetPipelineVersion"
-        classpath "io.spring.gradle:dependency-management-plugin:$springDependencyManagementPluginVersion"
-        classpath "org.gradle:test-retry-gradle-plugin:1.3.1"
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+        classpath "org.graceframework.plugins:views-gradle:$functionalTestViewsGradleVersion"
+        classpath "org.graceframework.plugins:asset-pipeline-gradle:$assetPipelineVersion"
+        classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
     }
 }
 
@@ -19,54 +17,34 @@ group "functional.tests"
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "war"
-apply plugin: "org.grails.asset-pipeline"
-apply plugin: "org.grails.grails-web"
-apply plugin: "org.grails.grails-gsp"
-apply plugin: "io.spring.dependency-management"
+apply plugin: "org.graceframework.asset-pipeline"
+apply plugin: "org.graceframework.grace-web"
+apply plugin: "org.graceframework.grace-gsp"
+apply plugin: "org.graceframework.plugins.views-json"
+apply plugin: "org.graceframework.plugins.views-markup"
 apply plugin: "org.gradle.test-retry"
 
-// uncommenting fails because we have functional tests for compilation errors
-//apply plugin: "org.grails.plugins.views-json"
-//apply plugin: "org.grails.plugins.views-markup"
-
-assets {
-    minifyJs = true
-    minifyCss = true
-}
-
 repositories {
-    mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
-    maven { url 'https://repo.gradle.org/gradle/libs-releases' }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.grails:grails-bom:$grailsVersion"
-    }
-    applyMavenExclusions false
+    mavenCentral()
 }
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "org.grails:grails-dependencies"
-    implementation "org.grails:grails-web-boot"
-
-    implementation "org.grails.plugins:hibernate5"
-    implementation "org.grails.plugins:mongodb"
-    implementation "org.grails.plugins:cache"
-    implementation "org.hibernate:hibernate-ehcache"
-    implementation "org.grails.plugins:scaffolding"
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.graceframework:grace-boot"
+    implementation "org.graceframework:grace-core"
+    implementation "org.graceframework:grace-logging"
+    implementation "org.graceframework.plugins:hibernate"
+    implementation "org.graceframework.plugins:mongodb"
+    implementation "org.graceframework.plugins:cache"
+    implementation "org.graceframework.plugins:scaffolding"
 
     implementation project(":views-json")
     implementation project(":views-markup")
     implementation project(":examples-functional-tests-plugin")
 
-    runtimeOnly "org.apache.tomcat:tomcat-jdbc:9.0.13"
-    runtimeOnly "org.grails.plugins:asset-pipeline-grails:$assetPipelineVersion"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:$assetPipelineVersion"
     runtimeOnly project(":views-json-templates")
 
     testImplementation project(":views-json-testing-support")
