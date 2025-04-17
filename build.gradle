@@ -41,7 +41,7 @@ dependencies {
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
     }
     compileOnly "org.graceframework:grace-boot"
-    documentation "org.fusesource.jansi:jansi:1.18"
+    documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "org.apache.groovy:groovy:$groovyVersion"
     documentation "org.apache.groovy:groovy-ant:$groovyVersion"
     documentation "org.apache.groovy:groovy-templates:$groovyVersion"
