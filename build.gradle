@@ -150,16 +150,6 @@ publishing {
                     url = 'https://github.com/graceframework/grace-fields'
                 }
             }
-
-            pom.withXml {
-                def pomNode = asNode()
-
-                try {
-                    pomNode.dependencyManagement.replaceNode {}
-                } catch (Throwable e) {
-                    // ignore
-                }
-            }
         }
     }
 }
