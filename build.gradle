@@ -12,7 +12,6 @@ buildscript {
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
-        classpath "io.spring.gradle:dependency-management-plugin:$springDependencyManagementPluginVersion"
     }
 }
 
@@ -64,10 +63,22 @@ subprojects { project->
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
     apply plugin: "org.gradle.test-retry"
-    apply plugin: "io.spring.dependency-management"
 
     if (project.name.startsWith('grace-plugin')) {
         apply plugin: 'org.graceframework.grace-plugin'
+    }
+    else {
+        apply plugin: "io.spring.dependency-management"
+
+        dependencyManagement {
+            imports {
+                mavenBom "org.graceframework:grace-bom:$graceVersion"
+            }
+            applyMavenExclusions false
+            generatedPomCustomization {
+                enabled = false
+            }
+        }
     }
 
     repositories {
@@ -80,13 +91,6 @@ subprojects { project->
         }
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.graceframework:grace-bom:$graceVersion"
-        }
-        applyMavenExclusions false
-    }
-
     apply from: '../publishing/mavenCentral.gradle'
 
 
@@ -96,23 +100,23 @@ subprojects { project->
         }
 
         dependencies {
-            api "org.apache.groovy:groovy:$groovyVersion"
-            api "org.slf4j:slf4j-api:$slf4jVersion"
+            api "org.apache.groovy:groovy"
+            api "org.slf4j:slf4j-api"
             documentation "org.fusesource.jansi:jansi:$jansiVersion"
-            documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
+            documentation "org.apache.groovy:groovy-dateutil"
             documentation "info.picocli:picocli:$picocliVersion"
             documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-            testImplementation "org.spockframework:spock-core:$spockVersion", {
+            testImplementation "org.spockframework:spock-core", {
                 exclude group: "org.junit.platform", module: "junit-platform-engine"
             }
-            testImplementation "org.apache.groovy:groovy-test-junit5:$groovyVersion", {
+            testImplementation "org.apache.groovy:groovy-test-junit5", {
                 exclude group: "org.junit.platform", module: "junit-platform-launcher"
                 exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
             }
-            testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-            testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
-            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+            testImplementation "org.junit.jupiter:junit-jupiter-api"
+            testImplementation "org.junit.platform:junit-platform-runner"
+            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
         }
 
         java {

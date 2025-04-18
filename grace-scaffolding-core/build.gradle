@@ -1,12 +1,11 @@
-
 dependencies {
-    implementation "org.graceframework:grace-core:$graceVersion"
+    implementation "org.graceframework:grace-core"
     implementation "org.graceframework:grace-datastore-core:$gormVersion"
     implementation "org.graceframework:grace-datastore-gorm-validation:$gormVersion"
-    implementation "org.graceframework:grace-web-url-mappings:$graceVersion"
-    compileOnly "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+    implementation "org.graceframework:grace-web-url-mappings"
+    compileOnly "jakarta.annotation:jakarta.annotation-api"
 
-    testImplementation "org.spockframework:spock-core:$spockVersion"
-    testImplementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "net.bytebuddy:byte-buddy"
     testImplementation "org.objenesis:objenesis:$objenesisVersion"
 }
