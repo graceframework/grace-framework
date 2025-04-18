@@ -1,6 +1,6 @@
 dependencies {
-    compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    implementation "org.graceframework:grace-plugin-controllers:$graceVersion"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    implementation "org.graceframework:grace-plugin-controllers"
     api project(':grace-async-core')
     compileOnly project(":grace-events-compat")
 
@@ -8,9 +8,9 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    testImplementation "org.graceframework:grace-test:$graceVersion"
-    testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "jakarta.servlet:jakarta.servlet-api"
+    testImplementation "org.graceframework:grace-test"
+    testImplementation "org.springframework:spring-test"
 }
 
 jar {
