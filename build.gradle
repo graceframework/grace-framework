@@ -1,17 +1,17 @@
 buildscript {
-	repositories {
-		mavenCentral()
+    repositories {
+        mavenCentral()
         gradlePluginPortal()
         if (project.projectVersion.endsWith('-SNAPSHOT')) {
             maven {
                 url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             }
         }
-	}
-	dependencies {
-		classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-	}
+    }
 }
 
 ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
@@ -32,7 +32,7 @@ apply plugin: "maven-publish"
 apply plugin: "signing"
 
 repositories {
-	mavenCentral()
+    mavenCentral()
     if (project.projectVersion.endsWith('-SNAPSHOT')) {
         maven {
             url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
@@ -45,25 +45,26 @@ configurations {
 }
 
 dependencies {
-	api "org.graceframework:grace-web-databinding"
-	api "org.graceframework:grace-web-gsp"
-	api "org.graceframework:grace-plugin-validation"
-	api "org.graceframework:grace-datastore-core:$gormVersion"
-	api "org.graceframework:grace-datastore-gorm:$gormVersion"
-	api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
-	api "org.apache.commons:commons-lang3"
-	compileOnly "org.graceframework:grace-boot"
-	compileOnly "jakarta.servlet:jakarta.servlet-api"
+    api "org.graceframework:grace-web-databinding"
+    api "org.graceframework:grace-web-gsp"
+    api "org.graceframework:grace-plugin-validation"
+    api "org.graceframework:grace-datastore-core:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm:$gormVersion"
+    api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
+    api "org.apache.commons:commons-lang3"
+    compileOnly "org.graceframework:grace-boot"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
 
     api "org.springframework.boot:spring-boot-autoconfigure"
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    documentation "org.fusesource.jansi:jansi:$jansiVersion"
-	documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-	testImplementation "org.apache.groovy:groovy-dateutil"
-	testImplementation "org.graceframework:grace-test-support"
-	testImplementation "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
+    documentation "org.fusesource.jansi:jansi:$jansiVersion"
+    documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
+
+    testImplementation "org.apache.groovy:groovy-dateutil"
+    testImplementation "org.graceframework:grace-test-support"
+    testImplementation "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
     testImplementation "org.spockframework:spock-core", {
         exclude group: "org.junit.platform", module: "junit-platform-engine"
     }
@@ -174,10 +175,4 @@ afterEvaluate {
         required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
         sign publishing.publications.maven
     }
-}
-
-jar {
-    enabled = true
-    archiveClassifier.set('plugin')
-    includeEmptyDirs = false
 }
