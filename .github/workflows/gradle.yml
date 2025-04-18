@@ -33,7 +33,7 @@ jobs:
         id: build
         uses: gradle/gradle-build-action@v3
         with:
-          arguments: build -x integrationTest -x findMainClass
+          arguments: build -x integrationTest -x findMainClass -x configureChromeDriverBinary -x configureGeckoDriverBinary
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
