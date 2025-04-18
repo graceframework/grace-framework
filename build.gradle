@@ -51,7 +51,7 @@ dependencies {
 	api "org.graceframework:grace-datastore-core:$gormVersion"
 	api "org.graceframework:grace-datastore-gorm:$gormVersion"
 	api "org.graceframework:grace-scaffolding-core:$scaffoldingVersion"
-	api "org.apache.commons:commons-lang3:3.13.0"
+	api "org.apache.commons:commons-lang3"
 	compileOnly "org.graceframework:grace-boot"
 	compileOnly "jakarta.servlet:jakarta.servlet-api"
 
@@ -61,21 +61,21 @@ dependencies {
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
 	documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-	testImplementation "org.apache.groovy:groovy-dateutil:$groovyVersion"
+	testImplementation "org.apache.groovy:groovy-dateutil"
 	testImplementation "org.graceframework:grace-test-support"
 	testImplementation "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
-    testImplementation "org.spockframework:spock-core:$spockVersion", {
+    testImplementation "org.spockframework:spock-core", {
         exclude group: "org.junit.platform", module: "junit-platform-engine"
     }
-    testImplementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
+    testImplementation "net.bytebuddy:byte-buddy"
     testImplementation "org.objenesis:objenesis:$objenesisVersion"
     testImplementation "org.apache.groovy:groovy-test-junit5:${groovyVersion}", {
         exclude group: "org.junit.platform", module: "junit-platform-launcher"
         exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
     }
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-    testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.platform:junit-platform-runner"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     testImplementation("org.jodd:jodd-wot:$joddWotVersion") {
         exclude module: 'slf4j-api'
         exclude module: 'asm'
