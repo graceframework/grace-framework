@@ -11,9 +11,9 @@ ext.pomInfo = {
         }
     }
     delegate.scm {
-        delegate.url 'https://github.com/graceframework/grace-views/'
-        delegate.connection 'scm:git:git://github.com/graceframework/grace-views'
-        delegate.developerConnection 'scm:git:ssh://github.com:graceframework/grace-views'
+        delegate.url 'https://github.com/graceframework/grace-views'
+        delegate.connection 'scm:git:git://github.com/graceframework/grace-views.git'
+        delegate.developerConnection 'scm:git:ssh://github.com:graceframework/grace-views.git'
     }
     delegate.developers {
         delegate.developer {
@@ -33,6 +33,15 @@ publishing {
                 from components.java
             }
 
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+
             if (isGrailsPlugin) {
                 artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
                         classifier: "plugin",
@@ -42,11 +51,11 @@ publishing {
             pom {
                 name = projectName
                 description = "Grace Views : $projectName"
-            }
 
-            pom.withXml {
-                def pomNode = asNode()
-                pomNode.children().last() + pomInfo
+                withXml {
+                    def pomNode = asNode()
+                    pomNode.children().last() + pomInfo
+                }
             }
         }
     }

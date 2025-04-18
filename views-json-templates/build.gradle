@@ -2,9 +2,9 @@ group = "org.graceframework.plugins"
 
 dependencies {
     api project(':views-json')
-    compileOnly "org.graceframework:grace-plugin-rest:$graceVersion"
-    compileOnly "jakarta.servlet:jakarta.servlet-api:$servletApiVersion"
-    compileOnly "org.graceframework:grace-datastore-gorm-mongodb:$gormMongodbVersion"
+    compileOnly "org.graceframework:grace-plugin-rest"
+    compileOnly "jakarta.servlet:jakarta.servlet-api"
+    compileOnly "org.graceframework:grace-datastore-gorm-mongodb"
 }
 
 def compileViews = tasks.register("compileViews", JavaExec) {

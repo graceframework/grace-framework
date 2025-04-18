@@ -23,8 +23,6 @@ ext {
 
 version = project.projectVersion
 
-apply plugin:'idea'
-
 apply plugin: 'maven-publish'
 apply plugin: "io.github.gradle-nexus.publish-plugin"
 
@@ -83,6 +81,19 @@ subprojects { project->
     if (ext.isGrailsPlugin) {
         apply plugin: "org.graceframework.grace-plugin"
     }
+    else {
+        apply plugin: "io.spring.dependency-management"
+
+        dependencyManagement {
+            imports {
+                mavenBom "org.graceframework:grace-bom:$graceVersion"
+            }
+            applyMavenExclusions false
+            generatedPomCustomization {
+                enabled = false
+            }
+        }
+    }
 
     java {
         toolchain {
@@ -107,16 +118,16 @@ subprojects { project->
             documentation "info.picocli:picocli:4.6.3"
             documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-            testImplementation "org.spockframework:spock-core:$spockVersion", {
+            testImplementation "org.spockframework:spock-core", {
                 exclude group: "org.junit.platform", module: "junit-platform-engine"
             }
-            testImplementation "org.apache.groovy:groovy-test-junit5:${groovyVersion}", {
+            testImplementation "org.apache.groovy:groovy-test-junit5", {
                 exclude group: "org.junit.platform", module: "junit-platform-launcher"
                 exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
             }
-            testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-            testImplementation "org.junit.platform:junit-platform-runner:${junitPlatformVersion}"
-            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+            testImplementation "org.junit.jupiter:junit-jupiter-api"
+            testImplementation "org.junit.platform:junit-platform-runner"
+            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
         }
 
         java {

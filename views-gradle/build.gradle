@@ -7,7 +7,7 @@ group = "org.graceframework.plugins"
 
 dependencies {
     compileOnly gradleApi()
-    api "org.graceframework:grace-gradle-plugin:$graceVersion", {
+    api "org.graceframework:grace-gradle-plugin", {
         exclude group: 'org.graceframework', module: 'grace-shell'
         exclude group: 'org.apache.groovy', module: 'groovy-xml'
     }
