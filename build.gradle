@@ -36,11 +36,11 @@ configurations {
 }
 
 dependencies {
-    api "org.liquibase:liquibase-core:$liquibaseVersion", {
+    api "org.liquibase:liquibase-core", {
         exclude group: 'javax.xml.bind', module: 'jaxb-api'
         exclude group: 'com.opencsv', module: 'opencsv'
     }
-    api("org.liquibase.ext:liquibase-hibernate5:$liquibaseHibernateVersion") {
+    api("org.liquibase.ext:liquibase-hibernate5") {
         exclude group: 'org.hibernate', module: 'hibernate-core'
         exclude group: 'org.hibernate', module: 'hibernate-entitymanager'
         exclude group: 'org.hibernate', module: 'hibernate-envers'
@@ -52,28 +52,28 @@ dependencies {
     compileOnly("org.graceframework:grace-shell") {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }
-    api("org.apache.groovy:groovy-sql:$groovyVersion")
+    api "org.apache.groovy:groovy-sql"
     api "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
 
     compileOnly "org.graceframework:grace-boot"
     compileOnly "org.graceframework:grace-cli"
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation "org.graceframework:grace-datastore-gorm:$gormVersion"
-    compileOnly "org.graceframework.plugins:hibernate:$hibernatePluginVersion"
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+    implementation "org.graceframework:grace-datastore-gorm"
+    compileOnly "org.graceframework.plugins:hibernate"
 
     testImplementation "org.graceframework:grace-shell"
-    testImplementation "org.graceframework.plugins:hibernate:$hibernatePluginVersion"
+    testImplementation "org.graceframework.plugins:hibernate"
 
     testImplementation "org.graceframework:grace-test-support"
     testImplementation "org.mockito:mockito-core"
-    testImplementation "com.h2database:h2:$h2Version"
+    testImplementation "com.h2database:h2"
 
     documentation "org.fusesource.jansi:jansi:1.18"
     documentation "com.github.javaparser:javaparser-core:3.15.14"
-    documentation "org.apache.groovy:groovy:$groovyVersion"
-    documentation "org.apache.groovy:groovy-ant:$groovyVersion"
-    documentation "org.apache.groovy:groovy-templates:$groovyVersion"
-    documentation "org.apache.groovy:groovy-xml:$groovyVersion"
+    documentation "org.apache.groovy:groovy"
+    documentation "org.apache.groovy:groovy-ant"
+    documentation "org.apache.groovy:groovy-templates"
+    documentation "org.apache.groovy:groovy-xml"
 }
 
 java {
