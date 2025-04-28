@@ -21,6 +21,8 @@ ext {
     userOrg = "graceframework"
 }
 
+ext['grace-gorm.version'] = project.gormVersion
+
 version = project.projectVersion
 
 apply plugin: 'maven-publish'
