@@ -10,8 +10,8 @@ dependencies {
 
     api project(":grace-datastore-gorm-mongodb-ext")
     api project(":grace-datastore-gorm-mongodb")
-    api "org.graceframework:grace-datastore-gorm-support"
-    api "org.graceframework:grace-datastore-web"
+    api "org.graceframework:grace-datastore-gorm-support:$datastoreVersion"
+    api "org.graceframework:grace-datastore-web:$datastoreVersion"
 
     api("org.springframework.boot:spring-boot-autoconfigure")
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
