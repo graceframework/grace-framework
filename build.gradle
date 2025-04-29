@@ -17,6 +17,8 @@ ext.isReleaseVersion = !projectVersion.endsWith("SNAPSHOT")
 
 // Build with the current version of GORM
 ext['grace-gorm.version'] = project.gormVersion
+ext['grace-gorm-hibernate.version'] = project.gormHibernateVersion
+ext['grace-plugin-hibernate.version'] = project.gormHibernateVersion
 
 version = project.projectVersion
 group = "org.graceframework.plugins"
