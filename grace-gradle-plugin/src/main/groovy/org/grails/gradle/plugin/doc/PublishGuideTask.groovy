@@ -17,6 +17,7 @@ package org.grails.gradle.plugin.doc
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
@@ -55,6 +56,14 @@ class PublishGuideTask extends AbstractCompile {
 
     @InputDirectory
     File srcDir
+
+    @Input
+    @Optional
+    Boolean asciidoc = true
+
+    @Input
+    @Optional
+    String language = ''
 
     PublishGuideTask() {
         setSourceCompatibility(SOURCE_AND_TARGET_COMPATIBILITY)
@@ -97,6 +106,8 @@ class PublishGuideTask extends AbstractCompile {
                 into "$destinationDir/api"
             }
         }
+        docPublisher.asciidoc = this.asciidoc
+        docPublisher.language = this.language
         docPublisher.title = project.name
         docPublisher.version = project.version
         docPublisher.src = srcDir
