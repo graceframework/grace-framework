@@ -53,7 +53,6 @@ import org.grails.build.logging.GrailsConsoleAntProject
 import org.grails.build.logging.GrailsConsoleLogger
 import org.grails.build.parsing.CommandLine
 import org.grails.cli.GrailsCli
-import org.grails.cli.profile.CommandArgument
 import org.grails.cli.profile.CommandDescription
 import org.grails.cli.profile.ExecutionContext
 import org.grails.cli.profile.Feature
@@ -270,7 +269,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
                 springBootVersion: specificBootVersion,
                 features: features,
                 skippedFeatures: skippedFeatures,
-                database: commandLine.optionValue(DATABASE_FLAG) ?: (commandLine.optionValue('d') ?: 'h2'),
+                database: commandLine.optionValue(DATABASE_FLAG) ?: commandLine.optionValue('d'),
                 template: commandLine.optionValue('template') ?: commandLine.optionValue('m'),
                 inplace: inPlace,
                 minimal: commandLine.hasOption(MINIMAL_FLAG),
@@ -377,16 +376,28 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         }
 
         List<Feature> features = cmd.minimal ? [] : evaluateFeatures(profileInstance, cmd.features, cmd.skippedFeatures, cmd.console)
+        List<String> featureNames = features*.name
 
         Map<String, String> variables = initializeVariables(appName, groupName, defaultPackageName, profileName, features, cmd.template, cmd.grailsVersion)
         Map<String, String> args = new HashMap<>()
         args.putAll(cmd.args)
-        args.put(FEATURES_FLAG, features*.name?.join(','))
+        args.put(FEATURES_FLAG, featureNames?.join(','))
 
         Project project = createAntProject(cmd.appName, projectTargetDirectory, variables, args, console, cmd.verbose, cmd.quiet)
         GrailsConsoleAntBuilder ant = new GrailsConsoleAntBuilder(project)
 
         String projectType = getName().substring(7)
+
+        String databaseType
+        if (!cmd.database && featureNames?.contains('hibernate')) {
+            databaseType = 'h2'
+        }
+        else if (!cmd.database && featureNames?.contains('mongodb')) {
+            databaseType = 'MongoDB'
+        }
+        else {
+            databaseType = cmd.database
+        }
 
         console.addStatus("Creating a new ${projectType == 'app' ? 'application' : projectType}")
         console.println()
@@ -395,9 +406,9 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             console.println("     Package:".padRight(20) + defaultPackageName)
         }
         console.println("     Profile:".padRight(20) + profileName)
-        console.println("     Features:".padRight(20) + features*.name?.join(', '))
-        if (projectType == 'app') {
-            console.println("     Database:".padRight(20) + cmd.database)
+        console.println("     Features:".padRight(20) + featureNames?.join(', '))
+        if ((projectType == 'app' || projectType == 'plugin') && databaseType) {
+            console.println("     Database:".padRight(20) + databaseType)
         }
         if (cmd.template) {
             console.println("     Template:".padRight(20) + cmd.template)
@@ -1039,7 +1050,10 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
             buildDependencies.addAll f.dependencies.findAll { Dependency dep -> dep.scope == 'build' }
         }
 
-        dependencies.add(new Dependency(Databases.getDriverArtifact(args['database']), 'runtime'))
+        List<String> featureNames = features*.name
+        if (featureNames?.contains('hibernate')) {
+            dependencies.add(new Dependency(Databases.getDriverArtifact(args['database']), 'runtime'))
+        }
 
         dependencies.add(new Dependency(this.profileRepository.getProfileArtifact(profileName), 'profile'))
 
