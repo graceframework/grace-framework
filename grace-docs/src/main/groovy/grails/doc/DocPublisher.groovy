@@ -232,7 +232,7 @@ class DocPublisher {
         // unpack documentation resources
         String docResources = "${workDir}/doc-resources"
         ant.mkdir(dir: docResources)
-        unpack(dest: docResources, src: 'grails-doc-files.jar')
+        unpack(dest: docResources, src: 'grace-doc-resources.jar')
 
         def refDocsDir = calculateLanguageDir(target?.absolutePath ?: './docs')
         def refGuideDir = new File(refDocsDir, 'guide')

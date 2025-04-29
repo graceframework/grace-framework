@@ -29,21 +29,20 @@ sourceSets {
     }
 }
 
-tasks.register("docFilesJar", Jar) {
-    description = 'Package up files used for generating documentation.'
+tasks.register('docResourcesJar', Jar) {
+    description = 'Package up resources used for generating documentation.'
     archiveVersion = null
-    archiveFileName = "grails-doc-files.jar"
+    archiveFileName = "grace-doc-resources.jar"
     from "src/main/template"
 }
 
 tasks.named('jar', Jar) {
-    from docFilesJar
+    dependsOn docResourcesJar
+    from docResourcesJar
 }
-
-jar.dependsOn docFilesJar
 
 eclipse {
     classpath {
-       plusConfigurations += [configurations.gradleConf]
+        plusConfigurations += [configurations.gradleConf]
     }
 }
