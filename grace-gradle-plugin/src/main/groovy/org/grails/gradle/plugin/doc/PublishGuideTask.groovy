@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.work.InputChanges
+
+import grails.doc.DocPublisher
 
 /**
  * A task used to publish the user guide if a publin that is in GDoc format
@@ -69,12 +71,9 @@ class PublishGuideTask extends AbstractCompile {
     @CompileDynamic
     @TaskAction
     void compile(InputChanges inputChanges) {
-        def urls = getClasspath().files.collect { File f -> f.toURI().toURL() }
-
         File destinationDir = getDestinationDirectory().getAsFile().getOrNull()
-        URLClassLoader classLoader = new URLClassLoader(urls as URL[], (ClassLoader) null)
-        def docPublisher = classLoader.loadClass('grails.doc.DocPublisher')
-                .newInstance(srcDir, destinationDir, project.logger)
+        DocPublisher docPublisher = new DocPublisher(srcDir, destinationDir, project.logger)
+
         if (groovydocDir?.exists()) {
             project.copy {
                 from groovydocDir

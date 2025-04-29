@@ -1,6 +1,9 @@
 configurations {
     // Required to keep Gradle classes off the test compile classpath.
     gradleConf.extendsFrom compileClasspath
+    compileClasspath {
+        exclude group: 'org.apache.groovy', module: 'groovy-xml'
+    }
 }
 
 dependencies {
@@ -10,6 +13,7 @@ dependencies {
     api libs.commons.text
     api libs.grails.gdoc.engine
     api libs.groovy.ant
+    api libs.groovy.templates
     api libs.jsoup
     api libs.slf4j.jcl
     api libs.snakeyaml
