@@ -90,7 +90,7 @@ publishing {
                             }
 
                             for (plugin in grails.plugins) {
-                                String artifactId = plugin.key
+                                String artifactId = (plugin.key == 'asset-pipeline') ? 'asset-pipeline-plugin' : plugin.key
                                 String version = "\${grace-plugin-${plugin.key}.version}"
                                 mkp.dependency {
                                     mkp.groupId 'org.graceframework.plugins'
