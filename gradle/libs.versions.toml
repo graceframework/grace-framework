@@ -10,7 +10,9 @@ commons-codec = "1.16.1"
 commons-lang = "2.6"
 commons-lang3 = "3.14.0"
 commons-text = "1.13.0"
+commons-validator = "1.9.0"
 glassfish-web-jsp-jstl = "3.0.1"
+gpars = "1.2.1"
 gradle = "8.13"
 gradle-git-properties = "2.4.2"
 grace-async = "6.3.0-RC1"
@@ -53,6 +55,9 @@ methvin-directory-watcher = "0.18.0"
 mockito = "5.11.0"
 mongodb-java-driver = "4.6.1"
 objenesis = "3.4"
+rxjava = "1.3.8"
+rxjava2 = "2.2.21"
+rxjava3 = "3.1.10"
 sitemesh = "2.6.0"
 slf4j = "2.0.17"
 snakeyaml = "2.2"
@@ -77,7 +82,9 @@ commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons
 commons-lang = { module = "commons-lang:commons-lang", version.ref = "commons-lang" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
+commons-validator = { module = "commons-validator:commons-validator", version.ref = "commons-validator" }
 glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
+gpars = { module = "org.codehaus.gpars:gpars", version.ref = "gpars" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
 grails-async-core = { module = "org.graceframework:grace-async-core", version.ref = "grace-async" }
 grails-async-gpars = { module = "org.graceframework:grace-async-gpars", version.ref = "grace-async" }
@@ -175,6 +182,9 @@ methvin-directoryWatcher = { module = "io.methvin:directory-watcher", version.re
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
+rxjava = { module = "io.reactivex:rxjava", version.ref = "rxjava" }
+rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
+rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava3" }
 sitemesh = { module = "opensymphony:sitemesh", version.ref = "sitemesh" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-jcl = { module = "org.slf4j:jcl-over-slf4j", version.ref = "slf4j" }
@@ -218,6 +228,7 @@ xhtmlrenderer = { module = "org.xhtmlrenderer:core-renderer", version.ref = "xht
 [bundles]
 bom = ["groovy-bom", "spring-framework-bom", "spring-boot-dependencies"]
 grails-async = ["grails-async-core", "grails-async-gpars", "grails-async-rxjava", "grails-async-rxjava2", "grails-async-rxjava3", "grails-plugin-async"]
+grails-dependencies = ["commons-text", "commons-validator", "gpars", "rxjava", "rxjava2", "rxjava3"]
 grails-devtools = ["methvin-directoryWatcher"]
 grails-events = ["grails-events-core", "grails-events-compat", "grails-events-gpars", "grails-events-rxjava", "grails-events-rxjava2", "grails-events-rxjava3", "grails-events-spring", "grails-events-transform", "grails-plugin-events"]
 grails-gorm = ["grails-datastore-core", "grails-datastore-async", "grails-datastore-gorm", "grails-datastore-gorm-async", "grails-datastore-gorm-bson", "grails-datastore-gorm-hibernate", "grails-datastore-gorm-mongodb", "grails-datastore-gorm-mongodb-ext", "grails-datastore-gorm-support", "grails-datastore-gorm-tck", "grails-datastore-gorm-test", "grails-datastore-gorm-validation", "grails-datastore-web"]
