@@ -30,10 +30,12 @@ import grails.doc.DocPublisher
  * A task used to publish the user guide if a publin that is in GDoc format
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
 class PublishGuideTask extends AbstractCompile {
+    private final static String SOURCE_AND_TARGET_COMPATIBILITY = '17'
 
     @InputDirectory
     @Optional
@@ -54,6 +56,11 @@ class PublishGuideTask extends AbstractCompile {
     @InputDirectory
     File srcDir
 
+    PublishGuideTask() {
+        setSourceCompatibility(SOURCE_AND_TARGET_COMPATIBILITY)
+        setTargetCompatibility(SOURCE_AND_TARGET_COMPATIBILITY)
+    }
+
     @Override
     void setSource(Object source) {
         try {
@@ -68,9 +75,13 @@ class PublishGuideTask extends AbstractCompile {
         }
     }
 
-    @CompileDynamic
     @TaskAction
-    void compile(InputChanges inputChanges) {
+    void execute(InputChanges inputs) {
+        compile()
+    }
+
+    @CompileDynamic
+    protected void compile() {
         File destinationDir = getDestinationDirectory().getAsFile().getOrNull()
         DocPublisher docPublisher = new DocPublisher(srcDir, destinationDir, project.logger)
 
