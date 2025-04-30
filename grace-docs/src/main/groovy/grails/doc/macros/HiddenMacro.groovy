@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package grails.doc.macros
 
-import org.gradle.api.tasks.Input
 import org.radeox.macro.BaseMacro
 import org.radeox.macro.parameter.MacroParameter
 
@@ -23,7 +22,6 @@ class HiddenMacro extends BaseMacro implements Serializable {
 
     private static final long serialVersionUID = 0L
 
-    @Input
     String getName() {
         'hidden'
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2022 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package grails.doc.macros
 
 import java.util.regex.Pattern
 
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
 import org.radeox.macro.BaseMacro
 import org.radeox.macro.CodeMacro
 import org.radeox.macro.parameter.BaseMacroParameter
@@ -29,7 +27,6 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
 
     private static final long serialVersionUID = 0L
 
-    @InputDirectory
     List baseDirs
 
     GspTagSourceMacro(basedir) {
@@ -39,7 +36,6 @@ class GspTagSourceMacro extends BaseMacro implements Serializable {
         baseDirs = basedir.collect { f -> f as File }
     }
 
-    @Input
     String getName() {
         'source'
     }
