@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.doc.gradle
+package org.grails.gradle.plugin.doc
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
