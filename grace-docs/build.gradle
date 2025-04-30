@@ -1,13 +1,10 @@
 configurations {
-    // Required to keep Gradle classes off the test compile classpath.
-    gradleConf.extendsFrom compileClasspath
     compileClasspath {
         exclude group: 'org.apache.groovy', module: 'groovy-xml'
     }
 }
 
 dependencies {
-    gradleConf gradleApi()
     api libs.asciidoctorj
     api libs.ant
     api libs.commons.text
@@ -27,12 +24,6 @@ dependencies {
     testImplementation libs.spock.core, { transitive = false }
 }
 
-sourceSets {
-    main {
-        compileClasspath = configurations.gradleConf
-    }
-}
-
 tasks.register('docResourcesJar', Jar) {
     description = 'Package up resources used for generating documentation.'
     archiveVersion = null
@@ -43,10 +34,4 @@ tasks.register('docResourcesJar', Jar) {
 tasks.named('jar', Jar) {
     dependsOn docResourcesJar
     from docResourcesJar
-}
-
-eclipse {
-    classpath {
-        plusConfigurations += [configurations.gradleConf]
-    }
 }
