@@ -1,7 +1,6 @@
 package org.grails.plugins.web.rest.render.xml
 
 import groovy.xml.XmlSlurper
-import spock.lang.Ignore
 
 import grails.converters.XML
 import grails.core.DefaultGrailsApplication
@@ -25,7 +24,6 @@ import spock.lang.Specification
 /**
  * @author Graeme Rocher
  */
-@Ignore
 class DefaultXmlRendererSpec extends Specification implements DomainUnitTest<XmlBook> {
 
     void setup() {

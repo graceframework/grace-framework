@@ -11,7 +11,6 @@ import grails.persistence.Entity
  * Check more detailed description in CommandObjectConstraintGettersSpec
  *
  */
-@Ignore('The interface GormEntity cannot be implemented more than once with different arguments')
 @Issue(['grails/grails-core#9749', 'grails/grails-core#9754'])
 class DomainConstraintGettersSpec extends Specification implements DataTest {
 
@@ -229,7 +228,7 @@ class DomainConstraintGettersSpec extends Specification implements DataTest {
     }
 
     // DOMAIN WITH TRANSIENTS
-
+    @Ignore
     void 'ensure transient properties and methods are not validated'() {
         DomainWithTransients domain = new DomainWithTransients()
         when: 'domain with transient methods and properties is validated'
@@ -239,6 +238,7 @@ class DomainConstraintGettersSpec extends Specification implements DataTest {
         domain.errors.getErrorCount() == 0
     }
 
+    @Ignore
     void 'ensure transient methods and properties are not constrained'() {
         when: 'constrained properties map is get'
         Map constrainedProperties = DomainWithTransients.getConstrainedProperties()
@@ -248,7 +248,7 @@ class DomainConstraintGettersSpec extends Specification implements DataTest {
     }
 
     // DOMAIN WITH SUPER CLASS WITH TRANSIENTS
-
+    @Ignore
     void 'ensure inherited transient properties and methods are not validated'() {
         DomainWithTransients domain = new DomainWithTransients()
         when: 'domain with superclass properties and methods is validated'
@@ -258,6 +258,7 @@ class DomainConstraintGettersSpec extends Specification implements DataTest {
         domain.errors.getErrorCount() == 0
     }
 
+    @Ignore
     void 'ensure inherited transient methods and properties are not constrained'() {
         when: 'constrained properties map is get'
         Map constrainedProperties = DomainWithTransients.getConstrainedProperties()
@@ -306,7 +307,7 @@ class SimplePropertiesDomain {
 /**
  * Domain with properties from super class only
  */
-//@Entity
+@Entity
 class InheritedPropertiesDomain extends SimplePropertiesDomain {}
 
 /**
@@ -370,7 +371,7 @@ class MethodPropertiesDomain {
 /**
  * Domain with method properties from super class
  */
-//@Entity
+@Entity
 class InheritedMethodPropertiesDomain extends MethodPropertiesDomain {}
 
 /**
@@ -540,7 +541,7 @@ trait BoolMethodPropertiesDomainTrait {
 /**
  * Domain with inherited bool method properties from super class
  */
-//@Entity
+@Entity
 class InheritedBoolMethodPropertiesDomain extends BoolMethodPropertiesDomain {}
 
 /**
@@ -594,7 +595,7 @@ trait TraitWithTransients {
     void setTransientBoolMethodProperty(Boolean value) {}
 }
 
-//@Entity
+@Entity
 class InheritedDomainWithTransients extends DomainWithTransients {}
 
 @Entity

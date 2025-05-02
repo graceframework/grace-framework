@@ -30,7 +30,6 @@ import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@Ignore('The interface GormEntity cannot be implemented more than once with different arguments')
 class GrailsWebDataBinderSpec extends Specification implements DataTest {
 
     private static Locale defaultLocale = Locale.getDefault()
@@ -121,7 +120,7 @@ class GrailsWebDataBinderSpec extends Specification implements DataTest {
         obj.someFloat == 5.5
         obj.someDouble == 6.6
         where:
-        locale << [Locale.getInstance("fi", "FI", ""), Locale.getInstance("en", "US", "")]
+        locale << [new Locale("fi", "FI", ""), new Locale("en", "US", "")]
         decimalSeparator << [',', '.']
     }
     
@@ -156,7 +155,7 @@ class GrailsWebDataBinderSpec extends Specification implements DataTest {
         obj.errors.getFieldError('someDouble').rejectedValue == '6' + decimalSeparator + '6x'
 
         where:
-        locale << [Locale.getInstance("fi", "FI", ""), Locale.getInstance("en", "US", "")]
+        locale << [new Locale("fi", "FI", ""), new Locale("en", "US", "")]
         decimalSeparator << [',', '.']
     }
 
@@ -1309,7 +1308,7 @@ class GrailsWebDataBinderSpec extends Specification implements DataTest {
 
     void 'test binding an Date to code in @BindingFormat'() {
         given:
-        Locale.setDefault(Locale.getInstance("en", "US", ""))
+        Locale.setDefault(new Locale("en", "US", ""))
         messageSource.addMessage 'my.date.format', Locale.US, 'MMddyyyy'
         def child = new Child()
 
@@ -1443,7 +1442,7 @@ class Widget  {
         timeZone nullable: true
     }
 }
-// @Entity
+@Entity
 class Fidget extends Widget {
     String name
 }
