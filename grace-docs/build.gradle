@@ -1,10 +1,7 @@
-configurations {
-    compileClasspath {
-        exclude group: 'org.apache.groovy', module: 'groovy-xml'
-    }
-}
-
 dependencies {
+    // NOTE: missing gradleApi() will cause NoSuchMethodError: 
+    // ScriptBytecodeAdapter.createRange(java.lang.Object, java.lang.Object, boolean, boolean)
+    compileOnly gradleApi()
     api libs.asciidoctorj
     api libs.ant
     api libs.commons.text
@@ -16,6 +13,7 @@ dependencies {
     api libs.snakeyaml
     api libs.xhtmlrenderer, {
         exclude group: 'bouncycastle', module:'bcprov-jdk14'
+        exclude group: 'bouncycastle', module:'bcmail-jdk14'
     }
 
     runtimeOnly libs.slf4j.api
