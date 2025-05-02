@@ -19,54 +19,43 @@ import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.javadoc.Groovydoc
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.util.GradleVersion
-
-import grails.util.BuildSettings
-
-import org.grails.gradle.plugin.util.SourceSets
 
 /**
  * Adds Grails doc publishing support
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
 class GrailsDocGradlePlugin implements Plugin<Project> {
 
-    public static final String DOC_CONFIGURATION = 'docs'
-
     @Override
     void apply(Project project) {
         verifyGradleVersion()
 
-        Configuration docConfiguration = project.configurations.create(DOC_CONFIGURATION)
-        project.dependencies.add(DOC_CONFIGURATION, "org.graceframework:grace-docs:${BuildSettings.getPackage().getImplementationVersion()}")
-
         Groovydoc groovydocTask = (Groovydoc) project.tasks.findByName('groovydoc')
         Javadoc javadocTask = (Javadoc) project.tasks.findByName('javadoc')
 
-        if (groovydocTask && javadocTask) {
-            Task docsTask = project.tasks.create('docs', PublishGuideTask)
-
-            docsTask.classpath = docConfiguration
-
-            String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
-            File applicationYml = project.file("${project.projectDir}/${grailsAppDir}/conf/application.yml")
-            if (applicationYml.exists()) {
-                docsTask.propertiesFile = applicationYml
+        project.tasks.register('docs', PublishGuideTask).configure { PublishGuideTask docsTask ->
+            docsTask.group = 'Documentation'
+            docsTask.description = 'Generates documentation for Grace Guides'
+            docsTask.sourceDir = project.file("${project.projectDir}/src/docs")
+            if (groovydocTask) {
+                docsTask.dependsOn(groovydocTask)
             }
-            docsTask.destinationDirectory.set(project.file("${project.buildDir}/docs/manual"))
-            docsTask.source = project.file("${project.projectDir}/src/docs")
-            docsTask.resourcesDir = project.file("${project.projectDir}/src/docs")
-            docsTask.groovydocDir = groovydocTask.destinationDir
-            docsTask.javadocDir = javadocTask.destinationDir
-            docsTask.dependsOn(groovydocTask)
-            docsTask.dependsOn(javadocTask)
+            if (javadocTask) {
+                docsTask.dependsOn(javadocTask)
+            }
+        }
+
+        project.tasks.register('docsPdf', PublishPdfTask).configure { PublishPdfTask docsPdfTask ->
+            docsPdfTask.dependsOn('docs')
+            docsPdfTask.group = 'Documentation'
+            docsPdfTask.description = 'Generates PDF documentation for Grace Guides'
         }
     }
 
