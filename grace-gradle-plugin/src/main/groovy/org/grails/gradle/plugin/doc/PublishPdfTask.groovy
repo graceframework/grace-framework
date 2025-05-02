@@ -28,7 +28,7 @@ import grails.doc.PdfPublisher
  * location.
  */
 @CompileStatic
-class PublishPdf extends DefaultTask {
+class PublishPdfTask extends DefaultTask {
 
     @Input String pdfName = 'single.pdf'
     @Input String language = ''
