@@ -5,11 +5,17 @@
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
 [![Groovy Version](https://img.shields.io/badge/Groovy-4.0.26-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.10-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.10)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.11-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.11)
 
 # Grace Framework
 
 [Grace](https://github.com/graceframework/grace-framework) is a fork of Grails 5 that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
+
+## Grace vs Spring Boot
+
+Grace and Spring Boot frameworks are excellent for building web applications, but their use depends on what you want. Generally, Grace framework may be advantageous in full-stack and monolithic applications, but Spring Boot is preferred for developing complex and microservice applications. Grace has better developer productivity than Spring Boot. Because it follows the convention over the configuration principle, it minimizes code requirements. This enhances productivity and fosters faster app development. The framework creates faster and more functional prototypes than Spring Boot due to its simple code generation like scaffolding and CoC. Grace fully embraces Groovy to enable many features that would not be possible using Java alone, including a rich Plugin ecosystem and Dynamic Modules, many DSLs, AST Transformations, Trait-based solutions, and much more. Grace also allow you create many different types of applications using Application profiles and templates. The learning curve for Grace is moderate and more straightforward than Spring Boot due to its emphasis on convention and simplicity. Currently, Grace framework has a less active developer community and support than Spring Boot, and the IDE tools don't support Groovy and Grace as well as Java and Spring Boot.
+
+You can learn more on the page [Grace vs Spring Boot](https://github.com/graceframework/grace-framework/wiki/Grace-vs-Spring-Boot).
 
 ## Getting Started
 
@@ -18,23 +24,29 @@ You need a Java Development Kit (JDK) installed, but it is not necessary to inst
 To install Grace, visit https://github.com/graceframework/grace-framework/releases and download the version you would like to use. Set a `GRACE_HOME` environment variable to point to the root of the extracted download and add `GRACE_HOME/bin` to your executable `PATH`. Then in a shell, type the following:
 
 ```bash
-    grace create-app com.example.blog
-    cd blog
-    grace run-app
+$ grace create-app com.example.blog
+$ cd blog
+$ grace run-app
+```
+
+SDKMAN! (The Software Development Kit Manager) can be used for managing multiple versions of various binary SDKs, including Groovy, Gradle and the Grace. Get SDKMAN! from sdkman.io and install Grace by using the following commands:
+
+```bash
+$ sdk install grace
 ```
 
 To build Grace, clone this GitHub repository and execute the install Gradle target:
 
 ```bash
-    git clone https://github.com/graceframework/grace-framework.git
-    cd grace-framework
-    ./gradlew pTML zipDist
+$ git clone https://github.com/graceframework/grace-framework.git
+$ cd grace-framework
+$ ./gradlew pTML zipDist
 ```
 
 If you encounter out of memory errors when trying to run the install target, try adjusting Gradle build settings. For example:
 
 ```bash
-    export GRADLE_OPTS="-Xmx2G -Xms2G -XX:NewSize=512m -XX:MaxNewSize=512m"
+$ export GRADLE_OPTS="-Xmx2G -Xms2G -XX:NewSize=512m -XX:MaxNewSize=512m"
 ```
 
 For installation instructions see [INSTALL.txt](INSTALL.txt).
