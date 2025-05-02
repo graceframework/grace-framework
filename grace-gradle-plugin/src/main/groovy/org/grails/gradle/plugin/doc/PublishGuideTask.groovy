@@ -15,17 +15,18 @@
  */
 package org.grails.gradle.plugin.doc
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.work.InputChanges
 
 import grails.doc.DocPublisher
+import grails.doc.macros.HiddenMacro
 
 /**
  * A task used to publish the user guide if a publin that is in GDoc format
@@ -35,12 +36,22 @@ import grails.doc.DocPublisher
  * @since 3.0
  */
 @CompileStatic
-class PublishGuideTask extends AbstractCompile {
-    private final static String SOURCE_AND_TARGET_COMPATIBILITY = '17'
+class PublishGuideTask extends DefaultTask {
+
+    @InputDirectory
+    File sourceDir
 
     @InputDirectory
     @Optional
     File resourcesDir
+
+    @OutputDirectory
+    @Optional
+    File targetDir = new File(project.buildDir, 'docs/manual')
+
+    @OutputDirectory
+    @Optional
+    File workDir = new File(project.buildDir, 'tmp')
 
     @InputFile
     @Optional
@@ -54,9 +65,6 @@ class PublishGuideTask extends AbstractCompile {
     @Optional
     File javadocDir
 
-    @InputDirectory
-    File srcDir
-
     @Input
     @Optional
     Boolean asciidoc = true
@@ -65,66 +73,61 @@ class PublishGuideTask extends AbstractCompile {
     @Optional
     String language = ''
 
-    PublishGuideTask() {
-        setSourceCompatibility(SOURCE_AND_TARGET_COMPATIBILITY)
-        setTargetCompatibility(SOURCE_AND_TARGET_COMPATIBILITY)
-    }
+    @Input
+    @Optional
+    String sourceRepo
 
-    @Override
-    void setSource(Object source) {
-        try {
-            srcDir = project.file(source)
-            if (srcDir.exists() && !srcDir.isDirectory()) {
-                throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
-            }
-            super.setSource(source)
-        }
-        catch (ignore) {
-            throw new IllegalArgumentException("The source for GSP compilation must be a single directory, but was $source")
-        }
-    }
+    @Input
+    @Optional
+    Collection macros = []
 
     @TaskAction
     void execute(InputChanges inputs) {
-        compile()
+        publishGuide()
     }
 
-    @CompileDynamic
-    protected void compile() {
-        File destinationDir = getDestinationDirectory().getAsFile().getOrNull()
-        DocPublisher docPublisher = new DocPublisher(srcDir, destinationDir, project.logger)
+    protected void publishGuide() {
+        DocPublisher docPublisher = new DocPublisher(sourceDir, targetDir, project.logger)
+
+        resourcesDir = resourcesDir ?: new File(sourceDir, 'resources')
+        propertiesFile = propertiesFile ?: new File(resourcesDir, 'doc.properties')
+
+        docPublisher.ant = project.ant
+        docPublisher.asciidoc = this.asciidoc
+        docPublisher.language = this.language
+        docPublisher.title = project.name
+        docPublisher.version = project.version
+        docPublisher.workDir = this.workDir
+        docPublisher.apiDir = this.targetDir
+        docPublisher.sourceRepo = this.sourceRepo
+        docPublisher.images = new File(resourcesDir, 'img')
+        docPublisher.css = new File(resourcesDir, 'css')
+        docPublisher.js = new File(resourcesDir, 'js')
+        docPublisher.style = new File(resourcesDir, 'style')
+        docPublisher.propertiesFile = propertiesFile
+
+        // Add custom macros.
+        // {hidden} macro for enabling translations.
+        docPublisher.registerMacro(new HiddenMacro())
+
+        for (m in macros) {
+            docPublisher.registerMacro(m)
+        }
+
+        docPublisher.publish()
 
         if (groovydocDir?.exists()) {
             project.copy {
                 from groovydocDir
-                into "$destinationDir/gapi"
+                into "$targetDir/gapi"
             }
         }
         if (javadocDir?.exists()) {
             project.copy {
                 from javadocDir
-                into "$destinationDir/api"
+                into "$targetDir/api"
             }
         }
-        docPublisher.asciidoc = this.asciidoc
-        docPublisher.language = this.language
-        docPublisher.title = project.name
-        docPublisher.version = project.version
-        docPublisher.src = srcDir
-        docPublisher.target = destinationDir
-        docPublisher.workDir = new File(project.buildDir, 'doc-tmp')
-        docPublisher.apiDir = destinationDir
-        if (resourcesDir) {
-            docPublisher.images = new File(resourcesDir, 'img')
-            docPublisher.css = new File(resourcesDir, 'css')
-            docPublisher.js = new File(resourcesDir, 'js')
-            docPublisher.style = new File(resourcesDir, 'style')
-        }
-        if (propertiesFile) {
-            docPublisher.propertiesFile = propertiesFile
-        }
-
-        docPublisher.publish()
     }
 
 }
