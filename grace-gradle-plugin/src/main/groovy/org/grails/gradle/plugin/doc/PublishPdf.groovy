@@ -1,4 +1,5 @@
-/* Copyright 2004-2022 the original author or authors.
+/*
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +15,9 @@
  */
 package org.grails.gradle.plugin.doc
 
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 import grails.doc.PdfPublisher
@@ -26,17 +27,17 @@ import grails.doc.PdfPublisher
  * single page HTML user guide has already been created in the default
  * location.
  */
+@CompileStatic
 class PublishPdf extends DefaultTask {
 
     @Input String pdfName = 'single.pdf'
     @Input String language = ''
-    @OutputDirectory @Input File outputDirectory = project.outputDir as File
 
     @TaskAction
     def publish() {
-        File outputDir = new File(outputDirectory, language ?: '')
+        File outputDir = project.layout.buildDirectory.get().asFile
         try {
-            PdfPublisher.publishPdfFromHtml(outputDir, 'guide/single.html', pdfName)
+            PdfPublisher.publishPdfFromHtml(outputDir, 'docs/manual/' + language + '/guide/single.html', pdfName)
         }
         catch (Exception ex) {
             ex.printStackTrace()
