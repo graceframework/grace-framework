@@ -245,6 +245,8 @@ strong {
 */
 
 #navigation {
+    padding-left: 10px;
+    padding-right: 10px;
     border-width: 0;
     font-size: 1.1em;
     height: 100px;
@@ -255,6 +257,7 @@ strong {
     padding: 0;
     padding-top: 25px;
     height: 3.1em;
+    float: right;
 }
 
 #navigation ul li {
@@ -288,11 +291,11 @@ strong {
 
 #nav-summary #nav-summary-childs {
     position: absolute;
-    top: 1.6em;
+    top: 32px;
     margin: 0;
     border-width: 1px;
     padding: 10px;
-    width: 25em;
+    width: 290px;
     z-index: 1;
 }
 
