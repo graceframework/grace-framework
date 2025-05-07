@@ -48,6 +48,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
 
     ProfileInfoCommand() {
         description.argument(name: 'Profile Name', description: 'The name or coordinates of the profile', required: true)
+        description.flag(name: 'all', type: 'boolean', description: 'Show all commands and features', required: false)
     }
 
     void setProfileRepository(ProfileRepository profileRepository) {
