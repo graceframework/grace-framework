@@ -18,7 +18,6 @@ package org.grails.cli.profile.commands
 import groovy.transform.CompileStatic
 
 import grails.build.logging.GrailsConsole
-import grails.config.ConfigMap
 
 import org.grails.cli.profile.Command
 import org.grails.cli.profile.CommandDescription
@@ -29,8 +28,6 @@ import org.grails.cli.profile.Profile
 import org.grails.cli.profile.ProfileRepository
 import org.grails.cli.profile.ProfileRepositoryAware
 import org.grails.cli.profile.ProjectCommand
-import org.grails.cli.profile.ProjectContext
-import org.grails.config.CodeGenConfig
 
 /**
  * A command to find out information about the given profile
@@ -79,7 +76,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             console.log('')
             console.log('Provided Commands:')
             console.log('-' * 80)
-            Iterable<Command> commands = findCommands(profile, console).sort { Command c -> c.name }.toUnique { Command c -> c.name }
+            Iterable<Command> commands = profile.internalCommands.sort { Command c -> c.name }
 
             for (cmd in commands) {
                 StringBuilder description = new StringBuilder()
@@ -90,7 +87,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             console.log('')
             console.log('Provided Features:')
             console.log('-' * 80)
-            Iterable<Feature> features = profile.features.sort { Feature f -> f.name }
+            Iterable<Feature> features = profile.internalFeatures.sort { Feature f -> f.name }
 
             for (feature in features) {
                 console.log("* ${feature.name.padRight(30)} ${feature.description}")
@@ -107,38 +104,6 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             }
             result.append(message)
         }
-    }
-
-    protected Iterable<Command> findCommands(Profile profile, GrailsConsole console) {
-        Iterable<Command> commands = profile.getCommands(new ProjectContext() {
-
-            @Override
-            GrailsConsole getConsole() {
-                console
-            }
-
-            @Override
-            File getBaseDir() {
-                new File('.')
-            }
-
-            @Override
-            ConfigMap getConfig() {
-                new CodeGenConfig()
-            }
-
-            @Override
-            String navigateConfig(String... path) {
-                config.navigate(path)
-            }
-
-            @Override
-            <T> T navigateConfigForType(Class<T> requiredType, String... path) {
-                (T) config.navigate(path)
-            }
-
-        })
-        commands
     }
 
 }
