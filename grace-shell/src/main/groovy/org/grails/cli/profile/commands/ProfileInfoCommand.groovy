@@ -73,6 +73,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
         else {
             console.log("Profile: ${profile.name}")
             console.log("Version: ${profile.version}")
+            console.log("Extends: ${profile.extends*.name.join(', ')}")
             console.log('-' * 80)
             console.log(profile.description)
             console.log('')
