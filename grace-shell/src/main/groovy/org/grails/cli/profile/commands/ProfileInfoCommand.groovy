@@ -62,6 +62,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             return false
         }
 
+        boolean showAll = executionContext.commandLine.hasOption('all')
         def profileName = executionContext.commandLine.remainingArgs[0]
 
         Profile profile = profileRepository.getProfile(profileName)
@@ -76,7 +77,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             console.log('')
             console.log('Provided Commands:')
             console.log('-' * 80)
-            Iterable<Command> commands = profile.internalCommands.sort { Command c -> c.name }
+            Iterable<Command> commands = getCommands(profile, showAll).sort { Command c -> c.name }
 
             for (cmd in commands) {
                 StringBuilder description = new StringBuilder()
@@ -87,7 +88,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             console.log('')
             console.log('Provided Features:')
             console.log('-' * 80)
-            Iterable<Feature> features = profile.internalFeatures.sort { Feature f -> f.name }
+            Iterable<Feature> features = getFeatures(profile, showAll).sort { Feature f -> f.name }
 
             for (feature in features) {
                 console.log("* ${feature.name.padRight(30)} ${feature.description}")
@@ -104,6 +105,30 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             }
             result.append(message)
         }
+    }
+
+    Iterable<Command> getCommands(Profile profile, boolean includeParents) {
+        Set<Command> allCommands = []
+        allCommands.addAll(profile.internalCommands)
+        if (includeParents) {
+            Iterable<Profile> parents = profile.extends
+            for (Profile p in parents) {
+                allCommands.addAll(p.internalCommands)
+            }
+        }
+        allCommands
+    }
+
+    Iterable<Feature> getFeatures(Profile profile, boolean includeParents) {
+        Set<Feature> allFeatures = []
+        allFeatures.addAll(profile.features)
+        if (includeParents) {
+            Iterable<Profile> parents = profile.extends
+            for (Profile p in parents) {
+                allFeatures.addAll(profile.features)
+            }
+        }
+        allFeatures
     }
 
 }
