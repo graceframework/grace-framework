@@ -122,7 +122,7 @@ a:hover,
     background: url(../img/grace.svg) no-repeat 0 center;
     background-size: 80px;
     padding-left: 90px;
-    width: 180px;
+    width: auto;
     float: left;
     line-height: 3.1em;
     height: 75px;
