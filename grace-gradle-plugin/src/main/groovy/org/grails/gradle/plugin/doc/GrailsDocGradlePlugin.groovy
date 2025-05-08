@@ -43,7 +43,12 @@ class GrailsDocGradlePlugin implements Plugin<Project> {
         project.tasks.register('docs', PublishGuideTask).configure { PublishGuideTask docsTask ->
             docsTask.group = 'Documentation'
             docsTask.description = 'Generates documentation for Grace Guides'
-            docsTask.sourceDir = project.file("${project.projectDir}/src/docs")
+            if (project.file("${project.projectDir}/docs").exists()) {
+                docsTask.sourceDir = project.file("${project.projectDir}/docs")
+            }
+            if (project.file("${project.projectDir}/src/docs").exists()) {
+                docsTask.sourceDir = project.file("${project.projectDir}/src/docs")
+            }
             if (groovydocTask) {
                 docsTask.dependsOn(groovydocTask)
             }
