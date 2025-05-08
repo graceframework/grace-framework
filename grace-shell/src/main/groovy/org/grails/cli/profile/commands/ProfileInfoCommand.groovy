@@ -74,26 +74,35 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             console.log("Profile: ${profile.name}")
             console.log("Version: ${profile.version}")
             console.log("Extends: ${profile.extends*.name.join(', ')}")
-            console.log('-' * 80)
-            console.log(profile.description)
+            console.log("Description: ${profile.description}")
             console.log('')
             console.log('Provided Commands:')
-            console.log('-' * 80)
+            console.log('-' * 100)
+            console.log("${'Name'.padRight(30)} Description")
+            console.log('-' * 100)
             Iterable<Command> commands = getCommands(profile, showAll).sort { Command c -> c.name }
 
-            for (cmd in commands) {
+            for (Command cmd in commands) {
                 StringBuilder description = new StringBuilder()
-                description.append("* ${cmd.description.name.padRight(30)} ${cmd.description.description}")
+                description.append("${cmd.description.name.padRight(30)} ${cmd.description.description}")
                 appendMessage(description, cmd.isDeprecated(), '[deprecated]')
                 console.log(description.toString())
             }
             console.log('')
             console.log('Provided Features:')
-            console.log('-' * 80)
+            console.log('-' * 100)
+            console.log("${'Name'.padRight(30)} Required  Defaults  Description")
+            console.log('-' * 100)
             Iterable<Feature> features = getFeatures(profile, showAll).sort { Feature f -> f.name }
-
-            for (feature in features) {
-                console.log("* ${feature.name.padRight(30)} ${feature.description}")
+            List<Feature> requiredFeatures = getRequiredFeatures(profile, showAll)
+            List<Feature> defaultFeatures = getDefaultFeatures(profile, showAll)
+            for (Feature feature in features) {
+                boolean isRequired = requiredFeatures.contains(feature)
+                boolean isDefault = defaultFeatures.contains(feature)
+                console.log(feature.name.padRight(31) +
+                        (isRequired ? '  *' : '   ').padRight(10) +
+                        (isDefault ? '  +' : '   ').padRight(10) +
+                        feature.description)
             }
         }
 
@@ -109,7 +118,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
         }
     }
 
-    Iterable<Command> getCommands(Profile profile, boolean includeParents) {
+    private static Iterable<Command> getCommands(Profile profile, boolean includeParents) {
         Set<Command> allCommands = []
         allCommands.addAll(profile.internalCommands)
         if (includeParents) {
@@ -121,7 +130,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
         allCommands
     }
 
-    Iterable<Feature> getFeatures(Profile profile, boolean includeParents) {
+    private static Iterable<Feature> getFeatures(Profile profile, boolean includeParents) {
         Set<Feature> allFeatures = []
         allFeatures.addAll(profile.features)
         if (includeParents) {
@@ -131,6 +140,30 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             }
         }
         allFeatures
+    }
+
+    private static List<Feature> getRequiredFeatures(Profile profile, boolean includeParents) {
+        List<Feature> requiredFeatures = new ArrayList<>()
+        requiredFeatures.addAll(profile.requiredFeatures)
+        if (includeParents) {
+            Iterable<Profile> parents = profile.extends
+            for (p in parents) {
+                requiredFeatures.addAll(p.requiredFeatures)
+            }
+        }
+        requiredFeatures
+    }
+
+    private static List<Feature> getDefaultFeatures(Profile profile, boolean includeParents) {
+        List<Feature> defaultFeatures = new ArrayList<>()
+        defaultFeatures.addAll(profile.defaultFeatures)
+        if (includeParents) {
+            Iterable<Profile> parents = profile.extends
+            for (p in parents) {
+                defaultFeatures.addAll(p.defaultFeatures)
+            }
+        }
+        defaultFeatures
     }
 
 }
