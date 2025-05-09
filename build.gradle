@@ -58,7 +58,6 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }
     api "org.apache.groovy:groovy-sql"
-    api "org.hibernate:hibernate-core-jakarta:$HibernateCoreVersion"
 
     compileOnly "org.graceframework:grace-boot"
     compileOnly "org.graceframework:grace-cli"
