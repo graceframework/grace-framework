@@ -23,11 +23,11 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
  */
 class YamlTocStrategy {
 
-    private final parser = new Yaml(new SafeConstructor(new LoaderOptions()))
-    private final resourceChecker
+    private final Yaml parser = new Yaml(new SafeConstructor(new LoaderOptions()))
+    private final FileResourceChecker resourceChecker
     private final String ext
 
-    YamlTocStrategy(resourceChecker, String ext = '.gdoc') {
+    YamlTocStrategy(FileResourceChecker resourceChecker, String ext = '.gdoc') {
         this.resourceChecker = resourceChecker
         this.ext = ext
     }
@@ -68,7 +68,7 @@ class YamlTocStrategy {
         }
 
         for (s in sections) {
-            def child = new UserGuideNode(parent: node, name: s.key, file: determineFilePath(s.key, node))
+            def child = new UserGuideNode(parent: node, name: s.key, file: determineFilePath(s.key, node), level: determineNodeLevel(node))
             node.children << child
             processSection(s.value, child)
         }
@@ -116,6 +116,16 @@ class YamlTocStrategy {
         }
 
         null
+    }
+
+    private determineNodeLevel(parent) {
+        def level = 0
+        def node = parent
+        while (node.name) {
+            level++
+            node = node.parent
+        }
+        level
     }
 
 }

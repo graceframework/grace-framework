@@ -37,4 +37,8 @@ class UserGuideNode {
      */
     String file
 
+    /**
+     * The level of the node
+     */
+    int level
 }

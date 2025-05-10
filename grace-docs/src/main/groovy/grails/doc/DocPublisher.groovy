@@ -504,7 +504,7 @@ class DocPublisher {
             String targetDir,
             fullContents,
             vars) {
-        fullContents << writePage(section, layoutTemplate, sectionTemplate, guideSrcDir, targetDir, '', '..', 0, vars)
+        fullContents << writePage(section, layoutTemplate, sectionTemplate, guideSrcDir, targetDir, '', '..', section.level, vars)
     }
 
     String writePage(
