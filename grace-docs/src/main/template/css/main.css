@@ -276,7 +276,7 @@ strong {
     display: block;
 }
 
-#navigation a {
+#navigation .navLinks a {
     display: block;
     padding: 0.3em 10px;
     outline: none;
@@ -736,7 +736,7 @@ li {
     -webkit-border-radius: 5px;
 }
 
-#navigation a {
+#navigation .navLinks a {
     border-radius: 18px;
     -moz-border-radius: 18px;
     -webkit-border-radius: 18px;

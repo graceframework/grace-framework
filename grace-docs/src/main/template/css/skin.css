@@ -51,7 +51,7 @@ a:hover,
     color: #268000;
 }
 
-#navigation a, #nav-summary #nav-summary-childs a:hover {
+#navigation .navLinks a, #nav-summary #nav-summary-childs a:hover {
     color: white;
 }
 
@@ -80,11 +80,11 @@ a:hover,
 }
 
 
-#navigation .selected a {
+#navigation .navLinks .selected a {
     background: #424649;
 }
 
-#navigation a:hover {
+#navigation .navLinks a:hover {
     background: #db4800;
 }
 
@@ -117,17 +117,41 @@ a:hover,
     background: url(../img/default/separator-menu.png) no-repeat 0 center;
 }
 
-.navTitle {
+.navHeader {
     color:#fff;
-    background: url(../img/grace.svg) no-repeat 0 center;
-    background-size: 80px;
-    padding-left: 90px;
+    padding-left: 10px;
+    padding-top: 10px;
+    height: 75px;
     width: auto;
     float: left;
     line-height: 3.1em;
-    height: 75px;
-    padding-top: 25px;
+    display: flex;
 }
+
+.navHeader #logo {
+    height: 80px;
+    width: 80px;
+}
+
+.docHeader {
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+.docTitle {
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-size: 1.375em;
+    color: #fff;
+    font-weight: bold;
+}
+
+.docSubTitle {
+    margin:0;
+    font-size: 1em;
+    color: #ccc;
+}
+
 .btn-default {
     background-color: #fff;
     border-color: #ccc;
@@ -183,4 +207,10 @@ a:hover,
     border-style: solid;
     border-color: #888;
     border-top-color: #444;
+}
+
+@media print {
+    .contribute-btn, .no-print, .no-print * {
+        display: none !important;
+    }
 }

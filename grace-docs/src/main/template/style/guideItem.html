@@ -17,11 +17,20 @@ function addJsClass() {
 
 <body class="body" onload="addJsClass();">
 <div id="navigation">
-    <div class="navTitle">
+    <div class="navHeader">
         <% if (logo) { %>
         <span id="logo">${logo}</span>
+        <% } else { %>
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
         <% } %>
-        ${docTitle.encodeAsHtml()}
+        <div class="docHeader">
+            <h1 class="docTitle">${docTitle.encodeAsHtml()}</h1>
+            <h3 class="docSubTitle">${subtitle.encodeAsHtml()}</h3>
+        </div>
     </div>
     <div class="navLinks">
         <ul>
