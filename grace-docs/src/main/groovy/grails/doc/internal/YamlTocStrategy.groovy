@@ -1,4 +1,5 @@
-/* Copyright 2011-2023 the original author or authors.
+/*
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +25,10 @@ import org.yaml.snakeyaml.constructor.SafeConstructor
 class YamlTocStrategy {
 
     private final Yaml parser = new Yaml(new SafeConstructor(new LoaderOptions()))
-    private final FileResourceChecker resourceChecker
+    private final ResourceChecker resourceChecker
     private final String ext
 
-    YamlTocStrategy(FileResourceChecker resourceChecker, String ext = '.gdoc') {
+    YamlTocStrategy(ResourceChecker resourceChecker, String ext = '.gdoc') {
         this.resourceChecker = resourceChecker
         this.ext = ext
     }
@@ -60,7 +61,7 @@ class YamlTocStrategy {
         rootNode
     }
 
-    private processSection(Map sections, UserGuideNode node) {
+    private processSection(sections, UserGuideNode node) {
         if (sections.title) {
             node.title = sections.title
             sections = sections.clone()

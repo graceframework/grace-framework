@@ -63,7 +63,7 @@ class YamlTocStrategySpec extends Specification {
     }
 }
 
-class MockResourceChecker {
+class MockResourceChecker implements ResourceChecker {
     private Set resources
 
     MockResourceChecker(availableResources) {
