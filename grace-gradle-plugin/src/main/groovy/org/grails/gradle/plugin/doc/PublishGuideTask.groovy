@@ -71,6 +71,10 @@ class PublishGuideTask extends DefaultTask {
 
     @Input
     @Optional
+    Boolean bookmarks = false
+
+    @Input
+    @Optional
     String language = ''
 
     @Input
@@ -94,6 +98,7 @@ class PublishGuideTask extends DefaultTask {
 
         docPublisher.ant = project.ant
         docPublisher.asciidoc = this.asciidoc
+        docPublisher.bookmarks = this.bookmarks
         docPublisher.language = this.language
         docPublisher.title = project.name
         docPublisher.version = project.version

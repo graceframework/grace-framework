@@ -170,6 +170,11 @@ class DocPublisher {
 
     boolean asciidoc = false
 
+    /**
+     * Whether to generate bookmarks for PDF
+     */
+    boolean bookmarks = false
+
     def output
     private BaseRenderContext context
     private WikiRenderEngine engine
@@ -384,6 +389,7 @@ class DocPublisher {
                 next: null,
                 legacyLinks: legacyLinks,
                 sourceRepo: sourceRepo,
+                bookmarks: bookmarks
         )
 
         if (engine instanceof AsciiDocEngine) {
