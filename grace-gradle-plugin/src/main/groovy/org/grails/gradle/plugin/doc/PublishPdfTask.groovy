@@ -18,30 +18,48 @@ package org.grails.gradle.plugin.doc
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-import grails.doc.PdfPublisher
+import grails.doc.DocPublisher
 
 /**
- * Gradle task for generating a gdoc-based PDF user guide. Assumes the
+ * Gradle task for generating a PDF user guide. Assumes the
  * single page HTML user guide has already been created in the default
  * location.
+ *
+ * @author Peter Ledbrook
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
 @CompileStatic
 class PublishPdfTask extends DefaultTask {
 
-    @Input String pdfName = 'single.pdf'
-    @Input String language = ''
+    @OutputDirectory
+    @Optional
+    File targetDir = new File(project.buildDir, 'docs/manual')
+
+    @Input
+    @Optional
+    String language = ''
+
+    @Input
+    @Optional
+    String singleHtml = 'single.html'
+
+    @Input
+    @Optional
+    String singlePdf = 'single.pdf'
 
     @TaskAction
     def publish() {
-        File outputDir = project.layout.buildDirectory.get().asFile
-        try {
-            PdfPublisher.publishPdfFromHtml(outputDir, 'docs/manual/' + language + '/guide/single.html', pdfName)
-        }
-        catch (Exception ex) {
-            ex.printStackTrace()
-        }
+        DocPublisher docPublisher = new DocPublisher(null, this.targetDir)
+        docPublisher.language = this.language
+        docPublisher.singleHtml = this.singleHtml
+        docPublisher.singlePdf = this.singlePdf
+        docPublisher.publishPdf()
     }
 
 }

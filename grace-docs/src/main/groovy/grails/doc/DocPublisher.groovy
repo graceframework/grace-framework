@@ -37,6 +37,7 @@ import grails.doc.internal.YamlTocStrategy
  * @see DocEngine
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.2
  */
 class DocPublisher {
@@ -171,6 +172,16 @@ class DocPublisher {
     boolean asciidoc = false
 
     /**
+     * the file name of the generated html
+     */
+    String singleHtml = 'single.html'
+
+    /**
+     * the file name of the generated PDF
+     */
+    String singlePdf = 'single.pdf'
+
+    /**
      * Whether to generate bookmarks for PDF
      */
     boolean bookmarks = false
@@ -180,6 +191,8 @@ class DocPublisher {
     private WikiRenderEngine engine
     private final customMacros = []
 
+    private final PdfBuilder pdfBuilder
+
     DocPublisher() {
         this(null, null)
     }
@@ -188,6 +201,8 @@ class DocPublisher {
         this.src = src
         this.target = target
         this.output = out
+
+        this.pdfBuilder = new PdfBuilder()
 
         try {
             engineProperties.load(getClass().classLoader.getResourceAsStream('grails/doc/doc.properties'))
@@ -224,11 +239,17 @@ class DocPublisher {
         // Adds encodeAsUrlPath(), encodeAsUrlFragment() and encodeAsHtml()
         // methods to String.
         use(StringEscapeCategory) {
-            catPublish()
+            generateGuide()
         }
     }
 
-    private void catPublish() {
+    void publishPdf() {
+        File baseDir = new File(this.target, this.language)
+        this.pdfBuilder.build(baseDir.absolutePath, singleHtml, singlePdf)
+        this.output.warn "Built user manual [${singlePdf}] at ${baseDir.absolutePath}/guide/${singlePdf}"
+    }
+
+    private void generateGuide() {
         initialize()
         if (!src?.exists()) {
             return
@@ -467,6 +488,7 @@ class DocPublisher {
                 }
             }
         }
+        this.output.warn '\n'
 
         vars.remove('section')
         vars.content = fullContents.toString()
@@ -479,9 +501,10 @@ class DocPublisher {
         vars.resourcesPath = calculatePathToResources(pathToRoot)
 
         template = templateEngine.createTemplate(new File("${docResources}/style/layout.html").newReader(encoding))
-        new File("${refGuideDir}/single.html").withWriter(encoding) { out ->
+        new File("${refGuideDir}/${singleHtml}").withWriter(encoding) { out ->
             template.make(vars).writeTo(out)
         }
+        this.output.warn "Built user manual [${singleHtml}] at ${refDocsDir}/${singleHtml}"
 
         vars.content = ''
         vars.single = false
@@ -499,7 +522,7 @@ class DocPublisher {
             template.make(vars).writeTo(out)
         }
 
-        ant.echo "Built user manual at ${refDocsDir}/index.html"
+        this.output.warn "Built user manual [index.html] at ${refDocsDir}/index.html"
     }
 
     void writeChapter(

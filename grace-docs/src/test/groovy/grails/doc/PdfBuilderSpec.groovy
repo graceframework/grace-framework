@@ -6,6 +6,7 @@ class PdfBuilderSpec extends Specification {
 
     void "remove CssLinks"() {
         given:
+        PdfBuilder pdfBuilder = new PdfBuilder()
         String html = """
 <head>
         <title>The Grails Framework 3.2.11</title>
@@ -37,10 +38,30 @@ function addJsClass(el) {
     </head>
     """
         when:
-        String output = PdfBuilder.removeCssLinks(html)
+        String output = pdfBuilder.removeCssLinks(html)
 
         then:
         output == expected
 
+    }
+
+    void "generate pdf from sample docs"() {
+        given:
+        PdfBuilder pdfBuilder = new PdfBuilder()
+        String sampleDocsDir = 'build/resources/test/docs'
+        File sampleDocsFolder = new File(sampleDocsDir)
+        String singleHtml = "single.html"
+        String singlePdf = 'single.pdf'
+
+        expect:
+        sampleDocsFolder.exists()
+        !new File("${sampleDocsDir}/guide/${singlePdf}").exists()
+
+        when:
+        pdfBuilder.build(sampleDocsDir, singleHtml, singlePdf)
+
+        then:
+        noExceptionThrown()
+        new File("${sampleDocsDir}/guide/${singlePdf}").exists()
     }
 }

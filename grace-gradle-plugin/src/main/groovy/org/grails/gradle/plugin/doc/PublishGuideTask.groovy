@@ -85,6 +85,10 @@ class PublishGuideTask extends DefaultTask {
     @Optional
     Collection macros = []
 
+    @Input
+    @Optional
+    String singleHtml = 'single.html'
+
     @TaskAction
     void execute(InputChanges inputs) {
         publishGuide()
@@ -110,6 +114,7 @@ class PublishGuideTask extends DefaultTask {
         docPublisher.js = new File(resourcesDir, 'js')
         docPublisher.style = new File(resourcesDir, 'style')
         docPublisher.propertiesFile = propertiesFile
+        docPublisher.singleHtml = this.singleHtml
 
         // Add custom macros.
         // {hidden} macro for enabling translations.
