@@ -152,6 +152,10 @@ a:hover,
     color: #ccc;
 }
 
+.docVersion {
+    display: none;
+}
+
 .btn-default {
     background-color: #fff;
     border-color: #ccc;
