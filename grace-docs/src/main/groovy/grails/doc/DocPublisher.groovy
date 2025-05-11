@@ -504,7 +504,7 @@ class DocPublisher {
         new File("${refGuideDir}/${singleHtml}").withWriter(encoding) { out ->
             template.make(vars).writeTo(out)
         }
-        this.output.warn "Built user manual [${singleHtml}] at ${refDocsDir}/${singleHtml}"
+        this.output.warn "Built user manual [${singleHtml}] at ${refGuideDir}/${singleHtml}"
 
         vars.content = ''
         vars.single = false
