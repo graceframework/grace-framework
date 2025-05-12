@@ -20,9 +20,11 @@ import java.nio.charset.StandardCharsets
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
+import com.lowagie.text.pdf.BaseFont
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 import org.w3c.dom.Document
+import org.xhtmlrenderer.pdf.ITextFontResolver
 import org.xhtmlrenderer.pdf.ITextRenderer
 
 /**
@@ -92,6 +94,16 @@ class PdfBuilder {
 
     void createPdfWithDocument(Document doc, File outputFile, File urlBase) {
         ITextRenderer renderer = new ITextRenderer()
+        ITextFontResolver fontResolver = renderer.fontResolver
+        File fontsDir = new File(urlBase.parentFile, "fonts")
+        if (fontsDir.exists() && fontsDir.isDirectory()) {
+            fontsDir.eachFile { File file ->
+                String font = file.name.toLowerCase()
+                if (font.endsWith(".otf") || font.endsWith(".ttf")) {
+                    fontResolver.addFont(file.absolutePath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED)
+                }
+            }
+        }
         renderer.setDocument(doc, urlBase.toURI().toString())
 
         OutputStream outputStream

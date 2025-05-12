@@ -109,6 +109,7 @@ class PublishGuideTask extends DefaultTask {
         docPublisher.workDir = this.workDir
         docPublisher.apiDir = this.targetDir
         docPublisher.sourceRepo = this.sourceRepo
+        docPublisher.fonts = new File(resourcesDir, 'fonts')
         docPublisher.images = new File(resourcesDir, 'img')
         docPublisher.css = new File(resourcesDir, 'css')
         docPublisher.js = new File(resourcesDir, 'js')
