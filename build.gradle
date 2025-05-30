@@ -26,6 +26,8 @@ group = "org.graceframework.plugins"
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "java-library"
+apply plugin: "groovy"
+apply plugin: "org.graceframework.grace-doc"
 apply plugin: "org.graceframework.grace-plugin"
 apply plugin: "org.graceframework.grace-gsp"
 apply plugin: "com.github.erdi.webdriver-binaries"
@@ -110,12 +112,6 @@ tasks.withType(Test) {
     }
 }
 
-groovydoc.doFirst {
-    classpath += (configurations.documentation + configurations.compileClasspath)
-}
-
-bootJar.enabled = false
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -129,6 +125,48 @@ jar {
     archiveClassifier.set('plugin')
     includeEmptyDirs = false
     exclude 'gsp_**', 'gsp/**', 'cache/Application.class', 'com/demo/*.class'
+}
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = 'Documentation'
+    docTitle = "Grace Cache - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    if (project.file('src/ast/groovy').exists()) {
+        files += project.files('src/ast/groovy')
+    }
+    source = files
+    classpath += (configurations.documentation + configurations.compileClasspath)
+}
+
+docs {
+    dependsOn groovydoc
+    sourceDir = project.file('src/main/docs')
 }
 
 publishing {

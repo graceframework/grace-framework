@@ -5,7 +5,7 @@ method is invoked.
 
 [source,groovy]
 ----
-include::{sourcedir}/grails-app/services/com/demo/BasicCachingService.groovy[tags=get_data,indent=0]
+include::{sourcedir}/app/services/com/demo/BasicCachingService.groovy[tags=get_data,indent=0]
 ----
 
 [source,groovy]
