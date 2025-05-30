@@ -1,63 +1,67 @@
-buildscript {
-    repositories {
-        maven {
-            url = "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.3.2"
-    }
+plugins {
+    id 'groovy'
+    id 'org.graceframework.grace-doc'
 }
 
-apply plugin: "org.asciidoctor.jvm.convert"
+def DOCUMENTATION_GROUP = 'Documentation'
 
 repositories {
-    maven {
-        url = "https://repo.grails.org/grails/core"
-    }
-}
-
-asciidoctor {
-    resources {
-        from('src/docs/images')
-        into "./images"
-    }
-
-    attributes 'experimental'  : 'true',
-               'compat-mode'   : 'true',
-               'toc'           : 'left',
-               'icons'         : 'font',
-               'version'       : project.version,
-               'sourcedir'     : "${rootProject.allprojects.find { it.name == 'views-core'}.projectDir}/src/main/groovy"
+    mavenCentral()
 }
 
 configurations {
-    documentation.extendsFrom(compileClasspath)
+    documentation
 }
 
 dependencies {
-  documentation project(path: ':views-json', configuration: 'compileOnly')
-  documentation project(path: ':views-markup', configuration: 'compileOnly')
-  documentation project(path: ':views-gradle', configuration: 'compileOnly')
+    documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
+    documentation "org.apache.groovy:groovy:$groovyVersion"
+    documentation "org.apache.groovy:groovy-ant:$groovyVersion"
 }
 
-task apidocs(type: Groovydoc, group: 'documentation') {
-    def allProjects = rootProject.allprojects.findAll { project ->
-      ['views-core', 'views-json', 'views-json-testing-support', 'views-markup','views-gradle'].contains(project.name)
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
     }
-    source allProjects.collect { project ->
-      project.files('src/main/groovy')
-    } 
-
-    destinationDir = new File(buildDir, 'docs/api')
-    // Might need a classpath
-    docTitle = "Grails Views ${version}"
-    
-    classpath = configurations.documentation
-    groovyClasspath = configurations.documentation
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
 }
 
-task docs(type:Copy, dependsOn:[apidocs, asciidoctor], group:'documentation')  {
-    from "$buildDir/asciidoc/html5"
-    into "$buildDir/docs"
+tasks.withType(Groovydoc) {
+    group = DOCUMENTATION_GROUP
+    docTitle = "Grace Views - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+}
+
+docs {
+    dependsOn groovydoc
+}
+
+def assembleTask = project.tasks.findByName('assemble')
+if (assembleTask == null) {
+    task assemble(dependsOn: docs, type:Zip) {
+        baseName = "${project.name}-${project.version}"
+        destinationDir = new File(project.buildDir, 'distributions')
+        from project.files("${buildDir}/docs")
+    }
 }
