@@ -1,3 +1,2 @@
-The Grails Cache plugin provides powerful and easy to use caching functionality to Grails applications and plugins.
+Grace Cache plugin provides powerful and easy to use caching functionality to Grace applications and plugins.
 
-IMPORTANT: Cache version 4.0.0 and higher requires GORM 6.1.x or higher

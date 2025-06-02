@@ -2,13 +2,11 @@ All of the plugin's classes are designed for extensibility; the classes are all 
 
 == Cache manager
 
-
 The core cache plugin registers a `grailsCacheManager` Spring bean, and the extension plugins replace this bean with one that creates and manages caches for that implementation. The default implementation is an instance of link:{api}/grails/plugin/cache/GrailsConcurrentMapCacheManager.html[GrailsConcurrentMapCacheManager] which uses link:{api}/grails/plugin/cache/GrailsConcurrentMapCache.html[GrailsConcurrentMapCache] as its cache implementation. It uses a `java.util.concurrent.ConcurrentHashMap` to store cached values.
 
 You can customize the cache manager by replacing the `grailsCacheManager` Spring bean in `resources.groovy` with your own; either subclass link:{api}/grails/plugin/cache/GrailsConcurrentMapCacheManager.html[GrailsConcurrentMapCacheManager] (e.g. to override the `createConcurrentMapCache()` method) or by implementing the link:{api}/org/grails/plugin/cache/GrailsCacheManager.html[GrailsCacheManager] interface.
 
 === Fragment caching
-
 
 You can cache partial GSP page sections with the `<cache:block>` tag. You can specify a key when using this tag but it's in general unnecessary. This is because the block will be rendered with its own Closure, and the default key is the full closure class name. This is unique since the closures aren't re-used; for example these two blocks will be cached independently, even in the same GSP:
 

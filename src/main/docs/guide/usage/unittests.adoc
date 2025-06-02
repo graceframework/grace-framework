@@ -1,7 +1,4 @@
-In general, code that is marked with cache related annotations can be unit
-tested without doing anything special to deal with caching.  The caching just
-won't be enabled and the code in cached methods will be executed each time the
-method is invoked.
+In general, code that is marked with cache related annotations can be unit tested without doing anything special to deal with caching.  The caching just won't be enabled and the code in cached methods will be executed each time the method is invoked.
 
 [source,groovy]
 ----

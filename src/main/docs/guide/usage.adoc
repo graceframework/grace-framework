@@ -1,31 +1,7 @@
-The cache plugin adds Spring bean method call, GSP page fragment and
-template caching to Grails applications. You configure one or more caches
-in `grails-app/conf/application.yml`, and
-annotate methods (either in Spring beans (typically Grails services)) to be cached.
-You can also wrap GSP sections in cache tags and render cached templates.
+The cache plugin adds Spring bean method call, GSP page fragment and template caching to Grace applications. You configure one or more caches in `app/conf/application.yml`, and annotate methods (either in Spring beans (typically Grace services)) to be cached. You can also wrap GSP sections in cache tags and render cached templates.
 
-There are three annotations; link:{api}/grails/plugin/cache/Cacheable.html[Cacheable],
-link:{api}/grails/plugin/cache/CachePut.html[CachePut],
-and link:{api}/grails/plugin/cache/CacheEvict.html[CacheEvict]. You use
-`Cacheable` to mark a method as one that should check the cache for a
-pre-existing result, or generate a new result and cache it. Use `CachePut` to
-mark a method as one that should always be evaluated and store its result in the
-cache regardless of existing cache values. And use `@CacheEvict` to flush a cache
-(either fully or partially) to force the re-evaluation of previously cached
-results.
+There are three annotations; link:{api}/grails/plugin/cache/Cacheable.html[Cacheable], link:{api}/grails/plugin/cache/CachePut.html[CachePut], and link:{api}/grails/plugin/cache/CacheEvict.html[CacheEvict]. You use `Cacheable` to mark a method as one that should check the cache for a pre-existing result, or generate a new result and cache it. Use `CachePut` to mark a method as one that should always be evaluated and store its result in the cache regardless of existing cache values. And use `@CacheEvict` to flush a cache (either fully or partially) to force the re-evaluation of previously cached results.
 
-When using distributed caching (such as ehcache with distributed cache enabled,
-or redis with multiple instances of the application running against one redis
-instance), all classes that use annotation caching or XML caching should
-override the `hashCode` method. The hash code of the object with the method
-marked as being cacheable is included in the cache key, and the default
-`hashCode` implementation will vary each time the application is run. Overriding
-`hashCode` ensures that each instance of the applications will appropriately
-share cache keys.
+When using distributed caching (such as ehcache with distributed cache enabled, or redis with multiple instances of the application running against one redis instance), all classes that use annotation caching or XML caching should override the `hashCode` method. The hash code of the object with the method marked as being cacheable is included in the cache key, and the default `hashCode` implementation will vary each time the application is run. Overriding `hashCode` ensures that each instance of the applications will appropriately share cache keys.
 
-This 'core' cache plugin uses an in-memory implementation where the caches and
-cache manager are backed by a thread-safe `java.util.concurrent.ConcurrentMap`.
-This is fine for testing and possibly for low-traffic sites, but you should
-consider using one of the extension plugins if you need clustering, disk
-storage, persistence between restarts, and more configurability of features like
-time-to-live, maximum cache size, etc. Currently the only extension plugin available for Grails 3 is https://plugins.grails.org/plugin/grails/cache-ehcache[cache-ehcache].
+This 'core' cache plugin uses an in-memory implementation where the caches and cache manager are backed by a thread-safe `java.util.concurrent.ConcurrentMap`. This is fine for testing and possibly for low-traffic sites, but you should consider using one of the extension plugins if you need clustering, disk storage, persistence between restarts, and more configurability of features like time-to-live, maximum cache size, etc.

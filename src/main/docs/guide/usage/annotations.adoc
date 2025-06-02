@@ -112,5 +112,5 @@ class Message implements Serializable {
 
 Note that for in-memory cache implementations it's not required that the objects being cached implement `Serializable` but if you use an implementation that uses Java serialization (for example the Redis plugin, or the Ehcache plugin when you have configured clustered caching) you must implement `Serializable`.
 
-To test this out, be sure to define a `"message"` cache in `grails-app/conf/application.yml` and save and retrieve `Message` instances using the service. There are `println` statements but you can also turn on SQL logging to watch the database access that's needed to retrieve instances that aren't cached yet, and you shouldn't see database access for cached values.
+To test this out, be sure to define a `"message"` cache in `app/conf/application.yml` and save and retrieve `Message` instances using the service. There are `println` statements but you can also turn on SQL logging to watch the database access that's needed to retrieve instances that aren't cached yet, and you shouldn't see database access for cached values.
 
