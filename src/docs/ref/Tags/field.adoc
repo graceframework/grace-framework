@@ -1,6 +1,6 @@
-==== f:field
+== f:field
 
-===== Description
+=== Description
 
 `f:field` renders the widget using either `f:widget` or the tag body accompanied by any surrounding markup, typically a container, a `label` tag and any validation messages.
 
@@ -56,7 +56,7 @@ See link:{guide}/customizingFieldRendering.html[Customizing Field Rendering] for
 The `f:field` tag handles embedded domain properties in a special way. See link:{guide}/embeddedProperties.html[Embedded Properties] for details.
 
 
-===== Attributes
+=== Attributes
 
 
 .Attributes for `f:field`
@@ -118,11 +118,11 @@ The `f:field` tag handles embedded domain properties in a special way. See link:
 
 Any additional attributes are passed to the rendered template. Any additional attributes prefixed with `widget-` are instead passed to the widget template or rendered on the default input.
 
-===== Example of overriding a `_wrapper.gsp`
+==== Example of overriding a `_wrapper.gsp`
 
 If you want to override a `f:wrapper` to be used for all *widgets* then create a file  with content like this:
 
-.grails-app/views/_fields/default/_wrapper.gsp
+.app/views/_fields/default/_wrapper.gsp
 ----
 <div class="form-group ${invalid ? 'has-error' : ''}">
     <label for="${property}">${label} ${required ? '*' : ''}</label>

@@ -27,7 +27,7 @@ names are summarized below:
 
 
 Users upgrading to 1.5 from a previous version should either rename their templates (recommended) or add the following
-to `grails-app/conf/application.yml` to change the default templates names to the old names
+to `app/conf/application.yml` to change the default templates names to the old names
 
 [source,groovy]
 ----
@@ -46,42 +46,42 @@ grails:
 
 The template for a field is chosen by a convention using the names of the controller, action, bean class, bean property, theme, etc. All the tags will look for templates in the following directories in decreasing order of preference:
 
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyName*/_themes/*themeName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/_themes/*themeName*/*propertyType*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/_themes/*themeName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*propertyName*/_themes/*themeName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/_themes/*themeName*/*propertyType*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/_themes/*themeName*/`
-* `grails-app/views/*controllerName*/*actionName*/*propertyName*/_themes/*themeName*/`
-* `grails-app/views/*controllerName*/*actionName*/_themes/*themeName*/*propertyType*/`
-* `grails-app/views/*controllerName*/*actionName*/_themes/*themeName*/`
-* `grails-app/views/*controllerName*/*propertyName*/_themes/*themeName*/`
-* `grails-app/views/*controllerName*/_themes/*themeName*/*propertyType*/`
-* `grails-app/views/*controllerName*/_themes/*themeName*/`
-* `grails-app/views/_fields/_themes/*themeName*/*class*/*propertyName*/`
-* `grails-app/views/_fields/_themes/*themeName*/*superclass*/*propertyName*/`
-* `grails-app/views/_fields/_themes/*themeName*/*associationType*/`
-* `grails-app/views/_fields/_themes/*themeName*/*propertyType*/`
-* `grails-app/views/_fields/_themes/*themeName*/*propertySuperclass*/`
-* `grails-app/views/_fields/_themes/*themeName*/default/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyType*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*actionName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*propertyName*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/*propertyType*/`
-* `grails-app/views/*controllerNamespace*/*controllerName*/`
-* `grails-app/views/*controllerName*/*actionName*/*propertyName*/`
-* `grails-app/views/*controllerName*/*actionName*/*propertyType*/`
-* `grails-app/views/*controllerName*/*actionName*/`
-* `grails-app/views/*controllerName*/*propertyName*/`
-* `grails-app/views/*controllerName*/*propertyType*/`
-* `grails-app/views/*controllerName*/`
-* `grails-app/views/_fields/*class*/*propertyName*/`
-* `grails-app/views/_fields/*superclass*/*propertyName*/`
-* `grails-app/views/_fields/*associationType*/`
-* `grails-app/views/_fields/*propertyType*/`
-* `grails-app/views/_fields/*propertySuperclass*/`
-* `grails-app/views/_fields/default/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyName*/_themes/*themeName*/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/_themes/*themeName*/*propertyType*/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/_themes/*themeName*/`
+* `app/views/*controllerNamespace*/*controllerName*/*propertyName*/_themes/*themeName*/`
+* `app/views/*controllerNamespace*/*controllerName*/_themes/*themeName*/*propertyType*/`
+* `app/views/*controllerNamespace*/*controllerName*/_themes/*themeName*/`
+* `app/views/*controllerName*/*actionName*/*propertyName*/_themes/*themeName*/`
+* `app/views/*controllerName*/*actionName*/_themes/*themeName*/*propertyType*/`
+* `app/views/*controllerName*/*actionName*/_themes/*themeName*/`
+* `app/views/*controllerName*/*propertyName*/_themes/*themeName*/`
+* `app/views/*controllerName*/_themes/*themeName*/*propertyType*/`
+* `app/views/*controllerName*/_themes/*themeName*/`
+* `app/views/_fields/_themes/*themeName*/*class*/*propertyName*/`
+* `app/views/_fields/_themes/*themeName*/*superclass*/*propertyName*/`
+* `app/views/_fields/_themes/*themeName*/*associationType*/`
+* `app/views/_fields/_themes/*themeName*/*propertyType*/`
+* `app/views/_fields/_themes/*themeName*/*propertySuperclass*/`
+* `app/views/_fields/_themes/*themeName*/default/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyName*/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyType*/`
+* `app/views/*controllerNamespace*/*controllerName*/*actionName*/`
+* `app/views/*controllerNamespace*/*controllerName*/*propertyName*/`
+* `app/views/*controllerNamespace*/*controllerName*/*propertyType*/`
+* `app/views/*controllerNamespace*/*controllerName*/`
+* `app/views/*controllerName*/*actionName*/*propertyName*/`
+* `app/views/*controllerName*/*actionName*/*propertyType*/`
+* `app/views/*controllerName*/*actionName*/`
+* `app/views/*controllerName*/*propertyName*/`
+* `app/views/*controllerName*/*propertyType*/`
+* `app/views/*controllerName*/`
+* `app/views/_fields/*class*/*propertyName*/`
+* `app/views/_fields/*superclass*/*propertyName*/`
+* `app/views/_fields/*associationType*/`
+* `app/views/_fields/*propertyType*/`
+* `app/views/_fields/*propertySuperclass*/`
+* `app/views/_fields/default/`
 
 The variables referenced in these paths are:
 
@@ -123,7 +123,7 @@ All class names are camel-cased simple forms. For example `java.lang.String` bec
 
 Templates are resolved in this order so that you can override in the more specific circumstance and fall back to successively more general defaults. For example, you can define a field template for all `java.lang.String` properties but override a specific property of a particular class to use more specialized rendering.
 
-Templates in plugins are resolved as well. This means plugins such as `Joda Time` can provide default rendering for special property types. A template in your application will take precedence over a template in a plugin at the same 'level'. For example if a plugin provides a `grails-app/views/_fields/string/_widget.gsp` the same template in your application will override it but if the plugin provides `grails-app/views/_fields/person/name/_widget.gsp` it would be used in preference to the more general template in your application.
+Templates in plugins are resolved as well. This means plugins such as `Joda Time` can provide default rendering for special property types. A template in your application will take precedence over a template in a plugin at the same 'level'. For example if a plugin provides a `app/views/_fields/string/_widget.gsp` the same template in your application will override it but if the plugin provides `app/views/_fields/person/name/_widget.gsp` it would be used in preference to the more general template in your application.
 
 For most properties the out-of-the-box defaults should provide a good starting point.
 
@@ -135,45 +135,45 @@ Imagine an object of class `Employee` that extends the class `Person` and has a 
 
 You can override the template `f:field` uses with any of these:
 
-* `grails-app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_wrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/name/_wrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/string/_wrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/_wrapper.gsp`
-* `grails-app/views/*controllerName*/name/_wrapper.gsp`
-* `grails-app/views/*controllerName*/string/_wrapper.gsp`
-* `grails-app/views/*controllerName*/_wrapper.gsp`
-* `grails-app/views/_fields/employee/name/_wrapper.gsp`
-* `grails-app/views/_fields/person/name/_wrapper.gsp`
-* `grails-app/views/_fields/string/_wrapper.gsp`
-* `grails-app/views/_fields/default/_wrapper.gsp`
+* `app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_wrapper.gsp`
+* `app/views/*controllerName*/*actionName*/name/_wrapper.gsp`
+* `app/views/*controllerName*/*actionName*/string/_wrapper.gsp`
+* `app/views/*controllerName*/*actionName*/_wrapper.gsp`
+* `app/views/*controllerName*/name/_wrapper.gsp`
+* `app/views/*controllerName*/string/_wrapper.gsp`
+* `app/views/*controllerName*/_wrapper.gsp`
+* `app/views/_fields/employee/name/_wrapper.gsp`
+* `app/views/_fields/person/name/_wrapper.gsp`
+* `app/views/_fields/string/_wrapper.gsp`
+* `app/views/_fields/default/_wrapper.gsp`
 
 override the template `f:widget` uses with any of these:
 
-* `grails-app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_widget.gsp`
-* `grails-app/views/*controllerName*/*actionName*/name/_widget.gsp`
-* `grails-app/views/*controllerName*/*actionName*/string/_widget.gsp`
-* `grails-app/views/*controllerName*/*actionName*/_widget.gsp`
-* `grails-app/views/*controllerName*/name/_widget.gsp`
-* `grails-app/views/*controllerName*/string/_widget.gsp`
-* `grails-app/views/*controllerName*/_widget.gsp`
-* `grails-app/views/_fields/employee/name/_widget.gsp`
-* `grails-app/views/_fields/person/name/_widget.gsp`
-* `grails-app/views/_fields/string/_widget.gsp`
-* `grails-app/views/_fields/default/_widget.gsp`
+* `app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_widget.gsp`
+* `app/views/*controllerName*/*actionName*/name/_widget.gsp`
+* `app/views/*controllerName*/*actionName*/string/_widget.gsp`
+* `app/views/*controllerName*/*actionName*/_widget.gsp`
+* `app/views/*controllerName*/name/_widget.gsp`
+* `app/views/*controllerName*/string/_widget.gsp`
+* `app/views/*controllerName*/_widget.gsp`
+* `app/views/_fields/employee/name/_widget.gsp`
+* `app/views/_fields/person/name/_widget.gsp`
+* `app/views/_fields/string/_widget.gsp`
+* `app/views/_fields/default/_widget.gsp`
 
 And override the template _f:display_ uses with any of these:
 
-* `grails-app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/name/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/string/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/*actionName*/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/name/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/string/_displayWrapper.gsp`
-* `grails-app/views/*controllerName*/_displayWrapper.gsp`
-* `grails-app/views/_fields/employee/name/_displayWrapper.gsp`
-* `grails-app/views/_fields/person/name/_displayWrapper.gsp`
-* `grails-app/views/_fields/string/_displayWrapper.gsp`
-* `grails-app/views/_fields/default/_displayWrapper.gsp`
+* `app/views/*controllerName*/*actionName*/name/_themes/*themeName*/_displayWrapper.gsp`
+* `app/views/*controllerName*/*actionName*/name/_displayWrapper.gsp`
+* `app/views/*controllerName*/*actionName*/string/_displayWrapper.gsp`
+* `app/views/*controllerName*/*actionName*/_displayWrapper.gsp`
+* `app/views/*controllerName*/name/_displayWrapper.gsp`
+* `app/views/*controllerName*/string/_displayWrapper.gsp`
+* `app/views/*controllerName*/_displayWrapper.gsp`
+* `app/views/_fields/employee/name/_displayWrapper.gsp`
+* `app/views/_fields/person/name/_displayWrapper.gsp`
+* `app/views/_fields/string/_displayWrapper.gsp`
+* `app/views/_fields/default/_displayWrapper.gsp`
 
 During template development it is usually recommended to disable template caching in order to allow the plugin to recognize new/renamed/moved templates without restarting the application. See the "Performance" section of the guide for the exact settings.
 
@@ -194,8 +194,7 @@ grails:
 ----
 
 
-=== Default Behaviour - Using Grails Widget Tags
-
+=== Default Behaviour - Using Grace Widget Tags
 
 If no template override is found the plugin will use the standard grails input tags (e.g. `g:select`, `g:checkbox`, `g:field`) for rendering input controls.
 Using `f:field` you can pass extra arguments (e.g. `optionKey`, `optionValue`) through to these tags by prefixing them with `widget-`, e.g.
@@ -207,7 +206,6 @@ Using `f:field` you can pass extra arguments (e.g. `optionKey`, `optionValue`) t
 
 
 === Template parameters
-
 
 The `f:field` and `f:widget` tags will pass the following parameters to your templates or to the body of `f:field` if you use one:
 
@@ -276,7 +274,6 @@ NOTE: If the `bean` attribute was not supplied to `f:field` then `bean`, `type`,
 
 === Field labels
 
-
 If the `label` attribute is not supplied to the `f:field` tag then the label string passed to the field template is resolved by convention. The plugin uses the following order of preference for the label:
 
 * An i18n message using the key '_beanClass_._path_`.label`'. For example when using `<f:field bean="personInstance" property="address.city"/>` the plugin will try the i18n key `person.address.city.label`. If the property path contains any index it is removed so `<f:field bean="authorInstance" property="books<<0>>.title"/>` would use the key `author.books.title.label`.
@@ -285,7 +282,6 @@ If the `label` attribute is not supplied to the `f:field` tag then the label str
 
 
 === Locating Field Templates Directly
-
 
 Rather than relying on the convention described previously to locate the template(s) to be used for a particular field, it is
 instead possible to directly specify the directory containing the templates. This feature was introduced in version 1.5.
@@ -321,7 +317,6 @@ by convention.
 
 
 === Locating Templates Directly Example
-
 
 [source,groovy]
 ----

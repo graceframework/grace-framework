@@ -24,7 +24,9 @@ group = "org.graceframework.plugins"
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: "groovy"
 apply plugin: "java-library"
+apply plugin: "org.graceframework.grace-doc"
 apply plugin: "org.graceframework.grace-plugin"
 apply plugin: "org.graceframework.grace-gsp"
 apply plugin: "io.github.gradle-nexus.publish-plugin"
@@ -83,12 +85,6 @@ dependencies {
     }
 }
 
-groovydoc.doFirst {
-    classpath += (configurations.documentation + configurations.compileClasspath)
-}
-
-bootJar.enabled = false
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -103,6 +99,46 @@ test {
 
 tasks.named('compileJava') {
     inputs.files(tasks.named('processResources'))
+}
+
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = 'Documentation'
+    docTitle = "Grace Fields - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+}
+
+docs {
+    dependsOn groovydoc
+    sourceDir = project.file('src/docs')
 }
 
 publishing {

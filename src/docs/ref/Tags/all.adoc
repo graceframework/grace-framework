@@ -1,13 +1,12 @@
-==== f:all
+== f:all
 
-===== Purpose
+=== Purpose
 
 Renders fields for all properties of an object by using `f:field` for each property.
 
 The `id`, `version`, `dateCreated` and `lastUpdated` properties are skipped on domain classes. Additionally any property with a `display: false` constraint set will be skipped.
 
-
-===== Attributes
+=== Attributes
 
 .Attributes for f:all
 [options="header",cols="1,1,3"]
@@ -36,16 +35,12 @@ The `id`, `version`, `dateCreated` and `lastUpdated` properties are skipped on d
 |Theme to use if available.
 |===
 
-
-
-===== Extra attributes (Since version 2.1.4)
-
+=== Extra attributes (Since version 2.1.4)
 
 You can pass extra attributes to the *all* tag that will be propagated to the inner fields.
 
 
-===== Example
-
+=== Example
 
 [source,groovy]
 ----

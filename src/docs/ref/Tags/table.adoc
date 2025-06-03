@@ -1,11 +1,10 @@
+== f:table
 
-==== f:table
-
-===== Purpose
+=== Purpose
 
 `<f:table/>` renders some or all properties of a collection of beans in a table using the _f:display_ widget for each property type. If there is no _\_display_ template in scope the tag will simply render the property values.
 
-===== Examples
+=== Examples
 
 [source,groovy]
 ----
@@ -31,7 +30,7 @@ The template for `<f:table/>` should be in
 
 [source]
 ----
-grails-app/views/templates/_fields/_table.gsp
+app/views/templates/_fields/_table.gsp
 ----
 
 but you can have multiple table templated, if you specify the template property.
@@ -47,7 +46,7 @@ All templates should still be located in `view/templates/_fields/`, the example 
 
 When *theme* is specified, the _\_display_ template will be searched first in *theme*, but the theme property does *not* directly apply to table.
 
-===== Attributes
+=== Attributes
 
 [options="header",cols="2,1,1,5"]
 |===
@@ -60,18 +59,18 @@ When *theme* is specified, the _\_display_ template will be searched first in *t
 |*order*|||Comma-separated `String` or `List` of properties which represents the order in which the tag should display them.
 |*theme*|String||Theme to use if available.
 |*maxProperties*|Number|7|The maximum number of properties to display when rendering the table. If zero is specified all columns are shown, otherwise `properties[0..<maxProperties]` are shown. `maxProperties` can be negative.
-|*template*|String|'table'|Alternative template for table rendering. Templates should be in the 'grails-app/views/templates/_fields/' folder.
+|*template*|String|'table'|Alternative template for table rendering. Templates should be in the 'app/views/templates/_fields/' folder.
 |===
 
  Any additional attributes are passed to the rendered template.
 
-===== Modifying the `_table.gsp` template.
+==== Modifying the `_table.gsp` template.
 
-To make you own version of a `f:table` template, the file should be located in `grails-app/views/templates/_fields/_table.gsp`
+To make you own version of a `f:table` template, the file should be located in `app/views/templates/_fields/_table.gsp`
 unless a different location is specified with the template property.
-You can find a starting point for a new file link:https://github.com/grails-fields-plugin/grails-fields/blob/master/grails-app/views/templates/_fields/_table.gsp[on GitHub]
+You can find a starting point for a new file link:https://github.com/graceframework/grace-fields/blob/6.3.x/app/views/templates/_fields/_table.gsp[on GitHub]
 
-====== Model in the template
+==== Model in the template
 
 The following model is passed to the  `_table.gsp` template:
 [options="header",cols="1,5"]

@@ -3,5 +3,6 @@ usage: Usage
 customizingFieldRendering: Customizing Field Rendering
 embeddedProperties: Embedded Properties
 themes: Themes
+scaffolding: Scaffolding Templates
 includingTemplatesInPlugins: Including Templates in Plugins
 performance: Performance

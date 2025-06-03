@@ -12,6 +12,6 @@ Embedded properties are handled in a special way by the `f:field` and `f:all` ta
 </fieldset>
 ----
 
-You can customize how embedded properties are surrounded by providing a layout at `grails-app/views/layouts/_fields/embedded.gsp` which will override the default layout provided by the plugin.
+You can customize how embedded properties are surrounded by providing a layout at `app/views/layouts/_fields/embedded.gsp` which will override the default layout provided by the plugin.
 
 When you use the `f:all` tag it will automatically handle embedded properties in this way.

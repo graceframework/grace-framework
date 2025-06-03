@@ -1,10 +1,10 @@
-==== f:with
+== f:with
 
-===== Purpose
+=== Purpose
 
 Places a bean in scope so that the bean attribute can be omitted on contained tags.
 
-===== Example
+=== Example
 
 [source,groovy]
 ----
@@ -14,7 +14,7 @@ Places a bean in scope so that the bean attribute can be omitted on contained ta
 </f:with>
 ----
 
-===== Attributes
+=== Attributes
 
 [format="csv", options="header"]
 |===
@@ -25,7 +25,7 @@ Places a bean in scope so that the bean attribute can be omitted on contained ta
 |===
 
 
-===== Extra attributes (Since version 2.1.4)
+=== Extra attributes (Since version 2.1.4)
 
 You can pass any number of extra attributes to the *with* tag that will be propagated to the inner fields and displays.
 
@@ -48,7 +48,7 @@ The code above is the same as:
 </f:with>
 ----
 
-===== Override extra attributes
+=== Override extra attributes
 
 You can override the extra attributes on any field just changing the attribute value on the popper field or display
 

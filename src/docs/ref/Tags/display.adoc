@@ -1,6 +1,6 @@
-==== f:display
+== f:display
 
-===== Purpose
+=== Purpose
 
 `f:display` renders a property for display. If there is no `_displayWrapper` template in scope the tag will simply render the property value.
 
@@ -12,8 +12,7 @@ NOTE: In version 1.5 new attributes were added:
 Since then you can specify the folders where the templates are located. You can do this for the wrapper folder, the widget folder ot both (if they are located on the same folder).
 
 
-===== Examples
-
+=== Examples
 
 [source,groovy]
 ----
@@ -40,8 +39,7 @@ Since then you can specify the folders where the templates are located. You can 
 </f:display>
 ----
 
-
-===== Attributes
+=== Attributes
 
 .Attributes for f:display
 [options="header",cols="1,1 ,3"]
@@ -54,7 +52,7 @@ Since then you can specify the folders where the templates are located. You can 
 
 |*property*
 | No
-|The path to the property. This can include any level of nesting and numeric or string indexes. For example `employees[0].address[home].street` is a valid path. If absent, all properties will be displayed via the `grails-app/views/templates/_fields/_list.gsp` (see the template code below).
+|The path to the property. This can include any level of nesting and numeric or string indexes. For example `employees[0].address[home].street` is a valid path. If absent, all properties will be displayed via the `app/views/templates/_fields/_list.gsp` (see the template code below).
 
 |*value*
 |No
@@ -103,4 +101,4 @@ Any additional attributes are passed to the rendered template.
 
 ==== Special case for rendering all properties of a bean
 
-When `f:display` is used without a `property` then all bean properties are rendered. This is done with the `grails-app/views/templates/_fields/_list.gsp` template. The default template can be found link:https://github.com/grails-fields-plugin/grails-fields/blob/master/grails-app/views/templates/_fields/_list.gsp[on GitHub]
+When `f:display` is used without a `property` then all bean properties are rendered. This is done with the `app/views/templates/_fields/_list.gsp` template. The default template can be found link:https://github.com/graceframework/grace-fields/blob/6.3.x/app/views/templates/_fields/_list.gsp[on GitHub]
