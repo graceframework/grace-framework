@@ -1,0 +1,45 @@
+name: Grace Doc
+on:
+  push:
+    branches:
+      - 6.3.x
+    paths:
+      - 'src/docs/**'
+jobs:
+  # Build job
+  build:
+    permissions:
+      contents: read  #  to fetch code (actions/checkout)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['17']
+    steps:
+      - name: Checkout repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+      - name: Get the current version
+        id: getversion
+        run: |
+          echo "$(cat gradle.properties | grep 'projectVersion=' | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+      - name: Generate Docs
+        id: build
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          arguments: docs
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: rainboyan/deploy-github-pages@v1.1.0
+        env:
+          VERSION: ${{ steps.getversion.outputs.projectVersion }}
+          TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build/docs/manual
