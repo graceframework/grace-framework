@@ -1,0 +1,8 @@
+== Installation
+
+To start using this library, there are only a couple simple steps:
+
+. Import the library in your `build.gradle`
+
+[source,groovy,subs="attributes",indent=1]
+testImplementation "org.graceframework.plugins:geb:{version}"

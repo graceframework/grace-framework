@@ -21,6 +21,7 @@ group = "org.graceframework.plugins"
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "java-library"
+apply plugin: "org.graceframework.grace-doc"
 apply plugin: "org.graceframework.grace-plugin"
 apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "maven-publish"
@@ -41,14 +42,11 @@ dependencies {
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
     }
     compileOnly "org.graceframework:grace-boot"
-    documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "org.apache.groovy:groovy:$groovyVersion"
     documentation "org.apache.groovy:groovy-ant:$groovyVersion"
     documentation "org.apache.groovy:groovy-templates:$groovyVersion"
     documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 }
-
-bootJar.enabled = false
 
 java {
     toolchain {
@@ -62,6 +60,46 @@ jar {
     enabled = true
     archiveClassifier.set('plugin')
     includeEmptyDirs = false
+}
+
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = 'Documentation'
+    docTitle = "Grace Geb - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+}
+
+docs {
+    dependsOn groovydoc
+    sourceDir = project.file('docs')
 }
 
 publishing {

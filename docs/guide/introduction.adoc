@@ -1,0 +1,5 @@
+Geb Functional Testing for Grace application
+
+This plugin just provides the Geb dependencies and a `create-functional-test` command for generating Geb tests in a Grace app.
+
+For further reference please see the http://www.gebish.org[Geb documentation].
