@@ -1,0 +1,13 @@
+#colset #col2 {
+    display: none !important;
+}
+
+#toggle-col1 {
+    display: none !important;
+}
+
+#nav-summary #nav-summary-childs {
+    position: absolute;
+    top: 32px;
+    margin-left: -54px !important;
+}
