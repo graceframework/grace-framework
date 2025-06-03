@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.3.2"
     }
 }
 
@@ -25,12 +24,13 @@ group = "org.graceframework.plugins"
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: "groovy"
 apply plugin: "java-library"
+apply plugin: "org.graceframework.grace-doc"
 apply plugin: "org.graceframework.grace-plugin"
 apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "maven-publish"
 apply plugin: "signing"
-apply plugin: "org.asciidoctor.jvm.convert"
 
 repositories {
     mavenCentral()
@@ -88,27 +88,50 @@ java {
     withSourcesJar()
 }
 
-tasks.withType(Groovydoc) {
-    configure {
-        docTitle = "Grace Database Migration Plugin ${version}"
-        source = project.files('src/main/groovy')
-        destinationDir = new File(buildDir, 'docs/api')
-        classpath = configurations.documentation
-        groovyClasspath = configurations.documentation
-    }
-}
-
-task docs(type:Copy, group: 'documentation')  {
-    dependsOn(groovydoc, asciidoctor)
-    from "$buildDir/asciidoc"
-    into "$buildDir/docs"
-}
-
 jar {
     enabled = true
     archiveClassifier.set('plugin')
     includeEmptyDirs = false
     exclude 'testapp/*.class', 'databasemigration/*.class'
+}
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = 'Documentation'
+    docTitle = "Grace Database Migration Plugin - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+}
+
+docs {
+    dependsOn groovydoc
+    sourceDir = project.file('src/docs')
 }
 
 publishing {
