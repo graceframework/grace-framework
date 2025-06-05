@@ -11,7 +11,7 @@ permissions:
 jobs:
   create_draft_release:
     if: ${{ github.repository == 'graceframework/grace-framework' }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -25,7 +25,7 @@ jobs:
             ${{ github.ref_name }}
   release_and_publish:
     needs: create_draft_release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['17']
@@ -38,11 +38,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: gradle/actions/wrapper-validation@v3
-      - name: Set up JDK
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Extract Target Branch
         id: extract_branch
         run: |
@@ -55,9 +57,7 @@ jobs:
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
       - name: Run Assemble
         id: assemble
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: assemble
+        run: ./gradlew assemble
       - name: Upload artifacts to the Github release
         id: upload_artifact
         if: steps.assemble.outcome == 'success'
@@ -73,7 +73,6 @@ jobs:
       - name: Publish to Sonatype OSSRH
         id: publish
         if: steps.assemble.outcome == 'success'
-        uses: gradle/actions/setup-gradle@v3
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -82,5 +81,4 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
-        with:
-          arguments: -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository

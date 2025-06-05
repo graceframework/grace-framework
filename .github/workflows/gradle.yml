@@ -12,7 +12,7 @@ jobs:
     if: ${{ github.repository == 'graceframework/grace-framework' }}
     permissions:
       contents: read  #  to fetch code (actions/checkout)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['17']
@@ -20,23 +20,23 @@ jobs:
       WORKSPACE: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Run Build
         id: build
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
+        run: ./gradlew build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
     permissions:
       contents: read  #  to fetch code (actions/checkout)
       checks: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         env:
@@ -44,18 +44,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up JDK 17
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: Publish to Sonatype OSSRH
         id: publish
-        uses: gradle/actions/setup-gradle@v3
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -64,5 +65,4 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
-        with:
-          arguments: -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg publishToSonatype closeAndReleaseSonatypeStagingRepository
