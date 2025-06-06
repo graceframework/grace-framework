@@ -1,6 +1,8 @@
 introduction:
   title: Introduction
-  changeLog: Change Log
+releases:
+  title: Release History
+  6.x: What's new in 6.x
 usage: 
   title: Usage
   dsl: Configuration
@@ -13,3 +15,4 @@ grailsCacheAdminService:
   title: The Cache Admin Service
   clearingCaches: Clearing Caches
 implementation: Implementation Details
+support: Support
