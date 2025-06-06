@@ -4,6 +4,8 @@ link:{github}/releases/tag/v6.3.0[release notes]
 
 🛠 Improvements
 
+* Update README
+* Remove dependency on concurrentlinkedhashmap-lru link:{github}/issues/60[#60]
 * Update github workflows - Upgrade to setup-gradle@v4
 * Add LICENSE 
 * Update docs - Migrate to Grace - Add changelog for version 6.x
@@ -15,6 +17,7 @@ link:{github}/releases/tag/v6.3.0[release notes]
 
 * Upgrade to Grace 2023.3.0-RC1 link:{github}/issues/55[#55]
 * Upgrade to Grace 2023.3.0-RC2 link:{github}/issues/58[#58]
+* Upgrade to Grace Data 2023.3.0 link:{github}/issues/59[#59]
 * Upgrade to Gradle 8.14 link:{github}/issues/57[#57]
 * Upgrade to Gradle 8.13 link:{github}/issues/56[#56]
 
