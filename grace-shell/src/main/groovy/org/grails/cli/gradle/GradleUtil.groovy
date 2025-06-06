@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import org.grails.cli.profile.ProjectContext
  *
  * @author Graeme Rocher
  * @author Lari Hotari
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -110,6 +111,7 @@ class GradleUtil {
     static LongRunningOperation setupConsoleOutput(ProjectContext context, LongRunningOperation operation) {
         GrailsConsole grailsConsole = context.console
         operation.colorOutput = System.getProperty('org.gradle.console') != 'plain' ? grailsConsole.ansiEnabled : false
+        operation.standardInput = System.in
         operation.standardOutput = new GrailsConsolePrintStream(grailsConsole.out)
         operation.standardError = new GrailsConsoleErrorPrintStream(grailsConsole.err)
         operation
