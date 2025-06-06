@@ -14,7 +14,7 @@
  */
 package grails.plugin.cache;
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
+import org.apache.groovy.util.concurrent.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
 import org.springframework.cache.support.SimpleValueWrapper;
 
 import java.io.Serializable;
