@@ -73,7 +73,7 @@ dependencies {
     testImplementation "com.h2database:h2"
 
     documentation "org.fusesource.jansi:jansi:1.18"
-    documentation "com.github.javaparser:javaparser-core:3.15.14"
+    documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
     documentation "org.apache.groovy:groovy"
     documentation "org.apache.groovy:groovy-ant"
     documentation "org.apache.groovy:groovy-templates"
