@@ -42,10 +42,8 @@ publishing {
                 }
             }
 
-            if (isGrailsPlugin) {
-                artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
-                        classifier: "plugin",
-                        extension: 'xml'
+            if (isPlugin) {
+                artifact source: "${project.sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml", classifier: "plugin", extension: 'xml'
             }
 
             pom {
@@ -82,7 +80,5 @@ afterEvaluate {
         onlyIf { isReleaseVersion }
     }
 }
-
-
 
 task install(dependsOn: project.tasks.withType(PublishToMavenLocal))
