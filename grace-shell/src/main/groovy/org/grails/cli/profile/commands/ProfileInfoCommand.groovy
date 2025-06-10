@@ -48,7 +48,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
 
     ProfileInfoCommand() {
         description.argument(name: 'Profile Name', description: 'The name or coordinates of the profile', required: true)
-        description.flag(name: 'all', type: 'boolean', description: 'Show all commands and features', required: false)
+        description.flag(name: 'only', type: 'boolean', description: "Only show the commands and features of this profile", required: false)
     }
 
     void setProfileRepository(ProfileRepository profileRepository) {
@@ -63,7 +63,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
             return false
         }
 
-        boolean showAll = executionContext.commandLine.hasOption('all')
+        boolean showAll = !executionContext.commandLine.hasOption('only')
         def profileName = executionContext.commandLine.remainingArgs[0]
 
         Profile profile = profileRepository.getProfile(profileName)
@@ -132,7 +132,7 @@ class ProfileInfoCommand extends ArgumentCompletingCommand implements GlobalComm
 
     private static Iterable<Feature> getFeatures(Profile profile, boolean includeParents) {
         Set<Feature> allFeatures = []
-        allFeatures.addAll(profile.features)
+        allFeatures.addAll(profile.internalFeatures)
         if (includeParents) {
             Iterable<Profile> parents = profile.extends
             for (Profile p in parents) {
