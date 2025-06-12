@@ -109,14 +109,7 @@ subprojects { project->
 
     if (project.name in ["views-core", "views-component", "views-json", "views-markup", "views-json-testing-support"]) {
 
-        configurations {
-            documentation
-        }
-
         dependencies {
-            documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
-            documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
-
             testImplementation "org.spockframework:spock-core", {
                 exclude group: "org.junit.platform", module: "junit-platform-engine"
             }
@@ -156,8 +149,6 @@ subprojects { project->
         tasks.withType(GroovyCompile) {
             options.compilerArgs << '-parameters'
         }
-
-        groovydoc.classpath = configurations.documentation
     }
 
 }
