@@ -1,5 +1,5 @@
 :includedir: src/docs/asciidoc/
-= Grails Views
+= Grace Views
 
 :author: Graeme Rocher
 :email: graeme.rocher@gmail.com

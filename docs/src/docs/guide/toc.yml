@@ -1,7 +1,7 @@
 introduction: Introduction
 releases:
   title: Release History
-  release6: What's new in 6.x
+  6.x: What's new in 6.x
 json:
   title: JSON Views
   jsonIntroduction: Introduction

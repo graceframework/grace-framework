@@ -1,12 +1,12 @@
 = Plugin Support
 
-Grails plugins as well as standard Gradle Java/Groovy projects can provide json views to your application.
+Grace plugins as well as standard Gradle Java/Groovy projects can provide json views to your application.
 
-== Grails Plugins
+== Grace Plugins
 
 Since JSON views are compiled all of a plugin's views and templates are available for use in your applications.
 
-The view resolution will look through all of the application's configured plugins for views that match a particular name. By default, the views a plugin supplies should be stored in `grails-app/views`, just like applications.
+The view resolution will look through all of the application's configured plugins for views that match a particular name. By default, the views a plugin supplies should be stored in `app/views`, just like applications.
 
 == Basic Libraries
 
@@ -18,10 +18,10 @@ Below is an example Gradle build that adds a `compileViews` task for templates l
 ----
 buildscript {
     repositories {
-        maven { url "https://repo.grails.org/grails/core" }
+        mavenCentral()
     }
     dependencies {
-        classpath "org.grails.plugins:views-gradle:{version}"
+        classpath "org.graceframework.plugins:views-gradle:{version}"
     }
 }
 
@@ -30,21 +30,20 @@ import grails.views.gradle.json.*
 apply plugin:"java"
 
 repositories {
-    maven { url "https://repo.grails.org/grails/core" }
+    mavenCentral()
 }
 
 dependencies {
-    compile "org.grails.plugins:views-json:{version}"
-    compileOnly "org.grails:grails-plugin-rest:3.1.7"
-    compileOnly "javax.servlet:javax.servlet-api:4.0.1"
+    implementation "org.graceframework.plugins:views-json:{version}"
 }
 
-task( compileViews, type:JsonViewCompilerTask ) {
+task(compileViews, type: JsonViewCompilerTask) {
     source = project.file('src/main/gson')
     destinationDir = project.file('build/classes/main')
     packageName = ""
     classpath = configurations.compileClasspath + configurations.runtimeClasspath
 }
+
 classes.dependsOn compileViews
 ----
 
@@ -52,7 +51,7 @@ Once this is in place any applications that includes this library will have acce
 
 For example if you want to render all instances of type `foo.bar.Birthday` create a template called `src/main/gson/foo/bar/_birthday.gson` then compile the template and place the JAR on the classpath of your application.
 
-NOTE: See the https://github.com/grails/grails-views/tree/master/json-templates/src/templates/grails/mongodb/geo[GeoJSON templates] for MongoDB for example of how it provides global templates for Mongo specific classes.
+NOTE: See the link:{github}/tree/6.3.x/views-json-templates/src/templates/grails/mongodb/geo[GeoJSON templates] for MongoDB for example of how it provides global templates for Mongo specific classes.
 
 == Customizing the Compile Task
 
@@ -61,7 +60,7 @@ Unless otherwise configured, the project name of the plugin (the gradle `project
 
 In Gradle `project.name` is generally calculated from the current directory. That means that if there is mismatch between the current directory and your plugin name view resolution from a plugin could fail.
 
-For example consider a plugin named `FooBarGrailsPlugin`, in this case Grails will search for views that match the plugin name `foo-bar`. However, if the directory where the plugin is located is called `fooBar` instead of `foo-bar` then view resolution will fail and the view will not be found when the plugin is installed into an application.
+For example consider a plugin named `FooBarGrailsPlugin`, in this case Grace will search for views that match the plugin name `foo-bar`. However, if the directory where the plugin is located is called `fooBar` instead of `foo-bar` then view resolution will fail and the view will not be found when the plugin is installed into an application.
 
 To resolve this issue you can customize the `compileGsonViews` task in the plugin's `build.gradle`
 

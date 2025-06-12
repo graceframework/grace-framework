@@ -20,7 +20,7 @@ System.out.println "Model is $binding.variables"
 json g.render(book)
 ----
 
-NOTE: If you using the `log` variable then you will need to enabling logging for the `grails.views` package in `grails-app/conf/logback.groovy`
+NOTE: If you using the `log` variable then you will need to enabling logging for the `grails.views` package in `app/conf/logback.groovy`
 
 
 == Connecting a Debugger
