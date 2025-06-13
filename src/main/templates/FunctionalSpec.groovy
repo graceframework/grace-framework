@@ -6,7 +6,7 @@ import grails.testing.mixin.integration.Integration
 import geb.spock.*
 
 /**
- * See http://www.gebish.org/manual/current/ for more instructions
+ * See https://groovy.apache.org/geb/manual/current/ for more instructions
  */
 @Integration
 @Rollback
@@ -18,11 +18,11 @@ class ${className}Spec extends GebSpec {
     def cleanup() {
     }
 
-    void "test something"() {
-        when:"The home page is visited"
+    void "test the homepage title"() {
+        when: "The homepage is visited"
             go '/'
 
-        then:"The title is correct"
+        then: "The title is correct"
         	title == "Welcome to Grace"
     }
 }
