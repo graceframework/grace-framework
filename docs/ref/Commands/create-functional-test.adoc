@@ -1,0 +1,46 @@
+== create-functional-test
+
+=== Description
+
+Creates a Geb Functional Test.
+
+=== Arguments
+
+[cols="1,2,1"]
+|===
+|**Name**
+|**Description**
+|**Required**
+
+|Test Name
+|The name of the Functional Test
+|true
+|===
+
+=== Flags
+
+[cols="1,2,1"]
+|===
+|**Name**
+|**Description**
+|**Type**
+
+|force
+|Whether to overwrite existing files
+|boolean, default: false
+|===
+
+=== Usage
+
+[source,console]
+----
+$ grace create-functional-test [Test Name]
+----
+
+=== Examples
+
+[source,console]
+----
+$ grace create-functional-test Post
+| Created src/integration-test/groovy/com/example/PostSpec.groovy
+----
