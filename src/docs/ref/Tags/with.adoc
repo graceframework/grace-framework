@@ -24,8 +24,7 @@ Places a bean in scope so that the bean attribute can be omitted on contained ta
 *prefix*,String,A string (including the trailing period) that should be appended before the input name such as `name="${prefix}propertyName"`.  The label is also modified.
 |===
 
-
-=== Extra attributes (Since version 2.1.4)
+=== Extra attributes
 
 You can pass any number of extra attributes to the *with* tag that will be propagated to the inner fields and displays.
 

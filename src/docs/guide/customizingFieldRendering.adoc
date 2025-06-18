@@ -43,7 +43,6 @@ grails:
 
 === Locating Field Templates by Convention
 
-
 The template for a field is chosen by a convention using the names of the controller, action, bean class, bean property, theme, etc. All the tags will look for templates in the following directories in decreasing order of preference:
 
 * `app/views/*controllerNamespace*/*controllerName*/*actionName*/*propertyName*/_themes/*themeName*/`
@@ -130,7 +129,6 @@ For most properties the out-of-the-box defaults should provide a good starting p
 
 === Locating Templates Conventionally Example
 
-
 Imagine an object of class `Employee` that extends the class `Person` and has a `String name` property.
 
 You can override the template `f:field` uses with any of these:
@@ -193,7 +191,6 @@ grails:
             disableLookupCache: true
 ----
 
-
 === Default Behaviour - Using Grace Widget Tags
 
 If no template override is found the plugin will use the standard grails input tags (e.g. `g:select`, `g:checkbox`, `g:field`) for rendering input controls.
@@ -203,7 +200,6 @@ Using `f:field` you can pass extra arguments (e.g. `optionKey`, `optionValue`) t
 ----
 <f:field bean="person" property="gender" widget-optionValue="name"/>
 ----
-
 
 === Template parameters
 
@@ -238,7 +234,7 @@ The `f:field` and `f:widget` tags will pass the following parameters to your tem
 |The constraints for the property if the bean is a domain or command object.
 
 |*persistentProperty*
-|link:http://grails.github.io/scaffolding/latest/api/org/grails/scaffolding/model/property/DomainProperty.html[DomainProperty]
+|link:{api}/org/grails/scaffolding/model/property/DomainProperty.html[DomainProperty]
 |The persistent property object if the bean is a domain object.
 
 |*errors*

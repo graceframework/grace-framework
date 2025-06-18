@@ -82,17 +82,13 @@ By default `f:display` simply renders the property value but if you supply a `\_
 <dd>${value}</dd>
 ----
 
-
-=== Extra attributes (Since version 2.1.4)
-
+=== Extra attributes
 
 You can pass any number of extra attributes to the `f:with` and `f:all` tags that will be propagated to the inner fields and displays.
 See their individual tags sections for more information.
 
 
 === Breaking changes
-
-
 
 === Templates
 
@@ -112,7 +108,6 @@ grails.plugin.fields.displayWrapper = "display"
 grails.plugin.fields.widget = "input"
 ----
 
-
 === Widget attributes
 
 To pass additional attributes to widgets, prefix them with 'widget-'.
@@ -129,12 +124,10 @@ To use the old prefix (for backwards compatibility), configure the following in 
 grails.plugin.fields.widgetPrefix = "input-"
 ----
 
-
 === Changes in tags
 
 * The `f:input` tag was deprecated because the name was confusing. Use the new `f:widget` tag instead.
 * The `f:displayWidget` tag was added. It outputs the widget for display purposes, without the wrapper (similar to the `widget` tag).
-
 
 === Localized numbers
 
