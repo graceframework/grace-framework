@@ -1,4 +1,7 @@
 introduction: Introduction
+releases:
+  title: Release History
+  6.x: What's new in 6.x
 usage: Usage
 customizingFieldRendering: Customizing Field Rendering
 embeddedProperties: Embedded Properties
