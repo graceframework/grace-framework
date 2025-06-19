@@ -21,9 +21,7 @@ You have a few options with `dbm-gorm-diff`:
 
 Regardless of which approach you use, be sure to inspect generated changes and adjust as necessary.
 
-
 === Autorun on start
-
 
 Since Liquibase maintains a record of changes that have been applied, you can avoid manually updating the database by taking advantage of the plugin's auto-run feature. By default this is disabled, but you can enable it by adding
 
@@ -67,17 +65,17 @@ import liquibase.database.Database
 
 class MigrationCallbacks {
 
-   void beforeStartMigration(Database Database) {
-      ...
-   }
+    void beforeStartMigration(Database Database) {
+        ...
+    }
 
-   void onStartMigration(Database database, Liquibase liquibase, String changelogName) {
-      ...
-   }
+    void onStartMigration(Database database, Liquibase liquibase, String changelogName) {
+        ...
+    }
 
-   void afterMigrations(Database Database) {
-      ...
-   }
+    void afterMigrations(Database Database) {
+        ...
+    }
 }
 ----
 
@@ -88,6 +86,6 @@ Register it in resources.groovy:
 import com.mycompany.myapp.MigrationCallbacks
 
 beans = {
-   migrationCallbacks(MigrationCallbacks)
+    migrationCallbacks(MigrationCallbacks)
 }
 ----

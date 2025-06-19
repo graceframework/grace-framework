@@ -9,9 +9,9 @@ Writes the SQL to STDOUT or a file for the specified number of previous changese
 Generates SQL for the specifed number of changeSets from the changelog. Executes against the database configured in `application.[yml|groovy]` for the current environment (defaults to `dev`).
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-previous-changeset-sql <<number>> <<filename>> --skip=<<skip>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>>
+$ grace <<environment>> dbm-previous-changeset-sql <<number>> <<filename>> --skip=<<skip>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>>
 ----
 
 Required arguments:
@@ -26,7 +26,7 @@ Optional arguments:
 * `defaultSchema` - The default schema name to use
 
 NOTE: Note that the `contexts` and `defaultSchema` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-update-count-sql "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>"
+$ grace dbm-update-count-sql "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>"
 ----

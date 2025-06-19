@@ -7,9 +7,9 @@ Outputs count or list of unrun change sets to STDOUT or a file.
 === Description
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-status <<filename>> --verbose=<<verbose>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
+$ grace <<environment>> dbm-status <<filename>> --verbose=<<verbose>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
 ----
 
 Required arguments: __none__.
@@ -23,14 +23,15 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource.  Not needed for the default dataSource.
 
 NOTE: Note that the `verbose`, `contexts`, `defaultSchema` and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+
+[source,console]
 ----
-grace dbm-status "--verbose=<<verbose>>" "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
+$ grace dbm-status "--verbose=<<verbose>>" "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

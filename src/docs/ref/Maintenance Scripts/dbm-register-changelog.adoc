@@ -7,9 +7,9 @@ Adds an include for the specified changelog to the main changelog.
 === Description
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-register-changelog <<filename>> --dataSource=<<dataSource>>
+$ grace <<environment>> dbm-register-changelog <<filename>> --dataSource=<<dataSource>>
 ----
 
 Required arguments:
@@ -21,14 +21,14 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource using `changelog-<<dataSource>>.groovy` if a `filename` is not given. Not needed for the default dataSource.
 
 NOTE: Note that the `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-diff  "--dataSource=<<dataSource>>"
+$ grace dbm-diff  "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`
 the suffix of `reports` will be used as the parameter value.
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

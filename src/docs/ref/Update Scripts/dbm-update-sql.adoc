@@ -11,9 +11,9 @@ Generates SQL for all un-run changeSets from the changelog. Executes against the
 This is useful for inspecting the generated SQL before running an update, or to generate SQL which can be tuned before running manually.
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-update-sql <<filename>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
+$ grace <<environment>> dbm-update-sql <<filename>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
 ----
 
 Required arguments: _none_ .
@@ -26,14 +26,15 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource.  Not needed for the default dataSource.
 
 NOTE: Note that the `contexts`, `defaultSchema`, and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+
+[source,console]
 ----
-grace dbm-update-sql "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" --dataSource=<<dataSource>>
+$ grace dbm-update-sql "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" --dataSource=<<dataSource>>
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

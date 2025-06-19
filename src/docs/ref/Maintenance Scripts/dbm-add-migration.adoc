@@ -10,9 +10,9 @@ This script provides a template in which to place your migration behaviour code,
 Grace code or raw SQL.
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-add-migration <<migrationName>>
+$ grace <<environment>> dbm-add-migration <<migrationName>>
 ----
 
 Required arguments:

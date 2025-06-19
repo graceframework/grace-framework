@@ -13,9 +13,9 @@ If a filename parameter is specified then the output will be written to the name
 File are written to the migrations folder, so specify the filename relative to the migrations folder (`app/migrations` by default).
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-diff <<otherEnv>> <<filename>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>> --add
+$ grace <<environment>> dbm-diff <<otherEnv>> <<filename>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>> --add
 ----
 
 Required arguments:
@@ -30,14 +30,14 @@ Optional arguments:
 * `dataSource` - If provided will run the script for the specified dataSource. Not needed for the default dataSource.
 
 NOTE: Note that the `defaultSchema` and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-diff "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
+$ grace dbm-diff "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

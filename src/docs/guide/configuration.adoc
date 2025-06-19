@@ -42,6 +42,7 @@ The configuration for this data source would be:
 grails.plugin.databasemigration.reports.updateOnStart = true
 grails.plugin.databasemigration.reports.changelogFileName = changelog-second.groovy
 ----
+
 The configuration for all data sources with same db schema would be:
 [source,groovy]
 ----

@@ -9,9 +9,9 @@ Generates Javadoc-like documentation based on current database and change log.
 Writes to the folder specified by the `destination` parameter, or to the `grails.plugin.databasemigration.dbDocLocation` configuration option (defaults to `target/dbdoc`).
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-db-doc <<destination>> --contexts=<<contexts>> --dataSource=<<dataSource>>
+$ grace <<environment>> dbm-db-doc <<destination>> --contexts=<<contexts>> --dataSource=<<dataSource>>
 ----
 
 Required arguments: _none_ .
@@ -23,14 +23,14 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource.  Not needed for the default dataSource.
 
 NOTE: Note that the `contexts` and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-db-doc "--contexts=<<contexts>>" "--dataSource=<<dataSource>>"
+$ grace dbm-db-doc "--contexts=<<contexts>>" "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

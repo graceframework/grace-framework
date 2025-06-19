@@ -9,9 +9,9 @@ Rolls back the database to the state it was in when the tag was applied.
 Requires that the named tag exists. You can create tags with the <<ref-maintenance-scripts-dbm-tag,dbm-tag>> script.
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-rollback <<tagName>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
+$ grace <<environment>> dbm-rollback <<tagName>> --contexts=<<contexts>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>>
 ----
 
 Required arguments:
@@ -25,14 +25,15 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource.  Not needed for the default dataSource.
 
 NOTE: Note that the `contexts`, `defaultSchema`, and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+
+[source,console]
 ----
-grace dbm-rollback "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
+$ grace dbm-rollback "--contexts=<<contexts>>" "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

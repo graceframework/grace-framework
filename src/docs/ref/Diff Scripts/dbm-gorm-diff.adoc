@@ -17,9 +17,9 @@ Doesn't modify any existing files - you need to manually merge the output into t
 You can configure database objects to be ignored by this script - either in the GORM classes or in the target database. For example you may want domain objects that are transient, or you may have externally-managed tables, keys, etc. that you want left alone by the diff script. The configuration name for these ignored objects is `grails.plugin.databasemigration.ignoredObjects`, whose value is a list of strings.
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-gorm-diff <<filename>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>> --add
+$ grace <<environment>> dbm-gorm-diff <<filename>> --defaultSchema=<<defaultSchema>> --dataSource=<<dataSource>> --add
 ----
 
 Required arguments: _none_ .
@@ -32,14 +32,14 @@ Optional arguments:
 * `dataSource` - if provided will run the script for the specified dataSource.  Not needed for the default dataSource.
 
 NOTE: Note that the `defaultSchema` and `dataSource` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-gorm-diff "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
+$ grace dbm-gorm-diff "--defaultSchema=<<defaultSchema>>" "--dataSource=<<dataSource>>"
 ----
 
 NOTE: For the `dataSource` parameter, if the data source is configured as `reports` underneath the `dataSources` key in `application.[yml|groovy]`, the value should be `reports`.
 
-[source,groovy]
+[source,console]
 ----
 --dataSource=reports
 ----

@@ -7,9 +7,9 @@ Lists the tags in the current database.
 === Description
 
 Usage:
-[source,java]
+[source,console]
 ----
-grace <<environment>> dbm-list-tags --defaultSchema=<<defaultSchema>>
+$ grace <<environment>> dbm-list-tags --defaultSchema=<<defaultSchema>>
 ----
 
 Required arguments:
@@ -21,7 +21,7 @@ Optional arguments:
 * `defaultSchema` - The default schema name to use
 
 NOTE: Note that the `defaultSchema` parameter name and value must be quoted if executed in Windows, e.g.
-[source,groovy]
+[source,console]
 ----
-grace dbm-tag "--defaultSchema=<<defaultSchema>>"
+$ grace dbm-tag "--defaultSchema=<<defaultSchema>>"
 ----
