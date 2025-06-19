@@ -2,7 +2,7 @@
 asset-pipeline = "6.3.0"
 cache = "6.3.0"
 database-migration = "6.3.0-RC1"
-fields = "6.3.0-RC1"
+fields = "6.3.0"
 geb = "6.3.0-RC1"
 hibernate = "2023.3.0-SNAPSHOT"
 mongodb = "2023.3.0-SNAPSHOT"
