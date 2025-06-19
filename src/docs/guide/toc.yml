@@ -1,4 +1,7 @@
 introduction: Introduction
+releases:
+  title: Release History
+  6.x: What's new in 6.x
 gettingStarted: Getting Started
 configuration: Configuration
 generalUsage: General Usage
