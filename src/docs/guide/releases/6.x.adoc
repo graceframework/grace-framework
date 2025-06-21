@@ -9,6 +9,7 @@ link:{github}/releases/tag/v6.3.0[release notes]
 
 🛠 Improvements
 
+* Update README - Add documentation link
 * Update README - Add document badge - Update badge versions - Remove Spring Boot badge - Simplify the description
 * Remove jansi dependency for documentation
 * Update github workflows - Upgrade to setup-gradle@v4
@@ -20,6 +21,7 @@ link:{github}/releases/tag/v6.3.0[release notes]
 * Upgrade to Grace 2023.3.0-RC2 link:{github}/issues/63[#63]
 * Upgrade to Grace 2023.3.0-RC1 link:{github}/issues/58[#58]
 * Upgrade to Grace Data 2023.3.0 link:{github}/issues/59[#59]
+* Upgrade to Grace Data Hibernate 2023.3.0 link:{github}/issues/60[#60]
 * Upgrade to Gradle 8.14 link:{github}/issues/62[#62]
 * Upgrade to Java Parser 3.26.4 link:{github}/issues/65[#65]
 
