@@ -1,3 +1,7 @@
 introduction: Introduction
+releases:
+  title: Release History
+  6.x: What's new in 6.x
 installation: Installation
 usage: Usage
+support: Support

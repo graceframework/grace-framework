@@ -1,0 +1,263 @@
+=== 6.3.0
+
+link:{github}/releases/tag/v6.3.0[release notes]
+
+⭐️ New Features
+
+* Setup github docs workflows 
+* Use 'grace-doc' Gradle plugin to generate documentation link:{github}/issues/31[#31]
+
+🛠 Improvements
+
+* Add document to create-functional-test command link:{github}/issues/34[#34]
+* Add new flag `force` to create-functional-test command link:{github}/issues/33[#33]
+* Update FunctionalSpec - Use the url of Apache Geb manual - Update the default test link:{github}/issues/32[#32]
+* Update LICENSE 
+* Update github workflows - Upgrade to setup-gradle@v4
+
+🚀 Dependency Upgrades
+
+* Update README Update badge versions of Grace, Groovy and Spring Boot
+* Upgrade to Grace 2023.3.0-RC1 link:{github}/issues/28[#28]
+* Upgrade to Grace 2023.3.0-RC2 link:{github}/issues/30[#30]
+* Upgrade to Gradle 8.14 link:{github}/issues/29[#29]
+
+=== 6.3.0-RC1
+
+link:{github}/releases/tag/v6.3.0-RC1[release notes]
+
+🛠 Improvements
+
+* Remove the unnecessary workaround for removing the generated extra dependencyManagement of POM link:{github}/issues/27[#27]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M2 link:{github}/issues/22[#22]
+* Upgrade to Gradle 8.13 link:{github}/issues/24[#24]
+* Upgrade to Groovy 4.0.26 link:{github}/issues/23[#23]
+* Upgrade to Jansi 2.4.1 link:{github}/issues/25[#25]
+* Upgrade to Java Parser 3.26.4 link:{github}/issues/26[#26]
+
+⚙️ Tasks
+
+* Release v6.3.0-RC1
+
+=== 6.3.0-M1
+
+link:{github}/releases/tag/v6.3.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README Update badge versions of Grace and Spring Boot
+* Update github workflows Switch to 6.3.x branch
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M1 link:{github}/issues/21[#21]
+
+⚙️ Tasks
+
+* Release v6.3.0-M1
+* Set version to 6.3.0-SNAPSHOT
+
+=== 6.2.0
+
+link:{github}/releases/tag/v6.2.0[release notes]
+
+🛠 Improvements
+
+* Update README 
+* Add GitHub issue template link:{github}/issues/19[#19]
+* Update build scripts to avoid deprecation warnings with Gradle 8 link:{github}/issues/18[#18]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-RC1 link:{github}/issues/17[#17]
+
+⚙️ Tasks
+
+* Release v6.2.0
+
+=== 6.2.0-RC1
+
+link:{github}/releases/tag/v6.2.0-RC1[release notes]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M3 link:{github}/issues/15[#15]
+* Upgrade to Grace 2023.2.0-M2 link:{github}/issues/14[#14]
+* Upgrade to Gradle 8.12 link:{github}/issues/16[#16]
+
+⚙️ Tasks
+
+* Release v6.2.0-RC1
+
+=== 6.2.0-M1
+
+link:{github}/releases/tag/v6.2.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README Update badge of Grace to current version
+* Update github workflows Switch to 6.2.x branch
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M1 link:{github}/issues/13[#13]
+
+⚙️ Tasks
+
+* Release v6.2.0-M1
+* Set version to 6.2.0-SNAPSHOT
+
+=== 6.1.0
+
+link:{github}/releases/tag/v6.1.0[release notes]
+
+🛠 Improvements
+
+* Update Badges
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-RC1 link:{github}/issues/10[#10]
+* Upgrade to Groovy 4.0.24 link:{github}/issues/11[#11]
+
+⚙️ Tasks
+
+* Release v6.1.0
+
+=== 6.1.0-RC1
+
+link:{github}/releases/tag/v6.1.0-RC1[release notes]
+
+🛠 Improvements
+
+* Use Java 17 toolchain link:{github}/issues/9[#9]
+* Use `classesDirectory` property instead of deprecated `outputDir` link:{github}/issues/8[#8]
+* Using repository gradlePluginPortal() link:{github}/issues/6[#6]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M3 link:{github}/issues/5[#5]
+* Upgrade to Gradle Nexus Publish Plugin 2.0.0 link:{github}/issues/7[#7]
+
+⚙️ Tasks
+
+* Release v6.1.0-RC1
+
+=== 6.1.0-M3
+
+link:{github}/releases/tag/v6.1.0-M3[release notes]
+
+🛠 Improvements
+
+* Remove dependencyManagement node of the generated POM file link:{github}/issues/4[#4]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M2 link:{github}/issues/3[#3]
+
+⚙️ Tasks
+
+* Release v6.1.0-M3
+
+=== 6.1.0-M2
+
+link:{github}/releases/tag/v6.1.0-M2[release notes]
+
+🛠 Improvements
+
+* Make dependency `grace-core` compileOnly link:{github}/issues/2[#2]
+* Update README 
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M1 link:{github}/issues/1[#1]
+
+⚙️ Tasks
+
+* Release v6.1.0-M2 
+
+=== 6.1.0-M1
+
+link:{github}/releases/tag/v6.1.0-M1[release notes]
+
+🐞 Bug Fixes
+
+* Remove `@PluginSource` on `GebGrailsPlugin` 
+
+🛠 Improvements
+
+* Update README
+* Update README
+* Update README
+
+🚀 Dependency Upgrades
+
+* Upgrade to Groovy 4.0.23 
+* Upgrade to Grace 2023.0.2 
+
+⚙️ Tasks
+
+* Release v6.1.0-M1 
+* Update github workflows
+* Set version to 6.1.0-SNAPSHOT
+
+=== 6.0.1
+
+link:{github}/releases/tag/v6.0.1[release notes]
+
+* Release v6.0.1
+* Upgrade to Grace 2023.0.0
+* Set version to 6.0.1-SNAPSHOT
+
+=== 6.0.0
+
+link:{github}/releases/tag/v6.0.0[release notes]
+
+* Release v6.0.0
+* Upgrade to Groovy 4.0.22
+* Upgrade to Grace 2023.0.0-RC2
+
+=== 6.0.0-RC1
+
+link:{github}/releases/tag/v6.0.0-RC1[release notes]
+
+* Release v6.0.0-RC1
+* Upgrade to Gradle Wrapper 7.6.4
+* Upgrade to Groovy 4.0.21
+* Upgrade to Grace 2023.0.0-M7
+
+=== 6.0.0-M3
+
+link:{github}/releases/tag/v6.0.0-M3[release notes]
+
+* Release v6.0.0-M3
+* Set `archiveClassifier` with 'plugin'
+* Update plugin: set grailsVersion
+* Update build.gradle
+* Upgrade to Grace 2023.0.0-M6
+
+=== 6.0.0-M2
+
+link:{github}/releases/tag/v6.0.0-M2[release notes]
+
+* Release v6.0.0-M2
+* Update README
+* Upgrade to Grace 2023.0.0-M5
+* Grace: update github workflows
+* Back to 6.0.0-SNAPSHOT
+
+=== 6.0.0-M1
+
+link:{github}/releases/tag/v6.0.0-M1[release notes]
+
+* Release v6.0.0-M1
+* Grace: update github workflows
+* Grace: migrate to app dir
+* Grace: update plugin info
+* Grace: Update scripts and templates
+* Upgrade to Grace 2023.0.0-M2
+* Grace: update gradle build scripts
+* Bump version: 6.0.0-SNAPSHOT
