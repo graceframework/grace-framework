@@ -135,9 +135,6 @@ task zipDist(type: Zip, dependsOn: [install, publishToDist, grailsCreateStartScr
             include 'bin/grace', 'bin/grace.bat', 'lib/', 'media/', 'samples/', 'scripts/', 'LICENSE.txt', 'INSTALL.txt'
             exclude 'ant/bin', 'src/grace', 'src/war'
         }
-        from(docs.destinationDir) {
-            into "doc"
-        }
         from("conf") {
             into "conf"
         }

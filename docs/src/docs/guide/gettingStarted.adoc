@@ -1,0 +1,71 @@
+Next, let's get started on creating your first project.
+
+[source,console,subs="attributes"]
+----
+$ sdk use grace {version}
+$ grace create-app com.examples.bookstore
+----
+
+you will see the new project has been created,
+
+[source,console,subs="attributes"]
+----
+| Creating a new application
+
+     Name:          bookstore
+     Package:       com.example
+     Profile:       web
+     Features:      asset-pipeline, async, bootstrap, cache, database-migration, events, fields, geb, gsp, hibernate, jquery, scaffolding
+     Database:      h2
+     Project root:  /Users/grace/bookstore
+
+| Application created by Grace {version}.
+----
+
+[source,console]
+----
+.
+├── app
+│   ├── assets
+│   ├── conf
+│   ├── controllers
+│   ├── domain
+│   ├── i18n
+│   ├── init
+│   ├── services
+│   ├── taglib
+│   └── views
+├── buildSrc
+│   └── build.gradle
+├── db
+│   └── migrations
+├── gradle
+│   └── wrapper
+├── src
+│   ├── integration-test
+│   ├── main
+│   └── test
+├── HELP.md
+├── README.md
+├── build.gradle
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+----
+
+then we create a domain class `Book`, which has a `name` property,
+We use `generate` command to generate all the controller, services, gsp views,
+
+[source,console,subs="attributes"]
+----
+$ cd blog
+$ grace generate scaffold Book name:string
+----
+
+Now, let's running the app,
+
+[source,console,subs="attributes"]
+----
+$ grace run-app
+----
