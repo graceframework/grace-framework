@@ -4,51 +4,59 @@ link:{github}/releases/tag/v2023.3.0[release notes]
 
 ⭐️ New Features
 
-* Add documentation
-* Config generate docs step to the release workflow #1080
-* Setup docs workflow #1079
+* Support custom Grace banner link:{github}/issues/1083[#1083]
+* Add documentation: user guide and api docs link:{github}/issues/1081[#1081]
+* Config generate docs step to the release workflow link:{github}/issues/1080[#1080]
+* Setup docs workflow link:{github}/issues/1079[#1079]
 
 🛠 Improvements
 
-* Enhance IntegrationTestGradlePlugin - Deprecation warning of the `IdeaModule.testSourceDirs` - Migrate to `tasks.register()` #1074
-* Only show internal commands and features by using flag `only`, removing flag `all` #1073 #1042
-* Improve GradleUtil - Use `System.in` as the standardInput of Gradle's BuildLauncher - It will make `shell` command work normally #1072
+* Change to `graceVersion` of the app info link:{github}/issues/1085[#1085]
+* Exclude obsolete `gsp` plugin from the plugin list link:{github}/issues/1084[#1084]
+* Enhance IntegrationTestGradlePlugin - Deprecation warning of the `IdeaModule.testSourceDirs` - Migrate to `tasks.register()` link:{github}/issues/1074[#1074]
+* Only show internal commands and features by using flag `only`, removing flag `all` link:{github}/issues/1073[#1073] link:{github}/issues/1042[#1042]
+* Improve GradleUtil - Use `System.in` as the standardInput of Gradle's BuildLauncher - It will make `shell` command work normally link:{github}/issues/1072[#1072]
+
+🐞 Bug Fixes
+
+* Fixes groovydoc: error parsing Java source file: `org/grails/plugins/datasource/DataSourcePluginConfiguration.java` link:{github}/issues/1082[#1082]
 
 🚀 Dependency Upgrades
 
-* Upgrade to Grace Asset Pipeline Plugin 6.3.0 #1022
-* Upgrade to Grace Async and Events 6.3.0 #1023
-* Upgrade to Grace Cache Plugin 6.3.0 #1024
-* Upgrade to Grace Data 2023.3.0 #1025
-* Upgrade to Grace Data Hibernate 2023.3.0 #1026
-* Upgrade to Grace Data MongoDB 2023.3.0 #1027
-* Upgrade to Grace Database Migration Plugin 6.3.0 #1028
-* Upgrade to Grace Fields Plugin 6.3.0 #1029
-* Upgrade to Grace Geb Plugin 6.3.0 #1030
-* Upgrade to Grace Profile: Base 2023.3.0 #1033
-* Upgrade to Grace Profile: Plugin 2023.3.0 #1034
-* Upgrade to Grace Profile: Profile 2023.3.0 #1035
-* Upgrade to Grace Profile: Rest API 2023.3.0 #1036
-* Upgrade to Grace Profile: Starter 2023.3.0 #1037
-* Upgrade to Grace Profile: Web 2023.3.0 #1038
-* Upgrade to Grace Profile: Web Plugin 2023.3.0 #1039
-* Upgrade to Grace Scaffolding 6.3.0 #1031
-* Upgrade to Grace Views 6.3.0 #1032
-* Upgrade to Gradle 8.14.2 #1068
-* Upgrade to Gradle Tooling API 8.14.2 #1069
-* Upgrade to Groovy 4.0.27 #1067
-* Upgrade to Maven 3.9.10 #1070
-* Upgrade to Maven Resolver 1.9.23 #1071
-* Upgrade to Spring Boot 3.3.13 #1076
-* Upgrade to Spring Boot 3.3.12 #1052
-* Upgrade to Spring Framework 6.1.21 #1077
-* Upgrade to Spring Framework 6.1.20 #1053
-* Upgrade to Tomcat 10.1.42 #1078
-* Upgrade to Tomcat 10.1.41 #1066
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0 link:{github}/issues/1022[#1022]
+* Upgrade to Grace Async and Events 6.3.0 link:{github}/issues/1023[#1023]
+* Upgrade to Grace Cache Plugin 6.3.0 link:{github}/issues/1024[#1024]
+* Upgrade to Grace Data 2023.3.0 link:{github}/issues/1025[#1025]
+* Upgrade to Grace Data Hibernate 2023.3.0 link:{github}/issues/1026[#1026]
+* Upgrade to Grace Data MongoDB 2023.3.0 link:{github}/issues/1027[#1027]
+* Upgrade to Grace Database Migration Plugin 6.3.0 link:{github}/issues/1028[#1028]
+* Upgrade to Grace Fields Plugin 6.3.0 link:{github}/issues/1029[#1029]
+* Upgrade to Grace Geb Plugin 6.3.0 link:{github}/issues/1030[#1030]
+* Upgrade to Grace Profile: Base 2023.3.0 link:{github}/issues/1033[#1033]
+* Upgrade to Grace Profile: Base 2023.3.1 link:{github}/issues/1086[#1086]
+* Upgrade to Grace Profile: Plugin 2023.3.0 link:{github}/issues/1034[#1034]
+* Upgrade to Grace Profile: Profile 2023.3.0 link:{github}/issues/1035[#1035]
+* Upgrade to Grace Profile: Rest API 2023.3.0 link:{github}/issues/1036[#1036]
+* Upgrade to Grace Profile: Starter 2023.3.0 link:{github}/issues/1037[#1037]
+* Upgrade to Grace Profile: Web 2023.3.0 link:{github}/issues/1038[#1038]
+* Upgrade to Grace Profile: Web Plugin 2023.3.0 link:{github}/issues/1039[#1039]
+* Upgrade to Grace Scaffolding 6.3.0 link:{github}/issues/1031[#1031]
+* Upgrade to Grace Views 6.3.0 link:{github}/issues/1032[#1032]
+* Upgrade to Gradle 8.14.2 link:{github}/issues/1068[#1068]
+* Upgrade to Gradle Tooling API 8.14.2 link:{github}/issues/1069[#1069]
+* Upgrade to Groovy 4.0.27 link:{github}/issues/1067[#1067]
+* Upgrade to Maven 3.9.10 link:{github}/issues/1070[#1070]
+* Upgrade to Maven Resolver 1.9.23 link:{github}/issues/1071[#1071]
+* Upgrade to Spring Boot 3.3.13 link:{github}/issues/1076[#1076]
+* Upgrade to Spring Boot 3.3.12 link:{github}/issues/1052[#1052]
+* Upgrade to Spring Framework 6.1.21 link:{github}/issues/1077[#1077]
+* Upgrade to Spring Framework 6.1.20 link:{github}/issues/1053[#1053]
+* Upgrade to Tomcat 10.1.42 link:{github}/issues/1078[#1078]
+* Upgrade to Tomcat 10.1.41 link:{github}/issues/1066[#1066]
 
 ⚙️ Tasks
 
-* Remove deprecated gradle/actions/wrapper-validation in the release workflow #1075
+* Remove deprecated gradle/actions/wrapper-validation in the release workflow link:{github}/issues/1075[#1075]
 * Update github workflows - Upgrade to setup-gradle@v4 - Upgrade to latest ubuntu
 * Release v2023.3.0
 
@@ -70,6 +78,7 @@ link:{github}/releases/tag/v2023.3.0[release notes]
 📜Profiles
 
 * https://github.com/grace-profiles/base/releases/tag/v2023.3.0[Base v2023.3.0]
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.1[Base v2023.3.1]
 * https://github.com/grace-profiles/plugin/releases/tag/v2023.3.0[Plugin v2023.3.0]
 * https://github.com/grace-profiles/profile/releases/tag/v2023.3.0[Profile v2023.3.0]
 * https://github.com/grace-profiles/rest-api/releases/tag/v2023.3.0[REST API v2023.3.0]
