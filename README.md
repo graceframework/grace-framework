@@ -1,15 +1,17 @@
+# <img src="media/logos/grace_logo_twitter_profile.png" width="80" height="80"> Grace Framework
+
 [![Main branch build status](https://github.com/graceframework/grace-framework/workflows/Grace%20CI/badge.svg?style=flat)](https://github.com/graceframework/grace-framework/actions?query=workflow%3A%Grace+CI%22)
 [![Apache 2.0 license](https://img.shields.io/badge/License-APACHE%202.0-green.svg?logo=APACHE&style=flat)](https://opensource.org/licenses/Apache-2.0)
 [![Latest version on Maven Central](https://img.shields.io/maven-central/v/org.graceframework/grace-core.svg?label=Maven%20Central&logo=apache-maven&style=flat)](https://search.maven.org/search?q=g:org.graceframework)
+[![Grace Document](https://img.shields.io/badge/Grace_Document-latest-blue?style=flat&logo=asciidoctor&logoColor=E40046&labelColor=ffffff&color=f49b06)](https://graceframework.org/grace-framework/latest/)
 [![Grace on Gradle](https://img.shields.io/badge/Gradle_Plugin_Portal--blue?style=social&logo=gradle
 )](https://plugins.gradle.org/u/grace)
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.26-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.11-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.11)
+[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.27-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.13-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.13)
 
-# Grace Framework
 
 [Grace](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
 
@@ -122,6 +124,10 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 * [Spring Boot Application with GORM](https://github.com/grace-guides/gs-spring-boot-gorm) is a how-to guide that shows you how to use GORM as data persistence layer in your Spring Boot application.
 * [Grace app and Spring Boot Test](https://github.com/grace-guides/gs-spring-boot-test) is a how-to guide that shows you how to use `@SpringBootTest` to test your Grace application.
 * [Build Admin Console with Grace Admin Plugin](https://github.com/grace-guides/gs-admin-console) is a how-to guide that shows you how to use Grace Admin plugin to build flexible, extensible management console in your application.
+
+## Ducumentation
+
+* [2023.3.x](https://graceframework.org/grace-framework/2023.3.x/)
 
 ## License
 
