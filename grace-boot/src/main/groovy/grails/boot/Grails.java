@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import grails.util.Environment;
  */
 public class Grails extends SpringApplication {
 
-    private static final String GRAILS_BANNER = "grails-banner.txt";
+    private static final String GRAILS_BANNER = "grace-banner.txt";
 
     /**
      * Create a new {@link Grails} instance. The application context will load

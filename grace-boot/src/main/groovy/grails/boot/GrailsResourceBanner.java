@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ public class GrailsResourceBanner extends ResourceBanner {
 
     private PropertyResolver getGrailsVersionResolver(Class<?> sourceClass) {
         MutablePropertySources propertySources = new MutablePropertySources();
-        propertySources.addLast(new MapPropertySource("grails-name", getNamesMap(sourceClass)));
-        propertySources.addLast(new MapPropertySource("grails-version", getVersionsMap(sourceClass)));
+        propertySources.addLast(new MapPropertySource("grace-name", getNamesMap(sourceClass)));
+        propertySources.addLast(new MapPropertySource("grace-version", getVersionsMap(sourceClass)));
         return new PropertySourcesPropertyResolver(propertySources);
     }
 
@@ -69,8 +69,8 @@ public class GrailsResourceBanner extends ResourceBanner {
     private Map<String, Object> getVersionsMap(Class<?> sourceClass) {
         Map<String, Object> versions = new HashMap<>();
         String grailsVersion = GrailsUtil.getGrailsVersion();
-        versions.put("grails.version", getVersionString(grailsVersion, false));
-        versions.put("grails.formatted-version", getVersionString(grailsVersion, true));
+        versions.put("grace.version", getVersionString(grailsVersion, false));
+        versions.put("grace.formatted-version", getVersionString(grailsVersion, true));
         return versions;
     }
 
