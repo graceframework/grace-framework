@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationShutdownHookInstance;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -43,6 +43,7 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import grails.boot.config.GrailsAutoConfiguration;
 
@@ -119,9 +120,10 @@ public class GrailsTests {
     @Test
     void bannerModeOnWithGrailsApp() {
         Grails app = new Grails(ExampleConfig.class);
+        app.setDefaultProperties(Collections.singletonMap("spring.main.banner-mode", "console"));
         app.setWebApplicationType(WebApplicationType.NONE);
         this.context = app.run();
-        assertThat(app).hasFieldOrPropertyWithValue("bannerMode", Banner.Mode.CONSOLE);
+        assertThatBannerModeIs(app, Banner.Mode.CONSOLE);
     }
 
     @Test
@@ -193,6 +195,11 @@ public class GrailsTests {
         AtomicReference<E> reference = new AtomicReference<>();
         app.addListeners(new TestEventListener<>(eventType, reference));
         return reference;
+    }
+
+    private void assertThatBannerModeIs(SpringApplication application, Banner.Mode mode) {
+        Object properties = ReflectionTestUtils.getField(application, "properties");
+        assertThat(properties).hasFieldOrPropertyWithValue("bannerMode", mode);
     }
 
     static class TestEventListener<E extends ApplicationEvent> implements SmartApplicationListener {
