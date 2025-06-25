@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 the original author or authors.
+ * Copyright 2021-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,8 @@ public final class GrailsVersion {
     public static final String BUILD_TIME_PROPERTY = "grails.buildTime";
 
     public static final String GIT_COMMIT_ID_PROPERTY = "git.commit.id";
+
+    public static final String GRACE_2024 = "2024";
 
     public static final String GRACE_2023 = "2023";
 
@@ -109,6 +111,10 @@ public final class GrailsVersion {
         return new GrailsVersion(version, null, null);
     }
 
+    public static boolean isGrace2024() {
+        return getMajorVersion(current().getVersion()).equals(GRACE_2024);
+    }
+
     public static boolean isGrace2023() {
         return getMajorVersion(current().getVersion()).equals(GRACE_2023);
     }
@@ -118,7 +124,11 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace() {
-        return isGrace2023() || isGrace2022();
+        return isGrace2024() || isGrace2023() || isGrace2022();
+    }
+
+    public static boolean isGrace2024(String graceVersion) {
+        return graceVersion != null && getMajorVersion(graceVersion).equals(GRACE_2024);
     }
 
     public static boolean isGrace2023(String graceVersion) {
@@ -130,11 +140,11 @@ public final class GrailsVersion {
     }
 
     public static boolean isGrace(String graceVersion) {
-        return isGrace2023(graceVersion) || isGrace2022(graceVersion);
+        return isGrace2024(graceVersion) || isGrace2023(graceVersion) || isGrace2022(graceVersion);
     }
 
     public static boolean isGraceSnapshotVersion(String graceVersion) {
-        return (isGrace2023(graceVersion) || isGrace2022(graceVersion)) && graceVersion.endsWith("-SNAPSHOT");
+        return (isGrace2024(graceVersion) || isGrace2023(graceVersion) || isGrace2022(graceVersion)) && graceVersion.endsWith("-SNAPSHOT");
     }
 
     public static boolean isGrails6(String grailsVersion) {

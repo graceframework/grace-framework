@@ -97,7 +97,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String BOOT_VERSION_FLAG = 'boot-version'
     public static final String PACKAGE_NAME_FLAG = 'package-name'
 
-    public static final String[] SUPPORT_GRACE_VERSIONS = ['2023', '2022', '6', '5', '4', '3']
+    public static final String[] SUPPORT_GRACE_VERSIONS = ['2024', '2023', '2022', '6', '5', '4', '3']
     public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.3', '3.4', '3.5']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
@@ -1080,25 +1080,26 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
         if (isSnapshotVersion) {
             buildRepositoryUrls.add(0, 'mavenLocal()')
         }
-        String buildRepositoriesString = GrailsVersion.isGrace2023(grailsVersion) ?
+        boolean useGradleBuildSrc = GrailsVersion.isGrace2024(grailsVersion) || GrailsVersion.isGrace2023(grailsVersion)
+        String buildRepositoriesString = useGradleBuildSrc ?
                 buildRepositoryUrls.collect(repositoryUrl.curry(4)).unique().join(ln) :
                 buildRepositoryUrls.collect(repositoryUrl.curry(8)).unique().join(ln)
 
         String buildDependenciesString = buildDependencies.collect { Dependency dep ->
-            GrailsVersion.isGrace2023(grailsVersion) ?
+            useGradleBuildSrc ?
                     "    implementation \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\"" :
                     "        classpath \"${dep.artifact.groupId}:${dep.artifact.artifactId}:${dep.artifact.version}\""
         }.unique().join(ln)
 
         List<GString> buildPlugins = profile.buildPlugins.collect { String name ->
-            GrailsVersion.isGrace2023(grailsVersion) ?
+            useGradleBuildSrc ?
                     "    id \"$name\"" :
                     "apply plugin: \"$name\""
         }
 
         for (Feature f in features) {
             buildPlugins.addAll f.buildPlugins.collect { String name ->
-                GrailsVersion.isGrace2023(grailsVersion) ?
+                useGradleBuildSrc ?
                         "    id \"$name\"" :
                         "apply plugin: \"$name\""
             }

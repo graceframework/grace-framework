@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,9 +72,7 @@ class MavenProfileRepository extends AbstractJarProfileRepository {
         this.classLoader = new GroovyClassLoader(Thread.currentThread().contextClassLoader)
         this.resolutionContext = new DependencyResolutionContext()
         this.grapeEngine = GrailsMavenGrapeEngineFactory.create(classLoader, repositoryConfigurations, resolutionContext)
-        this.profileDependencyVersions = grailsVersion != null ?
-                new GrailsDependenciesDependencyManagement(grailsVersion) :
-                new GrailsDependenciesDependencyManagement()
+        this.profileDependencyVersions = new GrailsDependenciesDependencyManagement(grailsVersion)
         this.resolutionContext.addDependencyManagement(profileDependencyVersions)
         this.grailsVersion = grailsVersion != null ? grailsVersion : GrailsVersion.current().version
     }

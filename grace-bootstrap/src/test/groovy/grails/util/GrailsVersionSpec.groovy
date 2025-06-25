@@ -45,6 +45,17 @@ class GrailsVersionSpec extends Specification {
         !GrailsVersion.isGrace2023('2022.0')
     }
 
+    def "Grace version 2024.x"() {
+        expect:
+        GrailsVersion.isGrace2024('2024')
+        GrailsVersion.isGrace2024('2024.')
+        GrailsVersion.isGrace2024('2024.0')
+        GrailsVersion.isGrace2024('2024.0.1')
+        !GrailsVersion.isGrace2024('2021.0')
+        !GrailsVersion.isGrace2024('2022.0')
+        !GrailsVersion.isGrace2024('2023.0')
+    }
+
     def "Grace versions"() {
         expect:
         GrailsVersion.isGrace('2022')
@@ -54,8 +65,10 @@ class GrailsVersionSpec extends Specification {
         GrailsVersion.isGrace('2023.')
         GrailsVersion.isGrace('2023.0')
         GrailsVersion.isGrace('2023.0.1')
-        !GrailsVersion.isGrace('2021.0')
-        !GrailsVersion.isGrace('2024.0')
+        GrailsVersion.isGrace('2024')
+        GrailsVersion.isGrace('2024.')
+        GrailsVersion.isGrace('2024.0')
+        GrailsVersion.isGrace('2024.0.1')
     }
 
     def "Grails version 3.x"() {
