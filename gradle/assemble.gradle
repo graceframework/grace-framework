@@ -106,7 +106,7 @@ class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateSt
 
 task install(dependsOn: populateDependencies) { task ->
     subprojects { Project project ->
-        if(!isDocs && !project.name.startsWith('grace-test-suite')) {
+        if(!isDocs && !isTestSuite) {
             task.dependsOn("$project.name:publishToMavenLocal")
         }
     }
@@ -114,7 +114,7 @@ task install(dependsOn: populateDependencies) { task ->
 
 task publishToDist { task ->
     subprojects { Project project ->
-        if (!isDocs && !project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
+        if (!isDocs && !isTestSuite && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
             project.tasks.named("generateMetadataFileForIvyPublication").configure {
                 enabled = false
             }
@@ -123,16 +123,17 @@ task publishToDist { task ->
     }
 }
 
-task zipDist(type: Zip, dependsOn: [install, publishToDist, grailsCreateStartScripts]) {
+task binZip(type: Zip, dependsOn: [publishToDist, grailsCreateStartScripts]) {
     destinationDirectory = "${buildDir}/distributions" as File
     archiveBaseName = 'grace'
     archiveAppendix = grailsVersion
+    archiveClassifier = 'bin'
 
     exclude "**/CVS/**"
 
     into("grace-$grailsVersion") {
         from(projectDir) {
-            include 'bin/grace', 'bin/grace.bat', 'lib/', 'media/', 'samples/', 'scripts/', 'LICENSE.txt', 'INSTALL.txt'
+            include 'bin/grace', 'bin/grace.bat', 'lib/', 'samples/', 'scripts/', 'LICENSE.txt', 'INSTALL.txt'
             exclude 'ant/bin', 'src/grace', 'src/war'
         }
         from("conf") {
@@ -142,13 +143,44 @@ task zipDist(type: Zip, dependsOn: [install, publishToDist, grailsCreateStartScr
             into "dist"
             exclude "*.zip*"
             exclude "*.tar*"
-            exclude '*-javadoc.jar*', '*-sources.jar*', 'ivy-*'
-        }
-        from(homeDistDir) {
-            into "src"
-            include '*-sources.jar'
+            exclude '*-javadoc.jar*', '*-sources.jar*', 'ivy-*', '*.jar.sha*'
         }
     }
 }
 
-task assemble(dependsOn: zipDist)
+task sourcesZip(type: Zip, dependsOn: [publishToDist]) {
+    destinationDirectory = "${buildDir}/distributions" as File
+    archiveBaseName = 'grace'
+    archiveAppendix = grailsVersion
+    archiveClassifier = 'sources'
+
+    into("grace-$grailsVersion") {
+        from(projectDir) {
+            include 'LICENSE.txt'
+        }
+        from(homeDistDir) {
+            into "src"
+            include '*-sources.jar', '*-sources.jar.sha*'
+        }
+    }
+}
+
+task docsZip(type: Zip, dependsOn: ['docs:docs']) {
+    destinationDirectory = "${buildDir}/distributions" as File
+    archiveBaseName = 'grace'
+    archiveAppendix = grailsVersion
+    archiveClassifier = 'docs'
+
+    into("grace-$grailsVersion") {
+        from(projectDir) {
+            include 'LICENSE.txt'
+        }
+        from("$projectDir/docs/build/docs/manual") {
+            into "docs"
+        }
+    }
+}
+
+task zipDist(dependsOn: [binZip, sourcesZip, docsZip])
+
+task assemble(dependsOn: [install, zipDist])
