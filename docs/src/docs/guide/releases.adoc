@@ -1,0 +1,31 @@
+To make it easier for users to use and upgrade, https://github.com/graceframework/grace-framework[Grace Framework] adopts a version policy consistent with the https://github.com/spring-projects/spring-boot[Spring Boot].
+
+[cols="50%,50%"]
+|===
+| Grace Version
+| Spring Boot Version
+
+| link:{github}/tree/2024.0.x[2024.0.x]
+| https://docs.spring.io/spring-boot/3.4/index.html[3.4.x]
+
+| link:{github}/tree/2023.3.x[2023.3.x]
+| https://docs.spring.io/spring-boot/3.3/index.html[3.3.x]
+
+| link:{github}/tree/2023.2.x[2023.2.x]
+| https://docs.spring.io/spring-boot/docs/3.2.12/reference/html/[3.2.x]
+
+| link:{github}/tree/2023.1.x[2023.1.x]
+| https://docs.spring.io/spring-boot/docs/3.1.12/reference/html/[3.1.x]
+
+| link:{github}/tree/2023.0.x[2023.0.x]
+| https://docs.spring.io/spring-boot/docs/3.0.13/reference/html/[3.0.x]
+
+| link:{github}/tree/2022.2.x[2022.2.x]
+| https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/[2.7.x]
+
+| link:{github}/tree/2022.1.x[2022.1.x]
+| https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/[2.7.x]
+
+| link:{github}/tree/2022.0.x[2022.0.x]
+| https://docs.spring.io/spring-boot/docs/2.7.18/reference/html/[2.7.x]
+|===
