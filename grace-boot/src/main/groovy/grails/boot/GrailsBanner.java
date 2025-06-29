@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 the original author or authors.
+ * Copyright 2021-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class GrailsBanner implements Banner {
             "              / _____)",
             " o  o   o  o | /  ___   ____   ____   ____   ____",
             "  \\/ \\^/ \\/  | | (___) / ___) / _  | / ___) / _  )",
-            "   \\_____/   | \\____/|| |    ( ( | |( (___ ( (/ /",
+            "   \\__Y__/   | \\____/|| |    ( ( | |( (___ ( (/ /",
             "    =====     \\_____/ |_|     \\_||_| \\____) \\____)",
             "  ================================================"
     };
