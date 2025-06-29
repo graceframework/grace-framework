@@ -447,7 +447,7 @@ apply plugin: "io.sdkman.vendors"
 sdkman {
     candidate = "grace"
     version = project.version
-    url = "https://github.com/graceframework/grace-framework/releases/download/v${project.version}/grace-${project.version}.zip"
+    url = "https://github.com/graceframework/grace-framework/releases/download/v${project.version}/grace-${project.version}-bin.zip"
     hashtag = "graceframework"
 }
 
