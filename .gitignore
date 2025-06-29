@@ -38,3 +38,8 @@ test-output
 
 # VS Code
 .vscode/
+
+# Grace
+/bin
+/dist
+/lib
