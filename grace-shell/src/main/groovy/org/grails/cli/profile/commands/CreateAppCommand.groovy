@@ -98,7 +98,7 @@ class CreateAppCommand extends ArgumentCompletingCommand implements ProfileRepos
     public static final String PACKAGE_NAME_FLAG = 'package-name'
 
     public static final String[] SUPPORT_GRACE_VERSIONS = ['2024', '2023', '2022', '6', '5', '4', '3']
-    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.3', '3.4', '3.5']
+    public static final String[] SUPPORT_SPRING_BOOT_VERSIONS = ['3.4', '3.5']
 
     public static final String UNZIP_PROFILE_TEMP_DIR = 'grails-profile-'
     public static final String UNZIP_TEMPLATE_TEMP_DIR = 'grails-template-'
