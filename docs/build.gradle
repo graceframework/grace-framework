@@ -37,6 +37,14 @@ jar {
     enabled = false
 }
 
+javadocJar {
+    enabled = false
+}
+
+sourcesJar {
+    enabled = false
+}
+
 def cleanTask = project.tasks.findByName('clean')
 if (cleanTask == null) {
     task clean(type: Delete) {
@@ -79,6 +87,6 @@ tasks.withType(Groovydoc) {
 }
 
 docs {
-    dependsOn groovydoc
+    dependsOn tasks.named('groovydoc')
     sourceDir = project.file('src/docs')
 }
