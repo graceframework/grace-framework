@@ -138,6 +138,7 @@ subprojects { project ->
         documentation
     }
 
+    ext.isDocs = project.name == "docs"
     ext.isTestSuite = project.name.startsWith("grace-test-suite")
     ext.isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
     ext.pomInfo = {
@@ -177,7 +178,7 @@ subprojects { project ->
 
     apply plugin: 'java-library'
     apply plugin: 'groovy'
-    if (!isTestSuite) {
+    if (!isDocs && !isTestSuite) {
         apply plugin: 'maven-publish'
         apply plugin: 'ivy-publish'
         apply plugin: 'signing'
@@ -197,7 +198,7 @@ subprojects { project ->
         withSourcesJar()
     }
 
-    if (!isTestSuite) {
+    if (!isDocs && !isTestSuite) {
 
         publishing {
             repositories {
@@ -258,6 +259,7 @@ subprojects { project ->
 
     }
 
+    if (project.name == 'docs') return
     if (project.name == 'grace-dependencies') return
     if (project.name == 'grace-bom') return
 
