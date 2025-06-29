@@ -54,9 +54,9 @@ jobs:
       - name: Set the current release version
         id: release_version
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
-      - name: Generate Docs
-        id: build
-        run: ./gradlew :docs:docs
+      - name: Run Assemble
+        id: assemble
+        run: ./gradlew assemble
       - name: Deploy to GitHub Pages
         id: deployment
         uses: rainboyan/deploy-github-pages@v1.1.0
@@ -65,9 +65,6 @@ jobs:
           TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages
           FOLDER: docs/build/docs/manual
-      - name: Run Assemble
-        id: assemble
-        run: ./gradlew assemble
       - name: Upload artifacts to the Github release
         id: upload_artifacts
         if: steps.assemble.outcome == 'success'
