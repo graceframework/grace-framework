@@ -1,4 +1,4 @@
-# <img src="media/logos/grace_logo_twitter_profile.png" width="80" height="80"> Grace Framework
+# <img src="media/logos/Grace.svg" width="80" height="80"> Grace Framework
 
 [![Main branch build status](https://github.com/graceframework/grace-framework/workflows/Grace%20CI/badge.svg?style=flat)](https://github.com/graceframework/grace-framework/actions?query=workflow%3A%Grace+CI%22)
 [![Apache 2.0 license](https://img.shields.io/badge/License-APACHE%202.0-green.svg?logo=APACHE&style=flat)](https://opensource.org/licenses/Apache-2.0)
@@ -10,7 +10,8 @@
 
 [![Java Version](https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk&color=437291)](https://docs.oracle.com/en/java/javase/17/)
 [![Groovy Version](https://img.shields.io/badge/Groovy-4.0.27-blue?logo=apachegroovy&style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.13-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.13)
+[![Gradle Version](https://img.shields.io/badge/Gradle-8.14.2-blue?logo=gradle&style=flat&color=1da2bd)](https://docs.gradle.org/8.14.2/release-notes.html)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.4.7-blue?logo=springboot&style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.4.7)
 
 
 [Grace](https://github.com/graceframework/grace-framework) is a fork of [Grails 5.1.x](https://github.com/apache/grails-core/tree/5.1.x) that started development in early 2022, it's a powerful and open-source One-Person web framework used to build enterprise-grade [Spring Boot](https://spring.io/projects/spring-boot/) applications with the powerful [Groovy](https://groovy-lang.org/) programming language. The core framework is very extensible and there are numerous [Plugins](https://github.com/grace-plugins/) available that provide easy integration of add-on features.
@@ -21,7 +22,7 @@ Grace inherits the excellent concepts and designs of Grails, and based on this, 
 
 Spring is the foundation for Grace, which is built on top of Spring Boot. To better support Spring Boot and integrate with other Spring ecosystems, Grace has rewritten `Plugin.doWithSpring()` using Spring Boot's [Auto-configuration](https://docs.spring.io/spring-boot/reference/using/auto-configuration.html), which also reduces redundant configurations and provides significant performance improvements. Grace has also provided [Configuration Metadata](https://docs.spring.io/spring-boot/specification/configuration-metadata/index.html) files include in Grace plugins' jars, the files are designed to let IDE developers offer contextual help and “code completion” as users are working with application.properties or application.yaml files. So, a Grace plugin is an extended Spring Boot Starter.
 
-It is worth mentioning that Grace supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0-RC2), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0-RC2), and the upcoming [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0-RC2). This makes the upgrade path easier and more manageable.
+It is worth mentioning that Grace supports all current versions of Spring Boot, including [2.7](https://github.com/graceframework/grace-framework/releases/tag/v2022.2.9), [3.0](https://github.com/graceframework/grace-framework/releases/tag/v2023.0.3), [3.1](https://github.com/graceframework/grace-framework/releases/tag/v2023.1.0), [3.2](https://github.com/graceframework/grace-framework/releases/tag/v2023.2.0), [3.3](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0), [3.4](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-M1), and the latest [3.5](https://github.com/graceframework/grace-framework/releases/tag/v2024.0.0-M1). This makes the upgrade path easier and more manageable.
 
 Grace has been actively developing, bringing numerous improvements and new features, including [Plugins](/grace-plugin-api/README.md), [GSP](/grace-plugin-gsp/README.md), [Console](/grace-console/README.md), [Shell](/grace-shell/README.md), and [Profiles](https://github.com/grace-profiles). Of course, it has also fixed a large number of legacy defects left in Grails 5, this makes developers happy.
 
@@ -81,24 +82,27 @@ Grace is first and foremost a web application framework, but it is also a platfo
 
 [Grace Framework](https://github.com/graceframework/) repository contains core plugins and most commonly used plugins, which are provided by default when creating a project.
 
-* [Grace Asset Pipeline Plugin](https://github.com/grace-plugins/grace-asset-pipeline) is a plugin used for managing and processing static assets in Grace applications.
 * [Grace Async and Events](https://github.com/graceframework/grace-async) provides asynchronous, parallel programming, Events APIs, which integrate Grace with various asynchronous libraries and frameworks such as GPars and RxJava.
 * [Grace Cache](https://github.com/graceframework/grace-cache) provides powerful and easy to use caching functionality to Grace applications and plugins.
+* [Grace Data](https://github.com/graceframework/grace-data) formerly known as `GORM` is the data access toolkit to provides a rich set of APIs for accessing relational and non-relational data including implementations for Hibernate (SQL), MongoDB, etc.
 * [Grace Data Hibernate](https://github.com/graceframework/grace-data-hibernate) provides a GORM implementation for Hibernate ORM.
 * [Grace Data MongoDB](https://github.com/graceframework/grace-data-mongodb) provides a GORM implementation for the MongodB Document Database.
 * [Grace Database Migration](https://github.com/graceframework/grace-database-migration) helps you manage database changes uses the Liquibase library.
-* [Grace Scaffolding](https://github.com/graceframework/grace-scaffolding) is a plugin to generate scaffolded controllers and views for your Grace application.
 * [Grace Fields](https://github.com/graceframework/grace-fields) is a plugin allows you to customize the rendering of input fields for properties of domain objects, command beans and POGOs based on their type, name, etc.
 * [Grace Geb](https://github.com/graceframework/grace-geb) provides the Geb dependencies and a `create-functional-test` command for generating Geb tests.
+* [Grace Scaffolding](https://github.com/graceframework/grace-scaffolding) is a plugin to generate scaffolded controllers and views for your Grace application.
 * [Grace Views](https://github.com/graceframework/grace-views) includes JSON views powered by Groovy's JsonBuilder, also provides the basis for implementation other view types.
 
 [Grace Plugins](https://github.com/grace-plugins/) repository contains several plugins to develop applications more easier and productive.
 
 * [Grace Admin](https://github.com/grace-plugins/grace-admin) is a powerful and flexible, extensible administration framework and management console for Grace, which use [Grace Dynamic Modules](/grace-plugin-dynamic-modules/README.md).
+* [Grace Asset Pipeline Plugin](https://github.com/grace-plugins/grace-asset-pipeline) is a plugin used for managing and processing static assets in Grace applications.
 * [Grace Dynamic Modules Plugin](https://github.com/grace-plugins/grace-dynamic-modules) is a powerful and flexible, extensible administration framework and management console for Grace.
-* [Grace Htmx](https://github.com/grace-plugins/grace-htmx) is a plugin provide helpers to easy use [HTMX](https://htmx.org).
-* [Grace Hotwire](https://github.com/grace-plugins/grace-hotwire) is a plugin for using [Hotwire](https://hotwired.dev) Stimulus and Turbo.
-* [Grace Unpoly](https://github.com/grace-plugins/grace-unpoly) is a plugin for using [Unpoly](https://unpoly.com).
+* [Grace Htmx](https://github.com/grace-plugins/grace-htmx) is a plugin provide helpers to easy use [HTMX](https://htmx.org) with Grace.
+* [Grace Hotwire](https://github.com/grace-plugins/grace-hotwire) is a plugin for using [Hotwire](https://hotwired.dev) Stimulus and Turbo with Grace.
+* [Grace Inertia](https://github.com/grace-plugins/grace-inertia) is a plugin for using [Inertia.js](https://inertiajs.com) with Grace.
+* [Grace Policy](https://github.com/grace-plugins/grace-policy) is an Authorization plugin for Grace applications.
+* [Grace Unpoly](https://github.com/grace-plugins/grace-unpoly) is a plugin for using [Unpoly](https://unpoly.com) with Grace.
 * [Grace View Components](https://github.com/grace-plugins/grace-view-components) is a plugin for creating reusable, testable and encapsulated view components.
 
 ## Profiles
@@ -112,8 +116,8 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 * `profile` - a profie to create a custom profile
 * `rest-api` - a profie for REST API applications
 * `starter` - A profile for getting start to create anything you like
-* `web-plugin` - a profile for Web plugin that contains web resources `css` `js` `images`
 * `web` - default profile to creae a web app
+* `web-plugin` - a profile for Web plugin that contains web resources `css` `js` `images`
 
 ## Guides
 
@@ -127,7 +131,7 @@ Grace provides several profiles in the [Grace Profiles](https://github.com/grace
 
 ## Ducumentation
 
-* [2023.3.x](https://graceframework.org/grace-framework/2023.3.x/)
+* [2024.0.x](https://graceframework.org/grace-framework/2024.0.x/)
 
 ## License
 
