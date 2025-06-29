@@ -106,7 +106,7 @@ class GrailsCreateStartScripts extends org.gradle.api.tasks.application.CreateSt
 
 task install(dependsOn: populateDependencies) { task ->
     subprojects { Project project ->
-        if(!project.name.startsWith('grace-test-suite')) {
+        if(!isDocs && !project.name.startsWith('grace-test-suite')) {
             task.dependsOn("$project.name:publishToMavenLocal")
         }
     }
@@ -114,7 +114,7 @@ task install(dependsOn: populateDependencies) { task ->
 
 task publishToDist { task ->
     subprojects { Project project ->
-        if (!project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
+        if (!isDocs && !project.name.startsWith('grace-test-suite') && !project.name.startsWith('grace-dependencies') && !project.name.startsWith('grace-bom')) {
             project.tasks.named("generateMetadataFileForIvyPublication").configure {
                 enabled = false
             }

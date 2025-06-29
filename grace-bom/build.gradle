@@ -60,7 +60,7 @@ publishing {
                     mkp.dependencyManagement {
                         mkp.dependencies {
                             for (sub in project.parent.subprojects) {
-                                if (sub.name == 'grace-bom' || sub.name.contains('test-suite')) continue
+                                if (sub.name == 'docs' || sub.name == 'grace-bom' || sub.name.contains('test-suite')) continue
 
                                 mkp.dependency {
                                     mkp.groupId sub.group
