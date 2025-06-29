@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:2023.3.0-RC2"
+        classpath "org.graceframework:grace-gradle-plugin:2023.3.0"
     }
 }
 
