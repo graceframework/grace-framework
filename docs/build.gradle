@@ -33,6 +33,10 @@ dependencies {
     documentation libs.snakeyaml
 }
 
+jar {
+    enabled = false
+}
+
 def cleanTask = project.tasks.findByName('clean')
 if (cleanTask == null) {
     task clean(type: Delete) {
