@@ -2,7 +2,6 @@ dependencies {
     compileOnly "jakarta.servlet:jakarta.servlet-api"
     implementation "org.graceframework:grace-plugin-controllers"
     api project(':grace-async-core')
-    compileOnly project(":grace-events-compat")
 
     api("org.springframework.boot:spring-boot-autoconfigure")
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
