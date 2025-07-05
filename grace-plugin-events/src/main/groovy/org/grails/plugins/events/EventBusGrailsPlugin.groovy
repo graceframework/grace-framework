@@ -27,9 +27,9 @@ class EventBusGrailsPlugin extends Plugin {
 
     def grailsVersion = "2023.0.0 > *"
     def description = 'Grace Events Plugin'
-    def documentation = "https://graceframework.org/grace-async/6.3.x/"
+    def documentation = "https://graceframework.org/grace-events/7.0.x/"
     def license = "APACHE"
-    def issueManagement = [system: "Github Issues", url: "https://github.com/graceframework/grace-async"]
-    def scm = [url: "https://github.com/graceframework/grace-async"]
+    def issueManagement = [system: "Github Issues", url: "https://github.com/graceframework/grace-events"]
+    def scm = [url: "https://github.com/graceframework/grace-events"]
 
 }
