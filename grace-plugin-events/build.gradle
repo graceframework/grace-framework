@@ -3,7 +3,6 @@ dependencies {
     api project(":grace-events-core")
     api project(":grace-events-spring")
     api project(":grace-events-transform")
-    compileOnly project(":grace-events-compat")
 
     api("org.springframework.boot:spring-boot-autoconfigure")
     annotationProcessor("org.springframework.boot:spring-boot-autoconfigure-processor")
