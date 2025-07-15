@@ -1,3 +1,5 @@
+group = "org.graceframework.plugins"
+
 dependencies {
     api project(":grace-scaffolding-core")
     compileOnly "jakarta.servlet:jakarta.servlet-api"
