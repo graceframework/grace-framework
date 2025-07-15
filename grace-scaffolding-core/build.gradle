@@ -1,3 +1,5 @@
+group = "org.graceframework"
+
 dependencies {
     implementation "org.graceframework:grace-core"
     implementation "org.graceframework:grace-datastore-core:$gormVersion"
