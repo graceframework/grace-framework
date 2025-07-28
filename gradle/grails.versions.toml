@@ -5,7 +5,7 @@ database-migration = "6.3.0"
 fields = "6.3.0"
 geb = "6.3.0"
 hibernate = "2024.0.0-SNAPSHOT"
-mongodb = "2023.3.0"
+mongodb = "2024.0.0-SNAPSHOT"
 scaffolding = "6.3.0"
 
 [profiles]
