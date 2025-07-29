@@ -15,8 +15,13 @@
  */
 package grails.boot;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
@@ -78,6 +83,14 @@ public class Grails extends SpringApplication {
         }
         else {
             setBanner(new GrailsBanner());
+        }
+    }
+
+    @Override
+    protected void load(ApplicationContext context, Object[] sources) {
+        super.load(context, sources);
+        if (context instanceof AbstractApplicationContext) {
+            ((AbstractApplicationContext) context).getBeanFactory().registerSingleton("PRIMARY_SOURCES", new LinkedHashSet<>(Arrays.asList(sources)));
         }
     }
 

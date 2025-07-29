@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import grails.web.mapping.UrlMappingInfo
 import org.springframework.core.io.ByteArrayResource
@@ -152,6 +153,7 @@ class DoubleWildcardUrlMappingTests extends Specification implements UrlMappings
         'foo.bar' == webRequest.params.path
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/components/image/$path**?" {
@@ -184,7 +186,7 @@ class SomeOtherController {
     def index() {}
 }
 
-@grails.artefact.Artefact('Controller')
+@Artefact('Controller')
 class DoubleWildCardController {
     def index(){ params.path }
     def otherAction() {}

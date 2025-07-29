@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package org.grails.encoder.impl
 import groovy.transform.CompileStatic
 
 import groovy.json.StringEscapeUtils
+
+import grails.artefact.Artefact
 import org.grails.encoder.Encoder
 import org.grails.encoder.CodecFactory
 import org.grails.encoder.CodecIdentifier
@@ -29,6 +31,7 @@ import org.grails.encoder.Decoder
  * @author Graeme Rocher
  * @since 0.5
  */
+@Artefact('Codec')
 @CompileStatic
 class JavaScriptCodec implements CodecFactory {
 

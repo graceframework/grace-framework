@@ -118,8 +118,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
         registerFindMainClassTask(project)
 
-        configureGrailsBuildSettings(project)
-
         enableNative2Ascii(project, grailsVersion)
 
         configureSpringBootExtension(project)
@@ -414,6 +412,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
             systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             group = 'Grace'
             description = 'Runs the interactive Groovy Console.'
+            systemProperty 'spring.devtools.restart.enabled', false
+            systemProperty 'spring.output.ansi.enabled', 'always'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.console.GrailsConsole')
         }
@@ -425,6 +425,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
             systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             group = 'Grace'
             description = 'Runs the interactive Groovy Shell.'
+            systemProperty 'spring.devtools.restart.enabled', false
+            systemProperty 'spring.output.ansi.enabled', 'always'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
             mainClass.set('grails.ui.shell.GrailsShell')
             standardInput = System.in
@@ -554,6 +556,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty 'spring.main.banner-mode', 'OFF'
                 systemProperty 'logging.level.ROOT', 'OFF'
+                systemProperty 'spring.devtools.restart.enabled', false
                 systemProperty 'spring.output.ansi.enabled', 'always'
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
@@ -584,6 +587,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 systemProperty 'spring.main.banner-mode', 'OFF'
                 systemProperty 'logging.level.ROOT', 'OFF'
+                systemProperty "spring.devtools.restart.enabled", false
                 systemProperty 'spring.output.ansi.enabled', 'always'
                 if (project.hasProperty('args')) {
                     args(CommandLineParser.translateCommandline(project.args))
@@ -657,11 +661,10 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def configFile = project.file("$project.buildDir/config.groovy")
         configScriptTask.outputs.file(configFile)
 
-        def projectName = project.name
+        def projectName = getGrailsProjectName(project)
         def projectVersion = project.version
         def projectDir = project.projectDir.absolutePath
         def projectType = getGrailsProjectType()
-        def isPlugin = projectType == GrailsProjectType.PLUGIN
         def grailsAppDir = new File(project.projectDir, grailsAppDir).absolutePath
         if (System.getProperty('os.name').startsWith('Windows')) {
             projectDir = projectDir.replace('\\', '\\\\')
@@ -679,9 +682,6 @@ withConfig(configuration) {
         source.ast.putNodeMetaData('PROJECT_NAME', '$projectName')
         source.ast.putNodeMetaData('PROJECT_TYPE', '$projectType')
         source.ast.putNodeMetaData('PROJECT_VERSION', '$projectVersion')
-        classNode.putNodeMetaData('projectVersion', '$projectVersion')
-        classNode.putNodeMetaData('projectName', '$projectName')
-        classNode.putNodeMetaData('isPlugin', '$isPlugin')
     }
 }
 """
@@ -694,6 +694,10 @@ withConfig(configuration) {
 
     protected GrailsProjectType getGrailsProjectType() {
         GrailsProjectType.NONE
+    }
+
+    protected String getGrailsProjectName(Project project) {
+        return project.name
     }
 
     protected FileCollection buildClasspath(Project project, Configuration... configurations) {

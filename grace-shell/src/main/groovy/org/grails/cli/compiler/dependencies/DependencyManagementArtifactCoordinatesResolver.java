@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.springframework.util.StringUtils;
  */
 public class DependencyManagementArtifactCoordinatesResolver implements ArtifactCoordinatesResolver {
 
-    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate", "hibernate5", "gsp", "scaffolding");
+    public static final Set<String> GRAILS_PLUGINS = Set.of("async", "cache", "events", "fields", "hibernate", "scaffolding");
 
     private final DependencyManagement dependencyManagement;
 
@@ -63,13 +63,14 @@ public class DependencyManagementArtifactCoordinatesResolver implements Artifact
             if (id.startsWith("spring-boot")) {
                 return new Dependency("org.springframework.boot", id, this.dependencyManagement.getSpringBootVersion());
             }
-            if (id.startsWith("grails")) {
-                return new Dependency("org.grails", id, this.dependencyManagement.getGrailsVersion());
+            if (id.startsWith("grace")) {
+                return new Dependency("org.graceframework", id, this.dependencyManagement.getGrailsVersion());
             }
+            Dependency dependency = this.dependencyManagement.find(id);
             if (GRAILS_PLUGINS.contains(id)) {
-                return new Dependency("org.grails.plugins", id, this.dependencyManagement.find(id).getVersion());
+                return new Dependency("org.graceframework.plugins", id, dependency.getVersion(), dependency.getClassifier());
             }
-            return this.dependencyManagement.find(id);
+            return dependency;
         }
         return null;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.grails.encoder.impl;
 
+import grails.artefact.Artefact;
+
 import org.grails.encoder.ChainedDecoder;
 import org.grails.encoder.ChainedEncoder;
 import org.grails.encoder.CodecFactory;
@@ -22,6 +24,7 @@ import org.grails.encoder.Decoder;
 import org.grails.encoder.Encoder;
 import org.grails.encoder.StreamingEncoder;
 
+@Artefact("Codec")
 public class HTMLJSCodec implements CodecFactory {
 
     protected final StreamingEncoder[] encoders;

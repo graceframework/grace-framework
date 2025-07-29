@@ -1,4 +1,5 @@
-/* Copyright 2004-2005 the original author or authors.
+/*
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +31,10 @@ public class ServiceArtefactHandlerTests {
     public void testIsServiceClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> c = gcl.parseClass("class TestService { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Service')\nclass TestService { }\n");
 
         ArtefactHandler handler = new ServiceArtefactHandler();
         assertTrue(handler.isArtefact(c));
     }
+
 }

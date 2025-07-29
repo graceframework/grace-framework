@@ -44,7 +44,7 @@ class TagLibDynamicMethodsTests extends Specification implements TagLibUnitTest<
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class TestTagLib {
     def myTag = {attrs, body -> body() }
  }

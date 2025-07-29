@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.grails.compiler.injection
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
@@ -29,7 +28,6 @@ import grails.compiler.ast.GrailsArtefactClassInjector
 import grails.util.BuildSettings
 
 import org.grails.core.artefact.ApplicationArtefactHandler
-import org.grails.io.support.UrlResource
 
 import static org.codehaus.groovy.ast.tools.GeneralUtils.args
 import static org.codehaus.groovy.ast.tools.GeneralUtils.callX
@@ -49,8 +47,6 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.stmt
 @AstTransformer
 class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
-    public static final String EXCLUDE_MEMBER = 'exclude'
-
     ApplicationArtefactHandler applicationArtefactHandler = new ApplicationArtefactHandler()
 
     private static final List<Integer> TRANSFORMED_INSTANCES = []
@@ -67,12 +63,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
 
     @Override
     void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode)
-    }
-
-    @Override
-    @CompileDynamic
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         if (applicationArtefactHandler.isArtefact(classNode)) {
             Integer objectId = Integer.valueOf(System.identityHashCode(classNode))
             if (!TRANSFORMED_INSTANCES.contains(objectId)) {
@@ -91,15 +81,6 @@ class ApplicationClassInjector implements GrailsArtefactClassInjector {
                 }
             }
         }
-    }
-
-    @Override
-    boolean shouldInject(URL url) {
-        if (url == null) {
-            return false
-        }
-        UrlResource res = new UrlResource(url)
-        res.filename.endsWith('Application.groovy')
     }
 
 }

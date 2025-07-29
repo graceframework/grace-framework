@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,7 @@ import org.grails.io.support.SpringIOUtils;
  * </pre>
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.5
  */
 public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoaderAware, PluginManagerAware {
@@ -649,6 +650,7 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             this.isInCollection = true;
             try {
                 callable.setDelegate(this);
+                callable.setResolveStrategy(Closure.DELEGATE_FIRST);
                 callable.call();
             }
             finally {
@@ -1464,32 +1466,6 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             return this.mappingInfoDeque.peek();
         }
 
-        class ParentResource {
-
-            String controllerName;
-
-            String uri;
-
-            boolean isSingle;
-
-            boolean isGroup;
-
-            ParentResource(String controllerName, String uri, boolean single) {
-                this.controllerName = controllerName;
-                this.uri = uri;
-                this.isSingle = single;
-                this.isGroup = false;
-            }
-
-            ParentResource(String controllerName, String uri, boolean single, boolean group) {
-                this.controllerName = controllerName;
-                this.uri = uri;
-                this.isSingle = single;
-                this.isGroup = group;
-            }
-
-        }
-
     }
 
     protected class UrlGroupMappingRecursionBuilder extends UrlMappingBuilder {
@@ -1509,6 +1485,32 @@ public class DefaultUrlMappingEvaluator implements UrlMappingEvaluator, ClassLoa
             }
 
             super.group(uri, mappings);
+        }
+
+    }
+
+    static class ParentResource {
+
+        String controllerName;
+
+        String uri;
+
+        boolean isSingle;
+
+        boolean isGroup;
+
+        ParentResource(String controllerName, String uri, boolean single) {
+            this.controllerName = controllerName;
+            this.uri = uri;
+            this.isSingle = single;
+            this.isGroup = false;
+        }
+
+        ParentResource(String controllerName, String uri, boolean single, boolean group) {
+            this.controllerName = controllerName;
+            this.uri = uri;
+            this.isSingle = single;
+            this.isGroup = group;
         }
 
     }

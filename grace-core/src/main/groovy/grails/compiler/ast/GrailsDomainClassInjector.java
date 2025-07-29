@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,10 @@ import org.codehaus.groovy.ast.ClassNode;
  * Mainly just a marker interface for implementations that perform injection on domain classes.
  *
  * @author Graeme Rocher
- *
  * @since 0.2
+ * @deprecated since 2024.0.0, in favor of {@link ClassInjector}
  */
+@Deprecated(since = "2024.0.0", forRemoval = true)
 public interface GrailsDomainClassInjector extends ClassInjector {
 
     /**
@@ -33,6 +34,7 @@ public interface GrailsDomainClassInjector extends ClassInjector {
      * @param classNode The ClassNode
      * @since 1.1
      */
+    @Deprecated(since = "2024.0.0", forRemoval = true)
     void performInjectionOnAnnotatedEntity(ClassNode classNode);
 
 }

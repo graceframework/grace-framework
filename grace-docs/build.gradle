@@ -1,3 +1,9 @@
+configurations {
+    compileClasspath {
+        exclude group: 'org.apache.groovy', module: 'groovy-xml'
+    }
+}
+
 dependencies {
     // NOTE: missing gradleApi() will cause NoSuchMethodError: 
     // ScriptBytecodeAdapter.createRange(java.lang.Object, java.lang.Object, boolean, boolean)

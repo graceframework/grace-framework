@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2024 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@ import groovy.util.logging.Slf4j
 import org.springframework.core.PriorityOrdered
 import org.springframework.core.io.Resource
 
+import grails.plugins.GrailsPlugin
 import grails.plugins.Plugin
 import grails.util.BuildSettings
 import grails.util.GrailsUtil
-
+import org.grails.plugins.BinaryGrailsPlugin
 import org.grails.spring.context.support.ReloadableResourceBundleMessageSource
 
 /**
@@ -39,7 +40,9 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
 
     String version = GrailsUtil.getGrailsVersion()
     def watchedResources = ['file:./grails-app/i18n/**/*.properties',
-                            'file:./app/i18n/**/*.properties']
+                            'file:./app/i18n/**/*.properties',
+                            'file:./plugins/*/grails-app/i18n/**/*.properties',
+                            'file:./plugins/*/app/i18n/**/*.properties']
 
     @Override
     Closure doWithSpring() {
@@ -75,32 +78,24 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
         }
 
         boolean nativeascii = application.config.getProperty('grails.enable.native2ascii', Boolean, true)
-        def resourcesDir = BuildSettings.RESOURCES_DIR
-        def classesDir = BuildSettings.CLASSES_DIR
-        def i18nDir = new File(BuildSettings.GRAILS_APP_DIR, 'i18n')
 
-        if (resourcesDir.exists() && event.source instanceof Resource) {
-            File eventFile = event.source.getFile().canonicalFile
-            if (isChildOfFile(eventFile, i18nDir)) {
-                if (nativeascii) {
-                    // if native2ascii is enabled then read the properties and write them out again
-                    // so that unicode escaping is applied
-                    def properties = new Properties()
-                    eventFile.withReader {
-                        properties.load(it)
+        if (event.source instanceof Resource) {
+            def baseDir = BuildSettings.BASE_DIR
+            File eventFile = event.source?.file?.canonicalFile
+
+            if (isInGrailsAppI18nDir(baseDir, eventFile)) {
+                def resourcesDir = BuildSettings.RESOURCES_DIR
+                reloadChangedI18nFile(resourcesDir, eventFile, nativeascii)
+            }
+            else {
+                for (GrailsPlugin plugin : this.pluginManager.getAllPlugins()) {
+                    if (plugin instanceof BinaryGrailsPlugin) {
+                        BinaryGrailsPlugin binaryGrailsPlugin = (BinaryGrailsPlugin) plugin
+                        File pluginDirectory = binaryGrailsPlugin.getProjectDirectory()
+                        if (pluginDirectory != null && isInGrailsAppI18nDir(pluginDirectory, eventFile)) {
+                            reloadChangedI18nFile(new File(pluginDirectory, 'build/resources/main'), eventFile, nativeascii)
+                        }
                     }
-                    // by using an OutputStream the unicode characters will be escaped
-                    new File(resourcesDir, eventFile.name).withOutputStream {
-                        properties.store(it, '')
-                    }
-                    new File(classesDir, eventFile.name).withOutputStream {
-                        properties.store(it, '')
-                    }
-                }
-                else {
-                    // otherwise just copy the file as is
-                    Files.copy(eventFile.toPath(), new File(resourcesDir, eventFile.name).toPath())
-                    Files.copy(eventFile.toPath(), new File(classesDir, eventFile.name).toPath())
                 }
             }
         }
@@ -111,15 +106,31 @@ class I18nGrailsPlugin extends Plugin implements PriorityOrdered {
         }
     }
 
-    protected boolean isChildOfFile(File child, File parent) {
-        def currentFile = child.canonicalFile
-        while (currentFile != null) {
-            if (currentFile == parent) {
-                return true
-            }
-            currentFile = currentFile.parentFile
+    private boolean isInGrailsAppI18nDir(File baseDir, File changedFile) {
+        if (baseDir == null || changedFile == null) {
+            return false
         }
-        false
+        String i18nPath = new File(baseDir, BuildSettings.GRAILS_APP_PATH + File.separator + 'i18n').getAbsolutePath()
+        changedFile.absolutePath.startsWith(i18nPath)
+    }
+
+    private void reloadChangedI18nFile(File resourcesDir, File eventFile, boolean nativeascii) {
+        if (nativeascii) {
+            // if native2ascii is enabled then read the properties and write them out again
+            // so that unicode escaping is applied
+            def properties = new Properties()
+            eventFile.withReader {
+                properties.load(it)
+            }
+            // by using an OutputStream the unicode characters will be escaped
+            new File(resourcesDir, eventFile.name).withOutputStream {
+                properties.store(it, '')
+            }
+        }
+        else {
+            // otherwise just copy the file as is
+            Files.copy(eventFile.toPath(), new File(resourcesDir, eventFile.name).toPath())
+        }
     }
 
     @Override

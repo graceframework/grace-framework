@@ -25,7 +25,7 @@ class AliasedTagPropertySpec extends Specification implements TagLibUnitTest<Ali
     }
 }
 
-@Artefact("TagLibrary")
+@Artefact("TagLib")
 class AliasedTagLib {
     static namespace = "a"
 

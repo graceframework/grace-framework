@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,9 @@ import org.codehaus.groovy.control.SourceUnit;
  *
  * @author Graeme Rocher
  * @since 2.2.3
+ * @deprecated since 2024.0.0, in favor of ${@link ClassInjector}
  */
+@Deprecated(since = "2024.0.0", forRemoval = true)
 public interface AnnotatedClassInjector {
 
     /**
@@ -32,6 +34,7 @@ public interface AnnotatedClassInjector {
      * @param source The source unit
      * @param classNode The class node
      */
+    @Deprecated(since = "2024.0.0", forRemoval = true)
     void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode);
 
 }

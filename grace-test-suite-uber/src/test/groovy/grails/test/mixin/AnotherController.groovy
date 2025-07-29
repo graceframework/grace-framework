@@ -1,8 +1,8 @@
 package grails.test.mixin
 
-import grails.artefact.Controller
 import grails.converters.JSON
 import grails.converters.XML
+import grails.web.Controller
 import grails.web.mime.MimeUtility
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile
 /**
  * @author graemerocher
  */
-@grails.web.Controller
+@Controller
 class AnotherController  {
 
     def handleCommand( TestCommand test ) {

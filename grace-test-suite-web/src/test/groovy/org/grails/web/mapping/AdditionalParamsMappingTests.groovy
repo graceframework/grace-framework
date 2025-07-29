@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import grails.web.mapping.UrlCreator
 import org.springframework.core.io.ByteArrayResource
@@ -43,6 +44,7 @@ class AdditionalParamsMappingTests extends Specification implements UrlMappingsU
         'json' == webRequest.params.format
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/$controller/$action?/$id?"{

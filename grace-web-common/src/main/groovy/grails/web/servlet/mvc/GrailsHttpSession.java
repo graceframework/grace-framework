@@ -37,6 +37,7 @@ public class GrailsHttpSession implements HttpSession {
         this.request = request;
     }
 
+    @Override
     public Object getAttribute(String name) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -44,12 +45,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    private void createSessionIfNecessary() {
-        if (this.adaptee == null) {
-            this.adaptee = this.request.getSession(true);
-        }
-    }
-
+    @Override
     public Enumeration<String> getAttributeNames() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -57,6 +53,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public long getCreationTime() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -64,6 +61,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public String getId() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -71,6 +69,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public long getLastAccessedTime() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -78,6 +77,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public int getMaxInactiveInterval() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -85,6 +85,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public ServletContext getServletContext() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -92,66 +93,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    /**
-     * @see jakarta.servlet.http.HttpSession#getSessionContext()
-     * @deprecated
-     */
-//    @Deprecated
-//    public jakarta.servlet.http.HttpSessionContext getSessionContext() {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getSessionContext();
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#getValue(java.lang.String)
-     * @deprecated
-     */
-//    @Deprecated
-//    public Object getValue(String name) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getAttribute(name);
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#getValueNames()
-     * @deprecated
-     */
-//    @Deprecated
-//    public String[] getValueNames() {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            return this.adaptee.getValueNames();
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#putValue(java.lang.String, java.lang.Object)
-     * @deprecated
-     */
-//    @Deprecated
-//    public void putValue(String name, Object value) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            this.adaptee.setAttribute(name, value);
-//        }
-//    }
-
-    /**
-     * @see jakarta.servlet.http.HttpSession#removeValue(java.lang.String)
-     * @deprecated
-     */
-//    @Deprecated
-//    public void removeValue(String name) {
-//        createSessionIfNecessary();
-//        synchronized (this) {
-//            this.adaptee.removeAttribute(name);
-//        }
-//    }
-
+    @Override
     public void invalidate() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -159,6 +101,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public boolean isNew() {
         createSessionIfNecessary();
         synchronized (this) {
@@ -166,6 +109,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public void removeAttribute(String name) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -173,6 +117,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public void setAttribute(String name, Object value) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -180,6 +125,7 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
+    @Override
     public void setMaxInactiveInterval(int arg0) {
         createSessionIfNecessary();
         synchronized (this) {
@@ -187,14 +133,13 @@ public class GrailsHttpSession implements HttpSession {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public String toString() {
         createSessionIfNecessary();
         StringBuilder sb = new StringBuilder("Session Content:\n");
-        Enumeration e = this.adaptee.getAttributeNames();
+        Enumeration<String> e = this.adaptee.getAttributeNames();
         while (e.hasMoreElements()) {
-            String name = (String) e.nextElement();
+            String name = e.nextElement();
             sb.append("  ");
             sb.append(name);
             sb.append(" = ");
@@ -202,6 +147,12 @@ public class GrailsHttpSession implements HttpSession {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    private void createSessionIfNecessary() {
+        if (this.adaptee == null) {
+            this.adaptee = this.request.getSession(true);
+        }
     }
 
 }

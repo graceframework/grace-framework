@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,20 @@ import grails.core.ArtefactHandlerAdapter;
 import grails.web.servlet.bootstrap.GrailsBootstrapClass;
 
 /**
+ * Handler for Bootstrap Artefact
+ *
  * @author Marc Palmer (marc@anyware.co.uk)
+ * @author Michael Yan
+ * @since 0.5
  */
 public class BootstrapArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Bootstrap";
+    public static final String PATH = "init";
 
     public BootstrapArtefactHandler() {
         super(TYPE, GrailsBootstrapClass.class, DefaultGrailsBootstrapClass.class,
-                DefaultGrailsBootstrapClass.BOOT_STRAP);
+                DefaultGrailsBootstrapClass.BOOT_STRAP, PATH);
     }
 
 }

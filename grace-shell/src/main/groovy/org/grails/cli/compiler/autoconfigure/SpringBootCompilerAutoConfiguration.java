@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.grails.cli.compiler.GroovyCompilerConfiguration;
  *
  * @author Dave Syer
  * @author Phillip Webb
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfiguration {
@@ -44,12 +45,8 @@ public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfigurati
 
     @Override
     public void applyImports(ImportCustomizer imports) {
-        imports.addImports("jakarta.annotation.PostConstruct", "jakarta.annotation.PreDestroy", "groovy.util.logging.Log",
-                "org.springframework.stereotype.Controller", "org.springframework.stereotype.Service",
-                "org.springframework.stereotype.Component", "org.springframework.beans.factory.annotation.Autowired",
-                "org.springframework.beans.factory.annotation.Value", "org.springframework.context.annotation.Import",
-                "org.springframework.context.annotation.ImportResource",
-                "org.springframework.context.annotation.Profile", "org.springframework.context.annotation.Scope",
+        imports.addImports("groovy.util.logging.Log",
+                "org.springframework.beans.factory.annotation.Autowired",
                 "org.springframework.context.annotation.Configuration",
                 "org.springframework.context.annotation.ComponentScan", "org.springframework.context.annotation.Bean",
                 "org.springframework.context.ApplicationContext", "org.springframework.context.MessageSource",
@@ -62,7 +59,6 @@ public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfigurati
                 "org.springframework.boot.autoconfigure.SpringBootApplication",
                 "org.springframework.boot.context.properties.ConfigurationProperties",
                 "org.springframework.boot.context.properties.EnableConfigurationProperties");
-        imports.addStarImports("org.springframework.stereotype", "org.springframework.scheduling.annotation");
     }
 
     @Override

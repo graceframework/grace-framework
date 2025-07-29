@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,8 @@ public class GrailsTestCompilerAutoConfiguration extends CompilerAutoConfigurati
 
     @Override
     public void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
-        dependencies.add("org.grails", "grails-plugin-testing");
+        dependencies.add("org.graceframework", "grace-test");
+        dependencies.add("org.graceframework", "grace-test-support");
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import java.net.URL;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
+import org.springframework.core.Ordered;
+
 import org.grails.io.support.FileSystemResource;
 import org.grails.io.support.Resource;
 
@@ -33,7 +35,7 @@ import org.grails.io.support.Resource;
  * @author Michael Yan
  * @since 0.2
  */
-public interface ClassInjector {
+public interface ClassInjector extends Ordered {
 
     int PRIVATE_STATIC_MODIFIER = Modifier.PRIVATE | Modifier.STATIC;
 
@@ -44,7 +46,8 @@ public interface ClassInjector {
      * @param context The generator context
      * @param classNode The ClassNode instance
      */
-    void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode);
+    default void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
+    }
 
     /**
      * Handles injection of properties, methods etc. into a class.
@@ -52,24 +55,28 @@ public interface ClassInjector {
      * @param source The source unit
      * @param classNode The ClassNode instance
      */
-    void performInjection(SourceUnit source, ClassNode classNode);
+    default void performInjection(SourceUnit source, ClassNode classNode) {
+    }
 
     /**
      * Handles injection of properties, methods etc. into a class.
      *
      * @param source The source unit
      * @param classNode The ClassNode instance
+     * @deprecated since 2024.0.0, in favor of {@link #performInjection(SourceUnit, ClassNode)}
      */
-    void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode);
+    @Deprecated(since = "2024.0.0", forRemoval = true)
+    default void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
+    }
 
     /**
      * Returns whether this injector should inject
      *
      * @param url The URL of the source file
      * @return true if injection should occur
-     * @deprecated since 2022.3.0, in favor of {@link #shouldInject(ClassNode)}
+     * @deprecated since 2024.0.0, in favor of {@link #shouldInject(ClassNode)}
      */
-    @Deprecated(forRemoval = true, since = "2023.0.0")
+    @Deprecated(since = "2024.0.0", forRemoval = true)
     default boolean shouldInject(URL url) {
         return true;
     }
@@ -95,6 +102,17 @@ public interface ClassInjector {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the order of this injector
+     *
+     * @return the order, default is zero
+     * @since 2024.0.0
+     */
+    @Override
+    default int getOrder() {
+        return 0;
     }
 
 }

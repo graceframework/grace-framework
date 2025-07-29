@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package grails.boot.config;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -146,7 +147,7 @@ public class GrailsApplicationPostProcessor
         Environment.setInitializing(true);
         this.grailsApplication.setApplicationContext(applicationContext);
         this.grailsApplication.setMainContext(applicationContext);
-        this.classes = loadArtefactClasses();
+        this.classes = loadArtefactClasses(applicationContext);
         this.classes.stream().filter(GrailsPluginArtefactHandler::isGrailsPlugin)
                 .forEach(this.pluginManager::addUserPlugin);
         customizePluginManager(this.pluginManager);
@@ -180,17 +181,29 @@ public class GrailsApplicationPostProcessor
         this.classes.forEach(this.grailsApplication::addArtefact);
     }
 
-    protected Set<Class<?>> loadArtefactClasses() {
+    protected Set<Class<?>> loadArtefactClasses(ApplicationContext applicationContext) {
         StartupStep artefactStep = this.applicationStartup.start("grails.application.artefact-classes.loaded");
-        GrailsComponentScanner scanner = new GrailsComponentScanner(this.applicationContext, this.applicationStartup);
-        Set<Class<?>> classes;
+        GrailsComponentScanner scanner = new GrailsComponentScanner(applicationContext, this.applicationStartup);
+        Set<Class<?>> classes = new LinkedHashSet<>();
         try {
-            classes = scanner.scan(Artefact.class);
+            classes.addAll(scanner.scan(Artefact.class));
         }
         catch (ClassNotFoundException ignored) {
-            classes = Collections.emptySet();
         }
-
+        if (applicationContext.containsBean("PRIMARY_SOURCES")) {
+            Object primarySourcesBean = applicationContext.getBean("PRIMARY_SOURCES");
+            try {
+                if (primarySourcesBean instanceof Set<?>) {
+                    for (Object source : (Set<?>) primarySourcesBean) {
+                        if (source instanceof Class<?>) {
+                            classes.add((Class<?>) source);
+                        }
+                    }
+                }
+            }
+            catch (Exception ignored) {
+            }
+        }
         artefactStep.tag("classCount", String.valueOf(classes.size())).end();
         return classes;
     }

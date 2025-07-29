@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.grails.plugins.web.mapping
 
-import groovy.transform.CompileDynamic
 import org.springframework.context.ApplicationContext
 import org.springframework.core.PriorityOrdered
 
@@ -72,15 +71,6 @@ class UrlMappingsGrailsPlugin extends Plugin implements PriorityOrdered {
     @Override
     int getOrder() {
         70
-    }
-
-    @CompileDynamic
-    static class DefaultUrlMappings {
-
-        static mappings = {
-            "/$controller/$action?/$id?(.$format)?"()
-        }
-
     }
 
 }

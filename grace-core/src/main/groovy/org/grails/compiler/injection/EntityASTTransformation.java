@@ -15,86 +15,33 @@
  */
 package org.grails.compiler.injection;
 
-import java.util.List;
-
-import groovy.transform.CompilationUnitAware;
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.control.CompilationUnit;
-import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
-import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
-import grails.compiler.ast.ClassInjector;
-import grails.compiler.ast.GrailsDomainClassInjector;
 import grails.persistence.Entity;
 
 import org.grails.core.artefact.DomainClassArtefactHandler;
 
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class EntityASTTransformation implements ASTTransformation, CompilationUnitAware {
+/**
+ * Injects the necessary fields and behaviors into a domain class in order to make it a property GORM entity.
+ *
+ * @author Graeme Rocher
+ * @since 1.1
+ * @see grails.persistence.Entity
+ */
+@GroovyASTTransformation
+public class EntityASTTransformation extends ArtefactTypeAstTransformation {
 
-    private static final ClassNode MY_TYPE = new ClassNode(Entity.class);
-
-    private static final String MY_TYPE_NAME = "@" + MY_TYPE.getNameWithoutPackage();
-
-    protected CompilationUnit compilationUnit;
-
-    public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof AnnotatedNode)) {
-            throw new RuntimeException("Internal error: wrong types: $node.class / $parent.class");
-        }
-
-        AnnotatedNode parent = (AnnotatedNode) astNodes[1];
-        AnnotationNode node = (AnnotationNode) astNodes[0];
-        if (!MY_TYPE.equals(node.getClassNode()) || !(parent instanceof ClassNode)) {
-            return;
-        }
-
-        ClassNode cNode = (ClassNode) parent;
-        String cName = cNode.getName();
-        if (cNode.isInterface()) {
-            throw new RuntimeException("Error processing interface '" + cName + "'. " +
-                    MY_TYPE_NAME + " not allowed for interfaces.");
-        }
-
-        applyTransformation(sourceUnit, cNode);
-    }
-
-    public void applyTransformation(SourceUnit sourceUnit, ClassNode classNode) {
-        if (GrailsASTUtils.isApplied(classNode, EntityASTTransformation.class)) {
-            return;
-        }
-        GrailsASTUtils.markApplied(classNode, EntityASTTransformation.class);
-
-        GrailsDomainClassInjector domainInjector = new DefaultGrailsDomainClassInjector();
-        domainInjector.performInjectionOnAnnotatedEntity(classNode);
-
-        ClassInjector[] classInjectors = GrailsAwareInjectionOperation.getClassInjectors();
-
-        List<ClassInjector> domainInjectors = ArtefactTypeAstTransformation.findInjectors(DomainClassArtefactHandler.TYPE, classInjectors);
-
-        for (ClassInjector injector : domainInjectors) {
-            try {
-                injector.performInjection(sourceUnit, classNode);
-            }
-            catch (RuntimeException e) {
-                System.err.println("Error occurred calling AST injector [" + injector.getClass().getName() + "]: " + e.getMessage());
-                throw e;
-            }
-        }
-
-        if (this.compilationUnit != null) {
-            TraitInjectionUtils.processTraitsForNode(sourceUnit, classNode, DomainClassArtefactHandler.TYPE, this.compilationUnit);
-        }
+    @Override
+    protected String resolveArtefactType(SourceUnit sourceUnit, AnnotationNode annotationNode, ClassNode classNode) {
+        return DomainClassArtefactHandler.TYPE;
     }
 
     @Override
-    public void setCompilationUnit(CompilationUnit unit) {
-        this.compilationUnit = unit;
+    protected Class<?> getAnnotationTypeClass() {
+        return Entity.class;
     }
 
 }

@@ -84,6 +84,7 @@ public class GrailsApplicationRunner {
             System.setProperty("logging.level.ROOT", "OFF");
             System.setProperty("org.grails.cli.compiler.grape.ProgressReporter", "none");
         }
+        System.setProperty("spring.application.name", sources[0]);
     }
 
     /**

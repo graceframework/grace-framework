@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 the original author or authors.
+ * Copyright 2015-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,29 @@
  */
 package org.grails.plugins.web.interceptors
 
-import grails.artefact.Interceptor
 import grails.core.ArtefactHandlerAdapter
 import grails.core.DefaultGrailsClass
 import grails.core.GrailsClass
+
+import org.grails.core.artefact.ControllerArtefactHandler
 
 /**
  * {@link grails.core.ArtefactHandler} for {@link grails.artefact.Interceptor} instances
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 class InterceptorArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String MATCH_SUFFIX = '.INTERCEPTOR_MATCHED'
 
-    public static final String TYPE = Interceptor.getSimpleName()
+    public static final String TYPE = 'Interceptor'
+
     public static final String PLUGIN_NAME = 'interceptors'
 
     InterceptorArtefactHandler() {
-        super(TYPE, GrailsClass, DefaultGrailsClass, TYPE)
+        super(TYPE, GrailsClass, DefaultGrailsClass, TYPE, ControllerArtefactHandler.PATH)
     }
 
     @Override

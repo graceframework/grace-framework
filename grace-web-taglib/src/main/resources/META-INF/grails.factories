@@ -1,2 +1,8 @@
-grails.compiler.traits.TraitInjector=grails.compiler.traits.TagLibraryTraitInjector
-org.grails.taglib.encoder.OutputContextLookup=org.grails.web.taglib.encoder.WebOutputContextLookup
+grails.compiler.traits.TraitInjector=\
+grails.compiler.traits.TagLibraryTraitInjector
+
+org.grails.taglib.encoder.OutputContextLookup=\
+org.grails.web.taglib.encoder.WebOutputContextLookup
+
+grails.compiler.ast.ClassInjector=\
+org.grails.compiler.web.taglib.TagLibraryTransformer

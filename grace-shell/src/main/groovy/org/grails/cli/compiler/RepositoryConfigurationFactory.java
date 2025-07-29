@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,6 @@ public final class RepositoryConfigurationFactory {
     private static final RepositoryConfiguration MAVEN_CENTRAL = new RepositoryConfiguration("central",
             URI.create("https://repo.maven.apache.org/maven2/"), false);
 
-    private static final RepositoryConfiguration GRAILS_CENTRAL = new RepositoryConfiguration("grailsCentral",
-            URI.create("https://repo.grails.org/grails/core"), false);
-
     private static final RepositoryConfiguration SPRING_MILESTONE = new RepositoryConfiguration("spring-milestone",
             URI.create("https://repo.spring.io/milestone"), false);
 
@@ -65,7 +62,6 @@ public final class RepositoryConfigurationFactory {
         MavenSettings mavenSettings = new MavenSettingsReader().readSettings();
         List<RepositoryConfiguration> repositoryConfiguration = new ArrayList<>();
         repositoryConfiguration.add(MAVEN_CENTRAL);
-        repositoryConfiguration.add(GRAILS_CENTRAL);
         if (!Boolean.getBoolean("disableSpringSnapshotRepos")) {
             repositoryConfiguration.add(SPRING_MILESTONE);
             repositoryConfiguration.add(SPRING_SNAPSHOT);

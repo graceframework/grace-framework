@@ -4,9 +4,7 @@ import groovy.transform.Generated
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.SourceUnit
-import org.grails.compiler.injection.ASTValidationErrorsHelper
 import grails.compiler.ast.ClassInjector
-import org.grails.compiler.injection.GrailsAwareClassLoader
 import org.springframework.validation.Errors
 
 import spock.lang.Specification
@@ -15,19 +13,18 @@ import java.lang.reflect.Method
 
 class ASTValidationErrorsHelperSpec extends Specification {
 
-    static gcl
-
-    void setupSpec() {
-        gcl = new GrailsAwareClassLoader()
+    def createGrailsClassLoader() {
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.disabledGlobalASTTransformations = true
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
         def transformer = new ClassInjector() {
             @Override
             void performInjection(SourceUnit source, ClassNode classNode) {
-                performInject(source, null, classNode)
-            }
-
-            @Override
-            void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                performInjection(source, null, classNode)
             }
 
             @Override
@@ -35,14 +32,19 @@ class ASTValidationErrorsHelperSpec extends Specification {
                 new ASTValidationErrorsHelper().injectErrorsCode(classNode)
             }
             @Override
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
         gcl.classInjectors = [transformer] as ClassInjector[]
+        return gcl
     }
 
     void 'Test injected errors property'() {
         given:
-            def widgetClass = gcl.parseClass('class MyWidget{}')
+            def gcl = createGrailsClassLoader()
+            def widgetClass = gcl.parseClass('''
+class MyWidget {
+}
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/MyWidget.groovy')
 
         when:
             def widget = widgetClass.newInstance()
@@ -78,6 +80,7 @@ class ASTValidationErrorsHelperSpec extends Specification {
 
     void 'Test injected errors property methods are marked with Generated annotation'() {
         given:
+        def gcl = createGrailsClassLoader()
         def widgetClass = gcl.parseClass('class MyWidget{}')
 
         and: 'injected method names to it'

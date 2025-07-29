@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.springframework.util.Assert;
  * A single dependency.
  *
  * @author Phillip Webb
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public final class Dependency {
@@ -33,6 +34,8 @@ public final class Dependency {
     private final String artifactId;
 
     private final String version;
+
+    private final String classifier;
 
     private final List<Exclusion> exclusions;
 
@@ -53,9 +56,36 @@ public final class Dependency {
      * @param groupId    the group ID
      * @param artifactId the artifact ID
      * @param version    the version
+     * @param classifier the classifier
+     * @since 2024.0.0
+     */
+    public Dependency(String groupId, String artifactId, String version, String classifier) {
+        this(groupId, artifactId, version, classifier, Collections.emptyList());
+    }
+
+    /**
+     * Create a new {@link Dependency} instance.
+     *
+     * @param groupId    the group ID
+     * @param artifactId the artifact ID
+     * @param version    the version
      * @param exclusions the exclusions
      */
     public Dependency(String groupId, String artifactId, String version, List<Exclusion> exclusions) {
+        this(groupId, artifactId, version, null, Collections.unmodifiableList(exclusions));
+    }
+
+    /**
+     * Create a new {@link Dependency} instance.
+     *
+     * @param groupId    the group ID
+     * @param artifactId the artifact ID
+     * @param version    the version
+     * @param classifier the classifier
+     * @param exclusions the exclusions
+     * @since 2024.0.0
+     */
+    public Dependency(String groupId, String artifactId, String version, String classifier, List<Exclusion> exclusions) {
         Assert.notNull(groupId, "GroupId must not be null");
         Assert.notNull(artifactId, "ArtifactId must not be null");
         Assert.notNull(version, "Version must not be null");
@@ -63,6 +93,7 @@ public final class Dependency {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.version = version;
+        this.classifier = classifier;
         this.exclusions = Collections.unmodifiableList(exclusions);
     }
 
@@ -91,6 +122,16 @@ public final class Dependency {
      */
     public String getVersion() {
         return this.version;
+    }
+
+    /**
+     * Return the dependency classifier.
+     *
+     * @return the classifier
+     * @since 2024.0.0
+     */
+    public String getClassifier() {
+        return this.classifier;
     }
 
     /**

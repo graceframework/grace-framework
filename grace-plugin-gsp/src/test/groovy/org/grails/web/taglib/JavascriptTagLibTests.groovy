@@ -1,6 +1,5 @@
 package org.grails.web.taglib
 
-
 import grails.util.GrailsUtil
 import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.grails.gsp.GroovyPageBinding
@@ -18,6 +17,7 @@ class JavascriptTagLibTests extends AbstractGrailsTagTests {
     protected void onSetUp() {
         
         gcl.parseClass('''
+@grails.artefact.Artefact('Controller')
 class TestController {}
 ''')
     }
@@ -26,6 +26,7 @@ class TestController {}
     protected void onInit() {
         if (!grailsApplication.getArtefact(UrlMappingsArtefactHandler.TYPE, 'TestUrlMappings')) {
             def urlMappingsClass = gcl.parseClass('''\
+@grails.artefact.Artefact('UrlMappings')
 class TestUrlMappings {
     static mappings = {
         "/$controller/$action?/$id?" {}

@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.core.DefaultGrailsApplication
 import grails.gorm.validation.ConstrainedProperty
 import grails.gorm.validation.DefaultConstrainedProperty
@@ -308,6 +309,7 @@ class RegexUrlMappingTests extends Specification implements UrlMappingsUnitTest<
         !info2
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/book/$author/$title/$test" {

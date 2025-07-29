@@ -28,20 +28,24 @@ import org.grails.core.DefaultGrailsControllerClass;
  *
  * <p>This class is responsible for looking up controller classes for uris.</p>
  *
- * <p>Lookups are cached in non-development mode, and the cache size can be controlled using the grails.urlmapping.cache.maxsize config property.</p>
+ * <p>Lookups are cached in non-development mode, and the cache size can be controlled
+ * using the grails.urlmapping.cache.maxsize config property.</p>
  *
  * @author Marc Palmer (marc@anyware.co.uk)
  * @author Michael Yan
+ * @since 0.5
  */
 public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Controller";
 
+    public static final String PATH = "controllers";
+
     public static final String PLUGIN_NAME = "controllers";
 
     public ControllerArtefactHandler() {
         super(TYPE, GrailsControllerClass.class, DefaultGrailsControllerClass.class,
-                DefaultGrailsControllerClass.CONTROLLER, false);
+                DefaultGrailsControllerClass.CONTROLLER, PATH);
     }
 
     @Override
@@ -50,15 +54,13 @@ public class ControllerArtefactHandler extends ArtefactHandlerAdapter {
     }
 
     @Override
-    public boolean isArtefact(ClassNode classNode) {
-        boolean isNotSpringController = classNode.getAnnotations(new ClassNode(Controller.class)).isEmpty();
-        return isNotSpringController && super.isArtefact(classNode);
+    public boolean isArtefactClass(ClassNode classNode) {
+        return super.isArtefactClass(classNode) && classNode.getAnnotations(new ClassNode(Controller.class)).isEmpty();
     }
 
     @Override
     public boolean isArtefactClass(Class<?> clazz) {
-        boolean isNotSpringController = clazz.getAnnotation(Controller.class) == null;
-        return isNotSpringController && super.isArtefactClass(clazz);
+        return super.isArtefactClass(clazz) && clazz.getAnnotation(Controller.class) == null;
     }
 
 }

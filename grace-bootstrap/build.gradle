@@ -10,13 +10,13 @@ dependencies {
 
     api libs.groovy.templates
     api libs.groovy.xml
+    api libs.slf4j.api
     api libs.snakeyaml
     compileOnly libs.spring.boot
     api libs.spring.core
     compileOnly libs.groovy.ant
     compileOnly libs.jansi
     compileOnly libs.jline
-    compileOnly libs.methvin.directoryWatcher
 
     testImplementation libs.jansi
     testImplementation libs.jline

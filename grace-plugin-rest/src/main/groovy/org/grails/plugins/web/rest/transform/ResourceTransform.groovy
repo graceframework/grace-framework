@@ -89,6 +89,7 @@ import static org.grails.compiler.injection.GrailsASTUtils.processVariableScopes
  * See the {@link Resource} annotation for more details
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.3
  */
 @CompileStatic
@@ -148,15 +149,18 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
             transactionalAnn.addMember(ATTR_READY_ONLY, ConstantExpression.PRIM_TRUE)
             newControllerClassNode.addAnnotation(transactionalAnn)
 
+            AnnotationNode artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))
+            artefactAnnotation.addMember('value', new ConstantExpression(ControllerArtefactHandler.TYPE))
+            newControllerClassNode.addAnnotation(artefactAnnotation)
+
             Expression readOnlyAttr = annotationNode.getMember(ATTR_READY_ONLY)
             boolean isReadOnly = readOnlyAttr != null && ((ConstantExpression) readOnlyAttr).trueExpression
             addConstructor(newControllerClassNode, parent, isReadOnly)
 
-            List<ClassInjector> injectors = ArtefactTypeAstTransformation.findInjectors(ControllerArtefactHandler.TYPE,
-                    GrailsAwareInjectionOperation.getClassInjectors())
+            List<ClassInjector> injectors = Arrays.asList(GrailsAwareInjectionOperation.getClassInjectors())
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
-                    injectors.findAll { !(it instanceof ControllerActionTransformer) })
+                    injectors.findAll { !(it instanceof ControllerActionTransformer) }, unit)
 
             if (unit) {
                 TraitInjectionUtils.processTraitsForNode(source, newControllerClassNode, 'Controller', unit)
@@ -272,13 +276,9 @@ class ResourceTransform implements ASTTransformation, CompilationUnitAware {
                     new ClassNode(List).getPlainNodeReference(), responseFormatsExpression, null, null)
 
             ArtefactTypeAstTransformation.performInjection(source, newControllerClassNode,
-                    injectors.findAll { it instanceof ControllerActionTransformer })
+                    injectors.findAll { it instanceof ControllerActionTransformer }, unit)
             new TransactionalTransform().visit(source, transactionalAnn, newControllerClassNode)
             newControllerClassNode.setModule(ast)
-
-            AnnotationNode artefactAnnotation = new AnnotationNode(new ClassNode(Artefact))
-            artefactAnnotation.addMember('value', new ConstantExpression(ControllerArtefactHandler.TYPE))
-            newControllerClassNode.addAnnotation(artefactAnnotation)
 
             ast.classes.add(newControllerClassNode)
         }

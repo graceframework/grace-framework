@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,22 @@
  */
 package grails.compiler.ast
 
+import org.codehaus.groovy.ast.ClassNode
+
 /**
  * A marker interface that indicates that this injector applies to all classes in a project
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
+ * @deprecated since 2024.0.0, in favor of {@link ClassInjector}
  */
+@Deprecated(since = '2024.0.0', forRemoval = true)
 interface GlobalClassInjector extends ClassInjector {
+
+    @Override
+    default boolean shouldInject(ClassNode classNode) {
+        true
+    }
 
 }

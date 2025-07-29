@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.grails.compiler.injection;
 
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,56 +43,36 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
-import grails.artefact.Artefact;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
-import grails.compiler.ast.GrailsDomainClassInjector;
 
 import org.grails.core.artefact.DomainClassArtefactHandler;
 import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.io.support.GrailsResourceUtils;
 
 /**
  * Default implementation of domain class injector interface that adds the 'id'
  * and 'version' properties and other previously boilerplate code.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.2
  */
 @AstTransformer
-public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInjector, GrailsArtefactClassInjector {
+public class DefaultGrailsDomainClassInjector implements GrailsArtefactClassInjector {
 
     private final List<ClassNode> classesWithInjectedToString = new ArrayList<>();
 
+    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        if (GrailsASTUtils.isDomainClass(classNode, source) && shouldInjectClass(classNode)) {
-            if (!classNode.getAnnotations(new ClassNode(Artefact.class)).isEmpty()) {
-                return;
-            }
-            performInjectionOnAnnotatedEntity(classNode);
-        }
+        performInjection(source, classNode);
     }
 
-    public void performInjectionOnAnnotatedEntity(ClassNode classNode) {
+    @Override
+    public void performInjection(SourceUnit source, ClassNode classNode) {
         injectIdProperty(classNode);
         injectVersionProperty(classNode);
         injectToStringMethod(classNode);
         injectAssociations(classNode);
-    }
-
-    public boolean shouldInject(URL url) {
-        return GrailsResourceUtils.isDomainClass(url);
-    }
-
-    protected boolean shouldInjectClass(ClassNode classNode) {
-        String fullName = GrailsASTUtils.getFullName(classNode);
-        String mappingFile = getMappingFileName(fullName);
-
-        if (getClass().getResource(mappingFile) != null) {
-            return false;
-        }
-
-        return !isEnum(classNode);
     }
 
     /**
@@ -107,7 +86,6 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
     }
 
     private void injectAssociations(ClassNode classNode) {
-
         List<PropertyNode> propertiesToAdd = new ArrayList<>();
         for (PropertyNode propertyNode : classNode.getProperties()) {
             String name = propertyNode.getName();
@@ -251,14 +229,7 @@ public class DefaultGrailsDomainClassInjector implements GrailsDomainClassInject
         }
     }
 
-    public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
-    }
-
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedEntity(classNode);
-    }
-
+    @Override
     public String[] getArtefactTypes() {
         return new String[] { DomainClassArtefactHandler.TYPE };
     }

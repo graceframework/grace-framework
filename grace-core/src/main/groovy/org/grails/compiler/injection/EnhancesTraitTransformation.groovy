@@ -19,7 +19,7 @@ import java.lang.reflect.Modifier
 
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-import org.apache.groovy.ast.tools.AnnotatedNodeUtils
+import org.apache.groovy.ast.tools.ClassNodeUtils
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.AnnotatedNode
 import org.codehaus.groovy.ast.AnnotationNode
@@ -41,11 +41,13 @@ import org.codehaus.groovy.transform.trait.Traits
 
 import grails.artefact.Enhances
 import grails.compiler.traits.TraitInjector
+import grails.compiler.traits.TraitInjectorAdapter
 
 /**
  * Implementation for {@link Enhances)
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
@@ -74,6 +76,8 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
                 newList.addExpression(expr)
                 expr = newList
             }
+
+            ClassNode superClass = ClassHelper.make(TraitInjectorAdapter)
             ClassNode[] interfaces = [ClassHelper.make(TraitInjector)] as ClassNode[]
 
             String traitClassName = cNode.name
@@ -82,19 +86,20 @@ class EnhancesTraitTransformation extends AbstractArtefactTypeAstTransformation 
             }
 
             ClassNode transformerNode = new ClassNode("${traitClassName}TraitInjector", Modifier.PUBLIC,
-                    ClassHelper.OBJECT_TYPE, interfaces, MixinNode.EMPTY_ARRAY)
+                    superClass, interfaces, MixinNode.EMPTY_ARRAY)
+            transformerNode.setModule(cNode.getModule())
 
             ClassNode classNodeRef = ClassHelper.make(traitClassName).getPlainNodeReference()
-            MethodNode getTraitMethodNode = transformerNode.addMethod(
+            MethodNode getTraitMethodNode = new MethodNode(
                     'getTrait', Modifier.PUBLIC, ClassHelper.CLASS_Type.getPlainNodeReference(),
                     GrailsASTUtils.ZERO_PARAMETERS, null, new ReturnStatement(new ClassExpression(classNodeRef)))
-            AnnotatedNodeUtils.markAsGenerated(transformerNode, getTraitMethodNode)
+            ClassNodeUtils.addGeneratedMethod(transformerNode, getTraitMethodNode)
 
             ClassNode strArrayType = ClassHelper.STRING_TYPE.makeArray()
-            MethodNode getArtefactTypesMethodNode = transformerNode.addMethod(
+            MethodNode getArtefactTypesMethodNode = new MethodNode(
                     'getArtefactTypes', Modifier.PUBLIC, strArrayType, GrailsASTUtils.ZERO_PARAMETERS, null,
                     new ReturnStatement(CastExpression.asExpression(strArrayType, expr)))
-            AnnotatedNodeUtils.markAsGenerated(transformerNode, getArtefactTypesMethodNode)
+            ClassNodeUtils.addGeneratedMethod(transformerNode, getArtefactTypesMethodNode)
 
             ModuleNode ast = source.AST
             transformerNode.module = ast

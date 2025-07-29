@@ -26,36 +26,38 @@ class DefaultASTValidateableHelperSpec extends Specification {
     static widgetClass
 
     def setupSpec() {
-        def gcl = new GrailsAwareClassLoader()
         def transformer = new ClassInjector() {
             void performInjection(SourceUnit source, ClassNode classNode) {
                 performInjection(source, null, classNode)
             }
 
-            @Override
-            void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
             void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
                 new DefaultASTValidateableHelper().injectValidateableCode(classNode, false)
             }
-            boolean shouldInject(URL url) { true }
+            boolean shouldInject(ClassNode classNode) { true }
         }
-        gcl.classInjectors = [transformer]as ClassInjector[]
-        widgetClass = gcl.parseClass('''
-        class Widget {
-            String name
-            String category
-            Integer count
+        def gcl = new GrailsAwareClassLoader()
+        gcl.disabledGlobalASTTransformations = true
+        gcl.classInjectors = [transformer] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
 
-            static constraints = {
-                name matches: /[A-Z].*/
-                category size: 3..50
-                count range: 1..10
-            }
-        }
-        ''')
+        widgetClass = gcl.parseClass('''
+class Widget {
+    String name
+    String category
+    Integer count
+
+    static constraints = {
+        name matches: /[A-Z].*/
+        category size: 3..50
+        count range: 1..10
+    }
+}
+''', '/Users/grails/grails-demo-project/grails-app/domain/org/demo/Widget.groovy')
 
         def servletContext = new MockServletContext()
         def applicationContext = new GenericWebApplicationContext(servletContext)

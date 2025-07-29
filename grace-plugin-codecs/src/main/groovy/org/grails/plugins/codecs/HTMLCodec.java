@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.plugins.codecs;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import grails.artefact.Artefact;
 import grails.core.GrailsApplication;
 import grails.core.support.GrailsApplicationAware;
 
@@ -35,6 +36,7 @@ import org.grails.encoder.impl.HTMLEncoder;
  * @author Lari Hotari
  * @since 1.1
  */
+@Artefact("Codec")
 public final class HTMLCodec implements CodecFactory, GrailsApplicationAware, InitializingBean {
 
     public static final String CONFIG_PROPERTY_GSP_HTMLCODEC = "grails.views.gsp.htmlcodec";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2022 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ import java.lang.annotation.Target
 import org.codehaus.groovy.transform.GroovyASTTransformationClass
 
 /**
- *
  * Meta Annotation to applied to a domain class if it is a REST resource
  *
  * @author Graeme Rocher
  * @since 2.3
- *
+ * @see org.grails.plugins.web.rest.transform.ResourceTransform
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target([ElementType.TYPE])

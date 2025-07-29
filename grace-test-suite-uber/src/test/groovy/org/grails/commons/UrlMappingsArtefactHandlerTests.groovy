@@ -2,7 +2,6 @@ package org.grails.commons
 
 import org.grails.core.artefact.UrlMappingsArtefactHandler
 import org.junit.jupiter.api.Test
-import org.springframework.core.io.ByteArrayResource
 
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue

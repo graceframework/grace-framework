@@ -1,8 +1,8 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import org.grails.web.util.WebUtils
-import org.grails.web.mapping.DefaultUrlMappingsHolder
 import spock.lang.Specification
 
 /**
@@ -88,6 +88,7 @@ class UrlMappingParameterTests extends Specification implements UrlMappingsUnitT
         assertEquals "/news/latest/sport",urlCreator.createURL("blog", "latest", [category:"sport"], "utf-8")
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "/$controller/$action?/$id?"{

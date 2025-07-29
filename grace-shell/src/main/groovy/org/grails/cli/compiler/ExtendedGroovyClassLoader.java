@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,22 +23,39 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
+import java.security.CodeSource;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+
+import grails.artefact.Artefact;
+import grails.core.ArtefactHandler;
+import grails.core.ArtefactInfo;
+import grails.core.GrailsClass;
+
+import org.grails.compiler.injection.GlobalGrailsClassInjectorTransformation;
+import org.grails.compiler.injection.GlobalGrailsPluginTransformation;
+import org.grails.compiler.injection.GrailsASTUtils;
+import org.grails.compiler.injection.GrailsAwareInjectionOperation;
+import org.grails.core.artefact.DomainClassArtefactHandler;
+import org.grails.core.io.support.GrailsFactoriesLoader;
 
 /**
  * Extension of the {@link GroovyClassLoader} with support for obtaining '.class' files as
@@ -46,6 +63,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Phillip Webb
  * @author Dave Syer
+ * @author Michael Yan
  * @since 2022.1.0
  */
 public class ExtendedGroovyClassLoader extends GroovyClassLoader {
@@ -77,6 +95,36 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
         super(parent, configuration);
         this.configuration = configuration;
         this.scope = scope;
+        this.configuration.setTargetDirectory(new File("."));
+        this.configuration.setDebug(true);
+    }
+
+    public void setDisabledGlobalASTTransformations(boolean disabledGlobalASTTransformations) {
+        if (disabledGlobalASTTransformations) {
+            Set<String> globalASTTransformations = new HashSet<>();
+            globalASTTransformations.add(GlobalGrailsClassInjectorTransformation.class.getName());
+            globalASTTransformations.add(GlobalGrailsPluginTransformation.class.getName());
+            this.configuration.setDisabledGlobalASTTransformations(globalASTTransformations);
+        }
+    }
+
+    @Override
+    protected CompilationUnit createCompilationUnit(CompilerConfiguration config, CodeSource source) {
+        CompilationUnit compilationUnit = super.createCompilationUnit(config, source);
+
+        compilationUnit.addPhaseOperation(getGrailsAwareInjectionOperation(compilationUnit), Phases.CANONICALIZATION);
+
+        return compilationUnit;
+    }
+
+    public static GrailsAwareInjectionOperation getGrailsAwareInjectionOperation(CompilationUnit compilationUnit) {
+        List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler.class);
+
+        List<ArtefactHandler> delegatedArtefactHandlers = artefactHandlers
+                .stream().map(DelegatedArtefactHandler::new).collect(Collectors.toList());
+
+        return new GrailsAwareInjectionOperation(compilationUnit, null,
+                delegatedArtefactHandlers.toArray(new ArtefactHandler[0]));
     }
 
     @Override
@@ -121,6 +169,7 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
     }
 
     @Override
+    @SuppressWarnings("removal")
     public ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
         InnerLoader loader = AccessController.doPrivileged(getInnerLoader());
         return new ExtendedClassCollector(loader, unit, su);
@@ -241,6 +290,63 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
             return super.loadClass(name, resolve);
         }
 
+    }
+
+    private static class DelegatedArtefactHandler implements ArtefactHandler {
+
+        private final ArtefactHandler delegate;
+
+        DelegatedArtefactHandler(ArtefactHandler artefactHandler) {
+            this.delegate = artefactHandler;
+        }
+
+        @Override
+        public String getPluginName() {
+            return this.delegate.getPluginName();
+        }
+
+        @Override
+        public String getType() {
+            return this.delegate.getType();
+        }
+
+        @Override
+        public boolean isArtefact(ClassNode classNode) {
+            if (classNode.isEnum() || classNode.isInterface() || (classNode instanceof InnerClassNode)
+                    || classNode.isAbstract()) {
+                return false;
+            }
+            if (getType().equals(DomainClassArtefactHandler.TYPE)) {
+                return GrailsASTUtils.hasAnnotation(classNode, Artefact.class);
+            }
+            String name = classNode.getName();
+            return name.endsWith(getType());
+        }
+
+        @Override
+        public boolean isArtefact(Class<?> aClass) {
+            return true;
+        }
+
+        @Override
+        public GrailsClass newArtefactClass(Class<?> artefactClass) {
+            return null;
+        }
+
+        @Override
+        public void initialize(ArtefactInfo artefacts) {
+
+        }
+
+        @Override
+        public GrailsClass getArtefactForFeature(Object feature) {
+            return null;
+        }
+
+        @Override
+        public boolean isArtefactGrailsClass(GrailsClass artefactGrailsClass) {
+            return false;
+        }
     }
 
 }

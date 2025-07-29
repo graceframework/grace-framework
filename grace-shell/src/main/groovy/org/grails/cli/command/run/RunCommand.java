@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,8 +58,8 @@ public class RunCommand implements Command {
     public CommandDescription getDescription() {
         CommandDescription description = new CommandDescription();
         description.setName(NAME);
-        description.setDescription("Run a groovy script");
-        description.setUsage("run [SCRIPT NAME]");
+        description.setDescription("Run a Groovy Single-File Application script");
+        description.setUsage("grace run [SCRIPT NAME]");
         return description;
     }
 

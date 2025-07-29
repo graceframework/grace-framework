@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,7 @@ import org.grails.spring.RuntimeSpringConfiguration;
  * and provides the magic to invoke its various methods from Java.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 @SuppressWarnings("rawtypes")
@@ -373,22 +374,32 @@ public class DefaultGrailsPlugin extends AbstractGrailsPlugin implements ParentA
         boolean warDeployed = env.isWarDeployed();
         boolean reloadEnabled = env.isReloadEnabled();
 
-        if (!((reloadEnabled || !warDeployed))) {
+        if (!(reloadEnabled || !warDeployed)) {
             return;
         }
 
-        Object referencedResources = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, WATCHED_RESOURCES);
-
         try {
+            String pluginConfigKey = "grails.plugins." + this.getName() + ".watchedResources";
             List resourceList = null;
-            if (referencedResources instanceof String) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
+            if (this.grailsApplication != null && this.grailsApplication.getConfig() != null) {
+                resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
+                if (resourceList == null) {
+                    pluginConfigKey = "grails.plugins." + this.getName() + ".watched-resources";
+                    resourceList = this.grailsApplication.getConfig().getProperty(pluginConfigKey, List.class);
                 }
-                resourceList = Collections.singletonList(referencedResources.toString());
             }
-            else if (referencedResources instanceof List) {
-                resourceList = (List) referencedResources;
+            if (resourceList == null) {
+                Object referencedResources = GrailsClassUtils.getPropertyOrStaticPropertyOrFieldValue(this.plugin, WATCHED_RESOURCES);
+
+                if (referencedResources instanceof String) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Configuring plugin " + this + " to watch resources with pattern: " + referencedResources);
+                    }
+                    resourceList = Collections.singletonList(referencedResources.toString());
+                }
+                else if (referencedResources instanceof List) {
+                    resourceList = (List) referencedResources;
+                }
             }
 
             if (resourceList == null) {

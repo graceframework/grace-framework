@@ -57,7 +57,7 @@ class SomeClass {
 ''')
         then: 'an error is thrown'
         MultipleCompilationErrorsException e = thrown()
-        e.message.contains '[Static type checking] - Non-static method grails.compiler.Person'
+        e.message.contains '[Static type checking] - Cannot find matching method java.lang.Class#findAllByName(java.lang.String) or static method grails.compiler.Person#findAllByName(java.lang.String).'
     }
 
     @Issue('GRAILS-9996')

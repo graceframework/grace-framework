@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package grails.test.mixin
 
+import grails.artefact.Artefact
 import grails.testing.web.controllers.ControllerUnitTest
 import org.junit.FixMethodOrder
 import org.junit.runners.MethodSorters
@@ -48,6 +49,7 @@ class SetupTeardownInvokeTests extends Specification implements ControllerUnitTe
     }
 }
 
+@Artefact('Controller')
 class SetupTeardownController {
     String value
     static int counter = 0

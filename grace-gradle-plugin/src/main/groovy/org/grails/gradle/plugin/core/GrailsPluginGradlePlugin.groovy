@@ -24,9 +24,12 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.PublishArtifact
 import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.internal.tasks.DefaultTaskDependency
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.GroovySourceDirectorySet
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
@@ -218,6 +221,17 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
     @Override
     protected GrailsProjectType getGrailsProjectType() {
         GrailsProjectType.PLUGIN
+    }
+
+    @Override
+    protected String getGrailsProjectName(Project project) {
+        SourceSet sourceSet = project.getExtensions().getByType(JavaPluginExtension).getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+        SourceDirectorySet groovySourceSet = sourceSet.getExtensions().getByType(GroovySourceDirectorySet)
+        File grailsPluginFile = groovySourceSet.getFiles().find { File f -> f.name.endsWith('GrailsPlugin.groovy') }
+        if (grailsPluginFile) {
+            return grailsPluginFile.name.substring(0, grailsPluginFile.name.indexOf('GrailsPlugin.groovy'))
+        }
+        return project.name
     }
 
     @Override

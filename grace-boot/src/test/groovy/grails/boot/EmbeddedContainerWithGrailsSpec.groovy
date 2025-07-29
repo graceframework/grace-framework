@@ -35,7 +35,6 @@ class EmbeddedContainerWithGrailsSpec extends Specification {
 
 }
 
-@Artefact("Controller")
 @Controller
 class FooController {
 

@@ -1,0 +1,2 @@
+grails.compiler.ast.ClassInjector=\
+org.grails.gsp.compiler.transform.GroovyPageBytecodeOptimizer

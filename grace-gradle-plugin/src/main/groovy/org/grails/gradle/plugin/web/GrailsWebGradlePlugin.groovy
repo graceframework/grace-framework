@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,10 @@ package org.grails.gradle.plugin.web
 
 import javax.inject.Inject
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
-import org.gradle.api.tasks.TaskContainer
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 
-import grails.util.Environment
-
-import org.grails.gradle.plugin.commands.ApplicationContextCommandTask
 import org.grails.gradle.plugin.core.GrailsGradlePlugin
 
 /**
@@ -44,7 +38,6 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
         super(registry)
     }
 
-    @CompileDynamic
     @Override
     void apply(Project project) {
         super.apply(project)
@@ -58,21 +51,6 @@ class GrailsWebGradlePlugin extends GrailsGradlePlugin {
         configureRunCommand(project)
 
         configurePathingJar(project)
-
-        TaskContainer taskContainer = project.tasks
-        if (taskContainer.findByName('urlMappingsReport') == null) {
-            FileCollection fileCollection = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console)
-            taskContainer.create('urlMappingsReport', ApplicationContextCommandTask) {
-                group = 'Command'
-                description = "Prints out a report of the project's URL mappings"
-                classpath = fileCollection
-                systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.name)
-                systemProperty 'spring.main.banner-mode', 'OFF'
-                systemProperty 'logging.level.ROOT', 'OFF'
-                systemProperty 'spring.output.ansi.enabled', 'always'
-                command = 'url-mappings-report'
-            }
-        }
     }
 
     @Override

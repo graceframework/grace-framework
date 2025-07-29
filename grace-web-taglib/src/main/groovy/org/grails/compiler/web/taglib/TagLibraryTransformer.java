@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 package org.grails.compiler.web.taglib;
 
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassHelper;
@@ -46,13 +44,11 @@ import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.SourceUnit;
 
 import grails.artefact.TagLibrary;
-import grails.compiler.ast.AnnotatedClassInjector;
 import grails.compiler.ast.AstTransformer;
 import grails.compiler.ast.GrailsArtefactClassInjector;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.artefact.gsp.TagLibArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
 import org.grails.taglib.TagOutput;
 import org.grails.taglib.encoder.OutputContextLookupHelper;
 
@@ -60,15 +56,13 @@ import org.grails.taglib.encoder.OutputContextLookupHelper;
  * Enhances tag library classes with the appropriate API at compile time.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
-public class TagLibraryTransformer implements GrailsArtefactClassInjector, AnnotatedClassInjector {
+public class TagLibraryTransformer implements GrailsArtefactClassInjector {
 
     protected static final String GET_TAG_LIB_NAMESPACE_METHOD_NAME = "$getTagLibNamespace";
-
-    public static Pattern TAGLIB_PATTERN = Pattern.compile(".+/" +
-            GrailsResourceUtils.GRAILS_APP_DIR + "/taglib/(.+)TagLib\\.groovy");
 
     private static final String ATTRS_ARGUMENT = "attrs";
 
@@ -104,10 +98,9 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
 
     private static final ClassNode CLOSURE_CLASS_NODE = new ClassNode(Closure.class);
 
-
     @Override
     public String[] getArtefactTypes() {
-        return new String[] { getArtefactType(), "TagLibrary" };
+        return new String[] { getArtefactType() };
     }
 
     protected String getArtefactType() {
@@ -115,22 +108,12 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
     }
 
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
+        performInjection(source, classNode);
     }
 
     @Override
     public void performInjection(SourceUnit source, ClassNode classNode) {
-        performInjectionOnAnnotatedClass(source, classNode);
-    }
-
-    @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
         List<PropertyNode> tags = findTags(classNode);
 
         PropertyNode namespaceProperty = classNode.getProperty(NAMESPACE_PROPERTY);
@@ -202,33 +185,29 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
                 new MethodCallExpression(new ClassExpression(TAG_OUTPUT_CLASS_NODE), "captureTagOutput", arguments)));
 
         if (includeBody && includeAttrs) {
-            if (!methodExists(classNode, tagName, MAP_CLOSURE_PARAMETERS)) {
+            if (!classNode.hasMethod(tagName, MAP_CLOSURE_PARAMETERS)) {
                 classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
                         GrailsASTUtils.OBJECT_CLASS_NODE, MAP_CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else if (includeAttrs) {
-            if (!methodExists(classNode, tagName, MAP_PARAMETERS)) {
+            if (!classNode.hasMethod(tagName, MAP_PARAMETERS)) {
                 classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
                         GrailsASTUtils.OBJECT_CLASS_NODE, MAP_PARAMETERS, null, methodBody));
             }
         }
         else if (includeBody) {
-            if (!methodExists(classNode, tagName, CLOSURE_PARAMETERS)) {
+            if (!classNode.hasMethod(tagName, CLOSURE_PARAMETERS)) {
                 classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
                         GrailsASTUtils.OBJECT_CLASS_NODE, CLOSURE_PARAMETERS, null, methodBody));
             }
         }
         else {
-            if (!methodExists(classNode, tagName, Parameter.EMPTY_ARRAY)) {
+            if (!classNode.hasMethod(tagName, Parameter.EMPTY_ARRAY)) {
                 classNode.addMethod(new MethodNode(tagName, Modifier.PUBLIC,
                         GrailsASTUtils.OBJECT_CLASS_NODE, Parameter.EMPTY_ARRAY, null, methodBody));
             }
         }
-    }
-
-    private boolean methodExists(ClassNode classNode, String methodName, Parameter[] parameters) {
-        return classNode.getMethod(methodName, parameters) != null;
     }
 
     private List<PropertyNode> findTags(ClassNode classNode) {
@@ -265,10 +244,6 @@ public class TagLibraryTransformer implements GrailsArtefactClassInjector, Annot
             }
         }
         return tags;
-    }
-
-    public boolean shouldInject(URL url) {
-        return url != null && TAGLIB_PATTERN.matcher(url.getFile()).find();
     }
 
 }

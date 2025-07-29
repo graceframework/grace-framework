@@ -29,17 +29,18 @@ import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.trait.TraitComposer;
+import org.springframework.core.OrderComparator;
 
-import grails.compiler.ast.SupportsClassNode;
 import grails.compiler.traits.TraitInjector;
 
 import org.grails.core.io.support.GrailsFactoriesLoader;
 
 /**
+ * Utilities for {@link grails.compiler.traits.TraitInjector}
  *
  * @author Jeff Brown
+ * @author Michael Yan
  * @since 3.0
- *
  */
 public final class TraitInjectionUtils {
 
@@ -48,13 +49,53 @@ public final class TraitInjectionUtils {
     private TraitInjectionUtils() {
     }
 
-    private static void extendTraits(CompilationUnit unit, SourceUnit source, ClassNode classNode) {
-        if (unit.getPhase() != CompilePhase.SEMANTIC_ANALYSIS.getPhaseNumber()) {
-            TraitComposer.doExtendTraits(classNode, source, unit);
+    public static void injectTrait(CompilationUnit unit, SourceUnit source, ClassNode classNode, Class<?> trait) {
+        boolean traitsAdded = addTrait(classNode, trait);
+        if (traitsAdded) {
+            extendTraits(unit, source, classNode);
         }
     }
 
-    private static boolean addTrait(ClassNode classNode, Class trait) {
+    public static void processTraitsForNode(SourceUnit sourceUnit, ClassNode cNode, String artefactType, CompilationUnit compilationUnit) {
+        List<TraitInjector> traitInjectors = getTraitInjectors();
+        List<TraitInjector> injectorsToUse = new ArrayList<>();
+        for (TraitInjector injector : traitInjectors) {
+            List<String> artefactTypes = Arrays.asList(injector.getArtefactTypes());
+
+            if (artefactTypes.contains(artefactType) && injector.supports(cNode)) {
+                injectorsToUse.add(injector);
+            }
+        }
+        try {
+            if (injectorsToUse.size() > 0) {
+                OrderComparator.sort(injectorsToUse);
+                doInjectionInternal(compilationUnit, sourceUnit, cNode, injectorsToUse);
+            }
+        }
+        catch (RuntimeException e) {
+            System.err.println("Error occurred calling Trait injector [" + TraitInjectionUtils.class.getName() + "]: "
+                    + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private static void doInjectionInternal(CompilationUnit unit, SourceUnit source, ClassNode classNode,
+                                            List<TraitInjector> injectorsToUse) {
+        boolean traitsAdded = false;
+
+        for (TraitInjector injector : injectorsToUse) {
+            Class<?> trait = injector.getTrait();
+            if (addTrait(classNode, trait)) {
+                traitsAdded = true;
+            }
+        }
+        if (traitsAdded) {
+            extendTraits(unit, source, classNode);
+        }
+    }
+
+    private static boolean addTrait(ClassNode classNode, Class<?> trait) {
         boolean traitsAdded = false;
         boolean implementsTrait = false;
         boolean traitNotLoaded = false;
@@ -81,25 +122,9 @@ public final class TraitInjectionUtils {
         return traitsAdded;
     }
 
-    public static void injectTrait(CompilationUnit unit, SourceUnit source, ClassNode classNode, Class trait) {
-        boolean traitsAdded = addTrait(classNode, trait);
-        if (traitsAdded) {
-            extendTraits(unit, source, classNode);
-        }
-    }
-
-    private static void doInjectionInternal(CompilationUnit unit, SourceUnit source, ClassNode classNode,
-            List<TraitInjector> injectorsToUse) {
-        boolean traitsAdded = false;
-
-        for (TraitInjector injector : injectorsToUse) {
-            Class<?> trait = injector.getTrait();
-            if (addTrait(classNode, trait)) {
-                traitsAdded = true;
-            }
-        }
-        if (traitsAdded) {
-            extendTraits(unit, source, classNode);
+    private static void extendTraits(CompilationUnit unit, SourceUnit source, ClassNode classNode) {
+        if (unit.getPhase() != CompilePhase.SEMANTIC_ANALYSIS.getPhaseNumber()) {
+            TraitComposer.doExtendTraits(classNode, source, unit);
         }
     }
 
@@ -107,43 +132,20 @@ public final class TraitInjectionUtils {
         if (traitInjectors == null) {
             traitInjectors = GrailsFactoriesLoader.loadFactories(TraitInjector.class);
 
-            traitInjectors = TraitInjectionSupport.resolveTraitInjectors(traitInjectors);
+            traitInjectors = sortTraitInjectors(traitInjectors);
         }
-        if (traitInjectors != null) {
-            return Collections.unmodifiableList(traitInjectors);
-        }
-        else {
-            return Collections.emptyList();
-        }
+
+        return Collections.unmodifiableList(traitInjectors);
     }
 
-    public static void processTraitsForNode(SourceUnit sourceUnit, ClassNode cNode, String artefactType, CompilationUnit compilationUnit) {
-        List<TraitInjector> traitInjectors = getTraitInjectors();
-        List<TraitInjector> injectorsToUse = new ArrayList<>();
-        for (TraitInjector injector : traitInjectors) {
-            List<String> artefactTypes = Arrays.asList(injector.getArtefactTypes());
-
-            boolean supportsClassNode = true;
-
-            if (injector instanceof SupportsClassNode) {
-                supportsClassNode = ((SupportsClassNode) injector).supports(cNode);
-            }
-
-            if (artefactTypes.contains(artefactType) && supportsClassNode) {
-                injectorsToUse.add(injector);
-            }
-        }
-        try {
-            if (injectorsToUse.size() > 0) {
-                doInjectionInternal(compilationUnit, sourceUnit, cNode, injectorsToUse);
-            }
-        }
-        catch (RuntimeException e) {
-            System.err.println("Error occurred calling Trait injector [" + TraitInjectionUtils.class.getName() + "]: "
-                        + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+    static List<TraitInjector> sortTraitInjectors(List<TraitInjector> injectors) {
+        List<TraitInjector> traitInjectors = new ArrayList<>(injectors);
+        traitInjectors.sort((TraitInjector o1, TraitInjector o2) -> {
+                    Class<?> t1 = o1.getTrait();
+                    Class<?> t2 = o2.getTrait();
+                    return (t1 == t2) ? 0 : (o1.getClass().getName().startsWith("grails.compiler.traits") ? -1 : 1);
+        });
+        return traitInjectors;
     }
 
 }

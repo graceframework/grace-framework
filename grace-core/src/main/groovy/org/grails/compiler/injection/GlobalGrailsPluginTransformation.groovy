@@ -43,9 +43,7 @@ import grails.util.GrailsNameUtils
 
 import org.grails.core.io.support.GrailsFactoriesLoader
 import org.grails.io.support.AntPathMatcher
-import org.grails.io.support.GrailsResourceUtils
 import org.grails.io.support.SpringIOUtils
-import org.grails.io.support.UrlResource
 
 /**
  * A global transformation that applies Grails' transformations to classes within a Grails project
@@ -67,25 +65,20 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
     void visit(ASTNode[] nodes, SourceUnit source) {
         ModuleNode ast = source.getAST()
 
-        URL url = GrailsASTUtils.getSourceUrl(source)
-        if (!url || !GrailsResourceUtils.isProjectSource(new UrlResource(url))) {
+        if (!GrailsASTUtils.isProjectSource(source)) {
             return
         }
 
         List<ArtefactHandler> artefactHandlers = GrailsFactoriesLoader.loadFactories(ArtefactHandler)
 
         Set<String> transformedClasses = []
-        boolean isPlugin = false
-        Object projectName = null
-        Object projectVersion = null
+        boolean isPlugin = ast.getNodeMetaData('PROJECT_TYPE') == 'PLUGIN'
+        Object projectName = ast.getNodeMetaData('PROJECT_NAME')
+        Object projectVersion = ast.getNodeMetaData('PROJECT_VERSION') ?: getClass().getPackage().getImplementationVersion()
         ClassNode pluginClassNode = null
 
         List<ClassNode> classes = new ArrayList<>(ast.getClasses())
         for (ClassNode classNode : classes) {
-            isPlugin = Boolean.parseBoolean((String) classNode.getNodeMetaData('isPlugin'))
-            projectName = classNode.getNodeMetaData('projectName')
-            projectVersion = classNode.getNodeMetaData('projectVersion') ?: getClass().getPackage().getImplementationVersion()
-
             String classNodeName = classNode.name
 
             if (classNodeName.endsWith('GrailsPlugin') && !classNode.isAbstract()) {
@@ -100,7 +93,7 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 continue
             }
 
-            if (!GrailsResourceUtils.isGrailsResource(new UrlResource(url))) {
+            if (!GrailsASTUtils.isGrailsSource(classNode)) {
                 continue
             }
 
@@ -111,9 +104,12 @@ class GlobalGrailsPluginTransformation implements ASTTransformation, Compilation
                 GrailsASTUtils.addAnnotationOrGetExisting(classNode, GrailsPlugin, members)
             }
 
-            for (ArtefactHandler handler in artefactHandlers) {
-                if (handler.isArtefact(classNode)) {
-                    transformedClasses.add classNodeName
+            if (isPlugin) {
+                for (ArtefactHandler handler in artefactHandlers) {
+                    if (handler.isArtefact(classNode)) {
+                        transformedClasses.add classNodeName
+                        break
+                    }
                 }
             }
         }

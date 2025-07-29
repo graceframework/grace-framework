@@ -1,5 +1,6 @@
 package org.grails.web.binding.hal.xml
 
+import grails.artefact.Artefact
 import grails.persistence.Entity
 import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
@@ -42,6 +43,7 @@ class HalXmlBindingSpec extends Specification implements ControllerUnitTest<Bind
     }
 }
 
+@Artefact("Controller")
 @Controller
 class BindingController {
     def createPerson() {

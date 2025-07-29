@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,21 @@ package org.grails.commons;
 
 import grails.core.ArtefactHandlerAdapter;
 
-import org.grails.core.artefact.DomainClassArtefactHandler;
-
 /**
+ * Handler for Codec Artefact
+ *
  * @author Marc Palmer (marc@anyware.co.uk)
+ * @author Michael Yan
+ * @since 0.5
  */
 public class CodecArtefactHandler extends ArtefactHandlerAdapter {
 
     public static final String TYPE = "Codec";
 
+    public static final String PATH = "utils";
+
     public CodecArtefactHandler() {
-        super(TYPE, GrailsCodecClass.class, DefaultGrailsCodecClass.class, TYPE);
-    }
-
-    @Override
-    public boolean isArtefactClass(@SuppressWarnings("rawtypes") Class clazz) {
-        if (clazz == null) {
-            return false;
-        }
-
-        return clazz.getName().endsWith(DefaultGrailsCodecClass.CODEC) && !DomainClassArtefactHandler.isDomainClass(clazz);
+        super(TYPE, GrailsCodecClass.class, DefaultGrailsCodecClass.class, TYPE, PATH);
     }
 
 }

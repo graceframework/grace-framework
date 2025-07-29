@@ -11,7 +11,7 @@ class TagLibraryTraitSpec extends Specification {
     
     void 'test that a class marked with @Artefact("TagLibrary") is enhanced with grails.artefact.TagLibrary'() {
         expect:
-            TagLibrary.isAssignableFrom SomeOtherTagLib
+            !TagLibrary.isAssignableFrom(SomeOtherTagLib)
     }
 }
 

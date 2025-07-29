@@ -15,10 +15,6 @@
  */
 package org.grails.core.artefact;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.net.URL;
-
 import groovy.lang.Closure;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.InnerClassNode;
@@ -26,40 +22,32 @@ import org.springframework.core.Ordered;
 
 import grails.artefact.Artefact;
 import grails.core.ArtefactHandlerAdapter;
-import grails.core.GrailsApplication;
 import grails.core.GrailsClass;
 import grails.core.GrailsDomainClass;
-import grails.core.support.GrailsApplicationAware;
 
 import org.grails.compiler.injection.GrailsASTUtils;
 import org.grails.core.DefaultGrailsDomainClass;
 import org.grails.datastore.mapping.model.MappingContext;
-import org.grails.io.support.GrailsResourceUtils;
-import org.grails.io.support.Resource;
 
 /**
  * Evaluates the conventions that define a domain class in Grails.
  *
  * @author Graeme Rocher
  * @author Marc Palmer (marc@anyware.co.uk)
+ * @author Michael Yan
+ * @since 0.5
  */
-@SuppressWarnings("deprecation")
-public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements GrailsApplicationAware, Ordered {
+@SuppressWarnings({"deprecation"})
+public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implements Ordered {
 
     public static final String TYPE = "Domain";
 
+    public static final String PATH = "domain";
+
     public static final String PLUGIN_NAME = "domainClass";
 
-    private static final String ENTITY_ANN_NAME = "Entity";
-
-    private static final String GRAILS_PACKAGE_PREFIX = "grails.";
-
     public DomainClassArtefactHandler() {
-        super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, true);
-    }
-
-    public void setGrailsApplication(GrailsApplication grailsApplication) {
-        // no-op
+        super(TYPE, GrailsDomainClass.class, DefaultGrailsDomainClass.class, null, PATH, true);
     }
 
     @Override
@@ -77,32 +65,13 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     @Override
-    protected boolean isArtefactResource(Resource resource) throws IOException {
-        return super.isArtefactResource(resource) && GrailsResourceUtils.isDomainClass(resource.getURL());
-    }
-
-    @Override
     protected boolean isValidArtefactClassNode(ClassNode classNode, int modifiers) {
         return !classNode.isEnum() && !(classNode instanceof InnerClassNode);
     }
 
     @Override
-    public boolean isArtefact(ClassNode classNode) {
-        if (classNode == null) {
-            return false;
-        }
-        if (!isValidArtefactClassNode(classNode, classNode.getModifiers())) {
-            return false;
-        }
-
-        URL url = GrailsASTUtils.getSourceUrl(classNode);
-        if (url != null) {
-            boolean isDomainClass = GrailsResourceUtils.isDomainClass(url);
-            return isDomainClass && !GrailsASTUtils.isJpaEntityClass(classNode);
-        }
-        else {
-            return super.isArtefact(classNode);
-        }
+    public boolean isArtefactClass(ClassNode classNode) {
+        return !GrailsASTUtils.isJpaEntityClass(classNode) && super.isArtefactClass(classNode);
     }
 
     @Override
@@ -123,45 +92,19 @@ public class DomainClassArtefactHandler extends ArtefactHandlerAdapter implement
     }
 
     private static boolean doIsDomainClassCheck(Class<?> clazz) {
-        // it's not a closure
-        if (Closure.class.isAssignableFrom(clazz)) {
+        if (Closure.class.isAssignableFrom(clazz) || clazz.isEnum()) {
             return false;
         }
 
-        if (clazz.isEnum()) {
-            return false;
-        }
-        Artefact artefactAnn = null;
         try {
-            artefactAnn = clazz.getAnnotation(Artefact.class);
-        }
-        catch (ArrayStoreException ignored) {
-            // happens if a reference to a class that no longer exists is there
-        }
-
-        if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
-            return true;
-        }
-
-        Annotation[] annotations = null;
-        try {
-            annotations = clazz.getAnnotations();
-        }
-        catch (ArrayStoreException ignored) {
-            // happens if a reference to a class that no longer exists is there
-        }
-
-        if (annotations != null) {
-            for (Annotation annotation : annotations) {
-                Class<? extends Annotation> annType = annotation.annotationType();
-                String annName = annType.getSimpleName();
-
-                String pkgName = annType.getPackage().getName();
-                if (ENTITY_ANN_NAME.equals(annName) && pkgName.startsWith(GRAILS_PACKAGE_PREFIX)) {
-                    return true;
-                }
+            Artefact artefactAnn = clazz.getAnnotation(Artefact.class);
+            if (artefactAnn != null && artefactAnn.value().equals(DomainClassArtefactHandler.TYPE)) {
+                return true;
             }
         }
+        catch (Exception ignored) {
+        }
+
         return false;
     }
 

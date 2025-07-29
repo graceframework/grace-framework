@@ -1,5 +1,6 @@
 package org.grails.web.mapping
 
+import grails.artefact.Artefact
 import grails.testing.web.UrlMappingsUnitTest
 import spock.lang.Specification
 
@@ -67,6 +68,7 @@ class ResponseCodeUrlMappingTests extends Specification implements UrlMappingsUn
         creator.delegate instanceof DefaultUrlCreator
     }
 
+    @Artefact('UrlMappings')
     static class UrlMappings {
         static mappings = {
             "404"{

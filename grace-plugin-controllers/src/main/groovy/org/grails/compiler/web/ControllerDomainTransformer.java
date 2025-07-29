@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package org.grails.compiler.web;
 
-import java.net.URL;
-
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
@@ -26,7 +24,6 @@ import grails.compiler.ast.AstTransformer;
 
 import org.grails.compiler.injection.AbstractGrailsArtefactTransformer;
 import org.grails.core.artefact.DomainClassArtefactHandler;
-import org.grails.io.support.GrailsResourceUtils;
 import org.grails.plugins.web.controllers.api.ControllersDomainBindingApi;
 import org.grails.web.databinding.DefaultASTDatabindingHelper;
 
@@ -34,6 +31,7 @@ import org.grails.web.databinding.DefaultASTDatabindingHelper;
  * Adds binding methods to domain classes.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 @AstTransformer
@@ -64,14 +62,15 @@ public class ControllerDomainTransformer extends AbstractGrailsArtefactTransform
         return false;
     }
 
-    public boolean shouldInject(URL url) {
-        return GrailsResourceUtils.isDomainClass(url);
-    }
-
     @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         super.performInjection(source, context, classNode);
         new DefaultASTDatabindingHelper().injectDatabindingCode(source, context, classNode);
+    }
+
+    @Override
+    public void performInjection(SourceUnit source, ClassNode classNode) {
+        performInjection(source, null, classNode);
     }
 
 }

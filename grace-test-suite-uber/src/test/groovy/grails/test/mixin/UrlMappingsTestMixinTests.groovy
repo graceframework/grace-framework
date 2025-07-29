@@ -100,6 +100,7 @@ class UrlMappingsTestMixinTests extends Specification implements GrailsWebUnitTe
 
 }
 
+@Artefact('UrlMappings')
 class AnotherUrlMappings {
     static mappings = {
         "/$controller/$action?/$id?" {}
@@ -140,6 +141,7 @@ class UserController {
     def list() {}
 }
 
+@Artefact('UrlMappings')
 class MyUrlMappings {
     static mappings = { applicationContext ->
         assert applicationContext != null
@@ -177,6 +179,7 @@ class MyUrlMappingsSpec extends Specification implements UrlMappingsUnitTest<MyU
     }
 }
 
+@Artefact('UrlMappings')
 class GRAILS5222UrlMappings {
     static mappings = {
         "/user/$idText?"{
@@ -203,6 +206,7 @@ class GRAILS5222UrlMappingsSpec extends Specification implements UrlMappingsUnit
     }
 }
 
+@Artefact('UrlMappings')
 class GRAILS9863UrlMappings {
     static mappings = {
         "/p/user" (controller:"user", action:"index", plugin:"sample")
@@ -224,6 +228,7 @@ class GRAILS9863UrlMappingsSpec extends Specification implements UrlMappingsUnit
     }
 }
 
+@Artefact('UrlMappings')
 class GRAILS9110UrlMappings {
     static mappings = {
         "/user"(controller:"user", action:"publicProfile") {
@@ -265,6 +270,7 @@ class GRAILS9110UrlMappingsSpec extends Specification implements UrlMappingsUnit
     }
 }
 
+@Artefact('UrlMappings')
 class MethodTestUrlMappings {
     static mappings = {
         "/users/$name"(controller: 'user', action: 'update', method: 'put')
@@ -300,6 +306,7 @@ class PersonController extends RestfulController<String> {
     }
 }
 
+@Artefact('UrlMappings')
 class ResourceTestUrlMappings {
     static mappings = {
         '/person'(resources: 'person')
@@ -355,6 +362,7 @@ class ExceptionTestErrorsController {
     def handleDefault() {}
 }
 
+@Artefact("UrlMappings")
 class ExceptionTestUrlMappings {
     static mappings = {
         '500'(controller: 'exceptionTestErrors', action: 'handleNullPointer', exception: NullPointerException)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,20 @@
  */
 package grails.compiler.ast;
 
+import java.util.Arrays;
+
 import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.ast.InnerClassNode;
 import org.codehaus.groovy.ast.Parameter;
 import org.codehaus.groovy.ast.expr.ArgumentListExpression;
+
+import org.grails.compiler.injection.GrailsASTUtils;
 
 /**
  * Interface specific to Grails artefacts that returns the artefact type.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public interface GrailsArtefactClassInjector extends ClassInjector {
@@ -33,6 +39,17 @@ public interface GrailsArtefactClassInjector extends ClassInjector {
 
     Parameter[] ZERO_PARAMETERS = new Parameter[0];
 
-    String[] getArtefactTypes();
+    default String[] getArtefactTypes() {
+        return new String[0];
+    }
+
+    @Override
+    default boolean shouldInject(ClassNode classNode) {
+        if (classNode.isEnum() || classNode instanceof InnerClassNode || classNode.getName().contains("$")) {
+            return false;
+        }
+        String artefactType = GrailsASTUtils.getGrailsArtefactType(classNode);
+        return artefactType != null && (Arrays.asList(getArtefactTypes()).contains(artefactType) || Arrays.asList(getArtefactTypes()).contains("*"));
+    }
 
 }

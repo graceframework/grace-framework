@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,27 @@
  */
 package grails.compiler.traits
 
+import groovy.transform.CompileStatic
+
 import grails.artefact.TagLibrary
 
 /**
+ * A {@link TraitInjector} that injects controllers with the {@link grails.artefact.TagLibrary} trait
  *
  * @since 3.0
  * @author Jeff Brown
- *
  */
-class TagLibraryTraitInjector implements TraitInjector {
+@CompileStatic
+class TagLibraryTraitInjector extends TraitInjectorAdapter {
 
     @Override
-    Class getTrait() {
+    Class<?> getTrait() {
         TagLibrary
     }
 
     @Override
     String[] getArtefactTypes() {
-        ['TagLibrary', 'TagLib'] as String[]
+        ['TagLib'] as String[]
     }
 
 }

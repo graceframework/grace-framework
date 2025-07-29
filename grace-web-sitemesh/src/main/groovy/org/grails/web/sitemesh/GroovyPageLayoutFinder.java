@@ -268,6 +268,13 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
         return new SpringMVCViewDecorator(decoratorName, view);
     }
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (!(this.viewResolver instanceof GrailsViewResolver)) {
+            setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
+        }
+    }
+
     private static class LayoutCacheKey {
 
         private String controllerName;
@@ -307,13 +314,6 @@ public class GroovyPageLayoutFinder implements ApplicationListener<ContextRefres
             return result;
         }
 
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (!(this.viewResolver instanceof GrailsViewResolver)) {
-            setViewResolver(event.getApplicationContext().getBean(GrailsViewResolver.class));
-        }
     }
 
     private static class DecoratorCacheValue {

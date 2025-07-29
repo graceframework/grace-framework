@@ -1,5 +1,6 @@
 org.grails.cli.command.generate.GenerateCommand
 org.grails.cli.command.destroy.DestroyCommand
+org.grails.cli.command.run.RunCommand
 org.grails.cli.profile.commands.ApplicationTemplateCommand
 org.grails.cli.profile.commands.CreateAppCommand
 org.grails.cli.profile.commands.CreatePluginCommand

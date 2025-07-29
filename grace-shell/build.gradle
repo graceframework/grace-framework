@@ -35,6 +35,7 @@ dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
     api project(":grace-cli")
+    api project(":grace-core")
     api project(":grace-gradle-model")
     api project(":grace-util")
 
@@ -73,17 +74,21 @@ dependencies {
         exclude group: "javax.inject", module: "javax.inject"
     }
     runtimeOnly libs.slf4j.simple
+    runtimeOnly libs.jakarta.servlet
+    runtimeOnly project(":grace-plugin-controllers")
+    runtimeOnly project(":grace-plugin-gsp")
+    runtimeOnly project(":grace-plugin-url-mappings")
 }
 
 task syncGrailsDependenciesBom(type: Sync) {
-	destinationDir = file("${buildDir}/generated-resources/org/grails/cli/compiler/dependencies")
-	from configurations.dependenciesBom
+    destinationDir = file("${buildDir}/generated-resources/org/grails/cli/compiler/dependencies")
+    from configurations.dependenciesBom
 }
 
 sourceSets {
-	main {
-		output.dir("${buildDir}/generated-resources", builtBy: "syncGrailsDependenciesBom")
-	}
+    main {
+        output.dir("${buildDir}/generated-resources", builtBy: "syncGrailsDependenciesBom")
+    }
 }
 
 eclipse {

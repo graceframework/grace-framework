@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
 
     private final BeanWrapper ctxBean = new BeanWrapperImpl(this);
 
+    @Deprecated(since = "2024.0.0", forRemoval = true)
     private ThemeSource themeSource;
 
     private static final String GRAILS_ENVIRONMENT_BEAN_NAME = "springEnvironment";
@@ -81,10 +82,12 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
         }
     }
 
+    @Override
     public MetaClass getMetaClass() {
         return this.metaClass;
     }
 
+    @Override
     public Object getProperty(String property) {
         if (containsBean(property)) {
             return getBean(property);
@@ -95,10 +98,12 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
         return null;
     }
 
+    @Override
     public Object invokeMethod(String name, Object args) {
         return this.metaClass.invokeMethod(this, name, args);
     }
 
+    @Override
     public void setMetaClass(MetaClass metaClass) {
         this.metaClass = metaClass;
     }
@@ -106,15 +111,18 @@ public class GrailsApplicationContext extends GenericApplicationContext implemen
     /**
      * Initialize the theme capability.
      */
+    @SuppressWarnings("deprecation")
     @Override
     protected void onRefresh() {
         this.themeSource = UiApplicationContextUtils.initThemeSource(this);
     }
 
+    @Deprecated(since = "2024.0.0", forRemoval = true)
     public Theme getTheme(String themeName) {
         return this.themeSource.getTheme(themeName);
     }
 
+    @Override
     public void setProperty(String property, Object newValue) {
         if (newValue instanceof BeanDefinition) {
             if (containsBean(property)) {

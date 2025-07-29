@@ -280,7 +280,12 @@ info.app.name: ${getClass().name}
         mockManager = new MockGrailsPluginManager(grailsApplication)
         mockManager.registerProvidedArtefacts(grailsApplication)
 
-        def mockControllerClass = gcl.parseClass("class MockController {  def index = {} } ")
+        def mockControllerClass = gcl.parseClass('''
+@grails.artefact.Artefact("Controller")
+class MockController { 
+  def index = {} 
+} 
+''')
         grailsApplication.addArtefact(ControllerArtefactHandler.TYPE, mockControllerClass)
         grailsApplication.addArtefact(CodecArtefactHandler.TYPE, HTMLCodec)
         grailsApplication.addArtefact(CodecArtefactHandler.TYPE, HTML4Codec)

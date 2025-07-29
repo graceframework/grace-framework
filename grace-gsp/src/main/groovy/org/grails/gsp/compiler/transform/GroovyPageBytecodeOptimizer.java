@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2022 the original author or authors.
+ * Copyright 2011-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 package org.grails.gsp.compiler.transform;
-
-import java.net.URL;
 
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.MethodNode;
@@ -32,9 +30,9 @@ public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
 
     private static final String RUN_METHOD = "run";
 
+    @Override
     public void performInjection(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-
-        // search run method in GSP script and get codeblock
+        // search run method in GSP script and get code block
         MethodNode runMethod = classNode.getMethod(RUN_METHOD, new Parameter[0]);
         if (runMethod != null && runMethod.getCode() instanceof BlockStatement) {
             BlockStatement block = (BlockStatement) runMethod.getCode();
@@ -45,17 +43,13 @@ public class GroovyPageBytecodeOptimizer implements GroovyPageInjector {
         }
     }
 
+    @Override
     public void performInjection(SourceUnit source, ClassNode classNode) {
         performInjection(source, null, classNode);
     }
 
     @Override
-    public void performInjectionOnAnnotatedClass(SourceUnit source, ClassNode classNode) {
-        performInjection(source, null, classNode);
-    }
-
-    //Avoid other injection
-    public boolean shouldInject(URL url) {
+    public boolean shouldInject(ClassNode classNode) {
         return false;
     }
 

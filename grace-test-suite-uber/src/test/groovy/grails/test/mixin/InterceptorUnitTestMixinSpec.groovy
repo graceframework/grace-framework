@@ -1,5 +1,6 @@
 package grails.test.mixin
 
+import grails.artefact.Artefact
 import grails.artefact.Interceptor
 import grails.testing.web.interceptor.InterceptorUnitTest
 import spock.lang.Specification
@@ -36,6 +37,7 @@ class InterceptorUnitTestMixinSpec extends Specification implements InterceptorU
     }
 }
 
+@Artefact('Interceptor')
 class TestInterceptor implements Interceptor {
     TestInterceptor() {
         match(controller:"foo", action:"bar")

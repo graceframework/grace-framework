@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.grails.compiler.web;
 
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 
@@ -29,9 +30,10 @@ import org.grails.core.artefact.ControllerArtefactHandler;
  * A transformation that makes an Artefact a controller
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
-@GroovyASTTransformation
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransformation {
 
     @Override
@@ -45,4 +47,3 @@ public class ControllerArtefactTypeTransformation extends ArtefactTypeAstTransfo
     }
 
 }
-

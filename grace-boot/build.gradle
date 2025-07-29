@@ -19,6 +19,7 @@ dependencies {
     api libs.spring.web
 
     compileOnly libs.jsr305
+    compileOnly libs.spring.boot.devtools
 
     testImplementation project(":grace-plugin-controllers")
     testImplementation project(":grace-test")
