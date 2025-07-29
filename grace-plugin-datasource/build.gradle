@@ -1,0 +1,20 @@
+dependencies {
+    api project(":grace-core")
+    api project(':grace-plugin-api')
+    api project(":grace-spring-boot")
+
+    api libs.grails.datastore.core
+    api libs.grails.datastore.gorm
+    api libs.groovy.sql
+    api libs.spring.boot.autoconfigure
+    api libs.spring.context
+    api libs.spring.jdbc
+    implementation libs.tomcat.jdbc
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation libs.assertj.core
+    testImplementation libs.h2
+    testImplementation libs.spring.boot.test
+    testImplementation libs.spring.test
+}

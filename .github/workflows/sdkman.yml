@@ -1,0 +1,32 @@
+name: SDKMAN Release
+
+on:
+  release:
+    types: [published]
+
+permissions: {}
+jobs:
+  sdkman_release:
+    if: ${{ github.repository == 'graceframework/grace-framework' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['17']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref_name }}
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: SDKMan release
+        run: ./gradlew sdkManRelease
+        env:
+          SDKMAN_KEY: ${{ secrets.SDKMAN_KEY }}
+          SDKMAN_TOKEN: ${{ secrets.SDKMAN_TOKEN }}

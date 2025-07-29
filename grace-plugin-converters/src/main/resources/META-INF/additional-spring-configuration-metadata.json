@@ -1,0 +1,50 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.converters.encoding",
+      "type": "java.lang.String",
+      "defaultValue": "UTF-8"
+    },
+    {
+      "name": "grails.converters.default.circular.reference.behaviour",
+      "type": "java.lang.String",
+      "defaultValue": "DEFAULT"
+    },
+    {
+      "name": "grails.converters.default.pretty.print",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.converters.xml.default.deep",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "grails.converters.json.date",
+      "type": "java.lang.String",
+      "defaultValue": "default"
+    },
+    {
+      "name": "grails.converters.json.default.deep",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.converters.json.cacheObjectMarshallerSelectionByClass",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "name": "grails.converters.json.circular.reference.behaviour",
+      "type": "java.lang.String",
+      "defaultValue": "DEFAULT"
+    },
+    {
+      "name": "grails.converters.json.pretty.print",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

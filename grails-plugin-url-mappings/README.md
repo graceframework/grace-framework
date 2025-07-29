@@ -1,2 +1,0 @@
-## grails-plugin-url-mappings
-

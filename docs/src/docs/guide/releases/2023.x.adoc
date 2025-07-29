@@ -1,0 +1,1831 @@
+=== 2023.3.0
+
+link:{github}/releases/tag/v2023.3.0[release notes]
+
+⭐️ New Features
+
+* Support custom Grace banner link:{github}/issues/1083[#1083]
+* Add documentation: user guide and api docs link:{github}/issues/1081[#1081]
+* Config generate docs step to the release workflow link:{github}/issues/1080[#1080]
+* Setup docs workflow link:{github}/issues/1079[#1079]
+
+🛠 Improvements
+
+* Change to `graceVersion` of the app info link:{github}/issues/1085[#1085]
+* Exclude obsolete `gsp` plugin from the plugin list link:{github}/issues/1084[#1084]
+* Enhance IntegrationTestGradlePlugin - Deprecation warning of the `IdeaModule.testSourceDirs` - Migrate to `tasks.register()` link:{github}/issues/1074[#1074]
+* Only show internal commands and features by using flag `only`, removing flag `all` link:{github}/issues/1073[#1073] link:{github}/issues/1042[#1042]
+* Improve GradleUtil - Use `System.in` as the standardInput of Gradle's BuildLauncher - It will make `shell` command work normally link:{github}/issues/1072[#1072]
+
+🐞 Bug Fixes
+
+* Fixes groovydoc: error parsing Java source file: `org/grails/plugins/datasource/DataSourcePluginConfiguration.java` link:{github}/issues/1082[#1082]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0 link:{github}/issues/1022[#1022]
+* Upgrade to Grace Async and Events 6.3.0 link:{github}/issues/1023[#1023]
+* Upgrade to Grace Cache Plugin 6.3.0 link:{github}/issues/1024[#1024]
+* Upgrade to Grace Data 2023.3.0 link:{github}/issues/1025[#1025]
+* Upgrade to Grace Data Hibernate 2023.3.0 link:{github}/issues/1026[#1026]
+* Upgrade to Grace Data MongoDB 2023.3.0 link:{github}/issues/1027[#1027]
+* Upgrade to Grace Database Migration Plugin 6.3.0 link:{github}/issues/1028[#1028]
+* Upgrade to Grace Fields Plugin 6.3.0 link:{github}/issues/1029[#1029]
+* Upgrade to Grace Geb Plugin 6.3.0 link:{github}/issues/1030[#1030]
+* Upgrade to Grace Profile: Base 2023.3.0 link:{github}/issues/1033[#1033]
+* Upgrade to Grace Profile: Base 2023.3.1 link:{github}/issues/1086[#1086]
+* Upgrade to Grace Profile: Plugin 2023.3.0 link:{github}/issues/1034[#1034]
+* Upgrade to Grace Profile: Profile 2023.3.0 link:{github}/issues/1035[#1035]
+* Upgrade to Grace Profile: Rest API 2023.3.0 link:{github}/issues/1036[#1036]
+* Upgrade to Grace Profile: Starter 2023.3.0 link:{github}/issues/1037[#1037]
+* Upgrade to Grace Profile: Web 2023.3.0 link:{github}/issues/1038[#1038]
+* Upgrade to Grace Profile: Web Plugin 2023.3.0 link:{github}/issues/1039[#1039]
+* Upgrade to Grace Scaffolding 6.3.0 link:{github}/issues/1031[#1031]
+* Upgrade to Grace Views 6.3.0 link:{github}/issues/1032[#1032]
+* Upgrade to Gradle 8.14.2 link:{github}/issues/1068[#1068]
+* Upgrade to Gradle Tooling API 8.14.2 link:{github}/issues/1069[#1069]
+* Upgrade to Groovy 4.0.27 link:{github}/issues/1067[#1067]
+* Upgrade to Maven 3.9.10 link:{github}/issues/1070[#1070]
+* Upgrade to Maven Resolver 1.9.23 link:{github}/issues/1071[#1071]
+* Upgrade to Spring Boot 3.3.13 link:{github}/issues/1076[#1076]
+* Upgrade to Spring Boot 3.3.12 link:{github}/issues/1052[#1052]
+* Upgrade to Spring Framework 6.1.21 link:{github}/issues/1077[#1077]
+* Upgrade to Spring Framework 6.1.20 link:{github}/issues/1053[#1053]
+* Upgrade to Tomcat 10.1.42 link:{github}/issues/1078[#1078]
+* Upgrade to Tomcat 10.1.41 link:{github}/issues/1066[#1066]
+
+⚙️ Tasks
+
+* Remove deprecated gradle/actions/wrapper-validation in the release workflow link:{github}/issues/1075[#1075]
+* Update github workflows - Upgrade to setup-gradle@v4 - Upgrade to latest ubuntu
+* Release v2023.3.0
+
+
+🔌 Plugins
+
+* https://github.com/grace-plugins/grace-asset-pipeline/releases/tag/v6.3.0[Grace Asset Pipeline v6.3.0]
+* https://github.com/graceframework/grace-async/releases/tag/v6.3.0[Grace Async and Events v6.3.0]
+* https://github.com/graceframework/grace-cache/releases/tag/v6.3.0[Grace Cache v6.3.0]
+* https://github.com/graceframework/grace-data/releases/tag/v2023.3.0[Grace Data v2023.3.0]
+* https://github.com/graceframework/grace-data-mongodb/releases/tag/v2023.3.0[Grace Data MongoDB v2023.3.0]
+* https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0[Grace Data Hibernate v2023.3.0]
+* https://github.com/graceframework/grace-database-migration/releases/tag/v6.3.0[Grace Database Migration v6.3.0]
+* https://github.com/graceframework/grace-fields/releases/tag/v6.3.0[Grace Fields v6.3.0]
+* https://github.com/graceframework/grace-geb/releases/tag/v6.3.0[Grace Geb v6.3.0]
+* https://github.com/graceframework/grace-scaffolding/releases/tag/v6.3.0[Grace Scaffolding v6.3.0]
+* https://github.com/graceframework/grace-views/releases/tag/v6.3.0[Grace Views v6.3.0]
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.0[Base v2023.3.0]
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.1[Base v2023.3.1]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.3.0[Plugin v2023.3.0]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.3.0[Profile v2023.3.0]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.3.0[REST API v2023.3.0]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.3.0[Starter v2023.3.0]
+* https://github.com/grace-profiles/web/releases/tag/v2023.3.0[Web v2023.3.0]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.3.0[Web Plugin v2023.3.0]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.3.0-RC2...v2023.3.0
+
+=== 2023.3.0-RC2
+
+link:{github}/releases/tag/v2023.3.0-RC2[release notes]
+
+⭐️ New Features
+
+* Support `create-app` for Spring Boot `3.5.0` link:{github}/issues/1046[#1046]
+* Add `ApplicationCommand` commands back to Shell link:{github}/issues/1063[#1063]
+* Add support custom fonts for PDF link:{github}/issues/1064[#1064]
+* Add support for PDF bookmarks link:{github}/issues/1057[#1057]
+* Add flag `--all` to command `profile-info` link:{github}/issues/1042[#1042] link:{github}/issues/1041[#1041]
+
+🛠 Improvements
+
+* Update README
+* Improve the styles for PDF document link:{github}/issues/1062[#1062]
+* Refactor PdfBuilder DocPublisher and PublishPdfTask link:{github}/issues/1059[#1059]
+* Introduce ResourceChecker to check resources for YamlTocStrategy link:{github}/issues/1058[#1058]
+* Improve the print media styles: hide the nav links and quick reference link:{github}/issues/1056[#1056]
+* Improve the section level as HTML headings link:{github}/issues/1055[#1055]
+* Improve guide logo and title for doc templates link:{github}/issues/1054[#1054]
+* Update docs template's styles link:{github}/issues/1047[#1047]
+* Support docs task's default `sourceDir` may be `docs` or `src/docs` link:{github}/issues/1045[#1045]
+* Command `profile-info` should show whether the feature is Required or Default link:{github}/issues/1044[#1044]
+* Command `profile-info` should show the extended Profiles link:{github}/issues/1043[#1043]
+* Command `profile-info` support show all the Profile's commands and features included parent Profile's link:{github}/issues/1041[#1041]
+* Command `profile-info` should only show the Profile's internal commands and features link:{github}/issues/1040[#1040]
+
+🐞 Bug Fixes
+
+* Correct the path of the generated single.html link:{github}/issues/1061[#1061]
+* Fix wrong src of the logo image in doc templates link:{github}/issues/1060[#1060]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Gradle 8.14 link:{github}/issues/1048[#1048]
+* Upgrade to Gradle Tooling API 8.14 link:{github}/issues/1049[#1049]
+
+⚙️ Tasks
+
+* Release v2023.3.0-RC2
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.3.0-RC1...v2023.3.0-RC2
+
+=== 2023.3.0-RC1
+
+link:{github}/releases/tag/v2023.3.0-RC1[release notes]
+
+This release is based on Spring Boot 3.3.11 and Spring Framework to 6.1.19.
+
+* Upgrade to Groovy 4.0.26, Gradle 8.13, Tomcat 10.1.40
+* Refactor `grace-docs` and `GrailsDocGradlePlugin`, now you can use `org.graceframework.grace-doc` gradle plugin to generate guide
+* `bootstrap` feature in base profile has upgrade to 5.3.5
+* Add `grace-datastore-gorm-tck` and some more dependencies to BOM
+
+For a complete list of changes made in this release see [this project on GitHub](https://github.com/orgs/graceframework/projects/8).
+
+⭐️ New Features
+
+* Update docs styles: make logo on the left and nav links on the right link:{github}/issues/1019[#1019]
+* Refactor GrailsDocGradlePlugin: register tasks PublishGuideTask and PublishPdfTask link:{github}/issues/1018[#1018]
+* Rename PublishPdf to PublishPdfTask link:{github}/issues/1017[#1017]
+* Enhance PublishGuideTask and remove duplicated PublishGuide link:{github}/issues/1016[#1016]
+* Add dependency gradleApi() to fix NoSuchMethodError: `ScriptBytecodeAdapter.createRange(java.lang.Object, java.lang.Object, boolean, boolean)` link:{github}/issues/1014[#1014]
+* Enhance PublishPdf: Make it CompileStatic and remove property 'outputDirectory' link:{github}/issues/1015[#1015]
+* Remove grace-docs' dependency on Gradle Api link:{github}/issues/1012[#1012]
+* Update DocPublisherTask: migrate to `groovy.ant.AntBuilder` link:{github}/issues/1011[#1011]
+* Update The radeox macros to clean up Gradle task related annotations link:{github}/issues/1010[#1010]
+* Move Gradle related tasks to grace-gradle-plugin * MigrateLegacyDocs * PublishGuide * PublishPdf link:{github}/issues/1009[#1009]
+* Remove `CreateReleaseDropDownTask` link:{github}/issues/1008[#1008]
+* Update doc templates: clean unused scripts link:{github}/issues/1007[#1007]
+* Add input properties `asciidoc` and `language` to `PublishGuideTask` link:{github}/issues/1006[#1006]
+* Explicitly set the source and target compatibility of `PublishGuideTask` link:{github}/issues/1005[#1005]
+* Add dependency `grace-docs` directly to gradle plugin link:{github}/issues/1004[#1004]
+* Add more dependencies to BOM link:{github}/issues/1000[#1000]
+* Add grace-datastore-gorm-tck dependency to BOM link:{github}/issues/996[#996]
+
+🛠 Improvements
+
+* Update README - Add information about Grace vs Spring Boot - Update the badge of Spring Boot
+* Rerun some skipped tests - GrailsWebDataBinderSpec - EntityTransformTests - InheritanceWithValidationTests - DomainConstraintGettersSpec - DefaultXmlRendererSpec link:{github}/issues/1020[#1020]
+* Change file and task name from  `grails-doc-files.jar` to `grace-doc-resources.jar` link:{github}/issues/1003[#1003]
+* Don't provide database driver dependency when using mongodb feature link:{github}/issues/1001[#1001] link:{github}/issues/939[#939]
+* Remove unused mongodb-java-driver in libs.versions.toml link:{github}/issues/1002[#1002]
+
+🐞 Bug Fixes
+
+* Remove SoftwareVersionSpec: cause SoftwareVersion already removed link:{github}/issues/1013[#1013] link:{github}/issues/1008[#1008]
+* Correct the artifactId of Asset Pipeline Plugin in BOM link:{github}/issues/999[#999]
+* Remove obsolete grails.factories in Services plugin link:{github}/issues/998[#998]
+* Correct the artifactId of Asset Pipeline Plugin in BOM link:{github}/issues/997[#997]
+* Remove grace-test-suite-* dependencies in the generated BOM link:{github}/issues/995[#995]
+
+🚀 Dependency Upgrades
+
+* Upgrade to AspectJ 1.9.24 link:{github}/issues/994[#994]
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0-RC1 link:{github}/issues/969[#969]
+* Upgrade to Grace Async and Events 6.3.0-RC1 link:{github}/issues/970[#970]
+* Upgrade to Grace Cache Plugin 6.3.0-RC1 link:{github}/issues/971[#971]
+* Upgrade to Grace Data 2023.3.0-RC1 link:{github}/issues/972[#972]
+* Upgrade to Grace Data Hibernate 2023.3.0-RC1 link:{github}/issues/973[#973]
+* Upgrade to Grace Data MongoDB 2023.3.0-RC1 link:{github}/issues/974[#974]
+* Upgrade to Grace Database Migration Plugin 6.3.0-RC1 link:{github}/issues/975[#975]
+* Upgrade to Grace Fields Plugin 6.3.0-RC1 link:{github}/issues/976[#976]
+* Upgrade to Grace Geb Plugin 6.3.0-RC1 link:{github}/issues/977[#977]
+* Upgrade to Grace Profile: Base 2023.3.0-RC1 link:{github}/issues/980[#980]
+* Upgrade to Grace Profile: Plugin 2023.3.0-RC1 link:{github}/issues/981[#981]
+* Upgrade to Grace Profile: Rest API 2023.3.0-RC1 link:{github}/issues/982[#982]
+* Upgrade to Grace Profile: Starter 2023.3.0-RC1 link:{github}/issues/983[#983]
+* Upgrade to Grace Profile: Web 2023.3.0-RC1 link:{github}/issues/984[#984]
+* Upgrade to Grace Profile: Web Plugin 2023.3.0-RC1 link:{github}/issues/985[#985]
+* Upgrade to Grace Profile: Profile 2023.3.0-RC1 link:{github}/issues/986[#986]
+* Upgrade to Grace Scaffolding 6.3.0-RC1 link:{github}/issues/978[#978]
+* Upgrade to Grace Views 6.3.0-RC1 link:{github}/issues/979[#979]
+* Upgrade to Java Parser 3.26.4 link:{github}/issues/987[#987]
+* Upgrade to Jsoup 1.18.3 link:{github}/issues/989[#989]
+* Upgrade to Mockito 5.11.0 link:{github}/issues/990[#990]
+* Upgrade to Spring Boot 3.3.11 link:{github}/issues/992[#992]
+* Upgrade to Spring Framework 6.1.19 link:{github}/issues/991[#991]
+* Upgrade to SLF4J 2.0.17 link:{github}/issues/988[#988]
+* Upgrade to Tomcat 10.1.40 link:{github}/issues/993[#993]
+
+⚙️ Tasks
+
+* Release v2023.3.0-RC1
+
+🔌 Plugins
+
+* https://github.com/grace-plugins/grace-asset-pipeline/releases/tag/v6.3.0-RC1[Grace Asset Pipeline v6.3.0-RC1]
+* https://github.com/graceframework/grace-async/releases/tag/v6.3.0-RC1[Grace Async and Events v6.3.0-RC1]
+* https://github.com/graceframework/grace-cache/releases/tag/v6.3.0-RC1[Grace Cache v6.3.0-RC1]
+* https://github.com/graceframework/grace-data/releases/tag/v2023.3.0-RC1[Grace Data v2023.3.0-RC1]
+* https://github.com/graceframework/grace-data-mongodb/releases/tag/v2023.3.0-RC1[Grace Data MongoDB v2023.3.0-RC1]
+* https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0-RC1[Grace Data Hibernate v2023.3.0-RC1]
+* https://github.com/graceframework/grace-database-migration/releases/tag/v6.3.0-RC1[Grace Database Migration v6.3.0-RC1]
+* https://github.com/graceframework/grace-fields/releases/tag/v6.3.0-RC1[Grace Fields v6.3.0-RC1]
+* https://github.com/graceframework/grace-geb/releases/tag/v6.3.0-RC1[Grace Geb v6.3.0-RC1]
+* https://github.com/graceframework/grace-scaffolding/releases/tag/v6.3.0-RC1[Grace Scaffolding v6.3.0-RC1]
+* https://github.com/graceframework/grace-views/releases/tag/v6.3.0-RC1[Grace Views v6.3.0-RC1]
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.0-RC1[Base v2023.3.0-RC1]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.3.0-RC1[Plugin v2023.3.0-RC1]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.3.0-RC1[Profile v2023.3.0-RC1]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.3.0-RC1[REST API v2023.3.0-RC1]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.3.0-RC1[Starter v2023.3.0-RC1]
+* https://github.com/grace-profiles/web/releases/tag/v2023.3.0-RC1[Web v2023.3.0-RC1]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.3.0-RC1[Web Plugin v2023.3.0-RC1]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.3.0-M2...v2023.3.0-RC1
+
+=== 2023.3.0-M2
+
+link:{github}/releases/tag/v2023.3.0-M2[release notes]
+
+Include total 127 issues were closed https://github.com/orgs/graceframework/projects/7
+
+⭐️ New Features
+
+* Introduce `GlobalCommand` to indicate some commands alwasy be available link:{github}/issues/967[#967]
+* Add GORM for MongoDB artifacts to BOM link:{github}/issues/965[#965]
+* Rewrite the Script Commands `list-plugins` `plugin-info` in Profile `base` to Shell CLI Commands link:{github}/issues/962[#962]
+* Support skipping some features with flag --skip on `create-app` link:{github}/issues/961[#961]
+* Add new property examples to `CommandDescription` link:{github}/issues/959[#959]
+* Support specific package name using command flag 'package-name' link:{github}/issues/957[#957]
+* Add liquibase-core and liquibase-hibernate5 to BOM link:{github}/issues/956[#956]
+* Support specific Database type using command flag 'database' link:{github}/issues/938[#938] link:{github}/issues/939[#939]
+* Support Groovy Template in the skeleton of Profile link:{github}/issues/938[#938]
+
+🛠 Improvements
+
+* Update README - Update badge versions of Grace and Spring Boot - Add more Plugins and Guides
+* Make `list-profiles` `profile-info` available in the project context, currently only globally link:{github}/issues/963[#963]
+* Refine the help message of `help` command link:{github}/issues/960[#960]
+* Refine the help message of `create-app` `create-plugin` `create-profile` link:{github}/issues/958[#958]
+* Exclude logback-spring.xml when packaging plugins link:{github}/issues/948[#948]
+* Increase the output width of application running status and plugin list information tables link:{github}/issues/947[#947]
+* Update README Update badge versions of Groovy and Spring Boot
+* No need to configure the assetsPath of asset-pipeline plugin link:{github}/issues/946[#946]
+* Support using methods instead of Closures in BootStrap class link:{github}/issues/943[#943]
+* grace-doc only support Gradle 8.0+ because of groovy-ant link:{github}/issues/937[#937]
+* Raise the minimum supported version of Gradle to 7.6.4+ or 8.3+ link:{github}/issues/936[#936]
+* Spring Dependency Management Plugin: Disable the customization of a generated pom
+* Also remove unused methods `resolveSpringBootVersion()`, `resolveSpringFrameworkVersion()`, `resolveTomcatVersion()` link:{github}/issues/934[#934]
+* Update README Update badge of Spring Boot version
+
+🐞 Bug Fixes
+
+* The 'applicationClass' of Integration should be a valid main Application class annotated with `@SpringBootApplication` link:{github}/issues/964[#964]
+* Fixed CreateAppCommandSpec link:{github}/issues/961[#961]
+* Update DocPublisher: migrate to `groovy.ant.AntBuilder` link:{github}/issues/935[#935]
+* Improve GrailsGradlePlugin: Optimize the generated POM of plugin * GrailsGradlePlugin: Remove duplicated `spring-boot-dependencies`
+
+🚀 Dependency Upgrades
+
+* Upgrade to AspectJ 1.9.23 link:{github}/issues/953[#953]
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0-M1 link:{github}/issues/904[#904]
+* Upgrade to Grace Async and Events 6.3.0-M1 link:{github}/issues/931[#931]
+* Upgrade to Grace Cache Plugin 6.3.0-M1 link:{github}/issues/921[#921]
+* Upgrade to Grace Data 2023.3.0-M1 link:{github}/issues/922[#922]
+* Upgrade to Grace Data Migration Plugin 6.3.0-M1 link:{github}/issues/908[#908]
+* Upgrade to Grace Data MongoDB 2023.3.0-M1 link:{github}/issues/966[#966]
+* Upgrade to Grace Data Hibernate 2023.3.0-M1 link:{github}/issues/923[#923]
+* Upgrade to Grace Fields Plugin 6.3.0-M1 link:{github}/issues/924[#924]
+* Upgrade to Grace Geb Plugin 6.3.0-M1 link:{github}/issues/919[#919]
+* Upgrade to Grace Profile: Base 2023.3.0-M2 link:{github}/issues/925[#925]
+* Upgrade to Grace Profile: Plugin 2023.3.0-M2 link:{github}/issues/926[#926]
+* Upgrade to Grace Profile: Profile 2023.3.0-M2 link:{github}/issues/920[#920]
+* Upgrade to Grace Profile: Rest API 2023.3.0-M2 link:{github}/issues/927[#927]
+* Upgrade to Grace Profile: Starter 2023.3.0-M2 link:{github}/issues/915[#915]
+* Upgrade to Grace Profile: Web 2023.3.0-M2 link:{github}/issues/928[#928]
+* Upgrade to Grace Profile: Web Plugin 2023.3.0-M2 link:{github}/issues/929[#929]
+* Upgrade to Grace Scaffolding 6.3.0-M1 link:{github}/issues/930[#930]
+* Upgrade to Grace Views 6.3.0-M1 link:{github}/issues/905[#905]
+* Upgrade to Gradle 8.13 link:{github}/issues/954[#954]
+* Upgrade to Gradle 8.12.1 link:{github}/issues/944[#944]
+* Upgrade to Gradle Tooling API 8.13 link:{github}/issues/955[#955]
+* Upgrade to Gradle Tooling API 8.12.1 link:{github}/issues/945[#945]
+* Upgrade to Groovy 4.0.26 link:{github}/issues/952[#952]
+* Upgrade to Groovy 4.0.25 link:{github}/issues/933[#933]
+* Upgrade to Spring Boot 3.3.10 link:{github}/issues/949[#949]
+* Upgrade to Spring Boot 3.3.9 link:{github}/issues/940[#940]
+* Upgrade to Spring Boot 3.3.8 link:{github}/issues/932[#932]
+* Upgrade to Spring Framework 6.1.18 link:{github}/issues/950[#950]
+* Upgrade to Spring Framework 6.1.17 link:{github}/issues/941[#941]
+* Upgrade to Tomcat 10.1.39 link:{github}/issues/951[#951]
+* Upgrade to Tomcat 10.1.36 link:{github}/issues/942[#942]
+
+⚙️ Tasks
+
+* Release v2023.3.0-M2
+
+
+🔌 Plugins
+
+* https://github.com/grace-plugins/grace-asset-pipeline/releases/tag/v6.3.0-M1[Grace Asset Pipeline v6.3.0-M1]
+* https://github.com/graceframework/grace-async/releases/tag/v6.3.0-M1[Grace Async and Events v6.3.0-M1]
+* https://github.com/graceframework/grace-cache/releases/tag/v6.3.0-M1[Grace Cache v6.3.0-M1]
+* https://github.com/graceframework/grace-data/releases/tag/v2023.3.0-M1[Grace Data v2023.3.0-M1]
+* https://github.com/graceframework/grace-data-mongodb/releases/tag/v2023.3.0-M1[Grace Data MongoDB v2023.3.0-M1]
+* https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0-M1[Grace Data Hibernate v2023.3.0-M1]
+* https://github.com/graceframework/grace-database-migration/releases/tag/v6.3.0-M1[Grace Database Migration v6.3.0-M1]
+* https://github.com/graceframework/grace-fields/releases/tag/v6.3.0-M1[Grace Fields v6.3.0-M1]
+* https://github.com/graceframework/grace-geb/releases/tag/v6.3.0-M1[Grace Geb v6.3.0-M1]
+* https://github.com/graceframework/grace-scaffolding/releases/tag/v6.3.0-M1[Grace Scaffolding v6.3.0-M1]
+* https://github.com/graceframework/grace-views/releases/tag/v6.3.0-M1[Grace Views v6.3.0-M1]
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.0-M2[Base v2023.3.0-M2]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.3.0-M2[Plugin v2023.3.0-M2]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.3.0-M2[Profile v2023.3.0-M2]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.3.0-M2[REST API v2023.3.0-M2]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.3.0-M2[Starter v2023.3.0-M2]
+* https://github.com/grace-profiles/web/releases/tag/v2023.3.0-M2[Web v2023.3.0-M2]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.3.0-M2[Web Plugin v2023.3.0-M2]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.3.0-M1...v2023.3.0-M2
+
+=== 2023.3.0-M1
+
+link:{github}/releases/tag/v2023.3.0-M1[release notes]
+
+🛠 Improvements
+
+* Spring Boot 3.2 is no longer supported link:{github}/issues/894[#894]
+* Remove the workaround for logback 1.5.7+ in Spring Boot 3.3 link:{github}/issues/895[#895]
+
+🚀 Dependency Upgrades
+
+* Upgrade to AssertJ 3.25.3 link:{github}/issues/891[#891]
+* Upgrade to Commons Lang3 3.14.0 link:{github}/issues/892[#892]
+* Upgrade to Grace Profile: Base 2023.3.0-M1 link:{github}/issues/896[#896]
+* Upgrade to Grace Profile: Plugin 2023.3.0-M1 link:{github}/issues/897[#897]
+* Upgrade to Grace Profile: Profile 2023.3.0-M1 link:{github}/issues/898[#898]
+* Upgrade to Grace Profile: Rest API 2023.3.0-M1 link:{github}/issues/899[#899]
+* Upgrade to Grace Profile: Starter 2023.3.0-M1 link:{github}/issues/900[#900]
+* Upgrade to Grace Profile: Web 2023.3.0-M1 link:{github}/issues/901[#901]
+* Upgrade to Grace Profile: Web Plugin 2023.3.0-M1 link:{github}/issues/902[#902]
+* Upgrade to Jackson Databind 2.17.3 link:{github}/issues/893[#893]
+* Upgrade to Spring Boot 3.3.7 link:{github}/issues/520[#520]
+
+⚙️ Tasks
+
+* Release v2023.3.0-M1
+* Disables Groovy Joint Validation Build
+* Switch to '2023.3.x' Update github workflows
+* Next development version: 2023.3.0-SNAPSHOT
+
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.3.0-M1[Base v2023.3.0-M1]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.3.0-M1[Plugin v2023.3.0-M1]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.3.0-M1[Profile v2023.3.0-M1]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.3.0-M1[REST API v2023.3.0-M1]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.3.0-M1[Starter v2023.3.0-M1]
+* https://github.com/grace-profiles/web/releases/tag/v2023.3.0-M1[Web v2023.3.0-M1]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.3.0-M1[Web Plugin v2023.3.0-M1]
+
+=== 2023.2.0
+
+link:{github}/releases/tag/v2023.2.0[release notes]
+
+🛠 Improvements
+
+* Update dependencies of `grace-web-jsp` link:{github}/issues/889[#889]
+* Bean `jspTagLibraryResolver` is created only if JSTL exists link:{github}/issues/888[#888]
+* Improve `assemble` task and remove deprecation warnings link:{github}/issues/887[#887]
+* Code format
+* Add dependencies `jsp` `jstl` `el` to `grace-web-jsp` link:{github}/issues/886[#886]
+* Make `jakarta-servlet` as a compileOnlyApi Dependency link:{github}/issues/885[#885]
+* Update build scripts to avoid deprecation warnings with Gradle 8 link:{github}/issues/884[#884]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0 link:{github}/issues/867[#867]
+* Upgrade to Grace Async and Events 6.2.0 link:{github}/issues/868[#868]
+* Upgrade to Grace Cache Plugin 6.2.0 link:{github}/issues/869[#869]
+* Upgrade to Grace Data 2023.2.0 link:{github}/issues/870[#870]
+* Upgrade to Grace Data Hibernate 2023.2.0 link:{github}/issues/871[#871]
+* Upgrade to Grace Database Migration Plugin 6.2.0 link:{github}/issues/872[#872]
+* Upgrade to Grace Fields Plugin 6.2.0 link:{github}/issues/873[#873]
+* Upgrade to Grace Geb Plugin 6.2.0 link:{github}/issues/874[#874]
+* Upgrade to Grace Profile: Base 2023.2.0 link:{github}/issues/875[#875]
+* Upgrade to Grace Profile: Plugin 2023.2.0 link:{github}/issues/876[#876]
+* Upgrade to Grace Profile: Profile 2023.2.0 link:{github}/issues/877[#877]
+* Upgrade to Grace Profile: Rest API 2023.2.0 link:{github}/issues/878[#878]
+* Upgrade to Grace Profile: Starter 2023.2.0 link:{github}/issues/879[#879]
+* Upgrade to Grace Profile: Web 2023.2.0 link:{github}/issues/880[#880]
+* Upgrade to Grace Profile: Web Plugin 2023.2.0 link:{github}/issues/881[#881]
+* Upgrade to Grace Scaffolding 6.2.0 link:{github}/issues/882[#882]
+* Upgrade to Grace Views 6.2.0 link:{github}/issues/883[#883]
+
+⚙️ Tasks
+
+* Release v2023.2.0
+
+🔌 Plugins
+
+* https://github.com/grace-plugins/grace-asset-pipeline/releases/tag/v6.2.0[Grace Asset Pipeline v6.2.0]
+* https://github.com/graceframework/grace-async/releases/tag/v6.2.0[Grace Async and Events v6.2.0]
+* https://github.com/graceframework/grace-cache/releases/tag/v6.2.0[Grace Cache v6.2.0]
+* https://github.com/graceframework/grace-data/releases/tag/v2023.2.0[Grace Data v2023.2.0]
+* https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.2.0[Grace Data Hibernate v2023.2.0]
+* https://github.com/graceframework/grace-database-migration/releases/tag/v6.2.0[Grace Database Migration v6.2.0]
+* https://github.com/graceframework/grace-fields/releases/tag/v6.2.0[Grace Fields v6.2.0]
+* https://github.com/graceframework/grace-geb/releases/tag/v6.2.0[Grace Geb v6.2.0]
+* https://github.com/graceframework/grace-scaffolding/releases/tag/v6.2.0[Grace Scaffolding v6.2.0]
+* https://github.com/graceframework/grace-views/releases/tag/v6.2.0[Grace Views v6.2.0]
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.2.0[Base v2023.2.0]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.2.0[Plugin v2023.2.0]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.2.0[Profile v2023.2.0]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.2.0[REST API v2023.2.0]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.2.0[Starter v2023.2.0]
+* https://github.com/grace-profiles/web/releases/tag/v2023.2.0[Web v2023.2.0]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.2.0[Web Plugin v2023.2.0]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.2.0-RC1...v2023.2.0
+
+=== 2023.2.0-RC1
+
+link:{github}/releases/tag/v2023.2.0-RC1[release notes]
+
+⭐️ New Features
+
+* Auto-configure `GrailsApplication` and `GrailsPluginManager` link:{github}/issues/857[#857]
+* Supports for Multiple Data Sources link:{github}/issues/858[#858]
+
+🛠 Improvements
+
+* Improves `CreateAppCommand`: Use explicit assignment instead of "space-assignment" link:{github}/issues/865[#865]
+* Improve conditions on `DataSourcePluginConfiguration` link:{github}/issues/859[#859]
+
+🐞 Bug Fixes
+
+* The value of `basePath` in `GroovyPageUnitTestResourceLoader` is wrong after initialization link:{github}/issues/864[#864]
+* Remove Gradle Extra Configurations Plugin link:{github}/issues/850[#850]
+
+🚀 Dependency Upgrades
+
+* Upgrade to CodeNarc Gradle Plugin 3.5.0 link:{github}/issues/854[#854]
+* Upgrade to Checkstyle Gradle Plugin 10.12.4 link:{github}/issues/852[#852]
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0-RC1 link:{github}/issues/822[#822]
+* Upgrade to Grace Async and Events 6.2.0-RC1 link:{github}/issues/823[#823]
+* Upgrade to Grace Cache Plugin 6.2.0-RC1 link:{github}/issues/824[#824]
+* Upgrade to Grace Data 2023.2.0-RC1 link:{github}/issues/825[#825]
+* Upgrade to Grace Data Hibernate 2023.2.0-RC1 link:{github}/issues/826[#826]
+* Upgrade to Grace Database Migration Plugin 6.2.0-RC1 link:{github}/issues/827[#827]
+* Upgrade to Grace Fields Plugin 6.2.0-RC1 link:{github}/issues/828[#828]
+* Upgrade to Grace Geb Plugin 6.2.0-RC1 link:{github}/issues/829[#829]
+* Upgrade to Grace Profile: Base 2023.2.0-RC1 link:{github}/issues/830[#830]
+* Upgrade to Grace Profile: Plugin 2023.2.0-RC1 link:{github}/issues/831[#831]
+* Upgrade to Grace Profile: Profile 2023.2.0-RC1 link:{github}/issues/832[#832]
+* Upgrade to Grace Profile: Rest API 2023.2.0-RC1 link:{github}/issues/833[#833]
+* Upgrade to Grace Profile: Starter 2023.2.0-RC1 link:{github}/issues/834[#834]
+* Upgrade to Grace Profile: Web 2023.2.0-RC1 link:{github}/issues/835[#835]
+* Upgrade to Grace Profile: Web Plugin 2023.2.0-RC1 link:{github}/issues/836[#836]
+* Upgrade to Grace Scaffolding 6.2.0-RC1 link:{github}/issues/837[#837]
+* Upgrade to Grace Views 6.2.0-RC1 link:{github}/issues/838[#838]
+* Upgrade to Gradle 8.12 link:{github}/issues/848[#848]
+* Upgrade to Gradle Tooling API 8.12 link:{github}/issues/849[#849]
+* Upgrade to JaCoCo Gradle Plugin 0.8.12 link:{github}/issues/853[#853]
+* Upgrade to Spring Dependency Management Plugin 1.1.7 link:{github}/issues/856[#856]
+* Upgrade to Spring Framework 6.1.16 link:{github}/issues/855[#855]
+* Upgrade to Test Retry Gradle Plugin 1.6.0 link:{github}/issues/851[#851]
+
+⚙️ Tasks
+
+* Release v2023.2.0-RC1
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.2.0-M3...v2023.2.0-RC1
+
+=== 2023.2.0-M3
+
+link:{github}/releases/tag/v2023.2.0-M3[release notes]
+
+⭐️ New Features
+
+* Setup GitHub Workflow to publish Grace plugins link:{github}/issues/845[#845]
+* Publish Grace plugins to the Gradle Plugin Portal link:{github}/issues/844[#844]
+
+🛠 Improvements
+
+* Define common properties for all Gradle plugins link:{github}/issues/846[#846]
+
+🐞 Bug Fixes
+
+* Remove all the unnecessary Gradle plugins properties files link:{github}/issues/843[#843]
+* Task `publishMavenPublication` should be declared an explicit dependency on `Sign` link:{github}/issues/842[#842]
+* Failed to publish publication 'graceXxxPluginMarkerMaven' to repository 'Sonatype' link:{github}/issues/841[#841]
+* Enable `pluginMaven` publication for Gradle plugins by removing `automatedPublishing = false` link:{github}/issues/840[#840]
+* Update DocPublisher: migrate to `groovy.ant.AntBuilder` link:{github}/issues/839[#839]
+
+⚙️ Tasks
+
+* Release v2023.2.0-M3
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.2.0-M2...v2023.2.0-M3
+
+=== 2023.2.0-M2
+
+link:{github}/releases/tag/v2023.2.0-M2[release notes]
+
+⭐️ New Features
+
+* Grace `destroy` command `destroy` as the opposite of `generate`, it will figure out what `generate` did, and undo it. link:{github}/issues/803[#803]
+* Grace `generate` command link:{github}/issues/771[#771]
+* Grace Generator API link:{github}/issues/772[#772]
+
+🛠 Improvements
+
+* Improve Gradle build scripts link:{github}/issues/820[#820]
+* Update DataSourcePluginConfigurationTests link:{github}/issues/819[#819]
+* Remove bean `transactionManager` from `DataSource` plugin link:{github}/issues/817[#817]
+* Add `plugin` Generator link:{github}/issues/815[#815]
+* Enhance `I18nGenerator` link:{github}/issues/814[#814]
+* Use Apache Commons Text link:{github}/issues/810[#810]
+* Add `@ConditionalOnMissingBean` on beans in `UrlMappingsPluginConfiguration` link:{github}/issues/809[#809]
+* Add `i18n` Generator link:{github}/issues/807[#807]
+* Refactor AbstractGenerator link:{github}/issues/806[#806]
+* Refactor Generator API link:{github}/issues/805[#805]
+* Update Interceptor generator template link:{github}/issues/804[#804]
+* Generator: generate operation can be revoked link:{github}/issues/802[#802]
+* Refactor Generator API link:{github}/issues/801[#801]
+* Update Gradle Build Scripts link:{github}/issues/799[#799]
+* Improvements for `GrailsProfileGradlePlugin` link:{github}/issues/796[#796]
+* Exclude `micrometer` in the distribution of Grace link:{github}/issues/795[#795]
+* Change PluginDefiner `org.grails.plugins` to `org.graceframework.plugins` link:{github}/issues/777[#777]
+* Improve `GrailsPluginGradlePlugin` with no functional changes link:{github}/issues/776[#776]
+* Plugin projects should not have `bootRun` tasks enabled by default link:{github}/issues/775[#775]
+* Plugin projects should not create tasks such as `console` `shell` `ApplicationCommand` `runCommand` `runScript` `pathingJar` link:{github}/issues/774[#774]
+* Allows to set a name for the Script Command link:{github}/issues/773[#773]
+* Allows to create a project that don't include any features link:{github}/issues/770[#770]
+* Fix `CommandLineParser` throw `ArrayIndexOutOfBoundsException` when the option value is empty link:{github}/issues/769[#769]
+* Disables Gradle console output coloring in interactive mode link:{github}/issues/768[#768]
+* Register `GrailsExtension` in `GroovyPagePlugin` link:{github}/issues/767[#767]
+* Support `TemplateRenderer.template()` to find specific the root directory of the templates link:{github}/issues/766[#766]
+* Support `GrailsConsole` to customize category and color of status message link:{github}/issues/765[#765]
+* Add new properties to `CommandArgument`: `type` `aliases` `banner` link:{github}/issues/764[#764]
+* Allow commands to display help information on their own link:{github}/issues/763[#763]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0-M2 link:{github}/issues/813[#813]
+* Upgrade to Grace Async and Events 6.2.0-M1 link:{github}/issues/779[#779]
+* Upgrade to Grace Cache Plugin 6.2.0-M1 link:{github}/issues/780[#780]
+* Upgrade to Grace Data 2023.2.0-M1 link:{github}/issues/781[#781]
+* Upgrade to Grace Data Hibernate 2023.2.0-M1 link:{github}/issues/782[#782]
+* Upgrade to Grace Database Migration Plugin 6.2.0-M1 link:{github}/issues/783[#783]
+* Upgrade to Grace Fields Plugin 6.2.0-M1 link:{github}/issues/784[#784]
+* Upgrade to Grace Geb Plugin 6.2.0-M1 link:{github}/issues/785[#785]
+* Upgrade to Grace Profile: Base 2023.2.0-M2 link:{github}/issues/786[#786]
+* Upgrade to Grace Profile: Plugin 2023.2.0-M2 link:{github}/issues/787[#787]
+* Upgrade to Grace Profile: Profile 2023.2.0-M2 link:{github}/issues/788[#788]
+* Upgrade to Grace Profile: Rest API 2023.2.0-M2 link:{github}/issues/789[#789]
+* Upgrade to Grace Profile: Starter 2023.2.0-M2 link:{github}/issues/790[#790]
+* Upgrade to Grace Profile: Web 2023.2.0-M2 link:{github}/issues/791[#791]
+* Upgrade to Grace Profile: Web Plugin 2023.2.0-M2 link:{github}/issues/792[#792]
+* Upgrade to Grace Scaffolding 6.2.0-M1 link:{github}/issues/793[#793]
+* Upgrade to Grace Views 6.2.0-M1 link:{github}/issues/794[#794]
+* Upgrade to Gradle 8.11.1 link:{github}/issues/797[#797]
+* Upgrade to Gradle Tooling API 8.11.1 link:{github}/issues/798[#798]
+* Upgrade to Maven 3.9.9 link:{github}/issues/800[#800]
+* Upgrade to Tomcat 10.1.34 link:{github}/issues/812[#812]
+
+⚙️ Tasks
+
+* Release v2023.2.0-M2
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.2.0-M1...v2023.2.0-M2
+
+=== 2023.2.0-M1
+
+link:{github}/releases/tag/v2023.2.0-M1[release notes]
+
+🛠 Improvements
+
+* Performs a SDKMan Minor Release for Milestone releases and Release Candidates link:{github}/issues/761[#761]
+* Improve `create-app` command for Spring Boot versions link:{github}/issues/753[#753]
+* Update README
+* Update github workflows
+
+🚀 Dependency Upgrades
+
+* Upgrade to Byte Buddy 1.14.19 link:{github}/issues/741[#741]
+* Upgrade to Commons Codec 1.16.1 link:{github}/issues/742[#742]
+* Upgrade to Commons Lang3 3.13.0 link:{github}/issues/743[#743]
+* Upgrade to Grace Profile: Base 2023.2.0-M1 link:{github}/issues/754[#754]
+* Upgrade to Grace Profile: Plugin 2023.2.0-M1 link:{github}/issues/755[#755]
+* Upgrade to Grace Profile: Profile 2023.2.0-M1 link:{github}/issues/756[#756]
+* Upgrade to Grace Profile: Rest API 2023.2.0-M1 link:{github}/issues/757[#757]
+* Upgrade to Grace Profile: Starter 2023.2.0-M1 link:{github}/issues/758[#758]
+* Upgrade to Grace Profile: Web 2023.2.0-M1 link:{github}/issues/759[#759]
+* Upgrade to Grace Profile: Web Plugin 2023.2.0-M1 link:{github}/issues/760[#760]
+* Upgrade to H2 2.2.224 link:{github}/issues/744[#744]
+* Upgrade to HSQLDB 2.7.3 link:{github}/issues/745[#745]
+* Upgrade to JUnit Jupiter 5.10.5 link:{github}/issues/751[#751]
+* Upgrade to JUnit Platform 1.10.5 link:{github}/issues/752[#752]
+* Upgrade to Mockito 5.7.0 link:{github}/issues/746[#746]
+* Upgrade to SLF4J 2.0.16 link:{github}/issues/747[#747]
+* Upgrade to SnakeYAML 2.2 link:{github}/issues/748[#748]
+* Upgrade to Spring Boot 3.2.12 link:{github}/issues/749[#749]
+* Upgrade to Spring Framework 6.1.15 link:{github}/issues/750[#750]
+
+⚙️ Tasks
+
+* Release v2023.2.0-M1
+* Next development version: 2023.2.0-SNAPSHOT
+
+=== 2023.1.1
+
+link:{github}/releases/tag/v2023.1.0[release notes]
+
+🛠 Improvements
+
+* Update DataSourcePluginConfigurationTests link:{github}/issues/818[#818]
+* Add `@ConditionalOnMissingBean` on beans in `UrlMappingsPluginConfiguration` link:{github}/issues/808[#808]
+* Update README Update current version for Groovy Badge
+
+🐞 Bug Fixes
+
+* Remove bean `transactionManager` from `DataSource` plugin link:{github}/issues/816[#816]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.1.1 link:{github}/issues/862[#862]
+* Upgrade to Grace Data 2023.1.1 link:{github}/issues/860[#860]
+* Upgrade to Grace Data Hibernate 2023.1.1 link:{github}/issues/861[#861]
+* Upgrade to Tomcat 10.1.34 link:{github}/issues/811[#811]
+
+⚙️ Tasks
+
+* Release v2023.1.1
+* Next development version: 2023.1.1-SNAPSHOT
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.1.0...v2023.1.1
+
+=== 2023.1.0
+
+link:{github}/releases/tag/v2023.1.0[release notes]
+
+🛠 Improvements
+
+* Plugin `gsp` dependency on plugin `i18n` should be optional link:{github}/issues/737[#737]
+
+🐞 Bug Fixes
+
+* Fixed bean `grailsResourceLocator` name conflict in `CoreConfiguration` and `GroovyPagesAutoConfiguration` link:{github}/issues/736[#736]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0 link:{github}/issues/719[#719]
+* Upgrade to Grace Async and Events 6.1.0 link:{github}/issues/720[#720]
+* Upgrade to Grace Cache Plugin 6.1.0 link:{github}/issues/721[#721]
+* Upgrade to Grace Data 2023.1.0 link:{github}/issues/722[#722]
+* Upgrade to Grace Data Hibernate 2023.1.0 link:{github}/issues/723[#723]
+* Upgrade to Grace Database Migration Plugin 6.1.0 link:{github}/issues/724[#724]
+* Upgrade to Grace Fields Plugin 6.1.0 link:{github}/issues/725[#725]
+* Upgrade to Grace Geb Plugin 6.1.0 link:{github}/issues/726[#726]
+* Upgrade to Grace Profile: Base 2023.1.0 link:{github}/issues/727[#727]
+* Upgrade to Grace Profile: Plugin 2023.1.0 link:{github}/issues/728[#728]
+* Upgrade to Grace Profile: Profile 2023.1.0 link:{github}/issues/729[#729]
+* Upgrade to Grace Profile: Rest API 2023.1.0 link:{github}/issues/730[#730]
+* Upgrade to Grace Profile: Starter 2023.1.0 link:{github}/issues/731[#731]
+* Upgrade to Grace Profile: Web 2023.1.0 link:{github}/issues/732[#732]
+* Upgrade to Grace Profile: Web Plugin 2023.1.0 link:{github}/issues/733[#733]
+* Upgrade to Grace Scaffolding 6.1.0 link:{github}/issues/734[#734]
+* Upgrade to Grace Views 6.1.0 link:{github}/issues/735[#735]
+
+⚙️ Tasks
+
+* Release v2023.1.0
+
+
+🔌 Plugins
+
+* https://github.com/grace-plugins/grace-asset-pipeline/releases/tag/v6.1.0[Grace Asset Pipeline v6.1.0]
+* https://github.com/graceframework/grace-async/releases/tag/v6.1.0[Grace Async and Events v6.1.0]
+* https://github.com/graceframework/grace-cache/releases/tag/v6.1.0[Grace Cache v6.1.0]
+* https://github.com/graceframework/grace-data/releases/tag/v2023.1.0[Grace Data v2023.1.0]
+* https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0[Grace Data Hibernate v2023.1.0]
+* https://github.com/graceframework/grace-database-migration/releases/tag/v6.1.0[Grace Database Migration v6.1.0]
+* https://github.com/graceframework/grace-fields/releases/tag/v6.1.0[Grace Fields v6.1.0]
+* https://github.com/graceframework/grace-geb/releases/tag/v6.1.0[Grace Geb v6.1.0]
+* https://github.com/graceframework/grace-scaffolding/releases/tag/v6.1.0[Grace Scaffolding v6.1.0]
+* https://github.com/graceframework/grace-views/releases/tag/v6.1.0[Grace Views v6.1.0]
+
+📜Profiles
+
+* https://github.com/grace-profiles/base/releases/tag/v2023.1.0[Base v2023.1.0]
+* https://github.com/grace-profiles/plugin/releases/tag/v2023.1.0[Plugin v2023.1.0]
+* https://github.com/grace-profiles/profile/releases/tag/v2023.1.0[Profile v2023.1.0]
+* https://github.com/grace-profiles/rest-api/releases/tag/v2023.1.0[REST API v2023.1.0]
+* https://github.com/grace-profiles/starter/releases/tag/v2023.1.0[Starter v2023.1.0]
+* https://github.com/grace-profiles/web/releases/tag/v2023.1.0[Web v2023.1.0]
+* https://github.com/grace-profiles/web-plugin/releases/tag/v2023.1.0[Web Plugin v2023.1.0]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.1.0-RC1...v2023.1.0
+
+=== 2023.1.0-RC1
+
+link:{github}/releases/tag/v2023.1.0-RC1[release notes]
+
+⭐️ New Features
+
+* Binding variable `config` to Console and Shell link:{github}/issues/709[#709]
+
+🛠 Improvements
+
+* Improve `CreateAppCommand` Remove some unnecessary directories and extra configurations when creating a minimal application link:{github}/issues/712[#712]
+* Grace Plugin Controllers: Update additional Spring Boot configuration metadata files link:{github}/issues/711[#711]
+* Move from GroovyPageForkCompileTask's deprecated `Project.javaexec(Action)` method to `ExecOperations.javaexec(Action)` link:{github}/issues/708[#708]
+
+🐞 Bug Fixes
+
+* Fixed a bug due to use Configuration Properties: `GroovyPagesProperties` link:{github}/issues/713[#713]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-RC1 link:{github}/issues/688[#688]
+* Upgrade to Grace Async and Events 6.1.0-RC1 link:{github}/issues/689[#689]
+* Upgrade to Grace Cache Plugin 6.1.0-RC1 link:{github}/issues/690[#690]
+* Upgrade to Grace Data 2023.1.0-RC1 link:{github}/issues/691[#691]
+* Upgrade to Grace Data Hibernate 2023.1.0-RC1 link:{github}/issues/692[#692]
+* Upgrade to Grace Database Migration Plugin 6.1.0-RC1 link:{github}/issues/693[#693]
+* Upgrade to Grace Fields Plugin 6.1.0-RC1 link:{github}/issues/694[#694]
+* Upgrade to Grace Geb Plugin 6.1.0-RC1 link:{github}/issues/695[#695]
+* Upgrade to Grace Profile: Base 2023.1.0-RC1 link:{github}/issues/696[#696]
+* Upgrade to Grace Profile: Plugin 2023.1.0-RC1 link:{github}/issues/697[#697]
+* Upgrade to Grace Profile: Profile 2023.1.0-RC1 link:{github}/issues/698[#698]
+* Upgrade to Grace Profile: Rest API 2023.1.0-RC1 link:{github}/issues/699[#699]
+* Upgrade to Grace Profile: Starter 2023.1.0-RC1 link:{github}/issues/700[#700]
+* Upgrade to Grace Profile: Web 2023.1.0-RC1 link:{github}/issues/701[#701]
+* Upgrade to Grace Profile: Web Plugin 2023.1.0-RC1 link:{github}/issues/702[#702]
+* Upgrade to Grace Scaffolding 6.1.0-RC1 link:{github}/issues/703[#703]
+* Upgrade to Grace Views 6.1.0-RC1 link:{github}/issues/704[#704]
+* Upgrade to Gradle Nexus Publish Plugin 2.0.0 link:{github}/issues/707[#707]
+* Upgrade to Groovy 4.0.24 link:{github}/issues/705[#705]
+* Upgrade to Tomcat 10.1.33 link:{github}/issues/706[#706]
+
+⚙️ Tasks
+
+* Release v2023.1.0-RC1
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.1.0-M3...v2023.1.0-RC1
+
+=== 2023.1.0-M3
+
+link:{github}/releases/tag/v2023.1.0-M3[release notes]
+
+⭐️ New Features
+
+* Support creating a minimal application by using a minimal flag link:{github}/issues/679[#679]
+* Grace Plugin Url Mappings: Generating Spring Boot configuration metadata files link:{github}/issues/677[#677]
+* Grace Plugin Rest: Generating Spring Boot configuration metadata files link:{github}/issues/676[#676]
+* Grace Plugin Mimetypes: Generating Spring Boot configuration metadata files link:{github}/issues/675[#675]
+* Grace Plugin Interceptors: Generating Spring Boot configuration metadata files link:{github}/issues/674[#674]
+* Grace Plugin Domain Class: Generating Spring Boot configuration metadata files link:{github}/issues/673[#673]
+* Grace Plugin Codecs: Generating Spring Boot configuration metadata files link:{github}/issues/672[#672]
+* Grace Plugin i18n: Generating Spring Boot configuration metadata files link:{github}/issues/671[#671]
+* Grace Plugin Datasource: Generating Spring Boot configuration metadata files link:{github}/issues/670[#670]
+* Grace Plugin Databinding: Generating Spring Boot configuration metadata files link:{github}/issues/669[#669]
+* Grace Plugin Core: Generating Spring Boot configuration metadata files link:{github}/issues/668[#668]
+* Grace Plugin Converters: Generating Spring Boot configuration metadata files link:{github}/issues/667[#667]
+* Grace Plugin Controllers: Generating Spring Boot configuration metadata files link:{github}/issues/666[#666]
+* Grace Plugin API: Generating Spring Boot configuration metadata files link:{github}/issues/665[#665]
+* Grace Boot: Generating Spring Boot configuration metadata files link:{github}/issues/664[#664]
+* Enabling Configuration Properties for GSP Plugin link:{github}/issues/663[#663]
+
+🛠 Improvements
+
+* Add more Mime Types to the default configuration link:{github}/issues/686[#686]
+* Cleanup Dependencies link:{github}/issues/685[#685]
+* Enhances Groovy awared AutoProxy for AOP link:{github}/issues/684[#684]
+* Remove Jakarta Servlet from Grace distribution link:{github}/issues/683[#683]
+* Excluding all the transitive dependencies of `grace-datastore-core` link:{github}/issues/682[#682]
+* Make `jakarta-servlet` as a Compile-only Dependency link:{github}/issues/681[#681]
+* Improvements for updating to new Spring Boot versions link:{github}/issues/680[#680]
+
+🐞 Bug Fixes
+
+* Fix `jspTagLibraryResolver` bean definition error in `WebSetupSpecInterceptor` link:{github}/issues/678[#678]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-M3 link:{github}/issues/643[#643]
+* Upgrade to Grace Async and Events 6.1.0-M3 link:{github}/issues/644[#644]
+* Upgrade to Grace Cache Plugin 6.1.0-M3 link:{github}/issues/645[#645]
+* Upgrade to Grace Data 2023.1.0-M3 link:{github}/issues/646[#646]
+* Upgrade to Grace Data Hibernate 2023.1.0-M3 link:{github}/issues/647[#647]
+* Upgrade to Grace Database Migration Plugin 6.1.0-M3 link:{github}/issues/648[#648]
+* Upgrade to Grace Fields Plugin 6.1.0-M3 link:{github}/issues/649[#649]
+* Upgrade to Grace Geb Plugin 6.1.0-M3 link:{github}/issues/650[#650]
+* Upgrade to Grace Profile: Base 2023.1.0-M3 link:{github}/issues/651[#651]
+* Upgrade to Grace Profile: Plugin 2023.1.0-M3 link:{github}/issues/652[#652]
+* Upgrade to Grace Profile: Profile 2023.1.0-M3 link:{github}/issues/653[#653]
+* Upgrade to Grace Profile: Rest API 2023.1.0-M3 link:{github}/issues/654[#654]
+* Upgrade to Grace Profile: Starter 2023.1.0-M3 link:{github}/issues/655[#655]
+* Upgrade to Grace Profile: Web 2023.1.0-M3 link:{github}/issues/656[#656]
+* Upgrade to Grace Profile: Web Plugin 2023.1.0-M3 link:{github}/issues/657[#657]
+* Upgrade to Grace Scaffolding Plugin 6.1.0-M3 link:{github}/issues/658[#658]
+* Upgrade to Grace Views 6.1.0-M3 link:{github}/issues/659[#659]
+* Upgrade to Tomcat 10.1.31 link:{github}/issues/661[#661]
+
+⚙️ Tasks
+
+* Release v2023.1.0-M3
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.1.0-M2...v2023.1.0-M3
+
+=== 2023.1.0-M2
+
+link:{github}/releases/tag/v2023.1.0-M2[release notes]
+
+⭐️ New Features
+
+* Auto-Configure Bean `proxyHandler` link:{github}/issues/626[#626]
+* Auto-Configure Groovy-aware Bean `org.springframework.aop.config.internalAutoProxyCreator` link:{github}/issues/627[#627]
+* Auto-Configure DomainClass Plugin link:{github}/issues/630[#630]
+* Auto-Configure Converters Plugin link:{github}/issues/628[#628]
+* Auto-Configure DataSource Plugin link:{github}/issues/629[#629]
+
+🛠 Improvements
+
+* Make `validateableConstraintsEvaluator` as Primary bean link:{github}/issues/641[#641]
+* Support specific Spring Boot version using command flag `boot-version` link:{github}/issues/640[#640]
+* Make `gradle-tooling-api` scope only for shell link:{github}/issues/639[#639]
+* Remove submodule `grace-web-boot` link:{github}/issues/638[#638]
+* Add `events` plugin to `grace-dependencies` link:{github}/issues/636[#636]
+* `ApplicationClassInjector`: No need to exclude auto configure classes for `Application` link:{github}/issues/635[#635]
+* Enhance `GrailsLayoutViewResolverPostProcessor` link:{github}/issues/634[#634]
+* Make bean `grailsLayoutViewResolverPostProcessor` auto configure link:{github}/issues/633[#633]
+* Remove unused bean `abstractViewResolver` link:{github}/issues/632[#632]
+* Remove unused bean `abstractGrailsResourceLocator` link:{github}/issues/631[#631]
+
+🐞 Bug Fixes
+
+* Fixes wrong `@ConditionalOnProperty` with `grails.web.hiddenmethod.filter.enabled` link:{github}/issues/637[#637]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-M2 link:{github}/issues/609[#609]
+* Upgrade to Grace Async and Events 6.1.0-M2 link:{github}/issues/610[#610]
+* Upgrade to Grace Cache Plugin 6.1.0-M2 link:{github}/issues/611[#611]
+* Upgrade to Grace Data 2023.1.0-M2 link:{github}/issues/612[#612]
+* Upgrade to Grace Data Hibernate 2023.1.0-M2 link:{github}/issues/613[#613]
+* Upgrade to Grace Database Migration Plugin 6.1.0-M2 link:{github}/issues/614[#614]
+* Upgrade to Grace Fields Plugin 6.1.0-M2 link:{github}/issues/615[#615]
+* Upgrade to Grace Geb Plugin 6.1.0-M2 link:{github}/issues/616[#616]
+* Upgrade to Grace Profile: Base 2023.1.0-M2 link:{github}/issues/617[#617]
+* Upgrade to Grace Profile: Plugin 2023.1.0-M2 link:{github}/issues/618[#618]
+* Upgrade to Grace Profile: Profile 2023.1.0-M2 link:{github}/issues/619[#619]
+* Upgrade to Grace Profile: Rest API 2023.1.0-M2 link:{github}/issues/620[#620]
+* Upgrade to Grace Profile: Starter 2023.1.0-M2 link:{github}/issues/621[#621]
+* Upgrade to Grace Profile: Web 2023.1.0-M2 link:{github}/issues/622[#622]
+* Upgrade to Grace Profile: Web Plugin 2023.1.0-M2 link:{github}/issues/623[#623]
+* Upgrade to Grace Scaffolding 6.1.0-M2 link:{github}/issues/624[#624]
+* Upgrade to Grace Views 6.1.0-M2 link:{github}/issues/625[#625]
+
+⚙️ Tasks
+
+* Release v2023.1.0-M2
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.1.0-M1...v2023.1.0-M2
+
+=== 2023.1.0-M1
+
+link:{github}/releases/tag/v2023.1.0-M1[release notes]
+
+🛠 Improvements
+
+* Remove the mandatory setting that allows beans to override and circular references link:{github}/issues/607[#607]
+* Enhance `ResourceTransform` link:{github}/issues/606[#606]
+* Make `grailsResourceLocator` Bean Auto-Configure link:{github}/issues/605[#605]
+* Update Badges Update Spring Boot version
+* Adds more badges Java, Groovy, Spring Boot
+
+🐞 Bug Fixes
+
+* Fix Jakarta JSTL Config package name wrong link:{github}/issues/603[#603]
+* Compile profile failed with an exception when using Gradle 8 link:{github}/issues/600[#600]
+* Fixes CLI error when creating a Plugin of profile `plugin` link:{github}/issues/590[#590]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Apache Ant 1.10.15 link:{github}/issues/593[#593]
+* Upgrade to AsciidoctorJ 2.5.13 link:{github}/issues/571[#571]
+* Upgrade to AspectJ 1.9.22.1 link:{github}/issues/551[#551]
+* Upgrade to AssertJ 3.24.2 link:{github}/issues/552[#552]
+* Upgrade to Byte Buddy 1.14.16 link:{github}/issues/553[#553]
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-M1 link:{github}/issues/572[#572]
+* Upgrade to Grace Async and Events 6.1.0-M1 link:{github}/issues/573[#573]
+* Upgrade to Grace Cache Plugin 6.1.0-M1 link:{github}/issues/574[#574]
+* Upgrade to Grace Data 2023.1.0-M1 link:{github}/issues/575[#575]
+* Upgrade to Grace Data Hibernate 2023.1.0-M1 link:{github}/issues/576[#576]
+* Upgrade to Grace Database Migration Plugin 6.1.0-M1 link:{github}/issues/577[#577]
+* Upgrade to Grace Fields Plugin 6.1.0-M1 link:{github}/issues/578[#578]
+* Upgrade to Grace Geb Plugin 6.1.0-M1 link:{github}/issues/579[#579]
+* Upgrade to Grace Profile: Base 2023.1.0-M1 link:{github}/issues/580[#580]
+* Upgrade to Grace Profile: Plugin 2023.1.0-M1 link:{github}/issues/581[#581]
+* Upgrade to Grace Profile: Profile 2023.1.0-M1 link:{github}/issues/582[#582]
+* Upgrade to Grace Profile: Rest API 2023.1.0-M1 link:{github}/issues/583[#583]
+* Upgrade to Grace Profile: Starter 2023.1.0-M1 link:{github}/issues/584[#584]
+* Upgrade to Grace Profile: Web 2023.1.0-M1 link:{github}/issues/585[#585]
+* Upgrade to Grace Profile: Web Plugin 2023.1.0-M1 link:{github}/issues/586[#586]
+* Upgrade to Grace Scaffolding 6.1.0-M1 link:{github}/issues/587[#587]
+* Upgrade to Grace Views 6.1.0-M1 link:{github}/issues/588[#588]
+* Upgrade to Gradle Git Properties 2.4.2 link:{github}/issues/554[#554]
+* Upgrade to Groovy 4.0.23 link:{github}/issues/594[#594]
+* Upgrade to Gson 2.10.1 link:{github}/issues/555[#555]
+* Upgrade to HSQLDB 2.7.2 link:{github}/issues/556[#556]
+* Upgrade to Jackson Databind 2.15.4 link:{github}/issues/557[#557]
+* Upgrade to Jakarta Inject 2.0.1 link:{github}/issues/558[#558]
+* Upgrade to Jakarta Servlet JSP 3.1.1 link:{github}/issues/559[#559]
+* Upgrade to Jakarta Servlet JSP JSTL 3.0.2 link:{github}/issues/560[#560]
+* Upgrade to Jakarta XML Bind 4.0.2 link:{github}/issues/561[#561]
+* Upgrade to Java Parser 3.26.2 link:{github}/issues/562[#562]
+* Upgrade to Javassist 3.30.2-GA link:{github}/issues/563[#563]
+* Upgrade to Json Unit 2.40.1 link:{github}/issues/564[#564]
+* Upgrade to Jsoup 1.18.1 link:{github}/issues/565[#565]
+* Upgrade to JUnit Jupiter 5.9.3 link:{github}/issues/566[#566]
+* Upgrade to JUnit Platform 1.9.3 link:{github}/issues/567[#567]
+* Upgrade to Mockito 5.3.1 link:{github}/issues/568[#568]
+* Upgrade to Objenesis 3.4 link:{github}/issues/569[#569]
+* Upgrade to SLF4J 2.0.13 link:{github}/issues/570[#570]
+* Upgrade to Spring Boot 3.1.12 link:{github}/issues/550[#550]
+* Upgrade to Tomcat 10.1.29 link:{github}/issues/596[#596]
+* Upgrade to Tomcat 10.1.30 link:{github}/issues/598[#598]
+
+⚙️ Tasks
+
+* Release v2023.1.0-M1
+* Update github workflows
+* Next development version: 2023.1.0-SNAPSHOT
+
+=== 2023.0.2
+
+link:{github}/releases/tag/v2023.0.2[release notes]
+
+🐞 Bug Fixes
+
+* Compile profile failed with an exception when using Gradle 8 link:{github}/issues/599[#599]
+* Fixes error when creating a Plugin of profile `plugin` link:{github}/issues/589[#589]
+
+⚙️ Tasks
+
+* Release v2023.0.2
+* Next development version: 2023.0.2-SNAPSHOT
+
+🚀 Dependency Upgrades
+
+* Upgrade to Apache Ant 1.10.15 link:{github}/issues/591[#591]
+* Upgrade to Groovy 4.0.23 link:{github}/issues/592[#592]
+* Upgrade to Tomcat 10.1.29 link:{github}/issues/595[#595]
+* Upgrade to Tomcat 10.1.30 link:{github}/issues/597[#597]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.1...v2023.0.2
+
+=== 2023.0.1
+
+link:{github}/releases/tag/v2023.0.1[release notes]
+
+🛠 Improvements
+
+* Change group and description of Gradle task `console` and `shell` link:{github}/issues/525[#525]
+* Change group of Gradle task `urlMappingsReport` link:{github}/issues/524[#524]
+* Change group of Gradle task `runCommand` and `runScript` link:{github}/issues/523[#523]
+* Set group of Gradle task `configScript` link:{github}/issues/522[#522]
+* Improve `ApplicationTemplateCommand` Support using command line options in `app:template` link:{github}/issues/516[#516]
+
+🐞 Bug Fixes
+
+* Task `mergeTestReports` shoud explicit depend on `test` link:{github}/issues/548[#548]
+* Grace BOM: Add missing `grace-datastore-web` link:{github}/issues/547[#547]
+* Fixes compiling error when a Domain Class with `@Resource` annotation link:{github}/issues/545[#545]
+* Remove exclude dependency `org.codehaus.groovy` of `grace-datatore-*` link:{github}/issues/544[#544]
+* Use `ResourceUtils.getURL` to resolve the `viewsDir` location to a `java.net.URL` link:{github}/issues/526[#526]
+* Fixes link 404 in `grace-plugin-dynamic-modules/README.md` link:{github}/issues/515[#515]
+
+⚙️ Tasks
+
+* Release v2023.0.1
+* Next development version: 2023.0.1-SNAPSHOT
+
+🚀 Dependency Upgrades
+
+* Upgrade to Caffeine 3.1.8 link:{github}/issues/546[#546]
+* Upgrade to Grace Asset Pipeline Plugin 6.0.1 link:{github}/issues/527[#527]
+* Upgrade to Grace Async and Events 6.0.1 link:{github}/issues/528[#528]
+* Upgrade to Grace Cache Plugin 6.0.1 link:{github}/issues/529[#529]
+* Upgrade to Grace Data 2023.0.1 link:{github}/issues/530[#530]
+* Upgrade to Grace Data Hibernate 2023.0.1 link:{github}/issues/531[#531]
+* Upgrade to Grace Database Migration Plugin 6.0.1 link:{github}/issues/532[#532]
+* Upgrade to Grace Fields Plugin 6.0.1 link:{github}/issues/533[#533]
+* Upgrade to Grace Geb Plugin 6.0.1 link:{github}/issues/534[#534]
+* Upgrade to Grace Profile: Base 2023.0.1 link:{github}/issues/535[#535]
+* Upgrade to Grace Profile: Plugin 2023.0.1 link:{github}/issues/536[#536]
+* Upgrade to Grace Profile: Profile 2023.0.1 link:{github}/issues/537[#537]
+* Upgrade to Grace Profile: Rest API 2023.0.1 link:{github}/issues/538[#538]
+* Upgrade to Grace Profile: Starter 2023.0.1 link:{github}/issues/539[#539]
+* Upgrade to Grace Profile: Web 2023.0.1 link:{github}/issues/540[#540]
+* Upgrade to Grace Profile: Web Plugin 2023.0.1 link:{github}/issues/541[#541]
+* Upgrade to Grace Scaffolding 6.0.1 link:{github}/issues/542[#542]
+* Upgrade to Grace Views 6.0.1 link:{github}/issues/543[#543]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0...v2023.0.1
+
+=== 2023.0.0
+
+link:{github}/releases/tag/v2023.0.0[release notes]
+
+🛠 Improvements
+
+* Update `README.md`
+* Set group and description of Gradle task `pathingJar` and `pathingJarCommand` link:{github}/issues/513[#513]
+* Set group and description of Gradle task `runCommand` and `runScript` link:{github}/issues/512[#512]
+* Set group and description of Gradle task `findMainClass` link:{github}/issues/511[#511]
+* Set description of Gradle task `configScript` link:{github}/issues/510[#510]
+* Set group and description of Gradle task `compileGroovyPages` and `compileWebappGroovyPages` link:{github}/issues/509[#509]
+* Set group and description of Gradle task `urlMappingsReport` link:{github}/issues/508[#508]
+* Set group and description of Gradle task `buildProperties` link:{github}/issues/507[#507]
+* Improvements for `GrailsPluginManager` and `DefaultModuleDescriptorFactory` link:{github}/issues/505[#505]
+* Adds new method `doDynamicModules()` to `GrailsPluginManager`
+* Refactor `DefaultModuleDescriptorFactory`
+* Enhance `DefaultModuleDescriptorFactory` Don't throw exception when ModuleDescriptor class of module type not found
+* Deprecate `grace-plugin-dynamic-modules` link:{github}/issues/504[#504]
+* Update `DefaultGrailsPluginTests`
+* Deprecate `grace-plugin-dynamic-modules`
+* Update `DynamicPlugin`, change `void doWithDynamicModules()` to `Closure doWithDynamicModules()`
+* Make tests passed Because dependency `spring-boot` changed to `compileOnly` link:{github}/issues/501[#501]
+* Cleanup runtime dependencies of `gracce-shell` link:{github}/issues/501[#501]
+* Ensure that features are applied in a fixed order when creating a project link:{github}/issues/498[#498]
+* Refine `ProfileInfoCommand`: Check wheather commands deprecated of profile, and append `[deprecated]` to its description link:{github}/issues/444[#444]
+* Change URL of `grails-bom` to `mavenCentral()` repository link:{github}/issues/443[#443]
+
+🐞 Bug Fixes
+
+* Disable banner and logging off when executing `./gradlew urlMappingsReport` link:{github}/issues/506[#506]
+* Fixed NPE error with `DynamicPlugin.doWithDynamicModules()` link:{github}/issues/504[#504]
+* Fixes `StaticResourceLoaderTests`#500
+* Fixes `create-app` error with App Template link:{github}/issues/499[#499]
+* Don't exclude `**/.gitkeep` when creating a new project link:{github}/issues/497[#497]
+* Remove exclusions of dependency `groovy` link:{github}/issues/496[#496]
+* Optimize SLF4J dependencies for all modules link:{github}/issues/495[#495]
+* Exclude `grace-shell.tar` in the distribution of Grace link:{github}/issues/494[#494]
+* Singleton as the defualt scope of Controllers link:{github}/issues/493[#493]
+* Use `HttpMethod.valueOf` instead of resolve method
+
+⚙️ Tasks
+
+* Release v2023.0.0
+* Start building against Grace Fields Plugin 6.0.0 snapshots link:{github}/issues/481[#481]
+* Start building against Grace Scaffolding 6.0.0 snapshots link:{github}/issues/490[#490]
+* Start building against Grace Profile: Web 2023.0.0 snapshots link:{github}/issues/488[#488]
+* Start building against Grace Profile: Base 2023.0.0 snapshots link:{github}/issues/483[#483]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Apache Ant 1.10.14 link:{github}/issues/503[#503]
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0 link:{github}/issues/475[#475]
+* Upgrade to Grace Async and Events 6.0.0 link:{github}/issues/476[#476]
+* Upgrade to Grace Cache Plugin 6.0.0 link:{github}/issues/477[#477]
+* Upgrade to Grace Data 2023.0.0 link:{github}/issues/478[#478]
+* Upgrade to Grace Data Hibernate 2023.0.0 link:{github}/issues/479[#479]
+* Upgrade to Grace Database Migration Plugin 6.0.0 link:{github}/issues/480[#480]
+* Upgrade to Grace Fields Plugin 6.0.0 link:{github}/issues/481[#481]
+* Upgrade to Grace Geb Plugin 6.0.0 link:{github}/issues/482[#482]
+* Upgrade to Grace Profile: Base 2023.0.0 link:{github}/issues/483[#483]
+* Upgrade to Grace Profile: Plugin 2023.0.0 link:{github}/issues/484[#484]
+* Upgrade to Grace Profile: Profile 2023.0.0 link:{github}/issues/485[#485]
+* Upgrade to Grace Profile: Rest API 2023.0.0 link:{github}/issues/486[#486]
+* Upgrade to Grace Profile: Starter 2023.0.0 link:{github}/issues/487[#487]
+* Upgrade to Grace Profile: Web 2023.0.0 link:{github}/issues/488[#488]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0 link:{github}/issues/489[#489]
+* Upgrade to Grace Scaffolding 6.0.0 link:{github}/issues/490[#490]
+* Upgrade to Grace Views 6.0.0 link:{github}/issues/491[#491]
+* Upgrade to Maven Settings Builder 3.9.4 link:{github}/issues/502[#502]
+* Upgrade to Spring Dependency Management Plugin 1.1.6 link:{github}/issues/445[#445]
+* Upgrade to Spring Framework 6.0.23 link:{github}/issues/492[#492]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-RC2...v2023.0.0
+
+=== 2023.0.0-RC2
+
+link:{github}/releases/tag/v2023.0.0-RC2[release notes]
+
+🐞 Bug Fixes
+
+* Fixes `GrailsVersion` throw NPE when execute `grace -v` link:{github}/issues/440[#440]
+
+⚙️ Tasks
+
+* Release v2023.0.0-RC2
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Profile: Base 2023.0.0-RC2 link:{github}/issues/432[#432]
+* Upgrade to Grace Profile: Plugin 2023.0.0-RC2 link:{github}/issues/433[#433]
+* Upgrade to Grace Profile: Profile 2023.0.0-RC2 link:{github}/issues/434[#434]
+* Upgrade to Grace Profile: Rest API 2023.0.0-RC2 link:{github}/issues/435[#435]
+* Upgrade to Grace Profile: Starter 2023.0.0-RC2 link:{github}/issues/436[#436]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-RC2 link:{github}/issues/437[#437]
+* Upgrade to Grace Profile: Web 2023.0.0-RC2 link:{github}/issues/438[#438]
+* Upgrade to Tomcat 10.1.28 link:{github}/issues/439[#439]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-RC1...v2023.0.0-RC2
+
+=== 2023.0.0-RC1
+
+link:{github}/releases/tag/v2023.0.0-RC1[release notes]
+
+⭐️ New Features
+
+* Add a new Profile `starter` starter is a new Profile provides only one file, it gives you to write your own Application Templates, apply it when you create a new project including app, plugin, profile. link:{github}/issues/427[#427]
+* Force overwrite of existing files When creating an new app When creating a new app, force overwrite are allowed even if the directory already exists link:{github}/issues/426[#426]
+* Support for creating Grails apps that using Profiles Using a specific Grails version when you create a new app with `create-app` command, but not support SNAPSHOT versions. link:{github}/issues/425[#425]
+* Support using latest Grace Snapshot version to test Snapshot is the latest, un-released version of Grace. link:{github}/issues/424[#424]
+* Support specific Grace version using command flag `grace-version` link:{github}/issues/423[#423]
+* Add supports `quiet` flag in `CreateAppCommand` link:{github}/issues/421[#421]
+* Refine `GroovyScriptCommand` This allow script command to apply Application Templates to exist project, perform some complex tasks such as install, uninstall, upgrade. link:{github}/issues/413[#413]
+* Namespaced Command Add new attribute `namespace` to `org.grails.cli.profile.Command`, allow commands groupd by namespace. link:{github}/issues/410[#410]
+* Support `Command` can be hidden Commands can be hidden, in some cases, some infrequently used commands do not need to be shown to the user. link:{github}/issues/409[#409]
+* Application templates are simple Groovy files containing DSL, Ant scripts, etc. you can use templates to generate/customize Grace applications. link:{github}/issues/406[#406]
+* Support start scripts including `lib\ext` jars in classpath link:{github}/issues/382[#382]
+
+⚡️ Breaking Changes
+
+🐞 Bug Fixes
+
+* Throw `StackOverflowError` when GSP view not exists Don't return cached `UrlMappingInfo` in the `UrlMappingsHandlerMapping` link:{github}/issues/378[#378]
+
+🛠 Improvements
+
+* Make `tomcat-jdbc` as `implementation` dependency to `grace-plugin-datasource` link:{github}/issues/429[#429]
+* Don't show `app:template` in non project directory `ApplicationTemplateCommand` should implements `ProjectCommand` instead of `ProfileCommand` link:{github}/issues/428[#428]
+* Don't add `log` field for Domain Class link:{github}/issues/422[#422]
+* Refactor `GrailsVersion`
+* Fixes `getGrailsGradlePluginVersion()` error for using Grails version
+* Fixes value of option `grace-version` maybe null when using `toString`
+* Support specific Grails version using command flag `grace-version` Supports Grails 3, 4
+* Make Gradle compatible old versions used in Grails 3/4
+* Fixes issues when initializing dependencies of Profile and Features
+* Support specific Grails version using command flag `grace-version` Supports Grails 5, 6
+* Add methods to check Grails versions
+* Support specific Grace version using command flag `grace-version`
+* Add methods to check Grace versions
+* Update `CreateAppCommand` to allow only log errors
+* Add `quiet` flag to `CommandLine`
+* Provide Command Options for Application Templates When creating a new project, we need to know the command options to create files or apply templates. link:{github}/issues/420[#420]
+* Add command options to script property and template binding
+* Add more options: `css` `database` `javascript` `enable-preview` Use `enable-preview` to ignore flags or options valiate
+* Add `getDeclaredOptions()` for `CommandLine`
+* Set `archiveClassifier` of plugin jar to `plugin` link:{github}/issues/419[#419]
+* Enhance `UrlMappingsHolderFactoryBean` Remove unneed code, it will cause type cast exception link:{github}/issues/418[#418]
+* Use a temporary directory to generate template files link:{github}/issues/406[#406]
+* Refine `ApplicationTemplateCommand` Fixes a minor bug in `CreateAppCommand` link:{github}/issues/406[#406]
+* Add `apply()` method to `GroovyScriptCommand` This will supports script commands to apply Application Templates
+* Add `deprecated` property to `GroovyScriptCommand`
+* Add `visible` property to `GroovyScriptCommand`
+* Provides namespace for Script Command
+* Deprecate `open` command link:{github}/issues/412[#412]
+* Allow `Command` to be deprecated link:{github}/issues/411[#411]
+* Display a warning message when executing a deprecated command
+* Marked `[deprecated]` on commands in `help` command
+* Add `deprecated` property to `MultiStepCommand`
+* Add `boolean isDeprecated()` to `Command`
+* Support namespaced commands
+* Add `getNamespace()` and `getFullName()` to `Command`
+* Refactor `HelpCommand` Add flag `all` to show all commands, only show visible commands default
+* Add `visible` property to `MultiStepCommand`
+* Convert `org.grails.cli.profile.Command` to Java Add default method `boolean isVisible()`
+* Fixes fail tests related Groovy STC link:{github}/issues/404[#404]
+* Remove deprecated `LazyBeanMap` Use `LazyMetaPropertyMap` instead link:{github}/issues/408[#408]
+* Extract method `evaluateFeatures`
+* Support template hooks `postGenerateProject`
+* Extract method `generateProjectSkeleton`
+* Support template hooks `preApplyTemplate` and `postApplyTemplate`
+* Use `Groovy` task to execute Application Template scripts
+* Fixes error in `hasFeature`
+* Fixes template could be `null`
+* Improve generated project information
+* Use `GrailsConsoleAntProject` and Grace's Ant tasks
+* Add more Ant tasks: * File * Git * Grace * Gradle * Groovy * Npm * Run * Say
+* Move `GrailsConsoleLogger` to its own class
+* Refactor `CreateAppCommand` * Fixes wrong project type * Make `getDestinationDirectory` `protected`
+* Refactor `CreateAppCommand` Cleanup
+* Refactor `CreateAppCommand` Don't use global variables
+* remove unneed method `resolveArtifactString`
+* Define constant UNZIP_TEMPLATE_TEMP_DIR
+* Refactor `CreateAppCommand`
+* Refactor `CreateAppCommand`
+* Refactor `CreateAppCommand`
+* Binding variables and versions to GStringTemplate
+* Don't call replacestring on binary files
+* Improve `copySkeleton` Check file exists before copying Copy `.gitattributes`
+* Refactor `CreateAppCommand`
+* Add more variables to Ant project properties
+* Support zip and git template and template directory
+* Support url resource for templates
+* Introduce Grace Application Templates
+* Improve `create-app` command: display project informations after project created link:{github}/issues/385[#385]
+* Improve `create-app` command error message when the app directory exists link:{github}/issues/384[#384]
+* Update Gradle default Start Script Templates link:{github}/issues/383[#383]
+* Add flags `stacktrace` and `verbose` to `create-app` command link:{github}/issues/381[#381]
+* Add `mavenLocal()` repository when using Grace snapshots version link:{github}/issues/380[#380]
+* Gradle: Use `JavaPluginExtension` instead of deprecated `JavaPluginConvention`
+* Improve `DirectoryWatcher`: Change logging level to `debug` when jna not available on MacOS
+* Update docs templates
+* Update github workflows Upgrade Gradle Actions
+* Add Jakarta Servlet and JSP taglib schema definitions
+* Update `Metadata.DEFAULT_SERVLET_VERSION` to `6.0`
+
+⚙️ Tasks
+
+* Release v2023.0.0-RC1
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-RC1 link:{github}/issues/386[#386]
+* Upgrade to Grace Async and Events 6.0.0-RC1 link:{github}/issues/387[#387]
+* Upgrade to Grace Cache Plugin 6.0.0-RC1 link:{github}/issues/388[#388]
+* Upgrade to Grace Data 2023.0.0-RC1 link:{github}/issues/389[#389]
+* Upgrade to Grace Data Hibernate 2023.0.0-RC1 link:{github}/issues/390[#390]
+* Upgrade to Grace Database Migration Plugin 6.0.0-RC1 link:{github}/issues/391[#391]
+* Upgrade to Grace Fields Plugin 6.0.0-RC1 link:{github}/issues/392[#392]
+* Upgrade to Grace Geb Plugin 6.0.0-RC1 link:{github}/issues/393[#393]
+* Upgrade to Grace Profile: Base 2023.0.0-RC1 link:{github}/issues/396[#396]
+* Upgrade to Grace Profile: Plugin 2023.0.0-RC1 link:{github}/issues/397[#397]
+* Upgrade to Grace Profile: Profile 2023.0.0-RC1 link:{github}/issues/398[#398]
+* Upgrade to Grace Profile: Rest API 2023.0.0-RC1 link:{github}/issues/399[#399]
+* Upgrade to Grace Profile: Starter 2023.0.0-RC1 link:{github}/issues/430[#430]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-RC1 link:{github}/issues/400[#400]
+* Upgrade to Grace Profile: Web 2023.0.0-RC1 link:{github}/issues/401[#401]
+* Upgrade to Grace Scaffolding 6.0.0-RC1 link:{github}/issues/394[#394]
+* Upgrade to Grace Views 6.0.0-RC1 link:{github}/issues/395[#395]
+* Upgrade to Groovy 4.0.22 link:{github}/issues/404[#404]
+* Upgrade to Maven Resolver 1.9.14 link:{github}/issues/403[#403]
+* Upgrade to Maven 3.9.4 link:{github}/issues/402[#402]
+* Upgrade to `org.xhtmlrenderer:core-renderer` R8 link:{github}/issues/407[#407]
+* Upgrade to SiteMesh 2.6.0 link:{github}/issues/350[#350]
+* Upgrade to Spring Framework 6.0.22 link:{github}/issues/351[#351]
+* Upgrade to Tomcat 10.1.25 link:{github}/issues/352[#352]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M7...v2023.0.0-RC1
+
+=== 2023.0.0-M7
+
+link:{github}/releases/tag/v2023.0.0-M7[release notes]
+
+⚡️ Breaking Changes
+
+* Temporarily remove the `run` command
+* Migrate the new hibernate plugin
+
+🐞 Bug Fixes
+
+* Fixes task `compileGroovy` execute failed on Windows
+* test: Use NullObject.getNullObject()
+* Gradle build: Using ByteBuddy instead of Cglib with Spock
+* Make tests passed Some tests ignored, should resolved later
+* The `SourceDirectorySet.outputDir` property has been deprecated, use the `classesDirectory` property instead
+* Fixes test because NullObject's constructor is private now
+* Grails Web: Fixes `StackOverflowError` when view not found
+* Grails GSP: Fixes failed test in `GrailsConventionGroovyPageLocatorSpec`
+* Grails Bootstrap: Fixes failed test in `GrailsPluginMetadataTests`
+* Grails Plugin GSP: Fixes `StackOverflowError`, because DefaultGroovyPageLocator‘s precompiledGspMap was not properly initialized
+* Grails Plugin GSP: Fixes circle reference error in `GroovyPagesAutoConfiguration`
+* Grails Plugin GSP: Fixes NPE in `GroovyPagesAutoConfiguration`
+* Grails Boot: fixes NOT generate `ApplicationLoader` in `BootInitializerClassInjector`
+
+🛠 Improvements
+
+* Start building against SiteMesh 2.6.0 snapshots link:{github}/issues/299[#299]
+* Start building against Grace Data Hibernate 2023.0.0 snapshots link:{github}/issues/296[#296]
+* Start building against Grace Data 2023.0.0 snapshots link:{github}/issues/295[#295]
+* Grails GSP: Make logger protected in `DefaultGroovyPageLocator`
+* Grails GSP: Improvements for `DefaultGroovyPageLocator`
+* Grails Shell: Make Commands and Features displaying by order
+* Grails Shell: Rearrange repositories and buildRepositories before using Grails profile
+* Grails Core: Make `shouldInject(URL)` default method in `ClassInjector`
+* Grails Plugin Interceptors: Adds missing `grails.factories`
+* Grails Plugin GSP: Adding version property to groovyPages plugin
+* Grails Core: `GrailsASTUtils`: adding more methods to check whether the specified source is a Grails project source
+* Grails Core: Deprecated `ClassInjector`.`shouldInject(URL)`, in favor of `shouldInject(ClassNode)`
+* Grails Gradle Plugin: configure Groovy AST Metadata for `configurationScript` of `GroovyCompileOptions`
+* Improve Gradle build
+* Gradle Build: cleanup
+* Gradle Build: Configure Java toolchain
+
+⚙️ Tasks
+
+* Release v2023.0.0-M7
+* Grace: update github workflows
+* ci: turn on unit tests
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-M4 link:{github}/issues/297[#297]
+* Upgrade to Grace Async and Events 6.0.0-M4 link:{github}/issues/327[#327]
+* Upgrade to Grace Cache Plugin 6.0.0-M3 link:{github}/issues/329[#329]
+* Upgrade to Grace Data 2023.0.0-M5 link:{github}/issues/295[#295]
+* Upgrade to Grace Data Hibernate 2023.0.0-M5 link:{github}/issues/296[#296]
+* Upgrade to Grace Database Migration Plugin 6.0.0-M3 link:{github}/issues/333[#333]
+* Upgrade to Grace Fields Plugin 6.0.0-M3 link:{github}/issues/330[#330]
+* Upgrade to Grace Geb Plugin 6.0.0-M3 link:{github}/issues/331[#331]
+* Upgrade to Grace Profile: Base 2023.0.0-M5 link:{github}/issues/334[#334]
+* Upgrade to Grace Profile: Plugin 2023.0.0-M4 link:{github}/issues/335[#335]
+* Upgrade to Grace Profile: Profile 2023.0.0-M4 link:{github}/issues/336[#336]
+* Upgrade to Grace Profile: Rest API 2023.0.0-M4 link:{github}/issues/337[#337]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-M4 link:{github}/issues/338[#338]
+* Upgrade to Grace Profile: Web 2023.0.0-M4 link:{github}/issues/339[#339]
+* Upgrade to Grace Scaffolding 6.0.0-M3 link:{github}/issues/332[#332]
+* Upgrade to Grace Views 6.0.0-M4 link:{github}/issues/328[#328]
+* Upgrade to Gradle Wrapper 7.6.4 link:{github}/issues/326[#326]
+* Upgrade to Gradle Tooling Api 7.6.4 link:{github}/issues/325[#325]
+* Upgrade to Groovy 4.0.21 link:{github}/issues/320[#320]
+* Upgrade to SiteMesh 2.6.0-M1 link:{github}/issues/299[#299]
+* Upgrade to SLF4J 2.0.9 link:{github}/issues/324[#324]
+* Upgrade to Spring Boot 3.0.13 link:{github}/issues/321[#321]
+* Upgrade to Spring Framework 6.0.14 link:{github}/issues/322[#322]
+* Upgrade to Tomcat 10.1.16 link:{github}/issues/323[#323]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M6...v2023.0.0-M7
+
+=== 2023.0.0-M6
+
+link:{github}/releases/tag/v2023.0.0-M6[release notes]
+
+⭐️ New Features
+
+* Grails Plugin GSP: Migrate to Jakarta Standard Tag Library 3.0
+* Grails Web JSP: adding `web-app_5_0.xsd` `web-app_6_0.xsd` `web-jsptaglibrary_3_0.xsd`
+
+🛠 Improvements
+
+* Use default `compileDir` configured in `asset-pipeline` link:{github}/issues/292[#292]
+* Remove Micronaut related libraries in Gradle versions catalog link:{github}/issues/291[#291]
+* Rewrite `Metadata` link:{github}/issues/290[#290]
+* Add tests to check resolve strategy of `BeanBuilder invokeBeanDefiningClosure()` link:{github}/issues/269[#269]
+* Improvements for `run-command` link:{github}/issues/288[#288]
+* Supports `run-script` loading in `/app/scripts` and `scripts` link:{github}/issues/287[#287]
+* Grails Boot: Support configure watch files in `application.yml` in dev mode
+* Grails Boot: Support reloading spring beans from `resources.xml` when changed
+* Grails Plugin Core: Support reloading spring `resources.groovy` when changed
+* Grails Bootstrap: Update `BuildSettings`
+* Grails Bootstrap: Minor improvements for `GrailsResourceUtils`
+* Grails Bootstrap: Improve documentation and comments for `GrailsResourceUtils`
+* Grails i18n Plugin: Revert 0adeb492
+* Grails Boot: Refine `GrailsDevelopmentModeWatchApplicationContextInitializer`
+* Grails Boot: Simplify `GrailsDevelopmentModeWatchApplicationContextInitializer`
+* Grails Bootstrap: adding new `BuildSettings.GRAILS_APP_PATH property`, it may be `app` or `grails-app` as default.
+* Grails i18n Plugin: Support watching i18n properties, use Ant to convert files to ASCII
+* Grails Boot: Refine `GrailsDevelopmentModeWatchApplicationContextInitializer`, use `BuildSettings.GRAILS_APP_DIR`
+* Grails Console: set IO verbosity to `VERBOSE`
+* Grails Gradle Plugin: Always configure system properties of `BuildSettings` when executing command like `bootRun`, `runCommand`, `runScript`
+* Grails Shell: using `BuildSettings.GRAILS_APP_DIR` to load the project Classes in Completer
+* Grails Shell: using `BuildSettings.GRAILS_APP_DIR` to load config files
+* Grails i18n Plugin: using `BuildSettings.GRAILS_APP_DIR` to get i18n properties
+* Grails Bootstrap: adding new `BuildSettings.APP_DIR` system property, also configure it by Gradle plugin
+* Grails Console: use `GrailsConsoleLogger` when running application commands or scripts
+* Grails Console: Running scripts from `GRAILS_APP_DIR/scripts` directory
+* Grails Bootstrap: Adding `GRAILS_APP_DIR` to `BuildSettings`
+* Grails Console: Rename `GrailsApplicationContextCommandRunner` to `GrailsApplicationCommandRunner`
+* Grails Console: set IO verbosity to `VERBOSE`
+
+🐞 Bug Fixes
+
+* Remove WARN: Using deprecated '-debug' fallback for parameter name resolution link:{github}/issues/294[#294]
+* Migrate to `grace-docs` dependency in `GrailsDocGradlePlugin` link:{github}/issues/293[#293]
+* Remove duplicated line
+* Remove unused grails-plugin-gsp
+* Fixes `event.source.file.canonicalFile` error link:{github}/issues/289[#289]
+* Remove unused Gradle plugin descriptors
+* Explicitly set resolve strategy to `OWNER_FIRST` in `BeanBuilder.invokeBeanDefiningClosure` link:{github}/issues/269[#269]
+* `GrailsDevelopmentModeWatchApplicationContextInitializer` `compilerConfig.targetDirectory` is not correct link:{github}/issues/261[#261]
+* Ignore `SystemEnvironmentConfigSpec`
+* Grails Core: fix tests in `StackTracePrinterSpec`
+* Grails Plugin REST: fix tests
+* Fixes tests related aop scoped-proxy, set `proxy-target-class`: false
+* Revert "Grails Boot: Support configure watch files in application.yml in dev mode"
+* Grails Gradle Plugin: Don't use deprecated Gradle `ConfigureUtil`
+* Grails Bootstrap: Fixes `GrailsResourceUtils.getPathFromBaseDir()`, the path relative to the project base directory
+* Grails Bootstrap: Update GrailsVersion in `GrailsUtilTests`
+* Grails Gradle Plugin: Import `grails-bom` after `spring-boot-dependencies`
+* Grails Console: remove unnecessary `configureApplicationContextClass()` in `DevelopmentGrails`
+* Grails Gradle Plugin: set systemProperty `base.dir` when running command or script
+* Grails Console: Fixes BUG: The `run-script` command does not work if `grails.codegen.defaultPackage` is set
+* Grails Console: Don't hook interceptors when execute commands
+* Grails Console: remove unnecessary `configureApplicationContextClass()` in `GrailsConsole` and `GrailsShell`
+
+⚙️ Tasks
+
+* Release v2023.0.0-M6
+* Update github workflows
+* Add Badges
+* Update README
+* Update readme
+* Update GitHub ISSUE_TEMPLATE.md
+* Update github workflows
+* Update github issue templates
+* Update github issue templates
+* Grace: update github workflows
+* Grace: migrate to grace
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-M3 link:{github}/issues/271[#271]
+* Upgrade to Grace Async and Events 6.0.0-M3 link:{github}/issues/272[#272]
+* Upgrade to Grace Cache Plugin 6.0.0-M2 link:{github}/issues/273[#273]
+* Upgrade to Grace Data 2023.0.0-M4 link:{github}/issues/274[#274]
+* Upgrade to Grace Data Hibernate 2023.0.0-M4 link:{github}/issues/275[#275]
+* Upgrade to Grace Database Migration Plugin 6.0.0-M2 link:{github}/issues/276[#276]
+* Upgrade to Grace Fields Plugin 6.0.0-M2 link:{github}/issues/277[#277]
+* Upgrade to Grace Geb Plugin 6.0.0-M2 link:{github}/issues/278[#278]
+* Upgrade to Grace Profile: Base 2023.0.0-M4 link:{github}/issues/281[#281]
+* Upgrade to Grace Profile: Plugin 2023.0.0-M3 link:{github}/issues/282[#282]
+* Upgrade to Grace Profile: Profile 2023.0.0-M3 link:{github}/issues/283[#283]
+* Upgrade to Grace Profile: Rest API 2023.0.0-M3 link:{github}/issues/284[#284]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-M3 link:{github}/issues/285[#285]
+* Upgrade to Grace Profile: Web 2023.0.0-M3 link:{github}/issues/286[#286]
+* Upgrade to Grace Scaffolding 6.0.0-M2 link:{github}/issues/279[#279]
+* Upgrade to Grace Views 6.0.0-M3 link:{github}/issues/280[#280]
+* Upgrade to Groovy 4.0.12
+* Upgrade to Jackson Databind 2.14.3
+* Upgrade to Micronaut 3.9.2
+* Upgrade to Spring Boot 3.0.7
+* Upgrade to Spring Framework 6.0.9
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M5...v2023.0.0-M6
+
+=== 2023.0.0-M5
+
+link:{github}/releases/tag/v2023.0.0-M5[release notes]
+
+🐞 Bug Fixes
+
+* Set default compatibility of `ProfileCompilerTask` to 17
+* Cleanup build scripts: make `spring-test` test only
+* Fixed NPE in `GroovyPagesAutoConfiguration`
+* Adds missing spring resources
+* Revert `GroovyPageLayoutFinder`
+* Groovy 3: Migrate to `groovy.test.NotYetImplemented`
+* Code format: make imports ordered
+* Update `AbstractGrailsTagTests`
+* Grails Console: Remove dependency of `jna`
+* Grails Gradle Plugin: Fixes `run-command` fails
+* Fixes `findMainClass` errors in Groovy 4
+
+🛠 Improvements
+
+* Gradle Plugin: Database Migration plugin no longer uses `app\migrations` by default link:{github}/issues/227[#227]
+* Gradle Plugin: `app\views` should not be treated as Resource dir link:{github}/issues/226[#226]
+* Remove deprecated Gradle plugins: `gracePluginPublish` and `graceProfilePublish` link:{github}/issues/217[#217]
+* Gradle Plugin: console and shell should be listed by group in Gradle tasks link:{github}/issues/216[#216]
+* Make application running status logging only when debug enabled
+* Grace: change console title
+* Update project skeleton: migrating from old apply plugin to plugins block link:{github}/issues/219[#219]
+* Use properties of `grace-bom` as variables for `CreateAppCommand` link:{github}/issues/218[#218]
+* Remove the direct dependency of GSP on url-mappings plugin link:{github}/issues/228[#228]
+* Format codes in `GroovyPagesGrailsPlugin`
+* Auto-Configure `GroovyPagesGrailsPlugin`
+* Auto-Configure `GroovyPagesGrailsPlugin`
+* Auto-Configure `GroovyPagesGrailsPlugin`
+* Auto-Configure `GroovyPagesGrailsPlugin`
+* Grails Boot: use `configureProfiles` in Grails
+* Grails Console: custom title for `GrailsConsole` fileNewWindow
+* Grails Console: Rename `GrailsSwingConsole` to `GrailsConsole`
+* Grails Console: Adding JVM and OS version for showAbout dialog
+* Grails Console: Migrate to Groovy 4, because Groovy 4 enable indy default
+* Grails Boot: Refactoring Grails
+* Grails Boot: Improve print information of the running app status
+* Grails Console: Improve `GrailsSwingConsole`
+* Grails Console: Improve the Grails shell with two call hooks: `beforeExecution` and `afterExecution`
+
+⚙️ Tasks
+
+* Grace: update github workflows
+* Grace: update github workflows
+* Grace: migrate to grace
+
+🚀 Dependency Upgrades
+
+* Upgrade to Ant 1.10.13
+* Upgrade to Grace Profile: Base 2023.0.0-M3 link:{github}/issues/220[#220]
+* Upgrade to Grace Profile: Plugin 2023.0.0-M2 link:{github}/issues/221[#221]
+* Upgrade to Grace Profile: Profile 2023.0.0-M2 link:{github}/issues/222[#222]
+* Upgrade to Grace Profile: Rest API 2023.0.0-M2 link:{github}/issues/223[#223]
+* Upgrade to Grace Profile: Web 2023.0.0-M2 link:{github}/issues/225[#225]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-M2 link:{github}/issues/224[#224]
+* Upgrade to Jackson Databind 2.14.2
+* Upgrade to Methvin Directory Watcher 0.18.0
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M4...v2023.0.0-M5
+
+=== 2023.0.0-M4
+
+link:{github}/releases/tag/v2023.0.0-M4[release notes]
+
+🐞 Bug Fixes
+
+* Fixes bug: ApplicationCommand in app/commands should be listed in Gradle tasks link:{github}/issues/179[#179]
+* Fixes findMainClass errors in Groovy 4
+* Downgrade Jansi to 1.18 link:{github}/issues/178[#178]
+
+⚙️ Tasks
+
+* Grace: update github workflows
+
+🚀 Dependency Upgrades
+
+* Upgrade to Ant 1.10.13
+* Upgrade to AsciidoctorJ 2.5.8
+* Upgrade to JSoup 1.16.1
+* Upgrade to Objenesis 3.3
+* Upgrade to SLF4J 2.0.7
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M3...v2023.0.0-M4
+
+=== 2023.0.0-M3
+
+link:{github}/releases/tag/v2023.0.0-M3[release notes]
+
+⭐️ New Features
+
+* ApplicationCommand can be registered as a Gradle task link:{github}/issues/175[#175]
+* Migrate to Jakarta: using Jakarta XML Binding 4.0.0
+* Migrate to Jakarta: remove javax libs in Gradle version catalog
+* Migrate to Jakarta: Using `jakarta.persistence-api`
+* Migrate auto-configurations to `@AutoConfiguration`
+* Grails Shell: Adding variable `projectSnakeCaseName` to `CreateAppCommand`
+* Grails Service and Spring Service coexist harmoniously
+* Grails Controller and Spring Controller coexist harmoniously
+* Changed viewName to better support integration with other view templates, like Groovy Templates
+* Improve log statements to help with debugging
+* Adding `toString` method, this is helpful for logs
+
+⚡️ Breaking Changes
+
+* Remove supports for micronaut spring
+* Break Changes: Scaffold templates moved to resources root
+* Break changes: JPA Entity is no longer considered Grails Domain
+
+🐞 Bug Fixes
+
+* Update Grails version pattern
+* Grails Plugin REST: fixes `AbstractJsonViewContainerRenderer` compiling errors in `grails-views` project
+* Use jakarta servlet
+* Grails GSP: fixes layout view not found
+* Fixes violations for Checkstyle check
+* Fixes violations for Codenarc check
+* Fixes violations for Codenarc check
+* Grails Plugin GSP: remove loadAfter 'filters'
+
+🛠 Improvements
+
+* Gradle Plugin: remove unused constants
+* Gradle Plugin: remove configureGroovy
+* Gradle Plugin: remove micronaut dependency and configureFileWatch
+* Update runtime dependencies of shell
+* Refine GrailsResourceBanner Support Spring Boot 3
+* Grails REST render context support viewName including namespace and controller name
+* Grails REST render context support viewName including namespace and controller name
+* Improve `ApplicationClassInjector`: make Grails to take advantage of DataSource and JPA configurations in Spring Boot
+* Improvements made to JPA Entity compatibility
+* Update Dependencies
+* Refine `GroovyPageViewResolver`
+* Make GroovyGrailsPlugin ordered
+* Grails Shell: format Gradle build.gradle
+* Grails Shell: remove extra spaces
+
+⚙️ Tasks
+
+* Gradle build: remove dependencySubstitution force using Groovy 4
+* Gradle Build: remove dependencySubstitution for using Groovy 4
+* Grace: add dependencySubstitution to use Groovy 4
+* Grace: update github workflows
+* Grace: optimize shell dependencies
+* Grace: update gradle build scripts
+* Don't publish milestones to sdkman
+
+🚀 Dependency Upgrades
+
+* Upgrade to Caffeine 3.1.6
+* Upgrade to Grace Async and Events 6.0.0-M2 link:{github}/issues/170[#170]
+* Upgrade to Grace Cache Plugin 6.0.0-M1 link:{github}/issues/151[#151]
+* Upgrade to Grace Data 2023.0.0-M2 link:{github}/issues/166[#166]
+* Upgrade to Grace Data 2023.0.0-M3 link:{github}/issues/168[#168]
+* Upgrade to Grace Data Hibernate 2023.0.0-M2 link:{github}/issues/167[#167]
+* Upgrade to Grace Data Hibernate 2023.0.0-M3 link:{github}/issues/169[#169]
+* Upgrade to Grace Database Migration Plugin 6.0.0-M1 link:{github}/issues/154[#154]
+* Upgrade to Grace Fields Plugin 6.0.0-M1 link:{github}/issues/155[#155]
+* Upgrade to Grace Geb Plugin 6.0.0-M1 link:{github}/issues/156[#156]
+* Upgrade to Grace Profile: Base 2023.0.0-M2 link:{github}/issues/173[#173]
+* Upgrade to Grace Profile: Plugin 2023.0.0-M1 link:{github}/issues/158[#158]
+* Upgrade to Grace Profile: Profile 2023.0.0-M1 link:{github}/issues/159[#159]
+* Upgrade to Grace Profile: Rest API 2023.0.0-M1 link:{github}/issues/160[#160]
+* Upgrade to Grace Profile: Web Plugin 2023.0.0-M1 link:{github}/issues/161[#161]
+* Upgrade to Grace Profile: Web 2023.0.0-M1 link:{github}/issues/162[#162]
+* Upgrade to Grace Scaffolding 6.0.0-M1 link:{github}/issues/163[#163]
+* Upgrade to Grace Views 6.0.0-M2 link:{github}/issues/172[#172]
+* Upgrade to Groovy 4.0.11
+* Upgrade to groovy-toml 4.0.11
+* Upgrade to Micronaut Core 4.0.7 link:{github}/issues/171[#171]
+* Upgrade to SLF4J 2.0.7 link:{github}/issues/174[#174]
+* Upgrade to Spring Boot 3.0.6
+* Upgrade to Spring Framework 6.0.8
+* Upgrade to Tomcat 10.1.8
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M2...v2023.0.0-M3
+
+=== 2023.0.0-M2
+
+link:{github}/releases/tag/v2023.0.0-M2[release notes]
+
+🐞 Bug Fixes
+
+* Use jakarta servlet
+* Update Dependencies
+* Don't publish milestones to sdkman
+* Fixes pluginExcludes type error
+* Grails Shell: fixes failing in 'create-app' Command
+* Gradle: migrate to Gradle 8 Gradle 8: 'classifier' was removed from type org.gradle.api.tasks.bundling.Jar
+* Grails Gradle Plugin: fixes some errors like AbstractMethodError in GrailsExtension and Environment
+* Gradle: Support Gradle 8.0 fixed: Could not create task of type 'GroovyPageForkCompileTask' in Gradle 8
+* Migrate to jakarta.* namespace
+* Grails Core: make GrailsASTUtils isDomainClass decoupled with 'javax.persistence-api' and GORM
+* Gradle Plugin: remove SDK Plugin
+
+🛠 Improvements
+
+* Grace: update install.txt
+* Grace: update runtime dependencies for shell
+* Grace: optimize shell dependencies
+* Grace: rename install and license
+* Grace: update readmes and license
+
+⚙️ Tasks
+
+* Grace: update gradle build scripts
+* Grace: update github workflows skip tests
+* Grace: update github workflows
+* Grace: update github workflows
+* Grace: fix Conflicting module versions
+* Grace: rename grails-sitemesh to grace-sitemesh
+* Grace: update run command
+* Grace: optimize shell dependencies
+* Grace: fixed some known issues
+* Grace: update profile and commands
+* Grace: update banner
+* Grace: fixed failed tests
+* Grace: update media assets
+* Grace: update testsuite build scripts
+* Grace: update github workflows
+* Grace: update gradle build scripts
+* Grace: rename all sub-projects
+
+🚀 Dependency Upgrades
+
+* Gradle Plugin: Upgrade to JaCoCo 0.8.9
+* Gradle Plugin: Test Retry Plugin 1.5.2
+* Gradle Plugin: Upgrade to Nexus Publish Plugin 1.3.0
+* Gradle Plugin: Upgrade to Nebula Extra Configuration Plugin 9.0.0
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-M1 link:{github}/issues/149[#149]
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-M2 link:{github}/issues/165[#165]
+* Upgrade to Grace Async and Events 6.0.0-M1 link:{github}/issues/150[#150]
+* Upgrade to Grace Data Hibernate 2023.0.0-M1 link:{github}/issues/153[#153]
+* Upgrade to Grace Data 2023.0.0-M1 link:{github}/issues/152[#152]
+* Upgrade to Grace Profile: Base 2023.0.0-M1 link:{github}/issues/157[#157]
+* Upgrade to Grace View 6.0.0-M1 link:{github}/issues/164[#164]
+
+**Full Changelog**: https://github.com/graceframework/grace-framework/compare/v2023.0.0-M1...v2023.0.0-M2
+
+=== 2023.0.0-M1
+
+link:{github}/releases/tag/v2023.0.0-M1[release notes]
+
+Grace 2023.0 will be the first release to support Spring Boot 3.0 and Spring Framework 6.0. This release will be migrated to Jakarta namespace, upgraded to Jakarta Servlet 6 and Jakarta JSP 3.1, Jakarta Transaction API 2.0. To accomplish this, we merged both the SiteMesh 2.4.2 and GSP projects into this repository, and did a lot of migration and upgrade work.
+The next step will be to gradually upgrade other major projects, such as Grace GORM, as well as other core plugins.
+
+⭐️ New Features
+
+* Jakarta: Migrate to 'jakarta.*' namespaces
+* Jakarta: Migrate to 'jakarta.persistence' namespaces
+* Jakarta: Migrate to 'jakarta.*' namespaces
+* Jakarta: Using jakarta.persistence-api
+* Support Jakarta EE 9
+* Support Jakarta EE 9
+* SiteMesh: Support Jakarta EE 9
+* Grails GSP Import GSP related projects into Grails Framework
+* Adding Grails Dynamic Modules Plugin
+* Import Spring Boot CLI
+
+⚡️ Breaking Changes
+
+* Micronaut: Remove supports for  Micronaut Spring
+
+🐞 Bug Fixes
+
+* Grace: fixed some known issues
+* Fixes deprecated warnings from SafeConstructor and Representer
+* CodeNarc: Fixes violations for CodeNarc check
+* Fixes errors for Checkstyle check: [RequireThis]
+* Grails Shell: fixes wrong location of 'grails-bom-effective.xml'
+* Grails Shell: fixed error import of GrailsDependenciesDependencyManagement
+* Grails GSP: fixes tests NPE with JSP 2.2 and JSTL 1.2
+* Grails GSP: fixes JSP tags not found
+* Grails GSP: added missing grails-plugin.xml
+* Grails GSP: fixed STC errors
+* Fixes some errors related to classLoader
+* Fixes type cast error in GradleCommand
+
+🛠 Improvements
+
+* Groovy: explicitly import 'groovy.xml.XmlSlurper'
+*: revert 'Adding not related modules'
+* SiteMesh: make tests pass
+* SiteMesh: adding module: 'grails-sitemesh'
+* SiteMesh: relocate to 'grails-sitemesh'
+* SiteMesh: Remove some files unused and not related
+* SiteMesh: relocate tlds to src/main/resources
+* Using Gradle to build
+* Update Grails version to 2023.0.0
+* Reorganizing the project codebase
+* fix: remove unused 'grails-gsp' in libs.version
+* Grails GSP: remove support for loading NamespacedTagDispatcher from Spring Beans
+* Grails GSP: minor improvements
+* Improvements for customizing Tag Namespace
+* Grails Gradle Plugin: remove dependency of 'spring-boot-cli'
+* Grails Gradle Plugin: adding dependency 'spring-boot-cli'
+* Grails Shell: remove depracted 'AetherGrapeEngine' and 'AetherGrapeEngineFactory'
+* Grails Shell: rename 'GrailsAetherGrapeEngineFactory' to 'GrailsMavenGrapeEngineFactory'
+* Grails Shell: use 'MavenResolverGrapeEngine' inplace of depracted 'AetherGrapeEngine'
+* Grails Shell: remove dependency of 'spring-boot-cli'
+* Grails Shell: remove SpringInvoker
+* Grails Shell: refactoring code
+* Grails Shell: refactoring GrailsApplicationCompilerAutoConfiguration and GrailsTestCompilerAutoConfiguration
+* Grails Shell: Apply IDEA Groovy and Java Code Style
+* Grails Shell: remove unused GrailsDependencyVersions
+* Grails Shell: relocate GrailsDependenciesDependencyManagement
+* Minor improvement: Correct words
+* Grails Web: Improvements for HttpServletReuest.isXhr
+* Grails Shell: Update RunCommand
+* Grails Shell: Update dependencies for GrailsCompilerAutoConfiguration
+* Grails Shell: Use GrailsDependenciesDependencyManagement replace of GrailsDependencyVersions
+* Grails GSP: adding web-app_3_0.x and web-app_4_0.xsd
+* Grails GSP: remove '@Depreacted' in JspInvokeGrailsTagLibTag
+* build: fixes Java Compile warnings of deprecated, unchecked, rawtypes
+* Grails GSP: isolated tests
+* Grails GSP: relocate test resources
+* Grails GSP: replace deprecated GrailsTagLibClass, DefaultGrailsTagLibClass, TagLibArtefactHandler
+* Grails GSP: cleanup build.gradle
+* Grails GSP: relocate ControllerTagLibraryTraitInjector to src/main/groovy
+* Grails GSP: define versions in Gradle version catalog
+* Grails GSP: update dependencies
+* Grails GSP: Update build.gradle
+* Prepare to merge
+* Grails Plugin Dynamic Modules: Change url to Object type
+* Update default Servlet version to 4.0
+* Refine UrlMappingsPluginConfiguration
+* Grails Plugin API: change closure ResolveStrategy to DELEGATE_FIRST
+* Grails Plugin API: relocate AbstractModuleDescriptor to 'grails.plugins.descriptors'
+
+⚙️ Tasks
+
+* Release v2023.0.0-M1
+* Grace: update github workflows
+* Grace: update github workflows
+* Grace: fixed failed tests
+* Grace: optimize shell dependencies
+* Grace: remove excluding slf4j-simple in all dependencies
+* Grace: update custom banner file
+* Grace: update profile repository
+* Grace: update commands
+* Grace: update banner
+* Grace: update media assets
+* Grace: update gradle build scripts
+* Grace: rename all sub-projects
+* Update to Jakarta dependencies in all the subprojects
+* Added Jakarta EE dependencies to Gradle version catalog
+* Update build to JDK 17
+* Upgrade io.github.gradle-nexus:publish-plugin to 1.3.0
+* Upgrade com.netflix.nebula:gradle-extra-configurations-plugin to 8.0.0
+* build: Upgrade to Checkstyle 10.9.3
+* build: Upgrade to CodeNarc 3.2.0
+* Next development version: 2023.0.0-SNAPSHOT
+
+🚀 Dependency Upgrades
+
+* Upgrade to Apache Groovy 3.0.16
+* Upgrade to AspectJ 1.9.19
+* Upgrade to Caffeine 3.1.5
+* Upgrade to groovy-toml 4.0.10
+* Upgrade to HSQLDB 2.7.1
+* Upgrade to JUnit Jupiter 5.9.2 and JUnit Platform 1.9.2
+* Upgrade to Spring Boot 3.0.5
+* Upgrade to Spring Boot 3.0.0

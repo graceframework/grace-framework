@@ -1,0 +1,38 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.web.disable.multipart",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.web.url.converter",
+      "type": "java.lang.String",
+      "defaultValue": "camelCase"
+    },
+    {
+      "name": "grails.cors.filter.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    }
+  ],
+  "hints": [
+    {
+      "name": "grails.web.url.converter",
+      "values": [
+        {
+          "value": "camelCase"
+        },
+        {
+          "value": "hyphenated"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,0 @@
-dependencies {
-    compileOnly libs.jakarta.servlet
-    api project(':grails-web-jsp')
-}

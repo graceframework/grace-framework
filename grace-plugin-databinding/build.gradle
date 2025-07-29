@@ -1,0 +1,12 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-web-databinding")
+
+    compileOnly libs.jakarta.servlet
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation project(":grace-test-support")
+}

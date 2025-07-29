@@ -1,0 +1,169 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin:1.3.0")
+    }
+}
+
+ext.isSnapshot = version.endsWith("-SNAPSHOT")
+ext.isReleaseVersion = !ext.isSnapshot
+ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
+ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
+
+apply plugin: 'com.gradle.plugin-publish'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'maven-publish'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+configurations {
+    documentation
+    compileClasspath {
+        exclude group: 'org.apache.groovy', module: 'groovy-xml'
+    }
+}
+
+dependencies {
+    api project(":grace-bootstrap")
+    api project(":grace-docs")
+    api project(":grace-gradle-model")
+    api project(":grace-shell"), {
+        exclude group: "org.slf4j", module: "slf4j-simple"
+    }
+    api gradleApi()
+    api libs.maven.model
+    api libs.spring.boot.gradle.plugin
+    api libs.spring.boot.loader.tools
+    api libs.spring.dependency.management.plugin
+
+    documentation libs.jansi
+    documentation libs.groovy.picocli
+}
+
+gradlePlugin {
+    website = 'https://github.com/graceframework/grace-framework'
+    vcsUrl = 'https://github.com/graceframework/grace-framework.git'
+
+    plugins {
+        graceCore {
+            displayName = "Grace Core Gradle Plugin"
+            description = 'The main Grace gradle plugin implementation'
+            id = 'org.graceframework.grace-core'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.core.GrailsGradlePlugin'
+        }
+        graceDoc {
+            displayName = "Grace Doc Gradle Plugin"
+            description = 'Adds Grace doc publishing support'
+            id = 'org.graceframework.grace-doc'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.doc.GrailsDocGradlePlugin'
+        }
+        graceGsp {
+            displayName = "Grace GSP Gradle Plugin"
+            description = 'A plugin that adds support for compiling Groovy Server Pages (GSP)'
+            id = 'org.graceframework.grace-gsp'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.web.gsp.GroovyPagePlugin'
+        }
+        gracePlugin {
+            displayName = "Grace-Plugin Gradle Plugin"
+            description = 'A Gradle plugin for Grace plugins'
+            id = 'org.graceframework.grace-plugin'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.core.GrailsPluginGradlePlugin'
+        }
+        graceProfile {
+            displayName = "Grace Profile Gradle Plugin"
+            description = 'A plugin that is capable of compiling a Grace profile into a JAR file for distribution'
+            id = 'org.graceframework.grace-profile'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.profiles.GrailsProfileGradlePlugin'
+        }
+        graceWeb {
+            displayName = "Grace Web Gradle Plugin"
+            description = 'Adds web specific extensions'
+            id = 'org.graceframework.grace-web'
+            tags.set(['groovy', 'grace-framework', 'spring-boot'])
+            implementationClass = 'org.grails.gradle.plugin.web.GrailsWebGradlePlugin'
+        }
+    }
+}
+
+jar {
+    manifest.mainAttributes(
+            "Built-By": System.properties['user.name'],
+            "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
+            "Implementation-Title": "Grace Framework",
+            "Implementation-Version": projectVersion,
+            "Implementation-Vendor": 'graceframework.org')
+}
+
+configure([compileGroovy, compileTestGroovy]) {
+    groovyOptions.encoding = "UTF-8"
+    options.encoding = "UTF-8"
+    options.forkOptions.memoryInitialSize = '128M'
+    options.forkOptions.memoryMaximumSize = '1G'
+}
+
+configure([compileJava, compileTestJava]) {
+    options.deprecation = true
+    options.debug = true
+}
+
+configure([groovydoc]) {
+    destinationDir = project.file("build/docs/api")
+    classpath += configurations.documentation
+}
+
+configure([javadoc]) {
+    options.encoding = "UTF-8"
+    options.docEncoding = "UTF-8"
+    options.charSet = "UTF-8"
+    options.jFlags "-Xms64M", "-Xmx512M"
+}
+
+tasks.withType(io.github.gradlenexus.publishplugin.InitializeNexusStagingRepository).configureEach {
+    shouldRunAfter(tasks.withType(Sign))
+}
+
+if (isReleaseVersion) {
+    afterEvaluate {
+        signing {
+            required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+            Publication[] publications = new Publication[publishing.publications.size()]
+            publishing.publications.findAll().toArray(publications)
+            sign(publications)
+        }
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { isReleaseVersion }
+    }
+}
+
+project.afterEvaluate {
+    project.publishing.publications.each { publication->
+        if (publication instanceof MavenPublication) {
+            publication.pom {
+                if (publication.name == "maven" || publication.name == "pluginMaven") {
+                    name = "Grace Gradle Plugin"
+                    description = "Grace Framework : A Gradle plugin for Grace which provides a bunch of useful plugins"
+                }
+
+                if (publication.name == "pluginMaven" || publication.name.endsWith("PluginMarkerMaven")) {
+                    withXml {
+                        def xml = asNode()
+                        xml.children().last() + pomInfo
+                    }
+                }
+            }
+        }
+    }
+}

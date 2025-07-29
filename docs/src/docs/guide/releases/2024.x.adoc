@@ -1,0 +1,41 @@
+=== 2024.0.0-M1
+
+link:{github}/releases/tag/v2024.0.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README
+* Add release notes for 2024.0.0-M1 link:{github}/issues/1100[#1111]
+* Use the new url of Grace binary distribution for sdkMan link:{github}/issues/1100[#1110]
+* Provides binary, sources and docs distributions for Grace framework link:{github}/issues/1100[#1109]
+* Update Grace Banner link:{github}/issues/1100[#1108]
+* Spring Boot 3.3.x is no longer supported link:{github}/issues/1100[#1107]
+* Update `grace-doc` to 2023.3.0 link:{github}/issues/1100[#1106]
+* Don't publish `docs` to Maven Central and includes it in the distribution link:{github}/issues/1100[#1104]
+* Add support for creating Grace 2024 project link:{github}/issues/1100[#1100]
+* Update GrailsTests: bannerMode has been bound to properties link:{github}/issues/1050[#1050]
+
+🚀 Dependency Upgrades
+
+* Upgrade to AssertJ 3.26.3 link:{github}/issues/1088[#1088]
+* Upgrade to Byte Buddy 1.15.11 link:{github}/issues/1089[#1089]
+* Upgrade to Commons Codec 1.17.2 link:{github}/issues/1091[#1091]
+* Upgrade to Commons Lang3 3.17.0 link:{github}/issues/1090[#1090]
+* Upgrade to Commons Text 1.13.1 link:{github}/issues/1099[#1099]
+* Upgrade to Gson 2.11.0 link:{github}/issues/1101[#1101]
+* Upgrade to H2 2.3.232 link:{github}/issues/1093[#1093]
+* Upgrade to Jackson Databind 2.18.4 link:{github}/issues/1092[#1092]
+* Upgrade to JUnit Jupiter 5.11.4 link:{github}/issues/1094[#1094]
+* Upgrade to JUnit Platform 1.11.4 link:{github}/issues/1095[#1095]
+* Upgrade to Mockito 5.14.2 link:{github}/issues/1102[#1102]
+* Upgrade to SnakeYAML 2.3 link:{github}/issues/1096[#1096]
+* Upgrade to Spring Boot 3.4.6 link:{github}/issues/1050[#1050]
+* Upgrade to Spring Boot 3.4.7 link:{github}/issues/1097[#1097]
+* Upgrade to Spring Framework 6.2.7 link:{github}/issues/1051[#1051]
+* Upgrade to Spring Framework 6.2.8 link:{github}/issues/1098[#1098]
+
+⚙️ Tasks
+
+* Release v2023.3.0-M1
+* Update GitHub workflows - Switch to 2024.0.x
+* Next development version: 2024.0.0-SNAPSHOT

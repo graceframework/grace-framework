@@ -1,10 +1,7 @@
 contact_links:
-  - name: Grails Core Discussions
-    url: https://github.com/grails/grails-core/discussions
-    about: Ask questions about Grails® framework on Github
+  - name: Grace Discussions
+    url: https://github.com/graceframework/grace-framework/discussions
+    about: Ask questions about Grace framework on Github
   - name: Stack Overflow
-    url: https://stackoverflow.com/tags/grails
+    url: https://stackoverflow.com/tags/graceframework
     about: Ask questions on Stack Overflow
-  - name: Grails Slack
-    url: https://grails.slack.com/
-    about: Chat with us on Grails Community Slack.

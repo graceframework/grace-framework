@@ -1,0 +1,10 @@
+dependencies {
+    api project(":grace-web-common")
+    api project(":grace-web-url-mappings")
+
+    api project(":grace-web-sitemesh")
+    compileOnlyApi libs.jakarta.servlet
+
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+}

@@ -1,0 +1,118 @@
+/*
+ * Copyright 2004-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.grails.plugins.core
+
+import groovy.transform.CompileStatic
+import org.springframework.beans.factory.config.CustomEditorConfigurer
+import org.springframework.beans.factory.support.DefaultListableBeanFactory
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+import org.springframework.context.support.GenericApplicationContext
+import org.springframework.core.PriorityOrdered
+import org.springframework.core.io.Resource
+import org.springframework.util.ClassUtils
+
+import grails.plugins.Plugin
+import grails.util.Environment
+import grails.util.GrailsUtil
+
+import org.grails.beans.support.PropertiesEditor
+import org.grails.core.support.ClassEditor
+import org.grails.dev.support.DevelopmentShutdownHook
+import org.grails.spring.DefaultRuntimeSpringConfiguration
+import org.grails.spring.RuntimeSpringConfigUtilities
+import org.grails.spring.RuntimeSpringConfiguration
+
+/**
+ * Configures the core shared beans within the Grails application context.
+ *
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 0.4
+ */
+class CoreGrailsPlugin extends Plugin implements PriorityOrdered {
+
+    def version = GrailsUtil.getGrailsVersion()
+    def watchedResources = ['file:./grails-app/conf/spring/resources.xml',
+                            'file:./grails-app/conf/spring/resources.groovy',
+                            'file:./grails-app/conf/application.groovy',
+                            'file:./grails-app/conf/application.yml',
+                            'file:./app/conf/spring/resources.xml',
+                            'file:./app/conf/spring/resources.groovy',
+                            'file:./app/conf/application.groovy',
+                            'file:./app/conf/application.yml']
+
+    @Override
+    Closure doWithSpring() {
+        { ->
+            def application = grailsApplication
+
+            // add shutdown hook if not running in war deployed mode
+            boolean warDeployed = Environment.isWarDeployed()
+            boolean devMode = !warDeployed && environment == Environment.DEVELOPMENT
+            if (devMode && ClassUtils.isPresent('jline.Terminal', application.classLoader)) {
+                shutdownHook(DevelopmentShutdownHook)
+            }
+
+            customEditors(CustomEditorConfigurer) {
+                customEditors = [(Class): ClassEditor,
+                                 (Properties): PropertiesEditor]
+            }
+
+        }
+    }
+
+    @Override
+    @CompileStatic
+    void onChange(Map<String, Object> event) {
+        GenericApplicationContext applicationContext = (GenericApplicationContext) this.applicationContext
+        if (event.source instanceof Resource) {
+            Resource res = (Resource) event.source
+            if (res.filename.endsWith('.xml')) {
+                def xmlBeans = new DefaultListableBeanFactory()
+                new XmlBeanDefinitionReader(xmlBeans).loadBeanDefinitions(res)
+                for (String beanName in xmlBeans.beanDefinitionNames) {
+                    applicationContext.registerBeanDefinition(beanName, xmlBeans.getBeanDefinition(beanName))
+                }
+            }
+            if (res.filename.endsWith('.groovy')) {
+                Map<String, Object> variables = [
+                        application: grailsApplication,
+                        grailsApplication: grailsApplication] as Map<String, Object>
+                RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration()
+                RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, variables, res)
+                springConfig.registerBeansWithContext(applicationContext)
+            }
+        }
+        else if (event.source instanceof Class) {
+            def clazz = (Class) event.source
+            if (Script.isAssignableFrom(clazz)) {
+                Map<String, Object> variables = [
+                        application: grailsApplication,
+                        grailsApplication: grailsApplication] as Map<String, Object>
+
+                RuntimeSpringConfiguration springConfig = new DefaultRuntimeSpringConfiguration(applicationContext)
+                RuntimeSpringConfigUtilities.reloadSpringResourcesConfig(springConfig, variables, clazz)
+                springConfig.registerBeansWithContext(applicationContext)
+            }
+        }
+    }
+
+    @Override
+    int getOrder() {
+        0
+    }
+
+}

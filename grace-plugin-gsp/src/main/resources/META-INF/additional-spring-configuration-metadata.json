@@ -1,0 +1,82 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.views.default.codec",
+      "type": "java.lang.String",
+      "description": "The default codec of Grails views.",
+      "defaultValue": "html"
+    },
+    {
+      "name": "grails.sitemesh.default.layout",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "replacement": "grails.views.gsp.layout.default-name"
+      }
+    },
+    {
+      "name": "grails.sitemesh.enable.nongsp",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },
+    {
+      "name": "grails.gsp.disable.caching.resources",
+      "type": "java.lang.Boolean",
+      "description": "Whether to disable caching of resources in GSP.",
+      "defaultValue": false,
+      "deprecation": {
+        "replacement": "grails.views.gsp.cache.enabled"
+      }
+    },
+    {
+      "name": "grails.gsp.enable.reload",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable GSP reloading in production.",
+      "defaultValue": false,
+      "deprecation": {
+        "replacement": "grails.views.gsp.reload.enabled"
+      }
+    },
+    {
+      "name": "grails.gsp.reload.interval",
+      "type": "java.lang.Integer",
+      "description": "Checks if the GSP has expired and should be reloaded, default value is 5000 (ms).",
+      "defaultValue": 5000,
+      "deprecation": {
+        "replacement": "grails.views.gsp.reload.interval"
+      }
+    },
+    {
+      "name": "grails.gsp.tldScanPattern",
+      "type": "java.lang.String",
+      "description": "The patterns of JSP tlds used to scan.",
+      "deprecation": {
+        "replacement": "grails.views.gsp.tld-scan-patterns"
+      }
+    },
+    {
+      "name": "grails.gsp.view.dir",
+      "type": "java.lang.String",
+      "description": "Thew views directory for GSP.",
+      "deprecation": {
+        "replacement": "grails.views.gsp.dir"
+      }
+    },
+    {
+      "name": "grails.gsp.view.layoutViewResolver",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable layout for GSP.",
+      "defaultValue": true,
+      "deprecation": {
+        "replacement": "grails.views.gsp.layout.enabled"
+      }
+    },
+    {
+      "name": "grails.views.gsp.modelrecording",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}

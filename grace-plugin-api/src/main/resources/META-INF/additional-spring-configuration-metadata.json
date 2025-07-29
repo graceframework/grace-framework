@@ -1,0 +1,14 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.plugin.excludes",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "name": "grails.plugin.includes",
+      "type": "java.util.List<java.lang.String>"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,26 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-core")
+    api project(":grace-plugin-api")
+    runtimeOnly project(":grace-plugin-controllers")
+    api project(":grace-util")
+    api project(":grace-web-common")
+
+    api libs.commons.lang3
+    compileOnly libs.jakarta.servlet
+    compileOnly(libs.grails.datastore.core) {
+        transitive = false
+    }
+    compileOnly(libs.grails.datastore.gorm) {
+        transitive = false
+    }
+
+    api libs.spring.boot.autoconfigure
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.json.unit
+    testRuntimeOnly libs.gson
+}

@@ -1,0 +1,12 @@
+dependencies {
+    api project(":grace-databinding")
+    api project(":grace-util")
+    api project(":grace-web-common")
+
+    compileOnly libs.grails.datastore.core
+    compileOnly libs.jakarta.annotation.api
+    compileOnlyApi libs.jakarta.servlet
+
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+}

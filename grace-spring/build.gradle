@@ -1,0 +1,10 @@
+dependencies {
+    api libs.groovy.xml
+    api libs.spring.context
+    compileOnly libs.spring.tx
+    compileOnly libs.spring.web
+
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+}

@@ -1,0 +1,9 @@
+dependencies {
+    api project(":grace-web-common")
+
+    api libs.jakarta.servlet
+    testImplementation project(":grace-plugin-controllers")
+    testImplementation libs.tomcat.embed.core
+    testRuntimeOnly project(":grace-plugin-i18n")
+    testRuntimeOnly project(":grace-plugin-url-mappings")
+}

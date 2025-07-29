@@ -1,0 +1,33 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "grails.profile",
+      "type": "java.lang.String",
+      "defaultValue": "web"
+    },
+    {
+      "name": "info.app.grailsVersion",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "info.app.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "info.app.servletVersion",
+      "type": "java.lang.String",
+      "defaultValue": "6.0"
+    },
+    {
+      "name": "info.app.version",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "grails.codegen.defaultPackage",
+      "type": "java.lang.String"
+    }
+  ],
+  "hints": [
+  ]
+}

@@ -1,0 +1,112 @@
+apply plugin: 'application'
+
+application {
+    mainClass.set('org.grails.cli.GrailsCli')
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://repo.gradle.org/gradle/libs-releases'
+    }
+}
+
+ext {
+    gradleToolingApiVersion = gradle.gradleVersion
+}
+
+configurations {
+    shellOnly
+    dependenciesBom
+    compileClasspath {
+        extendsFrom shellOnly
+    }
+    runtimeClasspath {
+        extendsFrom shellOnly
+        // Excludes from spring-boot, not needed for Shell
+        exclude group: 'org.springframework', module: 'spring-aop'
+        exclude group: 'org.springframework', module: 'spring-expression'
+        exclude group: 'org.springframework', module: 'spring-jcl'
+        exclude group: 'org.springframework', module: 'spring-tx'
+    }
+}
+
+dependencies {
+    api project(":grace-api")
+    api project(":grace-bootstrap")
+    api project(":grace-cli")
+    api project(":grace-core")
+    api project(":grace-gradle-model")
+    api project(":grace-util")
+
+    api libs.ant
+    shellOnly libs.gradle.tooling.api
+    api libs.groovy.ant, {
+        exclude group: "org.apache.ant", module: "ant-antlr"
+        exclude group: "org.apache.ant", module: "ant-junit"
+        exclude group: "org.apache.groovy", module: "groovy-groovydoc"
+    }
+    api libs.groovy.json
+    compileOnly libs.jakarta.servlet
+    implementation libs.spring.boot, {
+        exclude group: "io.micrometer"
+    }
+    compileOnly libs.spring.web, {
+        exclude group: "io.micrometer"
+    }
+    api libs.jansi
+    api libs.jline
+    api libs.slf4j.api
+    api libs.slf4j.jcl
+    dependenciesBom project(path: ":grace-bom", configuration: 'effectiveBom')
+    implementation(libs.maven.resolver.provider) {
+        exclude group: "com.google.guava", module: "guava"
+        exclude group: "javax.inject", module: "javax.inject"
+    }
+    implementation(libs.maven.resolver.connectorBasic)
+    implementation(libs.maven.resolver.impl)
+    implementation(libs.maven.resolver.transportFile)
+    implementation(libs.maven.resolver.transportHttp) {
+        exclude group: "commons-codec", module: "commons-codec"
+        exclude group: "org.slf4j", module:"jcl-over-slf4j"
+    }
+    implementation(libs.maven.settings.builder) {
+        exclude group: "javax.inject", module: "javax.inject"
+    }
+    runtimeOnly libs.slf4j.simple
+    runtimeOnly libs.jakarta.servlet
+    runtimeOnly project(":grace-plugin-controllers")
+    runtimeOnly project(":grace-plugin-gsp")
+    runtimeOnly project(":grace-plugin-url-mappings")
+}
+
+task syncGrailsDependenciesBom(type: Sync) {
+    destinationDir = file("${buildDir}/generated-resources/org/grails/cli/compiler/dependencies")
+    from configurations.dependenciesBom
+}
+
+sourceSets {
+    main {
+        output.dir("${buildDir}/generated-resources", builtBy: "syncGrailsDependenciesBom")
+    }
+}
+
+eclipse {
+    classpath {
+       file {
+           whenMerged { classpath ->
+                classpath.entries.find { entry -> entry.kind == 'src' && entry.path == "src/test/resources" }?.excludes=["profiles-repository/**", "gradle-sample/**"]
+           }
+       }
+    }
+}
+
+apply from: "../gradle/integration-test.gradle"
+
+integrationTest {
+    // jline doesn't use jline.terminal system property when TERM is dumb so use different TERM value for tests
+    // https://github.com/jline/jline2/blob/6a1b6bf/src/main/java/jline/TerminalFactory.java#L54-L57
+    environment 'TERM', 'xterm'
+    // execute in single thread
+    maxParallelForks = 1
+}

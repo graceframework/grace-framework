@@ -1,0 +1,10 @@
+dependencies {
+    compileOnly libs.jakarta.annotation.api
+    compileOnlyApi libs.jakarta.servlet
+    api project(":grace-web-common")
+    api project(":grace-taglib")
+
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+    testRuntimeOnly project(":grace-spring")
+}

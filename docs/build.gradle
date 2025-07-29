@@ -1,0 +1,92 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:2023.3.0"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java-library'
+apply plugin: 'org.graceframework.grace-doc'
+
+def DOCUMENTATION_GROUP = 'Documentation'
+def groovyVersion = libs.versions.groovy.get()
+def springFrameworkVersion = libs.versions.spring.framework.get()
+def springBootVersion = libs.versions.spring.boot.get()
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    documentation
+}
+
+dependencies {
+    documentation libs.groovy.ant
+    documentation libs.groovy.groovydoc
+    documentation libs.javaparser
+    documentation libs.spring.core
+    documentation libs.spring.boot
+    documentation libs.snakeyaml
+}
+
+jar {
+    enabled = false
+}
+
+javadocJar {
+    enabled = false
+}
+
+sourcesJar {
+    enabled = false
+}
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = DOCUMENTATION_GROUP
+    docTitle = "Grace Framework - ${project.version}"
+    windowTitle = "Grace Framework - ${project.version}"
+    footer = ""
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('grace-test-suite') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+
+    link("https://docs.oracle.com/en/java/javase/17/docs/api/", 'java.')
+    link("https://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi/", 'groovy.', 'org.codehaus.groovy.', 'org.apache.groovy.')
+    link("https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api", 'org.springframework.core.', 'org.springframework.context.', 'org.springframework.beans.')
+    link("https://docs.spring.io/spring-boot/${springBootVersion[0..2]}/api/java", 'org.springframework.boot.', 'org.springframework.boot.actuate.info.')
+}
+
+docs {
+    dependsOn tasks.named('groovydoc')
+    sourceDir = project.file('src/docs')
+}

@@ -1,0 +1,149 @@
+/*
+ * Copyright 2024-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.grails.plugins.datasource;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.util.ClassUtils;
+
+import grails.config.Config;
+import grails.core.GrailsApplication;
+import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings;
+import org.grails.datastore.mapping.config.Settings;
+import org.grails.datastore.mapping.core.connections.ConnectionSource;
+import org.grails.datastore.mapping.core.connections.ConnectionSources;
+import org.grails.plugins.datasource.DataSourcePluginConfiguration.GrailsDataSourceCondition;
+
+/**
+ * {@link EnableAutoConfiguration Auto-configure} for DataSource Plugin
+ *
+ * @author Michael Yan
+ * @since 2023.1.0
+ */
+@AutoConfiguration(before = {
+        DataSourceAutoConfiguration.class, SqlInitializationAutoConfiguration.class
+})
+@AutoConfigureOrder(100)
+@Import(DataSourcePluginConfiguration.BeanPostProcessorsRegistrar.class)
+@Conditional(GrailsDataSourceCondition.class)
+public class DataSourcePluginConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources(
+            ObjectProvider<GrailsApplication> grailsApplication) throws Exception {
+        Config config = grailsApplication.getObject().getConfig();
+
+        Map dataSources = config.getProperty("dataSources", Map.class, new HashMap<>());
+        if (dataSources != null && dataSources.isEmpty()) {
+            Map defaultDataSource = config.getProperty("dataSource", Map.class);
+            if (defaultDataSource != null) {
+                dataSources.put("dataSource", defaultDataSource);
+            }
+        }
+
+        return new DataSourceConnectionSourcesFactoryBean(config).getObject();
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "dataSource.url")
+    public DataSource dataSource(ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources) {
+        return dataSourceConnectionSources.getDefaultConnectionSource().getSource();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EmbeddedDatabaseShutdownHook embeddedDatabaseShutdownHook() {
+        return new EmbeddedDatabaseShutdownHook();
+    }
+
+    static final class GrailsDataSourceCondition extends AnyNestedCondition {
+
+        GrailsDataSourceCondition() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnProperty(name = "dataSource.url")
+        private static final class DataSourceUrlCondition {
+
+        }
+
+        @ConditionalOnProperty(name = "dataSources")
+        private static final class DataSourcesCondition {
+
+        }
+
+    }
+
+    public static class BeanPostProcessorsRegistrar implements ImportBeanDefinitionRegistrar, BeanFactoryAware {
+
+        private ConfigurableListableBeanFactory beanFactory;
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            if (beanFactory instanceof ConfigurableListableBeanFactory) {
+                ConfigurableListableBeanFactory listableBeanFactory = (ConfigurableListableBeanFactory) beanFactory;
+                this.beanFactory = listableBeanFactory;
+            }
+        }
+
+        @Override
+        public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+            ConnectionSources<DataSource, DataSourceSettings> dataSourceConnectionSources = this.beanFactory.getBean("dataSourceConnectionSources", ConnectionSources.class);
+            dataSourceConnectionSources.getAllConnectionSources().forEach(dataSource -> {
+                if (!dataSource.getName().equals(ConnectionSource.DEFAULT)) {
+                    BeanDefinitionBuilder beanDefinitionBuilder =
+                            BeanDefinitionBuilder.genericBeanDefinition(DataSource.class, dataSource::getSource)
+                                    .setRole(BeanDefinition.ROLE_APPLICATION);
+                    AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+                    String resourcePath = ClassUtils.convertClassNameToResourcePath(DataSourcePluginConfiguration.class.getName()) + ClassUtils.CLASS_FILE_SUFFIX;
+                    beanDefinition.setResource(new ClassPathResource(resourcePath));
+                    registry.registerBeanDefinition(Settings.SETTING_DATASOURCE + "_" + dataSource.getName(), beanDefinition);
+                }
+            });
+        }
+    }
+
+}

@@ -1,0 +1,23 @@
+dependencies {
+    api project(":grace-api")
+    api project(":grace-plugin-api")
+    api project(":grace-spring")
+    api project(":grace-spring-boot")
+
+    compileOnly libs.aspectj.rt
+    api libs.spring.aop
+    api libs.spring.beans
+    api libs.spring.boot.autoconfigure
+    api libs.spring.context
+    api libs.spring.core
+    annotationProcessor libs.spring.boot.autoconfigureProcessor
+    annotationProcessor libs.spring.boot.configurationProcessor
+
+    testImplementation project(":grace-test")
+    testImplementation libs.assertj.core
+    testImplementation libs.jakarta.servlet
+    testImplementation libs.spring.test
+    testRuntimeOnly libs.spring.aspects
+    testRuntimeOnly libs.aspectj.rt
+    testRuntimeOnly libs.aspectj.weaver
+}
