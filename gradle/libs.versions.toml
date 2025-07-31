@@ -15,7 +15,7 @@ glassfish-web-jsp-jstl = "3.0.1"
 gpars = "1.2.1"
 gradle = "8.14.3"
 gradle-git-properties = "2.4.2"
-grace-async = "6.3.0"
+grace-async = "7.0.0-SNAPSHOT"
 grace-events = "6.3.0"
 grails-gdoc = "1.0.1"
 grace-gorm = "2024.0.0-SNAPSHOT"
@@ -84,11 +84,11 @@ commons-validator = { module = "commons-validator:commons-validator", version.re
 glassfish-web-jsp-jstl = { module = "org.glassfish.web:jakarta.servlet.jsp.jstl", version.ref = "glassfish-web-jsp-jstl" }
 gpars = { module = "org.codehaus.gpars:gpars", version.ref = "gpars" }
 gradle-tooling-api = { module = "org.gradle:gradle-tooling-api", version.ref = "gradle" }
-grails-async-core = { module = "org.graceframework:grace-async-core", version.ref = "grace-async" }
-grails-async-gpars = { module = "org.graceframework:grace-async-gpars", version.ref = "grace-async" }
-grails-async-rxjava = { module = "org.graceframework:grace-async-rxjava", version.ref = "grace-async" }
-grails-async-rxjava2 = { module = "org.graceframework:grace-async-rxjava2", version.ref = "grace-async" }
-grails-async-rxjava3 = { module = "org.graceframework:grace-async-rxjava3", version.ref = "grace-async" }
+grails-async-core = { module = "org.graceframework.async:grace-async-core", version.ref = "grace-async" }
+grails-async-gpars = { module = "org.graceframework.async:grace-async-gpars", version.ref = "grace-async" }
+grails-async-rxjava = { module = "org.graceframework.async:grace-async-rxjava", version.ref = "grace-async" }
+grails-async-rxjava2 = { module = "org.graceframework.async:grace-async-rxjava2", version.ref = "grace-async" }
+grails-async-rxjava3 = { module = "org.graceframework.async:grace-async-rxjava3", version.ref = "grace-async" }
 grails-events-core = { module = "org.graceframework:grace-events-core", version.ref = "grace-events" }
 grails-events-compat = { module = "org.graceframework:grace-events-compat", version.ref = "grace-events" }
 grails-events-gpars = { module = "org.graceframework:grace-events-gpars", version.ref = "grace-events" }
