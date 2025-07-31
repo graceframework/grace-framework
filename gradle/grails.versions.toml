@@ -6,7 +6,7 @@ fields = "6.3.0"
 geb = "6.3.0"
 hibernate = "2024.0.0-SNAPSHOT"
 mongodb = "2024.0.0-SNAPSHOT"
-scaffolding = "6.3.0"
+scaffolding = "7.0.0-SNAPSHOT"
 
 [profiles]
 base = "2023.3.1"
