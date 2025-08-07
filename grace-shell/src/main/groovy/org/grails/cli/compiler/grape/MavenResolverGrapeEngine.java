@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 the original author or authors.
+ * Copyright 2012-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import org.eclipse.aether.util.filter.DependencyFilterUtils;
  *
  * @author Andy Wilkinson
  * @author Phillip Webb
+ * @author Michael Yan
  * @since 2022.1.0
  */
 @SuppressWarnings("rawtypes")
@@ -208,8 +209,11 @@ public class MavenResolverGrapeEngine implements GrapeEngine {
     }
 
     private GroovyClassLoader getClassLoader(Map args) {
-        GroovyClassLoader classLoader = (GroovyClassLoader) args.get("classLoader");
-        return (classLoader != null) ? classLoader : this.classLoader;
+        Object groovyClassLoader = args.get("classLoader");
+        if (groovyClassLoader != null && groovyClassLoader instanceof GroovyClassLoader) {
+            return (GroovyClassLoader) groovyClassLoader;
+        }
+        return this.classLoader;
     }
 
     @Override

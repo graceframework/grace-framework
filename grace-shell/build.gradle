@@ -28,6 +28,8 @@ configurations {
         exclude group: 'org.springframework', module: 'spring-expression'
         exclude group: 'org.springframework', module: 'spring-jcl'
         exclude group: 'org.springframework', module: 'spring-tx'
+        exclude group: 'io.micrometer', module: 'micrometer-commons'
+        exclude group: 'io.micrometer', module: 'micrometer-observation'
     }
 }
 
@@ -35,7 +37,9 @@ dependencies {
     api project(":grace-api")
     api project(":grace-bootstrap")
     api project(":grace-cli")
-    api project(":grace-core")
+    api project(":grace-core"), {
+        exclude group: "org.graceframework", module: "grace-plugin-api"
+    }
     api project(":grace-gradle-model")
     api project(":grace-util")
 
@@ -62,11 +66,13 @@ dependencies {
     implementation(libs.maven.resolver.provider) {
         exclude group: "com.google.guava", module: "guava"
         exclude group: "javax.inject", module: "javax.inject"
+        exclude group: "org.ow2.asm", module: "asm"
     }
     implementation(libs.maven.resolver.connectorBasic)
     implementation(libs.maven.resolver.impl)
     implementation(libs.maven.resolver.transportFile)
     implementation(libs.maven.resolver.transportHttp) {
+        exclude group: "com.google.code.gson", module:"gson"
         exclude group: "commons-codec", module: "commons-codec"
         exclude group: "org.slf4j", module:"jcl-over-slf4j"
     }
@@ -74,10 +80,6 @@ dependencies {
         exclude group: "javax.inject", module: "javax.inject"
     }
     runtimeOnly libs.slf4j.simple
-    runtimeOnly libs.jakarta.servlet
-    runtimeOnly project(":grace-plugin-controllers")
-    runtimeOnly project(":grace-plugin-gsp")
-    runtimeOnly project(":grace-plugin-url-mappings")
 }
 
 task syncGrailsDependenciesBom(type: Sync) {

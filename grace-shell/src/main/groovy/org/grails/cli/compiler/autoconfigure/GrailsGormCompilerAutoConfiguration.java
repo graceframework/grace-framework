@@ -46,7 +46,6 @@ public class GrailsGormCompilerAutoConfiguration extends CompilerAutoConfigurati
 
     @Override
     public void applyImports(ImportCustomizer imports) {
-        imports.addImports("grails.persistence.Entity");
         imports.addStarImports("grails.gorm.annotation", "grails.gorm.services", "grails.gorm.transactions");
     }
 

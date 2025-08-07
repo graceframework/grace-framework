@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ServiceLoader;
 
+import groovy.grape.GrabAnnotationTransformation;
 import groovy.grape.GrapeEngine;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyClassLoader.ClassCollector;
@@ -35,7 +36,6 @@ import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilePhase;
-import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.CompilationCustomizer;
@@ -80,6 +80,8 @@ public class GroovyCompiler {
 
     private final ExtendedGroovyClassLoader loader;
 
+    private final CompilationUnit compilationUnit;
+
     private final Iterable<CompilerAutoConfiguration> compilerAutoConfigurations;
 
     private final List<ASTTransformation> transformations;
@@ -103,6 +105,8 @@ public class GroovyCompiler {
 
         this.loader.setDisabledGlobalASTTransformations(true);
         this.loader.getConfiguration().addCompilationCustomizers(new CompilerAutoConfigureCustomizer());
+        this.compilationUnit = new CompilationUnit(this.loader.getConfiguration(), null, this.loader);
+
         if (configuration.isAutoconfigure()) {
             this.compilerAutoConfigurations = ServiceLoader.load(CompilerAutoConfiguration.class);
         }
@@ -121,6 +125,14 @@ public class GroovyCompiler {
         for (ASTTransformation transformation : ServiceLoader.load(SpringBootAstTransformation.class)) {
             this.transformations.add(transformation);
         }
+
+        GrabAnnotationTransformation grabAnnotationTransformation = new GrabAnnotationTransformation();
+        grabAnnotationTransformation.setCompilationUnit(this.compilationUnit);
+        GrailsArtefactClassTransformation grailsArtefactClassTransformation = new GrailsArtefactClassTransformation(this.loader);
+        grailsArtefactClassTransformation.setCompilationUnit(compilationUnit);
+
+        this.transformations.add(grabAnnotationTransformation);
+        this.transformations.add(grailsArtefactClassTransformation);
         this.transformations.sort(AnnotationAwareOrderComparator.INSTANCE);
     }
 
@@ -181,9 +193,6 @@ public class GroovyCompiler {
         this.loader.clearCache();
         List<Class<?>> classes = new ArrayList<>();
 
-        CompilerConfiguration configuration = this.loader.getConfiguration();
-
-        CompilationUnit compilationUnit = new CompilationUnit(configuration, null, this.loader);
         ClassCollector collector = this.loader.createCollector(compilationUnit, null);
         compilationUnit.setClassgenCallback(collector);
 
@@ -195,7 +204,6 @@ public class GroovyCompiler {
         }
 
         addAstTransformations(compilationUnit);
-        addGrailsAwareInjectionOperation(compilationUnit);
         compilationUnit.compile(Phases.CLASS_GENERATION);
         for (Object loadedClass : collector.getLoadedClasses()) {
             classes.add((Class<?>) loadedClass);
@@ -246,10 +254,6 @@ public class GroovyCompiler {
                 }
             }
         });
-    }
-
-    private void addGrailsAwareInjectionOperation(CompilationUnit compilationUnit) {
-        compilationUnit.addPhaseOperation(ExtendedGroovyClassLoader.getGrailsAwareInjectionOperation(compilationUnit), Phases.CANONICALIZATION);
     }
 
     private int getIndexOfASTTransformationVisitor(List<?> conversionOperations) {
