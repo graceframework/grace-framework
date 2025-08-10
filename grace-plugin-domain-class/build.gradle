@@ -5,10 +5,10 @@ dependencies {
     api project(":grace-spring")
 
     api libs.jakarta.persistence.api
-    api(libs.grails.datastore.core)
-    api(libs.grails.datastore.gorm)
-    api(libs.grails.datastore.gorm.support)
-    api(libs.grails.datastore.gorm.validation)
+    api(libs.grace.datastore.core)
+    api(libs.grace.datastore.gorm)
+    api(libs.grace.datastore.gorm.support)
+    api(libs.grace.datastore.gorm.validation)
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor

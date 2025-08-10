@@ -13,10 +13,10 @@ dependencies {
     api libs.spring.boot.autoconfigure
     annotationProcessor libs.spring.boot.autoconfigureProcessor
     annotationProcessor libs.spring.boot.configurationProcessor
-    compileOnly(libs.grails.datastore.core) {
+    compileOnly(libs.grace.datastore.core) {
         transitive = false
     }
-    compileOnly(libs.grails.datastore.gorm) {
+    compileOnly(libs.grace.datastore.gorm) {
         transitive = false
     }
     compileOnly(project(":grace-web-gsp")) {

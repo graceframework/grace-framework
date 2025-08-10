@@ -34,7 +34,7 @@ dependencies {
     testImplementation libs.jakarta.servlet.jsp.jstl
     testImplementation libs.glassfish.web.jsp.jstl
 
-    testImplementation libs.grails.datastore.gorm.hibernate, {
+    testImplementation libs.grace.datastore.gorm.hibernate, {
         exclude group: 'org.graceframework', module:'grace-datastore-gorm'
         exclude group: 'org.graceframework', module:'grace-datastore-core'
         exclude group: 'org.springframework', module:'spring-core'
@@ -68,7 +68,7 @@ dependencies {
         exclude module:'grace-web-common'
         exclude module:'grace-encoder'
     }
-    testImplementation libs.grails.async.core
+    testImplementation libs.grace.async.core
 
     testRuntimeOnly libs.spring.aspects
     testRuntimeOnly libs.aspectj.rt

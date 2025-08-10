@@ -9,10 +9,10 @@ dependencies {
 
     api libs.commons.lang3
     compileOnly libs.jakarta.servlet
-    compileOnly(libs.grails.datastore.core) {
+    compileOnly(libs.grace.datastore.core) {
         transitive = false
     }
-    compileOnly(libs.grails.datastore.gorm) {
+    compileOnly(libs.grace.datastore.gorm) {
         transitive = false
     }
 

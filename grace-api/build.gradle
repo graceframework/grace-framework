@@ -2,7 +2,7 @@ dependencies {
     api project(":grace-bootstrap")
     api project(":grace-util")
 
-    compileOnly(libs.grails.datastore.core) {
+    compileOnly(libs.grace.datastore.core) {
         transitive = false
     }
 

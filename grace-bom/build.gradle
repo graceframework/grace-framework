@@ -29,6 +29,15 @@ publishing {
 
                     mkp.properties {
 
+                        for (ver in libraryVersions) {
+                            String version = libs.versions[ver]
+                            tokens["${ver}.version"] = version
+                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
+                                throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
+                            }
+                            mkp."${ver}.version"(version)
+                        }
+
                         for (dep in grails.plugins) {
                             String version = dep.value
                             tokens["grace-plugin-${dep.key}.version"] = version
@@ -45,15 +54,6 @@ publishing {
                                 throw new RuntimeException("Cannot have a snapshot dependency on a profile [$dep.key] for a release!")
                             }
                             mkp."grace-profile-${dep.key}.version"(version)
-                        }
-
-                        for (ver in libraryVersions) {
-                            String version = libs.versions[ver]
-                            tokens["${ver}.version"] = version
-                            if (!isBuildSnapshot && version.endsWith("-SNAPSHOT")) {
-                                throw new RuntimeException("Cannot have a snapshot dependency on [$dep.key] for a release!")
-                            }
-                            mkp."${ver}.version"(version)
                         }
                     }
 
@@ -82,7 +82,7 @@ publishing {
                                     mkp.groupId groupId
                                     mkp.artifactId artifactId
                                     mkp.version "\${${dep.version.ref}.version}"
-                                    if (lib in libs.bundles.bom) {
+                                    if (lib in libs.bundles.boms) {
                                         mkp.type 'pom'
                                         mkp.scope 'import'
                                     }

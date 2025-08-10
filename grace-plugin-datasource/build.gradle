@@ -3,8 +3,8 @@ dependencies {
     api project(':grace-plugin-api')
     api project(":grace-spring-boot")
 
-    api libs.grails.datastore.core
-    api libs.grails.datastore.gorm
+    api libs.grace.datastore.core
+    api libs.grace.datastore.gorm
     api libs.groovy.sql
     api libs.spring.boot.autoconfigure
     api libs.spring.context

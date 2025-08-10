@@ -6,7 +6,7 @@ dependencies {
     api project(":grace-util")
 
     compileOnly libs.jakarta.persistence.api
-    api libs.grails.datastore.core, {
+    api libs.grace.datastore.core, {
         transitive = false
     }
     api libs.spring.beans
@@ -19,7 +19,7 @@ dependencies {
     testImplementation libs.spring.jdbc
     testImplementation libs.spring.test
     testImplementation libs.jakarta.persistence.api
-    testImplementation libs.grails.datastore.gorm.support
+    testImplementation libs.grace.datastore.gorm.support
 }
 
 eclipse {

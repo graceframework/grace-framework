@@ -6,7 +6,7 @@ dependencies {
     api project(":grace-util")
 
     api libs.commons.lang3
-    api libs.grails.datastore.core, {
+    api libs.grace.datastore.core, {
         transitive = false
     }
     api libs.spring.boot.autoconfigure

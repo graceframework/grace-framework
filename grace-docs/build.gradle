@@ -11,7 +11,7 @@ dependencies {
     api libs.asciidoctorj
     api libs.ant
     api libs.commons.text
-    api libs.grails.doc.engine
+    api libs.grace.doc.engine
     api libs.groovy.ant
     api libs.groovy.templates
     api libs.jsoup
