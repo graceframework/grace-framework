@@ -17,6 +17,7 @@ package grails.boot;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +27,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
 
+import grails.artefact.Artefact;
 import grails.util.Environment;
 
 /**
@@ -86,12 +88,31 @@ public class Grails extends SpringApplication {
         }
     }
 
+    /**
+     * Grails artefact classes should be handled by the Grails Plugins later,
+     * so here don't need to load them into the Spring's context.
+     *
+     * @param context the context to load beans into
+     * @param sources the sources to load
+     */
     @Override
     protected void load(ApplicationContext context, Object[] sources) {
-        super.load(context, sources);
+        Set<Object> loadedSources = new LinkedHashSet<>();
+        for (Object source : sources) {
+            if (source instanceof Class<?> clazz) {
+                Artefact annotation = clazz.getAnnotation(Artefact.class);
+                if (annotation == null || annotation.value().equals("Application")) {
+                    loadedSources.add(source);
+                }
+            }
+            else {
+                loadedSources.add(source);
+            }
+        }
         if (context instanceof AbstractApplicationContext) {
             ((AbstractApplicationContext) context).getBeanFactory().registerSingleton("PRIMARY_SOURCES", new LinkedHashSet<>(Arrays.asList(sources)));
         }
+        super.load(context, loadedSources.toArray(new Object[0]));
     }
 
     /**
