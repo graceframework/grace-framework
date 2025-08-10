@@ -17,10 +17,10 @@ gradle = "8.14.3"
 gradle-git-properties = "2.4.2"
 grace-async = "7.0.0-SNAPSHOT"
 grace-events = "7.0.0-SNAPSHOT"
+grace-data = "2024.0.0-SNAPSHOT"
+grace-data-hibernate = "2024.0.0-SNAPSHOT"
+grace-data-mongodb = "2024.0.0-SNAPSHOT"
 grace-doc-engine = "2.0.0-SNAPSHOT"
-grace-gorm = "2024.0.0-SNAPSHOT"
-grace-gorm-hibernate = "2024.0.0-SNAPSHOT"
-grace-gorm-mongodb = "2024.0.0-SNAPSHOT"
 grace-scaffolding = "7.0.0-SNAPSHOT"
 grace-views = "6.3.0"
 groovy = "4.0.28"
@@ -96,19 +96,19 @@ grails-events-rxjava2 = { module = "org.graceframework.events:grace-events-rxjav
 grails-events-rxjava3 = { module = "org.graceframework.events:grace-events-rxjava3", version.ref = "grace-events" }
 grails-events-spring = { module = "org.graceframework.events:grace-events-spring", version.ref = "grace-events" }
 grails-events-transform = { module = "org.graceframework.events:grace-events-transform", version.ref = "grace-events" }
-grails-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-gorm" }
-grails-datastore-async = { module = "org.graceframework:grace-datastore-async", version.ref = "grace-gorm" }
-grails-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-gorm" }
-grails-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-gorm" }
-grails-datastore-gorm-bson = { module = "org.graceframework:grace-datastore-gorm-bson", version.ref = "grace-gorm-mongodb" }
-grails-datastore-gorm-hibernate = { module = "org.graceframework:grace-datastore-gorm-hibernate", version.ref = "grace-gorm-hibernate" }
-grails-datastore-gorm-mongodb = { module = "org.graceframework:grace-datastore-gorm-mongodb", version.ref = "grace-gorm-mongodb" }
-grails-datastore-gorm-mongodb-ext = { module = "org.graceframework:grace-datastore-gorm-mongodb-ext", version.ref = "grace-gorm-mongodb" }
-grails-datastore-gorm-support = { module = "org.graceframework:grace-datastore-gorm-support", version.ref = "grace-gorm" }
-grails-datastore-gorm-tck = { module = "org.graceframework:grace-datastore-gorm-tck", version.ref = "grace-gorm" }
-grails-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-test", version.ref = "grace-gorm" }
-grails-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-gorm" }
-grails-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-gorm" }
+grails-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-data" }
+grails-datastore-async = { module = "org.graceframework:grace-datastore-async", version.ref = "grace-data" }
+grails-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-data" }
+grails-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-data" }
+grails-datastore-gorm-bson = { module = "org.graceframework:grace-datastore-gorm-bson", version.ref = "grace-data-mongodb" }
+grails-datastore-gorm-hibernate = { module = "org.graceframework:grace-datastore-gorm-hibernate", version.ref = "grace-data-hibernate" }
+grails-datastore-gorm-mongodb = { module = "org.graceframework:grace-datastore-gorm-mongodb", version.ref = "grace-data-mongodb" }
+grails-datastore-gorm-mongodb-ext = { module = "org.graceframework:grace-datastore-gorm-mongodb-ext", version.ref = "grace-data-mongodb" }
+grails-datastore-gorm-support = { module = "org.graceframework:grace-datastore-gorm-support", version.ref = "grace-data" }
+grails-datastore-gorm-tck = { module = "org.graceframework:grace-datastore-gorm-tck", version.ref = "grace-data" }
+grails-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-test", version.ref = "grace-data" }
+grails-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-data" }
+grails-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-data" }
 grails-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
 grails-plugin-async = { module = "org.graceframework.plugins:async", version.ref = "grace-async" }
 grails-plugin-events = { module = "org.graceframework.plugins:events", version.ref = "grace-events" }
