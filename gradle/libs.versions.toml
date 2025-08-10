@@ -17,7 +17,7 @@ gradle = "8.14.3"
 gradle-git-properties = "2.4.2"
 grace-async = "7.0.0-SNAPSHOT"
 grace-events = "7.0.0-SNAPSHOT"
-grails-gdoc = "1.0.1"
+grace-doc-engine = "2.0.0-SNAPSHOT"
 grace-gorm = "2024.0.0-SNAPSHOT"
 grace-gorm-hibernate = "2024.0.0-SNAPSHOT"
 grace-gorm-mongodb = "2024.0.0-SNAPSHOT"
@@ -109,7 +109,7 @@ grails-datastore-gorm-tck = { module = "org.graceframework:grace-datastore-gorm-
 grails-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-test", version.ref = "grace-gorm" }
 grails-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-gorm" }
 grails-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-gorm" }
-grails-gdoc-engine = { module = "org.grails:grails-gdoc-engine", version.ref = "grails-gdoc" }
+grails-doc-engine = { module = "org.graceframework:grace-doc-engine", version.ref = "grace-doc-engine" }
 grails-plugin-async = { module = "org.graceframework.plugins:async", version.ref = "grace-async" }
 grails-plugin-events = { module = "org.graceframework.plugins:events", version.ref = "grace-events" }
 grails-scaffolding-core = { module = "org.graceframework:grace-scaffolding-core", version.ref = "grace-scaffolding" }
