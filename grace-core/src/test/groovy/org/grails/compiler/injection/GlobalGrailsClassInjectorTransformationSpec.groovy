@@ -67,7 +67,7 @@ class Application {
         def clazz = gcl.parseClass('''
 class Bootstrap {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Bootstrap.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Bootstrap.groovy')
 
         def classNode = gcl.getClassNode('Bootstrap')
 
