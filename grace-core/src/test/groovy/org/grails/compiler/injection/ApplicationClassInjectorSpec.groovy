@@ -42,13 +42,13 @@ class ApplicationClassInjectorSpec extends Specification {
         def clazz = gcl.parseClass('''
 class Application {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
 
         then:
         clazz.getAnnotationsByType(SpringBootApplication).size() == 1
     }
 
-    def "Test Application class was not injected on '@SpringBootApplication', because 'Application.groovy' not in 'grails-app/init'"() {
+    def "Test Application class was not injected on '@SpringBootApplication', because 'Application.groovy' not in 'grails-app/boot'"() {
         given:
         def transformer = new ApplicationClassInjector()
         def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
@@ -64,7 +64,7 @@ class Application {
         def clazz = gcl.parseClass('''
 class Application {
 }
-''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
 
         then:
         !clazz.getAnnotationsByType(SpringBootApplication)
@@ -86,7 +86,7 @@ class Application {
         def clazz = gcl.parseClass('''
 class Application {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
 
         then:
         clazz.getAnnotationsByType(SpringBootApplication)

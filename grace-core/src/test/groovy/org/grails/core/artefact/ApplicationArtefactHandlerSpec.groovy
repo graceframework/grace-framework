@@ -48,7 +48,7 @@ class TestApplication {
         classNode.setModule(moduleNode)
 
         expect:
-        handler.isArtefact(classNode)
+        !handler.isArtefact(classNode)
     }
 
     void "Check TestApplication within 'app/init'"() {
@@ -62,16 +62,16 @@ class TestApplication {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/init/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/init/org/grace/demo/TestApplication.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
 
         expect:
-        handler.isArtefact(classNode)
+        !handler.isArtefact(classNode)
     }
 
     void "Check TestApplication within 'grails-app/boot'"() {
@@ -94,10 +94,33 @@ class TestApplication {
         classNode.setModule(moduleNode)
 
         expect:
-        !handler.isArtefact(classNode)
+        handler.isArtefact(classNode)
     }
 
-    void "Check TestApp within 'grails-app/init' but without suffix 'Application'"() {
+    void "Check TestApplication within 'app/boot'"() {
+        given:
+        ArtefactHandler handler = new ApplicationArtefactHandler()
+        GroovyClassLoader gcl = new GroovyClassLoader()
+        Class<?> clazz = gcl.parseClass('''
+class TestApplication {
+}
+''')
+
+        SourceUnit sourceUnit = Mock()
+        ModuleNode moduleNode = new ModuleNode(sourceUnit)
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        sourceUnit.getAST() >> moduleNode
+        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/boot/org/grace/demo/TestApplication.groovy'
+
+        ClassNode classNode = new ClassNode(clazz)
+        classNode.setModule(moduleNode)
+
+        expect:
+        handler.isArtefact(classNode)
+    }
+
+    void "Check TestApp within 'grails-app/boot' but without suffix 'Application'"() {
         given:
         ArtefactHandler handler = new ApplicationArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
@@ -111,7 +134,7 @@ class TestApp {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestApp.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApp.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -144,7 +167,30 @@ class TestApplication {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestApplication within 'grails-app/init' but now allow abstract"() {
+    void "Check TestApplication within 'src/main'"() {
+        given:
+        ArtefactHandler handler = new ApplicationArtefactHandler()
+        GroovyClassLoader gcl = new GroovyClassLoader()
+        Class<?> clazz = gcl.parseClass('''
+class TestApplication {
+}
+''')
+
+        SourceUnit sourceUnit = Mock()
+        ModuleNode moduleNode = new ModuleNode(sourceUnit)
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        sourceUnit.getAST() >> moduleNode
+        sourceUnit.getName() >> '/Users/grace/grace-demo-project/src/main/groovy/org/grace/demo/TestApplication.groovy'
+
+        ClassNode classNode = new ClassNode(clazz)
+        classNode.setModule(moduleNode)
+
+        expect:
+        handler.isArtefact(classNode)
+    }
+
+    void "Check TestApplication within 'grails-app/boot' but now allow abstract"() {
         given:
         ArtefactHandler handler = new ApplicationArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
@@ -159,7 +205,7 @@ abstract class TestApplication {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestApplication.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestApplication.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
