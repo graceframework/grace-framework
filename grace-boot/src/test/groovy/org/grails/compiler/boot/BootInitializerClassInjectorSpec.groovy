@@ -45,7 +45,7 @@ class Application {
         println "foo"
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
 
         applicationClass.main()
 
@@ -55,7 +55,7 @@ class Application {
         !Environment.isStandaloneDeployed()
     }
 
-    def "Test ApplicationLoader class was generated"() {
+    def "Test ApplicationLoader class was generated with Application in 'app/boot'"() {
         given:
         def transformer = new BootInitializerClassInjector()
         def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
@@ -73,7 +73,32 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+        def applicationLoader = gcl.getClassNode('ApplicationLoader')
+
+        then:
+        applicationLoader
+    }
+
+    def "Test ApplicationLoader class was generated with Application in 'src/main'"() {
+        given:
+        def transformer = new BootInitializerClassInjector()
+        def gcl = new GrailsAwareClassLoader(getClass().getClassLoader())
+        gcl.setDisabledGlobalASTTransformations(true)
+        gcl.setClassInjectors([transformer] as ClassInjector[])
+        gcl.setMetaDataMap([
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ])
+
+        when:
+        def clazz = gcl.parseClass('''
+class Application {
+    static void main(String[] args) {
+    }
+}
+''', '/Users/grails/grails-demo-project/src/main/groovy/org/demo/Application.groovy')
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:
@@ -99,7 +124,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:
@@ -124,7 +149,7 @@ class Application {
     static void main(String[] args) {
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
         def applicationLoader = gcl.getClassNode('ApplicationLoader')
 
         then:

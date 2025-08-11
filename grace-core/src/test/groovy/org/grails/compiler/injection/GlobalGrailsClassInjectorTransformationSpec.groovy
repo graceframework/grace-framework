@@ -41,7 +41,7 @@ class GlobalGrailsClassInjectorTransformationSpec extends Specification {
         def clazz = gcl.parseClass('''
 class Application {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
 
         def classNode = gcl.getClassNode('Application')
 

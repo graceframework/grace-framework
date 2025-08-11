@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,7 +157,7 @@ class LoggingController {
         log instanceof Logger
     }
 
-    def "Test log field is added to Application classes"() {
+    def "Test log field is added to Application classes in 'app/boot'"() {
         given:
         def transformer = new LoggingTransformer()
         def gcl = new GrailsAwareClassLoader()
@@ -176,7 +176,34 @@ class Application {
         return log
     }
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Application.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/boot/org/demo/Application.groovy')
+        def controller = cls.newInstance()
+        Logger log = controller.index()
+
+        then:
+        log instanceof Logger
+    }
+
+    def "Test log field is added to Application classes in 'src/main'"() {
+        given:
+        def transformer = new LoggingTransformer()
+        def gcl = new GrailsAwareClassLoader()
+        gcl.disabledGlobalASTTransformations = true
+        gcl.classInjectors = [transformer] as ClassInjector[]
+        gcl.metaDataMap = [
+                'GRAILS_APP_DIR': '/Users/grails/grails-demo-project/grails-app',
+                'PROJECT_DIR': '/Users/grails/grails-demo-project',
+                'PROJECT_TYPE': 'WEB_APP'
+        ]
+
+        when:
+        def cls = gcl.parseClass('''
+class Application {
+    def index() {
+        return log
+    }
+}
+''', '/Users/grails/grails-demo-project/src/main/groovy/org/demo/Application.groovy')
         def controller = cls.newInstance()
         Logger log = controller.index()
 
