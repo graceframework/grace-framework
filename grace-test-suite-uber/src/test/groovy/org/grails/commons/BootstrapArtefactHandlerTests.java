@@ -25,13 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Marc Palmer
  */
-public class BootStrapArtefactHandlerTests {
+public class BootstrapArtefactHandlerTests {
 
     @Test
-    public void testIsBootStrapClass() {
+    public void testIsBootstrapClass() {
         GroovyClassLoader gcl = new GroovyClassLoader();
 
-        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Bootstrap')\nclass TestBootStrap { }\n");
+        Class<?> c = gcl.parseClass("@grails.artefact.Artefact('Bootstrap')\nclass TestBootstrap { }\n");
 
         ArtefactHandler handler = new BootstrapArtefactHandler();
         assertTrue(handler.isArtefact(c));

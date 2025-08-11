@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import grails.plugins.Plugin
 import grails.util.GrailsUtil
 
 import org.grails.core.artefact.ControllerArtefactHandler
-import org.grails.plugins.web.servlet.context.BootStrapClassRunner
+import org.grails.plugins.web.servlet.context.BootstrapClassRunner
 
 /**
  * Handles the configuration of controllers for Grails.
@@ -54,9 +54,9 @@ class ControllersGrailsPlugin extends Plugin implements PriorityOrdered {
 
             boolean useJsessionId = config.getProperty(Settings.GRAILS_VIEWS_ENABLE_JSESSIONID, Boolean, false)
 
-            boolean skipBootStrap = Boolean.parseBoolean(System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP))
-            if (!skipBootStrap) {
-                bootStrapClassRunner(BootStrapClassRunner)
+            boolean skipBootstrap = Boolean.parseBoolean(System.getProperty(Settings.SETTING_SKIP_BOOTSTRAP))
+            if (!skipBootstrap) {
+                bootstrapClassRunner(BootstrapClassRunner)
             }
 
             def controllerClasses = application.getArtefacts(ControllerArtefactHandler.TYPE)

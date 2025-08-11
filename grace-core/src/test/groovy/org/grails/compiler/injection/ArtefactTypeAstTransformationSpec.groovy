@@ -188,11 +188,11 @@ class Application {
         when:
         def clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Bootstrap")
-class BootStrap {
+class Bootstrap {
 }
 ''')
 
-        def classNode = gcl.getClassNode('BootStrap')
+        def classNode = gcl.getClassNode('Bootstrap')
 
         then:
         ClassInjector[] bootstrapClassInjectors = classInjectors.findAll { it.shouldInject(classNode) }

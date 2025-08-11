@@ -29,12 +29,12 @@ import org.grails.web.servlet.boostrap.BootstrapArtefactHandler
  */
 class BootstrapArtefactHandlerSpec extends Specification {
 
-    void "Check TestBootStrap within 'grails-app/init'"() {
+    void "Check TestBootstrap within 'grails-app/init'"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
 
@@ -43,7 +43,7 @@ class TestBootStrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestBootStrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -52,12 +52,12 @@ class TestBootStrap {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestBootStrap within 'app/init'"() {
+    void "Check TestBootstrap within 'app/init'"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
 
@@ -66,7 +66,7 @@ class TestBootStrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/init/org/grails/demo/TestBootStrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/init/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -75,12 +75,12 @@ class TestBootStrap {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestBootStrap within 'grails-app/boot'"() {
+    void "Check TestBootstrap within 'grails-app/boot'"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
 
@@ -89,7 +89,7 @@ class TestBootStrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestBootStrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -121,13 +121,13 @@ class TestBoot {
         !handler.isArtefact(classNode)
     }
 
-    void "Check TestBootStrap within 'grails-app/boot' and annotated with @Artefact('Bootstrap')"() {
+    void "Check TestBootstrap within 'grails-app/boot' and annotated with @Artefact('Bootstrap')"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Bootstrap")
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
 
@@ -136,7 +136,7 @@ class TestBootStrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestBootStrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -145,13 +145,13 @@ class TestBootStrap {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestBootStrap within 'grails-app/init' but now allow abstract"() {
+    void "Check TestBootstrap within 'grails-app/init' but now allow abstract"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Bootstrap")
-abstract class TestBootStrap {
+abstract class TestBootstrap {
 }
 ''')
 
@@ -160,7 +160,7 @@ abstract class TestBootStrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestBootStrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
@@ -169,13 +169,13 @@ abstract class TestBootStrap {
         !handler.isArtefact(classNode)
     }
 
-    void "Check TestBootStrap with @Artefact('Bootstrap')"() {
+    void "Check TestBootstrap with @Artefact('Bootstrap')"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Bootstrap")
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
         ClassNode classNode = new ClassNode(clazz)
@@ -185,12 +185,12 @@ class TestBootStrap {
         handler.isArtefact(clazz)
     }
 
-    void "Check TestBootStrap without @Artefact('Bootstrap')"() {
+    void "Check TestBootstrap without @Artefact('Bootstrap')"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
         ClassNode classNode = new ClassNode(clazz)
@@ -200,13 +200,13 @@ class TestBootStrap {
         !handler.isArtefact(clazz)
     }
 
-    void "Check TestBootStrap with @Artefact but wrong type"() {
+    void "Check TestBootstrap with @Artefact but wrong type"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
 @grails.artefact.Artefact("App")
-class TestBootStrap {
+class TestBootstrap {
 }
 ''')
         ClassNode classNode = new ClassNode(clazz)
@@ -232,13 +232,13 @@ class TestBoot {
         !handler.isArtefact(clazz)
     }
 
-    void "Check TestBootStrap with @Artefact('Bootstrap') but not allow abstract"() {
+    void "Check TestBootstrap with @Artefact('Bootstrap') but not allow abstract"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class<?> clazz = gcl.parseClass('''
 @grails.artefact.Artefact("Bootstrap")
-abstract class TestBootStrap {
+abstract class TestBootstrap {
 }
 ''')
         ClassNode classNode = new ClassNode(clazz)
