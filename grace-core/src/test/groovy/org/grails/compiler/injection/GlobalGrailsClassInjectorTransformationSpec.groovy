@@ -65,11 +65,11 @@ class Application {
 
         when:
         def clazz = gcl.parseClass('''
-class BootStrap {
+class Bootstrap {
 }
-''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/BootStrap.groovy')
+''', '/Users/grails/grails-demo-project/grails-app/init/org/demo/Bootstrap.groovy')
 
-        def classNode = gcl.getClassNode('BootStrap')
+        def classNode = gcl.getClassNode('Bootstrap')
 
         then:
         clazz.getAnnotationsByType(Artefact)

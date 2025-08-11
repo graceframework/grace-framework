@@ -28,7 +28,7 @@ import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
 
 public class DefaultGrailsBootstrapClass extends AbstractGrailsClass implements GrailsBootstrapClass {
 
-    public static final String BOOT_STRAP = "BootStrap";
+    public static final String BOOT_STRAP = "Bootstrap";
 
     private static final String INIT_CLOSURE = "init";
 
