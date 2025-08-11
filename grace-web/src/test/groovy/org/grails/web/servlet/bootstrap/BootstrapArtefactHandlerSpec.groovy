@@ -49,7 +49,7 @@ class TestBootstrap {
         classNode.setModule(moduleNode)
 
         expect:
-        handler.isArtefact(classNode)
+        !handler.isArtefact(classNode)
     }
 
     void "Check TestBootstrap within 'app/init'"() {
@@ -63,16 +63,16 @@ class TestBootstrap {
 
         SourceUnit sourceUnit = Mock()
         ModuleNode moduleNode = new ModuleNode(sourceUnit)
-        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
-        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/app')
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/app/init/org/grails/demo/TestBootstrap.groovy'
+        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/init/org/grace/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
 
         expect:
-        handler.isArtefact(classNode)
+        !handler.isArtefact(classNode)
     }
 
     void "Check TestBootstrap within 'grails-app/boot'"() {
@@ -95,7 +95,30 @@ class TestBootstrap {
         classNode.setModule(moduleNode)
 
         expect:
-        !handler.isArtefact(classNode)
+        handler.isArtefact(classNode)
+    }
+
+    void "Check TestBootstrap within 'app/boot'"() {
+        given:
+        ArtefactHandler handler = new BootstrapArtefactHandler()
+        GroovyClassLoader gcl = new GroovyClassLoader()
+        Class<?> clazz = gcl.parseClass('''
+class TestBootstrap {
+}
+''')
+
+        SourceUnit sourceUnit = Mock()
+        ModuleNode moduleNode = new ModuleNode(sourceUnit)
+        moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grace/grace-demo-project')
+        moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grace/grace-demo-project/app')
+        sourceUnit.getAST() >> moduleNode
+        sourceUnit.getName() >> '/Users/grace/grace-demo-project/app/boot/org/grace/demo/TestBootstrap.groovy'
+
+        ClassNode classNode = new ClassNode(clazz)
+        classNode.setModule(moduleNode)
+
+        expect:
+        handler.isArtefact(classNode)
     }
 
     void "Check TestBoot within 'grails-app/init' but without suffix 'Bootstrap'"() {
@@ -145,7 +168,7 @@ class TestBootstrap {
         handler.isArtefact(classNode)
     }
 
-    void "Check TestBootstrap within 'grails-app/init' but now allow abstract"() {
+    void "Check TestBootstrap within 'grails-app/boot' but now allow abstract"() {
         given:
         ArtefactHandler handler = new BootstrapArtefactHandler()
         GroovyClassLoader gcl = new GroovyClassLoader()
@@ -160,7 +183,7 @@ abstract class TestBootstrap {
         moduleNode.putNodeMetaData('PROJECT_DIR', '/Users/grails/grails-demo-project')
         moduleNode.putNodeMetaData('GRAILS_APP_DIR', '/Users/grails/grails-demo-project/grails-app')
         sourceUnit.getAST() >> moduleNode
-        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/init/org/grails/demo/TestBootstrap.groovy'
+        sourceUnit.getName() >> '/Users/grails/grails-demo-project/grails-app/boot/org/grails/demo/TestBootstrap.groovy'
 
         ClassNode classNode = new ClassNode(clazz)
         classNode.setModule(moduleNode)
