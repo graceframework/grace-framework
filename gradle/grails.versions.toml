@@ -9,7 +9,7 @@ mongodb = "2024.0.0-SNAPSHOT"
 scaffolding = "7.0.0-SNAPSHOT"
 
 [profiles]
-base = "2023.3.1"
+base = "2024.0.0-SNAPSHOT"
 plugin = "2023.3.0"
 profile = "2023.3.0"
 rest-api = "2023.3.0"
