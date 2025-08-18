@@ -19,14 +19,14 @@ jobs:
     env:
       WORKSPACE: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
       - name: Run Build
         id: build
         run: ./gradlew build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout repository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup JDK
@@ -50,7 +50,7 @@ jobs:
           distribution: 'adopt'
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
       - name: Generate secring file
         env:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
