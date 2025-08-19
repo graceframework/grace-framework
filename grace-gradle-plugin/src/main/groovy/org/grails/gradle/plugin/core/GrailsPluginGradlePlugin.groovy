@@ -90,10 +90,15 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
     }
 
     protected void checkForConfigurationClash(Project project) {
-        File yamlConfig = new File(project.projectDir, "${grailsAppDir}/conf/plugin.yml")
-        File groovyConfig = new File(project.projectDir, "${grailsAppDir}/conf/plugin.groovy")
-        if (yamlConfig.exists() && groovyConfig.exists()) {
-            throw new RuntimeException('A plugin may define a plugin.yml or a plugin.groovy, but not both')
+        project.afterEvaluate {
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+            if (grailsAppPath) {
+                File yamlConfig = new File(project.projectDir, "${grailsAppPath}/conf/plugin.yml")
+                File groovyConfig = new File(project.projectDir, "${grailsAppPath}/conf/plugin.groovy")
+                if (yamlConfig.exists() && groovyConfig.exists()) {
+                    throw new RuntimeException('A plugin may define a plugin.yml or a plugin.groovy, but not both')
+                }
+            }
         }
     }
 

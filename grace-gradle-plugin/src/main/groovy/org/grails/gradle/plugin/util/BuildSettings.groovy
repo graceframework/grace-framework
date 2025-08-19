@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 the original author or authors.
+ * Copyright 2022-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,18 @@ class BuildSettings {
     public static final String APP_DIR = 'grails.app.dir'
 
     /**
+     * The app path of the application
+     */
+    public static final String APP_PATH = 'grails.app.path'
+
+    /**
      * The name of the system property for the the project target directory.
      * Must be set if Gradle build location is changed.
      */
     public static final String PROJECT_TARGET_DIR = 'grails.project.target.dir'
 
     /**
-     * The name of the system property for {@link #}.
+     * The name of the system property for the project resources directory.
      */
     public static final String PROJECT_RESOURCES_DIR = 'grails.project.resource.dir'
 
@@ -53,5 +58,15 @@ class BuildSettings {
      * The name of the system property for the project classes directory.
      */
     public static final String PROJECT_CLASSES_DIR = 'grails.project.class.dir'
+
+    /**
+     * The default app path of Grails.
+     */
+    public static final String DEFAULT_GRAILS_APP_PATH = 'grails-app'
+
+    /**
+     * The default app path of Grace.
+     */
+    public static final String DEFAULT_GRACE_APP_PATH = 'app'
 
 }
