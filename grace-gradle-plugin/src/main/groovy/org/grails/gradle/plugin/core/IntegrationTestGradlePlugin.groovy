@@ -21,10 +21,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.TestReport
 import org.gradle.language.base.plugins.LifecycleBasePlugin
@@ -35,7 +35,12 @@ import org.grails.gradle.plugin.util.SourceSets
  * Gradle plugin for adding separate src/integration-test folder to hold integration tests
  *
  * Adds integrationTestImplementation and integrationTestRuntimeOnly configurations
- * that extend from testCompileClasspath and testRuntimeClasspath
+ * that extend from testCompileClasspath and testRuntimeClasspath.
+ *
+ * @author Lari Hotari
+ * @author Graeme Rocher
+ * @author Michael Yan
+ * @since 3.0
  */
 @CompileStatic
 class IntegrationTestGradlePlugin implements Plugin<Project> {
@@ -45,7 +50,10 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        File[] sourceDirs = findIntegrationTestSources(project)
+        File[] sourceDirs = project.file(sourceFolderName).listFiles({ File file ->
+            file.isDirectory() && !file.name.contains('.')
+        } as FileFilter)
+
         if (sourceDirs) {
             List<File> acceptedSourceDirs = []
             SourceSetContainer sourceSets = SourceSets.findSourceSets(project)
@@ -56,10 +64,6 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
                 acceptedSourceDirs.add srcDir
             }
 
-            String grailsAppDir = SourceSets.resolveGrailsAppDir(project)
-            File resources = new File(project.projectDir, "${grailsAppDir}/conf")
-            integrationTestSources.resources.srcDir(resources)
-
             DependencyHandler dependencies = project.dependencies
             dependencies.add('integrationTestImplementation', SourceSets.findMainSourceSet(project).output)
             dependencies.add('integrationTestImplementation', SourceSets.findSourceSet(project, SourceSet.TEST_SOURCE_SET_NAME).output)
@@ -68,18 +72,10 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
             configurations.getByName('integrationTestRuntimeOnly').extendsFrom(configurations.getByName('testRuntimeClasspath'))
 
             TaskContainer tasks = project.tasks
-            tasks.register('integrationTest', Test) { Test integrationTestTask ->
-                integrationTestTask.group = LifecycleBasePlugin.VERIFICATION_GROUP
-                setClassesDirs(integrationTestTask, integrationTestSources)
-                integrationTestTask.classpath = integrationTestSources.runtimeClasspath
-                integrationTestTask.maxParallelForks = 1
-                integrationTestTask.reports.html.required.set(false)
-                integrationTestTask.shouldRunAfter('test')
-                tasks.findByName('check')?.dependsOn(integrationTestTask)
-            }
+            TaskProvider<Test> testTask = tasks.named('test', Test)
 
-            tasks.register('mergeTestReports', TestReport) { TestReport testReportTask ->
-                testReportTask.dependsOn('test')
+            TaskProvider<TestReport> mergeTestReports = tasks.register('mergeTestReports', TestReport) { TestReport testReportTask ->
+                testReportTask.dependsOn(testTask)
 
                 testReportTask.getDestinationDirectory().set(project.layout.buildDirectory.dir('reports/tests'))
                 testReportTask.getTestResults().from(project.layout.buildDirectory.dir('test-results/binary/test'),
@@ -87,19 +83,34 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
                         // different versions of Gradle store these results in different places. ugh.
                         project.layout.buildDirectory.dir('test-results/test/binary'),
                         project.layout.buildDirectory.dir('test-results/integrationTest/binary'))
-
-                tasks.findByName('integrationTestTask')?.finalizedBy testReportTask
             }
+
+            TaskProvider<Test> integrationTestTask = tasks.register('integrationTest', Test, { Test integrationTest ->
+                integrationTest.group = LifecycleBasePlugin.VERIFICATION_GROUP
+                integrationTest.description = 'Runs the integration tests.'
+                integrationTest.setTestClassesDirs(integrationTestSources.output.classesDirs)
+                integrationTest.classpath = integrationTestSources.runtimeClasspath
+                integrationTest.maxParallelForks = 1
+                integrationTest.reports.html.required.set(false)
+            })
+            integrationTestTask.configure { Test integrationTest ->
+                integrationTest.shouldRunAfter(testTask)
+                integrationTest.finalizedBy(mergeTestReports)
+                integrationTest.doFirst {
+                    String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+                    if (grailsAppPath) {
+                        File resources = project.file("${grailsAppPath}/conf")
+                        integrationTestSources.resources.srcDir(resources)
+                    }
+                }
+            }
+            tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME)
+                    .configure((check) -> check.dependsOn(integrationTestTask))
 
             if (ideaIntegration) {
                 integrateIdea(project, acceptedSourceDirs)
             }
         }
-    }
-
-    protected void setClassesDirs(Test integrationTestTask, SourceSet sourceSet) {
-        FileCollection classesDirs = sourceSet.output.classesDirs
-        integrationTestTask.setTestClassesDirs(classesDirs)
     }
 
     @CompileDynamic
@@ -121,10 +132,6 @@ class IntegrationTestGradlePlugin implements Plugin<Project> {
                 }
             }
         }
-    }
-
-    File[] findIntegrationTestSources(Project project) {
-        project.file(sourceFolderName).listFiles({ File file -> file.isDirectory() && !file.name.contains('.') } as FileFilter)
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2023 the original author or authors.
+ * Copyright 2008-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import groovy.transform.CompileStatic
  * Build time settings and configuration
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 @CompileStatic
 class BuildSettings {
@@ -108,6 +109,11 @@ class BuildSettings {
      * The app directory of the application
      */
     public static final String APP_DIR = 'grails.app.dir'
+
+    /**
+     * The app path of the application
+     */
+    public static final String APP_PATH = 'grails.app.path'
 
     /**
      * The name of the system property for the Grails work directory.
@@ -257,25 +263,51 @@ class BuildSettings {
     }
 
     static {
-        String appBaseDir = System.getProperty(APP_BASE_DIR)
-        if (appBaseDir) {
-            BASE_DIR = new File(appBaseDir)
+        if (System.getProperty(APP_BASE_DIR)) {
+            BASE_DIR = new File(System.getProperty(APP_BASE_DIR))
+        }
+        else if (System.getenv(APP_BASE_DIR)) {
+            BASE_DIR = new File(System.getenv(APP_BASE_DIR))
+        }
+        if (System.getProperty('BASE_DIR')) {
+            BASE_DIR = new File(System.getProperty('BASE_DIR'))
+        }
+        else if (System.getenv('BASE_DIR')) {
+            BASE_DIR = new File(System.getenv('BASE_DIR'))
         }
         else {
             BASE_DIR = new File('.')
         }
 
-        String appDir = System.getProperty(APP_DIR)
-        if (appDir) {
-            GRAILS_APP_DIR = new File(appDir)
+        if (System.getProperty(APP_DIR)) {
+            GRAILS_APP_DIR = new File(System.getProperty(APP_DIR))
+        }
+        else if (System.getenv(APP_DIR)) {
+            GRAILS_APP_DIR = new File(System.getenv(APP_DIR))
+        }
+        else if (System.getProperty('GRAILS_APP_DIR')) {
+            GRAILS_APP_DIR = new File(System.getProperty('GRAILS_APP_DIR'))
+        }
+        else if (System.getenv('GRAILS_APP_DIR')) {
+            GRAILS_APP_DIR = new File(System.getenv('GRAILS_APP_DIR'))
+        }
+        else if (System.getProperty(APP_PATH)) {
+            GRAILS_APP_DIR = new File(BASE_DIR, System.getProperty(APP_PATH))
+        }
+        else if (System.getenv(APP_PATH)) {
+            GRAILS_APP_DIR = new File(BASE_DIR, System.getenv(APP_PATH))
+        }
+        else if (System.getProperty('GRAILS_APP_PATH')) {
+            GRAILS_APP_DIR = new File(BASE_DIR, System.getProperty('GRAILS_APP_PATH'))
+        }
+        else if (System.getenv('GRAILS_APP_PATH')) {
+            GRAILS_APP_DIR = new File(BASE_DIR, System.getenv('GRAILS_APP_PATH'))
+        }
+        else if (new File(BASE_DIR, 'app').exists()) {
+            GRAILS_APP_DIR = new File(BASE_DIR, 'app')
         }
         else {
-            if (new File(BASE_DIR, 'app').exists()) {
-                GRAILS_APP_DIR = new File(BASE_DIR, 'app')
-            }
-            else {
-                GRAILS_APP_DIR = new File(BASE_DIR, 'grails-app')
-            }
+            GRAILS_APP_DIR = new File(BASE_DIR, 'grails-app')
         }
         GRAILS_APP_DIR_PRESENT = GRAILS_APP_DIR?.exists()
         if (GRAILS_APP_DIR_PRESENT) {

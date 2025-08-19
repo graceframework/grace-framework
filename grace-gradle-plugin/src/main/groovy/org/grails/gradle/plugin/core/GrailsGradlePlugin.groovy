@@ -35,7 +35,9 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.AbstractCopyTask
+import org.gradle.api.tasks.GroovySourceDirectorySet
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
@@ -82,7 +84,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
     List<String> excludedGrailsAppSourceDirs = ['assets', 'scripts']
     List<String> grailsAppResourceDirs = ['i18n', 'conf']
     private final ToolingModelBuilderRegistry registry
-    String grailsAppDir
     String grailsVersion
 
     @Inject
@@ -93,7 +94,8 @@ class GrailsGradlePlugin extends GroovyPlugin {
     void apply(Project project) {
         verifyGradleVersion()
 
-        grailsAppDir = SourceSets.resolveGrailsAppDir(project)
+        registerGrailsExtension(project)
+
         grailsVersion = resolveGrailsVersion(project)
 
         // Keep configure system properties First
@@ -111,8 +113,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         applyDefaultPlugins(project)
 
         registerToolingModelBuilder(project, registry)
-
-        registerGrailsExtension(project)
 
         applyBasePlugins(project)
 
@@ -218,13 +218,16 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     @CompileStatic
     protected void configureSpringBootExtension(Project project) {
-        project.getTasks().withType(BootRun, {
-            systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
-            systemProperty(BuildSettings.APP_DIR, project.file(grailsAppDir).absolutePath)
-            systemProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
-            systemProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
-            systemProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
-        })
+        project.getTasks().withType(BootRun).configureEach { BootRun bootRun ->
+            bootRun.doFirst("Configure System Properties") {
+                String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+                bootRun.systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
+                bootRun.systemProperty(BuildSettings.APP_DIR, grailsAppPath ? project.file(grailsAppPath).absolutePath : '')
+                bootRun.systemProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
+                bootRun.systemProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
+                bootRun.systemProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+            }
+        }
     }
 
     @CompileStatic
@@ -241,17 +244,20 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     protected GrailsExtension registerGrailsExtension(Project project) {
         if (project.extensions.findByName('grails') == null) {
-            project.extensions.add('grails', new GrailsExtension(project))
+            project.extensions.create(GrailsExtension, 'grails', GrailsExtension, project)
         }
     }
 
     @CompileStatic
     protected String configureGrailsBuildSettings(Project project) {
-        System.setProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
-        System.setProperty(BuildSettings.APP_DIR, project.file(grailsAppDir).absolutePath)
-        System.setProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
-        System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
-        System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+        project.afterEvaluate {
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+            System.setProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
+            System.setProperty(BuildSettings.APP_DIR, grailsAppPath ? project.file(grailsAppPath).absolutePath : '')
+            System.setProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
+            System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
+            System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+        }
     }
 
     @CompileDynamic
@@ -283,33 +289,31 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileDynamic
+    @CompileStatic
     protected void configureGrailsSourceDirs(Project project) {
-        project.sourceSets {
-            main {
-                groovy {
-                    srcDirs = resolveGrailsSourceDirs(project)
-                }
-                resources {
-                    srcDirs = resolveGrailsResourceDirs(project)
-                }
+        project.afterEvaluate {
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+            if (grailsAppPath) {
+                SourceSet mainSourceSet = project.getExtensions().getByType(JavaPluginExtension).getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                mainSourceSet.getExtensions().getByType(GroovySourceDirectorySet).setSrcDirs(resolveGrailsSourceDirs(project, grailsAppPath))
+                mainSourceSet.getResources().setSrcDirs(resolveGrailsResourceDirs(project, grailsAppPath))
             }
         }
     }
 
     @CompileStatic
-    protected List<File> resolveGrailsResourceDirs(Project project) {
+    protected List<File> resolveGrailsResourceDirs(Project project, String grailsAppPath) {
         List<File> grailsResourceDirs = [project.file('src/main/resources')]
         for (String f in grailsAppResourceDirs) {
-            grailsResourceDirs.add(project.file("${grailsAppDir}/${f}"))
+            grailsResourceDirs.add(project.file("${grailsAppPath}/${f}"))
         }
         grailsResourceDirs
     }
 
     @CompileStatic
-    protected List<File> resolveGrailsSourceDirs(Project project) {
+    protected List<File> resolveGrailsSourceDirs(Project project, String grailsAppPath) {
         List<File> grailsSourceDirs = []
-        project.file(grailsAppDir).eachDir { File subdir ->
+        project.file(grailsAppPath).eachDir { File subdir ->
             if (isGrailsSourceDirectory(subdir)) {
                 grailsSourceDirs.add(subdir)
             }
@@ -409,9 +413,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('console', JavaExec) {
-            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             group = 'Grace'
             description = 'Runs the interactive Groovy Console.'
+            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             systemProperty 'spring.devtools.restart.enabled', false
             systemProperty 'spring.output.ansi.enabled', 'always'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
@@ -422,9 +426,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
         tasks.create('shell', JavaExec) {
-            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             group = 'Grace'
             description = 'Runs the interactive Groovy Shell.'
+            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
             systemProperty 'spring.devtools.restart.enabled', false
             systemProperty 'spring.output.ansi.enabled', 'always'
             classpath = project.sourceSets.main.runtimeClasspath + configuration
@@ -453,17 +457,17 @@ class GrailsGradlePlugin extends GroovyPlugin {
     @CompileDynamic
     protected void enableNative2Ascii(Project project, String grailsVersion) {
         project.afterEvaluate {
-            SourceSet sourceSet = SourceSets.findMainSourceSet(project)
-
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
             TaskContainer taskContainer = project.tasks
 
+            SourceSet sourceSet = SourceSets.findMainSourceSet(project)
             taskContainer.getByName(sourceSet.processResourcesTaskName) { AbstractCopyTask task ->
                 GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
                 boolean native2ascii = grailsExt.isNative2ascii()
                 task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
                 if (native2ascii && grailsExt.isNative2asciiAnt() && !taskContainer.findByName('native2ascii')) {
                     File destinationDir = ((ProcessResources) task).destinationDir
-                    Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file("${grailsAppDir}/i18n"), destinationDir)
+                    Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file("${grailsAppPath}/i18n"), destinationDir)
                     task.dependsOn(native2asciiTask)
                 }
 
@@ -665,14 +669,16 @@ class GrailsGradlePlugin extends GroovyPlugin {
         def projectVersion = project.version
         def projectDir = project.projectDir.absolutePath
         def projectType = getGrailsProjectType()
-        def grailsAppDir = new File(project.projectDir, grailsAppDir).absolutePath
-        if (System.getProperty('os.name').startsWith('Windows')) {
-            projectDir = projectDir.replace('\\', '\\\\')
-            grailsAppDir = grailsAppDir.replace('\\', '\\\\')
-        }
+
         configScriptTask.inputs.property('name', projectName)
         configScriptTask.inputs.property('version', projectVersion)
         configScriptTask.doLast {
+            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+            String grailsAppDir = grailsAppPath ? project.file(grailsAppPath).absolutePath : ''
+            if (System.getProperty('os.name').startsWith('Windows')) {
+                projectDir = projectDir.replace('\\', '\\\\')
+                grailsAppDir = grailsAppDir.replace('\\', '\\\\')
+            }
             configFile.parentFile.mkdirs()
             configFile.text = """
 withConfig(configuration) {

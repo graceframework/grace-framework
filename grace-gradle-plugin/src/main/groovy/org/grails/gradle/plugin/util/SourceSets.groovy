@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,16 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 
+import org.grails.gradle.plugin.core.GrailsExtension
+
+import static org.grails.gradle.plugin.util.BuildSettings.APP_DIR
+import static org.grails.gradle.plugin.util.BuildSettings.APP_PATH
+import static org.grails.gradle.plugin.util.BuildSettings.DEFAULT_GRACE_APP_PATH
+import static org.grails.gradle.plugin.util.BuildSettings.DEFAULT_GRAILS_APP_PATH
+
 /**
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -56,13 +64,79 @@ class SourceSets {
         sourceSets
     }
 
+    /**
+     * Resolve the directory of Grails app, for examples, 'grails-app', 'app'.
+     *
+     * @param project the Gradle project
+     * @return the directory of Grails application
+     * @deprecated since 2024.0.0, in favor of {@link #resolveGrailsAppPath(Project)}
+     */
+    @Deprecated(since = '2024.0.0', forRemoval = true)
     static String resolveGrailsAppDir(Project project) {
-        List<String> grailsAppDirs = ['grails-app', 'app']
+        List<String> grailsAppDirs = [DEFAULT_GRAILS_APP_PATH, DEFAULT_GRACE_APP_PATH]
         String grailsAppDir = grailsAppDirs.find { String dir -> project.file(dir).exists() }
         if (!grailsAppDir) {
-            throw new GradleException("Grails requires an application directory : 'grails-app' or 'app'.")
+            throw new GradleException("Grace requires an application directory : 'grails-app' or 'app'.")
         }
         grailsAppDir
+    }
+
+    /**
+     * Resolve the directory of Grails app, for examples, 'grails-app', 'app', but you can always configure it.
+     *
+     * @param project the Gradle project
+     * @return the directory of Grails application
+     * @since 2024.0.0
+     */
+    static String resolveGrailsAppPath(Project project) {
+        File baseDir = project.projectDir
+        File appDir = null
+
+        if (System.getProperty(APP_DIR)) {
+            appDir = new File(System.getProperty(APP_DIR))
+        }
+        else if (System.getenv(APP_DIR)) {
+            appDir = new File(System.getenv(APP_DIR))
+        }
+        else if (System.getProperty('GRAILS_APP_DIR')) {
+            appDir = new File(System.getProperty('GRAILS_APP_DIR'))
+        }
+        else if (System.getenv('GRAILS_APP_DIR')) {
+            appDir = new File(System.getenv('GRAILS_APP_DIR'))
+        }
+        else if (System.getProperty(APP_PATH)) {
+            appDir = new File(baseDir, System.getProperty(APP_PATH))
+        }
+        else if (System.getenv(APP_PATH)) {
+            appDir = new File(baseDir, System.getenv(APP_PATH))
+        }
+        else if (System.getProperty('GRAILS_APP_PATH')) {
+            appDir = new File(baseDir, System.getProperty('GRAILS_APP_PATH'))
+        }
+        else if (System.getenv('GRAILS_APP_PATH')) {
+            appDir = new File(baseDir, System.getenv('GRAILS_APP_PATH'))
+        }
+        if (appDir?.exists()) {
+            return appDir.absolutePath.substring(baseDir.absolutePath.length() + 1)
+        }
+        String appPath = project.getExtensions().getByType(GrailsExtension).appPath?.trim()
+        if (!appPath) {
+            return ''
+        }
+        else {
+            appDir = new File(baseDir, appPath)
+        }
+
+        if (appDir.exists()) {
+            return appPath
+        }
+        else if (appPath != DEFAULT_GRACE_APP_PATH && System.getProperty('grails.gradle.app-path.checked') != 'true') {
+            System.setProperty('grails.gradle.app-path.checked', 'true')
+            throw new GradleException("Grace requires an application directory : [$appDir] not exist, please check it again!")
+        }
+        else {
+            return ''
+        }
     }
 
 }
