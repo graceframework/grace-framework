@@ -73,6 +73,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
             task.classpath = allClasspath
+            task.dependsOn(tasks.named('classes'))
         }
 
         TaskProvider<GroovyPageForkCompileTask> compileGroovyPages = tasks.register(
