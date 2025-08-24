@@ -43,7 +43,6 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
@@ -385,8 +384,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         if (project.configurations.findByName('console') == null) {
             def consoleConfiguration = project.configurations.create('console')
             def findMainClass = tasks.findByName('findMainClass')
-            findMainClass.group = 'build'
-            findMainClass.description = 'Finds the main class of the application.'
             def consoleTask = createConsoleTask(project, tasks, consoleConfiguration)
             def shellTask = createShellTask(project, tasks, consoleConfiguration)
 
@@ -438,16 +435,22 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected void registerFindMainClassTask(Project project) {
-        TaskContainer taskContainer = project.tasks
-        def findMainClassTask = taskContainer.findByName('findMainClass')
+        Task findMainClassTask = project.tasks.findByName('findMainClass')
         if (findMainClassTask == null) {
-            findMainClassTask = project.tasks.register('findMainClass', FindMainClassTask).get()
-            findMainClassTask.mustRunAfter(project.tasks.withType(GroovyCompile))
+            project.tasks.register('findMainClass', FindMainClassTask).configure { FindMainClassTask task ->
+                task.group = 'build'
+                task.description = 'Finds the main class of the application.'
+                task.mustRunAfter(project.tasks.named('classes'))
+            }
         }
         else if (!FindMainClassTask.isAssignableFrom(findMainClassTask.class)) {
-            def grailsFindMainClass = project.tasks.register('grailsFindMainClass', FindMainClassTask).get()
-            grailsFindMainClass.dependsOn(findMainClassTask)
-            findMainClassTask.finalizedBy(grailsFindMainClass)
+            project.tasks.register('grailsFindMainClass', FindMainClassTask).configure { FindMainClassTask task ->
+                task.group = 'build'
+                task.description = 'Finds the main class of the application.'
+                task.mustRunAfter(project.tasks.named('classes'))
+                task.dependsOn(findMainClassTask)
+                findMainClassTask.finalizedBy(task)
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskProvider
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 import org.grails.gradle.plugin.util.SourceSets
@@ -32,6 +33,7 @@ import org.grails.io.support.MainClassFinder
  * A task that finds the main task, differs slightly from Boot's version as expects a subclass of GrailsConfiguration
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -40,14 +42,16 @@ class FindMainClassTask extends DefaultTask {
     @TaskAction
     void setMainClassProperty() {
         Project project = this.project
-        BootRun bootRun = (BootRun) project.tasks.findByName('bootRun')
-        if (bootRun != null) {
+        TaskProvider<BootRun> bootRunTask = project.tasks.named('bootRun', BootRun)
+        if (bootRunTask.isPresent()) {
             String mainClass = findMainClass()
-            if (mainClass != null) {
-                bootRun.mainClass.set(mainClass)
-                ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) getProject()
-                        .getExtensions().getByName('ext')
-                extraProperties.set('mainClassName', mainClass)
+            bootRunTask.configure { BootRun bootRun ->
+                if (mainClass != null) {
+                    bootRun.mainClass.set(mainClass)
+                    ExtraPropertiesExtension extraProperties = getProject()
+                            .getExtensions().getByType(ExtraPropertiesExtension)
+                    extraProperties.set('mainClassName', mainClass)
+                }
             }
         }
     }
@@ -55,18 +59,12 @@ class FindMainClassTask extends DefaultTask {
     protected String findMainClass() {
         Project project = this.project
 
-        File buildDir = project.buildDir
+        File buildDir = project.layout.buildDirectory.get().asFile
         buildDir.mkdirs()
         File mainClassFile = new File(buildDir, '.mainClass')
         if (mainClassFile.exists()) {
             return mainClassFile.text
         }
-
-/*            // Try the SpringBoot extension setting
-            def bootExtension = project.extensions.findByType( SpringBootPluginExtension )
-            if(bootExtension?.mainClass) {
-                return bootExtension.mainClass
-            }*/
 
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
 
@@ -87,7 +85,7 @@ class FindMainClassTask extends DefaultTask {
         }
 
         if (mainClass == null) {
-            mainClass = mainClassFinder.findMainClass(new File(project.buildDir, 'classes/groovy/main'))
+            mainClass = mainClassFinder.findMainClass(project.layout.buildDirectory.dir('classes/groovy/main').get().asFile)
             if (mainClass != null) {
                 mainClassFile.text = mainClass
             }
@@ -99,7 +97,7 @@ class FindMainClassTask extends DefaultTask {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/main'))
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/main'))
     }
 
     protected MainClassFinder createMainClassFinder() {
