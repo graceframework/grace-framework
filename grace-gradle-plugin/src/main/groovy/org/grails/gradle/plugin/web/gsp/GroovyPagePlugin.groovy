@@ -54,7 +54,7 @@ class GroovyPagePlugin implements Plugin<Project> {
 
         SourceSetOutput output = mainSourceSet?.output
         FileCollection classesDirs = resolveClassesDirs(output, project)
-        File destDir = output?.dir('gsp-classes') ?: new File(project.buildDir, 'gsp-classes/main')
+        File destDir = output?.dir('gsp-classes') ?: project.layout.buildDirectory.dir('gsp-classes/main').get().asFile
 
         Configuration providedConfig = project.configurations.findByName('providedCompile')
         def allClasspath = project.configurations.compileClasspath + project.configurations.gspCompile + classesDirs
@@ -82,6 +82,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.description = 'Compiles the Groovy server pages (GSP).'
             task.destinationDirectory.set(destDir)
             task.tmpDirPath = getTmpDirPath(project)
+            task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
             task.dependsOn(tasks.named('classes'))
             task.dependsOn(compileWebappGroovyPages)
@@ -91,14 +92,16 @@ class GroovyPagePlugin implements Plugin<Project> {
             GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
             String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
             if (grailsAppPath) {
-                task.source = project.file("${grailsAppPath}/views")
-                task.serverpath = '/WEB-INF/grails-app/views/'
+                task.configDir = project.file("${grailsAppPath}/conf")
+                if (task.name == 'compileGroovyPages') {
+                    task.source = project.file("${grailsAppPath}/views")
+                }
             }
 
             if (grailsExt.getPathingJar() && Os.isFamily(Os.FAMILY_WINDOWS)) {
                 Jar pathingJar = (Jar) tasks.findByName('pathingJar')
-                allClasspath = project.files("${project.buildDir}/classes/groovy/main",
-                        "${project.buildDir}/resources/main", pathingJar.archiveFile.get().getAsFile())
+                allClasspath = project.files(project.layout.buildDirectory.dir('classes/groovy/main'),
+                        project.layout.buildDirectory.dir('resources/main'), pathingJar.archiveFile.get().getAsFile())
                 task.dependsOn(pathingJar)
                 task.setClasspath(allClasspath)
             }
@@ -136,12 +139,11 @@ class GroovyPagePlugin implements Plugin<Project> {
     }
 
     protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/main'))
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/main'))
     }
 
     protected String getTmpDirPath(Project project) {
-        def tmpdir = new File(project.buildDir as String, 'gsptmp')
-        tmpdir.absolutePath
+        project.layout.buildDirectory.dir('gsptmp').get().asFile.absolutePath
     }
 
 }

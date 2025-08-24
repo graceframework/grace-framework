@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2022 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.gradle.work.InputChanges
  * A task for compiling GSPs
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 3.0
  */
 @CompileStatic
@@ -45,6 +46,9 @@ class GroovyPageCompileTask extends AbstractCompile {
 
     @InputDirectory
     File srcDir
+
+    @InputDirectory
+    File configDir
 
     @Override
     void setSource(Object source) {
@@ -71,8 +75,8 @@ class GroovyPageCompileTask extends AbstractCompile {
 
         antBuilder.withClasspath(classpath).execute {
             taskdef(name: 'gspc', classname: 'org.grails.web.pages.GroovyPageCompilerTask')
-            def dest = compileTask.destinationDirectory.getAsFile().getOrNull()
-            def tmpdir = new File(gradleProject.buildDir, 'gsptmp')
+            File dest = compileTask.destinationDirectory.getAsFile().getOrNull()
+            File tmpdir = gradleProject.layout.buildDirectory.dir('gsptmp').get().asFile
             dest?.mkdirs()
 
             gspc(destdir: dest,
@@ -81,8 +85,8 @@ class GroovyPageCompileTask extends AbstractCompile {
                     serverpath: serverpath,
                     tmpdir: tmpdir) {
                 delegate.configs {
-                    pathelement(path: gradleProject.file('grails-app/conf/application.yml').absolutePath)
-                    pathelement(path: gradleProject.file('grails-app/conf/application.groovy').absolutePath)
+                    pathelement(new File(configDir, 'application.yml').absolutePath)
+                    pathelement(new File(configDir, 'application.groovy').absolutePath)
                 }
                 delegate.classpath {
                     pathelement(path: dest.absolutePath)

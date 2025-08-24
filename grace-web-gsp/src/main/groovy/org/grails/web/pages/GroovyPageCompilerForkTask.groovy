@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-2022 the original author or authors.
+ * Copyright 2004-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ import org.grails.gsp.compiler.GroovyPageCompiler
  * A Forked Compiler Task for use (typically by Gradle)
  *
  * @author David Estes
+ * @author Michael Yan
  */
-
 @CompileStatic
-public class GroovyPageCompilerForkTask {
+class GroovyPageCompilerForkTask {
 
     static final String FILE_EXTENSION = '.gsp'
 
@@ -122,7 +122,6 @@ Usage: java -cp CLASSPATH GroovyPageCompilerForkTask [srcDir] [destDir] [tmpDir]
         String packageName = args[4].trim()
         String serverpath = args[5]
         String[] configFiles = args[6].tokenize(',') as String[]
-        File configFile = new File(args[6])
         String encoding = args[7] ?: 'UTF-8'
 
         GroovyPageCompilerForkTask compiler = new GroovyPageCompilerForkTask(srcDir, destinationDir, tmpDir)

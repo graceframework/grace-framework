@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2024 the original author or authors.
+ * Copyright 2014-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import org.gradle.work.InputChanges
  * by {@link GspCompileOptions}
  *
  * @author David Estes
+ * @author Michael Yan
  * @since 4.0
  */
 @CompileStatic
@@ -60,6 +61,9 @@ class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Internal
     File srcDir
+
+    @Internal
+    File configDir
 
     @LocalState
     String tmpDirPath
@@ -130,11 +134,9 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
                         javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
 
-                        //This is the OLD Style and seems kinda silly to be hard coded this way. but restores functionality
-                        //for now
                         def configFiles = [
-                                project.file('grails-app/conf/application.yml').canonicalPath,
-                                project.file('grails-app/conf/application.groovy').canonicalPath
+                                new File(configDir, 'application.yml').canonicalPath,
+                                new File(configDir, 'application.groovy').canonicalPath
                         ].join(',')
 
                         Path path = Paths.get(tmpDirPath)
