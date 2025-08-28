@@ -35,6 +35,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.AbstractCopyTask
 import org.gradle.api.tasks.GroovySourceDirectorySet
@@ -79,6 +80,7 @@ import org.grails.gradle.plugin.util.SourceSets
 @CompileStatic
 class GrailsGradlePlugin extends GroovyPlugin {
 
+    public static final String CONSOLE_CONFIGURATION = 'console'
     public static final String PROFILE_CONFIGURATION = 'profile'
 
     List<Class<Plugin>> basePluginClasses = [IntegrationTestGradlePlugin] as List<Class<Plugin>>
@@ -553,53 +555,59 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileDynamic
     protected void configureRunScript(Project project) {
+        Configuration runtimeClasspath = project.getConfigurations().getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
+        Configuration consoleClasspath = project.configurations.getByName(CONSOLE_CONFIGURATION)
+        Configuration profileClasspath = project.configurations.getByName(PROFILE_CONFIGURATION)
+
         if (project.tasks.findByName('runScript') == null) {
-            project.tasks.create('runScript', ApplicationContextScriptTask) {
-                group = 'Grace'
-                description = "Executes the Grace Application Scripts."
-                classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
-                        project.configurations.profile)
-                systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
-                systemProperty 'spring.main.banner-mode', 'OFF'
-                systemProperty 'logging.level.ROOT', 'OFF'
-                systemProperty 'spring.devtools.restart.enabled', false
-                systemProperty 'spring.output.ansi.enabled', 'always'
+            project.tasks.register('runScript', ApplicationContextScriptTask) { ApplicationContextScriptTask scriptTask ->
+                scriptTask.group = 'Grace'
+                scriptTask.description = "Executes the Grace Application Scripts."
+                scriptTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
+                scriptTask.systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                scriptTask.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
+                scriptTask.systemProperty 'spring.main.banner-mode', 'OFF'
+                scriptTask.systemProperty 'logging.level.ROOT', 'OFF'
+                scriptTask.systemProperty 'spring.devtools.restart.enabled', false
+                scriptTask.systemProperty 'spring.output.ansi.enabled', 'always'
                 if (project.hasProperty('args')) {
-                    args(CommandLineParser.translateCommandline(project.args))
+                    scriptTask.args(CommandLineParser.translateCommandline(project.getProperties().get('args') as String))
                 }
             }
         }
     }
 
-    @CompileDynamic
     protected void configureRunCommand(Project project) {
+        Configuration runtimeClasspath = project.getConfigurations().getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
+        Configuration consoleClasspath = project.configurations.getByName(CONSOLE_CONFIGURATION)
+        Configuration profileClasspath = project.configurations.getByName(PROFILE_CONFIGURATION)
+
         if (project.tasks.findByName('runCommand') == null) {
-            def findMainClass = project.tasks.findByName('findMainClass')
-            findMainClass.doLast {
-                ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
-                def mainClassName = extraProperties.get('mainClassName')
-                if (mainClassName) {
-                    project.tasks.withType(ApplicationContextCommandTask) { ApplicationContextCommandTask task ->
-                        task.args mainClassName
-                    }
+            project.tasks.register('runCommand', ApplicationContextCommandTask) { ApplicationContextCommandTask commandTask ->
+                commandTask.group = 'Grace'
+                commandTask.description = "Executes the Grace Application Commands."
+                commandTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
+                commandTask.systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
+                commandTask.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
+                commandTask.systemProperty 'spring.main.banner-mode', 'OFF'
+                commandTask.systemProperty 'logging.level.ROOT', 'OFF'
+                commandTask.systemProperty "spring.devtools.restart.enabled", false
+                commandTask.systemProperty 'spring.output.ansi.enabled', 'always'
+                if (project.hasProperty('args')) {
+                    commandTask.args(CommandLineParser.translateCommandline(project.getProperties().get('args') as String))
                 }
             }
-            project.tasks.create('runCommand', ApplicationContextCommandTask) {
-                group = 'Grace'
-                description = "Executes the Grace Application Commands."
-                classpath = buildClasspath(project, project.configurations.runtimeClasspath, project.configurations.console,
-                        project.configurations.profile)
-                systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
-                systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
-                systemProperty 'spring.main.banner-mode', 'OFF'
-                systemProperty 'logging.level.ROOT', 'OFF'
-                systemProperty "spring.devtools.restart.enabled", false
-                systemProperty 'spring.output.ansi.enabled', 'always'
-                if (project.hasProperty('args')) {
-                    args(CommandLineParser.translateCommandline(project.args))
+
+            project.tasks.named('findMainClass').configure { Task findMainClass ->
+                findMainClass.doLast {
+                    ExtraPropertiesExtension extraProperties = project.getExtensions().getByType(ExtraPropertiesExtension)
+                    def mainClassName = extraProperties.get('mainClassName')
+                    if (mainClassName) {
+                        project.tasks.withType(ApplicationContextCommandTask).configureEach { ApplicationContextCommandTask commandTask ->
+                            commandTask.args mainClassName
+                        }
+                    }
                 }
             }
         }
