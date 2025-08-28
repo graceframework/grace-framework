@@ -516,29 +516,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileDynamic
-    protected Jar createPathingJarTask(Project project, String name, Configuration... configurations) {
-        project.tasks.create(name, Jar) { Jar task ->
-            task.dependsOn(configurations)
-            task.archiveAppendix.set('pathing')
-            task.setGroup('build')
-            task.setDescription('Generates a pathing jar file.')
-
-            Set files = []
-            configurations.each {
-                files.addAll(it.files)
-            }
-
-            task.doFirst {
-                manifest { Manifest manifest ->
-                    manifest.attributes 'Class-Path': files.collect { File file ->
-                        file.toURI().toURL().toString().replaceFirst(/file:\/+/, '/')
-                    }.join(' ')
-                }
-            }
-        }
-    }
-
     protected void configureRunScript(Project project) {
         Configuration runtimeClasspath = project.getConfigurations().getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
         Configuration consoleClasspath = project.configurations.getByName(CONSOLE_CONFIGURATION)
@@ -597,24 +574,17 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    protected FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
-        output?.classesDirs ?: project.files(new File(project.buildDir, 'classes/groovy/main'))
-    }
-
-    @CompileDynamic
     protected void configurePathingJar(Project project) {
+        ConfigurationContainer configurations = project.configurations
+        Configuration runtime = configurations.getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
+        Configuration developmentOnly = configurations.findByName(SpringBootPlugin.DEVELOPMENT_ONLY_CONFIGURATION_NAME)
+        Configuration console = configurations.getByName(CONSOLE_CONFIGURATION)
+
+        Jar pathingJar = (Jar) project.tasks.findByName('pathingJar')
+        Jar pathingJarCommand = (Jar) project.tasks.findByName('pathingJarCommand')
+
         project.afterEvaluate {
-            if (project.tasks.findByName('pathingJar') == null) {
-                ConfigurationContainer configurations = project.configurations
-                Configuration runtime = configurations.getByName('runtimeClasspath')
-                Configuration developmentOnly = configurations.findByName('developmentOnly')
-                Configuration console = configurations.getByName('console')
-                SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
-                SourceSetOutput output = mainSourceSet?.output
-                FileCollection mainFiles = resolveClassesDirs(output, project)
-
-                Jar pathingJar
-
+            if (pathingJar == null) {
                 if (developmentOnly != null) {
                     pathingJar = createPathingJarTask(project, 'pathingJar', runtime, developmentOnly)
                 }
@@ -622,32 +592,53 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     pathingJar = createPathingJarTask(project, 'pathingJar', runtime)
                 }
 
-                FileCollection pathingClasspath = project.files("${project.buildDir}/resources/main",
-                        "${project.projectDir}/gsp-classes", pathingJar.getArchiveFile().get().getAsFile()) + mainFiles
+                if (pathingJarCommand == null) {
+                    pathingJarCommand = createPathingJarTask(project, 'pathingJarCommand', runtime, console)
+                }
 
-                Jar pathingJarCommand = createPathingJarTask(project, 'pathingJarCommand', runtime, console)
-                FileCollection pathingClasspathCommand = project.files("${project.buildDir}/resources/main",
-                        "${project.projectDir}/gsp-classes", pathingJarCommand.getArchiveFile().get().getAsFile()) + mainFiles
+                FileCollection pathingClasspath = project.files(buildClasspath(project), pathingJar.getArchiveFile().get().getAsFile())
+                FileCollection pathingClasspathCommand = project.files(buildClasspath(project), pathingJarCommand.getArchiveFile().get().getAsFile())
 
                 GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
 
                 if (grailsExt.isPathingJar() && Os.isFamily(Os.FAMILY_WINDOWS)) {
-                    project.tasks.withType(JavaExec) { JavaExec task ->
+                    project.tasks.withType(JavaExec).configureEach { JavaExec task ->
                         if (task.name in ['console', 'shell']
                                 || task instanceof ApplicationContextCommandTask
                                 || task instanceof ApplicationContextScriptTask) {
                             task.dependsOn(pathingJarCommand)
                             task.doFirst {
-                                classpath = pathingClasspathCommand
+                                task.classpath = pathingClasspathCommand
                             }
                         }
                         else {
                             task.dependsOn(pathingJar)
                             task.doFirst {
-                                classpath = pathingClasspath
+                                task.classpath = pathingClasspath
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    protected Jar createPathingJarTask(Project project, String name, Configuration... configurations) {
+        project.tasks.create(name, Jar) { Jar task ->
+            task.group = 'build'
+            task.description = 'Generates a pathing jar file.'
+            task.archiveAppendix.set('pathing')
+
+            Set<File> files = []
+            configurations.each {
+                files.addAll(it.files)
+            }
+
+            task.doFirst {
+                task.manifest { Manifest manifest ->
+                    task.manifest.attributes 'Class-Path': files.collect { File file ->
+                        file.toURI().toURL().toString().replaceFirst(/file:\/+/, '/')
+                    }.join(' ')
                 }
             }
         }
@@ -706,12 +697,16 @@ withConfig(configuration) {
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
         SourceSetOutput output = mainSourceSet?.output
         FileCollection mainFiles = resolveClassesDirs(output, project)
-        FileCollection fileCollection = project.files("${project.buildDir}/resources/main",
-                "${project.projectDir}/gsp-classes") + mainFiles
+        FileCollection fileCollection = project.files(project.layout.buildDirectory.dir('resources/main'),
+                project.layout.buildDirectory.dir('gsp-classes'), mainFiles)
         configurations.each {
             fileCollection = fileCollection + it.filter({ File file -> !file.name.startsWith('spring-boot-devtools') })
         }
         fileCollection
+    }
+
+    private FileCollection resolveClassesDirs(SourceSetOutput output, Project project) {
+        output?.classesDirs ?: project.files(project.layout.buildDirectory.dir('classes/groovy/main'))
     }
 
     private void verifyGradleVersion() {
