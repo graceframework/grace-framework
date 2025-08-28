@@ -135,7 +135,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
 
     protected void configureProfile(Project project) {
         if (project.configurations.findByName(PROFILE_CONFIGURATION) == null) {
-            def profileConfiguration = project.configurations.create(PROFILE_CONFIGURATION)
+            Configuration profileConfiguration = project.configurations.create(PROFILE_CONFIGURATION)
             profileConfiguration.incoming.beforeResolve {
                 if (!profileConfiguration.allDependencies) {
                     addDefaultProfile(project, profileConfiguration)
@@ -222,9 +222,9 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
                 bootRun.systemProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
                 bootRun.systemProperty(BuildSettings.APP_DIR, grailsAppPath ? project.file(grailsAppPath).absolutePath : '')
-                bootRun.systemProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
-                bootRun.systemProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
-                bootRun.systemProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+                bootRun.systemProperty(BuildSettings.PROJECT_TARGET_DIR, SourceSets.getBuildTargetDir(project).absolutePath)
+                bootRun.systemProperty(BuildSettings.PROJECT_RESOURCES_DIR, SourceSets.getBuildResourcesDir(project).absolutePath)
+                bootRun.systemProperty(BuildSettings.PROJECT_CLASSES_DIR, SourceSets.getBuildClassesDir(project).absolutePath)
             }
         }
     }
@@ -248,14 +248,14 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileStatic
-    protected String configureGrailsBuildSettings(Project project) {
+    protected void configureGrailsBuildSettings(Project project) {
         project.afterEvaluate {
             String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
             System.setProperty(BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath)
             System.setProperty(BuildSettings.APP_DIR, grailsAppPath ? project.file(grailsAppPath).absolutePath : '')
-            System.setProperty(BuildSettings.PROJECT_TARGET_DIR, project.buildDir.absolutePath)
-            System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, new File(project.buildDir, 'resources/main').absolutePath)
-            System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, new File(project.buildDir, 'classes/groovy/main').absolutePath)
+            System.setProperty(BuildSettings.PROJECT_TARGET_DIR, SourceSets.getBuildTargetDir(project).absolutePath)
+            System.setProperty(BuildSettings.PROJECT_RESOURCES_DIR, SourceSets.getBuildResourcesDir(project).absolutePath)
+            System.setProperty(BuildSettings.PROJECT_CLASSES_DIR, SourceSets.getBuildClassesDir(project).absolutePath)
         }
     }
 

@@ -19,6 +19,7 @@ import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.GroovySourceDirectorySet
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 
@@ -44,6 +45,43 @@ class SourceSets {
      */
     static SourceSet findMainSourceSet(Project project) {
         findSourceSet(project, SourceSet.MAIN_SOURCE_SET_NAME)
+    }
+
+    /**
+     * Gets the base directory for the project
+     * @param project The project
+     * @return The base directory
+     */
+    static File getBaseDir(Project project) {
+        project.projectDir
+    }
+
+    /**
+     * Gets the build directory for the project
+     * @param project The project
+     * @return The build directory
+     */
+    static File getBuildTargetDir(Project project) {
+        project.layout.buildDirectory.get().asFile
+    }
+
+    /**
+     * Gets the build resources directory for the project
+     * @param project The project
+     * @return The resources directory
+     */
+    static File getBuildResourcesDir(Project project) {
+        findMainSourceSet(project).getOutput().getResourcesDir()
+    }
+
+    /**
+     * Gets the build Groovy classes directory for the project
+     * @param project The project
+     * @return The classes directory
+     */
+    static File getBuildClassesDir(Project project) {
+        GroovySourceDirectorySet groovySourceSet = findMainSourceSet(project).getExtensions().getByType(GroovySourceDirectorySet)
+        groovySourceSet.getClassesDirectory().get().asFile
     }
 
     /**
