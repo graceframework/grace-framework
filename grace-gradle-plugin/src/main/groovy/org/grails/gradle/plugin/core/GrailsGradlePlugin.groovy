@@ -384,75 +384,71 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     protected void configureConsoleTask(Project project) {
+        Configuration runtimeClasspath = project.getConfigurations().getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
         TaskContainer tasks = project.tasks
-        if (project.configurations.findByName('console') == null) {
-            def consoleConfiguration = project.configurations.create('console')
-            def findMainClass = tasks.findByName('findMainClass')
-            def consoleTask = createConsoleTask(project, tasks, consoleConfiguration)
-            def shellTask = createShellTask(project, tasks, consoleConfiguration)
 
-            findMainClass.doLast {
-                ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
-                def mainClassName = extraProperties.get('mainClassName')
-                if (mainClassName) {
-                    consoleTask.args mainClassName
-                    shellTask.args mainClassName
-                    project.tasks.withType(ApplicationContextCommandTask) { ApplicationContextCommandTask task ->
-                        task.args mainClassName
-                    }
-                }
-                project.tasks.withType(ApplicationContextScriptTask) { ApplicationContextScriptTask task ->
-                    task.args mainClassName
-                }
+        if (project.configurations.findByName('console') == null) {
+            Configuration consoleConfiguration = project.configurations.create(CONSOLE_CONFIGURATION)
+
+            TaskProvider<JavaExec> consoleTask = tasks.register('console', JavaExec) { JavaExec console ->
+                console.group = 'Grace'
+                console.description = 'Runs the interactive Groovy Console.'
+                console.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
+                console.systemProperty 'spring.devtools.restart.enabled', false
+                console.systemProperty 'spring.output.ansi.enabled', 'always'
+                console.classpath = buildClasspath(project, runtimeClasspath, consoleConfiguration)
+                console.mainClass.set('grails.ui.console.GrailsConsole')
             }
 
-            consoleTask.dependsOn(tasks.findByName('classes'), findMainClass)
-            shellTask.dependsOn(tasks.findByName('classes'), findMainClass)
-        }
-    }
+            TaskProvider<JavaExec> shellTask = tasks.register('shell', JavaExec) { JavaExec shell ->
+                shell.group = 'Grace'
+                shell.description = 'Runs the interactive Groovy Shell.'
+                shell.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
+                shell.systemProperty 'spring.devtools.restart.enabled', false
+                shell.systemProperty 'spring.output.ansi.enabled', 'always'
+                shell.classpath = buildClasspath(project, runtimeClasspath, consoleConfiguration)
+                shell.mainClass.set('grails.ui.shell.GrailsShell')
+                shell.standardInput = System.in
+            }
 
-    @CompileDynamic
-    protected JavaExec createConsoleTask(Project project, TaskContainer tasks, Configuration configuration) {
-        tasks.create('console', JavaExec) {
-            group = 'Grace'
-            description = 'Runs the interactive Groovy Console.'
-            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
-            systemProperty 'spring.devtools.restart.enabled', false
-            systemProperty 'spring.output.ansi.enabled', 'always'
-            classpath = project.sourceSets.main.runtimeClasspath + configuration
-            mainClass.set('grails.ui.console.GrailsConsole')
-        }
-    }
+            consoleTask.configure {
+                it.dependsOn(tasks.named('classes'), tasks.withType(FindMainClassTask))
+            }
+            shellTask.configure {
+                it.dependsOn(tasks.named('classes'), tasks.withType(FindMainClassTask))
+            }
 
-    @CompileDynamic
-    protected JavaExec createShellTask(Project project, TaskContainer tasks, Configuration configuration) {
-        tasks.create('shell', JavaExec) {
-            group = 'Grace'
-            description = 'Runs the interactive Groovy Shell.'
-            systemProperty BuildSettings.APP_BASE_DIR, project.projectDir.absolutePath
-            systemProperty 'spring.devtools.restart.enabled', false
-            systemProperty 'spring.output.ansi.enabled', 'always'
-            classpath = project.sourceSets.main.runtimeClasspath + configuration
-            mainClass.set('grails.ui.shell.GrailsShell')
-            standardInput = System.in
+            tasks.withType(FindMainClassTask).configureEach {
+                it.doLast {
+                    ExtraPropertiesExtension extraProperties = (ExtraPropertiesExtension) project.getExtensions().getByName('ext')
+                    def mainClassName = extraProperties.get('mainClassName')
+                    if (mainClassName) {
+                        consoleTask.configure {
+                            it.args mainClassName
+                        }
+                        shellTask.configure {
+                            it.args mainClassName
+                        }
+                    }
+                }
+            }
         }
     }
 
     protected void registerFindMainClassTask(Project project) {
         Task findMainClassTask = project.tasks.findByName('findMainClass')
         if (findMainClassTask == null) {
-            project.tasks.register('findMainClass', FindMainClassTask).configure { FindMainClassTask task ->
+            project.tasks.register('findMainClass', FindMainClassTask) { FindMainClassTask task ->
                 task.group = 'build'
                 task.description = 'Finds the main class of the application.'
-                task.mustRunAfter(project.tasks.named('classes'))
+                task.dependsOn(project.tasks.named('classes'))
             }
         }
         else if (!FindMainClassTask.isAssignableFrom(findMainClassTask.class)) {
-            project.tasks.register('grailsFindMainClass', FindMainClassTask).configure { FindMainClassTask task ->
+            project.tasks.register('grailsFindMainClass', FindMainClassTask) { FindMainClassTask task ->
                 task.group = 'build'
                 task.description = 'Finds the main class of the application.'
-                task.mustRunAfter(project.tasks.named('classes'))
-                task.dependsOn(findMainClassTask)
+                task.dependsOn(project.tasks.named('classes'), findMainClassTask)
                 findMainClassTask.finalizedBy(task)
             }
         }
@@ -599,7 +595,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
             }
 
-            project.tasks.named('findMainClass').configure { Task findMainClass ->
+            project.tasks.withType(FindMainClassTask).configureEach { Task findMainClass ->
                 findMainClass.doLast {
                     ExtraPropertiesExtension extraProperties = project.getExtensions().getByType(ExtraPropertiesExtension)
                     def mainClassName = extraProperties.get('mainClassName')
