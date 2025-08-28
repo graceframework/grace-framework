@@ -536,6 +536,18 @@ class GrailsGradlePlugin extends GroovyPlugin {
                     scriptTask.args(CommandLineParser.translateCommandline(project.getProperties().get('args') as String))
                 }
             }
+
+            project.tasks.withType(FindMainClassTask).configureEach { Task findMainClass ->
+                findMainClass.doLast {
+                    ExtraPropertiesExtension extraProperties = project.getExtensions().getByType(ExtraPropertiesExtension)
+                    def mainClassName = extraProperties.get('mainClassName')
+                    if (mainClassName) {
+                        project.tasks.withType(ApplicationContextScriptTask).configureEach { ApplicationContextScriptTask scriptTask ->
+                            scriptTask.args mainClassName
+                        }
+                    }
+                }
+            }
         }
     }
 
