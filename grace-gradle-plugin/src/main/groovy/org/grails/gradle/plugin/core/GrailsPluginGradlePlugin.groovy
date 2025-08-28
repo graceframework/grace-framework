@@ -112,7 +112,6 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
 
     @CompileDynamic
     protected void configureAstSources(Project project) {
-        SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
         SourceSetContainer sourceSets = SourceSets.findSourceSets(project)
         project.sourceSets {
             ast {
@@ -128,12 +127,12 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
             }
         }
 
-        TaskProvider<Copy> copyAstClasses = project.register( 'copyAstClasses', Copy) { Copy copy ->
+        TaskContainer tasks = project.tasks
+        TaskProvider<Copy> copyAstClasses = tasks.register( 'copyAstClasses', Copy) { Copy copy ->
             copy.from sourceSets.ast.output
             copy.into project.layout.buildDirectory.dir('classes/groovy/main')
         }
 
-        TaskContainer tasks = project.tasks
         tasks.named(JavaPlugin.CLASSES_TASK_NAME).configure { it.dependsOn(copyAstClasses) }
 
         tasks.withType(JavaExec).configureEach {
