@@ -42,7 +42,9 @@ import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
+import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.process.JavaForkOptions
@@ -659,31 +661,29 @@ class GrailsGradlePlugin extends GroovyPlugin {
         }
     }
 
-    @CompileDynamic
     protected void configureGroovyASTMetadata(Project project) {
-        def configScriptTask = project.tasks.create('configScript')
-        configScriptTask.group = 'Build Setup'
-        configScriptTask.description = 'Generates Groovy configuration script.'
+        String projectName = getGrailsProjectName(project)
+        String projectVersion = project.version
+        String projectDir = project.projectDir.absolutePath
+        GrailsProjectType projectType = getGrailsProjectType()
+        File configFile = project.layout.buildDirectory.file('config.groovy').get().asFile
 
-        def configFile = project.file("$project.buildDir/config.groovy")
-        configScriptTask.outputs.file(configFile)
+        TaskProvider<Task> configScriptTask = project.tasks.register('configScript') { Task configScript ->
+            configScript.group = 'Build Setup'
+            configScript.description = 'Generates Groovy configuration script.'
 
-        def projectName = getGrailsProjectName(project)
-        def projectVersion = project.version
-        def projectDir = project.projectDir.absolutePath
-        def projectType = getGrailsProjectType()
-
-        configScriptTask.inputs.property('name', projectName)
-        configScriptTask.inputs.property('version', projectVersion)
-        configScriptTask.doLast {
-            String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
-            String grailsAppDir = grailsAppPath ? project.file(grailsAppPath).absolutePath : ''
-            if (System.getProperty('os.name').startsWith('Windows')) {
-                projectDir = projectDir.replace('\\', '\\\\')
-                grailsAppDir = grailsAppDir.replace('\\', '\\\\')
-            }
-            configFile.parentFile.mkdirs()
-            configFile.text = """
+            configScript.outputs.file(configFile)
+            configScript.inputs.property('name', projectName)
+            configScript.inputs.property('version', projectVersion)
+            configScript.doLast {
+                String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
+                String grailsAppDir = grailsAppPath ? project.file(grailsAppPath).absolutePath : ''
+                if (System.getProperty('os.name').startsWith('Windows')) {
+                    projectDir = projectDir.replace('\\', '\\\\')
+                    grailsAppDir = grailsAppDir.replace('\\', '\\\\')
+                }
+                configFile.parentFile.mkdirs()
+                configFile.text = """
 withConfig(configuration) {
     inline(phase: 'CONVERSION') { source, context, classNode ->
         source.ast.putNodeMetaData('GRAILS_APP_DIR', '$grailsAppDir')
@@ -694,10 +694,11 @@ withConfig(configuration) {
     }
 }
 """
+            }
         }
-        project.tasks.getByName('compileGroovy').dependsOn(configScriptTask)
-        project.compileGroovy {
-            groovyOptions.configurationScript = configFile
+        project.tasks.named('compileGroovy', GroovyCompile).configure {
+            it.dependsOn(configScriptTask)
+            it.groovyOptions.configurationScript = configFile
         }
     }
 
