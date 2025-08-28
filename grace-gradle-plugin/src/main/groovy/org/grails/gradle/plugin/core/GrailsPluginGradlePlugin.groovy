@@ -103,7 +103,7 @@ class GrailsPluginGradlePlugin extends GrailsGradlePlugin {
     }
 
     @Override
-    protected Task createBuildPropertiesTask(Project project) {
+    protected void createBuildPropertiesTask(Project project) {
         // no-op
     }
 

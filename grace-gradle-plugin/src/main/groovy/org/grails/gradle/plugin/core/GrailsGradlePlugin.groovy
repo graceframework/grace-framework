@@ -186,36 +186,33 @@ class GrailsGradlePlugin extends GroovyPlugin {
     }
 
     @CompileDynamic
-    protected Task createBuildPropertiesTask(Project project) {
+    protected void createBuildPropertiesTask(Project project) {
         if (project.tasks.findByName('buildProperties') == null) {
             File resourcesDir = SourceSets.findMainSourceSet(project).output.resourcesDir
             File buildInfoFile = new File(resourcesDir, 'META-INF/grails.build.info')
 
-            Task buildPropertiesTask = project.tasks.create('buildProperties')
-            Map<String, Object> buildPropertiesContents = [
+            LinkedHashMap<String, Object> buildPropertiesContents = [
                     'grails.env': Environment.isSystemSet() ? Environment.current.getName() : Environment.PRODUCTION.getName(),
                     'info.app.name': project.name,
                     'info.app.version': project.version instanceof Serializable ? project.version : project.version.toString(),
                     'info.app.grailsVersion': grailsVersion]
 
-            buildPropertiesTask.group = 'build'
-            buildPropertiesTask.description = "Build properties into 'META-INF/grails.build.info'."
-            buildPropertiesTask.inputs.properties(buildPropertiesContents)
-            buildPropertiesTask.outputs.file(buildInfoFile)
-            buildPropertiesTask.doLast {
-                project.buildDir.mkdirs()
-                ant.mkdir(dir: buildInfoFile.parentFile)
-                ant.propertyfile(file: buildInfoFile) {
-                    for (me in buildPropertiesTask.inputs.properties) {
-                        entry key: me.key, value: me.value
+            TaskProvider<Task> buildPropertiesTask = project.tasks.register('buildProperties') { Task task ->
+                task.group = 'build'
+                task.description = "Build properties into 'META-INF/grails.build.info'."
+                task.inputs.properties(buildPropertiesContents)
+                task.outputs.file(buildInfoFile)
+                task.doLast {
+                    ant.mkdir(dir: buildInfoFile.parentFile)
+                    ant.propertyfile(file: buildInfoFile) {
+                        for (me in task.inputs.properties) {
+                            entry key: me.key, value: me.value
+                        }
                     }
                 }
             }
 
-            project.afterEvaluate {
-                TaskContainer tasks = project.tasks
-                tasks.findByName('processResources')?.dependsOn(buildPropertiesTask)
-            }
+            project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).configure {it.dependsOn(buildPropertiesTask) }
         }
     }
 
