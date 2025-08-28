@@ -37,7 +37,6 @@ import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.tasks.AbstractCopyTask
 import org.gradle.api.tasks.GroovySourceDirectorySet
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
@@ -456,26 +455,30 @@ class GrailsGradlePlugin extends GroovyPlugin {
      **/
     @CompileDynamic
     protected void enableNative2Ascii(Project project, String grailsVersion) {
+        Map<String, String> replaceTokens = [
+                'info.app.name': project.name,
+                'info.app.version': project.version?.toString(),
+                'info.app.grailsVersion': grailsVersion
+        ]
+
+        SourceSet sourceSet = SourceSets.findMainSourceSet(project)
+
         project.afterEvaluate {
             String grailsAppPath = SourceSets.resolveGrailsAppPath(project)
             TaskContainer taskContainer = project.tasks
 
-            SourceSet sourceSet = SourceSets.findMainSourceSet(project)
-            taskContainer.getByName(sourceSet.processResourcesTaskName) { AbstractCopyTask task ->
-                GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
-                boolean native2ascii = grailsExt.isNative2ascii()
-                task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
-                if (native2ascii && grailsExt.isNative2asciiAnt() && !taskContainer.findByName('native2ascii')) {
-                    File destinationDir = ((ProcessResources) task).destinationDir
-                    Task native2asciiTask = createNative2AsciiTask(taskContainer, project.file("${grailsAppPath}/i18n"), destinationDir)
-                    task.dependsOn(native2asciiTask)
-                }
+            GrailsExtension grailsExt = project.extensions.getByType(GrailsExtension)
+            boolean native2ascii = grailsExt.isNative2ascii()
 
-                Map<String, String> replaceTokens = [
-                        'info.app.name': project.name,
-                        'info.app.version': project.version?.toString(),
-                        'info.app.grailsVersion': grailsVersion
-                ]
+            taskContainer.named(sourceSet.processResourcesTaskName, ProcessResources).configure { ProcessResources task ->
+                task.setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+
+                if (native2ascii && grailsExt.isNative2asciiAnt()) {
+                    File i18nDir = project.file("${grailsAppPath}/i18n")
+                    File destinationDir = task.destinationDir
+                    ant.native2ascii(src: i18nDir, dest: destinationDir,
+                            includes: '**/*.properties', encoding: 'UTF-8')
+                }
 
                 task.from(project.relativePath('src/main/templates')) {
                     into('templates')
@@ -511,18 +514,6 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 }
             }
         }
-    }
-
-    @CompileDynamic
-    protected Task createNative2AsciiTask(TaskContainer taskContainer, src, dest) {
-        Task native2asciiTask = taskContainer.create('native2ascii')
-        native2asciiTask.doLast {
-            ant.native2ascii(src: src, dest: dest,
-                    includes: '**/*.properties', encoding: 'UTF-8')
-        }
-        native2asciiTask.inputs.dir(src)
-        native2asciiTask.outputs.dir(dest)
-        native2asciiTask
     }
 
     @CompileDynamic
