@@ -127,14 +127,14 @@ class GroovyPageForkCompileTask extends AbstractCompile {
                         javaExecSpec.getMainClass().set(getCompilerName())
                         javaExecSpec.setClasspath(getClasspath())
 
-                        def jvmArgs = compileOptions.forkOptions.jvmArgs
+                        List<String> jvmArgs = compileOptions.forkOptions.jvmArgs
                         if (jvmArgs) {
                             javaExecSpec.jvmArgs(jvmArgs)
                         }
                         javaExecSpec.setMaxHeapSize(compileOptions.forkOptions.memoryMaximumSize)
                         javaExecSpec.setMinHeapSize(compileOptions.forkOptions.memoryInitialSize)
 
-                        def configFiles = [
+                        String configFiles = [
                                 new File(configDir, 'application.yml').canonicalPath,
                                 new File(configDir, 'application.groovy').canonicalPath
                         ].join(',')
@@ -183,7 +183,7 @@ class GroovyPageForkCompileTask extends AbstractCompile {
 
     @Inject
     protected ObjectFactory getObjectFactory() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException()
     }
 
 }
