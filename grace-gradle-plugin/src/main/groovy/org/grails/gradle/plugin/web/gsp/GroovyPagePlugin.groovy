@@ -15,13 +15,13 @@
  */
 package org.grails.gradle.plugin.web.gsp
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.api.tasks.TaskContainer
@@ -30,6 +30,7 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.bundling.War
 
 import org.grails.gradle.plugin.core.GrailsExtension
+import org.grails.gradle.plugin.core.GrailsGradlePlugin
 import org.grails.gradle.plugin.util.SourceSets
 
 /**
@@ -42,25 +43,18 @@ import org.grails.gradle.plugin.util.SourceSets
 @CompileStatic
 class GroovyPagePlugin implements Plugin<Project> {
 
-    @CompileDynamic
     @Override
     void apply(Project project) {
         registerGrailsExtension(project)
-
-        project.configurations.create('gspCompile')
-        project.dependencies.add('gspCompile', 'jakarta.servlet:jakarta.servlet-api:6.0.0')
 
         SourceSet mainSourceSet = SourceSets.findMainSourceSet(project)
 
         SourceSetOutput output = mainSourceSet?.output
         FileCollection classesDirs = resolveClassesDirs(output, project)
-        File destDir = output?.dir('gsp-classes') ?: project.layout.buildDirectory.dir('gsp-classes/main').get().asFile
+        File destDir = project.layout.buildDirectory.dir('gsp-classes/main').get().asFile
 
-        Configuration providedConfig = project.configurations.findByName('providedCompile')
-        def allClasspath = project.configurations.compileClasspath + project.configurations.gspCompile + classesDirs
-        if (providedConfig) {
-            allClasspath += providedConfig
-        }
+        Configuration compileClasspath = project.configurations.findByName(JavaPlugin.COMPILE_CLASSPATH_CONFIGURATION_NAME)
+        FileCollection allClasspath = compileClasspath + classesDirs
 
         TaskContainer tasks = project.tasks
 
@@ -73,7 +67,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
             task.classpath = allClasspath
-            task.dependsOn(tasks.named('classes'))
+            task.dependsOn(tasks.named(JavaPlugin.CLASSES_TASK_NAME))
         }
 
         TaskProvider<GroovyPageForkCompileTask> compileGroovyPages = tasks.register(
@@ -84,7 +78,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
-            task.dependsOn(tasks.named('classes'))
+            task.dependsOn(tasks.named(JavaPlugin.CLASSES_TASK_NAME))
             task.dependsOn(compileWebappGroovyPages)
         }
 
@@ -133,8 +127,8 @@ class GroovyPagePlugin implements Plugin<Project> {
     }
 
     protected GrailsExtension registerGrailsExtension(Project project) {
-        if (project.extensions.findByName('grails') == null) {
-            project.extensions.add('grails', new GrailsExtension(project))
+        if (project.extensions.findByName(GrailsGradlePlugin.GRAILS_EXTENSION_NAME) == null) {
+            project.extensions.add(GrailsGradlePlugin.GRAILS_EXTENSION_NAME, new GrailsExtension(project))
         }
     }
 
