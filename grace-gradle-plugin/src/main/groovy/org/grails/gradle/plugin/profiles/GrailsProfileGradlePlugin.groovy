@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.ConfigurablePublishArtifact
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.CopySpec
+import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
@@ -33,8 +34,6 @@ import grails.io.IOUtils
 import org.grails.cli.profile.commands.script.GroovyScriptCommand
 import org.grails.gradle.plugin.profiles.tasks.ProfileCompilerTask
 
-import static org.gradle.api.plugins.BasePlugin.BUILD_GROUP
-
 /**
  * A plugin that is capable of compiling a Grails profile into a JAR file for distribution
  *
@@ -45,33 +44,28 @@ import static org.gradle.api.plugins.BasePlugin.BUILD_GROUP
 @CompileStatic
 class GrailsProfileGradlePlugin implements Plugin<Project> {
 
-    static final String CONFIGURATION_NAME = 'grails'
-
-    public static final String RUNTIME_CONFIGURATION = 'profile'
+    public static final String GRAILS_CONFIGURATION_NAME = 'grails'
+    public static final String PROFILE_CONFIGURATION_NAME = 'profile'
 
     @Override
     void apply(Project project) {
         project.getPluginManager().apply(GroovyPlugin)
-        project.configurations.create(CONFIGURATION_NAME)
-        Configuration profileConfiguration = project.configurations.create(RUNTIME_CONFIGURATION)
+        project.configurations.create(GRAILS_CONFIGURATION_NAME)
+        Configuration profileConfiguration = project.configurations.create(PROFILE_CONFIGURATION_NAME)
         profileConfiguration.setCanBeConsumed(false)
         profileConfiguration.setCanBeResolved(true)
         profileConfiguration.setVisible(false)
-        project.getPlugins().withType(GroovyPlugin, { javaPlugin ->
-            SourceSetContainer sourceSets = project.getExtensions()
-                    .getByType(JavaPluginExtension).getSourceSets()
+        project.getPlugins().withType(GroovyPlugin).configureEach {
+            SourceSetContainer sourceSets = project.extensions.getByType(JavaPluginExtension).sourceSets
             sourceSets.configureEach { SourceSet sourceSet ->
-                project.getConfigurations()
-                        .getByName(sourceSet.getCompileClasspathConfigurationName())
+                project.configurations.getByName(sourceSet.compileClasspathConfigurationName)
                         .extendsFrom(profileConfiguration)
-                project.getConfigurations()
-                        .getByName(sourceSet.getImplementationConfigurationName())
+                project.configurations.getByName(sourceSet.implementationConfigurationName)
                         .extendsFrom(profileConfiguration)
-                project.getConfigurations()
-                        .getByName(sourceSet.getRuntimeClasspathConfigurationName())
+                project.configurations.getByName(sourceSet.runtimeClasspathConfigurationName)
                         .extendsFrom(profileConfiguration)
             }
-        })
+        }
 
         def profileYml = project.file('profile.yml')
 
@@ -104,7 +98,7 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             c.into(new File(resourcesDir, '/META-INF/grails-profile'))
         })
 
-        def classesDir = project.layout.getBuildDirectory().dir('classes/profile').get().asFile
+        def classesDir = project.layout.buildDirectory.dir('classes/profile').get().asFile
         def compileProfileTask = project.tasks.register('compileProfile', ProfileCompilerTask, { ProfileCompilerTask task ->
             task.destinationDirectory.set(classesDir)
             task.source = commandsDir
@@ -113,10 +107,10 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             if (templatesDir.exists()) {
                 task.templatesDir = templatesDir
             }
-            task.classpath = project.configurations.getByName(RUNTIME_CONFIGURATION) + project.files(IOUtils.findJarFile(GroovyScriptCommand))
+            task.classpath = project.configurations.getByName(PROFILE_CONFIGURATION_NAME) + project.files(IOUtils.findJarFile(GroovyScriptCommand))
         })
 
-        def groovyClassesDir = project.layout.getBuildDirectory().dir('classes/groovy/main').get().asFile
+        def groovyClassesDir = project.layout.buildDirectory.dir('classes/groovy/main').get().asFile
         def compileTask = project.tasks.getByName('compileGroovy')
         if (compileTask) {
             compileTask.dependsOn(compileProfileTask)
@@ -129,9 +123,9 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
             jarTask.from(resourcesDir)
             jarTask.from(classesDir)
             jarTask.from(groovyClassesDir)
-            jarTask.destinationDirectory.set(project.layout.getBuildDirectory().dir('libs'))
+            jarTask.destinationDirectory.set(project.layout.buildDirectory.dir('libs'))
             jarTask.setDescription('Assembles a jar archive containing the profile classes.')
-            jarTask.setGroup(BUILD_GROUP)
+            jarTask.setGroup(BasePlugin.BUILD_GROUP)
         }
         else {
             // Create jar task
@@ -140,13 +134,13 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
                 jar.from(resourcesDir)
                 jar.from(classesDir)
                 jar.from(groovyClassesDir)
-                jar.destinationDirectory.set(project.layout.getBuildDirectory().dir('libs'))
+                jar.destinationDirectory.set(project.layout.buildDirectory.dir('libs'))
                 jar.setDescription('Assembles a jar archive containing the profile classes.')
-                jar.setGroup(BUILD_GROUP)
+                jar.setGroup(BasePlugin.BUILD_GROUP)
             }).get()
         }
 
-        project.artifacts.add(CONFIGURATION_NAME, jarTask.getArchiveFile(),
+        project.artifacts.add(GRAILS_CONFIGURATION_NAME, jarTask.getArchiveFile(),
                 { ConfigurablePublishArtifact artifact -> artifact.builtBy(jarTask) })
 
         project.tasks.register('sourcesJar', Jar, { Jar jar ->
@@ -161,12 +155,12 @@ class GrailsProfileGradlePlugin implements Plugin<Project> {
                 spec.into('skeleton')
             }
             jar.archiveClassifier.set('sources')
-            jar.destinationDirectory.set(project.layout.getBuildDirectory().dir('libs'))
+            jar.destinationDirectory.set(project.layout.buildDirectory.dir('libs'))
             jar.setDescription('Assembles a jar archive containing the profile sources.')
-            jar.setGroup(BUILD_GROUP)
+            jar.setGroup(BasePlugin.BUILD_GROUP)
         })
 
-        project.tasks.findByName('assemble').dependsOn jarTask
+        project.tasks.named(BasePlugin.ASSEMBLE_TASK_NAME).configure { it.dependsOn jarTask }
     }
 
 }

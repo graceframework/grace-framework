@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 the original author or authors.
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ class ProfileCompilerTask extends AbstractCompile {
 
         if (!profileData.containsKey('extends')) {
             List<String> dependencies = []
-            project.configurations.getByName(GrailsProfileGradlePlugin.RUNTIME_CONFIGURATION).allDependencies.all { Dependency d ->
+            project.configurations.getByName(GrailsProfileGradlePlugin.PROFILE_CONFIGURATION_NAME).allDependencies.all { Dependency d ->
                 dependencies.add("${d.group}:${d.name}:${d.version}".toString())
             }
             profileData.put('extends', dependencies.join(','))
