@@ -277,6 +277,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 commandTask.setDescription(commandDescription)
                 commandTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
                 commandTask.command = commandName
+                commandTask.dependsOn(JavaPlugin.CLASSES_TASK_NAME, FIND_MAIN_CLASS_TASK_NAME)
                 commandTask.systemProperty 'spring.main.banner-mode', 'OFF'
                 commandTask.systemProperty 'logging.level.ROOT', 'OFF'
                 commandTask.systemProperty 'spring.output.ansi.enabled', 'always'
@@ -526,6 +527,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 scriptTask.group = 'Grace'
                 scriptTask.description = "Executes the Grace Application Scripts."
                 scriptTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
+                scriptTask.dependsOn(JavaPlugin.CLASSES_TASK_NAME, FIND_MAIN_CLASS_TASK_NAME)
                 scriptTask.systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 scriptTask.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 scriptTask.systemProperty 'spring.main.banner-mode', 'OFF'
@@ -561,6 +563,7 @@ class GrailsGradlePlugin extends GroovyPlugin {
                 commandTask.group = 'Grace'
                 commandTask.description = "Executes the Grace Application Commands."
                 commandTask.classpath = buildClasspath(project, runtimeClasspath, consoleClasspath, profileClasspath)
+                commandTask.dependsOn(JavaPlugin.CLASSES_TASK_NAME, FIND_MAIN_CLASS_TASK_NAME)
                 commandTask.systemProperty Environment.KEY, System.getProperty(Environment.KEY, Environment.DEVELOPMENT.getName())
                 commandTask.systemProperty BuildSettings.APP_BASE_DIR, project.projectDir
                 commandTask.systemProperty 'spring.main.banner-mode', 'OFF'
