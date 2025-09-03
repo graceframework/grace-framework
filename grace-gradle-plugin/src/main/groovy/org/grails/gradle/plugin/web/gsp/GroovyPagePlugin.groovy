@@ -64,6 +64,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.description = "Compiles the Groovy server pages (GSP) in 'src/main/webapp'."
             task.destinationDirectory.set(destDir)
             task.source = project.file("src/main/webapp")
+            task.packageName = project.name
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/'
             task.classpath = allClasspath
@@ -75,6 +76,7 @@ class GroovyPagePlugin implements Plugin<Project> {
             task.group = 'grace'
             task.description = 'Compiles the Groovy server pages (GSP).'
             task.destinationDirectory.set(destDir)
+            task.packageName = project.name
             task.tmpDirPath = getTmpDirPath(project)
             task.serverpath = '/WEB-INF/grails-app/views/'
             task.classpath = allClasspath
